@@ -1,0 +1,38 @@
+$(document).ready(function(){
+	
+	$(".div_tracking_number").hide();		
+	
+	$("select[name='op_status_id']").change(function(){
+		var data = 'val='+$(this).val();
+		fcom.ajax(fcom.makeUrl('SellerOrders', 'checkIsShippingMode'), data, function(t) {			
+			var response = $.parseJSON(t);
+			if (response["shipping"]){
+				$(".div_tracking_number").show();				
+			}else{
+				$(".div_tracking_number").hide();				
+			}			
+		});
+	});
+	
+	$(document).on('click','ul.linksvertical li a.redirect--js',function(event){
+		event.stopPropagation();
+	});		
+	
+});
+(function() {
+	updateStatus = function(frm){		
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);		
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {			
+			window.location.reload();
+		});
+	};	
+	
+	updateShippingCompany = function(frm){
+		var data = fcom.frmData(frm);		
+		if (!$(frm).validate()) return;
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'updateShippingCompany'), data, function(t) {			
+			window.location.reload();
+		});
+	};
+})();

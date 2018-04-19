@@ -1,0 +1,85 @@
+<?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
+$arr_flds = array(
+	'order_id'	=>	Labels::getLabel('LBL_Order_Id_Date', $siteLangId),
+	'product'	=>	Labels::getLabel('LBL_Ordered_Product', $siteLangId),
+	'op_qty'	=>	Labels::getLabel('LBL_Qty', $siteLangId),
+	'total'		=>	Labels::getLabel('LBL_Total', $siteLangId),
+	'status'	=>	Labels::getLabel('LBL_Status', $siteLangId),
+	'action'	=>	Labels::getLabel('LBL_Action', $siteLangId),
+);
+
+$tbl = new HtmlElement('table', array('class'=>'table'));
+$th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
+foreach ($arr_flds as $val) {
+	$e = $th->appendElement('th', array(), $val);
+}
+
+$sr_no = 0;
+foreach ($orders as $sn => $order){
+	$sr_no++;
+	$tr = $tbl->appendElement('tr',array('class' =>'' ));
+	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($order['op_id']) );	
+	
+	foreach ($arr_flds as $key=>$val){
+		$td = $tr->appendElement('td');
+		switch ($key){
+			case 'order_id':
+			$txt = '<span class="caption--td">'.$val.'</span><a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.$orderDetailUrl.'">';
+			$txt .= $order['op_invoice_number'];
+			$txt .= '</a><br/>'. FatDate::format($order['order_date_added']);
+			$td->appendElement('plaintext', array(), $txt , true);
+			break;
+			case 'product':
+				$txt = '<span class="caption--td">'.$val.'</span>';
+				if( $order['op_selprod_title'] != '' ){
+					$txt .= '<div class="item-yk-head-title">'.$order['op_selprod_title'].'</div>';
+				}
+				$txt .= '<div class="item-yk-head-sub-title">'.$order['op_product_name'].'</div>';
+				
+				$txt .= '<div class="item-yk-head-specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$order['op_brand_name'];
+				if( $order['op_selprod_options'] != '' ){
+					$txt .= ' | ' . $order['op_selprod_options'];
+				}
+				$txt .= '</div>';				
+				$td->appendElement('plaintext', array(), $txt , true);
+			break;			
+			case 'total':
+				$txt = '<span class="caption--td">'.$val.'</span>';
+				// $txt .= CommonHelper::displayMoneyFormat($order['order_net_amount']);
+				$txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER));
+				$td->appendElement('plaintext', array(), $txt, true);
+			break;
+			case 'status':
+				$txt = '<span class="caption--td">'.$val.'</span>'.$order['orderstatus_name'];
+				$td->appendElement('plaintext', array(), $txt , true);
+			break;			
+			case 'action':
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				
+				$li = $ul->appendElement("li");
+				$li->appendElement('a', array('href'=> $orderDetailUrl, 'class'=>'',
+				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
+				'<i class="fa fa-eye"></i>', true);
+
+				$li = $ul->appendElement("li");
+				$li->appendElement('a', array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id']) ), 'class'=>'',
+				'title'=>Labels::getLabel('LBL_Cancel_Order',$siteLangId)),
+				'<i class="fa fa-close"></i>', true);				
+			break;
+			default:
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$order[$key],true);
+			break;
+		}
+	}
+}
+if (count($orders) == 0){
+	// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_Unable_to_find_any_record', $siteLangId));
+	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
+} else {
+	echo $tbl->getHtml();
+}
+
+$postedData['page'] = $page;
+echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmOrderSrchPaging') );
+$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToOrderSearchPage');
+$this->includeTemplate('_partial/pagination.php', $pagingArr,false);

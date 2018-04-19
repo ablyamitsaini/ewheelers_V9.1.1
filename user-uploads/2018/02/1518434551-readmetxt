@@ -1,0 +1,29 @@
+== [ Installation ] ==
+1. This module required vqmode. To install the vqmode you can visit the below URL and follow the instruction.
+https://github.com/vqmod/vqmod/wiki/Installing-vQmod-on-OpenCart
+2. Chose appropriate version from module folder and copy all file inside the version folder and paste this to open-cart root directory.
+3. Go to the Extensions->Shipping and click on install and fill the required configuration information in edit mode.
+4. To enable the auto "Track Aramex Shipment" update, set the following corn job.
+   1. {command to execute file} catalog/controller/account/aramex_traking_cron.php
+   2. System will sent an email to user's by order status as mentioned in the query. You can change your status id in the query at line 15    {aramex_traking_cron.php}. These status id can be found at "admin->Settings -> Localisation -> Order Statuses"
+	replace your actual status id in query
+	//AND order_status_id IN (1,2,3,15)
+	   id:status
+	   1:Pending
+	   2:Processing
+	   3:Shipped
+	   15:Processed 
+		 
+		 
+== [ Supported ] ==
+1.5.4,.5.4.1, 1.5.5.1,1.5.6,1.5.6.1,1.5.6.2,1.5.6.3,1.5.6.4,2.0.0.0,2.0.1.0,2.0.1.1,2.0.2.0,2.0.3.1
+
+==[ Features ]==
+Prepare Shipments
+Print Labels
+Return Shipments 
+Schedule Pickups
+Bulk Schedule Pickups
+Track Shipments
+Auto Track Shipments
+Calculate Rates

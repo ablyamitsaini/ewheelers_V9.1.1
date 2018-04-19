@@ -1,0 +1,2 @@
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+	<div class="section-head"><?php if( $cartHasPhysicalProduct ){ ?>5.<?php } else { echo '4.'; } ?> <?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></div>

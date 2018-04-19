@@ -1,0 +1,31 @@
+In configuration table add
+'CONF_PRODUCT_IMAGE_MAX_SIZE'
+
+application/models/settings.php
+after
+'CONF_DIGITAL_MAX_FILE_SIZE',
+add
+'CONF_PRODUCT_IMAGE_MAX_SIZE',
+
+admin-application/controllers/ConfigurationController
+after
+if(($post['CONF_DIGITAL_MAX_FILE_SIZE']>0) && ($post['CONF_DIGITAL_MAX_FILE_SIZE']>$this->return_bytes(ini_get('upload_max_filesize')))){
+					unset($post['CONF_DIGITAL_MAX_FILE_SIZE']);
+					Message::addError('Please keep "Max File Size" within allowed limit, which is '.$this->return_bytes(ini_get("upload_max_filesize")).' byte(s)');
+				}
+Add
+if(($post['CONF_PRODUCT_IMAGE_MAX_SIZE']>0) && ($post['CONF_PRODUCT_IMAGE_MAX_SIZE']>$this->return_bytes(ini_get('upload_max_filesize')))){
+					unset($post['CONF_PRODUCT_IMAGE_MAX_SIZE']);
+					Message::addError('Please keep "Max File Size" within allowed limit, which is '.$this->return_bytes(ini_get("upload_max_filesize")).' byte(s)');
+				}
+				
+After
+$frm->getField("CONF_MAX_NUMBER_PRODUCT_ADDONS")->html_after_field='<small>Determines how many add-ons items can be defined for a product.</small>';
+Add
+$frm->addRequiredField('Max File Size for Product Image:', 'CONF_PRODUCT_IMAGE_MAX_SIZE',Settings::getSetting("CONF_PRODUCT_IMAGE_MAX_SIZE"), '', 'class="small"');
+		$frm->getField("CONF_PRODUCT_IMAGE_MAX_SIZE")->html_after_field='<small>The maximum file size you can upload. Enter as byte. Maximim '.$this->return_bytes(ini_get("upload_max_filesize")).' byte(s) allowed as per your hosting/server settings.</small>';	
+
+Cut submitImageUploadImageForm function from application/views/account/page-js/product_form.js and admin-application/views/products/page-js/form.js
+
+Add 
+

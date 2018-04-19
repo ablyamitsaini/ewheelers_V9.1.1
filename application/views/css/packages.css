@@ -1,0 +1,175 @@
+/*package page**/
+.packages-banner {
+}
+.banner-over-txt {
+	text-align: center;
+	padding: 30px 0;
+}
+.banner-over-txt h3 {
+	font-size: 2.6em;
+	color: #000;
+	font-weight: 800;
+	line-height: 1.4;
+}
+.banner-over-txt p {
+	color: #000;
+	padding: 10px 0;
+}
+.package-desc {
+	font-size: 0.9em;
+	text-align: center;
+	margin: 0px auto;
+}
+.packages-box {
+	margin-bottom: 40px;
+}
+.packages-box .box {
+	text-align: center;
+}
+.packages-box .box.is--active {
+	background: #ffffff;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	padding: 0;
+	/*transform: scaleY(1.05);*/
+    
+	z-index: 2;
+}
+.packages-box .box .box-inner {
+	background: #282828;
+	border-radius: 3px;
+	padding: 30px;
+}
+.packages-box .box.two .box-inner {
+	background: #ff3a59;
+}
+.packages-box .box.two .after-box h3 {
+	background: #ff3a59;
+}
+.packages-box .box.three .box-inner {
+	background: #42c2e5;
+}
+.packages-box .box.three .after-box h3 {
+	background: #42c2e5;
+}
+.packages-box .name {
+	padding: 0 0 20px 0;
+	color: #fff;
+	font-size: 2em;
+	font-weight: 700;
+	line-height: 1;
+}
+.packages-box .name span {
+	color: #fff;
+	font-size: 0.8em;
+	display: block;
+	font-weight: normal;
+	text-transform: none;
+}
+.packages-box .valid {
+	color: #fff;
+	font-size: 1.3em;
+	font-weight: 600;
+	line-height: 1.5;
+}
+.packages-box .valid sup {
+	font-size: 3.2em;
+}
+.packages-box .valid span {
+	font-size: 4em;
+	font-weight: 800;
+	line-height: 1;
+}
+.packages-box .trial {
+	text-align: center;
+	padding: 20px;
+}
+.packages-box .trial ul {
+}
+.packages-box .trial ul li {
+	font-size: 1em;
+	margin: 5px 0;
+	color: #fff;
+}
+.packages-box .trial ul li span {
+	font-size: 1em;
+	font-weight: 600;
+}
+.packages-box .after-box {
+	margin-top: 10px;
+	background: #f2f2f2;
+	padding: 0 0px 35px 0px;
+	text-align: center;
+}
+.packages-box .after-box h3 {
+	background: #282828;
+	border-radius: 2px;
+	color: #fff;
+	font-weight: 600;
+	text-align: center;
+	padding: 10px;
+	font-size: 1.2em;
+}
+.packages-box .after-box ul {
+	margin: 30px auto;
+	text-align: center;
+	display: block;
+	max-width: 200px;
+}
+.packages-box .after-box ul li {
+	text-align: left;
+	border-radius: 3px;
+	padding: 0 5px;
+	margin: 5px auto;
+	font-size: 0.852em;
+}
+.packages-box .after-box .checkbox, .packages-box .after-box .radio {
+	color: #4c4c4c;
+	font-size: 1.2em;
+	vertical-align: top;
+	line-height: 1;
+}
+.packages-box a.btn {
+	border: solid 2px #ffffff;
+	color: #ffffff;
+	border-radius: 3px;
+	background: none;
+	min-width: 220px;
+	font-size: 1.1em;
+	font-weight: 600;
+}
+.packages-box a.btn:hover {
+	background: #fff;
+	color: #000;
+}
+.packages-box .after-box a.btn {
+	border: solid 2px #282828;
+	color: #282828;
+}
+.packages-box .after-box a.btn:hover {
+	background: #282828;
+	color: #fff;
+}
+.packages-box .box.two .after-box a.btn {
+	border-color: #ff3957;
+	color: #ff3957;
+}
+.packages-box .box.two .after-box a.btn:hover {
+	background: #ff3957;
+	color: #fff;
+}
+.packages-box .box.three .after-box a.btn {
+	border-color: #42c2e5;
+	color: #42c2e5;
+}
+.packages-box .box.three .after-box a.btn:hover {
+	background: #42c2e5;
+	color: #fff;
+}
+@media (max-width:1025px) {
+.packages-box a.btn {
+	min-width: inherit;
+}
+.packages-box .box {
+	min-height: 586px;
+}
+}

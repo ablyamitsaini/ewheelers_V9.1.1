@@ -1,0 +1,1 @@
+a:4:{s:5:"value";a:1:{i:0;a:2:{s:12:"product_name";s:13:"Windows Key-2";s:4:"sold";s:1:"1";}}s:10:"write_time";s:10:"1516017745";s:10:"expired_in";i:86400;s:12:"expired_time";i:1516104145;}

@@ -1,0 +1,74 @@
+<?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
+$arr_flds = array(
+	'sr'		=>	Labels::getLabel('LBL_SrNo.', $siteLangId),
+	'name'		=>	Labels::getLabel('LBL_Product', $siteLangId),
+	'selprod_stock'	=>	Labels::getLabel( 'LBL_Stock_Available', $siteLangId ),
+	'stock_on_order'=>	Labels::getLabel( 'LBL_Stock_On_Order', $siteLangId ),
+	'selprod_price'	=>	Labels::getLabel( 'LBL_Unit_Price', $siteLangId),
+	'total_value'	=>	Labels::getLabel( 'LBL_Total_Value_', $siteLangId ).'<br/>('.Labels::getLabel( 'LBL_Stock_Available', $siteLangId ).' * '.Labels::getLabel( 'LBL_Unit_Price', $siteLangId).')'
+);
+
+$tbl = new HtmlElement('table', array('class'=>'table'));
+$th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
+foreach ( $arr_flds as $val ) {
+	$e = $th->appendElement('th', array(), $val, true);
+}
+
+$sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
+foreach ($arrListing as $sn => $listing){
+	$sr_no++;
+	$tr = $tbl->appendElement('tr',array('class' =>'' ));
+	
+	foreach ($arr_flds as $key=>$val){
+		$td = $tr->appendElement('td');
+		switch ( $key ){
+			case 'sr':
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+			break;
+			case 'name':
+				$name = '<div class="item-yk-head-title">'.$listing['product_name'].'</div>';
+				if( $listing['selprod_title'] != '' ){
+					$name .= '<div class="item-yk-head-sub-title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
+				}
+			
+				if( $listing['brand_name'] != '' ){
+					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
+				}
+				$td->setAttribute('width', '40%');
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$name,true);
+			break;
+			
+			case 'selprod_stock':
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['selprod_stock'],true);
+			break;
+			
+			case 'stock_on_order':
+				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['stock_on_order'],true);
+			break;
+			
+			case 'selprod_price':
+				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($listing['selprod_price']),true);
+			break;
+			
+			case 'total_value':
+				$total_value = $listing['selprod_stock'] * $listing['selprod_price'];
+				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($total_value),true);
+			break;
+			
+			default:
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing[$key],true);
+			break;
+		}
+	}
+}
+if( count($arrListing) == 0 ){
+	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
+} else {
+	/* echo '<div class="box__head"><div class="group--btns"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
+	echo $tbl->getHtml();
+}
+$postedData['page'] = $page;
+echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmProductInventoryStockStatusSrchPaging') );
+$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToProductsInventoryStockStatusPage');
+$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
+?>

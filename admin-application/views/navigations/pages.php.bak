@@ -1,0 +1,67 @@
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<div class="sectionhead" >
+	<h4>Navigation Pages Listing</h4>
+	<a class="themebtn btn-default btn-sm" href="javascript:void(0)" onclick="searchNavigations()">Back to Navigations</a>
+	<a class="themebtn btn-default btn-sm" href="javascript:void(0)" onclick="navigationLinkForm(<?php echo $nav_id; ?>,0)">Add Navigation Page</a>
+</div>
+<div class="sectionbody">
+	<div class="tablewrap" >
+		<?php /* if( isset($arrListing) && count($arrListing) ){ */
+			$arr_flds = array(
+					'listserial'=>'Sr no.',
+					'nlinks_identifier'=>'Caption',	
+					'action' => 'Action',
+				);
+			$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
+			$th = $tbl->appendElement('thead')->appendElement('tr');
+			foreach ($arr_flds as $val) {
+				$e = $th->appendElement('th', array(), $val);
+			}
+
+			$sr_no = 0;
+			foreach ($arrListing as $sn=>$row){
+				$sr_no++;
+				$tr = $tbl->appendElement('tr');
+				foreach ($arr_flds as $key=>$val){
+					$td = $tr->appendElement('td');
+					switch ($key){
+						case 'listserial':
+							$td->appendElement('plaintext', array(), $sr_no);
+						break;
+						case 'nlinks_identifier':
+							if($row['nlinks_caption']!=''){
+								$td->appendElement('plaintext', array(), $row['nlinks_caption'],true);
+								$td->appendElement('br', array());
+								$td->appendElement('plaintext', array(), '('.$row[$key].')',true);
+							}else{
+								$td->appendElement('plaintext', array(), $row[$key],true);
+							}
+							break;
+						/* case 'action':
+							$ul = $td->appendElement("ul",array("class"=>"actions"));
+							if($canEdit){
+								$li = $ul->appendElement("li");
+								$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>'Edit',"onclick"=>"addForm(".$row['nav_id'].")"),'<i class="ion-edit icon"></i>', true);
+								
+								$li = $ul->appendElement("li");
+								$li->appendElement('a', array('href'=>"javascript:void(0)", 'class'=>'button small green', 'title'=>'Pages',"onclick"=>"pages(".$row['nav_id'].")"),'<i class="ion-document icon"></i>', true);
+							} */
+						break;
+						default:
+							$td->appendElement('plaintext', array(), $row[$key],true);
+						break;
+					}
+				}
+			}
+		/* } */
+		
+		
+		
+		if ( count($arrListing) == 0){
+			$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Records_Found',$adminLangId));
+		}
+		
+		echo $tbl->getHtml();
+		?>
+	</div> 
+</div>	

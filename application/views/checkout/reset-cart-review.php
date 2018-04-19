@@ -1,0 +1,2 @@
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<div class="section-head"><?php if( $cartHasPhysicalProduct ){ ?>4.<?php } else { echo '3.'; } ?> <?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></div>
