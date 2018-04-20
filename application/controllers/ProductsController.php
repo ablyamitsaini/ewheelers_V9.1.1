@@ -614,8 +614,7 @@ class ProductsController extends MyAppController {
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
 		$srch->addGroupBy('selprod_id');
 		/* ] */
-		echo $srch->getQuery();exit;
-		
+				
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);

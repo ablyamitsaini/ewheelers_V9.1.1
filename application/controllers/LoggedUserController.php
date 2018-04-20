@@ -24,6 +24,7 @@ class LoggedUserController extends MyAppController {
 		}
 		
 		$userPreferedDashboardType = ($userInfo['user_preferred_dashboard'])?$userInfo['user_preferred_dashboard']:$userInfo['user_registered_initially_for'];
+		
 		switch($userPreferedDashboardType){
 			case User::USER_TYPE_BUYER:
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
@@ -49,6 +50,7 @@ class LoggedUserController extends MyAppController {
 			Message::addErrorMessage(Labels::getLabel('MSG_Please_Configure_Your_Email',$this->siteLangId));
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'configureEmail'));
 		}
+		
 		$this->initCommonValues();		
 	}
 	

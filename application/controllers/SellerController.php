@@ -1259,7 +1259,7 @@ class SellerController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function shop(){
+	public function shop(){ 
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
