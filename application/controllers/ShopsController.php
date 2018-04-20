@@ -69,8 +69,8 @@ class ShopsController extends MyAppController {
 		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
 		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		
-		$featured = FatApp::getPostedData('featured', null, '');
-		if( !empty($featured)) {
+		$featured = FatApp::getPostedData('featured', FatUtility::VAR_INT, 0);
+		if(1 > $featured) {
 			$srch->addCondition('shop_featured', '=', $featured);
 		}
 		

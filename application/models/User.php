@@ -646,7 +646,7 @@ class User extends MyAppModel {
 		
 		$assign_fields['usuprequest_status'] = $status;
 		
-		$record->assignValues($assign_fields,true,'','',true);
+		$record->assignValues($assign_fields,false,'','',true);
 			
 		$record->setFldValue('usuprequest_attempts', 1, true);
 		$onDuplicateKeyUpdate=array(
