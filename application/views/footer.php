@@ -81,8 +81,12 @@
 	<div class="box-cookies">
 		<span id="cookieconsent:desc" class="cc-message">
 		<?php echo FatUtility::decodeHtmlEntities( FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '') );?>
-		<a href="<?php echo FatApp::getConfig('CONF_COOKIES_BUTTON_LINK', FatUtility::VAR_STRING, '');?>"><?php echo FatApp::getConfig('CONF_READ_MORE_COOKIES_BUTTON_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '');?></a>.</span>
-		<span class="cc-close cc-cookie-accept-js"><?php echo FatApp::getConfig('CONF_ACCEPT_COOKIES_BUTTON_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '');?></span>
+		<?php if(FatApp::getConfig('CONF_COOKIES_BUTTON_LINK', FatUtility::VAR_STRING, '')) { ?>
+			<a href="<?php echo FatApp::getConfig('CONF_COOKIES_BUTTON_LINK', FatUtility::VAR_STRING, '');?>"><?php echo FatApp::getConfig('CONF_READ_MORE_COOKIES_BUTTON_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '');?></a>.</span>
+		<?php } ?>
+		<?php if(FatApp::getConfig('CONF_ACCEPT_COOKIES_BUTTON_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '')) { ?>
+			<span class="cc-close cc-cookie-accept-js"><?php echo FatApp::getConfig('CONF_ACCEPT_COOKIES_BUTTON_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '');?></span>
+		<?php } ?>
 	</div>
 	<?php } ?>
 </div>
