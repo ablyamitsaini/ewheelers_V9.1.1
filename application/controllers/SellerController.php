@@ -1041,13 +1041,9 @@ class SellerController extends LoggedUserController {
 		if( User::canAddCustomProduct() ){
 			$cnd->attachCondition('product_seller_id', '=', UserAuthentication::getLoggedUserId(),'OR');
 		}
-<<<<<<< HEAD
 		$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 		$srch->addCondition('product_deleted','=',applicationConstants::NO);
-=======
-		//$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
->>>>>>> 2055d5c1f9cfffe57bc8b433d2fd23b891cadf11
-		
+
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if (!empty($keyword)) {
 			$cnd = $srch->addCondition('product_name', 'like', '%' . $keyword . '%');
