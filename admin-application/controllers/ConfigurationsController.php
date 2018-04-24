@@ -1184,7 +1184,6 @@ class ConfigurationsController extends AdminBaseController {
 				$frm->addTextarea(Labels::getLabel("LBL_ADDRESS",$this->adminLangId),'CONF_ADDRESS_'.$langId);
 				$frm->addTextarea(Labels::getLabel('LBL_Cookies_Policies_Text',$this->adminLangId),'CONF_COOKIES_TEXT_'.$langId);
 				$frm->addTextBox(Labels::getLabel('LBL_Cookies_Policies_Button_Text',$this->adminLangId),'CONF_ACCEPT_COOKIES_BUTTON_TEXT_'.$langId);
-				
 			break;
 			
 			case Configurations::FORM_EMAIL:
