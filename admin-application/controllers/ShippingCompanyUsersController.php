@@ -44,7 +44,7 @@ class ShippingCompanyUsersController extends AdminBaseController {
 			$srch->addCondition('uc.credential_username', '=', $keyword );	
 		}
 		
-		$user_active = FatApp::getPostedData( 'user_active', FatUtility::VAR_INT, -1 );
+		/* $user_active = FatApp::getPostedData( 'user_active', FatUtility::VAR_INT, -1 );
 		if( $user_active > -1 ){
 			$srch->addCondition('uc.credential_active', '=', $user_active );
 		}
@@ -62,7 +62,7 @@ class ShippingCompanyUsersController extends AdminBaseController {
 			if( $type == User::USER_TYPE_BUYER ) {
 				$srch->addCondition('u.user_is_buyer', '=', 1);
 			}
-		}
+		} */
 		
 		/* $user_regdate_from = FatApp::getPostedData('user_regdate_from', FatUtility::VAR_DATE, '') ;
 		if ( !empty($user_regdate_from) ) {
@@ -75,7 +75,8 @@ class ShippingCompanyUsersController extends AdminBaseController {
 		} */
 		
 		$srch->setPageNumber($page);
-		$srch->setPageSize($pagesize);		
+		$srch->setPageSize($pagesize);	
+		
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs,'user_id');			
 		

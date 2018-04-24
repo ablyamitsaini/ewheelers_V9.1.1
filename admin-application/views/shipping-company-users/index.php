@@ -14,29 +14,7 @@
 
                             </div>
 						</div>
-					</div>
-					<?php /*<section class="section searchform_filter">
-						<div class="sectionhead">
-							<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
-						</div>
-						<div class="sectionbody space togglewrap" style="display:none;">
-							<?php 
-								$frmSearch->setFormTagAttribute ( 'onsubmit', 'searchUsers(this,1); return(false);');
-								$frmSearch->setFormTagAttribute ( 'class', 'web_form' );
-								$frmSearch->developerTags['colClassPrefix'] = 'col-md-';					
-								$frmSearch->developerTags['fld_default_col'] = 6;
-								
-								$fld_keyword = $frmSearch->getField('keyword');
-								$fld_keyword->setFieldTagAttribute('onKeyUp','usersAutocomplete(this)');
-								$fld_keyword->htmlAfterField ='<div class="autoSuggest"></div>';							
-								
-
-								$fld = $frmSearch->getField('btn_clear');
-								$fld->addFieldTagAttribute('onclick','clearUserSearch()');
-								echo  $frmSearch->getFormHtml();
-							?>
-						</div>
-					</section> */?>
+					</div>					
                    
                     <section class="section">
 						<div class="sectionhead">
