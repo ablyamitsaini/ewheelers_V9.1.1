@@ -77,7 +77,7 @@
 </footer>
 <?php if(FatApp::getConfig('CONF_ENABLE_COOKIES', FatUtility::VAR_INT, 1) && !CommonHelper::getUserCookiesEnabled()){ ?>
 <div class="cc-window cc-banner cc-type-info cc-theme-block cc-bottom cookie-alert">
-    <?php if(FatApp::getConfig('CONF_COOKIES_TEXT_', FatUtility::VAR_STRING, '')) { ?>
+    <?php if(FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '')) { ?>
 	<div class="box-cookies">
 		<span id="cookieconsent:desc" class="cc-message">
 		<?php echo FatUtility::decodeHtmlEntities( FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '') );?>
