@@ -1030,7 +1030,7 @@ class SellerController extends LoggedUserController {
 		$pagesize = FatApp::getConfig('CONF_PAGE_SIZE',FatUtility::VAR_INT, 10);
 			
 		//$srch = Product::getSearchObject($this->siteLangId);
-		$srch = new ProductSearch($this->siteLangId, null, null, true, false);
+		$srch = new ProductSearch($this->siteLangId, null, null, false, false);
 		$srch->joinProductShippedBySeller(UserAuthentication::getLoggedUserId());						
 		$srch->joinTable( AttributeGroup::DB_TBL, 'LEFT OUTER JOIN', 'product_attrgrp_id = attrgrp_id', 'attrgrp' );
 		$srch->joinTable(UpcCode::DB_TBL, 'LEFT OUTER JOIN','upc_product_id = product_id','upc');
@@ -1041,8 +1041,12 @@ class SellerController extends LoggedUserController {
 		if( User::canAddCustomProduct() ){
 			$cnd->attachCondition('product_seller_id', '=', UserAuthentication::getLoggedUserId(),'OR');
 		}
+<<<<<<< HEAD
 		$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 		$srch->addCondition('product_deleted','=',applicationConstants::NO);
+=======
+		//$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
+>>>>>>> 2055d5c1f9cfffe57bc8b433d2fd23b891cadf11
 		
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if (!empty($keyword)) {
@@ -1058,11 +1062,13 @@ class SellerController extends LoggedUserController {
 			$is_custom_or_catalog = FatApp::getPostedData('type', FatUtility::VAR_INT, -1) ;
 			if ($is_custom_or_catalog > -1) {
 				if( $is_custom_or_catalog > 0 ){
-					$srch->addCondition('product_seller_id', '>', 0 );
+					$srch->addCondition('product_seller_id', '>', 0 );							
 				} else {
 					$srch->addCondition('product_seller_id', '=', 0 );
+					$srch->addCondition('product_active','=',applicationConstants::ACTIVE);	
 				}
 			} else {
+				$srch->addCondition('product_active','=',applicationConstants::ACTIVE);	
 				/* $srch->addCondition('product_seller_id', '=', 0 ); */
 			}
 		}
@@ -1260,7 +1266,7 @@ class SellerController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function shop(){
+	public function shop(){ 
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
@@ -3632,7 +3638,7 @@ class SellerController extends LoggedUserController {
 	
 	function catalogInfo($product_id = 0){
 		$product_id = FatUtility::int($product_id);
-		$prodSrchObj = new ProductSearch( $this->siteLangId );
+		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false );
 		/* fetch requested product[ */
 		$prodSrch = clone $prodSrchObj;
 		$prodSrch->joinProductToCategory();

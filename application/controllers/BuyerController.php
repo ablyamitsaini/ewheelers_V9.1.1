@@ -373,6 +373,7 @@ class BuyerController extends LoggedUserController {
 		$downloads = FatApp::getDb()->fetchAll($rs);	
 		
 		$digitalDownloads = Orders::digitalDownloadFormat($downloads);
+		
 		$this->set('frmSrch', $frm);
 		$this->set('digitalDownloads', $digitalDownloads );
 		$this->set('page', $page);

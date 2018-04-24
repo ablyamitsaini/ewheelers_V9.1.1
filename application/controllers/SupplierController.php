@@ -197,8 +197,7 @@ class SupplierController extends MyAppController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function profileActivationForm(){
-		
+	public function profileActivationForm(){		
 		
 		if(!$userId = $this->getRegisteredSupplierId()){
 			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
@@ -243,6 +242,7 @@ class SupplierController extends MyAppController {
 		$this->set('siteLangId', $this->siteLangId);
 		$this->set('approvalFrm', $approvalFrm);	
 		$this->_template->render(false,false,'supplier/profile-activation-form.php');
+		
 	}
 	
 	public function setupSupplierApproval() {

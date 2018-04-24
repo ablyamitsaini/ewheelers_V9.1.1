@@ -63,6 +63,7 @@ $(document).ready(function(){
 	};
 		
 	reloadUserList = function() {
+		console.log(currentPage);
 		searchUsers(document.frmUserSearchPaging, currentPage);
 	};
 	

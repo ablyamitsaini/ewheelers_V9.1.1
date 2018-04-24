@@ -68,13 +68,12 @@ class UserAuthentication extends FatModel {
 		$srch = new SearchBase('tbl_failed_login_attempts');
 		$srch->addCondition('attempt_ip', '=', $ip)->attachCondition('attempt_username', '=', $username);
 		$srch->addCondition('attempt_time', '>=', date('Y-m-d H:i:s', strtotime("-5 minutes")));
-		$srch->addFld('COUNT(*) AS total');
-		
+		$srch->addFld('COUNT(*) AS total');		
 		$rs = $srch->getResultSet();
 		
 		$row = $db->fetch($rs);
 		
-		return ($row['total'] > 2);
+		return ($row['total'] > 3);
 	}
 	
 	public static function doCookieLogin($returnAuth = true){

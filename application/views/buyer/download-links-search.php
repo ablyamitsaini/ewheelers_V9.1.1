@@ -46,13 +46,21 @@ foreach ($digitalDownloadLinks as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'opddl_downloadable_link':
-				$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
+				/* $link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
 				$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
 				$linkOnClick = ($row['downloadable']!=1) ? '' : 'increaseDownloadedCount('.$row['opddl_link_id'].')';
 				$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
 				
 				$td->appendElement('a', array('href'=> $linkUrl, 'class'=>'', 'title'=>$linkTitle, 'onClick'=>$linkOnClick),
-				$link, true);
+				$link, true); */
+				if($row['downloadable']!=1){
+					$td->appendElement('a', array('href'=> 'javascript:void(0)', 'class'=>'', 'title'=>''),
+				Labels::getLabel('LBL_N/A',$siteLangId), true);
+				}else{
+					$td->appendElement('a', array('href'=> $row['opddl_downloadable_link'],'target'=>'_blank', 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Click_to_download',$siteLangId), 'onClick'=>$increaseDownloadedCount($row['opddl_link_id'])),
+				$row['opddl_downloadable_link'], true);
+				}
 			break;
 			case 'downloadable_count':
 				$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;

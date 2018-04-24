@@ -3751,6 +3751,7 @@ class MobileAppApiController extends MyAppController {
 		$countryId = FatUtility::int($countryId);
 		$stateObj = new States();
 		$statesArr = $stateObj->getStatesByCountryId($countryId,$this->siteLangId);
+		$arr_states = [];
 		foreach($statesArr as $key=>$val){
 			$arr_states[]=array("id"=>$key,'name'=>$val);
 		}
@@ -3830,6 +3831,7 @@ class MobileAppApiController extends MyAppController {
 		if( !empty($toDate) ) {
 			$cond = $srch->addCondition('cast( utxn.`utxn_date` as date)','<=',$toDate ,'and' , true);
 		}
+		
 		if( $debit_credit_type > 0 ){
 			switch( $debit_credit_type ){
 				case Transactions::CREDIT_TYPE:
