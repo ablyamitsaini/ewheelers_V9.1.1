@@ -92,7 +92,7 @@
 	background-repeat: no-repeat;
 	border-radius: 100%;
 	opacity: .7;
-	background: url(../images/xloading.gif);
+	background: url(../images/loading.gif);
 	width: 30px;
 	height: 30px;
 }

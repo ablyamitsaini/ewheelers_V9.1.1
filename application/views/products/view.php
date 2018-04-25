@@ -403,7 +403,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 $("document").ready(function(){
 	zheight = $( window ).height() - 180;
 	zwidth = $( window ).width()/2 - 50;
-	$('.xzoom, .xzoom-gallery').xzoom({defaultScale: 1, zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 15});
+	$('.xzoom, .xzoom-gallery').xzoom({zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 15});
 	
 	window.setInterval(function(){
 		var scrollPos = $(window).scrollTop();

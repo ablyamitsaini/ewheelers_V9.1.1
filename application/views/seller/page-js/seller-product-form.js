@@ -286,6 +286,10 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					contentType: false,
 					success: function(t){
 						var ans = $.parseJSON(t);
+						if( ans.status == 0 ){
+							$.systemMessage( ans.msg,'alert alert--danger' );
+							sellerProductDownloadFrm(selprod_id, download_type);
+						}
 						$.systemMessage( ans.msg,'alert alert--success' );
 						sellerProductDownloadFrm(selprod_id, download_type);
 					},

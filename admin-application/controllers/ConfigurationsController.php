@@ -643,7 +643,7 @@ class ConfigurationsController extends AdminBaseController {
 
 				$fld =$frm->addSelectBox(Labels::getLabel("LBL_Default_Delivered_Order_Status",$this->adminLangId),'CONF_DEFAULT_DEIVERED_ORDER_STATUS',
 				$orderStatusArr,false,array(),'');
-				$fld->htmlAfterField = "<small>Set the default child order status when an order is marked delivered.</small>";	
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_default_child_order_status_when_an_order_is_marked_delivered.",$this->adminLangId)."</small>";	
 				
 				$fld =$frm->addSelectBox(Labels::getLabel("LBL_Default_Cancelled_Order_Status",$this->adminLangId),'CONF_DEFAULT_CANCEL_ORDER_STATUS',
 				$orderStatusArr,false,array(),''); 
