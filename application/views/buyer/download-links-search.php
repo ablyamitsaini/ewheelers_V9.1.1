@@ -58,7 +58,7 @@ foreach ($digitalDownloadLinks as $sn => $row){
 				Labels::getLabel('LBL_N/A',$siteLangId), true);
 				}else{
 					$td->appendElement('a', array('href'=> $row['opddl_downloadable_link'],'target'=>'_blank', 'class'=>'',
-					'title'=>Labels::getLabel('LBL_Click_to_download',$siteLangId), 'onClick'=>$increaseDownloadedCount($row['opddl_link_id'])),
+					'title'=>Labels::getLabel('LBL_Click_to_download',$siteLangId), 'onClick'=>'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].');' ),
 				$row['opddl_downloadable_link'], true);
 				}
 			break;

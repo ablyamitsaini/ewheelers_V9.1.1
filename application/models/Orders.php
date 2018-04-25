@@ -1794,9 +1794,10 @@ class Orders extends MyAppModel{
 		return $digitalDownloads;
 	}
 	
-	public static function getOrderProductDigitalDownloadLinks($op_id){
+	public static function getOrderProductDigitalDownloadLinks($op_id, $link_id = 0){
 		$op_id = FatUtility::int($op_id);		
-			
+		$link_id = FatUtility::int($link_id);		
+	
 		$srch = new OrderProductSearch(0,true);
 		$srch->joinOrderUser();
 		$srch->joinDigitalDownloadLinks();
@@ -1804,6 +1805,9 @@ class Orders extends MyAppModel{
 		$srch->addMultipleFields(array('op_id','op_invoice_number','order_user_id','op_product_type','order_date_added','op_qty','op_status_id','op_selprod_max_download_times','op_selprod_download_validity_in_days','opd.*'));	
 		$srch->addCondition('op_id','=',$op_id);
 		
+		if($link_id > 0){
+			$srch->addCondition('opddl_link_id','=',$link_id);
+		}
 		$rs = $srch->getResultSet();
 		
 		$downloads = FatApp::getDb()->fetchAll($rs);

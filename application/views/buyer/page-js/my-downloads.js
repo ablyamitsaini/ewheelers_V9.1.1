@@ -49,4 +49,19 @@ $(document).ready(function(){
 		searchBuyerDownloads(document.frmSrch);
 	};
 	
+	increaseDownloadedCount = function(linkId, opId ){
+	/* function increaseDownloadedCount( linkId, opId ){ */
+		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {
+			var ans = $.parseJSON(t);
+			if( ans.status == 0 ){
+				$.systemMessage( ans.msg, 'alert alert--danger');
+				return false;
+			}
+			location.reload();
+			/* var dataLink = $(this).attr('data-link');
+			window.location.href= dataLink; */
+			return true;
+		}); 
+	}
+	
 })();
