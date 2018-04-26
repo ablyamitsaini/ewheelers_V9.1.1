@@ -29,7 +29,7 @@ trait SellerProducts{
 		$srch = SellerProduct::getSearchObject( $this->siteLangId );
 		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p' );
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l' );
-		$srch->addOrder('product_name');
+		
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		if( $product_id ){
 			$srch->doNotCalculateRecords();
@@ -67,7 +67,7 @@ trait SellerProducts{
 		
 		/* $cnd = $srch->addCondition('product_seller_id' ,'=' , UserAuthentication::getLoggedUserId());
 		$cnd->attachCondition( 'product_seller_id', '=', 0,'OR'); */
-				
+	
 		$srch->addMultipleFields(array(
 			'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
@@ -75,6 +75,7 @@ trait SellerProducts{
 		
 		$srch->addOrder('selprod_active', 'DESC');
 		$srch->addOrder('selprod_added_on', 'DESC');
+		$srch->addOrder('product_name');
 		$db = FatApp::getDb();
 		$rs = $srch->getResultSet();
 		$arrListing = $db->fetchAll($rs);

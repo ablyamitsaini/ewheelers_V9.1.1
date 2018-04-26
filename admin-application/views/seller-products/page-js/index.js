@@ -330,7 +330,7 @@ $(document).ready(function(){
 					return;
 				}
 				$.systemMessage( ans.msg,'alert alert--success' );
-				//sellerProductDownloadFrm(selprod_id, download_type);
+				sellerProductDownloadFrm(selprod_id, download_type);
 			});	
 		}
 	};

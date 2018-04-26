@@ -300,6 +300,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 			});	
 		}else{
 			var data = fcom.frmData(document.frmDownload);
+			if (!$('#frmDownload').validate()) return;
 			$(dv).html(fcom.getLoader());
 			fcom.ajax(fcom.makeUrl('Seller', 'uploadDigitalFile'), data, function(t) {
 				var ans = $.parseJSON(t);
@@ -308,7 +309,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					return;
 				}
 				$.systemMessage( ans.msg,'alert alert--success' );
-				// sellerProductDownloadFrm(selprod_id, download_type);
+				sellerProductDownloadFrm(selprod_id, download_type);
 			});	
 		}
 	};
