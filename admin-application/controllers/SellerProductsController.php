@@ -244,7 +244,12 @@ class SellerProductsController extends AdminBaseController {
 		asort($options);
 		$sellerProdObj = new SellerProduct($selprod_id);
 		$post['selprod_code'] = $productRow['product_id'].'_'.implode('_',$options);
+		$selProdCode = $post['selprod_code'];
 		
+		if( $sellerProductRow && !Product::IsSellProdAvailableForUser($selProdCode , $this->adminLangId, $sellerProductRow['selprod_user_id'] ,$selprod_id) ){
+			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_user", $this->adminLangId) );
+			FatUtility::dieWithError( Message::getHtml() );	
+		}
 		
 		if( $post['selprod_track_inventory'] == Product::INVENTORY_NOT_TRACK ){
 			$post['selprod_threshold_stock_level'] = 0;
@@ -478,7 +483,6 @@ class SellerProductsController extends AdminBaseController {
 		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
 		$this->set('metaType', $metaType);
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
-		// $this->set('userId', UserAuthentication::getLoggedUserId());
 		$this->set('product_id', $sellerProductRow['selprod_product_id'] );
 		$this->set('selprod_id', $selprod_id );
 		$this->_template->render( false, false );
@@ -489,9 +493,6 @@ class SellerProductsController extends AdminBaseController {
 		$selprod_id = FatUtility::int( $post['selprod_id'] );
 	
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
-		/* if( $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId() ){
-			FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$this->adminLangId));
-		} */
 		
 		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
 		$this->set('metaType', $metaType);
@@ -865,9 +866,6 @@ class SellerProductsController extends AdminBaseController {
 		$selprod_id = FatUtility::int( $selprod_id );
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
 		$productRow = Product::getAttributesById( $sellerProductRow['selprod_product_id'],array('product_type') );
-		// if( $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId() ){
-			// FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$this->adminLangId));
-		// }
 		
 		$arrListing = SellerProduct::getSellerProductSpecialPrices( $selprod_id );
 		$this->set( 'arrListing', $arrListing );
@@ -886,9 +884,6 @@ class SellerProductsController extends AdminBaseController {
 			FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request',$this->adminLangId));
 		}
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
-		/* if( $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId() ){
-			FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$this->adminLangId));
-		} */
 		
 		$frmSellerProductSpecialPrice = $this->getSellerProductSpecialPriceForm();
 		$specialPriceRow = array();
@@ -1189,7 +1184,6 @@ class SellerProductsController extends AdminBaseController {
 		$frm->fill($taxRates + array('selprod_id'=>$sellerProductRow['selprod_id']));
 		
 		$this->set('frm', $frm);
-		// $this->set('userId', UserAuthentication::getLoggedUserId());
 		$this->set('selprod_id', $sellerProductRow['selprod_id'] );
 		$this->set('product_id', $sellerProductRow['selprod_product_id'] );
 		$this->_template->render( false, false );
@@ -1491,7 +1485,6 @@ class SellerProductsController extends AdminBaseController {
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
 		$pagesize = FatApp::getConfig('CONF_PAGE_SIZE',FatUtility::VAR_INT, 10);
 		
-		// $cRequestObj = new User(UserAuthentication::getLoggedUserId());
 		$cRequestObj = new User();
 		$srch = $cRequestObj->getUserCatalogRequestsObj();
 		$srch->addMultipleFields( array(

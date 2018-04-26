@@ -1903,7 +1903,7 @@ trait SellerProducts{
 		
 		$srchMeta = MetaTag::getSearchObject();
 		$srchMeta->addCondition('meta_record_id', '=', $post['selprod_id']);
-		$metaData = FatApp::getDb()->fetchAll($srchMeta->getResultSet());
+		$metaData = FatApp::getDb()->fetch($srchMeta->getResultSet());
 		
 
 		$metaData['meta_record_id'] = $selprod_id;
@@ -1918,6 +1918,7 @@ trait SellerProducts{
 		}
 		
 		$metaData['meta_identifier'] = $metaIdentifier;
+		/* commonHelper::printArray($metaData); die; */
 		$meta->assignValues($metaData);
 		
 		if (!$meta->save()) {

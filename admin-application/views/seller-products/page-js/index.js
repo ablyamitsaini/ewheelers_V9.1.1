@@ -23,14 +23,10 @@ $(document).ready(function(){
 });
 (function() {
 	var currentProdId = 0;	
-	var currentPage = 1;	
-	var runningAjaxReq = false;
+	var currentPage = 1;
 	var dv = '#listing';
 	searchProducts = function(frm){
-		if( runningAjaxReq == true ){
-			return;
-		}
-		runningAjaxReq = true;
+		
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
 		var data = '';
 		if (frm) {
@@ -41,7 +37,6 @@ $(document).ready(function(){
 		$(dv).html( fcom.getLoader() );
 		
 		fcom.ajax(fcom.makeUrl('SellerProducts','sellerProducts'),data,function(res){
-			runningAjaxReq = false;
 			$("#listing").html(res);
 		});
 	};
@@ -64,15 +59,9 @@ $(document).ready(function(){
 	
 	setUpSellerProduct = function(frm){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		var data = fcom.frmData(frm);
-		runningAjaxReq = true;
+		
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProduct'), data, function(t) {
-			runningAjaxReq = false;
 			if(t.selprod_id > 0){
 				$(frm.splprice_selprod_id).val(t.selprod_id);
 			}
@@ -101,14 +90,9 @@ $(document).ready(function(){
 	
 	setUpSellerProductLang = function(frm){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
+		
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductLang'), data, function(t) {
-			runningAjaxReq = false;			
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductLang'), data, function(t) {		
 			if(t.selprod_id > 0){
 				$(frm.splprice_selprod_id).val(t.selprod_id);
 			}
@@ -143,14 +127,9 @@ $(document).ready(function(){
 	
 	setUpSellerProductSpecialPrice = function(frm){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
+		
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductSpecialPrice'), data, function(t) {
-			runningAjaxReq = false;
 			sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
 			$(document).trigger('close.facebox');
 		});
@@ -187,14 +166,9 @@ $(document).ready(function(){
 	
 	setUpSellerProductVolumeDiscount = function( frm ){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
+		
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductVolumeDiscount'), data, function(t) {
-			runningAjaxReq = false;
 			sellerProductVolumeDiscounts( $(frm.voldiscount_selprod_id).val() );
 			$(document).trigger('close.facebox');
 		});
