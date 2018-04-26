@@ -365,12 +365,6 @@ class ReportsController extends LoggedUserController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	public function salesReport($orderDate = ''){
 		if( !User::canAccessSupplierDashboard() ){
 			FatApp::redirectUser(CommonHelper::generateUrl('Account','supplierApprovalForm'));
@@ -386,8 +380,8 @@ class ReportsController extends LoggedUserController {
 			Message::addErrorMessage( Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId) );
 			FatUtility::dieWithError(Message::getHtml());
 		}
-		/* $post = FatApp::getPostedData(); */
-		$orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_DATE, '') ;
+
+		$orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_STRING, '') ; 
 		$srchFrm = $this->getSalesReportSearchForm($orderDate);
 		$post = $srchFrm->getFormDataFromArray( FatApp::getPostedData() );
 		
@@ -488,11 +482,6 @@ class ReportsController extends LoggedUserController {
 		}
 		return $frm;
 	}
-	
-	
-	
-	
-	
 	
 	
 }

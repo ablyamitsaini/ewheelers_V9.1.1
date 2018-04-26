@@ -185,10 +185,10 @@
 		'select': function(item) {	
 			$('input[name=\'option_name\']').val('');
 			$('#product-option' + item['value']).remove();
-			$('#product-option-js').append('<li id="product-option' + item['value'] + '"><i class="remove_option-js remove_param fa fa-trash"></i> ' +item['label'] + '<input type="hidden" name="product_option[]" value="' + item['value'] + '"  /></li>');			
+			$('#product_options_list').append('<li id="product-option' + item['value'] + '"><i class="remove_option-js remove_param fa fa-trash"></i> ' +item['label'] + '<input type="hidden" name="product_option[]" value="' + item['value'] + '"  /></li>');			
 		}
 	});
-	$('#product-option-js').delegate('.remove_option-js', 'click', function() {		
+	$('#product_options_list').delegate('.remove_option-js', 'click', function() {		
 		$(this).parent().remove();
 	});
 		
@@ -199,7 +199,7 @@
 	<?php } } ?>
 	var data = {'options':options};
 	fcom.ajax(fcom.makeUrl('Seller', 'loadCustomProductOptionss'), data, function(t) {
-		$('#product-option-js').html(t);
+		$('#product_options_list').html(t);
 	});	
 	
 	$('input[name=\'tag_name\']').autocomplete({

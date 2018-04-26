@@ -367,12 +367,12 @@
 								
 								$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
 								$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
-								$linkOnClick = ($row['downloadable']!=1) ? '' : 'increaseDownloadedCount('.$row['opddl_link_id'].')';
+								$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
 								$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
 							?>
 							<tr>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></span><?php echo $sr_no;?></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></span><a onClick="<?php echo $linkOnClick; ?>" href="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
+							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></span><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></span><?php echo $downloadableCount;?></td>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></span><?php echo $row['opddl_downloaded_times'];?></td>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>                        
@@ -393,8 +393,16 @@
   <div class="gap"></div>
 </div>
 <script>
-	function increaseDownloadedCount( linkId ){
-		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId]), '', function(t) {
+	function increaseDownloadedCount( linkId, opId ){
+		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {
+			var ans = $.parseJSON(t);
+			if( ans.status == 0 ){
+				$.systemMessage( ans.msg, 'alert alert--danger');
+				return false;
+			}
+			/* var dataLink = $(this).attr('data-link');
+			window.location.href= dataLink; */
+			location.reload();
 			return true;
 		}); 
 	}

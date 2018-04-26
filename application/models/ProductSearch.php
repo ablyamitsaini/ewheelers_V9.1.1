@@ -332,17 +332,20 @@ class ProductSearch extends SearchBase {
 		}
 	}
 
-	public function joinProductToCategory( $langId = 0 ){
+	public function joinProductToCategory( $langId = 0, $isActive = true, $isDeleted = true ){
 		$langId = FatUtility::int($langId);
 		if($this->langId){
 			$langId = $this->langId;
 		}
 		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
 		$this->joinTable( ProductCategory::DB_TBL, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
-
-		$this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE );
-		$this->addCondition('c.prodcat_deleted', '=', applicationConstants::NO );
-
+		
+		if($isActive){
+			$this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE );
+		}
+		if($isDeleted){
+			$this->addCondition('c.prodcat_deleted', '=', applicationConstants::NO );
+		}
 
 		if( $langId ){
 			$this->joinTable( ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'c_l.prodcatlang_prodcat_id = c.prodcat_id AND prodcatlang_lang_id = '.$langId, 'c_l' );

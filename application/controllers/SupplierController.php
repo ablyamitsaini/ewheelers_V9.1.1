@@ -66,6 +66,7 @@ class SupplierController extends MyAppController {
 			$frm = $this->getSellerForm();
 			$post = $frm->getFormDataFromArray(FatApp::getPostedData());
 			$registrationFrm = $this->getSellerRegistrationForm();
+			unset($post['btn_submit']);
 			$registrationFrm->fill($post);
 			$this->set('termsAndConditionsLinkHref', $termsAndConditionsLinkHref);	
 			$this->set('frm', $registrationFrm);	

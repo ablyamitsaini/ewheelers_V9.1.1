@@ -1041,8 +1041,9 @@ class SellerController extends LoggedUserController {
 		if( User::canAddCustomProduct() ){
 			$cnd->attachCondition('product_seller_id', '=', UserAuthentication::getLoggedUserId(),'OR');
 		}
-		//$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
-		
+		$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
+		$srch->addCondition('product_deleted','=',applicationConstants::NO);
+
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if (!empty($keyword)) {
 			$cnd = $srch->addCondition('product_name', 'like', '%' . $keyword . '%');
@@ -3636,8 +3637,8 @@ class SellerController extends LoggedUserController {
 		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false );
 		/* fetch requested product[ */
 		$prodSrch = clone $prodSrchObj;
-		$prodSrch->joinProductToCategory();
-		$prodSrch->joinBrands();
+		$prodSrch->joinProductToCategory(0, false, false);
+		$prodSrch->joinBrands(0, false, false);
 		$prodSrch->addCondition( 'product_id', '=', $product_id );
 		$prodSrch->doNotLimitRecords();
 

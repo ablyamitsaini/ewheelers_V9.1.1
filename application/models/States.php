@@ -71,7 +71,7 @@ class States extends MyAppModel{
 		$srch->addMultipleFields(
 			array(
 				'state_id',
-				'if(state_name is null,state_identifier,state_name)as state_name'
+				'IFNULL(state_name, state_identifier) as state_name'
 				)
 			);			
 		

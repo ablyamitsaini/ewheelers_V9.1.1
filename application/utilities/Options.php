@@ -80,8 +80,9 @@ trait Options{
 		$userId = UserAuthentication::getLoggedUserId();
 		$post['option_seller_id'] = $userId; 
 		$optionObj->assignValues($post);
-		if (!$optionObj->save()) { 			
-			Message::addErrorMessage($optionObj->getError());
+		if (!$optionObj->save()) {	
+			Message::addErrorMessage(Labels::getLabel('MSG_Option_Identifier_already_exists',$this->siteLangId ));
+			/* Message::addErrorMessage($optionObj->getError()); */
 			FatUtility::dieJsonError( Message::getHtml() );						
 		}
 		

@@ -209,13 +209,31 @@ class BuyerController extends LoggedUserController {
 		AttachedFile::updateDownloadCount($res['afile_id']);
 	}
 	
-	public function downloadDigitalProductFromLink($linkId) {
+	public function downloadDigitalProductFromLink($linkId, $opId) {
 		$linkId = FatUtility::int($linkId);
-		if(1 > $linkId){
+		$opId = FatUtility::int($opId);
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		if(1 > $linkId || 1 > $opId){
 			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request',$this->siteLangId));
-			FatApp::redirectUser( CommonHelper::generateUrl('Buyer', 'Orders' ));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($opId,$linkId);
+		
+		if($digitalDownloadLinks == false || empty($digitalDownloadLinks) || $digitalDownloadLinks[0]['order_user_id']!= $userId){
+			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+			
+		}
+		$res = array_shift($digitalDownloadLinks);
+		
+		if($res == false || !$res['downloadable']){
+			Message::addErrorMessage(Labels::getLabel("MSG_Link_is_not_available_to_download",$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		OrderProductDigitalLinks::updateDownloadCount($linkId);
+		FatUtility::dieJsonSuccess(Labels::getLabel("MSG_Successfully_redirected",$this->siteLangId));
 	}
 	
 	/* public function myAddresses(){
