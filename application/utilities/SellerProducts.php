@@ -1346,15 +1346,15 @@ trait SellerProducts{
 		$digitalDownloadTypeArr = applicationConstants::digitalDownloadTypeArr($langId);
 		
 		$frm->addSelectBox( Labels::getLabel('LBL_Digital_Download_Type',$langId), 'download_type', $digitalDownloadTypeArr, '', array('class'=>'file-language-js'), '' )->requirements()->setRequired();
-		$fld = $frm->addTextArea(Labels::getLabel('LBL_Downloadable_Link',$this->siteLangId),'selprod_downloadable_link');
-		$fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_Add_links_comma_separated_or_with_new_line',$this->siteLangId).'</small>';
+		$fld = $frm->addTextArea(Labels::getLabel('LBL_Downloadable_Link',$langId),'selprod_downloadable_link');
+		$fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_Add_links_comma_separated_or_with_new_line',$langId).'</small>';
 		$fld->requirements()->setRequired();
 		$frm->addSelectBox( Labels::getLabel('Lbl_Language',$langId), 'lang_id', $bannerTypeArr, '', array('class'=>'file-language-js'), '' )->requirements()->setRequired();
 		//$frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();;
 		
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
 		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';	
-		$frm->addSubmitButton('','btn_submit',Labels::getLabel("LBL_Save_Changes",$this->siteLangId));		
+		$frm->addSubmitButton('','btn_submit',Labels::getLabel("LBL_Save_Changes",$langId));		
 		$frm->addHiddenField('','selprod_id'); 		
 		return $frm;
 	}

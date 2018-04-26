@@ -784,7 +784,7 @@ class ProductCategoriesController extends AdminBaseController {
 		}
 
 		$prodCateObj = new ProductCategory();
-		$categories = $prodCateObj->getProdCatAutoSuggest($search_keyword);
+		$categories = $prodCateObj->getProdCatAutoSuggest($search_keyword,10,$this->adminLangId);
 
 		$json = array();
 		$matches=$categories;

@@ -288,7 +288,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 						var ans = $.parseJSON(t);
 						if( ans.status == 0 ){
 							$.systemMessage( ans.msg,'alert alert--danger' );
-							sellerProductDownloadFrm(selprod_id, download_type);
+							return;
 						}
 						$.systemMessage( ans.msg,'alert alert--success' );
 						sellerProductDownloadFrm(selprod_id, download_type);
@@ -308,7 +308,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					return;
 				}
 				$.systemMessage( ans.msg,'alert alert--success' );
-				sellerProductDownloadFrm(selprod_id, download_type);
+				// sellerProductDownloadFrm(selprod_id, download_type);
 			});	
 		}
 	};
@@ -323,7 +323,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 				return;
 			}
 			$.systemMessage( ans.msg,'alert alert--success' );
-			sellerProductDownloadFrm( selprod_id,0 );
+			sellerProductDownloadFrm( selprod_id, 0 );
 		});
 	};		
 		

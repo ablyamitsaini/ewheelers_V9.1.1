@@ -1,8 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $imagesFrm->setFormTagAttribute('id', 'frmCustomCatalogProductImage');
-$option_fld = $imagesFrm->getField('option_id');
-$option_fld->setFieldTagAttribute( 'onchange','productImages('.$preqId.',this.value); return false;');
-
+$optionFld = $imagesFrm->getField('option_id');	
+$optionFld->addFieldTagAttribute('class','option-js');
+$langFld = $imagesFrm->getField('lang_id');	
+$langFld->addFieldTagAttribute('class','language-js');
 $img_fld = $imagesFrm->getField('prod_image');
 $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); return false;');
 ?>

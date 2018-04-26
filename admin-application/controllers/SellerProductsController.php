@@ -1326,43 +1326,58 @@ class SellerProductsController extends AdminBaseController {
 		return $frm;
 	}
 	
-	public function uploadDigitalFile(){		
+	public function uploadDigitalFile(){
 		$post = FatApp::getPostedData();
 		$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0 );
 		$lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0 );
-		$afile_name = FatApp::getPostedData('afile_name', FatUtility::VAR_STRING, '' );
+		$download_type = FatApp::getPostedData('download_type', FatUtility::VAR_INT, 0 );
+		
 		if ( !$selprod_id ) {
 			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
-			
-		if (!is_uploaded_file($_FILES['downloadable_file']['tmp_name'])) {
+		if($download_type == applicationConstants::DIGITAL_DOWNLOAD_FILE) {
+			/* $afile_name = FatApp::getPostedData('afile_name', FatUtility::VAR_STRING, '' ); */
+			if (!is_uploaded_file($_FILES['downloadable_file']['tmp_name'])) {
 			Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file',$this->adminLangId));
 			FatUtility::dieJsonError(Message::getHtml());
+			}
+	
+			$fileHandlerObj = new AttachedFile();
+			//$fileName = ($afile_name !='')?$afile_name:$_FILES['downloadable_file']['name'];
+			if(!$res = $fileHandlerObj->saveAttachment($_FILES['downloadable_file']['tmp_name'], AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprod_id, 0,
+			$_FILES['downloadable_file']['name'], -1, $unique_record = false, $lang_id)
+			){
+				Message::addErrorMessage($fileHandlerObj->getError());
+				FatUtility::dieJsonError( Message::getHtml() );
+			}
+		}else{
+			$data_to_be_save=array();
+			$data_to_be_save['selprod_downloadable_link'] = $post['selprod_downloadable_link'];
+			$sellerProdObj = new SellerProduct($selprod_id);
+			$sellerProdObj->assignValues( $data_to_be_save );
+
+			if ( !$sellerProdObj->save() ) {
+				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->adminLangId));
+				FatUtility::dieJsonError( Message::getHtml() );
+			}
 		}
-			
-		$fileHandlerObj = new AttachedFile();
-		//$fileName = ($afile_name !='')?$afile_name:$_FILES['downloadable_file']['name'];
-		if(!$res = $fileHandlerObj->saveAttachment($_FILES['downloadable_file']['tmp_name'], AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprod_id, 0,
-		$_FILES['downloadable_file']['name'], -1, $unique_record = false, $lang_id)
-		){
-			Message::addErrorMessage($fileHandlerObj->getError());
-			FatUtility::dieJsonError( Message::getHtml() );
-		}
-				
-		$this->set( 'msg', Labels::getLabel('MSG_File_Uploaded_Successfully', $this->adminLangId) );
+		
+		$this->set( 'msg', Labels::getLabel('MSG_Setup_Successful',$this->adminLangId) );
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function sellerProductDownloadFrm($selProd_id = 0){
+	public function sellerProductDownloadFrm($selProd_id = 0, $type = applicationConstants::DIGITAL_DOWNLOAD_FILE){
 		$post = FatApp::getPostedData();
 		$selprod_id = FatUtility::int( $selProd_id );
-				
+	
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
 		$productRow = Product::getAttributesById( $sellerProductRow['selprod_product_id'] ,array('product_type'));	
 		
 		$selprodDownloadFrm =  $this->getDownloadForm($this->adminLangId);
 		$data['selprod_id'] = $selProd_id;
+		$data['download_type'] = $type;
+		$data['selprod_downloadable_link'] = $sellerProductRow['selprod_downloadable_link'];
 		$selprodDownloadFrm->fill($data);
 		
 		$attachments = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprod_id, 0 ,-1);
@@ -1396,7 +1411,7 @@ class SellerProductsController extends AdminBaseController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	private function getDownloadForm($langId){
+	/* private function getDownloadForm($langId){
 		$frm = new Form('frmDownload');
 		$bannerTypeArr = applicationConstants::bannerTypeArr();
 		
@@ -1405,6 +1420,25 @@ class SellerProductsController extends AdminBaseController {
 		
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
 		//$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';		
+		$frm->addHiddenField('','selprod_id'); 		
+		return $frm;
+	} */
+	
+	private function getDownloadForm($langId){
+		$frm = new Form('frmDownload');
+		$bannerTypeArr = applicationConstants::bannerTypeArr($langId);
+		$digitalDownloadTypeArr = applicationConstants::digitalDownloadTypeArr($langId);
+		
+		$frm->addSelectBox( Labels::getLabel('LBL_Digital_Download_Type',$langId), 'download_type', $digitalDownloadTypeArr, '', array('class'=>'file-language-js'), '' )->requirements()->setRequired();
+		$fld = $frm->addTextArea(Labels::getLabel('LBL_Downloadable_Link',$langId),'selprod_downloadable_link');
+		$fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_Add_links_comma_separated_or_with_new_line',$langId).'</small>';
+		$fld->requirements()->setRequired();
+		$frm->addSelectBox( Labels::getLabel('Lbl_Language',$langId), 'lang_id', $bannerTypeArr, '', array('class'=>'file-language-js'), '' )->requirements()->setRequired();
+		//$frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();;
+		
+		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
+		// $fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';	
+		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Submit', $this->adminLangId));	
 		$frm->addHiddenField('','selprod_id'); 		
 		return $frm;
 	}

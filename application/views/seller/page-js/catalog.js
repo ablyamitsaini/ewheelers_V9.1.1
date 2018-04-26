@@ -1,3 +1,17 @@
+$(document).delegate('.option-js','change',function(){
+	var option_id = $(this).val();
+	var product_id = $('#frmCustomProductImage input[name=product_id]').val();
+	var lang_id = $('.language-js').val();
+	productImages(product_id,option_id,lang_id);
+});
+
+$(document).delegate('.language-js','change',function(){
+	var lang_id = $(this).val();
+	var product_id = $('#frmCustomProductImage input[name=product_id]').val();
+	var option_id = $('.option-js').val();
+	productImages(product_id,option_id,lang_id);
+});
+
 (function() {
 	var runningAjaxMsg = 'some requests already running or this stucked into runningAjaxReq variable value, so try to relaod the page and update the same to WebMaster. ';
 	var runningAjaxReq = false;

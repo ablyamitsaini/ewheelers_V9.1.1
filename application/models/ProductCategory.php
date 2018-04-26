@@ -209,8 +209,8 @@ class ProductCategory extends MyAppModel{
 		return false;
 	}
 
-	public function getProdCatAutoSuggest( $keywords = '', $limit = 10 ){
-		$srch = static::getSearchObject();
+	public function getProdCatAutoSuggest( $keywords = '', $limit = 10, $langId = 0 ){
+		$srch = static::getSearchObject(false, $langId);
 		$srch->addFld('m.prodcat_id,m.prodcat_identifier,m.prodcat_parent');
 		$srch->addCondition('m.prodcat_deleted', '=', applicationConstants::NO);
 		$srch->addCondition('m.prodcat_active', '=', applicationConstants::ACTIVE);
@@ -227,7 +227,7 @@ class ProductCategory extends MyAppModel{
 		foreach ($records as $row) {
 			if(count($return)>=$limit){break;}
 			if($row['prodcat_parent']>0){
-				$return[$row['prodcat_id']]=self::getParentTreeStructure($row['prodcat_id']);
+				$return[$row['prodcat_id']]=self::getParentTreeStructure($row['prodcat_id'], 0, '', $langId);
 			}else{
 				$return[$row['prodcat_id']] =$row['prodcat_identifier'];
 			}
