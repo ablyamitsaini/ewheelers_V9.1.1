@@ -239,7 +239,7 @@ class ProductsController extends AdminBaseController {
 		if( !$product_id ){
 			$data_to_be_save['product_added_on'] = 'mysql_func_now()';
 			$data_to_be_save['product_approved'] = 1;
-			$data_to_be_save['product_added_by_admin_id'] = AdminAuthentication::getLoggedAdminId();
+			$data_to_be_save['product_added_by_admin_id'] = applicationConstants::YES;
 		}
 		$prodObj->assignValues($data_to_be_save, true);
 		if ( !$prodObj->save() ) {

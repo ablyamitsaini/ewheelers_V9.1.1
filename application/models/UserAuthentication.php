@@ -18,6 +18,7 @@ class UserAuthentication extends FatModel {
 	
 	public function __construct() {
 		$this->commonLangId = CommonHelper::getLangId();
+		
 	}
 
 	public static function getAffiliateRegisterationStepArr( $langId ){

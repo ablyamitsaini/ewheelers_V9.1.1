@@ -6,7 +6,11 @@ class SupplierController extends MyAppController {
 	}
 	
 	public function index(){
+		if (UserAuthentication::isUserLogged() && ( User::isSeller() || User::isSigningUpForSeller() )) {
+			FatApp::redirectUser(CommonHelper::generateUrl('seller'));
+		}
 		if ( UserAuthentication::isUserLogged() ) {
+			Message::addErrorMessage(Labels::getLabel('MSG_You_are_already_logged_in._Please_logout_and_register_for_seller.',$this->siteLangId));
 			FatApp::redirectUser( CommonHelper::generateUrl('account') );
 		}
 		if( !FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM") ){
@@ -86,6 +90,26 @@ class SupplierController extends MyAppController {
 		if ( $post == false ) {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
 			FatUtility::dieJsonError( Message::getHtml());				
+		}
+		
+		if( !CommonHelper::validateUsername($post['user_username']) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+			if ( FatUtility::isAjaxCall() ) {
+				FatUtility::dieWithError( Message::getHtml());
+			} else {
+				$this->registrationForm();
+				return;
+			}
+		}
+		
+		if( !CommonHelper::validatePassword($post['user_password']) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
+			if ( FatUtility::isAjaxCall() ) {
+				FatUtility::dieWithError( Message::getHtml());
+			} else {
+				$this->registrationForm();
+				return;
+			}
 		}
 		
 		$userObj = new User();
@@ -540,6 +564,7 @@ class SupplierController extends MyAppController {
 		$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$this->siteLangId), 'user_username');
 		$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 		$fld->requirements()->setRequired();
+		$fld->requirements()->setLength(3,30);
 		
 		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$this->siteLangId), 'user_email');
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');

@@ -467,6 +467,16 @@ class GuestUserController extends MyAppController {
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser','registrationForm'));
 		}
 		
+		if( !CommonHelper::validateUsername($post['user_username']) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+			if ( FatUtility::isAjaxCall() ) {
+				FatUtility::dieWithError( Message::getHtml());
+			} else {
+				$this->registrationForm();
+				return;
+			}
+		}
+		
 		if( !CommonHelper::validatePassword($post['user_password']) ){
 			Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
 			if ( FatUtility::isAjaxCall() ) {
@@ -475,7 +485,7 @@ class GuestUserController extends MyAppController {
 				$this->registrationForm();
 				return;
 			}
-		} 
+		}
 		
 		$userObj = new User();
 		$db = FatApp::getDb();

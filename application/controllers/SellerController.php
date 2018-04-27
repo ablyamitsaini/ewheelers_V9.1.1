@@ -1035,12 +1035,21 @@ class SellerController extends LoggedUserController {
 		$srch->joinTable( AttributeGroup::DB_TBL, 'LEFT OUTER JOIN', 'product_attrgrp_id = attrgrp_id', 'attrgrp' );
 		$srch->joinTable(UpcCode::DB_TBL, 'LEFT OUTER JOIN','upc_product_id = product_id','upc');
 
-		$cnd = $srch->addCondition( 'product_seller_id', '=',0);
+		/* $cnd = $srch->addCondition( 'product_seller_id', '=',0);
 		$cnd->attachCondition( 'product_added_by_admin_id', '=', applicationConstants::YES,'OR');
 		
 		if( User::canAddCustomProduct() ){
 			$cnd->attachCondition('product_seller_id', '=', UserAuthentication::getLoggedUserId(),'OR');
+		} */
+		
+		if( User::canAddCustomProduct() ){
+			$srch->addDirectCondition('((product_seller_id = 0 AND product_added_by_admin_id = '.applicationConstants::YES.') OR product_seller_id = '.UserAuthentication::getLoggedUserId().')');
+		}else{
+			$cnd = $srch->addCondition( 'product_seller_id', '=',0);
+			$cnd->attachCondition( 'product_added_by_admin_id', '=', applicationConstants::YES,'AND');
 		}
+		
+		
 		$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 		$srch->addCondition('product_deleted','=',applicationConstants::NO);
 
@@ -1058,13 +1067,13 @@ class SellerController extends LoggedUserController {
 			$is_custom_or_catalog = FatApp::getPostedData('type', FatUtility::VAR_INT, -1) ;
 			if ($is_custom_or_catalog > -1) {
 				if( $is_custom_or_catalog > 0 ){
-					$srch->addCondition('product_seller_id', '>', 0 );							
+					$srch->addCondition('product_seller_id', '>', 0 );
 				} else {
 					$srch->addCondition('product_seller_id', '=', 0 );
-					$srch->addCondition('product_active','=',applicationConstants::ACTIVE);	
+					$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 				}
 			} else {
-				$srch->addCondition('product_active','=',applicationConstants::ACTIVE);	
+				$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 				/* $srch->addCondition('product_seller_id', '=', 0 ); */
 			}
 		}
@@ -1094,7 +1103,6 @@ class SellerController extends LoggedUserController {
 		$srch->addGroupBy('product_id');
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
-		
 		$db = FatApp::getDb();		
 		$rs = $srch->getResultSet();
 		$arr_listing = $db->fetchAll($rs);
@@ -1262,7 +1270,7 @@ class SellerController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function shop(){ 
+	public function shop(){
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));

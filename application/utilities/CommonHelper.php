@@ -837,6 +837,13 @@ class CommonHelper extends FatUtility{
 		}
 		return true;		
 	}
+	
+	public static function validateUsername($string = ''){
+		if( strlen($string) < 3 ){
+			return false;
+		}
+		return true;		
+	}
 
 	public static function getLangFields($condition_id = 0,$condition_field="",$condition_lang_field="",$lang_flds=array(),$lang_table=""){
 		$condition_id = FatUtility::int($condition_id);

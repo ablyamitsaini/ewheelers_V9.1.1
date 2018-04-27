@@ -16,7 +16,15 @@ $(document).ready(function(){
 	register = function(frm){
 		if (!$(frm).validate()) return;		
 		var data = fcom.frmData(frm);
-		companyDetailsForm(data);
+		fcom.ajax(fcom.makeUrl('GuestAdvertiser', 'validateDetails'), data, function(t) {
+			var ans = $.parseJSON(t);
+			if(ans.status==0) {
+				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				return;
+			}
+			companyDetailsForm(data);
+		});	
+		
 	};
 	
 	companyDetailsForm = function(data){

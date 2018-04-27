@@ -42,8 +42,16 @@ class GuestAffiliateController extends MyAppController {
 				$post['user_password'] = FatApp::getPostedData( 'user_password', FatUtility::VAR_STRING, '');
 				$post['user_username'] = FatApp::getPostedData( 'user_username', FatUtility::VAR_STRING, '');
 				
+				if( !CommonHelper::validateUsername( $post['user_username'] ) ){
+					Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+					if ( FatUtility::isAjaxCall() ) {
+						FatUtility::dieWithError( Message::getHtml());
+					}
+					FatApp::redirectUser( CommonHelper::generateUrl('GuestAffiliate') );
+				}
+				
 				if( !CommonHelper::validatePassword( $post['user_password'] ) ){
-					Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC',CommonHelper::getLangId()));
+					Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
 					if ( FatUtility::isAjaxCall() ) {
 						FatUtility::dieWithError( Message::getHtml());
 					}
@@ -309,8 +317,8 @@ class GuestAffiliateController extends MyAppController {
 			'link' => $link,
         );
 		$email = new EmailHandler();
-		if(!$email->sendWelcomeEmail(CommonHelper::getLangId(),$data)){
-			Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_WELCOME_EMAIL",CommonHelper::getLangId()));
+		if(!$email->sendWelcomeEmail($this->siteLangId,$data)){
+			Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_WELCOME_EMAIL",$this->siteLangId));
 			return false;
 		}
 		return true;
@@ -328,6 +336,7 @@ class GuestAffiliateController extends MyAppController {
 				$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$siteLangId), 'user_username');
 				$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 				$fld->requirements()->setRequired(true);
+				$fld->requirements()->setLength(3,30);
 				
 				$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email');
 				$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
@@ -416,8 +425,8 @@ class GuestAffiliateController extends MyAppController {
 		
 		$email = new EmailHandler();
 		
-		if(!$email->sendSignupVerificationLink(CommonHelper::getLangId(),$data)){
-			Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_VERFICATION_EMAIL",CommonHelper::getLangId()));
+		if(!$email->sendSignupVerificationLink($this->siteLangId,$data)){
+			Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_VERFICATION_EMAIL",$this->siteLangId));
 			return false;
 		}
 		

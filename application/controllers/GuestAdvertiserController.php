@@ -9,7 +9,8 @@ class GuestAdvertiserController extends MyAppController {
 	function account(){
 		if (UserAuthentication::isUserLogged() && ( User::isAdvertiser() || User::isSigningUpAdvertiser() )) {
 			FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
-		}elseif (UserAuthentication::isUserLogged())
+		}
+		if (UserAuthentication::isUserLogged())
 		{
 			Message::addErrorMessage(Labels::getLabel('MSG_You_are_already_logged_in._Please_logout_and_register_for_advertiser.',$this->siteLangId));
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
@@ -77,6 +78,25 @@ class GuestAdvertiserController extends MyAppController {
 		$this->_template->render(false,false,'guest-advertiser/company-details-form.php');
 	}
 	
+	public function validateDetails(){
+		$post = FatApp::getPostedData();
+		if ($post == false) {
+			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml());				
+		}
+		
+		if( !CommonHelper::validateUsername($post['user_username']) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml());
+		}
+		
+		if( !CommonHelper::validatePassword($post['user_password']) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml());
+		}
+		FatUtility::dieJsonSuccess( Labels::getLabel('MSG_Data_verified',$this->siteLangId) );
+	}
+
 	public function setupCompanyDetailsForm(){
 		if (UserAuthentication::isUserLogged()) {
 			Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in',$this->siteLangId));
@@ -302,6 +322,7 @@ class GuestAdvertiserController extends MyAppController {
 		$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$this->siteLangId), 'user_username');
 		$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 		$fld->requirements()->setRequired();
+		$fld->requirements()->setLength(3,30);
 		
 		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$this->siteLangId), 'user_email');
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
