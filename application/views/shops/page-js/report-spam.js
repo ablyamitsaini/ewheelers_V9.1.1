@@ -11,7 +11,7 @@
 		fcom.updateWithAjax(fcom.makeUrl('Shops', 'setUpShopSpam'), data, function(t) {
 			runningAjaxReq = false;
 			if( t.status ){
-				window.location.href = fcom.makeUrl('Shops', 'view', [frm.elements["shop_id"].value]);
+				/* window.location.href = fcom.makeUrl('Shops', 'view', [frm.elements["shop_id"].value]); */
 				document.frmShopReportSpam.reset();
 			}
 		});
