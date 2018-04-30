@@ -481,7 +481,7 @@ class ProductsController extends MyAppController {
 		$srch = new ProductSearch( $this->siteLangId );
 		$join_price = (isset($post['join_price']) && $post['join_price'] != '') ? FatUtility::int($post['join_price']) : 0 ;
 
-		$srch->setDefinedCriteria( $join_price,0,array(),false );
+		$srch->setDefinedCriteria( $join_price,0,array(),true );
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription();
 		$srch->addSubscriptionValidCondition();
