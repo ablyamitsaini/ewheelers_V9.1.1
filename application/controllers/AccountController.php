@@ -1764,7 +1764,7 @@ class AccountController extends LoggedUserController {
 		$db = FatApp::getDb();
 		
 		$srch = new ProductSearch( $this->siteLangId );
-		$srch->setDefinedCriteria( );
+		$srch->setDefinedCriteria(0,0,array(),false);
 		$srch->doNotCalculateRecords();
 		$srch->addMultipleFields(array( 'selprod_id'));
 		$srch->addCondition( 'selprod_id', '=', $product_id );
