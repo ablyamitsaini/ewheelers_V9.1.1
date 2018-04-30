@@ -1639,10 +1639,14 @@ class BuyerController extends LoggedUserController {
 						$result = $twitteroauth->upload('media/upload', array('media' => $image_path));							
 						if ($twitteroauth->getLastHttpCode() == 200) {
 							$parameters = array('Name' => FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId), 'status' => $message, 'media_ids' => $result->media_id_string);
-							$post = $twitteroauth->post('statuses/update', $parameters);									
-							$postMedia = true;
+							try{
+								$post = $twitteroauth->post('statuses/update', $parameters);									
+								$postMedia = true;
+							}catch(exception $e){ 
+								$error = $e->getMessage();
+							}								
 						}
-					}catch(exception $e){
+					}catch(exception $e){;
 						$error = $e->getMessage();
 					}	
 				}									
@@ -1650,7 +1654,11 @@ class BuyerController extends LoggedUserController {
 			
 			if(!$postMedia){
 				$parameters = array('Name' => FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId), 'status' => $message);
-				$post = $twitteroauth->post('statuses/update', $parameters, false);												
+				try{
+					$post = $twitteroauth->post('statuses/update', $parameters, false);												
+				}catch(exception $e){ 
+					$error = $e->getMessage();
+				}
 			}
 		
 			$this->set('errors', isset($post->errors) ? $post->errors : $error );
