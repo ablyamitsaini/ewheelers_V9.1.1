@@ -1270,7 +1270,7 @@ class SellerController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function shop(){
+	public function shop($tab='',$subTab=''){
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
@@ -1283,7 +1283,8 @@ class SellerController extends LoggedUserController {
 		if( !false == $shopDetails ){
 			$shop_id = $shopDetails['shop_id'];
 		}
-		
+		$this->set( 'tab', $tab );
+		$this->set( 'subTab', $subTab );
 		$this->set('shop_id',$shop_id);
 		$this->set('language',Language::getAllNames());
 		$this->set('siteLangId',$this->siteLangId);
@@ -1331,6 +1332,7 @@ class SellerController extends LoggedUserController {
 		/* ] */
 		
 		$shopFrm->fill( $shopDetails );
+		
 		$this->set( 'shopFrm', $shopFrm );
 		$this->set( 'stateId', $stateId );
 		$this->set( 'shop_id', $shop_id );
@@ -3678,4 +3680,199 @@ class SellerController extends LoggedUserController {
 		$this->set( 'productSpecifications', $productSpecifications );
 		$this->_template->render(false,false);
 	}
+	
+	
+	public function returnAddress(){
+		$userId = UserAuthentication::getLoggedUserId();
+		$userObj = new User($userId);			
+		$data = $userObj->getUserReturnAddress($this->siteLangId);			
+		$this->set('info',$data);
+		$this->_template->render(false, false);	
+	}
+	
+	public function returnAddressForm(){
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		$frm = $this->getReturnAddressForm();
+		$stateId = 0;
+		
+		$userObj = new User($userId);			
+		$data = $userObj->getUserReturnAddress();		
+		
+		if($data != false){
+			$frm->fill($data);
+			$stateId = $data['ura_state_id'];
+		}
+		
+		
+		$shopDetails = Shop::getAttributesByUserId($userId , null , false);
+		
+		if(!false == $shopDetails && $shopDetails['shop_active'] != applicationConstants::ACTIVE){
+			Message::addErrorMessage(Labels::getLabel('MSG_Your_shop_deactivated_contact_admin',$this->siteLangId));
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$shop_id = 0;
+
+		if( !false == $shopDetails ){
+			$shop_id =  $shopDetails['shop_id'];
+		}
+
+		$this->set('shop_id',$shop_id);
+		$this->set('language',Language::getAllNames());
+		$this->set('siteLangId',$this->siteLangId);
+		$this->set('frm', $frm);	
+		$this->set('stateId', $stateId);		
+		$this->set('languages', Language::getAllNames());		
+		$this->_template->render(false, false);
+	}
+	
+	public function setReturnAddress(){
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		$post = FatApp::getPostedData();
+		$ura_state_id = FatUtility::int($post['ura_state_id']);
+		$frm = $this->getReturnAddressForm();		
+		$post = $frm->getFormDataFromArray($post);
+		
+		if (false === $post) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieJsonError( Message::getHtml() );	
+		}
+		$post['ura_state_id'] = $ura_state_id;
+		
+		$userObj = new User($userId);
+		if (!$userObj->updateUserReturnAddress($post)) {
+			Message::addErrorMessage(Labels::getLabel($userObj->getError(),$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		$newTabLangId = $this->siteLangId;	
+		$this->set('langId', $newTabLangId); 
+		$this->set('msg', Labels::getLabel('MSG_Setup_successful',$this->siteLangId));	
+		$this->_template->render(false, false, 'json-success.php');		
+	}
+
+	public function returnAddressLangForm($langId){
+		$langId = FatUtility::int($langId);
+		$userId = UserAuthentication::getLoggedUserId();
+		$userId = FatUtility::int($userId);
+		
+		if(1 > $langId || 1 > $userId){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );	
+		}
+		
+		$frm = $this->getReturnAddressLangForm($langId);
+		$stateId = 0;
+		
+		$userObj = new User($userId);			
+		$data = $userObj->getUserReturnAddress( $langId );
+		
+		if( $data != false ){
+			$frm->fill($data);			
+		}
+		
+		
+		$shopDetails = Shop::getAttributesByUserId($userId , null , false);
+		
+		if(!false == $shopDetails && $shopDetails['shop_active'] != applicationConstants::ACTIVE){
+			Message::addErrorMessage(Labels::getLabel('MSG_Your_shop_deactivated_contact_admin',$this->siteLangId));
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$shop_id = 0;
+
+		if( !false == $shopDetails ){
+			$shop_id =  $shopDetails['shop_id'];
+		}
+
+		$this->set('shop_id',$shop_id);
+		$this->set('language',Language::getAllNames());
+		$this->set('siteLangId',$this->siteLangId);
+		$this->set('frm', $frm);		
+		$this->set('stateId', $stateId);		
+		$this->set('formLangId', $langId);		
+		$this->set('formLayout',Language::getLayoutDirection($langId));	
+		$this->_template->render(false, false);
+	}	
+	
+	public function setReturnAddressLang(){
+		$post = FatApp::getPostedData();
+		$lang_id = $post['lang_id'];
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		if($userId == 0 || $lang_id == 0){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$frm = $this->getReturnAddressLangForm($lang_id);
+		$post = $frm->getFormDataFromArray($post);		
+		
+		if (false === $post) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieJsonError( Message::getHtml() );	
+		}
+		
+		$userObj = new User($userId);
+		if (!$userObj->updateUserReturnAddressLang($post)) {
+			Message::addErrorMessage(Labels::getLabel($userObj->getError(),$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		$newTabLangId	 = 0;
+		$languages = Language::getAllNames();	
+		foreach($languages as $langId =>$langName ){
+
+			$userObj = new User( $userId );
+			$srch = new SearchBase( User::DB_TBL_USR_RETURN_ADDR_LANG );
+			$srch->addCondition( 'uralang_user_id', '=', $userId );
+			$srch->addCondition( 'uralang_lang_id', '=', $langId );
+			$srch->doNotCalculateRecords();
+			$srch->doNotLimitRecords();
+			$rs = $srch->getResultSet();
+			$vendorReturnAddress = FatApp::getDb()->fetch( $rs );
+
+		
+			if(!$vendorReturnAddress ){
+				$newTabLangId = $langId;
+				break;
+			}			
+		}	
+		
+		$this->set('langId', $newTabLangId);	
+		$this->set('msg', Labels::getLabel('MSG_Setup_successful',$this->siteLangId));	
+		$this->_template->render(false, false, 'json-success.php');	
+	}
+	
+	private function getReturnAddressForm(){
+		$frm = new Form('frmReturnAddress');
+		
+		$countryObj = new Countries();
+		$countriesArr = $countryObj->getCountriesArr($this->siteLangId);
+		
+		$fld = $frm->addSelectBox(Labels::getLabel('LBL_Country',$this->siteLangId),'ura_country_id',$countriesArr,FatApp::getConfig('CONF_COUNTRY'),array(), Labels::getLabel('LBL_Select',$this->siteLangId));
+		$fld->requirement->setRequired(true);
+		
+		$frm->addSelectBox(Labels::getLabel('LBL_State',$this->siteLangId),'ura_state_id',array(),'',array(),Labels::getLabel('LBL_Select',$this->siteLangId))->requirement->setRequired(true);
+		/* $frm->addTextBox(Labels::getLabel('LBL_City',$this->siteLangId), 'ura_city');	 */
+		$frm->addTextBox(Labels::getLabel('LBL_Postalcode',$this->siteLangId), 'ura_zip');	
+		$frm->addTextBox(Labels::getLabel('LBL_Phone',$this->siteLangId), 'ura_phone');				
+		
+		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES',$this->siteLangId));
+		return $frm;
+	}
+	
+	private function getReturnAddressLangForm($formLangId){
+		$formLangId = FatUtility::int($formLangId);
+		
+		$frm = new Form('frmReturnAddressLang');
+		$frm->addHiddenField('','lang_id',$formLangId);
+		$frm->addTextBox(Labels::getLabel('LBL_Name',$formLangId), 'ura_name')->requirement->setRequired(true);;
+		$frm->addTextBox(Labels::getLabel('LBL_City',$formLangId), 'ura_city')->requirement->setRequired(true);;
+		$frm->addTextarea(Labels::getLabel('LBL_Address1',$formLangId), 'ura_address_line_1')->requirement->setRequired(true);;
+		$frm->addTextarea(Labels::getLabel('LBL_Address2',$formLangId), 'ura_address_line_2');
+		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES',$this->siteLangId));
+		return $frm;
+	}
+	
 }

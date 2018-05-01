@@ -114,7 +114,7 @@ trait SellerProducts{
 		
 		if( !$vendorReturnAddress ){
 			Message::addErrorMessage(Labels::getLabel('MSG_Please_add_return_address',$this->siteLangId));
-			FatApp::redirectUser(CommonHelper::generateUrl('account','profileInfo',array(USER::RETURN_ADDRESS_ACCOUNT_TAB)));
+			FatApp::redirectUser(CommonHelper::generateUrl('seller','shop',array(USER::RETURN_ADDRESS_ACCOUNT_TAB)));
 		}
 		$languages = Language::getAllNames();
 		$userObj = new User( $userId );
@@ -130,7 +130,7 @@ trait SellerProducts{
 			$vendorReturnAddress = FatApp::getDb()->fetch( $rs );
 			if( !$vendorReturnAddress ){
 				Message::addErrorMessage(Labels::getLabel('MSG_Please_add_return_address_before_adding/updating_product',$this->siteLangId));
-				FatApp::redirectUser(CommonHelper::generateUrl('account','profileInfo',array(USER::RETURN_ADDRESS_ACCOUNT_TAB,$langId)));
+				FatApp::redirectUser(CommonHelper::generateUrl('seller','shop',array(USER::RETURN_ADDRESS_ACCOUNT_TAB,$langId)));
 			}
 		}
 		if( !$product_id ){
@@ -1997,5 +1997,5 @@ trait SellerProducts{
 		$this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully',$this->siteLangId));
 		$this->_template->render(false,false,'json-success.php');
 	}
-	
+
 }

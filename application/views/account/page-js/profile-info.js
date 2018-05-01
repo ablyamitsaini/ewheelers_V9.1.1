@@ -1,4 +1,6 @@
-
+$(document).ready(function(){
+	profileInfoForm();
+});
 
 (function() {
 	var runningAjaxReq = false;
@@ -48,40 +50,6 @@
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Account', 'updateBankInfo'), data, function(t) {	
 			bankInfoForm();						
-		});
-	};
-	
-	returnAddressForm = function(){
-		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Account','returnAddressForm'),'',function(t){
-			$(dv).html(t);
-		});
-	};
-	
-	setReturnAddress = function(frm){
-		if (!$(frm).validate()) return;		
-		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Account', 'setReturnAddress'), data, function(t) {	
-			returnAddressLangForm(t.langId);						
-		});
-	};
-	
-	returnAddressLangForm = function(langId){
-		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Account','returnAddressLangForm',[langId]),'',function(t){
-			$(dv).html(t);
-		});
-	};
-	
-	setReturnAddressLang = function(frm){
-		if (!$(frm).validate()) return;		
-		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Account', 'setReturnAddressLang'), data, function(t) {	
-			if(t.langId){
-				returnAddressLangForm(t.langId);
-			}else{
-				returnAddressForm();						
-			}
 		});
 	};
 	

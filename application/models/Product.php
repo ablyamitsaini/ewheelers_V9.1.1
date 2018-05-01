@@ -1026,4 +1026,5 @@ class Product extends MyAppModel{
 		
 		return true;
 	}
+	
 }
