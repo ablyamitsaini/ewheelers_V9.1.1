@@ -343,8 +343,7 @@ trait SellerProducts{
 		
 		
 		foreach($getProductUrls as $originalUrl=>$customUrl){
-				
-				
+	
 			$customUrl = UrlRewrite::getValidSeoUrl($customUrl,$originalUrl);
 
 			$seoUrlKeyword = array(
@@ -362,9 +361,9 @@ trait SellerProducts{
 		if(!isset($tabsArr[$metaType]) ){
 			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
-		}		
+		}
 		
-	/* 	$url =  $tabsArr[$metaType]['controller'].'/'.$tabsArr[$metaType]['action'].'/'.$selprod_id;
+		/* 	$url =  $tabsArr[$metaType]['controller'].'/'.$tabsArr[$metaType]['action'].'/'.$selprod_id;
 		$urlRewriteData_Save['urlrewrite_original'] = trim($url, '/\\');
 		$urlRewriteData_Save['urlrewrite_custom'] = trim(CommonHelper::seoUrl($url_keyword), '/\\');
 		if($selprod_id){
@@ -1905,6 +1904,20 @@ trait SellerProducts{
 		$srchMeta->addCondition('meta_record_id', '=', $post['selprod_id']);
 		$metaData = FatApp::getDb()->fetch($srchMeta->getResultSet());
 		
+		if(empty($metaData)){
+			$tabsArr = MetaTag::getTabsArr();
+			$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
+			
+			if($metaType == '' || !isset($tabsArr[$metaType]) )
+			{
+				Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
+				FatUtility::dieJsonError( Message::getHtml() );
+			}
+			
+			$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
+			$metaData['meta_action'] = $tabsArr[$metaType]['action'];
+		}
+		
 
 		$metaData['meta_record_id'] = $selprod_id;
 		$metaIdentifier = SellerProduct::getProductDisplayTitle($selprod_id, FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
@@ -1918,7 +1931,6 @@ trait SellerProducts{
 		}
 		
 		$metaData['meta_identifier'] = $metaIdentifier;
-		/* commonHelper::printArray($metaData); die; */
 		$meta->assignValues($metaData);
 		
 		if (!$meta->save()) {
