@@ -394,6 +394,7 @@ class SellerController extends LoggedUserController {
 		$this->set('orderDetail', $orderDetail);
 		$this->set('orderStatuses', $orderStatuses);
 		$this->set('shippedBySeller', $shippedBySeller);
+		$this->set('digitalDownloads', $digitalDownloads);
 		$this->set('digitalDownloadLinks', $digitalDownloadLinks);
 		$this->set( 'languages', Language::getAllNames() );
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
