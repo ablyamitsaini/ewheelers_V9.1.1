@@ -283,7 +283,7 @@ class MobileAppApiController extends MyAppController {
 							} 
 							
 							/* fetch Categories data[ */
-							 $productCatSrchTempObj = clone $productCatSrchObj;
+							$productCatSrchTempObj = clone $productCatSrchObj;
 							$productCatSrchTempObj->addCondition( 'prodcat_id', 'IN', array_keys( $categoryIds ) );
 							$rs = $productCatSrchTempObj->getResultSet(); 
 							/* ] */
@@ -1766,7 +1766,7 @@ class MobileAppApiController extends MyAppController {
 		if( empty($post) ){
 			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->siteLangId));
 		}
-		
+		$imageUrl = '';
 		if($post['action'] == "demo_avatar"){
 			if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
 				FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file',$this->siteLangId));
