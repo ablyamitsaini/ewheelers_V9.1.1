@@ -27,3 +27,18 @@
 	</section>
 	<div class="gap"></div>
 </div>
+<script>
+$(document).ready(function(){
+<?php if($tab==USER::RETURN_ADDRESS_ACCOUNT_TAB && !$subTab){?>
+returnAddressForm();
+<?php } elseif($subTab){?>
+	returnAddressLangForm(<?php echo $subTab;?>);
+	<?php
+	
+} else{
+	?>
+	shopForm();
+<?php }?>
+	
+});
+</script>

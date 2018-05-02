@@ -295,6 +295,7 @@ $(document).delegate('.bg-language-js','change',function(){
 			$.mbsmessage.close();
 		});
 	};
+	
 	resetDefaultCurrentTemplate = function(){
 		var agree = confirm( langLbl.confirmReset );
 		if( !agree ){
@@ -303,6 +304,40 @@ $(document).delegate('.bg-language-js','change',function(){
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'resetDefaultThemeColor'), '', function(t) {
 			$.mbsmessage.close();
 			themeColor();
+		});
+	};
+	
+	returnAddressForm = function(){
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Seller','returnAddressForm'),'',function(t){
+			$(dv).html(t);
+		});
+	};
+	
+	setReturnAddress = function(frm){
+		if (!$(frm).validate()) return;		
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddress'), data, function(t) {	
+			returnAddressLangForm(t.langId);						
+		});
+	};
+	
+	returnAddressLangForm = function(langId){
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Seller','returnAddressLangForm',[langId]),'',function(t){
+			$(dv).html(t);
+		});
+	};
+	
+	setReturnAddressLang = function(frm){
+		if (!$(frm).validate()) return;		
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddressLang'), data, function(t) {	
+			if(t.langId){
+				returnAddressLangForm(t.langId);
+			}else{
+				returnAddressForm();						
+			}
 		});
 	};
 

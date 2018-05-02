@@ -57,13 +57,15 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'action':
-				
-				$td->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($row['product_approved'] == applicationConstants::NO) ? 'btn btn--primary btn--sm disabled' : 'btn btn--primary btn--sm','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId)), Labels::getLabel('LBL_Add_To_Store',$siteLangId), true);
+				$canAddToStore = true;
+				if($row['product_approved'] == applicationConstants::NO){
+					$canAddToStore = false;
+				}
+				$td->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($canAddToStore) ? 'btn btn--primary btn--sm' : 'btn btn--primary btn--sm disabled','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId)), Labels::getLabel('LBL_Add_To_Store',$siteLangId), true);
 				
 				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
 				$li = $ul->appendElement("li");
-				$li->appendElement('a', array('href'=>'javascript:void(0)', 'onclick'=>'catalogInfo('.$row['product_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_product_Info',$siteLangId),
-				'title'=>Labels::getLabel('LBL_Product_Product',$siteLangId), true),
+				$li->appendElement('a', array('href'=>'javascript:void(0)', 'onclick'=>'catalogInfo('.$row['product_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_product_Info',$siteLangId), true),
 				'<i class="fa fa-eye"></i>', true);
 
 				

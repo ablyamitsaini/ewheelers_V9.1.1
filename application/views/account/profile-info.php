@@ -23,17 +23,12 @@
 							<div class="box__body">
 								<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
 									<ul>
-										<li class="<?php if($tab!=USER::RETURN_ADDRESS_ACCOUNT_TAB){ echo 'is-active';} ?>"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account',$siteLangId);?></a></li>
+										<li class="is-active"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account',$siteLangId);?></a></li>
 										<?php if( User::isAffiliate() ){ ?>
 										<li><a href="javascript:void(0);" onClick="affiliatePaymentInfoForm()"><?php echo Labels::getLabel('LBL_Payment_Info',$siteLangId);?></a></li>
 										<?php } ?>
 										<?php if( !User::isAffiliate() ){ ?>
 										<li><a href="javascript:void(0);" onClick="bankInfoForm()"><?php echo Labels::getLabel('LBL_Bank_Account',$siteLangId);?></a></li>
-										<?php } ?>
-										
-										<?php if( User::isSeller() ){ ?>
-										<li class="<?php if($tab==USER::RETURN_ADDRESS_ACCOUNT_TAB){ echo 'is-active';} ?>"><a href="javascript:void(0);" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_Return_Address',$siteLangId);?></a></li>
-									
 										<?php } ?>
 									</ul>
 								</div>
@@ -64,18 +59,3 @@
 	</section>
 	<div class="gap"></div>
 </div>
-<script>
-$(document).ready(function(){
-<?php if($tab==USER::RETURN_ADDRESS_ACCOUNT_TAB && !$subTab){?>
-returnAddressForm();
-<?php } elseif($subTab){?>
-	returnAddressLangForm(<?php echo $subTab;?>);
-	<?php
-	
-} else{
-	?>
-	profileInfoForm();
-<?php }?>
-	
-});
-</script>

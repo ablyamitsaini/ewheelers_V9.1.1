@@ -5942,7 +5942,6 @@ class MobileAppApiController extends MyAppController {
 		$srch->addMultipleFields(array( 'selprod_id'));
 		$srch->addCondition( 'selprod_id', '=', $product_id );
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		
 	
 		$productRs = $srch->getResultSet();
 		$product= $db->fetch($productRs);
