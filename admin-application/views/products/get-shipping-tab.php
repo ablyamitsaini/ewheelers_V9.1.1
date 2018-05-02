@@ -47,16 +47,18 @@
 		addShipping = function(){
 		
 			html  = '<tr id="shipping-row' + shipping_row + '">';
-			html += '  <td><input type="text" name="product_shipping[' + shipping_row + '][country_name]" value="" placeholder="<?php echo Labels::getLabel('LBL_Ships_To',$adminLangId)?>" /><input type="hidden" name="product_shipping[' + shipping_row + '][country_id]" value="" /></td>';
-			html += '  <td><input type="text" name="product_shipping[' + shipping_row + '][company_name]" value="" placeholder="<?php echo Labels::getLabel('LBL_Shipping_Company',$adminLangId)?>" /><input type="hidden" name="product_shipping[' + shipping_row + '][company_id]" value="" /></td>';
-			html += '  <td><input type="text" name="product_shipping[' + shipping_row + '][processing_time]" value="" placeholder="<?php echo Labels::getLabel('LBL_Processing_Time',$adminLangId)?>" /><input type="hidden" name="product_shipping[' + shipping_row + '][processing_time_id]" value="" /></td>';
-			html += '  <td>';
-			html += '<input type="text" name="product_shipping[' + shipping_row + '][cost]" value="" placeholder="<?php echo Labels::getLabel('LBL_Cost',$adminLangId)?>" />';
-			html += '</td>';
-			html += '<td>';
-			html += '<input type="text" name="product_shipping[' + shipping_row + '][additional_cost]" value="" placeholder="<?php echo Labels::getLabel('LBL_Each_Additional_Item',$adminLangId)?>" />';
-			html += '</td>';
-			html += '  <td><button type="button" class="btn btn--secondary ripplelink" title="<?php echo Labels::getLabel('LBL_Remove',$adminLangId)?>" onclick="$(\'#shipping-row' + shipping_row + '\').remove();" ><i class="ion-minus-round"></i></button></td>';
+			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][country_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Ships_To',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][country_id]' value='' /></td>";
+			
+			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][company_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Shipping_Company',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][company_id]' value='' /></td>";
+			
+			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][processing_time]' value='' placeholder='<?php echo Labels::getLabel('LBL_Processing_Time',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][processing_time_id]' value='' /></td>";
+			
+			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][cost]' value='' placeholder='<?php echo Labels::getLabel('LBL_Cost',$adminLangId)?>' /></td>";
+			
+			html += "<td><input type='text' name='product_shipping[" + shipping_row + "][additional_cost]' value='' placeholder='<?php echo Labels::getLabel('LBL_Each_Additional_Item',$adminLangId)?>' /></td>";
+			
+			html += "  <td><button type='button' class='btn btn--secondary ripplelink' title='<?php echo Labels::getLabel('LBL_Remove',$adminLangId)?>' onclick='$(\'#shipping-row' + shipping_row + '\').remove();' ><i class='ion-minus-round'></i></button></td>";
+			
 			html += '</tr>';
 			$('#shipping tbody').append(html);
 			shippingautocomplete(shipping_row);

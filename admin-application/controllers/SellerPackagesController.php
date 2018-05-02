@@ -56,11 +56,13 @@ class SellerPackagesController extends AdminBaseController {
 		$frm->addHiddenField('', 'spackage_id');
 		$frm->addRequiredField(Labels::getLabel('LBL_Package_Identifier',$this->adminLangId), SellerPackages::DB_TBL_PREFIX.'identifier');
 		$disbaleText= array();
-		if($spackageId>0){
+		if($spackageId > 0){
 			$disbaleText=  array('disabled'=>'disabled');
 		}
 		$packageTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Package_Type',$this->adminLangId), SellerPackages::DB_TBL_PREFIX.'type', $arr_package_options, '',$disbaleText,'');
-		$packageTypeFld->requirements()->setRequired();
+		if(0 == $spackageId){
+			$packageTypeFld->requirements()->setRequired();
+		}
 		$frm->addFloatField(Labels::getLabel('LBL_Package_Commision_Rate_in_Percentage',$this->adminLangId), SellerPackages::DB_TBL_PREFIX.'commission_rate');
 		$frm->addIntegerField(Labels::getLabel('LBL_Package_Products_Allowed',$this->adminLangId), SellerPackages::DB_TBL_PREFIX.'products_allowed');
 		$frm->addIntegerField(Labels::getLabel('LBL_Package_Images_Per_Catalog',$this->adminLangId), SellerPackages::DB_TBL_PREFIX.'images_per_product');

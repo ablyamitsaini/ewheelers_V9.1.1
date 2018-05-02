@@ -374,7 +374,7 @@ class SellerOrdersController extends AdminBaseController {
 		if(/* strtolower($orderDetail['pmethod_code']) == 'cashondelivery' &&  */!$orderDetail['optsu_user_id'] && in_array($post["op_status_id"],$restrictOrderStatusChange)){
 			Message::addErrorMessage(Labels::getLabel('MSG_Please_assign_shipping_user',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );	
-		} 
+		}
 		
 	
 		if (in_array($orderDetail["op_status_id"],$processingStatuses) && in_array($post["op_status_id"],$processingStatuses)){
