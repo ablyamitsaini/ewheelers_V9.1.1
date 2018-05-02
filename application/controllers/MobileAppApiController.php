@@ -1814,7 +1814,7 @@ class MobileAppApiController extends MyAppController {
 			unset($post['user_id']);
 		}
 		
-		if(!empty($post['user_dob') && ( $post['user_dob'] == "0000-00-00" || $post['user_dob'] == "" || strtotime( $post['user_dob'] ) == 0 )){
+		if(isset($post['user_dob']) && ( $post['user_dob'] == "0000-00-00" || $post['user_dob'] == "" || strtotime( $post['user_dob'] ) == 0 )){
 			unset($post['user_dob']);
 		}	
 		unset($post['credential_username']);

@@ -439,7 +439,7 @@ class Orders extends MyAppModel{
 				/* ] */
 				$counter++;
 			}
-		}
+		} 
 		/* CommonHelper::printArray($addresses);die; */
 		$db->deleteRecords( static::DB_TBL_ORDER_USER_ADDRESS, array('smt' => 'oua_order_id = ?', 'vals' => array( $this->getOrderId() ) ) );
 		if( !empty($addresses) ){
@@ -1586,7 +1586,7 @@ class Orders extends MyAppModel{
 		return $processingStatuses;
 	}
 	
-	function getAdminAllowedUpdateOrderStatuses($fetchForCOD = false){
+	function getAdminAllowedUpdateOrderStatuses($fetchForCOD = false, $productType = false){
 		$processingStatuses = array_merge(unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS")),unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")));
 		$processingStatuses = array_merge((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"));
 		$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"));
@@ -1597,6 +1597,13 @@ class Orders extends MyAppModel{
 		if($fetchForCOD){
 			$processingStatuses = array_diff((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"));
 			$processingStatuses = array_merge((array)$processingStatuses,(array)FatApp::getConfig("CONF_COD_ORDER_STATUS"));
+		}
+		
+		switch($productType){
+			case Product::PRODUCT_TYPE_DIGITAL:
+				$processingStatuses = array_diff((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_SHIPPING_ORDER_STATUS"));
+				$processingStatuses = array_diff((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS"));
+			break;
 		}
 		
 		return $processingStatuses;

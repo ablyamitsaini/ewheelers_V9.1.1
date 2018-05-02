@@ -172,7 +172,7 @@ class SellerOrdersController extends AdminBaseController {
 		if($opRow['pmethod_code'] == 'CashOnDelivery'){
 			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(true);
 		}else{
-			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses();
+			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(false,$opRow['op_product_type']);
 		}
 		
 		$data = array('op_id'=>$op_id , 'op_status_id' => $opRow['op_status_id'] );
@@ -355,7 +355,7 @@ class SellerOrdersController extends AdminBaseController {
 		if($orderDetail['pmethod_code'] == 'CashOnDelivery'){	
 			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(true);
 		}else{
-			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses();
+			$processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(false,$orderDetail['op_product_type']);
 		}
 		
 		$frm =  $this->getOrderCommentsForm($orderDetail,$processingStatuses);		
@@ -371,7 +371,7 @@ class SellerOrdersController extends AdminBaseController {
 			(array)FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS"),
 			(array)FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")
 		);
-		if(/* strtolower($orderDetail['pmethod_code']) == 'cashondelivery' &&  */!$orderDetail['optsu_user_id'] && in_array($post["op_status_id"],$restrictOrderStatusChange)){
+		if(/* strtolower($orderDetail['pmethod_code']) == 'cashondelivery' &&  */!$orderDetail['optsu_user_id'] && in_array($post["op_status_id"],$restrictOrderStatusChange) && $orderDetail['op_product_type'] == Product::PRODUCT_TYPE_PHYSICAL){
 			Message::addErrorMessage(Labels::getLabel('MSG_Please_assign_shipping_user',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );	
 		} 
@@ -546,11 +546,12 @@ class SellerOrdersController extends AdminBaseController {
 		return $frm;
 	}
 	
-	private function getOrderCommentsForm($orderData = array(),$processingOrderStatus){
+	private function getOrderCommentsForm($orderData = array(),$processingOrderStatus){		
 		$frm = new Form('frmOrderComments');
 		$frm->addTextArea(Labels::getLabel('LBL_Your_Comments',$this->adminLangId),'comments');			
 		
 		$orderStatusArr = Orders::getOrderProductStatusArr($this->adminLangId,$processingOrderStatus,$orderData['op_status_id']);
+		
 		$fld = $frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId),'op_status_id',$orderStatusArr);
 		$fld->requirements()->setRequired();
 			

@@ -1072,7 +1072,7 @@ class CheckoutController extends MyAppController{
 		$orderObj = new Orders();
 		if( $orderObj->addUpdateOrder( $orderData ,$this->siteLangId) ){
 			$order_id = $orderObj->getOrderId();
-		} else {
+		} else {			
 			Message::addErrorMessage($orderObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
 		}

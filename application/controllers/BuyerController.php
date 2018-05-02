@@ -1607,7 +1607,13 @@ class BuyerController extends LoggedUserController {
 		if (!empty($get['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty($_SESSION['oauth_token_secret'])) {
 			
 			$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"), $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);			
-			$access_token = $twitteroauth->oauth("oauth/access_token", ["oauth_verifier" => $get['oauth_verifier']]);				
+			try{
+				$access_token = $twitteroauth->oauth("oauth/access_token", ["oauth_verifier" => $get['oauth_verifier']]);				
+			}catch(exception $e){  
+				$this->set('errors', $e->getMessage() );
+				$this->_template->render(false,false,'buyer/twitter-response.php');
+				return;
+			}
 			
 			$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"), $access_token['oauth_token'], $access_token['oauth_token_secret']);
 			
@@ -1642,7 +1648,7 @@ class BuyerController extends LoggedUserController {
 							try{
 								$post = $twitteroauth->post('statuses/update', $parameters);									
 								$postMedia = true;
-							}catch(exception $e){ 
+							}catch(exception $e){  
 								$error = $e->getMessage();
 							}								
 						}
@@ -1660,7 +1666,7 @@ class BuyerController extends LoggedUserController {
 					$error = $e->getMessage();
 				}
 			}
-		
+					
 			$this->set('errors', isset($post->errors) ? $post->errors : $error );
 			$this->_template->render(false,false,'buyer/twitter-response.php');
 		}		
