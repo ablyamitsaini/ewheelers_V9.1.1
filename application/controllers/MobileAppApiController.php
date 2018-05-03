@@ -2,19 +2,19 @@
 class MobileAppApiController extends MyAppController {
 	public $app_user = array();
 
-	public function __construct($action){
+	public function __construct($action){  
 		parent::__construct($action);
 		$this->db = FatApp::getDb();
-		$this->pagesize=10;
+		$this->pagesize = 10;
 		$post = FatApp::getPostedData();
 		
-		if (!empty($post['_token'])) {
-			$user_token = $post["_token"];
+		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
+			$user_token = $_SERVER['HTTP_X_TOKEN'];
 			$userObj = new User();
 			$srch = $userObj->getUserSearchObj(array('u.*'));
 			$srch->addCondition('user_app_access_token','=',$user_token);
 			$rs = $srch->getResultSet();
-			$user = $this->db->fetch($rs,'user_id');
+			$user = $this->db->fetch($rs,'user_id');			
 			if ($user){
 				$this->app_user=$user;
 			} else	{
@@ -73,6 +73,8 @@ class MobileAppApiController extends MyAppController {
 										'about_us',
 										'language_labels'
 									);
+									
+									
 		if(!in_array($action,$public_api_requests)){
 			if(!isset($this->app_user["user_id"]) || (!$this->app_user["user_id"]>0)){
 				FatUtility::dieJsonError(Labels::getLabel('L_MOBILE_Please_login_or_login_again',$this->siteLangId));

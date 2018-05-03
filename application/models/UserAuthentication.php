@@ -77,6 +77,37 @@ class UserAuthentication extends FatModel {
 		return ($row['total'] > 3);
 	}
 	
+	public static function doAppLogin($token,$userType = 0) {
+		$db = FatApp::getDb();
+		$userObj = new User();
+		$srch = $userObj->getUserSearchObj(array('u.*'));
+		$srch->addCondition('user_app_access_token','=',$token);
+		$rs = $srch->getResultSet();
+		$user = $db->fetch($rs,'user_id');
+		if ($user){
+			return true;
+		}		
+       /*  $authRow = self::checkLoginTokenInDB($token);
+
+        if (strlen($token) != self::MD5_HASH_LENGTH_FOR_PWDS || empty($authRow)) {
+            self::clearLoggedUserLoginCookie();
+            return false;
+        }
+
+        $browser = CommonHelper::userAgent();
+        if (strtotime($authRow['uauth_expiry']) < strtotime('now')) {
+            self::clearLoggedUserLoginCookie();
+            return false;
+        }
+
+        $ths = new UserAuthentication();
+        if ($ths->loginByAppToken($authRow)) {
+            return true;
+        } */
+
+        return false;
+    }
+	
 	public static function doCookieLogin($returnAuth = true){
 		$cookieName = self::YOKARTUSER_COOKIE_NAME;
 		
