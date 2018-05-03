@@ -15,8 +15,7 @@
                          	<?php echo $frm->getFormTag(); ?>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="field-set">
-									
+                                    <div class="field-set">									
                                         <div class="field_cover field_cover--user"><?php echo $frm->getFieldHTML('username'); ?></div>
                                     </div>
                                 </div>
