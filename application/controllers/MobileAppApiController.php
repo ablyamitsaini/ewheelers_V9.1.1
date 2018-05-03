@@ -8,8 +8,14 @@ class MobileAppApiController extends MyAppController {
 		$this->pagesize = 10;
 		$post = FatApp::getPostedData();
 		
+		$user_token = '';		
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-			$user_token = $_SERVER['HTTP_X_TOKEN'];
+			$user_token = $_SERVER['HTTP_X_TOKEN'];			
+		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
+			$user_token = $post['_token'];	
+		}		
+		
+		if(!empty($user_token)){
 			$userObj = new User();
 			$srch = $userObj->getUserSearchObj(array('u.*'));
 			$srch->addCondition('user_app_access_token','=',$user_token);
@@ -21,7 +27,8 @@ class MobileAppApiController extends MyAppController {
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
 				die(json_encode($arr));	
 			}
-		}
+		}		
+		
 		//$post['language']=1;
 		if (isset($post['language'])){
 			$this->siteLangId = FatUtility::int($post['language']);

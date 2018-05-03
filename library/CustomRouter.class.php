@@ -1,8 +1,12 @@
 <?php
 class CustomRouter{	
 	static function setRoute(&$controller, &$action, &$queryString){
-		$userType = null;
-		if ('mobile-app-api' == $controller) {
+		$userType = null;		
+		if ('mobile-app-api' == $controller) {			
+			define('MOBILE_APP_API_CALL', true);
+            define('MOBILE_APP_API_VERSION', 'V1');
+		}else if ('app-api' == $controller) {
+			$controller = 'mobile-app-api';
 			define('MOBILE_APP_API_CALL', true);
 			define('MOBILE_APP_API_VERSION', $action);
 			
