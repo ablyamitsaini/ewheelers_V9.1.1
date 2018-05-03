@@ -198,13 +198,19 @@ class SellerOrdersController extends AdminBaseController {
 		if($opRow['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL){
 			$digitalDownloads = Orders::getOrderProductDigitalDownloads($op_id);
 		}
-			
+		
+		$digitalDownloadLinks = array();
+		if($opRow['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
+			$digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($op_id);
+		}
+		
 		$this->set('allLanguages',Language::getAllNames(false,0,false,false));
 		$this->set( 'frm', $frm );
 		$this->set( 'shippingHanldedBySeller', $shippingHanldedBySeller );
 		$this->set( 'order', $opRow );
 		$this->set('orderStatuses', $orderStatuses);
 		$this->set('digitalDownloads', $digitalDownloads);
+		$this->set('digitalDownloadLinks', $digitalDownloadLinks);
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->adminLangId));
 		$this->set('displayForm',(in_array($opRow['op_status_id'],$processingStatuses) && $this->canEdit));
 		$this->set('displayShippingUserForm', $displayShippingUserForm);

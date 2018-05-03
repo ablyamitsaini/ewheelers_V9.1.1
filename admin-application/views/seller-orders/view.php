@@ -253,6 +253,49 @@
 					</section>
 				<?php }?>
 				
+				<?php if(!empty($digitalDownloadLinks)){?>
+					<section class="section no-print">
+						<div class="sectionhead">
+							<h4><?php echo Labels::getLabel('LBL_Downloads',$adminLangId); ?></h4>
+						</div>
+						<div class="sectionbody">
+							<table class="table">
+								<tr>
+									<th><?php echo Labels::getLabel('LBL_Sr_No',$adminLangId);?></th>
+									<th><?php echo Labels::getLabel('LBL_Link',$adminLangId);?></th>
+									<th><?php echo Labels::getLabel('LBL_Download_times',$adminLangId);?></th>
+									<th><?php echo Labels::getLabel('LBL_Downloaded_count',$adminLangId);?></th>
+									<th><?php echo Labels::getLabel('LBL_Expired_on',$adminLangId);?></th>								
+								</tr>
+								 <?php $sr_no = 1;
+									foreach( $digitalDownloadLinks as $key=>$row ){
+										
+										/* $fileName = '<a href="'.CommonHelper::generateUrl('Seller','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'],AttachedFile::FILETYPE_ORDER_PRODUCT_DIGITAL_DOWNLOAD)).'">'.$row['afile_name'].'</a>'; */
+										/* $downloads = '<li><a href="'.CommonHelper::generateUrl('Seller','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'],AttachedFile::FILETYPE_ORDER_PRODUCT_DIGITAL_DOWNLOAD)).'"><i class="fa fa-download"></i></a></li>'; */
+										
+										$expiry = Labels::getLabel('LBL_N/A',$adminLangId) ;
+										if($row['expiry_date']!=''){
+											$expiry = FatDate::Format($row['expiry_date']);
+										}
+										
+										$downloadableCount = Labels::getLabel('LBL_N/A',$adminLangId) ;
+										if($row['downloadable_count'] != -1){
+											$downloadableCount = $row['downloadable_count'];
+										}
+										?>
+									<tr>
+									  <td><?php echo $sr_no;?></td>
+									  <td><a target="_blank" href="<?php echo $row['opddl_downloadable_link'];?>" title="<?php echo Labels::getLabel('LBL_Click_to_download',$adminLangId);?>"><?php echo $row['opddl_downloadable_link'];?></a></td>
+									  <td><?php echo $downloadableCount;?></td>
+									  <td><?php echo $row['opddl_downloaded_times'];?></td>
+									  <td><?php echo $expiry;?></td>                     
+									</tr>
+								<?php } ?>
+						</table>
+						</div>
+					</section>
+				<?php }?>
+				
 				<?php if(!empty($order['comments'])){?>
 				<section class="section no-print">
 					<div class="sectionhead">
