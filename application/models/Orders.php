@@ -1553,7 +1553,7 @@ class Orders extends MyAppModel{
 	}
 	
 	public static function getBuyerAllowedDigitalDownloadStatues(){
-		$buyerAllowDigitalDownloadStatuses = unserialize(FatApp::getConfig("CONF_ENABLE_DIGITAL_DOWNLOADS"));
+		$buyerAllowDigitalDownloadStatuses = unserialize(FatApp::getConfig("CONF_ENABLE_DIGITAL_DOWNLOADS", null, ''));
 		return $buyerAllowDigitalDownloadStatuses ;
 	}
 	
