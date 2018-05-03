@@ -1,4 +1,5 @@
 /user-uploads/caching/*
+/user-uploads/*
 /user-uploads/database-backups/*
 /conf/yokart-v8-1-test.staging.4demo.biz.php
 /conf/yokart-v8-1.anuprawat.4demo.biz.php
