@@ -109,9 +109,13 @@ class MobileAppApiController extends MyAppController {
 		$arrStr = array();
 		foreach($arr as $key=>$val){
 			if (!is_array($val)){
-				//$arrStr[$key] = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
-				/*Commented as \n /new line not working with messages*/
-				$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);					
+				if(!is_object($val)){
+					//$arrStr[$key] = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
+					//Commented as \n /new line not working with messages								
+					$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);
+				}else{	
+					$arrStr[$key] =  $val;
+				}
 			}else{
 				$arrStr[$key]= $this->cleanArray($val);	
 			}
@@ -161,7 +165,7 @@ class MobileAppApiController extends MyAppController {
 		die ($this->json_encode_unicode(array('status'=>1, 'records'=>$records)));			
 	}
 	
-	function home(){
+	function home(){		
 		$loggedUserId = $this->getAppLoggedUserId();
 		$productSrchObj = new ProductSearch( $this->siteLangId );
 		$productSrchObj->joinProductToCategory($this->siteLangId );
@@ -212,7 +216,7 @@ class MobileAppApiController extends MyAppController {
 			$productCatSrchObj->doNotCalculateRecords();
 			/* $productCatSrchObj->setPageSize(4); */
 			$productCatSrchObj->addMultipleFields( array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description') );
-			$collections = array();
+			$collections = new ArrayObject();
 			
 			/* [ */
 			
@@ -420,19 +424,17 @@ class MobileAppApiController extends MyAppController {
 			$home_slides = array();
 			foreach($slides as $key=>$val){
 				$home_slides[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Image','slide',array($val['slide_id'],0,$this->siteLangId))));
-			}
-			/*commonhelper::printarray($home_slides);
-			die();*/
+			}			
 		}
 		/* ] */
-		
+		$banners = new ArrayObject();
 		$bannerSrch = Banner::getBannerLocationSrchObj(true);
-		$bannerSrch->addCondition('blocation_id','<=',2);
+		$bannerSrch->addCondition('blocation_id','<=',0);
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = $this->db->fetchAll( $rs ,'blocation_key');
-		
-		$banners = $bannerLocation;
-		foreach( $bannerLocation as $val ){
+		if(!empty($bannerLocation)){
+			$banners = $bannerLocation;
+			foreach( $bannerLocation as $val ){
 			$srch = new BannerSearch($this->siteLangId,true);
 			$srch->joinPromotions($this->siteLangId, true,true,true);
 			$srch->addPromotionTypeCondition();
@@ -471,6 +473,8 @@ class MobileAppApiController extends MyAppController {
 			$banners[$val['blocation_key']]['banners'] = $home_banners;
 			//commonhelper::printarray($banners[$val['blocation_key']]['banners']);
 			//die();
+		} 
+		
 		}
 		
 		
@@ -574,21 +578,22 @@ class MobileAppApiController extends MyAppController {
 		}
 		/* End For Products */	
 
-		/* Sponsored Items ] */
+		/* Sponsored Items ] */		
 		$api_home_page_elements['sponsored_products'] = $home_sponsoredProds;
 		$api_home_page_elements['sponsored_shops'] = $sponsoredShops;
 		$api_home_page_elements['slides'] = $home_slides;
 		$api_home_page_elements['banners'] = $banners;
 		$api_home_page_elements['collections'] = $collections;
-//		CommonHelper::printArray(array('status'=>1 ,'data'=>$api_home_page_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->user_details['favItems'],'unread_messages'=>$this->user_details['unreadMessages']));
-		//CommonHelper::printArray($api_home_page_elements);
-		//die();
+
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_home_page_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 
 	}
 	
-	function get_category_structure(){
+	function get_category_structure(){		
 		$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
+		if(empty($categoriesDataArr)){
+			$categoriesDataArr =  array();
+		}
 		//commonhelper::printarray($categoriesDataArr);
 		//die();
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$categoriesDataArr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		

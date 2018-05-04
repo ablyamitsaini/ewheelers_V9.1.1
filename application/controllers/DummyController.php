@@ -69,11 +69,71 @@ class DummyController extends MyAppController {
 		var_dump($selProdValidOptionArr); exit;
 	}
 	
+	function pushTest(){
+		
+		$firebase_push_notification_server_key = "AAAAZA6vRK8:APA91bHlfYreFEpCK18CSBahNCe7e4pU-3c3925duLwhxXvxAGbWF5m4K7U4oMKWht_BBCAZ6VC6v8dGIBnR14_X-lNxJQwiORNUgeM3Djm9ZvUQJRk_n3hjkuAG2D8-iVAqtN2IC1GU";
+		$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
+		$url = 'https://fcm.googleapis.com/fcm/send';
+		//$url = 'https://gcm-http.googleapis.com/gcm/send';
+		//https://android.googleapis.com/gcm/send'
+		$fcmKey = $firebase_push_notification_server_key;
+
+		
+		$headers = array(
+				'Authorization: key=' . $fcmKey,
+				'Content-Type: application/json'
+		);
+		
+		$ch = curl_init();		
+		curl_setopt( $ch, CURLOPT_URL, $url );		
+		curl_setopt( $ch, CURLOPT_POST, true );		
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );		
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );		
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);		
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);		
+				
+		//$data = array('title'=>'Yocabs Notification Title', 'message'=>'Yocabs Notification Message Body');
+		$msg = array
+		(
+			'message' 	=> 'here is a message. message',
+			'title'		=> 'This is a title. title'
+			/* 'subtitle'	=> 'This is a subtitle. subtitle',
+			'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
+			'vibrate'	=> 1,
+			'sound'		=> 1,
+			'largeIcon'	=> 'large_icon',
+			'smallIcon'	=> 'small_icon' */
+		);
+		
+		$post = array(
+					'to' => $deviceToken,
+					'data' => $msg
+			);
+			
+			/* print_r($post);
+			die(); */
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $post ) );			
+			$result = curl_exec( $ch );			
+			$response = '';
+			
+			if ( curl_errno( $ch ) )
+			{
+				$response .= 'Error ' . curl_error( $ch ) . print_r($post, true);
+				echo $response;
+				return false;
+			}
+			
+			$objResult = json_decode($result, true);
+		
+		
+		curl_close( $ch );
+		echo $result;	
+	}
 	
 	function pushNotificaton(){		
 		// API access key from Google API's Console
 		$API_ACCESS_KEY =  'AAAAZA6vRK8:APA91bHlfYreFEpCK18CSBahNCe7e4pU-3c3925duLwhxXvxAGbWF5m4K7U4oMKWht_BBCAZ6VC6v8dGIBnR14_X-lNxJQwiORNUgeM3Djm9ZvUQJRk_n3hjkuAG2D8-iVAqtN2IC1GU' ;
-		$registrationIds = array( $_GET['id'] );
+		$registrationIds = 'c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E';
 		// prep the bundle
 		$msg = array
 		(
