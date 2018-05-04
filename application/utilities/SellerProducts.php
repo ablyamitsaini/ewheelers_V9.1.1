@@ -1901,29 +1901,21 @@ trait SellerProducts{
 	
 		$metaData = array();
 		
-		$srchMeta = MetaTag::getSearchObject();
-		$srchMeta->addMultipleFields(array('meta_controller','meta_action'));
-		$srchMeta->addCondition('meta_record_id', '=', $post['selprod_id']);
-		$metaData = FatApp::getDb()->fetch($srchMeta->getResultSet());
 		
-		if(empty($metaData)){
-			$tabsArr = MetaTag::getTabsArr();
-			$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
-			
-			if($metaType == '' || !isset($tabsArr[$metaType]) )
-			{
-				Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
-				FatUtility::dieJsonError( Message::getHtml() );
-			}
-			
-			$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
-			$metaData['meta_action'] = $tabsArr[$metaType]['action'];
+		$tabsArr = MetaTag::getTabsArr();
+		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
+		
+		if($metaType == '' || !isset($tabsArr[$metaType]) )
+		{
+			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
-
+		$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
+		$metaData['meta_action'] = $tabsArr[$metaType]['action'];
+		
 		$metaData['meta_record_id'] = $selprod_id;
 		$metaIdentifier = SellerProduct::getProductDisplayTitle($selprod_id, FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
-		
 		$meta = new MetaTag();
 		
 		$count = 1;
@@ -1931,7 +1923,6 @@ trait SellerProducts{
 			$metaIdentifier = $metaRow['meta_identifier']."-".$count;
 			$count++;
 		}
-		
 		$metaData['meta_identifier'] = $metaIdentifier;
 		$meta->assignValues($metaData);
 		

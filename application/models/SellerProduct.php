@@ -511,12 +511,13 @@ class SellerProduct extends MyAppModel{
 	public static function getProductDisplayTitle($selprod_id, $langId)
 	{
 		$prodSrch = new ProductSearch( $langId, null, null, true, false );
-		$prodSrch->joinSellerProducts();
+		$prodSrch->joinSellerProducts(0, '', array(), false);
 		$prodSrch->addCondition('selprod_id', '=', $selprod_id );
 		$prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name'));
 		$productRs = $prodSrch->getResultSet();
 		$products = FatApp::getDb()->fetch($productRs);
 		$variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['product_identifier'];
+		
 		$options = static::getSellerProductOptions( $selprod_id, true, $langId );
 		if( is_array($options) && count($options) ){
 			$variantStr .= ' - ';
