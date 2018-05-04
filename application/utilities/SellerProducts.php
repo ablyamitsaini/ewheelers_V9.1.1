@@ -67,7 +67,6 @@ trait SellerProducts{
 		
 		/* $cnd = $srch->addCondition('product_seller_id' ,'=' , UserAuthentication::getLoggedUserId());
 		$cnd->attachCondition( 'product_seller_id', '=', 0,'OR'); */
-	
 		$srch->addMultipleFields(array(
 			'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
@@ -378,14 +377,14 @@ trait SellerProducts{
 		} */
 		
 		/*--------  ] */
-		//save options data, if any[
+		/* save options data, if any[ */
 		if( $selprod_id ){
 			if( !$sellerProdObj->addUpdateSellerProductOptions( $selprod_id, $options )){
 				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
 				FatApp::redirectUser($_SESSION['referer_page_url']);				
 			}
 		}
-		//]
+		/* ] */
 		$languages = Language::getAllNames();
 		/* Add seller product title and SEO data automatically[ */
 		if(0 == FatApp::getPostedData('selprod_id',Fatutility::VAR_INT,0) ){
@@ -1854,7 +1853,8 @@ trait SellerProducts{
 		
 		unset($sellerProductRow['selprod_id']);
 		$data_to_be_save = $sellerProductRow;
-		
+		$data_to_be_save['selprod_price'] = $post['selprod_price'];
+		$data_to_be_save['selprod_stock'] = $post['selprod_stock'];
 		$data_to_be_save['selprod_user_id'] = UserAuthentication::getLoggedUserId();
 		$data_to_be_save['selprod_added_on'] = date("Y-m-d H:i:s");
 		

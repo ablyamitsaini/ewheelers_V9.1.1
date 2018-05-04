@@ -495,6 +495,7 @@ function removePriceFilter(){
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove();
 		searchProducts(frm, 0, undefined, 1);
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
 	
 })();
