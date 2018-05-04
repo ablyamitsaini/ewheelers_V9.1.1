@@ -23,8 +23,8 @@
 
 				<div class="right_panel_head_right">
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm link__filter hide--desktop"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></a>
-					<a href="javascript:void(0)" class="btn btn--primary btn--sm   switch--grind switch--link-js grid"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
-					<a href="javascript:void(0)" class="btn btn--secondary btn--sm   switch--list switch--link-js list "><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></a>
+					<a href="javascript:void(0)" class="btn btn--primary btn--sm switch--grind switch--link-js grid hide--mobile"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
+					<a href="javascript:void(0)" class="btn btn--secondary btn--sm switch--list switch--link-js list hide--mobile"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></a>
 					<div class="gap"></div>
 					<div class="sort-by">
 						<ul>

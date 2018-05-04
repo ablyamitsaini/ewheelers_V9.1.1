@@ -75,7 +75,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 				$.facebox(t,'faceboxWidth');
 			});
 		});
-	}
+	};
 	
 	setUpSellerProductClone = function(frm){
 		if (!$(frm).validate()) return;

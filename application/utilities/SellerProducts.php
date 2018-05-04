@@ -67,7 +67,6 @@ trait SellerProducts{
 		
 		/* $cnd = $srch->addCondition('product_seller_id' ,'=' , UserAuthentication::getLoggedUserId());
 		$cnd->attachCondition( 'product_seller_id', '=', 0,'OR'); */
-	
 		$srch->addMultipleFields(array(
 			'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
@@ -149,7 +148,7 @@ trait SellerProducts{
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Products'));
 		}		
 		
-		//$this->_template->addJs(array('js/jquery.datetimepicker.js'), false);
+		/* $this->_template->addJs(array('js/jquery.datetimepicker.js'), false); */
 		$this->_template->addCss(array('css/jquery.datetimepicker.css'), false);
 		$this->set('customActiveTab','GENERAL');
 		$this->set('product_id', $product_id);
@@ -243,7 +242,7 @@ trait SellerProducts{
 		{
 			$shippedBySeller = 1;
 		}
-		//$this->_template->addJs(array('js/jquery.datetimepicker.js'), false);
+		/* $this->_template->addJs(array('js/jquery.datetimepicker.js'), false); */
 		$this->_template->addCss(array('css/jquery.datetimepicker.css'), false);
 		$this->set('customActiveTab','GENERAL');
 		$this->set('frmSellerProduct', $frmSellerProduct);
@@ -289,7 +288,7 @@ trait SellerProducts{
 			FatApp::redirectUser($_SESSION['referer_page_url']);		
 		}
 		
-		//Validate product belongs to current logged seller[
+		/* Validate product belongs to current logged seller[ */
 		if( $selprod_id ){
 			$sellerProductRow = SellerProduct::getAttributesById( $selprod_id, array('selprod_user_id') );
 			if( $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()){
@@ -297,7 +296,7 @@ trait SellerProducts{
 				FatUtility::dieWithError( Message::getHtml() );					
 			}
 		}
-		//]
+		/* ] */
 		$post['selprod_url_keyword']= strtolower(CommonHelper::createSlug($post['selprod_url_keyword']));
 	
 		unset($post['selprod_id']);
@@ -378,14 +377,14 @@ trait SellerProducts{
 		} */
 		
 		/*--------  ] */
-		//save options data, if any[
+		/* save options data, if any[ */
 		if( $selprod_id ){
 			if( !$sellerProdObj->addUpdateSellerProductOptions( $selprod_id, $options )){
 				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
 				FatApp::redirectUser($_SESSION['referer_page_url']);				
 			}
 		}
-		//]
+		/* ] */
 		$languages = Language::getAllNames();
 		/* Add seller product title and SEO data automatically[ */
 		if(0 == FatApp::getPostedData('selprod_id',Fatutility::VAR_INT,0) ){
@@ -510,8 +509,8 @@ trait SellerProducts{
 		
 		$frm = new Form('frmSellerProductLang');
 		$frm->addTextbox(Labels::getLabel( 'LBL_Product_Display_Title', $formLangId),'selprod_title');
-		//$frm->addTextArea( Labels::getLabel( 'LBL_Features', $formLangId), 'selprod_features');
-		/* $frm->addTextArea( Labels::getLabel( 'LBL_Warranty', $formLangId), 'selprod_warranty');
+		/* $frm->addTextArea( Labels::getLabel( 'LBL_Features', $formLangId), 'selprod_features');
+		$frm->addTextArea( Labels::getLabel( 'LBL_Warranty', $formLangId), 'selprod_warranty');
 		$frm->addTextArea( Labels::getLabel( 'LBL_Return_Policy', $formLangId), 'selprod_return_policy');
 		 */
 		$frm->addTextArea( Labels::getLabel( 'LBL_Any_Extra_Comment_for_buyer', $formLangId), 'selprod_comments');
@@ -1350,7 +1349,7 @@ trait SellerProducts{
 		$fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_Add_links_comma_separated_or_with_new_line',$langId).'</small>';
 		$fld->requirements()->setRequired();
 		$frm->addSelectBox( Labels::getLabel('Lbl_Language',$langId), 'lang_id', $bannerTypeArr, '', array('class'=>'file-language-js'), '' )->requirements()->setRequired();
-		//$frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();;
+		/* $frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();; */
 		
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
 		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';	
@@ -1417,7 +1416,7 @@ trait SellerProducts{
 			}
 					
 			$fileHandlerObj = new AttachedFile();
-			//$fileName = ($afile_name !='')?$afile_name:$_FILES['downloadable_file']['name'];
+			/* $fileName = ($afile_name !='')?$afile_name:$_FILES['downloadable_file']['name']; */
 			if(!$res = $fileHandlerObj->saveAttachment($_FILES['downloadable_file']['tmp_name'], AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprod_id, 0,
 			$_FILES['downloadable_file']['name'], -1, $unique_record = false, $lang_id)
 			){
@@ -1825,7 +1824,7 @@ trait SellerProducts{
 			FatApp::redirectUser($_SESSION['referer_page_url']);		
 		}
 		
-		//Validate product belongs to current logged seller[
+		/* Validate product belongs to current logged seller[ */
 		if( $selprod_id ){
 			$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
 			if( $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()){
@@ -1833,7 +1832,7 @@ trait SellerProducts{
 				FatUtility::dieWithError( Message::getHtml() );					
 			}
 		}
-		//]
+		/* ] */
 		$post['selprod_url_keyword']= strtolower(CommonHelper::createSlug($post['selprod_url_keyword']));
 	
 		$options = array();
@@ -1854,7 +1853,9 @@ trait SellerProducts{
 		
 		unset($sellerProductRow['selprod_id']);
 		$data_to_be_save = $sellerProductRow;
-		
+		$data_to_be_save['selprod_price'] = $post['selprod_price'];
+		$data_to_be_save['selprod_stock'] = $post['selprod_stock'];
+		$data_to_be_save['selprod_available_from'] = $post['selprod_available_from'];
 		$data_to_be_save['selprod_user_id'] = UserAuthentication::getLoggedUserId();
 		$data_to_be_save['selprod_added_on'] = date("Y-m-d H:i:s");
 		
@@ -1885,14 +1886,14 @@ trait SellerProducts{
 			FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
 		}	
 		
-		//save options data, if any[
+		/* save options data, if any[ */
 		if( $selprod_id ){
 			if( !$sellerProdObj->addUpdateSellerProductOptions( $selprod_id, $options )){
 				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
 				FatApp::redirectUser($_SESSION['referer_page_url']);				
 			}
 		}
-		//]
+		/* ] */
 
 		$languages = Language::getAllNames();
 		
@@ -1900,28 +1901,21 @@ trait SellerProducts{
 	
 		$metaData = array();
 		
-		$srchMeta = MetaTag::getSearchObject();
-		$srchMeta->addCondition('meta_record_id', '=', $post['selprod_id']);
-		$metaData = FatApp::getDb()->fetch($srchMeta->getResultSet());
 		
-		if(empty($metaData)){
-			$tabsArr = MetaTag::getTabsArr();
-			$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
-			
-			if($metaType == '' || !isset($tabsArr[$metaType]) )
-			{
-				Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
-				FatUtility::dieJsonError( Message::getHtml() );
-			}
-			
-			$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
-			$metaData['meta_action'] = $tabsArr[$metaType]['action'];
+		$tabsArr = MetaTag::getTabsArr();
+		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
+		
+		if($metaType == '' || !isset($tabsArr[$metaType]) )
+		{
+			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
-
+		$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
+		$metaData['meta_action'] = $tabsArr[$metaType]['action'];
+		
 		$metaData['meta_record_id'] = $selprod_id;
 		$metaIdentifier = SellerProduct::getProductDisplayTitle($selprod_id, FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
-		
 		$meta = new MetaTag();
 		
 		$count = 1;
@@ -1929,7 +1923,6 @@ trait SellerProducts{
 			$metaIdentifier = $metaRow['meta_identifier']."-".$count;
 			$count++;
 		}
-		
 		$metaData['meta_identifier'] = $metaIdentifier;
 		$meta->assignValues($metaData);
 		
