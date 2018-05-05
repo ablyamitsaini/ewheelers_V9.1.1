@@ -12,7 +12,7 @@
         <div class="item-yk-head">
           <div class="item-yk-head-category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($rProduct['prodcat_id']));?>"><?php echo $rProduct['prodcat_name'];?> </a></div>
           <div class="item-yk-head-title"><a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));?>"><?php echo $rProduct['selprod_title'];?> </a></div>
-          <?php if(round($rProduct['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS")){ ?>
+          <?php if(round($rProduct['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
           <div class="item-yk_rating"><i class="svg"><svg   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14.854px" height="14.166px" viewBox="0 0 14.854 14.166" enable-background="new 0 0 14.854 14.166" xml:space="preserve">
             <path d="M14.854,5.49c0-0.268-0.286-0.375-0.5-0.41L9.873,4.428L7.864,0.367C7.784,0.197,7.632,0,7.427,0
 						C7.222,0,7.07,0.197,6.989,0.367L4.981,4.428L0.5,5.08C0.277,5.115,0,5.223,0,5.49c0,0.16,0.116,0.313,0.223,0.429l3.249,3.159

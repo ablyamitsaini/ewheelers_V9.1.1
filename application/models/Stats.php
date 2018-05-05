@@ -14,7 +14,7 @@ class Stats extends MyAppModel{
 		if($endDate){
 			$srch->addCondition($alias.'temp.order_date_added', '<=', $endDate. ' 23:59:59');
 		}
-		$completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS"));
+		$completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS",FatUtility::VAR_STRING,''));
 		if(!empty($completedOrderStatus)){		
 			$srch->addCondition($alias.'.op_status_id', 'IN', $completedOrderStatus);
 		}else{

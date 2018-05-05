@@ -72,7 +72,7 @@ class OrderPayment extends Orders{
 			"order_is_paid"=>$orderInfo["order_is_paid"],
 			"order_language"=>$orderInfo["order_language_code"],
 			"site_system_name"=>FatApp::getConfig("CONF_WEBSITE_NAME_".$orderInfo["order_language_id"]),
-			"site_system_admin_email"=>FatApp::getConfig("CONF_SITE_OWNER_EMAIL"),
+			"site_system_admin_email"=>FatApp::getConfig("CONF_SITE_OWNER_EMAIL",FatUtility::VAR_STRING,''),
 			"order_wallet_amount_charge"	=>	$orderInfo['order_wallet_amount_charge'],
 			"paypal_bn"=>"FATbit_SP",
 		);

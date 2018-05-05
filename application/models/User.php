@@ -198,16 +198,16 @@ class User extends MyAppModel {
 			return false;
 		}
 		
-		if( !FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM') ){
+		if( !FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM',FatUtility::VAR_INT,1) ){
 			return true;
 		}
 
-		if( FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM') ){
-			if(FatApp::getConfig('CONF_BUYER_CAN_SEE_SELLER_TAB') && self::isBuyer() ){		
+		if( FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM',FatUtility::VAR_INT,1) ){
+			if(FatApp::getConfig('CONF_BUYER_CAN_SEE_SELLER_TAB',FatUtility::VAR_INT,0) && self::isBuyer() ){		
 				return true;
 			}			
 		}
-		if( FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM') ){
+		if( FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM',FatUtility::VAR_INT,1) ){
 			if( !self::isBuyer() ){
 				return true;
 			}			
@@ -224,7 +224,7 @@ class User extends MyAppModel {
 			return true;
 		}
 		
-		if(!FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM') && self::isBuyer()){
+		if(!FatApp::getConfig('CONF_ACTIVATE_SEPARATE_SIGNUP_FORM',FatUtility::VAR_INT,1) && self::isBuyer()){
 			return true;
 		}
 		

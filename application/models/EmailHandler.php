@@ -642,7 +642,7 @@ class EmailHandler extends FatModel {
 			);
 			
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "primary_order_payment_status_change_admin",$langId, $arrReplacements);
-			if(FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS")){
+			if(FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_INT,0)){
 				
 				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
 				foreach ($emails as $email) {

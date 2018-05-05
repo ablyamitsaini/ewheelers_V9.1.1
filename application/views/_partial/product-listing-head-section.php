@@ -4,7 +4,7 @@
   <?php }?>
   <div class="item-yk-head-category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
   <div class="item-yk-head-title"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>"><?php echo $product['selprod_title'];?> </a></div>
-  <?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS")){ ?>
+  <?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
   <div class="item-yk_rating">
 	  <?php if(round($product['prod_rating'])>0 ){ ?>
 	  <span class="rate"><?php echo round($product['prod_rating'],1);?></span> <i class="svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14.854px" height="14.166px" viewBox="0 0 14.854 14.166" enable-background="new 0 0 14.854 14.166" xml:space="preserve">

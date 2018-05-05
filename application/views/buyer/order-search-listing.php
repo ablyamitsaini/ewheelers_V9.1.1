@@ -96,7 +96,7 @@ foreach ($orders as $sn => $order){
 					'<i class="fa fa-close"></i>', true);
 				}
 				
-				if(FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+				if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 					$opFeedBackUrl = CommonHelper::generateUrl('Buyer', 'orderFeedback', array($order['op_id']) );
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=> $opFeedBackUrl, 'class'=>'',

@@ -339,7 +339,7 @@ class MobileAppApiController extends MyAppController {
 								$Prs = $productShopSrchTempObj->getResultSet(); 	
 								
 								
-								if( !FatApp::getConfig("CONF_ALLOW_REVIEWS") ){
+								if( !FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0) ){
 									$rating = 0;
 								} else {
 									$rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
@@ -509,7 +509,7 @@ class MobileAppApiController extends MyAppController {
 				$shops['shop_banner']=CommonHelper::generateFullUrl('image','shopBanner',array($shops['shop_id'], $this->siteLangId));
 				$sponsoredShops['shops'][$shops['shop_id']]['shopData']=$shops;
 				$sponsoredShops['shops'][$shops['shop_id']]['shopData']['promotion_id']=$shops['promotion_id'];
-				if(!FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+				if(!FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 					$rating = 0;
 				} else {
 					$rating = SelProdRating::getSellerRating($shops['shop_user_id']);
@@ -1489,7 +1489,7 @@ class MobileAppApiController extends MyAppController {
 		$shop['shop_banner']=CommonHelper::generateFullUrl('image','shopBanner',array($shop['shop_id'], $this->siteLangId));
 
 
-		if(!FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+		if(!FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 			$shop_rating = 0;
 		}else{
 			$shop_rating = SelProdRating::getSellerRating($shop['shop_user_id']);
@@ -1885,8 +1885,8 @@ class MobileAppApiController extends MyAppController {
 		$db->startTransaction();
 		
 		$post['user_is_buyer'] = 1;
-		$post['user_is_supplier'] = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0 : 1;
-		$post['user_is_advertiser'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0 : 1;
+		$post['user_is_supplier'] = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0 : 1;
+		$post['user_is_advertiser'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0 : 1;
 		//$post['user_is_supplier'] = 0;
 		$post['user_preferred_dashboard'] = User::USER_BUYER_DASHBOARD;
 		$post['user_registered_initially_for'] = User::USER_TYPE_BUYER;
@@ -2096,8 +2096,8 @@ class MobileAppApiController extends MyAppController {
 			}
 			
 		}else{
-			$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM"))?0:1;
-			$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM"))?0:1;
+			$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1))?0:1;
+			$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1))?0:1;
 			
 			$db->startTransaction();
 			
@@ -2191,8 +2191,8 @@ class MobileAppApiController extends MyAppController {
 					FatUtility::dieJsonError(Labels::getLabel($userObj->getError(),$this->siteLangId));
 				}
 			}else{
-				$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0: 1;
-				$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0: 1;
+				$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0: 1;
+				$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0: 1;
 				
 				$db->startTransaction();
 				
@@ -4085,7 +4085,7 @@ class MobileAppApiController extends MyAppController {
 			$order['charges'] = $charges;
 			$mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image','product', array($order['selprod_product_id'], "MEDIUM", $order['op_selprod_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 			$order['product_image'] =  $mainImgUrl;
-			if (in_array($order["op_status_id"],SelProdReview::getBuyerAllowedOrderReviewStatuses()) && FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+			if (in_array($order["op_status_id"],SelProdReview::getBuyerAllowedOrderReviewStatuses()) && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 					$eligible_for_feedback = 1;
 			}
 			if (in_array($order["op_status_id"],Orders::getBuyerAllowedOrderCancellationStatuses()) && ($order["op_product_type"] != Product::PRODUCT_TYPE_DIGITAL)){
@@ -4994,7 +4994,7 @@ class MobileAppApiController extends MyAppController {
 		$rs = $srch->getResultSet();
 		$opDetail = FatApp::getDb()->fetch( $rs );
 		
-		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS")) ){
+		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) ){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_ACCESS',$this->siteLangId));
 		}
 		

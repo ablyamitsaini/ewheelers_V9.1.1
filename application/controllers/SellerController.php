@@ -34,7 +34,7 @@ class SellerController extends LoggedUserController {
 		$qryOtherCharges = $ocSrch->getQuery();
 		
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
-		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS")) );
+		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS",FatUtility::VAR_STRING,'')) );
 		$srch->joinSellerProducts();	
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');

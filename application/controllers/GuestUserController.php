@@ -192,8 +192,8 @@ class GuestUserController extends MyAppController {
 			}
 			
 		}else{
-			$user_is_supplier = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ?0:1;
-			$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM"))?0:1;
+			$user_is_supplier = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ?0:1;
+			$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1))?0:1;
 			
 			$db->startTransaction();
 			
@@ -341,8 +341,8 @@ class GuestUserController extends MyAppController {
 					CommonHelper::redirectUserReferer();	
 				}
 			}else{
-				$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0: 1;
-				$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0: 1;
+				$user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0: 1;
+				$user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0: 1;
 				
 				$db->startTransaction();
 				
@@ -492,8 +492,8 @@ class GuestUserController extends MyAppController {
 		$db->startTransaction();
 		
 		$post['user_is_buyer'] = 1;
-		$post['user_is_supplier'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM"))  ? 0 : 1;
-		$post['user_is_advertiser'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM")) ? 0 : 1;
+		$post['user_is_supplier'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1))  ? 0 : 1;
+		$post['user_is_advertiser'] = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ? 0 : 1;
 		//$post['user_is_supplier'] = 0;
 		$post['user_preferred_dashboard'] = User::USER_BUYER_DASHBOARD;
 		$post['user_registered_initially_for'] = User::USER_TYPE_BUYER;

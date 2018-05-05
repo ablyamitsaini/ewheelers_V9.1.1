@@ -1212,7 +1212,7 @@ class ProductsController extends MyAppController {
 		$shopRs = $srch->getResultSet();
 		$shop = FatApp::getDb()->fetch( $shopRs );
 
-		if(!FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+		if(!FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 			$shop_rating = 0;
 		}else{
 			$shop_rating = SelProdRating::getSellerRating($shop['shop_user_id']);
@@ -1734,7 +1734,7 @@ class ProductsController extends MyAppController {
 		$product['moreSellersArr'] = $moreSellersArr;
 
 		foreach($moreSellersArr as $seller){
-			if(FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+			if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 				$product['rating'][$seller['selprod_user_id']]= SelProdRating::getSellerRating($seller['selprod_user_id']);
 			}else{
 				$product['rating'][$seller['selprod_user_id']]= 0;
