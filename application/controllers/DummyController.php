@@ -72,7 +72,8 @@ class DummyController extends MyAppController {
 	function pushTest(){
 		
 		$firebase_push_notification_server_key = "AAAAZA6vRK8:APA91bHlfYreFEpCK18CSBahNCe7e4pU-3c3925duLwhxXvxAGbWF5m4K7U4oMKWht_BBCAZ6VC6v8dGIBnR14_X-lNxJQwiORNUgeM3Djm9ZvUQJRk_n3hjkuAG2D8-iVAqtN2IC1GU";
-		$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
+		//$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
+		$deviceToken = "cR2s9J34awU:APA91bFitjF45nb6QWxGU8saVSI4u2HIt-yKzelEu2qbbvgswCjMO_1-Db7rOTEUx8mEZsTd1m2VYT0SZ3ZV-N7AiOOqpQMWv-WM0TJO0-1rI66yjg2H92qf_xoFi6lb5IAStD4geiV6";
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		//$url = 'https://gcm-http.googleapis.com/gcm/send';
 		//https://android.googleapis.com/gcm/send'
@@ -96,13 +97,14 @@ class DummyController extends MyAppController {
 		$msg = array
 		(
 			'message' 	=> 'here is a message. message',
-			'title'		=> 'This is a title. title'
-			/* 'subtitle'	=> 'This is a subtitle. subtitle',
+			'title'		=> 'This is a title. title',
+			'subtitle'	=> 'This is a subtitle. subtitle',
+			'id'	=> 12,
 			'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
 			'vibrate'	=> 1,
 			'sound'		=> 1,
 			'largeIcon'	=> 'large_icon',
-			'smallIcon'	=> 'small_icon' */
+			'smallIcon'	=> 'small_icon'
 		);
 		
 		$post = array(
