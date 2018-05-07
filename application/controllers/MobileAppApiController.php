@@ -5673,6 +5673,12 @@ class MobileAppApiController extends MyAppController {
 		$oObj = new Orders();
 		$charges = $oObj->getOrderProductChargesArr($request['orrequest_op_id']);
 		$request['charges'] = $charges; 
+		$request['currency_order_tax_charged'] = CommonHelper::displayMoneyFormat($request['order_tax_charged'],true,false,false);
+		$request['currency_op_other_charges'] = CommonHelper::displayMoneyFormat($request['op_other_charges'],true,false,false);
+		$request['currency_op_refund_amount'] = CommonHelper::displayMoneyFormat($request['op_refund_amount'],true,false,false);
+		$returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);
+		$request['net_amount'] = $returnDataArr['op_refund_amount'];
+		$request['currency_net_amount'] = CommonHelper::displayMoneyFormat($request['net_amount'],true,false,false);
 		
 		$sellerUserObj = new User( $request['op_selprod_user_id'] );
 		$vendorReturnAddress = $sellerUserObj->getUserReturnAddress( $this->siteLangId );
