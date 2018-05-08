@@ -12,7 +12,7 @@
 } */
 
 :root {
- --first-color:#FF3A59;
+ --first-color:#6BC452;
  --second-color:#2D9FF3;
  --third-color:#FFFFFF;
  --txt-color:#333333;
@@ -195,7 +195,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"], a 
 /* #Links
 ================================================== */
 a {
-	color: #FF3A59;
+	color: #6BC452;
 }
 a, a:visited {
 	line-height: normal;
@@ -393,7 +393,7 @@ select {
 	color: inherit;
 }
 .link--primary {
-	color: #FF3A59;
+	color: #6BC452;
 	text-decoration: underline;
 }
 .link--normal {
@@ -401,20 +401,20 @@ select {
 	font-weight: 500;
 }
 .link--normal:hover {
-	color: #FF3A59;
+	color: #6BC452;
 }
 .link--arrow {
 	display: inline-block;
 	line-height: 1;
-	color: #FF3A59;
+	color: #6BC452;
 	font-weight: 400;
 	position: relative;
 	text-decoration: underline;
 	padding: 0 10px 0 0;
 }
 .link--arrow:before {
-	border-right: 2px solid #FF3A59;
-	border-top: 2px solid #FF3A59;
+	border-right: 2px solid #6BC452;
+	border-top: 2px solid #6BC452;
 	content: "";
 	display: inline-block;
 	height: 7px;
@@ -457,7 +457,7 @@ select {
 	color: #333333;
 }
 .text--normal a {
-	color: #FF3A59;
+	color: #6BC452;
 }
 .text--normal a:hover {
 	text-decoration: underline;
@@ -626,7 +626,7 @@ select {
 	width: 20px;
 	height: 20px;
 	position: relative;
-	border: 3px solid #FF3A59;
+	border: 3px solid #6BC452;
 	animation: loader 2s infinite ease;
 	margin: 15px auto;
 	text-align: center;
@@ -635,7 +635,7 @@ select {
 	vertical-align: top;
 	display: inline-block;
 	width: 100%;
-	background-color: #FF3A59;
+	background-color: #6BC452;
 	animation: loader-inner 2s infinite ease-in;
 }
  @keyframes loader {
@@ -687,7 +687,7 @@ select {
 	width: 10px;
 	height: 10px;
 	border-radius: 14px;
-	border: 2px solid #FF3A59;
+	border: 2px solid #6BC452;
 	margin: 10px;
 	animation: rotate 2s infinite linear;
 	animation-fill-mode: both;
@@ -1154,7 +1154,7 @@ transform: scale(2.5);
 	background: none;
 }
 .form input[type="submit"], .form input[type="button"] {
-	background: #FF3A59;
+	background: #6BC452;
 	border: solid 1px transparent;
 	min-height: 40px;
 }
@@ -1169,7 +1169,7 @@ transform: scale(2.5);
 	outline: 0;
 	background-image: none;
 	box-shadow: inset 0px 0px 10px rgba(0,0,0,0.2);
-	background: #FF3A59;
+	background: #6BC452;
 	border: solid 1px transparent;
 	color: #fff;
 }
@@ -1278,15 +1278,15 @@ transform:translateX(0)
 .btn--primary {
 	color: #fff;
 	border: solid 1px #DCDCDC;
-	background: #FF3A59;
-	border-color: #FF3A59;
+	background: #6BC452;
+	border-color: #6BC452;
 }
 .btn--primary:focus, .btn--primary.focus, .form input[type="submit"]:focus, .form input[type="submit"].focus {
 }
 .btn--primary:hover, .form input[type="submit"]:hover {
 	color: #fff;
-	border-color: #FF3A59;
-	background: #FF3A59;
+	border-color: #6BC452;
+	background: #6BC452;
 }
 .btn--primary:active:hover, .btn--primary:active:focus, .btn--primary:active.focus, .btn--primary.active:hover, .btn--primary.active:focus, .btn--primary.active.focus, .open > .btn--primary.dropdown-toggle:hover, .open > .btn--primary.dropdown-toggle:focus, .open > .btn--primary.dropdown-toggle.focus, .form input[type="submit"]:active:hover, .form input[type="submit"]:active:focus, .form input[type="submit"]:active.focus, .form input[type="submit"].active:hover, .form input[type="submit"].active:focus, .form input[type="submit"].active.focus, .open > .form input[type="submit"].dropdown-toggle:hover, .open > .form input[type="submit"].dropdown-toggle:focus, .open > .form input[type="submit"].dropdown-toggle.focus {
 }
@@ -1294,11 +1294,11 @@ transform:translateX(0)
 	background-image: none;
 }
 .btn--primary.disabled:hover, .btn--primary.disabled:focus, .btn--primary.disabled.focus, .btn--primary[disabled]:hover, .btn--primary[disabled]:focus, .btn--primary[disabled].focus, fieldset[disabled] .btn--primary:hover, fieldset[disabled] .btn--primary:focus, fieldset[disabled] .btn--primary.focus, .form input[type="submit"].disabled:hover, .form input[type="submit"].disabled:focus, .form input[type="submit"].disabled.focus, .form input[type="submit"][disabled]:hover, .form input[type="submit"][disabled]:focus, .form input[type="submit"][disabled].focus, fieldset[disabled] .form input[type="submit"]:hover, fieldset[disabled] .form input[type="submit"]:focus, fieldset[disabled] .form input[type="submit"].focus {
-	background-color: #FF3A59;
+	background-color: #6BC452;
 	border-color: #209d5e;
 }
 .btn--primary .badge, .form input[type="submit"] .badge {
-	color: #FF3A59;
+	color: #6BC452;
 	background-color: #fff;
 }
 /*success*/
@@ -1492,8 +1492,8 @@ transform:translateX(0)
 	background-image: none;
 }
 .btn--third.disabled:hover, .btn--third.disabled:focus, .btn--third.disabled.focus, .btn--third[disabled]:hover, .btn--third[disabled]:focus, .btn--third[disabled].focus, fieldset[disabled] .btn--third:hover, fieldset[disabled] .btn--third:focus, fieldset[disabled] .btn--third.focus, .form input[type="button"].disabled:hover, .form input[type="button"].disabled:focus, .form input[type="button"].disabled.focus, .form input[type="button"][disabled]:hover, .form input[type="button"][disabled]:focus, .form input[type="button"][disabled].focus, fieldset[disabled] .form input[type="button"]:hover, fieldset[disabled] .form input[type="button"]:focus, fieldset[disabled] .form input[type="button"].focus {
-	background-color: #FF3A59;
-	border-color: #FF3A59;
+	background-color: #6BC452;
+	border-color: #6BC452;
 }
 .btn--third .badge, .form input[type="button"] .badge {
 	color: #f15c5c;
@@ -1570,7 +1570,7 @@ transform:translateX(0)
 .btn--gray:hover {
 }
 .btn--link {
-	color: #FF3A59;
+	color: #6BC452;
 	font-size: 0.8em;
 	font-weight: normal;
 }
@@ -1856,8 +1856,8 @@ input[type="text"][disabled], input[type="password"][disabled] {
 	transform: scale(0) rotate(80deg);
 	width: 15px;
 	height: 8px;
-	border-bottom: 2px solid #FF3A59;
-	border-left: 2px solid #FF3A59;
+	border-bottom: 2px solid #6BC452;
+	border-left: 2px solid #6BC452;
 	border-bottom-left-radius: 1px;
 	left: 3px;
 	top: 4px;
@@ -1881,7 +1881,7 @@ input[type="text"][disabled], input[type="password"][disabled] {
 .radio .input-helper:after {
 	width: 11px;
 	height: 11px;
-	background: #FF3A59;
+	background: #6BC452;
 	border-radius: 50%;
 	top: 3px;
 	left: 4px;
@@ -2524,7 +2524,7 @@ input[type="text"][disabled], input[type="password"][disabled] {
 	width: 15px;
 	height: 15px;
 	margin: 5px;
-	background: #FF3A59;
+	background: #6BC452;
 	border-radius: 50%;
 }
  @-webkit-keyframes loading {
@@ -2611,7 +2611,7 @@ input[type="text"][disabled], input[type="password"][disabled] {
 }
 
 .checkbox-switch input:checked+label {
-    background: #FF3A59;
+    background: #6BC452;
 }
 
 .checkbox-switch input:checked+label:after {

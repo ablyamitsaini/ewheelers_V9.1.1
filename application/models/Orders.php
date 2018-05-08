@@ -1558,7 +1558,7 @@ class Orders extends MyAppModel{
 	}
 	
 	public function getVendorAllowedUpdateOrderStatuses( $fetchForDigitalProduct = false , $fetchForCOD = false ){
-		$processingStatuses = array_merge(unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS")),(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"));
+		$processingStatuses = array_merge(unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS")),(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS",FatUtility::VAR_STRING,''));
 		$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"));
 		$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS"));
 		$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_RETURN_REQUEST_ORDER_STATUS"));
@@ -1573,14 +1573,14 @@ class Orders extends MyAppModel{
 		
 		if( $fetchForDigitalProduct ){						
 			$processingStatuses = array_intersect( $digitalProductOrderStatusArr, $processingStatuses );			
-			$processingStatuses = array_merge( (array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"));			
+			$processingStatuses = array_merge( (array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS",FatUtility::VAR_INT,0));			
 		}else{
 			$processingStatuses = array_diff((array)$processingStatuses,$digitalProductOrderStatusArr);
 		}
 		
 		if($fetchForCOD){
-			$processingStatuses = array_diff((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"));
-			$processingStatuses = array_merge((array)$processingStatuses,(array)FatApp::getConfig("CONF_COD_ORDER_STATUS"));
+			$processingStatuses = array_diff((array)$processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS",FatUtility::VAR_INT,0));
+			$processingStatuses = array_merge((array)$processingStatuses,(array)FatApp::getConfig("CONF_COD_ORDER_STATUS",FatUtility::VAR_INT,0));
 		}
 		
 		return $processingStatuses;
@@ -1623,11 +1623,11 @@ class Orders extends MyAppModel{
 	
 	function getNotAllowedOrderCancellationStatuses(){
 		$cancellationStatuses = array_merge(
-			(array)FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"),
-			(array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS"),
-			(array)FatApp::getConfig("CONF_RETURN_REQUEST_ORDER_STATUS"),
-			(array)FatApp::getConfig("CONF_RETURN_REQUEST_WITHDRAWN_ORDER_STATUS"),
-			(array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS"),
+			(array)FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS",null,''),
+			(array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS",null,''),
+			(array)FatApp::getConfig("CONF_RETURN_REQUEST_ORDER_STATUS",null,''),
+			(array)FatApp::getConfig("CONF_RETURN_REQUEST_WITHDRAWN_ORDER_STATUS",null,''),
+			(array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS",null,''),
 			unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS"))
 		);
 		return $cancellationStatuses;

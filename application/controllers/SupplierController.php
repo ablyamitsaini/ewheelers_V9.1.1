@@ -17,7 +17,7 @@ class SupplierController extends MyAppController {
 			Message::addErrorMessage(Labels::getLabel('MSG_You_are_already_logged_in._Please_logout_and_register_for_seller.',$this->siteLangId));
 			FatApp::redirectUser( CommonHelper::generateUrl('account') );
 		}
-		if( !FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM") ){
+		if( !FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1) ){
 			FatApp::redirectUser( CommonHelper::generateUrl('guest-user','registration-form') );
 		}
 		$sellerFrm = $this->getSellerForm();
@@ -40,7 +40,7 @@ class SupplierController extends MyAppController {
 		if (UserAuthentication::isUserLogged()) {
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
 		}
-		if( !FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM") ){
+		if( !FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1) ){
 			FatApp::redirectUser( CommonHelper::generateUrl('guest-user','registration-form') );
 		}
 		$frm=$this->getSellerForm();
@@ -119,14 +119,14 @@ class SupplierController extends MyAppController {
 		$userObj = new User();
 		$db = FatApp::getDb();
 		$db->startTransaction();
-		if( FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM") && !FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION") ){
+		if( FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1) && !FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) ){
 			$post['user_is_supplier'] = 1;
 			$post['user_is_advertiser'] = 1;
 		}
 		$post['user_is_buyer'] = 1;
 		
 		$post['user_registered_initially_for'] = User::USER_TYPE_SELLER;
-		if( FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM") ){
+		if( FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1) ){
 			$post['user_is_buyer'] = 0;
 			$post['user_preferred_dashboard'] = User::USER_SELLER_DASHBOARD;
 		}
@@ -451,7 +451,7 @@ class SupplierController extends MyAppController {
 	}
 	
 	public function searchFaqs( $catId = '' ){
-		$faqMainCat = FatApp::getConfig("CONF_SELLER_PAGE_MAIN_CATEGORY");
+		$faqMainCat = FatApp::getConfig("CONF_SELLER_PAGE_MAIN_CATEGORY",FatUtility::VAR_STRING,'');
 		if( !empty($catId) && $catId > 0){
 			$faqCatId = array( $catId );
 		} else if( $faqMainCat ){

@@ -645,7 +645,7 @@ class ProductCategory extends MyAppModel{
 			unset($remainingCatCods[0]);
 			$remainingCatCods = array_values($remainingCatCods);
 			$catId = FatUtility::int($catId);
-			 $globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name');
+			$globalCatTree[$catId]['prodcat_name'] = self::getProductCategoryName($catId,$siteLangId);
 			$globalCatTree[$catId]['prodcat_id'] = $catId;
 			//$globalCatTree[$catId]['prodcat_id']['children'] = '';
 			if(count($remainingCatCods)>0)

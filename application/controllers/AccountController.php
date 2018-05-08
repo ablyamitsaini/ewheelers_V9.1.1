@@ -553,13 +553,13 @@ class AccountController extends LoggedUserController {
 		$balance = User::getUserBalance($userId);
 		$lastWithdrawal = User::getUserLastWithdrawalRequest($userId);
 			
-		if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days") - time()) > 0){
-			$nextWithdrawalDate = date('d M,Y',strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days"));	
+		if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS",FatUtility::VAR_INT,0)." days") - time()) > 0){
+			$nextWithdrawalDate = date('d M,Y',strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS",FatUtility::VAR_INT,0)." days"));	
 			Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date',$this->siteLangId),FatDate::format($lastWithdrawal["withdrawal_request_date"]),FatDate::format($nextWithdrawalDate),FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")));	
 			FatUtility::dieWithError(Message::getHtml());
 		}
 		
-		$minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT");
+		$minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT",FatUtility::VAR_INT,0);
 		if ( $balance < $minimumWithdrawLimit ){
 			Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less',$this->siteLangId),CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
 			FatUtility::dieWithError(Message::getHtml());
@@ -2094,7 +2094,7 @@ class AccountController extends LoggedUserController {
 		
 		$countryObj = new Countries();
 		$countriesArr = $countryObj->getCountriesArr($this->siteLangId);
-		$fld = $frm->addSelectBox(Labels::getLabel('LBL_Country',$this->siteLangId),'user_country_id',$countriesArr,FatApp::getConfig('CONF_COUNTRY'),array(),Labels::getLabel('LBL_Select',$this->siteLangId));
+		$fld = $frm->addSelectBox(Labels::getLabel('LBL_Country',$this->siteLangId),'user_country_id',$countriesArr,FatApp::getConfig('CONF_COUNTRY',FatUtility::VAR_INT,0),array(),Labels::getLabel('LBL_Select',$this->siteLangId));
 		$fld->requirement->setRequired(true);
 		
 		$frm->addSelectBox(Labels::getLabel('LBL_State',$this->siteLangId),'user_state_id',array(),'',array(),Labels::getLabel('LBL_Select',$this->siteLangId))->requirement->setRequired(true);
@@ -2376,7 +2376,7 @@ class AccountController extends LoggedUserController {
 	public function shareWithTag(){
 		$userId = UserAuthentication::getLoggedUserId();
 		
-		if( !FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE") ) {
+		if( !FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE",FatUtility::VAR_INT,1) ) {
 			Message::addErrorMessage( Labels::getLabel("LBL_Refferal_module_no_longer_active", $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
@@ -2463,7 +2463,7 @@ class AccountController extends LoggedUserController {
 	public function shareSocialReferEarn(){
 		$userId = UserAuthentication::getLoggedUserId();
 		
-		if( !FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE") ) {
+		if( !FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE",FatUtility::VAR_INT,1) ) {
 			Message::addErrorMessage( Labels::getLabel("LBL_Refferal_module_no_longer_active", $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}

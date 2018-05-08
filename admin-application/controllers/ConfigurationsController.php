@@ -804,7 +804,7 @@ class ConfigurationsController extends AdminBaseController {
 				$frm->addEmailField(Labels::getLabel("LBL_From_Email",$this->adminLangId),'CONF_FROM_EMAIL');
 				$frm->addEmailField(Labels::getLabel("LBL_Reply_to_Email_Address",$this->adminLangId),'CONF_REPLY_TO_EMAIL');
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Send_Email",$this->adminLangId),'CONF_SEND_EMAIL',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
-				if(FatApp::getConfig('CONF_SEND_EMAIL')){
+				if(FatApp::getConfig('CONF_SEND_EMAIL',FatUtility::VAR_INT,1)){
 					$fld->htmlAfterField = '<a href="javascript:void(0)" id="testMail-js">'.Labels::getLabel("LBL_Click_Here",$this->adminLangId).'</a> to test email. '.Labels::getLabel("LBL_This_will_send_Test_Email_to_Site_Owner_Email",$this->adminLangId).' - '.FatApp::getConfig("CONF_SITE_OWNER_EMAIL");
 				}
 				$frm->addEmailField(Labels::getLabel("LBL_Contact_Email_Address",$this->adminLangId),'CONF_CONTACT_EMAIL');

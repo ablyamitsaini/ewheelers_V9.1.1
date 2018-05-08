@@ -26,7 +26,7 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			 case 'tcolor_name':
-			 $activeString = (FatApp::getConfig("CONF_FRONT_THEME")==$row['tcolor_id'])?' <i class="icon ion-checkmark-circled is--active"></i>':'' ;
+			 $activeString = (FatApp::getConfig("CONF_FRONT_THEME",FatUtility::VAR_INT,1)==$row['tcolor_id'])?' <i class="icon ion-checkmark-circled is--active"></i>':'' ;
 					$td->appendElement('plaintext', array(),$row['tcolor_name'].$activeString , 
 					true);				
 				

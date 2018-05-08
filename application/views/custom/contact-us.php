@@ -30,12 +30,12 @@
         <div class="col-md-4">
           <div class="boxcontainer">
             <div class="box--gray"> <i class="fa fa-phone"></i>
-              <h3><?php echo FatApp::getConfig('CONF_SITE_PHONE');?></h3>
+              <h3><?php echo FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');?></h3>
               <p><?php echo Labels::getLabel('LBL_24_a_day_7_days_week',$siteLangId);?></p>
             </div>
             <div class="box--gray"> <i class="fa fa-briefcase"></i>
               <h3><?php echo Labels::getLabel('LBL_Office',$siteLangId);?></h3>
-              <?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId));?> </div>
+              <?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId,FatUtility::VAR_STRING,''));?> </div>
           </div>
           <?php echo FatUtility::decodeHtmlEntities( nl2br($pageData['epage_content']) );?> </div>
       </div>

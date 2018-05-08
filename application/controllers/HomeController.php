@@ -155,7 +155,7 @@ class HomeController extends MyAppController {
 								
 								$collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
 								
-								if( !FatApp::getConfig("CONF_ALLOW_REVIEWS") ){
+								if( !FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0) ){
 									$rating = 0;
 								} else {
 									$rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
@@ -303,7 +303,7 @@ class HomeController extends MyAppController {
 				
 				$sponsoredShops['shops'][$shops['shop_id']]['shopData']=$shops;
 				$sponsoredShops['shops'][$shops['shop_id']]['shopData']['promotion_id']=$shops['promotion_id'];
-				if(!FatApp::getConfig("CONF_ALLOW_REVIEWS")){
+				if(!FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 					$rating = 0;
 				} else {
 					$rating = SelProdRating::getSellerRating($shops['shop_user_id']);

@@ -29,7 +29,7 @@ class BuyerController extends LoggedUserController {
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		//$srch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d'),'yesterdayOrder');
-		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")) );
+		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS", null, '')) );
 		$srch->addCondition( 'order_user_id', '=', $userId );
 		$srch->addOrder("op_id","DESC");
 		$srch->setPageNumber(1);
@@ -962,7 +962,7 @@ class BuyerController extends LoggedUserController {
 		/* $srch->addMultipleFields( array('op_status_id', 'op_selprod_user_id', 'op_selprod_code','op_order_id','op_selprod_id','op_is_batch') ); */
 		$rs = $srch->getResultSet();
 		$opDetail = FatApp::getDb()->fetch( $rs );
-		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS")) ){
+		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) ){
 			Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
 			CommonHelper::redirectUserReferer();
 		}
@@ -1031,7 +1031,7 @@ class BuyerController extends LoggedUserController {
 		$rs = $srch->getResultSet();
 		$opDetail = FatApp::getDb()->fetch( $rs );
 		
-		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS")) ){
+		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) ){
 			Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
 			CommonHelper::redirectUserReferer();
 		}
@@ -1723,7 +1723,7 @@ class BuyerController extends LoggedUserController {
 	}
 	
 	public function shareEarn(){
-		if (!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE")){
+		if (!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE",FatUtility::VAR_INT,1)){
 			Message::addErrorMessage(Labels::getLabel('Msg_INVALID_REQUEST',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
 		}

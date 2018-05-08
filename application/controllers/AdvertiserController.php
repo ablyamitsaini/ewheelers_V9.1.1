@@ -42,7 +42,7 @@ class AdvertiserController extends LoggedUserController {
 		$lowBalWarning  ='';
 		$errorSet = false;
 		foreach($promotionList as $promotion){
-		if ($promotion["promotion_start_date"]<=date("Y-m-d") && $promotion["promotion_end_date"]>=date("Y-m-d") && ($walletBalance<FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE') && $errorSet==false)){
+		if ($promotion["promotion_start_date"]<=date("Y-m-d") && $promotion["promotion_end_date"]>=date("Y-m-d") && ($walletBalance<FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE',FatUtility::VAR_INT,0) && $errorSet==false)){
 		$errorSet = true;
 				Message::addInfo(sprintf(Labels::getLabel('L_Please_maintain_minimum_balance_to_%s',$this->siteLangId),CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'))));
 			}

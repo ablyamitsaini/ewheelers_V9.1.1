@@ -178,7 +178,7 @@ class AffiliateController extends LoggedUserController{
 		
 		if (!empty($get['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty($_SESSION['oauth_token_secret'])) {
 			// We've got everything we need
-			$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"), $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+			$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY",FatUtility::VAR_STRING,''), FatApp::getConfig("CONF_TWITTER_API_SECRET",FatUtility::VAR_STRING,''), $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 			// Let's request the access token
 			$access_token = $twitteroauth->getAccessToken($get['oauth_verifier']);
 			// Save it in a session var
@@ -197,7 +197,7 @@ class AffiliateController extends LoggedUserController{
 			curl_close($ch);
 			$anchor_length=strlen($shorturl);
 			//$message = substr($shorturl." Twitter Message will go here ",0,(140-$anchor_length-6));
-			$message = substr($shorturl." ".sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_TWITTER_POST_TITLE".$this->siteLangId),FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId)),0,134-$anchor_length);
+			$message = substr($shorturl." ".sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_TWITTER_POST_TITLE".$this->siteLangId,FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId)),0,134-$anchor_length);
 			$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE, 0, 0, $this->siteLangId );
 			if(!empty($file_row))
 			{

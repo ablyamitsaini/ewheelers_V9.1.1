@@ -48,7 +48,7 @@ $action = strtolower($action);
 			<h6><?php echo Labels::getLabel("LBL_Rewards",$siteLangId); ?></h6>
 			<ul class="links--vertical">
 			<li class="<?php echo ($controller == 'buyer' && $action == 'rewardpoints') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Buyer','rewardPoints'); ?>"><i class="fa fa-trophy"></i><?php echo Labels::getLabel("LBL_Reward_Points",$siteLangId); ?></a></li>
-			<?php if(FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE')){?>
+			<?php if(FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE',FatUtility::VAR_INT,1)){?>
 			<li class="<?php echo ($controller == 'buyer' && $action == 'shareearn') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Buyer','shareEarn'); ?>"><i class="fa fa-share-alt"></i><?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?></a></li>			
 			<?php }?>
 			<li class="<?php echo ($controller == 'buyer' && $action == 'offers') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Buyer','offers'); ?>"><i class="fa fa-tags"></i><?php echo Labels::getLabel("LBL_My_Offers",$siteLangId); ?></a></li>

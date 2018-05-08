@@ -58,7 +58,7 @@ class CustomController extends MyAppController {
 	}
 	
 	public function faq(){
-		$cmsPagesToFaq = FatApp::getConfig('conf_cms_pages_to_faq_page');
+		$cmsPagesToFaq = FatApp::getConfig('conf_cms_pages_to_faq_page', null, '');
 		$cmsPagesToFaq = unserialize($cmsPagesToFaq);
 		if( sizeof( $cmsPagesToFaq ) > 0 && is_array( $cmsPagesToFaq ) ){
 			$contentPageSrch = ContentPage::getSearchObject($this->siteLangId);
@@ -142,7 +142,7 @@ class CustomController extends MyAppController {
 	
 	public function searchFaqs($catId=''){
 		$searchFrm = $this->getSearchFaqForm();
-		$faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY");
+		$faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
 		if( !empty($catId) && $catId > 0 ){
 			$faqCatId = array( $catId );
 		} else if( $faqMainCat ) {

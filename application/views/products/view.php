@@ -342,7 +342,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
           </div>
         </div>
         <div class="gap"></div>
-        <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS")) { ?>
+        <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
         <div class="white--bg padding20" id="itemRatings">
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBl_Reviews', $siteLangId); ?></h4>
