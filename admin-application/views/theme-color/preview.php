@@ -41,7 +41,7 @@
 <div id="body">
 	<!--main panel start here-->
 	<div>
-		<iframe id="theme_preview_iframe" src="<?php echo CommonHelper::generateFullUrl('','',array(),CONF_WEBROOT_FRONT_URL); ?>" data="<?php echo $theme?>"></iframe>
+		<iframe id="theme_preview_iframe" src="<?php echo CommonHelper::generateFullUrl('','',array(),CONF_WEBROOT_FRONT_URL); ?>?theme-preview" data="<?php echo $theme?>"></iframe>
 	</div>          
 	<!--main panel end here-->
 </div>

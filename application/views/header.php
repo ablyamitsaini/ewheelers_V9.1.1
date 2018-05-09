@@ -12,6 +12,7 @@ $commonHead1Data = array(
 	'controllerName'	=>	$controllerName,
 	'jsVariables'		=>	$jsVariables,
 	'extendEditorJs'    =>  $extendEditorJs,
+	'themeDetail'       =>  $themeDetail,
 );
 
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data, false);

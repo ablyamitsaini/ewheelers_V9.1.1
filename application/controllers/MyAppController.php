@@ -102,11 +102,18 @@ class MyAppController extends FatController {
 		foreach($languages as $val){
 			$jsVariables['language'.$val['language_id']] = $val['language_layout_direction'];
 		}
-
+		
 		if(CommonHelper::getLayoutDirection() == 'rtl'){
 			$this->_template->addCss('css/style--arabic.css');
 		}
-
+		$themeId = FatApp::getConfig('CONF_FRONT_THEME',FatUtility::VAR_INT,1);
+		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+			$themeId = $_SESSION['preview_theme'];
+		}
+		
+		$themeDetail = ThemeColor::getAttributesById($themeId);
+		
+		$this->set('themeDetail',$themeDetail);
 		$this->set('jsVariables',$jsVariables);
 		$this->set('controllerName', $controllerName );
 		$this->set('isAppUser' , commonhelper::isAppUser());

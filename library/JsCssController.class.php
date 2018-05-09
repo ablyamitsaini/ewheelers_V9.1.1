@@ -88,7 +88,12 @@ class JsCssController{
         $str = '';
         foreach ($arr as $fl){
             if (substr($fl, '-4') != '.css') continue;
-			if (!empty($_SESSION['preview_theme']) && isset($_SESSION['preview_theme']) ) {
+			
+			$file = CONF_THEME_PATH . 'common-css' . DIRECTORY_SEPARATOR . $fl;
+			if (file_exists($file)) {
+				$str .= file_get_contents($file);
+			}
+			/* if (!empty($_SESSION['preview_theme']) && isset($_SESSION['preview_theme']) ) {
 				
 				$Cfile = 'common-css' . DIRECTORY_SEPARATOR . $fl;
 				$filesArr =  array(
@@ -110,7 +115,7 @@ class JsCssController{
 				if (file_exists($file)) {
 					$str .= file_get_contents($file);
 				}
-			}
+			} */
         }
 
 		$str = str_replace('../', '', $str);

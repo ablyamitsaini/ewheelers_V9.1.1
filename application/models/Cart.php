@@ -345,9 +345,9 @@ class Cart extends FatModel {
 		}
 		$rs = $prodSrch->getResultSet();
 		$sellerProductRow = FatApp::getDb()->fetch($rs);
-		if( !$sellerProductRow || $sellerProductRow['selprod_stock'] <= 0 ){
+		/* if( !$sellerProductRow || $sellerProductRow['selprod_stock'] <= 0 ){
 			return false;
-		}
+		} */
 		
 		$productSelectedShippingMethodsArr = $this->getProductShippingMethod();
 		if( ( $quantity > $sellerProductRow['selprod_stock'] ) ){
@@ -1154,7 +1154,6 @@ class Cart extends FatModel {
 	}
 	
 	public function updateUserCart() {
-		
 		if (isset($this->cart_user_id)) {
 			$record = new TableRecord('tbl_user_cart');
 			$cart_arr = $this->SYSTEM_ARR['cart'];

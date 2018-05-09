@@ -1946,8 +1946,29 @@ class BuyerController extends LoggedUserController {
 		}		
 		FatApp::redirectUser($redirectUrl);	
 	}
-
 	
+	public function addItemsToCart($orderId){
+		if(!$orderId){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			CommonHelper::redirectUserReferer();
+		}
+	
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		$orderObj = new Orders();
+		$orderDetail = $orderObj->getOrderById($orderId,$this->siteLangId);
+		if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			CommonHelper::redirectUserReferer();
+		}
+		$db = FatApp::getDb();
+		if(!$db->updateFromArray( 'tbl_user_cart', array( 'usercart_details' => $orderDetail['order_cart_data'] ), array('smt' => 'usercart_user_id = ?', 'vals' => array($userId) ) )){
+			Message::addErrorMessage(Labels::getLabel("MSG_Can_not_be_Re-Order",$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		Message::addErrorMessage(Labels::getLabel("MSG_Successfully_redirecting",$this->siteLangId));
+		FatUtility::dieJsonSuccess( Message::getHtml() );
+	}
 	
 	
 	/* repay payment pending order [ */	

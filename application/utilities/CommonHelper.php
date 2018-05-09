@@ -137,8 +137,11 @@ class CommonHelper extends FatUtility{
 	
 	
 	static function generateUrl($controller = '', $action = '', $queryData = array(), $use_root_url = '', $url_rewriting = null, $encodeUrl = false) {
-		$url = FatUtility::generateUrl($controller, $action, $queryData, $use_root_url, $url_rewriting);
 		
+		if(self::isThemePreview()){
+			array_push($queryData,'?theme-preview');
+		}
+		$url = FatUtility::generateUrl($controller, $action, $queryData, $use_root_url, $url_rewriting);
 		
 		/* if(FatUtility::isAjaxCall()){
 			return $url;
@@ -236,7 +239,7 @@ class CommonHelper extends FatUtility{
 		return $rewardPointValues = min(static::convertRewardPointToCurrency($rewardPoints),$orderNetAmount);
 		//return $rewardPoints = static::convertCurrencyToRewardPoint($rewardPointValues);
 	}
-			
+	
 	public static function orderProductAmount($opArr = array(),$amountType =  'netamount',$pricePerItem = false, $userType = false){
 		$amount = 0;
 		
@@ -713,8 +716,16 @@ class CommonHelper extends FatUtility{
 	public static function getCurrUrl() {
 	 return self::getUrlScheme() . $_SERVER["REQUEST_URI"];
 	}
+	
+	public static function isThemePreview(){
+		if(strpos(urldecode($_SERVER['REQUEST_URI']),'?theme-preview') > 0){
+			return true;
+		}
+		return false;
+	}
 		
 	public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0  ) {
+		
 		if( $type == NavigationLinks::NAVLINK_TYPE_CMS ){	
 			$url = CommonHelper::generateUrl('cms','view',array($nav_cpage_id));
 		} else if( $type==NavigationLinks::NAVLINK_TYPE_EXTERNAL_PAGE ){
@@ -724,6 +735,11 @@ class CommonHelper extends FatUtility{
 		} else if( $type == NavigationLinks::NAVLINK_TYPE_CATEGORY_PAGE ){
 			$url= CommonHelper::generateUrl('category','view',array($nav_category_id));
 		}
+		
+		if(self::isThemePreview()){
+			$url = $url.'?theme-preview';
+		}
+		
 		return $url;
 	}
 

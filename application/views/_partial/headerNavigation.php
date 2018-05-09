@@ -4,7 +4,7 @@
 // die('<pre>' . print_r($this->variables, true) . '</pre>');
 ?>
 <div class="logo zoomIn">
-	<a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
+	<a href="<?php echo CommonHelper::generateUrl('Home','index'); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
 </div>
 <?php $this->includeTemplate('_partial/headerSearchFormArea.php'); ?>
 <?php if( $headerNavigation && count( $headerNavigation ) ){ ?>

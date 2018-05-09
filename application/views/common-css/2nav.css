@@ -188,7 +188,7 @@
 	padding: 0;
 }
 .sublinks > li > a:hover {
-	color: #6BC452;
+	color: var(--first-color);
 }
 .sublinks > li > ul {
 	margin: 10px 0;
@@ -206,10 +206,10 @@
 	position: relative;
 }
 .sublinks > li > ul > li a:hover {
-	color: #6BC452;
+	color: var(--first-color);
 }
 .sublinks > li > ul > li a:before {
-	background: #6BC452;
+	background: var(--first-color);
 	bottom: 0px;
 	content: "";
 	height: 1px;
@@ -290,7 +290,7 @@ body.toggled_left .navigation-wrapper {
 	webkit-transform: translate(0px, 0px);
 }
 .navigation-wrapper {
-	background: #6BC452;
+	background: var(--first-color);
 	bottom: 0;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);

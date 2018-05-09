@@ -357,18 +357,15 @@ class ThemeColorController extends AdminBaseController {
 			}else{
 				FatApp::redirectUser(CommonHelper::generateUrl('ThemeColor',''));
 			}
-	
 		}
-		$this->updateCssFiles();
+		/* $this->updateCssFiles(); */
 		if(FatUtility::isAjaxCall()){
-				$this->set('msg',Labels::getLabel('Msg_Theme_Activated_Successfully',CommonHelper::getLangId()));
-				$this->_template->render(false, false, 'json-success.php');		
-			}else{
-				Message::addMessage(Labels::getLabel('Msg_Theme_Activated_Successfully',CommonHelper::getLangId()));
-				FatApp::redirectUser(CommonHelper::generateUrl('ThemeColor',''));
-			}
-		
-		
+			$this->set('msg',Labels::getLabel('Msg_Theme_Activated_Successfully',CommonHelper::getLangId()));
+			$this->_template->render(false, false, 'json-success.php');		
+		}else{
+			Message::addMessage(Labels::getLabel('Msg_Theme_Activated_Successfully',CommonHelper::getLangId()));
+			FatApp::redirectUser(CommonHelper::generateUrl('ThemeColor',''));
+		}
 	}
 	
 	public function deleteTheme(){
@@ -450,7 +447,7 @@ class ThemeColorController extends AdminBaseController {
         }
 	}
 	
-	public function  preview($tColorId) {
+	public function preview($tColorId) {
 		$tColorId = FatUtility::int($tColorId);
 		if(0 >= $tColorId){
 			Message::addErrorMessage($this->str_invalid_request_id);

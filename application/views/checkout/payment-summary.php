@@ -21,7 +21,7 @@
 	</form>	
 	<span class="gap"></span>	
 		<?php if(!empty($cartSummary['cartRewardPoints'])){?>
-		<div class="alert alert--success">
+		<div class="alert alert--success relative">
 		<a href="javascript:void(0)" class="close" onClick="removeRewardPoints()"></a>
 		<p><?php echo Labels::getLabel('LBL_Reward_Points',$siteLangId);?> <strong><?php echo $cartSummary['cartRewardPoints'];?></strong> <?php echo Labels::getLabel('LBL_Successfully_Used',$siteLangId);?></p>
 		</div>

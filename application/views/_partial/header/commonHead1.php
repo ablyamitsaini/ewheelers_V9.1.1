@@ -6,6 +6,19 @@ if( $controllerName != 'GuestUser' && $controllerName != 'Error' ){
 ?><!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 <head>
+<style>
+	:root {
+		--first-color:#<?php echo $themeDetail['tcolor_first_color']; ?>;
+		--second-color:#<?php echo $themeDetail['tcolor_second_color']; ?>;
+		--third-color:#<?php echo $themeDetail['tcolor_third_color']; ?>;
+		--txt-color:#<?php echo $themeDetail['tcolor_text_color']; ?>;
+		--txt-color-light:#<?php echo $themeDetail['tcolor_text_light_color']; ?>;
+		--border-color:#<?php echo $themeDetail['tcolor_border_first_color']; ?>;
+		--border-color-second:#<?php echo $themeDetail['tcolor_border_second_color']; ?>;
+		--second-btn-color:#<?php echo $themeDetail['tcolor_second_btn_color']; ?>;
+		--header-txt-color:#<?php echo $themeDetail['tcolor_header_text_color']; ?>;
+	}
+</style>
 <meta charset="utf-8">
 <meta name="author" content="">
 <!-- Mobile Specific Metas ===================== -->

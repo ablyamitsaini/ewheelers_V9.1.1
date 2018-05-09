@@ -112,6 +112,11 @@ foreach ($orders as $sn => $order){
 					'<i class="fa fa-dollar"></i>', true);
 				}
 				
+				$cartUrl = CommonHelper::generateUrl('cart');
+				$li = $ul->appendElement("li");
+				$li->appendElement('a', array('href'=>'javascript:void(0)' , 'onClick'=>'return addItemsToCart("'.$order['order_id'].'");',
+					'title'=>Labels::getLabel('LBL_Re-Order',$siteLangId)),
+					'<i class="fa fa-cart-plus"></i>', true);
 			break;
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$order[$key],true);

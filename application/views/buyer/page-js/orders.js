@@ -11,14 +11,24 @@ $(document).ready(function(){
 		$("#ordersListing").html( fcom.getLoader() );
 		fcom.ajax(fcom.makeUrl('Buyer','orderSearchListing'), data, function(res){
 			$("#ordersListing").html(res);
-		}); 
+		});
+	};
+	
+	addItemsToCart = function(orderId){
+		fcom.updateWithAjax(fcom.makeUrl('Buyer','addItemsToCart',[orderId]), '', function(ans){
+			if( ans.status ){
+				window.location = fcom.makeUrl('Cart');
+				return true;
+			}
+			return false;
+		});
 	};
 	
 	goToOrderSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmOrderSrchPaging;		
+		var frm = document.frmOrderSrchPaging;
 		$(frm.page).val(page);
 		searchOrders(frm);
 	};
