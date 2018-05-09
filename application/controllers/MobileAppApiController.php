@@ -8,12 +8,15 @@ class MobileAppApiController extends MyAppController {
 		$this->pagesize = 10;
 		$post = FatApp::getPostedData();
 		
-		$user_token = '';		
+		$user_token = '';
+
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
 			$user_token = $_SERVER['HTTP_X_TOKEN'];			
 		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
 			$user_token = $post['_token'];	
-		}		
+		} else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
+			$user_token = $post['_token'];	
+		} 			
 		
 		if(!empty($user_token)){
 			$userObj = new User();
@@ -5670,6 +5673,12 @@ class MobileAppApiController extends MyAppController {
 		$oObj = new Orders();
 		$charges = $oObj->getOrderProductChargesArr($request['orrequest_op_id']);
 		$request['charges'] = $charges; 
+		$request['currency_order_tax_charged'] = CommonHelper::displayMoneyFormat($request['order_tax_charged'],true,false,false);
+		$request['currency_op_other_charges'] = CommonHelper::displayMoneyFormat($request['op_other_charges'],true,false,false);
+		$request['currency_op_refund_amount'] = CommonHelper::displayMoneyFormat($request['op_refund_amount'],true,false,false);
+		$returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);
+		$request['net_amount'] = $returnDataArr['op_refund_amount'];
+		$request['currency_net_amount'] = CommonHelper::displayMoneyFormat($request['net_amount'],true,false,false);
 		
 		$sellerUserObj = new User( $request['op_selprod_user_id'] );
 		$vendorReturnAddress = $sellerUserObj->getUserReturnAddress( $this->siteLangId );
@@ -6270,13 +6279,8 @@ class MobileAppApiController extends MyAppController {
 		}
 	}
 	
-	function send_to_web(){ 
-		$post = FatApp::getPostedData();
-		//$post['ttkn']="c67b29e7dfa07ccd32a0be248";
-		//die($this->siteLangId."#");
-		//print_r($this->siteLangId."#".$_COOKIE['defaultSiteLang']);
-		//die();
-		//$post = array('ttkn'=>"ee6e9435783c3d6845af6df82","is_wallet"=>1,"order_id"=>"O1509077879");
+	function send_to_web(){ 	
+		$post = FatApp::getPostedData();		
 		if (empty($post)) {
 			FatUtility::dieJsonError( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
 		}

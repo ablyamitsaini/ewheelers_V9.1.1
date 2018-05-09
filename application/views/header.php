@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 if( isset($includeEditor) && $includeEditor == true ){

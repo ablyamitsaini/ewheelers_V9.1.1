@@ -1,6 +1,6 @@
 <?php
 class CustomRouter{	
-	static function setRoute(&$controller, &$action, &$queryString){
+	static function setRoute(&$controller, &$action, &$queryString){		
 		$userType = null;		
 		if ('mobile-app-api' == $controller) {			
 			define('MOBILE_APP_API_CALL', true);
@@ -43,7 +43,7 @@ class CustomRouter{
 		
 		define('MOBILE_APP_USER_TYPE', $userType);
 		
-		if(defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()){					
+		if(defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()){				
 			$url = $_SERVER['REQUEST_URI'];			
 			
 			$url = substr($url, strlen(CONF_WEBROOT_URL));
