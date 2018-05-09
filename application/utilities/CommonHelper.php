@@ -858,6 +858,9 @@ class CommonHelper extends FatUtility{
 		if( strlen($string) < 3 ){
 			return false;
 		}
+		if(!preg_match('/^[a-zA-Z0-9]{3,30}$/', $string)) {
+			return false;
+		}
 		return true;		
 	}
 

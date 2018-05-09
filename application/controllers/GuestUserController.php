@@ -468,7 +468,7 @@ class GuestUserController extends MyAppController {
 		}
 		
 		if( !CommonHelper::validateUsername($post['user_username']) ){
-			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
 			if ( FatUtility::isAjaxCall() ) {
 				FatUtility::dieWithError( Message::getHtml());
 			} else {

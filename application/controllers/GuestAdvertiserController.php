@@ -86,7 +86,7 @@ class GuestAdvertiserController extends MyAppController {
 		}
 		
 		if( !CommonHelper::validateUsername($post['user_username']) ){
-			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+			Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml());
 		}
 		
@@ -322,7 +322,7 @@ class GuestAdvertiserController extends MyAppController {
 		$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$this->siteLangId), 'user_username');
 		$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 		$fld->requirements()->setRequired();
-		$fld->requirements()->setLength(3,30);
+		$fld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]{3,30}$");
 		
 		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$this->siteLangId), 'user_email');
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');

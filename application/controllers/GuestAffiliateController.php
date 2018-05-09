@@ -43,7 +43,7 @@ class GuestAffiliateController extends MyAppController {
 				$post['user_username'] = FatApp::getPostedData( 'user_username', FatUtility::VAR_STRING, '');
 				
 				if( !CommonHelper::validateUsername( $post['user_username'] ) ){
-					Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_LENGTH_MUST_BE_BETWEEN_3_AND_30',$this->siteLangId));
+					Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC',$this->siteLangId));
 					if ( FatUtility::isAjaxCall() ) {
 						FatUtility::dieWithError( Message::getHtml());
 					}
@@ -336,7 +336,7 @@ class GuestAffiliateController extends MyAppController {
 				$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$siteLangId), 'user_username');
 				$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 				$fld->requirements()->setRequired(true);
-				$fld->requirements()->setLength(3,30);
+				$fld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]{3,30}$");
 				
 				$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email');
 				$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
