@@ -9,7 +9,6 @@ define('CONF_FRONT_END_THEME_PATH', CONF_FRONT_END_APPLICATION_PATH . 'views/');
 $conf_webroot_frontend = CONF_WEBROOT_FRONTEND;
 $conf_webroot_url_dir = 'admin/';
 define('CONF_WEBROOT_URL', CONF_WEBROOT_BACKEND);
-
 define('CONF_WEBROOT_FRONT_URL', CONF_WEBROOT_FRONTEND);
 define('CONF_WEBROOT_URL_TRADITIONAL', $conf_webroot_frontend.'public/admin.php?url=');
 define('CONF_HTML_EDITOR', 'innova');

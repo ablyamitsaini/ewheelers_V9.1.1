@@ -805,8 +805,19 @@ class PromotionsController extends AdminBaseController {
 		$frm->addRequiredField(Labels::getLabel('Lbl_Identifier',$this->adminLangId),'promotion_identifier');
 		
 		$linkTargetsArr = applicationConstants::getLinkTargetsArr($this->adminLangId);
-		$promotioTypeArr = Promotion::getTypeArr($this->adminLangId);
-		$pTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Type',$this->adminLangId), 'promotion_type', $promotioTypeArr, '',array(),'');	
+		if($promotionId > 0){
+			$srch = new PromotionSearch($this->adminLangId);	
+			$srch->addCondition('promotion_id','=',$promotionId);
+			$srch->addMultipleFields(array('promotion_type'));
+			$rs = $srch->getResultSet();
+			$promotioType = FatApp::getDb()->fetch($rs);
+			$promotionTypeArr = Promotion::getTypeArr($this->adminLangId);
+			$promotioTypeValue = $promotionTypeArr[$promotioType['promotion_type']];
+			$promotioTypeArr = array($promotioType['promotion_type'] => $promotioTypeValue);
+		}else{
+			$promotioTypeArr = Promotion::getTypeArr($this->adminLangId);
+		}		
+		$pTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Type',$this->adminLangId), 'promotion_type', $promotioTypeArr, '',array(),'');			
 							
 		/* Shop [ */
 		$frm->addTextBox(Labels::getLabel('LBL_Shop',$this->adminLangId), 'promotion_shop','',array('readonly'=>true))->requirements()->setRequired(true);;
