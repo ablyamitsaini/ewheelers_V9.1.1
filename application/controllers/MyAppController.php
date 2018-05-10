@@ -112,7 +112,6 @@ class MyAppController extends FatController {
 		}
 		
 		$themeDetail = ThemeColor::getAttributesById($themeId);
-		
 		$this->set('themeDetail',$themeDetail);
 		$this->set('jsVariables',$jsVariables);
 		$this->set('controllerName', $controllerName );

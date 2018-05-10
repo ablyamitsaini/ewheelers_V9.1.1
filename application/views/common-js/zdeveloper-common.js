@@ -636,7 +636,14 @@ $(document).ready(function(){
 		$(this).addClass('is-active');
 	});
 	
-	
+	$(document).on("keydown",'input[name=user_username]',function(e){
+		if (e.which === 32) {  return false; }	
+		this.value = this.value.replace(/\s/g, "");	
+	});
+
+	$(document).on("change",'input[name=user_username]',function(e){	
+		this.value = this.value.replace(/\s/g, "");	
+	});
 
 });
 

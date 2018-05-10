@@ -715,7 +715,8 @@ class ProductsController extends MyAppController {
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
 		$json['totalRecords'] = $totalRecords;
-		$json['startRecord'] = ( $totalRecords > 0 ) ? 1 : 0 ;
+		/* $json['startRecord'] = ( $totalRecords > 0 ) ? 1 : 0 ; */
+		$json['startRecord'] = $startRecord ;
 		$json['endRecord'] = $endRecord;
 		$json['priceArr'] = $priceArr;					
 		$json['selectedCurrencyPriceArr'] = $selectedCurrencyPriceArr;					

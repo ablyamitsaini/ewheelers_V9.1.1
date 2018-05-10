@@ -20,7 +20,6 @@
 			  </div>
 
 			  <div class="col-md-7 col-xs-12 col-sm-12">
-
 				<div class="right_panel_head_right">
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm link__filter hide--desktop"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></a>
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm switch--grind switch--link-js grid hide--mobile"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
@@ -40,7 +39,6 @@
 						</ul>
 					</div>
 				</div>
-
 			  </div>
 			</div>
 		</div>

@@ -9,6 +9,7 @@ $commonHead1Data = array(
 	'controllerName'	=>	$controllerName,
 	'jsVariables'		=>	$jsVariables,
 	'extendEditorJs'	=>	$extendEditorJs,
+	'themeDetail'	    =>	$themeDetail,
 	);
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data,false); 
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */
