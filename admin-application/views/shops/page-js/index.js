@@ -335,12 +335,12 @@ $(document).on('click','.shopFile-Js',function(){
 							$('#input-field'+fileType).addClass('text-success');
 							$('#form-upload').remove();
 							shopImages(ans.shopId,imageType,langId);
-							fcom.displaySuccessMessage(ans.msg,'','alert_success');
+							fcom.displaySuccessMessage(ans.msg);
 							//addShopLangForm(ans.shopId, langId);	
 						}else{
 							$('#input-field'+fileType).removeClass('text-success');
 							$('#input-field'+fileType).addClass('text-danger');
-							fcom.displayErrorMessage(ans.msg,'','alert_danger');
+							fcom.displayErrorMessage(ans.msg);
 						}												
 					},
 					error: function(xhr, ajaxOptions, thrownError) {

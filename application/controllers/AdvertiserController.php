@@ -1182,6 +1182,11 @@ class AdvertiserController extends LoggedUserController {
 		$frm->addTextBox( '', 'keyword', '' ,array('placeholder'=>Labels::getLabel('LBL_keyword',$langId)));
 		
 		$typeArr = Promotion::getTypeArr($langId);
+		if(!User::isSeller()){
+			unset($typeArr[Promotion::TYPE_SHOP]);
+			unset($typeArr[Promotion::TYPE_PRODUCT]);			
+		}
+			
 		$frm->addSelectBox( '', 'type', array('-1'=>Labels::getLabel('LBL_All_Type',$langId))+$typeArr, '', array(), '' );
 		
 		$frm->addDateField('','date_from','',array('readonly'=>'readonly','class'=>'field--calender','placeholder'=>Labels::getLabel('LBL_Date_From',$langId)));
