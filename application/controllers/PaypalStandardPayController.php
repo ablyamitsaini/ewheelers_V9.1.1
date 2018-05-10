@@ -7,7 +7,7 @@ class PaypalStandardPayController extends PaymentController{
 	private $currenciesAccepted = array(
 										'Australian Dollar' => 'AUD',
 										'Brazilian Real' => 'BRL',
-										/* 'Canadian Dollar' => 'CAD', */
+										'Canadian Dollar' => 'CAD',
 										'Czech Koruna' => 'CZK',
 										'Danish Krone' => 'DKK',
 										'Euro' => 'EUR',
