@@ -87,6 +87,12 @@
 					if($objPrivilege->canViewBrandRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_BRAND_REQUEST_APPROVAL', FatUtility::VAR_INT, 0)){ ?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Brands','BrandRequests');?>"><?php echo Labels::getLabel('LBL_Brand_Requests',$adminLangId);?></a></li>
 					<?php } ?>
+					<?php /* if($objPrivilege->canViewSellerCatalogRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_SELLER_CAN_REQUEST_PRODUCT', FatUtility::VAR_INT, 0)){?>
+					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerCatalogRequests');?>"><?php echo Labels::getLabel('LBL_Product_Catalog_Requests',$adminLangId);?> <?php if($catReqCount){ ?><span class='badge'>(<?php echo $catReqCount; ?>)</span><?php } ?></a></li>
+					<?php } */ ?>
+					<?php if($objPrivilege->canViewCustomCatalogProductRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_SELLER_CAN_REQUEST_CUSTOM_PRODUCT', FatUtility::VAR_INT, 0)){?>
+					<li><a href="<?php echo CommonHelper::generateUrl('CustomProducts');?>"><?php echo Labels::getLabel('LBL_Custom_Product_Catalog_Requests',$adminLangId);?> <?php if($custProdReqCount){ ?><span class='badge'>(<?php echo $custProdReqCount; ?>)</span><?php } ?></a></li>
+					<?php }?>
 				</ul>
 			</li>
 			<?php }?>
@@ -114,12 +120,6 @@
 					
 					<?php if($objPrivilege->canViewSellerApprovalRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerApprovalRequests');?>"><?php echo Labels::getLabel('LBL_Seller_Approval_Requests',$adminLangId);?> <?php if($supReqCount){ ?><span class='badge'>(<?php echo $supReqCount; ?>)</span><?php } ?></a></li>
-					<?php }?>
-					<?php if($objPrivilege->canViewSellerCatalogRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_SELLER_CAN_REQUEST_PRODUCT', FatUtility::VAR_INT, 0)){?>
-					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerCatalogRequests');?>"><?php echo Labels::getLabel('LBL_Product_Catalog_Requests',$adminLangId);?> <?php if($catReqCount){ ?><span class='badge'>(<?php echo $catReqCount; ?>)</span><?php } ?></a></li>
-					<?php }?>
-					<?php if($objPrivilege->canViewCustomCatalogProductRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_SELLER_CAN_REQUEST_CUSTOM_PRODUCT', FatUtility::VAR_INT, 0)){?>
-					<li><a href="<?php echo CommonHelper::generateUrl('CustomProducts');?>"><?php echo Labels::getLabel('LBL_Custom_Product_Catalog_Requests',$adminLangId);?> <?php if($custProdReqCount){ ?><span class='badge'>(<?php echo $custProdReqCount; ?>)</span><?php } ?></a></li>
 					<?php }?>
 				</ul>
 			</li>

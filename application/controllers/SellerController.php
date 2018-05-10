@@ -2495,7 +2495,7 @@ class SellerController extends LoggedUserController {
 			'orrmsg_date'			=>	date('Y-m-d H:i:s'),
 		);
 		$oReturnRequestMsgObj = new OrderReturnRequestMessage();
-		$oReturnRequestMsgObj->assignValues( $returnRequestMsgDataToSave, true );
+		$oReturnRequestMsgObj->assignValues( $returnRequestMsgDataToSave );
 		if ( !$oReturnRequestMsgObj->save() ) {
 			Message::addErrorMessage( $oReturnRequestMsgObj->getError() );
 			FatUtility::dieWithError( Message::getHtml() );

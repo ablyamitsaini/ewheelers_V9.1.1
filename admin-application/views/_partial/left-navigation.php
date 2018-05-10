@@ -117,9 +117,9 @@
 					<?php if($objPrivilege->canViewSellerApprovalRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerApprovalRequests');?>"><?php echo Labels::getLabel('LBL_Seller_Approval_Requests',$adminLangId);?> <?php if($supReqCount){ ?><span class='badge'>(<?php echo $supReqCount; ?>)</span><?php } ?></a></li>
 					<?php }?>
-					<?php if($objPrivilege->canViewSellerCatalogRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
+					<?php /* if($objPrivilege->canViewSellerCatalogRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerCatalogRequests');?>"><?php echo Labels::getLabel('LBL_Product_Catalog_Requests',$adminLangId);?> <?php if($catReqCount){ ?><span class='badge'>(<?php echo $catReqCount; ?>)</span><?php } ?></a></li>
-					<?php }?>
+					<?php } */ ?>
 				</ul>
 			</li>
 			<?php }?>
