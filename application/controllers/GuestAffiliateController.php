@@ -335,8 +335,8 @@ class GuestAffiliateController extends MyAppController {
 		
 				$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$siteLangId), 'user_username');
 				$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
-				$fld->requirements()->setRequired(true);
-				$fld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]{3,30}$");
+				$fld->requirements()->setRequired();
+				$fld->requirements()->setUsername();
 				
 				$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email');
 				$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');

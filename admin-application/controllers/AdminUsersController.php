@@ -350,14 +350,16 @@ class AdminUsersController extends AdminBaseController {
 		$frm = new Form('frmAdminUser');		
 		$frm->addHiddenField('', 'admin_id',$adminId);
 		$frm->addRequiredField(Labels::getLabel('LBL_Full_Name',$this->adminLangId), 'admin_name');
-		$frm->addRequiredField(Labels::getLabel('LBL_Username',$this->adminLangId), 'admin_username');
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_Username',$this->adminLangId), 'admin_username');
+		$fld->requirements()->setRequired();
+		$fld->requirements()->setUsername();
 		$frm->addRequiredField(Labels::getLabel('LBL_Email',$this->adminLangId), 'admin_email');
 		
 		if($adminId == 0)
 		{
 			$fld=$frm->addPasswordField(Labels::getLabel('LBL_Password',$this->adminLangId), 'password');
-			$fld->requirements()->setRequired(true);
-			$fld->requirements()->setLength(4,20);
+			$fld->requirements()->setRequired();
+			$fld->requirements()->setPassword();
 			$fld=$frm->addPasswordField(Labels::getLabel('LBL_Confirm_Password',$this->adminLangId), 'confirm_password');
 			$fld->requirements()->setRequired();
 			$fld->requirements()->setCompareWith('password','eq','');
