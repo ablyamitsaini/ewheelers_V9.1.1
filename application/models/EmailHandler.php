@@ -1822,7 +1822,7 @@ class EmailHandler extends FatModel {
 		$arrReplacements = array(
 			'{user_name}' => trim($row["user_name"]),
 			'{debit_credit_type}' => $row['urp_points'] > 0 ? Labels::getLabel( 'LBL_credited', $langId ) : Labels::getLabel( 'LBL_debited', $langId ),
-			'{reward_points}' => $row['urp_points'],
+			'{reward_points}' => abs($row['urp_points']),
 			'{comments}' => $row["urp_comments"],
 		);
 		self::sendMailTpl( $row['credential_email'], 'reward_points_credited_debited', $langId, $arrReplacements );

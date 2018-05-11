@@ -115,6 +115,12 @@ class PromotionSearch extends SearchBase{
 	}
 	
 	public function addDateFromCondition($dateFrom){
+		
+		/* echo $dateFrom." hehehe ";
+		$dateFrom = str_replace('/', '-', $dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		echo $dateFrom; */
+		
 		if( $dateFrom != '' ){
 			$this->addCondition('pr.promotion_start_date', '>=', $dateFrom. ' 00:00:00');
 		}

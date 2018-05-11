@@ -346,8 +346,7 @@ class MetaTagsController extends AdminBaseController {
 		return false;
 	}
 	
-	private function getForm($metaTagId = 0 , $metaType = 'default' , $recordId = 0)
-	{
+	private function getForm($metaTagId = 0 , $metaType = 'default' , $recordId = 0){
 		$this->objPrivilege->canViewMetaTags();
 		$metaTagId = FatUtility::int($metaTagId);
 		$frm = new Form('frmMetaTag');
@@ -363,10 +362,14 @@ class MetaTagsController extends AdminBaseController {
 		
 		if($metaType == MetaTag::META_GROUP_ADVANCED)
 		{
-			$frm->addRequiredField(Labels::getLabel('LBL_Controller',$this->adminLangId), 'meta_controller');
-			$frm->addRequiredField(Labels::getLabel('LBL_Action',$this->adminLangId), 'meta_action');
-			$frm->addTextBox(Labels::getLabel('LBL_Record_Id',$this->adminLangId), 'meta_record_id');
-			$frm->addTextBox(Labels::getLabel('LBL_Sub_Record_Id',$this->adminLangId), 'meta_subrecord_id');
+			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Controller',$this->adminLangId), 'meta_controller');
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Controller",$this->adminLangId)."</small>";
+			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Action',$this->adminLangId), 'meta_action');
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Action",$this->adminLangId)."</small>";
+			$fld = $frm->addTextBox(Labels::getLabel('LBL_Record_Id',$this->adminLangId), 'meta_record_id');
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Record_ID",$this->adminLangId)."</small>";
+			$fld = $frm->addTextBox(Labels::getLabel('LBL_Sub_Record_Id',$this->adminLangId), 'meta_subrecord_id');
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Sub_Record_ID",$this->adminLangId)."</small>";
 		}
 		else{
 			$frm->addHiddenField(Labels::getLabel('LBL_Entity_Id',$this->adminLangId), 'meta_record_id', $recordId);

@@ -7,7 +7,22 @@ class CollectionsController extends MyAppController {
 	public function view($collection_id){
 		$searchForm = $this->getCollectionSearchForm($collection_id);
 		$collection = Collections::getAttributesById($collection_id);
-		$this->set('collection',$collection);
+		
+		/* Collection Data[ */
+		
+		$collectionSrch = Collections::getSearchObject(  true,$this->siteLangId);
+		$collectionSrch->addMultipleFields(
+			array(
+				'collection_id', 'IFNULL(collection_name, collection_identifier) as collection_name'			
+			)
+		);
+		$collectionSrch->doNotCalculateRecords();
+		$collectionSrch->doNotLimitRecords();
+		$collectionSrch->addCondition('collection_id','=',$collection_id);
+		$collectionSrchRs = $collectionSrch->getResultSet();
+		$collectionArr = FatApp::getDb()->fetch($collectionSrchRs);
+		$this->set('collection',$collectionArr);
+		
 		$this->set('searchForm',$searchForm);
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));

@@ -2,7 +2,7 @@
 <div id="body" class="body bg--gray">
 	<div class="section section--pagebar">
       <div class="fixed-container container--fixed">
-        <h4><?php echo $collection['collection_identifier']; ?></h4>
+        <h4><?php echo $collection['collection_name']; ?></h4>
       </div>
     </div>
 	<section class="dashboard">

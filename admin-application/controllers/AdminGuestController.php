@@ -389,7 +389,7 @@ class AdminGuestController extends FatController {
 	
 	private function getForgotForm(){
 		$frm = new Form('adminFrmForgot');
-		$frm->addEmailField('', 'admin_email')->requirements()->setRequired();
+		$frm->addEmailField('', 'admin_email','',array('placeholder'=>Labels::getLabel('LBL_Enter_Your_Email_Address',$this->adminLangId)))->requirements()->setRequired();
 		//$frm->addRequiredField('', 'security_code');
 		if(FatApp::getConfig('CONF_RECAPTCHA_SITEKEY',FatUtility::VAR_STRING,'') != '' ){		
 			$frm->addHtml('', 'security_code','<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY',FatUtility::VAR_STRING,'').'"></div>');

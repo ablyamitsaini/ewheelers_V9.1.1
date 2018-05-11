@@ -567,8 +567,8 @@ $(document).delegate('.language-js','change',function(){
 				});
 			},
 			'select': function(item) {
-				$('input[name=\'product_shipping[' + shipping_row + '][country_name]').val(item.label);
-				$('input[name=\'product_shipping[' + shipping_row + '][country_id]').val(item.value);
+				$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').val(item.label);
+				$('input[name=\'product_shipping[' + shipping_row + '][country_id]\']').val(item.value);
 			}
 		});
 				
