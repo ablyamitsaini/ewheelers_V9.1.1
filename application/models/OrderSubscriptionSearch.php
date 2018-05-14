@@ -116,6 +116,10 @@ class OrderSubscriptionSearch extends SearchBase {
 	}
 	
 	public function addDateFromCondition( $dateFrom ){
+		
+		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		
 		if( !$this->isOrdersTableJoined ){
 			trigger_error(Labels::getLabel('MSG_Order_Date_Condition_cannot_be_applied,_as_Orders_Table_is_not_Joined,_So,_Please_Use_joinOrders()_first,_then_try_to_add_Order_date_from_condition',$this->commonLangId), E_USER_ERROR);
 		}
@@ -125,6 +129,10 @@ class OrderSubscriptionSearch extends SearchBase {
 	}
 	
 	public function addDateToCondition( $dateTo ){
+		
+		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
+		$dateTo = date('Y-m-d', strtotime( $dateTo ));
+		
 		if( !$this->isOrdersTableJoined ){
 			trigger_error(Labels::getLabel('MSG_Order_Date_Condition_cannot_be_applied,_as_Orders_Table_is_not_Joined,_So,_Please_Use_joinOrders()_first,_then_try_to_add_Order_date_to_condition',$this->commonLangId), E_USER_ERROR);
 		}
