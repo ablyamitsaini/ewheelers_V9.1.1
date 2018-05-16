@@ -40,7 +40,7 @@ if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicatio
 							$td->appendElement('plaintext', array(), Product::getProductShippingTitle($row,$siteLangId),true);
 							break;
 						default:
-							$td->appendElement('plaintext', array(), $row[$key]);
+							$td->appendElement('plaintext', array(), $row[$key], true);
 						break;
 					}
 				}

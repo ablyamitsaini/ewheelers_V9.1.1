@@ -52,10 +52,10 @@
 								$td->appendElement('plaintext', array(), $sr_no);
 							break;
 							case SellerPackagePlans::DB_TBL_PREFIX.'price':
-								$td->appendElement('plaintext', array(), SellerPackagePlans::getPlanPriceWithPeriod($row,$row[SellerPackagePlans::DB_TBL_PREFIX.'price']) );
+								$td->appendElement('plaintext', array(), SellerPackagePlans::getPlanPriceWithPeriod($row,$row[SellerPackagePlans::DB_TBL_PREFIX.'price']), true );
 							break;
 							case SellerPackagePlans::DB_TBL_PREFIX.'trial_interval':
-								$td->appendElement('plaintext', array(), SellerPackagePlans::getPlanTrialPeriod($row) );
+								$td->appendElement('plaintext', array(), SellerPackagePlans::getPlanTrialPeriod($row), true );
 							break;
 							
 							break;
@@ -73,7 +73,7 @@
 								}
 							break;
 							default:
-								$td->appendElement('plaintext', array(), $row[$key]);
+								$td->appendElement('plaintext', array(), $row[$key], true);
 							break;
 						}
 					}

@@ -40,7 +40,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'coupon_type':
 		
-				$td->appendElement('plaintext', array(), $discountTypeArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $discountTypeArr[$row[$key]], true);
 			break;
 			case 'coupon_discount_value':
 				$discountValue = ($row['coupon_discount_in_percent'] == ApplicationConstants::PERCENTAGE)?$row[$key].' %':CommonHelper::displayMoneyFormat($row[$key]);
@@ -54,7 +54,7 @@ foreach ($arr_listing as $sn=>$row){
 				$isExpired = false;
 				$isExpired = ($row['coupon_end_date'] != "0000-00-00" && strtotime($row['coupon_end_date']) < strtotime(date('Y-m-d'))) ? true: false;
 				if( $isExpired ){
-					$td->appendElement('plaintext', array(), Labels::getLabel("LBL_Expired", $adminLangId) );
+					$td->appendElement('plaintext', array(), Labels::getLabel("LBL_Expired", $adminLangId), true );
 					
 				} else {
 					$active = "";
@@ -102,7 +102,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

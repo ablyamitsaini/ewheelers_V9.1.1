@@ -46,7 +46,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			case 'wishlistUserCounts':
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 			
 			case 'sold':
@@ -54,7 +54,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

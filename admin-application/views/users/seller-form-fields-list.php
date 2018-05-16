@@ -36,18 +36,18 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'sformfield_required':				
-				$td->appendElement('plaintext', array(), $yesNoArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $yesNoArr[$row[$key]], true);
 			break;
 			case 'sformfield_type':				
-				$td->appendElement('plaintext', array(), $fieldTypeArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $fieldTypeArr[$row[$key]], true);
 			break;
 			case 'sformfield_identifier':
 				if(isset($row['sformfield_caption']) && $row['sformfield_caption']!=''){
-					$td->appendElement('plaintext', array(), $row['sformfield_caption']);
+					$td->appendElement('plaintext', array(), $row['sformfield_caption'], true);
 					$td->appendElement('br', array());
 					$td->appendElement('plaintext', array(), '('.$row[$key].')',true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 				break;						
 			case 'action':
@@ -69,7 +69,7 @@ foreach ($arr_listing as $sn=>$row){
 					}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

@@ -322,7 +322,7 @@ class HomeController extends MyAppController {
 		$prodObj->addPromotionTypeCondition(Promotion::TYPE_PRODUCT);
 		$prodObj->joinActiveUser();
 		$prodObj->setDefinedCriteria();
-		/* $prodObj->addShopActiveExpiredCondition(); */
+		$prodObj->addShopActiveExpiredCondition();
 		$prodObj->joinUserWallet();
 		$prodObj->joinBudget();
 		$prodObj->addBudgetCondition(); 

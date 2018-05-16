@@ -40,16 +40,16 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key]));				
 			break;	
 			case 'promotion_duration':				
-				$td->appendElement('plaintext', array(), $promotionBudgetDurationArr[$row[$key]]);				
+				$td->appendElement('plaintext', array(), $promotionBudgetDurationArr[$row[$key]], true);				
 			break;
 			case 'promotion_type':				
-				$td->appendElement('plaintext', array(), $typeArr[$row[$key]]);				
+				$td->appendElement('plaintext', array(), $typeArr[$row[$key]], true);				
 			break;
 			case 'promotion_approved':				
-				$td->appendElement('plaintext', array(), $arrYesNo[$row[$key]]);				
+				$td->appendElement('plaintext', array(), $arrYesNo[$row[$key]], true);				
 			break;
 			case 'promotion_active':				
-				$td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]]);				
+				$td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]], true);				
 			break;
 			case 'promotion_end_date':				
 				$txt = '';
@@ -99,7 +99,7 @@ foreach ($arr_listing as $sn=>$row){
 			
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

@@ -38,7 +38,7 @@ foreach ($arr_listing as $sn=>$row){
 			case 'taxval_value':
 				$str = CommonHelper::displayTaxFormat($row['taxval_is_percent'],$row[$key]);
 				
-				$td->appendElement('plaintext', array(), $str);
+				$td->appendElement('plaintext', array(), $str, true);
 			break;
 			case 'taxcat_active':
 				$active = "active";
@@ -68,7 +68,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

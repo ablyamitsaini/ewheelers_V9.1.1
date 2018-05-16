@@ -16,7 +16,7 @@ foreach ($arr_flds as $val) {
 }
 
 $sr_no = $page==1?0:$pageSize*($page-1);
-foreach ($arr_listing as $sn=>$row){ 
+foreach ($arr_listing as $sn=>$row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
 		
@@ -36,7 +36,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

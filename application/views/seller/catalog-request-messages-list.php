@@ -45,7 +45,7 @@ foreach ($messagesList as $sn=>$row){
 				$td->appendElement('plaintext', array(), $txt, true );
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

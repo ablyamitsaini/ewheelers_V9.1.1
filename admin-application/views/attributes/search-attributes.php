@@ -33,21 +33,21 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'attr_identifier':
 				if($row['attr_name']!=''){
-					$td->appendElement('plaintext', array(), $row['attr_name']);
+					$td->appendElement('plaintext', array(), $row['attr_name'], true);
 					$td->appendElement('br', array());
 				}
-				$td->appendElement('plaintext', array(), '('.$row[$key].')');
+				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				break;
 
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"));
-				if( $canEdit ){		
+				if( $canEdit ){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"langForm(".$row['attr_id'].", ". $adminDefaultLangId .")"),'<i class="ion-edit icon"></i>', true);
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

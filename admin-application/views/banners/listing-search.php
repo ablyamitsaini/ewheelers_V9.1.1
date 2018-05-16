@@ -27,17 +27,17 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'banner_target':
-				$td->appendElement('plaintext', array(),$linkTargetsArr[$row[$key]]);
+				$td->appendElement('plaintext', array(),$linkTargetsArr[$row[$key]], true);
 			break;
 			case 'banner_title':
 				$title = ($row['banner_title'] !='')?$row['banner_title']:$row['promotion_name'];
-				$td->appendElement('plaintext', array(),$title);
+				$td->appendElement('plaintext', array(),$title,true);
 			break;
-			case 'banner_type':				
-				$td->appendElement('plaintext', array(),$bannerTypeArr[$row[$key]]);
-			break;	
+			case 'banner_type':
+				$td->appendElement('plaintext', array(), $bannerTypeArr[$row[$key]], true);
+			break;
 			case 'banner_active':
-				/* $td->appendElement('plaintext', array(),$activeInactiveArr[$row[$key]]); */
+				/* $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]], true); */
 				$active = "";
 				if( $row['banner_active'] ) {
 					$active = 'checked';

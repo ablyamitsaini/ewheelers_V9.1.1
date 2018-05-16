@@ -33,8 +33,7 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $onOffArr[$row[$key]], true);
 			break;
 			case 'shop_active':
-				//$td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]]);
-				
+			
 				$active = "";
 				if( $row['shop_active'] ) {
 					$active = 'checked';
@@ -54,14 +53,14 @@ foreach ($arr_listing as $sn=>$row){
 			if($canViewShopReports){
 				$td->appendElement('a', array('href' => CommonHelper::generateUrl('ShopReports' ,'index' ,array($row['shop_id'])) ), $row[$key]);
 			} else {
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			}
 			break;
 			case 'numOfReviews':
 			if($canViewShopReports){
 				$td->appendElement('a', array('href' => CommonHelper::generateUrl('ProductReviews' ,'index' ,array($row['shop_user_id'])) ), $row[$key]);
 			} else {
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			}
 			break;
 			case 'shop_identifier':
@@ -92,7 +91,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

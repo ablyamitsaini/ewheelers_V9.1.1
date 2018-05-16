@@ -27,7 +27,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			case 'op_shop_name':
-				$td->appendElement('plaintext', array(), $row['op_shop_name']);
+				$td->appendElement('plaintext', array(), $row['op_shop_name'], true);
 			break;
 			
 			case 'owner_name':
@@ -43,7 +43,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

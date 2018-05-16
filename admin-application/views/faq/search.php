@@ -45,7 +45,7 @@ foreach ($arr_listing as $sn=>$row){
 					$td->appendElement('br', array());
 					$td->appendElement('plaintext', array(), '('.$row[$key].')',true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}				
 				break;
 			case 'faq_active':
@@ -55,7 +55,7 @@ foreach ($arr_listing as $sn=>$row){
 					}
 					$statucAct = ($canEdit === true) ? 'toggleStatus(this)' : '';
 					$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['faqcat_id'].'" value="'.$row['faqcat_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['faqcat_id'].'">Toggle</label></div>';
-					$td->appendElement('plaintext', array(), $str,true);
+					$td->appendElement('plaintext', array(), $str, true);
 			break;
 			case 'action':
 				//$ul = $td->appendElement("ul",array("class"=>"actions"));
@@ -81,7 +81,7 @@ foreach ($arr_listing as $sn=>$row){
 				}				
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

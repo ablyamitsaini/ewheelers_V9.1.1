@@ -46,11 +46,11 @@ foreach ($arr_listing as $sn=>$row){
 					$td->appendElement('br', array());
 					$td->appendElement('plaintext', array(), '('.$row[$key].')',true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}				
 				break;
 			case 'sstory_featured':
-				$td->appendElement('plaintext', array(), ($row[$key] == 1) ? Labels::getLabel('LBL_Yes', $adminLangId) : Labels::getLabel('LBL_No', $adminLangId));
+				$td->appendElement('plaintext', array(), ($row[$key] == 1) ? Labels::getLabel('LBL_Yes', $adminLangId) : Labels::getLabel('LBL_No', $adminLangId), true);
 			break;
 			case 'sstory_active':
 					$active = "active";
@@ -76,7 +76,7 @@ foreach ($arr_listing as $sn=>$row){
 				}				
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

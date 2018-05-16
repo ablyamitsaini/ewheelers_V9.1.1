@@ -75,7 +75,7 @@ foreach ($ordersList as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}
