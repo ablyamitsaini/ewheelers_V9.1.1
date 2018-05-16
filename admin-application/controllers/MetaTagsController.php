@@ -363,13 +363,13 @@ class MetaTagsController extends AdminBaseController {
 		if($metaType == MetaTag::META_GROUP_ADVANCED)
 		{
 			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Controller',$this->adminLangId), 'meta_controller');
-			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Controller",$this->adminLangId)."</small>";
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Ex:_If_URL_is",$this->adminLangId)." http://domain-name.com/shops/report-spam/1/10 ". Labels::getLabel("LBL_then_controller_will_be_",$this->adminLangId) ." shops</small>";
 			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Action',$this->adminLangId), 'meta_action');
-			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Action",$this->adminLangId)."</small>";
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Ex:_If_URL_is",$this->adminLangId)." http://domain-name.com/shops/report-spam/1/10 ". Labels::getLabel("LBL_then_action_will_be_",$this->adminLangId) ." reportSpam</small>";
 			$fld = $frm->addTextBox(Labels::getLabel('LBL_Record_Id',$this->adminLangId), 'meta_record_id');
-			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Record_ID",$this->adminLangId)."</small>";
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Ex:_If_URL_is",$this->adminLangId)." http://domain-name.com/shops/report-spam/1/10 ". Labels::getLabel("LBL_then_record_id_will_be_",$this->adminLangId) ." 1</small>";
 			$fld = $frm->addTextBox(Labels::getLabel('LBL_Sub_Record_Id',$this->adminLangId), 'meta_subrecord_id');
-			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Describe_Sub_Record_ID",$this->adminLangId)."</small>";
+			$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Ex:_If_URL_is",$this->adminLangId)." http://domain-name.com/shops/report-spam/1/10 ". Labels::getLabel("LBL_then_sub_record_id_will_be_",$this->adminLangId) ." 10</small>";
 		}
 		else{
 			$frm->addHiddenField(Labels::getLabel('LBL_Entity_Id',$this->adminLangId), 'meta_record_id', $recordId);

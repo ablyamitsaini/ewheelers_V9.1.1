@@ -165,9 +165,15 @@ class PromotionSearch extends SearchBase{
 		pr.promotion_end_time >= NOW() and pr.promotion_start_time <= NOW() end ");  */
 		
 		
-	 	 $this->addCondition('pr.promotion_start_time', '<=', date('H:i'));		
+	 /* 	$this->addCondition('pr.promotion_start_time', '<=', date('H:i'));		
 		
-		$this->addCondition('pr.promotion_end_time', '>=', date('H:i'));   
+		$this->addCondition('pr.promotion_end_time', '>=', date('H:i')); */   
+		
+		$cnd = $this->addCondition('pr.promotion_start_time', '=', '00:00:00');		
+		$cnd->attachCondition('pr.promotion_start_time', '<=', date('H:i:s'),'OR');
+		
+		$cnd = $this->addCondition('pr.promotion_end_time', '=', '00:00:00');
+		$cnd->attachCondition('pr.promotion_end_time', '>=', date('H:i:s'),'OR');
 		
 		
 		if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){
