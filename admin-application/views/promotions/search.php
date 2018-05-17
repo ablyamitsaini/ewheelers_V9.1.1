@@ -34,10 +34,10 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'promotion_name':
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;	
 			case 'promotion_type':
-				$td->appendElement('plaintext', array(), $typeArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $typeArr[$row[$key]], true);
 			break;
 			case 'blocation_promotion_cost':
 			
@@ -50,7 +50,7 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key],true,true));
 			break;			
 			case 'promotion_approved':
-				$td->appendElement('plaintext', array(), $yesNoArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $yesNoArr[$row[$key]], true);
 			break;				
 			case 'action':
 			

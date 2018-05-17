@@ -42,17 +42,17 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 			break;
 			case 'user_name':
-				$td->appendElement('plaintext', array(), (!empty($row[$key]) ? $row[$key] : 'Admin' ) );
+				$td->appendElement('plaintext', array(), (!empty($row[$key]) ? $row[$key] : 'Admin' ), true );
 			break;
 			case 'attrgrp_name':
-				$td->appendElement('plaintext', array(), CommonHelper::displayNotApplicable($adminLangId, $row[$key]));
+				$td->appendElement('plaintext', array(), CommonHelper::displayNotApplicable($adminLangId, $row[$key]), true);
 			break;
 			case 'product':
 				$td->appendElement('plaintext', array(), ($row['product_seller_id']) ? 'Custom' : 'Catalog' );
 			break;
 			case 'product_approved':
 				$approveUnApproveArr = Product::getApproveUnApproveArr($adminLangId);
-				$td->appendElement('plaintext', array(), $approveUnApproveArr[$row[$key]] );
+				$td->appendElement('plaintext', array(), $approveUnApproveArr[$row[$key]], true );
 			break;
 			case 'product_active':
 				$active = "";
@@ -125,7 +125,7 @@ foreach ($arr_listing as $sn => $row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

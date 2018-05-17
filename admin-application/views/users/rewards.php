@@ -34,10 +34,10 @@
 								$td->appendElement('plaintext', array(),FatDate::format($row[$key]));
 							break;													
 							case 'urp_comments':								
-								$td->appendElement('plaintext', array(), nl2br($row[$key]));
+								$td->appendElement('plaintext', array(), nl2br($row[$key]), true);
 							break;						
 							default:
-								$td->appendElement('plaintext', array(), $row[$key]);
+								$td->appendElement('plaintext', array(), $row[$key], true);
 							break;
 						}
 					}

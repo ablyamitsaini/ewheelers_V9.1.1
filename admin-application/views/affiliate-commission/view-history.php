@@ -39,7 +39,7 @@
 								$td->appendElement('plaintext', array(), FatDate::format($row[$key]),true);
 							break;									
 							default:
-								$td->appendElement('plaintext', array(), CommonHelper::displayText($row[$key]));
+								$td->appendElement('plaintext', array(), CommonHelper::displayText($row[$key]), true);
 							break;
 						}
 					}

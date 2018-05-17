@@ -113,12 +113,20 @@ class QuestionnairesSearch extends SearchBase {
 	}
 	
 	public function addDateFromCondition( $dateFrom ){
+		
+		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		
 		if( $dateFrom != '' ){
 			$this->addCondition('questionnaire_start_date', '>=', $dateFrom. ' 00:00:00');
 		}
 	}
 	
 	public function addDateToCondition( $dateTo ){
+		
+		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
+		$dateTo = date('Y-m-d', strtotime( $dateTo ));
+		
 		if( $dateTo != '' ){
 			$this->addCondition('questionnaire_end_date', '<=', $dateTo. ' 23:59:59');
 		}

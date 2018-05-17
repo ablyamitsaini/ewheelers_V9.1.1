@@ -32,7 +32,7 @@
 								$td = $tr->appendElement('td');
 								switch ($key){																		
 									case 'credential_username':
-									$td->appendElement('plaintext', array(),$row[$key]);
+									$td->appendElement('plaintext', array(),$row[$key], true);
 									break;
 									case 'couponhistory_amount':
 									$td->appendElement('plaintext', array(),CommonHelper::displayMoneyFormat($row[$key]));
@@ -41,7 +41,7 @@
 									$td->appendElement('plaintext', array(), FatDate::format($row[$key]),true);
 									break;												
 									default:
-									$td->appendElement('plaintext', array(), $row[$key]);
+									$td->appendElement('plaintext', array(), $row[$key], true);
 									break;
 								}
 							}

@@ -30,7 +30,7 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'ppoint_type':
-				$td->appendElement('plaintext', array(), $policyPointTypeArr[$row['ppoint_type']]);
+				$td->appendElement('plaintext', array(), $policyPointTypeArr[$row['ppoint_type']], true);
 			break;
 			case 'ppoint_active':
 					$active = "";

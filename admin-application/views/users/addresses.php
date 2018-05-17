@@ -48,7 +48,7 @@
 							break;
 							case 'ua_is_default':
 								$str = ($row['ua_is_default']== 1)? Labels::getLabel('LBL_Yes', $adminLangId) : Labels::getLabel('LBL_No', $adminLangId);
-								$td->appendElement('plaintext', array(), $str);
+								$td->appendElement('plaintext', array(), $str, true);
 							break;	
 							case 'action':								
 								$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
@@ -64,7 +64,7 @@
 								}
 							break;							
 							default:
-								$td->appendElement('plaintext', array(), $row[$key]);
+								$td->appendElement('plaintext', array(), $row[$key], true);
 							break;
 						}
 					}

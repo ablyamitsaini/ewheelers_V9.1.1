@@ -41,7 +41,7 @@
 						$td->appendElement('plaintext', array(), $statusArr[$row[$key]],true);
 					break;							
 					default:
-						$td->appendElement('plaintext', array(), $row[$key]);
+						$td->appendElement('plaintext', array(), $row[$key], true);
 					break;
 				}
 			}

@@ -47,7 +47,7 @@ foreach ($arr_listing as $sn=>$row){
 				break;
 			case 'post_published':
 				$postStatusArr = applicationConstants::getBlogPostStatusArr($adminLangId);
-				$td->appendElement('plaintext', array(), $postStatusArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $postStatusArr[$row[$key]], true);
 			break;
 			case 'child_count':
 				if($row[$key]==0){
@@ -72,7 +72,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

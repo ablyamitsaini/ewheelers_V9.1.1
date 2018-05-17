@@ -128,7 +128,7 @@ $(document).delegate('.bg-language-js','change',function(){
 						shopLangForm(t.shopId , t.langId);
 						return;
 					}
-					shopForm();		
+					returnAddressForm();		
 				});
 			});	
 		});

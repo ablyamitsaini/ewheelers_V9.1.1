@@ -35,7 +35,6 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'shippingapi_active':
-				/* $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]]); */
 				$active = "active";
 				if( !$row['shippingapi_active'] ) {
 					$active = '';
@@ -75,7 +74,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

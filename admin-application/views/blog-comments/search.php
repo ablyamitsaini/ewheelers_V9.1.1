@@ -31,14 +31,14 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), FatDate::format($row['bpcomment_added_on'] , true));
 			break;
 			case 'bpcomment_author_name':
-				$td->appendElement('plaintext', array(),CommonHelper::displayName($row[$key]) );
+				$td->appendElement('plaintext', array(),CommonHelper::displayName($row[$key]), true );
 			break;
 			case 'bpcomment_approved':
 				$statusArr = applicationConstants::getBlogCommentStatusArr($adminLangId);
-				$td->appendElement('plaintext', array(), $statusArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $statusArr[$row[$key]], true);
 			break;
 			case 'post_title':
-				$td->appendElement('plaintext', array(), CommonHelper::displayName($row[$key]));
+				$td->appendElement('plaintext', array(), CommonHelper::displayName($row[$key]), true);
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
@@ -57,7 +57,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

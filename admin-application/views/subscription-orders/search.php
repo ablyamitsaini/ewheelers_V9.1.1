@@ -63,7 +63,7 @@ foreach ($ordersList as $sn=>$row){
 				$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SubscriptionOrders','view',array($row['order_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),Labels::getLabel('LBL_View_Order_Detail',$adminLangId), true);								
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

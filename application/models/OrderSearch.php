@@ -42,12 +42,20 @@ class OrderSearch extends SearchBase {
 	}
 	
 	public function addDateFromCondition( $dateFrom ){
+		
+		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		
 		if( $dateFrom != '' ){
 			$this->addCondition('o.order_date_added', '>=', $dateFrom. ' 00:00:00');
 		}
 	}
 	
 	public function addDateToCondition( $dateTo ){
+		
+		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
+		$dateTo = date('Y-m-d', strtotime( $dateTo ));
+		
 		if( $dateTo != '' ){
 			$this->addCondition('o.order_date_added', '<=', $dateTo. ' 23:59:59');
 		}

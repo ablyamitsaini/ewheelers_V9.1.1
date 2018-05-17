@@ -12,15 +12,15 @@
 		$e = $th->appendElement('th', array(), $val,true);
 	}
 	$sr_no = 0;
-	foreach ($arr_listing as $sn=>$row){ 
+	foreach ($arr_listing as $sn=>$row){
 		$sr_no++;
 		$tr = $tbl->appendElement('tr');
 
 		foreach ($arr_flds as $key=>$val){
 			$td = $tr->appendElement('td');
-			switch ($key){																		
+			switch ($key){
 				case 'credential_username':
-				$td->appendElement('plaintext', array(),$row[$key]);
+				$td->appendElement('plaintext', array(),$row[$key], true);
 				break;
 				case 'couponhistory_amount':
 				$td->appendElement('plaintext', array(),CommonHelper::displayMoneyFormat($row[$key]));
@@ -29,7 +29,7 @@
 				$td->appendElement('plaintext', array(), FatDate::format($row[$key]),true);
 				break;												
 				default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 				break;
 			}
 		}

@@ -35,7 +35,7 @@ foreach ($arr_listing as $sn=>$row){
 				'<i class="ion-eye icon"></i>',true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

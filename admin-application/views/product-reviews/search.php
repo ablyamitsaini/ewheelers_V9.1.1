@@ -29,7 +29,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			
 			case 'spreview_status':
-				$td->appendElement('plaintext', array(), $reviewStatus[$row[$key]]);
+				$td->appendElement('plaintext', array(), $reviewStatus[$row[$key]], true);
 			break;
 			
 			case 'sprating_rating':
@@ -69,7 +69,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

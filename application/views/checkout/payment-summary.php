@@ -6,7 +6,8 @@
 		<li>
 			<div class="boxwhite">
 				<p><?php echo Labels::getLabel('LBL_Reward_Point_in_your_account', $siteLangId); ?>
-				<strong><?php echo UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?></strong></p>
+				<strong><?php echo UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?></strong>
+				(<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())));?>)</p>
 			</div>
 		</li>
 	</ul>	

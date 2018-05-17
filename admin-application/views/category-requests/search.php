@@ -26,15 +26,15 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'scategoryreq_identifier':
 				if($row['scategoryreq_name']!=''){
-					$td->appendElement('plaintext', array(), $row['scategoryreq_name']);
+					$td->appendElement('plaintext', array(), $row['scategoryreq_name'], true);
 					$td->appendElement('br', array());
-					$td->appendElement('plaintext', array(), '('.$row[$key].')');
+					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 			break;		
 			case 'scategoryreq_status':
-				$td->appendElement('plaintext', array(), $statusArr[$row[$key]]);
+				$td->appendElement('plaintext', array(), $statusArr[$row[$key]], true);
 			break;		
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"));
@@ -44,7 +44,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

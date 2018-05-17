@@ -57,7 +57,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), CommonHelper::displayText($row[$key]));
+				$td->appendElement('plaintext', array(), CommonHelper::displayText($row[$key]), true);
 			break;
 		}
 	}

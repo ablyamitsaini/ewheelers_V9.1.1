@@ -76,7 +76,7 @@ foreach ($arr_listing as $sn=>$row){
 			case 'credential_verified':				
 				$yesNoArr = applicationConstants::getYesNoArr($adminLangId);
 				$str = isset($row[$key])?$yesNoArr[$row[$key]]:'';
-				$td->appendElement('plaintext',array(),$str);
+				$td->appendElement('plaintext',array(),$str, true);
 			break;				 
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
@@ -110,7 +110,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

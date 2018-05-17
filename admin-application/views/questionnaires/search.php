@@ -37,11 +37,11 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'questionnaire_identifier':
 				if($row['questionnaire_name']!=''){
-					$td->appendElement('plaintext', array(), $row['questionnaire_name']);
+					$td->appendElement('plaintext', array(), $row['questionnaire_name'], true);
 					$td->appendElement('br', array());
-					$td->appendElement('plaintext', array(), '('.$row[$key].')');
+					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 			break;						
 			case 'action':
@@ -68,7 +68,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

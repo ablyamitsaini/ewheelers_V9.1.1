@@ -24,11 +24,11 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'filter_identifier':
 				if($row['filter_name']!=''){
-					$td->appendElement('plaintext', array(), $row['filter_name']);
+					$td->appendElement('plaintext', array(), $row['filter_name'], true);
 					$td->appendElement('br', array());
-					$td->appendElement('plaintext', array(), '('.$row[$key].')');
+					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 				break;						
 			case 'action':
@@ -42,7 +42,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

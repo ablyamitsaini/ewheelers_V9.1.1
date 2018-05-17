@@ -95,12 +95,20 @@ class OrderReturnRequestSearch extends SearchBase {
 	}
 	
 	public function addDateFromCondition( $dateFrom ){
+		
+		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		
 		if( $dateFrom != '' ){
 			$this->addCondition('orrequest_date', '>=', $dateFrom. ' 00:00:00');
 		}
 	}
 	
 	public function addDateToCondition( $dateTo ){
+		
+		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
+		$dateTo = date('Y-m-d', strtotime( $dateTo ));
+		
 		if( $dateTo != '' ){
 			$this->addCondition('orrequest_date', '<=', $dateTo. ' 23:59:59');
 		}

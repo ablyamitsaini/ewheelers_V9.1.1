@@ -25,10 +25,7 @@ foreach ($arr_listing as $sn=>$row){
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
-			break;
-			// case 'state_active':
-				// $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]]);
-			// break;		
+			break;		
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
 				if($canEdit){

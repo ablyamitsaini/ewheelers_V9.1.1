@@ -29,11 +29,11 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'filtergroup_identifier':
 				if($row['filtergroup_name']!=''){
-					$td->appendElement('plaintext', array(), $row['filtergroup_name']);
+					$td->appendElement('plaintext', array(), $row['filtergroup_name'], true);
 					$td->appendElement('br', array());
-					$td->appendElement('plaintext', array(), '('.$row[$key].')');
+					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 				break;
 			case 'filtergroup_active':
@@ -46,8 +46,8 @@ foreach ($arr_listing as $sn=>$row){
 					  <span data-off="'. Labels::getLabel('LBL_Active', $adminLangId) .'" data-on="'. Labels::getLabel('LBL_Inactive', $adminLangId) .'" class="switch-labels"></span>
 					  <span class="switch-handles"></span>
 					</label>';
-					$td->appendElement('plaintext', array(), $str,true);
-			break;			
+					$td->appendElement('plaintext', array(), $str, true);
+			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"));
 				if($canEdit){
@@ -62,7 +62,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

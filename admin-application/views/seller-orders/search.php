@@ -45,7 +45,7 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($amt, true, true) );
 			break;
 			case 'op_status_id':
-				$td->appendElement('plaintext', array(), $row['orderstatus_name']);
+				$td->appendElement('plaintext', array(), $row['orderstatus_name'], true);
 			break;
 			case 'order_date_added':
 				$td->appendElement('plaintext',array(),FatDate::format($row[$key],true,true,
@@ -73,7 +73,7 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

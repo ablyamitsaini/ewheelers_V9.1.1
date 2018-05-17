@@ -57,7 +57,7 @@ $frmOptions->setFormTagAttribute('onsubmit', 'submitOptionForm(this); return(fal
 									
 									default:
 										if(!isset($row[$key])){ break;}
-										$td->appendElement('plaintext', array(), $row[$key]);
+										$td->appendElement('plaintext', array(), $row[$key], true);
 									break;
 								}
 							}

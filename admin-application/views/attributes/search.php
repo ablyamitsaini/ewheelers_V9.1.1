@@ -35,7 +35,7 @@ foreach ($arr_listing as $sn=>$row){
 				$li->appendElement('a', array('href'=> CommonHelper::generateUrl('Attributes','manageAttributes',array($row['attrgrp_id'])),'title'=>Labels::getLabel('LBL_Manage_Attributes',$adminLangId),'class'=>'button small green'),'<i class="ion-navicon-round icon"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

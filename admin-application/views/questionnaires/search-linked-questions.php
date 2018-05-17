@@ -38,7 +38,7 @@ foreach ($arr_listing as $sn=>$row){
 					$td->appendElement('plaintext', array(), $row['question_title'].'<br/>('.$row['question_identifier'].')',true);
 				}
 				else{
-					$td->appendElement('plaintext', array(), $row['question_identifier']);
+					$td->appendElement('plaintext', array(), $row['question_identifier'], true);
 				}
 			break;					
 			case 'action':
@@ -50,7 +50,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}

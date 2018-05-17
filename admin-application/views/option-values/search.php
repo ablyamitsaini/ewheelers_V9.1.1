@@ -28,11 +28,11 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'optionvalue_identifier':
 				if($row['optionvalue_name']!=''){
-					$td->appendElement('plaintext', array(), $row['optionvalue_name']);
+					$td->appendElement('plaintext', array(), $row['optionvalue_name'], true);
 					$td->appendElement('br', array());
-					$td->appendElement('plaintext', array(), '('.$row[$key].')');
+					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				}else{
-					$td->appendElement('plaintext', array(), $row[$key]);
+					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 				break;						
 			case 'action':
@@ -53,7 +53,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), $row[$key]);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 		}
 	}
