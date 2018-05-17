@@ -91,11 +91,14 @@
                       <?php if( count( $orders ) > 0 ){
 								foreach( $orders as $orderId => $row ){
 									$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($row['op_id']) );	
+									$prodOrBatchUrl = 'javascript:void(0)';
 									if( $row['op_is_batch'] ){
 										$prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($row['op_selprod_id']));
 										$prodOrBatchImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','BatchProduct', array($row['op_selprod_id'],$siteLangId, "SMALL"),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg');
 								   } else {
-										$prodOrBatchUrl = CommonHelper::generateUrl('Products','view',array($row['op_selprod_id']));
+										if(Product::verifyProductIsValid($row['op_selprod_id']) == true){
+											$prodOrBatchUrl = CommonHelper::generateUrl('Products','view',array($row['op_selprod_id']));
+										}
 										$prodOrBatchImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($row['selprod_product_id'], "SMALL", $row['op_selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg');
 								   }
 									/* $prodName = ''; 

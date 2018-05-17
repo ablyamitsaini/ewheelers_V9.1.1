@@ -54,8 +54,10 @@
         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
       </tr>
       <?php }?>
+	  
       <?php if(!empty($cartSummary['cartRewardPoints'])){
 		 $appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']);
+		 die($appliedRewardPointsDiscount);
 		 $netAmount = $cartSummary['orderNetAmount'] - $appliedRewardPointsDiscount;
 		?>
      <tr>
@@ -63,6 +65,7 @@
        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::rewardPointDiscount(abs($netAmount),$cartSummary['cartRewardPoints'])); ?></td>
      </tr>
      <?php } ?>
+	 
       <tr>
         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></td>
