@@ -637,7 +637,7 @@ class ProductCategory extends MyAppModel{
 			return false;
 	} 
 
-    public  function getCategoryTreeForSearch( $siteLangId,$categories,&$globalCatTree = array() ){
+    public  function getCategoryTreeForSearch( $siteLangId,$categories,&$globalCatTree = array(),$attr = array() ){
 		if($categories){
 			
 			$remainingCatCods =  $categories;
@@ -645,18 +645,27 @@ class ProductCategory extends MyAppModel{
 			unset($remainingCatCods[0]);
 			$remainingCatCods = array_values($remainingCatCods);
 			$catId = FatUtility::int($catId);
-			$globalCatTree[$catId]['prodcat_name'] = self::getProductCategoryName($catId,$siteLangId);
-			$globalCatTree[$catId]['prodcat_id'] = $catId;
+			if(!empty($attr) && is_array($attr)){
+				$prodCatSrch = new ProductCategorySearch( $siteLangId );
+				$prodCatSrch->addMultipleFields( array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code') );
+				$prodCatSrch->addCondition('prodcat_id','=',$catId);
+				$rs = $prodCatSrch->getResultSet();
+				$rows = FatApp::getDb()->fetch($rs);
+				$globalCatTree[$catId] = $rows;
+			}else{
+				$globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name');
+				$globalCatTree[$catId]['prodcat_id'] = $catId;
+			}
 			//$globalCatTree[$catId]['prodcat_id']['children'] = '';
 			if(count($remainingCatCods)>0)
-			self::getCategoryTreeForSearch($siteLangId,$remainingCatCods,$globalCatTree[$catId]['children'] );
+			self::getCategoryTreeForSearch($siteLangId,$remainingCatCods,$globalCatTree[$catId]['children'],$attr );
 
 		}
 
 
 	}
 
-	public  function getCategoryTreeArr($siteLangId,$categoriesDataArr){
+	public  function getCategoryTreeArr($siteLangId,$categoriesDataArr, $attr = array()){
 
 		foreach($categoriesDataArr as $categoriesData){
 			
@@ -671,8 +680,17 @@ class ProductCategory extends MyAppModel{
 
 				$this->categoryTreeArr [$parentId] = array();
 			}
-			$this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name');
-			$this->categoryTreeArr [$parentId]['prodcat_id'] =  FatUtility::int($prodCats[0]);
+			if(!empty($attr) && is_array($attr)){
+				$prodCatSrch = new ProductCategorySearch( $siteLangId );
+				$prodCatSrch->addMultipleFields( $attr );
+				$prodCatSrch->addCondition('prodcat_id','=',FatUtility::int($prodCats[0]));
+				$rs = $prodCatSrch->getResultSet();
+				$rows = FatApp::getDb()->fetch($rs);
+				$this->categoryTreeArr [$parentId] = $rows;
+			}else{
+				$this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name');
+				$this->categoryTreeArr [$parentId]['prodcat_id'] =  FatUtility::int($prodCats[0]); 
+			}
 
 			if(!isset($this->categoryTreeArr [$parentId]['children'])){
 				$this->categoryTreeArr [$parentId]['children'] = array();
