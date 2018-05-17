@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$shopLangFrm->setFormTagAttribute('onsubmit', 'setupShopLang(this); return(false);');
+/* $shopLangFrm->setFormTagAttribute('onsubmit', 'setupShopLang(this); return(false);'); */
 $shopLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
 
 $shopLangFrm->developerTags['colClassPrefix'] = 'col-md-';
