@@ -87,24 +87,7 @@ class UserAuthentication extends FatModel {
 		if ($user){
 			return true;
 		}		
-       /*  $authRow = self::checkLoginTokenInDB($token);
-
-        if (strlen($token) != self::MD5_HASH_LENGTH_FOR_PWDS || empty($authRow)) {
-            self::clearLoggedUserLoginCookie();
-            return false;
-        }
-
-        $browser = CommonHelper::userAgent();
-        if (strtotime($authRow['uauth_expiry']) < strtotime('now')) {
-            self::clearLoggedUserLoginCookie();
-            return false;
-        }
-
-        $ths = new UserAuthentication();
-        if ($ths->loginByAppToken($authRow)) {
-            return true;
-        } */
-
+       
         return false;
     }
 	

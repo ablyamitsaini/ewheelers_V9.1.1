@@ -593,15 +593,32 @@ class MobileAppApiController extends MyAppController {
 	}
 	
 	function get_category_structure(){		
-		$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
+		$productCategory = new productCategory;
+		$prodSrchObj = new ProductCategorySearch(  $this->siteLangId );
+		$categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, $prodSrchObj,true );
+		$categoriesDataArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code')); 
+		//$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
+		$categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
 		if(empty($categoriesDataArr)){
 			$categoriesDataArr =  array();
 		}
-		//commonhelper::printarray($categoriesDataArr);
-		//die();
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$categoriesDataArr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
+	private function resetKeyValues($arr){
+		$result = array();
+		foreach($arr as $key=>$val){
+			$result[$key] = $val;
+			$childernArr = array();
+			if(!empty($val['children'])){
+				$array = array_values($val['children']);
+				$childernArr = $this->resetKeyValues($array);
+			}
+			$result[$key]['children'] = $childernArr;
+		}
+		return $result;
+	}
+			
 	function category($id){
 		$id = intVal($id);
 		if( $id == 0 ){
@@ -2337,27 +2354,26 @@ class MobileAppApiController extends MyAppController {
 		$rs = $srch->getResultSet();
 		$threadDetails = FatApp::getDb()->fetchAll($rs);
 		
-		if($threadDetails == false){
+		/* if($threadDetails == false){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_ACCESS',$this->siteLangId));
-		}
+		} */
 		
 		$threadObj = new Thread($threadId);
 		if(!$threadObj->markUserMessageRead($threadId , $userId)){
 			FatUtility::dieJsonError($threadObj->getError());
 		}
 		$thread_message_records = array();
-		foreach($threadDetails as $mkey=>$mval){
-			$profile_images_arr=  array(
-										"message_from_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_from_user_id'],'ORIGINAL')),
-										"message_to_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_to_user_id'],'ORIGINAL')),
-										"message_timestamp"=>strtotime($mval['message_date'])
-										);
-			$thread_message_records[] = array_merge($mval,$profile_images_arr);
+		if(!empty($threadDetails)){
+			foreach($threadDetails as $mkey=>$mval){
+				$profile_images_arr=  array(
+											"message_from_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_from_user_id'],'ORIGINAL')),
+											"message_to_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_to_user_id'],'ORIGINAL')),
+											"message_timestamp"=>strtotime($mval['message_date'])
+											);
+				$thread_message_records[] = array_merge($mval,$profile_images_arr);
+			}
 		}
-		/*commonhelper::printarray($thread_message_records);
-		die();*/
-		//commonhelper::printarray($thread_message_records);
-		//die();
+		
 		$api_thread_elements = array('thread_details'=>$thread_message_records,'thread_types'=>Thread::getThreadTypeArr($this->siteLangId));
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_thread_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 
@@ -2440,10 +2456,14 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
 		
+		$ua_id = 0;
+		if(array_key_exists('ua_id',$post)){
+			$ua_id = FatUtility::int($post['ua_id']);
+			unset($post['ua_id']);
+		}
 		$ua_state_id = FatUtility::int($post['ua_state_id']);
-		$post['ua_state_id'] = $ua_state_id;
-		$ua_id = FatUtility::int($post['ua_id']);
-		unset($post['ua_id']);
+		$post['ua_state_id'] = $ua_state_id;	
+		
 		$addressObj = new UserAddress($ua_id);
 		$data_to_be_save = $post;
 		$data_to_be_save['ua_user_id'] = $userId;
@@ -5714,8 +5734,8 @@ class MobileAppApiController extends MyAppController {
 			$count++;
 		}
 		
-		$return_request['canEscalateRequest'] = $canEscalateRequest;
-		$return_request['canApproveReturnRequest'] = $canApproveReturnRequest;
+		$return_request['canEscalateRequest'] = ($canEscalateRequest)?1:0;
+		$return_request['canApproveReturnRequest'] = ($canApproveReturnRequest)?1:0;
 		$return_request['request'] = $request;
 		$return_request['vendorReturnAddress'] = $vendorReturnAddress;
 		$return_request['returnRequestTypeArr']= $returnRequestTypeDispArr;

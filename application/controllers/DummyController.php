@@ -194,11 +194,12 @@ class DummyController extends MyAppController {
 	}
 	
 	function index(){ 
-		$sortOrder = 'desc';
-		if(!in_array($sortOrder,array('asc','desc'))){
-			$sortOrder = 'asc';
+		$post = array();
+		
+		if(array_key_exists('ua_id',$post)){
+			echo $ua_id = FatUtility::int($post['ua_id']);
+			
 		}
-		echo $sortOrder;
 		exit;
 		
 		$arr = array(
