@@ -38,11 +38,12 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		$discountTotal = $discountTotal + abs($discountedPrice);
 		$total =  $total + $opCustomerBuyingPrice + $shippingPrice;
 		
-		if($val["op_is_batch"]){
+		$prodOrBatchUrl = 'javascript:void(0)';
+		/* if($val["op_is_batch"]){
 			$prodOrBatchUrl  = CommonHelper::generateFullUrl('products','batch',array($val["op_selprod_id"]),"/");
 		}else{
 			$prodOrBatchUrl  = CommonHelper::generateFullUrl('products','view',array($val["op_selprod_id"]),"/");
-		}
+		} */
 		
 		$str .= '<tr>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">

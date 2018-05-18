@@ -3400,7 +3400,7 @@ class SellerController extends LoggedUserController {
 		}
 		
 		if($type == 'CATALOG_PRODUCT'){
-			$fld = $frm->addTextBox(Labels::getLabel('LBL_Brand/Manfacturer', $this->siteLangId),'brand_name');		
+			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Brand/Manfacturer', $this->siteLangId),'brand_name');		
 			$fld->htmlAfterField = '<br/><small class="text--small"><a href="javascript:void(0)" onClick="addBrandReqForm(0);">'. Labels::getLabel('LBL_Brand_not_found?_select_other_and_request_for_brand', $this->siteLangId).'</a></small>';
 			$frm->addHiddenField('','product_brand_id');			
 		}

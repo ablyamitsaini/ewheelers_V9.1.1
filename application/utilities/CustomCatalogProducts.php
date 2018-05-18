@@ -461,7 +461,7 @@ trait CustomCatalogProducts{
 	public function setUpCustomSellerProduct(){
 		$this->canAddCustomCatalogProduct();
 		$preqId = FatApp::getPostedData('selprod_product_id',FatUtility::VAR_INT,0);
-		if(!$preqId){			
+		if(!$preqId){		
 			FatUtility::dieWithError( Labels::getLabel('MSG_Invalid_Request',$this->siteLangId));		
 		}
 		
