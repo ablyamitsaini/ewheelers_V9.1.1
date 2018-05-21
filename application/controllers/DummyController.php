@@ -71,9 +71,9 @@ class DummyController extends MyAppController {
 	
 	function pushTest(){
 		
-		$firebase_push_notification_server_key = "AAAAZA6vRK8:APA91bHlfYreFEpCK18CSBahNCe7e4pU-3c3925duLwhxXvxAGbWF5m4K7U4oMKWht_BBCAZ6VC6v8dGIBnR14_X-lNxJQwiORNUgeM3Djm9ZvUQJRk_n3hjkuAG2D8-iVAqtN2IC1GU";
+		$firebase_push_notification_server_key = "AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR";
 		//$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
-		$deviceToken = "cR2s9J34awU:APA91bFitjF45nb6QWxGU8saVSI4u2HIt-yKzelEu2qbbvgswCjMO_1-Db7rOTEUx8mEZsTd1m2VYT0SZ3ZV-N7AiOOqpQMWv-WM0TJO0-1rI66yjg2H92qf_xoFi6lb5IAStD4geiV6";
+		$deviceToken = "d6yoX4jrr_w:APA91bE40fdSPxRjwYL6JSKEsVJNsybNmNzbz5_dZh_Csd5LU24_gLq7lp8JRC6uxRsMtDdJ8Mk8N-8GhQXWnGpFdYtZwIKy5Za9bGI6N1bH93ltFc8_HmDnRskznBeeOWD5yKhXb0Iu";
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		//$url = 'https://gcm-http.googleapis.com/gcm/send';
 		//https://android.googleapis.com/gcm/send'

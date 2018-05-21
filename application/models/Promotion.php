@@ -27,9 +27,10 @@ class Promotion extends MyAppModel{
 	const MONTHLY = 2;
 	const DURATION_NOT_AVAILABALE = 4;
 	
-	const REDIRECT_SHOP=1;
-	const REDIRECT_PRODUCT=2;
-	const REDIRECT_CATEGORY=3;
+	const REDIRECT_SHOP = 1;
+	const REDIRECT_PRODUCT = 2;
+	const REDIRECT_CATEGORY = 3;
+	
 	public function __construct($id = 0) {
 		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id );
 		$this->objMainTableRecord->setSensitiveFields ( array (
@@ -105,36 +106,40 @@ class Promotion extends MyAppModel{
 			break;
 			case PROMOTION::TYPE_BANNER:
 				return $bPromotionCost;
-			break;
-			
-		}
-		
+			break;			
+		}		
 	}
 	
 	function getPromotionLastChargedEntry($promotionId = 0)
 	{
 		$promotionId = FatUtility::int($promotionId);
-		if ($promotionId < 1 ) return array();
+		if (1 > $promotionId ){
+			return array();
+		}	
 		$srch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
 		$srch->addCondition('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'promotion_id', '=', $promotionId);
 		$srch->addOrder('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'id', 'desc');
 		
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
-		if ($row == false) return array();
-		else return $row;
+		if ($row == false){
+			return array();
+		}else{ 
+			return $row;
+		}
 	}
 	
 	function addUpdatePromotionCharges($data,$langId)
-	{
-		
+	{		
 		$pchargeUserId = FatUtility::int($data['user_id']);
 		$pchargePromotionId = FatUtility::int($data['promotion_id']);
 		$chargedAmount = $data['total_cost'];
-		if (($pchargeUserId < 1 ) || ($pchargePromotionId <1) || ($chargedAmount <=0 )) return array();
-		
+		if (($pchargeUserId < 1 ) || ($pchargePromotionId <1) || ($chargedAmount <=0 )){
+			return array();
+		}	
 		
 		$record = new TableRecord(Promotion::DB_TBL_CHARGES);
+		
 		$dataToSave = array();
 		$dataToSave['pcharge_user_id'] = $pchargeUserId;
 		$dataToSave['pcharge_promotion_id'] = $pchargePromotionId;
@@ -146,6 +151,7 @@ class Promotion extends MyAppModel{
 		$dataToSave['pcharge_start_date'] = $data['start_click_date'];
 		$dataToSave['pcharge_end_date'] = $data['end_click_date'];
 		$record->assignValues($dataToSave);
+		
 		if ($record->addNew()) {
 			$this->charge_log_id = $record->getId();
 			
@@ -159,8 +165,7 @@ class Promotion extends MyAppModel{
 			
 			$txnArray["utxn_comments"] = sprintf(Labels::getLabel('M_Charges_for_promotion_from_duration',$langId) , $formatted_request_value, $dataToSave['pcharge_start_date'] , $dataToSave['pcharge_end_date'] , $dataToSave['pcharge_clicks']);
 			if ($txnId = $transObj->addTransaction($txnArray)) {
-				$emailNotificationObj = new EmailHandler();
-				
+				$emailNotificationObj = new EmailHandler();			
 				
 				$emailNotificationObj->sendTxnNotification($txnId, $langId);
 			}
@@ -185,8 +190,7 @@ class Promotion extends MyAppModel{
 		);
 	}
 	
-	static function isUserClickCountable($userId,$promotionId,$ip,$session){
-		
+	static function isUserClickCountable($userId,$promotionId,$ip,$session){	
 		
 		$srch = new SearchBase(PROMOTION::DB_TBL_CLICKS);
 		$srch->addCondition(PROMOTION::DB_TBL_CLICKS_PREFIX.'promotion_id','=',$promotionId);
@@ -206,7 +210,7 @@ class Promotion extends MyAppModel{
 		if($langId == 0){ 
 			trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.',$this->commonLangId), E_USER_ERROR);				
 		}
-		$arr=array(
+		$arr = array(
 			
 			applicationConstants::YES => Labels::getLabel('LBL_Approved',$langId),
 			
@@ -215,10 +219,7 @@ class Promotion extends MyAppModel{
 	}
 	
 	static public function getPromotionWalleToBeCharged($user_id){
-		
-		
-		
-		
+			
 		$prmSrch = new PromotionSearch();
 		$prmSrch->joinPromotionCharge();
 		$prmSrch->addGroupBy('promotion_id');
@@ -247,16 +248,13 @@ class Promotion extends MyAppModel{
 			$promotionClicks =FatApp::getDb()->fetch($rs);
 			
 			
-			if($promotionClicks){
-				
+			if($promotionClicks){				
 				// Get User Wallet Balance 
 				$userId = $pVal['promotion_user_id'];
 				/* $txnObj = new Transactions();
 				$accountSummary = $txnObj->getTransactionSummary($userId); */		
 				//$balance = $accountSummary['total_earned'] - $accountSummary['total_used'];
-				
-				
-			
+							
 				if($promotionClicks){
 					$promotionCharges += $promotionClicks['total_cost'];
 				}

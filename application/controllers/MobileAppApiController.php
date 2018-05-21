@@ -198,7 +198,7 @@ class MobileAppApiController extends MyAppController {
 		'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews','selprod_sold_count','ufp_id','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty') );
 		$orderBy = 'ASC';	
 		
-		/* collections fetching/processing [ */
+		/* Collections fetching/processing [ */
 		
 		//$collectionCache =  FatCache::get('collectionCache',CONF_HOME_PAGE_CACHE_TIME,'.txt');
 		$collectionCache = false;
@@ -4583,6 +4583,7 @@ class MobileAppApiController extends MyAppController {
 	function submit_order_cancellation_request(){
 		$user_id = $this->getAppLoggedUserId();
 		$post = FatApp::getPostedData();
+		
 		if( empty($post['ocrequest_message']) || empty($post['child_order_id']) || empty($post['ocrequest_ocreason_id']) ){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
