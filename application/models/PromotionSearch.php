@@ -60,10 +60,14 @@ class PromotionSearch extends SearchBase{
 		$srch->doNotCalculateRecords();
 		
 		if($fromDate != ''){
+			$fromDate = FatDate::convertDatetimeToTimestamp($fromDate);
+			$fromDate = date('Y-m-d', strtotime( $fromDate ));
 			$srch->addCondition( 'i.plog_date', '>=', $fromDate.' 00:00:00' );
 		}
 		
 		if($todate != ''){
+			$toDate = FatDate::convertDatetimeToTimestamp($toDate);
+			$toDate = date('Y-m-d', strtotime( $toDate ));
 			$srch->addCondition( 'i.plog_date', '<=', $todate.' 23:59:59' );
 		}
 		

@@ -3859,12 +3859,12 @@ class MobileAppApiController extends MyAppController {
 			$cond->attachCondition('concat("TN-" ,lpad( utxn.`utxn_id`,7,0))','like','%'.$keyword.'%','OR' , true);
 		}
 		
-		$fromDate = FatApp::getPostedData('date_from');
+		$fromDate = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
 		if( !empty($fromDate) ) {
 			$cond = $srch->addCondition('utxn.utxn_date','>=',$fromDate);
 		}
 		
-		$toDate = FatApp::getPostedData('date_to');
+		$toDate = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
 		if( !empty($toDate) ) {
 			$cond = $srch->addCondition('cast( utxn.`utxn_date` as date)','<=',$toDate ,'and' , true);
 		}
@@ -4556,12 +4556,12 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCondition('op_invoice_number', '=', $op_invoice_number);
 		}
 		
-		$ocrequest_date_from = FatApp::getPostedData('ocrequest_date_from', null, '');
+		$ocrequest_date_from = FatApp::getPostedData('ocrequest_date_from', FatUtility::VAR_DATE, '');
 		if( !empty($ocrequest_date_from) ){
 			$srch->addCondition('ocrequest_date', '>=', $ocrequest_date_from. ' 00:00:00');
 		}
 		
-		$ocrequest_date_to = FatApp::getPostedData('ocrequest_date_to', null, '');
+		$ocrequest_date_to = FatApp::getPostedData('ocrequest_date_to', FatUtility::VAR_DATE, '');
 		if( !empty($ocrequest_date_to) ){
 			$srch->addCondition('ocrequest_date', '<=', $ocrequest_date_to. ' 23:59:59');
 		}
@@ -4685,12 +4685,12 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCondition('orrequest_status', '=', $orrequest_status);
 		}
 		
-		$orrequest_date_from = FatApp::getPostedData('orrequest_date_from', null, '');
+		$orrequest_date_from = FatApp::getPostedData('orrequest_date_from', FatUtility::VAR_DATE, '');
 		if( !empty($orrequest_date_from) ){
 			$srch->addCondition('orrequest_date', '>=', $orrequest_date_from. ' 00:00:00');
 		}
 		
-		$orrequest_date_to = FatApp::getPostedData('orrequest_date_to', null, '');
+		$orrequest_date_to = FatApp::getPostedData('orrequest_date_to', FatUtility::VAR_DATE, '');
 		if( !empty($orrequest_date_to) ){
 			$srch->addCondition('orrequest_date', '<=', $orrequest_date_to. ' 23:59:59');
 		}
@@ -5810,12 +5810,12 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCondition('orrequest_type', '=', $orrequest_type);
 		}
 		
-		$orrequest_date_from = FatApp::getPostedData('orrequest_date_from', null, '');
+		$orrequest_date_from = FatApp::getPostedData('orrequest_date_from', FatUtility::VAR_DATE, '');
 		if( !empty($orrequest_date_from) ){
 			$srch->addCondition('orrequest_date', '>=', $orrequest_date_from. ' 00:00:00');
 		}
 		
-		$orrequest_date_to = FatApp::getPostedData('orrequest_date_to', null, '');
+		$orrequest_date_to = FatApp::getPostedData('orrequest_date_to', FatUtility::VAR_DATE, '');
 		if( !empty($orrequest_date_to) ){
 			$srch->addCondition('orrequest_date', '<=', $orrequest_date_to. ' 23:59:59');
 		}
@@ -5873,12 +5873,12 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCondition('op_invoice_number', '=', $op_invoice_number);
 		}
 		
-		$ocrequest_date_from = FatApp::getPostedData('ocrequest_date_from', null, '');
+		$ocrequest_date_from = FatApp::getPostedData('ocrequest_date_from', FatUtility::VAR_DATE, '');
 		if( !empty($ocrequest_date_from) ){
 			$srch->addCondition('ocrequest_date', '>=', $ocrequest_date_from. ' 00:00:00');
 		}
 		
-		$ocrequest_date_to = FatApp::getPostedData('ocrequest_date_to', null, '');
+		$ocrequest_date_to = FatApp::getPostedData('ocrequest_date_to', FatUtility::VAR_DATE, '');
 		if( !empty($ocrequest_date_to) ){
 			$srch->addCondition('ocrequest_date', '<=', $ocrequest_date_to. ' 23:59:59');
 		}

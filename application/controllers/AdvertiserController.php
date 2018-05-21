@@ -481,8 +481,8 @@ class AdvertiserController extends LoggedUserController {
 			$srch->addCondition('promotion_type','=',$type);
 		}
 		
-		$dateFrom = FatApp::getPostedData('date_from', null, '');
-		$dateTo = FatApp::getPostedData('date_to', null, '');
+		$dateFrom = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
+		$dateTo = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
 		
 		if( !empty($dateFrom) ) {
 			$srch->addDateFromCondition($dateFrom, $dateTo);
