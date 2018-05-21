@@ -1,13 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="section-head"><?php if( $cartHasPhysicalProduct ){ ?>5.<?php } else { echo '4.'; } ?> <?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></div>
-<?php if(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())>0){ ?>
+<?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
+	  if($rewardPoints > 0){ ?>
 	<div class="list__selection list__selection--even">
 	<ul>
 		<li>
 			<div class="boxwhite">
 				<p><?php echo Labels::getLabel('LBL_Reward_Point_in_your_account', $siteLangId); ?>
-				<strong><?php echo UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?></strong>
-				(<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())));?>)</p>
+				<strong><?php echo $rewardPoints; ?></strong>
+				(<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())));?>) <?php echo Labels::getLabel('LBL_You_can_use_upto_', $siteLangId); ?> <strong><?php echo min(min($rewardPoints,CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal'])),FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0)); ?></strong></p>
 			</div>
 		</li>
 	</ul>	
