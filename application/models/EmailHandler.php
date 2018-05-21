@@ -114,7 +114,7 @@ class EmailHandler extends FatModel {
 		}
 		return true;	
 	}
-		
+	
 	private static function sendMail( $to, $subject, $body, $extra_headers = '',$tpl_name = '', $langId ) {	
 		$db = FatApp::getDb();
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
