@@ -22,6 +22,8 @@ foreach ($arr_flds as $val) {
 }
 
 $sr_no = $page==1?0:$pageSize*($page-1);
+
+/* CommonHelper::printArray($arr_listing); die; */
 foreach ($arr_listing as $sn=>$row){ 
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
@@ -42,7 +44,7 @@ foreach ($arr_listing as $sn=>$row){
 			case 'blocation_promotion_cost':
 			
 			case 'banner_promotion_cost':
-				$cost = Promotion::getPromotionCostPerClick($row['promotion_type'],$row['blocation_promotion_cost']);
+				$cost = Promotion::getPromotionCostPerClick($row['promotion_type'],$row['blocation_id']);
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($cost,true,true));
 			break;
 			case 'promotion_budget':

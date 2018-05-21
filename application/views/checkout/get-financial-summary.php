@@ -57,7 +57,7 @@
 	  
       <?php if(!empty($cartSummary['cartRewardPoints'])){
 		 $appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']);
-		 die($appliedRewardPointsDiscount);
+		 /* die($appliedRewardPointsDiscount); */
 		 $netAmount = $cartSummary['orderNetAmount'] - $appliedRewardPointsDiscount;
 		?>
      <tr>

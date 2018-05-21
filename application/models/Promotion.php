@@ -91,7 +91,7 @@ class Promotion extends MyAppModel{
 		FatApp::getDb()->insertFromArray(static::DB_TBL_LOGS,$bannerLogData,true,array(),$onDuplicateBannerLogData);		
 	}
 	
-	public static function getPromotionCostPerClick($promotionType, $bPromotionCost = 0){
+	public static function getPromotionCostPerClick($promotionType, $blocation_id = 0){
 		
 		Switch ($promotionType){
 			case PROMOTION::TYPE_SHOP:
@@ -104,7 +104,15 @@ class Promotion extends MyAppModel{
 				return FatApp::getConfig('CONF_CPC_SLIDES');
 			break;
 			case PROMOTION::TYPE_BANNER:
-				return $bPromotionCost;
+				$srch = Banner::getBannerLocationSrchObj();
+				$srch->addCondition('blocation_id', '=', $blocation_id);
+				$srch->addFld('blocation_promotion_cost');
+				$rs = $srch->getResultSet();
+				$row = FatApp::getDb()->fetch($rs);
+				if(array_key_exists('blocation_promotion_cost',$row)){
+					return $row['blocation_promotion_cost'];
+				}
+				return 0;
 			break;
 			
 		}
