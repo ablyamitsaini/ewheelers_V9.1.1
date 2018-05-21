@@ -76,7 +76,7 @@ class BuyerController extends LoggedUserController {
 	
 		/* Total Purchases [*/			
 		/*]*/
-		
+		/* CommonHelper::printArray($orders); die; */
 		$this->set('data', $user->getProfileData());
 		$this->set('orders', $orders);
 		$this->set('ordersCount', $srch->recordCount());

@@ -92,9 +92,13 @@ class Thread extends MyAppModel{
 			$srch->addCondition('message_is_unread','=',$type);
 		}
 		if($startDate){
+			$startDate = FatDate::convertDatetimeToTimestamp($startDate);
+			$startDate = date('Y-m-d', strtotime( $startDate ));
 			$srch->addCondition('ttm.message_date', '>=', $startDate. ' 00:00:00');
 		}
 		if($endDate){
+			$endDate = FatDate::convertDatetimeToTimestamp($endDate);
+			$endDate = date('Y-m-d', strtotime( $endDate ));
 			$srch->addCondition('ttm.message_date', '<=', $endDate. ' 23:59:59');
 		}
 		

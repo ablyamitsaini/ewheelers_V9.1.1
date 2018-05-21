@@ -1203,7 +1203,7 @@ class CheckoutController extends MyAppController{
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function useRewardPoints(){	
+	public function useRewardPoints(){
 		$post = FatApp::getPostedData();
 	
 		if( false == $post ){

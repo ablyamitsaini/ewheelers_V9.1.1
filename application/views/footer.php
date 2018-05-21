@@ -147,6 +147,10 @@
 <?php if(FatApp::getConfig('CONF_ENABLE_LIVECHAT',FatUtility::VAR_STRING,'')){ echo FatApp::getConfig('CONF_LIVE_CHAT_CODE',FatUtility::VAR_STRING,''); }?>
 <?php if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){ echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,''); }?>
 
+<script type="text/javascript" src="<?php
+$fl = 'js/variables.js';
+echo FatUtility::generateUrl ( 'JsCss', 'js', array (), '', false ). '&f=' . rawurlencode ( $fl );
+?>"></script>
 </body>
 
 </html>

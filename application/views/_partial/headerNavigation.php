@@ -16,11 +16,11 @@
 		$noOfCharAllowedInNav = 90;	
 		$rightNavCharCount = 5;
 		if( !$isUserLogged ){
-			$rightNavCharCount = $rightNavCharCount + strlen(Labels::getLabel('LBL_Sign_In', $siteLangId));
+			$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel('LBL_Sign_In', $siteLangId));
 		}else{			
-			$rightNavCharCount = $rightNavCharCount + strlen(Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName);
+			$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName);
 		}		
-		$rightNavCharCount = $rightNavCharCount + strlen(Labels::getLabel("LBL_Cart", $siteLangId)); 
+		$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel("LBL_Cart", $siteLangId)); 
 		$noOfCharAllowedInNav = $noOfCharAllowedInNav - $rightNavCharCount;
 		
 		$navLinkCount = 0;
@@ -29,7 +29,7 @@
 			foreach( $headerNavigation as $nav ){
 				if( !$nav['pages'] ){ break;}
 				foreach($nav['pages'] as $link){
-					$noOfCharAllowedInNav = $noOfCharAllowedInNav - strlen($link['nlink_caption']);
+					$noOfCharAllowedInNav = $noOfCharAllowedInNav - mb_strlen($link['nlink_caption']);
 					if($noOfCharAllowedInNav < 0){
 						break;
 					}

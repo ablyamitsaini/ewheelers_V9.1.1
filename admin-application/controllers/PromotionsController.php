@@ -41,7 +41,7 @@ class PromotionsController extends AdminBaseController {
 		$srch->joinBannersAndLocation($this->adminLangId,Promotion::TYPE_BANNER,'b');
 		$srch->joinPromotionsLogForCount();		
 		$srch->addOrder( 'promotion_id', 'DESC');	
-		$srch->addMultipleFields(array('pr.promotion_id','ifnull(pr_l.promotion_name,pr.promotion_identifier)as promotion_name','pr.promotion_type','pr.promotion_budget','pr.promotion_duration','promotion_approved','bbl.blocation_promotion_cost','pri.impressions','pri.clicks','pri.orders'));		
+		$srch->addMultipleFields(array('pr.promotion_id','ifnull(pr_l.promotion_name,pr.promotion_identifier)as promotion_name','pr.promotion_type','pr.promotion_budget','pr.promotion_duration','promotion_approved','bbl.blocation_promotion_cost','pri.impressions','pri.clicks','pri.orders','bbl.blocation_id'));		
 		$srch->addCondition('pr.promotion_deleted','=',applicationConstants::NO);
 		
 		$date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '') ;

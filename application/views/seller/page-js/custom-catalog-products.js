@@ -2,6 +2,13 @@ $(document).ready(function(){
 	searchCustomCatalogProducts(document.frmSearchCustomCatalogProducts);
 });
 
+$(document).delegate('.option-js','change',function(){
+	var option_id = $(this).val();
+	var product_id = $('#frmCustomCatalogProductImage input[name=preq_id]').val();
+	var lang_id = $('.language-js').val();
+	productImages(product_id,option_id,lang_id);
+});
+
 (function() {
 	var runningAjaxReq = false;
 	var dv = '#listing';

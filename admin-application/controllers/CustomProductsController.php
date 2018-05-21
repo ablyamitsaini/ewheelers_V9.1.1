@@ -198,12 +198,13 @@ class CustomProductsController extends AdminBaseController {
 			FatUtility::dieWithError($this->str_invalid_request);
 		}
 		
-		$productReqRow = ProductRequest::getAttributesById( $preqId);
+		$productReqRow = ProductRequest::getAttributesById( $preqId );
 		if(!$productReqRow){
 			FatUtility::dieWithError($this->str_invalid_request);
 		}
 		
-		$productReqRow = array_merge($productReqRow,json_decode($productReqRow['preq_content'],true));	
+		$productReqRow = array_merge($productReqRow,json_decode($productReqRow['preq_content'],true));
+		
 		if($productReqRow['preq_sel_prod_data'] !=''){
 			$productReqRow = array_merge($productReqRow,json_decode($productReqRow['preq_sel_prod_data'],true));
 		}

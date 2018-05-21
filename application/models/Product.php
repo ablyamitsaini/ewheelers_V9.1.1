@@ -1027,4 +1027,24 @@ class Product extends MyAppModel{
 		return true;
 	}
 	
+	public static function verifyProductIsValid($selprod_id){
+		
+		$prodSrch = new ProductSearch();
+		$prodSrch->setDefinedCriteria();
+		$prodSrch->joinProductToCategory();
+		$prodSrch->joinSellerSubscription();
+		$prodSrch->addSubscriptionValidCondition();
+		$prodSrch->addMultipleFields(array('selprod_id','product_id'));
+		$prodSrch->addCondition( 'selprod_id', '=', $selprod_id );
+		$prodSrch->doNotLimitRecords();
+		$productRs = $prodSrch->getResultSet();
+		$product = FatApp::getDb()->fetch($productRs);
+		
+		if($product == false){
+			return false;
+		}
+		return true;
+		
+	}
+	
 }

@@ -7,7 +7,8 @@ $(document).ready(function(){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			//i.e for selectbox
 			$(elem).change(function(){
-				searchProducts(frm);
+				/* searchProducts(frm); */
+				searchProducts(frm,undefined,undefined,1);
 			});
 		}
 	});

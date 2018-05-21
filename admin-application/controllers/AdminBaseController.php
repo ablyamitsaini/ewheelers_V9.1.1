@@ -306,7 +306,7 @@ class AdminBaseController extends FatController {
 		$pTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Product_Type',$this->adminLangId), 'product_type', Product::getProductTypes($langId),Product::PRODUCT_TYPE_PHYSICAL,array('id'=>'product_type'),'');
 		
 		if($type == 'REQUESTED_CATALOG_PRODUCT'){
-			$fld = $frm->addTextBox(Labels::getLabel('LBL_Brand/Manfacturer', $this->adminLangId),'brand_name');					
+			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Brand/Manfacturer', $this->adminLangId),'brand_name');					
 			//$fld1 = $frm->addTextBox(Labels::getLabel('LBL_Category',$this->adminLangId),'category_name');
 			
 			$frm->addHiddenField('','product_brand_id');
@@ -591,7 +591,7 @@ class AdminBaseController extends FatController {
 			$fld->requirements()->setRequired();
 		}			
 		
-		$frm->addDateField( Labels::getLabel('LBL_Date_Available', $this->adminLangId), 'selprod_available_from', FatDate::format(date('d-M-Y'),false, true, FatApp::getConfig('conf_timezone')), array('readonly' => 'readonly'));
+		$frm->addDateField( Labels::getLabel('LBL_Date_Available', $this->adminLangId), 'selprod_available_from', '' , array('readonly' => 'readonly'))->requirements()->setRequired();
 		
 		/* $frm->addDateTimeField( Labels::getLabel('LBL_Date_Available', $this->adminLangId), 'selprod_available_from', '' , array('readonly' => 'readonly')); */
 		
@@ -612,7 +612,7 @@ class AdminBaseController extends FatController {
 		$fld1 = $frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
 		return $frm;
 	}
-		
+	
 	protected function renderJsonError($msg = ''){
 		$this->set('msg', $msg);
 		$this->_template->render(false, false, 'json-error.php', false, false);

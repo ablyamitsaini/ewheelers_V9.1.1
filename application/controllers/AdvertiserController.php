@@ -481,14 +481,15 @@ class AdvertiserController extends LoggedUserController {
 			$srch->addCondition('promotion_type','=',$type);
 		}
 		
-		$dateFrom = FatApp::getPostedData('date_from', null, '');
+		$dateFrom = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
+		$dateTo = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
+		
 		if( !empty($dateFrom) ) {
-			$srch->addDateFromCondition($dateFrom);
+			$srch->addDateFromCondition($dateFrom, $dateTo);
 		}
 		
-		$dateTo = FatApp::getPostedData('date_to', null, '');
 		if( !empty($dateTo) ) {
-			$srch->addDateToCondition($dateTo);
+			$srch->addDateToCondition($dateTo, $dateFrom);
 		}
 		
 		$srch->addMultipleFields(array('promotion_id','promotion_budget','promotion_duration','promotion_type','IFNULL(promotion_name,promotion_identifier) as promotion_name','promotion_start_date','promotion_end_date','promotion_start_time','promotion_end_time','promotion_active','promotion_approved','promotion_active'));

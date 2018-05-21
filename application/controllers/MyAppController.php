@@ -436,6 +436,5 @@ class MyAppController extends FatController {
 		$this->_template->addJs('js/listing-functions.js');
 		$this->_template->addCss('css/ion.rangeSlider.css');
 		$this->_template->addCss('css/ion.rangeSlider.skinHTML5.css');
-
 	}
 }

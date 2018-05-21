@@ -60,10 +60,14 @@ class PromotionSearch extends SearchBase{
 		$srch->doNotCalculateRecords();
 		
 		if($fromDate != ''){
+			$fromDate = FatDate::convertDatetimeToTimestamp($fromDate);
+			$fromDate = date('Y-m-d', strtotime( $fromDate ));
 			$srch->addCondition( 'i.plog_date', '>=', $fromDate.' 00:00:00' );
 		}
 		
 		if($todate != ''){
+			$toDate = FatDate::convertDatetimeToTimestamp($toDate);
+			$toDate = date('Y-m-d', strtotime( $toDate ));
 			$srch->addCondition( 'i.plog_date', '<=', $todate.' 23:59:59' );
 		}
 		
@@ -114,22 +118,34 @@ class PromotionSearch extends SearchBase{
 		}
 	}
 	
-	public function addDateFromCondition($dateFrom){
+	public function addDateFromCondition($dateFrom, $dateTo){
 		
 		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
 		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
-		
-		if( $dateFrom != '' ){
-			$this->addCondition('pr.promotion_start_date', '>=', $dateFrom. ' 00:00:00');
-		}
-	}
-	
-	public function addDateToCondition($dateTo){
-		
 		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
 		$dateTo = date('Y-m-d', strtotime( $dateTo ));
 		
-		if( $dateTo != '' ){
+		if( $dateFrom != '' && $dateTo == ''){			
+			$cnd = $this->addCondition('pr.promotion_start_date', '>=', $dateFrom. ' 00:00:00');
+			$cnd->attachCondition('pr.promotion_end_date', '>=', $dateFrom. ' 00:00:00');
+		}else if( $dateFrom != ''){
+			$this->addCondition('pr.promotion_start_date', '>=', $dateFrom. ' 00:00:00');
+		}
+		
+	}
+	
+	public function addDateToCondition($dateTo, $dateFrom){
+		
+		$dateTo = FatDate::convertDatetimeToTimestamp($dateTo);
+		$dateTo = date('Y-m-d', strtotime( $dateTo ));
+		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
+		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
+		
+		if( $dateTo != '' && $dateFrom == ''){
+			$cnd = $this->addCondition('pr.promotion_end_date', '<=', $dateTo. ' 23:59:59');
+			$cnd->attachCondition('pr.promotion_start_date', '<=', $dateTo. ' 23:59:59');
+			
+		}else if( $dateTo != ''){
 			$this->addCondition('pr.promotion_end_date', '<=', $dateTo. ' 23:59:59');
 		}
 	}

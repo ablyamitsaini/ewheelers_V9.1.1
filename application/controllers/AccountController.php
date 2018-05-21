@@ -509,12 +509,12 @@ class AccountController extends LoggedUserController {
 			$cond->attachCondition('concat("TN-" ,lpad( utxn.`utxn_id`,7,0))','like','%'.$keyword.'%','OR' , true);
 		}
 		
-		$fromDate = FatApp::getPostedData('date_from');
+		$fromDate = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
 		if( !empty($fromDate) ) {
 			$cond = $srch->addCondition('utxn.utxn_date','>=',$fromDate);
 		}
 		
-		$toDate = FatApp::getPostedData('date_to');
+		$toDate = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
 		if( !empty($toDate) ) {
 			$cond = $srch->addCondition('cast( utxn.`utxn_date` as date)','<=',$toDate ,'and' , true);
 		}

@@ -1433,7 +1433,7 @@ body.fixed .top_bar {
         -webkit-filter: opacity(100%) blur(3px);
     }
     100% {
-        -webkit-filter: opacity(100%) blur(0px);
+        -webkit-filter: opacity(100%) blur(1px);
     }
 }
 
