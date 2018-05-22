@@ -118,7 +118,17 @@ class PromotionSearch extends SearchBase{
 		}
 	}
 	
-	public function addDateFromCondition($dateFrom, $dateTo){
+	public function addDateCondition($dateFrom, $dateTo){
+		if(!empty($dateTo)){
+			$this->addCondition('pr.promotion_start_date', '<=', $dateTo);
+		}
+		
+		if(!empty($dateFrom)){
+			$this->addCondition('pr.promotion_end_date', '>=', $dateFrom);
+		}
+	}
+	
+	/* public function addDateFromCondition($dateFrom, $dateTo){
 		
 		$dateFrom = FatDate::convertDatetimeToTimestamp($dateFrom);
 		$dateFrom = date('Y-m-d', strtotime( $dateFrom ));
@@ -148,7 +158,7 @@ class PromotionSearch extends SearchBase{
 		}else if( $dateTo != ''){
 			$this->addCondition('pr.promotion_end_date', '<=', $dateTo. ' 23:59:59');
 		}
-	}
+	} */
 	
 	public function addPromotionTypeCondition($type){
 		if( $type != '' ){

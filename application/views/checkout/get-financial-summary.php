@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<?php if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
+<?php /* CommonHelper::printArray($cartSummary); die; */ if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
 
 <div class="applied-coupon"> <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?></span> <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink "><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
 <?php } else { ?>
@@ -57,11 +57,10 @@
 	  
       <?php if(!empty($cartSummary['cartRewardPoints'])){
 		 $appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']);
-		 $netAmount = $cartSummary['orderNetAmount'] - $appliedRewardPointsDiscount;
 		?>
      <tr>
        <td class="text-left"><?php echo Labels::getLabel('LBL_Reward_point_discount', $siteLangId); ?></td>
-       <td class="text-right"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::rewardPointDiscount(abs($netAmount),$cartSummary['cartRewardPoints'])); ?></td>
+       <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($appliedRewardPointsDiscount); ?></td>
      </tr>
      <?php } ?>
 	 
