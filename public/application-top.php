@@ -26,7 +26,6 @@ $hrs = floor($mins / 60);
 $mins -= $hrs * 60;
 $offset = sprintf('%+d:%02d', $hrs*$sgn, $mins);
 FatApp::getDb()->query("SET time_zone = '".$offset."'");
-
 /* ] */
 
 

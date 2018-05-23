@@ -320,7 +320,7 @@ class ProductsController extends AdminBaseController {
 
 		$prodObj = new Product( $product_id );
 		$productLangData = $prodObj->getAttributesByLangId( $lang_id, $product_id );
-
+		
 		if( $productLangData ){
 			$productLangFrm->fill($productLangData);
 		}
