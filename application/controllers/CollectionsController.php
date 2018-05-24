@@ -109,6 +109,7 @@ class CollectionsController extends MyAppController {
 				}
 				$productSrchTempObj = clone $productSrchObj;
 				$productSrchTempObj->addCondition( 'selprod_id', 'IN', array_keys( $productIds ) );
+				$productSrchTempObj->addOrder('in_stock','DESC');
 				$productSrchTempObj->addOrder( 'theprice', $orderBy );
 				$productSrchTempObj->joinSellers( );
 				$productSrchTempObj->joinSellerSubscription($this->siteLangId );
@@ -121,7 +122,8 @@ class CollectionsController extends MyAppController {
 				$collections = $db->fetchAll( $rs );
 				/* commonHelper::printArray($collections); die; */
 				/* ] */
-				
+				$this->set('pageCount', $productSrchTempObj->pages());
+				$this->set('recordCount', $productSrchTempObj->recordCount());
 				unset( $tempObj );
 				unset( $productSrchTempObj );
 				$this->set('collections',$collections);
@@ -187,7 +189,8 @@ class CollectionsController extends MyAppController {
 				$prodSrchObj = new ProductSearch( $this->siteLangId );
 				$prodSrchObj->setDefinedCriteria();			
 				$prodSrchObj->setPageSize($totalProdCountToDisplay);
-				$prodSrchObj->joinProductToCategory( );		
+				$prodSrchObj->joinProductToCategory( );	
+				$prodSrchObj->addOrder('in_stock','DESC');
 				$prodSrchObj->addCondition( 'selprod_deleted', '=', applicationConstants::NO );				
 				foreach($collections as $val){
 					$prodSrch = clone $prodSrchObj;

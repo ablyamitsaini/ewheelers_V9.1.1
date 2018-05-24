@@ -2374,7 +2374,7 @@ body.fixed .top_bar {
     fill: #b3b3b3;
 }
 
-.social li .svg {
+.social li .svg, .social li img {
     width: 30px;
     height: auto;
 }
