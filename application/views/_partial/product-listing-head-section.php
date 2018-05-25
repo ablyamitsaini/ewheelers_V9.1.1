@@ -1,7 +1,7 @@
 <div class="item-yk-head">
-  <?php if(isset($selprod_condition) && $selprod_condition) { ?>
-  <!--<div class="item-yk-head-lable"><?php /* echo Product::getConditionArr($siteLangId)[$product['selprod_condition']]; */?></div>-->
-  <?php }?>
+  <?php /* if(isset($selprod_condition) && $selprod_condition) { ?>
+  <div class="item-yk-head-lable"><?php echo Product::getConditionArr($siteLangId)[$product['selprod_condition']];?></div>
+  <?php } */ ?>
   <div class="item-yk-head-category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
   <div class="item-yk-head-title"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>"><?php echo $product['selprod_title'];?> </a></div>
   <?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>

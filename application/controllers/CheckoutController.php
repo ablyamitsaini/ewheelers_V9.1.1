@@ -1090,13 +1090,21 @@ class CheckoutController extends MyAppController{
 			FatApp::redirectUser( CommonHelper::generateUrl('Buyer', 'viewOrder', array($order_id) ) );
 		}
 		$WalletPaymentForm = $this->getWalletPaymentForm( $this->siteLangId );
+		$confirmForm = $this->getConfirmFormWithNoAmount( $this->siteLangId );
 		$userWalletBalance = User::getUserBalance($userId,true);
-			
+
 		if( (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'],FatUtility::VAR_FLOAT) ) && $cartSummary['cartWalletSelected'] ){ 
 			$WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay','Charge', array($order_id)) );
 			$WalletPaymentForm->fill( array('order_id' => $order_id) );
 			$WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
 			$WalletPaymentForm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId) );
+		}
+		
+		if($cartSummary['orderNetAmount'] <= 0) {
+			$confirmForm->addFormTagAttribute('action', CommonHelper::generateUrl('ConfirmPay','Charge', array($order_id)) );
+			$confirmForm->fill( array('order_id' => $order_id) );
+			/* $confirmForm->setFormTagAttribute('onsubmit', 'confirmOrderWithoutPayment(this); return(false);'); */
+			$confirmForm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Confirm_Order', $this->siteLangId) );
 		}
 		
 		$redeemRewardFrm = $this->getRewardsForm($this->siteLangId);	
@@ -1116,6 +1124,7 @@ class CheckoutController extends MyAppController{
 		$this->set( 'orderInfo', $orderInfo );
 		$this->set('userWalletBalance', $userWalletBalance );
 		$this->set('WalletPaymentForm', $WalletPaymentForm );
+		$this->set('confirmForm', $confirmForm );
 		$this->_template->render(false, false );
 	}
 	
@@ -1257,7 +1266,7 @@ class CheckoutController extends MyAppController{
 		$this->_template->render(false, false, 'json-success.php');	
 	}
 	
-	public function ConfirmOrder(){ 
+	public function ConfirmOrder(){
 		$order_type = FatApp::getPostedData('order_type', FatUtility::VAR_INT, 0);
 		
 		/* Loading Money to wallet[ */
@@ -1503,6 +1512,12 @@ class CheckoutController extends MyAppController{
 	
 	private function getWalletPaymentForm( $langId ){
 		$frm = new Form('frmWalletPayment');
+		$frm->addHiddenField('','order_id');
+		return $frm;
+	}
+	
+	private function getConfirmFormWithNoAmount( $langId ){
+		$frm = new Form('frmConfirmForm');
 		$frm->addHiddenField('','order_id');
 		return $frm;
 	}
