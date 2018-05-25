@@ -29,9 +29,9 @@
 		</div>
 	<?php }?>
 	</div>
-<?php } ?>
+<?php } /* CommonHelper::printArray($cartSummary); die; */ ?>
 
-<?php if( $userWalletBalance > 0 ){ ?>
+<?php if( $userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0){ ?>
 <div id="wallet" class="list__selection list__selection--even">
 	<label>
 		<span class="checkbox">
@@ -50,8 +50,8 @@
 		<ul>
 			<li>
 				<div class="boxwhite">
-				<p><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?></p>
-				<h5><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></h5>
+					<p><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?></p>
+					<h5><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></h5>
 				</div>
 			</li>
 			<li>
@@ -82,11 +82,10 @@
 				$WalletPaymentForm->developerTags['fld_default_col'] = 12;
 				echo $WalletPaymentForm->getFormHtml(); ?>
 			</li>
-			
 			<script type="text/javascript">
 				function confirmOrder(frm){
 					var data = fcom.frmData(frm);
-					var action = $(frm).attr('action')
+					var action = $(frm).attr('action');
 					fcom.updateWithAjax(fcom.makeUrl('Checkout', 'ConfirmOrder'), data, function(ans) {
 						$(location).attr("href", action);
 					});
@@ -98,6 +97,32 @@
 	<?php } ?>
 </div>
 <?php } ?>
+
+
+<?php if($cartSummary['orderNetAmount'] <= 0) { ?>
+<div id="wallet" class="list__selection list__selection--even">
+	<div class="listing--grids">
+		<ul>
+			<li>
+				<div class="boxwhite">
+					<p><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?></p>
+					<h5><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></h5>
+				</div>
+			</li>
+			<li>
+				<?php 
+				$btnSubmitFld = $confirmForm->getField('btn_submit');
+				$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
+				
+				$confirmForm->developerTags['colClassPrefix'] = 'col-md-';
+				$confirmForm->developerTags['fld_default_col'] = 12;
+				echo $confirmForm->getFormHtml(); ?>
+			</li>
+		</ul>
+	</div>
+</div>
+<?php }?>
+
 
 
 <div class="make-payment-wrapper <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>">
@@ -140,7 +165,7 @@ $(document).ready(function(){
      if($(tabsId + ' LI A.is-active').length > 0){ 
          loadTab( $(tabsId + ' LI A.is-active') );
      }
-     $(tabsId + ' A').click(function(){ 
+     $(tabsId + ' A').click(function(){
           if( $(this).hasClass('is-active')){ return false; }
           $(tabsId + ' LI A.is-active').removeClass('is-active');
 		  $('li').removeClass('is-active');
@@ -160,6 +185,6 @@ function loadTab( tabObj ){
 	/* $(containerId).load( tabObj.attr('href'), function(){
 		//$(containerId).fadeIn('fast');
 	}); */
-}	
+}
 </script>  
 <?php } ?>
