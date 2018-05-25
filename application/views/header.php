@@ -6,6 +6,13 @@ if( isset($includeEditor) && $includeEditor == true ){
 }else{
 	$extendEditorJs	= 'false';
 }
+
+if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+	$themeActive = 'true';
+}else{
+	$themeActive = 'false';
+}
+	
 array_walk($jsVariables, function( &$item1, $key ) { $item1 = html_entity_decode($item1,ENT_QUOTES,'UTF-8');});
 $commonHead1Data = array(
 	'siteLangId'		=>	$siteLangId,
@@ -13,6 +20,7 @@ $commonHead1Data = array(
 	'jsVariables'		=>	$jsVariables,
 	'extendEditorJs'    =>  $extendEditorJs,
 	'themeDetail'       =>  $themeDetail,
+	'themeActive'       =>  $themeActive,
 );
 
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data, false);

@@ -40,7 +40,7 @@ var cart = {
 		});
 	},
 	
-	remove: function (key, page,dv){ 
+	remove: function (key, page,dv){
 		if(confirm( langLbl.confirmRemove )){
 			var data = 'key=' + key ;
 			if(page=='checkout')

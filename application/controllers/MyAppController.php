@@ -106,7 +106,9 @@ class MyAppController extends FatController {
 		if(CommonHelper::getLayoutDirection() == 'rtl'){
 			$this->_template->addCss('css/style--arabic.css');
 		}
+		
 		$themeId = FatApp::getConfig('CONF_FRONT_THEME',FatUtility::VAR_INT,1);
+		
 		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 			$themeId = $_SESSION['preview_theme'];
 		}
@@ -118,6 +120,16 @@ class MyAppController extends FatController {
 		$this->set('isAppUser' , commonhelper::isAppUser());
 		$this->set('action', $this->action );
 	}
+	
+	/* public function checkisThemePreview(){
+		$themeActive = 0;
+		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+			$themeActive = 1;
+		}
+		$json = array();
+		$json['isThemePreview'] = $themeActive;
+		die(json_encode($json));
+	} */
 
 	public function getStates($countryId , $stateId = 0){
 		$countryId = FatUtility::int($countryId);

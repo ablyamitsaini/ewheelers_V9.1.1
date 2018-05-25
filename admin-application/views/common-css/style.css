@@ -10104,6 +10104,10 @@ body.switchtoggled .color_pallete .pallete_control {
     background: #fff;
 }
 
+table.table.fixed-layout{
+	table-layout: fixed;
+}
+
 
 
 
