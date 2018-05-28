@@ -1235,7 +1235,10 @@ class CheckoutController extends MyAppController{
 		
 		$cartObj = new Cart();
 		$cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-		$rewardPointValues = min(CommonHelper::convertRewardPointToCurrency($rewardPoints),$cartSummary['cartTotal']);
+		
+		$cartTotalWithoutDiscount = $cartSummary['cartTotal'] - $cartSummary["cartDiscounts"]["coupon_discount_total"];
+		
+		$rewardPointValues = min(CommonHelper::convertRewardPointToCurrency($rewardPoints),$cartTotalWithoutDiscount);
 		$rewardPoints = CommonHelper::convertCurrencyToRewardPoint($rewardPointValues);
 		
 		if($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')){

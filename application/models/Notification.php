@@ -86,9 +86,9 @@ class Notification extends MyAppModel {
 			Notification::REPORT_SHOP_NOTIFICATION=>array(Labels::getLabel('user_report_shop_notification',$langId),''),
 			Notification::NOTIFICATION_ABUSIVE_WORD=>array(Labels::getLabel('user_abusive_word_notification',$langId),''),
 			Notification::NEW_SUBSCRIPTION_PURCHASE_NOTIFICATION=>array(Labels::getLabel('user_new_subscription_purchase_notification',$langId),''),
-			Notification::PROMOTION_APPROVAL_NOTIFICATION=>array(Labels::getLabel('user_promotion_approval_notification',$langId),''),
-			Notification::WITHDRAWL_REQUEST_NOTIFICATION=>array(Labels::getLabel('user_withdrawl_request_notification',$langId),''),
-			Notification::NEW_SUPPLIER_APPROVAL_NOTIFICATION=>array(Labels::getLabel('user_supplier_approval_notification',$langId),''),
+			Notification::PROMOTION_APPROVAL_NOTIFICATION=>array(Labels::getLabel('user_promotion_approval_notification',$langId),'promotions'),
+			Notification::WITHDRAWL_REQUEST_NOTIFICATION=>array(Labels::getLabel('user_withdrawl_request_notification',$langId),'withdrawal-requests'),
+			Notification::NEW_SUPPLIER_APPROVAL_NOTIFICATION=>array(Labels::getLabel('user_supplier_approval_notification',$langId),'users/seller-approval-requests'),
 			Notification::NEW_SELLER_APPROVED_NOTIFICATION=>array(Labels::getLabel('user_seller_approved_notification',$langId),''),
 			Notification::ABUSIVE_REVIEW_POSTED_NOTIFICATION=>array(Labels::getLabel('admin_abusive_review_posted_notification',$langId),''),
 			Notification::PRODUCT_REVIEW_NOTIFICATION=>array(Labels::getLabel('admin_Product_review_notification',$langId),''),
@@ -98,7 +98,7 @@ class Notification extends MyAppModel {
 			Notification::ORDER_EMAIL_NOTIFICATION=>array(Labels::getLabel('admin_order_email_notification',$langId),''),
 			Notification::NEW_CUSTOM_CATALOG_REQUEST_NOTIFICATION=>array(Labels::getLabel('admin_custom_catalog_request_notification',$langId),'custom-products'),
 		);
-			
+	
 		return $labelArr;
 	}
 	
