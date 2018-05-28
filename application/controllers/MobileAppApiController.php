@@ -127,8 +127,11 @@ class MobileAppApiController extends MyAppController {
 		
 	}
 	
-	function json_encode_unicode($data) {
+	function json_encode_unicode($data , $convertToType = false) {
 		$data = $this->cleanArray($data);
+		/* if($convertToType){			
+			die(FatUtility::convertToJson($data, JSON_FORCE_OBJECT));
+		} */
 		FatUtility::dieJsonSuccess($data);
 		//die (json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));		
 	}
@@ -596,12 +599,15 @@ class MobileAppApiController extends MyAppController {
 		$productCategory = new productCategory;
 		$prodSrchObj = new ProductCategorySearch(  $this->siteLangId );
 		$categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, $prodSrchObj,true );
+		//echo "<prE>";print_r($categoriesArr);
 		$categoriesDataArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code')); 
+		
 		//$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
 		$categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
 		if(empty($categoriesDataArr)){
 			$categoriesDataArr =  array();
 		}
+		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$categoriesDataArr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
@@ -1748,7 +1754,7 @@ class MobileAppApiController extends MyAppController {
 				'name'=>$user['user_name'],
 				'email'=>$user['credential_email'],
 				'username'=>$user['credential_username'],
-				'phone'=>$user['user_phone'],
+				'phone'=>FatUtility::convertToType($user['user_phone'],FatUtility::VAR_STRING),
 				'dob'=>$user['user_dob'],
 				'city'=>$user['user_city'],
 				'country_id'=>$user['user_country_id'],
@@ -1768,9 +1774,8 @@ class MobileAppApiController extends MyAppController {
 				'products_services'=>$user['user_products_services'],
 			);
 		}
-		
-		//die($this->json_encode_unicode($arr));
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+				
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
 	}
 	
 	public function remove_profile_image(){

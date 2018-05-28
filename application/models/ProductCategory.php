@@ -685,7 +685,7 @@ class ProductCategory extends MyAppModel{
 				$prodCatSrch->addMultipleFields( $attr );
 				$prodCatSrch->addCondition('prodcat_id','=',FatUtility::int($prodCats[0]));
 				$rs = $prodCatSrch->getResultSet();
-				$rows = FatApp::getDb()->fetch($rs);
+				$rows = FatApp::getDb()->fetch($rs);				
 				$this->categoryTreeArr [$parentId] = $rows;
 			}else{
 				$this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name');
@@ -695,7 +695,7 @@ class ProductCategory extends MyAppModel{
 			if(!isset($this->categoryTreeArr [$parentId]['children'])){
 				$this->categoryTreeArr [$parentId]['children'] = array();
 			}
-			productCategory::getCategoryTreeForSearch($siteLangId,$remaingCategories,$this->categoryTreeArr[$parentId]['children']);
+			productCategory::getCategoryTreeForSearch($siteLangId,$remaingCategories,$this->categoryTreeArr[$parentId]['children'],$attr);
 
 		}
 
