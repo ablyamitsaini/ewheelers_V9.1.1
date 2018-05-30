@@ -139,7 +139,7 @@ class AdvertiserController extends LoggedUserController {
 				$row = FatApp::getDb()->fetch( $rs ,'blocation_id');
 				if(!empty($row)){
 					$minBudget = $row['blocation_promotion_cost'];
-				}			
+				}	
 			break;
 			
 			case Promotion::TYPE_SLIDES:
@@ -150,7 +150,7 @@ class AdvertiserController extends LoggedUserController {
 					'slide_type' => Slides::TYPE_PPC,			
 					'slide_active' => applicationConstants::ACTIVE,			
 				);
-				$minBudget = FatApp::getConfig('CONF_CPC_SLIDES',FatUtility::VAR_FLOAT,0);				
+				$minBudget = FatApp::getConfig('CONF_CPC_SLIDES',FatUtility::VAR_FLOAT,0);
 			break;
 			
 			default:

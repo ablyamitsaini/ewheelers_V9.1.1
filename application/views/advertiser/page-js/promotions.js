@@ -25,7 +25,7 @@ $(document).delegate("input[name='promotion_budget']",'blur',function(){
 		$.mbsmessage.close();
 	});
 });
-$(document).delegate("input[name='banner_blocation_id']",'change',function(){
+$(document).delegate("select[name='banner_blocation_id']",'change',function(){
 	$("input[name='promotion_budget']").trigger('blur');
 });
 (function() {

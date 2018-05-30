@@ -13,6 +13,21 @@ $(document).delegate('.display-js','change',function(){
 	var langId = $(".language-js").val();
 	images(promotion_id,langId,screen);
 });
+$(document).delegate("input[name='promotion_budget']",'blur',function(){
+	var frm = document.frmPromotion;
+	var data = fcom.frmData(frm);
+	fcom.ajax(fcom.makeUrl('Promotions', 'checkValidPromotionBudget'), data, function(t) {
+		var ans = $.parseJSON(t);
+		if( ans.status == 0 ){
+			$.mbsmessage( ans.msg,false,'alert alert--danger');
+			return;
+		}
+		$.mbsmessage.close();
+	});
+});
+$(document).delegate("select[name='banner_blocation_id']",'change',function(){
+	$("input[name='promotion_budget']").trigger('blur');
+});
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
