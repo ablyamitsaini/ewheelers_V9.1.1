@@ -5035,6 +5035,11 @@ input.qty {
     margin: 5px 10px;
 }
 
+.remove {
+    margin: 5px;
+	color:red;
+}
+
 .items {
     width: 100%;
     background: #f5f5f5;

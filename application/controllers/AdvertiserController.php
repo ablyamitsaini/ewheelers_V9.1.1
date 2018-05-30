@@ -73,7 +73,9 @@ class AdvertiserController extends LoggedUserController {
 		$promotionApproved = applicationConstants::NO;
 		$bannerData = array();
 		$slidesData = array();
-		
+	
+		$minBudget = 0;
+
 		Switch($post['promotion_type']){
 			case Promotion::TYPE_SHOP:
 				$srch = Shop::getSearchObject(true,$this->siteLangId);
@@ -88,7 +90,8 @@ class AdvertiserController extends LoggedUserController {
 					FatUtility::dieJsonError( Message::getHtml() );	
 				}				
 				$promotion_record_id = $row['shop_id'];
-				$promotionApproved = applicationConstants::YES; 			
+				$promotionApproved = applicationConstants::YES; 
+				$minBudget = FatApp::getConfig('CONF_CPC_SHOP',FatUtility::VAR_FLOAT,0);				
 			break;
 			
 			case Promotion::TYPE_PRODUCT:
@@ -115,7 +118,7 @@ class AdvertiserController extends LoggedUserController {
 				}				
 				$promotion_record_id = $row['selprod_id'];
 				$promotionApproved = applicationConstants::YES; 
-				
+				$minBudget = FatApp::getConfig('CONF_CPC_PRODUCT',FatUtility::VAR_FLOAT,0);
 			break;
 			
 			case Promotion::TYPE_BANNER:
@@ -126,7 +129,17 @@ class AdvertiserController extends LoggedUserController {
 					'banner_target' => applicationConstants::LINK_TARGET_BLANK_WINDOW,
 					'banner_type' => Banner::TYPE_PPC,			
 					'banner_active' => applicationConstants::ACTIVE,			
-				);				
+				);
+				
+				$bannerLocationId = Fatutility::int($post['banner_blocation_id']);
+				$srch = BannerLocation::getSearchObject($this->siteLangId);
+				$srch->addMultipleFields(array('blocation_promotion_cost'));
+				$srch->addCondition('blocation_id', '=', $bannerLocationId);
+				$rs = $srch->getResultSet();
+				$row = FatApp::getDb()->fetch( $rs ,'blocation_id');
+				if(!empty($row)){
+					$minBudget = $row['blocation_promotion_cost'];
+				}			
 			break;
 			
 			case Promotion::TYPE_SLIDES:
@@ -136,13 +149,19 @@ class AdvertiserController extends LoggedUserController {
 					'slide_target' => applicationConstants::LINK_TARGET_BLANK_WINDOW,
 					'slide_type' => Slides::TYPE_PPC,			
 					'slide_active' => applicationConstants::ACTIVE,			
-				);				 
+				);
+				$minBudget = FatApp::getConfig('CONF_CPC_SLIDES',FatUtility::VAR_FLOAT,0);				
 			break;
 			
 			default:
 				Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
 				FatUtility::dieJsonError( Message::getHtml() );	
 			break;
+		}
+		$promotionBudget = Fatutility::float( $post['promotion_budget'] );
+		if($minBudget > $promotionBudget){
+			Message::addErrorMessage( Labels::getLabel("MSG_Budget_should_be_greater_than_CPC", $this->siteLangId) );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
 		/* $bannerData = array(
@@ -1131,12 +1150,12 @@ class AdvertiserController extends LoggedUserController {
 		if(User::isSeller()){
 			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_BANNER, 'eq', 'banner_url', $locIdFldReqObj);
 			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_SHOP, 'eq', 'banner_url', $locIdFldUnReqObj);
-			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_PRODUCT, 'eq', 'banner_url', $locIdFldUnReqObj);
-				
+			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_PRODUCT, 'eq', 'banner_url', $locIdFldUnReqObj);	
 		}
-			$fld = $frm->addTextBox(Labels::getLabel('LbL_Budget'.'_['.commonHelper::getDefaultCurrencySymbol().']',$this->siteLangId),'promotion_budget');
-			$fld->requirements()->setRequired();
-			$fld->requirements()->setFloatPositive(true);
+		
+		$fld = $frm->addTextBox(Labels::getLabel('LbL_Budget'.'_['.commonHelper::getDefaultCurrencySymbol().']',$this->siteLangId),'promotion_budget');
+		$fld->requirements()->setRequired();
+		$fld->requirements()->setFloatPositive(true);
 		
 		$fldDuration = $frm->addSelectBox(Labels::getLabel('LBL_Duration', $this->siteLangId) , 'promotion_duration', Promotion::getPromotionBudgetDurationArr($this->siteLangId), '', array('id'=>'promotion_duration'))->requirements()->setRequired();
 		
@@ -1225,4 +1244,42 @@ class AdvertiserController extends LoggedUserController {
 		$frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Add_Money_to_account',$langId) );
 		return $frm;
 	}
-}	
+	
+	public function checkValidPromotionBudget()
+	{
+		$post = FatApp::getPostedData();
+		$promotionType = Fatutility::int( $post['promotion_type'] );
+		$promotionBudget = Fatutility::float( $post['promotion_budget'] );
+
+		$minBudget = 0;
+		
+		Switch($promotionType){
+			case Promotion::TYPE_SHOP:
+				$minBudget = FatApp::getConfig('CONF_CPC_SHOP',FatUtility::VAR_FLOAT,0);
+			break;
+			case Promotion::TYPE_PRODUCT:
+				$minBudget = FatApp::getConfig('CONF_CPC_PRODUCT',FatUtility::VAR_FLOAT,0);
+			break;
+			case Promotion::TYPE_BANNER:
+				$bannerLocationId = Fatutility::int( $post['banner_blocation_id'] );
+				$srch = BannerLocation::getSearchObject($this->siteLangId);
+				$srch->addMultipleFields(array('blocation_promotion_cost'));
+				$srch->addCondition('blocation_id', '=', $bannerLocationId);
+				$rs = $srch->getResultSet();
+				$row = FatApp::getDb()->fetch( $rs ,'blocation_id');
+				if(!empty($row)){
+					$minBudget = $row['blocation_promotion_cost'];
+				}
+			break;
+			case Promotion::TYPE_SLIDES:
+				$minBudget = FatApp::getConfig('CONF_CPC_SLIDES',FatUtility::VAR_FLOAT,0);
+			break;
+		}
+		
+		if($minBudget > $promotionBudget){
+			Message::addErrorMessage( Labels::getLabel("MSG_Budget_should_be_greater_than_CPC", $this->siteLangId) );
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		FatUtility::dieJsonSuccess(Message::getHtml());
+	}
+}
