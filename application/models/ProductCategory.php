@@ -651,7 +651,9 @@ class ProductCategory extends MyAppModel{
 				$prodCatSrch->addCondition('prodcat_id','=',$catId);
 				$rs = $prodCatSrch->getResultSet();
 				$rows = FatApp::getDb()->fetch($rs);
-				$globalCatTree[$catId] = $rows;
+				foreach($rows as $key=>$val){	
+					$globalCatTree[$catId][$key] = $val;
+				}
 			}else{
 				$globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name');
 				$globalCatTree[$catId]['prodcat_id'] = $catId;
@@ -685,8 +687,10 @@ class ProductCategory extends MyAppModel{
 				$prodCatSrch->addMultipleFields( $attr );
 				$prodCatSrch->addCondition('prodcat_id','=',FatUtility::int($prodCats[0]));
 				$rs = $prodCatSrch->getResultSet();
-				$rows = FatApp::getDb()->fetch($rs);				
-				$this->categoryTreeArr [$parentId] = $rows;
+				$rows = FatApp::getDb()->fetch($rs);
+				foreach($rows as $key=>$val){	
+					$this->categoryTreeArr [$parentId][$key] = $val;
+				}
 			}else{
 				$this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name');
 				$this->categoryTreeArr [$parentId]['prodcat_id'] =  FatUtility::int($prodCats[0]); 

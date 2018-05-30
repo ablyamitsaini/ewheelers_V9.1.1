@@ -295,7 +295,7 @@ class CommonHelper extends FatUtility{
 		if($pricePerItem){
 			$amount = round($amount/$opArr['op_qty'],2);
 		}
-		return $amount;
+		return (float)$amount;
 	}
 	
 	public static function getOrderProductRefundAmtArr($requestRow = array()){

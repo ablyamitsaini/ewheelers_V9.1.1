@@ -54,19 +54,23 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
-		$optionSrch = SellerProduct::getSearchObject();
-		$optionSrch->joinTable( Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', 'sp.selprod_product_id = po.prodoption_product_id','po');
-		$optionSrch->addCondition( 'selprod_id', '=',28 );
-		$optionSrch->addMultipleFields(array('prodoption_option_id'));
-		$optionSrch->doNotCalculateRecords();
-		$optionSrch->doNotLimitRecords();
-		$rs = $optionSrch->getResultSet();
-		$db = FatApp::getDb();
-		while( $row = $db->fetch($rs) ){
-			var_dump($row);	
-			$selProdValidOptionArr[$selprodId][] = $row['prodoption_option_id'];
-		}	
-		var_dump($selProdValidOptionArr); exit;
+		
+		$prodSrchObj = new ProductSearch( $this->siteLangId );
+		$prodSrchObj->setDefinedCriteria();
+		$prodSrchObj->joinProductToCategory();
+		$prodSrchObj->joinSellerSubscription($this->siteLangId ,true);
+		$prodSrchObj->addSubscriptionValidCondition();
+		$prodSrchObj->doNotCalculateRecords();
+		$prodSrchObj->doNotLimitRecords();
+		
+		$catSrch = clone $prodSrchObj;
+		$catSrch->addGroupBy('prodcat_id');
+		
+		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,true );
+		$productCategory = new productCategory;
+		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
+		
+		CommonHelper::printArray($categoriesArr); exit;
 	}
 	
 	function pushTest(){

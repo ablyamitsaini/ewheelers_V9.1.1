@@ -115,7 +115,8 @@ class MobileAppApiController extends MyAppController {
 				if(!is_object($val)){
 					//$arrStr[$key] = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
 					//Commented as \n /new line not working with messages								
-					$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);
+					//$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);					
+					$arrStr[$key] = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $val);					
 				}else{	
 					$arrStr[$key] =  $val;
 				}
@@ -128,10 +129,10 @@ class MobileAppApiController extends MyAppController {
 	}
 	
 	function json_encode_unicode($data , $convertToType = false) {
-		$data = $this->cleanArray($data);
-		/* if($convertToType){			
+		if($convertToType){						
 			die(FatUtility::convertToJson($data, JSON_FORCE_OBJECT));
-		} */
+		}
+		$data = $this->cleanArray($data);
 		FatUtility::dieJsonSuccess($data);
 		//die (json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));		
 	}
@@ -1775,7 +1776,7 @@ class MobileAppApiController extends MyAppController {
 			);
 		}
 				
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));			
 	}
 	
 	public function remove_profile_image(){
@@ -5844,14 +5845,14 @@ class MobileAppApiController extends MyAppController {
 		}
 		
 		$api_return_requests_elements = array(
-													'requests'=>$requests,
-													'total_pages'=>$srch->pages(),
-													'total_records'=>$srch->recordCount(),
-													'returnRequestTypeArr'=>$returnRequestTypeDispArr,
-													'OrderReturnRequestStatusArr'=>OrderReturnRequest::getRequestStatusArr( $this->siteLangId ),
-													'sellerPage'=>true,
-													'buyerPage'=>false
-													);
+											'requests'=>$requests,
+											'total_pages'=>$srch->pages(),
+											'total_records'=>$srch->recordCount(),
+											'returnRequestTypeArr'=>$returnRequestTypeDispArr,
+											'OrderReturnRequestStatusArr'=>OrderReturnRequest::getRequestStatusArr( $this->siteLangId ),
+											'sellerPage'=>true,
+											'buyerPage'=>false
+										);
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_return_requests_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
