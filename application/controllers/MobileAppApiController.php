@@ -5362,8 +5362,8 @@ class MobileAppApiController extends MyAppController {
 		
 		
 		$address = $orderObj->getOrderAddresses($orderDetail['op_order_id']);
-		$orderDetail['billingAddress'] = (isset($address[Orders::BILLING_ADDRESS_TYPE]))?$address[Orders::BILLING_ADDRESS_TYPE]:array();
-		$orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:array();
+		$orderDetail['billingAddress'] = (isset($address[Orders::BILLING_ADDRESS_TYPE]))?$address[Orders::BILLING_ADDRESS_TYPE]:(object)array();
+		$orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:(object)array();
 
 		$orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$op_id,'seller_id'=>$userId));
 		

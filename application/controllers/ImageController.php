@@ -21,9 +21,12 @@ class ImageController extends FatController{
 		} else {
 			//FILETYPE_USER_IMAGE
 			//FILETYPE_f_PROFILE_IMAGE
-
 			$file_row = AttachedFile::getAttachment( $fileType, $recordId );
+			if($cropedImage && $file_row == false){
+				$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $recordId );
+			}
 		}
+		
 		$image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
 		switch( strtoupper($sizeType) ){

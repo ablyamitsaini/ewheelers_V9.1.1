@@ -46,21 +46,30 @@ class Labels extends MyAppModel{
 			return;
 		}
 		
-		global $lang_array;
+		
+		$cacheAvailable = static::isAPCUcacheAvailable();
+		if ($cacheAvailable) {
+			$cacheKey = static::getAPCUcacheKey($lblKey,$langId);
+			if (apcu_exists($cacheKey)) {
+				return apcu_fetch($cacheKey);
+			}
+		}else {
+			global $lang_array;
+	
+			if (isset($lang_array[$lblKey][$langId])) { 
+				if($lang_array[$lblKey][$langId]!=''){
+					return $lang_array[$lblKey][$langId];
+				}else{
+					$arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($lblKey))));
+					array_shift($arr);				
+					return $str = implode(' ', $arr);
+				}
+			}
+		}
 		
 		$key_original = $lblKey;
 		$key = strtoupper($lblKey);
 		
-		if (isset($lang_array[$lblKey][$langId])) { 
-			if($lang_array[$lblKey][$langId]!=''){
-				return $lang_array[$lblKey][$langId];
-			}else{
-				$arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($lblKey))));
-				array_shift($arr);				
-				return $str = implode(' ', $arr);
-			}
-		}
-		 
 		$db = FatApp::getDb();
 		
 		$srch = static::getSearchObject($langId);
@@ -69,17 +78,15 @@ class Labels extends MyAppModel{
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		
-		if($lbl = $db->fetch( $srch->getResultSet())){			
-			$lang_array[$lblKey][$langId] = $lbl[static::DB_TBL_PREFIX . 'caption'];
+		if($lbl = $db->fetch( $srch->getResultSet())){									
 			if(isset($lbl[static::DB_TBL_PREFIX . 'caption']) && $lbl[static::DB_TBL_PREFIX . 'caption']!=''){
-				return $lbl[static::DB_TBL_PREFIX . 'caption'];
+				$str = $lbl[static::DB_TBL_PREFIX . 'caption'];
 			}else{
 				$arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($lblKey))));
 				array_shift($arr);				
-				return $str = implode(' ', $arr);
+				$str = implode(' ', $arr);
 			}
-		}else {
-			// $arr =  explode('_', strtolower($key_original));
+		}else {			
 			$arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($key_original))));
 			array_shift($arr);
 			
@@ -92,19 +99,42 @@ class Labels extends MyAppModel{
 							
 			FatApp::getDB()->insertFromArray(static::DB_TBL,$assignValues,false,array(),$assignValues);			
 		}
+		
+		if ($cacheAvailable) {
+			apcu_store($cacheKey, $str);
+		}else {
+			global $lang_array;
+			$lang_array[$lblKey][$langId] = $str;
+		}
+		
 		return $str;
 	}
 	
 	public function addUpdateData($data = array()){
 		$assignValues = array(
-						static::DB_TBL_PREFIX . 'key' => $data['label_key'], 
-						static::DB_TBL_PREFIX . 'caption' => $data['label_caption'],
-						static::DB_TBL_PREFIX . 'lang_id' => $data['label_lang_id']
-						);
-						
+			static::DB_TBL_PREFIX . 'key' => $data['label_key'], 
+			static::DB_TBL_PREFIX . 'caption' => $data['label_caption'],
+			static::DB_TBL_PREFIX . 'lang_id' => $data['label_lang_id']
+		);
+		
 		if(!FatApp::getDB()->insertFromArray(static::DB_TBL,$assignValues,false,array(),$assignValues)){
 			return false;
-		}		
+		}	
+		
+		$cacheAvailable = static::isAPCUcacheAvailable();
+		if ($cacheAvailable) {
+			$cacheKey = static::getAPCUcacheKey($data['label_key'],$data['label_lang_id']);
+			apcu_store($cacheKey, $data['label_caption']);
+		}	
+		
 		return true;
+	}
+	
+	public static function isAPCUcacheAvailable(){		
+		return $cacheAvailable = extension_loaded('apcu') && ini_get('apcu.enabled') ;
+	}
+	
+	public static function getAPCUcacheKey($key, $langId){
+		return $cacheKey = $_SERVER['SERVER_NAME'] . '_' . $key . '_' . $langId;
 	}
 }	
