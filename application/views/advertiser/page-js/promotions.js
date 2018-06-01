@@ -12,13 +12,28 @@ $(document).delegate('.banner-screen-js','change',function(){
 	var promotion_id = $("input[name='promotion_id']").val();
 	var lang_id = $(".banner-language-js").val();
 	images(promotion_id,lang_id,screen_id);
-});	
+});
+$(document).delegate("input[name='promotion_budget']",'blur',function(){
+	var frm = document.frmPromotion;
+	var data = fcom.frmData(frm);
+	fcom.ajax(fcom.makeUrl('Advertiser', 'checkValidPromotionBudget'), data, function(t) {
+		var ans = $.parseJSON(t);
+		if( ans.status == 0 ){
+			$.mbsmessage( ans.msg,false,'alert alert--danger');
+			return;
+		}
+		$.mbsmessage.close();
+	});
+});
+$(document).delegate("select[name='banner_blocation_id']",'change',function(){
+	$("input[name='promotion_budget']").trigger('blur');
+});
 (function() {
 	//var dv = '#promotionForm';
 	var dv = '#listing';
 	//var litingDv = '#listing';
 		
-	goToSearchPage = function(page) {	
+	goToSearchPage = function(page) {
 		if(typeof page == undefined || page == null){
 			page =1;
 		}

@@ -223,7 +223,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 								<?php if( $product['special_price_found'] ){ ?>
 								<span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
 								<?php } ?></div>
-								<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','shippingSummary')" class="btn btn--sm btn--gray ripplelink"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
+								<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="btn btn--sm btn--gray ripplelink"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
 							</td>
 						</tr>
 						<?php }

@@ -18,6 +18,7 @@
 		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="text" />
         <span class="increase increase-js">+</span> </div>
 		<a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>','loadFinancialSummary')"><i class="fa fa-refresh"></i></a>
+		<a class="remove" title="<?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','')"><i class="fa fa-times"></i></a>
     </div>
     <div class="product_price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </div>
   </li>

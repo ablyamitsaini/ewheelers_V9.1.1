@@ -1093,7 +1093,7 @@ class CheckoutController extends MyAppController{
 		$confirmForm = $this->getConfirmFormWithNoAmount( $this->siteLangId );
 		$userWalletBalance = User::getUserBalance($userId,true);
 
-		if( (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'],FatUtility::VAR_FLOAT) ) && $cartSummary['cartWalletSelected'] ){ 
+		if( (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'],FatUtility::VAR_FLOAT) ) && $cartSummary['cartWalletSelected'] ){
 			$WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay','Charge', array($order_id)) );
 			$WalletPaymentForm->fill( array('order_id' => $order_id) );
 			$WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
@@ -1235,7 +1235,10 @@ class CheckoutController extends MyAppController{
 		
 		$cartObj = new Cart();
 		$cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-		$rewardPointValues = min(CommonHelper::convertRewardPointToCurrency($rewardPoints),$cartSummary['cartTotal']);
+		
+		$cartTotalWithoutDiscount = $cartSummary['cartTotal'] - $cartSummary["cartDiscounts"]["coupon_discount_total"];
+		
+		$rewardPointValues = min(CommonHelper::convertRewardPointToCurrency($rewardPoints),$cartTotalWithoutDiscount);
 		$rewardPoints = CommonHelper::convertCurrencyToRewardPoint($rewardPointValues);
 		
 		if($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')){

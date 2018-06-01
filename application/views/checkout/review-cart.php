@@ -44,7 +44,7 @@
   <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
   <?php } ?>
 </div>
-<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','cartReview')" class="btn btn--sm btn--gray ripplelink removeCart-Js"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a></td>
+<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="btn btn--sm btn--gray ripplelink removeCart-Js"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a></td>
 </tr>
 <?php } } else {
 				echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);

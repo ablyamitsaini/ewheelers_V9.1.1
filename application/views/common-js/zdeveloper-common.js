@@ -188,9 +188,16 @@ function submitSiteSearch(frm){
 		url_arr.push($(frm).find('select[name="category"]').val());
 	}
 	/* url_arr = []; */
-	url = fcom.makeUrl('Products','search', url_arr)
+	
+	if(themeActive == true ){
+		url = fcom.makeUrl('Products','search', url_arr)+'?theme-preview';
+		document.location.href = url;
+		return;
+	}
+	url = fcom.makeUrl('Products','search', url_arr);
 	document.location.href = url;
 }
+
 function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
 	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
@@ -658,6 +665,19 @@ function isUserLogged(){
 	});
 	return isUserLogged;
 }
+
+/* function checkisThemePreview(){
+	var isThemePreview = 0;
+	$.ajax({
+		url: fcom.makeUrl('MyApp','checkisThemePreview'),
+		async: false,
+		dataType: 'json',
+	}).done(function(ans) {
+		isThemePreview = parseInt( ans.isThemePreview );
+	});
+	alert(isThemePreview);
+	return isThemePreview;
+} */
 
 function loginPopUpBox(){
 	fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(ans){

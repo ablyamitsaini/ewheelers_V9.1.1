@@ -5,9 +5,11 @@
 <div class="box__body">
 	<?php $frm->setFormTagAttribute('class','form');
 	$frm->developerTags['colClassPrefix'] = 'col-md-';
-	$frm->developerTags['fld_default_col'] = 8;
+	$frm->developerTags['fld_default_col'] = 6;
 	$frm->setFormTagAttribute('onsubmit', 'setupWithdrawalReq(this); return(false);');
-	
+	$ifscFld = $frm->getField('ub_ifsc_swift_code');
+	$ifscFld->setWrapperAttribute('class','col-sm-12');
+	$ifscFld->developerTags['col'] = 12;
 	if( User::isAffiliate() ){
 		$paymentMethodFld = $frm->getField('uextra_payment_method');
 		$paymentMethodFld->setOptionListTagAttribute( 'class', 'links--inline' );

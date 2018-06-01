@@ -723,7 +723,7 @@ class CommonHelper extends FatUtility{
 		}
 		return false;
 	}
-		
+	
 	public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0  ) {
 		
 		if( $type == NavigationLinks::NAVLINK_TYPE_CMS ){	

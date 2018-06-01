@@ -1,10 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 <?php
-// ob_end_clean();
-// die('<pre>' . print_r($this->variables, true) . '</pre>');
+if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+	$logoUrl = CommonHelper::generateUrl('home','index');
+}else{
+	$logoUrl = CommonHelper::generateUrl();
+}
 ?>
 <div class="logo zoomIn">
-	<a href="<?php echo CommonHelper::generateUrl('Home','index'); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
+	<a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
 </div>
 <?php $this->includeTemplate('_partial/headerSearchFormArea.php'); ?>
 <?php if( $headerNavigation && count( $headerNavigation ) ){ ?>

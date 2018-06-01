@@ -18,7 +18,7 @@
 					'utxn_comments' => Labels::getLabel('LBL_Description',$adminLangId),
 					'utxn_status' => Labels::getLabel('LBL_Status',$adminLangId),
 					);
-				$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
+				$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive fixed-layout'));
 				$th = $tbl->appendElement('thead')->appendElement('tr');
 				foreach ($arr_flds as $key=>$val) {					
 					$e = $th->appendElement('th', array(), $val,true);

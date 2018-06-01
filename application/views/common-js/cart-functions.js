@@ -40,18 +40,26 @@ var cart = {
 		});
 	},
 	
-	remove: function (key, page,dv){ 
+	remove: function (key, page){
 		if(confirm( langLbl.confirmRemove )){
 			var data = 'key=' + key ;
-			if(page=='checkout')
+			if(page == 'checkout')
 			{
 				fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
 					if( ans.status ){
 						loadFinancialSummary();
-						if( dv=='shippingSummary' ){
+						dv = $(".is-current").attr("id");
+						if( dv=='address' ){
+							loadAddressDiv();
+						}
+						if( dv=='shipping-summary' ){
 							loadShippingSummaryDiv();
-						}if(dv=='cartReview'){
+						}
+						if(dv=='cart-review'){
 							loadCartReviewDiv();
+						}
+						if(dv=='payment'){
+							loadPaymentSummary();
 						}
 						/* setUpShippingApi($('form#frm_fat_id_frmShippingApi')); */
 					}

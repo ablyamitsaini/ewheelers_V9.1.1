@@ -198,6 +198,8 @@ class CollectionsController extends MyAppController {
 					$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
 					'IFNULL(product_name, product_identifier) as product_name', 
 					'IF(selprod_stock > 0, 1, 0) AS in_stock') );
+					$prodSrch->addGroupBy('selprod_id');
+					
 					$prodRs = $prodSrch->getResultSet();					
 					$collections[$val['shop_id']]['products'] = $db->fetchAll( $prodRs);
 					$collections[$val['shop_id']]['totalProducts'] = $prodSrch->recordCount();
