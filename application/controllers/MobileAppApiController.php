@@ -129,11 +129,13 @@ class MobileAppApiController extends MyAppController {
 	}
 	
 	function json_encode_unicode($data , $convertToType = false) {
+		die(FatUtility::convertToJson($data, 0));
+		/* 
 		if($convertToType){						
-			die(FatUtility::convertToJson($data, JSON_FORCE_OBJECT));
+			die(json_encode($data));			
 		}
 		$data = $this->cleanArray($data);
-		FatUtility::dieJsonSuccess($data);
+		FatUtility::dieJsonSuccess($data); */
 		//die (json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));		
 	}
 	
@@ -1818,6 +1820,12 @@ class MobileAppApiController extends MyAppController {
 			){
 				FatUtility::dieJsonError($fileHandlerObj->getError());
 			}
+			
+			FatApp::getDb()->deleteRecords ( AttachedFile::DB_TBL, array (
+					'smt' => 'afile_type = ? AND afile_record_id = ?',
+					'vals' => array (AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)
+			) );
+			
 			$imageUrl = CommonHelper::generateFullUrl('Image','user',array($userId,'ORIGINAL')).'?'.time();
 		}
 		
@@ -4489,7 +4497,7 @@ class MobileAppApiController extends MyAppController {
 										'orders'=>$orders,
 										'ordersCount'=>$srch->recordCount(),
 										'totalSoldCount'=>FatUtility::int($ordersStats['totalSoldCount']),
-										'totalSoldSales'=>$ordersStats['totalSoldSales'],
+										'totalSoldSales'=>FatUtility::float($ordersStats['totalSoldSales']),
 										'yesterdayOrderCount'=>FatUtility::int($ordersStats['yesterdayOrderCount']),
 										'todayUnreadMessageCount'=>$todayUnreadMessageCount,
 										'totalMessageCount'=>$totalMessageCount,
@@ -4828,14 +4836,15 @@ class MobileAppApiController extends MyAppController {
 		'orrmsg_date', 'msg_user.user_name as msg_user_name', 'orrequest_status', 
 		'orrmsg_from_admin_id', 'admin_name' ) );
 		$rs = $srch->getResultSet();
+		$srch->addOrder('orrmsg_date','desc');
 		$messagesList = FatApp::getDb()->fetchAll($rs);
-		ksort($messagesList);
+		
 		$message_records = array();
 		foreach($messagesList as $mkey=>$mval){
-			$message_records[] = array_merge($mval,array("message_timestamp"=>strtotime($mval['orrmsg_date'])));
+			$arr = array_merge($mval,array("message_timestamp"=>strtotime($mval['orrmsg_date'])));
+			array_unshift($message_records,$arr);
 		}
-		//commonhelper::printarray($message_records);
-		//die();											
+									
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'messagesList'=>$message_records,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
@@ -5249,7 +5258,7 @@ class MobileAppApiController extends MyAppController {
 		$api_orders_elements = array('orders'=>$orders,'orderStatuses'=>$orderStsArr,'total_pages'=>$srch->pages(),'page'=>$page,'total_records'=>$srch->recordCount());
 		//commonhelper::printarray($api_orders_elements);
 		//die();
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
 		
 	}
 	
@@ -5853,7 +5862,7 @@ class MobileAppApiController extends MyAppController {
 											'sellerPage'=>true,
 											'buyerPage'=>false
 										);
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_return_requests_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_return_requests_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
 	}
 	
 	function seller_order_cancellation_requests(){
@@ -6756,6 +6765,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->setPageSize($pagesize);	
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
+		
 		$api_notification_elements = array('records'=>$records,'total_pages'=>$srch->pages(),'total_records'=>$srch->recordCount());
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=> $api_notification_elements)));
 		

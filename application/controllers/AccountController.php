@@ -727,9 +727,12 @@ class AccountController extends LoggedUserController {
 		$userId = UserAuthentication::getLoggedUserId();
 		$recordId = FatUtility::int($userId);
 		
-		if($cropedImage == true){
-			$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $recordId );	
-		}else{
+		$file_row = false;
+		if($cropedImage == true){ 
+			$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $recordId );				
+		}
+		
+		if( $file_row == false ){
 			$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $recordId );
 		}
 		
