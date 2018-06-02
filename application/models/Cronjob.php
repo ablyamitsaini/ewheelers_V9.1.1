@@ -490,7 +490,6 @@ class Cronjob extends FatModel {
 					static::DB_TBL_CONFIGURATION,$assignValues,false,array(),$assignValues
 				);
 			
-				
 			}
 		}
 	}
@@ -691,5 +690,100 @@ class Cronjob extends FatModel {
 		}	
 		
 		return Labels::getLabel('MSG_Success',FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));	
-	}		
+	}
+	
+	public static function remindBuyerForProductsInCart(){
+		
+		$sentCartReminderCount  =  FatApp::getConfig('CONF_SENT_CART_REMINDER_COUNT',FatUtility::VAR_INT,2);
+		$buyerReminderInterval  =  FatApp::getConfig('CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART',FatUtility::VAR_INT,15);
+		
+		$srch = new SearchBase('tbl_user_cart','uc');
+		$srch->joinTable(User::DB_TBL,'LEFT OUTER JOIN','u.user_id = usercart_user_id','u');
+		$srch->joinTable(Credential::DB_TBL,'LEFT OUTER JOIN','ucr.'.Credential::DB_TBL_PREFIX.'user_id = u.user_id','ucr');
+		$srch->addMultipleFields(array('uc.*','user_name','credential_email'));
+		$srch->addCondition('ucr.credential_active','=',applicationConstants::YES);
+		$srch->addCondition('ucr.credential_verified','=',applicationConstants::YES); 
+		$srch->addCondition('u.user_is_buyer','=',applicationConstants::YES);
+		$srch->addCondition('usercart_type', '=',Cart::TYPE_PRODUCT);
+		$srch->addCondition('usercart_sent_reminder', '<',$sentCartReminderCount);
+		$srch->addCondition('usercart_added_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+	
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetchAll($rs);
+		if(empty($row)){
+			return;
+		}
+	
+		foreach($row as $val){
+			
+			$cartDetails = unserialize( $val["usercart_details"] );
+			if(count($cartDetails) == 0){
+				continue;
+			}
+			
+			$data = array("user_id" => $val['usercart_user_id'], "user_name" => $val['user_name'], "user_email" => $val['credential_email'], "link" => CommonHelper::generateFullUrl('Checkout'));
+			
+			$email = new EmailHandler();
+			if(!$email->remindBuyerForCartItems(FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$data)){
+				return $val['usercart_user_id'].' - '.Labels::getLabel("MSG_ERROR_IN_SENDING_REMINDER_EMAIL_TO_BUYER",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+			}
+			
+			
+			if(!FatApp::getDb()->updateFromArray( 'tbl_user_cart', array( 'usercart_sent_reminder' => 'mysql_func_usercart_sent_reminder + 1' ), array('smt' => 'usercart_user_id = ?', 'vals' => array($val['usercart_user_id']) ),true )){
+				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+			}
+			
+		}
+		
+	}
+	
+	public static function remindBuyerForProductsInWishlist()
+	{
+		$sentWishListReminderCount  =  FatApp::getConfig('CONF_SENT_WISHLIST_REMINDER_COUNT',FatUtility::VAR_INT,2);
+		$buyerReminderInterval  =  FatApp::getConfig('CONF_REMINDER_INTERVAL_PRODUCTS_IN_WISHLIST',FatUtility::VAR_INT,15);
+		
+		$srch = new UserWishListProductSearch( FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1) );
+		$srch->joinWishLists();
+		$srch->joinTable(User::DB_TBL,'LEFT OUTER JOIN','u.user_id = uwlist_user_id','u');
+		$srch->joinTable(Credential::DB_TBL,'LEFT OUTER JOIN','ucr.'.Credential::DB_TBL_PREFIX.'user_id = u.user_id','ucr');
+		$srch->joinSellerProducts();
+		$srch->joinProducts();
+		$srch->joinSellers();
+		$srch->joinShops();
+		$srch->joinProductToCategory();
+		$srch->joinSellerSubscription(FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),true);
+		$srch->addSubscriptionValidCondition();
+		$srch->addMultipleFields(array('uwlp.*','u.user_id','u.user_name','ucr.credential_email', 'uwlist_sent_reminder'));
+		$srch->addCondition('ucr.credential_active','=',applicationConstants::ACTIVE);
+		$srch->addCondition('ucr.credential_verified','=',applicationConstants::YES);
+		$srch->addCondition('u.user_is_buyer','=',applicationConstants::YES);
+		$srch->addCondition('uwlist_sent_reminder', '<',$sentWishListReminderCount);
+		$srch->addCondition('uwlist_added_on', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+		$srch->addGroupBy('u.user_id');
+		
+		
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetchAll($rs);
+		if(empty($row)){
+			return;
+		}
+	
+		foreach($row as $val){
+			
+			$data = array("user_id" => $val['user_id'], "user_name" => $val['user_name'], "user_email" => $val['credential_email'], "link" => CommonHelper::generateFullUrl('Account','wishlist'));
+			
+			$email = new EmailHandler();
+			if(!$email->remindBuyerForWishlistItems(FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$data)){
+				return $val['user_id'].' - '.Labels::getLabel("MSG_ERROR_IN_SENDING_REMINDER_EMAIL_TO_BUYER",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+			}
+			
+			
+			if(!FatApp::getDb()->updateFromArray( 'tbl_user_wish_lists', array( 'uwlist_sent_reminder' => 'mysql_func_uwlist_sent_reminder + 1' ), array('smt' => 'uwlist_user_id = ?', 'vals' => array($val['user_id']) ),true )){
+				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+			}
+			
+		}
+		
+	}
+	
 }

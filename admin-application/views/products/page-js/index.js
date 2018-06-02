@@ -62,15 +62,11 @@ $(document).delegate('.language-js','change',function(){
 	productForm = function( id, attrgrp_id ) {
 		fcom.displayProcessing();		
 		fcom.resetEditorInstance();
-		if( !id && attrgrp_id == 0 ){
-			productAttributeGroupForm( );
-			return;
-		}
 		
 		fcom.ajax(fcom.makeUrl('Products', 'form', [ id, attrgrp_id]), '', function(t) {
 			fcom.updateFaceboxContent(t,'faceboxWidth product-setup-width');
-			
-			if(id > 0 && CONF_PRODUCT_DIMENSIONS_ENABLE == 0)
+
+			if(CONF_PRODUCT_DIMENSIONS_ENABLE == 0)
 			{
 				addShippingTab(id,PRODUCT_TYPE_DIGITAL);
 			}
@@ -84,13 +80,7 @@ $(document).delegate('.language-js','change',function(){
 			});
 		});
 	};
-	sellerProductForm = function(product_id, selprod_id){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Products', 'form', [ product_id, selprod_id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
-			});
-		});
-	};
+	
 	productLangForm = function(product_id, lang_id) {
 		fcom.displayProcessing();
 		fcom.resetEditorInstance();		

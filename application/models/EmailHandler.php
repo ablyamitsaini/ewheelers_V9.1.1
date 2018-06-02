@@ -2227,5 +2227,33 @@ class EmailHandler extends FatModel {
 		return false;
 	}
 	
+	function remindBuyerForCartItems( $langId, $d ){
+		$tpl = 'reminder_for_items_in_cart';
+
+		$vars = array(
+			'{user_full_name}' => $d['user_name'],
+			'{checkout_url}' => $d['link'],
+		);
+		
+		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
+	function remindBuyerForWishlistItems( $langId, $d ){
+		$tpl = 'reminder_for_items_in_wishlist';
+
+		$vars = array(
+			'{user_full_name}' => $d['user_name'],
+			'{checkout_url}' => $d['link'],
+		);
+		
+		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
 	
 }

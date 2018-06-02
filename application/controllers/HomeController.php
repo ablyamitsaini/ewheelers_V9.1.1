@@ -63,7 +63,7 @@ class HomeController extends MyAppController {
 							$tempObj = clone $collectionObj;
 							$tempObj->joinCollectionProducts();
 							$tempObj->addCondition( 'collection_id', '=', $collection_id );
-							$tempObj->setPageSize( $collection['collection_primary_records']);
+							/* $tempObj->setPageSize( $collection['collection_primary_records']); */
 							$tempObj->addMultipleFields( array( 'ctsp_selprod_id' ) );
 							$tempObj->addCondition( 'ctsp_selprod_id', '!=', 'NULL'  );
 							$rs = $tempObj->getResultSet();
@@ -136,7 +136,7 @@ class HomeController extends MyAppController {
 							$shopObj = clone $shopSearchObj;
 							$shopObj->joinSellerSubscription();
 							$shopObj->addCondition( 'shop_id', 'IN', array_keys( $shopIds ) );
-						
+							$shopObj->setPageSize( $collection['collection_primary_records'] );
 							//$shopObj->addMultipleFields( array( 'shop_id','shop_user_id','shop_name','country_name','state_name') );
 							$shopObj->addMultipleFields( array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name') );
 						

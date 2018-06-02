@@ -1103,7 +1103,7 @@ class Cart extends FatModel {
 	}
 	
 	public function removeCartDiscountCoupon() {
-		$couponCode = $this->SYSTEM_ARR['shopping_cart']['discount_coupon'];
+		$couponCode = array_key_exists('discount_coupon', $this->SYSTEM_ARR['shopping_cart']) ? $this->SYSTEM_ARR['shopping_cart']['discount_coupon'] : '';
 		unset($this->SYSTEM_ARR['shopping_cart']['discount_coupon']);
 		
 		/* Removing from temp hold[ */
@@ -1163,8 +1163,8 @@ class Cart extends FatModel {
 				$cart_arr["shopping_cart"] = $this->SYSTEM_ARR['shopping_cart'];
 			}
 			$cart_arr = serialize($cart_arr);
-			$record->assignValues( array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr ) );
-			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr ) ) ){
+			$record->assignValues( array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) );
+			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) ) ){
 				Message::addErrorMessage( $record->getError() );
 				throw new Exception('');
 			}

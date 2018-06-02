@@ -1216,8 +1216,9 @@ class AccountController extends LoggedUserController {
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		
 		$favouriteProducts[] = Product::getUserFavouriteProducts( $loggedUserId, $this->siteLangId );
+		/* CommonHelper::printArray($favouriteProducts); die; */
 		$wishLists = UserWishList::getUserWishLists( $loggedUserId, false );
-		
+
 		if( $wishLists ){
 			$srchObj = new UserWishListProductSearch( $this->siteLangId );
 			$db = FatApp::getDb();

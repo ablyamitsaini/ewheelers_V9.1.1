@@ -145,14 +145,15 @@ class UserWishListProductSearch extends SearchBase {
 		if( $langId ){
 			$this->joinTable( Shop::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop.shop_id = s_l.shoplang_shop_id AND shoplang_lang_id = '. $langId , 's_l' );
 		}
-	}	
+	}
+	
 	public function joinSellers(){
 		$this->sellerUserJoined = true;
 		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'selprod_user_id = seller_user.user_id','seller_user');
-		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'credential_user_id = seller_user.user_id','seller_user_cred' );
-		$this->addCondition( 'seller_user.user_is_supplier','=', applicationConstants::YES );
-		$this->addCondition('credential_active', '=', applicationConstants::ACTIVE );
-		$this->addCondition('credential_active', '=', applicationConstants::ACTIVE );
+		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'seller_user_cred.credential_user_id = seller_user.user_id','seller_user_cred' );
+		$this->addCondition('seller_user.user_is_supplier','=', applicationConstants::YES );
+		$this->addCondition('seller_user_cred.credential_active', '=', applicationConstants::ACTIVE );
+		$this->addCondition('seller_user_cred.credential_verified', '=', applicationConstants::YES );
 		$this->addCondition('seller_user.user_deleted', '=', applicationConstants::NO );
 		
 	}

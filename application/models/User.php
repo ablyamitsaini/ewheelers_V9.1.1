@@ -387,7 +387,6 @@ class User extends MyAppModel {
 		if($isVerified){
 			$srch->addCondition('uc.'.static::DB_TBL_CRED_PREFIX.'verified','=',1);				
 		}
-		
 		$rs = $srch->getResultSet();
 		$record = FatApp::getDb()->fetch($rs);
 		if(!empty($record)){
