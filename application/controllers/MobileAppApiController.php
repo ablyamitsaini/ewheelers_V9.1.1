@@ -115,7 +115,8 @@ class MobileAppApiController extends MyAppController {
 				if(!is_object($val)){
 					//$arrStr[$key] = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
 					//Commented as \n /new line not working with messages								
-					$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);
+					//$arrStr[$key] = preg_replace('/[\x1F\x7F]/u', '', $val);					
+					$arrStr[$key] = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $val);					
 				}else{	
 					$arrStr[$key] =  $val;
 				}
@@ -127,9 +128,14 @@ class MobileAppApiController extends MyAppController {
 		
 	}
 	
-	function json_encode_unicode($data) {
+	function json_encode_unicode($data , $convertToType = false) {
+		die(FatUtility::convertToJson($data, 0));
+		/* 
+		if($convertToType){						
+			die(json_encode($data));			
+		}
 		$data = $this->cleanArray($data);
-		FatUtility::dieJsonSuccess($data);
+		FatUtility::dieJsonSuccess($data); */
 		//die (json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));		
 	}
 	
@@ -198,7 +204,7 @@ class MobileAppApiController extends MyAppController {
 		'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews','selprod_sold_count','ufp_id','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty') );
 		$orderBy = 'ASC';	
 		
-		/* collections fetching/processing [ */
+		/* Collections fetching/processing [ */
 		
 		//$collectionCache =  FatCache::get('collectionCache',CONF_HOME_PAGE_CACHE_TIME,'.txt');
 		$collectionCache = false;
@@ -596,12 +602,15 @@ class MobileAppApiController extends MyAppController {
 		$productCategory = new productCategory;
 		$prodSrchObj = new ProductCategorySearch(  $this->siteLangId );
 		$categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, $prodSrchObj,true );
+		//echo "<prE>";print_r($categoriesArr);
 		$categoriesDataArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code')); 
+		
 		//$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
 		$categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
 		if(empty($categoriesDataArr)){
 			$categoriesDataArr =  array();
 		}
+		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$categoriesDataArr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
@@ -1748,7 +1757,7 @@ class MobileAppApiController extends MyAppController {
 				'name'=>$user['user_name'],
 				'email'=>$user['credential_email'],
 				'username'=>$user['credential_username'],
-				'phone'=>$user['user_phone'],
+				'phone'=>FatUtility::convertToType($user['user_phone'],FatUtility::VAR_STRING),
 				'dob'=>$user['user_dob'],
 				'city'=>$user['user_city'],
 				'country_id'=>$user['user_country_id'],
@@ -1768,9 +1777,8 @@ class MobileAppApiController extends MyAppController {
 				'products_services'=>$user['user_products_services'],
 			);
 		}
-		
-		//die($this->json_encode_unicode($arr));
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+				
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$arr,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));			
 	}
 	
 	public function remove_profile_image(){
@@ -1812,6 +1820,12 @@ class MobileAppApiController extends MyAppController {
 			){
 				FatUtility::dieJsonError($fileHandlerObj->getError());
 			}
+			
+			FatApp::getDb()->deleteRecords ( AttachedFile::DB_TBL, array (
+					'smt' => 'afile_type = ? AND afile_record_id = ?',
+					'vals' => array (AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)
+			) );
+			
 			$imageUrl = CommonHelper::generateFullUrl('Image','user',array($userId,'ORIGINAL')).'?'.time();
 		}
 		
@@ -2438,8 +2452,8 @@ class MobileAppApiController extends MyAppController {
 			$emailObj = new EmailHandler();
 			$emailObj->SendMessageNotification($insertId,$this->siteLangId);
 		}
-		
-		$arr=array('status'=>1,'msg'=>Labels::getLabel("MSG_Message_Submitted_Successfully",$this->siteLangId));
+		unset($data['message_is_unread']);
+		$arr = array('status'=>1,'msg'=>Labels::getLabel("MSG_Message_Submitted_Successfully",$this->siteLangId),'data'=>$data);
 		die ($this->json_encode_unicode($arr));
 	}
 	
@@ -4483,7 +4497,7 @@ class MobileAppApiController extends MyAppController {
 										'orders'=>$orders,
 										'ordersCount'=>$srch->recordCount(),
 										'totalSoldCount'=>FatUtility::int($ordersStats['totalSoldCount']),
-										'totalSoldSales'=>$ordersStats['totalSoldSales'],
+										'totalSoldSales'=>FatUtility::float($ordersStats['totalSoldSales']),
 										'yesterdayOrderCount'=>FatUtility::int($ordersStats['yesterdayOrderCount']),
 										'todayUnreadMessageCount'=>$todayUnreadMessageCount,
 										'totalMessageCount'=>$totalMessageCount,
@@ -4583,6 +4597,7 @@ class MobileAppApiController extends MyAppController {
 	function submit_order_cancellation_request(){
 		$user_id = $this->getAppLoggedUserId();
 		$post = FatApp::getPostedData();
+		
 		if( empty($post['ocrequest_message']) || empty($post['child_order_id']) || empty($post['ocrequest_ocreason_id']) ){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
@@ -4821,14 +4836,15 @@ class MobileAppApiController extends MyAppController {
 		'orrmsg_date', 'msg_user.user_name as msg_user_name', 'orrequest_status', 
 		'orrmsg_from_admin_id', 'admin_name' ) );
 		$rs = $srch->getResultSet();
+		$srch->addOrder('orrmsg_date','desc');
 		$messagesList = FatApp::getDb()->fetchAll($rs);
-		ksort($messagesList);
+		
 		$message_records = array();
 		foreach($messagesList as $mkey=>$mval){
-			$message_records[] = array_merge($mval,array("message_timestamp"=>strtotime($mval['orrmsg_date'])));
+			$arr = array_merge($mval,array("message_timestamp"=>strtotime($mval['orrmsg_date'])));
+			array_unshift($message_records,$arr);
 		}
-		//commonhelper::printarray($message_records);
-		//die();											
+									
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'messagesList'=>$message_records,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 	}
 	
@@ -5242,7 +5258,7 @@ class MobileAppApiController extends MyAppController {
 		$api_orders_elements = array('orders'=>$orders,'orderStatuses'=>$orderStsArr,'total_pages'=>$srch->pages(),'page'=>$page,'total_records'=>$srch->recordCount());
 		//commonhelper::printarray($api_orders_elements);
 		//die();
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
 		
 	}
 	
@@ -5346,8 +5362,8 @@ class MobileAppApiController extends MyAppController {
 		
 		
 		$address = $orderObj->getOrderAddresses($orderDetail['op_order_id']);
-		$orderDetail['billingAddress'] = (isset($address[Orders::BILLING_ADDRESS_TYPE]))?$address[Orders::BILLING_ADDRESS_TYPE]:array();
-		$orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:array();
+		$orderDetail['billingAddress'] = (isset($address[Orders::BILLING_ADDRESS_TYPE]))?$address[Orders::BILLING_ADDRESS_TYPE]:(object)array();
+		$orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:(object)array();
 
 		$orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$op_id,'seller_id'=>$userId));
 		
@@ -5618,7 +5634,7 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError( $emailNotificationObj->getError() );
 		}
 		/* ] */
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId))));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'msg_data'=>$returnRequestMsgDataToSave,'data'=>Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId))));		
 	}
 	
 	public function approve_order_return_request( $orrequest_id ){
@@ -5838,15 +5854,15 @@ class MobileAppApiController extends MyAppController {
 		}
 		
 		$api_return_requests_elements = array(
-													'requests'=>$requests,
-													'total_pages'=>$srch->pages(),
-													'total_records'=>$srch->recordCount(),
-													'returnRequestTypeArr'=>$returnRequestTypeDispArr,
-													'OrderReturnRequestStatusArr'=>OrderReturnRequest::getRequestStatusArr( $this->siteLangId ),
-													'sellerPage'=>true,
-													'buyerPage'=>false
-													);
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_return_requests_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
+											'requests'=>$requests,
+											'total_pages'=>$srch->pages(),
+											'total_records'=>$srch->recordCount(),
+											'returnRequestTypeArr'=>$returnRequestTypeDispArr,
+											'OrderReturnRequestStatusArr'=>OrderReturnRequest::getRequestStatusArr( $this->siteLangId ),
+											'sellerPage'=>true,
+											'buyerPage'=>false
+										);
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_return_requests_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount),true));		
 	}
 	
 	function seller_order_cancellation_requests(){
@@ -6749,6 +6765,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->setPageSize($pagesize);	
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
+		
 		$api_notification_elements = array('records'=>$records,'total_pages'=>$srch->pages(),'total_records'=>$srch->recordCount());
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=> $api_notification_elements)));
 		

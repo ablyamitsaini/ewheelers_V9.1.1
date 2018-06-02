@@ -454,7 +454,6 @@ class ProductsController extends MyAppController {
 		$srchFrm = $this->getProductSearchForm();
 		$post = FatApp::getPostedData();
 
-		//var_dump($post); exit;
 		$postedCurrencyId = FatApp::getPostedData( 'currency_id', FatUtility::VAR_INT, 0 );
 		if( $postedCurrencyId > 0 && $postedCurrencyId != $this->siteCurrencyId ){
 			Message::addErrorMessage( Labels::getLabel("LBL_Currency_data_updated,_So_Page_Reloaded", $this->siteLangId) );
