@@ -2452,8 +2452,8 @@ class MobileAppApiController extends MyAppController {
 			$emailObj = new EmailHandler();
 			$emailObj->SendMessageNotification($insertId,$this->siteLangId);
 		}
-		
-		$arr=array('status'=>1,'msg'=>Labels::getLabel("MSG_Message_Submitted_Successfully",$this->siteLangId));
+		unset($data['message_is_unread']);
+		$arr = array('status'=>1,'msg'=>Labels::getLabel("MSG_Message_Submitted_Successfully",$this->siteLangId),'data'=>$data);
 		die ($this->json_encode_unicode($arr));
 	}
 	
@@ -5634,7 +5634,7 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError( $emailNotificationObj->getError() );
 		}
 		/* ] */
-		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId))));		
+		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'msg_data'=>$returnRequestMsgDataToSave,'data'=>Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId))));		
 	}
 	
 	public function approve_order_return_request( $orrequest_id ){
