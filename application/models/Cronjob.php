@@ -753,14 +753,13 @@ class Cronjob extends FatModel {
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription(FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),true);
 		$srch->addSubscriptionValidCondition();
-		$srch->addMultipleFields(array('uwlp.*','u.user_id','u.user_name','ucr.credential_email', 'uwlist_sent_reminder'));
+		$srch->addMultipleFields(array('uwlp.*','u.user_id','u.user_name','ucr.credential_email'));
 		$srch->addCondition('ucr.credential_active','=',applicationConstants::ACTIVE);
 		$srch->addCondition('ucr.credential_verified','=',applicationConstants::YES);
 		$srch->addCondition('u.user_is_buyer','=',applicationConstants::YES);
 		$srch->addCondition('uwlist_sent_reminder', '<',$sentWishListReminderCount);
 		$srch->addCondition('uwlist_added_on', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
 		$srch->addGroupBy('u.user_id');
-		
 		
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
