@@ -2246,7 +2246,7 @@ class EmailHandler extends FatModel {
 
 		$vars = array(
 			'{user_full_name}' => $d['user_name'],
-			'{checkout_url}' => $d['link'],
+			'{wishlist_url}' => $d['link'],
 		);
 		
 		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){
@@ -2254,6 +2254,5 @@ class EmailHandler extends FatModel {
 		}
 		return false;
 	}
-	
 	
 }
