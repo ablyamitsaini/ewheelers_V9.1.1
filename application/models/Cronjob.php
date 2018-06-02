@@ -707,7 +707,8 @@ class Cronjob extends FatModel {
 		$srch->addCondition('usercart_type', '=',Cart::TYPE_PRODUCT);
 		$srch->addCondition('usercart_sent_reminder', '<',$sentCartReminderCount);
 		$srch->addCondition('usercart_added_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
-	
+		$srch->addCondition('usercart_reminder_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
 		if(empty($row)){
@@ -729,7 +730,7 @@ class Cronjob extends FatModel {
 			}
 			
 			
-			if(!FatApp::getDb()->updateFromArray( 'tbl_user_cart', array( 'usercart_sent_reminder' => 'mysql_func_usercart_sent_reminder + 1' ), array('smt' => 'usercart_user_id = ?', 'vals' => array($val['usercart_user_id']) ),true )){
+			if(!FatApp::getDb()->updateFromArray( 'tbl_user_cart', array( 'usercart_sent_reminder' => 'mysql_func_usercart_sent_reminder + 1', 'usercart_reminder_date' => date('Y-m-d H:i:s') ), array('smt' => 'usercart_user_id = ?', 'vals' => array($val['usercart_user_id']) ),true )){
 				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 			}
 			
@@ -759,8 +760,8 @@ class Cronjob extends FatModel {
 		$srch->addCondition('u.user_is_buyer','=',applicationConstants::YES);
 		$srch->addCondition('uwlist_sent_reminder', '<',$sentWishListReminderCount);
 		$srch->addCondition('uwlist_added_on', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+		$srch->addCondition('uwlist_reminder_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
 		$srch->addGroupBy('u.user_id');
-		
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
 		if(empty($row)){
@@ -777,7 +778,7 @@ class Cronjob extends FatModel {
 			}
 			
 			
-			if(!FatApp::getDb()->updateFromArray( 'tbl_user_wish_lists', array( 'uwlist_sent_reminder' => 'mysql_func_uwlist_sent_reminder + 1' ), array('smt' => 'uwlist_user_id = ?', 'vals' => array($val['user_id']) ),true )){
+			if(!FatApp::getDb()->updateFromArray( 'tbl_user_wish_lists', array( 'uwlist_sent_reminder' => 'mysql_func_uwlist_sent_reminder + 1', 'uwlist_reminder_date' => date('Y-m-d H:i:s') ), array('smt' => 'uwlist_user_id = ?', 'vals' => array($val['user_id']) ),true )){
 				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 			}
 			
