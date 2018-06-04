@@ -15,12 +15,14 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 	
 array_walk($jsVariables, function( &$item1, $key ) { $item1 = html_entity_decode($item1,ENT_QUOTES,'UTF-8');});
 $commonHead1Data = array(
-	'siteLangId'		=>	$siteLangId,
-	'controllerName'	=>	$controllerName,
-	'jsVariables'		=>	$jsVariables,
-	'extendEditorJs'    =>  $extendEditorJs,
-	'themeDetail'       =>  $themeDetail,
-	'themeActive'       =>  $themeActive,
+	'siteLangId'		  =>    $siteLangId,
+	'controllerName'	  =>    $controllerName,
+	'jsVariables'		  =>    $jsVariables,
+	'extendEditorJs'      =>    $extendEditorJs,
+	'themeDetail'         =>    $themeDetail,
+	'themeActive'         =>    $themeActive,
+	'currencySymbolLeft'  =>    $currencySymbolLeft,
+	'currencySymbolRight' =>    $currencySymbolRight,
 );
 
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data, false);

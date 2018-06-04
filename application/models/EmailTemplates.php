@@ -53,7 +53,6 @@ class EmailTemplates extends MyAppModel{
 				static::DB_TBL_PREFIX . 'replacements',
 				static::DB_TBL_PREFIX . 'status',
 		) );
-
 		if($langId > 0){
 			$srch->addCondition(static::DB_TBL_PREFIX . 'lang_id','=',$langId);
 		}		

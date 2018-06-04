@@ -671,12 +671,12 @@ class ProductsController extends MyAppController {
 
 		if( !empty($price_min_range)) {
 			$min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($price_min_range,false,false);
-			$srch->addCondition('theprice', '>=', $min_price_range_default_currency);
+			$priceSrch->addCondition('theprice', '>=', $min_price_range_default_currency);
 		}
 
 		if( !empty($price_max_range)) {
 			$max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($price_max_range,false,false);
-			$srch->addCondition('theprice', '<=', $max_price_range_default_currency);
+			$priceSrch->addCondition('theprice', '<=', $max_price_range_default_currency);
 		}
 
 		if( !empty($featured)) {

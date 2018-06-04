@@ -155,4 +155,30 @@ class EmailTemplatesController extends AdminBaseController {
 		$this->_template->render(false, false);
 	}
 	
+	public function changeStatus(){
+		$this->objPrivilege->canEditEmailTemplates();
+		$etplCode = FatApp::getPostedData('etplCode', FatUtility::VAR_STRING, '');
+		if($etplCode == ''){
+			Message::addErrorMessage($this->str_invalid_request_id);
+			FatUtility::dieWithError( Message::getHtml() );	
+		}
+		
+		$etplObj = new EmailTemplates($etplCode);
+		$records =  $etplObj->getEtpl($etplCode );
+		
+		if($records==false){
+			Message::addErrorMessage($this->str_invalid_request);
+			FatUtility::dieWithError( Message::getHtml() );	
+		}
+		$status = ( $records['etpl_status'] == applicationConstants::ACTIVE ) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+
+		if (!$etplObj->activateEmailTemplate($status, $etplCode)) {
+			Message::addErrorMessage($userObj->getError());
+			FatUtility::dieWithError( Message::getHtml() );				
+		}
+		
+		$this->set('msg', $this->str_update_record);
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
 }

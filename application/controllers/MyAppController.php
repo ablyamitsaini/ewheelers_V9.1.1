@@ -112,24 +112,19 @@ class MyAppController extends FatController {
 		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 			$themeId = $_SESSION['preview_theme'];
 		}
-		
 		$themeDetail = ThemeColor::getAttributesById($themeId);
+		
+		$currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
+		$currencySymbolRight = CommonHelper::getCurrencySymbolRight();
+		
+		$this->set('currencySymbolLeft',$currencySymbolLeft);
+		$this->set('currencySymbolRight',$currencySymbolRight);
 		$this->set('themeDetail',$themeDetail);
 		$this->set('jsVariables',$jsVariables);
 		$this->set('controllerName', $controllerName );
 		$this->set('isAppUser' , commonhelper::isAppUser());
 		$this->set('action', $this->action );
 	}
-	
-	/* public function checkisThemePreview(){
-		$themeActive = 0;
-		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
-			$themeActive = 1;
-		}
-		$json = array();
-		$json['isThemePreview'] = $themeActive;
-		die(json_encode($json));
-	} */
 
 	public function getStates($countryId , $stateId = 0){
 		$countryId = FatUtility::int($countryId);
