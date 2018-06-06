@@ -2379,11 +2379,11 @@ class MobileAppApiController extends MyAppController {
 		$thread_message_records = array();
 		if(!empty($threadDetails)){
 			foreach($threadDetails as $mkey=>$mval){
-				$profile_images_arr=  array(
-											"message_from_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_from_user_id'],'ORIGINAL')),
-											"message_to_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_to_user_id'],'ORIGINAL')),
-											"message_timestamp"=>strtotime($mval['message_date'])
-											);
+				$profile_images_arr =  array(
+								"message_from_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_from_user_id'],'ORIGINAL')),
+								"message_to_profile_url"=>CommonHelper::generateFullUrl('image','user', array($mval['message_to_user_id'],'ORIGINAL')),
+								"message_timestamp"=>strtotime($mval['message_date'])
+								);
 				$thread_message_records[] = array_merge($mval,$profile_images_arr);
 			}
 		}
@@ -2402,12 +2402,13 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
 		$threadId =  FatUtility::int($post['message_thread_id']);
-/*		$messageId =  FatUtility::int($post['message_id']);
+		/*
+		$messageId =  FatUtility::int($post['message_id']);
 		
 		if(1 > $threadId || 1 > $messageId){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
-*/		
+		*/		
 		
 		if(1 > $threadId){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
@@ -2453,6 +2454,9 @@ class MobileAppApiController extends MyAppController {
 			$emailObj->SendMessageNotification($insertId,$this->siteLangId);
 		}
 		unset($data['message_is_unread']);
+		$userObj = new User($userId);
+		$userInfo = $userObj->getUserInfo(array('user_id','user_name'),true,true);
+		$data['message_from_name'] =  $userInfo['user_name'];
 		$arr = array('status'=>1,'msg'=>Labels::getLabel("MSG_Message_Submitted_Successfully",$this->siteLangId),'data'=>$data);
 		die ($this->json_encode_unicode($arr));
 	}
@@ -5634,6 +5638,11 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError( $emailNotificationObj->getError() );
 		}
 		/* ] */
+		
+		$userObj = new User($user_id);
+		$userInfo = $userObj->getUserInfo(array('user_id','user_name'),true,true);
+		$returnRequestMsgDataToSave['msg_user_name'] =  $userInfo['user_name'];
+		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'msg_data'=>$returnRequestMsgDataToSave,'data'=>Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId))));		
 	}
 	

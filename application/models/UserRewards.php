@@ -62,6 +62,11 @@ class UserRewards extends MyAppModel{
 			$srch->joinUserRewardBreakup();
 			$srch->addCondition('urpbreakup_used','=',0);
 			$srch->addCondition('urp_user_id','=',$result['urp_user_id']);			
+			$cnd = $srch->addCondition('urp_date_expiry','>=',date('Y-m-d'));			
+			$cnd->attachCondition('urp_date_expiry','=','0000-00-00');	
+			$srch->addOrder('urp_date_added','asc');
+			$srch->addOrder('urp_date_expiry','asc');
+			
 			$rs = $srch->getResultSet();
 			
 			$unUsedRewardsPointsArr = FatApp::getDb()->fetchAll($rs);
