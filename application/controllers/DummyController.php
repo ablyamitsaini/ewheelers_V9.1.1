@@ -54,7 +54,14 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
-		
+		$srch = new UserRewardSearch();
+			$srch->joinUserRewardBreakup();
+			$srch->addCondition('urpbreakup_used','=',0);
+			$srch->addCondition('urp_user_id','=',$result['urp_user_id']);			
+			$cnd = $srch->addCondition('urp_date_expiry','<=',date('Y-m-d'));			
+			$cnd->attachCondition('urp_date_expiry','=','0000-00-00');	
+			echo $srch->getQuery();
+		exit;
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria();
 		$prodSrchObj->joinProductToCategory();

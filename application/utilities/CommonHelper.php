@@ -1610,6 +1610,19 @@ class CommonHelper extends FatUtility{
 		}
 		trigger_error(Labels::getLabel('ERR_Default_currency_not_specified.',CommonHelper::getLangId()), E_USER_ERROR);		
 	}
+	
+	public static function logData($str){
+		if(is_array($str)){
+			$str = json_encode($str);
+		}
+		//Something to write to txt log
+		$log  = "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a").PHP_EOL.				
+				"data: ".$str.PHP_EOL.
+				"-------------------------".PHP_EOL;
+		$file = CONF_UPLOADS_PATH.'./log_'.date("Y-m-d").'.txt';
+		//Save string to log, use FILE_APPEND to append.
+		file_put_contents($file, $log, FILE_APPEND);
+	}
 
 	public static function fullCopy( $source, $target,$empty_first=true) {
 		if ($empty_first){
