@@ -2229,10 +2229,46 @@ class EmailHandler extends FatModel {
 	
 	function remindBuyerForCartItems( $langId, $d ){
 		$tpl = 'reminder_for_items_in_cart';
+		
+		$cartData = Cart::getCartData($d['user_id']);
+		$cartInfo = unserialize( $cartData );
+		$selProdIds = array();
+		foreach($cartInfo as $key => $quantity){
+			$keyDecoded = unserialize( base64_decode($key) );
 
+			if( strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT ) === FALSE ){
+				continue;
+			}
+			$selProdIds[] = FatUtility::int(str_replace( Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded ));	
+		}
+		
+		$prodSrch = new ProductSearch( $langId );
+		$prodSrch->setDefinedCriteria(0,0,array(),false);
+		$prodSrch->joinProductToCategory();
+		$prodSrch->joinSellerSubscription();
+		$prodSrch->addSubscriptionValidCondition();
+		$prodSrch->doNotCalculateRecords();
+		$prodSrch->addCondition( 'selprod_id', 'IN', $selProdIds );
+		$prodSrch->addCondition('selprod_deleted','=',applicationConstants::NO);
+		$prodSrch->doNotLimitRecords();
+		$prodSrch->addMultipleFields( array(
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn',
+			'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+			'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
+			'shop_id', 'shop_name',
+			'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') );
+		$productRs = $prodSrch->getResultSet();
+		$products = FatApp::getDb()->fetchAll($productRs); 
+		
+		$fatTpl = new FatTemplate('', '');
+		$fatTpl->set('products', $products);
+		$fatTpl->set('siteLangId', $langId);
+		$productsInCartFormatHtml = $fatTpl->render(false, false, '_partial/products-in-cart-wishlist-email.php', true);
+		
 		$vars = array(
 			'{user_full_name}' => $d['user_name'],
 			'{checkout_url}' => $d['link'],
+			'{products_in_cart_format}' => $productsInCartFormatHtml,
 		);
 		
 		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){
@@ -2243,10 +2279,45 @@ class EmailHandler extends FatModel {
 	
 	function remindBuyerForWishlistItems( $langId, $d ){
 		$tpl = 'reminder_for_items_in_wishlist';
-
+	
+		$wListObj = new UserWishList();
+		$srch = UserWishList::getSearchObject($d['user_id']);
+		$wListObj->joinWishListProducts($srch);		
+		$srch->addMultipleFields(array('uwlist_id','uwlp_selprod_id'));
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$rs = $srch->getResultSet();
+		$selProdIds = FatApp::getDb()->fetchAllAssoc($rs);
+		
+		$prodSrch = new ProductSearch( $langId );
+		$prodSrch->setDefinedCriteria(0,0,array(),false);
+		$prodSrch->joinProductToCategory();
+		$prodSrch->joinSellerSubscription();
+		$prodSrch->addSubscriptionValidCondition();
+		$prodSrch->doNotCalculateRecords();
+		$prodSrch->addCondition( 'selprod_id', 'IN', $selProdIds );
+		$prodSrch->addCondition('selprod_deleted','=',applicationConstants::NO);
+		$prodSrch->doNotLimitRecords();
+		$prodSrch->addMultipleFields( array(
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn',
+			'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+			'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
+			'shop_id', 'shop_name',
+			'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') );
+		$productRs = $prodSrch->getResultSet();
+		$products = FatApp::getDb()->fetchAll($productRs); 
+		
+		$fatTpl = new FatTemplate('', '');
+		$fatTpl->set('products', $products);
+		$fatTpl->set('siteLangId', $langId);
+		$productsInWishlistFormatHtml = $fatTpl->render(false, false, '_partial/products-in-cart-wishlist-email.php', true);
+		
+		
+		
 		$vars = array(
 			'{user_full_name}' => $d['user_name'],
 			'{wishlist_url}' => $d['link'],
+			'{products_in_wishlist_format}' => $productsInWishlistFormatHtml,
 		);
 		
 		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){

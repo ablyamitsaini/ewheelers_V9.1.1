@@ -119,7 +119,7 @@
 													}
 													$prodName.= $row['op_product_name'];
 													?>
-													<a title="<?php echo $row['op_product_name'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $row['op_product_name'];?></a></div>
+													<a title="<?php echo $row['op_product_name'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $prodName;?></a></div>
 													<div class="item-yk-head-brand"><span><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId,$row['op_brand_name']);?></div>
 													<?php if( $row['op_selprod_options'] != '' ){ ?>
 													<div class="item-yk-head-specification"><?php echo $row['op_selprod_options'];?></div>

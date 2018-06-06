@@ -3,9 +3,8 @@
  ALTER TABLE `tbl_user_cart` ADD `usercart_added_date` DATETIME NOT NULL AFTER `usercart_details`; 
  ALTER TABLE `tbl_user_cart` ADD `usercart_sent_reminder` INT NOT NULL AFTER `usercart_added_date`; 
 
- ALTER TABLE `tbl_user_wish_lists` ADD `uwlist_sent_reminder` INT NOT NULL AFTER `uwlist_added_on`; 
-
- ALTER TABLE `tbl_user_wish_lists` ADD `uwlist_reminder_date` DATETIME NOT NULL AFTER `uwlist_sent_reminder`; 
+ ALTER TABLE `tbl_user_wish_list_products` ADD `uwlp_sent_reminder` INT NOT NULL AFTER `uwlp_added_on`, ADD `uwlp_reminder_date` DATETIME NOT NULL AFTER `uwlp_sent_reminder`; 
+  
  ALTER TABLE `tbl_user_cart` ADD `usercart_reminder_date` DATETIME NOT NULL AFTER `usercart_sent_reminder`; 
 
 

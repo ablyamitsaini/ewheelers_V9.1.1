@@ -62,9 +62,9 @@ class Cart extends FatModel {
 		return $cart_user_id;
 	}
 	
-	public static function getCartData(){
+	public static function getCartData($userId){
 		$srch = new SearchBase('tbl_user_cart');
-		$srch->addCondition('usercart_user_id', '=', UserAuthentication::getLoggedUserId() );
+		$srch->addCondition('usercart_user_id', '=', $userId );
 		$srch->addCondition('usercart_type', '=', CART::TYPE_PRODUCT );
 		$rs = $srch->getResultSet();
 		if( $row = FatApp::getDb()->fetch($rs) ){
@@ -1164,7 +1164,7 @@ class Cart extends FatModel {
 			}
 			$cart_arr = serialize($cart_arr);
 			$record->assignValues( array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) );
-			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) ) ){
+			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ), "usercart_sent_reminder" => 0 ) ) ){
 				Message::addErrorMessage( $record->getError() );
 				throw new Exception('');
 			}

@@ -1207,7 +1207,6 @@ class AccountController extends LoggedUserController {
 		$this->set( 'wish_list_id', $wish_list_id );
 		$this->set( 'totalWishListItems', Common::countWishList() );
 		
-		
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	

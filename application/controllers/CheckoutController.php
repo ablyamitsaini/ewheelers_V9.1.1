@@ -834,7 +834,7 @@ class CheckoutController extends MyAppController{
 		$orderData['order_referrer_user_id'] = 0;
 		$orderData['order_referrer_reward_points'] = 0;
 		$orderData['order_referral_reward_points'] = 0;
-		$orderData['order_cart_data'] = Cart::getCartData();
+		$orderData['order_cart_data'] = Cart::getCartData($userId);
 		
 		$referrerUserId = 0;
 		if ( isset($_COOKIE['referrer_code_checkout']) && !empty($_COOKIE['referrer_code_checkout']) ){

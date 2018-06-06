@@ -731,7 +731,7 @@ class Cronjob extends FatModel {
 			
 			
 			if(!FatApp::getDb()->updateFromArray( 'tbl_user_cart', array( 'usercart_sent_reminder' => 'mysql_func_usercart_sent_reminder + 1', 'usercart_reminder_date' => date('Y-m-d H:i:s') ), array('smt' => 'usercart_user_id = ?', 'vals' => array($val['usercart_user_id']) ),true )){
-				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+				return Labels::getLabel("MSG_Can_not_be_updated",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 			}
 			
 		}
@@ -758,9 +758,9 @@ class Cronjob extends FatModel {
 		$srch->addCondition('ucr.credential_active','=',applicationConstants::ACTIVE);
 		$srch->addCondition('ucr.credential_verified','=',applicationConstants::YES);
 		$srch->addCondition('u.user_is_buyer','=',applicationConstants::YES);
-		$srch->addCondition('uwlist_sent_reminder', '<',$sentWishListReminderCount);
-		$srch->addCondition('uwlist_added_on', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
-		$srch->addCondition('uwlist_reminder_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+		$srch->addCondition('uwlp_sent_reminder', '<',$sentWishListReminderCount);
+		$srch->addCondition('uwlp_added_on', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
+		$srch->addCondition('uwlp_reminder_date', '<=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $buyerReminderInterval . ' DAY )','AND',true);
 		$srch->addGroupBy('u.user_id');
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
@@ -777,13 +777,10 @@ class Cronjob extends FatModel {
 				return $val['user_id'].' - '.Labels::getLabel("MSG_ERROR_IN_SENDING_REMINDER_EMAIL_TO_BUYER",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 			}
 			
-			
-			if(!FatApp::getDb()->updateFromArray( 'tbl_user_wish_lists', array( 'uwlist_sent_reminder' => 'mysql_func_uwlist_sent_reminder + 1', 'uwlist_reminder_date' => date('Y-m-d H:i:s') ), array('smt' => 'uwlist_user_id = ?', 'vals' => array($val['user_id']) ),true )){
-				return Labels::getLabel("MSG_Can_not_be_Re-Order",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
+			if(!FatApp::getDb()->query('UPDATE tbl_user_wish_list_products uwlp, tbl_user_wish_lists uwl SET uwlp.uwlp_sent_reminder = uwlp_sent_reminder + 1, uwlp.uwlp_reminder_date = NOW() WHERE uwl.uwlist_user_id = '.$val['user_id'])){
+				return Labels::getLabel("MSG_Can_not_be_updated",FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 			}
-			
 		}
-		
 	}
 	
 }

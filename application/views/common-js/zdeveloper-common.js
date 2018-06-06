@@ -600,8 +600,10 @@ $(document).ready(function(){
 				if( ans.action == 'A' ){
 					$(el).addClass("is-active");
 					$( "[data-id="+product_id+"]").addClass("is-active");
+					$("[data-id="+product_id+"] span").attr('title', langLbl.RemoveProductFromFavourite);
 				} else if( ans.action == 'R' ){
 					$( "[data-id="+product_id+"]").removeClass("is-active");
+					$("[data-id="+product_id+"] span").attr('title', langLbl.AddProductToFavourite);
 				}
 			}
 		});

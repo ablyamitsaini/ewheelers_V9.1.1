@@ -172,14 +172,12 @@ class UserWishListProductSearch extends SearchBase {
 		}
 	}
 	
-	
-	
 	public function joinSellerSubscription($langId= 0 ,$joinSeller = false){
 		$langId = FatUtility::int($langId);
 		if($this->langId){
 			$langId = $this->langId;
 		}
-			
+	
 		if($joinSeller){
 			$this->joinSellers();
 		}

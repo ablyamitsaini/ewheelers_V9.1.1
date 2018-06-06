@@ -17,7 +17,7 @@ $staticCollectionClass='static--collection';
  </span>
   <?php } ?>
   <ul>
-    <li class="menu-item menu-item1 heart-wrapper <?php echo($product['ufp_id'])?'is-active':'';?>" data-id="<?php echo $product['selprod_id']; ?>"> <span  title="<?php echo Labels::getLabel('LBL_Add_Product_to_favourite_list',$siteLangId); ?>"> <i class="svg "> <svg viewBox="0 0 15.996 13.711">
+    <li class="menu-item menu-item1 heart-wrapper <?php echo($product['ufp_id'])?'is-active':'';?>" data-id="<?php echo $product['selprod_id']; ?>"> <span  title="<?php echo($product['ufp_id'])? Labels::getLabel('LBL_Remove_product_from_favourite_list',$siteLangId) : Labels::getLabel('LBL_Add_Product_to_favourite_list',$siteLangId); ?>"> <i class="svg "> <svg viewBox="0 0 15.996 13.711">
       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#heart-fav"></use>
       </svg>
       <div class="ring"></div>
