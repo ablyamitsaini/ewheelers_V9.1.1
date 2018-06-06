@@ -96,6 +96,8 @@ class MyAppController extends FatController {
 			'pleaseSelect' =>Labels::getLabel('VLBL_Please_select',$this->siteLangId),
 			'to' =>Labels::getLabel('VLBL_to',$this->siteLangId),
 			'options' =>Labels::getLabel('VLBL_options',$this->siteLangId),
+			'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list',$this->siteLangId),
+			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
 		);
 
 		$languages = Language::getAllNames(false);
@@ -112,24 +114,19 @@ class MyAppController extends FatController {
 		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 			$themeId = $_SESSION['preview_theme'];
 		}
-		
 		$themeDetail = ThemeColor::getAttributesById($themeId);
+		
+		$currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
+		$currencySymbolRight = CommonHelper::getCurrencySymbolRight();
+		
+		$this->set('currencySymbolLeft',$currencySymbolLeft);
+		$this->set('currencySymbolRight',$currencySymbolRight);
 		$this->set('themeDetail',$themeDetail);
 		$this->set('jsVariables',$jsVariables);
 		$this->set('controllerName', $controllerName );
 		$this->set('isAppUser' , commonhelper::isAppUser());
 		$this->set('action', $this->action );
 	}
-	
-	/* public function checkisThemePreview(){
-		$themeActive = 0;
-		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
-			$themeActive = 1;
-		}
-		$json = array();
-		$json['isThemePreview'] = $themeActive;
-		die(json_encode($json));
-	} */
 
 	public function getStates($countryId , $stateId = 0){
 		$countryId = FatUtility::int($countryId);

@@ -42,7 +42,7 @@ if( isset( $collections ) && count($collections) ){
 				  <?php if($showAddToFavorite) { ?>
 					<div class="collections-ui">
 						<ul>
-						  <li class="heart-wrapper <?php echo($product['ufp_id'])?'is-active':'';?>" data-id="<?php echo $product['selprod_id']; ?>"> <a href="javascript:void(0)" title="<?php echo Labels::getLabel('LBL_Add_Product_to_favourite_list',$siteLangId); ?>"> <i class="svg "> <svg viewBox="0 0 15.996 13.711">
+						  <li class="heart-wrapper <?php echo($product['ufp_id'])?'is-active':'';?>" data-id="<?php echo $product['selprod_id']; ?>"> <a href="javascript:void(0)" title="<?php echo($product['ufp_id'])? Labels::getLabel('LBL_Remove_product_from_favourite_list',$siteLangId) : Labels::getLabel('LBL_Add_Product_to_favourite_list',$siteLangId); ?>"> <i class="svg "> <svg viewBox="0 0 15.996 13.711">
 							<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#heart-fav"></use>
 							</svg>
 							<div class="ring"></div>
@@ -51,8 +51,7 @@ if( isset( $collections ) && count($collections) ){
 						  <li class="collection-wrapper"><a href="javascript:void(0)" title="<?php echo Labels::getLabel('LBL_Add_Product_to_your_wishlist',$siteLangId); ?>" onClick="viewWishList(<?php echo $product['selprod_id']; ?>,this);" class="ripplelink collection-toggle link--icon wishListLink-Js"><span class="ink animate" style="height: 359px; width: 359px; top: -207.938px; left: 7.34375px;"></span> <i class="svg"> <svg viewBox="0 0 64 64">
 							<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#collection-list"></use>
 							</svg> </i> </a>
-							<div class="collection__container" id="listDisplayDiv_<?php echo $product['selprod_id']; ?>" data-id ="<?php echo $product['selprod_id']; ?>">
-									
+							<div class="collection__container" id="listDisplayDiv_<?php echo $product['selprod_id']; ?>" data-id ="<?php echo $product['selprod_id']; ?>">	
 							</div>
 						  </li>
 						</ul>

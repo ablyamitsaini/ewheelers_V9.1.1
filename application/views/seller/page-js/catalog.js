@@ -175,18 +175,18 @@ $(document).delegate('.language-js','change',function(){
 	
 	shippingautocomplete = function(shipping_row) {
 	
-		$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500); 
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500);
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500);
 		});
-		$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').autocomplete({
 			'source': function(request, response) {
 			
 				$.ajax({
@@ -207,13 +207,13 @@ $(document).delegate('.language-js','change',function(){
 				});
 			},
 			'select': function(item) {
-				$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').val(item.label);
-				$('input[name=\'product_shipping[' + shipping_row + '][country_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][country_name]"]').val(item.label);
+				$('input[name="product_shipping[' + shipping_row + '][country_id]"]').val(item.value);
 			}
 		});
 		
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').autocomplete({
 				'source': function(request, response) {
 			
 				$.ajax({
@@ -235,15 +235,15 @@ $(document).delegate('.language-js','change',function(){
 			},
 			'select': function(item) {
 				
-				$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').val(item.label);
-					$('input[name=\'product_shipping[' + shipping_row + '][company_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][company_name]"]').val(item.label);
+					$('input[name="product_shipping[' + shipping_row + '][company_id]"]').val(item.value);
 				
 				
 			}
 				
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').autocomplete({
 				'source': function(request, response) {
 			
 				$.ajax({
@@ -265,8 +265,8 @@ $(document).delegate('.language-js','change',function(){
 			},
 			'select': function(item) {
 				
-				$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').val(item.label);
-					$('input[name=\'product_shipping[' + shipping_row + '][processing_time_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').val(item.label);
+					$('input[name="product_shipping[' + shipping_row + '][processing_time_id]"]').val(item.value);
 				
 				
 			}

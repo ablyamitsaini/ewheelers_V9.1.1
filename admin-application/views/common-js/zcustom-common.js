@@ -220,18 +220,21 @@
 		if(nid>0)
 		{
 			$.systemMessage(langLbl.processing,'alert--process');
-			markRead(nid);
+			markRead(nid,url,id);
+		}else{
+			var form = '<input type="hidden" name="id" value="'+id+'">';
+			$('<form action="' + url + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();	
 		}
-        var form = '<input type="hidden" name="id" value="'+id+'">';
-        $('<form action="' + url + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
 	};
-	markRead = function(nid){	
+	markRead = function(nid,url,id){	
 		if(nid.length < 1){
 			return false;
 		}	
 		var data = 'record_ids='+nid+'&status='+1+'&markread=1';
-		fcom.updateWithAjax(fcom.makeUrl('Notifications', 'changeStatus'), data, function(t) {							
-		});			
+		fcom.updateWithAjax(fcom.makeUrl('Notifications', 'changeStatus'), data, function(t) {	
+			var form = '<input type="hidden" name="id" value="'+id+'">';
+			$('<form action="' + url + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();	
+		});	
 	};
 
 	/* $(document).click(function(event) {

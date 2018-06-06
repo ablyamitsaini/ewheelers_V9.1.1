@@ -62,15 +62,11 @@ $(document).delegate('.language-js','change',function(){
 	productForm = function( id, attrgrp_id ) {
 		fcom.displayProcessing();		
 		fcom.resetEditorInstance();
-		if( !id && attrgrp_id == 0 ){
-			productAttributeGroupForm( );
-			return;
-		}
 		
 		fcom.ajax(fcom.makeUrl('Products', 'form', [ id, attrgrp_id]), '', function(t) {
 			fcom.updateFaceboxContent(t,'faceboxWidth product-setup-width');
-			
-			if(id > 0 && CONF_PRODUCT_DIMENSIONS_ENABLE == 0)
+
+			if(CONF_PRODUCT_DIMENSIONS_ENABLE == 0)
 			{
 				addShippingTab(id,PRODUCT_TYPE_DIGITAL);
 			}
@@ -84,13 +80,7 @@ $(document).delegate('.language-js','change',function(){
 			});
 		});
 	};
-	sellerProductForm = function(product_id, selprod_id){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Products', 'form', [ product_id, selprod_id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
-			});
-		});
-	};
+	
 	productLangForm = function(product_id, lang_id) {
 		fcom.displayProcessing();
 		fcom.resetEditorInstance();		
@@ -594,18 +584,18 @@ $(document).delegate('.language-js','change',function(){
 	};
 	
 	shippingautocomplete = function(shipping_row) {
-		$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500); 
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500);
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').focusout(function() {
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').focusout(function() {
 				setTimeout(function(){ $('.suggestions').hide(); }, 500);
 		});
-		$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').autocomplete({
 			'source': function(request, response) {
 				$.ajax({
 					url: fcom.makeUrl('products', 'countries_autocomplete'),
@@ -623,12 +613,12 @@ $(document).delegate('.language-js','change',function(){
 				});
 			},
 			'select': function(item) {
-				$('input[name=\'product_shipping[' + shipping_row + '][country_name]\']').val(item.label);
-				$('input[name=\'product_shipping[' + shipping_row + '][country_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][country_name]"]').val(item.label);
+				$('input[name="product_shipping[' + shipping_row + '][country_id]"]').val(item.value);
 			}
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').autocomplete({
 				'source': function(request, response) {
 				$.ajax({
 					url: fcom.makeUrl('products', 'shippingCompanyAutocomplete'),
@@ -646,12 +636,12 @@ $(document).delegate('.language-js','change',function(){
 				});
 			},
 			'select': function(item) {
-				$('input[name=\'product_shipping[' + shipping_row + '][company_name]\']').val(item.label);
-				$('input[name=\'product_shipping[' + shipping_row + '][company_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][company_name]"]').val(item.label);
+				$('input[name="product_shipping[' + shipping_row + '][company_id]"]').val(item.value);
 			}
 		});
 		
-		$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').autocomplete({
 				'source': function(request, response) {
 				$.ajax({
 					url: fcom.makeUrl('products', 'shippingMethodDurationAutocomplete'),
@@ -669,8 +659,8 @@ $(document).delegate('.language-js','change',function(){
 				});
 			},
 			'select': function(item) {
-				$('input[name=\'product_shipping[' + shipping_row + '][processing_time]\']').val(item.label);
-				$('input[name=\'product_shipping[' + shipping_row + '][processing_time_id]\']').val(item.value);
+				$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').val(item.label);
+				$('input[name="product_shipping[' + shipping_row + '][processing_time_id]"]').val(item.value);
 			}
 		});
 	};

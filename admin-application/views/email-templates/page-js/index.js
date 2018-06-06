@@ -81,6 +81,27 @@ $(document).ready(function(){
 		});
 	};
 	
+	toggleStatus = function(obj){
+		if(!confirm(langLbl.confirmUpdateStatus)){return;}
+		var etplCode = obj.id;
+		if(etplCode == ''){
+			fcom.displayErrorMessage(langLbl.invalidRequest);
+			return false;
+		}
+		data='etplCode='+etplCode;
+		fcom.displayProcessing();
+		fcom.ajax(fcom.makeUrl('EmailTemplates','changeStatus'),data,function(res){
+		var ans =$.parseJSON(res);
+			if(ans.status == 1){
+				$(obj).toggleClass("active");
+				fcom.displaySuccessMessage(ans.msg);
+			}else{
+				fcom.displayErrorMessage(ans.msg);
+			}
+		});
+		$.systemMessage.close();
+	};	
+	
 	clearSearch = function(){		
 		document.frmEtplsSearch.reset();		
 		searchEtpls(document.frmEtplsSearch);

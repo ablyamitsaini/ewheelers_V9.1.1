@@ -616,6 +616,20 @@ class ConfigurationsController extends AdminBaseController {
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart",$this->adminLangId),'CONF_MAINTAIN_WALLET_ON_PAYMENT_FAILURE',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));					
 				$fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_payment_failure",$this->adminLangId)."</small>";
 				
+				$fld = $frm->addIntegerField(Labels::getLabel("LBL_Reminder_Interval_For_Products_In_Cart_[Days]",$this->adminLangId),'CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART','');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_interval_in_days_to_send_auto_notification_alert_to_buyer_for_products_in_cart.",$this->adminLangId)."</small>";
+				
+				$fld = $frm->addIntegerField(Labels::getLabel("LBL_Set_Notification_Count_to_be_Sent",$this->adminLangId),'CONF_SENT_CART_REMINDER_COUNT','');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_how_many_notifications_will_be_sent_to_buyer.",$this->adminLangId)."</small>";
+				
+				$frm->addHtml('','Wishlist','<h3>'.Labels::getLabel("LBL_Wishlist",$this->adminLangId).'</h3>');
+		
+				$fld = $frm->addIntegerField(Labels::getLabel("LBL_Reminder_Interval_For_Products_In_Wishlist_[Days]",$this->adminLangId),'CONF_REMINDER_INTERVAL_PRODUCTS_IN_WISHLIST','');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_interval_in_days_to_send_auto_notification_alert_to_buyer_for_products_in_Wishlist.",$this->adminLangId)."</small>";
+				
+				$fld = $frm->addIntegerField(Labels::getLabel("LBL_Set_Notification_Count_to_be_Sent",$this->adminLangId),'CONF_SENT_WISHLIST_REMINDER_COUNT','');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_how_many_notifications_will_be_sent_to_buyer.",$this->adminLangId)."</small>";
+				
 				$frm->addHtml('','Checkout','<h3>'.Labels::getLabel("LBL_Checkout",$this->adminLangId).'</h3>');
 				
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_New_Order_Alert_Email",$this->adminLangId),'CONF_NEW_ORDER_EMAIL',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));					

@@ -77,7 +77,7 @@ class Tag extends MyAppModel{
 				$productTags = Product::getProductTags( $productId, $lang_id );
 				$productName = Product::getAttributesBylangId($lang_id,$productId,'product_name'); 
 				if(!$productName){
-					$productData =	Product::getProductDataById( FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$productId,'ifNull(product_name,product_identifier) as product_name');
+					$productData =	Product::getProductDataById( FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$productId,array('ifNull(product_name,product_identifier) as product_name','product_identifier'));
 					 $productName = $productData['product_name'];
 				}
 				
@@ -100,7 +100,9 @@ class Tag extends MyAppModel{
 						if( !$prodObj->updateLangData( $lang_id, $data_to_update ) ){}
 					} */
 				}else{
-					$data_to_update = array( 'product_tags_string'	=>	''	);
+					$productName = !empty($productName) ? $productName : $productData['product_identifier'];
+					
+					$data_to_update = array( 'product_tags_string' => '', 'product_name' => $productName);
 					if( !$prodObj->updateLangData( $lang_id, $data_to_update ) ){}
 				}
 			}

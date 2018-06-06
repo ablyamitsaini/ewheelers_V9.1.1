@@ -1207,7 +1207,6 @@ class AccountController extends LoggedUserController {
 		$this->set( 'wish_list_id', $wish_list_id );
 		$this->set( 'totalWishListItems', Common::countWishList() );
 		
-		
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
@@ -1219,8 +1218,9 @@ class AccountController extends LoggedUserController {
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		
 		$favouriteProducts[] = Product::getUserFavouriteProducts( $loggedUserId, $this->siteLangId );
+		/* CommonHelper::printArray($favouriteProducts); die; */
 		$wishLists = UserWishList::getUserWishLists( $loggedUserId, false );
-		
+
 		if( $wishLists ){
 			$srchObj = new UserWishListProductSearch( $this->siteLangId );
 			$db = FatApp::getDb();

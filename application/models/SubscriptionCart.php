@@ -411,7 +411,7 @@ class SubscriptionCart extends FatModel {
 			
 			}
 			$cart_arr = serialize($cart_arr);
-			$record->assignValues( array("usercart_user_id" => $this->scart_user_id, 'usercart_type'=> Cart::TYPE_SUBSCRIPTION, "usercart_details" => $cart_arr ) );
+			$record->assignValues( array("usercart_user_id" => $this->scart_user_id, 'usercart_type'=> Cart::TYPE_SUBSCRIPTION, "usercart_details" => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) );
 			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr ) ) ){
 				Message::addErrorMessage( $record->getError() );
 				throw new Exception('');

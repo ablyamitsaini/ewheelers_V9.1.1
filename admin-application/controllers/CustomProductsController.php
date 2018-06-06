@@ -641,7 +641,7 @@ class CustomProductsController extends AdminBaseController {
 				$productLangData = array(
 					'productlang_product_id'=>$product_id,
 					'productlang_lang_id'=>$lang_id,
-					'product_name'=>isset($reqLangData['product_name'])?$reqLangData['product_name']:$data['product_identifier'],				
+					'product_name'=>isset($reqLangData['product_name']) ? $reqLangData['product_name'] : $data['product_identifier'],				
 					'product_description'=>isset($reqLangData['product_description'])?$reqLangData['product_description']:'',
 					'product_youtube_video'=>isset($reqLangData['product_youtube_video'])?$reqLangData['product_youtube_video']:'',
 					'product_tags_string'=>'',

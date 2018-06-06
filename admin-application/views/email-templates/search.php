@@ -2,7 +2,7 @@
 $arr_flds = array(
 		'listserial'=> Labels::getLabel('LBL_Sr_no.',$adminLangId),
 		'etpl_name'=> Labels::getLabel('LBL_name',$adminLangId),
-		/* 'etpl_code'=>'Code', */
+		'etpl_status'=>Labels::getLabel('LBL_Status',$adminLangId),
 		'action' => Labels::getLabel('LBL_Action',$adminLangId),
 	);
 $tbl = new HtmlElement('table',array('width'=>'100%', 'class'=>'table table-responsive'));
@@ -22,7 +22,19 @@ foreach ($arr_listing as $sn=>$row){
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no,true);
-			break;					
+			break;	
+			case 'etpl_status':
+				$active = "active";
+				if( !$row['etpl_status'] ) {
+					$active = '';
+				}
+				$statucAct = ( $canEdit === true ) ? 'toggleStatus(this)' : '';
+				$str='<label id="'.$row['etpl_code'].'" class="statustab '.$active.'" onclick="'.$statucAct.'">
+				  <span data-off="'. Labels::getLabel('LBL_Active', $adminLangId) .'" data-on="'. Labels::getLabel('LBL_Inactive', $adminLangId) .'" class="switch-labels"></span>
+				  <span class="switch-handles"></span>
+				</label>';
+				$td->appendElement('plaintext', array(), $str,true);
+			break;			
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
 				if($canEdit){
@@ -34,7 +46,7 @@ foreach ($arr_listing as $sn=>$row){
 					
 					$innerLi=$innerUl->appendElement('li');
 					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"editEtplLangForm('".$row['etpl_code']."' , ".$langId.")"),Labels::getLabel('LBL_Edit',$adminLangId), true);						
-							
+	
 				}
 			break;
 			default:

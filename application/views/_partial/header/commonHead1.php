@@ -43,6 +43,8 @@ echo $str = '<script type="text/javascript">
 		var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';
 		var extendEditorJs = ' . $extendEditorJs . ';
 		var themeActive = ' . $themeActive . ';
+		var currencySymbolLeft = "' . $currencySymbolLeft . '";
+		var currencySymbolRight = "' . $currencySymbolRight . '";
 		if( CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES <= 0  ){
 			CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = 3;
 		}

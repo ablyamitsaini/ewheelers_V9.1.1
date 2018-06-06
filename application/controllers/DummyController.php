@@ -902,4 +902,29 @@ var_dump($logArr);
 			}
 		}
 	}
+	
+	function checkEmailTemplate()
+	{
+		$selprod_id = array(109,141,148,59,66);
+		$prodSrch = new ProductSearch(1);
+		$prodSrch->setDefinedCriteria(0,0,array(),false);
+		$prodSrch->joinProductToCategory();
+		$prodSrch->joinSellerSubscription();
+		$prodSrch->addSubscriptionValidCondition();
+		$prodSrch->doNotCalculateRecords();
+		$prodSrch->addCondition( 'selprod_id', 'IN', $selprod_id );
+		$prodSrch->addCondition('selprod_deleted','=',applicationConstants::NO);
+		$prodSrch->doNotLimitRecords();
+		$prodSrch->addMultipleFields( array(
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn',
+			'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+			'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
+			'shop_id', 'shop_name',
+			'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') );
+		$productRs = $prodSrch->getResultSet();
+		$products = FatApp::getDb()->fetchAll($productRs); 
+		
+		$this->set('products', $products);
+		$this->_template->render(false, false, '_partial/products-in-cart-email.php');
+	}
 }
