@@ -62,7 +62,7 @@ class UserRewards extends MyAppModel{
 			$srch->joinUserRewardBreakup();
 			$srch->addCondition('urpbreakup_used','=',0);
 			$srch->addCondition('urp_user_id','=',$result['urp_user_id']);			
-			$cnd = $srch->addCondition('urp_date_expiry','<=',date('Y-m-d'));			
+			$cnd = $srch->addCondition('urp_date_expiry','>=',date('Y-m-d'));			
 			$cnd->attachCondition('urp_date_expiry','=','0000-00-00');			
 			$rs = $srch->getResultSet();
 			
