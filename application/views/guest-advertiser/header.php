@@ -4,12 +4,20 @@ if( isset($includeEditor) && $includeEditor == true ){
 }else{
 	$extendEditorJs	= 'false';
 }
+if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+	$themeActive = 'true';
+}else{
+	$themeActive = 'false';
+}
 $commonHead1Data = array(
 	'siteLangId'		=>	$siteLangId,
 	'controllerName'	=>	$controllerName,
 	'jsVariables'		=>	$jsVariables,
 	'extendEditorJs'	=>	$extendEditorJs,
 	'themeDetail'	    =>	$themeDetail,
+	'themeActive'         =>    $themeActive,
+	'currencySymbolLeft'  =>    $currencySymbolLeft,
+	'currencySymbolRight' =>    $currencySymbolRight,
 	);
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data,false); 
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */

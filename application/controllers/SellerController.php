@@ -3407,8 +3407,8 @@ class SellerController extends LoggedUserController {
 		
 		$frm->addCheckBox(Labels::getLabel('LBL_Product_Featured',$this->siteLangId), 'product_featured', 1, array(), false, 0);
 		
-		$frm->addFloatField( Labels::getLabel('LBL_Minimum_Selling_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'product_min_selling_price', '');
-	
+		$fld = $frm->addFloatField( Labels::getLabel('LBL_Minimum_Selling_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'product_min_selling_price', '');
+		$fld->requirements()->setPositive();
 		$taxCategories =  Tax::getSaleTaxCatArr($langId);
 		$frm->addSelectBox(Labels::getLabel('LBL_Tax_Category',$this->siteLangId), 'ptt_taxcat_id', $taxCategories, '', array(),Labels::getLabel('Lbl_Select',$this->siteLangId))->requirements()->setRequired(true);
 		
@@ -3586,14 +3586,17 @@ class SellerController extends LoggedUserController {
 		
 		$frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->siteLangId),'selprod_url_keyword')->requirements()->setRequired();
 		$fld = $frm->addFloatField( Labels::getLabel('LBL_Price',$this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_price');
+		$fld->requirements()->setPositive();
 		if(isset($productData['product_min_selling_price'])){
 			$fld->requirements()->setRange($productData['product_min_selling_price'],9999999999);
 			$fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Minimum_selling_price_for_this_product_is',$this->siteLangId).' '.CommonHelper::displayMoneyFormat($productData['product_min_selling_price'],true,true));
 			$fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates',$this->siteLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price',$this->siteLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'],true,true).'</small>';			
 		}
 		
-		$frm->addIntegerField( Labels::getLabel('LBL_Quantity',$this->siteLangId),'selprod_stock');
-		$frm->addIntegerField( Labels::getLabel('LBL_Minimum_Quantity',$this->siteLangId),'selprod_min_order_qty');
+		$fld = $frm->addIntegerField( Labels::getLabel('LBL_Quantity',$this->siteLangId),'selprod_stock');
+		$fld->requirements()->setPositive();
+		$fld = $frm->addIntegerField( Labels::getLabel('LBL_Minimum_Quantity',$this->siteLangId),'selprod_min_order_qty');
+		$fld->requirements()->setPositive();
 		$frm->addSelectBox( Labels::getLabel('LBL_Subtract_Stock', $this->siteLangId), 'selprod_subtract_stock', applicationConstants::getYesNoArr($this->siteLangId), applicationConstants::YES , array(), '' );
 		$selprod_track_inventoryFld =  $frm->addSelectBox( Labels::getLabel('LBL_Track_Inventory', $this->siteLangId), 'selprod_track_inventory', Product::getInventoryTrackArr($this->siteLangId), Product::INVENTORY_NOT_TRACK , array(), '' );
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_Alert_Stock_Level', $this->siteLangId), 'selprod_threshold_stock_level' );
