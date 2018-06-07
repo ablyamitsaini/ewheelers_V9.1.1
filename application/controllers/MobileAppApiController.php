@@ -5389,8 +5389,13 @@ class MobileAppApiController extends MyAppController {
 		$orderDetail['net_amount'] = CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER);
 		$orderDetail['currency_net_amount'] = CommonHelper::displayMoneyFormat($orderDetail['net_amount'],true,false,false);
 		$orderDetail['order_date_updated'] = ($orderDetail['order_date_updated'] == '0000-00-00 00:00:00')?$orderDetail['order_date_added']:$orderDetail['order_date_updated'];
-		
-		$api_orders_elements = array('orderDetail'=>$orderDetail,'orderStatuses'=>$orderStsArr,'shippedBySeller'=>$shippedBySeller,'displayForm'=>(in_array($orderDetail['op_status_id'],$processingStatuses)),'yesNoArr'=>applicationConstants::getYesNoArr($this->siteLangId));
+			
+		$displayForm = 0;	
+		if(in_array($orderDetail['op_status_id'],$processingStatuses)){
+			$displayForm = 1;
+		}			
+						
+		$api_orders_elements = array('orderDetail'=>$orderDetail,'orderStatuses'=>$orderStsArr,'shippedBySeller'=>$shippedBySeller,'displayForm'=>$displayForm,'yesNoArr'=>applicationConstants::getYesNoArr($this->siteLangId));
 		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		
 		
