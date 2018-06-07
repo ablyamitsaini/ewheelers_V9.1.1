@@ -55,9 +55,11 @@
 	<?php } else { ?>
 	<section class="top-space bg--white">
 	  <div class="fixed-container">
+		<?php if(!$isAppUser){?>
 		<div class="breadcrumb">
 		   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
+		<?php }?>
 		<div class="row">
 		  <div class="col-lg-12">
 			<div class="heading3"><?php echo $cPage['cpage_title']; ?></div>

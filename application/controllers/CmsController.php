@@ -4,7 +4,7 @@ class CmsController extends MyAppController{
 		parent::__construct($action);
 	}
 
-    public function view($cPageId){
+    public function view($cPageId , $isAppUser = false){
 		
 		$cPageId = FatUtility::int($cPageId);
 		$srch = ContentPage::getSearchObject($this->siteLangId );
@@ -27,7 +27,12 @@ class CmsController extends MyAppController{
 		}
 		$this->set('blockData', $blockData);
 		$this->set('cPage', $cPage);
-		$this->_template->render();	
+		if($isAppUser){
+			$this->set('isAppUser', $isAppUser);
+			$this->_template->render(false,false);		
+		}else{
+			$this->_template->render();	
+		}
 	}
 
 	public function getBreadcrumbNodes($action) {
