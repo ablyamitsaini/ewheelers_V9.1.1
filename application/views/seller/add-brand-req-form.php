@@ -3,7 +3,6 @@ $frmBrandReq->setFormTagAttribute('class', 'form form--horizontal');
 $frmBrandReq->setFormTagAttribute('onsubmit', 'setupBrandReq(this); return(false);');
 $identifierFld = $frmBrandReq->getField(Brand::DB_TBL_PREFIX.'id');
 $identifierFld->setFieldTagAttribute('id',Brand::DB_TBL_PREFIX.'id');
-
 ?>
 
 <div class="box__head">
@@ -21,9 +20,7 @@ $identifierFld->setFieldTagAttribute('id',Brand::DB_TBL_PREFIX.'id');
 	  <li  class="<?php echo $inactive;?>" ><a href="javascript:void(0)" <?php if($brandReqId>0){?> onclick="brandMediaForm(<?php echo $brandReqId ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>
     </ul>
   </div>
- 
     <?php
 		echo $frmBrandReq->getFormHtml();
-		?>
-  
+	?>
 </div>

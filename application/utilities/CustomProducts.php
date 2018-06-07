@@ -1398,11 +1398,13 @@ trait CustomProducts{
 		$this->set('langId', $this->siteLangId);
 		$this->_template->render(false, false);
 	}
-		
+
 	public function setupBrandReq(){
 		
-		$frm = $this->getBrandForm();
-		$post = $frm->getFormDataFromArray(FatApp::getPostedData());
+		/* $frm = $this->getBrandForm();
+		$post = $frm->getFormDataFromArray(FatApp::getPostedData()); */
+		
+		$post = FatApp::getPostedData();
 		
 		if (false === $post) {			
 			Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -1471,7 +1473,7 @@ trait CustomProducts{
 		}
 		
 		
-		$this->set('msg', Labels::getLabel("MSG_Tag_Setup_Successful",$this->siteLangId));
+		$this->set('msg', Labels::getLabel("MSG_Brand_Setup_Successful",$this->siteLangId));
 		$this->set('brandReqId', $brandReqId);
 		$this->set('langId', $newTabLangId); 
 		$this->_template->render(false, false, 'json-success.php');

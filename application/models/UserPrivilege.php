@@ -100,16 +100,15 @@ class UserPrivilege  {
 		return true;
 	}
 	
-	static public function canSellerUpdateBrandRequest($tagId){
+	static public function canSellerUpdateBrandRequest($brandId){
 		
 		$userId =   UserAuthentication::getLoggedUserId();
 	
-		if(!$data = BrandRequest::getAttributesById( $tagId ,array('sbrandreq_seller_id')))
+		if(!$data = Brand::getAttributesById( $brandId ,array('brand_seller_id')))
 		{
-			
 			return false;
 		}else{
-			if($data['sbrandreq_seller_id']!=$userId){
+			if($data['brand_seller_id']!=$userId){
 				return false;
 			}
 		}
