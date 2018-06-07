@@ -19,7 +19,7 @@ $product_short_description_fld->htmlAfterField = 'Enter Data Separated By New Li
 	
 	<div class="tabs_nav_container responsive flat">
 		<ul class="tabs_nav">
-			<li><a href="javascript:void(0);" onclick="sellerProductForm(<?php echo $product_id ?>, 0);"><?php echo Labels::getLabel('LBL_Basic',$adminLangId); ?></a></li>
+			<li><a href="javascript:void(0);" onclick="productForm(<?php echo $product_id ?>, 0);"><?php echo Labels::getLabel('LBL_Basic',$adminLangId); ?></a></li>
 			<?php 
 				foreach($languages as $langId=>$langName){?>
 					<li class="<?php echo (!$product_id) ? 'fat-inactive' : '';  ?>"><a class = "<?php echo ($product_lang_id==$langId) ? ' active' : ''; ?>" href="javascript:void(0);" <?php echo ($product_id) ? "onclick='productLangForm( ".$product_id.",".$langId." );'" : ""; ?>><?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
