@@ -6697,7 +6697,7 @@ class MobileAppApiController extends MyAppController {
 				'status'=>1, 
 				'title'=>$cpage['cpage_title'],
 				'content'=>$cpage['cpage_content'],
-				'web_url'=>CommonHelper::generateFullUrl('Cms','view',array($cpage['cpage_id'])),
+				'web_url'=>CommonHelper::generateFullUrl('Cms','view',array($cpage['cpage_id'],true)),
 				)));
 	}
 	
