@@ -82,13 +82,15 @@ trait CustomProducts{
 		
 		/* Validate product belongs to current logged seller[ */
 		if($product_id){
-			$productRow = Product::getAttributesById( $product_id, array('product_seller_id') );
+			$productRow = Product::getAttributesById( $product_id, array('product_seller_id','product_brand_id') );
 			if( $productRow['product_seller_id'] != UserAuthentication::getLoggedUserId()){
 				Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
 				FatApp::redirectUser(CommonHelper::generateUrl('Seller','customProduct'));
 			}
 		}
 		/* ] */
+		
+		
 		$this->set('customActiveTab','GENERAL');
 
 		
@@ -134,6 +136,7 @@ trait CustomProducts{
 					Product::DB_TBL_PREFIX.'ship_free',
 					Product::DB_TBL_PREFIX.'cod_enabled',
 					Product::DB_TBL_PREFIX.'upc',
+					Product::DB_TBL_PREFIX.'brand_id',
 				);
 			$row_data = Product::getAttributesById($product_id, $productAttrToGet);
 			$taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
@@ -152,8 +155,8 @@ trait CustomProducts{
 			/* CommonHelper::printArray($row_data); die; */
 			$customProductFrm->fill($row_data);
 		}
-		
-	
+		$alertToShow = $this->CheckProductLinkWithCatBrand($product_id);
+		$this->set('alertToShow', $alertToShow);
 		$this->set('customProductFrm', $customProductFrm);		
 		$this->set('product_id',$product_id);
 		$this->set('activeTab','GENERAL');
@@ -384,7 +387,8 @@ trait CustomProducts{
 		//$optionsData = Product::getProductOptions( $product_id, $this->siteLangId);
 		
 		$customProductOptionFrm = $this->getCustomProductOptionForm();
-		
+		$alertToShow = $this->CheckProductLinkWithCatBrand($product_id);
+		$this->set('alertToShow', $alertToShow);
 		$this->set( 'customProductOptionFrm', $customProductOptionFrm );
 		$this->set( 'product_id', $product_id );
 		$this->set( 'activeTab', 'OPTIONS');
@@ -748,6 +752,9 @@ trait CustomProducts{
 	
 	public function customProductSpecifications($product_id){
 		$productSpecifications = Product::getProductSpecifications( $product_id, $this->siteLangId);
+		
+		$alertToShow = $this->CheckProductLinkWithCatBrand($product_id);
+		$this->set('alertToShow', $alertToShow);
 		$this->set( 'prodSpec', $productSpecifications );
 		$this->set( 'product_id', $product_id );
 		$languages = Language::getAllNames();
@@ -1062,6 +1069,9 @@ trait CustomProducts{
 		$product_row = FatApp::getDb()->fetch($rs);
 		$prodObj = new Product();
 		$product_tags = $prodObj->getProductTags($productId,$lang_id);
+		
+		$alertToShow = $this->CheckProductLinkWithCatBrand($productId);
+		$this->set('alertToShow', $alertToShow);
 		
 		$frm->fill($product_row);
 		
@@ -1790,6 +1800,19 @@ trait CustomProducts{
 		$frm->addTextBox( Labels::getLabel('LBL_YouTube_Video', $siteLangId),'product_youtube_video');
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $siteLangId ));
 		return $frm;
+	}
+	
+	public function CheckProductLinkWithCatBrand($productId)
+	{
+		$alertToShow = false;
+		if($productId){
+			$productRow = Product::getAttributesById( $productId, array('product_brand_id') );
+			$prodObj = new Product();
+			$prodCategories = $prodObj->getProductCategories($productId);
+			if( !$prodCategories || $productRow['product_brand_id'] == 0 ){ $alertToShow = true; }
+			$this->set( 'alertToShow', $alertToShow);
+		}
+		return $alertToShow;
 	}
 	
 }

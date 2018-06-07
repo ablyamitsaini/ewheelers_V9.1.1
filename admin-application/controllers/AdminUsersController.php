@@ -304,7 +304,7 @@ class AdminUsersController extends AdminBaseController {
 	
 		$adminId = FatUtility::int($post['admin_id']);
 		
-		if(2 > $adminId || 1 > $moduleId){
+		if(2 > $adminId /* || 1 > $moduleId */){
 			Message::addErrorMessage($this->str_invalid_request_id);			
 			FatUtility::dieJsonError(Message::getHtml());
 		}

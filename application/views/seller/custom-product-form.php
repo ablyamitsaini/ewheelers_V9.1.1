@@ -1,7 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <script type="text/javascript">
-var  productId  =  <?php echo $productId ;?>;
-
+var  productId  =  <?php echo $productId ;?>
 </script>
 <div id="body" class="body bg--gray">
     <section class="top-space">

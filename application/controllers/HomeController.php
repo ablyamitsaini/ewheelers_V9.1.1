@@ -139,7 +139,7 @@ class HomeController extends MyAppController {
 							$shopObj->setPageSize( $collection['collection_primary_records'] );
 							//$shopObj->addMultipleFields( array( 'shop_id','shop_user_id','shop_name','country_name','state_name') );
 							$shopObj->addMultipleFields( array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name') );
-						
+							
 							$rs = $shopObj->getResultSet();
 							$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 							while ($shopsData = $db->fetch($rs) ){
