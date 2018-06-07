@@ -804,7 +804,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		$srch->addCondition('ossubs_till_date','<=',$endDate);
 		$srch->addCondition('ossubs_till_date','!=','0000-00-00');
 		$srch->addCondition('user_autorenew_subscription','!=',1);
-		$srch->addMultipleFields(array('order_user_id','order_id','ossubs_id','ossubs_type','ossubs_price','ossubs_images_allowed','ossubs_products_allowed','ossubs_plan_id','ossubs_interval','ossubs_frequency'));
+		$srch->addMultipleFields(array('order_user_id','order_id','ossubs_id','ossubs_type','ossubs_price','ossubs_images_allowed','ossubs_products_allowed','ossubs_plan_id','ossubs_interval','ossubs_frequency','ossubs_commission'));
 		/* $srch->addGroupBy('order_user_id');  */
 		$srch->addOrder('ossubs_id','desc');
 

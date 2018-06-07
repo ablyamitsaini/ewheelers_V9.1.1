@@ -305,6 +305,8 @@ trait CustomProducts{
 		if( $customProductLangData ){
 			$customProductLangFrm->fill($customProductLangData);
 		}
+		$alertToShow = $this->CheckProductLinkWithCatBrand($product_id);
+		$this->set('alertToShow', $alertToShow);
 		$this->set('formLayout',Language::getLayoutDirection($lang_id));
 		$this->set('activeTab','GENERAL');
 		$this->set( 'languages', Language::getAllNames() );
