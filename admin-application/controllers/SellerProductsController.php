@@ -206,6 +206,8 @@ class SellerProductsController extends AdminBaseController {
 	
 	
 	public function setUpSellerProduct(){
+		$this->objPrivilege->canEditSellerProducts();
+		
 		$post = FatApp::getPostedData();
 		// CommonHelper::printArray($post); die;
 		$selprod_id = Fatutility::int( $post['selprod_id'] );
@@ -381,8 +383,8 @@ class SellerProductsController extends AdminBaseController {
 		return $frm;
 	}
 	
-	public function setUpSellerProductLang(){		
-		
+	public function setUpSellerProductLang(){	
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = Fatutility::int( $post['selprod_id'] );
 		$lang_id = Fatutility::int( $post['lang_id'] );
@@ -436,6 +438,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function addPolicyPoint(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		if(empty($post['selprod_id']) || empty($post['ppoint_id'])){
 			Message::addErrorMessage($this->str_invalid_request);
@@ -455,6 +458,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function removePolicyPoint(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		if(empty($post['selprod_id']) || empty($post['ppoint_id'])){
 			Message::addErrorMessage($this->str_invalid_request);
@@ -586,8 +590,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setupProdMeta(){
-		
-		
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$metaId = FatUtility::int($post['meta_id']);
 		$metaReocrdId = FatUtility::int($post['meta_record_id']);
@@ -652,7 +655,7 @@ class SellerProductsController extends AdminBaseController {
 	
 	public function setupProdMetaLang(){
 		
-		
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		
 		$metaId = $post['meta_id'];
@@ -823,7 +826,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setupSellerProductLinks(){
-		
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = FatUtility::int( $post['selprod_id'] );
 		/* if(!UserPrivilege::canEditSellerProduct($selprod_id))
@@ -931,6 +934,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setUpSellerProductSpecialPrice(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = FatUtility::int( $post['splprice_selprod_id'] );
 		$splprice_id = FatUtility::int( $post['splprice_id'] );
@@ -967,6 +971,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function deleteSellerProductSpecialPrice(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$splprice_id = FatUtility::int($post['splprice_id']);
 		if( !$splprice_id ){
@@ -1038,6 +1043,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setUpSellerProductVolumeDiscount(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = FatUtility::int( $post['voldiscount_selprod_id'] );
 		$voldiscount_id = FatUtility::int( $post['voldiscount_id'] );
@@ -1078,6 +1084,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function deleteSellerProductVolumeDiscount(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$voldiscount_id = FatApp::getPostedData( 'voldiscount_id', FatUtility::VAR_INT, 0 );
 		if( !$voldiscount_id ){
@@ -1167,7 +1174,7 @@ class SellerProductsController extends AdminBaseController {
 		return $frm;
 	}
 	
-	public function changeTaxCategory($selprod_id){		
+	public function changeTaxCategory($selprod_id){	
 		$selprod_id = FatUtility::int( $selprod_id );
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
 		
@@ -1190,6 +1197,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setUpTaxCategory(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = FatUtility::int( $post['selprod_id'] );
 		if( !$selprod_id ){
@@ -1216,6 +1224,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function resetTaxRates($selprod_id){
+		$this->objPrivilege->canEditSellerProducts();
 		$selprod_id = FatUtility::int( $selprod_id );
 		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
 		
@@ -1230,6 +1239,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function resetCatTaxRates($taxcat_id){
+		$this->objPrivilege->canEditSellerProducts();
 		$taxcat_id = FatUtility::int( $taxcat_id );
 		if($taxcat_id == 0){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->adminLangId));
@@ -1321,6 +1331,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function uploadDigitalFile(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0 );
 		$lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0 );
@@ -1387,6 +1398,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function deleteDigitalFile($selprodId,$afileId = 0){
+		$this->objPrivilege->canEditSellerProducts();
 		$selprodId = FatUtility::int($selprodId);
 		$afileId = FatUtility::int($afileId);
 		
@@ -1528,7 +1540,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setUpCatalogRequest(){
-		
+		$this->objPrivilege->canEditSellerProducts();
 		if(!User::canRequestProduct()){
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Invalid_Access' , $this->adminLangId ));
 			FatUtility::dieWithError(Message::getHtml());
@@ -1708,7 +1720,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function setUpCatalogRequestMessage(){
-		
+		$this->objPrivilege->canEditSellerProducts();
 		$requestId = FatApp::getPostedData('requestId', null, '0');
 		$frm = $this->getCatalogRequestMessageForm( $requestId );
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
@@ -1766,6 +1778,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function deleteRequestedCatalog(){
+		$this->objPrivilege->canEditSellerProducts();
 		$post = FatApp::getPostedData();
 		$scatrequest_id = FatUtility::int($post['scatrequest_id']);
 		
@@ -1953,7 +1966,6 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function sendMailForm($user_id,$selprod_id){
-		$this->objPrivilege->canEditSellerProducts();
 		$user_id = FatUtility::int($user_id);
 		$selprod_id = FatUtility::int($selprod_id);
 		$userObj = new User($user_id);
@@ -1969,7 +1981,6 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function sendMailThresholdStock($user_id,$selprod_id){
-		$this->objPrivilege->canEditSellerProducts();
 		$user_id = FatUtility::int($user_id);
 		$selprod_id = FatUtility::int($selprod_id);
 
@@ -2015,7 +2026,7 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function sellerProductDelete(){
-		
+		$this->objPrivilege->canEditSellerProducts();
 		$selprod_id = FatApp::getPostedData('id', FatUtility::VAR_INT, 0);		
 		if($selprod_id < 1){
 			Message::addErrorMessage(
@@ -2058,11 +2069,9 @@ class SellerProductsController extends AdminBaseController {
 			Message::addErrorMessage($sellerProdObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );	
 		}
-	//	FatUtility::dieJsonSuccess($this->str_update_record);
+		//	FatUtility::dieJsonSuccess($this->str_update_record);
 		$msg='Status changed Successfully';
 		$this->set('msg',$msg);
 		$this->_template->render(false,false,'json-success.php');
-
-
 	}
 }
