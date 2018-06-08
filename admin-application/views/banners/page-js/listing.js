@@ -136,7 +136,11 @@ $(document).delegate('.display-js','change',function(){
 		});
 	};
 	
-	toggleStatus = function( e,obj ){
+	toggleStatus = function( e,obj,canEdit ){
+		if(canEdit == 0){
+			e.preventDefault();
+			return;
+		}
 		if(!confirm(langLbl.confirmUpdateStatus)){
 			e.preventDefault();
 			return;

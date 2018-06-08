@@ -54,11 +54,11 @@ foreach ($arr_listing as $sn=>$row){
 				if($row['brand_active']) {
 					$active = 'checked';
 				}
-				$statucAct = ($canEdit === true) ? 'toggleStatus(event,this)' : '';
-				$str='<label class="statustab -txt-uppercase">
-                                            
-                     <input '.$active.' type="checkbox" id="switch'.$row['brand_id'].'" value="'.$row['brand_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-                                      	<i class="switch-handles"></i>';
+				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
+				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
+				$str='<label class="statustab -txt-uppercase">    
+                     <input '.$active.' type="checkbox" id="switch'.$row['brand_id'].'" value="'.$row['brand_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                    <i class="switch-handles '.$statusClass.'"></i>';
 					$td->appendElement('plaintext', array(), $str,true);
 			break;			
 			case 'action':

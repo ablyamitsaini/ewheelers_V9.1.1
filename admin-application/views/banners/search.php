@@ -33,10 +33,11 @@ foreach ($arr_listing as $sn=>$row){
 			if( $row['blocation_active'] ) {
 				$active = 'checked';
 			}
-			$statucAct = ( $canEdit === true ) ? 'toggleStatusBannerLocation(event,this)' : '';
+			$statusAct = ( $canEdit === true ) ? 'toggleStatusBannerLocation(event,this,' .applicationConstants::YES. ')' : 'toggleStatusBannerLocation(event,this,' .applicationConstants::NO. ')';
+				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
 			$str='<label class="statustab -txt-uppercase">                 
-			<input '.$active.' type="checkbox" id="switch'.$row['blocation_id'].'" value="'.$row['blocation_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-			<i class="switch-handles"></i></label>';
+			<input '.$active.' type="checkbox" id="switch'.$row['blocation_id'].'" value="'.$row['blocation_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+			<i class="switch-handles '.$statusClass.'"></i></label>';
 			$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'blocation_promotion_cost':				

@@ -94,7 +94,11 @@ addBannersLayouts = function() {
 		searchTax(document.frmTaxSearch);
 	};
 	
-	toggleStatusBannerLocation = function( e,obj ){
+	toggleStatusBannerLocation = function( e,obj,canEdit ){
+		if(canEdit == 0){
+			e.preventDefault();
+			return;
+		}
 		if(!confirm(langLbl.confirmUpdateStatus)){
 			e.preventDefault();
 			return;
