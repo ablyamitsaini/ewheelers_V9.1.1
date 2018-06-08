@@ -38,11 +38,12 @@ foreach ($arr_listing as $sn=>$row){
 				if( $row['shop_active'] ) {
 					$active = 'checked';
 				}
-				$statucAct = ( $canEdit === true ) ? 'toggleStatus(event,this)' : '';
-				//$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['shop_id'].'">Toggle</label></div>';
+				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this)' : 'toggleStatus(event,this)';
+				$statusClass = ( $canEdit === true ) ? '' : 'disabled';
+				//$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statusAct.'"/><label for="switch'.$row['shop_id'].'">Toggle</label></div>';
 				$str= '<label class="statustab -txt-uppercase">
-					   <input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-                       <i class="switch-handles"></i></label>';
+					   <input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                       <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
 				
 			break;
