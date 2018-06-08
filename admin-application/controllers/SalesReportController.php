@@ -26,7 +26,7 @@ class SalesReportController extends AdminBaseController {
 	public function search(){
 		$this->objPrivilege->canViewSalesReport();
 		$db = FatApp::getDb();
-		$orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_DATE, '') ;
+		$orderDate = FatApp::getPostedData('orderDate') ;
 		
 		$srchFrm = $this->getSearchForm($orderDate);
 		
