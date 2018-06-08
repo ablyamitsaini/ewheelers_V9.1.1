@@ -15,4 +15,7 @@
  INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES ('reminder_for_items_in_cart', '1', 'Reminder for items in Cart', 'Reminder for items in Cart', 'Reminder for items in Cart', '', '1'); 
 
  INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES ('reminder_for_items_in_wishlist', '1', 'Reminder for items in wishlist', 'Reminder for items in wishlist', 'Reminder for items in wishlist', '', '1'); 
+  
+ ALTER TABLE `tbl_users` DROP `user_app_access_token`;
 
+ 

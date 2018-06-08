@@ -9,6 +9,9 @@ class UserAuthentication extends FatModel {
 	
 	const DB_TBL_USER_AUTH = 'tbl_user_auth_token';
 	const DB_TBL_UAUTH_PREFIX = 'uauth_';
+	
+	const TOKEN_LENGTH = 32;
+	
 	private $commonLangId;
 	
 	const AFFILIATE_REG_STEP1 = 1;
@@ -78,16 +81,45 @@ class UserAuthentication extends FatModel {
 	}
 	
 	public static function doAppLogin($token,$userType = 0) {
-		$db = FatApp::getDb();
-		$userObj = new User();
-		$srch = $userObj->getUserSearchObj(array('u.*'));
-		$srch->addCondition('user_app_access_token','=',$token);
-		$rs = $srch->getResultSet();
-		$user = $db->fetch($rs,'user_id');
-		if ($user){
-			return true;
-		}		
-       
+		$authRow = self::checkLoginTokenInDB($token);
+		
+		if (strlen($token) != self::TOKEN_LENGTH || empty($authRow)) {
+            self::clearLoggedUserLoginCookie();
+            return false;
+        }
+		
+		$browser = CommonHelper::userAgent();
+		if (strtotime($authRow['uauth_expiry']) < strtotime('now')) {
+            self::clearLoggedUserLoginCookie();
+            return false;
+        }
+		
+		$ths = new UserAuthentication();
+        if ($row = $ths->loginByAppToken($authRow)) {
+            return true;
+        }
+
+        return false;
+    }
+	
+	private function loginByAppToken($authRow) {
+
+        $userObj = new User($authRow['uauth_user_id']);
+
+        if ($row = $userObj->getProfileData()) {
+
+            if ($row['credential_verified'] != applicationConstants::YES) {
+                return false;
+            }
+			
+            if ($row['credential_active'] != applicationConstants::YES) {
+                return false;
+            }
+            $row['user_ip'] = CommonHelper::getClientIp();
+			$this->setSession($row);
+
+            return $row;
+        }
         return false;
     }
 	
@@ -100,7 +132,7 @@ class UserAuthentication extends FatModel {
 			
 			$authRow = self::checkLoginTokenInDB($token);
 			
-			if(strlen($token) != 25 || empty($authRow)){
+			if(strlen($token) != self::TOKEN_LENGTH || empty($authRow)){
 				self::clearLoggedUserLoginCookie();
 				return false;
 			}
@@ -226,7 +258,16 @@ class UserAuthentication extends FatModel {
 		return false; 
 	}
 	
-	public static function saveRememberLoginToken(&$values){
+	/* public static function saveRememberLoginToken(&$values){
+		$db = FatApp::getDb();
+		if($db->insertFromArray(static::DB_TBL_USER_AUTH, $values)){
+			return true;
+		}
+		
+		return false;
+	} */
+	
+	public static function saveLoginToken(&$values){
 		$db = FatApp::getDb();
 		if($db->insertFromArray(static::DB_TBL_USER_AUTH, $values)){
 			return true;
