@@ -33,19 +33,16 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $onOffArr[$row[$key]], true);
 			break;
 			case 'shop_active':
-			
 				$active = "";
 				if( $row['shop_active'] ) {
 					$active = 'checked';
 				}
-				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this)' : 'toggleStatus(event,this)';
-				$statusClass = ( $canEdit === true ) ? '' : 'disabled';
-				//$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statusAct.'"/><label for="switch'.$row['shop_id'].'">Toggle</label></div>';
+				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
+				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
 				$str= '<label class="statustab -txt-uppercase">
 					   <input '.$active.' type="checkbox" id="switch'.$row['shop_id'].'" value="'.$row['shop_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
                        <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
-				
 			break;
 			case 'shop_featured':
 				$td->appendElement('plaintext', array(), applicationConstants::getYesNoArr($adminLangId)[$row[$key]], true );

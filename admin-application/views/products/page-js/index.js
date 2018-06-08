@@ -511,7 +511,11 @@ $(document).delegate('.language-js','change',function(){
 		return false;
 	};
 	
-	toggleStatus = function(e,obj){
+	toggleStatus = function(e,obj,canEdit){
+		if(canEdit == 0){
+			e.preventDefault();
+			return;
+		}
 		if(!confirm(langLbl.confirmUpdateStatus)){
 			e.preventDefault();
 			return;

@@ -42,11 +42,11 @@ foreach ( $arrListing as $sn => $row ){
 				if( $row['emptycartitem_active'] ) {
 					$active = 'checked';
 				}
-				$statucAct = ( $canEdit === true ) ? 'toggleStatus(event,this)' : '';
-				//$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['emptycartitem_id'].'" value="'.$row['emptycartitem_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['emptycartitem_id'].'">Toggle</label></div>';
+				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
+				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
 				$str='<label class="statustab -txt-uppercase">                 
-                     <input '.$active.' type="checkbox" id="switch'.$row['emptycartitem_id'].'" value="'.$row['emptycartitem_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-                                      	<i class="switch-handles"></i></label>';
+                     <input '.$active.' type="checkbox" id="switch'.$row['emptycartitem_id'].'" value="'.$row['emptycartitem_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                    <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'action':

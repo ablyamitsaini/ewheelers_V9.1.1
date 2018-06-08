@@ -55,17 +55,16 @@ foreach ($arr_listing as $sn=>$row){
 				$isExpired = ($row['coupon_end_date'] != "0000-00-00" && strtotime($row['coupon_end_date']) < strtotime(date('Y-m-d'))) ? true: false;
 				if( $isExpired ){
 					$td->appendElement('plaintext', array(), Labels::getLabel("LBL_Expired", $adminLangId), true );
-					
 				} else {
 					$active = "";
 					if($row['coupon_active']) {
 					$active = 'checked';
 					}
-					$statucAct = ($canEdit === true) ? 'toggleStatus(event,this)' : '';
-					//$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['coupon_id'].'" value="'.$row['coupon_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['coupon_id'].'">Toggle</label></div>';
+					$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
+					$statusClass = ( $canEdit === false ) ? 'disabled' : '';
 					$str='<label class="statustab -txt-uppercase">                 
-                     <input '.$active.' type="checkbox" id="switch'.$row['coupon_id'].'" value="'.$row['coupon_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-                                      	<i class="switch-handles"></i></label>';
+                     <input '.$active.' type="checkbox" id="switch'.$row['coupon_id'].'" value="'.$row['coupon_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                    <i class="switch-handles '.$statusClass.'"></i></label>';
 					$td->appendElement('plaintext', array(), $str,true);
 				}
 			break;	
@@ -96,7 +95,7 @@ foreach ($arr_listing as $sn=>$row){
 					$li->appendElement('a', array('href'=>"javascript:void(0)", 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Delete',$adminLangId),"onclick"=>"deleteRecord(".$row['coupon_id'].")"),'<i class="ion-android-delete icon"></i>', true); */
 				}
 				if($canView){
-              		$innerLiHistory=$innerUl->appendElement('li');	
+              		$innerLiHistory=$ul->appendElement('li');	
 
 					$innerLiHistory->appendElement('a', array('href'=>"javascript:void(0)", 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_History',$adminLangId),"onclick"=>"couponHistory(".$row['coupon_id'].")"),Labels::getLabel('LBL_History',$adminLangId), true);
 				}

@@ -36,18 +36,11 @@ foreach ($arr_listing as $sn=>$row){
 				if( $row['epage_active'] ) {
 					$active = 'checked';
 				}
-				$statucAct = ( $canEdit === true ) ? 'toggleStatus(event,this)' : '';
-				/* $str='<label id="'.$row['epage_id'].'" class="statustab '.$active.'" onclick="'.$statucAct.'">
-				  <span data-off="'. Labels::getLabel('LBL_Active', $adminLangId) .'" data-on="'. Labels::getLabel('LBL_Inactive', $adminLangId) .'" class="switch-labels"></span>
-				  <span class="switch-handles"></span>
-				</label>'; */
-			//	$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['epage_id'].'" value="'.$row['epage_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['epage_id'].'">Toggle</label></div>';
-				$str='<label class="statustab -txt-uppercase">
-                                            
-                     <input '.$active.' type="checkbox" id="switch'.$row['epage_id'].'" value="'.$row['epage_id'].'" onclick="'.$statucAct.'" class="switch-labels"/>
-                                      	<i class="switch-handles"></i>
-
-                                      </label>';
+				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
+				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
+				$str='<label class="statustab -txt-uppercase">    
+                     <input '.$active.' type="checkbox" id="switch'.$row['epage_id'].'" value="'.$row['epage_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                    <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
 
 			break;	
