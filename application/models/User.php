@@ -1712,12 +1712,23 @@ class User extends MyAppModel {
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
-		$generatedToken = substr(md5(rand(1, 99999) . microtime()), 1, 25);
-		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array('user_app_access_token'=>hash('sha256', $generatedToken)), array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$this->mainTableRecordId)))){
-			$this->error = FatApp::getDb()->getError();
-			echo $this->error; die;
-		}
-		return true;
+		
+		$generatedToken = substr(md5(rand(1, 99999) . microtime()), 0,UserAuthentication::TOKEN_LENGTH);
+				
+		$expiry = strtotime("+7 DAYS");
+		$values = array(
+			'uauth_user_id'=>$this->mainTableRecordId,
+			'uauth_token'=>$generatedToken,
+			'uauth_expiry'=>date('Y-m-d H:i:s', $expiry),
+			'uauth_browser'=>CommonHelper::userAgent(),
+			'uauth_last_access'=>date('Y-m-d H:i:s'), 
+			'uauth_last_ip'=>CommonHelper::getClientIp(),
+		); 
+		if(! UserAuthentication::saveLoginToken($values) ){
+			return false;
+		}	
+		
+		return $generatedToken;
     }
 	
 	function createUserTempToken($generatedToken){

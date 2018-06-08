@@ -8,28 +8,24 @@ class MobileAppApiController extends MyAppController {
 		$this->pagesize = 10;
 		$post = FatApp::getPostedData();
 		
-		$user_token = '';
+		$token = '';
 
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-			$user_token = $_SERVER['HTTP_X_TOKEN'];			
+			$token = $_SERVER['HTTP_X_TOKEN'];			
 		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
-			$user_token = $post['_token'];	
+			$token = $post['_token'];	
 		} else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
-			$user_token = $post['_token'];	
+			$token = $post['_token'];	
 		} 			
 		
-		if(!empty($user_token)){
-			$userObj = new User();
-			$srch = $userObj->getUserSearchObj(array('u.*'));
-			$srch->addCondition('user_app_access_token','=',$user_token);
-			$rs = $srch->getResultSet();
-			$user = $this->db->fetch($rs,'user_id');			
-			if ($user){
-				$this->app_user=$user;
-			} else	{
+		if(!empty($token)){			
+			$userId = UserAuthentication::getLoggedUserId(); 
+			$userObj = new User($userId);
+			if(!$row = $userObj->getProfileData()){
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
-				die(json_encode($arr));	
-			}
+				die(json_encode($arr));
+			}			
+			$this->app_user = $row;			
 		}		
 		
 		//$post['language']=1;
@@ -2033,18 +2029,20 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
 		}
 		$userId = UserAuthentication::getLoggedUserId();
-		$uObj=new User($userId);
-		if ( !$uObj->setMobileAppToken()){
+		$uObj = new User($userId);				
+		if ( !$generatedToken = $uObj->setMobileAppToken()){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
-		$userInfo = $uObj->getUserInfo(array('user_app_access_token','user_name','user_id'),true,true);
+		
+		$userInfo = $uObj->getUserInfo(array('user_name','user_id'),true,true);
+		
 		$arr=array(
 					'status'=>1,
-					'token'=>$userInfo["user_app_access_token"], 
+					'token'=>$generatedToken, 
 					'user_name'=>$userInfo["user_name"], 
 					'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'thumb',1)).'?'.time()
-					);
+					);			
 		die ($this->json_encode_unicode($arr));
 	}
 	
@@ -5394,7 +5392,7 @@ class MobileAppApiController extends MyAppController {
 		if(in_array($orderDetail['op_status_id'],$processingStatuses)){
 			$displayForm = 1;
 		}			
-						
+		
 		$api_orders_elements = array('orderDetail'=>$orderDetail,'orderStatuses'=>$orderStsArr,'shippedBySeller'=>$shippedBySeller,'displayForm'=>$displayForm,'yesNoArr'=>applicationConstants::getYesNoArr($this->siteLangId));
 		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$api_orders_elements,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));		

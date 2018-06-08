@@ -77,10 +77,10 @@ class GuestUserController extends MyAppController {
 			'uauth_expiry'=>date('Y-m-d H:i:s', $expiry),
 			'uauth_browser'=>CommonHelper::userAgent(),
 			'uauth_last_access'=>date('Y-m-d H:i:s'), 
-			'uauth_last_ip'=>CommonHelper::userIp(),
+			'uauth_last_ip'=>CommonHelper::getClientIp(),
 		);
 		
-		if( UserAuthentication::saveRememberLoginToken($values) ){
+		if( UserAuthentication::saveLoginToken($values) ){
 			$cookieName = UserAuthentication::YOKARTUSER_COOKIE_NAME;
 			$cookres = setcookie($cookieName, $token, $expiry, '/');
 			return true;
@@ -89,7 +89,7 @@ class GuestUserController extends MyAppController {
 	}
 	
 	private function generateLoginToken(){
-		return substr(md5(rand(1, 99999) . microtime()), 1, 25);
+		return substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
 	}
 	
 	public function LogInFormPopUp(){
