@@ -1781,17 +1781,51 @@ class User extends MyAppModel {
 
     }
 	
-	function setPushNotificationToken($uToken){
+	function setPushNotificationToken($appToken,$fcmDeviceId){
 		if (($this->mainTableRecordId < 1)) {			
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
-		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array('user_push_notification_api_token'=>$uToken), array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$this->mainTableRecordId)))){
+		
+		$expiry = strtotime("+7 DAYS");	
+		$values = array(			
+			'uauth_expiry'=>date('Y-m-d H:i:s', $expiry),
+			'uauth_browser'=>CommonHelper::userAgent(),
+			'uauth_fcm_id'=>$fcmDeviceId,
+			'uauth_last_access'=>date('Y-m-d H:i:s'), 
+			'uauth_last_ip'=>CommonHelper::getClientIp(),
+		); 
+		$where = array('smt' => 'uauth_user_id = ? and uauth_token = ?', 'vals' => array((int)$this->mainTableRecordId,$appToken));
+		if(!UserAuthentication::updateFcmDeviceToken($values,$where)){
+			return false;
+		}
+		/* if (!FatApp::getDb()->updateFromArray(static::DB_TBL_USER_AUTH, array('user_push_notification_api_token'=>$uToken), array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$this->mainTableRecordId)))){
 			$this->error = FatApp::getDb()->getError();
 			echo $this->error; die;
-		}
+		} */
 		return true;
     }
 	
+	public function getPushNotificationTokens(){
+		if (($this->mainTableRecordId < 1)) {			
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
+			return false;
+		}
+		$db = FatApp::getDb();
+		
+		$srch = self::getSearchObject(true,true);
+		$srch->joinTable(UserAuthentication::DB_TBL_USER_AUTH,'LEFT OUTER JOIN','uauth.uauth_user_id = u.user_id','uauth');
+		$srch->addCondition('user_id', '=', $this->mainTableRecordId);
+		$srch->addCondition('uc.'.static::DB_TBL_CRED_PREFIX.'active','=',1);
+		$srch->addCondition('uc.'.static::DB_TBL_CRED_PREFIX.'verified','=',1);				
+		$srch->addCondition('uauth_fcm_id', '!=', '');
+		$srch->addCondition('uauth_last_access', '>=', date('Y-m-d H:i:s', strtotime("-7 DAYS")));
+		$srch->addFld('uauth_fcm_id');		
+		$rs = $srch->getResultSet();
+		if(!$row = $db->fetch($rs)){
+			return array();
+		}
+		return $row;
+	}
 	
 }

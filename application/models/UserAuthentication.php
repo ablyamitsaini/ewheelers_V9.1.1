@@ -258,14 +258,13 @@ class UserAuthentication extends FatModel {
 		return false; 
 	}
 	
-	/* public static function saveRememberLoginToken(&$values){
-		$db = FatApp::getDb();
-		if($db->insertFromArray(static::DB_TBL_USER_AUTH, $values)){
+	public static function updateFcmDeviceToken(&$values,$where){
+		$db = FatApp::getDb();		
+		if($db->updateFromArray(static::DB_TBL_USER_AUTH, $values,$where)){
 			return true;
 		}
-		
 		return false;
-	} */
+	}
 	
 	public static function saveLoginToken(&$values){
 		$db = FatApp::getDb();
