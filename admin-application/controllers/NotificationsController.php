@@ -88,8 +88,7 @@ class NotificationsController extends AdminBaseController {
 		$srch->addCondition('n.'.Notification::DB_TBL_PREFIX.'marked_read','=',applicationConstants::NO);	
 		
 		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs);		
-		//echo "<pre>"; print_r($records);die;
+		$records = FatApp::getDb()->fetchAll($rs);
 		$this->set('labelArr',Notification::getLabelKeyString($this->adminLangId));
 		$this->set('arr_listing',$records);
 		$this->_template->render(false,false);	

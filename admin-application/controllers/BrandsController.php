@@ -18,9 +18,15 @@ class BrandsController extends AdminBaseController {
 		$this->set("canEdit",$this->canEdit);		
 	}
 
-	public function index() {
+	public function index(){
 		$this->objPrivilege->canViewBrands();
-		$search = $this->getSearchForm();				
+		$search = $this->getSearchForm();
+		$data = FatApp::getPostedData();
+		if($data){
+			$data['brand_id'] = $data['id'];
+			unset($data['id']);
+			$search->fill($data);
+		}
 		$this->set("search",$search);
 		$this->set('includeEditor',true);
 		$this->_template->addJs('js/import-export.js');	
@@ -62,7 +68,9 @@ class BrandsController extends AdminBaseController {
 	
 		$srch->addMultipleFields(array("b_l.brand_name"));
 		$srch->addCondition('brand_status','=',Brand::BRAND_REQUEST_APPROVED);
-		
+		if(!empty($post['brand_id'])){
+			$srch->addCondition('b.brand_id','=',$post['brand_id']);
+		}
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll( $rs );		
 		$this->set("arr_listing",$records);
@@ -651,7 +659,7 @@ class BrandsController extends AdminBaseController {
 		$this->_template->render(false,false); */
 	}
 	
-	public function brandRequests() {
+	public function brandRequests(){
 		$this->objPrivilege->canViewBrandRequests();
 		$search = $this->getSearchForm();			
 		$data = FatApp::getPostedData();
@@ -659,7 +667,7 @@ class BrandsController extends AdminBaseController {
 			$data['brand_id'] = $data['id'];
 			unset($data['id']);
 			$search->fill($data);
-		}		
+		}	
 		$this->set("search",$search);	
 		$this->_template->render();
 	}
@@ -695,7 +703,6 @@ class BrandsController extends AdminBaseController {
 		$srch->joinTable(Brand::DB_TBL . '_lang', 'LEFT OUTER JOIN',
 		'brandlang_brand_id = b.brand_id AND brandlang_lang_id = ' . $this->adminLangId,'bl');
 		$srch->addMultipleFields(array("bl.brand_name"));
-		
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll( $rs );
 		

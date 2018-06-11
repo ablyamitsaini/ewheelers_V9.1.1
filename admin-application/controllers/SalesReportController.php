@@ -33,9 +33,17 @@ class SalesReportController extends AdminBaseController {
 		$post = $srchFrm->getFormDataFromArray( FatApp::getPostedData() );
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
 		$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
-	
+		
+		$ocSrch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
+		$ocSrch->doNotCalculateRecords();
+		$ocSrch->doNotLimitRecords();
+		$ocSrch->addMultipleFields(array('opcharge_op_id','sum(opcharge_amount) as op_other_charges'));
+		$ocSrch->addGroupBy('opc.opcharge_op_id');
+		$qryOtherCharges = $ocSrch->getQuery();
+		
 		$srch = new OrderProductSearch( 0, true );
 		$srch->joinPaymentMethod();
+		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		$srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_TAX,'optax');
 		$srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_SHIPPING,'opship');
 		
@@ -62,12 +70,11 @@ class SalesReportController extends AdminBaseController {
 			$srch->addFld(array('op_invoice_number'));	
 		}		
 		
-		$srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','sum(order_net_amount) as orderNetAmount','(SUM(optax.opcharge_amount)) as taxTotal','(SUM(opship.opcharge_amount)) as shippingTotal'));
-		
+		$srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','op.op_qty','op.op_unit_price','op_other_charges','sum(order_net_amount) as orderNetAmount','(SUM(optax.opcharge_amount)) as taxTotal','(SUM(opship.opcharge_amount)) as shippingTotal'));
+
 		$srch->addOrder('order_date','desc');
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
-		//echo $srch->getQuery();
 		$rs = $srch->getResultSet();
 		$arr_listing = $db->fetchAll($rs);
 		

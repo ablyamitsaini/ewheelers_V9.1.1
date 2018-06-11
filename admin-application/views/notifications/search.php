@@ -21,7 +21,8 @@ foreach ($arr_listing as $sn=>$row){
 		$tr = $tbl->appendElement('tr',array('class'=>'read'));
 	}
 	$uname = ($row['user_name'])?$row['user_name']:'- Guest User -';
-	$url = 'http://'.$_SERVER['SERVER_NAME'].CONF_WEBROOT_BACKEND.$labelArr[$row['notification_label_key']][1];
+	$url = CommonHelper::generateUrl($labelArr[$row['notification_label_key']][1]);
+	/* $url = 'http://'.$_SERVER['SERVER_NAME'].CONF_WEBROOT_BACKEND.$labelArr[$row['notification_label_key']][1]; */
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
