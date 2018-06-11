@@ -68,7 +68,10 @@ class Notification extends MyAppModel {
 	
 	
 	public static function getLabelKeyString($langId){
-	
+		
+		$brandRequestApproval = FatApp::getConfig('CONF_BRAND_REQUEST_APPROVAL');
+		$brandRequestUrl = ($brandRequestApproval) ? 'brands/brand-requests' : 'brands' ;
+		
 		$labelArr = array(
 			Notification::NEW_USER_REGISTERATION_NOTIFICATION=>array(Labels::getLabel('user_registration_notification',$langId),'users'),
 			Notification::NEW_SUPPLIER_REGISTERATION_NOTIFICATION=>array(Labels::getLabel('supplier_registration_notification',$langId),'users'),
@@ -76,7 +79,7 @@ class Notification extends MyAppModel {
 			Notification::GUEST_ADVISER_REGISTERATION=>array(Labels::getLabel('user_order_placed_notification',$langId),'orders'),
 			Notification::NEW_CATALOG_REQUEST_NOTIFICATION=>array(Labels::getLabel('user_catalog_request_notification',$langId),'users/seller-catalog-requests'),
 			Notification::SUPPLIER_APPROVAL=>array(Labels::getLabel('user_supplier_approval_notification',$langId),'users/seller-approval-requests'),
-			Notification::BRAND_REQUEST_NOTIFICATION=>array(Labels::getLabel('seller_brand_request_notification',$langId),'brands/brand-requests'),
+			Notification::BRAND_REQUEST_NOTIFICATION=>array(Labels::getLabel('seller_brand_request_notification',$langId),$brandRequestUrl),
 			Notification::NEW_ORDER_STATUS_NOTIFICATION=>array(Labels::getLabel('user_order_status_notification',$langId),'orders'),
 			Notification::ORDER_CANCELLATION_NOTIFICATION=>array(Labels::getLabel('user_order_cancellation_notification',$langId),'orders'),
 			Notification::ORDER_RETURNED_NOTIFICATION=>array(Labels::getLabel('user_order_return_notification',$langId),''),

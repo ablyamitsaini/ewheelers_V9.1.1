@@ -69,7 +69,7 @@ $(document).delegate('.language-js','change',function(){
 		});
 	};
 
-	searchProductBrands = function(form){		
+	searchProductBrands = function(form){
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);

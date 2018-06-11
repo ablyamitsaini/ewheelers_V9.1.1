@@ -3,21 +3,22 @@
 $arrFlds1 = array(
 	'listserial'=>Labels::getLabel('LBL_Sr_no.',$adminLangId),
 	'order_date'=>Labels::getLabel('LBL_Date',$adminLangId),
-	'totOrders'=>Labels::getLabel('LBL_No._of_Orders',$adminLangId),		
+	'totOrders'=>Labels::getLabel('LBL_No._of_Orders',$adminLangId),
+	'orderNetAmount'=>Labels::getLabel('LBL_Order_Net_Amount',$adminLangId),
 );
 $arrFlds2  = array(
 	'listserial'=>Labels::getLabel('LBL_Sr_no.',$adminLangId),
 	'op_invoice_number'=>Labels::getLabel('LBL_Invoice_Number',$adminLangId),
+	'order_net_amount'=>Labels::getLabel('LBL_Order_Net_Amount',$adminLangId),
 );	
-$arr = array(			
+$arr = array(
 	'totQtys'=>Labels::getLabel('LBL_No._of_Qty',$adminLangId),				
-	'totRefundedQtys'=>Labels::getLabel('LBL_Refunded_Qty',$adminLangId),				
-	'orderNetAmount'=>Labels::getLabel('LBL_Order_Net_Amount',$adminLangId),				
+	'totRefundedQtys'=>Labels::getLabel('LBL_Refunded_Qty',$adminLangId),			
 	'taxTotal'=>Labels::getLabel('LBL_Tax_Charged',$adminLangId),				
 	'shippingTotal'=>Labels::getLabel('LBL_Shipping_Charges',$adminLangId),				
 	'totalRefundedAmount'=>Labels::getLabel('LBL_Refunded_Amount',$adminLangId),				
 	'totalSalesEarnings'=>Labels::getLabel('LBL_Sales_Earnings',$adminLangId)
-);	
+);
 if(empty($orderDate)){
 	$arr_flds = array_merge($arrFlds1,$arr);
 }else{
@@ -44,20 +45,20 @@ foreach ($arr_listing as $sn=>$row){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
-			
 			case 'order_date':
-				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('SalesReport',
-						'index',array($row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
+				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('SalesReport','index',array($row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
 			break;
-			
+			case 'order_net_amount':
+				$amt = CommonHelper::orderProductAmount($row);
+				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($amt, true, true) );
+			break;
 			case 'totalSalesEarnings':
 			case 'totalRefundedAmount':
 			case 'orderNetAmount':
 			case 'taxTotal':
 			case 'shippingTotal':
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key],true,true));
-			break;								
-			
+			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
