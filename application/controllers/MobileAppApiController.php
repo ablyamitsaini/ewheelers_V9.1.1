@@ -13,11 +13,11 @@ class MobileAppApiController extends MyAppController {
 
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
 			$this->appToken = $_SERVER['HTTP_X_TOKEN'];			
-		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
+		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
-		} else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
+		}/*  else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
-		} 			
+		} 	 */		
 		
 		if(!empty($this->appToken)){			
 			$userId = UserAuthentication::getLoggedUserId(); 

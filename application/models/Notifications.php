@@ -39,7 +39,7 @@ class Notifications extends MyAppModel{
 		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
 		foreach($fcmDeviceIds as $pushNotificationApiToken){
 			$pusher = new Pusher($google_push_notification_api_key);
-			$pusher->notify($pushNotificationApiToken, array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
+			$pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
 		}
 		/* 
 		$userInfo = $uObj->getUserInfo(array('user_push_notification_api_token'),true,true);

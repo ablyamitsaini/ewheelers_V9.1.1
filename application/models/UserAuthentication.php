@@ -258,6 +258,16 @@ class UserAuthentication extends FatModel {
 		return false; 
 	}
 	
+	public static function checkFcmDeviceTokenInDB($fcmDeviceToken){
+		$db = FatApp::getDb();
+		$srch = new SearchBase(static::DB_TBL_USER_AUTH);
+		$srch->addCondition(static::DB_TBL_UAUTH_PREFIX . 'fcm_id', '=', $fcmDeviceToken);
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();	
+		$rs = $srch->getResultSet();
+		return $db->fetch($rs);
+	}
+	
 	public static function updateFcmDeviceToken(&$values,$where){
 		$db = FatApp::getDb();		
 		if($db->updateFromArray(static::DB_TBL_USER_AUTH, $values,$where)){

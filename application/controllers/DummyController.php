@@ -55,10 +55,38 @@ class DummyController extends MyAppController {
 	
 	function abcd(){
 		$uObj = new User(119);
-		$row = $uObj->getPushNotificationTokens();
-		var_dump($row);
+		//$fcmDeviceIds = $uObj->getPushNotificationTokens();
+		$fcmDeviceIds = array(
+				0=> array('uauth_fcm_id'=>'fg5DrO-PjLM:APA91bH6NkDtFhLrpbSgyjqhGb1-Pj0TUsbsTrTtaZnYHa9xDr7wl_E0tVYDywSwQ7Y2mydMQiGwR1UWQ5BY4czzid7AX33gIYzdGtbFe8wsC-TpXfnmS8n2cEiicqp1dLd6JPikL_2b'),
+			);
+		var_dump($fcmDeviceIds);
+		echo "\n";
+		if(empty($fcmDeviceIds)){
+			return false;	
+		}
+		
+		$google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY",FatUtility::VAR_STRING,'');
+		//$google_push_notification_api_key = 'AIzaSyDqigFC0880hWtyGChS6TlZi3Vm_I4Q4Qk';
+		
+		if(trim($google_push_notification_api_key) == ''){
+			return false;
+		}
+		
+		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+		foreach($fcmDeviceIds as $pushNotificationApiToken){
+			echo $pushNotificationApiToken['uauth_fcm_id']."\n";
+			echo "<br>======<br>";
+			$pusher = new Pusher($google_push_notification_api_key);			
+			try{
+				$res = $pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('message'=>'hello test','type'=>'TXN'));
+				var_dump($res);
+			}catch(exception $e){
+				var_dump($e);
+			}
+			echo "<br>======<br>";
+		}
 		exit;
-		echo strlen($token); exit;
+		
 		
 	$userObj = new User(119);
 		$row = $userObj->getProfileData();
@@ -93,7 +121,7 @@ class DummyController extends MyAppController {
 		
 		$firebase_push_notification_server_key = "AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR";
 		//$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
-		$deviceToken = "d6yoX4jrr_w:APA91bE40fdSPxRjwYL6JSKEsVJNsybNmNzbz5_dZh_Csd5LU24_gLq7lp8JRC6uxRsMtDdJ8Mk8N-8GhQXWnGpFdYtZwIKy5Za9bGI6N1bH93ltFc8_HmDnRskznBeeOWD5yKhXb0Iu";
+		$deviceToken = "fg5DrO-PjLM:APA91bH6NkDtFhLrpbSgyjqhGb1-Pj0TUsbsTrTtaZnYHa9xDr7wl_E0tVYDywSwQ7Y2mydMQiGwR1UWQ5BY4czzid7AX33gIYzdGtbFe8wsC-TpXfnmS8n2cEiicqp1dLd6JPikL_2b";
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		//$url = 'https://gcm-http.googleapis.com/gcm/send';
 		//https://android.googleapis.com/gcm/send'

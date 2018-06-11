@@ -50,7 +50,7 @@ class SalesReportController extends AdminBaseController {
 		$cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);
 		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
 		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
-		
+		//echo $srch->getQuery(); exit;
 		if ( empty($orderDate) ) {
 			$date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '') ;
 			if ( !empty($date_from) ) {
@@ -73,6 +73,9 @@ class SalesReportController extends AdminBaseController {
 		$srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','op.op_qty','op.op_unit_price','op_other_charges','sum(order_net_amount) as orderNetAmount','(SUM(optax.opcharge_amount)) as taxTotal','(SUM(opship.opcharge_amount)) as shippingTotal'));
 
 		$srch->addOrder('order_date','desc');
+		
+		
+		
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
 		$rs = $srch->getResultSet();
