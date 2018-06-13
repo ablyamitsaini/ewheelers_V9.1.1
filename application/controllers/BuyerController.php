@@ -1272,14 +1272,14 @@ class BuyerController extends LoggedUserController {
 		
 		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) ){
 			Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		$frm = $this->getOrderReturnRequestForm( $this->siteLangId, $opDetail );
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
 		if ( false === $post ) {
 			Message::addErrorMessage( current($frm->getValidationErrors()) );
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		if($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL){
@@ -1299,7 +1299,7 @@ class BuyerController extends LoggedUserController {
 			}
 			
 			Message::addErrorMessage( sprintf(Labels::getLabel('MSG_Return_Refund_cannot_placed', $this->siteLangId) , implode(',' ,$status_names) ) ) ;
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		$oReturnRequestSrch = new OrderReturnRequestSearch();
@@ -1328,12 +1328,12 @@ class BuyerController extends LoggedUserController {
 		$oReturnRequestObj->assignValues($returnRequestDataToSave);
 		if ( !$oReturnRequestObj->save() ) {
 			Message::addErrorMessage( $oReturnRequestObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		$orrequest_id = $oReturnRequestObj->getMainTableRecordId();
 		if( !$orrequest_id ){
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Something_went_wrong,_please_contact_admin' , $this->siteLangId ));
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
 		/* attach file with request [ */
@@ -1376,12 +1376,12 @@ class BuyerController extends LoggedUserController {
 		$oReturnRequestMsgObj->assignValues( $returnRequestMsgDataToSave );
 		if ( !$oReturnRequestMsgObj->save() ) {
 			Message::addErrorMessage( $oReturnRequestMsgObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		$orrmsg_id = $oReturnRequestMsgObj->getMainTableRecordId();
 		if( !$orrmsg_id ){
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Something_went_wrong,_please_contact_admin' , $this->siteLangId ));
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		/* ] */
 		
@@ -1394,7 +1394,7 @@ class BuyerController extends LoggedUserController {
 		$emailNotificationObj = new EmailHandler();
 		if( !$emailNotificationObj->SendOrderReturnRequestNotification( $orrmsg_id, $opDetail['order_language_id']) ){
 			Message::addErrorMessage( $emailNotificationObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		/* ] */
 		

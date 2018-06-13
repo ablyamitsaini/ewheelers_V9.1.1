@@ -28,12 +28,12 @@ class Notifications extends MyAppModel{
 		$uObj = new User($userId);
 		$fcmDeviceIds = $uObj->getPushNotificationTokens();
 		if(empty($fcmDeviceIds)){
-			return false;	
+			return $this->getMainTableRecordId();
 		}
 		
 		$google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY",FatUtility::VAR_STRING,'');
 		if(trim($google_push_notification_api_key) == ''){
-			return false;
+			return $this->getMainTableRecordId();
 		}
 		
 		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
