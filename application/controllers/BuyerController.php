@@ -1978,17 +1978,17 @@ class BuyerController extends LoggedUserController {
 			$cartObj->add($selprod_id, $quantity);
 		}
 		
+		$cartObj->removeUsedRewardPoints();
+		$cartObj->removeCartDiscountCoupon();
+		$cartObj->removeProductShippingMethod();
+		
 		/* Update existing cart [ */
 		
 		/* $db = FatApp::getDb();
 		if(!$db->updateFromArray( 'tbl_user_cart', array( 'usercart_details' => $orderDetail['order_cart_data'],"usercart_added_date" => date ( 'Y-m-d H:i:s' ) ), array('smt' => 'usercart_user_id = ?', 'vals' => array($userId) ) )){
 			Message::addErrorMessage(Labels::getLabel("MSG_Can_not_be_Re-Order",$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
-		} 
-		
-		$cartObj->removeUsedRewardPoints();
-		$cartObj->removeCartDiscountCoupon();
-		$cartObj->removeProductShippingMethod(); */
+		} */
 		
 		/* ] */
 		
