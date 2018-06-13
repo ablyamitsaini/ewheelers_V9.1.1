@@ -24,15 +24,33 @@ class Notifications extends MyAppModel{
 		if (!$this->save()) {
 			return false;		
 		}
-		$uObj=new User($userId);
+		
+		$uObj = new User($userId);
+		$fcmDeviceIds = $uObj->getPushNotificationTokens();
+		if(empty($fcmDeviceIds)){
+			return false;	
+		}
+		
+		$google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY",FatUtility::VAR_STRING,'');
+		if(trim($google_push_notification_api_key) == ''){
+			return false;
+		}
+		
+		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+		foreach($fcmDeviceIds as $pushNotificationApiToken){
+			$pusher = new Pusher($google_push_notification_api_key);
+			$pusher->notify($pushNotificationApiToken, array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
+		}
+		/* 
 		$userInfo = $uObj->getUserInfo(array('user_push_notification_api_token'),true,true);
 		$user_push_notification_api_token = $userInfo['user_push_notification_api_token']; 
-		$google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY",FatUtility::VAR_STRING,'');
+		
 		if (!empty($user_push_notification_api_token) && !empty($google_push_notification_api_key)){
 			require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
 			$pusher = new Pusher($google_push_notification_api_key);
 			$pusher->notify($user_push_notification_api_token, array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
-		} 
+		}  */
+		
 		return $this->getMainTableRecordId();
 	}
 	

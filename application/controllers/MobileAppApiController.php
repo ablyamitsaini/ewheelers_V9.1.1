@@ -1,24 +1,25 @@
 <?php
 class MobileAppApiController extends MyAppController {
 	public $app_user = array();
-
+	public $appToken = '';
+	
 	public function __construct($action){  
 		parent::__construct($action);
 		$this->db = FatApp::getDb();
 		$this->pagesize = 10;
 		$post = FatApp::getPostedData();
 		
-		$token = '';
+		$this->appToken = '';
 
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-			$token = $_SERVER['HTTP_X_TOKEN'];			
+			$this->appToken = $_SERVER['HTTP_X_TOKEN'];			
 		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
-			$token = $post['_token'];	
+			$this->appToken = $post['_token'];	
 		} else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
-			$token = $post['_token'];	
+			$this->appToken = $post['_token'];	
 		} 			
 		
-		if(!empty($token)){			
+		if(!empty($this->appToken)){			
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
@@ -5501,6 +5502,7 @@ class MobileAppApiController extends MyAppController {
 		if(!$orderObj->addChildProductOrderHistory($op_id,$this->siteLangId,FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS"),$post["comments"],true)){	
 			FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_REQUEST',$this->siteLangId));
 		}
+		
 		die ($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>Labels::getLabel('MSG_Updated_Successfully',$this->siteLangId))));		
 	
 	}
@@ -6730,13 +6732,13 @@ class MobileAppApiController extends MyAppController {
 				)));
 	}
 	
-	public function setUserPushNotificationToken($token){
-		if(empty($token)){
+	public function setUserPushNotificationToken($fcmDeviceId){
+		if(empty($fcmDeviceId)){
 			FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request',$this->siteLangId));
 		}
 		$userId = $this->getAppLoggedUserId();
-		$uObj=new User($userId);
-		if ( !$uObj->setPushNotificationToken($token)){
+		$uObj= new User($userId);
+		if ( !$uObj->setPushNotificationToken($this->appToken,$fcmDeviceId)){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
 		die ($this->json_encode_unicode(array('status'=>1,'msg'=>Labels::getLabel('Msg_Successfully_Updated',$this->siteLangId))));

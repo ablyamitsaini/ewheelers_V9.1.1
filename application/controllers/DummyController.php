@@ -54,8 +54,10 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
-		
-		$token = substr(md5(rand(1, 99999) . microtime()), 0,UserAuthentication::TOKEN_LENGTH);
+		$uObj = new User(119);
+		$row = $uObj->getPushNotificationTokens();
+		var_dump($row);
+		exit;
 		echo strlen($token); exit;
 		
 	$userObj = new User(119);

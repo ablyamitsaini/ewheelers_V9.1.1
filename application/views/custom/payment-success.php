@@ -8,7 +8,9 @@
                        <div class="message message--success align--center">
                            <i class="fa fa-check-circle"></i>
                            <h2><?php echo Labels::getLabel('LBL_Congratulations',$siteLangId);?></h2>
+						   <?php if(!CommonHelper::isAppUser()){ ?>
                            <h6><?php echo CommonHelper::renderHtml($textMessage);?></h6>
+						   <?php }?>
                            <span class="gap"></span>
                        </div>
                    </div>                   
