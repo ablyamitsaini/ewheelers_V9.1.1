@@ -912,7 +912,7 @@ class SellerProductsController extends AdminBaseController {
 	private function getSellerProductSpecialPriceForm(){
 		$frm = new Form('frmSellerProductSpecialPrice');
 		$fld = $frm->addFloatField( Labels::getLabel('LBL_Special_Price', $this->adminLangId).CommonHelper::concatCurrencySymbolWithAmtLbl(), 'splprice_price' );
-		
+		$fld->requirements()->setPositive();
 		$fld = $frm->addDateField(Labels::getLabel( 'LBL_Price_Start_Date' ,$this->adminLangId),'splprice_start_date', '' , array('readonly' => 'readonly'));
 		$fld->requirements()->setRequired();
 		
@@ -1115,9 +1115,10 @@ class SellerProductsController extends AdminBaseController {
 		
 		$frm->addHiddenField('','voldiscount_selprod_id',0);
 		$frm->addHiddenField('','voldiscount_id',0);
-		$frm->addIntegerField( Labels::getLabel("LBL_Minimum_Quantity", $langId), 'voldiscount_min_qty' );
-		$frm->addFloatField( Labels::getLabel("LBL_Discount_in_(%)", $this->adminLangId), "voldiscount_percentage" );
-		
+		$qtyFld = $frm->addIntegerField( Labels::getLabel("LBL_Minimum_Quantity", $langId), 'voldiscount_min_qty' );
+		$qtyFld->requirements()->setPositive();
+		$discountFld = $frm->addFloatField( Labels::getLabel("LBL_Discount_in_(%)", $this->adminLangId), "voldiscount_percentage" );
+		$discountFld->requirements()->setPositive();
 		$fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
 		$fld2 = $frm->addButton('','btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')') );
 		$fld1->attachField($fld2);

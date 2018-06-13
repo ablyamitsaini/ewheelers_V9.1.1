@@ -430,7 +430,7 @@ class ProductSearch extends SearchBase {
 
 		$strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
 		$this->addFld("
-		IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)		
+		IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
 		+ IF(selprod_title LIKE $strKeyword, 4, 0)
 		+ IF(product_name LIKE $strKeyword, 4, 0)
 		+ IF(product_tags_string LIKE $strKeyword, 4, 0)

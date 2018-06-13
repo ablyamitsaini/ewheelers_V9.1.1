@@ -61,7 +61,7 @@ class SalesReportController extends AdminBaseController {
 			if ( !empty($date_to) ) {
 				$srch->addCondition('o.order_date_added', '<=', $date_to. ' 23:59:59');
 			}
-			$srch->addGroupBy('DATE(o.order_date_added)');						
+			$srch->addGroupBy('DATE(o.order_date_added)');			
 		} else {
 			$this->set( 'orderDate', $orderDate );
 			$srch->addGroupBy('op_invoice_number');	
