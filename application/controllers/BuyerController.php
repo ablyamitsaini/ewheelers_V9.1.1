@@ -1272,14 +1272,14 @@ class BuyerController extends LoggedUserController {
 		
 		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) ){
 			Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		$frm = $this->getOrderReturnRequestForm( $this->siteLangId, $opDetail );
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
 		if ( false === $post ) {
 			Message::addErrorMessage( current($frm->getValidationErrors()) );
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		if($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL){
@@ -1299,7 +1299,7 @@ class BuyerController extends LoggedUserController {
 			}
 			
 			Message::addErrorMessage( sprintf(Labels::getLabel('MSG_Return_Refund_cannot_placed', $this->siteLangId) , implode(',' ,$status_names) ) ) ;
-			FatUtility::dieWithError(Message::getHtml());
+			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
 		$oReturnRequestSrch = new OrderReturnRequestSearch();
@@ -1328,12 +1328,12 @@ class BuyerController extends LoggedUserController {
 		$oReturnRequestObj->assignValues($returnRequestDataToSave);
 		if ( !$oReturnRequestObj->save() ) {
 			Message::addErrorMessage( $oReturnRequestObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		$orrequest_id = $oReturnRequestObj->getMainTableRecordId();
 		if( !$orrequest_id ){
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Something_went_wrong,_please_contact_admin' , $this->siteLangId ));
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
 		/* attach file with request [ */
@@ -1376,12 +1376,12 @@ class BuyerController extends LoggedUserController {
 		$oReturnRequestMsgObj->assignValues( $returnRequestMsgDataToSave );
 		if ( !$oReturnRequestMsgObj->save() ) {
 			Message::addErrorMessage( $oReturnRequestMsgObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		$orrmsg_id = $oReturnRequestMsgObj->getMainTableRecordId();
 		if( !$orrmsg_id ){
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Something_went_wrong,_please_contact_admin' , $this->siteLangId ));
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		/* ] */
 		
@@ -1394,7 +1394,7 @@ class BuyerController extends LoggedUserController {
 		$emailNotificationObj = new EmailHandler();
 		if( !$emailNotificationObj->SendOrderReturnRequestNotification( $orrmsg_id, $opDetail['order_language_id']) ){
 			Message::addErrorMessage( $emailNotificationObj->getError() );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		/* ] */
 		
@@ -1961,12 +1961,38 @@ class BuyerController extends LoggedUserController {
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
 		}
-		$db = FatApp::getDb();
+		
+		$cartObj = new Cart();
+		$cartInfo = unserialize( $orderDetail['order_cart_data'] );
+		unset($cartInfo['shopping_cart']);
+		foreach($cartInfo as $key => $quantity){
+			
+			$keyDecoded = unserialize( base64_decode($key) );
+			
+			$selprod_id = 0;
+
+			if( strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT ) !== FALSE ){
+				$selprod_id = FatUtility::int(str_replace( Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded ));
+			}
+			
+			$cartObj->add($selprod_id, $quantity);
+		}
+		
+		$cartObj->removeUsedRewardPoints();
+		$cartObj->removeCartDiscountCoupon();
+		$cartObj->removeProductShippingMethod();
+		
+		/* Update existing cart [ */
+		
+		/* $db = FatApp::getDb();
 		if(!$db->updateFromArray( 'tbl_user_cart', array( 'usercart_details' => $orderDetail['order_cart_data'],"usercart_added_date" => date ( 'Y-m-d H:i:s' ) ), array('smt' => 'usercart_user_id = ?', 'vals' => array($userId) ) )){
 			Message::addErrorMessage(Labels::getLabel("MSG_Can_not_be_Re-Order",$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
-		}
-		Message::addErrorMessage(Labels::getLabel("MSG_Successfully_redirecting",$this->siteLangId));
+		} */
+		
+		/* ] */
+		
+		Message::addMessage(Labels::getLabel("MSG_Successfully_redirecting",$this->siteLangId));
 		FatUtility::dieJsonSuccess( Message::getHtml() );
 	}
 	

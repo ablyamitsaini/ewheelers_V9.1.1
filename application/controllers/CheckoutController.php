@@ -660,7 +660,7 @@ class CheckoutController extends MyAppController{
 		$pmSrch->addMultipleFields(array('pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'pmethod_code', 'pmethod_description'));
 		if( !$cartSummary["isCodEnabled"] ){
 			$pmSrch->addCondition( 'pmethod_code', '!=', 'CashOnDelivery' );
-		}	
+		}
 
 		/* if( $this->cartObj->hasDigitalProduct() ){
 			

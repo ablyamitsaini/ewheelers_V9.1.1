@@ -1211,6 +1211,9 @@ class AccountController extends LoggedUserController {
 	}
 	
 	public function wishlist(){
+		$this->_template->addCss('css/slick.css');
+		$this->_template->addJs('js/slick.js');
+		$this->_template->addCss('css/product-detail.css');
 		$this->_template->render();	
 	}
 	

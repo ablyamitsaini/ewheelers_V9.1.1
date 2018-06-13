@@ -67,28 +67,29 @@ foreach ($arrListing as $sn => $row){
 
 
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"),'',true);
-				$li = $ul->appendElement("li",array('class'=>'droplink'));
+				if( $canEdit ){
+					$li = $ul->appendElement("li",array('class'=>'droplink'));
 
-				$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
-              		$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
-              		$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
-              		$innerLiEdit=$innerUl->appendElement('li');
+					$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
+						$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
+						$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
+						$innerLiEdit=$innerUl->appendElement('li');
 
 
 
-				$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
-				'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addSellerProductForm(" . $row['selprod_product_id'] . ",".$row['selprod_id'].")"),
-			Labels::getLabel('LBL_Edit',$adminLangId), true);
-				
-				$innerLiSpecialPrice = $innerUl->appendElement("li");
-				$innerLiSpecialPrice->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
-				'title'=>Labels::getLabel('LBL_Special_Price',$adminLangId),"onclick"=>"addSellerProductSpecialPrices(".$row['selprod_id'].")"),
-				Labels::getLabel('LBL_Special_Price',$adminLangId), true);
-				
-				$innerLiDelete = $innerUl->appendElement("li");
-				$innerLiDelete->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
-				'title'=>Labels::getLabel('LBL_Delete_Product',$adminLangId),"onclick"=>"sellerProductDelete(".$row['selprod_id'].")"),
-				Labels::getLabel('LBL_Delete_Product',$adminLangId), true);
+					$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addSellerProductForm(" . $row['selprod_product_id'] . ",".$row['selprod_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
+					
+					$innerLiSpecialPrice = $innerUl->appendElement("li");
+					$innerLiSpecialPrice->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Special_Price',$adminLangId),"onclick"=>"addSellerProductSpecialPrices(".$row['selprod_id'].")"),
+					Labels::getLabel('LBL_Special_Price',$adminLangId), true);
+					
+					$innerLiDelete = $innerUl->appendElement("li");
+					$innerLiDelete->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Delete_Product',$adminLangId),"onclick"=>"sellerProductDelete(".$row['selprod_id'].")"),
+					Labels::getLabel('LBL_Delete_Product',$adminLangId), true);
+				}
 			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key],true);
