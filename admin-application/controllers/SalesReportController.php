@@ -74,8 +74,6 @@ class SalesReportController extends AdminBaseController {
 
 		$srch->addOrder('order_date','desc');
 		
-		
-		
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
 		$rs = $srch->getResultSet();

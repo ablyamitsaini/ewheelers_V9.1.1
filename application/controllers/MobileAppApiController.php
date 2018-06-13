@@ -2351,7 +2351,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->joinShops();
 		$srch->joinOrderProducts();
 		$srch->joinOrderProductStatus();
-		$srch->addMultipleFields(array('tth.*','top.op_invoice_number','message_text','message_date'));
+		$srch->addMultipleFields(array('tth.*','ttm.message_id','top.op_invoice_number','message_text','message_date'));
 		//$srch->addMultipleFields(array('tth.*','ttm.message_id','ttm.message_text','ttm.message_date','ttm.message_is_unread'));
 		$srch->addCondition('ttm.message_deleted','=',0);
 		$srch->addCondition('tth.thread_id','=',$threadId);
@@ -2360,7 +2360,7 @@ class MobileAppApiController extends MyAppController {
 		}
 		$cnd = $srch->addCondition('ttm.message_from','=',$userId);
 		$cnd->attachCondition('ttm.message_to','=',$userId,'OR');
-		//$srch->addOrder('message_id','DESC');	
+		$srch->addOrder('message_date','DESC');	
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
 		//die($srch->getquery());

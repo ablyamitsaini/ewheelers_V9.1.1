@@ -55,10 +55,10 @@ class DummyController extends MyAppController {
 	
 	function abcd(){
 		$uObj = new User(119);
-		//$fcmDeviceIds = $uObj->getPushNotificationTokens();
-		$fcmDeviceIds = array(
+		$fcmDeviceIds = $uObj->getPushNotificationTokens();
+		/* $fcmDeviceIds = array(
 				0=> array('uauth_fcm_id'=>'fg5DrO-PjLM:APA91bH6NkDtFhLrpbSgyjqhGb1-Pj0TUsbsTrTtaZnYHa9xDr7wl_E0tVYDywSwQ7Y2mydMQiGwR1UWQ5BY4czzid7AX33gIYzdGtbFe8wsC-TpXfnmS8n2cEiicqp1dLd6JPikL_2b'),
-			);
+			); */
 		var_dump($fcmDeviceIds);
 		echo "\n";
 		if(empty($fcmDeviceIds)){
@@ -121,7 +121,7 @@ class DummyController extends MyAppController {
 		
 		$firebase_push_notification_server_key = "AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR";
 		//$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
-		$deviceToken = "fg5DrO-PjLM:APA91bH6NkDtFhLrpbSgyjqhGb1-Pj0TUsbsTrTtaZnYHa9xDr7wl_E0tVYDywSwQ7Y2mydMQiGwR1UWQ5BY4czzid7AX33gIYzdGtbFe8wsC-TpXfnmS8n2cEiicqp1dLd6JPikL_2b";
+		$deviceToken = "diQKzFBIIK0:APA91bH9xJI-T87KFKjdBYrXedLYgzXyKIVlFl9-atUbDfAZynou32D9oZNMV0T9cWupD73dKkYQeSdLGpoJGaoFejF8OKIR7JLIFtT86nedQsNaeASs5u0-jbq8piPwlmGfkAPUxRuZ";
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		//$url = 'https://gcm-http.googleapis.com/gcm/send';
 		//https://android.googleapis.com/gcm/send'
