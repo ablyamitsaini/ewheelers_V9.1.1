@@ -626,7 +626,7 @@ class Cart extends FatModel {
 		return true;
 	}
 	
-	public function removeProductShippingMethod(  ){
+	public function removeProductShippingMethod(){
 		unset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']);
 		$this->updateUserCart();
 		return true;

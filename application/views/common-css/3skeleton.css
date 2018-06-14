@@ -4589,13 +4589,14 @@ body.is--dashboard {
 }
 
 .panel__head .links--inline li {
-    padding: 0 0 0 20px;
+    padding: 0 0 0 20px; position: relative;
 }
 
 .panel__head .links--inline li strong {
     color: #555555;
 }
-
+.panel__head .links--inline li:after{ content: "|"; margin-left: 5px;}
+.panel__head .links--inline li:last-child:after{ content: normal;}
 .item__description {
     font-size: 0.9em;
 }
@@ -6423,7 +6424,7 @@ input.qty {
     margin: 2px auto;
     border: solid 1px var(--border-color);
     border-radius: 2px;
-    padding: 10px;
+    padding: 10px; margin-right: 10px;
 }
 
 .inline-images li img {

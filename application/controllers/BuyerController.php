@@ -754,7 +754,9 @@ class BuyerController extends LoggedUserController {
 		if( ($request['orrequest_status'] == OrderReturnRequest::RETURN_REQUEST_STATUS_PENDING) || $request['orrequest_status'] == OrderReturnRequest::RETURN_REQUEST_STATUS_ESCALATED ){
 			$canWithdrawRequest = true;
 		}
-		
+		if($attachedFile = AttachedFile::getAttachment( AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id )){
+			$this->set('attachedFile' , $attachedFile);
+		}
 		$this->set('canEscalateRequest', $canEscalateRequest);
 		$this->set('canWithdrawRequest', $canWithdrawRequest);
 		$this->set('returnRequestMsgsSrchForm', $returnRequestMsgsSrchForm);
@@ -765,6 +767,26 @@ class BuyerController extends LoggedUserController {
 		$this->set('logged_user_name', UserAuthentication::getLoggedUserAttribute( 'user_name') );
 		$this->set('logged_user_id', UserAuthentication::getLoggedUserId() );
 		$this->_template->render();
+	}
+	
+	public function downloadAttachedFileForReturn($recordId, $recordSubid =0) {
+		
+		$recordId = FatUtility::int($recordId);
+		
+		if(1 > $recordId){
+			Message::addErrorMessage($this->str_invalid_request);
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $recordId,$recordSubid );
+		
+		if(false == $file_row){
+			Message::addErrorMessage($this->str_invalid_request);
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$fileName = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
+		AttachedFile::downloadAttachment($fileName,$file_row['afile_name']);		
 	}
 	
 	public function WithdrawOrderReturnRequest( $orrequest_id ){

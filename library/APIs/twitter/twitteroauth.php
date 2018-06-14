@@ -68,13 +68,12 @@ class TwitterOAuth {
     $parameters['oauth_callback'] = $oauth_callback; 
     $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
     $token = OAuthUtil::parse_parameters($request);
-	
 	if (isset($token['oauth_callback_confirmed']) && ($token['oauth_callback_confirmed'] == true)) {
 		$this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
 		return $token;
 	} else {
 		return false;
-	} 
+	}
   }
   /**
    * Get the authorize URL

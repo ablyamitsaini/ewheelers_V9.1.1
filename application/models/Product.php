@@ -832,6 +832,8 @@ class Product extends MyAppModel{
 		}
 		$srch = MetaTag::getSearchObject();
 		$srch->addCondition( MetaTag::DB_TBL_PREFIX.'record_id','=',$selProductId);
+		$srch->addCondition( MetaTag::DB_TBL_PREFIX.'controller','=','Products');
+		$srch->addCondition( MetaTag::DB_TBL_PREFIX.'action','=','view');
 		$srch->addMultipleFields(array('meta_id','meta_identifier'));
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetch($rs);
