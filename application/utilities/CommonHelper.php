@@ -377,10 +377,13 @@ class CommonHelper extends FatUtility{
 		
 		$opDataToUpdate = array(
 			'op_refund_qty'			=>	$requestRow['orrequest_qty'],
+			'op_cart_amount'			=>	$cartAmount,
+			'op_prod_price'			=>	$cartAmount- $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund,
 			'op_refund_amount'		=>	round($op_refund_amount,2),
 			'op_refund_shipping'		=>	$op_refund_shipping,
 			'op_refund_commission'	=>	$op_refund_commission,
-			'op_refund_affiliate_commission' => $op_refund_affiliate_commission
+			'op_refund_affiliate_commission' => $op_refund_affiliate_commission,
+			'op_refund_tax' => $taxToRefund,
 		);
 		return $opDataToUpdate;
 	}
