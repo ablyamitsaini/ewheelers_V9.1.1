@@ -15,11 +15,15 @@ class MobileAppApiController extends MyAppController {
 			$this->appToken = $_SERVER['HTTP_X_TOKEN'];			
 		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
+			if (!UserAuthentication::doAppLogin($this->appToken)) {                    
+				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
+				die(json_encode($arr));	
+			}
 		}/*  else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
 		} 	 */		
 		
-		if(!empty($this->appToken)){			
+		if(!empty($this->appToken)){			 //die($this->appToken);
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
