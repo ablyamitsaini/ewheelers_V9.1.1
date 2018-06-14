@@ -109,34 +109,31 @@
 											<tr class="">
 												<th width="15%"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></th>
 												<th><?php echo Labels::getLabel( 'LBL_Date', $siteLangId ); ?></th>
+												<th width="15%"><?php echo Labels::getLabel( 'LBL_Product_Price', $siteLangId ); ?></th>
+												<th width="15%"><?php echo Labels::getLabel( 'LBL_Tax', $siteLangId ); ?></th>
+												<th width="15%"><?php echo Labels::getLabel( 'LBL_Shipping', $siteLangId ); ?></th>
 												<th width="15%"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></th>
-												<th width="15%"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></th>
+												<th width="15%"><?php echo Labels::getLabel( 'LBL_Total_Amount', $siteLangId ); ?></th>
 											</tr>
 											<tr>
+												<?php $returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);?>
 												<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></span><?php echo $request['orreason_title']; ?></td>
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Date', $siteLangId ); ?></span>
 													<div class="item__description">
 														<span class=""><?php echo FatDate::format($request['orrequest_date']); ?></span>
 													</div>
 												</td>
+												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Product_Price', $siteLangId ); ?></span>
+												<?php echo CommonHelper::displayMoneyFormat($returnDataArr['op_prod_price'], true, false);?></td>
+												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Tax', $siteLangId ); ?></span>
+												<?php echo CommonHelper::displayMoneyFormat($returnDataArr['op_refund_tax'], true, false); 
+												?></td>
+												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Shipping', $siteLangId ); ?></span>
+												<?php echo CommonHelper::displayMoneyFormat($returnDataArr['op_refund_shipping'], true, false); 
+												?></td>
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></span><?php echo $requestRequestStatusArr[$request['orrequest_status']]; ?></td>
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></span><?php
-												$returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);
-												/* $priceTotalPerItem = CommonHelper::orderProductAmount($request,'netamount',true);
-												$price = 0;	
-												if($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED){
-													if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
-														$shipCharges = isset($request['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$request['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
-														$unitShipCharges = round(($shipCharges / $request['op_qty']),2);
-														$priceTotalPerItem = $priceTotalPerItem + $unitShipCharges;		
-														$price = $priceTotalPerItem * $request['orrequest_qty'];
-													}	
-												}
-												
-												if(!$price){
-													$price = $priceTotalPerItem * $request['orrequest_qty'];
-													$price = $price + $request['op_refund_shipping'];
-												} */
+														
 												echo CommonHelper::displayMoneyFormat($returnDataArr['op_refund_amount'], true, false);  ?></td>
 											</tr>
 										</tbody>

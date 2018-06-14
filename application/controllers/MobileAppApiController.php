@@ -23,7 +23,7 @@ class MobileAppApiController extends MyAppController {
 			$this->appToken = $post['_token'];	
 		} 	 */		
 		
-		if(!empty($this->appToken)){			 //die($this->appToken);
+		if(!empty($this->appToken)){			
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
