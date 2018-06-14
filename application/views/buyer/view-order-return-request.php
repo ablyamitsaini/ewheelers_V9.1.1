@@ -104,10 +104,13 @@
 									<table class="table table--orders">
 										<tbody>
 											<tr class="">
-												<th width="15%"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></th>
-												<th><?php echo Labels::getLabel( 'LBL_Date', $siteLangId ); ?></th>
-												<th width="15%"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></th>
-												<th width="15%"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></th>
+												<th width="20%"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></th>
+												<th width="20%"><?php echo Labels::getLabel( 'LBL_Date', $siteLangId ); ?></th>
+												<th width="20%"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></th>
+												<th width="20%"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></th>
+												<?php if(isset($attachedFile) && !empty($attachedFile)){ ?>
+												<th width="20%"><?php echo Labels::getLabel( 'LBL_Download_Attached_Files', $siteLangId ); ?></th>
+												<?php } ?>
 											</tr>
 											<tr>
 												<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></span><?php echo $request['orreason_title']; ?></td>
@@ -135,6 +138,9 @@
 													$price = $price + $request['op_refund_shipping'];
 												} */
 												echo CommonHelper::displayMoneyFormat($returnDataArr['op_refund_amount'], true, false); ?></td>
+												<?php if(isset($attachedFile) && !empty($attachedFile)){ ?>
+												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Download_Attached_Files', $siteLangId ); ?></span><a href="<?php echo CommonHelper::generateUrl('Buyer','downloadAttachedFileForReturn' , array($request["orrequest_id"]));  ?>" class="button small green" > <?php echo Labels::getLabel('LBL_Download',$siteLangId); ?></a></td>
+												<?php } ?>
 											</tr>
 										</tbody>
 									</table>

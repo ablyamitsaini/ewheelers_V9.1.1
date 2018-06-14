@@ -185,15 +185,9 @@ class CartController extends MyAppController{
 			Message::addMessage($cartObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		if(!$cartObj->removeUsedRewardPoints()){
-			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
+		$cartObj->removeUsedRewardPoints();
 		if(0 == $cartObj->countProducts()){
-			if(!$cartObj->removeCartDiscountCoupon()){
-				Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
-				FatUtility::dieWithError( Message::getHtml() );
-			}
+			$cartObj->removeCartDiscountCoupon();
 		}
 		$this->set( 'msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId) );
 		$this->_template->render(false, false, 'json-success.php');
@@ -239,10 +233,8 @@ class CartController extends MyAppController{
 			Message::addMessage($cartObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		if(!$cartObj->removeUsedRewardPoints()){
-			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
+		$cartObj->removeUsedRewardPoints();
+		$cartObj->removeProductShippingMethod();
 		
 		if(!empty($cartObj->getWarning())){
 			$this->set( 'msg', $cartObj->getWarning() );
@@ -380,10 +372,7 @@ class CartController extends MyAppController{
 			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		if(!$cartObj->removeUsedRewardPoints()){
-			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
+		$cartObj->removeUsedRewardPoints();
 		
 		$this->set( 'msg', Labels::getLabel("MSG_cart_discount_coupon_applied", $this->siteLangId) );
 		$this->_template->render(false, false, 'json-success.php');		
@@ -395,10 +384,7 @@ class CartController extends MyAppController{
 			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		if(!$cartObj->removeUsedRewardPoints()){
-			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
+		$cartObj->removeUsedRewardPoints();
 		$this->set( 'msg', Labels::getLabel("MSG_cart_discount_coupon_removed", $this->siteLangId) );
 		$this->_template->render(false, false, 'json-success.php');	
 	}
