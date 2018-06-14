@@ -54,11 +54,14 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
+		
+		/* Notifications::sendPushNotification('AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR','f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl',array('title' =>'hi' , 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1')); exit; */
+		
 		$uObj = new User(119);
-		$fcmDeviceIds = $uObj->getPushNotificationTokens();
-		/* $fcmDeviceIds = array(
-				0=> array('uauth_fcm_id'=>'fg5DrO-PjLM:APA91bH6NkDtFhLrpbSgyjqhGb1-Pj0TUsbsTrTtaZnYHa9xDr7wl_E0tVYDywSwQ7Y2mydMQiGwR1UWQ5BY4czzid7AX33gIYzdGtbFe8wsC-TpXfnmS8n2cEiicqp1dLd6JPikL_2b'),
-			); */
+		//$fcmDeviceIds = $uObj->getPushNotificationTokens();
+		$fcmDeviceIds = array(
+				0=> array('uauth_fcm_id'=>'f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl'),
+			);  
 		var_dump($fcmDeviceIds);
 		echo "\n";
 		if(empty($fcmDeviceIds)){
@@ -72,7 +75,16 @@ class DummyController extends MyAppController {
 			return false;
 		}
 		
-		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+/* 	require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+	$pusher = new Pusher($google_push_notification_api_key); */	
+	foreach($fcmDeviceIds as $pushNotificationApiToken){		
+		echo $google_push_notification_api_key."\n";
+		echo $pushNotificationApiToken['uauth_fcm_id']."\n";
+		Notifications::sendPushNotification($google_push_notification_api_key,$pushNotificationApiToken['uauth_fcm_id'],array( 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1'));
+		
+		//$pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('text'=>'testing','sound' => 'default', 'badge' => '1'));
+	}
+		/* require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
 		foreach($fcmDeviceIds as $pushNotificationApiToken){
 			echo $pushNotificationApiToken['uauth_fcm_id']."\n";
 			echo "<br>======<br>";
@@ -84,7 +96,7 @@ class DummyController extends MyAppController {
 				var_dump($e);
 			}
 			echo "<br>======<br>";
-		}
+		} */
 		exit;
 		
 		
@@ -120,8 +132,9 @@ class DummyController extends MyAppController {
 	function pushTest(){
 		
 		$firebase_push_notification_server_key = "AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR";
+		//$firebase_push_notification_server_key = "AIzaSyDqigFC0880hWtyGChS6TlZi3Vm_I4Q4Qk";
 		//$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
-		$deviceToken = "diQKzFBIIK0:APA91bH9xJI-T87KFKjdBYrXedLYgzXyKIVlFl9-atUbDfAZynou32D9oZNMV0T9cWupD73dKkYQeSdLGpoJGaoFejF8OKIR7JLIFtT86nedQsNaeASs5u0-jbq8piPwlmGfkAPUxRuZ";
+		$deviceToken = "f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl";
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		//$url = 'https://gcm-http.googleapis.com/gcm/send';
 		//https://android.googleapis.com/gcm/send'
@@ -146,13 +159,13 @@ class DummyController extends MyAppController {
 		(
 			'message' 	=> 'here is a message. message',
 			'title'		=> 'This is a title. title',
-			'subtitle'	=> 'This is a subtitle. subtitle',
+			/* 'subtitle'	=> 'This is a subtitle. subtitle',
 			'id'	=> 12,
 			'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
 			'vibrate'	=> 1,
 			'sound'		=> 1,
 			'largeIcon'	=> 'large_icon',
-			'smallIcon'	=> 'small_icon'
+			'smallIcon'	=> 'small_icon' */
 		);
 		
 		$post = array(

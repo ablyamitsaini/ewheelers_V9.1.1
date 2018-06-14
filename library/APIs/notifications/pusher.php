@@ -1,7 +1,7 @@
 <?php
 class Pusher
 {
-    const GOOGLE_GCM_URL = 'https://android.googleapis.com/gcm/send';
+    const GOOGLE_GCM_URL = 'https://fcm.googleapis.com/fcm/send';
 
     private $apiKey;
     private $proxy;
