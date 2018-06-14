@@ -1788,14 +1788,23 @@ class User extends MyAppModel {
 		}
 		
 		$expiry = strtotime("+7 DAYS");	
-		$values = array(			
+		$values = array(
+			/* 'uauth_user_id'=>$this->mainTableRecordId,
+			'uauth_token'=>$appToken, */
 			'uauth_expiry'=>date('Y-m-d H:i:s', $expiry),
 			'uauth_browser'=>CommonHelper::userAgent(),
 			'uauth_fcm_id'=>$fcmDeviceId,
 			'uauth_last_access'=>date('Y-m-d H:i:s'), 
 			'uauth_last_ip'=>CommonHelper::getClientIp(),
-		); 
+		);
+		
+		FatApp::getDb()->deleteRecords(UserAuthentication::DB_TBL_USER_AUTH, array(
+				'smt' => 'uauth_fcm_id = ? and uauth_token != ?',
+				'vals' => array($fcmDeviceId,$appToken)
+			));
+		
 		$where = array('smt' => 'uauth_user_id = ? and uauth_token = ?', 'vals' => array((int)$this->mainTableRecordId,$appToken));
+		
 		if(!UserAuthentication::updateFcmDeviceToken($values,$where)){
 			return false;
 		}
@@ -1822,7 +1831,7 @@ class User extends MyAppModel {
 		$srch->addCondition('uauth_last_access', '>=', date('Y-m-d H:i:s', strtotime("-7 DAYS")));
 		$srch->addFld('uauth_fcm_id');		
 		$rs = $srch->getResultSet();
-		if(!$row = $db->fetch($rs)){
+		if(!$row = $db->fetchAll($rs)){
 			return array();
 		}
 		return $row;

@@ -13,13 +13,17 @@ class MobileAppApiController extends MyAppController {
 
 		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
 			$this->appToken = $_SERVER['HTTP_X_TOKEN'];			
-		}else if('v1' == MOBILE_APP_API_VERSION && isset($post['_token']) && !empty($post['_token'])){
+		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
-		} else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
+			if (!UserAuthentication::doAppLogin($this->appToken)) {                    
+				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
+				die(json_encode($arr));	
+			}
+		}/*  else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
 			$this->appToken = $post['_token'];	
-		} 			
+		} 	 */		
 		
-		if(!empty($this->appToken)){			
+		if(!empty($this->appToken)){			 //die($this->appToken);
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
@@ -2351,7 +2355,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->joinShops();
 		$srch->joinOrderProducts();
 		$srch->joinOrderProductStatus();
-		$srch->addMultipleFields(array('tth.*','top.op_invoice_number','message_text','message_date'));
+		$srch->addMultipleFields(array('tth.*','ttm.message_id','top.op_invoice_number','message_text','message_date'));
 		//$srch->addMultipleFields(array('tth.*','ttm.message_id','ttm.message_text','ttm.message_date','ttm.message_is_unread'));
 		$srch->addCondition('ttm.message_deleted','=',0);
 		$srch->addCondition('tth.thread_id','=',$threadId);
@@ -2360,7 +2364,7 @@ class MobileAppApiController extends MyAppController {
 		}
 		$cnd = $srch->addCondition('ttm.message_from','=',$userId);
 		$cnd->attachCondition('ttm.message_to','=',$userId,'OR');
-		//$srch->addOrder('message_id','DESC');	
+		$srch->addOrder('message_date','DESC');	
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
 		//die($srch->getquery());

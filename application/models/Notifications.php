@@ -13,7 +13,7 @@ class Notifications extends MyAppModel{
 		return $srch;
 	}
 	
-	public function addNotification($data){
+	public function addNotification($data){ 
 		$userId = FatUtility::int($data['unotification_user_id']);
 		if($userId < 1){
 			trigger_error(Labels::getLabel('MSG_INVALID_REQUEST',$this->commonLangId),E_USER_ERROR) ;
@@ -36,23 +36,49 @@ class Notifications extends MyAppModel{
 			return $this->getMainTableRecordId();
 		}
 		
-		require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
-		foreach($fcmDeviceIds as $pushNotificationApiToken){
-			$pusher = new Pusher($google_push_notification_api_key);
-			$pusher->notify($pushNotificationApiToken, array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
-		}
-		/* 
-		$userInfo = $uObj->getUserInfo(array('user_push_notification_api_token'),true,true);
-		$user_push_notification_api_token = $userInfo['user_push_notification_api_token']; 
-		
-		if (!empty($user_push_notification_api_token) && !empty($google_push_notification_api_key)){
-			require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
-			$pusher = new Pusher($google_push_notification_api_key);
-			$pusher->notify($user_push_notification_api_token, array('message'=>$data['unotification_body'],'type'=>$data['unotification_type']));
-		}  */
+		/* require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+		$pusher = new Pusher($google_push_notification_api_key); */
+		foreach($fcmDeviceIds as $pushNotificationApiToken){			
+			$message = array( 'text' => $data['unotification_body'], 'type'=>$data['unotification_type']);			
+			self::sendPushNotification($google_push_notification_api_key,$pushNotificationApiToken['uauth_fcm_id'],$message); 
+			/* $pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('text'=>$data['unotification_body'],'type'=>$data['unotification_type'])); */
+		} 	
 		
 		return $this->getMainTableRecordId();
 	}
+	
+	public static function sendPushNotification($serverKey,$deviceToken,$data = array()){
+		$url = "https://fcm.googleapis.com/fcm/send";
+		
+		$notification = $data;
+		$arrayToSend = array('to' => $deviceToken, 'notification' => $notification,'priority'=>'high');
+		$json = json_encode($arrayToSend);
+		$headers = array();
+		$headers[] = 'Content-Type: application/json';
+		$headers[] = 'Authorization: key='. $serverKey;
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST,"POST");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		//Send the request
+		$response = curl_exec($ch);
+		//Close request
+		$data = array();
+		if ($response === FALSE) {
+			$data['status'] = false;	
+			$data['msg'] = curl_error($ch);				
+		}else{
+			$data['status'] = true;
+			$data['msg'] = $response;
+		}
+		curl_close($ch);		
+		return $data;
+	}
+	
 	
 	function readUserNotification($notificationId,$userId){
 		
