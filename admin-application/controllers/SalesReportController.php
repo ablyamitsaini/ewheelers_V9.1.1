@@ -50,7 +50,7 @@ class SalesReportController extends AdminBaseController {
 		$cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);
 		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
 		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
-		echo $srch->getQuery(); 
+		
 		if ( empty($orderDate) ) {
 			$date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '') ;
 			if ( !empty($date_from) ) {
