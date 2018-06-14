@@ -436,11 +436,11 @@ function removePriceFilter(){
 				
 				if(minPrice == maxPrice)
 				{
-					if(range){
+					/* if(range){
 						range.update({
 							disable: true
 						});	
-					}
+					} */
 				}else{
 					if(range){
 						range.update({
@@ -458,12 +458,12 @@ function removePriceFilter(){
 				$('input[name="priceFilterMaxValue"]').val(0);
 				if(range)
 				{
-					range.update({
+					/* range.update({
 					from: 0,
 					to: 0,
 					disable: true
 					});
-					range.reset();
+					range.reset(); */
 				}
 			}
 			
@@ -500,7 +500,7 @@ function removePriceFilter(){
 		var frm = document.frmProductSearchPaging;	
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove();
-		searchProducts(frm, 0, undefined, 1);
+		searchProducts(frm);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
 	
