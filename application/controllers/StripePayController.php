@@ -23,6 +23,11 @@ class StripePayController extends PaymentController{
 			);
 		$this->set('stripe', $stripe);
 		
+		if(!isset($this->paymentSettings['privateKey']) && !isset($this->paymentSettings['publishableKey'])){
+			Message::addErrorMessage(Labels::getLabel('STRIPE_INVALID_PAYMENT_GATEWAY_SETUP_ERROR',$this->siteLangId));
+			CommonHelper::redirectUserReferer();
+		}
+		
 		if( strlen(trim($this->paymentSettings['privateKey'])) > 0 && strlen(trim($this->paymentSettings['publishableKey'])) > 0 ){
 			if( strpos($this->paymentSettings['privateKey'], 'test') !== false || strpos($this->paymentSettings['publishableKey'], 'test') !== false ){ }
 			\Stripe\Stripe::setApiKey($stripe['secret_key']);
