@@ -39,10 +39,11 @@ class EmailHandler extends FatModel {
 				}
 			}
 		}
-		if($row['etpl_status']!= applicationConstants::ACTIVE)
-		{
+		
+		if($row['etpl_status']!= applicationConstants::ACTIVE){
 			return false;
 		}
+		
 		if (!isset($row['etpl_body']) || $row['etpl_body'] == '') {
 			return false;
 		}

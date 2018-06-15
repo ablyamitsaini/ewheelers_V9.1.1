@@ -351,10 +351,12 @@ class AdminUsersController extends AdminBaseController {
 		$frm->addHiddenField('', 'admin_id',$adminId);
 		$frm->addRequiredField(Labels::getLabel('LBL_Full_Name',$this->adminLangId), 'admin_name');
 		$fld = $frm->addTextBox(Labels::getLabel('LBL_Username',$this->adminLangId), 'admin_username');
+		$fld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'username',AdminUsers::DB_TBL_PREFIX.'id','admin_username','admin_username');
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setUsername();
-		$frm->addRequiredField(Labels::getLabel('LBL_Email',$this->adminLangId), 'admin_email');
-		
+		$emailFld = $frm->addRequiredField(Labels::getLabel('LBL_Email',$this->adminLangId), 'admin_email');
+		$emailFld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'email',AdminUsers::DB_TBL_PREFIX.'id','admin_email','admin_email');
+
 		if($adminId == 0)
 		{
 			$fld=$frm->addPasswordField(Labels::getLabel('LBL_Password',$this->adminLangId), 'password');
