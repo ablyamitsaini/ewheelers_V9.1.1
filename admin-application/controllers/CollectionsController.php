@@ -151,6 +151,12 @@ class CollectionsController extends AdminBaseController {
 		
 		$post['collection_layout_type'] = $data['collection_layout_type'];
 		unset($post['btn_submit']);
+		
+		$collectionData = Collections::getAttributesById($collectionId );
+		if($collectionData['collection_type'] == Collections::COLLECTION_TYPE_SHOP){
+			$post['collection_child_records'] = 2;
+		}
+		
 		$record = new Collections($collectionId);
 		if ( !$record->addUpdateData($post) ) {
 			Message::addErrorMessage( $record->getError() );
@@ -282,7 +288,11 @@ class CollectionsController extends AdminBaseController {
 		$fld->html_after_field = '<br/><small>This is applicable only on category collections.</small>';
 
 		$frm->addTextBox( Labels::getLabel('LBL_Primary_Record',$this->adminLangId), 'collection_primary_records' )->requirements()->setRequired();
-		$frm->addTextBox( Labels::getLabel('LBL_Child_Records',$this->adminLangId), 'collection_child_records' );
+		
+		if($collectionData['collection_type'] != Collections::COLLECTION_TYPE_SHOP){
+			$frm->addTextBox( Labels::getLabel('LBL_Child_Records',$this->adminLangId), 'collection_child_records' );
+		}
+	
 		/* $frm->addTextBox( Labels::getLabel('LBL_Link_URL(If_Any)',$this->adminLangId), 'collection_link_url' ); */
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'collection_active',$activeInactiveArr,'',array(),'');

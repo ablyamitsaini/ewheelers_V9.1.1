@@ -14,9 +14,10 @@ $fld->fieldWrapper = array('<div class="box--scroller">','</div>');
 
 $criteria_fld = $frm->getField('collection_criteria');
 $criteria_fld->setWrapperAttribute('id', 'collection_criteria_div');
-
-$childRecord_fld = $frm->getField('collection_child_records');
-$childRecord_fld->setWrapperAttribute('id', 'collection_child_records_div');
+if($collection_type != Collections::COLLECTION_TYPE_SHOP){
+	$childRecord_fld = $frm->getField('collection_child_records');
+	$childRecord_fld->setWrapperAttribute('id', 'collection_child_records_div');
+}
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 
