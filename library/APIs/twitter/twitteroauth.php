@@ -66,7 +66,7 @@ class TwitterOAuth {
   function getRequestToken($oauth_callback) {
     $parameters = array();
     $parameters['oauth_callback'] = $oauth_callback; 
-    $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
+    $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);	
     $token = OAuthUtil::parse_parameters($request);
 	
 	if (isset($token['oauth_callback_confirmed']) && ($token['oauth_callback_confirmed'] == true)) {
