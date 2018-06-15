@@ -8,7 +8,6 @@ $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatA
 $get_twitter_url = CommonHelper::generateFullUrl('Buyer','twitterCallback',array(),'',false);
 
 $request_token = $twitteroauth->getRequestToken($get_twitter_url);
-
 ?>
 
 <div id="body" class="body bg--gray">
@@ -102,7 +101,7 @@ function twitter_shared(name){
 	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
 }
 </script>
-<?php
+<?php 
 	if ($request_token) {		
 		$_SESSION["TWITTER_URL"] = CommonHelper::generateFullUrl('Buyer','twitterCallback',array(),'',false);
 		$_SESSION['oauth_token'] = $request_token['oauth_token'];
