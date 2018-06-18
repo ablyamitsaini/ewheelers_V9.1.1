@@ -1,39 +1,19 @@
 $(document).ready(function(){
 	var frm = document.frmProductSearch;
-	/* form submit upon onchange of form elements select box[ */
-/* $('#filters').append('<a href="javascript:void(0)" class="price" onclick="removePriceFilter(this)" >'+$("input[name=priceFilterMinValue]").val()+' - '+$("input[name=priceFilterMaxValue]").val()+'</a>'); */
 		
 	$.each( frm.elements, function(index, elem){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			/* i.e for selectbox */
 			$(elem).change(function(){
-				/* searchProducts(frm); */
 				searchProducts(frm,undefined,undefined,1);
 			});
 		}
 	});
 	/* ] */
-	/* addPricefilter(); */
-	
 	
 	/* form submit upon onchange of elements not inside form tag[ */
 	
-	/* $(".filter_categories").click(function(event){
-		event.preventDefault();
-		$(".filter_categories").removeClass("is--active");
-		$(this).addClass("is--active");
-		$("input[name='category']").val( $(this).attr("data-id") );
-		searchProducts(frm);
-	}); */
-	
-	/* $(".brand_categories").click(function(event){
-		event.preventDefault();
-		$(".brand_categories").removeClass("selected_link");
-		$(this).addClass("selected_link");
-		$("#category_id").val($(this).attr('id')) ;
-		resetFormPagingandSearch();
-	}) */
-	
+
 	if( typeof isBrandPage !== 'undefined' && isBrandPage !== null ){
 		$("input[name=brands]").attr("disabled","disabled");
 		$("input[name=brands]").parent("label").addClass("disabled");
@@ -46,7 +26,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm);		
+		searchProducts(frm,undefined,undefined,1);		
 	});
 	
 	$("input[name=category]").change(function(){
@@ -108,7 +88,6 @@ $(document).ready(function(){
 		if( code == 13 ) {
 			e.preventDefault();
 			addPricefilter();
-		//	searchProducts(frm);
 		}
 	});
 	
@@ -123,8 +102,6 @@ $(document).ready(function(){
 			id = $(this).attr('class');
 			clearFilters(id,this); 
 		});
-		/* form submit upon onchange of form elements select box[ */
-		
 		
 		var minPrice=$("#old-min-value").val();
 		var maxPrice=$("#old-max-value").val();
@@ -134,12 +111,7 @@ $(document).ready(function(){
 		range = $range.data("ionRangeSlider");
 		updateRange(minPrice,maxPrice);
 		range.reset();
-		
-		searchProducts(frm, 0,1);
-		/*updateRange($("#price_min_range").val(),$("#price_max_range").val());
-		range.reset();
-		$('input[name="priceFilterMinValue"]').val($("#price_min_range").val());
-		$('input[name="priceFilterMaxValue"]').val($("#price_max_range").val());*/
+		searchProducts(frm);
 	});
 	
 	
@@ -342,7 +314,6 @@ function removePriceFilter(){
 				data=data+"&out_of_stock=1";
 			});
 			/* ] */
-			
 			/* price filter value pickup[ */
 			if(withPriceFilter == undefined || withPriceFilter==0){
 				if(typeof $("input[name=old-min-value]").val() != "undefined"){
@@ -361,12 +332,14 @@ function removePriceFilter(){
 			}
 			/* ] */
 		}
+		
 		if(($( "#filters" ).find('a').length)>0){
 			$('#resetAll').css('display','block');
 		}
 		else{
 			$('#resetAll').css('display','none');  
 		}
+		
 		var dv = $("#productsList");
 		var colMdVal = $(dv).attr('data-col-md');
 		if( append == 1 ){
@@ -376,7 +349,7 @@ function removePriceFilter(){
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
-			/* alert(ans.priceArr['minPrice']); */
+			
 			processing_product_load = false;
 			$.mbsmessage.close();
 			
@@ -400,22 +373,22 @@ function removePriceFilter(){
 			} else {
 				$(".hide_on_no_product").removeClass("dont-show");
 			}
-			/* if( $(frm).find("input[name='shop_id']").val() > 0 ){
-				alert("pawan working");
-			} */
 			
-			if(ans.priceArr && ans.totalRecords > 0) {
+			if(ans.selectedCurrencyPriceArr && ans.selectedCurrencyPriceArr['minPrice'] !='' && ans.selectedCurrencyPriceArr['maxPrice'] !='') {
 				var minPrice = ans.selectedCurrencyPriceArr['minPrice'];
 				var maxPrice = ans.selectedCurrencyPriceArr['maxPrice'];
-				$("#price_range").val(minPrice+'-'+maxPrice);
-				var $range = $("#price_range");
-				range = $range.data("ionRangeSlider");
 				
-				if(withPriceFilter == undefined || withPriceFilter == 0)
-				{
+				$('input[name="price_min_range"]').val(minPrice);
+				$('input[name="price_max_range"]').val(maxPrice);
+				
+				$("#price_range").val(minPrice+'-'+maxPrice);
+				
+				if(withPriceFilter == undefined || withPriceFilter == 0){
 					$('input[name="priceFilterMinValue"]').val(minPrice);
 					$('input[name="priceFilterMaxValue"]').val(maxPrice);
-					/* if(minPrice!=$("input[name=old-min-value]").val() || maxPrice!=$("input[name=old-max-value]").val(){}*/
+					
+					var $range = $("#price_range");
+					range = $range.data("ionRangeSlider");
 					if(range){
 						range.update({
 							min: minPrice,
@@ -426,46 +399,9 @@ function removePriceFilter(){
 						});
 					}
 					$('.price').remove();
-				}else{
-					if(range){
-						range.update({
-							disable: false
-						});
-					}
-				}
-				
-				if(minPrice == maxPrice)
-				{
-					/* if(range){
-						range.update({
-							disable: true
-						});	
-					} */
-				}else{
-					if(range){
-						range.update({
-							disable: false
-						});
-					}
-				}
-				if(range){
-					range.reset();
-				}
-			} else {
-				var $range = $("#price_range");
-				range = $range.data("ionRangeSlider");
-				$('input[name="priceFilterMinValue"]').val(0);
-				$('input[name="priceFilterMaxValue"]').val(0);
-				if(range)
-				{
-					/* range.update({
-					from: 0,
-					to: 0,
-					disable: true
-					});
-					range.reset(); */
 				}
 			}
+			
 			
 			
 			if( append == 1 ){
@@ -476,11 +412,13 @@ function removePriceFilter(){
 				$( ".filters" ).removeClass( "filter-disabled" );
 				$(dv).html( ans.html );
 			}
+			
 			/* if(ans.totalRecords==0)
 			{
 				$('#top-filters').hide();
 				return;
 			} */
+			
 			/* for LoadMore[ */
 			$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
 			/* ] */
@@ -500,7 +438,7 @@ function removePriceFilter(){
 		var frm = document.frmProductSearchPaging;	
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove();
-		searchProducts(frm);
+		searchProducts(frm,undefined,undefined,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
 	

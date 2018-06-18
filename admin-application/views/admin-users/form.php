@@ -6,11 +6,9 @@ $frm->developerTags['fld_default_col'] = 12;
 
 $userNameFld = $frm->getField('admin_username');
 $userNameFld->addFieldTagAttribute('id','admin_username');
-$userNameFld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'username',AdminUsers::DB_TBL_PREFIX.'id','admin_username','admin_username');
 
 $emailFld = $frm->getField('admin_email');
 $emailFld->addFieldTagAttribute('id','admin_email');
-$emailFld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'email',AdminUsers::DB_TBL_PREFIX.'id','admin_email','admin_email');
 
 ?>
 <section class="section">

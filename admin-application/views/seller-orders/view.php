@@ -110,8 +110,9 @@
 								   </p>
 								</div>
 								
-								 <div class="col-lg-6 col-md-6 col-sm-12">
+								<div class="col-lg-6 col-md-6 col-sm-12">
 									<h5><?php echo Labels::getLabel('LBL_Shipping_Details',$adminLangId); ?></h5>
+									<p><strong><?php echo $order['shippingAddress']['oua_name']; ?></strong><br>
 									<?php if(!empty($order['shippingAddress'])){
 
 									$shippingAddress = '';

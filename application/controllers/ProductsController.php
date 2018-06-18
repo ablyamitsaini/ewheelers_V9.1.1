@@ -609,7 +609,6 @@ class ProductsController extends MyAppController {
 			}
 		}
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		//$srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE );
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
 		$srch->addGroupBy('selprod_id');
 		/* ] */
@@ -618,90 +617,17 @@ class ProductsController extends MyAppController {
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
-	
-		/*if( $productsList ){
-			foreach($productsList as &$product){
-
-
-
-				 $moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
-				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
-				$moreSellerSrch->addGroupBy('selprod_code');
-				$moreSellerRs = $moreSellerSrch->getResultSet();
-				$moreSellerRow = $db->fetch($moreSellerRs); 
-
-				$product['moreSellerData'] =  array();
-				$product['selprod_return_policies'] = array();
-				$product['selprod_warranty_policies']  = array();
-				 $product['selprod_return_policies'] = SellerProduct::getSelprodPolicies($product['selprod_id'] , PolicyPoint::PPOINT_TYPE_RETURN , $this->siteLangId,$limit = 2);
-				$product['selprod_warranty_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'] , PolicyPoint::PPOINT_TYPE_WARRANTY , $this->siteLangId); 
-			}
-		}
-		*/
 		
-		/* Price Filters[ */
-		$priceSrch = new ProductSearch( $this->siteLangId );
-		$priceSrch->setDefinedCriteria(1);
-		$priceSrch->joinProductToCategory();
-		$priceSrch->joinSellerSubscription();
-		$priceSrch->addSubscriptionValidCondition();
-		$priceSrch->doNotCalculateRecords();
-		$priceSrch->doNotLimitRecords();
-
-		if( $category_id ) {
-			$priceSrch->addCategoryCondition($category_id);
-		}
-
-		if( $brand ) {
-			$priceSrch->addBrandCondition($brand);
-		}
-
-		if( $optionvalue ) {
-			$priceSrch->addOptionCondition($optionvalue);
-		}
-
-		if( !empty($condition) ) {
-			$priceSrch->addConditionCondition($condition);
-		}
-
-		if( !empty($out_of_stock) && $out_of_stock == 1 ) {
-			$priceSrch->excludeOutOfStockProducts();
-		}
-
-		if( !empty($price_min_range)) {
-			$min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($price_min_range,false,false);
-			$priceSrch->addCondition('theprice', '>=', $min_price_range_default_currency);
-		}
-
-		if( !empty($price_max_range)) {
-			$max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($price_max_range,false,false);
-			$priceSrch->addCondition('theprice', '<=', $max_price_range_default_currency);
-		}
-
-		if( !empty($featured)) {
-			$priceSrch->addCondition('product_featured', '=', $featured);
-		}
-
-		$priceSrch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
-		$qry = $priceSrch->getQuery();
-		$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
-		//$priceRs = $priceSrch->getResultSet();
-
-		$priceRs = $db->query($qry);
-		$priceArr = $db->fetch($priceRs);
+		$priceArr = array(
+			"minPrice"=>$price_min_range,
+			"maxPrice"=>$price_max_range,
+		);
 		
 		$selectedCurrencyPriceArr = array(
 			"minPrice"=>floor(CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false)),
 			"maxPrice"=>ceil(CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false)),
 		);
 		
-		/* ] */
-		
-		
-		
-		/* $this->set('priceArr', $priceArr ); */
 		$this->set('products', $productsList );
 		$this->set('siteLangId', $this->siteLangId);
 		$this->set('page', $page);
@@ -715,7 +641,6 @@ class ProductsController extends MyAppController {
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
 		$json['totalRecords'] = $totalRecords;
-		/* $json['startRecord'] = ( $totalRecords > 0 ) ? 1 : 0 ; */
 		$json['startRecord'] = $startRecord ;
 		$json['endRecord'] = $endRecord;
 		$json['priceArr'] = $priceArr;					
@@ -734,8 +659,6 @@ class ProductsController extends MyAppController {
 
 		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'products/products-list-load-more-btn.php', true, false);
 		FatUtility::dieJsonSuccess($json);
-		/* $this->set( 'html', $html );
-		$this->_template->render(false, false, 'json-success.php'); */
 	}
 
 	public function view( $selprod_id = 0){ 
