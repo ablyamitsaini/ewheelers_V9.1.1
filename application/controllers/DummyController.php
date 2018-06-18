@@ -54,7 +54,11 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
+		$post['gp_token']="ya29.GlveBRjjFrAbCqUPARC12DUkPP-3yVbeGwzr-QReRtmquoFbHB8wxZhAeRUNIHhJ3TfZ0HTqoyLaBbmfN1MOPBEEDvXgnrTOy3HBt6WVSW_f4gevC96_jRp8uQh5";
+		$content=@file_get_contents($gplus_url="https://www.googleapis.com/oauth2/v1/userinfo?access_token=".$post['gp_token']);
+		$me=json_decode($content);
 		
+		var_dump($me); exit;
 		/* Notifications::sendPushNotification('AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR','f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl',array('title' =>'hi' , 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1')); exit; */
 		
 		$uObj = new User(119);

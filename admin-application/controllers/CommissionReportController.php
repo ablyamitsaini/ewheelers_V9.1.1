@@ -28,15 +28,19 @@ class CommissionReportController extends AdminBaseController {
 		$page = FatApp::getPostedData( 'page', FatUtility::VAR_INT, 1 );
 		$pageSize = FatApp::getConfig( 'CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10 );
 		
-		$srch = new OrderProductSearch( $this->adminLangId, true );
+		/* $srch = new OrderProductSearch( $this->adminLangId, true );
 		$srch->joinPaymentMethod();
 		$srch->joinSellerUser();
-		/* $srch->joinTable( OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', 'op.op_id = opcharge.opcharge_op_id', 'opcharge'  ); */
+		
 		$cnd = $srch->addCondition( 'o.order_is_paid', '=', Orders::ORDER_IS_PAID );
 		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
-		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
+		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
+				
+		$attr = array('op_shop_name', 'op.op_selprod_user_id', 'o.order_id', 'op.op_id', 'count(op.op_id) as totChildOrders', 'seller.user_name as owner_name','seller_cred.credential_email as owner_email', 'sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as total_sales', 'SUM(op_commission_charged - op_refund_commission) as total_commission');
+		$srch = Report::salesReportObject($this->adminLangId,true,$attr);
+		
 		$srch->addGroupBy( 'op.op_shop_id' );
-		$srch->addMultipleFields( array('op_shop_name', 'op.op_selprod_user_id', 'o.order_id', 'op.op_id', 'count(op.op_id) as totChildOrders', 'seller.user_name as owner_name','seller_cred.credential_email as owner_email', 'SUM( (op_unit_price) * op_qty - op_refund_amount ) as total_sales', 'SUM(op_commission_charged - op_refund_commission) as total_commission') );
+		/* $srch->addMultipleFields( array('op_shop_name', 'op.op_selprod_user_id', 'o.order_id', 'op.op_id', 'count(op.op_id) as totChildOrders', 'seller.user_name as owner_name','seller_cred.credential_email as owner_email', 'sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as total_sales', 'SUM(op_commission_charged - op_refund_commission) as total_commission') ); */
 		
 		$op_shop_id = FatApp::getPostedData('op_shop_id', null, '');
 		$shop_keyword = FatApp::getPostedData('shop_name', null, '');

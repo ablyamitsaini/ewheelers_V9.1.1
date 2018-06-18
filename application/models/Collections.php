@@ -132,6 +132,7 @@ class Collections extends MyAppModel{
 		}
 		return true; 
 	}
+	
 	public function addUpdateCollectionShops($collection_id , $shop_id){
 		$shop_id = FatUtility::int($shop_id);
 		$collection_id = FatUtility::int($collection_id);
@@ -226,6 +227,7 @@ class Collections extends MyAppModel{
 		}
 		return true;
 	}
+	
 	public function removeCollectionShops( $collection_id, $shop_id ){
 		$db = FatApp::getDb();
 		$collection_id = FatUtility::int($collection_id);
@@ -277,6 +279,7 @@ class Collections extends MyAppModel{
 		$data =  $db->fetchAll( $rs );
 		return $data;
 	}
+	
 	public static function getShops( $collection_id, $lang_id ){
 		$collection_id = FatUtility::convertToType( $collection_id, FatUtility::VAR_INT );
 		

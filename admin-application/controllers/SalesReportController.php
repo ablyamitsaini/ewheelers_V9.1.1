@@ -34,7 +34,7 @@ class SalesReportController extends AdminBaseController {
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
 		$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
 		
-		$ocSrch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
+		/* $ocSrch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
 		$ocSrch->doNotCalculateRecords();
 		$ocSrch->doNotLimitRecords();
 		$ocSrch->addMultipleFields(array('opcharge_op_id','sum(opcharge_amount) as op_other_charges'));
@@ -49,8 +49,8 @@ class SalesReportController extends AdminBaseController {
 		
 		$cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);
 		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
-		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
-		
+		$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
+		$srch = Report::salesReportObject();
 		if ( empty($orderDate) ) {
 			$date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '') ;
 			if ( !empty($date_from) ) {
@@ -70,7 +70,7 @@ class SalesReportController extends AdminBaseController {
 			$srch->addFld(array('op_invoice_number'));	
 		}		
 		
-		$srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','op.op_qty','op.op_unit_price','op_other_charges','sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as orderNetAmount','(SUM(optax.opcharge_amount)) as taxTotal','(SUM(opship.opcharge_amount)) as shippingTotal'));
+		/* $srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','op.op_qty','op.op_unit_price','op_other_charges','sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as orderNetAmount','(SUM(optax.opcharge_amount)) as taxTotal','(SUM(opship.opcharge_amount)) as shippingTotal')); */
 
 		$srch->addOrder('order_date','desc');
 		

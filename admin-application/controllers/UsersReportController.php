@@ -32,6 +32,26 @@ class UsersReportController extends AdminBaseController {
 		}
 		$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
 		
+		/*
+			$ocSrch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
+			$ocSrch->doNotCalculateRecords();
+			$ocSrch->doNotLimitRecords();
+			$ocSrch->addMultipleFields(array('opcharge_op_id','sum(opcharge_amount) as op_other_charges'));
+			$ocSrch->addGroupBy('opc.opcharge_op_id');
+			$qryOtherCharges = $ocSrch->getQuery();
+			
+			$srch = new OrderProductSearch(0,true);
+			$srch->joinPaymentMethod();
+			$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
+			$cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);
+			$cnd->attachCondition('pmethod_code', '=','cashondelivery');
+			$srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
+			$srch->doNotCalculateRecords();
+			$srch->doNotLimitRecords();
+			$srch->addGroupBy('op.op_order_id');
+			$srch->addMultipleFields(array('op.op_order_id',"SUM(op_qty - op_refund_qty) as totQtys","sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as totUserPurchase"));	
+		*/
+		
 		$srch = new OrderProductSearch(0,true);
 		$srch->joinPaymentMethod();
 		$cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);

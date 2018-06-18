@@ -139,6 +139,7 @@ class User extends MyAppModel {
 	public static function isAffiliate(){
 		return (1 == UserAuthentication::getLoggedUserAttribute( 'user_is_affiliate' ));
 	}
+	
 	public static function isSigningUpForSeller(){
 		return (static::USER_TYPE_SELLER == UserAuthentication::getLoggedUserAttribute( 'user_registered_initially_for' ));
 	}
@@ -1656,6 +1657,7 @@ class User extends MyAppModel {
 		
 		return $row;
 	}
+	
 	public static function isAdminLogged($ip = '') {
 		if ($ip == '') {
 			$ip = $_SERVER['REMOTE_ADDR'];
@@ -1750,8 +1752,7 @@ class User extends MyAppModel {
         
     }
 	
-	function validateAPITempToken($token)
-    {
+	function validateAPITempToken($token){
         if (($this->mainTableRecordId < 1)) {			
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
