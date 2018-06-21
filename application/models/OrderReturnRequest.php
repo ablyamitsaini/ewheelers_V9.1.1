@@ -267,6 +267,9 @@ class OrderReturnRequest extends MyAppModel{
 				'op_refund_affiliate_commission' => $op_refund_affiliate_commission
 			); */
 			$opDataToUpdate = CommonHelper::getOrderProductRefundAmtArr($requestRow);
+			unset($opDataToUpdate['op_cart_amount']);
+			unset($opDataToUpdate['op_prod_price']);
+			unset($opDataToUpdate['op_refund_tax']);
 			$whereArr = array( 'smt' => 'op_id = ?', 'vals' => array( $requestRow['orrequest_op_id'] ) );
 			if( !$db->updateFromArray( OrderProduct::DB_TBL, $opDataToUpdate, $whereArr ) ){
 				$this->error = $db->getError();

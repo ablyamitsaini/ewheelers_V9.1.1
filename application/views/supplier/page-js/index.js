@@ -1,6 +1,7 @@
 window.recordCount = 0;
 $(document).ready(function(){
 	$(document).delegate('.acc_ctrl','click',function(e){
+		$(".questions-section").hide();
 		e.preventDefault();
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
@@ -50,8 +51,8 @@ $(document).ready(function(){
 			$.mbsmessage.close();	
 			$(dv).find('.loader-yk').remove();
 			$(dvCategoryPanel).html(ans.categoriesPanelHtml);
-			if(ans.recordCount==0){
-				$(".questions-section").remove();
+			if(ans.recordCount!=0){
+				$(".questions-section").show();
 			}
 			window.recordCount = ans.recordCount;
 		}); 

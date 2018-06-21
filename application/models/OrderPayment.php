@@ -253,7 +253,7 @@ class OrderPayment extends Orders{
 		}
 	}
 	
-	public function confirmCodOrder($orderId, $langId){		
+	public function confirmCodOrder($orderId, $langId){
 		$langId = FatUtility::int($langId);
 		
 		$db = FatApp::getDb();		
@@ -264,7 +264,24 @@ class OrderPayment extends Orders{
 		
 		$request = 'CashOnDelivery';
 		$orderPaymentObj = new OrderPayment($orderId,$langId);
-		$orderPaymentObj->addOrderPaymentComments($request); 
+		$orderPaymentObj->addOrderPaymentComments($request);
+		
+		$paymentOrderId = $this->paymentOrderId;
+		$orderDetails = $this->getOrderById($paymentOrderId);
+		if(!empty($orderDetails['order_discount_coupon_code'])){
+			$srch = DiscountCoupons::getSearchObject();
+			$srch->addCondition('coupon_code','=',$orderDetails['order_discount_coupon_code']);
+			$rs = $srch->getResultSet();			
+			$row = FatApp::getDb()->fetch($rs);
+			if(!empty($row)){
+				if (!FatApp::getDb()->insertFromArray(CouponHistory::DB_TBL, array('couponhistory_coupon_id' => $row['coupon_id'], 'couponhistory_order_id' => $orderDetails['order_id'],'couponhistory_user_id'=>$orderDetails['order_user_id'],'couponhistory_amount'=>$orderDetails['order_discount_total'],'couponhistory_added_on' => date('Y-m-d H:i:s')))){ 
+					$this->error = FatApp::getDb()->getError();
+					return false;
+				}
+				FatApp::getDb()->deleteRecords( DiscountCoupons::DB_TBL_COUPON_HOLD, array('smt' => 'couponhold_coupon_id = ? and couponhold_user_id = ?', 'vals' => array($row['coupon_id'], $orderDetails['order_user_id'] ) ) );
+			}
+		}
+		
 		return true;
 	}
 	
