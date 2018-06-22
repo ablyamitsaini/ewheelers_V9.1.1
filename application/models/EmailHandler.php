@@ -2284,12 +2284,13 @@ class EmailHandler extends FatModel {
 		$wListObj = new UserWishList();
 		$srch = UserWishList::getSearchObject($d['user_id']);
 		$wListObj->joinWishListProducts($srch);		
-		$srch->addMultipleFields(array('uwlist_id','uwlp_selprod_id'));
+		$srch->addMultipleFields(array('uwlp_selprod_id','uwlist_id'));
+		$srch->addGroupBy('uwlp_selprod_id');
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$rs = $srch->getResultSet();
 		$selProdIds = FatApp::getDb()->fetchAllAssoc($rs);
-		
+		$selProdIds = array_keys($selProdIds);
 		$prodSrch = new ProductSearch( $langId );
 		$prodSrch->setDefinedCriteria(0,0,array(),false);
 		$prodSrch->joinProductToCategory();
@@ -2298,7 +2299,8 @@ class EmailHandler extends FatModel {
 		$prodSrch->doNotCalculateRecords();
 		$prodSrch->addCondition( 'selprod_id', 'IN', $selProdIds );
 		$prodSrch->addCondition('selprod_deleted','=',applicationConstants::NO);
-		$prodSrch->doNotLimitRecords();
+		$prodSrch->addGroupBy('selprod_id');
+		$prodSrch->setPageSize(9);
 		$prodSrch->addMultipleFields( array(
 			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn',
 			'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
@@ -2312,9 +2314,7 @@ class EmailHandler extends FatModel {
 		$fatTpl->set('products', $products);
 		$fatTpl->set('siteLangId', $langId);
 		$productsInWishlistFormatHtml = $fatTpl->render(false, false, '_partial/products-in-cart-wishlist-email.php', true);
-		
-		
-		
+	
 		$vars = array(
 			'{user_full_name}' => $d['user_name'],
 			'{wishlist_url}' => $d['link'],
@@ -2322,6 +2322,19 @@ class EmailHandler extends FatModel {
 		);
 		
 		if(self::sendMailTpl($d['user_email'], $tpl ,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
+	function failedLoginAttempt( $langId, $data ){
+		$tpl = 'failed_login_attempt';
+		
+		$vars = array(
+					'{user_full_name}' => $data['user_name'],
+				);
+		
+		if(self::sendMailTpl($data['credential_email'], $tpl ,$langId, $vars)){
 			return true;
 		}
 		return false;

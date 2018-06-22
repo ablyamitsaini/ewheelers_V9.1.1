@@ -70,6 +70,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;	
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
+				
 				if($canEdit){
 					$li = $ul->appendElement("li",array('class'=>'droplink'));
 
@@ -77,11 +78,6 @@ foreach ($arr_listing as $sn=>$row){
               		$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
               		$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
               		$innerLiEdit=$innerUl->appendElement('li');	
-
-
-
-
-
 					$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addCouponFormNew(".$row['coupon_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
 					if($row['coupon_type'] != DiscountCoupons::TYPE_SELLER_PACKAGE){
 						$linkFuncName = 'addCouponLinkProductForm';
@@ -93,9 +89,13 @@ foreach ($arr_listing as $sn=>$row){
 					
 					/* $li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=>"javascript:void(0)", 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Delete',$adminLangId),"onclick"=>"deleteRecord(".$row['coupon_id'].")"),'<i class="ion-android-delete icon"></i>', true); */
+				}else{
+					$li = $ul->appendElement("li",array('class'=>'droplink'));
+					$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
+              		$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
 				}
 				if($canView){
-              		$innerLiHistory=$ul->appendElement('li');	
+              		$innerLiHistory=$innerUl->appendElement('li');	
 
 					$innerLiHistory->appendElement('a', array('href'=>"javascript:void(0)", 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_History',$adminLangId),"onclick"=>"couponHistory(".$row['coupon_id'].")"),Labels::getLabel('LBL_History',$adminLangId), true);
 				}

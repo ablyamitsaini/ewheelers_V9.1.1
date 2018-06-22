@@ -156,7 +156,18 @@ class UserAuthentication extends FatModel {
 	}
 		
 	public function login($username, $password, $ip, $encryptPassword = true,$isAdmin = false) {
+		$db = FatApp::getDb();
 		if ($this->isBruteForceAttempt($ip, $username)) {
+			
+			$userSrch = User::getSearchObject(true,false);		
+			$userSrch->addCondition('credential_username', '=', $username);
+			$userRs = $userSrch->getResultSet();
+			
+			if ( $row = $db->fetch($userRs) ) {
+				$email = new EmailHandler();
+				$email->failedLoginAttempt(FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$row);
+			}
+			
 			$this->error =  Labels::getLabel('ERR_LOGIN_ATTEMPT_LIMIT_EXCEEDED_PLEASE_TRY_LATER',$this->commonLangId);
 			return false;
 		}
@@ -165,7 +176,6 @@ class UserAuthentication extends FatModel {
 			$password = UserAuthentication::encryptPassword($password);
 		}
 	
-		$db = FatApp::getDb();
 		$srch = User::getSearchObject(true,false);		
 		$condition=$srch->addCondition('credential_username', '=', $username);
 		$condition->attachCondition('credential_email', '=', $username,'OR');

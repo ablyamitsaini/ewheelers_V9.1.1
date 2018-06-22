@@ -5,13 +5,13 @@ $str='<table border="0" cellpadding="0" cellspacing="0" width="100%" style="bord
 	<td valign="top" style="padding:15px 0">';
    foreach($products as $product){
 		$oldPrice = '';
-		$discountedPrice = '<span style="display:block;width:50px;height:24px;border:3px solid #fff; padding:13px 0;line-height:24px"></span>';
+		$discountedPrice = '<span style="display:block;width:30px;height:20px;border:3px solid #fff; padding:10px 5px;line-height:22px"></span>';
 		if($product['special_price_found']){
 			$oldPrice = CommonHelper::displayMoneyFormat($product['selprod_price']);
 			$discountedPrice = CommonHelper::showProductDiscountedText($product, $siteLangId);
-			$discountedPrice = '<span style="display:block;background-color:#f62d1d;color:#fff;text-align:center;border-radius:50%;border:3px solid #fff;font-family:Helvetica;width:50px;height:24px;font-size:15px;font-weight:700;padding:13px 0;line-height:24px">'.$discountedPrice.'</span>';
+			$discountedPrice = '<span style="display:block;background-color:#ff3a59;color:#fff;text-align:center;border-radius:50%;border:3px solid #fff;font-family:Helvetica;width:30px;height:20px;font-size:13px;font-weight:700;padding:10px 5px;line-height:22px">'.$discountedPrice.'</span>';
 		}
-	$str .='<table align="left" border="0" cellpadding="0" cellspacing="0" width="265" style="min-height:320px; border-collapse:collapse;border:1px solid #cccccc">
+	$str .='<table align="left" border="0" cellpadding="0" cellspacing="0" width="165" style="min-height:305px; border-collapse:collapse;border:1px solid #cccccc">
 		<tbody><tr>
 			<td valign="top">'.$discountedPrice.'
 				<table style="min-width:100%;border-collapse:collapse" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -23,7 +23,7 @@ $str='<table border="0" cellpadding="0" cellspacing="0" width="100%" style="bord
 										<tr>
 											<td style="padding-right:9px;padding-left:9px;padding-top:0;padding-bottom:0;text-align:center" valign="top">
 
-												<img alt='.$product['selprod_title'].'" src="'.CommonHelper::generateFullUrl('image','product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL).' style="max-width:352px;padding-bottom:0;display:inline!important;vertical-align:bottom;border:0;height:150px;outline:none;text-decoration:none" height="150" align="middle">
+												<img alt='.$product['selprod_title'].'" src="'.CommonHelper::generateFullUrl('image','product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL).' style="max-width:200px;padding-bottom:0;display:inline!important;vertical-align:bottom;border:0;height:150px;outline:none;text-decoration:none" height="125" align="middle">
 
 											</td>
 										</tr>
@@ -66,7 +66,7 @@ $str='<table border="0" cellpadding="0" cellspacing="0" width="100%" style="bord
 			</td>
 		</tr>
 	</tbody></table>';
-	if($countProducts % 2 == 0){
+	if($countProducts % 3 == 0){
 		$str .='</td></tr><tr><td valign="top" style="padding:15px 0">';
 	}else{
 		$str .='<table align="left" border="0" cellpadding="0" cellspacing="0" width="10" style="border-collapse:collapse">

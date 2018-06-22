@@ -223,8 +223,8 @@ $(document).delegate('.language-js','change',function(){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Products', 'linksForm', [id]), '', function(t) {
 				$.facebox(t,'faceboxWidth');
+				reloadProductLinks(id);
 			});
-			reloadProductLinks(id);			
 		});
 	};
 	
@@ -680,7 +680,6 @@ $(document).delegate('.language-js','change',function(){
 	};
 	
 	updateProductLink = function (product_id, option_id){
-	//reloadProductLinks(product_id);
 		fcom.updateWithAjax(fcom.makeUrl('Products', 'updateProductLink'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
 			reloadProductLinks(product_id);
 		});

@@ -6,7 +6,7 @@ $(document).ready(function(){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			/* i.e for selectbox */
 			$(elem).change(function(){
-				searchProducts(frm,undefined,undefined,1);
+				searchProducts(frm,0,0,1);
 			});
 		}
 	});
@@ -27,7 +27,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,undefined,undefined,1);		
+		searchProducts(frm,0,0,1);		
 	});
 	
 	$("input[name=category]").change(function(){
@@ -47,7 +47,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,undefined,undefined,1);		
+		searchProducts(frm,0,0,1);		
 	});
 	
 	$("input[name=conditions]").change(function(){
@@ -58,7 +58,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,undefined,undefined,1);
+		searchProducts(frm,0,0,1);
 	});
 	
 	$("input[name=free_shipping]").change(function(){
@@ -73,7 +73,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,undefined,undefined,1);
+		searchProducts(frm,0,0,1);
 	});
 	
 	$("input[name='priceFilterMinValue']").keyup(function(e){
@@ -216,9 +216,10 @@ function removeFilter(id,obj){
 	$('.'+id).remove();
 	$('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 	var frm = document.frmProductSearch;
+
 	/* form submit upon onchange of form elements select box[ */	
-	removeFromSearchQueryString(id);
-	searchProducts(frm,undefined,undefined,1);
+	removeFromSearchQueryString(id);		
+	searchProducts(frm,0,0,1);
 }
 
 function clearFilters(id,obj){
@@ -261,7 +262,8 @@ function addPricefilter(){
 		searchArr['currency'] = langLbl.siteCurrencyId;
 		var frm = document.frmProductSearch;		
 		/* form submit upon onchange of form elements select box[ */
-		searchProducts(frm,undefined,undefined,1); 
+		 searchProducts(frm,0,0,1); 
+
 	}
 }
 function removePriceFilter(){
@@ -299,7 +301,7 @@ function removePriceFilter(){
 		if( processing_product_load == true ) return false;
 		processing_product_load = true;
 		append = ( append == "undefined" ) ? 0 : append;
-		reset = ( reset == undefined ) ? 0 : reset;
+		reset = ( reset == "undefined" ) ? 0 : reset;
 		/*[ this block should be written before overriding html of 'form's parent div/element, otherwise it will through exception in ie due to form being removed from div */
 		var data = fcom.frmData(frm);
 		/*]*/
@@ -480,7 +482,7 @@ function removePriceFilter(){
 		var frm = document.frmProductSearchPaging;	
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove();
-		searchProducts(frm,undefined,undefined,1);
+		searchProducts(frm,0,0,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
 	
