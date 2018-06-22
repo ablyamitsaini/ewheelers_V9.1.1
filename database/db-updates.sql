@@ -166,5 +166,10 @@
 			</tr>
 		</tbody>
 	</table></div>', '', '1');
+	
+	
+	ALTER TABLE `tbl_shops` ADD `shop_free_shipping_on` INT NOT NULL AFTER `shop_updated_on`;
+	
+	ALTER TABLE `tbl_order_products` ADD `op_free_shipping_on` INT NOT NULL AFTER `op_selprod_download_validity_in_days`, ADD `op_calculated_shipping_charges` FLOAT NOT NULL AFTER `op_free_shipping_on`;
 
  

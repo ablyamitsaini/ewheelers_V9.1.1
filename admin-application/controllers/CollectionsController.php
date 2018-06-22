@@ -406,7 +406,7 @@ class CollectionsController extends AdminBaseController {
 		$this->objPrivilege->canEditCollections();
 		$post = FatApp::getPostedData();
 		if ( false === $post ) {
-			Message::addErrorMessage(current($frm->getValidationErrors()));
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request',$this->adminLangId));
 			FatUtility::dieWithError(Message::getHtml());
 		}
 		

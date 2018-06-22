@@ -656,7 +656,10 @@ class SellerController extends LoggedUserController {
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}
-		
+		$this->_template->addCss(array('css/bootstrap-tour.css'), false);
+		$this->_template->addJs(array('js/tour-script.js'), false);
+		$this->_template->addJs(array('js/bootstrap.js'), false);
+		$this->_template->addJs(array('js/bootstrap-tour.js'), false);
 		$frmSearchCatalogProduct = $this->getCatalogProductSearchForm();
 		$this->set("frmSearchCatalogProduct", $frmSearchCatalogProduct);
 		$this->set("displayDefaultListing", $displayDefaultListing);		
@@ -2969,7 +2972,8 @@ class SellerController extends LoggedUserController {
 		
 		$frm->addSelectBox(Labels::getLabel('Lbl_Display_Status',$this->siteLangId),'shop_supplier_display_status',$onOffArr,'',array(),'');
 		
-		
+		$fld = $frm->addTextBox( Labels::getLabel('LBL_Free_Shipping_On', $this->siteLangId), 'shop_free_shipping_on' );
+		$fld->requirements()->setInt();
 		
 		
 		
