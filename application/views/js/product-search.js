@@ -1,6 +1,7 @@
+var searchArr = [];
 $(document).ready(function(){
-	var frm = document.frmProductSearch;
-		
+	var frm = document.frmProductSearch;		
+	
 	$.each( frm.elements, function(index, elem){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			/* i.e for selectbox */
@@ -95,6 +96,7 @@ $(document).ready(function(){
 	
 	
 	$("#resetAll").on('click',function(){
+		searchArr = [];
 		document.frmProductSearch.reset();
 		document.frmProductSearchPaging.reset();
 
@@ -186,29 +188,63 @@ $(window).load(function(){
 	}
 })
 
+/* function updateQueryStringParameter(uri, key, value) {
+  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+  if (uri.match(re)) {
+	return uri.replace(re, '$1' + key + "=" + value + '$2');
+  }
+  else {
+	return uri + separator + key + "=" + value;
+  }
+} */
+
 function htmlEncode(value){
   return $('<div/>').text(value).html();
 }
+
 function addFilter(id,obj){
 	var click = "onclick=removeFilter('"+id+"',this)";
 	$filter = $(obj).parent().text();
 	$filterVal = htmlEncode($(obj).parent().text());
+	addToSearchQueryString (id,obj);	
 	$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
 		
 }
 
 function removeFilter(id,obj){
-$('.'+id).remove();
- $('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
+	$('.'+id).remove();
+	$('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 	var frm = document.frmProductSearch;
-	/* form submit upon onchange of form elements select box[ */
+	/* form submit upon onchange of form elements select box[ */	
+	removeFromSearchQueryString(id);
 	searchProducts(frm,undefined,undefined,1);
 }
-function clearFilters(id,obj){
-$('.'+id).remove();
- $('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 
+function clearFilters(id,obj){
+ $('.'+id).remove();
+ $('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 }
+
+function addToSearchQueryString(id,obj){	
+	$filter = $(obj).parent().text();
+	$filterVal = htmlEncode($(obj).parent().text());
+	//searchUrl = searchUrl +'&'+ id + '='+ $filterVal.replace(/ /g,'');
+	searchArr[id] = $filterVal.replace(/ /g,'');			
+}
+
+function removeFromSearchQueryString(key){
+	delete searchArr[key];		
+}
+
+function getSearchQueryUrl(){	
+	url = '';
+	for (var key in searchArr) {
+		url = url +'&'+ key + '='+ searchArr[key];
+	}	
+	return encodeURI(url);
+}
+
 function addPricefilter(){
 	$('.price').remove();
 	if(typeof($("input[name=priceFilterMaxValue]").val())!== "undefined"){
@@ -220,9 +256,12 @@ function addPricefilter(){
 			$("input[name=price_min_range]").val($("input[name=priceFilterMinValue]").val());
 			$("input[name=price_max_range]").val($("input[name=priceFilterMaxValue]").val());
 		}
-		var frm = document.frmProductSearch;
+		searchArr['price_min_range'] = $("input[name=priceFilterMinValue]").val();
+		searchArr['price_max_range'] = $("input[name=priceFilterMaxValue]").val();
+		searchArr['currency'] = langLbl.siteCurrencyId;
+		var frm = document.frmProductSearch;		
 		/* form submit upon onchange of form elements select box[ */
-		 searchProducts(frm,undefined,undefined,1); 
+		searchProducts(frm,undefined,undefined,1); 
 	}
 }
 function removePriceFilter(){
@@ -240,7 +279,9 @@ function removePriceFilter(){
 	updateRange(minPrice,maxPrice);
 	range.reset();
 
-	
+	delete searchArr['price_min_range'];
+	delete searchArr['price_max_range'];
+	delete searchArr['currency'];
 	searchProducts(frm);
 	$('.price').remove();
 }
@@ -281,7 +322,7 @@ function removePriceFilter(){
 				brands.push($(this).val());
 			});
 			if ( brands.length ){
-				data=data+"&brand="+[brands];
+				data=data+"&brand="+[brands];				
 			}
 			/* ] */
 			
@@ -348,7 +389,8 @@ function removePriceFilter(){
 			$(dv).html(fcom.getLoader());
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
-		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
+						
+		fcom.updateWithAjax(fcom.makeUrl('Products','productsList',),data,function(ans){
 			
 			processing_product_load = false;
 			$.mbsmessage.close();
