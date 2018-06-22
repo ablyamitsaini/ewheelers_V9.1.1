@@ -98,6 +98,7 @@ class MyAppController extends FatController {
 			'options' =>Labels::getLabel('VLBL_options',$this->siteLangId),
 			'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list',$this->siteLangId),
 			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
+			'siteCurrencyId' =>$this->siteCurrencyId,
 		);
 
 		$languages = Language::getAllNames(false);
