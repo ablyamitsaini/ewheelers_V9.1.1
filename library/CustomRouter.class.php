@@ -23,12 +23,20 @@ class CustomRouter{
 			
 			$token = null;
             
-            if (isset($_SERVER['HTTP_X_USER_TYPE'])) {
+			if(array_key_exists('HTTP_X_USER_TYPE',$_SERVER)){
+				$userType = intval($_SERVER['HTTP_X_USER_TYPE']);
+			}
+			
+			if(array_key_exists('HTTP_X_TOKEN',$_SERVER)){
+				$token = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:null;
+			}
+			
+            /* if (isset($_SERVER['HTTP_X_USER_TYPE'])) {
                 $userType = intval($_SERVER['HTTP_X_USER_TYPE']);
             }
             if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
                 $token = $_SERVER['HTTP_X_TOKEN'];
-            }
+            } */
 
             if ($token) { 
                 if (!UserAuthentication::doAppLogin($token)) {                    
