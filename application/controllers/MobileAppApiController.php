@@ -2022,8 +2022,7 @@ class MobileAppApiController extends MyAppController {
 	}
 	
 	function login(){
-		$post = FatApp::getPostedData();
-		//$post = array("username"=>'keith.anderson@dummyid.com','password'=>"welcome1");
+		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
 		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {
 			//FatUtility::dieJsonError( FatUtility::decodeHtmlEntities(Labels::getLabel($authentication->getError(),$this->siteLangId)));
@@ -2043,7 +2042,7 @@ class MobileAppApiController extends MyAppController {
 					'user_name'=>$userInfo["user_name"], 
 					'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'thumb',1)).'?'.time()
-					);			
+				);			
 		die ($this->json_encode_unicode($arr));
 	}
 	
