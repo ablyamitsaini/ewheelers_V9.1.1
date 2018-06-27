@@ -12,16 +12,17 @@ class MobileAppApiController extends MyAppController {
 		$this->appToken = '';
 
 		if (array_key_exists('HTTP_X_TOKEN',$_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])){
-			$this->appToken = $_SERVER['HTTP_X_TOKEN'];	
+			$this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:null;	
 		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && array_key_exists('_token',$post)){
-			$this->appToken = $post['_token'];	
-			if (!UserAuthentication::doAppLogin($this->appToken)) {                    
-				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
-				die(json_encode($arr));	
-			}
+			$this->appToken = ($post['_token']!='')?$post['_token']:null;				
 		}			
-				
-		if(!empty($this->appToken)){			
+		
+		if (!UserAuthentication::doAppLogin($this->appToken)) {                    
+			$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
+			die(json_encode($arr));	
+		}
+		
+		if($this->appToken){			
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
@@ -30,7 +31,7 @@ class MobileAppApiController extends MyAppController {
 			}			
 			$this->app_user = $row;			
 		}		
-				
+			
 		if (array_key_exists('language',$post)){
 			$this->siteLangId = FatUtility::int($post['language']);
 			$_COOKIE['defaultSiteLang'] = $this->siteLangId;
