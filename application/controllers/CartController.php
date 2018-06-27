@@ -401,11 +401,10 @@ class CartController extends MyAppController{
 		$cartObj = new Cart();
 		$productsArr = $cartObj->getProducts($this->siteLangId);
 		$cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-		
 		$this->set('siteLangId', $this->siteLangId );
 		$this->set('products', $productsArr );
 		$this->set('cartSummary', $cartSummary);
 		$this->set( 'totalCartItems', $cartObj->countProducts() );	
 		$this->_template->render(false,false);
-	}	
+	}
 }

@@ -8,14 +8,32 @@
 				<div class="col-md-10 panel__right--full " >
 					<div class="cols--group">
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h2>							
+						   <h2><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h2>
+						   <a href="javascript:void(0)" class="btn-inline btn-inline-js">Product setup Guide</a>					   
 						</div>
 						<div class="panel__body">
+							<div class="box-container box-slide-js" style="display:none;">
+							  <a href="javascript:void(0)" class="small-link-close btn-inline-js"></a>
+							  <h5>Product Setup Help Guide</h5>
+							  <div class="row">
+								  <div class="tabled-container">
+									  <div class="tabled-box">
+										<h6>How to add Product from catalog?</h6>
+										<a href="javascript:void(0)" class="btn-play" id="catalog-setup-tour">Start Tour</a>
+									  </div>
+									  <div class="tabled-box">
+										<h6>How to add Custom Products?</h6>
+										<a href="javascript:void(0)" class="btn-play" id="custom-product-setup-tour">Start Tour</a>
+									  </div>
+								  </div>
+							  </div>
+							</div>
+						
 							<div class="box box--white box--space"> 
 								<div class="box__head">
 								   <h4><?php echo Labels::getLabel('LBL_Search_Products',$siteLangId); ?></h4>
 								   <div class="group--btns panel__head_action">
-								   <a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a>
+								   <div class="-inline-element" id="tour-step-2" ><a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a></div>
 								   <a href="<?php echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId)?></a>
 								   
 								   <?php if((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true )){?>									
@@ -36,6 +54,7 @@
 										$fldSubmit->setFieldTagAttribute('class','btn--block');
 										
 										$keywordFld = $frmSearchCatalogProduct->getField('keyword');
+										$keywordFld->setFieldTagAttribute('id','tour-step-3');
 										$keywordFld->developerTags['col'] = 12;
 										
 										
@@ -84,5 +103,9 @@ $(document).ready(function(){
 	<?php if(!$displayDefaultListing){?>	
 	searchCatalogProducts(document.frmSearchCatalogProduct);	
 	<?php }?>
+});
+
+$(".btn-inline-js").click(function(){
+    $(".box-slide-js").slideToggle();
 });
 </script>
