@@ -69,8 +69,8 @@ class OrderProduct extends MyAppModel{
 		}
 		if($isCancelled){
 			$opSrch->joinTable(OrderCancelRequest::DB_TBL,'LEFT OUTER JOIN','ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id','ocr');
-			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status','=',0);
-			$cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);
+			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=',1);
+			/* $cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true); */
 		}
 		$rs = $opSrch->getResultSet();
 		return $row = FatApp::getDb()->fetchAll($rs);
