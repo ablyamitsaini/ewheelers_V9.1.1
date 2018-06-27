@@ -146,7 +146,6 @@ class ShopsController extends AdminBaseController {
 				$data['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
 			}
 			/* ] */
-		
 			$frm->fill($data);
 			$stateId = $data['shop_state_id'];
 		}
@@ -166,7 +165,6 @@ class ShopsController extends AdminBaseController {
 		$post = FatApp::getPostedData();
 		$shop_state = FatUtility::int($post['shop_state']);		
 		$post = $frm->getFormDataFromArray($post);
-		
 		$post['shop_state_id'] = $shop_state;
 		
 		if (false === $post) {			
@@ -177,7 +175,7 @@ class ShopsController extends AdminBaseController {
 		$shop_id = $post['shop_id'];
 		unset($post['shop_id']);
 		
-		$record = new Shop($shop_id);		
+		$record = new Shop($shop_id);	
 		$record->assignValues($post);
 		
 		if (!$record->save()) { 	
@@ -508,7 +506,8 @@ class ShopsController extends AdminBaseController {
 		
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId),'shop_active',$activeInactiveArr,'',array(),'');
-		
+		$fld = $frm->addTextBox( Labels::getLabel('LBL_Free_Shipping_On', $this->adminLangId), 'shop_free_ship_upto' );
+		$fld->requirements()->setInt();
 		$frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'shop_featured', 1,array(),false,0);
 		
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));		

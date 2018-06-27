@@ -1300,6 +1300,27 @@ class Orders extends MyAppModel{
 				/* $comments = sprintf(Labels::getLabel('LBL_Cancel_Request_Approved',$langId),$formattedRequestValue); */
 				$txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]); 
 				
+				
+				/* Based on free ship functionality [ */
+				if(0 < $childOrderInfo["op_free_ship_upto"]){
+					$sellerPrice = 0;
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
+					foreach($rows as $row){
+						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
+							continue;
+						}
+						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+					}
+					
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
+					
+					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
+						$txnAmount = $txnAmount - $row['op_actual_shipping_charges'];
+					}
+				}
+				/* ] */
+				
+				
 				/*Refund to Buyer[*/
 				if ( $txnAmount > 0 ){		
 					
@@ -1642,7 +1663,7 @@ class Orders extends MyAppModel{
 		$srch->joinTable(OrderProduct::DB_TBL_CHARGES,'LEFT OUTER JOIN','opc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = op.op_id','opc');
 		$srch->joinTable(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING,'LEFT OUTER JOIN','ops.opshipping_op_id = op.op_id','ops');
 		
-		$srch->addMultipleFields(array('op.*','op_l.*','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
+		$srch->addMultipleFields(array('op.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
 		$srch->addCondition('op_id','=',$op_id);
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();

@@ -13,4 +13,4 @@ class RecommendationActivityBrowsing extends MyAppModel{
 		$srch = new SearchBase(static::DB_TBL, 'rab');
 		return $srch;
 	}
-}	
+}

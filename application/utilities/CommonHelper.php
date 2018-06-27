@@ -1646,7 +1646,7 @@ class CommonHelper extends FatUtility{
 		file_put_contents($file, $log, FILE_APPEND);
 	}
 
-	public static function fullCopy( $source, $target,$empty_first=true) {
+	public static function fullCopy($source, $target, $empty_first=true) {
 		if ($empty_first){
 			self::recursiveDelete($target);
 		}

@@ -670,7 +670,7 @@ class EmailHandler extends FatModel {
 	}
 	
 	public function cashOnDeliveryOrderUpdateBuyerAdmin($orderId,$langId = 0){
-		//$langId = FatApp::getConfig('conf_default_site_lang');
+		$langId = FatApp::getConfig('conf_default_site_lang');
 		$langId = FatUtility::int($langId);
 		$orderObj = new Orders();
 		$orderDetail = $orderObj->getOrderById($orderId);
