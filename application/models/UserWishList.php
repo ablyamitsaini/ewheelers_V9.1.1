@@ -22,7 +22,7 @@ class UserWishList extends MyAppModel {
 		return $srch;
 	}
 	
-	public static function joinWishListProducts( $srchObj ){
+	public function joinWishListProducts( $srchObj ){
 		if( !is_object($srchObj) ){
 			trigger_error(Labels::getLabel('MSG_Invalid_Join_Request!',$this->commonLangId), E_USER_ERROR);
 		}

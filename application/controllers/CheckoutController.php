@@ -885,6 +885,17 @@ class CheckoutController extends MyAppController{
 		
 		/* order products[ */
 		$cartProducts = $this->cartObj->getProducts($this->siteLangId);
+		
+		$sellerPrice = array();
+		if( is_array($cartProducts) && count($cartProducts) ){
+			foreach( $cartProducts as $selprod ){
+				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
+					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
+				}
+				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
+			}
+		}
+		
 		$orderData['products'] = array();
 		$orderData['prodCharges'] = array();
 		
@@ -1021,6 +1032,8 @@ class CheckoutController extends MyAppController{
 						'productShippingData'	=>	$productShippingData,
 						'productShippingLangData'	=>	$productShippingLangData,
 						'op_tax_collected_by_seller'	=>	$taxCollectedBySeller,
+						'op_free_ship_upto'	=>	$cartProduct['shop_free_ship_upto'],
+						'op_actual_shipping_charges'	=>	$cartProduct['shipping_cost'],
 					);
 					
 					$order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
@@ -1041,10 +1054,21 @@ class CheckoutController extends MyAppController{
 						$usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)),2);
 					}
 					
+					$shippingTotal = 0;
+					foreach($sellerPrice as $sellerId => $sellerData){
+						if($sellerId != $cartProduct['selprod_user_id']){
+							continue;
+						}
+						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerData['totalPrice']){
+							continue;
+						}
+						$shippingTotal += $cartProduct['shipping_cost'];
+					}
+					
 					//CommonHelper::printArray($cartProduct); die();
 					$orderData['prodCharges'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
 						OrderProduct::CHARGE_TYPE_SHIPPING => array(
-							'amount' => $cartProduct['shipping_cost']
+							'amount' => $shippingTotal
 						),
 						OrderProduct::CHARGE_TYPE_TAX =>array(
 							'amount' => $cartProduct['tax']
@@ -1060,8 +1084,8 @@ class CheckoutController extends MyAppController{
 						 OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT => array(
 							'amount'	=>	-$cartProduct['volume_discount_total']
 						), 
-					);
 							
+					);
 			}
 		}
 		
@@ -1579,7 +1603,6 @@ class CheckoutController extends MyAppController{
 	
 	public function getFinancialSummary(){
 		$cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-		//CommonHelper::printArray($cartSummary); die();
 		$products = $this->cartObj->getProducts($this->siteLangId);
 		$this->set('products', $products );
 		$this->set('cartSummary', $cartSummary );

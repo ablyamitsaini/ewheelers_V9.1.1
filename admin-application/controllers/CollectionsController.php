@@ -542,10 +542,7 @@ class CollectionsController extends AdminBaseController {
 		$db = FatApp::getDb();
 		$srch = new ProductSearch($this->adminLangId);
 		$srch->joinSellerProducts();
-		if (!empty($post['keyword'])) {
-			$srch->addCondition('selprod_title', 'LIKE', '%' . $post['keyword'] . '%');
-		}
-		
+
 		// $srch = SellerProduct::getSearchObject($this->adminLangId);		
 		$post = FatApp::getPostedData();
 		$srch->addCondition('selprod_id', '>',0);

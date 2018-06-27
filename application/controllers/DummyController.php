@@ -987,4 +987,28 @@ var_dump($logArr);
 		$this->set('products', $products);
 		$this->_template->render(false, false, '_partial/products-in-cart-email.php');
 	}
+	
+	public static function orderProduct($orderId='O1530082003', $isRefunded = true, $isCancelled = true, $op_id='406'){
+		
+		/* $op = new Orders();
+		$childOrderInfo = $op->getOrderProductsByOpId($op_id,1);
+		CommonHelper::printArray($childOrderInfo); */
+		$opSrch = OrderProduct::getSearchObject();
+		$opSrch->doNotCalculateRecords();
+		$opSrch->doNotLimitRecords();
+		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
+		$opSrch->addCondition('op_order_id','=',$orderId);
+		if($isRefunded){
+			$opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty','=',0);
+		}
+		if($isCancelled){
+			$opSrch->joinTable(OrderCancelRequest::DB_TBL,'LEFT OUTER JOIN','ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id','ocr');
+			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status','=',0);
+			$cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);
+		}
+		echo $opSrch->getQuery().'<br/>';
+		$rs = $opSrch->getResultSet();
+		$row = FatApp::getDb()->fetchAll($rs);
+		CommonHelper::printArray($row); die;
+	}
 }
