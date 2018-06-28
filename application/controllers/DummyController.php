@@ -56,7 +56,6 @@ class DummyController extends MyAppController {
 	function abcd(){
 		echo urldecode('https://www.flipkart.com/search?p%5B%5D=facets.brand%255B%255D%3DSamsung&sid=tyy%2F4io&otracker=CLP_filters&p%5B%5D=facets.brand%255B%255D%3DMi&p%5B%5D=facets.ram%255B%255D%3D1%2BGB&p%5B%5D=facets.ram%255B%255D%3D2%2BGB');
 		
-		url exit;
 		/* Notifications::sendPushNotification('AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR','f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl',array('title' =>'hi' , 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1')); exit; */
 		
 		$uObj = new User(119);
@@ -986,7 +985,7 @@ var_dump($logArr);
 		$this->_template->render(false, false, '_partial/products-in-cart-email.php');
 	}
 	
-	public static function orderProduct($orderId='O1530082003', $isRefunded = true, $isCancelled = true, $op_id='406'){
+	public static function orderProduct($orderId='O1530169223', $opId='428', $isRefunded = true, $isCancelled = true){
 		
 		/* $op = new Orders();
 		$childOrderInfo = $op->getOrderProductsByOpId($op_id,1);
@@ -996,15 +995,18 @@ var_dump($logArr);
 		$opSrch->doNotLimitRecords();
 		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
 		$opSrch->addCondition('op_order_id','=',$orderId);
+		if($opId){
+			$opSrch->addCondition('op_id','!=',$opId);
+		}
 		if($isRefunded){
 			$opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty','=',0);
 		}
 		if($isCancelled){
 			$opSrch->joinTable(OrderCancelRequest::DB_TBL,'LEFT OUTER JOIN','ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id','ocr');
-			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status','=',0);
+			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=',1);
 			$cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);
 		}
-		echo $opSrch->getQuery().'<br/>';
+		echo $opSrch->getQuery(); 	
 		$rs = $opSrch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
 		CommonHelper::printArray($row); die;

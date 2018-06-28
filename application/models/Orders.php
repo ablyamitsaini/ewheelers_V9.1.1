@@ -1300,29 +1300,9 @@ class Orders extends MyAppModel{
 				/* $comments = sprintf(Labels::getLabel('LBL_Cancel_Request_Approved',$langId),$formattedRequestValue); */
 				$txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]); 
 				
-				
-				/* Based on free ship functionality [ */
-				if(0 < $childOrderInfo["op_free_ship_upto"]){
-					$sellerPrice = 0;
-					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
-					foreach($rows as $row){
-						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
-							continue;
-						}
-						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
-					}
-					
-					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
-					
-					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
-						$txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges'];
-					}
-				}
-				/* ] */
-				
-				
 				/*Refund to Buyer[*/
-				if ( $txnAmount > 0 ){		
+				if ( $txnAmount > 0 ){
+					
 					
 					$txnDataArr = array(
 						'utxn_user_id'	=>	$childOrderInfo['order_user_id'],
@@ -1339,6 +1319,40 @@ class Orders extends MyAppModel{
 					}
 				}
 				/*]*/
+				
+				/* Deduct Shipping Charges [ */
+				if(0 < $childOrderInfo["op_free_ship_upto"]){
+					$sellerPrice = 0;
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					foreach($rows as $row){
+						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
+							continue;
+						}
+						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+					}
+					
+					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
+						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
+						
+						if(0 < $actualShipCharges){
+							$comments = sprintf(Labels::getLabel('LBL_Deducted_Shipping_Charges',$langId),$formattedRequestValue);
+							$txnDataArr = array(
+								'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
+								'utxn_comments'	=> $comments,						
+								'utxn_status'	=> Transactions::STATUS_COMPLETED,
+								'utxn_debit'	=> $actualShipCharges,
+								'utxn_op_id'	=> $childOrderInfo['op_id'],
+								'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+							);
+							$transObj = new Transactions();
+							if($txnId = $transObj->addTransaction($txnDataArr)){
+								$emailNotificationObj->sendTxnNotification($txnId,$langId);
+							}
+						}
+					}
+				}
+				/* ] */
 			}
 		}
 		/* ] */
@@ -1350,6 +1364,7 @@ class Orders extends MyAppModel{
 			$comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved',$langId),$formattedRequestValue);
 			$txnAmount = $childOrderInfo['op_refund_amount'];
 			
+			/*Refund to Buyer[*/
 			if ( $txnAmount > 0 ){
 				$txnArray["utxn_user_id"] = $childOrderInfo['order_user_id'];
 				$txnArray["utxn_credit"] = $txnAmount;
@@ -1361,6 +1376,42 @@ class Orders extends MyAppModel{
 				if($txnId = $transObj->addTransaction($txnArray)){
 					$emailNotificationObj->sendTxnNotification($txnId,$langId);
 				}
+			/* ] */	
+			
+			/* Deduct Shipping Charges [ */
+				if(0 < $childOrderInfo["op_free_ship_upto"]){
+					$sellerPrice = 0;
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					foreach($rows as $row){
+						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
+							continue;
+						}
+						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+					}
+					
+					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
+						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
+						
+						if(0 < $actualShipCharges){
+							$comments = sprintf(Labels::getLabel('LBL_Deducted_Shipping_Charges',$langId),$formattedRequestValue);
+							$txnDataArr = array(
+								'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
+								'utxn_comments'	=> $comments,						
+								'utxn_status'	=> Transactions::STATUS_COMPLETED,
+								'utxn_debit'	=> $actualShipCharges,
+								'utxn_op_id'	=> $childOrderInfo['op_id'],
+								'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+							);
+							$transObj = new Transactions();
+							if($txnId = $transObj->addTransaction($txnDataArr)){
+								$emailNotificationObj->sendTxnNotification($txnId,$langId);
+							}
+						}
+					}
+				}
+				/* ] */
+
 			}
 		}
 	}
