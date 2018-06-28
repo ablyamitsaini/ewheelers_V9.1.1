@@ -5,6 +5,7 @@ class Stats extends MyAppModel{
 	public static function getSalesStatsObj($startDate = false,$endDate = false,$alias = 'stats'){
 		$srch = new SearchBase( Orders::DB_TBL_ORDER_PRODUCTS, $alias );
 		$srch->joinTable(Orders::DB_TBL,'LEFT OUTER JOIN',$alias.'.op_order_id = '.$alias.'temp.order_id',$alias.'temp');
+		$srch->joinTable(PaymentMethods::DB_TBL, 'LEFT OUTER JOIN', $alias.'temp.order_pmethod_id = pm.pmethod_id', 'pm' );	
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		
@@ -20,7 +21,10 @@ class Stats extends MyAppModel{
 		}else{
 			$srch->addCondition($alias.'.op_status_id', '=', 0);
 		}
-		$srch->addCondition($alias.'temp.order_is_paid', '=', Orders::ORDER_IS_PAID);	
+	
+		$cnd = $srch->addCondition($alias.'temp.order_is_paid', '=', Orders::ORDER_IS_PAID);	
+		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
+		
 		return 	$srch;
 	}
 	
