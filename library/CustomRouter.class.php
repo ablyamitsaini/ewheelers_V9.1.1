@@ -1,7 +1,8 @@
 <?php
 class CustomRouter{	
 	static function setRoute(&$controller, &$action, &$queryString){		
-		$userType = null;		
+		$userType = null;	
+		
 		if ('mobile-app-api' == $controller) {			
 			define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', 'v1');
@@ -28,25 +29,7 @@ class CustomRouter{
             
 			if(array_key_exists('HTTP_X_USER_TYPE',$_SERVER)){
 				$userType = intval($_SERVER['HTTP_X_USER_TYPE']);
-			}
-			
-			/* if(array_key_exists('HTTP_X_TOKEN',$_SERVER)){
-				$token = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:null;
-			} */
-			
-            /* if (isset($_SERVER['HTTP_X_USER_TYPE'])) {
-                $userType = intval($_SERVER['HTTP_X_USER_TYPE']);
-            }
-            if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-                $token = $_SERVER['HTTP_X_TOKEN'];
-            } */
-
-            /* if ($token) { 
-                if (!UserAuthentication::doAppLogin($token)) {                    
-					$arr = array('status'=>-1,'msg'=>"Invalid Token");	
-					die(json_encode($arr));	
-                }
-            } */	
+			}			
 		}else {
             define('MOBILE_APP_API_CALL', false);
             define('MOBILE_APP_API_VERSION', '');

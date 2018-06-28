@@ -1315,7 +1315,7 @@ class Orders extends MyAppModel{
 					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
 					
 					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
-						$txnAmount = $txnAmount - $row['op_actual_shipping_charges'];
+						$txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges'];
 					}
 				}
 				/* ] */
