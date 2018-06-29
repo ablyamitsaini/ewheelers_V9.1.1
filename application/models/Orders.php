@@ -1322,7 +1322,7 @@ class Orders extends MyAppModel{
 				/* Deduct Shipping Charges [ */
 				if(0 < $childOrderInfo["op_free_ship_upto"]){
 					$sellerPrice = 0;
-					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
@@ -1380,7 +1380,7 @@ class Orders extends MyAppModel{
 			/* Deduct Shipping Charges [ */
 				if(0 < $childOrderInfo["op_free_ship_upto"]){
 					$sellerPrice = 0;
-					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
