@@ -64,13 +64,13 @@ class OrderProduct extends MyAppModel{
 		$opSrch->doNotLimitRecords();
 		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
 		$opSrch->addCondition('op_order_id','=',$orderId);
-		if($opId){
+		if( 0 < $opId ){
 			$opSrch->addCondition('op_id','!=',$opId);
 		}
-		if($isRefunded){
+		if( $isRefunded ){
 			$opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty','=',0);
 		}
-		if($isCancelled){
+		if( $isCancelled ){
 			$opSrch->joinTable(OrderCancelRequest::DB_TBL,'LEFT OUTER JOIN','ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id','ocr');
 			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=',1);
 			$cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);

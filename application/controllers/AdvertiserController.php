@@ -438,7 +438,7 @@ class AdvertiserController extends LoggedUserController {
 		}
 		
 		
-		if($promotionDetails['promotion_approved']==applicationConstants::YES){
+		/* if($promotionDetails['promotion_approved']==applicationConstants::YES){ */
 			$dataToUpdate = array(
 								'promotion_approved'=>applicationConstants::NO
 							);
@@ -449,11 +449,10 @@ class AdvertiserController extends LoggedUserController {
 				$db->rollbackTransaction();		
 				Message::addErrorMessage($record->getError());
 				FatUtility::dieJsonError( Message::getHtml() );
-			}	
+			}
 			
 			EmailHandler::SendPromotionApprovalRequestAdmin( $this->siteLangId, $userId ,$promotionDetails);
-
-			//send notification to admin			
+		
 			$notificationData = array(
 					'notification_record_type' => Notification::TYPE_PROMOTION,
 					'notification_record_id' => $promotionId,
@@ -465,9 +464,8 @@ class AdvertiserController extends LoggedUserController {
 			if(!Notification::saveNotifications($notificationData)){
 				Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT",$this->siteLangId));	
 				FatUtility::dieJsonError( Message::getHtml() );
-			}			
-		
-		}
+			}
+		/* } */
 		$db->commitTransaction();
 		
 		Message::addMessage($_FILES['file']['name']." ". Labels::getLabel('MSG_File_uploaded_successfully_and_send_it_for_admin_approval',$this->siteLangId));

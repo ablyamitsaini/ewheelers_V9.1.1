@@ -1019,7 +1019,6 @@ class CheckoutController extends MyAppController{
 						'op_selprod_max_download_times' => ($productInfo['selprod_max_download_times']!='-1')?$cartProduct['quantity']*$productInfo['selprod_max_download_times']:$productInfo['selprod_max_download_times'],
 						'op_selprod_download_validity_in_days' => $productInfo['selprod_download_validity_in_days'],
 						'op_sduration_id'			=>	$cartProduct['sduration_id'],
-						//'op_shipping_cost'	=>	$cartProduct['shipping_cost'],
 						//'op_discount_total'	=>	0, //todo:: after coupon discount integration
 						//'op_tax_total'	=>	$cartProduct['tax'], 
 						'op_commission_charged' => $cartProduct['commission'],
@@ -1046,14 +1045,6 @@ class CheckoutController extends MyAppController{
 						}
 					}			
 					
-					$rewardPoints = 0;
-					$rewardPoints = $orderData['order_reward_point_value'];
-					$usedRewardPoint = 0;
-					if($rewardPoints > 0){
-						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $cartProduct['shipping_cost'] +  $cartProduct['tax']  - $discount ;
-						$usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)),2);
-					}
-					
 					$shippingTotal = 0;
 					foreach($sellerPrice as $sellerId => $sellerData){
 						if($sellerId != $cartProduct['selprod_user_id']){
@@ -1063,6 +1054,14 @@ class CheckoutController extends MyAppController{
 							continue;
 						}
 						$shippingTotal += $cartProduct['shipping_cost'];
+					}
+					
+					$rewardPoints = 0;
+					$rewardPoints = $orderData['order_reward_point_value'];
+					$usedRewardPoint = 0;
+					if($rewardPoints > 0){
+						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingTotal +  $cartProduct['tax']  - $discount ;
+						$usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)),2);
 					}
 					
 					//CommonHelper::printArray($cartProduct); die();

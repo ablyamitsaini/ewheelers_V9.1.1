@@ -11,7 +11,7 @@ $abusive_lang_id_fld->addFieldTagAttribute( 'onChange', 'changeFormLayOut(this);
 ?>
 <section class="section">
 	<div class="sectionhead">
-		<h4><?php echo Labels::getLabel('LBL_User_Setup',$adminLangId); ?></h4>
+		<h4><?php echo Labels::getLabel('LBL_Abusive_Keyword_Setup',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">
 		<div class="border-box border-box--space">
