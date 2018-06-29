@@ -812,7 +812,13 @@ class MobileAppApiController extends MyAppController {
 		$collection_product_id = FatApp::getPostedData('collection_product_id', FatUtility::VAR_INT, 0);						
 		$criteria = array('collection_product_id'=>$collection_product_id);
 		
-		$srch->setDefinedCriteria(true,0,$criteria);
+		$shop_id = FatApp::getPostedData('shop_id', null, '');
+		if($shop_id > 0){
+			$srch->setDefinedCriteria(false,0,$criteria);
+		}else{
+			$srch->setDefinedCriteria(true,0,$criteria);
+		}
+		
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription();
 		$srch->addSubscriptionValidCondition();
@@ -861,7 +867,7 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCategoryCondition($category_id);
 		}
 
-		$shop_id = FatApp::getPostedData('shop_id', null, '');
+		
 		if( $shop_id ) {
 			$shop_id = FatUtility::int($shop_id);
 			$srch->addShopIdCondition($shop_id);
@@ -3392,12 +3398,7 @@ class MobileAppApiController extends MyAppController {
 		$shopRs = $srch->getResultSet();
 		$allShops = $db->fetchAll($shopRs);
 		
-		/*$allShopArr = array();
-		foreach($allShops as $skey=>$sval){
-			
-		}*/
 		
-
 		$totalProdCountToDisplay = 4;
 
 		$productCustomSrchObj = new ProductSearch( $this->siteLangId );
@@ -3437,7 +3438,8 @@ class MobileAppApiController extends MyAppController {
 			//$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
 			//'IFNULL(product_name, product_identifier) as product_name', 
 			//'IF(selprod_stock > 0, 1, 0) AS in_stock') );
-			$prodRs = $prodSrch->getResultSet();
+			
+			$prodRs = $prodSrch->getResultSet();			
 			$shopsArr[$cnt] = $val;
 			$shopProducts = $db->fetchAll( $prodRs);
 			foreach($shopProducts as &$shopProduct){

@@ -244,7 +244,7 @@ class BlogController extends MyAppController{
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
 		$this->set('postedData', $post);
-		$json['html'] = $this->_template->render( false,false,'blog/search-comments.php', true, false);
+		$json['html'] = $this->_template->render( false,false,'blog/search-comments.php', true, true);
 		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'blog/load-more-comments-btn.php', true, false);
 		FatUtility::dieJsonSuccess($json);
 	}
