@@ -55,6 +55,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 			break;
 			case 'admin_active':
+			if($row['admin_id'] > 1){
 					$active = "active";
 					if(!$row['admin_active']) {
 						$active = '';
@@ -65,6 +66,7 @@ foreach ($arr_listing as $sn=>$row){
 					  <span class="switch-handles"></span>
 					</label>';
 					$td->appendElement('plaintext', array(), $str,true);
+			}
 			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key],true);

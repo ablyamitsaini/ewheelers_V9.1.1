@@ -19,6 +19,5 @@ $emailFld->addFieldTagAttribute('id','admin_email');
 		<div class="border-box border-box--space">
 			<?php echo $frm->getFormHtml(); ?>
 		</div>
-	</div>						
-						
+	</div>					
 </section>

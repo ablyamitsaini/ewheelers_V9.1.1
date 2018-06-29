@@ -345,7 +345,7 @@ class BlogController extends MyAppController{
 		$contributionId = $contribution->getMainTableRecordId();
 
 		$notificationData = array(
-				'notification_record_type' => Notification::TYPE_PROMOTION,
+				'notification_record_type' => Notification::TYPE_BLOG,
 				'notification_record_id' => $contributionId,
 				'notification_user_id' => UserAuthentication::getLoggedUserId(true),
 				'notification_label_key' => Notification::BLOG_CONTRIBUTION_NOTIFICATION,
