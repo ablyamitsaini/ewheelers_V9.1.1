@@ -58,15 +58,13 @@ class OrderProduct extends MyAppModel{
 		return $row = FatApp::getDb()->fetchAll($rs,'op_id');
 	}
 	
-	public static function getOpArrByOrderId($orderId, $opId = 0, $isRefunded = true, $isCancelled = true){
+	public static function getOpArrByOrderId($orderId, $isRefunded = true, $isCancelled = true){
 		$opSrch = OrderProduct::getSearchObject();
 		$opSrch->doNotCalculateRecords();
 		$opSrch->doNotLimitRecords();
 		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
 		$opSrch->addCondition('op_order_id','=',$orderId);
-		if( 0 < $opId ){
-			$opSrch->addCondition('op_id','!=',$opId);
-		}
+
 		if( $isRefunded ){
 			$opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty','=',0);
 		}

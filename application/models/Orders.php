@@ -1329,8 +1329,8 @@ class Orders extends MyAppModel{
 						}
 						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
 					}
-					
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
 						
@@ -1387,8 +1387,8 @@ class Orders extends MyAppModel{
 						}
 						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
 					}
-					
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
 						
