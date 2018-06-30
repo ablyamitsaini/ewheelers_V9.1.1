@@ -1327,9 +1327,16 @@ class Orders extends MyAppModel{
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
 						}
-						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+						if( $row['op_refund_qty'] == $row['op_qty'] ){
+							continue;
+						}
+						$qty = $row['op_qty'];
+						if(0 < $row['op_refund_qty']){
+							$qty = $row['op_qty'] - $row['op_refund_qty'];
+						}
+						$sellerPrice+= $row['op_unit_price'] * $qty;
 					}
-					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
 					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
@@ -1385,8 +1392,16 @@ class Orders extends MyAppModel{
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
 						}
-						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+						if( $row['op_refund_qty'] == $row['op_qty'] ){
+							continue;
+						}
+						$qty = $row['op_qty'];
+						if(0 < $row['op_refund_qty'] && $row['op_id'] != $childOrderInfo["op_id"]){
+							$qty = $row['op_qty'] - $row['op_refund_qty'];
+						}
+						$sellerPrice+= $row['op_unit_price'] * $qty;
 					}
+					
 					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
 					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
