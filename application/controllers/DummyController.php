@@ -1011,4 +1011,54 @@ var_dump($logArr);
 		$row = FatApp::getDb()->fetchAll($rs);
 		CommonHelper::printArray($row); die;
 	}
+	
+	function textChange(){
+
+		$conn = new mysqli(CONF_DB_SERVER,CONF_DB_USER, CONF_DB_PASS, CONF_DB_NAME);
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		} 
+		$langId = 2;
+		/* $tablename = "tbl_language_labels"; 
+		$sql = 'SELECT * FROM '.$tablename .' where label_lang_id = '.$langId ;
+		$result = $conn->query($sql);
+		
+		$db = FatApp::getDb();
+		if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {			
+			if($db->updateFromArray($tablename, array('label_key' => $row['label_key'],'label_lang_id'=>$row['label_lang_id'],'label_caption'=>$row['label_caption']), array('smt' => 'label_id = ?', 'vals' => array($row['label_id'])))){
+			echo $row['label_id']."<br>";
+			}   
+			}
+		} */
+		
+		/* $tablename = "tbl_navigations_lang"; 
+		$sql = 'SELECT * FROM '.$tablename .' where navlang_lang_id = '.$langId ;
+		$result = $conn->query($sql);
+		
+		$db = FatApp::getDb();
+		if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {			
+			if($db->updateFromArray($tablename, array('nav_name' => $row['nav_name']), array('smt' => 'navlang_nav_id = ? and navlang_lang_id = ?', 'vals' => array($row['navlang_nav_id'],$row['navlang_lang_id'])))){
+			echo $row['navlang_nav_id']."<br>";
+			}   
+			}
+		}  */
+		
+		$tablename = "tbl_navigation_links_lang"; 
+		$sql = 'SELECT * FROM '.$tablename .' where nlinklang_lang_id = '.$langId ;
+		$result = $conn->query($sql);
+		
+		$db = FatApp::getDb();
+		if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {			
+			if($db->updateFromArray($tablename, array('nlink_caption' => $row['nlink_caption']), array('smt' => 'nlinklang_nlink_id = ? and nlinklang_lang_id = ?', 'vals' => array($row['nlinklang_nlink_id'],$row['nlinklang_lang_id'])))){
+			echo $row['nlinklang_nlink_id']."<br>";
+			}   
+			}
+		} 
+		
+		die(done);
+	}
 }

@@ -1323,15 +1323,22 @@ class Orders extends MyAppModel{
 				/* Deduct Shipping Charges [ */
 				if(0 < $childOrderInfo["op_free_ship_upto"]){
 					$sellerPrice = 0;
-					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
 						}
-						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+						if( $row['op_refund_qty'] == $row['op_qty'] ){
+							continue;
+						}
+						$qty = $row['op_qty'];
+						if(0 < $row['op_refund_qty']){
+							$qty = $row['op_qty'] - $row['op_refund_qty'];
+						}
+						$sellerPrice+= $row['op_unit_price'] * $qty;
 					}
-					
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
 						
@@ -1381,15 +1388,23 @@ class Orders extends MyAppModel{
 			/* Deduct Shipping Charges [ */
 				if(0 < $childOrderInfo["op_free_ship_upto"]){
 					$sellerPrice = 0;
-					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"], $childOrderInfo["op_id"]);
+					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
 							continue;
 						}
-						$sellerPrice+= $row['op_unit_price'] * $row['op_qty'];
+						if( $row['op_refund_qty'] == $row['op_qty'] ){
+							continue;
+						}
+						$qty = $row['op_qty'];
+						if(0 < $row['op_refund_qty'] && $row['op_id'] != $childOrderInfo["op_id"]){
+							$qty = $row['op_qty'] - $row['op_refund_qty'];
+						}
+						$sellerPrice+= $row['op_unit_price'] * $qty;
 					}
 					
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPrice ){
+					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
 						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
 						

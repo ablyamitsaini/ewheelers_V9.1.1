@@ -58,25 +58,19 @@ class OrderProduct extends MyAppModel{
 		return $row = FatApp::getDb()->fetchAll($rs,'op_id');
 	}
 	
-	public static function getOpArrByOrderId($orderId, $opId = 0, $isRefunded = true, $isCancelled = true){
+	public static function getOpArrByOrderId($orderId, $checkNotCancelled = true){
 		$opSrch = OrderProduct::getSearchObject();
 		$opSrch->doNotCalculateRecords();
 		$opSrch->doNotLimitRecords();
-		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
+		$opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges','op_refund_qty'));
 		$opSrch->addCondition('op_order_id','=',$orderId);
-		if( 0 < $opId ){
-			$opSrch->addCondition('op_id','!=',$opId);
-		}
-		if( $isRefunded ){
-			$opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty','=',0);
-		}
-		if( $isCancelled ){
+
+		if( $checkNotCancelled ){
 			$opSrch->joinTable(OrderCancelRequest::DB_TBL,'LEFT OUTER JOIN','ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id','ocr');
-			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=',1);
+			$cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=',OrderCancelRequest::CANCELLATION_REQUEST_STATUS_APPROVED);
 			$cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);
 		}
 		$rs = $opSrch->getResultSet();
-		return $row = FatApp::getDb()->fetchAll($rs);
-		/* CommonHelper::printArray($row); die; */
+		return $rows = FatApp::getDb()->fetchAll($rs);
 	}
 }
