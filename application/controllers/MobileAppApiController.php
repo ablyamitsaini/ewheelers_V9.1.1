@@ -1542,6 +1542,7 @@ class MobileAppApiController extends MyAppController {
 		$bannerLocation = FatApp::getDb()->fetchAll( $rs ,'blocation_key');
 
 		$banners = $bannerLocation;
+		$product_bannerListing = array();
 		foreach( $bannerLocation as $val ){
 			$srch = new BannerSearch($this->siteLangId,true);
 			$srch->joinPromotions($this->siteLangId, true,true,true);
@@ -1571,9 +1572,7 @@ class MobileAppApiController extends MyAppController {
 			$srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id' ,'userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration'));
 			$rs = $srch->getResultSet();
 			$bannerListing = FatApp::getDb()->fetchAll( $rs,'banner_id');
-			
-			
-			$product_bannerListing = array();
+								
 			foreach($bannerListing as $bkey=>$bval){
 				$product_bannerListing[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Banner','HomePageAfterFirstLayout',array($bval['banner_id'], $this->siteLangId))));
 			}
