@@ -80,6 +80,8 @@ class UserAuthentication extends FatModel {
 		return ($row['total'] > 3);
 	}
 	
+	
+	
 	public static function doAppLogin($token,$userType = 0) {
 		$authRow = self::checkLoginTokenInDB($token);
 		

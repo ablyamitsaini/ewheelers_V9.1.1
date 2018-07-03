@@ -170,3 +170,9 @@
 	ALTER TABLE `tbl_shops` ADD `shop_free_ship_upto` INT NOT NULL AFTER `shop_updated_on`;
 	
 	ALTER TABLE `tbl_order_products` ADD `op_free_ship_upto` INT NOT NULL AFTER `op_selprod_download_validity_in_days`, ADD `op_actual_shipping_charges` FLOAT NOT NULL AFTER `op_free_ship_upto`;
+
+--------------3 Jul 2018-----------
+CREATE TABLE `tbl_unique_check_failed_attempt` (
+  `ucfattempt_ip` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `ucfattempt_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
