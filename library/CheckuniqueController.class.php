@@ -1,5 +1,6 @@
 <?php
-class CheckuniqueController {	
+class CheckuniqueController {
+	const DB_TBL = 'tbl_unique_check_failed_attempt';	
 	function check() {
 		$db = FatApp::getDb();
 		
@@ -90,7 +91,7 @@ class CheckuniqueController {
 	private function isBruteForceAttemptToCheckUnique($ip) {
 		$db = FatApp::getDb();
 		
-		$srch = new SearchBase('tbl_unique_check_failed_attempt');
+		$srch = new SearchBase(self::DB_TBL);
 		$srch->addCondition('ucfattempt_ip', '=', $ip);
 		$srch->addCondition('ucfattempt_time', '>=', date('Y-m-d H:i:s', strtotime("-1 minutes")));
 		$srch->addFld('COUNT(*) AS total');		
@@ -105,17 +106,17 @@ class CheckuniqueController {
 	private function logFailedAttempt($ip , $removeOldEntries = false) {
 		$db = FatApp::getDb();
 		
-		$db->deleteRecords ( 'tbl_unique_check_failed_attempt', array (
+		$db->deleteRecords ( self::DB_TBL, array (
 				'smt' => 'ucfattempt_time < ?',
 				'vals' => array (date ( 'Y-m-d H:i:s', strtotime ( "-7 Day" ) ) ) ) );
 		
 		if($removeOldEntries){
-			$db->deleteRecords ( 'tbl_unique_check_failed_attempt', array (
+			$db->deleteRecords ( self::DB_TBL, array (
 				'smt' => 'ucfattempt_ip = ? and ucfattempt_time < ? ',
 				'vals' => array ($ip, date ( 'Y-m-d H:i:s', strtotime ( "-2 Min" ) ) ) ) );
 		}
 		
-		$db->insertFromArray('tbl_unique_check_failed_attempt', array(				
+		$db->insertFromArray(self::DB_TBL, array(				
 				'ucfattempt_ip'=>$ip,
 				'ucfattempt_time'=>date('Y-m-d H:i:s')
 		));
