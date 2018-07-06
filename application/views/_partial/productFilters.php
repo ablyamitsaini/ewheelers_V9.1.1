@@ -250,13 +250,15 @@ array_walk($catCodeArr,function(&$n) {
 	
 	<!--Condition Filters[ -->
 	
-	<?php if( isset($conditionsArr) && $conditionsArr ){ ?>
+	<?php if( isset($conditionsArr) && $conditionsArr ){ 
+	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
+	?>
 	<div class="widgets">
 		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
 		<div class="selected-filters toggle-target">
 			<ul class="listing--vertical listing--vertical-chcek">
 			<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
-			<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox"><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
+			<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox" <?php if(in_array($condition['selprod_condition'],$conditionsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
 			<?php } ?>
 			</ul>
 		</div>
@@ -266,11 +268,12 @@ array_walk($catCodeArr,function(&$n) {
 	<!-- ] -->
 	
 	<!--Availability Filters[ -->
+	<?php $availability = isset($availability)?$availability:0;?>
 	<div class="widgets ">
 		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
 		<div class="selected-filters toggle-target">
 			<ul class="listing--vertical listing--vertical-chcek">
-			<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox"><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
+			<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
 			</ul>
 		</div>
 	</div>

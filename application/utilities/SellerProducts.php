@@ -334,7 +334,12 @@ trait SellerProducts{
 		}
 		
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
-		$urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
+		
+		$sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlMoreSellers($post['selprod_url_keyword']);
+		
+		/* $urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
 		$urlRewriteData['urlrewrite_original'] = trim(Product::PRODUCT_VIEW_ORGINAL_URL.$selprod_id, '/\\');
 		
 		$productCustomUrl = CommonHelper::seoUrl($post['selprod_url_keyword']);
@@ -352,7 +357,7 @@ trait SellerProducts{
 			FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
 				
 			
-		}
+		} */
 		/* Add Meta Tags  [  ---- */
 		$tabsArr = MetaTag::getTabsArr();
 		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
@@ -1870,7 +1875,10 @@ trait SellerProducts{
 		}
 		
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
-		$urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
+		$sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlMoreSellers($post['selprod_url_keyword']);
+		/* $urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
 		$urlRewriteData['urlrewrite_original'] = trim(Product::PRODUCT_VIEW_ORGINAL_URL.$selprod_id, '/\\');
 		
 		$productCustomUrl = CommonHelper::seoUrl($post['selprod_url_keyword']);
@@ -1887,7 +1895,7 @@ trait SellerProducts{
 			'urlrewrite_custom'=>$customUrl
 			);	
 			FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-		}	
+		} */	
 		
 		/* save options data, if any[ */
 		if( $selprod_id ){

@@ -24,7 +24,7 @@ class MyAppController extends FatController {
 			'showSignUpLink' => true);
 		$this->set('loginData',$loginData);
 
-		$controllerName = get_class($this);
+		$controllerName = get_class($this);		
 		$arr = explode('-', FatUtility::camel2dashed($controllerName));
 		array_pop($arr);
 		$urlController = implode('-', $arr);
@@ -99,6 +99,7 @@ class MyAppController extends FatController {
 			'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list',$this->siteLangId),
 			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
 			'siteCurrencyId' =>$this->siteCurrencyId,
+			'controllerName' =>$controllerName,			
 		);
 
 		$languages = Language::getAllNames(false);
@@ -315,8 +316,8 @@ class MyAppController extends FatController {
 		$pageSizeArr[50] = 50 . ' '.$itemsTxt;
 		$frm = new Form('frmProductSearch');
 		$frm->addTextBox('','keyword');
-		$frm->addSelectBox( '', 'sortBy', $sortByArr, 'price_asc', array(), '');
-		$frm->addSelectBox( '', 'pageSize', $pageSizeArr, $pageSize, array(), '' );
+		$frm->addSelectBox( '', 'sortBy', $sortByArr, 'price_asc', array('id'=>'sortBy'), '');
+		$frm->addSelectBox( '', 'pageSize', $pageSizeArr, $pageSize, array('id'=>'pageSize'), '' );
 		$frm->addHiddenField('', 'page', 1);
 		$frm->addHiddenField('', 'sortOrder', 'asc');
 		$frm->addHiddenField('', 'category',0);

@@ -508,8 +508,7 @@ class SellerProduct extends MyAppModel{
 		return FatApp::getDb()->fetchAllAssoc($srch->getResultSet());
 	}
 	
-	public static function getProductDisplayTitle($selprod_id, $langId)
-	{
+	public static function getProductDisplayTitle($selprod_id, $langId){
 		$prodSrch = new ProductSearch( $langId, null, null, true, false );
 		$prodSrch->joinSellerProducts(0, '', array(), false);
 		$prodSrch->addCondition('selprod_id', '=', $selprod_id );
@@ -532,4 +531,49 @@ class SellerProduct extends MyAppModel{
 		}
 		return $variantStr;
 	}
+	
+	private function rewriteUrl($keyword ,$type = 'product'){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		switch(strtolower($type)){
+			case 'reviews':
+				$originalUrl = Product::PRODUCT_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-reviews-'.$this->mainTableRecordId;	
+			break;
+			case 'moresellers':
+				$originalUrl = Product::PRODUCT_MORE_SELLERS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-sellers-'.$this->mainTableRecordId;	
+			break;
+			default:
+				$originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+			break;
+		}
+			
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}	
+	
+	public function rewriteUrlProduct($keyword){
+		return $this->rewriteUrl($keyword,'product');
+	}
+	
+	public function rewriteUrlReviews($keyword){
+		return $this->rewriteUrl($keyword,'reviews');
+	}
+	
+	public function rewriteUrlMoreSellers($keyword){
+		return $this->rewriteUrl($keyword,'moresellers');
+	}
+	
 }

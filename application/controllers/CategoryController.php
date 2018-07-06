@@ -18,6 +18,10 @@ class CategoryController extends MyAppController {
 		$this->includeProductPageJsCss();
 		$frm = $this->getProductSearchForm();
 
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
+		//var_dump($headerFormParamsAssocArr); exit;
+		
 		$data['category'] = $category_id;
 		$data['join_price'] = 1;
 		$frm->fill( $data );
@@ -180,6 +184,7 @@ class CategoryController extends MyAppController {
 		/* Get category Polls [ */
 		$pollQuest = Polling::getCategoryPoll($category_id , $this->siteLangId);
 		$this->set('pollQuest', $pollQuest);
+		$this->set('category_id', $category_id);
 		/* ] */
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css')); 

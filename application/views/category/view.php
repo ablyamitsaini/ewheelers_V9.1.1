@@ -78,6 +78,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Category','view',array($category_id)); ?>';
 	searchProducts(document.frmProductSearch);
 });
 </script>

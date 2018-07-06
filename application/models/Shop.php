@@ -197,9 +197,68 @@ class Shop extends MyAppModel {
 
 		if (is_string($attr)) {
 			return $row[$attr];
+		}	
+			
+	}
+	
+	private function rewriteUrl($keyword ,$type = 'shop'){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
 		}
 		
+		switch(strtolower($type)){
+			case 'top-products':
+				$originalUrl = Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-top-products-'.$this->mainTableRecordId;	
+			break;
+			case 'reviews':
+				$originalUrl = Shop::SHOP_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-reviews-'.$this->mainTableRecordId;	
+			break;
+			case 'contact':
+				$originalUrl = Shop::SHOP_SEND_MESSAGE_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-contact-'.$this->mainTableRecordId;	
+			break;
+			case 'policy':
+				$originalUrl = Shop::SHOP_POLICY_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-policy-'.$this->mainTableRecordId;	
+			break;
+			default:
+				$originalUrl = Shop::SHOP_VIEW_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+			break;
+		}
 			
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}
+	
+	public function rewriteUrlShop($keyword){
+		return $this->rewriteUrl($keyword,'shop');
+	}
+	
+	public function rewriteUrlReviews($keyword){
+		return $this->rewriteUrl($keyword,'reviews');
+	}
+	
+	public function rewriteUrlTopProducts($keyword){
+		return $this->rewriteUrl($keyword,'top-products');
+	}
+	
+	public function rewriteUrlContact($keyword){
+		return $this->rewriteUrl($keyword,'contact');
+	}
+	
+	public function rewriteUrlpolicy($keyword){
+		return $this->rewriteUrl($keyword,'policy');
 	}
 	
 	/* public function getShopAttachments(){

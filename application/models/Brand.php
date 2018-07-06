@@ -90,6 +90,26 @@ class Brand extends MyAppModel{
 		return false;
 	}
 	
+	public function rewriteUrl($keyword){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$originalUrl = Brand::REWRITE_URL_PREFIX.$this->mainTableRecordId;
+		$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+			
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}
+	
 	public static function recordBrandWeightage($brandId){
 		/* $brandId =  FatUtility::int($brandId);
 		

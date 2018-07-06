@@ -42,7 +42,7 @@ class CustomRouter{
 			
 			$url = substr($url, strlen(CONF_WEBROOT_URL));
 			$url = rtrim($url, '/');
-						
+			
 			$srch = UrlRewrite::getSearchObject();
 			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $url);
 			$rs = $srch->getResultSet();

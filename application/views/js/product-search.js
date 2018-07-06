@@ -27,7 +27,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,0,0,1);		
+		searchProducts(frm,0,0,1,1);		
 	});
 	
 	$("input[name=category]").change(function(){
@@ -37,7 +37,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm);		
+		searchProducts(frm,0,0,1,1);		
 	});
 	
 	$("input[name=optionvalues]").change(function(){
@@ -47,7 +47,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,0,0,1);		
+		searchProducts(frm,0,0,1,1);		
 	});
 	
 	$("input[name=conditions]").change(function(){
@@ -58,7 +58,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,0,0,1);
+		searchProducts(frm,0,0,1,1);
 	});
 	
 	$("input[name=free_shipping]").change(function(){
@@ -73,7 +73,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
-		searchProducts(frm,0,0,1);
+		searchProducts(frm,0,0,1,1);
 	});
 	
 	$("input[name='priceFilterMinValue']").keyup(function(e){
@@ -113,7 +113,7 @@ $(document).ready(function(){
 		range = $range.data("ionRangeSlider");
 		updateRange(minPrice,maxPrice);
 		range.reset();
-		searchProducts(frm);
+		searchProducts(frm,0,0,1,1);
 	});
 	
 	
@@ -219,7 +219,7 @@ function removeFilter(id,obj){
 
 	/* form submit upon onchange of form elements select box[ */	
 	removeFromSearchQueryString(id);		
-	searchProducts(frm,0,0,1);
+	searchProducts(frm,0,0,1,1);
 }
 
 function clearFilters(id,obj){
@@ -231,18 +231,63 @@ function addToSearchQueryString(id,obj){
 	$filter = $(obj).parent().text();
 	$filterVal = htmlEncode($(obj).parent().text());
 	//searchUrl = searchUrl +'&'+ id + '='+ $filterVal.replace(/ /g,'');
-	searchArr[id] = $filterVal.replace(/ /g,'');			
+	searchArr[id] = $filterVal.replace(/ /g,'');
+	
 }
 
 function removeFromSearchQueryString(key){
 	delete searchArr[key];		
 }
 
-function getSearchQueryUrl(){	
+function getSearchQueryUrl(includeBaseUrl){	
 	url = '';
+	if(typeof includeBaseUrl != 'undefined' || includeBaseUrl != null){
+		url = $currentPageUrl;
+	}
+	
 	for (var key in searchArr) {
-		url = url +'&'+ key + '='+ searchArr[key];
+		url = url +'/'+ key.replace(/_/g,'-') + '-'+ searchArr[key];
 	}	
+	
+	var keyword = $("input[name=keyword]").val();
+	if(keyword !=''){
+		delete searchArr['keyword'];		
+		url = url +'/'+'keyword-'+keyword.replace(/_/g,'-');
+	}
+	
+	var currency = parseInt($("input[name=currency_id]").val());
+	if(currency > 0){
+		delete searchArr['currency'];
+		url = url +'/'+'currency-'+currency;
+	}
+	
+	var featured = parseInt($("input[name=featured]").val());
+	if(featured > 0){
+		url = url +'/'+'featured-'+featured;
+	}
+	
+	var collection_id = parseInt($("input[name=collection_id]").val());
+	if(collection_id > 0){
+		url = url +'/'+'collection-'+collection_id;
+	}
+	
+	var shop_id = parseInt($("input[name=shop_id]").val());
+	if(shop_id > 0){
+		url = url +'/'+'shop-'+shop_id;
+	}
+		
+	var e = document.getElementById("sortBy");
+	var sortBy = e.options[e.selectedIndex].value;
+	if(sortBy){
+		url = url +'/'+'sort-'+sortBy.replace(/_/g,'-');
+	} 
+	
+	/* var e = document.getElementById("pageSize");
+	var pageSize = parseInt(e.options[e.selectedIndex].value);
+	if(pageSize > 0){
+		url = url +'/'+'page-'+pageSize;
+	} */
+	
 	return encodeURI(url);
 }
 
@@ -262,7 +307,7 @@ function addPricefilter(){
 		searchArr['currency'] = langLbl.siteCurrencyId;
 		var frm = document.frmProductSearch;		
 		/* form submit upon onchange of form elements select box[ */
-		 searchProducts(frm,0,0,1); 
+		 searchProducts(frm,0,0,1,1); 
 
 	}
 }
@@ -284,7 +329,7 @@ function removePriceFilter(){
 	delete searchArr['price_min_range'];
 	delete searchArr['price_max_range'];
 	delete searchArr['currency'];
-	searchProducts(frm);
+	searchProducts(frm,0,0,1,1);
 	$('.price').remove();
 }
 	
@@ -296,12 +341,17 @@ function removePriceFilter(){
 		});
 	};
 	var processing_product_load = false;
-	searchProducts = function( frm, append, reset, withPriceFilter ){
+	searchProducts = function( frm, append, reset, withPriceFilter ,useFilterInurl ){
 
 		if( processing_product_load == true ) return false;
 		processing_product_load = true;
 		append = ( append == "undefined" ) ? 0 : append;
 		reset = ( reset == "undefined" ) ? 0 : reset;
+		
+		if(typeof useFilterInurl == 'undefined' || useFilterInurl == null){
+			useFilterInurl = 0;
+		}		
+		
 		/*[ this block should be written before overriding html of 'form's parent div/element, otherwise it will through exception in ie due to form being removed from div */
 		var data = fcom.frmData(frm);
 		/*]*/
@@ -391,8 +441,11 @@ function removePriceFilter(){
 			$(dv).html(fcom.getLoader());
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
-						
-		fcom.updateWithAjax(fcom.makeUrl('Products','productsList',),data,function(ans){
+		
+		if(useFilterInurl > 0){
+			history.pushState(null, null, getSearchQueryUrl(true));	
+		}
+		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;
 			$.mbsmessage.close();
@@ -482,7 +535,7 @@ function removePriceFilter(){
 		var frm = document.frmProductSearchPaging;	
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove();
-		searchProducts(frm,0,0,1);
+		searchProducts(frm,0,0,1,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
 	

@@ -1711,12 +1711,17 @@ class SellerController extends LoggedUserController {
 		} */
 		
 		/* url data[ */
-		$shopOriginalUrl = 'shops/view/'.$shop_id;
-		$shopCustomUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
+		$shopOriginalUrl = Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$shop_id;
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($shopOriginalUrl)));
-		} else {
+		} else {			
+			$shopObj->rewriteUrlShop($post['urlrewrite_custom']);
+			$shopObj->rewriteUrlReviews($post['urlrewrite_custom']);
+			$shopObj->rewriteUrlTopProducts($post['urlrewrite_custom']);
+			$shopObj->rewriteUrlContact($post['urlrewrite_custom']);
+			$shopObj->rewriteUrlpolicy($post['urlrewrite_custom']);
 			
+			/* $shopCustomUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
 			$getShopUrls  = applicationConstants::getShopUrlRewriteLink($shopCustomUrl,$shop_id);
 			foreach($getShopUrls as $originalUrl=>$customUrl){
 				
@@ -1744,7 +1749,7 @@ class SellerController extends LoggedUserController {
 						FatUtility::dieJsonError( Message::getHtml() );		
 					}
 				}
-			}
+			} */
 		}
 		/* ] */
 		

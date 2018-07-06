@@ -102,37 +102,23 @@ class BrandsController extends AdminBaseController {
 		
 		//FatApp::getDb()->startTransaction();
 		
-		$record = new Brand($brand_id);
-		$record->assignValues($data);
+		$brand = new Brand($brand_id);
+		$brand->assignValues($data);
 		
-		if (!$record->save()) {
-			Message::addErrorMessage($record->getError());
+		if (!$brand->save()) {
+			Message::addErrorMessage($brand->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
-		$brand_id = $record->getMainTableRecordId();
-		/* url data[ */
+		$brand_id = $brand->getMainTableRecordId();
 		
-		
-		
-		
-		$brandOriginalUrl = $this->rewriteUrl.$brand_id;
-		$seoUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
+		/* url data[ */			
+		$brandOriginalUrl = $this->rewriteUrl.$brand_id;		
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($brandOriginalUrl)));
 		} else {
-			$originalUrl = $this->rewriteUrl.$brand_id;
-			$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-
-			$seoUrlKeyword = array(
-			'urlrewrite_original'=>$originalUrl,
-			'urlrewrite_custom'=>$customUrl
-			);	
-			FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-		}
-		
-		
-		
+			$brand->rewriteUrl($post['urlrewrite_custom']);
+		}		
 		/* ] */
 		
 		$newTabLangId=0;	
@@ -146,7 +132,7 @@ class BrandsController extends AdminBaseController {
 				}			
 			}	
 		} else {
-			$brandId = $record->getMainTableRecordId();
+			$brandId = $brand->getMainTableRecordId();
 			$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);	
 		}	
 		
