@@ -2030,9 +2030,8 @@ class MobileAppApiController extends MyAppController {
 	function login(){
 		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
-		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {
-			//FatUtility::dieJsonError( FatUtility::decodeHtmlEntities(Labels::getLabel($authentication->getError(),$this->siteLangId)));
-			FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
+		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {		
+			FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(),$this->siteLangId)));
 		}
 		$userId = UserAuthentication::getLoggedUserId();
 		$uObj = new User($userId);				
