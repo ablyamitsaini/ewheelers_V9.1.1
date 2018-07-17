@@ -1046,7 +1046,7 @@ var_dump($logArr);
 			}
 		}  */
 		
-		$tablename = "tbl_navigation_links_lang"; 
+		/* $tablename = "tbl_navigation_links_lang"; 
 		$sql = 'SELECT * FROM '.$tablename .' where nlinklang_lang_id = '.$langId ;
 		$result = $conn->query($sql);
 		
@@ -1057,8 +1057,8 @@ var_dump($logArr);
 			echo $row['nlinklang_nlink_id']."<br>";
 			}   
 			}
-		} 
+		}  */
 		
-		die(done);
+		die('done');
 	}
 }

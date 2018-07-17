@@ -110,12 +110,12 @@ $("document").ready(function(){
 	goToProductListingSearchPage = function(page){
 		if(typeof page==undefined || page == null){
 			page =1;
-		}		
+		}
 		/* var frm = document.frmProductSearchPaging;		
 		$(frm.page).val(page);
 		$("form[name='frmProductSearchPaging']").remove(); */
 		var uwlist_id = $("input[name='uwlist_id']").val();
-		searchWishListItems( uwlist_id, 1, page );
+		searchWishListItems( uwlist_id, 0, page );
 	}
 	
 	goToFavouriteListingSearchPage = function(page){
@@ -125,8 +125,7 @@ $("document").ready(function(){
 		 var frm = document.frmProductSearchPaging;		
 		$(frm.page).val(page);
 		
-		
-		viewFavouriteItems( frm, 1,page );
+		viewFavouriteItems( frm, 0,page );
 	}
 	
 	searchFavoriteShop = function(){

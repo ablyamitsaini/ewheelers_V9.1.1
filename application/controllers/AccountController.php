@@ -1395,20 +1395,19 @@ class AccountController extends LoggedUserController {
 		$endRecord = $page * $pageSize;
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
-		$json['totalRecords'] = $totalRecords;
-		$json['startRecord'] = $startRecord;
-		$json['endRecord'] = $endRecord;
+		$this->set('totalRecords',$totalRecords); 
+		$this->set('startRecord',$startRecord); 
+		$this->set('endRecord',$endRecord);
 		
 		if($totalRecords > 0)
 		{
-			$json['html'] = $this->_template->render( false, false, 'products/products-list.php', true, false);
+			$this->set('html',$this->_template->render( false, false, 'products/products-list.php', true, false));
 		}
 		else{
-			$json['html'] = $this->_template->render( false, false, '_partial/no-record-found.php', true, false);
+			$this->set('html',$this->_template->render( false, false, '_partial/no-record-found.php', true, false));
 		}
-		
-		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'products/products-list-load-more-btn.php', true, false);
-		FatUtility::dieJsonSuccess($json);
+		$this->set('loadMoreBtnHtml',$this->_template->render( false, false, 'products/products-list-load-more-btn.php',true, false));
+		$this->_template->render(false,false,'json-success.php',true,false);
 		//$this->_template->render(false, false, 'products/products-list.php');
 	}
 	
@@ -1417,7 +1416,7 @@ class AccountController extends LoggedUserController {
 		$db = FatApp::getDb();
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
 		$pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
-		
+		$pageSize = 1;
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		
 		$wishListRow = Product::getUserFavouriteProducts( $loggedUserId,$this->siteLangId );
@@ -1503,19 +1502,19 @@ class AccountController extends LoggedUserController {
 		$endRecord = $page * $pageSize;
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
-		$json['totalRecords'] = $totalRecords;
-		$json['startRecord'] = $startRecord;
-		$json['endRecord'] = $endRecord;
+
+		$this->set('totalRecords',$totalRecords);
+		$this->set('startRecord',$startRecord);
+		$this->set('endRecord',$endRecord);
 		
 		if($totalRecords > 0){
-			$json['html'] = $this->_template->render( false, false, 'products/products-list.php', true, false);
+			$this->set('html',$this->_template->render( false, false, 'products/products-list.php', true, false));
 		}
 		else{
-			$json['html'] = $this->_template->render( false, false, '_partial/no-record-found.php', true, false);
+			$this->set('html',$this->_template->render( false, false, '_partial/no-record-found.php', true, false));
 		}
-		
-		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'products/products-list-load-more-btn.php', true, false);
-		FatUtility::dieJsonSuccess($json);
+		$this->set('loadMoreBtnHtml',$this->_template->render( false, false, 'products/products-list-load-more-btn.php',true,false));
+		$this->_template->render(false,false,'json-success.php',true,false);
 		//$this->_template->render(false, false, 'products/products-list.php');
 	}
 	

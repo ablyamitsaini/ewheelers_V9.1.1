@@ -55,7 +55,7 @@
 		<div class="divider"></div>
 		<div class="gap"></div>
 	</div>
-	<div class="listing-products listing-products--grid ">
+	<div class="listing-products -listing-products listing-products--grid ">
 		<div class="section section--items listview">
 			<div id="productsList" class="row"></div>
 		</div>

@@ -714,3 +714,7 @@
 		margin-top: 10px;
 	}
 }
+
+@media(max-width:767px){
+	.-listing-products [class*="col-"]{float:none; display:inline-block;vertical-align:top; margin:0 -2px;}
+}

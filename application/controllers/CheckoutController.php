@@ -461,9 +461,12 @@ class CheckoutController extends MyAppController{
 		/* get user shipping address[ */
 		$shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 		/* ] */
+		
+		$sellerPrice = $this->getSellersProductItemsPrice($cartProducts);
 		$sn= 0;
 		$json= array();
 		if( !empty($cartProducts) ){
+
 			$prodSrchObj = new ProductSearch( );	
 			foreach($cartProducts as $cartkey=>$cartval){			
 				$sn++;
@@ -497,6 +500,32 @@ class CheckoutController extends MyAppController{
 					$product = FatApp::getDb()->fetch($productRs);					
 					/* ] */
 					
+					
+					/* $sellerShipping = array();
+					foreach($sellerPrice as $sellerId => $sellerData){
+						CommonHelper::printArray($sellerShipping);
+						if($sellerId != $cartval['selprod_user_id']){
+							continue;
+						}
+						
+						if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerData['totalPrice']){
+							if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ){
+								
+								if(!array_key_exists($sellerId,$sellerShipping)){
+									$sellerShipping[$sellerId]['location'] = $post["shipping_locations"][$productKey];
+									continue;
+								}
+								
+								if($sellerShipping[$sellerId]['location'] != $post["shipping_locations"][$productKey]){
+									
+									Message::addErrorMessage(Labels::getLabel('MSG_Selected_Shipping_methods_are_different', $this->siteLangId));
+									FatUtility::dieWithError( Message::getHtml() );
+								}
+							}
+						}
+					} */
+					
+					
 					if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ){
 							foreach($shipping_options as $shipOption){
 									if($shipOption['pship_id']==$post["shipping_locations"][$productKey]){								
@@ -521,7 +550,7 @@ class CheckoutController extends MyAppController{
 						
 						
 					
-					}elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING ) && !empty($post["shipping_services"][$productKey]) ){							
+					}elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING ) && !empty($post["shipping_services"][$productKey]) ){
 								list($carrier_name, $carrier_price) = explode("-", $post["shipping_services"][$productKey]);
 								$productToShippingMethods['product'][$cartval['selprod_id']] = array(
 											'selprod_id'	=>	$cartval['selprod_id'],
@@ -541,7 +570,8 @@ class CheckoutController extends MyAppController{
 					}
 				}
 			}
-			
+			die('here');
+					
 			if (!$json) {
 				$this->cartObj->setProductShippingMethod( $productToShippingMethods );
 				if( !$this->cartObj->isProductShippingMethodSet() ){
@@ -549,6 +579,27 @@ class CheckoutController extends MyAppController{
 					Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
 					FatUtility::dieWithError( Message::getHtml() );
 				}
+				
+				
+				
+				/* Check if different shipping is selected in case of free shipping [ */
+				
+				/* foreach( $cartProducts as $cartProduct ){
+					foreach($sellerPrice as $sellerId => $sellerData){
+						if($sellerId != $cartProduct['selprod_user_id']){
+							continue;
+						}
+						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerData['totalPrice'] && ()){
+							
+						}
+						
+					}
+					
+				} */
+				/* ] */
+				
+				
+				
 				$this->set('msg',Labels::getLabel('MSG_Shipping_Method_selected_successfully.', $this->siteLangId));
 				$this->_template->render(false, false, 'json-success.php');
 			}else{
@@ -886,15 +937,7 @@ class CheckoutController extends MyAppController{
 		/* order products[ */
 		$cartProducts = $this->cartObj->getProducts($this->siteLangId);
 		
-		$sellerPrice = array();
-		if( is_array($cartProducts) && count($cartProducts) ){
-			foreach( $cartProducts as $selprod ){
-				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
-					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
-				}
-				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
-			}
-		}
+		$sellerPrice = $this->getSellersProductItemsPrice($cartProducts);
 		
 		$orderData['products'] = array();
 		$orderData['prodCharges'] = array();
@@ -1630,5 +1673,18 @@ class CheckoutController extends MyAppController{
 		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
+	}
+	
+	public function getSellersProductItemsPrice($cartProducts){
+		$sellerPrice = array();
+		if( is_array($cartProducts) && count($cartProducts) ){
+			foreach( $cartProducts as $selprod ){
+				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
+					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
+				}
+				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
+			}
+		}
+		return $sellerPrice;
 	}
 }

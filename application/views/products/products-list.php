@@ -22,9 +22,15 @@ if($products){
   </div>
 </div>
 <?php  }
+
+	$searchFunction ='goToProductListingSearchPage';
+	if(isset($pagingFunc)){
+		$searchFunction =  $pagingFunc;
+	}
+
 	$postedData['page'] = (isset($page)) ? $page:1;
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmProductSearchPaging','id' => 'frmProductSearchPaging') );
-	$pagingArr = array('pageCount'=>$pageCount,'page'=>$postedData['page'],'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToProductListingSearchPage');
+	$pagingArr = array('pageCount'=>$pageCount,'page'=>$postedData['page'],'recordCount'=>$recordCount, 'callBackJsFunc' => $searchFunction);
 	$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 } else {
 	echo Labels::getLabel('LBL_No_record_found!', $siteLangId);
