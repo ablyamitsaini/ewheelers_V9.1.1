@@ -18,14 +18,14 @@ defined( 'SYSTEM_INIT' ) or die( 'Invalid Usage.' );
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="field-set">
-                                        <div class="field_cover"><?php echo $frmResetPassword->getFieldHTML('new_pwd');?></div>
+                                        <div class="field_cover field_cover--lock"><?php echo $frmResetPassword->getFieldHTML('new_pwd');?></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="field-set">
-                                        <div class="field_cover">
+                                        <div class="field_cover field_cover--lock">
                                             <div class="captcha-wrap">
                                             <?php echo $frmResetPassword->getFieldHTML('confirm_pwd');?>
                                            <?php echo $frmResetPassword->getFieldHTML('apr_id');?> 

@@ -462,7 +462,6 @@ class CheckoutController extends MyAppController{
 		$shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 		/* ] */
 		
-		$sellerPrice = $this->getSellersProductItemsPrice($cartProducts);
 		$sn= 0;
 		$json= array();
 		if( !empty($cartProducts) ){
@@ -499,32 +498,6 @@ class CheckoutController extends MyAppController{
 					$productRs = $prodSrch->getResultSet();									
 					$product = FatApp::getDb()->fetch($productRs);					
 					/* ] */
-					
-					
-					/* $sellerShipping = array();
-					foreach($sellerPrice as $sellerId => $sellerData){
-						CommonHelper::printArray($sellerShipping);
-						if($sellerId != $cartval['selprod_user_id']){
-							continue;
-						}
-						
-						if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerData['totalPrice']){
-							if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ){
-								
-								if(!array_key_exists($sellerId,$sellerShipping)){
-									$sellerShipping[$sellerId]['location'] = $post["shipping_locations"][$productKey];
-									continue;
-								}
-								
-								if($sellerShipping[$sellerId]['location'] != $post["shipping_locations"][$productKey]){
-									
-									Message::addErrorMessage(Labels::getLabel('MSG_Selected_Shipping_methods_are_different', $this->siteLangId));
-									FatUtility::dieWithError( Message::getHtml() );
-								}
-							}
-						}
-					} */
-					
 					
 					if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ){
 							foreach($shipping_options as $shipOption){
@@ -570,7 +543,7 @@ class CheckoutController extends MyAppController{
 					}
 				}
 			}
-			die('here');
+			
 					
 			if (!$json) {
 				$this->cartObj->setProductShippingMethod( $productToShippingMethods );

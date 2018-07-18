@@ -45,7 +45,8 @@ $(document).ready(function(){
 	};
 	
 	clearSearch = function(){
-		document.frmSrch.reset();
+		/* document.frmSrch.reset(); */
+		$('input[name=keyword').val('');
 		searchBuyerDownloads(document.frmSrch);
 	};
 	

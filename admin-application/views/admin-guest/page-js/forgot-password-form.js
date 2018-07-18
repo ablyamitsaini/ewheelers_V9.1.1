@@ -12,13 +12,13 @@
 		var data = fcom.frmData(frm);				
 		fcom.updateWithAjax(fcom.makeUrl("adminGuest", "forgotPassword"), data, function(t) {
 			if(t.status){
-				$.systemMessage(t.msg,'alert--success');
+				/* $.systemMessage(t.msg,'alert--success'); */
 				frm.reset();
 			}
-			else
+			/* else
 			{
 				$.systemMessage(t.msg,'');
-			}
+			} */
 		});  
 		if($(".g-recaptcha").html()){			
 			grecaptcha.reset();
