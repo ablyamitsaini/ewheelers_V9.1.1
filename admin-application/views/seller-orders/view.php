@@ -112,10 +112,9 @@
 								
 								<div class="col-lg-6 col-md-6 col-sm-12">
 									<h5><?php echo Labels::getLabel('LBL_Shipping_Details',$adminLangId); ?></h5>
-									<?php (!empty($order[Orders::SHIPPING_ADDRESS_TYPE])) { ?>
+									<?php if(!empty($order['shippingAddress'])){ ?>
 									<p><strong><?php echo $order['shippingAddress']['oua_name']; ?></strong><br>
-									<?php if(!empty($order['shippingAddress'])){
-
+									<?php
 									$shippingAddress = '';
 									if($order['shippingAddress']['oua_address1']!=''){
 										$shippingAddress.=$order['shippingAddress']['oua_address1'].'<br>';
@@ -142,7 +141,7 @@
 									}
 									
 									echo $shippingAddress;
-									} }?>
+									} ?>
 								</div>
 							</div>
 						</section>
