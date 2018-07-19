@@ -1851,13 +1851,14 @@ class AccountController extends LoggedUserController {
 		$endRecord = $pagesize;
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
-		$json['totalRecords'] = $totalRecords;
-		$json['startRecord'] = $startRecord;
-		$json['endRecord'] = $endRecord;
-		$json['records'] = $records;
-		$json['html'] = $this->_template->render( false, false, 'account/thread-message-search.php', true, false);
-		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, '_partial/load-previous-btn.php', true, false);
-		FatUtility::dieJsonSuccess($json);
+		
+		$this->set('totalRecords',$totalRecords);
+		$this->set('startRecord',$startRecord);
+		$this->set('endRecord',$endRecord);
+		$this->set('records',$records);
+		$this->set('loadMoreBtnHtml',$this->_template->render( false, false, '_partial/load-previous-btn.php',true));
+		$this->set('html',$this->_template->render( false, false, 'account/thread-message-search.php', true, false));
+		$this->_template->render(false,false,'json-success.php',true,false);	
 	}
 	
 	public function sendMessage(){

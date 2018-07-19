@@ -11,19 +11,18 @@ class MobileAppApiController extends MyAppController {
 		
 		$this->appToken = '';
 
-		if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-			$this->appToken = $_SERVER['HTTP_X_TOKEN'];			
-		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && isset($post['_token']) && !empty($post['_token'])){
-			$this->appToken = $post['_token'];	
+		if (array_key_exists('HTTP_X_TOKEN',$_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])){
+			$this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';	
+		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && array_key_exists('_token',$post)){
+			$this->appToken = ($post['_token']!='')?$post['_token']:'';				
+		}			
+		
+		if($this->appToken){			
 			if (!UserAuthentication::doAppLogin($this->appToken)) {                    
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
 				die(json_encode($arr));	
 			}
-		}/*  else if($action == 'send_to_web' && isset($post['_token']) && !empty($post['_token'])){
-			$this->appToken = $post['_token'];	
-		} 	 */		
-		
-		if(!empty($this->appToken)){			
+			
 			$userId = UserAuthentication::getLoggedUserId(); 
 			$userObj = new User($userId);
 			if(!$row = $userObj->getProfileData()){
@@ -32,15 +31,13 @@ class MobileAppApiController extends MyAppController {
 			}			
 			$this->app_user = $row;			
 		}		
-		
-		//$post['language']=1;
-		if (isset($post['language'])){
+			
+		if (array_key_exists('language',$post)){
 			$this->siteLangId = FatUtility::int($post['language']);
 			$_COOKIE['defaultSiteLang'] = $this->siteLangId;
 		}
-	
-		//$post = array("currency"=>3);
-		if (isset($post['currency'])){
+				
+		if (array_key_exists('currency',$post)){
 			$this->siteCurrencyId = FatUtility::int($post['currency']);			
 			$_COOKIE['defaultSiteCurrency'] = $this->siteCurrencyId;
 		}
@@ -815,7 +812,13 @@ class MobileAppApiController extends MyAppController {
 		$collection_product_id = FatApp::getPostedData('collection_product_id', FatUtility::VAR_INT, 0);						
 		$criteria = array('collection_product_id'=>$collection_product_id);
 		
-		$srch->setDefinedCriteria(true,0,$criteria);
+		$shop_id = FatApp::getPostedData('shop_id', null, '');
+		if($shop_id > 0){
+			$srch->setDefinedCriteria(false,0,$criteria);
+		}else{
+			$srch->setDefinedCriteria(true,0,$criteria);
+		}
+		
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription();
 		$srch->addSubscriptionValidCondition();
@@ -864,7 +867,7 @@ class MobileAppApiController extends MyAppController {
 			$srch->addCategoryCondition($category_id);
 		}
 
-		$shop_id = FatApp::getPostedData('shop_id', null, '');
+		
 		if( $shop_id ) {
 			$shop_id = FatUtility::int($shop_id);
 			$srch->addShopIdCondition($shop_id);
@@ -1539,6 +1542,7 @@ class MobileAppApiController extends MyAppController {
 		$bannerLocation = FatApp::getDb()->fetchAll( $rs ,'blocation_key');
 
 		$banners = $bannerLocation;
+		$product_bannerListing = array();
 		foreach( $bannerLocation as $val ){
 			$srch = new BannerSearch($this->siteLangId,true);
 			$srch->joinPromotions($this->siteLangId, true,true,true);
@@ -1568,9 +1572,7 @@ class MobileAppApiController extends MyAppController {
 			$srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id' ,'userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration'));
 			$rs = $srch->getResultSet();
 			$bannerListing = FatApp::getDb()->fetchAll( $rs,'banner_id');
-			
-			
-			$product_bannerListing = array();
+								
 			foreach($bannerListing as $bkey=>$bval){
 				$product_bannerListing[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Banner','HomePageAfterFirstLayout',array($bval['banner_id'], $this->siteLangId))));
 			}
@@ -2026,8 +2028,7 @@ class MobileAppApiController extends MyAppController {
 	}
 	
 	function login(){
-		$post = FatApp::getPostedData();
-		//$post = array("username"=>'keith.anderson@dummyid.com','password'=>"welcome1");
+		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
 		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {
 			//FatUtility::dieJsonError( FatUtility::decodeHtmlEntities(Labels::getLabel($authentication->getError(),$this->siteLangId)));
@@ -2047,7 +2048,7 @@ class MobileAppApiController extends MyAppController {
 					'user_name'=>$userInfo["user_name"], 
 					'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'thumb',1)).'?'.time()
-					);			
+				);			
 		die ($this->json_encode_unicode($arr));
 	}
 	
@@ -3396,12 +3397,7 @@ class MobileAppApiController extends MyAppController {
 		$shopRs = $srch->getResultSet();
 		$allShops = $db->fetchAll($shopRs);
 		
-		/*$allShopArr = array();
-		foreach($allShops as $skey=>$sval){
-			
-		}*/
 		
-
 		$totalProdCountToDisplay = 4;
 
 		$productCustomSrchObj = new ProductSearch( $this->siteLangId );
@@ -3441,7 +3437,8 @@ class MobileAppApiController extends MyAppController {
 			//$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
 			//'IFNULL(product_name, product_identifier) as product_name', 
 			//'IF(selprod_stock > 0, 1, 0) AS in_stock') );
-			$prodRs = $prodSrch->getResultSet();
+			
+			$prodRs = $prodSrch->getResultSet();			
 			$shopsArr[$cnt] = $val;
 			$shopProducts = $db->fetchAll( $prodRs);
 			foreach($shopProducts as &$shopProduct){

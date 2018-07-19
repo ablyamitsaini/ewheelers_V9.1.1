@@ -292,7 +292,7 @@ class SocialPlatformController extends AdminBaseController {
 		$frm = new Form('frmSocialPlatform');		
 		$frm->addHiddenField('', 'splatform_id', 0);
 		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Identifier',$this->adminLangId), 'splatform_identifier');
-		$fld->setUnique('tbl_navigations', 'splatform_identifier', 'splatform_id', 'splatform_id', 'splatform_id');
+		$fld->setUnique(SocialPlatform::DB_TBL, 'splatform_identifier', 'splatform_id', 'splatform_id', 'splatform_id');
 		
 		$frm->addRequiredField(Labels::getLabel('LBL_URL',$this->adminLangId),'splatform_url');
 		$fld = $frm->addSelectBox(Labels::getLabel('LBL_Icon_Type_From_CSS',$this->adminLangId), 'splatform_icon_class', SocialPlatform::getIconArr($this->adminLangId) );

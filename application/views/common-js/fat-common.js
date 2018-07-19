@@ -1,9 +1,11 @@
+siteConstants.userWebRoot = (siteConstants.rewritingEnabled)?siteConstants.webroot:siteConstants.webroot_traditional;
+var pageReloading = false;
 var fcom = {
 		ajaxRequestLog: [],
-		logAjaxRequest: function(url, data, res) {
+		logAjaxRequest: function(url, data, res, ajaxLoopHandler) {
 			
 			var d = (new Date()).getTime();
-			var last = d - 120000;
+			var last = d - 20000;
 			var obj = {url: url, 
 					data: (typeof data == "object")?JSON.stringify(data):data, 
 					res: (typeof res == "object")?JSON.stringify(res):res, 
@@ -23,18 +25,25 @@ var fcom = {
 				}
 			}
 			
-			if (repeatCount >= 10) {
+			fcom.ajaxRequestLog.push(obj);
+			
+			if (repeatCount >= 5 && !pageReloading) {
 				if (confirm('This page seems to be stuck with some ajax call loop.\nDo you want to reload the page?')) {
+					pageReloading = true;
 					location.reload();
 				}
 			}
-
-			fcom.ajaxRequestLog.push(obj);
-			console.log('Added log: ' + fcom.ajaxRequestLog.length);
+			
+			if (ajaxLoopHandler && repeatCount >= 2) {
+				console.log('Executing ajaxLoopHandler for url: ' + url + ', data: ' + obj.data + ', res: ' + obj.res);
+				ajaxLoopHandler();
+			}
+			
+			return repeatCount;
 		},
 		
 		ajax: function(url, data, fn, options) {
-			var o = $.extend(true, {fOutMode:'html', timeout: 300000, maxRetry: 0, retryNumber: 0}, options);
+			var o = $.extend(true, {fOutMode:'html', timeout: null, maxRetry: 0, retryNumber: 0, ajaxLoopHandler: null}, options);
 			if ( "string" == $.type(data) ) {
 				data += '&fOutMode=' + o.fOutMode + '&fIsAjax=1';
 			}
@@ -45,13 +54,18 @@ var fcom = {
 				if ( !data.fOutMode ) data.fOutMode = o.fOutMode;
 			}
 			
+			var dbmsg = o.dbmsg||'<img src="img/loading.gif" alt="Processing..">';
+			var dvdebug = $('<div />').append(dbmsg);
+			dvdebug.appendTo($('#dv-bg-processes'));
+			
 			$.ajax({
 				method: "POST",
 				url: url,
 				data: data,
 				dataType: o.fOutMode,
 				success: function (t) {
-					fcom.logAjaxRequest(url, data, t);
+					dvdebug.remove();
+					var repeatCount = fcom.logAjaxRequest(url, data, t, o.ajaxLoopHandler);
 					if (o.fOutMode == 'json') {
 						if (t.status == -1) {
 							alert(t.msg);
@@ -61,9 +75,17 @@ var fcom = {
 							return ;
 						}
 					}
-					fn(t);
+					if (repeatCount >= 2 && o.ajaxLoopHandler) {
+						setTimeout(function() {
+							fn(t);
+						}, 1000);
+					} 
+					else {
+						fn(t);
+					}
 				},
 				error: function(jqXHR, textStatus, error) {
+					dvdebug.remove();
 					if(textStatus == "parsererror" && jqXHR.statusText == "OK") {
 				        alert('Seems some json error.' + jqXHR.responseText);
 				        return ;
@@ -72,15 +94,16 @@ var fcom = {
 					
 					o.retryNumber++;
 					if (o.retryNumber <= o.maxRetry) {
-						console.log('Will retry ' + o.retryNumber);
 						setTimeout(function() {
 							fcom.ajax(url, data, fn, o)
 						}, 3000);
-					}/* else {
+					}
+					else {
 						if (!options.errorFn) {
-							alert(jqXHR.statusText + '\n' + textStatus);
+							console.log('Http Error: ' + textStatus);
+							/* alert('Http Error: ' + textStatus); */
 						}
-					} */
+					}
 					
 					console.log( "Ajax Request " + url + " error: " + textStatus + " -- " + error);
 					if (options.errorFn) {
@@ -92,42 +115,15 @@ var fcom = {
 		},
 		
 		updateWithAjax: function(url, data, fn, options) {
-			
-			$.mbsmessage(langLbl.requestProcessing,true,'alert--process alert');
+			$.mbsmessage('Processing...');
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {
-				
 				if (ans.status != 1) {
 					$(document).trigger('close.mbsmessage');
-					
-					$.systemMessage(ans.msg,'alert alert--danger');
-					
-					/* Custom Code[ */
-					if( ans.redirectUrl ){
-						setTimeout(function(){ window.location.href = ans.redirectUrl }, 3000);
-					}
-					/* ] */
-					//alert(ans.msg);
+					alert(ans.msg);
 					return ;
 				}
-				if(ans.alertType){
-					$alertType = ans.alertType;
-				}else{
-					$alertType = 'alert alert--success';
-				}
-				$.mbsmessage(ans.msg,true, $alertType);
-				
-				if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
-					var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
-					setTimeout(function(){
-						$.systemMessage.close();
-					}, time);
-				}
-				
-				/* setTimeout(function () {
-					$.mbsmessage.close();
-				}, 3000); */
-			
+				$.mbsmessage(ans.msg, true);
 				fn (ans);
 			}, o);
 		},
@@ -156,7 +152,7 @@ var fcom = {
 				urlRewritingEnabled = (siteConstants.rewritingEnabled == 1);
 			}
 			if (!use_root_url) {
-				use_root_url = (urlRewritingEnabled) ? siteConstants.webroot : siteConstants.webroot_traditional;			
+				use_root_url = (urlRewritingEnabled)?siteConstants.webroot:siteConstants.webroot_traditional;			
 			}
 			var url;
 			if (!controller) controller = '';
@@ -178,7 +174,10 @@ var fcom = {
 			return url;
 		},
 		frmData: function(frm) {
-			return $(frm).serialize();
+			var disabled = $(frm).find(':input:disabled').removeAttr('disabled');
+			var out = $(frm).serialize();
+			disabled.attr('disabled','disabled');
+			return out;
 		},
 		qStringToObject: function(q) {
 			var args = new Object(); 

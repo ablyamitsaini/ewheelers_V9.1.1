@@ -152,7 +152,7 @@ $fl = 'js/variables.js';
 echo FatUtility::generateUrl ( 'JsCss', 'js', array (), '', false ). '&f=' . rawurlencode ( $fl );
 ?>"></script>
 </body>
-
+<!-- bestech work-->
 </html>
 <?php 
 //$content  = ob_get_clean();

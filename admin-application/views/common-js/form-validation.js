@@ -4,7 +4,7 @@
     */
     var Validation = function() {
 
-        messages={
+         messages={
                 required: "{caption} "+langLbl.isMandatory,
                 email: langLbl.pleaseEnterValidEmailId+" {caption}.",
                 charonly: langLbl.charactersSupportedFor+" {caption}.",
@@ -37,7 +37,7 @@
             email : {
                check: function(rval, value) {
                    if(rval && value)
-                       return testPattern(value,"^((?:(?:(?:[a-zA-Z0-9][\\.\\-\\+_]?)*)[a-zA-Z0-9])+)\\@((?:(?:(?:[a-zA-Z0-9][\\.\\-_]?){0,62})[a-zA-Z0-9])+)\\.([a-zA-Z0-9]{2,6})$");
+                       return testPattern(value,"^((?:(?:(?:[a-zA-Z0-9][\\.\\-\\+_]?)*)[a-zA-Z0-9])+)\\@((?:(?:(?:[a-zA-Z0-9][\\.\\-_]?){0,62})[a-zA-Z0-9])+)\\.([a-zA-Z0-9]{2,63})$");
                    return true;
                }
             },
@@ -154,11 +154,11 @@
             comparewith:{
                 check: function(rval, value, o){
                     
-                    if(o.dateFormat){
+                    if(o.dateFormat && rval != '' && value != ''){
                         rval = $.Validation.convertStringToDate(rval, o.dateFormat).getTime();
                         value = $.Validation.convertStringToDate(value, o.dateFormat).getTime();
                     }
-                    if(o.numeric){
+                    if(o.numeric && rval != '' && value != ''){
                         rval=parseFloat(rval);
                         value=parseFloat(value);
                     }
@@ -236,7 +236,9 @@
     				var editors = oUtil.arrEditor;
     				for (x in editors){
     					var obj = eval(editors[x]);
-    					$('#' + obj.idTextArea).val(obj.getXHTMLBody());
+    					if ($('#' + obj.idTextArea).length) {
+    						$('#' + obj.idTextArea).val(obj.getXHTMLBody());
+    					}
     				}
     			}
 
@@ -255,11 +257,7 @@
     		},
     		isValid : function() {
     			return this.valid;
-    		},
-			removeValidations: function(){
-				return true;
-               
-			}
+    		}
     }
     
     /* 
@@ -290,174 +288,11 @@
             }
             if(event == "keyup") {
                 obj.field.bind("keyup",function(e) {
-					if(obj.settings.summaryElementId == 'flash')
-					{
-						if(e.which==13) {
-							return obj.validate()
-						} else {
-							$('#flash').html('');
-							return obj.customValidate(e);
-						} 
-					}
                     return obj.validate();
                 });
             }
         },
-        customValidate : function(e) {
-			
-			var clname='erlist_' + this.field.attr('name').replace(/\[/g, '_').replace(/\]/g, '_');
-            if (this.field.attr('data-fat-arr-index')) {
-            	clname += '_' + this.field.attr('data-fat-arr-index');
-            }
-            
-            $('.'+clname).remove();
-            
-            var obj = this,
-                field = obj.field,
-                errorClass = "errorlist",
-                errorlist = $(document.createElement("ul")).addClass(errorClass).addClass(clname),
-                types = {};
-            
-            	if (jQuery(field).attr('data-fatreq')) {
-            		var s = eval('[' + jQuery(field).attr('data-fatreq') + ']');
-            		types = s[0];
-            	}
-            
-                errors = []; 
-            jQuery.each(types, function(rname, rval){
-                if(rname!='customMessage'){
-                    var rule=$.Validation.getRule(rname);
-                    
-                    var fldval = $.trim(field.val());
-                    
-                    if (field.attr('data-fatdateformat') && 'range' == rname) {
-                    	rval.dateFormat = field.attr('data-fatdateformat');
-                    }
-                    
-                    if (field.attr('type')){
-                        if(field.attr('type').toLowerCase()==='checkbox'){
-                        	if (field.attr('name').indexOf('[') > 0 && rname == 'selectionrange') {
-                        		var arrayFieldNamePre = field.attr('name');
-                        		arrayFieldNamePre = arrayFieldNamePre.substring(0, arrayFieldNamePre.indexOf('[') + 1);
-                        		fldval = $(field).parents('form').find('input[name^="' + arrayFieldNamePre + '"]:checked').length;
-                        	}
-                        	else {
-                        		fldval=(field.is(':checked'))?fldval:'';
-                        	}
-                        }
-                    }
-                    
-                    if(rname=='comparewith'){
-                        for (x in rval){
-                        	if (field.attr('data-fatdateformat')) {
-                            	rval[x].dateFormat = field.attr('data-fatdateformat');
-                            }
-                            var validvalue=rule.check($(field).parents('form').find('[name='+rval[x].fldname+']').val(), fldval, rval[x]);
-                            if (!validvalue) break;
-                        }
-                    }
-                    else{
-                        var validvalue=rule.check(rval, fldval);
-                    }
-                    
-                    if(!validvalue){
-                        field.addClass("error");
-                        if(types.customMessage){
-                            msg=types.customMessage;
-                        }
-                        else{
-                            if(rname=='comparewith'){
-                                msg=$.Validation.getMessage(rname+'_'+rval[x].operator);
-                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('title'));
-                            }
-                            else{
-                                msg=$.Validation.getMessage(rname);
-                            }
-                        }
-                        msg=msg.replace("{caption}",$(field).attr('title'));
-                        if(jQuery.isArray(rval) && rval.length==2){
-                            msg=msg.replace("{minval}", rval[0]);
-                            msg=msg.replace("{minlength}", rval[0]);
-                            msg=msg.replace("{maxval}", rval[1]);
-                            msg=msg.replace("{maxlength}", rval[1]);
-                        }
-                        if(rname=='range'){
-                            msg=msg.replace("{minval}", rval.minval);
-                            msg=msg.replace("{maxval}", rval.maxval);
-                        }
-                        
-                        errors.push(msg);
-                    }
-            }});
-            
-            if(errors.length) {
-                if(this.settings.errordisplay!=0){ //  && this.settings.errordisplay!=1 // removed on 21st July.. as requested by client 
-                  //  obj.field.unbind("keyup");
-                   // obj.attach("keyup");
-					
-                }
-                switch(this.settings.errordisplay){
-                case 1:
-                    /* Updated on 28th April to display the summary Messages */
-					if(this.settings.summaryElementId == 'flash') { 
-						
-						/* if( $('#'+this.settings.summaryElementId + ' #msg').length <= 0 ) { 
-							$('#'+this.settings.summaryElementId).html( '<div id="msg"><div class="system-notice"><a class="close" href="javascript:void(0)"  onclick="$(this).parent().parent().remove();"></a><div class="sysmsgcontent smry_errors"></div></div></div></div>' )
-						}
-						$('#'+this.settings.summaryElementId + ' .sysmsgcontent').append(errorlist.empty()); */
-						//  document.getElementById(this.settings.summaryElementId).scrollIntoView();
-					} else {
-						$('#'+this.settings.summaryElementId).append(errorlist.empty());
-						document.getElementById( this.settings.summaryElementId ).scrollIntoView();
-					}
-					
-                    break;
-                case 2:
-                	if(field.attr('type') && field.attr('type').toLowerCase()==='checkbox') {
-                		field.parent().before(errorlist.empty());
-                	}
-                	else {
-                		field.before(errorlist.empty());
-                	}
-                    break;
-                case 3:
-                	if(field.attr('type') && field.attr('type').toLowerCase()==='checkbox') {
-                		field.parent().after(errorlist.empty());
-                	}
-                	else {
-                		field.after(errorlist.empty());
-                	}
-                    break;
-                case 0:
-                    
-                    break;
-                }
-                for(error in errors) {
-                    if(this.settings.errordisplay == 0){
-                        alert(errors[error]);
-                        return;
-                    }
-                    else {
-                    		var li=$(document.createElement('li')).append($(document.createElement('a')).html(errors[error]).attr({'href':'javascript:void(0);'}).bind('click', function(){$(field).focus();}));
-                    		//li.appendTo(errorlist);
-                    }
-                }
-                obj.valid = false;
-            } 
-            else {
-                errorlist.remove();
-                field.removeClass("error");
-                obj.valid = true;
-            }
-            if (this.field.attr('data-mbsunichk')) {
-            	if (this.field.attr('data-mbsunichk') == '2') {
-            		obj.valid = false;
-            		if (!this.field.hasClass('field-processing')) this.field.trigger('change');
-            	}
-            }
-        },
-		validate : function() { 
-			
+        validate : function() {
             var clname='erlist_' + this.field.attr('name').replace(/\[/g, '_').replace(/\]/g, '_');
             if (this.field.attr('data-fat-arr-index')) {
             	clname += '_' + this.field.attr('data-fat-arr-index');
@@ -521,13 +356,13 @@
                         else{
                             if(rname=='comparewith'){
                                 msg=$.Validation.getMessage(rname+'_'+rval[x].operator);
-                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('title'));
+                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('data-field-caption'));
                             }
                             else{
                                 msg=$.Validation.getMessage(rname);
                             }
                         }
-                        msg=msg.replace("{caption}",$(field).attr('title'));
+                        msg=msg.replace("{caption}",$(field).attr('data-field-caption'));
                         if(jQuery.isArray(rval) && rval.length==2){
                             msg=msg.replace("{minval}", rval[0]);
                             msg=msg.replace("{minlength}", rval[0]);
@@ -544,26 +379,14 @@
             }});
             
             if(errors.length) {
-                if(this.settings.errordisplay!=0){ //  && this.settings.errordisplay!=1 // removed on 21st July.. as requested by client 
+                if(this.settings.errordisplay!=0 && this.settings.errordisplay!=1){
                     obj.field.unbind("keyup");
                     obj.attach("keyup");
-					
                 }
                 switch(this.settings.errordisplay){
                 case 1:
-                    /* Updated on 28th April to display the summary Messages */
-					if(this.settings.summaryElementId == 'flash') {
-						
-						if( $('#'+this.settings.summaryElementId + ' #msg').length <= 0 ) { 
-							$('#'+this.settings.summaryElementId).html( '<div id="msg"><div class="system-notice"><a class="close" href="javascript:void(0)"  onclick="$(this).parent().parent().remove();"></a><div class="sysmsgcontent smry_errors"></div></div></div></div>' )
-						}
-						$('#'+this.settings.summaryElementId + ' .sysmsgcontent').append(errorlist.empty());
-						//  document.getElementById(this.settings.summaryElementId).scrollIntoView();
-					} else {
-						$('#'+this.settings.summaryElementId).append(errorlist.empty());
-						document.getElementById( this.settings.summaryElementId ).scrollIntoView();
-					}
-					
+                    $('#'+this.settings.summaryElementId).append(errorlist.empty());
+                    document.getElementById(this.settings.summaryElementId).scrollIntoView();
                     break;
                 case 2:
                 	if(field.attr('type') && field.attr('type').toLowerCase()==='checkbox') {
@@ -627,22 +450,17 @@
             
             var $this = $(this);
             $(this).bind("submit", function(e) {
-				
             	if ($this.hasClass('data-fat-submitted')) {
             		e.preventDefault();
             		console.log('Prevented resubmit of form.');
             		return ;
             	}
-				
-				/* Added on 28th April to display the summary Messages */
                 validator.validate(); 
                 if(!validator.isValid()) {
                     e.preventDefault();
-					$("#msg").show();
                 }
                 else {
                 	$this.addClass('data-fat-submitted');
-					$("#msg").hide();
                 	setTimeout(function() {
                 		$this.removeClass('data-fat-submitted');
                 	}, 3000);
@@ -676,7 +494,7 @@
 	            if(ans.status==0){
 	            	fld.addClass('field-unique-error');
 	            	
-	            	checkUniqueErrorNotify(fld.attr('title'),  entered);
+	            	checkUniqueErrorNotify(fld.attr('data-field-caption'),  entered);
 	                fld.val(ans.existing_value);
 	                fld.focus();
 	            }
@@ -725,16 +543,7 @@
 				break;
 			}
 			if (!match) continue;
-			
 			$(el[0].form.elements[arr[i].fldname]).attr('data-fatreq', JSON.stringify(arr[i].requirement));
-			
-			/* custom code to add/remove * sign[ */
-			if( JSON.stringify(arr[i].requirement.required) == 'true' ){
-				$(el[0].form.elements[arr[i].fldname]).parent().parent().siblings('.caption-wraper').find('.spn_must_field').html('*');
-			} else {
-				$(el[0].form.elements[arr[i].fldname]).parent().parent().siblings('.caption-wraper').find('.spn_must_field').html('');
-			}
-			/* ] */
 		}
 	};
 	

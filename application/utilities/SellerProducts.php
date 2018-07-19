@@ -1201,7 +1201,9 @@ trait SellerProducts{
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
 
-		
+		/* foreach($post as $key=>$val){
+			$post[$key] = strip_tags($post[$key]);
+		} */
 		
 		$tabsArr = MetaTag::getTabsArr();
 		$metaType = FatUtility::convertToType($post['meta_type'] ,FatUtility::VAR_STRING);
@@ -1280,9 +1282,9 @@ trait SellerProducts{
 		$data = array(
 			'metalang_lang_id'=>$lang_id,
 			'metalang_meta_id'=>$metaId,
-			'meta_title'=>$post['meta_title'],
-			'meta_keywords'=>$post['meta_keywords'],
-			'meta_description'=>$post['meta_description'],
+			'meta_title'=>strip_tags($post['meta_title']),
+			'meta_keywords'=>strip_tags($post['meta_keywords']),
+			'meta_description'=>strip_tags($post['meta_description']),
 			'meta_other_meta_tags'=>$post['meta_other_meta_tags'],
 		);
 		

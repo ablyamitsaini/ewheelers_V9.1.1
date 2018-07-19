@@ -1,7 +1,8 @@
 <?php
 class CustomRouter{	
 	static function setRoute(&$controller, &$action, &$queryString){		
-		$userType = null;		
+		$userType = null;	
+		
 		if ('mobile-app-api' == $controller) {			
 			define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', 'v1');
@@ -18,24 +19,17 @@ class CustomRouter{
             }
 			
             $action = $queryString[0];            
-			if ($controller != '' && $action == '') { $action = 'index';}
+            if ($controller != '' && $action == '') 
+            { 
+                $action = 'index';
+            }
             array_shift($queryString);	
 			
 			$token = null;
             
-            if (isset($_SERVER['HTTP_X_USER_TYPE'])) {
-                $userType = intval($_SERVER['HTTP_X_USER_TYPE']);
-            }
-            if (isset($_SERVER['HTTP_X_TOKEN']) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-                $token = $_SERVER['HTTP_X_TOKEN'];
-            }
-
-            if ($token) { 
-                if (!UserAuthentication::doAppLogin($token)) {                    
-					$arr = array('status'=>-1,'msg'=>"Invalid Token");	
-					die(json_encode($arr));	
-                }
-            }	
+			if(array_key_exists('HTTP_X_USER_TYPE',$_SERVER)){
+				$userType = intval($_SERVER['HTTP_X_USER_TYPE']);
+			}			
 		}else {
             define('MOBILE_APP_API_CALL', false);
             define('MOBILE_APP_API_VERSION', '');
@@ -50,7 +44,7 @@ class CustomRouter{
 			$url = rtrim($url, '/');
 						
 			$srch = UrlRewrite::getSearchObject();
-			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', 'LIKE', $url);
+			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $url);
 			$rs = $srch->getResultSet();
 			if (!$row = FatApp::getDb()->fetch($rs)) {
 				return;
@@ -67,7 +61,10 @@ class CustomRouter{
 			
 			$queryString = $arr;
 			
-			if ($controller != '' && $action == '') { $action = 'index';}
+            if ($controller != '' && $action == '') 
+            { 
+                $action = 'index';
+            }
 			
 			if ($controller == '') { $controller = 'Content'; }
 			

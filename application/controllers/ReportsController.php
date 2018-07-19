@@ -288,7 +288,7 @@ class ReportsController extends LoggedUserController {
 		/* ] */
 		
 		$srch = SellerProduct::getSearchObject( $this->siteLangId );
-		$srch->joinTable( '('. $orderProductSrch->getQuery() .')', 'LEFT OUTER JOIN', 'sp.selprod_id = qryop.op_selprod_id', 'qryop' ); 
+		$srch->joinTable( '('. $orderProductSrch->getQuery() .')', 'INNER JOIN', 'sp.selprod_id = qryop.op_selprod_id', 'qryop' ); 
 		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p' );
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = ' . $this->siteLangId, 'p_l' );
 		$srch->joinTable( Brand::DB_TBL, 'INNER JOIN', 'p.product_brand_id = b.brand_id', 'b' );
