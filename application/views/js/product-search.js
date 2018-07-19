@@ -68,8 +68,7 @@ $(document).ready(function(){
 	$("input:checkbox[name=out_of_stock]").change(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
-			addFilter(id,this);
-		
+			addFilter(id,this);		
 		}else{
 			removeFilter(id,this);
 		}
@@ -361,6 +360,7 @@ function removePriceFilter(){
 			/* Category filter value pickup[ */
 			var category=[];
 			$("input:checkbox[name=category]:checked").each(function(){
+				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
 				category.push($(this).val());
 			});
 			if ( category.length ){
@@ -371,6 +371,7 @@ function removePriceFilter(){
 			/* brands filter value pickup[ */
 			var brands=[];
 			$("input:checkbox[name=brands]:checked").each(function(){
+				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
 				brands.push($(this).val());
 			});
 			if ( brands.length ){
@@ -381,6 +382,7 @@ function removePriceFilter(){
 			/* Option filter value pickup[ */
 			var optionvalues=[];
 			$("input:checkbox[name=optionvalues]:checked").each(function(){
+				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
 				optionvalues.push($(this).val());
 			});
 			if ( optionvalues.length ){
@@ -391,6 +393,7 @@ function removePriceFilter(){
 			/* condition filters value pickup[ */
 			var conditions=[];
 			$("input:checkbox[name=conditions]:checked").each(function(){
+				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
 				conditions.push($(this).val());
 			});
 			if ( conditions.length ){
@@ -404,6 +407,7 @@ function removePriceFilter(){
 			
 			/* Out Of Stock Filter value pickup[ */
 			$("input:checkbox[name=out_of_stock]:checked").each(function(){
+				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
 				data=data+"&out_of_stock=1";
 			});
 			/* ] */
@@ -422,6 +426,8 @@ function removePriceFilter(){
 				if(typeof $("input[name=price_max_range]").val() != "undefined"){
 					data = data+"&max_price_range="+$("input[name=price_max_range]").val();
 				}
+				searchArr['price_min_range'] = $("input[name=priceFilterMinValue]").val();
+				searchArr['price_max_range'] = $("input[name=priceFilterMaxValue]").val();				
 			}
 			/* ] */
 		}

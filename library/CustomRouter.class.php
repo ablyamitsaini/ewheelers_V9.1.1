@@ -40,15 +40,18 @@ class CustomRouter{
 		if(defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()){				
 			$url = $_SERVER['REQUEST_URI'];			
 			
-			$url = substr($url, strlen(CONF_WEBROOT_URL));
-			$url = rtrim($url, '/');
+			/* [ Check url rewritten by the system and "/" discarded in url rewrite*/
+			$customUrl = substr($url, strlen(CONF_WEBROOT_URL));
+			$customUrl = rtrim($customUrl, '/');
+			$customUrl = explode('/',$customUrl);
 			
 			$srch = UrlRewrite::getSearchObject();
-			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $url);
+			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
 			$rs = $srch->getResultSet();
-			if (!$row = FatApp::getDb()->fetch($rs)) {
+			if (!$row = FatApp::getDb()->fetch($rs)) {				
 				return;
 			}
+			/*]*/			
 			
 			$url = $row['urlrewrite_original'];
 			$arr = explode('/', $url);
@@ -60,6 +63,13 @@ class CustomRouter{
 			array_shift($arr);
 			
 			$queryString = $arr;
+			
+			/* [ used in case of filters when passed through url*/
+			array_shift($customUrl);
+			if(!empty($customUrl)){
+				$queryString = array_merge($queryString,$customUrl);			
+			}
+			/* ]*/
 			
             if ($controller != '' && $action == '') 
             { 

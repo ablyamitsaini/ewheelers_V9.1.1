@@ -341,6 +341,41 @@ class BlogPostCategory extends MyAppModel{
 		return static::getBlogPostCatParentChildWiseArr( $langId, 0, false, true );
 	}
 	
+	public function rewriteUrl($keyword , $suffixWithId = true , $parentId = 0){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$parentId =  FatUtility::int($parentId);
+		$parentUrl = '';
+		if(0 < $parentId){
+			$parentUrlRewriteData = UrlRewrite::getDataByOriginalUrl(BlogPostCategory::REWRITE_URL_PREFIX.$parentId );
+			$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+		}
+		
+		$originalUrl = BlogPostCategory::REWRITE_URL_PREFIX.$this->mainTableRecordId;
+		
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);		
+		$seoUrl =  CommonHelper::seoUrl($keyword);	
+		if($suffixWithId){
+			$seoUrl =  $seoUrl.'-'.$this->mainTableRecordId;	
+		}
+		
+		$seoUrl = str_replace($parentUrl,'',$seoUrl);
+		$seoUrl = $parentUrl.'-'.$seoUrl;
+		
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}
+	
 	public function canMarkRecordDelete($bpcategory_id){
 		$srch = static::getSearchObject();
 		$srch->addCondition('bpc.bpcategory_deleted', '=', applicationConstants::NO);

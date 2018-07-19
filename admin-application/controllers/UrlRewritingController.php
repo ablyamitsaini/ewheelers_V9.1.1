@@ -103,7 +103,7 @@ class UrlRewritingController extends AdminBaseController {
 		unset($post['urlrewrite_id']);
 		
 		$url = FatApp::getPostedData('urlrewrite_custom', FatUtility::VAR_STRING);
-		$post['urlrewrite_custom'] = trim(CommonHelper::seoUrl($url), '/\\');
+		$post['urlrewrite_custom'] = CommonHelper::seoUrl($url);
 		
 		$url = FatApp::getPostedData('urlrewrite_original', FatUtility::VAR_STRING);
 		$post['urlrewrite_original'] = trim($url, '/\\');

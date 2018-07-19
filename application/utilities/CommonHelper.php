@@ -1282,9 +1282,9 @@ class CommonHelper extends FatUtility{
 		//Lower case everything
 		$string = strtolower($string);
 		//Make alphanumeric (removes all other characters)
-		//$string = preg_replace("/[^a-z0-9_\s-\/]/", "", $string);	
+		//$string = preg_replace("/[^a-z0-9,&_\s-\/]/", "", $string);	
 		//covert / to -
-		$string = preg_replace("/[\s\/]/", "-", $string);		
+		$string = preg_replace("/[\s,&\/]/", "-", $string);		
 		//Clean up multiple dashes or whitespaces
 		$string = preg_replace("/[\s-]+/", " ", $string);
 		//Convert whitespaces and underscore to dash
@@ -1295,9 +1295,9 @@ class CommonHelper extends FatUtility{
 		
 		if (file_exists ( CONF_INSTALLATION_PATH . 'application/controllers/' .$keyword.'Controller' . '.php' )){			
 			return $string.'-'.rand(1,100);
-		}
-		
-		return $string;
+		}	
+			
+		return trim($string,'-');
 	}
 	
 	public static function recursiveDelete($str) {

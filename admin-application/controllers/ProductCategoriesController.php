@@ -529,46 +529,11 @@ class ProductCategoriesController extends AdminBaseController {
 			//	$this->_template->render(false, false, 'json-error.php');
 			}
 		}else{
-			
-		
-			$parentUrl = '';
-			if($isnew && $prodcat_parent){
-				$parentRewrite = UrlRewrite::getDataByOriginalUrl($this->rewriteUrl.$prodcat_parent );
-				$parentUrl = $parentRewrite['urlrewrite_custom'];
-			}
-			$currentUrl ='';
-			if(!$isnew)
-			{
-				$currentRewrite = UrlRewrite::getDataByOriginalUrl($this->rewriteUrl.$prodcat_id );
-				$currentUrl = $currentRewrite['urlrewrite_custom']."/";
-			}
-			$prodcat_id = $record->getMainTableRecordId();
-			/* url data[ */
-			$catOriginalUrl = $this->rewriteUrl.$prodcat_id;
-			$seoUrlPrefix ='';
-			if($parentUrl){
-				$seoUrlPrefix = $parentUrl."/";
-			}
-			$seoUrl = CommonHelper::seoUrl($seoUrlPrefix.$post['urlrewrite_custom']);
 			if( $post['urlrewrite_custom'] == '' ){
 				FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($catOriginalUrl)));
-			} else {
-				$originalUrl = ProductCategory::REWRITE_URL_PREFIX.$prodcat_id;
-				$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-
-				$seoUrlKeyword = array(
-				'urlrewrite_original'=>$originalUrl,
-				'urlrewrite_custom'=>$customUrl
-				);	
-				FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-				
-				$seoUpdateUrlKeyword = array(
-				'urlrewrite_custom'=> "mysql_func_REPLACE(urlrewrite_custom, ".$currentUrl."/", $customUrl."/)",				
-				);
-				FatApp::getDb()->updateFromArray( UrlRewrite::DB_TBL, $seoUpdateUrlKeyword,array('smt'=>'urlrewrite_original=?','vals'=>array($this->rewriteUrl."%")),true);
-				
+			}else{
+				$record->rewriteUrl($post['urlrewrite_custom'],true,$prodcat_parent);
 			}
-			
 			/* ] */
 			
 			$newTabLangId=0;

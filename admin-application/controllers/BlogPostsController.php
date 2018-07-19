@@ -159,33 +159,11 @@ class BlogPostsController extends AdminBaseController {
 		}
 		$post_id = $record->getMainTableRecordId();
 		/* url data[ */
-		$blogOriginalUrl = 'blog/post-detail/'.$post_id;
-		$blogCustomUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
+		$blogOriginalUrl = BlogPost::REWRITE_URL_PREFIX.$post_id;		
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($blogOriginalUrl)));
 		} else {
-			$urlSrch = UrlRewrite::getSearchObject();
-			$urlSrch->doNotCalculateRecords();
-			$urlSrch->doNotLimitRecords();
-			$urlSrch->addFld('urlrewrite_custom');
-			$urlSrch->addCondition( 'urlrewrite_original', '=', $blogOriginalUrl );
-			$rs = $urlSrch->getResultSet();
-			$urlRow = FatApp::getDb()->fetch($rs);
-			$recordObj = new TableRecord(UrlRewrite::DB_TBL);
-			if( $urlRow ){
-				$recordObj->assignValues( array('urlrewrite_custom'	=>	$blogCustomUrl ) );
-				if( !$recordObj->update( array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($blogOriginalUrl)) )){
-					Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->adminLangId) );
-					FatUtility::dieJsonError( Message::getHtml() );
-				}
-				//$shopDetails['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
-			} else {
-				$recordObj->assignValues( array('urlrewrite_original' => $blogOriginalUrl, 'urlrewrite_custom'	=>	$blogCustomUrl ) );
-				if( !$recordObj->addNew( )){
-					Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->adminLangId) );
-					FatUtility::dieJsonError( Message::getHtml() );		
-				}
-			}
+			$record->rewriteUrl($post['urlrewrite_custom']);			
 		}
 		/* ] */
 		

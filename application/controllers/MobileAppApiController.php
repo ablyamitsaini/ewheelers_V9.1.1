@@ -2027,7 +2027,7 @@ class MobileAppApiController extends MyAppController {
 		
 	}
 	
-	function login(){
+	function login(){ 
 		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
 		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {		
@@ -2041,7 +2041,7 @@ class MobileAppApiController extends MyAppController {
 		
 		$userInfo = $uObj->getUserInfo(array('user_name','user_id'),true,true);
 		
-		$arr=array(
+		$arr = array(
 					'status'=>1,
 					'token'=>$generatedToken, 
 					'user_name'=>$userInfo["user_name"], 

@@ -201,34 +201,44 @@ class Shop extends MyAppModel {
 			
 	}
 	
-	private function rewriteUrl($keyword ,$type = 'shop'){
+	private function rewriteUrl($keyword ,$type = 'shop' , $suffixWithId = true){
 		if ($this->mainTableRecordId < 1) {						
 			return false;
 		}
 		
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
+		$seoUrl = CommonHelper::seoUrl($keyword);		
+		
 		switch(strtolower($type)){
 			case 'top-products':
 				$originalUrl = Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-top-products-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-top-products$/','',$seoUrl);
+				$seoUrl.=  '-top-products';	
 			break;
 			case 'reviews':
 				$originalUrl = Shop::SHOP_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-reviews-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-reviews$/','',$seoUrl);
+				$seoUrl.= '-reviews';	
 			break;
 			case 'contact':
 				$originalUrl = Shop::SHOP_SEND_MESSAGE_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-contact-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-contact$/','',$seoUrl);
+				$seoUrl.=  '-contact';	
 			break;
 			case 'policy':
 				$originalUrl = Shop::SHOP_POLICY_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-policy-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-policy$/','',$seoUrl);
+				$seoUrl.=  '-policy';	
 			break;
 			default:
-				$originalUrl = Shop::SHOP_VIEW_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+				$originalUrl = Shop::SHOP_VIEW_ORGINAL_URL.$this->mainTableRecordId;					
 			break;
 		}
-			
+		
+		if($suffixWithId){
+			$seoUrl.= '-'.$this->mainTableRecordId;
+		}
+		
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
 
 		$seoUrlKeyword = array(
@@ -242,7 +252,7 @@ class Shop extends MyAppModel {
 	}
 	
 	public function rewriteUrlShop($keyword){
-		return $this->rewriteUrl($keyword,'shop');
+		return $this->rewriteUrl($keyword);
 	}
 	
 	public function rewriteUrlReviews($keyword){

@@ -13,6 +13,10 @@ class UrlRewrite extends MyAppModel{
 		$srch = new SearchBase(static::DB_TBL, 'ur');		
 		return $srch;
 	}
+	
+	public static function saveData($originalUrl,$customUrl){
+	
+	}
 
 	public static function getDataByCustomUrl($customUrl,$excludeThisOriginalUrl = false){
 		$urlSrch = static::getSearchObject();

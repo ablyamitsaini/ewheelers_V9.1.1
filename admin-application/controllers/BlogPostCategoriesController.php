@@ -158,21 +158,11 @@ class BlogPostCategoriesController extends AdminBaseController {
 		}
 		$bpcategory_id = $record->getMainTableRecordId();
 		/* url data[ */
-		$blogOriginalUrl = 'blog/category/'.$bpcategory_id;
-		$seoUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
+		$blogOriginalUrl = BlogPostCategory::REWRITE_URL_PREFIX.$bpcategory_id;		
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($blogOriginalUrl)));
 		} else {
-			
-			$originalUrl = BlogPostCategory::REWRITE_URL_PREFIX.$bpcategory_id;
-			$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-			$seoUrlKeyword = array(
-			'urlrewrite_original'=>$originalUrl,
-			'urlrewrite_custom'=>$customUrl
-			);	
-			
-			FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-		
+			$record->rewriteUrl($post['urlrewrite_custom'],true,$bpcategory_parent);			
 		}
 		/* ] */
 		

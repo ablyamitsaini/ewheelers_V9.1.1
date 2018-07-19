@@ -537,21 +537,27 @@ class SellerProduct extends MyAppModel{
 			return false;
 		}
 		
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
+		$seoUrl = CommonHelper::seoUrl($keyword);
+		
 		switch(strtolower($type)){
 			case 'reviews':
 				$originalUrl = Product::PRODUCT_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-reviews-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-reviews$/','',$seoUrl);
+				$seoUrl.=  '-reviews';	
 			break;
 			case 'moresellers':
 				$originalUrl = Product::PRODUCT_MORE_SELLERS_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-sellers-'.$this->mainTableRecordId;	
+				$seoUrl = preg_replace('/-sellers$/','',$seoUrl);
+				$seoUrl.=  '-sellers';	
 			break;
 			default:
-				$originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$this->mainTableRecordId;
-				$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+				$originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$this->mainTableRecordId;				
 			break;
 		}
-			
+		
+		$seoUrl.= '-'.$this->mainTableRecordId;
+					
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
 
 		$seoUrlKeyword = array(

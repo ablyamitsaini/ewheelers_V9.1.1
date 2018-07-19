@@ -90,13 +90,19 @@ class Brand extends MyAppModel{
 		return false;
 	}
 	
-	public function rewriteUrl($keyword){
+	public function rewriteUrl($keyword, $suffixWithId = true){
 		if ($this->mainTableRecordId < 1) {						
 			return false;
 		}
 		
-		$originalUrl = Brand::REWRITE_URL_PREFIX.$this->mainTableRecordId;
-		$seoUrl =  CommonHelper::seoUrl($keyword).'-'.$this->mainTableRecordId;	
+		$originalUrl = Brand::REWRITE_URL_PREFIX.$this->mainTableRecordId;		
+		
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
+		$seoUrl =  CommonHelper::seoUrl($keyword);	
+				
+		if($suffixWithId){
+			$seoUrl =  $seoUrl.'-'.$this->mainTableRecordId;	
+		}
 			
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
 
