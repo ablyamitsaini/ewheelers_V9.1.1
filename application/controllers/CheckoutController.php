@@ -391,10 +391,11 @@ class CheckoutController extends MyAppController{
 			FatUtility::dieWithError( $shippingDurationError );
 		} */
 		$cart_products=$this->cartObj->getProducts( $this->siteLangId ); 
+		
 		/* get user shipping address[ */
 		$shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 		
-		
+		$sellerPrice = $this->getSellersProductItemsPrice($cart_products);
 		/* ] */
 		foreach($cart_products as $cartkey=>$cartval)
 		{
@@ -419,8 +420,18 @@ class CheckoutController extends MyAppController{
 			}
 			$cart_products[$cartkey]['shipping_rates']=$shipping_options;
 			$cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;
-		
-		} 
+			$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 0;
+			
+			foreach($sellerPrice as $sellerId => $sellerData){
+				if($sellerId != $cartval['selprod_user_id']){
+					continue;
+				}
+				$cart_products[$cartkey]['totalPrice'] = $sellerData['totalPrice'];
+				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerData['totalPrice']){
+					$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 1;
+				}
+			}
+		}
 		if(count($cart_products)==0){
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
 			FatUtility::dieWithError(Message::getHtml());
@@ -500,29 +511,26 @@ class CheckoutController extends MyAppController{
 					/* ] */
 					
 					if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ){
-							foreach($shipping_options as $shipOption){
-									if($shipOption['pship_id']==$post["shipping_locations"][$productKey]){								
-									
-										$productToShippingMethods['product'][$cartval['selprod_id']] = array(
-											'selprod_id'	=>	$cartval['selprod_id'],
-											'pship_id'	=>	$post["shipping_locations"][$productKey],
-											'sduration_id'	=>	$shipOption['sduration_id'],
-											'sduration_name' => $shipOption['sduration_name'],
-											'sduration_from' => $shipOption['sduration_from'],
-											'sduration_to' => $shipOption['sduration_to'],
-											'sduration_days_or_weeks' => $shipOption['sduration_days_or_weeks'],
-											'mshipapi_id'	=>	$post["shipping_type"][$productKey],
-											'mshipcompany_id'	=>	$shipOption['scompanylang_scompany_id'],
-											'mshipcompany_name'	=>	$shipOption['scompany_name'],
-											'shipped_by_seller'	=>	CommonHelper::isShippedBySeller($cartval['selprod_user_id'],$product['product_seller_id'],$product['shippedBySellerId']),
-											'mshipapi_cost' =>  ( $free_shipping_options == 0 )? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
-											);	
-											continue;
-									}
-							}
-						
-						
-					
+						foreach($shipping_options as $shipOption){
+								if($shipOption['pship_id']==$post["shipping_locations"][$productKey]){								
+								
+									$productToShippingMethods['product'][$cartval['selprod_id']] = array(
+										'selprod_id'	=>	$cartval['selprod_id'],
+										'pship_id'	=>	$post["shipping_locations"][$productKey],
+										'sduration_id'	=>	$shipOption['sduration_id'],
+										'sduration_name' => $shipOption['sduration_name'],
+										'sduration_from' => $shipOption['sduration_from'],
+										'sduration_to' => $shipOption['sduration_to'],
+										'sduration_days_or_weeks' => $shipOption['sduration_days_or_weeks'],
+										'mshipapi_id'	=>	$post["shipping_type"][$productKey],
+										'mshipcompany_id'	=>	$shipOption['scompanylang_scompany_id'],
+										'mshipcompany_name'	=>	$shipOption['scompany_name'],
+										'shipped_by_seller'	=>	CommonHelper::isShippedBySeller($cartval['selprod_user_id'],$product['product_seller_id'],$product['shippedBySellerId']),
+										'mshipapi_cost' =>  ( $free_shipping_options == 0 )? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
+										);	
+										continue;
+								}
+						}
 					}elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING ) && !empty($post["shipping_services"][$productKey]) ){
 								list($carrier_name, $carrier_price) = explode("-", $post["shipping_services"][$productKey]);
 								$productToShippingMethods['product'][$cartval['selprod_id']] = array(

@@ -7522,4 +7522,5 @@ form.custom-form input[type="submit"] {
 .box-container{padding: 30px;background: #fff;position: relative;}
 
 .-inline-element{display:inline-block;vertical-align:top;}
+.-row-heading td{background:#eee;color:#000;}
 

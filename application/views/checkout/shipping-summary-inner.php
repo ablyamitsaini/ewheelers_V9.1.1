@@ -7,7 +7,6 @@ $frmShippingApi->setFormTagAttribute('onSubmit', 'setUpShippingApi(this); return
 
 $shippingapi_idFld = $frmShippingApi->getField('shippingapi_id');
 $shippingapi_idFld->developerTags['col'] = 6;
-
 //$btnSubmit->setFieldTagAttribute('class','btn btn--primary btn--h-large');
 ?>
 <div class="review-wrapper">
@@ -15,10 +14,29 @@ $shippingapi_idFld->developerTags['col'] = 6;
 	<div class="short-detail">	
 		<table class="cart-summary item-yk">
 			<tbody>
-				<?php 
+				<?php usort($products, function($a, $b) {
+					  return $a['shop_id'] - $b['shop_id'];
+					});
+					
+					$prevShopId = 0;
 				if( count($products) ){
 					foreach( $products as $product ){
-						$newShippingMethods = $shippingMethods;
+						if( $product['shop_id'] != $prevShopId){ ?>
+							<tr class="-row-heading">
+								<td colspan="2"><?php echo $product['shop_name']; ?></td>
+								<td class="text-right" colspan="2"><?php 
+								if($product['shop_free_shipping_eligibility'] > 0) {
+									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ; 
+								}
+								elseif($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']){
+									$str = Labels::getLabel('LBL_Upto_{amount}_you_will_get_free_shipping', $siteLangId);
+									$str = str_replace( '{amount}', $product['shop_free_ship_upto'], $str );
+									echo '<div class="note-messages">'.$str.'</div>';
+								}
+								?>
+								</td>
+							</tr>
+						<?php } $prevShopId = $product['shop_id']; $newShippingMethods = $shippingMethods;
 						$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)'; 
 						$shopUrl = !$isAppUser?CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) ):'javascript:void(0)';
 						$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
