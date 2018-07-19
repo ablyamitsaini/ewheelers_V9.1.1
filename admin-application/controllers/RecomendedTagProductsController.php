@@ -45,6 +45,7 @@ class RecomendedTagProductsController extends AdminBaseController {
 		
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
+		/* echo $srch->getQuery(); die; */
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs);
 		

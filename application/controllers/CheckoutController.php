@@ -394,8 +394,8 @@ class CheckoutController extends MyAppController{
 		
 		/* get user shipping address[ */
 		$shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
+		$sellerPrice = $this->cartObj->getSellersProductItemsPrice($cart_products);
 		
-		$sellerPrice = $this->getSellersProductItemsPrice($cart_products);
 		/* ] */
 		foreach($cart_products as $cartkey=>$cartval)
 		{
@@ -422,15 +422,13 @@ class CheckoutController extends MyAppController{
 			$cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;
 			$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 0;
 			
-			foreach($sellerPrice as $sellerId => $sellerData){
-				if($sellerId != $cartval['selprod_user_id']){
-					continue;
-				}
-				$cart_products[$cartkey]['totalPrice'] = $sellerData['totalPrice'];
-				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerData['totalPrice']){
+			if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
+				$cart_products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
+				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
 					$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 1;
 				}
 			}
+			
 		}
 		if(count($cart_products)==0){
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
@@ -559,27 +557,7 @@ class CheckoutController extends MyAppController{
 					//MSG_Error_in_Shipping_Method_Selection
 					Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
 					FatUtility::dieWithError( Message::getHtml() );
-				}
-				
-				
-				
-				/* Check if different shipping is selected in case of free shipping [ */
-				
-				/* foreach( $cartProducts as $cartProduct ){
-					foreach($sellerPrice as $sellerId => $sellerData){
-						if($sellerId != $cartProduct['selprod_user_id']){
-							continue;
-						}
-						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerData['totalPrice'] && ()){
-							
-						}
-						
-					}
-					
-				} */
-				/* ] */
-				
-				
+				}				
 				
 				$this->set('msg',Labels::getLabel('MSG_Shipping_Method_selected_successfully.', $this->siteLangId));
 				$this->_template->render(false, false, 'json-success.php');
@@ -918,7 +896,7 @@ class CheckoutController extends MyAppController{
 		/* order products[ */
 		$cartProducts = $this->cartObj->getProducts($this->siteLangId);
 		
-		$sellerPrice = $this->getSellersProductItemsPrice($cartProducts);
+		$sellerPrice = $this->cartObj->getSellersProductItemsPrice($cartProducts);
 		
 		$orderData['products'] = array();
 		$orderData['prodCharges'] = array();
@@ -1070,11 +1048,9 @@ class CheckoutController extends MyAppController{
 					}			
 					
 					$shippingTotal = 0;
-					foreach($sellerPrice as $sellerId => $sellerData){
-						if($sellerId != $cartProduct['selprod_user_id']){
-							continue;
-						}
-						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerData['totalPrice']){
+					
+					if(array_key_exists($cartProduct['selprod_user_id'],$sellerPrice)){
+						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerPrice[$cartProduct['selprod_user_id']]['totalPrice']){
 							continue;
 						}
 						$shippingTotal += $cartProduct['shipping_cost'];
@@ -1654,18 +1630,5 @@ class CheckoutController extends MyAppController{
 		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
-	}
-	
-	public function getSellersProductItemsPrice($cartProducts){
-		$sellerPrice = array();
-		if( is_array($cartProducts) && count($cartProducts) ){
-			foreach( $cartProducts as $selprod ){
-				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
-					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
-				}
-				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
-			}
-		}
-		return $sellerPrice;
 	}
 }

@@ -49,6 +49,7 @@ class ProductReviewsController extends AdminBaseController {
 		$srch->joinUser();
 		$srch->joinSeller();
 		$srch->joinProducts();
+		$srch->joinSellerProducts($this->adminLangId);
 		$srch->joinSelProdRatingByType(SelProdRating::TYPE_PRODUCT);
 		$srch->addMultipleFields(array('IFNULL(product_name,product_identifier) as product_name', 'usc.credential_username as seller_username','uc.credential_username as reviewed_by','spreview_id','spreview_posted_on','spreview_status','sprating_rating'));
 		$srch->addOrder('spreview_posted_on','DESC');		

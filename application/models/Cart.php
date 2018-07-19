@@ -684,15 +684,8 @@ class Cart extends FatModel {
 	public function getCartFinancialSummary( $langId ){
 		$products = $this->getProducts( $langId );
 		
-		$sellerPrice = array();
-		if( is_array($products) && count($products) ){
-			foreach( $products as $selprod ){
-				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
-					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
-				}
-				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
-			}
-		}
+		$sellerPrice = $this->getSellersProductItemsPrice($products);
+		
 		
 		$cartTotal = 0;
 		$cartTotalNonBatch = 0;
@@ -731,15 +724,13 @@ class Cart extends FatModel {
 				$originalShipping += $product['shipping_cost'];
 				$totalSiteCommission += $product['commission'];
 				
-				foreach($sellerPrice as $sellerId => $sellerData){
-					if($sellerId != $product['selprod_user_id']){
-						continue;
-					}
-					if($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] < $sellerData['totalPrice']){
+				if(array_key_exists($product['selprod_user_id'],$sellerPrice)){
+					if($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] < $sellerPrice[$product['selprod_user_id']]['totalPrice']){
 						continue;
 					}
 					$shippingTotal += $product['shipping_cost'];
 				}
+
 			}
 		}
 		
@@ -1463,32 +1454,17 @@ class Cart extends FatModel {
         return $productWeight * $coversionRate;
     }
 	
-	/* function getTotalSellerProductPrice($langId){
-		$cartInfo = $this->SYSTEM_ARR['cart'];
-		$selProdIds = array();
-		foreach($cartInfo as $key => $quantity){
-			$keyDecoded = unserialize( base64_decode($key) );
-
-			if( strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT ) === FALSE ){
-				continue;
+	public function getSellersProductItemsPrice($cartProducts){
+		$sellerPrice = array();
+		if( is_array($cartProducts) && count($cartProducts) ){
+			foreach( $cartProducts as $selprod ){
+				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
+					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
+				}
+				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
 			}
-			$selProdIds[] = FatUtility::int(str_replace( Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded ));	
 		}
-		$prodSrch = new ProductSearch($langId);
-		$prodSrch->setDefinedCriteria(1,0,array(),false);
-		$prodSrch->joinProductToCategory();
-		$prodSrch->joinSellerSubscription();
-		$prodSrch->addSubscriptionValidCondition();
-		$prodSrch->doNotCalculateRecords();
-		$prodSrch->addCondition( 'selprod_id', 'IN', $selProdIds );
-		$prodSrch->addCondition('selprod_deleted','=',applicationConstants::NO);
-		$prodSrch->addGroupBy('selprod_user_id');
-		$prodSrch->doNotLimitRecords();
-		$prodSrch->addMultipleFields( array(
-			'selprod_user_id', 'sum(theprice) as totalprice', 'shop.shop_free_ship_upto' ) );
-		$productRs = $prodSrch->getResultSet();
-		$products = FatApp::getDb()->fetchAll($productRs);
-		return $products;
-	} */
+		return $sellerPrice;
+	}
 
 }

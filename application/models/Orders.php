@@ -415,6 +415,8 @@ class Orders extends MyAppModel{
 					$chargeTypeArr = OrderProduct::getChargeTypeArr($langId);
 					$oChargesRecordObj = new TableRecord(OrderProduct::DB_TBL_CHARGES);
 					foreach($chargeTypeArr as $chargeType=>$chargeVal){
+						if(!array_key_exists($selprodId,$prodCharges)){ continue;}
+
 						if(!array_key_exists($chargeType,$prodCharges[$selprodId])){ continue;}
 						
 						$amnt = $prodCharges[$selprodId][$chargeType]['amount'];
@@ -438,7 +440,7 @@ class Orders extends MyAppModel{
 				/* ] */
 				$counter++;
 			}
-		} 
+		}
 		/* CommonHelper::printArray($addresses);die; */
 		$db->deleteRecords( static::DB_TBL_ORDER_USER_ADDRESS, array('smt' => 'oua_order_id = ?', 'vals' => array( $this->getOrderId() ) ) );
 		if( !empty($addresses) ){
