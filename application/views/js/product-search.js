@@ -23,7 +23,8 @@ $(document).ready(function(){
 	$("input[name=brands]").change(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
-			addFilter(id,this);		
+			addFilter(id,this);
+			addToSearchQueryString(id,this);	
 		}else{
 			removeFilter(id,this);
 		}
@@ -33,7 +34,8 @@ $(document).ready(function(){
 	$("input[name=category]").change(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
-			addFilter(id,this);		
+			addFilter(id,this);
+			addToSearchQueryString(id,this);	
 		}else{
 			removeFilter(id,this);
 		}
@@ -43,7 +45,8 @@ $(document).ready(function(){
 	$("input[name=optionvalues]").change(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
-			addFilter(id,this);		
+			addFilter(id,this);
+			addToSearchQueryString(id,this);	
 		}else{
 			removeFilter(id,this);
 		}
@@ -54,7 +57,7 @@ $(document).ready(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
 			addFilter(id,this);
-		
+			addToSearchQueryString(id,this);
 		}else{
 			removeFilter(id,this);
 		}
@@ -68,7 +71,8 @@ $(document).ready(function(){
 	$("input:checkbox[name=out_of_stock]").change(function(){
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
-			addFilter(id,this);		
+			addFilter(id,this);
+			addToSearchQueryString(id,this);	
 		}else{
 			removeFilter(id,this);
 		}
@@ -76,7 +80,7 @@ $(document).ready(function(){
 	});
 	
 	$("input[name='priceFilterMinValue']").keyup(function(e){
-		var code = e.which;
+		var code = e.which; 
 		if( code == 13 ) {
 			e.preventDefault();
 			addPricefilter();
@@ -205,17 +209,16 @@ function htmlEncode(value){
 function addFilter(id,obj){
 	var click = "onclick=removeFilter('"+id+"',this)";
 	$filter = $(obj).parent().text();
-	$filterVal = htmlEncode($(obj).parent().text());
-	addToSearchQueryString (id,obj);	
-	$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
-		
+	$filterVal = htmlEncode($(obj).parent().text());		
+	if(!$('#filters').find('a').hasClass(id)){
+		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");		
+	}
 }
 
 function removeFilter(id,obj){
 	$('.'+id).remove();
 	$('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 	var frm = document.frmProductSearch;
-
 	/* form submit upon onchange of form elements select box[ */	
 	removeFromSearchQueryString(id);		
 	searchProducts(frm,0,0,1,1);
@@ -230,8 +233,7 @@ function addToSearchQueryString(id,obj){
 	$filter = $(obj).parent().text();
 	$filterVal = htmlEncode($(obj).parent().text());
 	//searchUrl = searchUrl +'&'+ id + '='+ $filterVal.replace(/ /g,'');
-	searchArr[id] = $filterVal.replace(/ /g,'');
-	
+	searchArr[id] = $filterVal.replace(/ /g,'');	
 }
 
 function removeFromSearchQueryString(key){
@@ -290,62 +292,58 @@ function getSearchQueryUrl(includeBaseUrl){
 	return encodeURI(url);
 }
 
-function addPricefilter(){
+function addPricefilter(){ 
 	$('.price').remove();
-	if(typeof($("input[name=priceFilterMaxValue]").val())!== "undefined"){
-		if( $("input[name=priceFilterMaxValue]").val()==$("#price_max_range").val() && $("input[name=priceFilterMinValue]").val() ==Math.floor($("#price_min_range").val()))
-		{
-
-		}else{
-			$('#filters').append('<a href="javascript:void(0)" class="price" onclick="removePriceFilter(this)" >'+currencySymbolLeft+$("input[name=priceFilterMinValue]").val()+currencySymbolRight+' - '+currencySymbolLeft+$("input[name=priceFilterMaxValue]").val()+currencySymbolRight+'</a>');
-			$("input[name=price_min_range]").val($("input[name=priceFilterMinValue]").val());
-			$("input[name=price_max_range]").val($("input[name=priceFilterMaxValue]").val());
-		}
-		searchArr['price_min_range'] = $("input[name=priceFilterMinValue]").val();
-		searchArr['price_max_range'] = $("input[name=priceFilterMaxValue]").val();
-		searchArr['currency'] = langLbl.siteCurrencyId;
-		var frm = document.frmProductSearch;		
-		/* form submit upon onchange of form elements select box[ */
-		 searchProducts(frm,0,0,1,1); 
-
+	if(!$('#filters').find('a').hasClass('price')){
+		$('#filters').append('<a href="javascript:void(0)" class="price" onclick="removePriceFilter(this)" >'+currencySymbolLeft+$("input[name=priceFilterMinValue]").val()+currencySymbolRight+' - '+currencySymbolLeft+$("input[name=priceFilterMaxValue]").val()+currencySymbolRight+'</a>');
 	}
+	searchArr['price_min_range'] = $("input[name=priceFilterMinValue]").val();
+	searchArr['price_max_range'] = $("input[name=priceFilterMaxValue]").val();
+	searchArr['currency'] = langLbl.siteCurrencyId;
+	var frm = document.frmProductSearch;		
+	searchProducts(frm,0,0,1,1);	
 }
-function removePriceFilter(){
-
-	var minPrice=$("#old-min-value").val();
-	var maxPrice=$("#old-max-value").val();
-	$('#filters').append('<a href="javascript:void(0)" class="price" onclick="removePriceFilter(this)" >'+currencySymbolLeft+ Math.floor($("#price_min_range").val())+currencySymbolRight+ '-' +currencySymbolLeft+Math.floor($("#price_max_range").val())+currencySymbolRight+'</a>');
-	$("input[name=price_min_range]").val(minPrice);
-	$("input[name=price_max_range]").val(maxPrice);
+function removePriceFilter(){	
+	updatePriceFilter();
 	var frm = document.frmProductSearch;
-	
-	$("#price_range").val(minPrice+'-'+maxPrice);
-	var $range = $("#price_range");
-	range = $range.data("ionRangeSlider");
-	updateRange(minPrice,maxPrice);
-	range.reset();
-
 	delete searchArr['price_min_range'];
 	delete searchArr['price_max_range'];
 	delete searchArr['currency'];
-	searchProducts(frm,0,0,1,1);
+	searchProducts(frm,0,0,1,1);	
 	$('.price').remove();
+}
+
+function updatePriceFilter(minPrice,maxPrice){
+	if(typeof minPrice == 'undefined' || typeof maxPrice == 'undefined'){
+		minPrice = $("#filterDefaultMinValue").val();
+		maxPrice = $("#filterDefaultMaxValue").val();
+	}else{
+		addPricefilter();
+	}	
+	
+	$('input[name="priceFilterMinValue"]').val(minPrice);				
+	$('input[name="priceFilterMaxValue"]').val(maxPrice);
+	var frm = document.frmProductSearch;	
+	var $range = $("#price_range");
+	range = $range.data("ionRangeSlider");		
+	updateRange(minPrice,maxPrice);
+	range.reset();	
 }
 	
 (function() {
-	updateRange = function (from,to) {
+	updateRange = function (from,to) {			
 		range.update({
 			from: from,
 			to: to
 		});
 	};
 	var processing_product_load = false;
-	searchProducts = function( frm, append, reset, withPriceFilter ,useFilterInurl ){
+	searchProducts = function( frm, append, resetValue, withPriceFilter ,useFilterInurl ){
 
 		if( processing_product_load == true ) return false;
 		processing_product_load = true;
-		append = ( append == "undefined" ) ? 0 : append;
-		reset = ( reset == "undefined" ) ? 0 : reset;
+		append = (typeof append == "undefined" ) ? 0 : append;
+		resetValue = (typeof resetValue == "undefined" ) ? 0 : resetValue;
 		
 		if(typeof useFilterInurl == 'undefined' || useFilterInurl == null){
 			useFilterInurl = 0;
@@ -356,11 +354,13 @@ function removePriceFilter(){
 		/*]*/
 		data = data+"&colMdVal="+[colMdVal];
 		
-		if(reset == 0){
+		if(resetValue == 0){ 
 			/* Category filter value pickup[ */
 			var category=[];
 			$("input:checkbox[name=category]:checked").each(function(){
-				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
+				var id = $(this).parent().parent().find('label').attr('id');	
+				addToSearchQueryString (id,this);
+				addFilter (id,this);
 				category.push($(this).val());
 			});
 			if ( category.length ){
@@ -371,7 +371,9 @@ function removePriceFilter(){
 			/* brands filter value pickup[ */
 			var brands=[];
 			$("input:checkbox[name=brands]:checked").each(function(){
-				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
+				var id = $(this).parent().parent().find('label').attr('id');	
+				addToSearchQueryString (id,this);
+				addFilter (id,this);
 				brands.push($(this).val());
 			});
 			if ( brands.length ){
@@ -382,7 +384,9 @@ function removePriceFilter(){
 			/* Option filter value pickup[ */
 			var optionvalues=[];
 			$("input:checkbox[name=optionvalues]:checked").each(function(){
-				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
+				var id = $(this).parent().parent().find('label').attr('id');	
+				addToSearchQueryString (id,this);
+				addFilter (id,this);
 				optionvalues.push($(this).val());
 			});
 			if ( optionvalues.length ){
@@ -393,7 +397,9 @@ function removePriceFilter(){
 			/* condition filters value pickup[ */
 			var conditions=[];
 			$("input:checkbox[name=conditions]:checked").each(function(){
-				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
+				var id = $(this).parent().parent().find('label').attr('id');	
+				addToSearchQueryString (id,this);
+				addFilter (id,this);
 				conditions.push($(this).val());
 			});
 			if ( conditions.length ){
@@ -407,35 +413,43 @@ function removePriceFilter(){
 			
 			/* Out Of Stock Filter value pickup[ */
 			$("input:checkbox[name=out_of_stock]:checked").each(function(){
-				addToSearchQueryString ($(this).parent().parent().find('label').attr('id'),this);
+				var id = $(this).parent().parent().find('label').attr('id');	
+				addToSearchQueryString (id,this);
+				addFilter (id,this);
 				data=data+"&out_of_stock=1";
 			});
 			/* ] */
-			/* price filter value pickup[ */
-			if(withPriceFilter == undefined || withPriceFilter==0){
+			
+			/* price filter value pickup[ */			
+			if(typeof $("input[name=priceFilterMinValue]").val() != "undefined"){
+				data = data+"&min_price_range="+$("input[name=priceFilterMinValue]").val();
+			}
+			if(typeof $("input[name=priceFilterMaxValue]").val() != "undefined"){
+				data = data+"&max_price_range="+$("input[name=priceFilterMaxValue]").val();
+			}
+		
+			/* if(typeof withPriceFilter == 'undefined' || withPriceFilter==0){ 
 				if(typeof $("input[name=old-min-value]").val() != "undefined"){
 					data = data+"&min_price_range="+$("input[name=old-min-value]").val();
 				}
 				if(typeof $("input[name=old-max-value]").val() != "undefined"){
 					data = data+"&max_price_range="+$("input[name=old-max-value]").val();
-				}
+				}	
+					
 			}else{
 				if(typeof $("input[name=price_min_range]").val() != "undefined"){
 					data = data+"&min_price_range="+$("input[name=price_min_range]").val();
 				}
 				if(typeof $("input[name=price_max_range]").val() != "undefined"){
 					data = data+"&max_price_range="+$("input[name=price_max_range]").val();
-				}
-				searchArr['price_min_range'] = $("input[name=priceFilterMinValue]").val();
-				searchArr['price_max_range'] = $("input[name=priceFilterMaxValue]").val();				
-			}
+				}							 				
+			} */
 			/* ] */
 		}
 		
 		if(($( "#filters" ).find('a').length)>0){
 			$('#resetAll').css('display','block');
-		}
-		else{
+		}else{
 			$('#resetAll').css('display','none');  
 		}
 		
@@ -451,6 +465,7 @@ function removePriceFilter(){
 		if(useFilterInurl > 0){
 			history.pushState(null, null, getSearchQueryUrl(true));	
 		}
+		
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;
@@ -477,7 +492,7 @@ function removePriceFilter(){
 				$(".hide_on_no_product").removeClass("dont-show");
 			}
 			
-			if(ans.selectedCurrencyPriceArr && ans.selectedCurrencyPriceArr['minPrice'] !='' && ans.selectedCurrencyPriceArr['maxPrice'] !='') {
+			/* if(ans.selectedCurrencyPriceArr && ans.selectedCurrencyPriceArr['minPrice'] !='' && ans.selectedCurrencyPriceArr['maxPrice'] !='') {
 				var minPrice = ans.selectedCurrencyPriceArr['minPrice'];
 				var maxPrice = ans.selectedCurrencyPriceArr['maxPrice'];
 				
@@ -501,11 +516,9 @@ function removePriceFilter(){
 							disable: false
 						});
 					}
-					$('.price').remove();
+					$('.price').remove();					
 				}
-			}
-			
-			
+			} */
 			
 			if( append == 1 ){
 				$(dv).find('.loader-yk').remove();

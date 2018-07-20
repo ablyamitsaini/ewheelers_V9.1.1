@@ -253,34 +253,39 @@ class ProductsController extends MyAppController {
 		/* ] */
 
 
-		/* Price Filters[ */
+		/* Price Filters[ */		
+		$priceSrch = new ProductSearch( $this->siteLangId );
+		$priceSrch->setDefinedCriteria(1);
+		$priceSrch->joinProductToCategory();
+		$priceSrch->joinSellerSubscription();
+		$priceSrch->addSubscriptionValidCondition();
+		$priceSrch->doNotCalculateRecords();
+		$priceSrch->doNotLimitRecords();
+
+		if( !empty($category_id) ) {
+			$priceSrch->addCategoryCondition($category_id);
+		}
+
+		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
+			$priceSrch->addKeywordSearch($headerFormParamsAssocArr['keyword']);
+
+		}
+		$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
+		$qry = $priceSrch->getQuery();
+		$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
+		//$priceRs = $priceSrch->getResultSet();
+
+		$priceRs = $db->query($qry);
+		$priceArr = $db->fetch($priceRs);
+		 /* }  */
+		
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
-		}else{
-			$priceSrch = new ProductSearch( $this->siteLangId );
-			$priceSrch->setDefinedCriteria(1);
-			$priceSrch->joinProductToCategory();
-			$priceSrch->joinSellerSubscription();
-			$priceSrch->addSubscriptionValidCondition();
-			$priceSrch->doNotCalculateRecords();
-			$priceSrch->doNotLimitRecords();
-
-			if( !empty($category_id) ) {
-				$priceSrch->addCategoryCondition($category_id);
-			}
-
-			if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
-				$priceSrch->addKeywordSearch($headerFormParamsAssocArr['keyword']);
-
-			}
-			$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
-			$qry = $priceSrch->getQuery();
-			$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
-			//$priceRs = $priceSrch->getResultSet();
-
-			$priceRs = $db->query($qry);
-			$priceArr = $db->fetch($priceRs);
+			$priceInFilter = true;
 		}
 		/* CommonHelper::printArray($priceArr); die; */
 		/* ] */
@@ -318,9 +323,15 @@ class ProductsController extends MyAppController {
 			'currencySymbolLeft'	  =>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	  =>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			  =>	$this->siteLangId,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,
 			'count_for_view_more'     =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 
+
+		$this->set('priceArr', $priceArr);
+		$this->set('priceInFilter', $priceInFilter);
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchedCategoryData', $searchedCategoryData);
 		if( empty($record) ){
@@ -342,6 +353,18 @@ class ProductsController extends MyAppController {
 		$headerFormParamsArr = FatApp::getParameters();
 
 		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		if(array_key_exists('shop',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
+		}	
+		if(array_key_exists('collection',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
+		}
 		$headerFormParamsAssocArr['join_price'] = 1;
 		$headerFormParamsAssocArr['featured'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
@@ -377,18 +400,6 @@ class ProductsController extends MyAppController {
 		$prodSrchObj->addCondition('selprod_deleted','=',applicationConstants::NO);
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
 		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);
-
-			/* $tagSrch = Tag::getSearchObject($this->siteLangId);
-			$tagSrch->addMultipleFields(array('tag_id'));
-			$tagSrch->doNotCalculateRecords();
-			$tagSrch->doNotLimitRecords();
-			$cnd = $tagSrch->addCondition('tag_name','=',$headerFormParamsAssocArr['keyword'],'OR');
-			$cnd->attachCondition('tag_identifier','=',$headerFormParamsAssocArr['keyword']);
-			$rs = $tagSrch->getResultSet();
-			$row = $db->fetch($rs);
-			if(!empty($row) && $row['tag_id'] > 0){
-				Tag::recordTagWeightage($row['tag_id']);
-			} */
 
 			$searchItemObj = new SearchItem();
 			$searchData = array('keyword'=>$headerFormParamsAssocArr['keyword']);
@@ -467,10 +478,35 @@ class ProductsController extends MyAppController {
 		$priceArr = $db->fetch($priceRs);
 
 		/* ] */
+		
+		$brandsCheckedArr = array();
+		if(array_key_exists('brand',$headerFormParamsAssocArr)){
+			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+		}
+		
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalues',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalues'];
+		}
+		
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}
 		$productFiltersArr = array(
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'			=>	$categoriesArr,
 			'brandsArr'				=>	$brandsArr,
+			'brandsCheckedArr'		  =>	$brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
 			'conditionsArr'			=>	$conditionsArr,
+			'availability'	          =>	 $availability,
 			'priceArr'				=>	$priceArr,
 			'currencySymbolLeft'	=>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	=>	CommonHelper::getCurrencySymbolRight(),
@@ -484,6 +520,8 @@ class ProductsController extends MyAppController {
 		if(empty($record)){
 			$this->set('noProductFound', 'noProductFound');
 		}
+		
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Products','featured') );
 		$this->set('productFiltersArr', $productFiltersArr );
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));

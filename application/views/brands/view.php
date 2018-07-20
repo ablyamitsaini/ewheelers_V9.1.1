@@ -65,6 +65,10 @@
 <script type="text/javascript">
 var isBrandPage = 1;
 $(document).ready(function(){
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Brands','view',array($brandId)); ?>';
+	<?php if($priceInFilter){?>			
+		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
+	<?php }?>
 	searchProducts(document.frmProductSearch);
 });	 
 </script>	

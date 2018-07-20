@@ -55,6 +55,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){ 
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','featured'); ?>';
 	searchProducts(document.frmProductSearch);
 });	 
 </script> 

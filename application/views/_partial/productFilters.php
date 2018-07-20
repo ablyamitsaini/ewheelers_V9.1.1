@@ -171,9 +171,9 @@ array_walk($catCodeArr,function(&$n) {
     <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
 	  <div class="filter-content toggle-target">
 		<div class="prices " id="perform_price">
-			<input type="text" value="<?php echo floor($priceArr['minPrice']); ?>-<?php echo ceil($priceArr['maxPrice']); ?>" name="price_range" id="price_range" />
-			<input type="hidden" value="<?php echo floor($priceArr['minPrice']); ?>" name="price_min_range" id="price_min_range" />
-			<input type="hidden" value="<?php echo ceil($priceArr['maxPrice']); ?>" name="price_max_range" id="price_max_range" />
+			<input type="text" value="<?php echo floor($filterDefaultMinValue); ?>-<?php echo ceil($filterDefaultMaxValue); ?>" name="price_range" id="price_range" />
+			<input type="hidden" value="<?php echo floor($filterDefaultMinValue); ?>" name="filterDefaultMinValue" id="filterDefaultMinValue" />
+			<input type="hidden" value="<?php echo ceil($filterDefaultMaxValue); ?>" name="filterDefaultMaxValue" id="filterDefaultMaxValue" />
 		</div>
 		<div class="clear"></div>
 		<div class="slide__fields form">
@@ -310,10 +310,10 @@ $("document").ready(function(){
 	var max=0;
 	<?php if( isset($priceArr) && $priceArr ){ ?>
 	var range,
-	min = Math.floor(<?php echo $priceArr['minPrice']; ?>),
-    max = Math.floor(<?php echo $priceArr['maxPrice']; ?>),
-    from  = Math.floor(<?php echo $priceArr['minPrice']; ?>),
-    to = Math.floor(<?php echo $priceArr['maxPrice']; ?>);
+	min = Math.floor(<?php echo $filterDefaultMinValue; ?>),
+    max = Math.floor(<?php echo $filterDefaultMaxValue; ?>),
+    from,
+    to;
 	var $from = $('input[name="priceFilterMinValue"]');
 	var $to = $('input[name="priceFilterMaxValue"]');
 	var $range = $("#price_range");
@@ -321,8 +321,7 @@ $("document").ready(function(){
 		$from.prop("value", from);
 		$to.prop("value", to);
 	};
-	$(document.frmProductSearch).append('<input type="hidden" id="old-min-value" name="old-min-value" value='+<?php echo $priceArr['minPrice']; ?>+' />');
-	$(document.frmProductSearch).append('<input type="hidden" id="old-max-value" name="old-max-value" value='+<?php echo $priceArr['maxPrice']; ?>+' />');
+
 	$("#price_range").ionRangeSlider({
 		hide_min_max: true,
 		hide_from_to: true,
@@ -334,14 +333,13 @@ $("document").ready(function(){
 		type: 'double',
 		prettify_enabled: true,
 		prettify_separator: ',',
-		grid: false,
+		grid: true,
 		// grid_num: 1,
-		prefix: "<?php echo $currencySymbolLeft; ?>",
-		postfix: "<?php echo $currencySymbolRight; ?>",
+		prefix: '<?php echo $currencySymbolLeft; ?>',
+		postfix: '<?php echo $currencySymbolRight; ?>',
 		
 		input_values_separator: '-',
 		onFinish: function () {
-			
 			var minMaxArr = $("#price_range").val().split('-');
 			if(minMaxArr.length == 2){
 				var min = Number(minMaxArr[0]);
@@ -349,6 +347,7 @@ $("document").ready(function(){
 				$('input[name="priceFilterMinValue"]').val(min);
 				$('input[name="priceFilterMaxValue"]').val(max);
 				return addPricefilter();
+				//return searchProducts(document.frmProductSearch);
 			}
 
 		},
@@ -356,7 +355,6 @@ $("document").ready(function(){
 			from = data.from;
 			to = data.to;
 			updateValues();
-			
 		}
 	});
 
@@ -404,6 +402,7 @@ $to.on("change", function () {
     updateRange();
 });
 
+
 <?php } ?>
 	
 	/* left side filters scroll bar[ */
@@ -426,7 +425,7 @@ $to.on("change", function () {
 		$(this).next('ul').toggle("");
 	});
 	$('.span--expand').click();
-	/* ] */
+	/* ] */	
 });
 
 /*  $(window).load(function(){

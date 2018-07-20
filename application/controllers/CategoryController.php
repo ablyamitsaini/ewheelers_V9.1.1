@@ -142,27 +142,31 @@ class CategoryController extends MyAppController {
 		/* ] */
 
 
-		/* Price Filters[ */
+		/* Price Filters[ */		
+		$priceSrch = new ProductSearch( $this->siteLangId );
+		$priceSrch->setDefinedCriteria(1);
+		$priceSrch->joinProductToCategory();
+		$priceSrch->joinSellerSubscription();
+		$priceSrch->addSubscriptionValidCondition();
+		$priceSrch->doNotCalculateRecords();
+		$priceSrch->doNotLimitRecords();
+		$priceSrch->addCategoryCondition($category_id);
+		$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
+		
+	
+		$qry = $priceSrch->getQuery();
+		$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
+		//$priceRs = $priceSrch->getResultSet();
+		$priceRs = $db->query($qry);
+		$priceArr = $db->fetch($priceRs);
+		
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
-		}else{
-			$priceSrch = new ProductSearch( $this->siteLangId );
-			$priceSrch->setDefinedCriteria(1);
-			$priceSrch->joinProductToCategory();
-			$priceSrch->joinSellerSubscription();
-			$priceSrch->addSubscriptionValidCondition();
-			$priceSrch->doNotCalculateRecords();
-			$priceSrch->doNotLimitRecords();
-			$priceSrch->addCategoryCondition($category_id);
-			$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
-			
-		
-			$qry = $priceSrch->getQuery();
-			$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
-			//$priceRs = $priceSrch->getResultSet();
-			$priceRs = $db->query($qry);
-			$priceArr = $db->fetch($priceRs);
+			$priceInFilter = true;
 		}
 		/* ] */
 
@@ -198,6 +202,9 @@ class CategoryController extends MyAppController {
 			'priceArr'				=>	$priceArr,
 			'options'				=>	$options,
 			'siteLangId'			=>	$this->siteLangId,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,
 			'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 
@@ -219,7 +226,8 @@ class CategoryController extends MyAppController {
 		if( empty($record) ){
 			$this->set('noProductFound', 'noProductFound');
 		}
-
+		$this->set('priceArr', $priceArr);
+		$this->set('priceInFilter', $priceInFilter);
 		/* Get category Polls [ */
 		$pollQuest = Polling::getCategoryPoll($category_id , $this->siteLangId);
 		$this->set('pollQuest', $pollQuest);
