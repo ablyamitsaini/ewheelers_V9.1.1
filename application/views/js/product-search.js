@@ -392,7 +392,7 @@ function removePriceFilter(){
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
 						
-		fcom.updateWithAjax(fcom.makeUrl('Products','productsList',),data,function(ans){
+		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;
 			$.mbsmessage.close();

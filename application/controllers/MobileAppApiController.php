@@ -13,7 +13,7 @@ class MobileAppApiController extends MyAppController {
 
 		if (array_key_exists('HTTP_X_TOKEN',$_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])){
 			$this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';	
-		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web') && array_key_exists('_token',$post)){
+		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token',$post)){
 			$this->appToken = ($post['_token']!='')?$post['_token']:'';				
 		}			
 		
