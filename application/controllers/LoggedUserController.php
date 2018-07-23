@@ -62,8 +62,8 @@ class LoggedUserController extends MyAppController {
 		$frm = new Form('frmOrderCancellationRequest');
 		$frm->addTextBox( '', 'op_invoice_number' );
 		$frm->addSelectBox('' ,'ocrequest_status', array( '-1' => Labels::getLabel('LBL_Status_Does_Not_Matter', $langId)  ) + OrderCancelRequest::getRequestStatusArr( $langId ), '', array(),'' );
-		$frm->addDateField( '', 'ocrequest_date_from' );
-		$frm->addDateField( '', 'ocrequest_date_to' );
+		$frm->addDateField( '', 'ocrequest_date_from', '',array('readonly'=>'readonly'));
+		$frm->addDateField( '', 'ocrequest_date_to', '',array('readonly'=>'readonly'));
 		
 		$fldSubmit = $frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$langId) );
 		$fldCancel = $frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearOrderCancelRequestSearch();') );

@@ -774,10 +774,10 @@ trait SellerProducts{
 		$frm = new Form('frmSellerProductSpecialPrice');
 		$fld = $frm->addFloatField( Labels::getLabel('LBL_Special_Price', $this->siteLangId).CommonHelper::concatCurrencySymbolWithAmtLbl(), 'splprice_price' );
 		$fld->requirements()->setPositive();
-		$fld = $frm->addDateField(Labels::getLabel( 'LBL_Price_Start_Date' ,$this->siteLangId),'splprice_start_date');
+		$fld = $frm->addDateField(Labels::getLabel( 'LBL_Price_Start_Date' ,$this->siteLangId),'splprice_start_date','' , array( 'readonly'=>'readonly'));
 		$fld->requirements()->setRequired();
 		
-		$fld = $frm->addDateField(Labels::getLabel( 'LBL_Price_End_Date' ,$this->siteLangId),'splprice_end_date');
+		$fld = $frm->addDateField(Labels::getLabel( 'LBL_Price_End_Date' ,$this->siteLangId),'splprice_end_date','' , array( 'readonly'=>'readonly'));
 		$fld->requirements()->setRequired();
 		
 		$frm->addHiddenField('','splprice_selprod_id');

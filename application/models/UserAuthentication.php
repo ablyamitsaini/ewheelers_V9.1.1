@@ -205,7 +205,7 @@ class UserAuthentication extends FatModel {
 		if(!$isAdmin){
 			
 			if ($row['credential_verified'] != applicationConstants::YES) {
-				$this->error = str_replace( "{clickhere}" ,'<a href="javascript:void(0)" onclick="resendVerificationLink('."'".$username."'".')">'.Labels::getLabel('LBL_Click_Here',$this->commonLangId).'</a>', Labels::getLabel('MSG_Your_Account_verification_is_pending', $this->commonLangId));
+				$this->error = str_replace( "{clickhere}" ,'<a href="javascript:void(0)" onclick="resendVerificationLink('."'".$username."'".')">'.Labels::getLabel('LBL_Click_Here',$this->commonLangId).'</a>', Labels::getLabel('MSG_Your_Account_verification_is_pending_{clickhere}', $this->commonLangId));
 				if ( FatUtility::isAjaxCall() ) {
 					$json['status'] = 0;
 					$json['msg'] = $this->error;
