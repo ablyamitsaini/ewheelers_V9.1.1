@@ -2027,12 +2027,11 @@ class MobileAppApiController extends MyAppController {
 		
 	}
 	
-	function login(){
+	function login(){ 
 		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
-		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {
-			//FatUtility::dieJsonError( FatUtility::decodeHtmlEntities(Labels::getLabel($authentication->getError(),$this->siteLangId)));
-			FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
+		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {		
+			FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(),$this->siteLangId)));
 		}
 		$userId = UserAuthentication::getLoggedUserId();
 		$uObj = new User($userId);				
@@ -2042,7 +2041,7 @@ class MobileAppApiController extends MyAppController {
 		
 		$userInfo = $uObj->getUserInfo(array('user_name','user_id'),true,true);
 		
-		$arr=array(
+		$arr = array(
 					'status'=>1,
 					'token'=>$generatedToken, 
 					'user_name'=>$userInfo["user_name"], 
@@ -2188,11 +2187,11 @@ class MobileAppApiController extends MyAppController {
 		if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false)) {
 			FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
 		}
-		if ( !$userObj->setMobileAppToken()){
+		if ( !$token = $userObj->setMobileAppToken()){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
-		$userInfo = $userObj->getUserInfo(array('user_id','user_app_access_token','user_name'),true,true);
-		$arr=array('status'=>1,'token'=>$userInfo["user_app_access_token"], 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
+		$userInfo = $userObj->getUserInfo(array('user_id','user_name'),true,true);
+		$arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
 					);
 		die ($this->json_encode_unicode($arr));
@@ -2267,11 +2266,11 @@ class MobileAppApiController extends MyAppController {
 			if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false)) {
 				FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
 			}
-			if ( !$userObj->setMobileAppToken()){
+			if ( !$token = $userObj->setMobileAppToken()){
 				FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 			}
-			$userInfo = $userObj->getUserInfo(array('user_id','user_app_access_token','user_name'),true,true);
-			$arr=array('status'=>1,'token'=>$userInfo["user_app_access_token"], 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
+			$userInfo = $userObj->getUserInfo(array('user_id','user_name'),true,true);
+			$arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
 					);
 			die ($this->json_encode_unicode($arr));
