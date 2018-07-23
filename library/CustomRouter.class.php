@@ -48,7 +48,7 @@ class CustomRouter{
 			$srch = UrlRewrite::getSearchObject();
 			$srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
 			$rs = $srch->getResultSet();
-			if (!$row = FatApp::getDb()->fetch($rs)) {				
+			if (!$row = FatApp::getDb()->fetch($rs)) {											
 				return;
 			}
 			/*]*/			
@@ -62,13 +62,12 @@ class CustomRouter{
 			$action = (isset($arr[0]))?$arr[0]:'';
 			array_shift($arr);
 			
-			$queryString = $arr;
-			
+			$queryString = $arr;			
 			/* [ used in case of filters when passed through url*/
 			array_shift($customUrl);
 			if(!empty($customUrl)){
 				$queryString = array_merge($queryString,$customUrl);			
-			}
+			}			
 			/* ]*/
 			
             if ($controller != '' && $action == '') 

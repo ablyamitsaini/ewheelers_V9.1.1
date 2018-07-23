@@ -19,8 +19,8 @@ class CategoryController extends MyAppController {
 		$frm = $this->getProductSearchForm();
 
 		$headerFormParamsArr = FatApp::getParameters();
-		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
-		//var_dump($headerFormParamsAssocArr); exit;
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
 		if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
 		}
@@ -67,9 +67,6 @@ class CategoryController extends MyAppController {
 		$rs = $prodSrchObj->getResultSet();
 		$record = FatApp::getDb()->fetchAll($rs);
 
-
-		//	var_dump($record); die;
-
 		$brandsArr = array();
 		$conditionsArr  = array();
 		$priceArr  = array();
@@ -79,12 +76,8 @@ class CategoryController extends MyAppController {
 		$catSrch->addGroupBy('prodcat_id');
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, $category_id, false, false, false, $catSrch,false );
 
-		//var_dump($categoriesDataArr); die;
-
 		$productCategory = new productCategory;
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-
-
 		/* ] */
 
 		/* Brand Filters Data[ */
@@ -176,8 +169,8 @@ class CategoryController extends MyAppController {
 		}
 		
 		$optionValueCheckedArr = array();
-		if(array_key_exists('optionvalues',$headerFormParamsAssocArr)){
-			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalues'];
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
 		
 		$conditionsCheckedArr = array();
@@ -195,7 +188,8 @@ class CategoryController extends MyAppController {
 			'categoriesArr'			=>	$categoriesArr,
 		//	'categoryDataArr'		=>	$categoryFilterData,
 			'brandsArr'				=>	$brandsArr,
-			'brandsCheckedArr'		  =>	$brandsCheckedArr,
+			'brandsCheckedArr'		  => $brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
 			'availability'	          =>	 $availability,
 			'conditionsArr'			=>	$conditionsArr,
 			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
@@ -208,21 +202,12 @@ class CategoryController extends MyAppController {
 			'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 
-
-
-
 		//$this->set('categoryData',$categoryData);
-		 $this->set( 'productFiltersArr', $productFiltersArr );
-		 $this->set('frmProductSearch',$frm);
+		$this->set( 'productFiltersArr', $productFiltersArr );
+		$this->set('frmProductSearch',$frm);
 
 		$this->set('categoryData', $categoryData);
-		//$this->_template->render(false, false, 'category/view-test.php');
-		//exit();
-
-		// $this->_template->render(false, false, 'category/view.php');
-
-		//var_dump($categoryData); die;
-
+		
 		if( empty($record) ){
 			$this->set('noProductFound', 'noProductFound');
 		}

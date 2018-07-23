@@ -790,14 +790,14 @@ class ProductCategory extends MyAppModel{
 		$seoUrl = $parentUrl.'-'.$seoUrl;
 		
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-
-		$seoUrlKeyword = array(
+		return UrlRewrite::update($originalUrl,$customUrl);
+		/* $seoUrlKeyword = array(
 			'urlrewrite_original'=>$originalUrl,
 			'urlrewrite_custom'=>$customUrl
 		);	
 		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
 			return true;
 		}
-		return false;
+		return false; */
 	}		
 }

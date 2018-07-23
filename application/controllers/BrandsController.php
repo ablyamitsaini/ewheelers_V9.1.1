@@ -21,7 +21,7 @@ class BrandsController extends MyAppController {
 		FatApp::redirectUser( CommonHelper::generateUrl('Brands') );
 	}
 	
-	public function view( $brandId ){
+	public function view( $brandId ){ 
 		$brandId = FatUtility::int($brandId);
 		Brand::recordBrandWeightage($brandId);
 		$db = FatApp::getDb();
@@ -30,7 +30,7 @@ class BrandsController extends MyAppController {
 		$frm = $this->getProductSearchForm();	
 		
 		$headerFormParamsArr = FatApp::getParameters();
-		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		
 		if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
@@ -46,7 +46,7 @@ class BrandsController extends MyAppController {
 		}
 		$headerFormParamsAssocArr['join_price'] = 1;	
 		$frm->fill( $headerFormParamsAssocArr );
-		
+				
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria(0);
 		$prodSrchObj->joinProductToCategory();
@@ -112,8 +112,7 @@ class BrandsController extends MyAppController {
 			$priceInFilter = true;
 		}
 		/* ] */
-		
-		
+				
 		/* Categories Data[ */
 		//echo $prodSrchObj->getQuery();die();
 		$catSrch = clone $prodSrchObj;
@@ -133,13 +132,18 @@ class BrandsController extends MyAppController {
 		/* ] */
 		
 		$optionValueCheckedArr = array();
-		if(array_key_exists('optionvalues',$headerFormParamsAssocArr)){
-			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalues'];
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
 		
 		$conditionsCheckedArr = array();
 		if(array_key_exists('condition',$headerFormParamsAssocArr)){
 			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$prodcatArr = array();
+		if(array_key_exists('prodcat',$headerFormParamsAssocArr)){
+			$prodcatArr = $headerFormParamsAssocArr['prodcat'];
 		}
 		
 		$availability = 0;
@@ -159,6 +163,7 @@ class BrandsController extends MyAppController {
 			'brandsCheckedArr'	=>	array($brandId),
 			'conditionsArr'		=>	$conditionsArr,			
 			'priceArr'			=>	$priceArr,
+			'prodcatArr'			=>	$prodcatArr,
 			'priceInFilter'			  =>	$priceInFilter,		 
 			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
 			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,			

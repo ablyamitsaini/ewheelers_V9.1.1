@@ -141,8 +141,7 @@ class ShopsController extends MyAppController {
 		return $frm;
 	}
 	
-	public function view( $shop_id ){
-
+	public function view( $shop_id ){				
 		$shop_id = FatUtility::int($shop_id);
 		
 		if( $shop_id <= 0 ){
@@ -156,9 +155,19 @@ class ShopsController extends MyAppController {
 		$this->shopDetail($shop_id); /* [defined in traits] */
 		$searchFrm = $this->getSearchForm();
 		$frm = $this->getProductSearchForm();
-		$frmData = array('shop_id' => $shop_id);
-		$frm->fill($frmData);
-		$searchFrm->fill($frmData);
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		$headerFormParamsAssocArr['join_price'] = 1;
+		$headerFormParamsAssocArr['shop_id'] = $shop_id;		
+		$frm->fill($headerFormParamsAssocArr);
+		$searchFrm->fill($headerFormParamsAssocArr);
 		
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria(1);
@@ -176,6 +185,8 @@ class ShopsController extends MyAppController {
 		
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchFrm', $searchFrm);
+		$this->set('shopId', $shop_id);
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Shops','view',array($shop_id)));
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css')); 
 		$this->_template->addJs('js/shop-nav.js');
@@ -261,8 +272,6 @@ class ShopsController extends MyAppController {
 		
 		/* ] */
 		
-		
-		
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
 		$brandSrch->addGroupBy('brand_id');
@@ -298,16 +307,29 @@ class ShopsController extends MyAppController {
 		//$priceRs = $priceSrch->getResultSet();
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
+		
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
 		/* ] */
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		
 		$productFiltersArr = array( 
 			'categoriesArr'		=>	$categoriesArr,
 			'productCategories'		=>	$productCategories,
+			'prodcatArr'		=>	array(),
+			'brandsCheckedArr'		  => array(),
 			'shopCatFilters'		=>	true,
 			'brandsArr'			=>	$brandsArr,
 			'CategoryCheckedArr' =>array(),
 			'conditionsArr'		=>	$conditionsArr,
 			'priceArr'			=>	$priceArr,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'siteLangId'		=>	$this->siteLangId
 		);
 		
@@ -330,7 +352,7 @@ class ShopsController extends MyAppController {
 				$this->_template->addJs('js/slick.min.js');
 				$this->_template->addCss('shops/templates/page-css/'.$shop['shop_ltemplate_id'].'.css');
 			break;
-			default:
+			default: 
 			$this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
 	
 			break;
@@ -381,6 +403,7 @@ class ShopsController extends MyAppController {
 		$this->set('layoutRecordId',$shop['shop_id']);
 		$showBgImage = $this->showBackgroundImage($shop_id,$this->siteLangId,$shop['shop_ltemplate_id']);
 		$this->set('showBgImage',$showBgImage);
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Shops','view',array($shop_id)));
 	}
 	
 	public function getAllowedShowBg($templateId =''){

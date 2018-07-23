@@ -137,13 +137,16 @@ class ProductsController extends MyAppController {
 
 		$headerFormParamsArr = FatApp::getParameters();
 
-		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
 		if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
 		}
+		
 		if(array_key_exists('sort',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
 		}
+		
 		if(array_key_exists('shop',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
 		}	
@@ -296,8 +299,8 @@ class ProductsController extends MyAppController {
 		}
 		
 		$optionValueCheckedArr = array();
-		if(array_key_exists('optionvalues',$headerFormParamsAssocArr)){
-			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalues'];
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
 		
 		$conditionsCheckedArr = array();
@@ -352,7 +355,7 @@ class ProductsController extends MyAppController {
 
 		$headerFormParamsArr = FatApp::getParameters();
 
-		$headerFormParamsAssocArr = CommonHelper::arrayToAssocArray($headerFormParamsArr);
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
 		}
@@ -485,8 +488,8 @@ class ProductsController extends MyAppController {
 		}
 		
 		$optionValueCheckedArr = array();
-		if(array_key_exists('optionvalues',$headerFormParamsAssocArr)){
-			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalues'];
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
 		
 		$conditionsCheckedArr = array();

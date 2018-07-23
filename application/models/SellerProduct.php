@@ -559,15 +559,7 @@ class SellerProduct extends MyAppModel{
 		$seoUrl.= '-'.$this->mainTableRecordId;
 					
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-
-		$seoUrlKeyword = array(
-			'urlrewrite_original'=>$originalUrl,
-			'urlrewrite_custom'=>$customUrl
-		);	
-		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
-			return true;
-		}
-		return false;
+		return UrlRewrite::update($originalUrl,$customUrl);		
 	}	
 	
 	public function rewriteUrlProduct($keyword){

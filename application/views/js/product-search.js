@@ -31,7 +31,7 @@ $(document).ready(function(){
 		searchProducts(frm,0,0,1,1);		
 	});
 	
-	$("input[name=category]").change(function(){
+	$("input[name=category]").change(function(){		
 		var id= $(this).parent().parent().find('label').attr('id');
 		if($(this).is(":checked")){
 			addFilter(id,this);
@@ -107,15 +107,7 @@ $(document).ready(function(){
 			id = $(this).attr('class');
 			clearFilters(id,this); 
 		});
-		
-		var minPrice=$("#old-min-value").val();
-		var maxPrice=$("#old-max-value").val();
-		
-		$("#price_range").val(minPrice+'-'+maxPrice);
-		var $range = $("#price_range");
-		range = $range.data("ionRangeSlider");
-		updateRange(minPrice,maxPrice);
-		range.reset();
+		updatePriceFilter();		
 		searchProducts(frm,0,0,1,1);
 	});
 	
@@ -230,10 +222,14 @@ function clearFilters(id,obj){
 }
 
 function addToSearchQueryString(id,obj){	
-	$filter = $(obj).parent().text();
-	$filterVal = htmlEncode($(obj).parent().text());
-	//searchUrl = searchUrl +'&'+ id + '='+ $filterVal.replace(/ /g,'');
-	searchArr[id] = $filterVal.replace(/ /g,'');	
+	//$filter = $(obj).parent().text(); 
+	var attrVal = $(obj).attr('data-title')		
+	if (typeof attrVal !== typeof undefined && attrVal !== false) {		
+		$filterVal = htmlEncode(attrVal).toLowerCase();
+	}else{
+		$filterVal = htmlEncode($(obj).parent().text()).toLowerCase();
+	}	
+	searchArr[id] = encodeURIComponent($filterVal.replace(/ /g,''));	
 }
 
 function removeFromSearchQueryString(key){
@@ -277,11 +273,11 @@ function getSearchQueryUrl(includeBaseUrl){
 		url = url +'/'+'shop-'+shop_id;
 	}
 		
-	var e = document.getElementById("sortBy");
+	/* var e = document.getElementById("sortBy");
 	var sortBy = e.options[e.selectedIndex].value;
-	if(sortBy){
+	if(sortBy){ 
 		url = url +'/'+'sort-'+sortBy.replace(/_/g,'-');
-	} 
+	} */ 
 	
 	/* var e = document.getElementById("pageSize");
 	var pageSize = parseInt(e.options[e.selectedIndex].value);
@@ -428,23 +424,6 @@ function updatePriceFilter(minPrice,maxPrice){
 				data = data+"&max_price_range="+$("input[name=priceFilterMaxValue]").val();
 			}
 		
-			/* if(typeof withPriceFilter == 'undefined' || withPriceFilter==0){ 
-				if(typeof $("input[name=old-min-value]").val() != "undefined"){
-					data = data+"&min_price_range="+$("input[name=old-min-value]").val();
-				}
-				if(typeof $("input[name=old-max-value]").val() != "undefined"){
-					data = data+"&max_price_range="+$("input[name=old-max-value]").val();
-				}	
-					
-			}else{
-				if(typeof $("input[name=price_min_range]").val() != "undefined"){
-					data = data+"&min_price_range="+$("input[name=price_min_range]").val();
-				}
-				if(typeof $("input[name=price_max_range]").val() != "undefined"){
-					data = data+"&max_price_range="+$("input[name=price_max_range]").val();
-				}							 				
-			} */
-			/* ] */
 		}
 		
 		if(($( "#filters" ).find('a').length)>0){
@@ -491,35 +470,7 @@ function updatePriceFilter(minPrice,maxPrice){
 			} else {
 				$(".hide_on_no_product").removeClass("dont-show");
 			}
-			
-			/* if(ans.selectedCurrencyPriceArr && ans.selectedCurrencyPriceArr['minPrice'] !='' && ans.selectedCurrencyPriceArr['maxPrice'] !='') {
-				var minPrice = ans.selectedCurrencyPriceArr['minPrice'];
-				var maxPrice = ans.selectedCurrencyPriceArr['maxPrice'];
-				
-				$('input[name="price_min_range"]').val(minPrice);
-				$('input[name="price_max_range"]').val(maxPrice);
-				
-				$("#price_range").val(minPrice+'-'+maxPrice);
-				
-				if(withPriceFilter == undefined || withPriceFilter == 0){
-					$('input[name="priceFilterMinValue"]').val(minPrice);
-					$('input[name="priceFilterMaxValue"]').val(maxPrice);
-					
-					var $range = $("#price_range");
-					range = $range.data("ionRangeSlider");
-					if(range){
-						range.update({
-							min: minPrice,
-							max: maxPrice,
-							from: minPrice,
-							to: maxPrice,
-							disable: false
-						});
-					}
-					$('.price').remove();					
-				}
-			} */
-			
+									
 			if( append == 1 ){
 				$(dv).find('.loader-yk').remove();
 				$( ".filters" ).removeClass( "filter-disabled" );
@@ -528,13 +479,7 @@ function updatePriceFilter(minPrice,maxPrice){
 				$( ".filters" ).removeClass( "filter-disabled" );
 				$(dv).html( ans.html );
 			}
-			
-			/* if(ans.totalRecords==0)
-			{
-				$('#top-filters').hide();
-				return;
-			} */
-			
+									
 			/* for LoadMore[ */
 			$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
 			/* ] */

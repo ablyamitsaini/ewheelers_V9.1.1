@@ -31,7 +31,7 @@ array_walk($catCodeArr,function(&$n) {
   <!--Categories Filters[ resetAll-->
   
  
-  <?php 
+  <?php   
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
   <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !isset( $shopCatFilters ) ){ ?>
@@ -47,7 +47,7 @@ array_walk($catCodeArr,function(&$n) {
 					foreach( $cat['children'] as $children ){ ?>
 						<li>
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
-							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
+							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>"  href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
 							
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){
 								echo '<ul>';
@@ -80,47 +80,7 @@ array_walk($catCodeArr,function(&$n) {
 				} ?>
 				
 			</li>
-		<?php } ?>
-	  <?php /* foreach( $categoriesArr as $cat ){
-			//$cat['children'] = array(); 
-			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id']));
-			//$catUrl = 'javascript:void(0)';
-			?>
-		<li> <a class="filter_categories" data-id = "<?php echo $cat['prodcat_id']; ?>" <?php if( count($cat['children']) == 0 ){ ?> href="<?php echo $catUrl; ?>" <?php } ?>><?php echo $cat['prodcat_name']; ?></a>
-		<?php if( count($cat['children']) ){ ?>
-		<ul>
-		<?php foreach($cat['children'] as $children){ 
-			$catUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); 
-			//$catUrl = 'javascript:void(0)';
-			?>
-		  <li> <a <?php if( count($children['children']) == 0 ){ ?> href="<?php echo $catUrl; ?>" <?php }?>><?php echo $children['prodcat_name']; ?></a>
-			<?php if(count($children['children'])){ ?>
-			<ul>
-			<?php foreach($children['children'] as $subChildren){ 
-				$catUrl = CommonHelper::generateUrl('category','view',array($subChildren['prodcat_id'])); 
-				//$catUrl = 'javascript:void(0)';
-				?>
-			  <li> <a <?php if(count($subChildren['children']) == 0) { ?> href="<?php echo $catUrl; ?>" <?php }?>><?php echo $subChildren['prodcat_name']; ?></a>
-				<ul>
-				<?php if(count($subChildren['children'])) { 
-				$catUrl = CommonHelper::generateUrl('category','view',array($subSubChildren['prodcat_id'])); 
-				//$catUrl = 'javascript:void(0)';
-				?>
-				<?php foreach($subChildren['children'] as $subSubChildren){ ?>
-				<li><a href="<?php echo $catUrl; ?>"><?php echo $subSubChildren['prodcat_name']; ?> </a></li>
-				<?php } ?>
-				<?php }?>
-				</ul>
-			  </li>
-			<?php } ?>
-			</ul>
-			<?php } ?>
-		  </li>
-		<?php } ?>
-		</ul>
-		<?php } ?>
-	  </li>
-	  <?php } */ ?>
+		<?php } ?>	  
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_more', $siteLangId); ?> </a> -->
    </div>
@@ -131,12 +91,9 @@ array_walk($catCodeArr,function(&$n) {
 	  
 	  <div class="brands-list toggle-target scrollbar">
 	<ul>
-		<?php 
-	
-		
+		<?php 		
 		$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
-		foreach($categoriesArr as $cat){
-		//	var_dump($cat);
+		foreach($categoriesArr as $cat){			
 			$catName= $cat['prodcat_name'];
 			$productCatCode = explode("_",$cat['prodcat_code']);
 			$productCatName = '';
@@ -151,7 +108,7 @@ array_walk($catCodeArr,function(&$n) {
 				}
 			}?>
 			<li>
-				<label class="checkbox brand" id="prodcat_<?php echo $cat['prodcat_id']; ?>"><input name="category" value="<?php echo $cat['prodcat_id']; ?>" type="checkbox" ><i class="input-helper"></i><?php echo $productCatName; ?></label></a>
+				<label class="checkbox brand" id="prodcat_<?php echo $cat['prodcat_id']; ?>" ><input name="category" value="<?php echo $cat['prodcat_id']; ?>" type="checkbox" data-title="<?php echo $catName; ?>" <?php if(in_array($cat['prodcat_id'],$prodcatArr)){echo "checked";}?>><i class="input-helper"></i><?php echo $productCatName; ?></label></a>
 			</li>
 			
 	<?php } ?>
@@ -240,7 +197,7 @@ array_walk($catCodeArr,function(&$n) {
 			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];	
 				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>"; 				
 			?>
-				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionValueId,$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>			
+				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionRow['optionvalue_id'],$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>			
 			
 		<?php }
 			echo "</ul></div>
