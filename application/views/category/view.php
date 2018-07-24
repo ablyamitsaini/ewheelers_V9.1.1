@@ -53,9 +53,7 @@
 			<div class="category__description container--cms">
 			<?php  echo FatUtility::decodeHtmlEntities($categoryData['prodcat_description']); ?>
 			</div>
-			<?php
-			}
-
+			<?php }
 			$this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId), false);
 			?>
 		</div>

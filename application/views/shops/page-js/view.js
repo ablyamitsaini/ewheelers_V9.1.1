@@ -1,6 +1,6 @@
 $(document).ready(function(){ 
 	// Target your element	
-	searchProducts( document.frmProductSearch,0,0,0,1 );	
+	searchProducts( document.frmProductSearch );	
 	if($(".shop-navigations").length){
 		$('.shop-navigations').colourBrightness();
 	}

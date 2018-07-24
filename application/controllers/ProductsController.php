@@ -174,9 +174,7 @@ class ProductsController extends MyAppController {
 				}
 			}
 		}
-
 		/* ] */
-
 
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria();
@@ -191,7 +189,6 @@ class ProductsController extends MyAppController {
 
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
 		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);
-
 			/* $tagSrch = Tag::getSearchObject($this->siteLangId);
 			$tagSrch->addMultipleFields(array('tag_id'));
 			$tagSrch->doNotCalculateRecords();
@@ -203,15 +200,12 @@ class ProductsController extends MyAppController {
 			if(!empty($row) && $row['tag_id'] > 0){
 				Tag::recordTagWeightage($row['tag_id']);
 			} */
-
-
 		}
 
 		$rs = $prodSrchObj->getResultSet();
 		$record = FatApp::getDb()->fetch($rs);
 
-		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) && count($record) ) {
-
+		if(array_key_exists('keyword',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['keyword']!= '' && count($record) ) {
 			$searchItemObj = new SearchItem();
 			$searchData = array('keyword'=>$headerFormParamsAssocArr['keyword']);
 			$searchItemObj->addSearchResult($searchData);
@@ -220,17 +214,14 @@ class ProductsController extends MyAppController {
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
-	//	$catSrch->addCondition('prodcat_parent','=',0);
-
-		
+		//$catSrch->addCondition('prodcat_parent','=',0);
 		//Get All Categories which have products
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
 
 		/* ] */
-		$productCategory = new productCategory;
-		//echo "<pre>"; print_r($categoriesDataArr); die
+		$productCategory = new productCategory;		
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-		//print_r($categoriesArr); die;
+		
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
 		$brandSrch->addGroupBy('brand_id');
@@ -327,8 +318,8 @@ class ProductsController extends MyAppController {
 			'currencySymbolRight' 	  =>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			  =>	$this->siteLangId,
 			'priceInFilter'			  =>	$priceInFilter,		 
-			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
-			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'count_for_view_more'     =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 

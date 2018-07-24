@@ -158,6 +158,7 @@ class ShopsController extends MyAppController {
 		
 		$headerFormParamsArr = FatApp::getParameters();
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
 		if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
 		}
@@ -209,6 +210,21 @@ class ShopsController extends MyAppController {
 	
 	public function shopDetail( $shop_id, $policy = false ){
 		$db = FatApp::getDb();
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		if(array_key_exists('shop',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
+		}	
+		if(array_key_exists('collection',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
+		}	
 		
 		$srch = new ShopSearch( $this->siteLangId );
 		$srch->setDefinedCriteria( $this->siteLangId );
@@ -311,21 +327,51 @@ class ShopsController extends MyAppController {
 		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
-		
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}		
 		/* ] */
+				
+		$brandsCheckedArr = array();
+		if(array_key_exists('brand',$headerFormParamsAssocArr)){
+			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+		}
 		
-		$headerFormParamsArr = FatApp::getParameters();
-		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
+		}
 		
-		$productFiltersArr = array( 
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}
+		
+		$prodcatArr = array();
+		if(array_key_exists('prodcat',$headerFormParamsAssocArr)){
+			$prodcatArr = $headerFormParamsAssocArr['prodcat'];
+		}
+		
+		$productFiltersArr = array(			
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'		=>	$categoriesArr,
 			'productCategories'		=>	$productCategories,
-			'prodcatArr'		=>	array(),
-			'brandsCheckedArr'		  => array(),
+			'prodcatArr'		=>	$prodcatArr,
+			'brandsCheckedArr'		  => $brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'availability'	          =>	 $availability,
 			'shopCatFilters'		=>	true,
 			'brandsArr'			=>	$brandsArr,
 			'CategoryCheckedArr' =>array(),
 			'conditionsArr'		=>	$conditionsArr,
+			'conditionsCheckedArr'			=>	$conditionsCheckedArr,
 			'priceArr'			=>	$priceArr,
 			'priceInFilter'			  =>	$priceInFilter,		 
 			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		

@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
 <script type="text/javascript">
 	(function($){
 		if(langLbl.layoutDirection == 'rtl'){
@@ -50,7 +50,7 @@
 			}); 
 		} 
 	})(jQuery); 
-
-	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
-
+	$(document).ready(function(){ 
+		$currentPageUrl = '<?php echo $canonicalUrl; ?>';	
+	});
 </script>

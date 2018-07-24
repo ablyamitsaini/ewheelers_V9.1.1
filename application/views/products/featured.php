@@ -5,7 +5,6 @@
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->overrideFldType("hidden");
 ?>
-
 <div id="body" class="body bg--gray">
   <section class="dashboard">
     <div class="fixed-container">
@@ -33,7 +32,7 @@
         </div>
 		<?php }
 		if(!isset($noProductFound)){
-			$blockTitle=Labels::getLabel('LBL_FEATURED_PRODUCTS', $siteLangId);
+			$blockTitle = Labels::getLabel('LBL_FEATURED_PRODUCTS', $siteLangId);
 			$class ='col-lg-9';
 		}else{
 			$class= 'col-lg-12';
