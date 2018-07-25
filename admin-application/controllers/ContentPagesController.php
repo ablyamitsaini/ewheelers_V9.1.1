@@ -10,6 +10,7 @@ class ContentPagesController extends AdminBaseController {
 		$this->canEdit = $this->objPrivilege->canEditContentPages($this->admin_id,true);
 		$this->set("canView",$this->canView);
 		$this->set("canEdit",$this->canEdit);
+		$this->rewriteUrl = ContentPage::REWRITE_URL_PREFIX;
 	}
 	
 	public function index() {
@@ -71,6 +72,13 @@ class ContentPagesController extends AdminBaseController {
 				FatUtility::dieWithError($this->str_invalid_request);
 			}
 			
+			/* url data[ */
+			$urlRow = UrlRewrite::getDataByOriginalUrl($this->rewriteUrl.$cpage_id);
+			if(!empty($urlRow)){
+				$data['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
+			}
+			/*]*/
+			
 			$blockFrm->fill($data);
 			$this->set('cpage_layout', $data['cpage_layout']);
 		}
@@ -94,13 +102,24 @@ class ContentPagesController extends AdminBaseController {
 		
 		$cpage_id = $post['cpage_id'];
 		unset($post['cpage_id']);
-		$record = new ContentPage($cpage_id);		
-		$record->assignValues($post);
+		$contentPage = new ContentPage($cpage_id);		
+		$contentPage->assignValues($post);
 		
-		if (!$record->save()) { 	
-			Message::addErrorMessage($record->getError());
+		if (!$contentPage->save()) { 	
+			Message::addErrorMessage($contentPage->getError());
 			FatUtility::dieJsonError( Message::getHtml() );			
 		} 
+		
+		$cpage_id = $contentPage->getMainTableRecordId();
+		
+		/* url data[ */			
+		$originalUrl = $this->rewriteUrl.$cpage_id;		
+		if( $post['urlrewrite_custom'] == '' ){
+			UrlRewrite::remove($originalUrl);
+		} else {
+			$contentPage->rewriteUrl($post['urlrewrite_custom']);
+		}		
+		/* ] */
 		
 		$newTabLangId = 0;
 		if($cpage_id > 0){			
@@ -112,7 +131,7 @@ class ContentPagesController extends AdminBaseController {
 				}			
 			}	
 		}else{
-			$cpage_id = $record->getMainTableRecordId();
+			$cpage_id = $contentPage->getMainTableRecordId();
 			$newTabLangId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);	
 		}			
 				
@@ -304,6 +323,8 @@ class ContentPagesController extends AdminBaseController {
 		$frm = new Form('frmBlock');		
 		$frm->addHiddenField('', 'cpage_id',0);
 		$frm->addRequiredField(Labels::getLabel('LBL_Page_Identifier',$this->adminLangId), 'cpage_identifier');
+		$fld = $frm->addTextBox( Labels::getLabel('LBL_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
+		$fld->requirements()->setRequired();
 		$frm->addSelectBox( Labels::getLabel('LBL_Layout_Type',$this->adminLangId), 'cpage_layout',$this->getAvailableLayouts(),'',array('id'=>'cpage_layout') )->requirements()->setRequired();
 		
 		

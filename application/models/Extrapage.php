@@ -22,6 +22,8 @@ class Extrapage extends MyAppModel {
 	const SELLER_PAGE_FORM_TEXT = 24;
 	const FOOTER_TRUST_BANNERS = 26;
 	
+	CONST REWRITE_URL_PREFIX = 'custom/view/';
+	
 	public function __construct($epageId = 0) {
 		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $epageId );				
 	}
@@ -64,7 +66,6 @@ class Extrapage extends MyAppModel {
 		);
 	}
 	
-
 	public function updatePageContent($data = array()){
 		if (! ($this->mainTableRecordId > 0)) {
 			$this->error = Labels::getLabel('MSG_Invalid_Request',$this->commonLangId);	
@@ -119,4 +120,18 @@ class Extrapage extends MyAppModel {
 			static::AFFILIATE_BANNER_SLOGAN => Labels::getLabel('LBL_Affiliate_Banner_Slogan',$langId),
 		);
 	}
+
+	public function rewriteUrl($keyword){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$originalUrl = static::REWRITE_URL_PREFIX.$this->mainTableRecordId;		
+		
+		$seoUrl =  CommonHelper::seoUrl($keyword);	
+		
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
+		
+		return UrlRewrite::update($originalUrl,$customUrl);	
+	}		
 }

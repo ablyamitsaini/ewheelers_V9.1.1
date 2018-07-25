@@ -4,6 +4,15 @@ $blockFrm->setFormTagAttribute('onsubmit', 'setupBlock(this); return(false);');
 $blockFrm->developerTags['colClassPrefix'] = 'col-md-';
 $blockFrm->developerTags['fld_default_col'] = 12;
 
+$identiFierFld = $blockFrm->getField('epage_identifier');
+$identiFierFld->setFieldTagAttribute('onkeyup',"Slugify(this.value,'urlrewrite_custom','epage_id');
+getSlugUrl($(\"#urlrewrite_custom\"),$(\"#urlrewrite_custom\").val())");
+$IDFld = $blockFrm->getField('epage_id');
+$IDFld->setFieldTagAttribute('id',"epage_id");
+$urlFld = $blockFrm->getField('urlrewrite_custom');
+$urlFld->setFieldTagAttribute('id',"urlrewrite_custom");
+$urlFld->htmlAfterField = "<small class='text--small'>" . CommonHelper::generateFullUrl('Custom','View',array($epage_id),CONF_WEBROOT_FRONT_URL).'</small>';
+$urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 ?>
 <section class="section">
 <div class="sectionhead">

@@ -9,7 +9,8 @@ class ContentBlockController extends AdminBaseController {
 		$this->canView = $this->objPrivilege->canViewContentBlocks($this->admin_id,true);
 		$this->canEdit = $this->objPrivilege->canEditContentBlocks($this->admin_id,true);
 		$this->set("canView",$this->canView);
-		$this->set("canEdit",$this->canEdit);		
+		$this->set("canEdit",$this->canEdit);
+		$this->rewriteUrl = Extrapage::REWRITE_URL_PREFIX;		
 	}
 	
 	public function index($epage_id = 0) {
@@ -45,7 +46,14 @@ class ContentBlockController extends AdminBaseController {
 			$data = Extrapage::getAttributesById($epage_id,array('epage_id','epage_identifier','epage_active'));			
 			if ($data === false) {
 				FatUtility::dieWithError($this->str_invalid_request);
-			}			
+			}	
+
+			/* url data[ */
+			$urlRow = UrlRewrite::getDataByOriginalUrl($this->rewriteUrl.$epage_id);
+			if(!empty($urlRow)){
+				$data['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
+			}
+			/*]*/	
 			$blockFrm->fill($data);
 		}
 		
@@ -79,10 +87,21 @@ class ContentBlockController extends AdminBaseController {
 		}
 		
 		$record = new Extrapage($epage_id);
+		$urlrewrite_custom = $post['urlrewrite_custom'];
+		unset($post['urlrewrite_custom']);
 		if (!$record->updatePageContent($post)) { 			
 			Message::addErrorMessage($record->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
+		
+		/* url data[ */	
+		$originalUrl = $this->rewriteUrl.$epage_id;		
+		if( $urlrewrite_custom == '' ){
+			UrlRewrite::remove($originalUrl);
+		} else {
+			$record->rewriteUrl($urlrewrite_custom);
+		}		
+		/* ] */
 		
 		$newTabLangId = 0;	
 		$languages = Language::getAllNames();	
@@ -285,7 +304,8 @@ class ContentBlockController extends AdminBaseController {
 		$frm = new Form('frmBlock');		
 		$frm->addHiddenField('', 'epage_id',0);
 		$frm->addRequiredField(Labels::getLabel('LBL_Page_Identifier',$this->adminLangId), 'epage_identifier');
-		
+		$fld = $frm->addTextBox( Labels::getLabel('LBL_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
+		$fld->requirements()->setRequired();
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($langId);
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'epage_active', $activeInactiveArr, '',array(),'');
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));		

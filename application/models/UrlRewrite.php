@@ -14,6 +14,13 @@ class UrlRewrite extends MyAppModel{
 		return $srch;
 	}
 	
+	public static function remove($originalUrl){
+		if(FatApp::getDb()->deleteRecords(static::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($originalUrl)))){
+			return true;
+		}
+		return false;
+	}
+	
 	public static function update($originalUrl,$customUrl){
 		$seoUrlKeyword = array(
 			'urlrewrite_original'=>$originalUrl,
