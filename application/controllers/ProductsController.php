@@ -1968,7 +1968,7 @@ class ProductsController extends MyAppController {
 		if(!FatApp::getDb()->insertFromArray(Product::DB_PRODUCT_SAVED_SEARCH,$data_to_save_arr, false)){
 			/* Message::addErrorMessage(FatApp::getDb()->getError()); */
 			Message::addErrorMessage(Labels::getLabel('MSG_Can_not_be_saved',$this->siteLangId));
-			FatUtility::dieWithError( Message::getHtml());
+			FatUtility::dieJsonError( Message::getHtml());
 		}
 
 		$this->set('msg', Labels::getLabel('MSG_Saved_successfully',$this->siteLangId) );

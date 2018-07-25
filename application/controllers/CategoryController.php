@@ -18,10 +18,25 @@ class CategoryController extends MyAppController {
 		$this->includeProductPageJsCss();
 		$frm = $this->getProductSearchForm();
 
-		$data['category'] = $category_id;
-		$data['join_price'] = 1;
-		$frm->fill( $data );
-
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		if(array_key_exists('shop',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
+		}	
+		if(array_key_exists('collection',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
+		}
+		$headerFormParamsAssocArr['category'] = $category_id;
+		$headerFormParamsAssocArr['join_price'] = 1;
+		$frm->fill( $headerFormParamsAssocArr );
+		
 		$catSrch = new ProductCategorySearch( $this->siteLangId );
 		$catSrch->addCondition( 'prodcat_id', '=', $category_id );
 
@@ -52,9 +67,6 @@ class CategoryController extends MyAppController {
 		$rs = $prodSrchObj->getResultSet();
 		$record = FatApp::getDb()->fetchAll($rs);
 
-
-		//	var_dump($record); die;
-
 		$brandsArr = array();
 		$conditionsArr  = array();
 		$priceArr  = array();
@@ -64,12 +76,8 @@ class CategoryController extends MyAppController {
 		$catSrch->addGroupBy('prodcat_id');
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, $category_id, false, false, false, $catSrch,false );
 
-		//var_dump($categoriesDataArr); die;
-
 		$productCategory = new productCategory;
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-
-
 		/* ] */
 
 		/* Brand Filters Data[ */
@@ -127,7 +135,7 @@ class CategoryController extends MyAppController {
 		/* ] */
 
 
-		/* Price Filters[ */
+		/* Price Filters[ */		
 		$priceSrch = new ProductSearch( $this->siteLangId );
 		$priceSrch->setDefinedCriteria(1);
 		$priceSrch->joinProductToCategory();
@@ -144,42 +152,72 @@ class CategoryController extends MyAppController {
 		//$priceRs = $priceSrch->getResultSet();
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
+		
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}
 		/* ] */
 
-	
+		$brandsCheckedArr = array();
+		if(array_key_exists('brand',$headerFormParamsAssocArr)){
+			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+		}
+		
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
+		}
+		
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}
+		
 		$productFiltersArr = array(
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'			=>	$categoriesArr,
 		//	'categoryDataArr'		=>	$categoryFilterData,
 			'brandsArr'				=>	$brandsArr,
+			'brandsCheckedArr'		  => $brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'availability'	          =>	 $availability,
 			'conditionsArr'			=>	$conditionsArr,
+			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
 			'priceArr'				=>	$priceArr,
 			'options'				=>	$options,
 			'siteLangId'			=>	$this->siteLangId,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,
 			'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 
-
-
-
 		//$this->set('categoryData',$categoryData);
-		 $this->set( 'productFiltersArr', $productFiltersArr );
-		 $this->set('frmProductSearch',$frm);
+		$this->set( 'productFiltersArr', $productFiltersArr );
+		$this->set('frmProductSearch',$frm);
 
 		$this->set('categoryData', $categoryData);
-		//$this->_template->render(false, false, 'category/view-test.php');
-		//exit();
-
-		// $this->_template->render(false, false, 'category/view.php');
-
-		//var_dump($categoryData); die;
-
+		
 		if( empty($record) ){
 			$this->set('noProductFound', 'noProductFound');
 		}
-
+		$this->set('priceArr', $priceArr);
+		$this->set('priceInFilter', $priceInFilter);
 		/* Get category Polls [ */
 		$pollQuest = Polling::getCategoryPoll($category_id , $this->siteLangId);
 		$this->set('pollQuest', $pollQuest);
+		$this->set('category_id', $category_id);
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Category','view',array($category_id)));
 		/* ] */
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css')); 

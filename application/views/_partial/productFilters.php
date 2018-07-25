@@ -31,7 +31,7 @@ array_walk($catCodeArr,function(&$n) {
   <!--Categories Filters[ resetAll-->
   
  
-  <?php 
+  <?php   
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
   <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !isset( $shopCatFilters ) ){ ?>
@@ -47,7 +47,7 @@ array_walk($catCodeArr,function(&$n) {
 					foreach( $cat['children'] as $children ){ ?>
 						<li>
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
-							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
+							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>"  href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
 							
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){
 								echo '<ul>';
@@ -80,47 +80,7 @@ array_walk($catCodeArr,function(&$n) {
 				} ?>
 				
 			</li>
-		<?php } ?>
-	  <?php /* foreach( $categoriesArr as $cat ){
-			//$cat['children'] = array(); 
-			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id']));
-			//$catUrl = 'javascript:void(0)';
-			?>
-		<li> <a class="filter_categories" data-id = "<?php echo $cat['prodcat_id']; ?>" <?php if( count($cat['children']) == 0 ){ ?> href="<?php echo $catUrl; ?>" <?php } ?>><?php echo $cat['prodcat_name']; ?></a>
-		<?php if( count($cat['children']) ){ ?>
-		<ul>
-		<?php foreach($cat['children'] as $children){ 
-			$catUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); 
-			//$catUrl = 'javascript:void(0)';
-			?>
-		  <li> <a <?php if( count($children['children']) == 0 ){ ?> href="<?php echo $catUrl; ?>" <?php }?>><?php echo $children['prodcat_name']; ?></a>
-			<?php if(count($children['children'])){ ?>
-			<ul>
-			<?php foreach($children['children'] as $subChildren){ 
-				$catUrl = CommonHelper::generateUrl('category','view',array($subChildren['prodcat_id'])); 
-				//$catUrl = 'javascript:void(0)';
-				?>
-			  <li> <a <?php if(count($subChildren['children']) == 0) { ?> href="<?php echo $catUrl; ?>" <?php }?>><?php echo $subChildren['prodcat_name']; ?></a>
-				<ul>
-				<?php if(count($subChildren['children'])) { 
-				$catUrl = CommonHelper::generateUrl('category','view',array($subSubChildren['prodcat_id'])); 
-				//$catUrl = 'javascript:void(0)';
-				?>
-				<?php foreach($subChildren['children'] as $subSubChildren){ ?>
-				<li><a href="<?php echo $catUrl; ?>"><?php echo $subSubChildren['prodcat_name']; ?> </a></li>
-				<?php } ?>
-				<?php }?>
-				</ul>
-			  </li>
-			<?php } ?>
-			</ul>
-			<?php } ?>
-		  </li>
-		<?php } ?>
-		</ul>
-		<?php } ?>
-	  </li>
-	  <?php } */ ?>
+		<?php } ?>	  
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_more', $siteLangId); ?> </a> -->
    </div>
@@ -131,12 +91,9 @@ array_walk($catCodeArr,function(&$n) {
 	  
 	  <div class="brands-list toggle-target scrollbar">
 	<ul>
-		<?php 
-	
-		
+		<?php 		
 		$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
-		foreach($categoriesArr as $cat){
-		//	var_dump($cat);
+		foreach($categoriesArr as $cat){			
 			$catName= $cat['prodcat_name'];
 			$productCatCode = explode("_",$cat['prodcat_code']);
 			$productCatName = '';
@@ -151,7 +108,7 @@ array_walk($catCodeArr,function(&$n) {
 				}
 			}?>
 			<li>
-				<label class="checkbox brand" id="prodcat_<?php echo $cat['prodcat_id']; ?>"><input name="category" value="<?php echo $cat['prodcat_id']; ?>" type="checkbox" ><i class="input-helper"></i><?php echo $productCatName; ?></label></a>
+				<label class="checkbox brand" id="prodcat_<?php echo $cat['prodcat_id']; ?>" ><input name="category" value="<?php echo $cat['prodcat_id']; ?>" type="checkbox" data-title="<?php echo $catName; ?>" <?php if(in_array($cat['prodcat_id'],$prodcatArr)){echo "checked";}?>><i class="input-helper"></i><?php echo $productCatName; ?></label></a>
 			</li>
 			
 	<?php } ?>
@@ -171,9 +128,9 @@ array_walk($catCodeArr,function(&$n) {
     <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
 	  <div class="filter-content toggle-target">
 		<div class="prices " id="perform_price">
-			<input type="text" value="<?php echo floor($priceArr['minPrice']); ?>-<?php echo ceil($priceArr['maxPrice']); ?>" name="price_range" id="price_range" />
-			<input type="hidden" value="<?php echo floor($priceArr['minPrice']); ?>" name="price_min_range" id="price_min_range" />
-			<input type="hidden" value="<?php echo ceil($priceArr['maxPrice']); ?>" name="price_max_range" id="price_max_range" />
+			<input type="text" value="<?php echo floor($filterDefaultMinValue); ?>-<?php echo ceil($filterDefaultMaxValue); ?>" name="price_range" id="price_range" />
+			<input type="hidden" value="<?php echo floor($filterDefaultMinValue); ?>" name="filterDefaultMinValue" id="filterDefaultMinValue" />
+			<input type="hidden" value="<?php echo ceil($filterDefaultMaxValue); ?>" name="filterDefaultMaxValue" id="filterDefaultMaxValue" />
 		</div>
 		<div class="clear"></div>
 		<div class="slide__fields form">
@@ -240,7 +197,7 @@ array_walk($catCodeArr,function(&$n) {
 			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];	
 				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>"; 				
 			?>
-				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionValueId,$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>			
+				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionRow['optionvalue_id'],$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>			
 			
 		<?php }
 			echo "</ul></div>
@@ -250,13 +207,15 @@ array_walk($catCodeArr,function(&$n) {
 	
 	<!--Condition Filters[ -->
 	
-	<?php if( isset($conditionsArr) && $conditionsArr ){ ?>
+	<?php if( isset($conditionsArr) && $conditionsArr ){ 
+	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
+	?>
 	<div class="widgets">
 		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
 		<div class="selected-filters toggle-target">
 			<ul class="listing--vertical listing--vertical-chcek">
 			<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
-			<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox"><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
+			<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox" <?php if(in_array($condition['selprod_condition'],$conditionsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
 			<?php } ?>
 			</ul>
 		</div>
@@ -266,11 +225,12 @@ array_walk($catCodeArr,function(&$n) {
 	<!-- ] -->
 	
 	<!--Availability Filters[ -->
+	<?php $availability = isset($availability)?$availability:0;?>
 	<div class="widgets ">
 		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
 		<div class="selected-filters toggle-target">
 			<ul class="listing--vertical listing--vertical-chcek">
-			<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox"><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
+			<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
 			</ul>
 		</div>
 	</div>
@@ -307,10 +267,10 @@ $("document").ready(function(){
 	var max=0;
 	<?php if( isset($priceArr) && $priceArr ){ ?>
 	var range,
-	min = Math.floor(<?php echo $priceArr['minPrice']; ?>),
-    max = Math.floor(<?php echo $priceArr['maxPrice']; ?>),
-    from  = Math.floor(<?php echo $priceArr['minPrice']; ?>),
-    to = Math.floor(<?php echo $priceArr['maxPrice']; ?>);
+	min = Math.floor(<?php echo $filterDefaultMinValue; ?>),
+    max = Math.floor(<?php echo $filterDefaultMaxValue; ?>),
+    from,
+    to;
 	var $from = $('input[name="priceFilterMinValue"]');
 	var $to = $('input[name="priceFilterMaxValue"]');
 	var $range = $("#price_range");
@@ -318,8 +278,7 @@ $("document").ready(function(){
 		$from.prop("value", from);
 		$to.prop("value", to);
 	};
-	$(document.frmProductSearch).append('<input type="hidden" id="old-min-value" name="old-min-value" value='+<?php echo $priceArr['minPrice']; ?>+' />');
-	$(document.frmProductSearch).append('<input type="hidden" id="old-max-value" name="old-max-value" value='+<?php echo $priceArr['maxPrice']; ?>+' />');
+
 	$("#price_range").ionRangeSlider({
 		hide_min_max: true,
 		hide_from_to: true,
@@ -331,14 +290,13 @@ $("document").ready(function(){
 		type: 'double',
 		prettify_enabled: true,
 		prettify_separator: ',',
-		grid: false,
+		grid: true,
 		// grid_num: 1,
-		prefix: "<?php echo $currencySymbolLeft; ?>",
-		postfix: "<?php echo $currencySymbolRight; ?>",
+		prefix: '<?php echo $currencySymbolLeft; ?>',
+		postfix: '<?php echo $currencySymbolRight; ?>',
 		
 		input_values_separator: '-',
 		onFinish: function () {
-			
 			var minMaxArr = $("#price_range").val().split('-');
 			if(minMaxArr.length == 2){
 				var min = Number(minMaxArr[0]);
@@ -346,6 +304,7 @@ $("document").ready(function(){
 				$('input[name="priceFilterMinValue"]').val(min);
 				$('input[name="priceFilterMaxValue"]').val(max);
 				return addPricefilter();
+				//return searchProducts(document.frmProductSearch);
 			}
 
 		},
@@ -353,7 +312,6 @@ $("document").ready(function(){
 			from = data.from;
 			to = data.to;
 			updateValues();
-			
 		}
 	});
 
@@ -401,6 +359,7 @@ $to.on("change", function () {
     updateRange();
 });
 
+
 <?php } ?>
 	
 	/* left side filters scroll bar[ */
@@ -423,7 +382,7 @@ $to.on("change", function () {
 		$(this).next('ul').toggle("");
 	});
 	$('.span--expand').click();
-	/* ] */
+	/* ] */	
 });
 
 /*  $(window).load(function(){

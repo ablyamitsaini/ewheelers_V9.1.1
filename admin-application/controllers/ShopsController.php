@@ -175,47 +175,24 @@ class ShopsController extends AdminBaseController {
 		$shop_id = $post['shop_id'];
 		unset($post['shop_id']);
 		
-		$record = new Shop($shop_id);	
-		$record->assignValues($post);
+		$shop = new Shop($shop_id);	
+		$shop->assignValues($post);
 		
-		if (!$record->save()) { 	
-			Message::addErrorMessage($record->getError());
+		if (!$shop->save()) { 	
+			Message::addErrorMessage($shop->getError());
 			FatUtility::dieJsonError( Message::getHtml() );			
 		} 
 		/* url data[ */
-		$shopOriginalUrl = 'shops/view/'.$shop_id;
-		$shopCustomUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
+		$shopOriginalUrl = Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$shop_id;
+		
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($shopOriginalUrl)));
 		} else {
-			$getShopUrls  = applicationConstants::getShopUrlRewriteLink($shopCustomUrl,$shop_id);
-			foreach($getShopUrls as $originalUrl=>$customUrl){
-				
-				$urlSrch = UrlRewrite::getSearchObject();
-				$urlSrch->doNotCalculateRecords();
-				$urlSrch->doNotLimitRecords();
-				$urlSrch->addFld('urlrewrite_custom');
-				$urlSrch->addCondition( 'urlrewrite_original', '=', $originalUrl );
-				$rs = $urlSrch->getResultSet();
-				$urlRow = FatApp::getDb()->fetch($rs);
-				$recordObj = new TableRecord(UrlRewrite::DB_TBL);
-				if( $urlRow ){
-					
-					
-					$recordObj->assignValues( array('urlrewrite_custom'	=>	$customUrl ) );
-					if( !$recordObj->update( array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($originalUrl)) )){
-						Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->adminLangId) );
-						FatUtility::dieJsonError( Message::getHtml() );
-					}
-					//$shopDetails['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
-				} else {
-					$recordObj->assignValues( array('urlrewrite_original' => $originalUrl, 'urlrewrite_custom'	=>	$customUrl) );
-					if( !$recordObj->addNew( )){
-						Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->adminLangId) );
-						FatUtility::dieJsonError( Message::getHtml() );		
-					}
-				}
-			}
+			$shop->rewriteUrlShop($post['urlrewrite_custom']);
+			$shop->rewriteUrlReviews($post['urlrewrite_custom']);
+			$shop->rewriteUrlTopProducts($post['urlrewrite_custom']);
+			$shop->rewriteUrlContact($post['urlrewrite_custom']);
+			$shop->rewriteUrlpolicy($post['urlrewrite_custom']);
 		}
 		/* ] */
 		$newTabLangId = 0;	
@@ -228,7 +205,7 @@ class ShopsController extends AdminBaseController {
 				}			
 			}	
 		}else{
-			$shop_id = $record->getMainTableRecordId();
+			$shop_id = $shop->getMainTableRecordId();
 			$newTabLangId = $this->adminLangId;	
 		}
 

@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage');
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');  
 	$searchFrm->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
 	$keywordFld = $searchFrm->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
@@ -33,9 +33,8 @@
         </div>
       </div>
     </div>
-
-	<?php
-		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'searchFrm'=>$searchFrm,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
+	<?php 
+		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'searchFrm'=>$searchFrm,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'canonicalUrl'=>$canonicalUrl,'shopId'=>$shopId,'productFiltersArr'=>$productFiltersArr);
 		$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 	?>
 	<section class="top-space">
@@ -47,7 +46,7 @@
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
 						<div class="box box--white">
-							<?php
+							<?php 
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
 								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
@@ -78,3 +77,11 @@
 	<div class="gap"></div>
 </div>
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>
+<script type="text/javascript">
+$(document).ready(function(){ 
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';	
+	<?php if($productFiltersArr['priceInFilter']){?>
+		updatePriceFilter(<?php echo floor($productFiltersArr['priceArr']['minPrice']);?>,<?php echo ceil($productFiltersArr['priceArr']['maxPrice']);?>);
+	<?php }?>
+});	
+</script>	

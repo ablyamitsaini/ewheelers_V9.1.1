@@ -115,15 +115,33 @@ var fcom = {
 		},
 		
 		updateWithAjax: function(url, data, fn, options) {
-			$.mbsmessage('Processing...');
+			$.mbsmessage(langLbl.requestProcessing,true,'alert--process alert');
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {
 				if (ans.status != 1) {
 					$(document).trigger('close.mbsmessage');
-					alert(ans.msg);
+					$.systemMessage(ans.msg,'alert alert--danger');
+					/* Custom Code[ */
+					if( ans.redirectUrl ){
+						setTimeout(function(){ window.location.href = ans.redirectUrl }, 3000);
+					}
+					/* ] */
 					return ;
 				}
-				$.mbsmessage(ans.msg, true);
+				
+				if(ans.alertType){
+					$alertType = ans.alertType;
+				}else{
+					$alertType = 'alert alert--success';
+				}
+				$.mbsmessage(ans.msg,true, $alertType);
+				
+				if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
+					var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
+					setTimeout(function(){
+						$.systemMessage.close();
+					}, time);
+				}
 				fn (ans);
 			}, o);
 		},

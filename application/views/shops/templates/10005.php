@@ -58,9 +58,5 @@
 			}); 
 		} 
 	})(jQuery); 
-</script> 
-
-	
-
-
-
+$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
+</script>

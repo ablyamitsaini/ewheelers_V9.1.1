@@ -57,6 +57,11 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){ 
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','search'); ?>';
+	<?php if($priceInFilter){?>			
+		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
+	<?php }?>
 	searchProducts(document.frmProductSearch);
+	
 });	 
 </script>	

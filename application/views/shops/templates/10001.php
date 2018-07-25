@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');?>
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 <div class="gap"></div>
 <div class="gap"></div>
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
 <script type="text/javascript">
 	(function($){
 		if(langLbl.layoutDirection == 'rtl'){
@@ -50,4 +50,7 @@
 			}); 
 		} 
 	})(jQuery); 
+	$(document).ready(function(){ 
+		$currentPageUrl = '<?php echo $canonicalUrl; ?>';	
+	});
 </script>

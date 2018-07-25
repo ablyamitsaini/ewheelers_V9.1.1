@@ -1052,4 +1052,53 @@ class Product extends MyAppModel{
 		
 	}
 	
+	public static function convertArrToSrchFiltersAssocArr($arr){
+		$arr_url_params = array();
+		if (!empty($arr)) {
+			foreach($arr as $key=>$val) {
+				$firstDashPosition = strpos($val,'-');				
+				$keyString = strtolower(substr($val,0,$firstDashPosition));
+				$valueString = substr($val,$firstDashPosition+1);
+				
+				switch($keyString){
+					case 'price_min_range':
+					case 'price_max_range':						
+						$arr_url_params[$keyString] = $valueString;
+					break;					
+					case 'price':							
+						$lastOccurenceDashPosition = strripos($valueString,'-');
+						$arr_url_params[$keyString.'-'.substr($valueString,0,$lastOccurenceDashPosition)] = substr($valueString,$lastOccurenceDashPosition+1);						
+					break;
+					case 'keyword':					
+					case 'currency':
+					case 'sort':
+					case 'page':
+					case 'category':
+						$arr_url_params[$keyString] = $valueString;
+					break;
+										
+					case 'brand':					
+					case 'prodcat':					
+					case 'optionvalue':					
+					case 'condition':					
+					case 'availability':										
+						$dashPosition =strpos($valueString,'-');
+						$id = substr($valueString,0,$dashPosition);
+						$valueString = substr($valueString,$dashPosition+1);
+						if(!array_key_exists($keyString,$arr_url_params)){
+							$arr_url_params[$keyString] = array() ;
+						}
+						if(!in_array($id,$arr_url_params[$keyString])){
+							array_push($arr_url_params[$keyString],$id);							
+						}													
+					break;
+					default:
+						$arr_url_params[$keyString] = $valueString;
+					break;					
+				}
+			}	
+		}	
+		
+		return $arr_url_params;
+	}
 }
