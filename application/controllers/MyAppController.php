@@ -10,7 +10,7 @@ class MyAppController extends FatController {
 		}
 		CommonHelper::initCommonVariables();
 		$this->initCommonVariables();
-		UserAuthentication::doCookieLogin();
+		//UserAuthentication::doCookieLogin();
 	}
 
 	public function initCommonVariables(){

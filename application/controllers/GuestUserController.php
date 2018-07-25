@@ -1,9 +1,9 @@
 <?php
 class GuestUserController extends MyAppController {
 	public function loginForm() {
-		if(UserAuthentication::doCookieLogin()){
+		/* if(UserAuthentication::doCookieLogin()){
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
-		}
+		} */
 		if (UserAuthentication::isUserLogged()) {
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
 		}

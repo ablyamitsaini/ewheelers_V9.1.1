@@ -18,7 +18,7 @@ class MobileAppApiController extends MyAppController {
 		}			
 		
 		if($this->appToken){			
-			if (!UserAuthentication::doAppLogin($this->appToken)) {                    
+			if (!UserAuthentication::isUserLogged('',$this->appToken)) {                    
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
 				die(json_encode($arr));	
 			}
