@@ -133,6 +133,8 @@ class ProductsController extends MyAppController {
 	public function search(){
 		$db = FatApp::getDb();
 
+		
+		
 		$frm = $this->getProductSearchForm();
 
 		$headerFormParamsArr = FatApp::getParameters();
