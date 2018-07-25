@@ -775,7 +775,9 @@ class ProductCategory extends MyAppModel{
 		$parentUrl = '';
 		if(0 < $parentId){
 			$parentUrlRewriteData = UrlRewrite::getDataByOriginalUrl(ProductCategory::REWRITE_URL_PREFIX.$parentId );
-			$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			if(!empty($parentUrlRewriteData)){
+				$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			}
 		}
 		
 		$originalUrl = ProductCategory::REWRITE_URL_PREFIX.$this->mainTableRecordId;

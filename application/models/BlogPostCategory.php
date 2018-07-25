@@ -350,7 +350,9 @@ class BlogPostCategory extends MyAppModel{
 		$parentUrl = '';
 		if(0 < $parentId){
 			$parentUrlRewriteData = UrlRewrite::getDataByOriginalUrl(BlogPostCategory::REWRITE_URL_PREFIX.$parentId );
-			$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			if(!empty($parentUrlRewriteData)){
+				$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			}
 		}
 		
 		$originalUrl = BlogPostCategory::REWRITE_URL_PREFIX.$this->mainTableRecordId;
