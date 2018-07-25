@@ -140,8 +140,8 @@ class DeletedUsersController extends AdminBaseController {
 		$keyword = $frm->addTextBox(Labels::getLabel('LBL_Name_Or_Email',$this->adminLangId), 'keyword','',array('id'=>'keyword','autocomplete'=>'off'));
 		$keyword->setFieldTagAttribute('onKeyUp','usersAutocomplete(this)');
 		
-		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_From',$this->adminLangId), 'user_regdate_from');
-		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_To',$this->adminLangId), 'user_regdate_to');
+		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_From',$this->adminLangId), 'user_regdate_from','' , array( 'readonly'=>'readonly'));
+		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_To',$this->adminLangId), 'user_regdate_to','' , array( 'readonly'=>'readonly'));
 		
 		$frm->addHiddenField('','page',1);
 		$frm->addHiddenField('','user_id');
@@ -150,4 +150,4 @@ class DeletedUsersController extends AdminBaseController {
 		$fld_submit->attachField($fld_cancel);			
 		return $frm;
 	}
-}	
+}

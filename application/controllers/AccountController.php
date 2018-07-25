@@ -3,10 +3,10 @@ class AccountController extends LoggedUserController {
 	public function __construct($action){
 		parent::__construct($action);
 		if( !isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) ){
-			if( User::isSeller() || User::isSigningUpForSeller() ){
-				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-			} else if( User::isBuyer()  || User::isSigningUpBuyer()){
+			if( User::isBuyer()  || User::isSigningUpBuyer()){
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+			} else if( User::isSeller() || User::isSigningUpForSeller() ){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
 			} else if( User::isAdvertiser() || User::isSigningUpAdvertiser() ){
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
 			} else if( User::isAffiliate()  || User::isSigningUpAffiliate()){
@@ -18,11 +18,11 @@ class AccountController extends LoggedUserController {
 	
 	public function index() {
 		/* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
-		if( ( User::isSeller() || User::isSigningUpForSeller() )&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' ){
-			FatApp::redirectUser(CommonHelper::generateUrl('seller'));
-		} else if( ( User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' ){
+		if( ( User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' ){
 			FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-		} else if( (User::isAdvertiser() || User::isSigningUpAdvertiser() ) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ){
+		} else if( ( User::isSeller() || User::isSigningUpForSeller() )&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' ){
+			FatApp::redirectUser(CommonHelper::generateUrl('seller'));
+		}  else if( (User::isAdvertiser() || User::isSigningUpAdvertiser() ) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ){
 			FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
 		} else if( (User::isAffiliate()  || User::isSigningUpAffiliate() ) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE' ){
 			FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
@@ -1260,28 +1260,6 @@ class AccountController extends LoggedUserController {
 		$this->_template->render( false, false );	
 	}
 	
-	public function viewWishListItems(){
-		$post = FatApp::getPostedData();
-		$uwlist_id = FatUtility::int( $post['uwlist_id'] );
-		
-		$db = FatApp::getDb();
-		$loggedUserId = UserAuthentication::getLoggedUserId();
-		
-		$srch = UserWishList::getSearchObject( $loggedUserId );
-		$srch->addMultipleFields( array('uwlist_id', 'uwlist_title') );
-		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		$srch->addCondition( 'uwlist_id', '=', $uwlist_id );
-		$rs = $srch->getResultSet();
-		$wishListRow = $db->fetch($rs);
-		if( !$wishListRow ){
-			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
-		$this->set('wishListRow', $wishListRow);
-		$this->_template->render(false, false, 'account/wish-list-items.php');
-	}
-	
 	public function viewFavouriteItems(){
 		
 		$db = FatApp::getDb();
@@ -1536,6 +1514,101 @@ class AccountController extends LoggedUserController {
 		
 		$obj = new UserWishList();
 		$obj->deleteWishList( $row['uwlist_id'] );
+		$this->set('msg', Labels::getLabel( 'LBL_Record_deleted_successfully', $this->siteLangId ) );
+		$this->_template->render( false, false, 'json-success.php' );
+	}
+	
+	public function savedSearches(){
+		$this->_template->render();	
+	}
+	
+	public function savedSearchesSearch(){
+		$post = FatApp::getPostedData();
+		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
+		$pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
+		$loggedUserId = UserAuthentication::getLoggedUserId();
+		
+		$srch = new SearchBase( Product::DB_PRODUCT_SAVED_SEARCH );
+		$srch->addOrder('pssearch_added_on','DESC');
+		$srch->addCondition( 'pssearch_user_id', '=', $loggedUserId );
+		$srch->setPageNumber($page);
+		$srch->setPageSize($pageSize);
+		$rs = $srch->getResultSet();
+		$arrListing = FatApp::getDb()->fetchAll($rs);
+		
+		$this->set('page', $page);
+		$this->set('pageSize', $pageSize);
+		$this->set('recordCount', $srch->recordCount());
+		$this->set('pageCount', $srch->pages());
+		$this->set('arrListing', $arrListing);
+		$this->_template->render( false, false );	
+	}
+	
+	public function viewWishListItems(){
+		$post = FatApp::getPostedData();
+		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
+		
+		$db = FatApp::getDb();
+		$loggedUserId = UserAuthentication::getLoggedUserId();
+		
+		$srch = UserWishList::getSearchObject( $loggedUserId );
+		$srch->addMultipleFields( array('uwlist_id', 'uwlist_title') );
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addCondition( 'uwlist_id', '=', $uwlist_id );
+		$rs = $srch->getResultSet();
+		$wishListRow = $db->fetch($rs);
+		if( !$wishListRow ){
+			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		$this->set('wishListRow', $wishListRow);
+		$this->_template->render(false, false, 'account/wish-list-items.php');
+	}
+	
+	public function deleteSavedSearch(){
+		$post = FatApp::getPostedData();
+		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
+		
+		$srch = new SearchBase( Product::DB_PRODUCT_SAVED_SEARCH );
+		$srch->addCondition( 'pssearch_id', '=', $pssearch_id );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch($rs);
+		if( !$row ){
+			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		if(!FatApp::getDb()->deleteRecords( Product::DB_PRODUCT_SAVED_SEARCH, array('smt' => 'pssearch_id = ?', 'vals' => array($pssearch_id) ) )){
+			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$this->set('msg', Labels::getLabel( 'LBL_Record_deleted_successfully', $this->siteLangId ) );
+		$this->_template->render( false, false, 'json-success.php' );
+	}
+	
+	public function updateSearchdate(){
+		$post = FatApp::getPostedData();
+		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
+		
+		$srch = new SearchBase( Product::DB_PRODUCT_SAVED_SEARCH );
+		$srch->addCondition( 'pssearch_id', '=', $pssearch_id );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch($rs);
+		if( !$row ){
+			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}
+		
+		$updateArray = array( 'pssearch_updated_on' => date('Y-m-d H:i:s') );
+		$whr = array('smt'=>'pssearch_id = ?', 'vals'=> array($pssearch_id));
+		
+		if(!FatApp::getDb()->updateFromArray(Product::DB_PRODUCT_SAVED_SEARCH, $updateArray, $whr)){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		
 		$this->set('msg', Labels::getLabel( 'LBL_Record_deleted_successfully', $this->siteLangId ) );
 		$this->_template->render( false, false, 'json-success.php' );
 	}

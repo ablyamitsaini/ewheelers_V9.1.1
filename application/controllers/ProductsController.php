@@ -1934,4 +1934,45 @@ class ProductsController extends MyAppController {
 		die(json_encode($json));		
 	}
 	
+	public function saveProductSearchPopup(){
+		$loggedUserId = UserAuthentication::getLoggedUserId();
+		$frm = $this->getCreateSavedSearchForm();
+		$frm->fill(array('user_id' => $loggedUserId));
+		$this->set('frm', $frm);
+		$this->_template->render(false, false);
+	}
+	
+	
+	private function getCreateSavedSearchForm(){
+		$frm = new Form('frmSavedSearch');
+		$frm->setRequiredStarWith('NONE');
+		$frm->addRequiredField('','pssearch_name');
+		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Add', $this->siteLangId));
+		return $frm;
+	}
+	
+	public function setupSaveProductSearch(){
+		$frm = $this->getCreateSavedSearchForm( );
+		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
+		if ( false === $post ) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		
+		$data_to_save_arr =$post;
+		$data_to_save_arr['pssearch_name'] = $post['pssearch_name'];
+		$data_to_save_arr['pssearch_user_id'] = UserAuthentication::getLoggedUserId();
+		$data_to_save_arr['pssearch_url'] = $_SERVER['HTTP_REFERER'];
+		$data_to_save_arr['pssearch_added_on'] = date('Y-m-d H:i:s');
+
+		if(!FatApp::getDb()->insertFromArray(Product::DB_PRODUCT_SAVED_SEARCH,$data_to_save_arr, false)){
+			/* Message::addErrorMessage(FatApp::getDb()->getError()); */
+			Message::addErrorMessage(Labels::getLabel('MSG_Can_not_be_saved',$this->siteLangId));
+			FatUtility::dieWithError( Message::getHtml());
+		}
+
+		$this->set('msg', Labels::getLabel('MSG_Saved_successfully',$this->siteLangId) );
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
 }

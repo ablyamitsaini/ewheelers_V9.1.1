@@ -392,7 +392,7 @@ function removePriceFilter(){
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
 						
-		fcom.updateWithAjax(fcom.makeUrl('Products','productsList',),data,function(ans){
+		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;
 			$.mbsmessage.close();
@@ -485,5 +485,34 @@ function removePriceFilter(){
 		searchProducts(frm,0,0,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
+	
+	saveProductSearch = function() {
+		 event.stopPropagation();
+		if( isUserLogged() == 0 ){
+			loginPopUpBox();
+			return false;
+		}
+		$.facebox(function() {
+		fcom.ajax(fcom.makeUrl('Products','saveProductSearchPopup'), '' ,function(ans){
+			$.facebox(ans,'faceboxWidth collection-ui-popup');
+				if( ans.status ){
+					$(document).trigger('close.facebox');
+				}
+			});
+		});
+	
+		return false;
+	};
+	
+	setupSaveProductSearch = function(frm){
+		if ( !$(frm).validate() ) return false;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Products', 'setupSaveProductSearch'), data, function(ans) {
+			if( ans.status ){
+				$(document).trigger('close.facebox');
+			}
+		});
+	};
+
 	
 })();
