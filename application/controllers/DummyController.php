@@ -54,8 +54,8 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
-		echo urldecode('https://www.flipkart.com/search?p%5B%5D=facets.brand%255B%255D%3DSamsung&sid=tyy%2F4io&otracker=CLP_filters&p%5B%5D=facets.brand%255B%255D%3DMi&p%5B%5D=facets.ram%255B%255D%3D1%2BGB&p%5B%5D=facets.ram%255B%255D%3D2%2BGB');
-		
+			var_dump($_SERVER);
+		exit;
 		/* Notifications::sendPushNotification('AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR','f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl',array('title' =>'hi' , 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1')); exit; */
 		
 		$uObj = new User(119);

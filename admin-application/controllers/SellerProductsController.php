@@ -267,40 +267,12 @@ class SellerProductsController extends AdminBaseController {
 		}
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
 		
-		/* Add Url rewriting  [  ---- */
-		$tabsArr = MetaTag::getTabsArr();
-		$metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
-		
-		if(!isset($tabsArr[$metaType]) )
-		{
-			Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS",$this->adminLangId));
-			FatUtility::dieJsonError( Message::getHtml() );
-		}		
-		$seoUrl =  CommonHelper::seoUrl($post['selprod_url_keyword']).'-'.$selprod_id;
-		$originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$selprod_id;
-		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-
-		$seoUrlKeyword = array(
-		'urlrewrite_original'=>$originalUrl,
-		'urlrewrite_custom'=>$customUrl
-		);	
-		FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-		
-		/* 	$url =  $tabsArr[$metaType]['controller'].'/'.$tabsArr[$metaType]['action'].'/'.$selprod_id;
-		$urlRewriteData_Save['urlrewrite_original'] = trim($url, '/\\');
-		$urlRewriteData_Save['urlrewrite_custom'] = trim(CommonHelper::seoUrl($url_keyword), '/\\');
-		if($selprod_id){
-			$record = new UrlRewrite();
-			$record->assignValues($urlRewriteData_Save);
-	
-			if (!$record->save()) {
-				Message::addErrorMessage($record->getError());
-				FatUtility::dieJsonError( Message::getHtml() );
-			}
-			
-		} */
-		
+		/* Add Url rewriting  [  ---- */		
+		$sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
+		$sellerProdObj->rewriteUrlMoreSellers($post['selprod_url_keyword']);		
 		/*--------  ] */
+		
 		//save options data, if any[
 		if( $selprod_id ){
 			if( !$sellerProdObj->addUpdateSellerProductOptions( $selprod_id, $options )){

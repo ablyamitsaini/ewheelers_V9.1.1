@@ -13,6 +13,17 @@ class UrlRewrite extends MyAppModel{
 		$srch = new SearchBase(static::DB_TBL, 'ur');		
 		return $srch;
 	}
+	
+	public static function update($originalUrl,$customUrl){
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);
+		if(FatApp::getDb()->insertFromArray( static::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}
 
 	public static function getDataByCustomUrl($customUrl,$excludeThisOriginalUrl = false){
 		$urlSrch = static::getSearchObject();

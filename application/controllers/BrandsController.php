@@ -21,7 +21,7 @@ class BrandsController extends MyAppController {
 		FatApp::redirectUser( CommonHelper::generateUrl('Brands') );
 	}
 	
-	public function view( $brandId ){
+	public function view( $brandId ){ 
 		$brandId = FatUtility::int($brandId);
 		Brand::recordBrandWeightage($brandId);
 		$db = FatApp::getDb();
@@ -29,6 +29,24 @@ class BrandsController extends MyAppController {
 		$this->includeProductPageJsCss();
 		$frm = $this->getProductSearchForm();	
 		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		if(array_key_exists('shop',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
+		}	
+		if(array_key_exists('collection',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
+		}
+		$headerFormParamsAssocArr['join_price'] = 1;	
+		$frm->fill( $headerFormParamsAssocArr );
+				
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria(0);
 		$prodSrchObj->joinProductToCategory();
@@ -84,9 +102,17 @@ class BrandsController extends MyAppController {
 		//$priceRs = $priceSrch->getResultSet();
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
+		
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}
 		/* ] */
-		
-		
+				
 		/* Categories Data[ */
 		//echo $prodSrchObj->getQuery();die();
 		$catSrch = clone $prodSrchObj;
@@ -105,14 +131,42 @@ class BrandsController extends MyAppController {
 		
 		/* ] */
 		
-		$productFiltersArr = array( 
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
+		}
+		
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$prodcatArr = array();
+		if(array_key_exists('prodcat',$headerFormParamsAssocArr)){
+			$prodcatArr = $headerFormParamsAssocArr['prodcat'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}
+		
+		$productFiltersArr = array(
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'		=>	$categoriesArr, 
 			'productCategories'		=>	$productCategories,
 			'shopCatFilters'		=>	true,
-			'brandsArr'			=>	$brandsArr,
+			'brandsArr'			=>	$brandsArr,			
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
+			'availability'	          =>	 $availability,
 			'brandsCheckedArr'	=>	array($brandId),
 			'conditionsArr'		=>	$conditionsArr,			
-			'priceArr'			=>	$priceArr,			
+			'priceArr'			=>	$priceArr,
+			'prodcatArr'			=>	$prodcatArr,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'			  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'			  =>	$filterDefaultMaxValue,			
 			'siteLangId'		=>	$this->siteLangId
 		);
 		
@@ -121,7 +175,11 @@ class BrandsController extends MyAppController {
 		
 		$this->set('frmProductSearch', $frm);	
 		$this->set('brandData', $brandData);
+		$this->set('brandId', $brandId);
+		$this->set('priceArr', $priceArr);
+		$this->set('priceInFilter', $priceInFilter);
 		$this->set('productFiltersArr', $productFiltersArr );
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Brands','view',array($brandId)) );
 		if(empty($record)){
 			$this->set('noProductFound', 'noProductFound');
 		}

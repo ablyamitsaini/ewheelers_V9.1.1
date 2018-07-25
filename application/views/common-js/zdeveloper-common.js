@@ -177,15 +177,15 @@ function submitSiteSearch(frm){
 	var qryParam=($(frm).serialize_without_blank());
 	var url_arr = [];
 	if( qryParam.indexOf("keyword") > -1 ){
-		url_arr.push('keyword');
+		//url_arr.push('keyword');
 		var keyword = $(frm).find('input[name="keyword"]').val();
 		var protomatch = /^(https?|ftp):\/\//;
-		url_arr.push(encodeURIComponent(keyword.replace(protomatch,'').replace(/\//g,'-')));
+		url_arr.push('keyword-'+encodeURIComponent(keyword.replace(protomatch,'').replace(/\//g,'-')));
 	}
 	
 	if( qryParam.indexOf("category") > -1 ){
-		url_arr.push('category');
-		url_arr.push($(frm).find('select[name="category"]').val());
+		//url_arr.push('category');
+		url_arr.push('category-'+$(frm).find('select[name="category"]').val());
 	}
 	/* url_arr = []; */
 	

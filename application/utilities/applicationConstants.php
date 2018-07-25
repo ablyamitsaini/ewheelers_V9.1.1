@@ -312,7 +312,7 @@ class applicationConstants{
 		);
 	}	
 	
-	static function getShopUrlRewriteLink($customLink ='',$id = 0){		
+	/* static function getShopUrlRewriteLink($customLink ='',$id = 0){		
 		return array(
 			Shop::SHOP_VIEW_ORGINAL_URL.$id           =>  $customLink,
 			Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$id   =>  $customLink.'/top-products',
@@ -320,15 +320,15 @@ class applicationConstants{
 			Shop::SHOP_SEND_MESSAGE_ORGINAL_URL.$id   =>  $customLink.'/contact',
 			Shop::SHOP_POLICY_ORGINAL_URL.$id         =>  $customLink.'/policy'
 		);		
-	}
+	} */
 	
-	static function getProductUrlRewriteLink($customLink ='',$id = 0){		
+	/* static function getProductUrlRewriteLink($customLink ='',$id = 0){		
 		return array(
 			Product::PRODUCT_VIEW_ORGINAL_URL.$id           =>  $customLink.'/'.$id,
 			Product::PRODUCT_REVIEWS_ORGINAL_URL.$id        =>  $customLink.'/reviews/'.$id,
 			Product::PRODUCT_MORE_SELLERS_ORGINAL_URL.$id        =>  $customLink.'/sellers/'.$id,			
 		);		
-	}
+	} */
 	
 	static function getSmtpSecureArr($langId){		
 		return array(

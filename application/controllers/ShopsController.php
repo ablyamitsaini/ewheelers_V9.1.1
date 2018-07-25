@@ -141,8 +141,7 @@ class ShopsController extends MyAppController {
 		return $frm;
 	}
 	
-	public function view( $shop_id ){
-
+	public function view( $shop_id ){				
 		$shop_id = FatUtility::int($shop_id);
 		
 		if( $shop_id <= 0 ){
@@ -156,9 +155,20 @@ class ShopsController extends MyAppController {
 		$this->shopDetail($shop_id); /* [defined in traits] */
 		$searchFrm = $this->getSearchForm();
 		$frm = $this->getProductSearchForm();
-		$frmData = array('shop_id' => $shop_id);
-		$frm->fill($frmData);
-		$searchFrm->fill($frmData);
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		$headerFormParamsAssocArr['join_price'] = 1;
+		$headerFormParamsAssocArr['shop_id'] = $shop_id;		
+		$frm->fill($headerFormParamsAssocArr);
+		$searchFrm->fill($headerFormParamsAssocArr);
 		
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria(1);
@@ -176,6 +186,8 @@ class ShopsController extends MyAppController {
 		
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchFrm', $searchFrm);
+		$this->set('shopId', $shop_id);
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Shops','view',array($shop_id)));
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css')); 
 		$this->_template->addJs('js/shop-nav.js');
@@ -198,6 +210,21 @@ class ShopsController extends MyAppController {
 	
 	public function shopDetail( $shop_id, $policy = false ){
 		$db = FatApp::getDb();
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
+		}
+		if(array_key_exists('sort',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
+		}
+		if(array_key_exists('shop',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
+		}	
+		if(array_key_exists('collection',$headerFormParamsAssocArr)){
+			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
+		}	
 		
 		$srch = new ShopSearch( $this->siteLangId );
 		$srch->setDefinedCriteria( $this->siteLangId );
@@ -261,8 +288,6 @@ class ShopsController extends MyAppController {
 		
 		/* ] */
 		
-		
-		
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
 		$brandSrch->addGroupBy('brand_id');
@@ -298,16 +323,59 @@ class ShopsController extends MyAppController {
 		//$priceRs = $priceSrch->getResultSet();
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
-		/* ] */
 		
-		$productFiltersArr = array( 
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}		
+		/* ] */
+				
+		$brandsCheckedArr = array();
+		if(array_key_exists('brand',$headerFormParamsAssocArr)){
+			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+		}
+		
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
+		}
+		
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}
+		
+		$prodcatArr = array();
+		if(array_key_exists('prodcat',$headerFormParamsAssocArr)){
+			$prodcatArr = $headerFormParamsAssocArr['prodcat'];
+		}
+		
+		$productFiltersArr = array(			
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'		=>	$categoriesArr,
 			'productCategories'		=>	$productCategories,
+			'prodcatArr'		=>	$prodcatArr,
+			'brandsCheckedArr'		  => $brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'availability'	          =>	 $availability,
 			'shopCatFilters'		=>	true,
 			'brandsArr'			=>	$brandsArr,
 			'CategoryCheckedArr' =>array(),
 			'conditionsArr'		=>	$conditionsArr,
+			'conditionsCheckedArr'			=>	$conditionsCheckedArr,
 			'priceArr'			=>	$priceArr,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'siteLangId'		=>	$this->siteLangId
 		);
 		
@@ -330,7 +398,7 @@ class ShopsController extends MyAppController {
 				$this->_template->addJs('js/slick.min.js');
 				$this->_template->addCss('shops/templates/page-css/'.$shop['shop_ltemplate_id'].'.css');
 			break;
-			default:
+			default: 
 			$this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
 	
 			break;
@@ -381,6 +449,7 @@ class ShopsController extends MyAppController {
 		$this->set('layoutRecordId',$shop['shop_id']);
 		$showBgImage = $this->showBackgroundImage($shop_id,$this->siteLangId,$shop['shop_ltemplate_id']);
 		$this->set('showBgImage',$showBgImage);
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Shops','view',array($shop_id)));
 	}
 	
 	public function getAllowedShowBg($templateId =''){

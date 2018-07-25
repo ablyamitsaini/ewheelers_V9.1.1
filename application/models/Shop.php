@@ -197,9 +197,78 @@ class Shop extends MyAppModel {
 
 		if (is_string($attr)) {
 			return $row[$attr];
+		}	
+			
+	}
+	
+	private function rewriteUrl($keyword ,$type = 'shop' , $suffixWithId = true){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
 		}
 		
-			
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
+		$seoUrl = CommonHelper::seoUrl($keyword);		
+		
+		switch(strtolower($type)){
+			case 'top-products':
+				$originalUrl = Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl = preg_replace('/-top-products$/','',$seoUrl);
+				$seoUrl.=  '-top-products';	
+			break;
+			case 'reviews':
+				$originalUrl = Shop::SHOP_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl = preg_replace('/-reviews$/','',$seoUrl);
+				$seoUrl.= '-reviews';	
+			break;
+			case 'contact':
+				$originalUrl = Shop::SHOP_SEND_MESSAGE_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl = preg_replace('/-contact$/','',$seoUrl);
+				$seoUrl.=  '-contact';	
+			break;
+			case 'policy':
+				$originalUrl = Shop::SHOP_POLICY_ORGINAL_URL.$this->mainTableRecordId;
+				$seoUrl = preg_replace('/-policy$/','',$seoUrl);
+				$seoUrl.=  '-policy';	
+			break;
+			default:
+				$originalUrl = Shop::SHOP_VIEW_ORGINAL_URL.$this->mainTableRecordId;					
+			break;
+		}
+		
+		if($suffixWithId){
+			$seoUrl.= '-'.$this->mainTableRecordId;
+		}
+		
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
+	}
+	
+	public function rewriteUrlShop($keyword){
+		return $this->rewriteUrl($keyword);
+	}
+	
+	public function rewriteUrlReviews($keyword){
+		return $this->rewriteUrl($keyword,'reviews');
+	}
+	
+	public function rewriteUrlTopProducts($keyword){
+		return $this->rewriteUrl($keyword,'top-products');
+	}
+	
+	public function rewriteUrlContact($keyword){
+		return $this->rewriteUrl($keyword,'contact');
+	}
+	
+	public function rewriteUrlpolicy($keyword){
+		return $this->rewriteUrl($keyword,'policy');
 	}
 	
 	/* public function getShopAttachments(){

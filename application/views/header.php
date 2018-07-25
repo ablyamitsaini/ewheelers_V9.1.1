@@ -23,6 +23,7 @@ $commonHead1Data = array(
 	'themeActive'         =>    $themeActive,
 	'currencySymbolLeft'  =>    $currencySymbolLeft,
 	'currencySymbolRight' =>    $currencySymbolRight,
+	'canonicalUrl' =>    isset($canonicalUrl)?$canonicalUrl:'',
 );
 
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data, false);

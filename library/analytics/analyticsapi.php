@@ -336,7 +336,7 @@ Class Ykart_analytics
 				$params['start-date']=$this->yearDate;				
 			break;
 		}
-		$searchTerm = $this->query($params);	
+		$searchTerm = $this->query($params);			
 		$result=array();
 		if($searchTerm['status']==true && $searchTerm['result']['http_code']==200){
 			$result['totalsForAllResults']=$searchTerm['result']['totalsForAllResults']['ga:searchResultViews'];

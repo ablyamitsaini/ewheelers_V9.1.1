@@ -6,6 +6,7 @@ class BlogPost extends MyAppModel{
 	const DB_LANG_TBL_PREFIX ='postlang_';
 	const DB_POST_TO_CAT_TBL ='tbl_blog_post_to_category';
 	const DB_POST_TO_CAT_TBL_PREFIX ='ptc_';
+	const REWRITE_URL_PREFIX = 'blog/post-detail/';
 
 	private $db;
 
@@ -106,6 +107,32 @@ class BlogPost extends MyAppModel{
 			}
 		}
 		return true;
+	}
+	
+	public function rewriteUrl($keyword, $suffixWithId = true){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$originalUrl = BlogPost::REWRITE_URL_PREFIX.$this->mainTableRecordId;		
+		
+		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
+		$seoUrl =  CommonHelper::seoUrl($keyword);	
+				
+		if($suffixWithId){
+			$seoUrl =  $seoUrl.'-'.$this->mainTableRecordId;	
+		}
+			
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+
+		$seoUrlKeyword = array(
+			'urlrewrite_original'=>$originalUrl,
+			'urlrewrite_custom'=>$customUrl
+		);	
+		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
+			return true;
+		}
+		return false;
 	}
 	
 	public function canMarkRecordDelete(){

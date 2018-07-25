@@ -303,7 +303,7 @@ class HomeController extends AdminBaseController {
 		phpFastCache::setup("path", CONF_UPLOADS_PATH."caching");
 		$cache = phpFastCache();
 		
-		$result = $cache->get("dashboardInfo_".$type.'_'.$this->adminLangId);		
+		$result = $cache->get("dashboardInfo_".$type.'_'.$interval.'_'.$this->adminLangId);		
 		if($result == null) { 
 			if(strtoupper($type) == 'TOP_PRODUCTS'){
 				$statsObj = new Statistics();		

@@ -115,15 +115,15 @@ var fcom = {
 		},
 		
 		updateWithAjax: function(url, data, fn, options) {
-			$.mbsmessage('Processing...');
+			$.systemMessage(langLbl.processing,'alert--process');
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {
 				if (ans.status != 1) {
 					$(document).trigger('close.mbsmessage');
-					alert(ans.msg);
+					$.systemMessage(ans.msg, '');
 					return ;
 				}
-				$.mbsmessage(ans.msg, true);
+				$.systemMessage(ans.msg,  'alert--success');
 				fn (ans);
 			}, o);
 		},

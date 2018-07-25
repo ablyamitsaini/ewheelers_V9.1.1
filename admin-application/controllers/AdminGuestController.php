@@ -34,12 +34,12 @@ class AdminGuestController extends FatController {
 	public function loginForm() {
 	
 		$frm = $this->getLoginForm();
-		$forgotfrm = $this->getForgotForm();
+		//$forgotfrm = $this->getForgotForm();
 		
 		/* custom theming of login form[ */
 		$frm->setValidatorJsObjectName ( 'loginValidator' );
 		$frm->setFormTagAttribute ( 'onsubmit', 'login(this, loginValidator); return(false);' );
-//$frm->setFormTagAttribute ( 'class', '' );
+		//$frm->setFormTagAttribute ( 'class', '' );
 		
 		$frm->setFormTagAttribute('id', 'adminLoginForm');
 		$frm->setFormTagAttribute('class', 'web_form');
@@ -63,16 +63,16 @@ class AdminGuestController extends FatController {
 		/* ] */
 		
 		/* custom theming of forgot form[ */
-		$forgotfrm->setFormTagAttribute('id', 'frmForgot');
+	/* 	$forgotfrm->setFormTagAttribute('id', 'frmForgot');
 		$forgotfrm->setFormTagAttribute('class', 'web_form');
 		$forgotfrm->setRequiredStarPosition('none');
 		$forgotfrm->setValidatorJsObjectName('forgotValidator');
 		$forgotfrm->setFormTagAttribute ( 'onsubmit', 'forgotPassword(this, forgotValidator); return false;');
 		
-		$email_fld = $forgotfrm->getField('admin_email');
+		$email_fld = $forgotfrm->getField('admin_email'); 
 		$email_fld->addFieldTagAttribute('title', 'Email Address');
 		$email_fld->addFieldTagAttribute('autocomplete', 'off');
-		$email_fld->setRequiredStarWith('none');
+		$email_fld->setRequiredStarWith('none');*/
 		/* ] */
 		
 		if($this->doCookieAdminLogin()){
@@ -80,7 +80,7 @@ class AdminGuestController extends FatController {
 		}
 		
 		$this->set('frm', $frm);
-		$this->set('frmForgot', $forgotfrm );
+		/* $this->set('frmForgot', $forgotfrm ); */
 		
 		$this->_template->render();
 	}

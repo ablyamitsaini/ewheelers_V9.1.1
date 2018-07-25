@@ -930,10 +930,9 @@ class CommonHelper extends FatUtility{
 		}
 		return $options_arr;
 	} */	
-	
-	/* used for URL creations */
+		
 	static function arrayToAssocArray( $arr ){
-		$arr_url_params = array();
+		$arr_url_params = array();				
 		if (!empty($arr)) {
 			foreach($arr as $key=>$val) {
 				$v = 0;
@@ -944,7 +943,8 @@ class CommonHelper extends FatUtility{
 				}
 				$arr_url_params[$k] = $v;
 			}
-		}
+		} 		
+		
 		return $arr_url_params;
 	}
 	
@@ -1239,29 +1239,22 @@ class CommonHelper extends FatUtility{
 		//Lower case everything
 		$string = strtolower($string);
 		//Make alphanumeric (removes all other characters)
-		//$string = preg_replace("/[^a-z0-9_\s-\/]/", "", $string);		
+		//$string = preg_replace("/[^a-z0-9,&_\s-\/]/", "", $string);	
+		//covert / to -
+		$string = preg_replace("/[\s,&\/]/", "-", $string);		
 		//Clean up multiple dashes or whitespaces
 		$string = preg_replace("/[\s-]+/", " ", $string);
 		//Convert whitespaces and underscore to dash
 		$string = preg_replace("/[\s_]/", "-", $string);
 		
-		/* //Lower case everything
-		$string = strtolower($string);
-		//Make alphanumeric (removes all other characters)
-		$string = preg_replace("/[^a-z0-9_\s-\/]/", "", $string);
-		//Clean up multiple dashes or whitespaces
-		$string = preg_replace("/[\s-]+/", " ", $string);
-		//Convert whitespaces and underscore to dash
-		$string = preg_replace("/[\s_]/", "-", $string);
-		*/
 		$keyword = strtolower($string);
 		$keyword = ucfirst(FatUtility::dashed2Camel($keyword));
 		
 		if (file_exists ( CONF_INSTALLATION_PATH . 'application/controllers/' .$keyword.'Controller' . '.php' )){			
 			return $string.'-'.rand(1,100);
-		}
-		
-		return $string;
+		}	
+			
+		return trim($string,'-');
 	}
 	
 	public static function recursiveDelete($str) {
@@ -1671,4 +1664,10 @@ class CommonHelper extends FatUtility{
 		}
 	}	
 	
+	public static function demoUrl(){
+		if($_SERVER['SERVER_NAME']== 'v8.demo.yo-kart.com'){
+			return true;
+		}
+		return false;
+	}
 }

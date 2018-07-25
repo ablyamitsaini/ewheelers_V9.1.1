@@ -627,13 +627,13 @@ class Importexport extends ImportexportCommon{
 					$categoryId = 0;					
 					$categoryData = ProductCategory::getAttributesByIdentifier($identifier,array('prodcat_id'));
 				}				
-				
+								
 				if(!empty($categoryData) && $categoryData['prodcat_id']){
 					$categoryId = $categoryData['prodcat_id'];
 					$where = array('smt' => 'prodcat_id = ?', 'vals' => array( $categoryId ) );						
 					$this->db->updateFromArray( ProductCategory::DB_TBL, $data,$where);		
-				}else{
-					if($this->isDefaultSheetData($langId)){
+				}else{					
+					if($this->isDefaultSheetData($langId)){						
 						$this->db->insertFromArray( ProductCategory::DB_TBL, $data);	
 						$categoryId = $this->db->getInsertId();							
 					}
@@ -660,16 +660,10 @@ class Importexport extends ImportexportCommon{
 					if($this->isDefaultSheetData($langId)){
 						if(trim($seoUrl) == ''){
 							$seoUrl = $identifier;
-						}							
-						$originalUrl = ProductCategory::REWRITE_URL_PREFIX.$categoryId;
-						$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-						
-						$seoUrlKeyword = array(
-							'urlrewrite_original'=>$originalUrl,
-							'urlrewrite_custom'=>$customUrl
-						);
-						
-						$this->db->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
+						}	
+						$prodcatData = ProductCategory::getAttributesById($categoryId,array('prodcat_parent'));
+						$category = new ProductCategory($categoryId);
+						$category->rewriteUrl($seoUrl,true,$prodcatData['prodcat_parent']);
 					}
 					/* ]*/					
 				}					
@@ -960,15 +954,9 @@ class Importexport extends ImportexportCommon{
 					if($this->isDefaultSheetData($langId)){
 						if(trim($seoUrl) == ''){
 							$seoUrl = $identifier;
-						}							
-						$shopOriginalUrl = Brand::REWRITE_URL_PREFIX.$brandId;
-						$shopCustomUrl = UrlRewrite::getValidSeoUrl($seoUrl,$shopOriginalUrl);
-						
-						$seoUrlKeyword = array(
-							'urlrewrite_original'=>$shopOriginalUrl,
-							'urlrewrite_custom'=>$shopCustomUrl
-						);						
-						$this->db->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$shopCustomUrl));
+						}
+						$brand = new Brand($brandId);
+						$brand->rewriteUrl($seoUrl);								
 					}
 					/* ]*/
 				}
@@ -2965,15 +2953,10 @@ class Importexport extends ImportexportCommon{
 					/* Url rewriting [*/
 					if($this->isDefaultSheetData($langId)){
 						if(trim($urlKeyword) != ''){
-							$urlKeyword =  CommonHelper::seoUrl($urlKeyword).'/'.$selprodId;	
-							$originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$selprodId;
-							$customUrl = UrlRewrite::getValidSeoUrl($urlKeyword,$originalUrl);
-							
-							$seoUrlKeyword = array(
-								'urlrewrite_original'=>$originalUrl,
-								'urlrewrite_custom'=>$customUrl
-							);							
-							$this->db->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
+							$sellerProdObj = new SellerProduct($selprodId);
+							$sellerProdObj->rewriteUrlProduct($urlKeyword);
+							$sellerProdObj->rewriteUrlReviews($urlKeyword);
+							$sellerProdObj->rewriteUrlMoreSellers($urlKeyword);							
 						}						
 					} 
 					/* ]*/	
