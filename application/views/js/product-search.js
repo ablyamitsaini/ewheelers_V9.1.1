@@ -217,8 +217,8 @@ function removeFilter(id,obj){
 }
 
 function clearFilters(id,obj){
- $('.'+id).remove();
- $('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
+	$('.'+id).remove();
+	$('#'+id).find('input[type=\'checkbox\']').attr('checked', false);
 }
 
 function addToSearchQueryString(id,obj){	
