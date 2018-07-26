@@ -4,7 +4,7 @@ class BlogController extends MyAppController{
 		parent::__construct($action);
 		$this->set('blogPage',true);
 		$this->set('bodyClass','is--blog');
-		$this->_template->addCss('css/style---blog.css');
+		$this->_template->addCss('css/blog.css');
 			
 	}
 

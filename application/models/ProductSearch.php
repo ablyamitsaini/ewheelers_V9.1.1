@@ -615,6 +615,7 @@ class ProductSearch extends SearchBase {
 	
 	public function joinProductRating(){
 		$selProdReviewObj = new SelProdReviewSearch();
+		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();

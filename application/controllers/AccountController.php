@@ -1314,6 +1314,7 @@ class AccountController extends LoggedUserController {
 		$srch->addCondition('selprod_deleted',  '=', applicationConstants::NO );
 		$srch->addCondition('selprod_active', '=', applicationConstants::YES);
 		$selProdReviewObj = new SelProdReviewSearch();
+		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -1423,6 +1424,7 @@ class AccountController extends LoggedUserController {
 		
 		
 		$selProdReviewObj = new SelProdReviewSearch();
+		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
