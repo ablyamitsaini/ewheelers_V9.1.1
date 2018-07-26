@@ -18,6 +18,8 @@ class ContentPage extends MyAppModel {
 	const CONTENT_PAGE_LAYOUT1_BLOCK_4 = 4 ;
 	const CONTENT_PAGE_LAYOUT1_BLOCK_5 = 5 ;
 	
+	CONST REWRITE_URL_PREFIX = 'cms/view/';
+	
 	
 	public function __construct($epageId = 0) {
 		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $epageId );				
@@ -113,6 +115,20 @@ class ContentPage extends MyAppModel {
 			return true;
 		}
 		return false;
+	}
+	
+	public function rewriteUrl($keyword){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$originalUrl = static::REWRITE_URL_PREFIX.$this->mainTableRecordId;		
+		
+		$seoUrl =  CommonHelper::seoUrl($keyword);	
+		
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
+		
+		return UrlRewrite::update($originalUrl,$customUrl);		
 	}
 	
 	public function addUpdateContentPageBlocks($langId, $cpageId , $data){

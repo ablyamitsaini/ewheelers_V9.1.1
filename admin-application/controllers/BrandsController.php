@@ -115,7 +115,7 @@ class BrandsController extends AdminBaseController {
 		/* url data[ */			
 		$brandOriginalUrl = $this->rewriteUrl.$brand_id;		
 		if( $post['urlrewrite_custom'] == '' ){
-			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($brandOriginalUrl)));
+			UrlRewrite::remove($brandOriginalUrl);
 		} else {
 			$brand->rewriteUrl($post['urlrewrite_custom']);
 		}		
@@ -958,14 +958,8 @@ class BrandsController extends AdminBaseController {
 						if(trim($seoUrl) == ''){
 							$seoUrl = $identifier;
 						}							
-						$shopOriginalUrl = $this->rewriteUrl.$brandId;
-						$shopCustomUrl = UrlRewrite::getValidSeoUrl($seoUrl,$shopOriginalUrl);
-						
-						$seoUrlKeyword = array(
-							'urlrewrite_original'=>$shopOriginalUrl,
-							'urlrewrite_custom'=>$shopCustomUrl
-						);						
-						$db->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$shopCustomUrl));
+						$brand = new Brand($brandId);
+						$brand->rewriteUrl($seoUrl);
 					}
 					/* ]*/
 				}

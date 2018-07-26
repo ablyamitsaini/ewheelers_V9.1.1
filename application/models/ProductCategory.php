@@ -775,7 +775,9 @@ class ProductCategory extends MyAppModel{
 		$parentUrl = '';
 		if(0 < $parentId){
 			$parentUrlRewriteData = UrlRewrite::getDataByOriginalUrl(ProductCategory::REWRITE_URL_PREFIX.$parentId );
-			$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			if(!empty($parentUrlRewriteData)){
+				$parentUrl = preg_replace('/-'.$parentId.'$/','',$parentUrlRewriteData['urlrewrite_custom']);
+			}
 		}
 		
 		$originalUrl = ProductCategory::REWRITE_URL_PREFIX.$this->mainTableRecordId;
@@ -789,15 +791,7 @@ class ProductCategory extends MyAppModel{
 		$seoUrl = str_replace($parentUrl,'',$seoUrl);
 		$seoUrl = $parentUrl.'-'.$seoUrl;
 		
-		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
-		return UrlRewrite::update($originalUrl,$customUrl);
-		/* $seoUrlKeyword = array(
-			'urlrewrite_original'=>$originalUrl,
-			'urlrewrite_custom'=>$customUrl
-		);	
-		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
-			return true;
-		}
-		return false; */
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
+		return UrlRewrite::update($originalUrl,$customUrl);		
 	}		
 }

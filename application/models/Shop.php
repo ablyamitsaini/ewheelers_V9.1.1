@@ -201,12 +201,11 @@ class Shop extends MyAppModel {
 			
 	}
 	
-	private function rewriteUrl($keyword ,$type = 'shop' , $suffixWithId = true){
+	private function rewriteUrl($keyword ,$type = 'shop'){
 		if ($this->mainTableRecordId < 1) {						
 			return false;
 		}
 		
-		$keyword = preg_replace('/-'.$this->mainTableRecordId.'$/','',$keyword);
 		$seoUrl = CommonHelper::seoUrl($keyword);		
 		
 		switch(strtolower($type)){
@@ -235,20 +234,9 @@ class Shop extends MyAppModel {
 			break;
 		}
 		
-		if($suffixWithId){
-			$seoUrl.= '-'.$this->mainTableRecordId;
-		}
-		
-		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl);
+		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
 
-		$seoUrlKeyword = array(
-			'urlrewrite_original'=>$originalUrl,
-			'urlrewrite_custom'=>$customUrl
-		);	
-		if(FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl))){
-			return true;
-		}
-		return false;
+		return UrlRewrite::update($originalUrl,$customUrl);
 	}
 	
 	public function rewriteUrlShop($keyword){

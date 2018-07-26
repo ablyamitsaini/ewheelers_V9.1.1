@@ -69,7 +69,18 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
-			var_dump($_SERVER);
+		
+		$urlKeyword = 'apparel-textiles-accessories-textiles-leather-products-textile-stock';
+		$excludeThisOriginalUrl ='category/view/454';
+		echo $url = UrlRewrite::getValidSeoUrl($urlKeyword,$excludeThisOriginalUrl,455);
+		exit;
+		
+		
+		$i = 1; 				
+		$slug = $customUrl;
+		while(static::getDataByCustomUrl($slug,$excludeThisOriginalUrl)){                
+			$slug = $customUrl . "-" . $i++;     			
+		}
 		exit;
 		/* Notifications::sendPushNotification('AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR','f36lUmAdj1w:APA91bEMS-oLPX7UDItO1cglzYN0MBDfAfJ3AYIRKRfgWSbnbgDaQV_1EW3OjamTINuIM_2tB6Gt-o-GI6ZZcS-SBG3D45wrIIIKuBTmhhcIb7Dp8UdqmZ8sZ6OcTIcKrlIk6Kqap4Gl',array('title' =>'hi' , 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1')); exit; */
 		

@@ -637,18 +637,19 @@ class CommonHelper extends FatUtility{
 		}
 		/** rewrind the "file" with the csv lines **/
 		fseek($temp_memory, 0);
-		/** modify header to be downloadable csv file **/
-		//header("content-type:application/csv;charset=UTF-8");
+		/** modify header to be downloadable csv file **/		
+		header('Content-Description: File Transfer');
+		/* header('Content-Transfer-Encoding: binary');
+		header('Content-Type: application/octet-stream'); */		
 		header('Content-Encoding: UTF-8');
-		header('Content-type: text/csv; charset=UTF-8; encoding=UTF-8');
+		header('Content-type: application/csv; charset=UTF-8; encoding=UTF-8');
 		header('Content-Disposition: attachement; filename="' . $output_file_name . '";');
 		/** Send file to browser for download */
 		
 		//echo "\xEF\xBB\xBF";
-		//header("Cache-Control: cache, must-revalidate"); 
-		//header("Pragma: public"); 
-		//header( 'Content-Disposition: attachment;filename=export.csv' );  
-		
+		header("Cache-Control: cache, must-revalidate"); 
+		header("Pragma: public"); 
+				
 		fpassthru($temp_memory);
 	}
 	

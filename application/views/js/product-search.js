@@ -203,7 +203,7 @@ function addFilter(id,obj){
 	$filter = $(obj).parent().text();
 	$filterVal = htmlEncode($(obj).parent().text());		
 	if(!$('#filters').find('a').hasClass(id)){
-		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");		
+		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
 	}
 }
 

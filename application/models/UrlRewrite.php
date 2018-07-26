@@ -14,6 +14,13 @@ class UrlRewrite extends MyAppModel{
 		return $srch;
 	}
 	
+	public static function remove($originalUrl){
+		if(FatApp::getDb()->deleteRecords(static::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($originalUrl)))){
+			return true;
+		}
+		return false;
+	}
+	
 	public static function update($originalUrl,$customUrl){
 		$seoUrlKeyword = array(
 			'urlrewrite_original'=>$originalUrl,
@@ -25,14 +32,14 @@ class UrlRewrite extends MyAppModel{
 		return false;
 	}
 
-	public static function getDataByCustomUrl($customUrl,$excludeThisOriginalUrl = false){
+	public static function getDataByCustomUrl($customUrl,$originalUrl = false){
 		$urlSrch = static::getSearchObject();
 		$urlSrch->doNotCalculateRecords();
 		$urlSrch->setPageSize(1);
 		$urlSrch->addMultipleFields(array('urlrewrite_id','urlrewrite_original','urlrewrite_custom'));		
 		$urlSrch->addCondition( 'urlrewrite_custom', '=', $customUrl );
-		if($excludeThisOriginalUrl){
-			$urlSrch->addCondition( 'urlrewrite_original', '!=', $excludeThisOriginalUrl );
+		if($originalUrl){
+			$urlSrch->addCondition( 'urlrewrite_original', '!=', $originalUrl );
 		}
 		$rs = $urlSrch->getResultSet();
 		$urlRow = FatApp::getDb()->fetch($rs);
@@ -60,17 +67,22 @@ class UrlRewrite extends MyAppModel{
 		return $urlRow;
 	}
 	
-	public static function getValidSeoUrl($urlKeyword,$excludeThisOriginalUrl = false){		
+	public static function getValidSeoUrl($urlKeyword,$originalUrl,$recordId = 0){		
 		$customUrl = CommonHelper::seoUrl($urlKeyword);
 		
-		$res = static::getDataByCustomUrl($customUrl,$excludeThisOriginalUrl);
+		$res = static::getDataByCustomUrl($customUrl,$originalUrl);
 		if(empty($res)){
 			return $customUrl;
 		}
 		
-		$i = 1; 				
+		$i = 1; 						
+		if($recordId > 0){
+			$customUrl = preg_replace('/-'.$recordId.'$/','',$customUrl).'-'.$recordId ;
+		}	
+		
 		$slug = $customUrl;
-		while(static::getDataByCustomUrl($slug,$excludeThisOriginalUrl)){                
+		
+		while(static::getDataByCustomUrl($slug,$originalUrl)){                
 			$slug = $customUrl . "-" . $i++;     			
 		}
 		
