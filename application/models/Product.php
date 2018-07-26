@@ -36,6 +36,9 @@ class Product extends MyAppModel{
 	const DB_PRODUCT_SHIPPED_BY_SELLER = 'tbl_products_shipped_by_seller';
 	const DB_PRODUCT_SHIPPED_BY_SELLER_PREFIX = 'psbs_';
 	
+	const DB_PRODUCT_SAVED_SEARCH = 'tbl_product_saved_search';
+	const DB_PRODUCT_SAVED_SEARCH_PREFIX = 'pss_';
+	
 	const PRODUCT_TYPE_PHYSICAL = 1;
 	const PRODUCT_TYPE_DIGITAL = 2;
 	

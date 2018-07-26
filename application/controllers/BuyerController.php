@@ -382,7 +382,7 @@ class BuyerController extends LoggedUserController {
 		$srch->setPageSize($pagesize);
 		
 		$keyword = FatApp::getPostedData('keyword', null, '');
-		if( !empty($keyword) ) {			
+		if( !empty($keyword) ) {
 			$srch->addKeywordSearch($keyword);
 			$frm->fill( array('keyword' => $keyword ) );
 		}
@@ -420,7 +420,7 @@ class BuyerController extends LoggedUserController {
 		$srch->addOrder('opddl_link_id','asc');
 		$srch->setPageSize($pagesize);
 		$keyword = FatApp::getPostedData('keyword', null, '');
-		if( !empty($keyword) ) {			
+		if( !empty($keyword) ) {
 			$srch->addKeywordSearch($keyword);
 			$frm->fill( array('keyword' => $keyword ) );
 		}

@@ -1148,7 +1148,7 @@ class Importexport extends ImportexportCommon{
 		$srch->doNotCalculateRecords();
 		$srch->addMultipleFields(array('tp.*','tp_l.*','ps.ps_from_country_id','ps.ps_free','user_id','credential_username','brand_id','brand_identifier','country_id','country_code'));		
 		if($userId){
-			$cnd = $srch->addCondition('tp.product_seller_id','=',$userId,'AND');
+			$cnd = $srch->addCondition('tp.product_seller_id','=',$userId,'OR');
 			$cnd->attachCondition('tp.product_seller_id','=',0);
 		}
 			

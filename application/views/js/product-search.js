@@ -449,7 +449,6 @@ function updatePriceFilter(minPrice,maxPrice){
 		if(useFilterInurl > 0){
 			history.pushState(null, null, getSearchQueryUrl(true));	
 		}
-		
 
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
@@ -508,5 +507,34 @@ function updatePriceFilter(minPrice,maxPrice){
 		searchProducts(frm,0,0,1,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	};
+	
+	saveProductSearch = function() {
+		 event.stopPropagation();
+		if( isUserLogged() == 0 ){
+			loginPopUpBox();
+			return false;
+		}
+		$.facebox(function() {
+		fcom.ajax(fcom.makeUrl('Products','saveProductSearchPopup'), '' ,function(ans){
+			$.facebox(ans,'faceboxWidth collection-ui-popup');
+				if( ans.status ){
+					$(document).trigger('close.facebox');
+				}
+			});
+		});
+	
+		return false;
+	};
+	
+	setupSaveProductSearch = function(frm){
+		if ( !$(frm).validate() ) return false;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Products', 'setupSaveProductSearch'), data, function(ans) {
+			if( ans.status ){
+				$(document).trigger('close.facebox');
+			}
+		});
+	};
+
 	
 })();

@@ -369,6 +369,7 @@ class Orders extends MyAppModel{
 					$sellerProduct = SellerProduct::getAttributesById($product['op_selprod_id'], array('selprod_downloadable_link'), false);
 					$downlodableLinks = preg_split("/\n|,/", $sellerProduct['selprod_downloadable_link']);
 					foreach($downlodableLinks as $link) {
+						if($link == '') continue;
 						$linkData['opddl_op_id'] = $op_id;
 						$linkData['opddl_downloadable_link'] = $link;
 						if(!$db->insertFromArray(OrderProductDigitalLinks::DB_TBL,$linkData)){
@@ -1323,7 +1324,7 @@ class Orders extends MyAppModel{
 				/*]*/
 				
 				/* Deduct Shipping Charges [ */
-				if(0 < $childOrderInfo["op_free_ship_upto"]){
+				if( 0 < $childOrderInfo["op_free_ship_upto"] && $childOrderInfo['op_status_id'] >= FatApp::getConfig("CONF_DEFAULT_SHIPPING_ORDER_STATUS") ){
 					$sellerPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
