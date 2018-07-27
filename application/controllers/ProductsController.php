@@ -1119,7 +1119,7 @@ class ProductsController extends MyAppController {
 
 							$recommendedProductsQuery.= ")";
 
-		//	$srch->joinTable("$recommendedProductsQuery" , 'inner join' , 'rs1.rec_product_id = product_id' , 'rs1' );
+		$srch->joinTable("$recommendedProductsQuery" , 'inner join' , 'rs1.rec_product_id = product_id' , 'rs1' );
 		$srch->addGroupBy('product_id');
 		//$srch->addOrder('rs1.weightage' , 'desc');
 
@@ -2032,14 +2032,14 @@ class ProductsController extends MyAppController {
 	}
 	
 	public function setupSaveProductSearch(){
-		$frm = $this->getCreateSavedSearchForm( );
+		$frm = $this->getCreateSavedSearchForm();
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
 		if ( false === $post ) {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
 			FatUtility::dieWithError(Message::getHtml());
 		}
 		
-		$data_to_save_arr =$post;
+		$data_to_save_arr = array();
 		$data_to_save_arr['pssearch_name'] = $post['pssearch_name'];
 		$data_to_save_arr['pssearch_user_id'] = UserAuthentication::getLoggedUserId();
 		$data_to_save_arr['pssearch_url'] = $_SERVER['HTTP_REFERER'];

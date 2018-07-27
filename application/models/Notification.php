@@ -100,6 +100,7 @@ class Notification extends MyAppModel {
 			Notification::RETURN_REQUEST_MESSAGE_TO_USER_NOTIFICATION=>array(Labels::getLabel('admin_order_return_request_message_to_user_notification',$langId),''),
 			Notification::ORDER_EMAIL_NOTIFICATION=>array(Labels::getLabel('admin_order_email_notification',$langId),''),
 			Notification::NEW_CUSTOM_CATALOG_REQUEST_NOTIFICATION=>array(Labels::getLabel('admin_custom_catalog_request_notification',$langId),'custom-products'),
+			Notification::BLOG_COMMENT_NOTIFICATION=>array(Labels::getLabel('user_blog_comment_notification',$langId),'blog-comments'),
 		);
 	
 		return $labelArr;
