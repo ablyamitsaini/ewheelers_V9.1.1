@@ -21,7 +21,7 @@
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
 						<div class="box box--white">
-							<?php
+							<?php 
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
 								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
@@ -31,7 +31,7 @@
 						</div>
 					</div>
 				</div>
-				<?php }
+				<?php } 
 				if(!isset($noProductFound)){
 					$blockTitle=Labels::getLabel('LBL_All_PRODUCTS', $siteLangId);
 					$class ='col-lg-9';
@@ -39,15 +39,13 @@
 					$class= 'col-lg-12';
 					$blockTitle = '';
 				}
-				?>
+				?>				
 				<div class="<?php echo $class;?>">
 					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId),false);  ?>
 				</div>
 				<div class="col-md-3 col--left col--left-adds">
 					<div class="wrapper--adds" >
-						<div class="grids" id="searchPageBanners">
-							
-						</div>   
+						<div class="grids" id="searchPageBanners"></div>   
 					</div>  
 				</div>
 			</div>
@@ -57,11 +55,12 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){ 
-	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','search'); ?>';
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','search'); ?>';	
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_PRODUCT; ?>';
+	$recordId = 0;
 	<?php if($priceInFilter){?>			
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
 	searchProducts(document.frmProductSearch);
-	
 });	 
 </script>	

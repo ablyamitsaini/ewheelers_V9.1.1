@@ -55,6 +55,11 @@
 <script type="text/javascript">
 $(document).ready(function(){ 
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','featured'); ?>';
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_FEATURED_PRODUCT; ?>';
+	$recordId = 0;
+	<?php if($productFiltersArr['priceInFilter']){?>
+		updatePriceFilter(<?php echo floor($productFiltersArr['priceArr']['minPrice']);?>,<?php echo ceil($productFiltersArr['priceArr']['maxPrice']);?>);
+	<?php }?>
 	searchProducts(document.frmProductSearch);
 });	 
 </script> 

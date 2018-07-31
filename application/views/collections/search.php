@@ -14,8 +14,7 @@ if(!empty($collections)){ ?>
 		case Collections::COLLECTION_TYPE_SHOP:
 			$this->includeTemplate('shops/search.php',array('allShops'=>$collections,'siteLangId'=>$siteLangId,'totalProdCountToDisplay'=>$totalProdCountToDisplay),false);
 		break;
-	} ?>
-	
+	} ?>	
 <?php } else {
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 }

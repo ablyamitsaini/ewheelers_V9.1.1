@@ -1088,7 +1088,7 @@ var_dump($logArr);
 		die('done');
 	}
 	
-	function changeCustomUrl(){
+	function changeCustomUrl1(){
 		$urlSrch = UrlRewrite::getSearchObject();
 		$urlSrch->doNotCalculateRecords();
 		$urlSrch->addMultipleFields(array('urlrewrite_id','urlrewrite_original','urlrewrite_custom'));

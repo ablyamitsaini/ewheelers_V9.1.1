@@ -66,6 +66,8 @@
 var isBrandPage = 1;
 $(document).ready(function(){
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Brands','view',array($brandId)); ?>';
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_BRAND; ?>';
+	$recordId = <?php echo $brandId; ?>;
 	<?php if($priceInFilter){?>			
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>

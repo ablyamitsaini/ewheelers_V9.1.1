@@ -707,6 +707,7 @@
 		border: none;
 		border-bottom: solid 1px var(--border-color);
 	}
+	.scrollbar{overflow-y: auto;} 
 }
 
 @media only screen and (max-width: 800px) {

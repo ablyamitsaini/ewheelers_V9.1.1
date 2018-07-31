@@ -77,6 +77,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Category','view',array($category_id)); ?>';
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_CATEGORY; ?>';
+	$recordId = <?php echo $category_id; ?>;
 	<?php if($priceInFilter){?>			
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>

@@ -315,7 +315,7 @@ class MyAppController extends FatController {
 		$pageSizeArr[25] = 25 . ' '.$itemsTxt;
 		$pageSizeArr[50] = 50 . ' '.$itemsTxt;
 		$frm = new Form('frmProductSearch');
-		$frm->addTextBox('','keyword');
+		$frm->addTextBox('','keyword','',array('id'=>'keyword'));
 		$frm->addSelectBox( '', 'sortBy', $sortByArr, 'price_asc', array('id'=>'sortBy'), '');
 		$frm->addSelectBox( '', 'pageSize', $pageSizeArr, $pageSize, array('id'=>'pageSize'), '' );
 		$frm->addHiddenField('', 'page', 1);

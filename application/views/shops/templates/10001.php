@@ -51,6 +51,6 @@
 		} 
 	})(jQuery); 
 	$(document).ready(function(){ 
-		$currentPageUrl = '<?php echo $canonicalUrl; ?>';	
+		$currentPageUrl = '<?php echo $canonicalUrl; ?>';			
 	});
 </script>

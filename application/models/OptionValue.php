@@ -3,6 +3,7 @@ class OptionValue extends MyAppModel{
 	const DB_TBL = 'tbl_option_values';
 	const DB_TBL_LANG ='tbl_option_values_lang';
 	const DB_TBL_PREFIX = 'optionvalue_';	
+	const DB_TBL_LANG_PREFIX = 'optionvaluelang_';	
 	private $db;
 
 	public function __construct($id = 0) {
@@ -10,8 +11,15 @@ class OptionValue extends MyAppModel{
 		$this->db=FatApp::getDb();
 	}
 	
-	public static function getSearchObject() {
+	public static function getSearchObject($langId = 0) {
 		$srch = new SearchBase(static::DB_TBL, 'ov');
+		
+		if($langId > 0){
+			$srch->joinTable(static::DB_TBL_LANG,'LEFT OUTER JOIN',
+			'ov_l.'.static::DB_TBL_LANG_PREFIX.'optionvalue_id = ov.'.static::tblFld('id').' and 
+			ov_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId,'ov_l');
+		}
+		
 		$srch->addOrder('ov.'.static::DB_TBL_PREFIX.'display_order','ASC');
 		return $srch;
 	}
