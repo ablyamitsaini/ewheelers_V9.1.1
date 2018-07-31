@@ -4,7 +4,7 @@ class BlogController extends MyAppController{
 		parent::__construct($action);
 		$this->set('blogPage',true);
 		$this->set('bodyClass','is--blog');
-		$this->_template->addCss('css/blog.css');
+		$this->_template->addCss('css/style---blog.css');
 			
 	}
 
@@ -385,10 +385,10 @@ class BlogController extends MyAppController{
 
 	private function getPostCommentForm($postId){
 		
-		$frm = new Form('frmBlogPostComment'); 
-		$frm->addTextarea(Labels::getLabel('LBL_Message',$this->siteLangId), 'bpcomment_content')->requirements()->setRequired(true);
-		$frm->addRequiredField(Labels::getLabel('LBL_Name',$this->siteLangId), 'bpcomment_author_name');
-		$frm->addEmailField(Labels::getLabel('LBL_Email_Address',$this->siteLangId), 'bpcomment_author_email','');
+		$frm = new Form('frmBlogPostComment');
+		$frm->addRequiredField(Labels::getLabel('',$this->siteLangId), 'bpcomment_author_name');
+		$frm->addEmailField(Labels::getLabel('',$this->siteLangId), 'bpcomment_author_email','');
+		$frm->addTextarea(Labels::getLabel('',$this->siteLangId), 'bpcomment_content')->requirements()->setRequired(true);
 		$frm->addHiddenField('', 'bpcomment_post_id',$postId);
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('Btn_Post_Comment',$this->siteLangId));		
 		return $frm;

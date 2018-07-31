@@ -1114,7 +1114,7 @@ class ProductsController extends MyAppController {
 
 							$recommendedProductsQuery.= ")";
 
-		//	$srch->joinTable("$recommendedProductsQuery" , 'inner join' , 'rs1.rec_product_id = product_id' , 'rs1' );
+		$srch->joinTable("$recommendedProductsQuery" , 'inner join' , 'rs1.rec_product_id = product_id' , 'rs1' );
 		$srch->addGroupBy('product_id');
 		//$srch->addOrder('rs1.weightage' , 'desc');
 
