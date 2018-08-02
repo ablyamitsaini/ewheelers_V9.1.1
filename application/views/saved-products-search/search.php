@@ -6,7 +6,24 @@ if(!empty($arrListing)){?>
 		<li>
 			<div class="detail-side">
 				<div class="heading3"><?php echo ucfirst($row['pssearch_name']); ?></div>
-				<div class="heading5"><?php echo $row['search_items'];?></div>
+				<div class="heading5"><?php /* CommonHelper::printArray($row['search_items']) */;?>
+					<?php 
+						$str = '';
+						foreach($row['search_items'] as $record){
+							if(is_array($record['value'])){
+								$str.= ' <strong>'.$record['label'].'</strong>: ';
+								$listValues = '';								
+								foreach($record['value'] as $list){
+									$listValues.= $list.',';
+								}
+								$str.= rtrim($listValues,' , ');
+							}else{
+								$str.= ' <strong>'.$record['label'].'</strong>: '.$record['value'].' ';
+							}						
+					}
+					echo $str;	
+					?>
+				</div>
 				<div class="date"><?php echo FatDate::format($row['pssearch_added_on']); ?></div>
 			</div>
 			<div class="results-side">

@@ -48,8 +48,98 @@ class SavedSearchProduct extends MyAppModel{
 			break;
 		}		
 	}
-
+	
 	public static function getSearhResultFormat($arr,$langId = 0){		
+		$result = [];
+		$seperator = ' , ';
+		$count = 1;
+		foreach($arr as $key=>$row){
+			switch($key){
+				case 'price-min-range':
+					$result[$count]['label'] = Labels::getLabel('LBL_Price_min',$langId);
+					$result[$count]['value'] = $row;								
+				break;
+				case 'price-max-range':
+					$result[$count]['label'] = Labels::getLabel('LBL_Price_max',$langId);
+					$result[$count]['value'] = $row;				
+				break;
+				case 'featured':
+					$result[$count]['label'] = Labels::getLabel('LBL_Featured',$langId);
+					$result[$count]['value'] = Labels::getLabel('LBL_Yes',$langId);					
+				break;	
+				case 'currency_id':					
+					$currency = Currency::getAttributesById($row,array('currency_code'));
+					if($currency){
+						$result[$count]['label'] = Labels::getLabel('LBL_Currency',$langId);
+						$result[$count]['value'] = $currency['currency_code'];							
+					}
+				break;
+				case 'brand':					
+					$brand = Brand::getSearchObject($langId);
+					$brand->addMultipleFields(array('IFNULL(brand_name,brand_identifier) as brand_name,brand_identifier'));
+					$brand->addCondition('brand_id','in',$row);
+					$rs = $brand->getResultSet();
+					$brandData = FatApp::getDb()->fetchAll($rs);					
+					if(!empty($brandData)){
+						$result[$count]['label'] = Labels::getLabel('LBL_Brand',$langId);
+						$result[$count]['value'] = [];						
+						foreach($brandData as $val){
+							$result[$count]['value'][] = ($val['brand_name']!='')?$val['brand_name']:$val['brand_identifier'];		
+						}						
+					}								
+				break;
+				case 'prodcat':					
+					$productCategory = ProductCategory::getSearchObject(false,$langId);
+					$productCategory->addMultipleFields(array('IFNULL(prodcat_name,prodcat_identifier) as prodcat_name,prodcat_identifier'));
+					$productCategory->addCondition('prodcat_id','in',$row);
+					$rs = $productCategory->getResultSet();
+					$productCategoryData = FatApp::getDb()->fetchAll($rs);					
+					if(!empty($productCategoryData)){
+						$result[$count]['label'] = Labels::getLabel('LBL_Category',$langId);
+						$result[$count]['value'] = [];						
+						foreach($productCategoryData as $val){
+							$result[$count]['value'][] = ($val['prodcat_name']!='')?$val['prodcat_name']:$val['prodcat_identifier'];
+						}						
+					}					
+				break;
+				case 'condition':
+					$conditionArr = Product::getConditionArr($langId); 
+					$result[$count]['label'] = Labels::getLabel('LBL_Condition',$langId);
+					$result[$count]['value'] = [];							
+					foreach($row as $val){
+						if(!array_key_exists($val,$conditionArr)){
+							continue;
+						}
+						$result[$count]['value'][] = $conditionArr[$val];						
+					}
+				break;
+				case 'optionvalue':
+					$optionValue = OptionValue::getSearchObject($langId);
+					$optionValue->addMultipleFields(array('IFNULL(optionvalue_name,optionvalue_identifier) as optionvalue_name,optionvalue_identifier'));
+					$optionValue->addCondition('optionvalue_id','in',$row);
+					$rs = $optionValue->getResultSet();
+					$optionValueData = FatApp::getDb()->fetchAll($rs);					
+					if(!empty($optionValueData)){
+						$result[$count]['label'] = Labels::getLabel('LBL_Options',$langId);
+						$result[$count]['value'] = [];						
+						foreach($optionValueData as $val){
+							$result[$count]['value'][]= ($val['optionvalue_name']!='')?$val['optionvalue_name']:$val['optionvalue_identifier'];							
+						}						
+					}
+				break;
+				case 'availability':					
+					if(in_array(1,$row)){
+						$result[$count]['label'] = Labels::getLabel('LBL_Out_of_stock',$langId);
+						$result[$count]['value'] = Labels::getLabel('LBL_Yes',$langId) ;
+					}					
+				break;
+			}
+			$count++;
+		}
+		return $result;
+	}
+
+	/* public static function getSearhResultFormat($arr,$langId = 0){		
 		$string = '';
 		$seperator = ' , ';
 		foreach($arr as $key=>$row){
@@ -130,5 +220,5 @@ class SavedSearchProduct extends MyAppModel{
 			}
 		}
 		return rtrim($string,$seperator);
-	}		
+	} */		
 }	

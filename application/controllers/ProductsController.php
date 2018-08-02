@@ -80,7 +80,7 @@ class ProductsController extends MyAppController {
 		$conditionsArr = $db->fetchAll($conditionRs);
 		/* ] */
 
-		/* Price Filters[ */
+		/* Price Filters [ */
 		$priceSrch = new ProductSearch( $this->siteLangId );
 		$priceSrch->setDefinedCriteria(1);
 		$priceSrch->joinProductToCategory();
@@ -92,6 +92,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
 			$priceSrch->addKeywordSearch($headerFormParamsAssocArr['keyword']);
 		}
+		
 		if( !empty($category_id) ) {
 			$priceSrch->addCategoryCondition($category_id);
 		}

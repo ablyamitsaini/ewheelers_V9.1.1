@@ -39,6 +39,7 @@ class HomeController extends AdminBaseController {
 				$token = $analytics->getRefreshToken(FatApp::getConfig("CONF_ANALYTICS_ACCESS_TOKEN"));        
 		
 					$analytics->setAccessToken((isset($token['accessToken']))?$token['accessToken']:'');
+					
 					$accountId = $analytics->setAccountId(FatApp::getConfig("CONF_ANALYTICS_ID")); 
 					if(!$accountId){
 						Message::addErrorMessage(Labels::getLabel('LBL_Analytic_Id_does_not_exist_with_Configured_Account',$this->adminLangId));		
