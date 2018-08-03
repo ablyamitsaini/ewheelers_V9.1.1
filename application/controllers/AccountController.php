@@ -1520,32 +1520,6 @@ class AccountController extends LoggedUserController {
 		$this->_template->render( false, false, 'json-success.php' );
 	}
 	
-	public function savedSearches(){
-		$this->_template->render();	
-	}
-	
-	public function savedSearchesSearch(){
-		$post = FatApp::getPostedData();
-		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
-		$pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
-		$loggedUserId = UserAuthentication::getLoggedUserId();
-		
-		$srch = new SearchBase( Product::DB_PRODUCT_SAVED_SEARCH );
-		$srch->addOrder('pssearch_added_on','DESC');
-		$srch->addCondition( 'pssearch_user_id', '=', $loggedUserId );
-		$srch->setPageNumber($page);
-		$srch->setPageSize($pageSize);
-		$rs = $srch->getResultSet();
-		$arrListing = FatApp::getDb()->fetchAll($rs);
-		
-		$this->set('page', $page);
-		$this->set('pageSize', $pageSize);
-		$this->set('recordCount', $srch->recordCount());
-		$this->set('pageCount', $srch->pages());
-		$this->set('arrListing', $arrListing);
-		$this->_template->render( false, false );	
-	}
-	
 	public function viewWishListItems(){
 		$post = FatApp::getPostedData();
 		$pssearch_id = FatUtility::int( $post['pssearch_id'] );

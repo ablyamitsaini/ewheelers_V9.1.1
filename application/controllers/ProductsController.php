@@ -80,7 +80,7 @@ class ProductsController extends MyAppController {
 		$conditionsArr = $db->fetchAll($conditionRs);
 		/* ] */
 
-		/* Price Filters[ */
+		/* Price Filters [ */
 		$priceSrch = new ProductSearch( $this->siteLangId );
 		$priceSrch->setDefinedCriteria(1);
 		$priceSrch->joinProductToCategory();
@@ -92,6 +92,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
 			$priceSrch->addKeywordSearch($headerFormParamsAssocArr['keyword']);
 		}
+		
 		if( !empty($category_id) ) {
 			$priceSrch->addCategoryCondition($category_id);
 		}
@@ -130,8 +131,8 @@ class ProductsController extends MyAppController {
 		$this->_template->render();
 	}
 
-	public function search(){
-		$db = FatApp::getDb();
+	public function search(){ 
+		$db = FatApp::getDb(); 
 
 		$frm = $this->getProductSearchForm();
 
@@ -139,20 +140,6 @@ class ProductsController extends MyAppController {
 
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		
-		if(array_key_exists('currency',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
-		}
-		
-		if(array_key_exists('sort',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
-		}
-		
-		if(array_key_exists('shop',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
-		}	
-		if(array_key_exists('collection',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
-		}	
 		$headerFormParamsAssocArr['join_price'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
 		$this->includeProductPageJsCss();
@@ -471,6 +458,14 @@ class ProductsController extends MyAppController {
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
 
+		$priceInFilter = false;	
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}
 		/* ] */
 		
 		$brandsCheckedArr = array();
@@ -498,13 +493,16 @@ class ProductsController extends MyAppController {
 			'brandsArr'				=>	$brandsArr,
 			'brandsCheckedArr'		  =>	$brandsCheckedArr,
 			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
-			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
 			'conditionsArr'			=>	$conditionsArr,
+			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
 			'availability'	          =>	 $availability,
 			'priceArr'				=>	$priceArr,
 			'currencySymbolLeft'	=>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	=>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			=>	$this->siteLangId,
+			'priceInFilter'			  =>	$priceInFilter,		 
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
 
@@ -522,7 +520,7 @@ class ProductsController extends MyAppController {
 		$this->_template->render();
 	}
 
-	public function productsList(){
+	public function productsList(){ 
 		$json = array();
 		$json['reload'] = 0;
 		$db = FatApp::getDb();
@@ -578,7 +576,6 @@ class ProductsController extends MyAppController {
 		$srch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' );
 		/* ] */
 		$selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -773,7 +770,6 @@ class ProductsController extends MyAppController {
 		/* ] */
 
 		$selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -1135,7 +1131,6 @@ class ProductsController extends MyAppController {
 		$srch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' );
 		/* ] */
 		$selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -1695,7 +1690,6 @@ class ProductsController extends MyAppController {
 
 
 		$selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -1803,7 +1797,6 @@ class ProductsController extends MyAppController {
 		/* ] */
 
 		$selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSellerProducts();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$selProdReviewObj->doNotCalculateRecords();
@@ -2012,47 +2005,5 @@ class ProductsController extends MyAppController {
 			);
 		}
 		die(json_encode($json));		
-	}
-	
-	public function saveProductSearchPopup(){
-		$loggedUserId = UserAuthentication::getLoggedUserId();
-		$frm = $this->getCreateSavedSearchForm();
-		$frm->fill(array('user_id' => $loggedUserId));
-		$this->set('frm', $frm);
-		$this->_template->render(false, false);
-	}
-	
-	
-	private function getCreateSavedSearchForm(){
-		$frm = new Form('frmSavedSearch');
-		$frm->setRequiredStarWith('NONE');
-		$frm->addRequiredField('','pssearch_name');
-		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Add', $this->siteLangId));
-		return $frm;
-	}
-	
-	public function setupSaveProductSearch(){
-		$frm = $this->getCreateSavedSearchForm();
-		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
-		if ( false === $post ) {
-			Message::addErrorMessage(current($frm->getValidationErrors()));
-			FatUtility::dieWithError(Message::getHtml());
-		}
-		
-		$data_to_save_arr = array();
-		$data_to_save_arr['pssearch_name'] = $post['pssearch_name'];
-		$data_to_save_arr['pssearch_user_id'] = UserAuthentication::getLoggedUserId();
-		$data_to_save_arr['pssearch_url'] = $_SERVER['HTTP_REFERER'];
-		$data_to_save_arr['pssearch_added_on'] = date('Y-m-d H:i:s');
-
-		if(!FatApp::getDb()->insertFromArray(Product::DB_PRODUCT_SAVED_SEARCH,$data_to_save_arr, false)){
-			/* Message::addErrorMessage(FatApp::getDb()->getError()); */
-			Message::addErrorMessage(Labels::getLabel('MSG_Can_not_be_saved',$this->siteLangId));
-			FatUtility::dieJsonError( Message::getHtml());
-		}
-
-		$this->set('msg', Labels::getLabel('MSG_Saved_successfully',$this->siteLangId) );
-		$this->_template->render(false, false, 'json-success.php');
-	}
-	
+	}		
 }

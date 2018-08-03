@@ -610,13 +610,17 @@ $(document).ready(function(){
 		
 	}
 	
-	$(".sign-in").click(function(){
+	openSignInForm = function(){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(t){	
 				$.facebox(t,'faceboxWidth loginpopup');
 				
 			});
 		});
+	}
+	
+	$(".sign-in").click(function(){
+		openSignInForm();
 		
 	});
 	
@@ -682,9 +686,10 @@ function isUserLogged(){
 } */
 
 function loginPopUpBox(){
-	fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(ans){
+	/* fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(ans){
 		$(".login-account a").click();
-	});
+	}); */
+	openSignInForm();
 }
 function setSiteDefaultLang(langId){ 
 	fcom.ajax(fcom.makeUrl('Home','setLanguage',[langId]),'',function(res){

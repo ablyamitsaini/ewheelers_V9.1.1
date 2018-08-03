@@ -176,3 +176,40 @@ CREATE TABLE `tbl_unique_check_failed_attempt` (
   `ucfattempt_ip` varchar(50) CHARACTER SET utf8 NOT NULL,
   `ucfattempt_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-------------31 Jul 2018-----------
+--
+-- Table structure for table `tbl_product_saved_search`
+--
+
+CREATE TABLE `tbl_product_saved_search` (
+  `pssearch_id` int(11) NOT NULL,
+  `pssearch_user_id` int(11) NOT NULL,
+  `pssearch_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `pssearch_type` int(11) NOT NULL,
+  `pssearch_record_id` int(11) NOT NULL,
+  `pssearch_url` text CHARACTER SET utf8mb4 NOT NULL,
+  `pssearch_added_on` datetime NOT NULL,
+  `pssearch_updated_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_product_saved_search`
+--
+ALTER TABLE `tbl_product_saved_search`
+  ADD PRIMARY KEY (`pssearch_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tbl_product_saved_search`
+--
+ALTER TABLE `tbl_product_saved_search`
+  MODIFY `pssearch_id` int(11) NOT NULL AUTO_INCREMENT;

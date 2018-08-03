@@ -37,7 +37,7 @@ class Brand extends MyAppModel{
 		return $srch;
 	}
 	
-	public static function getListingObj($langId,$attr = null,$isActive=false){
+	public static function getListingObj($langId,$attr = null,$isActive = false){
 		$srch = self::getSearchObject( $langId, true, $isActive );
 		
 		if ( null != $attr ) {
@@ -57,7 +57,7 @@ class Brand extends MyAppModel{
 		
 		return $srch;
 	}
-	
+			
 	public static function getAllIdentifierAssoc($langId = 0,$isDeleted = true, $isActive = false){
 		$srch = self::getSearchObject( $langId, true );
 		$srch->doNotCalculateRecords();

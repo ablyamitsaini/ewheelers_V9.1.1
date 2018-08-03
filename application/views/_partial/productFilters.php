@@ -84,11 +84,7 @@ array_walk($catCodeArr,function(&$n) {
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_more', $siteLangId); ?> </a> -->
    </div>
-  <?php }else{
-	  
-	  //Work in Progress
-	  ?>
-	  
+  <?php }else{ //Work in Progress  ?>
 	  <div class="brands-list toggle-target scrollbar">
 	<ul>
 		<?php 		

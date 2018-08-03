@@ -80,6 +80,8 @@
 <script type="text/javascript">
 $(document).ready(function(){ 
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';	
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_SHOP; ?>';
+	$recordId = <?php echo $shopId;?>;
 	<?php if($productFiltersArr['priceInFilter']){?>
 		updatePriceFilter(<?php echo floor($productFiltersArr['priceArr']['minPrice']);?>,<?php echo ceil($productFiltersArr['priceArr']['maxPrice']);?>);
 	<?php }?>
