@@ -225,12 +225,13 @@ function addToSearchQueryString(id,obj){
 	//$filter = $(obj).parent().text(); 
 	var attrVal = $(obj).attr('data-title')		
 	if (typeof attrVal !== typeof undefined && attrVal !== false) {		
-		$filterVal = htmlEncode(removeSpecialCharacter(attrVal));
+		$filterVal = htmlEncode(removeSpecialCharacter(attrVal));		
 	}else{
 		$filterVal = htmlEncode(removeSpecialCharacter($(obj).parent().text()));
 	}
 	$filterVal = $filterVal.trim().toLowerCase();
-	searchArr[id] = encodeURIComponent($filterVal.replace(/ /g,'-'));	
+	//searchArr[id] = encodeURIComponent($filterVal.replace(/ /g,'-'));	
+	searchArr[id] = $filterVal.replace(/ /g,'-');	
 }
 
 function removeSpecialCharacter($str){
