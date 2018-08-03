@@ -97,6 +97,7 @@ class AdminPrivilege  {
 	Const SECTION_CUSTOM_PRODUCT_REQUESTS = 95;
 	Const SECTION_CUSTOM_CATALOG_PRODUCT_REQUESTS = 96;
 	Const SECTION_DATABASE_BACKUP = 96;
+	Const SECTION_USER_REQUESTS = 97;
 	
 	const PRIVILEGE_NONE = 0;
 	const PRIVILEGE_READ = 1;
@@ -226,6 +227,7 @@ class AdminPrivilege  {
 			static::SECTION_NOTIFICATION => Labels::getLabel('MSG_Notifications',CommonHelper::getLangId()),
 			static::SECTION_DATABASE_BACKUP => Labels::getLabel('MSG_Database_Backup',CommonHelper::getLangId()),
 			static::SECTION_ORDER_STATUS => Labels::getLabel('MSG_Order_Status_Management',CommonHelper::getLangId()),
+			static::SECTION_USER_REQUESTS => Labels::getLabel('MSG_User_Requests',CommonHelper::getLangId()),
 			
 			/* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
 			static::SECTION_Languages => Labels::getLabel('MSG_Order_Status',CommonHelper::getLangId()), */
@@ -1116,5 +1118,13 @@ class AdminPrivilege  {
 	
 	public function canEditDatabaseBackupView( $adminId = 0, $returnResult = false ){
 		return $this->checkPermission( $adminId, static::SECTION_DATABASE_BACKUP, static::PRIVILEGE_WRITE, $returnResult);
+	}
+	
+	public function canViewUserRequests( $adminId = 0, $returnResult = false ){
+		return $this->checkPermission( $adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_READ, $returnResult);
+	}
+	
+	public function canEditUserRequests( $adminId = 0, $returnResult = false ){
+		return $this->checkPermission( $adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
 	}	
 }

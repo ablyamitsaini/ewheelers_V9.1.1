@@ -1261,3 +1261,25 @@ html {
 	margin-right: 40px;
 }
 }
+
+/* [ added on 2 August */
+
+.nav--toggled{width: 100%;}
+.nav--toggled > ul > li{position: relative;margin: 5px 0; display: block;border: solid 2px var(--border-color);}
+.nav--toggled > ul > li .link--toggle{ position: absolute; right:0; top:0;height:42px; width:40px;cursor: pointer;}
+.nav--toggled > ul > li > a{position: relative; padding:12px 40px 12px 10px; color: #333; display: block;font-weight:700;}
+.nav--toggled > ul > li > ul{margin: 0; padding:0 0 15px;}
+.nav--toggled > ul > li ul li .link--toggle{right: 0;}
+.nav--toggled > ul > li ul li{padding: 0;position: relative;display: block;}
+.nav--toggled > ul > li ul li a{color: #999; padding:10px 40px 10px 15px;display: block;}
+.nav--toggled > ul > li ul li a:hover{color: #333;}
+.nav--toggled > ul > li ul li.is--active a{color: #333;font-weight:600;}
+
+.nav--toggled > ul > li.is-active > a,.nav--vertical > ul > li > a.is-active{color: #000;font-weight: 600;}
+.nav--toggled .is-selected > a{font-weight: 500;color:var(--first-color);}
+.nav--toggled > ul > li .link--toggle:before{color:var(--first-color); position: absolute;left: 50%;top: 50%;content: "+"; font-size: 1.6rem;transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);}
+.nav--toggled > ul > li .link--toggle.is-active:before{content: "-";font-size: 2.2rem;}
+.nav--toggled > ul > li .link--toggle.is-active:hover{background: none;}
+.nav--toggled > ul > li > ul ul{margin:0 0 0 15px;}
+
+/* added on 2 August ] */

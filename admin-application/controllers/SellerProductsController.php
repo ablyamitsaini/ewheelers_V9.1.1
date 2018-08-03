@@ -1924,7 +1924,7 @@ class SellerProductsController extends AdminBaseController {
 		
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
-		
+	/* echo	$srch->getQuery(); die; */
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		

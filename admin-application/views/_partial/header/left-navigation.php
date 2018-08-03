@@ -102,6 +102,7 @@
 				$objPrivilege->canViewSellerApprovalForm( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewSellerApprovalRequests( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewSellerCatalogRequests( AdminAuthentication::getLoggedAdminId(), true ) || 
+				$objPrivilege->canViewUserRequests( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewCustomCatalogProductRequests( AdminAuthentication::getLoggedAdminId(), true ) 
 			){ ?>
 			<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Users',$adminLangId);?></a>
@@ -120,6 +121,10 @@
 					
 					<?php if($objPrivilege->canViewSellerApprovalRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerApprovalRequests');?>"><?php echo Labels::getLabel('LBL_Seller_Approval_Requests',$adminLangId);?> <?php if($supReqCount){ ?><span class='badge'>(<?php echo $supReqCount; ?>)</span><?php } ?></a></li>
+					<?php }?>
+					
+					<?php if($objPrivilege->canViewUserRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
+					<li><a href="<?php echo CommonHelper::generateUrl('Users','userRequests');?>"><?php echo Labels::getLabel('LBL_Users_Requests',$adminLangId);?> <?php if($supReqCount){ ?><span class='badge'>(<?php echo $supReqCount; ?>)</span><?php } ?></a></li>
 					<?php }?>
 				</ul>
 			</li>

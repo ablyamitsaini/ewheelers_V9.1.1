@@ -2,12 +2,12 @@ $(document).ready(function(){
 	searchBlogs(document.frmBlogSearch);
 	bannerAdds();
 	
-	$('.toggle-nav--vertical-js').click(function(){
+	/* $('.toggle-nav--vertical-js').click(function(){
 		$(this).toggleClass("active");
 		if($(window).width()<990){
 			$('.nav--vertical-js').slideToggle();
 		}
-	});
+	}); */
 	
 });
 (function() {

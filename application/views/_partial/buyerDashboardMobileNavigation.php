@@ -39,7 +39,7 @@ $action = strtolower($action);
 	  <li class="<?php echo ($controller == 'SavedProductsSearch' && $action == 'listing') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('SavedProductsSearch','listing');?>"><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId);?></a></li>
       <li class="<?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></a></li>
       <li class="<?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>"><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></a></li>
-    </ul>
+	</ul>
   </li>
   <li class="<?php echo ($controller == 'GuestUser' && $action == 'Logout') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('GuestUser','Logout');?>"><?php echo Labels::getLabel('LBL_Logout',$siteLangId);?></a></li>
 </ul>

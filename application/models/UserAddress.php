@@ -54,4 +54,19 @@
 		return FatApp::getDb()->fetchAll( $rs );
 	}
 	
+	public function deleteUserAddresses($userId){
+		$userId = FatUtility::int($userId);
+		$db = FatApp::getDb();
+		if(1 > $userId){ 
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST.',$this->commonLangId);	
+			return false;
+		}
+		
+		if (!$db->deleteRecords(static::DB_TBL, array('smt' => 'ua_user_id = ?', 'vals' => array($userId)))){
+			$this->error = $db->getError();
+			return false;
+		}
+		return true;
+	}
+	
 } ?>

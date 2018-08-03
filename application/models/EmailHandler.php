@@ -2340,4 +2340,23 @@ class EmailHandler extends FatModel {
 		return false;
 	}
 	
+	function SendDataRequestNotification($data,$langId){
+		$tpl = 'data_request_notification_to_admin';
+		$userObj = new User($data['user_id']);
+		$userInfo = $userObj->getUserInfo(array('user_name','credential_email','credential_username','user_phone'));
+				
+		$vars = array(
+					'{user_full_name}' => $userInfo['user_name'],
+					'{username}'	   => $userInfo['credential_username'],
+					'{user_phone}'	   => $userInfo['user_phone'],
+					'{ureq_purpose}'   => $data['ureq_purpose'],
+					
+				);
+		
+		if(self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), $tpl ,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
 }

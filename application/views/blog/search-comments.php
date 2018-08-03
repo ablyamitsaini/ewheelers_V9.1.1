@@ -2,18 +2,24 @@
 if($commentsCount){
 	foreach($blogPostComments as $comment){
 ?>
-<div class="comment box box--white box--space">
-   <div class="comment__head">
-	   <h6><?php echo CommonHelper::displayName($comment['bpcomment_author_name']); ?></h6>
-	   <span class="text--normal"><?php echo FatDate::format($comment['bpcomment_added_on']); ?></span>
-   </div>
-   <div class="comment__body">
-	   <div class="comment__description">
+
+<div class="comment even thread-even depth-1 comment-element" id="li-comment-13881">
+	<article id="comment-13881" class="comment">
+		<header class="comment-meta comment-author vcard">
+			<img alt="" src="<?php echo CommonHelper::generateUrl('image','user', array($comment['bpcomment_user_id'], "THUMB",1),CONF_WEBROOT_FRONT_URL); ?>" class="avatar avatar-60 photo" width="60" height="60">
+			<cite class="fn"><?php echo CommonHelper::displayName($comment['bpcomment_author_name']); ?></cite>
+			<a class="comment-time-link" href="javascript:void(0)"><time datetime="<?php echo FatDate::format($comment['bpcomment_added_on']); ?>"><?php echo FatDate::format($comment['bpcomment_added_on']); ?></time></a>
+		</header>
+		<!-- .comment-meta -->
+		<section class="comment-content comment">
 			<p><?php echo nl2br($comment['bpcomment_content']); ?></p>
-	   </div>
-   </div>
+		</section>
+		<!-- .comment-content -->
+	</article>
 </div>
-	<?php }
+
+<?php }
+
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSearchCommentsPaging') );
 } else{ ?>
 	<div class="comment box box--white box--space">

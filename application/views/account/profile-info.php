@@ -44,6 +44,10 @@
 										<?php if( User::canViewSupplierTab() && ( User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() ) ){ ?>
 										<li <?php echo (User::USER_SELLER_DASHBOARD == $userPreferredDashboard)?'class="is-active"':''?>><a href="javascript:void(0)" onClick="setPreferredDashboad(<?php echo User::USER_SELLER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Seller',$siteLangId);?></a></li><?php }?>
 									 </ul>
+									 <div class="gap"></div>
+									 <div class="gap"></div>
+									 <a class="btn btn--block btn--secondary btn--sm" href="javascript:void(0)" onclick="userTruncateData()"><?php echo Labels::getLabel('LBL_Forget_Me',$siteLangId); ?></a>
+									 <a class="btn btn--block btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
 								 </div>
 								 <div class="grid__left" id="profileInfoFrmBlock">
 									<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>										 

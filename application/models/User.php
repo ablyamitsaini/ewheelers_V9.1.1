@@ -485,6 +485,23 @@ class User extends MyAppModel {
 		}
 		return true;
 	}
+	
+	public function deleteBankInfo($userId){
+		
+		$userId = FatUtility::int($userId);
+		
+		if(1 > $userId){ 
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST.',$this->commonLangId);	
+			return false;
+		}
+		
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_BANK_INFO, array('smt' => 'ub_user_id = ?', 'vals' => array($userId)))){
+			$this->error = FatApp::getDb()->getError();
+			return false;
+		}
+		return true;
+	}
+	
 	public function updateSettingsInfo($data = array()){
 		if (($this->mainTableRecordId < 1)) {			
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
@@ -514,6 +531,14 @@ class User extends MyAppModel {
 		}
 		return true;
 	}
+	public function truncateUserInfo($data = array(),$userId){
+
+		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, $data, array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$userId)))){
+			$this->error = FatApp::getDb()->getError();
+			echo $this->error; die;
+		}
+		return true;
+	}
 	public function updateCredInfo($data = array(),$userId){
 		$assignValues = array(
 			static::DB_TBL_CRED_PREFIX.'password' => UserAuthentication::encryptPassword ( $data['user_password'] ) 
@@ -524,9 +549,10 @@ class User extends MyAppModel {
 		}
 		return true;
 	}
+	
 	public function getUserReturnAddress($langId = 0){
 		$langId = FatUtility::int($langId);
-		if (($this->mainTableRecordId < 1)) {			
+		if (($this->mainTableRecordId < 1)) {
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
@@ -587,6 +613,26 @@ class User extends MyAppModel {
 			return false;
 		}
 		return true;
+	}
+	
+	public function deleteUserReturnAddress($userId){
+		$userId = FatUtility::int($userId);
+		
+		if(1 > $userId){
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST.',$this->commonLangId);	
+			return false;
+		}
+		
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR, array('smt' => 'ura_user_id = ?', 'vals' => array($userId)))){
+			$this->error = $db->getError();
+			return false;
+		}
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR_LANG, array('smt' => 'uralang_user_id = ?', 'vals' => array($userId)))){
+			$this->error = $db->getError();
+			return false;
+		}
+		return true;
+		
 	}
 	
 	public function getSupplierRequestFieldsValueArr($requestId,$langId){

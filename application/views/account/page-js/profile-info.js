@@ -179,6 +179,32 @@ $(document).ready(function(){
 		});
 	};
 	
+	userTruncateData = function(){
+		var agree = confirm( langLbl.confirmRemove );
+		if( !agree ){
+			return false;
+		}
+		fcom.updateWithAjax(fcom.makeUrl('Account', 'truncateUserData'), '', function(t) {
+			profileInfoForm();
+		});
+	};
+	
+	requestData = function(){
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Account', 'requestDataForm'), '', function(t) {
+				$.facebox( t,'faceboxWidth');
+			});
+		});
+	};
+	
+	setupRequestData = function(frm){
+		if (!$(frm).validate()) return;	
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Account', 'setupRequestData'), data, function(t) {
+			$("#facebox .close").trigger('click');
+		});	
+	};
+	
 	
 })();	
 

@@ -42,7 +42,7 @@ class AddressesController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	function setDefault(){
+	public function setDefault(){
 		$post = FatApp::getPostedData();
 		if($post == false){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
@@ -80,7 +80,7 @@ class AddressesController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	function deleteRecord(){
+	public function deleteRecord(){
 		$post = FatApp::getPostedData();
 		if($post == false){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
