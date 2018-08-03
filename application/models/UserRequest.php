@@ -15,7 +15,7 @@ class UserRequest extends MyAppModel {
 	public function __construct($userReqId = 0) {
 		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $userReqId );		
 		$this->objMainTableRecord->setSensitiveFields ( array (
-			'ureq_date'
+			/* 'ureq_date' */
 		) );
 	}
 	

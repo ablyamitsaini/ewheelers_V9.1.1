@@ -2654,10 +2654,19 @@ class AccountController extends LoggedUserController {
 		$this->_template->render(false,false);
 	}
 	
-	public function truncateUserData()
-	{
+	public function truncateUserData(){
 		$userId = UserAuthentication::getLoggedUserId();
 		$db = FatApp::getDb();
+		
+		$srch = new SearchBase( UserRequest::DB_TBL );
+		$srch->addCondition( 'ureq_user_id', '=', $userId );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch($rs);
+		if( $row ){
+			Message::addErrorMessage( Labels::getLabel('LBL_You_have_alrady_submitted_the_request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
@@ -2672,7 +2681,7 @@ class AccountController extends LoggedUserController {
 			Message::addErrorMessage($userReqObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		Message::addMessage(Labels::getLabel('MSG_Successfully_deleted_user_data',$this->siteLangId));
+		Message::addMessage(Labels::getLabel('MSG_Request_sent_successfully',$this->siteLangId));
 		FatUtility::dieJsonSuccess( Message::getHtml() );	
 	}
 	

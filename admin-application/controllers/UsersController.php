@@ -2001,13 +2001,16 @@ class UsersController extends AdminBaseController {
 		$db = FatApp::getDb();
 		$db->startTransaction();
 		
+		/* Delete User Addresses [ */
 		$addressObj = new UserAddress();
 		if (!$addressObj->deleteUserAddresses($userId)) {
 			$db->rollbackTransaction();
 			Message::addErrorMessage(Labels::getLabel("MSG_USER_ADDRESSES_COULD_NOT_BE_DELETED",$this->adminLangId) . $addressObj->getError());				
 			FatUtility::dieJsonError( Message::getHtml());				
 		}
+		/* ] */
 		
+		/* Update User information [ */
 		$userObj = new User();
 		$userData = array(
 				'user_name'=>'',
@@ -2028,13 +2031,17 @@ class UsersController extends AdminBaseController {
 			Message::addErrorMessage(Labels::getLabel("MSG_USER_INFO_COULD_NOT_BE_DELETED",$this->adminLangId) . $userObj->getError());				
 			FatUtility::dieJsonError( Message::getHtml());				
 		}
-
+		/* ] */
+		
+		/* Delete Bank Info [ */
 		if (!$userObj->deleteBankInfo($userId)) {
 			$db->rollbackTransaction();
 			Message::addErrorMessage(Labels::getLabel("MSG_BANK_INFO_COULD_NOT_BE_DELETED",$this->adminLangId) . $userObj->getError());				
 			FatUtility::dieJsonError( Message::getHtml());				
 		}
+		/* ] */
 		
+		/* Delete Seller's Return Address [ */
 		$userObj = new User($userId);
 		$srch = $userObj->getUserSearchObj(array('user_is_supplier','user_registered_initially_for'));
 		$rs = $srch->getResultSet();		
@@ -2048,7 +2055,18 @@ class UsersController extends AdminBaseController {
 				FatUtility::dieJsonError( Message::getHtml());				
 			}
 		}
-
+		/* ] */
+		
+		/* Update Order User Address [ */
+		$order = new Orders();
+		if (!$order->updateOrderUserAddress($userId)) {
+			$db->rollbackTransaction();
+			Message::addErrorMessage($order->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		/* ] */
+		
+		/* Update request status to complete [ */
 		$assignValues = array(
 			'ureq_status'=>UserRequest::USER_REQUEST_STATUS_COMPLETE,
 			'ureq_approved_date'=>date('Y-m-d H:i:s'),
@@ -2061,6 +2079,8 @@ class UsersController extends AdminBaseController {
 			Message::addErrorMessage($userReqObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
+		/* ] */
+		
 		$db->commitTransaction();
 		$this->set('userReqId', $userReqId);
 		$this->set('msg', Labels::getLabel('LBL_Successfully_Deleted_User_data',$this->adminLangId));

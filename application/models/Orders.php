@@ -41,7 +41,9 @@ class Orders extends MyAppModel{
 	const ORDER_PRODUCT = 1;
 	const ORDER_SUBSCRIPTION = 2;
 	const ORDER_WALLET_RECHARGE = 3;
-		
+	
+	const REPLACE_ORDER_USER_ADDRESS ='XXX';
+	
 	//const DEFAULT_CHILD_ORDER_STATUS_ID = 1;
 	
 	/* const DB_TBL_ORDER_CANCEL_REQUEST = 'tbl_order_cancel_requests'; 
@@ -2075,6 +2077,28 @@ class Orders extends MyAppModel{
 		}else{
 			return sprintf( Labels::getLabel( 'LBL_ORDER_PLACED_%s', $langId ), $formattedOrderValue );
 		}
+	}
+	
+	public function updateOrderUserAddress( $userId ) {
+		
+		$srch = new  OrderSearch();
+		$srch->addCondition('order_user_id','=',$userId);
+		$rs = $srch->getResultSet();
+		$orderInfo = FatApp::getDb()->fetchAll($rs);
+
+		if(!$orderInfo) {
+			return true;
+		}
+		/* print_r($orderInfo);die; */
+		foreach($orderInfo as $order){
+			if (!FatApp::getDb()->updateFromArray(Orders::DB_TBL_ORDER_USER_ADDRESS, array('oua_address1' => static::REPLACE_ORDER_USER_ADDRESS,'oua_address2' => static::REPLACE_ORDER_USER_ADDRESS,'oua_city' => static::REPLACE_ORDER_USER_ADDRESS,'oua_state' => static::REPLACE_ORDER_USER_ADDRESS,'oua_country' => static::REPLACE_ORDER_USER_ADDRESS,'oua_country_code' => static::REPLACE_ORDER_USER_ADDRESS,'oua_phone' => static::REPLACE_ORDER_USER_ADDRESS,'oua_zip' => static::REPLACE_ORDER_USER_ADDRESS),
+				array('smt' => 'oua_order_id = ? ', 'vals' => array($order['order_id'])))){
+				$this->error = FatApp::getDb()->getError();
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 }

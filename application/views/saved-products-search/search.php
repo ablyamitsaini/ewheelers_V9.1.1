@@ -28,7 +28,7 @@ if(!empty($arrListing)){?>
 			</div>
 			<div class="results-side">
 				<?php /*?><span class="newly-added"><?php echo $row['newRecords'];?></span><?php */?>
-				<strong><a href="<?php echo $row['search_url'];?>"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a></strong> <?php /* echo Labels::getLabel('LBL_Out_of',$siteLangId); */?> <?php /* echo $row['totalRecords']; */?>
+				<strong><a href="<?php echo $row['search_url'];?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a></strong> <?php /* echo Labels::getLabel('LBL_Out_of',$siteLangId); */?> <?php /* echo $row['totalRecords']; */?>
 			</div>
 		</li>
 	  <?php }?>
