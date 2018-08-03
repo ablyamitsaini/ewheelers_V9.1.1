@@ -297,8 +297,8 @@ class applicationConstants{
 	
 	static function getCatalogTypeArrForFrontEnd ($langId){
 		return array(
-			static::SYSTEM_CATALOG => Labels::getLabel('LBL_System_Products',$langId),
-			static::CUSTOM_CATALOG => Labels::getLabel('LBL_My_Products',$langId)
+			static::SYSTEM_CATALOG => Labels::getLabel('LBL_Marketplace_Products',$langId),
+			static::CUSTOM_CATALOG => Labels::getLabel('LBL_My_Private_Products',$langId)
 		);
 	}
 	

@@ -4,8 +4,7 @@ class BlogController extends MyAppController{
 		parent::__construct($action);
 		$this->set('blogPage',true);
 		$this->set('bodyClass','is--blog');
-		$this->_template->addCss('css/style---blog.css');
-			
+		$this->_template->addCss('css/blog.css');	
 	}
 
 	public function getBreadcrumbNodes($action) {
@@ -49,6 +48,8 @@ class BlogController extends MyAppController{
 	}
 	
     public function index(){
+		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addCss('css/slick.css');
 		$this->_template->render();
 	}
 	
@@ -58,6 +59,8 @@ class BlogController extends MyAppController{
 			Message::addErrorMessage(Labels::getLabel('Lbl_Invalid_Request',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
 		}
+		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addCss('css/slick.css');
 		$this->set('bpCategoryId',$categoryId);
 		$this->_template->render(true , true , 'blog/index.php');
 	}

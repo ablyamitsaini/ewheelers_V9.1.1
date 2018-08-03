@@ -2680,22 +2680,95 @@ class AccountController extends LoggedUserController {
 		$this->_template->render(false,false);
 	}
 	
-	/* protected function getPromotionSearchForm()	{
-		$frm=new Form('frmSearchPromotion','frmSearchPromotion');
-		$frm->setFieldsPerRow(4);
-		$frm->setExtra('class="siteForm ondark" rel="search"');
-		$frm->captionInSameCell(true);
-		$frm->setRequiredStarWith('not-required');
-		$frm->addHiddenField('', 'mode', "search");
-		$frm->addHiddenField('', 'page', '1');
-		$fld=$frm->addTextBox('', 'date_from', '', '', ' placeholder="'.Labels::getLabel('LBL_Date_From',$this->siteLangId).'" readonly class="date-pick calendar"');
-		$fld=$frm->addTextBox('', 'date_to', '', '', ' placeholder="'.Labels::getLabel('LBL_Date_To',$this->siteLangId).'" readonly class="date-pick calendar"');
-		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Search',$this->siteLangId),'','class="btn primary-btn"');
-		$frm->getField("btn_submit")->html_after_field='&nbsp;&nbsp;<a href="?" class="btn secondary-btn">'.Labels::getLabel('LBL_Clear',$this->siteLangId).'</a>';
-		$frm->setJsErrorDisplay('afterfield');
-		$frm->setAction('?');
+	public function truncateUserData()
+	{
+		$userId = UserAuthentication::getLoggedUserId();
+		$db = FatApp::getDb();
+		
+		$assignValues = array(
+			'ureq_user_id'=>$userId,
+			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_TRUNCATE,
+			'ureq_date'=>date('Y-m-d H:i:s'),
+		);
+		
+		$userReqObj = new UserRequest();
+		$userReqObj->assignValues($assignValues);
+		if (!$userReqObj->save()) {
+			
+			Message::addErrorMessage($userReqObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		Message::addMessage(Labels::getLabel('MSG_Successfully_deleted_user_data',$this->siteLangId));
+		FatUtility::dieJsonSuccess( Message::getHtml() );	
+	}
+	
+	private function getRequestDataForm(){
+		$frm = new Form('frmRequestdata');
+		$frm->addTextBox(Labels::getLabel('LBL_Email',$this->siteLangId),'credential_email','',array('readonly'=>'readonly'));
+		$frm->addTextBox(Labels::getLabel('LBL_Name',$this->siteLangId), 'user_name','',array('readonly'=>'readonly'));
+		$purposeFld = $frm->addTextArea(Labels::getLabel('LBL_Purpose_of_Request_Data',$this->siteLangId), 'ureq_purpose');
+		$purposeFld->requirements()->setRequired();
+		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Send_Request',$this->siteLangId));
+		return $frm;
+	}
+	
+	public function requestDataForm(){
+		$userObj = new User(UserAuthentication::getLoggedUserId());
+		$srch = $userObj->getUserSearchObj(array('credential_username','credential_email','user_name'));
+		$rs = $srch->getResultSet();
+		
+		if(!$rs){
+			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$data = FatApp::getDb()->fetch($rs,'user_id');
+		
+		if ($data === false) {
+			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$frm = $this->getRequestDataForm();
+		$frm->fill($data);
 		$this->set('frm', $frm);
 		$this->set('siteLangId',$this->siteLangId);
-		return $frm;
-	} */
+		$this->_template->render(false, false);
+	}
+	
+	public function setupRequestData(){
+		$frm = $this->getRequestDataForm ();
+		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
+		if (false === $post) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieJsonError( Message::getHtml() );	
+		}
+		$userId = UserAuthentication::getLoggedUserId();
+		
+		$assignValues = array(
+			'ureq_user_id'=>$userId,
+			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_DATA,
+			'ureq_date'=>date('Y-m-d H:i:s'),
+			'ureq_purpose'=>$post['ureq_purpose'],
+		);
+
+		$userReqObj = new UserRequest($userId);
+		$userReqObj->assignValues($assignValues);
+		if (!$userReqObj->save()) {
+			$db->rollbackTransaction();
+			Message::addErrorMessage($userReqObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+
+		$post['user_id'] = $userId;
+		$emailNotificationObj = new EmailHandler();
+		if (!$emailNotificationObj->SendDataRequestNotification( $post, $this->siteLangId)){
+			Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(),$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$this->set('msg', Labels::getLabel('MSG_REQUEST_SENT_SUCCESSFULLY',$this->siteLangId));	
+		$this->_template->render(false, false, 'json-success.php');	
+	}
+
 }	

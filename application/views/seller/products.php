@@ -29,16 +29,16 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<div class="col-md-10 panel__right--full " >
 					<div class="cols--group">
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_My_Products',$siteLangId); ?></h2>
+						   <h2><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); ?></h2>
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
 								<div class="box__head box__head--large">
-								   <h4><?php echo Labels::getLabel('LBL_Search_Products',$siteLangId); ?></h4>
+								   <h4><?php echo Labels::getLabel('LBL_Search_your_inventory',$siteLangId); ?></h4>
 									<div class="group--btns">
-										<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a>
+										<!--<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php /* echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId); */?></a>-->
 										<?php if( User::canAddCustomProduct() ){ ?>
-											<a href="<?php echo commonHelper::generateUrl('seller','catalog');?>" class = "btn btn--secondary btn--sm"><?php echo Labels::getLabel( 'LBL_Products_list', $siteLangId);?></a>
+											<a href="<?php echo commonHelper::generateUrl('seller','catalog');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Products_list', $siteLangId);?></a>
 										<?php } ?>
 									</div>
 								</div>
