@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 if(!empty($postList)){ ?>
 	<section>
-		<div class="js-posts-slider posts-slider">
+		<div class="js-posts-slider posts-slider" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 		 <?php foreach($postList as $blogPost ){ ?>
 			<div class="post-item">
 				<div class="post-media"><img src="<?php echo CommonHelper::generateUrl('image','blogPostFront', array($blogPost['post_id'],$siteLangId, "BANNER"),CONF_WEBROOT_URL); ?>" data-ratio="16:9" alt="<?php echo $blogPost['post_title']?>" class="img"></div>
@@ -89,19 +89,6 @@ if(!empty($postList)){ ?>
 	} ?>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 <?php 
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmBlogSearchPaging') );
@@ -110,32 +97,60 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
-
-		$('.posts-slider').slick({
-			centerMode: true,
-			centerPadding: '28%',
-			slidesToShow: 1,
-			arrows: true,
-			responsive: [{
-					breakpoint: 768,
-					settings: {
-						arrows: false,
-						centerMode: false,
-						centerPadding: '0px',
-						slidesToShow: 1
+		if(langLbl.layoutDirection == 'rtl'){
+			$('.posts-slider').slick({
+				centerMode: true,
+				centerPadding: '28%',
+				slidesToShow: 1,
+				arrows: true,
+				rtl:true,
+				responsive: [{
+						breakpoint: 768,
+						settings: {
+							arrows: false,
+							centerMode: false,
+							centerPadding: '0px',
+							slidesToShow: 1
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							arrows: false,
+							centerMode: false,
+							centerPadding: '0px',
+							slidesToShow: 1
+						}
 					}
-				},
-				{
-					breakpoint: 480,
-					settings: {
-						arrows: false,
-						centerMode: false,
-						centerPadding: '0px',
-						slidesToShow: 1
+				]
+			});
+		}else{
+			$('.posts-slider').slick({
+				centerMode: true,
+				centerPadding: '28%',
+				slidesToShow: 1,
+				arrows: true,
+				responsive: [{
+						breakpoint: 768,
+						settings: {
+							arrows: false,
+							centerMode: false,
+							centerPadding: '0px',
+							slidesToShow: 1
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+							arrows: false,
+							centerMode: false,
+							centerPadding: '0px',
+							slidesToShow: 1
+						}
 					}
-				}
-			]
-		});
+				]
+			});
+		}
 		
 	});
 </script>

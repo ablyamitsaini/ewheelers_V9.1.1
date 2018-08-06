@@ -213,3 +213,22 @@ ALTER TABLE `tbl_product_saved_search`
 --
 ALTER TABLE `tbl_product_saved_search`
   MODIFY `pssearch_id` int(11) NOT NULL AUTO_INCREMENT;
+  
+  
+  
+CREATE TABLE `tbl_user_requests_history` (
+  `ureq_id` int(11) NOT NULL,
+  `ureq_user_id` int(11) NOT NULL,
+  `ureq_type` tinyint(4) NOT NULL,
+  `ureq_purpose` varchar(500) NOT NULL,
+  `ureq_status` tinyint(4) NOT NULL,
+  `ureq_date` datetime NOT NULL,
+  `ureq_approved_date` datetime NOT NULL,
+  `ureq_deleted` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `tbl_user_requests_history`
+	ADD PRIMARY KEY (`ureq_id`);
+
+ALTER TABLE `tbl_user_requests_history`
+	MODIFY `ureq_id` int(11) NOT NULL AUTO_INCREMENT;
