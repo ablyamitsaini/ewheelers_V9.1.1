@@ -486,16 +486,13 @@ class User extends MyAppModel {
 		return true;
 	}
 	
-	public function deleteBankInfo($userId){
-		
-		$userId = FatUtility::int($userId);
-		
-		if(1 > $userId){ 
-			$this->error = Labels::getLabel('ERR_INVALID_REQUEST.',$this->commonLangId);	
+	public function deleteBankInfo(){
+		if (($this->mainTableRecordId < 1)) {			
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
 		
-		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_BANK_INFO, array('smt' => 'ub_user_id = ?', 'vals' => array($userId)))){
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_BANK_INFO, array('smt' => 'ub_user_id = ?', 'vals' => array($this->mainTableRecordId)))){
 			$this->error = FatApp::getDb()->getError();
 			return false;
 		}
@@ -531,9 +528,14 @@ class User extends MyAppModel {
 		}
 		return true;
 	}
-	public function truncateUserInfo($data = array(),$userId){
+	public function truncateUserInfo($data = array()){
+		
+		if (($this->mainTableRecordId < 1)) {		
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
+			return false;
+		}
 
-		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, $data, array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$userId)))){
+		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, $data, array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array($this->mainTableRecordId)))){
 			$this->error = FatApp::getDb()->getError();
 			echo $this->error; die;
 		}
@@ -615,24 +617,21 @@ class User extends MyAppModel {
 		return true;
 	}
 	
-	public function deleteUserReturnAddress($userId){
-		$userId = FatUtility::int($userId);
-		
-		if(1 > $userId){
-			$this->error = Labels::getLabel('ERR_INVALID_REQUEST.',$this->commonLangId);	
+	public function deleteUserReturnAddress(){
+		if (($this->mainTableRecordId < 1)) {			
+			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
 		
-		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR, array('smt' => 'ura_user_id = ?', 'vals' => array($userId)))){
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR, array('smt' => 'ura_user_id = ?', 'vals' => array($this->mainTableRecordId)))){
 			$this->error = $db->getError();
 			return false;
 		}
-		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR_LANG, array('smt' => 'uralang_user_id = ?', 'vals' => array($userId)))){
+		if (!FatApp::getDb()->deleteRecords(static::DB_TBL_USR_RETURN_ADDR_LANG, array('smt' => 'uralang_user_id = ?', 'vals' => array($this->mainTableRecordId)))){
 			$this->error = $db->getError();
 			return false;
 		}
 		return true;
-		
 	}
 	
 	public function getSupplierRequestFieldsValueArr($requestId,$langId){

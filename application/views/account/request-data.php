@@ -8,7 +8,7 @@
 				<div class="col-md-10 panel__right--full" >	
 					<div class="cols--group">
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('Lbl_Request_My_Data',$siteLangId);?></h2>							   
+						   <h2><?php echo Labels::getLabel('Lbl_Request_My_Data',$siteLangId);?></h2>					   
 					   </div>
 						<div class="panel__body">
 							<div class="box box--white box--space">                                  

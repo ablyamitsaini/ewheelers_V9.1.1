@@ -271,10 +271,15 @@ class GuestUserController extends MyAppController {
 		unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
 		unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
 		
+		$cartObj = new Cart();
+		if($cartObj->hasProducts()){
+			FatApp::redirectUser(CommonHelper::generateFullUrl('cart'));
+		}
+		
 		$preferredDashboard = 0;
 		if($userInfo != false){
 			$preferredDashboard = $userInfo['user_preferred_dashboard'];
-		}			
+		}
 		FatApp::redirectUser(User::getPreferedDashbordRedirectUrl($preferredDashboard));
 	}
 	
@@ -414,6 +419,11 @@ class GuestUserController extends MyAppController {
 			}
 			
 			unset($_SESSION['access_token']);
+			
+			$cartObj = new Cart();
+			if($cartObj->hasProducts()){
+				FatApp::redirectUser(CommonHelper::generateFullUrl('cart'));
+			}
 			
 			$preferredDashboard = 0;
 			if($userInfo != false){

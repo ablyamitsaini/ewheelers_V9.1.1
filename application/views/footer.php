@@ -1,6 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 </div>
-
+<?php /* if(CommonHelper::demoUrl()){ */ ?>
+<div class="no-print fixed-demo-btn" id="demo-btn"><a href="javascript:void(0);" class="request-demo" id="btn-demo">Request
+            a Demo</a></div>
+<?php /* } */ ?>
 <footer id="footer" class="no-print clearfix">
     <section class="bg-light">
 

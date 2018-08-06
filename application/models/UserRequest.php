@@ -69,5 +69,4 @@ class UserRequest extends MyAppModel {
 		return true;
 	}
 	
-	
 }

@@ -650,4 +650,8 @@ class CustomController extends MyAppController {
 		$_SESSION['cookies_enabled']= true;	
 		return true;
 	}
+	
+	public function requestDemo(){
+		$this->_template->render( false, false ); 
+	}
 }

@@ -2658,9 +2658,11 @@ class AccountController extends LoggedUserController {
 		$userId = UserAuthentication::getLoggedUserId();
 		$db = FatApp::getDb();
 		
-		$srch = new SearchBase( UserRequest::DB_TBL );
+		$srch = new UserRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_TRUNCATE );
 		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
 		if( $row ){
@@ -2728,6 +2730,18 @@ class AccountController extends LoggedUserController {
 		}
 		$userId = UserAuthentication::getLoggedUserId();
 		
+		$srch = new UserRequestSearch();
+		$srch->addCondition( 'ureq_user_id', '=', $userId );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_DATA );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch($rs);
+		if( $row ){
+			Message::addErrorMessage( Labels::getLabel('LBL_You_have_alrady_submitted_the_data_request', $this->siteLangId) );
+			FatUtility::dieWithError( Message::getHtml() );
+		}	
+		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
 			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_DATA,
@@ -2735,10 +2749,9 @@ class AccountController extends LoggedUserController {
 			'ureq_purpose'=>$post['ureq_purpose'],
 		);
 
-		$userReqObj = new UserRequest($userId);
+		$userReqObj = new UserRequest();
 		$userReqObj->assignValues($assignValues);
 		if (!$userReqObj->save()) {
-			$db->rollbackTransaction();
 			Message::addErrorMessage($userReqObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
@@ -2754,4 +2767,4 @@ class AccountController extends LoggedUserController {
 		$this->_template->render(false, false, 'json-success.php');	
 	}
 
-}	
+}

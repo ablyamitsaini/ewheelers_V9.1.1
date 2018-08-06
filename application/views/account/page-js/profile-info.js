@@ -180,7 +180,7 @@ $(document).ready(function(){
 	};
 	
 	userTruncateData = function(){
-		var agree = confirm( langLbl.confirmRemove );
+		var agree = confirm( langLbl.confirmDeletePersonalInformation );
 		if( !agree ){
 			return false;
 		}

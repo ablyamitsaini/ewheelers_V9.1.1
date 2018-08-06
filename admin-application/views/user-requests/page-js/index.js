@@ -30,7 +30,7 @@ $(document).ready(function(){
 		
 		$("#userRequestsListing").html(fcom.getLoader());
 		
-		fcom.ajax(fcom.makeUrl('Users','userRequestsSearch'),data,function(res){
+		fcom.ajax(fcom.makeUrl('UserRequests','userRequestsSearch'),data,function(res){
 			$("#userRequestsListing").html(res);
 		});
 	};
@@ -43,27 +43,35 @@ $(document).ready(function(){
 	updateRequestStatus = function (reqId,reqStatus){
 		if(!confirm(langLbl.confirmChangeRequestStatus)){return;}
 		var data = 'reqId='+reqId+'&status='+reqStatus;
-		fcom.updateWithAjax(fcom.makeUrl('Users', 'updateRequestStatus'), data, function(t) {					
+		fcom.updateWithAjax(fcom.makeUrl('UserRequests', 'updateRequestStatus'), data, function(t) {					
 			if(t.userReqId > 0) {
 				searchUserRequests();
 			}	
 		});
 	};
 	
-	deleteUserRequest = function (reqId,reqStatus){
-		if(!confirm(langLbl.confirmChangeRequestStatus)){return;}
+	deleteUserRequest = function (reqId){
+		if(!confirm(langLbl.confirmDelete)){return;}
 		var data = 'reqId='+reqId;
-		fcom.updateWithAjax(fcom.makeUrl('Users', 'deleteUserRequest'), data, function(t) {			
+		fcom.updateWithAjax(fcom.makeUrl('UserRequests', 'deleteUserRequest'), data, function(t) {			
 			if(t.userReqId > 0) {
 				searchUserRequests();
 			}	
 		});
+	};
+	
+	viewRequestPurpose = function (reqId){
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('UserRequests','viewUserRequest',[reqId]),'',function(t){
+				fcom.updateFaceboxContent(t);
+			});
+		});		
 	};
 	
 	truncateUserData = function (userId,userReqId){
 		if(!confirm(langLbl.confirmTruncateUserData)){return;}
 		var data = 'userId='+userId+'&userReqId='+userReqId;
-		fcom.updateWithAjax(fcom.makeUrl('Users', 'truncateUserData'), data, function(t) {					
+		fcom.updateWithAjax(fcom.makeUrl('UserRequests', 'truncateUserData'), data, function(t) {					
 			if(t.userReqId > 0) {
 				searchUserRequests();
 			}	

@@ -729,6 +729,18 @@ $(document).delegate('.readMore' ,'click' , function(){
 	$this.toggleClass('expanded');
 });
 /* ] */
+
+/* Request a demo button [ */
+$(document).delegate('#btn-demo' ,'click' , function(){
+	$.facebox(function() {
+		fcom.ajax(fcom.makeUrl('Custom','requestDemo'), '', function(t){	
+			$.facebox(t,'faceboxWidth requestdemo');
+			
+		});
+	});
+});
+/* ] */
+
 // Autocomplete */
 	(function($) {
 		$.fn.autocomplete = function(option) {

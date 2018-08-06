@@ -2614,3 +2614,226 @@ input[type="text"][disabled], input[type="password"][disabled] {
 .checkbox-switch label:active:after {
     width: 50px;
 }
+
+.fixed-demo-btn {
+    line-height: 1.8;
+    position: fixed;
+    right: -100px;
+    top: 300px;
+    z-index: 10;
+    background: var(--first-color);
+    border-radius: 2px 2px 0px 0px;
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    display: block;
+    height: 50px;
+    width: 228px;
+    color: #fff;
+    font-size: 1.5em;
+    /* font-weight: 600; */
+    text-align: center;
+}
+.fixed-demo-btn #btn-demo {
+    color: #fff;
+    display: block;
+}
+
+.modal {
+	background-color: white;
+	border-radius: 0;
+	display: none;
+	max-height: calc(100% - 100px);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	right: auto;
+	bottom: auto;
+	transform: translate(-50%, -50%);
+	z-index: 990;
+}
+
+.modal.modal-is-visible {
+	display: block;
+	z-index: 1010;
+}
+
+.modal .modal-body {
+	height: 100%;
+
+}
+
+/* .modal-overlay {
+	background-color: rgba(0, 0, 0, 0.85);
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 980;
+} */
+
+.modal-overlay.modal-is-visible {
+	display: block;
+	z-index: 1009;
+}
+
+.crossed {
+	z-index: 1;
+	position: absolute;
+	text-align: center;
+	line-height: 18px;
+	-ms-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 0px;
+	width: 30px;
+	height: 30px;
+}
+
+.crossed:before {
+	width: 1px;
+	height: 30px;
+	left: 50%;
+	margin: 0 0 0 -1px;
+	position: absolute;
+	top: 0;
+	content: "";
+	background: #000;
+}
+
+.crossed:after {
+	width: 30px;
+	height: 1px;
+	left: 0px;
+	top: 50%;
+	margin: -0px 0 0 0;
+	position: absolute;
+	content: "";
+	background: #000;
+}
+
+.bg-modal {
+	background: #fff url(./images/bg-dot.png) repeat 0 0;
+	position: relative;
+	padding-bottom: 50px;
+}
+
+.bg-modal:after {
+	background: url(./images/floating-layer.png) no-repeat center bottom;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 131px;
+	width: 100%;
+	content: "";
+}
+
+.bg-modal:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 131px;
+	width: 100%;
+	content: "";
+	background: rgb(255, 255, 255);
+	background: -moz-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+	background: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff", endColorstr="#ffffff", GradientType=1);
+}
+
+.pop-logo {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.pop-logo img {
+	display: inline-block;
+}
+
+.get-started-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	z-index: 1;
+	margin-bottom: 50px;
+}
+
+.started-box {
+	text-align: center;
+	max-width: 350px;
+	padding: 10px 50px;
+	position: relative;
+}
+
+.started-box:first-child:after {
+	background: #d9dade;
+	width: 1px;
+	height: 190px;
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 0;
+	margin-top: -95px;
+}
+
+.illus {
+	margin: 15px auto;
+}
+
+.illus img {
+	display: inline-block;
+}
+
+.modal-content {
+	position: relative;
+	z-index: 1;
+}
+
+.modal-content .btn {
+	min-width: 200px;
+}
+
+.modal-content .btn--primary {
+	background: #ff4461;
+	border: none;
+	color: #fff;
+}
+
+.modal-content .btn--secondary {
+	background: #1c8adb;
+	border: none;
+}
+
+.view-packages {
+	color: #000;
+	font-size: 16px;
+	font-weight: 400;
+	background: url(./images/arrow-black.png) no-repeat right center;
+	padding: 10px;
+	padding-right: 35px;
+}
+
+@media only screen and (max-width:767px) {
+	.modal {
+		overflow-y: scroll;
+	}
+	.get-started-wrapper {
+		flex-direction: column;
+	}
+}
+
+#facebox .content.faceboxWidth.requestdemo{
+    padding: 0;
+	width: 700px;
+    min-width: 350px;
+    min-height: 150px;
+}
