@@ -580,6 +580,13 @@ class Importexport extends ImportexportCommon{
 						$parent = isset($categoriesIdentifiers[$col])?$categoriesIdentifiers[$col]:0;
 					}
 				}
+				
+				if($parent){
+					$categoryData = ProductCategory::getAttributesById($parent,'prodcat_id');
+					if(empty($categoryData) || $categoryData == false){
+						$parent = 0;
+					}	
+				}
 			}
 			
 			$name = $this->getCell($line,$colCount++,'');
