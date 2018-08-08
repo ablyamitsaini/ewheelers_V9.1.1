@@ -1916,7 +1916,8 @@ class SellerProductsController extends AdminBaseController {
 			$condition = $srch->addCondition('product_name', 'LIKE', '%' . $post['keyword'] . '%');
 			$condition->attachCondition('selprod_title', 'LIKE', '%' . $post['keyword'] . '%');
 		}
-		$srch->addCondition('emailarchive_tpl_name','LIKE','threshold_notification_vendor_custom');
+		$cnd = $srch->addCondition('emailarchive_tpl_name','LIKE','threshold_notification_vendor_custom');
+		$cnd->attachCondition('emailarchive_tpl_name','LIKE','threshold_notification_vendor', 'OR');
 		$srch->addDirectCondition('selprod_stock <= selprod_threshold_stock_level');
 		$srch->addDirectCondition('selprod_track_inventory = '.Product::INVENTORY_TRACK);
 		$srch->setPageSize(FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10));
@@ -1966,7 +1967,7 @@ class SellerProductsController extends AdminBaseController {
 		}
 
 		$emailNotificationObj = new EmailHandler();
-		if(!$emailNotificationObj->sendProductStockAlertCustom( $selprod_id, $this->adminLangId )){
+		if(!$emailNotificationObj->sendProductStockAlert( $selprod_id, $this->adminLangId )){
 			Message::addErrorMessage($emailNotificationObj->getError());
 			FatUtility::dieWithError(Message::getHtml());
 		}

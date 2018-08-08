@@ -740,40 +740,6 @@ class EmailHandler extends FatModel {
 		return true;
 	}
 	
-	public function sendProductStockAlertCustom($selprod_id, $langId = 0){
-		
-		$langId = FatUtility::int($langId);
-		if($langId == 0 ){ $langId = FatApp::getConfig('conf_default_site_lang');}
-		
-		$srch = SellerProduct::getSearchObject($langId);
-		$srch->joinTable(User::DB_TBL,'LEFT OUTER JOIN','u.user_id = sp.selprod_user_id','u');
-		$srch->joinTable(User::DB_TBL_CRED,'LEFT OUTER JOIN','c.credential_user_id = u.user_id','c');
-		$srch->addCondition('selprod_id','= ',$selprod_id);
-		
-		$srch->addMultipleFields(array('selprod_title','selprod_product_id','user_name','credential_email'));
-		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		$rs = $srch->getResultSet();
-		
-		if(!$rs){ return ;}
-		
-		$productInfo = FatApp::getDb()->fetch($rs);
-		
-		if(empty($productInfo)){ return;}
-		
-		$frontEndUrl = (CONF_WEBROOT_FRONT_URL)?CONF_WEBROOT_FRONT_URL:CONF_WEBROOT_URL;
-		$url = CommonHelper::generateFullUrl('seller', 'products',array(),$frontEndUrl);
-		$productAnchor = "<a href='".$url."'>".Labels::getLabel('LBL_click_here',$langId)."</a>";
-		
-		$arrReplacements = array(
-			'{user_name}' => $productInfo['user_name'],
-			'{prod_title}' => $productInfo["selprod_title"],
-			'{click_here}' => $productAnchor
-		);
-		self::sendMailTpl($productInfo["credential_email"],"threshold_notification_vendor_custom",$langId, $arrReplacements);
-		return true;
-	}
-	
 	public function NewOrderVendor($orderId, $langId = 0){
 		$langId = FatApp::getConfig('conf_default_site_lang');
 		$orderObj = new Orders();

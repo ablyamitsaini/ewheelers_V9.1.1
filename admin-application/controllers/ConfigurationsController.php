@@ -815,13 +815,16 @@ class ConfigurationsController extends AdminBaseController {
 			
 			case Configurations::FORM_EMAIL:
 				
-				$frm->addEmailField(Labels::getLabel("LBL_From_Email",$this->adminLangId),'CONF_FROM_EMAIL');
-				$frm->addEmailField(Labels::getLabel("LBL_Reply_to_Email_Address",$this->adminLangId),'CONF_REPLY_TO_EMAIL');
+				$fld = $frm->addEmailField(Labels::getLabel("LBL_From_Email",$this->adminLangId),'CONF_FROM_EMAIL');
+				$fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Required_for_sending_emails",$this->adminLangId)."</small>";
+				$fld = $frm->addEmailField(Labels::getLabel("LBL_Reply_to_Email_Address",$this->adminLangId),'CONF_REPLY_TO_EMAIL');
+				$fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Required_for_email_headers_-_user_can_reply_to_this_email",$this->adminLangId)."</small>";
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Send_Email",$this->adminLangId),'CONF_SEND_EMAIL',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
 				if(FatApp::getConfig('CONF_SEND_EMAIL',FatUtility::VAR_INT,1)){
 					$fld->htmlAfterField = '<a href="javascript:void(0)" id="testMail-js">'.Labels::getLabel("LBL_Click_Here",$this->adminLangId).'</a> to test email. '.Labels::getLabel("LBL_This_will_send_Test_Email_to_Site_Owner_Email",$this->adminLangId).' - '.FatApp::getConfig("CONF_SITE_OWNER_EMAIL");
 				}
-				$frm->addEmailField(Labels::getLabel("LBL_Contact_Email_Address",$this->adminLangId),'CONF_CONTACT_EMAIL');
+				$fld = $frm->addEmailField(Labels::getLabel("LBL_Contact_Email_Address",$this->adminLangId),'CONF_CONTACT_EMAIL');
+				$fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Email_id_to_contact_site_owner",$this->adminLangId)."</small>";
 				$frm->addRadioButtons(Labels::getLabel("LBL_Send_SMTP_Email",$this->adminLangId),'CONF_SEND_SMTP_EMAIL',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_SMTP_Host",$this->adminLangId),'CONF_SMTP_HOST');
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_SMTP_Port",$this->adminLangId),'CONF_SMTP_PORT');

@@ -25,7 +25,6 @@ class UserRequestsController extends AdminBaseController {
 		if ( $page < 2 ) {
 			$page = 1;
 		}
-		$post = FatApp::getPostedData();
 		
 		$srch = new UserRequestSearch();	
 		$srch->joinUser();
@@ -46,8 +45,7 @@ class UserRequestsController extends AdminBaseController {
 		$this->set("userRequestStatusArr",$userRequestStatusArr);
 		$this->set('pageCount',$srch->pages());
 		$this->set('page', $page);
-		$this->set('pageSize', $pagesize);
-		$this->set('postedData', $post);						
+		$this->set('pageSize', $pagesize);					
 		$this->set('recordCount', $srch->recordCount());
 		$this->_template->render(false,false,null,false,false);
 	}
@@ -55,7 +53,7 @@ class UserRequestsController extends AdminBaseController {
 	public function updateRequestStatus(){
 		$this->objPrivilege->canEditUserRequests();
 		$post = FatApp::getPostedData();
-		if($post == false){
+		if(empty($post)){
 			Message::addErrorMessage($this->str_invalid_request);
 			FatUtility::dieJsonError(Message::getHtml());
 		}
@@ -108,7 +106,7 @@ class UserRequestsController extends AdminBaseController {
 	public function deleteUserRequest(){
 		$this->objPrivilege->canEditUserRequests();
 		$post = FatApp::getPostedData();
-		if($post == false){
+		if(empty($post)){
 			Message::addErrorMessage($this->str_invalid_request);
 			FatUtility::dieJsonError(Message::getHtml());
 		}
@@ -135,7 +133,7 @@ class UserRequestsController extends AdminBaseController {
 	{
 		$this->objPrivilege->canEditUserRequests();
 		$post = FatApp::getPostedData();
-		if($post == false){
+		if(empty($post)){
 			Message::addErrorMessage($this->str_invalid_request);
 			FatUtility::dieJsonError(Message::getHtml());
 		}

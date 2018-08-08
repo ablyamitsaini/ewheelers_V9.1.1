@@ -1209,7 +1209,6 @@ class Orders extends MyAppModel{
 	
 		$childOrderInfo = $this->getOrderProductsByOpId($op_id,$langId);
 		if( empty($childOrderInfo) ){ $this->error = Labels::getLabel( "MSG_Invalid_Access" ,$langId ); return false; }
-		
 		$db = FatApp::getDb();
 		$emailNotificationObj = new EmailHandler();
 		
@@ -1262,13 +1261,11 @@ class Orders extends MyAppModel{
 			foreach($selProdIdArr as $opSelprodId){
 				if(empty($opSelprodId)) { continue; }
 				
-				// Stock subtraction		
-				if ( FatApp::getConfig("CONF_SUBTRACT_STOCK") ){
-					$db->query("UPDATE tbl_seller_products SET selprod_stock = (selprod_stock - " . (int)$childOrderInfo['op_qty'] . "),selprod_sold_count = (selprod_sold_count + " . (int)$childOrderInfo['op_qty'] . ") WHERE selprod_id = '" . (int)$opSelprodId . "' AND selprod_subtract_stock = '1'");
-				}
+				/* Stock subtraction */
 				
+				$db->query("UPDATE tbl_seller_products SET selprod_stock = (selprod_stock - " . (int)$childOrderInfo['op_qty'] . "),selprod_sold_count = (selprod_sold_count + " . (int)$childOrderInfo['op_qty'] . ") WHERE selprod_id = '" . (int)$opSelprodId . "' AND selprod_subtract_stock = '1'");
+
 				$sellProdInfo = SellerProduct::getAttributesById($opSelprodId,array('selprod_stock','selprod_subtract_stock','selprod_track_inventory','selprod_threshold_stock_level'));
-			
 				if (($sellProdInfo["selprod_threshold_stock_level"] >= $sellProdInfo["selprod_stock"]) && ($sellProdInfo["selprod_track_inventory"] == 1)){
 					$emailNotificationObj->sendProductStockAlert( $opSelprodId );
 				}
