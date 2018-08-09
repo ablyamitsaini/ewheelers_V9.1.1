@@ -1208,10 +1208,14 @@ class ConfigurationsController extends AdminBaseController {
 			
 			case Configurations::FORM_SHARING:
 				$frm->addHtml('','ShareAndEarn','<h3>'.Labels::getLabel('LBL_Share_and_Earn_Settings',$this->adminLangId).'</h3>');
-				$frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Title",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_'.$langId);
-				$frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Caption",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_'.$langId);
-				$frm->addTextarea(Labels::getLabel("LBL_Facebook_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_'.$langId);
-				$frm->addTextarea(Labels::getLabel("LBL_Twitter_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_TWITTER_POST_TITLE'.$langId);
+				$fld = $frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Title",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_title_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Caption",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_caption_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextarea(Labels::getLabel("LBL_Facebook_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_description_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextarea(Labels::getLabel("LBL_Twitter_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_TWITTER_POST_TITLE'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_description_shared_on_twitter",$this->adminLangId)."</small>";
 			break;
 			
 			case Configurations::FORM_MEDIA:	

@@ -456,6 +456,9 @@ class ImportExportController extends AdminBaseController {
 					break;
 					case Importexport::TYPE_USERS:	
 						$displayRangeFields = true;						
+					break;
+					case Importexport::TYPE_OPTIONS:	
+						$frm->addSelectBox(Labels::getLabel('LBL_Select_Data',$langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(),'')->requirements()->setRequired();				
 					break;				
 				}
 			break;	
@@ -474,7 +477,10 @@ class ImportExportController extends AdminBaseController {
 					break;
 					case Importexport::TYPE_SELLER_PRODUCTS:						
 						$frm->addSelectBox(Labels::getLabel('LBL_Select_Data',$langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(),'')->requirements()->setRequired();
-					break;				
+					break;
+					case Importexport::TYPE_OPTIONS:	
+						$frm->addSelectBox(Labels::getLabel('LBL_Select_Data',$langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(),'')->requirements()->setRequired();				
+					break;						
 				}
 				$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:',$langId), 'import_file', array('id' => 'import_file') );
 				$fldImg->setFieldTagAttribute('onChange','$(\'#importFileName\').html(this.value)');
