@@ -16,12 +16,12 @@ if(!empty($arrListing)){?>
 								foreach($record['value'] as $list){
 									$listValues.= $list.',';
 								}
-								$str.= rtrim($listValues,' , ');
+								$str.= rtrim($listValues,' , ').' |';
 							}else{
-								$str.= ' <strong>'.$record['label'].'</strong>: '.$record['value'].' ';
+								$str.= ' <strong>'.$record['label'].'</strong>: '.$record['value'].' |';
 							}						
 					}
-					echo $str;	
+					echo rtrim($str,'|');	
 					?>
 				</div>
 				<div class="date"><?php echo FatDate::format($row['pssearch_added_on']); ?></div>
@@ -36,6 +36,6 @@ if(!empty($arrListing)){?>
 <?php  
 	$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'siteLangId'=>$siteLangId);
 	$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
-}else{ 
+}else{
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 }?>
