@@ -526,6 +526,7 @@ class ConfigurationsController extends AdminBaseController {
 				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_catalog_items_are_shown_per_page_(products,_categories,_etc)",$this->adminLangId).".</small>";
 
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Add_favorites_to_wishlist",$this->adminLangId),'CONF_ADD_FAVORITES_TO_WISHLIST',applicationConstants::getYesNoArr($this->adminLangId),applicationConstants::YES,array('class'=>'list-inline'));
+				$fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_On_enabling_this_feature,_buyer_will_have_to_select_or_create_a_wishlist_to_group_his_favorites",$this->adminLangId).'</small>';
 				
 				$frm->addHtml('','Account','<h3>'.Labels::getLabel("LBL_Account",$this->adminLangId).'</h3>');
 				

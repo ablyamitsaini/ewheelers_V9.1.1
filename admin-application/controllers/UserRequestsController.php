@@ -208,6 +208,15 @@ class UserRequestsController extends AdminBaseController {
 		}
 		/* ] */
 		
+		/* Deactivate Account [ */
+		$status = applicationConstants::INACTIVE;
+		if (!$userObj->activateAccount($status)) {
+			$db->rollbackTransaction();
+			Message::addErrorMessage($userObj->getError());
+			FatUtility::dieWithError( Message::getHtml() );				
+		}
+		/* ] */
+		
 		/* Update request status to complete [ */
 		$assignValues = array(
 			'ureq_status'=>UserRequest::USER_REQUEST_STATUS_COMPLETE,
