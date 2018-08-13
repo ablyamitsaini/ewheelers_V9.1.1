@@ -1,0 +1,1 @@
+1. Made the favorites and wishlist manageable from admin.

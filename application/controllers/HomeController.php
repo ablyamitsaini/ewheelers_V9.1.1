@@ -17,7 +17,7 @@ class HomeController extends MyAppController {
 		$productSrchObj->addSubscriptionValidCondition();
 		$productSrchObj->joinProductRating( );
 		
-		if( FatApp::getConfig('CONF_PRODUCT_FAVORITE_TYPE', FatUtility::VAR_INT, 1) == Product::TYPE_FAVORITE){
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
 			$productSrchObj->joinFavouriteProducts( $loggedUserId );
 			$productSrchObj->addFld('ufp_id');
 		}else{

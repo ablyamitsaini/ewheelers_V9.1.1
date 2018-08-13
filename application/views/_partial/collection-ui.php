@@ -6,7 +6,7 @@ $staticCollectionClass='static--collection';
 <?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer())) $showAddToFavorite = false; ?>
 <?php if($showAddToFavorite) { ?>
 <div class="collections-ui <?php echo $staticCollectionClass;?> "> 
-<?php if( FatApp::getConfig('CONF_PRODUCT_FAVORITE_TYPE', FatUtility::VAR_INT, 1) == Product::TYPE_FAVORITE){ ?>
+<?php if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){ ?>
 <div class="favourite heart-wrapper <?php echo($product['ufp_id'])?'is-active':'';?>" data-id="<?php echo $product['selprod_id']; ?>">
 	<a href="javascript:void(0)" <?php echo($product['ufp_id'])? Labels::getLabel('LBL_Remove_product_from_favourite_list',$siteLangId) : Labels::getLabel('LBL_Add_Product_to_favourite_list',$siteLangId); ?>>
 		<div class="ring"></div>

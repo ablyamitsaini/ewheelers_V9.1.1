@@ -1219,7 +1219,7 @@ class AccountController extends LoggedUserController {
 	
 	public function wishListSearch(){
 		$loggedUserId = UserAuthentication::getLoggedUserId();
-		if( FatApp::getConfig('CONF_PRODUCT_FAVORITE_TYPE', FatUtility::VAR_INT, 1) == Product::TYPE_FAVORITE){
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
 			$wishLists[] = Product::getUserFavouriteProducts( $loggedUserId, $this->siteLangId );
 		}else{
 			$wishLists = UserWishList::getUserWishLists( $loggedUserId, false );
