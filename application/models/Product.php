@@ -49,6 +49,9 @@ class Product extends MyAppModel{
 	CONST CONDITION_USED = 2;
 	CONST CONDITION_REFURBISH = 3;
 	
+	CONST TYPE_WISHLIST = 1;
+	CONST TYPE_FAVORITE = 2;
+	
 	CONST PRODUCT_VIEW_ORGINAL_URL ='products/view/';
 	CONST PRODUCT_REVIEWS_ORGINAL_URL ='reviews/product/';
 	CONST PRODUCT_MORE_SELLERS_ORGINAL_URL ='products/sellers/';
@@ -120,6 +123,18 @@ class Product extends MyAppModel{
 		return array(
 			self::PRODUCT_TYPE_PHYSICAL => Labels::getLabel('LBL_Physical', $langId),
 			self::PRODUCT_TYPE_DIGITAL => Labels::getLabel('LBL_Digital', $langId)
+		);
+	}
+	
+	public static function getProductFavoriteTypes($langId = 0){
+		$langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
+		if( !$langId ){
+			trigger_error(Labels::getLabel("ERR_Arguments_not_specified.",$this->commonLangId), E_USER_ERROR);
+			return false;
+		}
+		return array(
+			self::TYPE_WISHLIST => Labels::getLabel('LBL_Wishlist', $langId),
+			self::TYPE_FAVORITE => Labels::getLabel('LBL_Favorite', $langId)
 		);
 	}
 	

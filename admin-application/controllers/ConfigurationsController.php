@@ -525,6 +525,7 @@ class ConfigurationsController extends AdminBaseController {
 				$fld3 = $frm->addTextBox(Labels::getLabel("LBL_Default_Items_Per_Page_(Catalog)",$this->adminLangId),"CONF_ITEMS_PER_PAGE_CATALOG");
 				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_catalog_items_are_shown_per_page_(products,_categories,_etc)",$this->adminLangId).".</small>";
 
+				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Product_Favorite_type",$this->adminLangId),'CONF_PRODUCT_FAVORITE_TYPE',Product::getProductFavoriteTypes($this->adminLangId),Product::TYPE_WISHLIST,array('class'=>'list-inline'));
 				
 				$frm->addHtml('','Account','<h3>'.Labels::getLabel("LBL_Account",$this->adminLangId).'</h3>');
 				

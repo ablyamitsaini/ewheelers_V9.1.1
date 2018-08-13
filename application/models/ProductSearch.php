@@ -360,11 +360,17 @@ class ProductSearch extends SearchBase {
 		$this->joinTable(  Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_product_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp' );
 	}
 	
-	public function joinUserWishListProducts(){
+	public function joinUserWishListProducts($user_id){
 		
-		$this->joinTable( UserWishList::DB_TBL_LIST_PRODUCTS, 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' ); 
+		$wislistPSrchObj = new UserWishListProductSearch();
+		$wislistPSrchObj->joinWishLists();
+		$wislistPSrchObj->doNotCalculateRecords();
+		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $user_id );
+		$wishListSubQuery = $wislistPSrchObj->getQuery();
+
+		$this->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' );
 	}
-		
+	
 	public function addCategoryCondition($category){
 		
 		if( is_numeric($category) ){
