@@ -2659,8 +2659,8 @@ class AccountController extends LoggedUserController {
 		
 		$srch = new UserRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_TRUNCATE );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_TRUNCATE );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
@@ -2671,7 +2671,7 @@ class AccountController extends LoggedUserController {
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_TRUNCATE,
+			'ureq_type'=>UserRequest::TYPE_TRUNCATE,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 		);
 		
@@ -2731,8 +2731,8 @@ class AccountController extends LoggedUserController {
 		
 		$srch = new UserRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_DATA );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_DATA );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
@@ -2743,7 +2743,7 @@ class AccountController extends LoggedUserController {
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_DATA,
+			'ureq_type'=>UserRequest::TYPE_DATA,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 			'ureq_purpose'=>$post['ureq_purpose'],
 		);
