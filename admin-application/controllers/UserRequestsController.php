@@ -57,7 +57,7 @@ class UserRequestsController extends AdminBaseController {
 			Message::addErrorMessage($this->str_invalid_request);
 			FatUtility::dieJsonError(Message::getHtml());
 		}
-		
+				
 		$userReqId = FatUtility::int($post['reqId']);
 		$status = FatUtility::int($post['status']);
 		

@@ -20,8 +20,8 @@ if(!empty($arrListing)){?>
 							}else{
 								$str.= ' <strong>'.$record['label'].'</strong>: '.$record['value'].' ';
 							}						
-					}
-					echo $str;	
+						}
+						echo $str;	
 					?>
 				</div>
 				<div class="date"><?php echo FatDate::format($row['pssearch_added_on']); ?></div>

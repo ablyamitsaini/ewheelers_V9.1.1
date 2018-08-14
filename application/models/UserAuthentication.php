@@ -328,8 +328,7 @@ class UserAuthentication extends FatModel {
 		if ($ip == '') {			
 			$ip = CommonHelper::getClientIp();
 		}
-		
-		$isUserLogged =  false;
+				
 		if (isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
 				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip 
 				&& is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
@@ -337,23 +336,15 @@ class UserAuthentication extends FatModel {
 			return true;
 		}
 		
-		if(!$isUserLogged && $token != ''){
-			$isUserLogged = static::doAppLogin($token);
+		if($token != '' && static::doAppLogin($token)){
+			return true;
 		}
 		
-		if(!$isUserLogged){
-			$isUserLogged = static::doCookieLogin(false);
+		if(static::doCookieLogin(false)){
+			return true;
 		}
 		
-		return $isUserLogged;
-				
-		/* if (! isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
-				|| $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] != $ip 
-				|| ! is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
-				|| 0 >= $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {
-			return false;
-		}
-		return true; */
+		return false;		
 	}
 	
 	public static function getLoggedUserAttribute($attr, $returnNullIfNotLogged = false) {
