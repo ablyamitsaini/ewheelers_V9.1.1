@@ -1219,40 +1219,40 @@ class AccountController extends LoggedUserController {
 	
 	public function wishListSearch(){
 		$loggedUserId = UserAuthentication::getLoggedUserId();
-		
-		$favouriteProducts[] = Product::getUserFavouriteProducts( $loggedUserId, $this->siteLangId );
-		/* CommonHelper::printArray($favouriteProducts); die; */
-		$wishLists = UserWishList::getUserWishLists( $loggedUserId, false );
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$wishLists[] = Product::getUserFavouriteProducts( $loggedUserId, $this->siteLangId );
+		}else{
+			$wishLists = UserWishList::getUserWishLists( $loggedUserId, false );
 
-		if( $wishLists ){
-			$srchObj = new UserWishListProductSearch( $this->siteLangId );
-			$db = FatApp::getDb();
-			foreach( $wishLists as &$wishlist ){
-				$srch = clone $srchObj;
-				$srch->joinSellerProducts();
-				$srch->joinProducts();
-				$srch->joinSellers();
-				$srch->joinShops();
-				$srch->joinProductToCategory();
-				$srch->joinSellerSubscription($this->siteLangId,true);
-				$srch->addSubscriptionValidCondition();
-				$srch->addCondition('uwlp_uwlist_id', '=', $wishlist['uwlist_id']);
-				$srch->setPageNumber(1);
-				$srch->setPageSize(4); 
-				$srch->addMultipleFields( array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock') );
-				$srch->addOrder('uwlp_added_on');
-				$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-				$srch->addCondition('selprod_active', '=', applicationConstants::YES);			
-				/* $srch->addOrder( 'in_stock', 'DESC' );
-				$srch->addOrder('product_name'); */
-				$srch->addGroupBy('selprod_id'); 
-				$rs = $srch->getResultSet();
-				$products = $db->fetchAll($rs);
-				$wishlist['products'] = $products;
-				$wishlist['totalProducts'] = $srch->recordCount();
+			if( $wishLists ){
+				$srchObj = new UserWishListProductSearch( $this->siteLangId );
+				$db = FatApp::getDb();
+				foreach( $wishLists as &$wishlist ){
+					$srch = clone $srchObj;
+					$srch->joinSellerProducts();
+					$srch->joinProducts();
+					$srch->joinSellers();
+					$srch->joinShops();
+					$srch->joinProductToCategory();
+					$srch->joinSellerSubscription($this->siteLangId,true);
+					$srch->addSubscriptionValidCondition();
+					$srch->addCondition('uwlp_uwlist_id', '=', $wishlist['uwlist_id']);
+					$srch->setPageNumber(1);
+					$srch->setPageSize(4); 
+					$srch->addMultipleFields( array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock') );
+					$srch->addOrder('uwlp_added_on');
+					$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+					$srch->addCondition('selprod_active', '=', applicationConstants::YES);
+					$srch->addGroupBy('selprod_id'); 
+					$rs = $srch->getResultSet();
+					$products = $db->fetchAll($rs);
+					$wishlist['products'] = $products;
+					$wishlist['totalProducts'] = $srch->recordCount();
+				}
 			}
 		}
-		$wishLists = array_merge($favouriteProducts,$wishLists);
+		
+		/* $wishLists = array_merge($favouriteProducts,$wishLists); */
 		$frm = $this->getCreateWishListForm();
 		$this->set('wishLists', $wishLists);
 		
@@ -1395,7 +1395,6 @@ class AccountController extends LoggedUserController {
 		$db = FatApp::getDb();
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
 		$pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
-		$pageSize = 1;
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		
 		$wishListRow = Product::getUserFavouriteProducts( $loggedUserId,$this->siteLangId );
@@ -1522,7 +1521,7 @@ class AccountController extends LoggedUserController {
 	
 	public function viewWishListItems(){
 		$post = FatApp::getPostedData();
-		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
+		$uwlist_id = FatUtility::int( $post['uwlist_id'] );
 		
 		$db = FatApp::getDb();
 		$loggedUserId = UserAuthentication::getLoggedUserId();
@@ -2660,8 +2659,8 @@ class AccountController extends LoggedUserController {
 		
 		$srch = new UserRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_TRUNCATE );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_TRUNCATE );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
@@ -2672,7 +2671,7 @@ class AccountController extends LoggedUserController {
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_TRUNCATE,
+			'ureq_type'=>UserRequest::TYPE_TRUNCATE,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 		);
 		
@@ -2732,8 +2731,8 @@ class AccountController extends LoggedUserController {
 		
 		$srch = new UserRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::USER_REQUEST_TYPE_DATA );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::USER_REQUEST_STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_DATA );
+		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
@@ -2744,7 +2743,7 @@ class AccountController extends LoggedUserController {
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::USER_REQUEST_TYPE_DATA,
+			'ureq_type'=>UserRequest::TYPE_DATA,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 			'ureq_purpose'=>$post['ureq_purpose'],
 		);

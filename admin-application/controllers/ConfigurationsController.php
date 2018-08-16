@@ -525,6 +525,8 @@ class ConfigurationsController extends AdminBaseController {
 				$fld3 = $frm->addTextBox(Labels::getLabel("LBL_Default_Items_Per_Page_(Catalog)",$this->adminLangId),"CONF_ITEMS_PER_PAGE_CATALOG");
 				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_catalog_items_are_shown_per_page_(products,_categories,_etc)",$this->adminLangId).".</small>";
 
+				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Add_favorites_to_wishlist",$this->adminLangId),'CONF_ADD_FAVORITES_TO_WISHLIST',applicationConstants::getYesNoArr($this->adminLangId),applicationConstants::YES,array('class'=>'list-inline'));
+				$fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_On_enabling_this_feature,_buyer_will_have_to_select_or_create_a_wishlist_to_group_his_favorites",$this->adminLangId).'</small>';
 				
 				$frm->addHtml('','Account','<h3>'.Labels::getLabel("LBL_Account",$this->adminLangId).'</h3>');
 				
@@ -1208,10 +1210,14 @@ class ConfigurationsController extends AdminBaseController {
 			
 			case Configurations::FORM_SHARING:
 				$frm->addHtml('','ShareAndEarn','<h3>'.Labels::getLabel('LBL_Share_and_Earn_Settings',$this->adminLangId).'</h3>');
-				$frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Title",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_'.$langId);
-				$frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Caption",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_'.$langId);
-				$frm->addTextarea(Labels::getLabel("LBL_Facebook_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_'.$langId);
-				$frm->addTextarea(Labels::getLabel("LBL_Twitter_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_TWITTER_POST_TITLE'.$langId);
+				$fld = $frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Title",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_title_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextbox(Labels::getLabel("LBL_Facebook_Post_Caption",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_caption_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextarea(Labels::getLabel("LBL_Facebook_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_description_shared_on_facebook",$this->adminLangId)."</small>";
+				$fld = $frm->addTextarea(Labels::getLabel("LBL_Twitter_Post_Description",$this->adminLangId),'CONF_SOCIAL_FEED_TWITTER_POST_TITLE'.$langId);
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_description_shared_on_twitter",$this->adminLangId)."</small>";
 			break;
 			
 			case Configurations::FORM_MEDIA:	

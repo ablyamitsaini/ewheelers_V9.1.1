@@ -186,6 +186,9 @@
 .detail_head.item-yk .collections-ui {
     bottom: auto;
     top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .detail_head.item-yk .product_price {

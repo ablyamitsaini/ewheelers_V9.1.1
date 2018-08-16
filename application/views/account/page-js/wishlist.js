@@ -41,17 +41,16 @@ $("document").ready(function(){
 		}
 		$(dv).html( fcom.getLoader() );
 		fcom.ajax(fcom.makeUrl('Account','viewWishListItems'), 'uwlist_id=' + uwlist_id, function(ans){
-			if( append == 1 ){ 
+			if( append == 1 ){
 				$(dv).find('.loader-yk').remove();
 				$(dv).append(ans);
 			} else {
 				$(dv).find('.loader-yk').remove();
 				$(dv).html(ans);
 			}
-			
-			
-		}); 
+		});
 	};
+	
 	viewFavouriteItems = function(frm, append ){
 		if(typeof append == undefined || append == null){
 			append = 0;

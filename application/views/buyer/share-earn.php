@@ -81,14 +81,17 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
 
 function facebook_redirect(response_token){
 	FB.ui( {
-		method: 'feed',
-		name: "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
-		link: "<?php echo $referralTrackingUrl?>",
-		picture: "<?php echo CommonHelper::generateFullUrl('image', 'socialFeed',array($siteLangId ,''),"/")?>",
-		caption: "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
-		description: "<?php echo str_replace(array("\n","\r","\r\n"),' ',sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_".$siteLangId,FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_".$siteLangId)))?>",
-		
-	}, 
+		method: 'share_open_graph',
+		action_type: 'og.likes',
+		action_properties: JSON.stringify({
+			object: {
+				'og:url': "<?php echo $referralTrackingUrl?>",
+				'og:title': "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
+				'og:description': "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
+				'og:image': "<?php echo CommonHelper::generateFullUrl('image', 'socialFeed',array($siteLangId ,''),"/")?>",
+			}
+		})
+	},
 	function( response ) {
 		if ( response !== null && typeof response.post_id !== 'undefined' ) {
 			$.mbsmessage(langLbl.thanksForSharing, true, 'alert alert--success');

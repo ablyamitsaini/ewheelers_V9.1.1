@@ -564,17 +564,14 @@ class ProductsController extends MyAppController {
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
 		}
-		$srch->joinFavouriteProducts( $loggedUserId );
-
-		$wislistPSrchObj = new UserWishListProductSearch();
-		//	$wislistPSrchObj->joinFavouriteProducts();
-		$wislistPSrchObj->joinWishLists();
-		$wislistPSrchObj->doNotCalculateRecords();
-		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $loggedUserId );
-		$wishListSubQuery = $wislistPSrchObj->getQuery();
-
-		$srch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' );
-		/* ] */
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$srch->joinFavouriteProducts( $loggedUserId );
+			$srch->addFld('ufp_id');
+		}else{
+			$srch->joinUserWishListProducts( $loggedUserId );
+			$srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+		}
+		
 		$selProdReviewObj = new SelProdReviewSearch();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
@@ -588,12 +585,12 @@ class ProductsController extends MyAppController {
 
 		$srch->setPageNumber($page);
 		$srch->addMultipleFields(array('GETCATCODE(`prodcat_id`)',
-				'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
+				'product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
 				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 				'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
 				'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
-				'selprod_sold_count','selprod_return_policy', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
+				'selprod_sold_count','selprod_return_policy','ifnull(prod_rating,0) prod_rating',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
 				));
 
 		if( $pageSize ){
@@ -755,19 +752,13 @@ class ProductsController extends MyAppController {
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
 		}
-		$prodSrch->joinFavouriteProducts($loggedUserId);
-
-		$wislistPSrchObj = new UserWishListProductSearch();
-		$wislistPSrchObj->joinWishLists();
-		$wislistPSrchObj->doNotCalculateRecords();
-		//$wislistPSrchObj->setPageNumber(1);
-		$wislistPSrchObj->setPageSize(1);
-		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $loggedUserId );
-		$wislistPSrchObj->addCondition( 'uwlp_selprod_id', '=', $selprod_id );
-
-		$wishListSubQuery = $wislistPSrchObj->getQuery();
-		$prodSrch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp_selprod_id = selprod_id', 'uwlp' );
-		/* ] */
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$prodSrch->joinFavouriteProducts( $loggedUserId );
+			$prodSrch->addFld('ufp_id');
+		}else{
+			$prodSrch->joinUserWishListProducts( $loggedUserId );
+			$prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+		}
 
 		$selProdReviewObj = new SelProdReviewSearch();
 		$selProdReviewObj->joinSelProdRating();
@@ -781,10 +772,10 @@ class ProductsController extends MyAppController {
 		$prodSrch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating' );
 
 		$prodSrch->addMultipleFields( array(
-			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'ufp_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
 			'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
 			'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-			'shop_id', 'shop_name', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
+			'shop_id', 'shop_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
 			'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from') );
 
 		$productRs = $prodSrch->getResultSet();
@@ -1079,11 +1070,11 @@ class ProductsController extends MyAppController {
 		$srch->addSubscriptionValidCondition();
 		$srch->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
 		$srch->addMultipleFields(array(
-				'product_id','prodcat_id','ufp_id','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
+				'product_id','prodcat_id','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 				'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
 				'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-				'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating'
+				'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy','ifnull(prod_rating,0) prod_rating'
 				 ));
 
 		$dateToEquate = date('Y-m-d');
@@ -1117,19 +1108,13 @@ class ProductsController extends MyAppController {
 
 		$srch->joinTable("$recommendedProductsQuery" , 'inner join' , 'rs1.rec_product_id = product_id' , 'rs1' );
 		$srch->addGroupBy('product_id');
-		//$srch->addOrder('rs1.weightage' , 'desc');
-
-
-		$srch->joinFavouriteProducts($loggedUserId );
-		$wislistPSrchObj = new UserWishListProductSearch();
-		//	$wislistPSrchObj->joinFavouriteProducts();
-		$wislistPSrchObj->joinWishLists();
-		$wislistPSrchObj->doNotCalculateRecords();
-		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $loggedUserId );
-		$wishListSubQuery = $wislistPSrchObj->getQuery();
-
-		$srch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp' );
-		/* ] */
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$srch->joinFavouriteProducts( $loggedUserId );
+			$srch->addFld('ufp_id');
+		}else{
+			$srch->joinUserWishListProducts( $loggedUserId );
+			$srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+		}
 		$selProdReviewObj = new SelProdReviewSearch();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
@@ -1142,7 +1127,6 @@ class ProductsController extends MyAppController {
 		$srch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating' );
 		$srch->setPageSize(5);
 		$srch->doNotCalculateRecords();
-		//echo $srch->getQuery();exit;
 		$recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
 		$this->set('recommendedProducts' , $recommendedProducts);
 		/* ]  */
@@ -1353,13 +1337,19 @@ class ProductsController extends MyAppController {
 				$prodSrch->joinProductToCategory();
 				$prodSrch->doNotCalculateRecords();
 				$prodSrch->doNotLimitRecords();
-				$prodSrch->joinFavouriteProducts($loggedUserId );
+				if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+					$prodSrch->joinFavouriteProducts( $loggedUserId );
+					$prodSrch->addFld('ufp_id');
+				}else{
+					$prodSrch->joinUserWishListProducts( $loggedUserId );
+					$prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+				}
 				$prodSrch->joinProductRating();
 				$prodSrch->addCondition('selprod_id', 'IN', $cookiesProductsArr );
 				$prodSrch->addMultipleFields(array(
 						'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ',
 						'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-						'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','ufp_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price'));
+						'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price'));
 
 
 				$productRs = $prodSrch->getResultSet();
@@ -1385,13 +1375,19 @@ class ProductsController extends MyAppController {
 			$prodSrch->joinProductToCategory();
 			$prodSrch->doNotCalculateRecords();
 			$prodSrch->doNotLimitRecords();
-			$prodSrch->joinFavouriteProducts($loggedUserId );
+			if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+				$prodSrch->joinFavouriteProducts( $loggedUserId );
+				$prodSrch->addFld('ufp_id');
+			}else{
+				$prodSrch->joinUserWishListProducts( $loggedUserId );
+				$prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+			}
 			$prodSrch->joinProductRating();
 			$prodSrch->addCondition('selprod_id', 'IN', $ids );
 			$prodSrch->addMultipleFields(array(
 					'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 					'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-					'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','ufp_id','selprod_price'));
+					'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price'));
 			
 			$productRs = $prodSrch->getResultSet();
 			$Products = FatApp::getDb()->fetchAll($productRs,'selprod_id');
@@ -1591,12 +1587,18 @@ class ProductsController extends MyAppController {
 			$productSrchObj->setPageSize( 10 );
 			$productSrchObj->setDefinedCriteria();
 
-			$productSrchObj->joinFavouriteProducts($loggedUserId );
+			if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+				$productSrchObj->joinFavouriteProducts( $loggedUserId );
+				$productSrchObj->addFld('ufp_id');
+			}else{
+				$productSrchObj->joinUserWishListProducts( $loggedUserId );
+				$productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+			}
 			$productSrchObj->joinProductRating( );
 
 			$productSrchObj->addMultipleFields( array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 			'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-			'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','ufp_id') );
+			'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count') );
 
 			$productCatSrchObj = ProductCategory::getSearchObject( false, $this->siteLangId );
 			$productCatSrchObj->doNotCalculateRecords();
@@ -1781,20 +1783,14 @@ class ProductsController extends MyAppController {
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
 		}
-		$prodSrch->joinFavouriteProducts($loggedUserId);
-
-		$wislistPSrchObj = new UserWishListProductSearch();
-		$wislistPSrchObj->joinWishLists();
-
-		$wislistPSrchObj->doNotCalculateRecords();
-		//$wislistPSrchObj->setPageNumber(1);
-		$wislistPSrchObj->setPageSize(1);
-		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $loggedUserId );
-		$wislistPSrchObj->addCondition( 'uwlp_selprod_id', '=', $selprod_id );
-
-		$wishListSubQuery = $wislistPSrchObj->getQuery();
-		$prodSrch->joinTable( '(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp_selprod_id = selprod_id', 'uwlp' );
-		/* ] */
+		
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$prodSrch->joinFavouriteProducts( $loggedUserId );
+			$prodSrch->addFld('ufp_id');
+		}else{
+			$prodSrch->joinUserWishListProducts( $loggedUserId );
+			$prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+		}
 
 		$selProdReviewObj = new SelProdReviewSearch();
 		$selProdReviewObj->joinSelProdRating();
@@ -1808,10 +1804,10 @@ class ProductsController extends MyAppController {
 		$prodSrch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating' );
 
 		$prodSrch->addMultipleFields( array(
-			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'ufp_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
 			'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
 			'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-			'shop_id', 'shop_name', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
+			'shop_id', 'shop_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
 			'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from') );
 
 		/* echo $selprod_id; die; */

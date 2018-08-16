@@ -1,15 +1,14 @@
 <?php
 class UserRequest extends MyAppModel {
-	const ADMIN_SESSION_ELEMENT_NAME = 'yokartAdmin';
-	
+
 	const DB_TBL = 'tbl_user_requests_history';
 	const DB_TBL_PREFIX = 'ureq_';
 
-	const USER_REQUEST_TYPE_TRUNCATE = 1;
-	const USER_REQUEST_TYPE_DATA = 2;
+	const TYPE_TRUNCATE = 1;
+	const TYPE_DATA = 2;
 	
-	const USER_REQUEST_STATUS_PENDING = 0;
-	const USER_REQUEST_STATUS_COMPLETE = 1;
+	const STATUS_PENDING = 0;
+	const STATUS_COMPLETE = 1;
 
 	
 	public function __construct($userReqId = 0) {
@@ -25,8 +24,8 @@ class UserRequest extends MyAppModel {
 			$langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
 		}
 		return array(
-			static::USER_REQUEST_TYPE_TRUNCATE	=>	Labels::getLabel('LBL_Truncate_Request', $langId),	
-			static::USER_REQUEST_TYPE_DATA	=>	Labels::getLabel('LBL_Data_Request', $langId)
+			static::TYPE_TRUNCATE	=>	Labels::getLabel('LBL_Truncate_Request', $langId),	
+			static::TYPE_DATA	=>	Labels::getLabel('LBL_Data_Request', $langId)
 		);
 	}
 	
@@ -36,8 +35,8 @@ class UserRequest extends MyAppModel {
 			$langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
 		}
 		return array(
-			static::USER_REQUEST_STATUS_PENDING	=>	Labels::getLabel('LBL_Pending', $langId),	
-			static::USER_REQUEST_STATUS_COMPLETE =>	Labels::getLabel('LBL_Complete', $langId)
+			static::STATUS_PENDING	=>	Labels::getLabel('LBL_Pending', $langId),	
+			static::STATUS_COMPLETE =>	Labels::getLabel('LBL_Complete', $langId)
 		);
 	}
 	

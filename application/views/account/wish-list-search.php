@@ -48,7 +48,7 @@
 		<?php 	}	 
 			
 	}?>
-
+<?php if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
 <div class="col-md-3 col-sm-4">
 	<div class="items">
 		<div class="items__body">
@@ -69,3 +69,4 @@
 		</div>
 	</div>
 </div>
+<?php }?>

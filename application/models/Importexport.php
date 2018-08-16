@@ -26,6 +26,9 @@ class Importexport extends ImportexportCommon{
 	const PRODUCT_SPECIFICATION = 4;
 	const PRODUCT_SHIPPING = 5;
 	
+	const LABEL_OPTIONS = 1;
+	const LABEL_OPTIONS_VALUES = 2;
+	
 	const SELLER_PROD_GENERAL_DATA = 6;
 	const SELLER_PROD_OPTION = 7;
 	const SELLER_PROD_SEO = 8;
@@ -83,6 +86,14 @@ class Importexport extends ImportexportCommon{
 		return $arr;
 	}		
 		
+	public static function getOptionContentTypeArr($langId){
+		$arr = array(
+			static::LABEL_OPTIONS=>Labels::getLabel('LBL_Options',$langId),
+			static::LABEL_OPTIONS_VALUES=>Labels::getLabel('LBL_Option_Values',$langId),
+		);
+		return $arr;
+	}
+	
 	public static function getProductCatalogContentTypeArr($langId){
 		$arr = array(
 			static::PRODUCT_CATALOG=>Labels::getLabel('LBL_Product_Catalog',$langId),
@@ -209,8 +220,16 @@ class Importexport extends ImportexportCommon{
 				}	
 			break;
 			case Importexport::TYPE_OPTIONS:
-				$sheetData = $this->exportOptions($langId, $userId);
-				$sheetName = Labels::getLabel('LBL_Options',$langId);
+				switch($sheetType){
+					case Importexport::LABEL_OPTIONS:	
+						$sheetData = $this->exportOptions($langId, $userId);
+						$sheetName = Labels::getLabel('LBL_Options',$langId);
+					break;
+					case Importexport::LABEL_OPTIONS_VALUES:	
+						$sheetData = $this->exportOptionValues($langId, $userId);
+						$sheetName = Labels::getLabel('LBL_Option_Values',$langId);
+					break;
+				}
 			break;
 			case Importexport::TYPE_OPTION_VALUES:
 				$sheetData = $this->exportOptionValues($langId, $userId);
@@ -361,7 +380,14 @@ class Importexport extends ImportexportCommon{
 				}	
 			break;
 			case Importexport::TYPE_OPTIONS:
-				$this->importOptions($csvFilePointer,$post,$langId);
+				switch($sheetType){
+					case Importexport::PRODUCT_CATALOG:	
+						$this->importOptions($csvFilePointer,$post,$langId);
+					break;
+					case Importexport::PRODUCT_OPTION:	
+						$this->importOptionValues($csvFilePointer,$post,$langId);
+					break;
+				}
 			break;
 			case Importexport::TYPE_OPTION_VALUES:
 				$this->importOptionValues($csvFilePointer,$post,$langId);				
@@ -4074,7 +4100,7 @@ class Importexport extends ImportexportCommon{
 		return $sheetData;
 	}		
 
-	public function importOptionValues($csvFilePointer,$post,$langId){ 
+	public function importOptionValues($csvFilePointer,$post,$langId){
 		$rowCount = 0;
 		$optionIdentifierArr = array();
 		$optionIdArr = array();

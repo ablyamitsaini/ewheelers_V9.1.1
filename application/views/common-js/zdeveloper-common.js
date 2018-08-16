@@ -76,7 +76,6 @@ function getCardType(number){
 
  viewWishList = function( selprod_id, dv,event){
 	event.stopPropagation();
-	//dv.stopPropagation();
 	/*var dv = "#listDisplayDiv_" + selprod_id; */
 		
 	if( $(dv). next().hasClass("is-item-active") ){
@@ -146,8 +145,7 @@ setupWishList = function(frm,event){
 }
 
 addRemoveWishListProduct = function( selprod_id, wish_list_id,event ){
-	
-	 event.stopPropagation();
+	event.stopPropagation();
 	if( isUserLogged() == 0 ){
 		loginPopUpBox();
 		return false;
@@ -158,12 +156,11 @@ addRemoveWishListProduct = function( selprod_id, wish_list_id,event ){
 	fcom.updateWithAjax( fcom.makeUrl('Account', 'addRemoveWishListProduct', [selprod_id, wish_list_id]), '', function(ans){
 		if( ans.status == 1 ){
 			if( ans.productIsInAnyList){
-				$(dv).parents('.item, .item--main').find('.wishListLink-Js').addClass('is-active');
+				$( "[data-id="+selprod_id+"]").addClass("is-active");
 			} else {
-				$(dv).parents('.item, .item--main').find('.wishListLink-Js').removeClass('is-active');
+				$( "[data-id="+selprod_id+"]").removeClass("is-active");
 			}
 			if( ans.action == 'A' ){
-				//$(dv).parents('.item, .item--main').find('.wishListLink-Js').addClass('is-active');
 				$(dv).find(".wishListCheckBox_" + ans.wish_list_id ).addClass('is-active');
 			} else if( ans.action == 'R' ){
 				$(dv).find(".wishListCheckBox_" + ans.wish_list_id ).removeClass('is-active');

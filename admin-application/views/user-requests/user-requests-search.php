@@ -39,18 +39,18 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'ureq_type':
 			
-				$str = $userRequestTypeArr[UserRequest::USER_REQUEST_TYPE_DATA];
-				if( $row['ureq_type'] == UserRequest::USER_REQUEST_TYPE_TRUNCATE){
-					$str = $userRequestTypeArr[UserRequest::USER_REQUEST_TYPE_TRUNCATE];
+				$str = $userRequestTypeArr[UserRequest::TYPE_DATA];
+				if( $row['ureq_type'] == UserRequest::TYPE_TRUNCATE){
+					$str = $userRequestTypeArr[UserRequest::TYPE_TRUNCATE];
 				}
 				
 				$td->appendElement('plaintext', array(), $str  ,true);
 				
 			break;
 			case 'ureq_status':
-				$str = $userRequestStatusArr[UserRequest::USER_REQUEST_STATUS_PENDING];
-				if( $row['ureq_status'] == UserRequest::USER_REQUEST_STATUS_COMPLETE){
-					$str = $userRequestStatusArr[UserRequest::USER_REQUEST_STATUS_COMPLETE];
+				$str = $userRequestStatusArr[UserRequest::STATUS_PENDING];
+				if( $row['ureq_status'] == UserRequest::STATUS_COMPLETE){
+					$str = $userRequestStatusArr[UserRequest::STATUS_COMPLETE];
 				}
 				
 				$td->appendElement('plaintext', array(), $str  ,true);
@@ -64,15 +64,15 @@ foreach ($arr_listing as $sn=>$row){
 					$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
 					$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));	
 					
-					if( $row['ureq_type'] == UserRequest::USER_REQUEST_TYPE_TRUNCATE && $row['ureq_status']==UserRequest::USER_REQUEST_STATUS_PENDING){
+					if( $row['ureq_type'] == UserRequest::TYPE_TRUNCATE && $row['ureq_status']==UserRequest::STATUS_PENDING){
 						$innerLi=$innerUl->appendElement('li');
 						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Truncate_User_Data',$adminLangId),"onclick"=>"truncateUserData(".$row['user_id'].",".$row['ureq_id'].")"),Labels::getLabel('LBL_Truncate_User_Data',$adminLangId), true);
 					}
 					
-					if( $row['ureq_type'] == UserRequest::USER_REQUEST_TYPE_DATA ){
-						if($row['ureq_status']==UserRequest::USER_REQUEST_STATUS_PENDING){
+					if( $row['ureq_type'] == UserRequest::TYPE_DATA ){
+						if($row['ureq_status']==UserRequest::STATUS_PENDING){
 							$innerLi=$innerUl->appendElement('li');
-							$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Change_Status_To_Complete',$adminLangId),"onclick"=>"updateRequestStatus(".$row['ureq_id'].",".UserRequest::USER_REQUEST_STATUS_COMPLETE.")"),Labels::getLabel('LBL_Complete',$adminLangId), true);
+							$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Change_Status_To_Complete',$adminLangId),"onclick"=>"updateRequestStatus(".$row['ureq_id'].",".UserRequest::STATUS_COMPLETE.")"),Labels::getLabel('LBL_Complete',$adminLangId), true);
 						}
 						
 						$innerLi=$innerUl->appendElement('li');

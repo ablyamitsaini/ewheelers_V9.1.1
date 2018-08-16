@@ -1,10 +1,6 @@
 <?php
 class UserRequestsController extends AdminBaseController {
 	public function __construct($action) {
-		$ajaxCallArray = array();
-		if(!FatUtility::isAjaxCall() && in_array($action,$ajaxCallArray)){
-			die($this->str_invalid_Action);
-		} 
 		parent::__construct($action);		
 		$this->admin_id = AdminAuthentication::getLoggedAdminId();
 		$this->canView = $this->objPrivilege->canViewUserRequests($this->admin_id,true);
@@ -47,7 +43,7 @@ class UserRequestsController extends AdminBaseController {
 		$this->set('page', $page);
 		$this->set('pageSize', $pagesize);					
 		$this->set('recordCount', $srch->recordCount());
-		$this->_template->render(false,false,null,false,false);
+		$this->_template->render(false,false);
 	}
 	
 	public function updateRequestStatus(){
@@ -66,9 +62,9 @@ class UserRequestsController extends AdminBaseController {
 			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
-		$userObj = new UserRequest();
-		if (!$userObj->updateRequestStatus($userReqId,$status)) {
-			Message::addErrorMessage($userObj->getError());
+		$userRequest = new UserRequest();
+		if (!$userRequest->updateRequestStatus($userReqId,$status)) {
+			Message::addErrorMessage($userRequest->getError());
 			FatUtility::dieJsonError( Message::getHtml() );				
 		}
 		
@@ -90,7 +86,7 @@ class UserRequestsController extends AdminBaseController {
 		$srch->joinUser();
 		$srch->addMultipleFields(array('user_name','user_phone','credential_email','credential_username','ureq_date','ureq_purpose'));
 		$srch->addCondition('ureq_id','=',$userReqId);
-		$srch->addCondition('ureq_type','=',UserRequest::USER_REQUEST_TYPE_DATA);
+		$srch->addCondition('ureq_type','=',UserRequest::TYPE_DATA);
 		$srch->addCondition('ureq_deleted','=',applicationConstants::NO);
 		$rs = $srch->getResultSet();
 		$userRequest = FatApp::getDb()->fetch($rs);	
@@ -145,10 +141,10 @@ class UserRequestsController extends AdminBaseController {
 		$db->startTransaction();
 		
 		/* Delete User Addresses [ */
-		$addressObj = new UserAddress();
-		if (!$addressObj->deleteUserAddresses($userId)) {
+		$userAddress = new UserAddress();
+		if (!$userAddress->deleteUserAddresses($userId)) {
 			$db->rollbackTransaction();
-			Message::addErrorMessage(Labels::getLabel("MSG_USER_ADDRESSES_COULD_NOT_BE_DELETED",$this->adminLangId) . $addressObj->getError());				
+			Message::addErrorMessage(Labels::getLabel("MSG_USER_ADDRESSES_COULD_NOT_BE_DELETED",$this->adminLangId) . $userAddress->getError());				
 			FatUtility::dieJsonError( Message::getHtml());				
 		}
 		/* ] */
@@ -208,9 +204,18 @@ class UserRequestsController extends AdminBaseController {
 		}
 		/* ] */
 		
+		/* Deactivate Account [ */
+		$status = applicationConstants::INACTIVE;
+		if (!$userObj->activateAccount($status)) {
+			$db->rollbackTransaction();
+			Message::addErrorMessage($userObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );				
+		}
+		/* ] */
+		
 		/* Update request status to complete [ */
 		$assignValues = array(
-			'ureq_status'=>UserRequest::USER_REQUEST_STATUS_COMPLETE,
+			'ureq_status'=>UserRequest::STATUS_COMPLETE,
 			'ureq_approved_date'=>date('Y-m-d H:i:s'),
 		);
 		

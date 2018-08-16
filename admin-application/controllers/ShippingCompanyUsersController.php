@@ -86,7 +86,7 @@ class ShippingCompanyUsersController extends AdminBaseController {
 		$this->set('pageSize', $pagesize);
 		$this->set('postedData', $post);						
 		$this->set('recordCount', $srch->recordCount());						
-		$this->_template->render(false,false,null,false,false);
+		$this->_template->render(false,false);
 	}
 	
 	public function Orders( $shipping_company_user_id = 0 ){

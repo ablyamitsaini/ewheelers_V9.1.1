@@ -118,7 +118,7 @@ class UsersController extends AdminBaseController {
 		$this->set('postedData', $post);						
 		$this->set('recordCount', $srch->recordCount());						
 		$this->set('canVerify', $this->objPrivilege->canVerifyUsers($this->admin_id,true));
-		$this->_template->render(false,false,null,false,false);
+		$this->_template->render(false,false);
 	}
 	
 	public function login($userId) {
