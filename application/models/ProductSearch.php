@@ -357,7 +357,7 @@ class ProductSearch extends SearchBase {
 	
 	public function joinFavouriteProducts($user_id ){
 		
-		$this->joinTable(  Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_product_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp' );
+		$this->joinTable(  Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_selprod_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp' );
 	}
 	
 	public function joinUserWishListProducts($user_id){

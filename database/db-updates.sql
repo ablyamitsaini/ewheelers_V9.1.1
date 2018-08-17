@@ -229,3 +229,5 @@ ALTER TABLE `tbl_user_requests_history`
 
 ALTER TABLE `tbl_user_requests_history`
 	MODIFY `ureq_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tbl_user_favourite_products` CHANGE `ufp_product_id` `ufp_selprod_id` INT(11) NOT NULL;	

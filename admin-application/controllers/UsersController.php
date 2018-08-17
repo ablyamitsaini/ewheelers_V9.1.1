@@ -136,7 +136,7 @@ class UsersController extends AdminBaseController {
 			FatApp::redirectUser(CommonHelper::generateUrl('Users'));
 		}
 		
-		FatApp::redirectUser(CommonHelper::generateUrl('account','',array(),'/'));
+		FatApp::redirectUser(CommonHelper::generateUrl('account','',array(),CONF_WEBROOT_FRONT_URL));
 	}
 	
 	public function setup(){
