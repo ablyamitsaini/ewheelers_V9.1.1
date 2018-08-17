@@ -437,7 +437,7 @@ class ProductsController extends MyAppController {
 
 		/* Price Filters[ */
 		$priceSrch = new ProductSearch( $this->siteLangId );
-		$priceSrch->setDefinedCriteria(0);
+		$priceSrch->setDefinedCriteria(1);
 		$priceSrch->joinProductToCategory();
 		$priceSrch->joinSellerSubscription();
 		$priceSrch->addSubscriptionValidCondition();
@@ -553,11 +553,18 @@ class ProductsController extends MyAppController {
 		$srch = new ProductSearch( $this->siteLangId );
 		$join_price = (isset($post['join_price']) && $post['join_price'] != '') ? FatUtility::int($post['join_price']) : 0 ;
 
-		$srch->setDefinedCriteria( $join_price,0,array(),true );
+		
+		$criteria = array();
+		$optionvalue = FatApp::getPostedData('optionvalue', null, '');
+		if($optionvalue){
+			$criteria['optionvalue'] = $optionvalue;
+		}
+				
+		$srch->setDefinedCriteria( $join_price,0,$criteria,true );
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription();
 		$srch->addSubscriptionValidCondition();
-	
+		
 		
 		/* to check current product is in wish list or not[ */
 		$loggedUserId = 0;
@@ -627,7 +634,7 @@ class ProductsController extends MyAppController {
 		if( $optionvalue ) {
 			$srch->addOptionCondition($optionvalue);
 		}
-
+				
 		$condition = FatApp::getPostedData('condition', null, '');
 		if( !empty($condition) ) {
 			$srch->addConditionCondition($condition);
@@ -682,7 +689,6 @@ class ProductsController extends MyAppController {
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
 		$srch->addGroupBy('selprod_id');
 		/* ] */
-
 		
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();

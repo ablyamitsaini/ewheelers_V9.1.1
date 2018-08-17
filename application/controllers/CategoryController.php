@@ -135,9 +135,9 @@ class CategoryController extends MyAppController {
 		/* ] */
 
 
-		/* Price Filters[ */		
+		/* Price Filters[ */				
 		$priceSrch = new ProductSearch( $this->siteLangId );
-		$priceSrch->setDefinedCriteria(1);
+		$priceSrch->setDefinedCriteria();
 		$priceSrch->joinProductToCategory();
 		$priceSrch->joinSellerSubscription();
 		$priceSrch->addSubscriptionValidCondition();
@@ -149,6 +149,7 @@ class CategoryController extends MyAppController {
 	
 		$qry = $priceSrch->getQuery();
 		$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
+		
 		//$priceRs = $priceSrch->getResultSet();
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
