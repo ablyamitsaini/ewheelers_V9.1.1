@@ -245,7 +245,7 @@ class ProfileController extends AdminBaseController{
 		$post = FatApp::getPostedData();
 		$session_element_name = AdminAuthentication::SESSION_ELEMENT_NAME;
 		$cookie_name = $session_element_name.'layout';
-		if(setcookie($cookie_name,$post['layout'],time()+86400*30, CONF_WEBROOT_URL)){
+		if(setcookie($cookie_name,$post['layout'],time()+86400*30, CONF_WEBROOT_FRONT_URL)){
 			Message::addMessage(Labels::getLabel('LBL_Setting_Updated_Successfully',$this->adminLangId));
 		} else {
 			Message::addErrorMessage($this->str_invalid_request);

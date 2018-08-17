@@ -1025,10 +1025,10 @@ class ProductsController extends MyAppController {
 					array_push($newRecentProductsArr,$val);
 				}
 				array_push($newRecentProductsArr,$selprod_id);
-				setcookie('recentViewedProducts',implode('_',$newRecentProductsArr),time()+60*60*72, '/');
+				setcookie('recentViewedProducts',implode('_',$newRecentProductsArr),time()+60*60*72, CONF_WEBROOT_URL);
 			}
 		} else {
-			setcookie('recentViewedProducts',$selprod_id.'_',time()+60*60*72, '/');
+			setcookie('recentViewedProducts',$selprod_id.'_',time()+60*60*72, CONF_WEBROOT_URL);
 		}
 		/* ] */
 

@@ -320,7 +320,8 @@ class UserAuthentication extends FatModel {
 				'vals' => array($_COOKIE[static::YOKARTUSER_COOKIE_NAME])
 			));
 		}
-		setcookie($_COOKIE[static::YOKARTUSER_COOKIE_NAME], '', time() - 3600, '/');
+		
+		setcookie($_COOKIE[static::YOKARTUSER_COOKIE_NAME], '', time() - 3600, CONF_WEBROOT_URL);
 		return true;
 	}
 	
