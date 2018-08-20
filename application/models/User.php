@@ -528,19 +528,105 @@ class User extends MyAppModel {
 		}
 		return true;
 	}
-	public function truncateUserInfo($data = array()){
-		
-		if (($this->mainTableRecordId < 1)) {		
+	
+	public function truncateUserInfo(){
+		if (($this->mainTableRecordId < 1)) {
 			$this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED',$this->commonLangId);
 			return false;
 		}
-
-		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, $data, array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array($this->mainTableRecordId)))){
-			$this->error = FatApp::getDb()->getError();
-			echo $this->error; die;
+		
+		$db = FatApp::getDb();
+		$db->startTransaction();
+		
+		/* Delete User Addresses [ */
+		$userAddress = new UserAddress();
+		if (!$userAddress->deleteUserAddresses($this->mainTableRecordId)) {
+			$db->rollbackTransaction();
+			$this->error = $userAddress->getError();
+			return false;				
 		}
+		/* ] */		
+		
+		/* Update User information [ */
+		$data = array(
+				'user_name'=>'',
+				'user_phone'=>'',
+				'user_dob'=>'',
+				'user_city'=>'',
+				'user_country_id'=>'',
+				'user_state_id'=>'',
+				'user_company'=>'',
+				'user_profile_info'=>'',
+				'user_address1'=>'',
+				'user_address2'=>'',
+				'user_zip'=>'',
+				'user_products_services'=>'',
+			);
+
+		if (!$db->updateFromArray(static::DB_TBL, $data, array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array($this->mainTableRecordId)))){
+			$this->error = $db->getError();
+			return false;
+		}
+		/* ] */
+		
+		/* Delete User's Profile Image [ */
+		$fileHandlerObj = new AttachedFile();
+		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $this->mainTableRecordId)){
+			Message::addErrorMessage($fileHandlerObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $this->mainTableRecordId)){
+			Message::addErrorMessage($fileHandlerObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		/* ] */
+		
+		/* Delete Bank Info [ */
+		if (!$this->deleteBankInfo()) {
+			$db->rollbackTransaction();
+			$this->error = $db->getError();
+			return false;			
+		}
+		/* ] */
+		
+		/* Delete Seller's Return Address [ */
+		$srch = $this->getUserSearchObj(array('user_is_supplier','user_registered_initially_for'));
+		$rs = $srch->getResultSet();		
+		
+		$userData = $db->fetch($rs,'user_id');
+
+		if( $userData['user_is_supplier'] || $userData['user_registered_initially_for'] ){
+			if (!$this->deleteUserReturnAddress()) {
+				$db->rollbackTransaction();
+				$this->error = $db->getError();			
+				return false;			
+			}
+		}
+		/* ] */
+
+		/* Update Order User Address [ */
+		$order = new Orders();
+		if (!$order->updateOrderUserAddress($this->mainTableRecordId)) {
+			$db->rollbackTransaction();
+			$this->error = $order->getError();				
+				return false;
+		}
+		/* ] */
+		
+		/* Deactivate Account [ */
+		$this->assignValues(array('user_deleted'=>applicationConstants::YES));
+		if (!$this->save()) {
+			$db->rollbackTransaction();
+			$this->error = $db->getError();
+			return false;
+		}
+		/* ] */
+		
+		$db->commitTransaction();
 		return true;
 	}
+	
 	public function updateCredInfo($data = array(),$userId){
 		$assignValues = array(
 			static::DB_TBL_CRED_PREFIX.'password' => UserAuthentication::encryptPassword ( $data['user_password'] ) 

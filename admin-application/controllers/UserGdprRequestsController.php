@@ -1,5 +1,5 @@
 <?php
-class UserRequestsController extends AdminBaseController {
+class UserGdprRequestsController extends AdminBaseController {
 	public function __construct($action) {
 		parent::__construct($action);		
 		$this->admin_id = AdminAuthentication::getLoggedAdminId();
@@ -22,7 +22,7 @@ class UserRequestsController extends AdminBaseController {
 			$page = 1;
 		}
 		
-		$srch = new UserRequestSearch();	
+		$srch = new UserGdprRequestSearch();	
 		$srch->joinUser();
 		$srch->addMultipleFields(array('user_id','user_name','user_phone','credential_email','credential_username','ureq_id','ureq_status','ureq_type','ureq_date'));
 		$srch->addCondition('ureq_deleted','=',applicationConstants::NO);
@@ -34,8 +34,8 @@ class UserRequestsController extends AdminBaseController {
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);			
 		
-		$userRequestTypeArr = UserRequest::getUserRequestTypesArr($this->adminLangId);
-		$userRequestStatusArr = UserRequest::getUserRequestStatusesArr($this->adminLangId);
+		$userRequestTypeArr = UserGdprRequest::getUserRequestTypesArr($this->adminLangId);
+		$userRequestStatusArr = UserGdprRequest::getUserRequestStatusesArr($this->adminLangId);
 		$this->set("arr_listing",$records);
 		$this->set("userRequestTypeArr",$userRequestTypeArr);
 		$this->set("userRequestStatusArr",$userRequestStatusArr);
@@ -62,13 +62,17 @@ class UserRequestsController extends AdminBaseController {
 			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
-		$userRequest = new UserRequest();
-		if (!$userRequest->updateRequestStatus($userReqId,$status)) {
+		$emailNotificationObj = new EmailHandler();
+		if (!$emailNotificationObj->GdprRequestStatusUpdate( $post['reqId'], $this->adminLangId)){
+			Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(),$this->adminLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		$userRequest = new UserGdprRequest($userReqId);
+		if (!$userRequest->updateRequestStatus($status)) {
 			Message::addErrorMessage($userRequest->getError());
 			FatUtility::dieJsonError( Message::getHtml() );				
 		}
 		
-		$this->set('userReqId', $userReqId);
 		$this->set('msg', Labels::getLabel('LBL_Updated_Successfully',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
 	}
@@ -82,11 +86,11 @@ class UserRequestsController extends AdminBaseController {
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
-		$srch = new UserRequestSearch();	
+		$srch = new UserGdprRequestSearch();	
 		$srch->joinUser();
 		$srch->addMultipleFields(array('user_name','user_phone','credential_email','credential_username','ureq_date','ureq_purpose'));
 		$srch->addCondition('ureq_id','=',$userReqId);
-		$srch->addCondition('ureq_type','=',UserRequest::TYPE_DATA);
+		$srch->addCondition('ureq_type','=',UserGdprRequest::TYPE_DATA_REQUEST);
 		$srch->addCondition('ureq_deleted','=',applicationConstants::NO);
 		$rs = $srch->getResultSet();
 		$userRequest = FatApp::getDb()->fetch($rs);	
@@ -99,7 +103,7 @@ class UserRequestsController extends AdminBaseController {
 		$this->_template->render(false, false);	
 	}
 	
-	public function deleteUserRequest(){
+	/* public function deleteUserRequest(){
 		$this->objPrivilege->canEditUserRequests();
 		$post = FatApp::getPostedData();
 		if(empty($post)){
@@ -114,8 +118,8 @@ class UserRequestsController extends AdminBaseController {
 			FatUtility::dieJsonError(Message::getHtml());
 		}
 		
-		$userObj = new UserRequest();
-		if (!$userObj->deleteRequest($userReqId)) {
+		$userObj = new UserGdprRequest();
+		if (!$userObj->deleteRequest()) {
 			Message::addErrorMessage($userObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );				
 		}
@@ -123,7 +127,7 @@ class UserRequestsController extends AdminBaseController {
 		$this->set('userReqId', $userReqId);
 		$this->set('msg', Labels::getLabel('LBL_Updated_Successfully',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
-	}
+	} */
 	
 	public function truncateUserData()
 	{
@@ -135,91 +139,27 @@ class UserRequestsController extends AdminBaseController {
 		}
 
 		$userId = FatUtility::int($post['userId']);
-		$userReqId = FatUtility::int($post['userReqId']);
-
-		$db = FatApp::getDb();
-		$db->startTransaction();
+		$userReqId = FatUtility::int($post['reqId']);
 		
-		/* Delete User Addresses [ */
-		$userAddress = new UserAddress();
-		if (!$userAddress->deleteUserAddresses($userId)) {
-			$db->rollbackTransaction();
-			Message::addErrorMessage(Labels::getLabel("MSG_USER_ADDRESSES_COULD_NOT_BE_DELETED",$this->adminLangId) . $userAddress->getError());				
-			FatUtility::dieJsonError( Message::getHtml());				
-		}
-		/* ] */
-		
-		/* Update User information [ */
 		$userObj = new User($userId);
-		$userData = array(
-				'user_name'=>'',
-				'user_phone'=>'',
-				'user_dob'=>'',
-				'user_city'=>'',
-				'user_country_id'=>'',
-				'user_state_id'=>'',
-				'user_company'=>'',
-				'user_profile_info'=>'',
-				'user_address1'=>'',
-				'user_address2'=>'',
-				'user_zip'=>'',
-				'user_products_services'=>'',
-			);
-		if (!$userObj->truncateUserInfo($userData)) {
-			$db->rollbackTransaction();
+		if (!$userObj->truncateUserInfo()) {
 			Message::addErrorMessage(Labels::getLabel("MSG_USER_INFO_COULD_NOT_BE_DELETED",$this->adminLangId) . $userObj->getError());				
 			FatUtility::dieJsonError( Message::getHtml());				
 		}
-		/* ] */
 		
-		/* Delete Bank Info [ */
-		if (!$userObj->deleteBankInfo()) {
-			$db->rollbackTransaction();
-			Message::addErrorMessage(Labels::getLabel("MSG_BANK_INFO_COULD_NOT_BE_DELETED",$this->adminLangId) . $userObj->getError());				
-			FatUtility::dieJsonError( Message::getHtml());				
-		}
-		/* ] */
-		
-		/* Delete Seller's Return Address [ */
-		$srch = $userObj->getUserSearchObj(array('user_is_supplier','user_registered_initially_for'));
-		$rs = $srch->getResultSet();		
-		
-		$userData = $db->fetch($rs,'user_id');
-
-		if( $userData['user_is_supplier'] || $userData['user_registered_initially_for'] ){
-			if (!$userObj->deleteUserReturnAddress()) {
-				$db->rollbackTransaction();
-				Message::addErrorMessage(Labels::getLabel("MSG_USER_RETURN_ADDRESS_COULD_NOT_BE_DELETED",$this->adminLangId) . $userObj->getError());				
-				FatUtility::dieJsonError( Message::getHtml());				
-			}
-		}
-		/* ] */
-		
-		/* Update Order User Address [ */
-		$order = new Orders();
-		if (!$order->updateOrderUserAddress($userId)) {
-			$db->rollbackTransaction();
-			Message::addErrorMessage($order->getError());
+		$emailNotificationObj = new EmailHandler();
+		if (!$emailNotificationObj->GdprRequestStatusUpdate( $post['reqId'], $this->adminLangId)){
+			Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(),$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		/* ] */
-		
-		/* Deactivate Account [ */
-		$status = applicationConstants::INACTIVE;
-		if (!$userObj->activateAccount($status)) {
-			$db->rollbackTransaction();
-			Message::addErrorMessage($userObj->getError());
-			FatUtility::dieJsonError( Message::getHtml() );				
-		}
-		/* ] */
 		
 		/* Update request status to complete [ */
 		$assignValues = array(
-			'ureq_status'=>UserRequest::STATUS_COMPLETE,
+			'ureq_status'=>UserGdprRequest::STATUS_COMPLETE,
 			'ureq_approved_date'=>date('Y-m-d H:i:s'),
 		);
 		
-		$userReqObj = new UserRequest($userReqId);
+		$userReqObj = new UserGdprRequest($userReqId);
 		$userReqObj->assignValues($assignValues);
 		if (!$userReqObj->save()) {
 			$db->rollbackTransaction();
@@ -228,7 +168,6 @@ class UserRequestsController extends AdminBaseController {
 		}
 		/* ] */
 		
-		$db->commitTransaction();
 		$this->set('userReqId', $userReqId);
 		$this->set('msg', Labels::getLabel('LBL_Successfully_Deleted_User_data',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
