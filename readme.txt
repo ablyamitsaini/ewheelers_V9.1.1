@@ -6,5 +6,6 @@
 6. Updated Cookie path CONF_WEBROOT_URL in case of setCookies.
 7. tbl_user_favourite_products changed `ufp_product_id` to `ufp_selprod_id`
 8. multiple options search filter listing update. 
+9. Rewards point immediately get subtracted if order is on COD.
 
-Note : Url rewriting update, discarded slashes with existing url. Need to change all / to - in tbl_url_rewrite  table urlrewrite_custom coloum. To do this you can hit the url domainname.com/dummy/change-custom-url. It will rewrite existin url structure and may impact on SEO.
+Note : Url rewriting update, discarded slashes with existing url. Need to change all / to - in tbl_url_rewrite  table urlrewrite_custom coloum. To do this you can hit the url domainname.com/dummy/change-custom-url. It will rewrite existing url structure and may impact on SEO.

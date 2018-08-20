@@ -6,6 +6,10 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
+	function mytest(){
+		
+	}
+	
 	function changeCustomUrl(){
 		$urlSrch = UrlRewrite::getSearchObject();
 		$urlSrch->doNotCalculateRecords();
