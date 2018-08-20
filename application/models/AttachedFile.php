@@ -276,9 +276,10 @@ class AttachedFile extends MyAppModel {
 			$uploadedFilePath = CONF_UPLOADS_PATH;
 		}
 	
-		$fileMimeType = mime_content_type($uploadedFilePath . $image_name);
+		$fileMimeType = '';
 	
 		if ( !empty($image_name) && file_exists($uploadedFilePath . $image_name) ) { 
+			$fileMimeType = mime_content_type($uploadedFilePath . $image_name);
 			$image_name = $uploadedFilePath . $image_name;
 			$headers = FatApp::getApacheRequestHeaders();
 			if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
