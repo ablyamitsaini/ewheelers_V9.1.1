@@ -2601,7 +2601,7 @@ class MobileAppApiController extends MyAppController {
 		'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews','selprod_sold_count','ufp_id','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty') );
 		
 		$srch = new UserFavoriteProductSearch();
-		$srch->joinTable( '(' . $productSrchObj->getQuery() . ')', 'INNER JOIN', 'ufp_product_id = selprod_id', 'pCust');
+		$srch->joinTable( '(' . $productSrchObj->getQuery() . ')', 'INNER JOIN', 'ufp_selprod_id = selprod_id', 'pCust');
 		$srch->addCondition('ufp_user_id', '=', $userId );
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize); 
@@ -6028,7 +6028,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$srch->addCondition('ufp_user_id', '=', $loggedUserId );
-		$srch->addCondition( 'ufp_product_id', '=', $product_id );
+		$srch->addCondition( 'ufp_selprod_id', '=', $product_id );
 		$rs = $srch->getResultSet();
 		if( !$row = $db->fetch($rs) ){
 			$prodObj = new Product();
@@ -6038,7 +6038,7 @@ class MobileAppApiController extends MyAppController {
 			$action = 'A'; //Added to favorite
 			die ($this->json_encode_unicode(array('status'=>1,'msg'=>Labels::getLabel('LBL_Product_has_been_marked_as_favourite_successfully',$this->siteLangId))));
 		} else {
-			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_product_id = ?', 'vals'=>array($loggedUserId, $product_id)))){
+			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $product_id)))){
 				FatUtility::dieJsonError(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
 			}
 			$action = 'R'; //Removed from favorite

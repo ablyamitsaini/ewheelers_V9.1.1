@@ -82,7 +82,7 @@ class UserAuthentication extends FatModel {
 	
 	
 	
-	public static function doAppLogin($token,$userType = 0) {
+	public static function doAppLogin($token, $userType = 0) {
 		$authRow = self::checkLoginTokenInDB($token);
 		
 		if (strlen($token) != self::TOKEN_LENGTH || empty($authRow)) {
@@ -125,35 +125,36 @@ class UserAuthentication extends FatModel {
         return false;
     }
 	
-	public static function doCookieLogin($returnAuth = true){
+	public static function doCookieLogin($returnAuthRow = true){
 		$cookieName = self::YOKARTUSER_COOKIE_NAME;
 		
-		if(isset($_COOKIE[$cookieName])){
-			$token = $_COOKIE[$cookieName];
-			$authRow = false;
-			
-			$authRow = self::checkLoginTokenInDB($token);
-			
-			if(strlen($token) != self::TOKEN_LENGTH || empty($authRow)){
-				self::clearLoggedUserLoginCookie();
-				return false;
-			}
-			
-			$browser = CommonHelper::userAgent();
-			if(strtotime($authRow['uauth_expiry']) < strtotime('now') || $authRow['uauth_browser'] != $browser || CommonHelper::userIp() != $authRow['uauth_last_ip']){
-				self::clearLoggedUserLoginCookie();
-				return false;
-			}
-			
-			$ths = new UserAuthentication();
-			if($ths->loginByCookie($authRow)){
-				if(true === $returnAuth){
-					return $authRow;
-				}
-				return true;
-			}			
+		if(!array_key_exists($cookieName,$_COOKIE)){
 			return false;
-		}	
+		}
+		
+		$token = $_COOKIE[$cookieName];
+		$authRow = false;
+		
+		$authRow = self::checkLoginTokenInDB($token);
+		
+		if(strlen($token) != self::TOKEN_LENGTH || empty($authRow)){
+			self::clearLoggedUserLoginCookie();
+			return false;
+		}
+		
+		$browser = CommonHelper::userAgent();
+		if(strtotime($authRow['uauth_expiry']) < strtotime('now') || $authRow['uauth_browser'] != $browser || CommonHelper::userIp() != $authRow['uauth_last_ip']){
+			self::clearLoggedUserLoginCookie();
+			return false;
+		}
+		
+		$ths = new UserAuthentication();
+		if($ths->loginByCookie($authRow)){
+			if(true === $returnAuthRow){
+				return $authRow;
+			}
+			return true;
+		}			
 		return false;
 	}
 		
@@ -319,41 +320,32 @@ class UserAuthentication extends FatModel {
 				'vals' => array($_COOKIE[static::YOKARTUSER_COOKIE_NAME])
 			));
 		}
-		setcookie($_COOKIE[static::YOKARTUSER_COOKIE_NAME], '', time() - 3600, '/');
+		
+		setcookie($_COOKIE[static::YOKARTUSER_COOKIE_NAME], '', time() - 3600, CONF_WEBROOT_URL);
 		return true;
 	}
 	
 	public static function isUserLogged($ip = '', $token = '') {
-		if ($ip == '') {
-			//$ip = $_SERVER['REMOTE_ADDR'];
+		if ($ip == '') {			
 			$ip = CommonHelper::getClientIp();
 		}
-		
-		$isUserLogged =  false;
+				
 		if (isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
 				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip 
 				&& is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
 				&& 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {
-			$isUserLogged = true;
+			return true;
 		}
 		
-		if(!$isUserLogged && $token != ''){
-			$isUserLogged = static::doAppLogin($token);
+		if($token != '' && static::doAppLogin($token)){
+			return true;
 		}
 		
-		if(!$isUserLogged){
-			$isUserLogged = static::doCookieLogin();
+		if(static::doCookieLogin(false)){
+			return true;
 		}
 		
-		return $isUserLogged;
-				
-		/* if (! isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
-				|| $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] != $ip 
-				|| ! is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
-				|| 0 >= $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {
-			return false;
-		}
-		return true; */
+		return false;		
 	}
 	
 	public static function getLoggedUserAttribute($attr, $returnNullIfNotLogged = false) {

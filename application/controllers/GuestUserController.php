@@ -34,7 +34,7 @@ class GuestUserController extends MyAppController {
         }
 		
 		$userId = UserAuthentication::getLoggedUserId();
-		setcookie('uc_id', $userId, time()+3600*24*30,'/');	
+		setcookie('uc_id', $userId, time()+3600*24*30,CONF_WEBROOT_URL);	
 		
 		$data = User::getAttributesById($userId,array('user_preferred_dashboard'));	
 		
@@ -82,7 +82,7 @@ class GuestUserController extends MyAppController {
 		
 		if( UserAuthentication::saveLoginToken($values) ){
 			$cookieName = UserAuthentication::YOKARTUSER_COOKIE_NAME;
-			$cookres = setcookie($cookieName, $token, $expiry, '/');
+			$cookres = setcookie($cookieName, $token, $expiry, CONF_WEBROOT_URL);
 			return true;
 		}
 		return false;

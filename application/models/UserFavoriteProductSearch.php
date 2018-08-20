@@ -91,7 +91,7 @@ class UserFavoriteProductSearch extends SearchBase {
 		if( $this->langId ){
 			$langId = $this->langId;
 		}
-		$this->joinTable( SellerProduct::DB_TBL, 'INNER JOIN', 'ufp.ufp_product_id = sp.selprod_id', 'sp' );
+		$this->joinTable( SellerProduct::DB_TBL, 'INNER JOIN', 'ufp.ufp_selprod_id = sp.selprod_id', 'sp' );
 		
 		if($langId){
 			$this->joinTable(SellerProduct::DB_LANG_TBL,'LEFT OUTER JOIN',

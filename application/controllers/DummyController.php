@@ -6,6 +6,10 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
+	function mytest(){
+		
+	}
+	
 	function changeCustomUrl(){
 		$urlSrch = UrlRewrite::getSearchObject();
 		$urlSrch->doNotCalculateRecords();
@@ -69,6 +73,13 @@ class DummyController extends MyAppController {
 	}
 	
 	function abcd(){
+		
+		$parent = 2500;
+		$categoryData = ProductCategory::getAttributesById($parent,'prodcat_id');
+		if(empty($categoryData) || $categoryData == false){
+			$parent = 0;
+		}
+			echo $parent; exit;		
 		
 		$urlKeyword = 'apparel-textiles-accessories-textiles-leather-products-textile-stock';
 		$excludeThisOriginalUrl ='category/view/454';

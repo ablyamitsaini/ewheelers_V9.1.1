@@ -985,24 +985,11 @@ class Orders extends MyAppModel{
 					$emailObj->OrderRenewSubscriptionEmail($orderId);			
 				}
 			
-				/* Use Reward Point [ */
-			
+				/* Use Reward Point [ */				
 				if($orderInfo['order_reward_point_used'] > 0){
-					$rewardsRecord = new UserRewards();
-					$rewarPointArr = array(
-						'urp_user_id'=>$orderInfo['order_user_id'],
-						'urp_points'=>'-'.$orderInfo['order_reward_point_used'],
-						'urp_used_order_id'=>$orderId,
-						'urp_comments'=>'Reward Points used in checkout with order ID '.$orderId,
-					);
-					$rewardsRecord->assignValues($rewarPointArr);
-					if ( $rewardsRecord->save() ) {
-						$urpId = $rewardsRecord->getMainTableRecordId();
-						$emailObj = new EmailHandler();
-						$emailObj->sendRewardPointsNotification( CommonHelper::getLangId(), $urpId );
-					}
+					UserRewards::debit($orderInfo['order_user_id'],$orderInfo['order_reward_point_used'],$orderId,$orderInfo['order_language_id']);					
 				}
-			/*]*/
+				/*]*/
 			}
 		}
 		
@@ -1107,23 +1094,14 @@ class Orders extends MyAppModel{
 			$isReferrerRewarded = false;
 			$isReferralRewarded = false;
 			
+			$paymentMethodRow = PaymentMethods::getAttributesById( $orderInfo['order_pmethod_id'] );
+			
 			/* Use Reward Point [ */
-			if($orderInfo['order_reward_point_used'] > 0){
-				$rewardsRecord = new UserRewards();
-				$rewarPointArr = array(
-					'urp_user_id'=>$orderInfo['order_user_id'],
-					'urp_points'=>'-'.$orderInfo['order_reward_point_used'],
-					'urp_used_order_id'=>$orderId,
-					'urp_comments'=>'Reward Points used in checkout with order ID '.$orderId,
-				);
-				$rewardsRecord->assignValues($rewarPointArr);
-				if ( $rewardsRecord->save() ) {
-					$urpId = $rewardsRecord->getMainTableRecordId();
-					$emailObj = new EmailHandler();
-					$emailObj->sendRewardPointsNotification( $orderInfo['order_language_id'], $urpId );
-				}
+			if(strtolower($paymentMethodRow['pmethod_code']) != 'cashondelivery' && $orderInfo['order_reward_point_used'] > 0){
+				UserRewards::debit($orderInfo['order_user_id'],$orderInfo['order_reward_point_used'],$orderId,$orderInfo['order_language_id']);				
 			}
 			/*]*/
+			
 			/* Reward Points to Referrer[ */
 			if( $orderInfo['order_referrer_user_id'] && $orderInfo['order_referrer_reward_points'] ){
 				$rewardExpiryDate = '0000-00-00';
@@ -1303,8 +1281,7 @@ class Orders extends MyAppModel{
 				$txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]); 
 				
 				/*Refund to Buyer[*/
-				if ( $txnAmount > 0 ){
-					
+				if ( $txnAmount > 0 ){		
 					
 					$txnDataArr = array(
 						'utxn_user_id'	=>	$childOrderInfo['order_user_id'],

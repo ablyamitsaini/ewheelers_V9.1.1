@@ -22,6 +22,30 @@ class UserRewards extends MyAppModel{
 		return $output;
 	}
 	
+	public static function debit($userId,$rewardPointUsed,$orderId,$langId=0){
+		$rewardsRecord = new UserRewards();
+		$rewarPointArr = array(
+			'urp_user_id'=>$userId,
+			'urp_points'=>'-'.$rewardPointUsed,
+			'urp_used_order_id'=>$orderId,
+			'urp_comments'=>'Reward Points used in checkout with order ID '.$orderId,
+		);
+		$rewardsRecord->assignValues($rewarPointArr);
+		if (!$rewardsRecord->save() ) {
+			//Message::addErrorMessage($rewardsRecord->getError());	
+			return false;			
+		}
+		
+		$urpId = $rewardsRecord->getMainTableRecordId();
+		$emailObj = new EmailHandler();
+		if($emailObj->sendRewardPointsNotification( $langId, $urpId )){
+			return true;
+		}		
+		
+		//Message::addErrorMessage($emailObj->getError());
+		return false;
+	}
+	
 	public static function getAndSetRewardsPointBreakup($urpId){
 		$urpId = FatUtility::int($urpId);
 		if(1 > $urpId){

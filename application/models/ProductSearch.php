@@ -100,6 +100,10 @@ class ProductSearch extends SearchBase {
         }
         
         $this->joinTable( SellerProduct::DB_TBL, 'LEFT OUTER JOIN','msellprod.selprod_product_id = p.product_id and selprod_deleted = '.applicationConstants::NO.' and selprod_active = '.applicationConstants::ACTIVE,'msellprod');
+		if(isset($criteria['optionvalue']) && $criteria['optionvalue'] !=''){ 
+			$this->addOptionCondition($criteria['optionvalue']);
+		}
+		
 		if(isset($criteria['collection_product_id']) && $criteria['collection_product_id'] >0){
 			$this->joinTable( Collections::DB_TBL_COLLECTION_TO_SELPROD,'INNER JOIN',
 			Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']);	
@@ -110,6 +114,9 @@ class ProductSearch extends SearchBase {
 			$fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments',);
 		}	
 		$this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = msellprod.selprod_id AND \'' . $splPriceForDate . '\' BETWEEN msplpric.splprice_start_date AND msplpric.splprice_end_date AND msplpric.splprice_price < msellprod.selprod_price', 'msplpric');
+		if(isset($criteria['optionvalue']) && $criteria['optionvalue'] !=''){ 
+			$this->addOptionCondition($criteria['optionvalue']);
+		} 
 		
 		$srch = new SearchBase( SellerProduct::DB_TBL,'sprods');
 		
@@ -117,7 +124,7 @@ class ProductSearch extends SearchBase {
 			$srch->joinTable( Collections::DB_TBL_COLLECTION_TO_SELPROD,'INNER JOIN',
 			Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']);	
 		}
-		
+				
 		$srch->joinTable( Product::DB_TBL, 'INNER JOIN','product_id = selprod_product_id');
 		$srch->joinTable( User::DB_TBL, 'INNER JOIN', 'selprod_user_id = user_id AND user_is_supplier = '.applicationConstants::YES);
 		$srch->joinTable( User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES );
@@ -132,6 +139,11 @@ class ProductSearch extends SearchBase {
             'splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN splprice_start_date AND splprice_end_date and splprice_price < selprod_price');
 		$srch->addCondition( 'sprods.selprod_active', '=', applicationConstants::ACTIVE );
 		$srch->addCondition( 'sprods.selprod_deleted', '=', applicationConstants::NO );
+				
+		if(isset($criteria['optionvalue']) && $criteria['optionvalue'] !=''){ 
+			$this->addOptionCondition($criteria['optionvalue'],$srch);
+		} 
+		
 		if($checkAvailableFrom){
 			$srch->addCondition( 'sprods.selprod_available_from', '<=', $now );
 		}
@@ -143,6 +155,7 @@ class ProductSearch extends SearchBase {
 			$srch->addGroupBy('selprod_product_id');
 		}	
 		$tmpQry = $srch->getQuery();		
+		
 		$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
 
 		/*$srch = new SearchBase( SellerProduct::DB_TBL, 'sprods');
@@ -357,7 +370,7 @@ class ProductSearch extends SearchBase {
 	
 	public function joinFavouriteProducts($user_id ){
 		
-		$this->joinTable(  Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_product_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp' );
+		$this->joinTable(  Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_selprod_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp' );
 	}
 	
 	public function joinUserWishListProducts($user_id){
@@ -505,7 +518,15 @@ class ProductSearch extends SearchBase {
 		}
 	}
 
-	public function addOptionCondition($optionValue){
+	public function addOptionCondition($optionValue, $obj = false , $alias = ''){
+		if($obj === false){
+			$obj = $this;
+		}
+		
+		if($alias!=''){
+			$alias.= '.';
+		}
+		
 		if(strpos($optionValue, ",")=== false ){
 			if(strpos($optionValue, "_")=== false ){
 				$opVal = $optionValue;
@@ -514,7 +535,7 @@ class ProductSearch extends SearchBase {
 			}
 			
 			$opVal = FatUtility::int($opVal);			
-			$this->addDirectCondition(" (selprod_code like '%_".$opVal."_%' or selprod_code like '%_".$opVal."') " );			
+			$obj->addDirectCondition(" (".$alias."selprod_code like '%_".$opVal."_%' or ".$alias."selprod_code like '%_".$opVal."') " );			
 		}else{
 			$optionValueArr  = explode(",",$optionValue);
 			sort($optionValueArr);
@@ -530,14 +551,14 @@ class ProductSearch extends SearchBase {
 				$str.= $andCnd;
 				foreach($row as $val){
 					if(1 > FatUtility::int($val)){ continue;}
-					$str.= $orCnd." "."selprod_code like '%_".$val."_%' or selprod_code like '%_".$val."'";
+					$str.= $orCnd." ".$alias."selprod_code like '%_".$val."_%' or ".$alias."selprod_code like '%_".$val."'";
 					$orCnd = 'or';
 				}
 				$orCnd = "";
 				$andCnd = ") and (";
 			}
 			$str.= " )";
-			$this->addDirectCondition($str);
+			$obj->addDirectCondition($str);
 		}		
 	}
 	

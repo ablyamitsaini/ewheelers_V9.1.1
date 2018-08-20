@@ -257,7 +257,7 @@ class AdminAuthentication extends FatModel {
 				'vals' => array($_COOKIE[static::ADMIN_REMEMBER_ME_COOKIE_NAME])
 			));
 		}
-		setcookie(static::ADMIN_REMEMBER_ME_COOKIE_NAME, '', time() - 3600, "'".CONF_WEBROOT_URL."'");
+		setcookie(static::ADMIN_REMEMBER_ME_COOKIE_NAME, '', time() - 3600, CONF_WEBROOT_FRONT_URL);
 		return true;
 	}
 }

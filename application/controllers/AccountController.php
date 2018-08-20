@@ -1681,7 +1681,7 @@ class AccountController extends LoggedUserController {
 	
 	public function toggleProductFavorite(){
 		$post = FatApp::getPostedData();
-		$product_id = FatUtility::int( $post['product_id'] );
+		$selprodId = FatUtility::int( $post['product_id'] );
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		$db = FatApp::getDb();
 		
@@ -1689,7 +1689,7 @@ class AccountController extends LoggedUserController {
 		$srch->setDefinedCriteria(0,0,array(),false);
 		$srch->doNotCalculateRecords();
 		$srch->addMultipleFields(array( 'selprod_id'));
-		$srch->addCondition( 'selprod_id', '=', $product_id );
+		$srch->addCondition( 'selprod_id', '=', $selprodId );
 		$srch->joinProductToCategory();
 		$srch->joinShops();
 		$srch->joinSellerSubscription();
@@ -1709,18 +1709,18 @@ class AccountController extends LoggedUserController {
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$srch->addCondition('ufp_user_id', '=', $loggedUserId );
-		$srch->addCondition( 'ufp_product_id', '=', $product_id );
+		$srch->addCondition( 'ufp_selprod_id', '=', $selprodId );
 		$rs = $srch->getResultSet();
 		if( !$row = $db->fetch($rs) ){
 			$prodObj = new Product();
-			if( !$prodObj->addUpdateUserFavoriteProduct( $loggedUserId, $product_id ) ){
+			if( !$prodObj->addUpdateUserFavoriteProduct( $loggedUserId, $selprodId ) ){
 				Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
 				FatUtility::dieWithError(Message::getHtml());
 			}
 			$action = 'A'; //Added to favorite
 			$this->set('msg', Labels::getLabel('LBL_Product_has_been_marked_as_favourite_successfully', $this->siteLangId) );
 		} else {
-			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_product_id = ?', 'vals'=>array($loggedUserId, $product_id)))){
+			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $product_id)))){
 				Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
 				FatUtility::dieWithError(Message::getHtml());
 			}

@@ -22,17 +22,18 @@ $(document).ready(function(){
 (function() {
 	updateStatus = function(frm){		
 		if (!$(frm).validate()) return;
+		var op_id = $(frm.op_id).val();		
 		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {			
-			window.location.reload();
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {		
+			window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]);
 		});
 	};	
 	
 	updateShippingCompany = function(frm){
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);	
+		var op_id = $(frm.op_id).val();				
 		if (!$(frm).validate()) return;
-		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'updateShippingCompany'), data, function(t) {			
-			window.location.reload();
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'updateShippingCompany'), data, function(t) {			window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]);
 		});
 	};
 })();

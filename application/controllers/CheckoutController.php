@@ -143,7 +143,7 @@ class CheckoutController extends MyAppController{
 			if(0 < $langId ){ 
 				$languages = Language::getAllNames();
 				if(array_key_exists($langId,$languages)){ 		
-					setcookie('defaultSiteLang', $langId, time()+3600*24*10,'/');
+					setcookie('defaultSiteLang', $langId, time()+3600*24*10,CONF_WEBROOT_URL);
 				}			
 			}
 		
@@ -152,7 +152,7 @@ class CheckoutController extends MyAppController{
 			if(0 < $currencyId ){ 
 				$currencies = Currency::getCurrencyAssoc($this->siteLangId);
 				if(array_key_exists($currencyId,$currencies)){ 		
-					setcookie('defaultSiteCurrency', $currencyId, time()+3600*24*10,'/');
+					setcookie('defaultSiteCurrency', $currencyId, time()+3600*24*10,CONF_WEBROOT_URL);
 				}				
 			}
 			commonhelper::setAppUser();
@@ -1447,13 +1447,22 @@ class CheckoutController extends MyAppController{
 			Message::addErrorMessage( Labels::getLabel('MSG_Amount_for_payment_gateway_must_be_greater_than_zero.', $this->siteLangId ) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		
+				
 		if( $pmethod_id ){
 			$_SESSION['cart_order_id'] = $order_id;
 			$orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id) );
 			$this->cartObj->clear();
 			$this->cartObj->updateUserCart(); 
 		}
+		
+		/* Deduct reward point in case of cashondelivery [ */
+		if( strtolower($paymentMethodRow['pmethod_code']) == 'cashondelivery' && $orderInfo['order_reward_point_used'] > 0 ){						
+			$rewardDebited = UserRewards::debit($orderInfo['order_user_id'],$orderInfo['order_reward_point_used'],$order_id,$orderInfo['order_language_id']);
+			if(!$rewardDebited){				
+				FatUtility::dieWithError( Message::getHtml() );
+			}				
+		}
+		/*]*/	
 		
 		/* if ( !$orderObj->addOrderHistory( $order_id, 1, Labels::getLabel("LBL_-NA-",$this->siteLangId), true, $this->siteLangId ) ){
 			Message::addErrorMessage( $orderObj->getError() );
