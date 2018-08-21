@@ -2652,8 +2652,12 @@ class AccountController extends LoggedUserController {
 		$this->set('addressFrm',$addressFrm);
 		$this->_template->render(false,false);
 	}
+
+	public function truncateDataRequestPopup(){
+		$this->_template->render(false,false);
+	}
 	
-	public function truncateUserData(){
+	public function sendTruncateRequest(){
 		$userId = UserAuthentication::getLoggedUserId();
 		$db = FatApp::getDb();
 		
@@ -2666,7 +2670,7 @@ class AccountController extends LoggedUserController {
 		$row = FatApp::getDb()->fetch($rs);
 		if( $row ){
 			Message::addErrorMessage( Labels::getLabel('LBL_You_have_alrady_submitted_the_request', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
 		$assignValues = array(

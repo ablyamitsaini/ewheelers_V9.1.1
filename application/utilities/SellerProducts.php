@@ -1468,7 +1468,7 @@ trait SellerProducts{
 		/* ] */
 		
 		$fileHandlerObj = new AttachedFile();
-		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprodId, $afileId )){			
+		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprodId, $afileId )){
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}

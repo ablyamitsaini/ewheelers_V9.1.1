@@ -369,3 +369,5 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 		</tbody>
 	</table></div>', '{username} Username
 {request_type} Request Type', '1');
+
+ALTER TABLE `tbl_user_requests_history` CHANGE `ureq_purpose` `ureq_purpose` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

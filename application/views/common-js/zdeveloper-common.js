@@ -732,7 +732,6 @@ $(document).delegate('#btn-demo' ,'click' , function(){
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Custom','requestDemo'), '', function(t){	
 			$.facebox(t,'faceboxWidth requestdemo');
-			
 		});
 	});
 });

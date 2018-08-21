@@ -32,7 +32,7 @@ class UserGdprRequestsController extends AdminBaseController {
 		$srch->setPageSize($pagesize);	
 		
 		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs);			
+		$records = FatApp::getDb()->fetchAll($rs);		
 		
 		$userRequestTypeArr = UserGdprRequest::getUserRequestTypesArr($this->adminLangId);
 		$userRequestStatusArr = UserGdprRequest::getUserRequestStatusesArr($this->adminLangId);

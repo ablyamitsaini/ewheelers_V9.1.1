@@ -30,7 +30,7 @@
 				$colectionForm->developerTags['fld_default_col'] = 8; 
 				$urlFld = $colectionForm->getField('urlrewrite_custom');
 				$urlFld->setFieldTagAttribute('id',"urlrewrite_custom");
-				$urlFld->setFieldTagAttribute('onkeyup',"getSlugUrl(this,this.value,'".$baseUrl."')");
+				$urlFld->setFieldTagAttribute('onkeyup',"getSlugUrl(this,this.value,'".$baseUrl."','post')");
 				$urlFld->htmlAfterField = "<small class='text--small'>" . CommonHelper::generateFullUrl('Shops','Collection',array($shop_id)).'</small>';
 				$IDFld = $colectionForm->getField('scollection_id');
 				$IDFld->setFieldTagAttribute('id',"scollection_id");

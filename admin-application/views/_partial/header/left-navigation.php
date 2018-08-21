@@ -124,7 +124,7 @@
 					<?php }?>
 					
 					<?php if($objPrivilege->canViewUserRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
-					<li><a href="<?php echo CommonHelper::generateUrl('userGdprRequests');?>"><?php echo Labels::getLabel('LBL_Users_GDPR_Requests',$adminLangId);?> <?php if($supReqCount){ ?><span class='badge'>(<?php echo $supReqCount; ?>)</span><?php } ?></a></li>
+					<li><a href="<?php echo CommonHelper::generateUrl('userGdprRequests');?>"><?php echo Labels::getLabel('LBL_Users_GDPR_Requests',$adminLangId);?> <?php if($gdprReqCount){ ?><span class='badge'>(<?php echo $gdprReqCount; ?>)</span><?php } ?></a></li>
 					<?php }?>
 				</ul>
 			</li>

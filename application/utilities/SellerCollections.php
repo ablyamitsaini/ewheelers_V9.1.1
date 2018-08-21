@@ -40,6 +40,7 @@ trait SellerCollections{
 		$shop_id=$this->commonShopCollection();
 		$colectionForm = $this->getCollectionGeneralForm('',$shop_id);
 		$shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id);
+		$baseUrl = Shop::getShopUrl($shop_id,'urlrewrite_custom');
 		if(!empty($shopcolDetails)){
 		
 			/* url data[ */
@@ -52,9 +53,8 @@ trait SellerCollections{
 			$urlSrch->addCondition( 'urlrewrite_original', '=', 'shops/collection/'.$shop_id );
 			$rs = $urlSrch->getResultSet();
 			$urlRow = FatApp::getDb()->fetch($rs);
-			if( $urlRow ){
-				$customUrl  = explode("/",$urlRow['urlrewrite_custom']);
-				$shopcolDetails['urlrewrite_custom'] = $customUrl[1];
+			if( $urlRow ){				
+				$shopcolDetails['urlrewrite_custom'] = str_replace('-'.$baseUrl,'',$urlRow['urlrewrite_custom']);
 			}
 			/* ] */
 		
@@ -62,7 +62,7 @@ trait SellerCollections{
 			$this->set('scollection_id',$shopcolDetails['scollection_id']);
 		}
 	
-		$this->set('baseUrl', Shop::getShopUrl($shop_id,'urlrewrite_custom'));
+		$this->set('baseUrl', $baseUrl);
 		$this->set('shop_id', $shop_id);
 		$this->set('colectionForm', $colectionForm);
 		$this->_template->render( false, false );
@@ -82,7 +82,6 @@ trait SellerCollections{
 	}
 	
 	public function setupShopCollection(){
-
 		$post = FatApp::getPostedData();
 		$shop_id = FatUtility::int($post['scollection_shop_id']);
 		$scollection_id = FatUtility::int($post['scollection_id']);
@@ -97,7 +96,7 @@ trait SellerCollections{
 		}
 		$frm = $this->getCollectionGeneralForm($scollection_id);
 		$post = $frm->getFormDataFromArray(FatApp::getPostedData());
-				
+	
 		$record = new ShopCollection($scollection_id);
 		
 		$record->assignValues($post);
@@ -106,48 +105,28 @@ trait SellerCollections{
 			FatUtility::dieJsonError( Message::getHtml() );			
 		}
 		/* url data[ */
-		$shopOriginalUrl = 'shops/collection/'.$shop_id;
-		$shopUrl = Shop::getShopUrl($shop_id,'urlrewrite_custom');
-		$shopCustomUrl = $shopUrl.'/'.CommonHelper::seoUrl($post['urlrewrite_custom']);
+		
+		
+		$shopOriginalUrl = Shop::SHOP_COLLECTION_ORGINAL_URL.$shop_id;
 		if( $post['urlrewrite_custom'] == '' ){
 			FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($shopOriginalUrl)));
 		} else {
-			$urlSrch = UrlRewrite::getSearchObject();
-			$urlSrch->doNotCalculateRecords();
-			$urlSrch->doNotLimitRecords();
-			$urlSrch->addFld('urlrewrite_custom');
-			$urlSrch->addCondition( 'urlrewrite_original', '=', $shopOriginalUrl );
-			$rs = $urlSrch->getResultSet();
-			$urlRow = FatApp::getDb()->fetch($rs);
-			$recordObj = new TableRecord(UrlRewrite::DB_TBL);
-			if( $urlRow ){
-				$recordObj->assignValues( array('urlrewrite_custom'	=>	$shopCustomUrl ) );
-				if( !$recordObj->update( array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($shopOriginalUrl)) )){
-					Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->siteLangId) );
-					FatUtility::dieJsonError( Message::getHtml() );
-				}
-				//$shopDetails['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
-			} else {
-				$recordObj->assignValues( array('urlrewrite_original' => $shopOriginalUrl, 'urlrewrite_custom'	=>	$shopCustomUrl ) );
-				if( !$recordObj->addNew( )){
-					Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->siteLangId) );
-					FatUtility::dieJsonError( Message::getHtml() );		
-				}
-			}
+			$shop = new Shop($shop_id);
+			$shop->setupCollectionUrl($post['urlrewrite_custom']);			
 		}
 		/* ] */
-		$newTabLangId=0;	
-		if($collection_id>0){			
-			$languages = Language::getAllNames();	
-			foreach($languages as $langId =>$langName ){			
+		$newTabLangId=0;
+		if($collection_id>0){
+			$languages = Language::getAllNames();
+			foreach($languages as $langId =>$langName ){
 				if(!$row = ShopCollection::getAttributesByLangId($langId,$shop_id)){
 					$newTabLangId = $langId;
 					break;
-				}			
-			}	
+				}
+			}
 		}else{
 			$collection_id = $record->getMainTableRecordId();
-			$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);	
+			$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
 		}
 		
 		$this->set('msg', Labels::getLabel('LBL_Setup_Successful',$this->siteLangId ));

@@ -371,9 +371,9 @@ $(document).ready(function(){
 			.replace(/^-+/, '')             // Trim - from start of text
 			.replace(/-+$/, '');   
 			if( extra && pos == 'pre' ){
-				str = extra+'/'+str;
+				str = extra+'-'+str;
 			} if( extra && pos == 'post' ){
-				str = str +'/'+extra;
+				str = str +'-'+extra;
 			}
 			$(obj).next().html( siteConstants.webroot + str );
 		};
