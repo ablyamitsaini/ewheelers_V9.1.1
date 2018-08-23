@@ -46,9 +46,9 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 						</div>
 						<div class="post--title"><?php echo $blogPostData['post_title']; ?></div>
 						<ul class="likes-count">
-							<!--<li><i class="icn-like"><img src="/images/eyes.png"></i>500 Views</li>-->
+							<!--<li><i class="icn-like"><img src="<?php echo CONF_WEBROOT_URL; ?>images/eye.svg"></i>500 Views</li>-->
 							<?php if($blogPostData['post_comment_opened']){ ?>
-								<li><i class="icn-msg"><img src="<?php echo CONF_WEBROOT_URL; ?>images/comments.png"></i><?php echo $commentsCount,' ',Labels::getLabel('Lbl_Comments',$siteLangId); ?></li>
+								<li><i class="icn-msg"><img src="<?php echo CONF_WEBROOT_URL; ?>images/comments.svg"></i><?php echo $commentsCount,' ',Labels::getLabel('Lbl_Comments',$siteLangId); ?></li>
 							<?php  } ?>
 						</ul>
 					</div>					

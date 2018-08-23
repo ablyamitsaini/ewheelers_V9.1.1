@@ -118,7 +118,6 @@ class MyAppController extends FatController {
 			$themeId = $_SESSION['preview_theme'];
 		}
 		$themeDetail = ThemeColor::getAttributesById($themeId);
-		
 		$currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
 		$currencySymbolRight = CommonHelper::getCurrencySymbolRight();
 		

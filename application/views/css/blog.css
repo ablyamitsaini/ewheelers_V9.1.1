@@ -1,37 +1,4 @@
-:root {
-	--first-color: #ff3a59;
-	--second-color: #E74C3C;
-	--third-color: #FFFFFF;
-	--txt-color: #333333;
-	--txt-color-light: #999999;
-	--border-color: #DCDCDC;
-	--border-color-second: #FFFFFF;
-	--second-btn-color: #FFFFFF;
-	--header-txt-color: #FFFFFF;
-}
 
-html {
-	font-size: 16px;
-}
-.nav--centered {
-	width: 100%;
-	background: #fff;
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	color: #555555;
-}
-.nav--centered li {
-	display: inline-block;
-	vertical-align: top;
-}
-.nav--centered li a {
-	display: block;
-	color: inherit;
-	padding: 12px 30px;
-}
-.nav--centered li a:hover {
-	background: rgba(0, 0, 0, 0.06);
-}
 .post__pic .slick-arrow {
 	position: absolute;
 	top: 50%;
@@ -573,7 +540,9 @@ html {
 	margin-right: 10px;
 }
 
-
+.likes-count li .icn-msg img {
+    width: 20px;
+}
 
 
 .post__detail {

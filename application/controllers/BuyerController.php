@@ -453,7 +453,7 @@ class BuyerController extends LoggedUserController {
 		$rs = $srch->getResultSet();
 		$opDetail = FatApp::getDb()->fetch( $rs );
 		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) ){
-			Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
+			Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
 			CommonHelper::redirectUserReferer();
 		}
 		
@@ -519,10 +519,10 @@ class BuyerController extends LoggedUserController {
 			}
 		}
 		
-		/* if ( !in_array($opDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) ){
+		if ( !in_array($opDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) ){
 			Message::addErrorMessage( Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
-		} */
+		}
 		
 		$ocRequestSrch = new OrderCancelRequestSearch();
 		$ocRequestSrch->doNotCalculateRecords();
@@ -561,7 +561,7 @@ class BuyerController extends LoggedUserController {
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 
-		//send notification to admin			
+		/* send notification to admin */
 		$notificationData = array(
 				'notification_record_type' => Notification::TYPE_ORDER_CANCELATION,
 				'notification_record_id' => $oCRequestObj->getMainTableRecordId(),
@@ -576,7 +576,7 @@ class BuyerController extends LoggedUserController {
 		}
 		
 		Message::addMessage( Labels::getLabel('MSG_Your_cancellation_request_submitted', $this->siteLangId) );
-		
+		FatUtility::dieJsonSuccess(Message::getHtml());
 		$this->_template->render( false, false, 'json-success.php' );
 	}
 	

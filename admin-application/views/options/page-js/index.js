@@ -30,7 +30,8 @@ $(document).ready(function(){
 				fcom.updateFaceboxContent(t);
 				addOptionForm(optionId);	
 				optionValueListing(optionId);
-				fcom.resetFaceboxHeight();				
+				fcom.resetFaceboxHeight();	
+				$.systemMessage.close();				
 			});
 	};
 	
@@ -60,6 +61,7 @@ $(document).ready(function(){
 			dv.html(t);					
 			jscolor.installByClassName('jscolor');
 			fcom.resetFaceboxHeight();
+			$.systemMessage.close();
 		});
 	};
 	
