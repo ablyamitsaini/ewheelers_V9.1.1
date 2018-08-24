@@ -12,3 +12,4 @@
 Note : Url rewriting update, discarded slashes with existing url. Need to change all / to - in tbl_url_rewrite  table urlrewrite_custom coloum. To do this you can hit the url domainname.com/dummy/change-custom-url. It will rewrite existing url structure and may impact on SEO.
 
 11. Fixed bugs related to GDPR module (#019780,#019784,#019783,#019781)
+12. Fixed bugs - blur icon on blog page(#019782) and invalid access error on order status update (#019772).

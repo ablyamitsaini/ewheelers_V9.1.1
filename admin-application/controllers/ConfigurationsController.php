@@ -1224,103 +1224,103 @@ class ConfigurationsController extends AdminBaseController {
 			case Configurations::FORM_MEDIA:	
 				$ul = $frm->addHtml('','MediaGrids','<ul class="grids--onethird">');
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Admin_Logo',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Admin_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_ADMIN_LOGO, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteAdminLogo',array($langId)).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeSiteAdminLogo('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','siteAdminLogo',array($langId)).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeSiteAdminLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}
 			
-				$ul->htmlAfterField .= ' <input type="button" name="admin_logo" class="logoFiles-Js btn-xs" id="admin_logo" data-file_type='.AttachedFile::FILETYPE_ADMIN_LOGO.' value="Upload file"><small>Dimensions 142*45</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="admin_logo" class="logoFiles-Js btn-xs" id="admin_logo" data-file_type='.AttachedFile::FILETYPE_ADMIN_LOGO.' value="Upload file"><small>Dimensions 142*45</small></li>';
 
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Desktop_Logo',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Desktop_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 			
 
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_FRONT_LOGO, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteLogo',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeDesktopLogo('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
-				}	
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','siteLogo',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeDesktopLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
+				}
 
-				$ul->htmlAfterField .= ' <input type="button" name="front_logo" class="logoFiles-Js btn-xs" id="front_logo" data-file_type='.AttachedFile::FILETYPE_FRONT_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';				
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="front_logo" class="logoFiles-Js btn-xs" id="front_logo" data-file_type='.AttachedFile::FILETYPE_FRONT_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';				
 
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Email_Template_Logo',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Email_Template_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_EMAIL_LOGO, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','emailLogo',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeEmailLogo('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','emailLogo',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeEmailLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}				
 				
-				$ul->htmlAfterField .= ' <input type="button" name="email_logo" class="logoFiles-Js btn-xs" id="email_logo" data-file_type='.AttachedFile::FILETYPE_EMAIL_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="email_logo" class="logoFiles-Js btn-xs" id="email_logo" data-file_type='.AttachedFile::FILETYPE_EMAIL_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
 				
 
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Website_Favicon',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Website_Favicon',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_FAVICON, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','favicon',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeFavicon('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','favicon',array($langId), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeFavicon('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}
 				
-				$ul->htmlAfterField .= ' <input type="button" name="favicon" class="logoFiles-Js btn-xs" id="favicon" data-file_type='.AttachedFile::FILETYPE_FAVICON.' value="Upload file"></li>';				
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="favicon" class="logoFiles-Js btn-xs" id="favicon" data-file_type='.AttachedFile::FILETYPE_FAVICON.' value="Upload file"></li>';				
 						
 
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Social_Feed_Image',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Social_Feed_Image',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','socialFeed',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeSocialFeedImage('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','socialFeed',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeSocialFeedImage('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}				
 				
-				$ul->htmlAfterField .= ' <input type="button" name="social_feed_image" class="logoFiles-Js btn-xs" id="social_feed_image" data-file_type='.AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE.' value="Upload file"><small>Dimensions 160*240</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="social_feed_image" class="logoFiles-Js btn-xs" id="social_feed_image" data-file_type='.AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE.' value="Upload file"><small>Dimensions 160*240</small></li>';
 				
 
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Payment_Page_Logo',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Payment_Page_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_PAYMENT_PAGE_LOGO, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','paymentPageLogo',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removePaymentPageLogo('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','paymentPageLogo',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removePaymentPageLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}				
 				
-				$ul->htmlAfterField .= ' <input type="button" name="payment_page_logo" class="logoFiles-Js btn-xs" id="payment_page_logo" data-file_type='.AttachedFile::FILETYPE_PAYMENT_PAGE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="payment_page_logo" class="logoFiles-Js btn-xs" id="payment_page_logo" data-file_type='.AttachedFile::FILETYPE_PAYMENT_PAGE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
 				
 
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Watermark_Image',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Watermark_Image',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_WATERMARK_IMAGE, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','watermarkImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeWatermarkImage('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','watermarkImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeWatermarkImage('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}				
 				
-				$ul->htmlAfterField .= ' <input type="button" name="watermark_image" class="logoFiles-Js btn-xs" id="watermark_image" data-file_type='.AttachedFile::FILETYPE_WATERMARK_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';				
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="watermark_image" class="logoFiles-Js btn-xs" id="watermark_image" data-file_type='.AttachedFile::FILETYPE_WATERMARK_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';				
 
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Apple_Touch_Icon',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Apple_Touch_Icon',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_APPLE_TOUCH_ICON, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','appleTouchIcon',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeAppleTouchIcon('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','appleTouchIcon',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeAppleTouchIcon('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}				
 				
-				$ul->htmlAfterField .= ' <input type="button" name="apple_touch_icon" class="logoFiles-Js btn-xs" id="apple_touch_icon" data-file_type='.AttachedFile::FILETYPE_APPLE_TOUCH_ICON.' value="Upload file"></li>';					
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="apple_touch_icon" class="logoFiles-Js btn-xs" id="apple_touch_icon" data-file_type='.AttachedFile::FILETYPE_APPLE_TOUCH_ICON.' value="Upload file"></li>';					
 				
 
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Mobile_Logo',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Mobile_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_MOBILE_LOGO, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','mobileLogo',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','mobileLogo',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}
 				
-				$ul->htmlAfterField .= ' <input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
 				
-				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image',$this->adminLangId).'';
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 
 				
 				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, 0, 0, $langId ) ){
-					$ul->htmlAfterField .= '<div class="logoWrap"><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','CategoryCollectionBgImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a></div></div>';
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','CategoryCollectionBgImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}
 				
-				$ul->htmlAfterField .= ' <input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';
 				
 				$ul->htmlAfterField .='</ul>';
 			break;
