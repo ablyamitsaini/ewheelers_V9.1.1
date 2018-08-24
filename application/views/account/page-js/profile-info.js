@@ -179,14 +179,27 @@ $(document).ready(function(){
 		});
 	};
 	
-	userTruncateData = function(){
-		var agree = confirm( langLbl.confirmDeletePersonalInformation );
+	truncateDataRequestPopup = function(){
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Account', 'truncateDataRequestPopup'), '', function(t) {
+				$.facebox( t,'faceboxWidth');
+			});
+		});
+	};
+	
+	sendTruncateRequest = function(){
+		/* var agree = confirm( langLbl.confirmDeletePersonalInformation );
 		if( !agree ){
 			return false;
-		}
-		fcom.updateWithAjax(fcom.makeUrl('Account', 'truncateUserData'), '', function(t) {
+		} */
+		fcom.updateWithAjax(fcom.makeUrl('Account', 'sendTruncateRequest'), '', function(t) {
 			profileInfoForm();
+			$(document).trigger('close.facebox');
 		});
+	};
+	
+	cancelTruncateRequest = function(){
+		$(document).trigger('close.facebox');
 	};
 	
 	requestData = function(){

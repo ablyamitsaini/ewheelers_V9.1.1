@@ -124,7 +124,6 @@ class SellerController extends LoggedUserController {
 	public function sales(){
 		$frmOrderSrch = $this->getOrderSearchForm( $this->siteLangId );
 		$this->set('frmOrderSrch', $frmOrderSrch);
-		
 		$this->_template->render();
 	}
 	

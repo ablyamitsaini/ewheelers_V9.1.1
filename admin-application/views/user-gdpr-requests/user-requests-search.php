@@ -39,18 +39,18 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'ureq_type':
 			
-				$str = $userRequestTypeArr[UserRequest::TYPE_DATA];
-				if( $row['ureq_type'] == UserRequest::TYPE_TRUNCATE){
-					$str = $userRequestTypeArr[UserRequest::TYPE_TRUNCATE];
+				$str = $userRequestTypeArr[UserGdprRequest::TYPE_DATA_REQUEST];
+				if( $row['ureq_type'] == UserGdprRequest::TYPE_TRUNCATE){
+					$str = $userRequestTypeArr[UserGdprRequest::TYPE_TRUNCATE];
 				}
 				
 				$td->appendElement('plaintext', array(), $str  ,true);
 				
 			break;
 			case 'ureq_status':
-				$str = $userRequestStatusArr[UserRequest::STATUS_PENDING];
-				if( $row['ureq_status'] == UserRequest::STATUS_COMPLETE){
-					$str = $userRequestStatusArr[UserRequest::STATUS_COMPLETE];
+				$str = $userRequestStatusArr[UserGdprRequest::STATUS_PENDING];
+				if( $row['ureq_status'] == UserGdprRequest::STATUS_COMPLETE){
+					$str = $userRequestStatusArr[UserGdprRequest::STATUS_COMPLETE];
 				}
 				
 				$td->appendElement('plaintext', array(), $str  ,true);
@@ -59,28 +59,28 @@ foreach ($arr_listing as $sn=>$row){
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
 				if($canEdit){
+					if($row['ureq_status']==UserGdprRequest::STATUS_PENDING){
 					$li = $ul->appendElement("li",array('class'=>'droplink'));						
     			    $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
 					$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
 					$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));	
 					
-					if( $row['ureq_type'] == UserRequest::TYPE_TRUNCATE && $row['ureq_status']==UserRequest::STATUS_PENDING){
+					if( $row['ureq_type'] == UserGdprRequest::TYPE_TRUNCATE ){
 						$innerLi=$innerUl->appendElement('li');
 						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Truncate_User_Data',$adminLangId),"onclick"=>"truncateUserData(".$row['user_id'].",".$row['ureq_id'].")"),Labels::getLabel('LBL_Truncate_User_Data',$adminLangId), true);
 					}
 					
-					if( $row['ureq_type'] == UserRequest::TYPE_DATA ){
-						if($row['ureq_status']==UserRequest::STATUS_PENDING){
-							$innerLi=$innerUl->appendElement('li');
-							$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Change_Status_To_Complete',$adminLangId),"onclick"=>"updateRequestStatus(".$row['ureq_id'].",".UserRequest::STATUS_COMPLETE.")"),Labels::getLabel('LBL_Complete',$adminLangId), true);
-						}
+					if( $row['ureq_type'] == UserGdprRequest::TYPE_DATA_REQUEST ){
+						$innerLi=$innerUl->appendElement('li');
+						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Change_Status_To_Complete',$adminLangId),"onclick"=>"updateRequestStatus(".$row['ureq_id'].",".UserGdprRequest::STATUS_COMPLETE.")"),Labels::getLabel('LBL_Complete',$adminLangId), true);
 						
 						$innerLi=$innerUl->appendElement('li');
-						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Request_Purpose',$adminLangId),"onclick"=>"viewRequestPurpose(".$row['ureq_id'].")"),Labels::getLabel('LBL_Request_Purpose',$adminLangId), true);
+						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_View_Purpose',$adminLangId),"onclick"=>"viewRequestPurpose(".$row['ureq_id'].")"),Labels::getLabel('LBL_View_Purpose',$adminLangId), true);
 					}
 					
-					$innerLi=$innerUl->appendElement('li');
-					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_Request',$adminLangId),"onclick"=>"deleteUserRequest(".$row['ureq_id'].")"),Labels::getLabel('LBL_Delete_Request',$adminLangId), true);
+						/* $innerLi=$innerUl->appendElement('li');
+						$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_Request',$adminLangId),"onclick"=>"deleteUserRequest(".$row['ureq_id'].")"),Labels::getLabel('LBL_Delete_Request',$adminLangId), true); */
+					}
 				}
 			break;
 			default:

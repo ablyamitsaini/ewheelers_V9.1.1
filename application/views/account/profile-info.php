@@ -46,7 +46,7 @@
 									 </ul>
 									 <div class="gap"></div>
 									 <div class="gap"></div>
-									 <a class="btn btn--block btn--secondary btn--sm" href="javascript:void(0)" onclick="userTruncateData()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data',$siteLangId); ?></a>
+									 <a class="btn btn--block btn--secondary btn--sm" href="javascript:void(0)" onclick="truncateDataRequestPopup()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data',$siteLangId); ?></a>
 									 <a class="btn btn--block btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
 								 </div>
 								 <div class="grid__left" id="profileInfoFrmBlock">

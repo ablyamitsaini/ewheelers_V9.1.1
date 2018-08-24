@@ -11,6 +11,8 @@
 	<div class="box__body">
 		<div class="form__subcontent">
 			<?php
+			$btnFld = $frm->getField('btn_submit');
+			$btnFld->htmlBeforeField = str_replace( "{clickhere}" ,'<a target="_blank" href="'.$gdprPolicyLinkHref.'">'.Labels::getLabel('LBL_Click_Here',$siteLangId).'</a>', Labels::getLabel('LBL_{clickhere}_to_read_the_policies_of_GDPR',$siteLangId)).'<br/><br/>';
 			echo $frm->getFormHtml();
 			?>
 		</div>

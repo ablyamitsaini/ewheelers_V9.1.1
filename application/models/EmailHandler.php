@@ -2310,7 +2310,7 @@ class EmailHandler extends FatModel {
 		$tpl = 'data_request_notification_to_admin';
 		$userObj = new User($data['user_id']);
 		$userInfo = $userObj->getUserInfo(array('user_name','credential_email','credential_username','user_phone'));
-				
+	
 		$vars = array(
 					'{user_full_name}' => $userInfo['user_name'],
 					'{username}'	   => $userInfo['credential_username'],
@@ -2320,6 +2320,28 @@ class EmailHandler extends FatModel {
 				);
 		
 		if(self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), $tpl ,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
+	function GdprRequestStatusUpdate($reqId,$langId){
+		$tpl = 'gdpr_request_status_update_notification_to_user';
+		$reqData = UserGdprRequest::getAttributesById($reqId,array('ureq_user_id','ureq_type'));	
+		
+		$reqTypeArr = UserGdprRequest::getUserRequestTypesArr( $langId );
+		$reqTypeName = $reqTypeArr[$reqData['ureq_type']];
+		
+		$userObj = new User($reqData['ureq_user_id']);
+		/* $userInfo = $userObj->getUserInfo(array('credential_email','credential_username'), false,false); */
+		$srch = $userObj->getUserSearchObj(array('credential_email','credential_username'), true, false);
+		$rs = $srch->getResultSet();
+		$userInfo = FatApp::getDb()->fetch($rs);
+		$vars = array(
+					'{username}'	   => $userInfo['credential_username'],
+					'{request_type}'	   => $reqTypeName,
+				);
+		if(self::sendMailTpl($userInfo['credential_email'], $tpl ,$langId, $vars)){
 			return true;
 		}
 		return false;

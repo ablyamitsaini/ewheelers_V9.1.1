@@ -1696,7 +1696,7 @@ input[type="file"] {
 	color: red;
 	content: "*";
 }
-.form input[type="submit"] {
+.form input[type="submit"],.form input[type="button"] {
 	margin: 0 10px 0 0;
 }
 input[type="text"].p-cards {
@@ -2614,6 +2614,8 @@ input[type="text"][disabled], input[type="password"][disabled] {
 .checkbox-switch label:active:after {
     width: 50px;
 }
+
+/* Demo button */
 
 .fixed-demo-btn {
     line-height: 1.8;

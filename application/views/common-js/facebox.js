@@ -106,8 +106,7 @@
         append('<div class="loader-yk"><div class="loader-yk-inner"></div></div>')
 
       $('#facebox').show().css({
-		
-        top:	getPageScroll()[1] + (getPageHeight() / 10),
+        /* top:	getPageScroll()[1] + (getPageHeight() / 10), */
         left:	$(window).width() / 2 - ($('#facebox .popup').outerWidth() / 2)
       })
 

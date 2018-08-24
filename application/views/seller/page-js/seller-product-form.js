@@ -288,9 +288,9 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 						var ans = $.parseJSON(t);
 						if( ans.status == 0 ){
 							$.systemMessage( ans.msg,'alert alert--danger' );
+							sellerProductDownloadFrm(selprod_id, download_type);
 							return;
 						}
-						$.systemMessage( ans.msg,'alert alert--success' );
 						sellerProductDownloadFrm(selprod_id, download_type);
 					},
 					error: function(jqXHR, textStatus, errorThrown){
@@ -313,21 +313,15 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 			});	
 		}
 	};
-	
+
 	deleteDigitalFile = function(selprod_id,afile_id){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
-		fcom.ajax( fcom.makeUrl( 'Seller', 'deleteDigitalFile', [selprod_id, afile_id] ), '' , function(t) {
-			var ans = $.parseJSON(t);
-			if( ans.status == 0 ){
-				$.systemMessage( ans.msg,'alert alert--danger' );
-				return;
-			}
-			$.systemMessage( ans.msg,'alert alert--success' );
+		fcom.updateWithAjax(fcom.makeUrl('seller', 'deleteDigitalFile', [selprod_id, afile_id]), '', function(t) {
 			sellerProductDownloadFrm( selprod_id, 0 );
 		});
-	};		
-		
+	}
+	
 	linkPoliciesForm = function(product_id,selprod_id,ppoint_type){
 		fcom.ajax(fcom.makeUrl('Seller', 'linkPoliciesForm', [product_id,selprod_id,ppoint_type]), '', function(t) {
 			$(dv).html(t);

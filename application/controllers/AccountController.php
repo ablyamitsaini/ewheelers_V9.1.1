@@ -2652,30 +2652,34 @@ class AccountController extends LoggedUserController {
 		$this->set('addressFrm',$addressFrm);
 		$this->_template->render(false,false);
 	}
+
+	public function truncateDataRequestPopup(){
+		$this->_template->render(false,false);
+	}
 	
-	public function truncateUserData(){
+	public function sendTruncateRequest(){
 		$userId = UserAuthentication::getLoggedUserId();
 		$db = FatApp::getDb();
 		
-		$srch = new UserRequestSearch();
+		$srch = new UserGdprRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_TRUNCATE );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserGdprRequest::TYPE_TRUNCATE );
+		$srch->addCondition( 'ureq_status', '=', UserGdprRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
 		if( $row ){
 			Message::addErrorMessage( Labels::getLabel('LBL_You_have_alrady_submitted_the_request', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::TYPE_TRUNCATE,
+			'ureq_type'=>UserGdprRequest::TYPE_TRUNCATE,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 		);
 		
-		$userReqObj = new UserRequest();
+		$userReqObj = new UserGdprRequest();
 		$userReqObj->assignValues($assignValues);
 		if (!$userReqObj->save()) {
 			
@@ -2712,10 +2716,19 @@ class AccountController extends LoggedUserController {
 			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
+		$cPageSrch = ContentPage::getSearchObject($this->siteLangId);
+		$cPageSrch->addCondition('cpage_id','=',FatApp::getConfig('CONF_GDPR_POLICY_PAGE' , FatUtility::VAR_INT , 0));
+		$cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
+		if(!empty($cpage) && is_array($cpage)) {
+			$gdprPolicyLinkHref = CommonHelper::generateUrl('Cms','view',array($cpage['cpage_id']));
+		} else {
+			$gdprPolicyLinkHref = 'javascript:void(0)';
+		}
 		
 		$frm = $this->getRequestDataForm();
 		$frm->fill($data);
 		$this->set('frm', $frm);
+		$this->set('gdprPolicyLinkHref', $gdprPolicyLinkHref);
 		$this->set('siteLangId',$this->siteLangId);
 		$this->_template->render(false, false);
 	}
@@ -2729,10 +2742,10 @@ class AccountController extends LoggedUserController {
 		}
 		$userId = UserAuthentication::getLoggedUserId();
 		
-		$srch = new UserRequestSearch();
+		$srch = new UserGdprRequestSearch();
 		$srch->addCondition( 'ureq_user_id', '=', $userId );
-		$srch->addCondition( 'ureq_type', '=', UserRequest::TYPE_DATA );
-		$srch->addCondition( 'ureq_status', '=', UserRequest::STATUS_PENDING );
+		$srch->addCondition( 'ureq_type', '=', UserGdprRequest::TYPE_DATA_REQUEST );
+		$srch->addCondition( 'ureq_status', '=', UserGdprRequest::STATUS_PENDING );
 		$srch->addCondition( 'ureq_deleted', '=', applicationConstants::NO );
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
@@ -2743,12 +2756,12 @@ class AccountController extends LoggedUserController {
 		
 		$assignValues = array(
 			'ureq_user_id'=>$userId,
-			'ureq_type'=>UserRequest::TYPE_DATA,
+			'ureq_type'=>UserGdprRequest::TYPE_DATA_REQUEST,
 			'ureq_date'=>date('Y-m-d H:i:s'),
 			'ureq_purpose'=>$post['ureq_purpose'],
 		);
 
-		$userReqObj = new UserRequest();
+		$userReqObj = new UserGdprRequest();
 		$userReqObj->assignValues($assignValues);
 		if (!$userReqObj->save()) {
 			Message::addErrorMessage($userReqObj->getError());

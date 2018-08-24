@@ -1,8 +1,8 @@
 <?php
-class UserRequestSearch extends SearchBase {
+class UserGdprRequestSearch extends SearchBase {
 	
 	function __construct( ) {
-		parent::__construct( UserRequest::DB_TBL, 'ureq');
+		parent::__construct( UserGdprRequest::DB_TBL, 'ureq');
 	}
 	
 	public function joinUser(){

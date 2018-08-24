@@ -87,6 +87,13 @@ class Navigation {
 			$template->set('sellerOrderCount',$sellerOrderCount);
 		}
 		
+		/* User GDPR requests */
+		$gdprSrch = new UserGdprRequestSearch();
+		$gdprSrch->addCondition('ureq_status','=',UserGdprRequest::STATUS_PENDING);
+		$gdprSrch->addCondition('ureq_deleted','=',applicationConstants::NO);
+		$gdprSrch->getResultSet();
+		$gdprReqCount = $gdprSrch->recordCount();
+		
 		/* set counter variables [ */
 		$template->set('custProdReqCount',$custProdReqCount);
 		$template->set('supReqCount',$supReqCount);
@@ -97,6 +104,7 @@ class Navigation {
 		$template->set('blogContrCount',$blogContrCount);
 		$template->set('blogCommentsCount',$blogCommentsCount);
 		$template->set('threshSelProdCount',$threshSelProdCount);
+		$template->set('gdprReqCount',$gdprReqCount);
 		$template->set('adminLangId',CommonHelper::getLangId());
 		/* ] */
 		

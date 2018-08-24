@@ -22,6 +22,7 @@ class Shop extends MyAppModel {
 	const SHOP_POLICY_ORGINAL_URL ='shops/policy/';
 	const SHOP_SEND_MESSAGE_ORGINAL_URL ='shops/send-message/';
 	const SHOP_TOP_PRODUCTS_ORGINAL_URL ='shops/top-products/';
+	const SHOP_COLLECTION_ORGINAL_URL ='shops/collection/';
 	
 	const SHOP_PRODUCTS_COUNT_AT_HOMEPAGE = 2;
 	
@@ -228,7 +229,13 @@ class Shop extends MyAppModel {
 				$originalUrl = Shop::SHOP_POLICY_ORGINAL_URL.$this->mainTableRecordId;
 				$seoUrl = preg_replace('/-policy$/','',$seoUrl);
 				$seoUrl.=  '-policy';	
-			break;
+			break;	
+			case 'collection':
+				$originalUrl = Shop::SHOP_COLLECTION_ORGINAL_URL.$this->mainTableRecordId;
+				$shopUrl = static::getShopUrl($this->mainTableRecordId,'urlrewrite_custom');
+				$seoUrl = preg_replace('/-'.$shopUrl.'$/','',$seoUrl);
+				$seoUrl.=  '-'.$shopUrl;	
+			break;				
 			default:
 				$originalUrl = Shop::SHOP_VIEW_ORGINAL_URL.$this->mainTableRecordId;					
 			break;
@@ -237,6 +244,10 @@ class Shop extends MyAppModel {
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
 
 		return UrlRewrite::update($originalUrl,$customUrl);
+	}
+	
+	public function setupCollectionUrl($keyword){
+		return $this->rewriteUrl($keyword,'collection');
 	}
 	
 	public function rewriteUrlShop($keyword){
