@@ -1510,7 +1510,8 @@ class Orders extends MyAppModel{
 				$txnAmount = ($availQty * $childOrderInfo['op_unit_price']) - $deductVolumeDiscount + $shipCharges;
 				
 				if(/* FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0) */$childOrderInfo['op_tax_collected_by_seller']){
-					$txnAmount = $txnAmount + $taxCharges;						
+					$unitTaxCharges = round(($taxCharges / $childOrderInfo['op_qty']),2);
+					$txnAmount = $txnAmount + ($unitTaxCharges * $availQty);						
 				}
 				
 				if ( $txnAmount > 0 ){
