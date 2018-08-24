@@ -194,8 +194,19 @@ class OrderProductSearch extends SearchBase {
 	}
 	
 	public function addSellerCompletedOrdersStats($startDate = false,$endDate = false ,$alias = 'CompleteOrder'){
-		$srch = Stats::getSalesStatsObj($startDate,$endDate,$alias);		
-		$srch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', $alias.'c.opcharge_op_id = '.$alias.'.op_id and '.$alias.'c.opcharge_type = '.OrderProduct::CHARGE_TYPE_SHIPPING, $alias.'c');
+		$srch = Stats::getSalesStatsObj($startDate,$endDate,$alias);				
+		
+	 	$subSrch = Stats::getSalesStatsObj($startDate,$endDate,$alias.'_t');
+		$subSrch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', $alias.'_tc.opcharge_op_id = '.$alias.'_t.op_id', $alias.'_tc');
+		$cnd = $subSrch->addCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_SHIPPING);
+		$cnd->attachCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_TAX,'OR');
+		$subSrch->addFld($alias.'_tc.opcharge_op_id,SUM('.$alias.'_tc.opcharge_amount) as opcharge_amount');
+		$subSrch->addGroupBy($alias.'_tc.opcharge_op_id');
+		
+		$srch->joinTable('(' . $subSrch->getQuery() . ')', 'LEFT OUTER JOIN', $alias.'c.opcharge_op_id = '.$alias.'.op_id', $alias.'c');
+		
+		//$srch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', $alias.'c.opcharge_op_id = '.$alias.'.op_id and ('.$alias.'c.opcharge_type = '.OrderProduct::CHARGE_TYPE_SHIPPING.')', $alias.'c');
+		
 		$srch->addGroupBy($alias.'.op_selprod_user_id');
 		$srch->addMultipleFields(array($alias.'.op_selprod_user_id as '.$alias.'_op_selprod_user_id',"count(".$alias.".op_id) as ".$alias.'Count','SUM((('.$alias.'.op_unit_price * '.$alias.'.op_qty) + IFNULL('.$alias.'c.opcharge_amount,0)) - '.$alias.'.op_refund_amount) AS '.$alias.'Sales'));
 		$qrytotalOrders = $srch->getQuery();
