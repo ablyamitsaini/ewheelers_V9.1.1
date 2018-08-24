@@ -8,5 +8,6 @@
 8. multiple options search filter listing update. 
 9. Rewards point immediately get subtracted if order is on COD.
 10. Enhancement in default image display in case of actual image not exist.
+11. On Return request approval fixed seller amount credit issue.
 
 Note : Url rewriting update, discarded slashes with existing url. Need to change all / to - in tbl_url_rewrite  table urlrewrite_custom coloum. To do this you can hit the url domainname.com/dummy/change-custom-url. It will rewrite existing url structure and may impact on SEO.

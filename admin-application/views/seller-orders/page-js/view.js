@@ -24,7 +24,7 @@ $(document).ready(function(){
 		if (!$(frm).validate()) return;
 		var op_id = $(frm.op_id).val();		
 		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {		
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {				
 			window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]);
 		});
 	};	
