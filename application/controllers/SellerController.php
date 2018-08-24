@@ -71,6 +71,7 @@ class SellerController extends LoggedUserController {
 		$orderSrch->addGroupBy('op_selprod_user_id');
 		$orderSrch->addCondition( 'op_selprod_user_id', '=', $userId );
 		$orderSrch->addMultipleFields(array('yesterdayOrderCount' ,'yesterdaySoldCount','totalSoldCount','totalSoldSales' ));
+		
 		$rs = $orderSrch->getResultSet();
 		$ordersStats = FatApp::getDb()->fetch($rs);
 		/* ]*/		
