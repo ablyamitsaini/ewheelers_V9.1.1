@@ -156,7 +156,7 @@ class SellerOrdersController extends AdminBaseController {
 		$opRow = FatApp::getDb()->fetch( $opRs );
 		
 		if($opRow == false){ 
-			Message::addErrorMessage('hello');
+			Message::addErrorMessage($this->str_invalid_request);
 			CommonHelper::redirectUserReferer();
 		}
 		$orderObj = new Orders($opRow['order_id']);
