@@ -22,9 +22,9 @@ class DummyController extends MyAppController {
 		foreach($urlRows as $row){
 			$data = array(
 				'opsetting_op_id'=>$row['op_id'],
-				'opsetting_tax_collected_by_seller'=>$row['op_tax_collected_by_seller'],
-				'opsetting_commission_include_tax'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0),
-				'opsetting_commission_include_shipping'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX',FatUtility::VAR_INT,0),
+				'op_tax_collected_by_seller'=>$row['op_tax_collected_by_seller'],
+				'op_commission_include_tax'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0),
+				'op_commission_include_shipping'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX',FatUtility::VAR_INT,0),
 			);
 			
 			if(!$db->insertFromArray(OrderProduct::DB_TBL_SETTINGS,$data,false,array(),$data)){
