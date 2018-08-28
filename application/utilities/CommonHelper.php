@@ -320,14 +320,26 @@ class CommonHelper extends FatUtility{
 	public static function getOrderProductRefundAmtArr($requestRow = array()){
 		$volumeDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount']):0;
 		$shipCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
+		$perUnitShippingCost = $shipCharges / $requestRow["op_qty"];
 		
 		$couponDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount']):0;		
 		
 		$taxCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_TAX]['opcharge_amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_TAX]['opcharge_amount']:0;
+		$taxPerQty = ($taxCharges/$requestRow['op_qty']);
 		
 		$cartAmount = $requestRow["op_unit_price"] * $requestRow["orrequest_qty"];
 		
-		$op_refund_commission = round( (($requestRow["op_unit_price"]*$requestRow['op_qty']) * $requestRow['op_commission_percentage'])/100, 2 );
+		$commissionCostValue = $requestRow["op_unit_price"];
+		if($requestRow['op_commission_include_tax'] && $taxPerQty){
+			$commissionCostValue = $commissionCostValue + $taxPerQty; 
+		}
+		
+		if($requestRow['op_commission_include_shipping'] && $perUnitShippingCost ){
+			$commissionCostValue = $commissionCostValue + $perUnitShippingCost;
+		}
+		
+		$op_refund_commission = round( (($commissionCostValue*$requestRow['op_qty']) * $requestRow['op_commission_percentage'])/100, 2 );
+				
 		$op_refund_commission = min($op_refund_commission,FatApp::getConfig("CONF_MAX_COMMISSION"));
 
 		$perProdRefundCommission = round($op_refund_commission /$requestRow['op_qty'] ,2 );
@@ -339,10 +351,9 @@ class CommonHelper extends FatUtility{
 		
 		$op_refund_affiliate_commission = round( ($cartAmount * $requestRow['op_affiliate_commission_percentage'])/100, 2 );
 			
-		$taxPerQty = 0;
+		
 		$taxToRefund = 0;			
-		if($taxCharges > 0){
-			$taxPerQty = ($taxCharges/$requestRow['op_qty']);
+		if($taxCharges > 0){			
 			$taxToRefund = ($taxPerQty * ($requestRow['orrequest_qty']));
 		}
 		

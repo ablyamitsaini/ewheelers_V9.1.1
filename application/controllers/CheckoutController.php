@@ -990,10 +990,10 @@ class CheckoutController extends MyAppController{
 						);
 					}
 					
-					$taxCollectedBySeller = applicationConstants::NO;
+					/* $taxCollectedBySeller = applicationConstants::NO;
 					if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 						$taxCollectedBySeller = applicationConstants::YES;
-					}
+					} */
 
 					$orderData['products'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
 						'op_selprod_id'		=>	$productInfo['selprod_id'],
@@ -1032,11 +1032,11 @@ class CheckoutController extends MyAppController{
 						'productsLangData'	=>	$productsLangData,
 						'productShippingData'	=>	$productShippingData,
 						'productShippingLangData'	=>	$productShippingLangData,
-						'op_tax_collected_by_seller'	=>	$taxCollectedBySeller,
+						/* 'op_tax_collected_by_seller'	=>	$taxCollectedBySeller, */
 						'op_free_ship_upto'	=>	$cartProduct['shop_free_ship_upto'],
 						'op_actual_shipping_charges'	=>	$cartProduct['shipping_cost'],
 					);
-					
+										
 					$order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
 					$order_affiliate_total_commission += isset($cartProduct['affiliate_commission'])?$cartProduct['affiliate_commission']:'';
 					

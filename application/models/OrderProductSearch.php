@@ -26,11 +26,16 @@ class OrderProductSearch extends SearchBase {
 			$this->joinOrderProductStatus( $this->langId );
 		}
 		
+		$this->joinSettings();
 	}
 	
 	public function joinSellerUser(){
 		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'seller.user_id = op.op_selprod_user_id', 'seller' );
 		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'seller.user_id = credential_user_id', 'seller_cred' );
+	}
+	
+	public function joinSettings(){		
+		$this->joinTable( OrderProduct::DB_TBL_SETTINGS, 'LEFT OUTER JOIN', 'op.op_id = opst.opsetting_op_id', 'opst' );
 	}
 	
 	public function joinOrders(){

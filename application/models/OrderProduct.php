@@ -9,6 +9,9 @@ class OrderProduct extends MyAppModel{
 	const DB_TBL_CHARGES_PREFIX= 	'opcharge_';
 	const DB_TBL_OP_TO_SHIPPING_USERS = 'tbl_order_product_to_shipping_users';
 	
+	const DB_TBL_SETTINGS = 	'tbl_order_product_settings';
+	const DB_TBL_SETTINGS_PREFIX = 'opsetting_';
+	
 	const CHARGE_TYPE_TAX = 1;
 	const CHARGE_TYPE_DISCOUNT = 2;
 	const CHARGE_TYPE_SHIPPING = 3;
@@ -72,5 +75,23 @@ class OrderProduct extends MyAppModel{
 		}
 		$rs = $opSrch->getResultSet();
 		return $rows = FatApp::getDb()->fetchAll($rs);
+	}
+	
+	public function setupSettings(){
+		if ($this->mainTableRecordId < 1) {						
+			return false;
+		}
+		
+		$data = array(
+			'opsetting_op_id'=>$this->mainTableRecordId,
+			'op_tax_collected_by_seller'=>FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0),
+			'op_commission_include_tax'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0),
+			'op_commission_include_shipping'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX',FatUtility::VAR_INT,0)
+		);
+		
+		if(FatApp::getDb()->insertFromArray(static::DB_TBL_SETTINGS,$data,false,array(),$data)){
+			return true;	
+		}		
+		return false;		
 	}
 }

@@ -371,3 +371,26 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 {request_type} Request Type', '1');
 
 ALTER TABLE `tbl_user_requests_history` CHANGE `ureq_purpose` `ureq_purpose` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_order_product_settings`
+--
+
+CREATE TABLE `tbl_order_product_settings` (
+  `opsetting_op_id` int(11) NOT NULL,
+  `op_commission_include_tax` tinyint(1) NOT NULL,
+  `op_commission_include_shipping` tinyint(1) NOT NULL,
+  `op_tax_collected_by_seller` tinyint(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_order_product_settings`
+--
+ALTER TABLE `tbl_order_product_settings`
+  ADD UNIQUE KEY `opsetting_op_id` (`opsetting_op_id`);

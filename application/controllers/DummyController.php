@@ -7,12 +7,37 @@ class DummyController extends MyAppController {
 	}
 	
 	function mytest(){
-		
+		$orders = new Orders();
+		$orders->getOrderProductsByOpId(48,1);
+	}
+	
+	function updateOrderProdSetting(){
+		$srch = new SearchBase(OrderProduct::DB_TBL);
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addMultipleFields(array('op_id','op_tax_collected_by_seller'));
+		$rs = $srch->getResultSet();
+		$urlRows = FatApp::getDb()->fetchAll($rs);
+		$db = FatApp::getDb();
+		foreach($urlRows as $row){
+			$data = array(
+				'opsetting_op_id'=>$row['op_id'],
+				'opsetting_tax_collected_by_seller'=>$row['op_tax_collected_by_seller'],
+				'opsetting_commission_include_tax'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0),
+				'opsetting_commission_include_shipping'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX',FatUtility::VAR_INT,0),
+			);
+			
+			if(!$db->insertFromArray(OrderProduct::DB_TBL_SETTINGS,$data,false,array(),$data)){
+				echo "Error with ".$row['op_id'].':'.$db->getError() .'<br>';
+			}		
+		}
+		echo "Done";
 	}
 	
 	function changeCustomUrl(){
 		$urlSrch = UrlRewrite::getSearchObject();
 		$urlSrch->doNotCalculateRecords();
+		$urlSrch->doNotLimitRecords();
 		$urlSrch->addMultipleFields(array('urlrewrite_id','urlrewrite_original','urlrewrite_custom'));
 		$rs = $urlSrch->getResultSet();
 		$urlRows = FatApp::getDb()->fetchAll($rs);

@@ -146,7 +146,7 @@ class SellerController extends LoggedUserController {
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
 		$srch->joinSellerProducts();
 		$srch->joinShippingUsers();
-		$srch->joinShippingCharges();
+		$srch->joinShippingCharges();		
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		$srch->addCondition( 'op_selprod_user_id', '=', $userId );
@@ -2351,6 +2351,7 @@ class SellerController extends LoggedUserController {
 		
 		$srch = new OrderReturnRequestSearch( $this->siteLangId );
 		$srch->joinOrderProducts();
+		$srch->joinOrderProductSettings();
 		$srch->joinOrders();
 		$srch->joinOrderBuyerUser();
 		$srch->joinOrderReturnReasons();
@@ -2365,7 +2366,7 @@ class SellerController extends LoggedUserController {
 		'orrequest_date', 'orrequest_status','orrequest_reference',  'op_invoice_number', 'op_selprod_title', 'op_product_name', 
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_qty',
 		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title', 
-		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage') );
+		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping') );
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 		

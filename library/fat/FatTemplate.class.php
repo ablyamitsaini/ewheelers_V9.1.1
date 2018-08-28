@@ -131,13 +131,13 @@ class FatTemplate {
 				}
 				else {
 					$str .= '<script type="text/javascript" language="javascript" 
-							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'jsCommon', array(), $use_root_url, false) . '&f=' . rawurlencode($fl) . '&min=0&sid=' . $time, CONF_DEF_CACHE_TIME, '.css') . '"></script>' . "\n";
+							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'jsCommon', array(), $use_root_url, false) . '&f=' . rawurlencode($fl) . '&min=0&sid=' . $time, CONF_DEF_CACHE_TIME, '.js') . '"></script>' . "\n";
 				}
 			}
 
 			if ( $mergeFiles ) {
 				$str .= '<script type="text/javascript" language="javascript" 
-							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'jsCommon', array(), $use_root_url, false) . '&min=0&sid=' . $last_updated , CONF_DEF_CACHE_TIME, '.css'). '"></script>' . "\n";
+							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'jsCommon', array(), $use_root_url, false) . '&min=0&sid=' . $last_updated , CONF_DEF_CACHE_TIME, '.js'). '"></script>' . "\n";
 			}
 		}
 		if ( count($this->arr_page_js) > 0 ) {
@@ -149,12 +149,12 @@ class FatTemplate {
 				}
 				else {
 					$str .= '<script type="text/javascript" language="javascript" 
-							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'js', array(), $use_root_url, false) . '&f=' . rawurlencode($val) . '&min=0&sid=' . $time , CONF_DEF_CACHE_TIME, '.css'). '" ></script>' . "\n";
+							src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'js', array(), $use_root_url, false) . '&f=' . rawurlencode($val) . '&min=0&sid=' . $time , CONF_DEF_CACHE_TIME, '.js'). '" ></script>' . "\n";
 				}
 			}
 			if ( $mergeFiles ) {
 				$str .= '<script type="text/javascript" language="javascript" 
-						src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'js', array(), $use_root_url, false) . '&f=' . rawurlencode(implode(',', $this->arr_page_js)) . '&min=1&sid=' . $last_updated , CONF_DEF_CACHE_TIME, '.css'). '" ></script>' . "\n";
+						src="' . FatCache::getCachedUrl(FatUtility::generateUrl('JsCss', 'js', array(), $use_root_url, false) . '&f=' . rawurlencode(implode(',', $this->arr_page_js)) . '&min=1&sid=' . $last_updated , CONF_DEF_CACHE_TIME, '.js'). '" ></script>' . "\n";
 			}
 		}
 		/* Include JS Ends */

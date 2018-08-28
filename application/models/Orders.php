@@ -308,7 +308,7 @@ class Orders extends MyAppModel{
 		$db->deleteRecords( static::DB_TBL_ORDER_PRODUCTS, array('smt' => 'op_order_id = ?', 'vals' => array( $this->getOrderId() ) ) );
 		$db->deleteRecords( static::DB_TBL_ORDER_PRODUCTS_LANG, array('smt' => 'oplang_order_id = ?', 'vals' => array( $this->getOrderId() ) ) );
 		
-		if( !empty($products) ){
+		if( !empty($products) ){			
 			$opRecordObj = new TableRecord( static::DB_TBL_ORDER_PRODUCTS );
 			$opLangRecordObj = new TableRecord( static::DB_TBL_ORDER_PRODUCTS_LANG );
 			$opShippingRecordObj = new TableRecord( static::DB_TBL_ORDER_PRODUCTS_SHIPPING );
@@ -327,6 +327,14 @@ class Orders extends MyAppModel{
 				}
 				
 				$op_id = $opRecordObj->getId();
+				
+				/*Save order product settings [*/
+				$orderProduct = new OrderProduct($op_id);
+				if( !$orderProduct->setupSettings()){
+					$db->rollbackTransaction();
+					return false;
+				}
+				/*]*/
 				
 				/* saving of products lang data[ */
 				$productsLangData = $product['productsLangData'];
@@ -441,6 +449,7 @@ class Orders extends MyAppModel{
 					}
 				}
 				/* ] */
+				
 				$counter++;
 			}
 		}
@@ -1703,17 +1712,16 @@ class Orders extends MyAppModel{
 		$op_id = FatUtility::int($op_id);
 		$langId = FatUtility::int($langId);
 		$srch = new OrderProductSearch($langId, true);
-		$srch->joinPaymentMethod();
+		$srch->joinPaymentMethod();		
 		$srch->joinShippingUsers();
 		//$srch->joinTable(Orders::DB_TBL,'LEFT OUTER JOIN','o.order_id = op.op_order_id','o');
 		$srch->joinTable(OrderProduct::DB_TBL_CHARGES,'LEFT OUTER JOIN','opc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = op.op_id','opc');
 		$srch->joinTable(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING,'LEFT OUTER JOIN','ops.opshipping_op_id = op.op_id','ops');
 		
-		$srch->addMultipleFields(array('op.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
+		$srch->addMultipleFields(array('op.*','opst.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
 		$srch->addCondition('op_id','=',$op_id);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		
+		$srch->doNotLimitRecords();		
 		$records = array();
 		$row = FatApp::getDb()->fetch($srch->getResultSet());
 		$charges = $this->getOrderProductChargesArr($op_id);
