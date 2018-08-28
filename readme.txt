@@ -17,3 +17,5 @@ Note : Url rewriting update, discarded slashes with existing url. Need to change
 15. DB updates to store order product setting based on configuration.
 Note : hit the url http://domainname.com/dummy/update-order-prod-setting
 
+16. Reward point discount with volume discount issue fixed.
+

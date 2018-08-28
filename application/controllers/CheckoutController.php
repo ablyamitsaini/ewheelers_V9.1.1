@@ -1060,11 +1060,10 @@ class CheckoutController extends MyAppController{
 					$rewardPoints = $orderData['order_reward_point_value'];
 					$usedRewardPoint = 0;
 					if($rewardPoints > 0){
-						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingTotal +  $cartProduct['tax']  - $discount ;
+						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingTotal +  $cartProduct['tax']  - $discount - $cartProduct['volume_discount_total'] ;
 						$usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)),2);
 					}
 					
-					//CommonHelper::printArray($cartProduct); die();
 					$orderData['prodCharges'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
 						OrderProduct::CHARGE_TYPE_SHIPPING => array(
 							'amount' => $shippingTotal
@@ -1084,7 +1083,7 @@ class CheckoutController extends MyAppController{
 							'amount'	=>	-$cartProduct['volume_discount_total']
 						), 
 							
-					);
+					);					
 			}
 		}
 		

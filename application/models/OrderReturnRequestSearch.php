@@ -30,7 +30,7 @@ class OrderReturnRequestSearch extends SearchBase {
 	}
 	
 	public function joinOrderProductSettings(){
-		$this->joinTable( OrderProduct::DB_TBL_SETTINGS, 'LEFT OUTER JOIN', 'op.op_id = opst.opsetting_op_id', 'opst' );
+		$this->joinTable( OrderProduct::DB_TBL_SETTINGS, 'LEFT OUTER JOIN', 'op.op_id = opst.opsetting_op_id', 'opst');
 	}
 	
 	public function joinOrderReturnReasons( $langId = 0 ){
