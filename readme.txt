@@ -14,3 +14,4 @@ Note : Url rewriting update, discarded slashes with existing url. Need to change
 
 11. Fixed bugs related to GDPR module (#019780,#019784,#019783,#019781)
 12. Fixed bugs - blur icon on blog page(#019782) and invalid access error on order status update (#019772).
+13. Implemented blog pages header integration.

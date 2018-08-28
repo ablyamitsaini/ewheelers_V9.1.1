@@ -42,7 +42,7 @@ FatApp::setViewDataProvider('_partial/footerSocialMedia.php', array('Common', 'f
 FatApp::setViewDataProvider('_partial/footerTopBrands.php', array('Common', 'footerTopBrands'));
 FatApp::setViewDataProvider('_partial/footerTopCategories.php', array('Common', 'footerTopCategories'));
 FatApp::setViewDataProvider('_partial/footerTrustBanners.php', array('Common', 'footerTrustBanners'));
-
+FatApp::setViewDataProvider('_partial/blogNavigation.php', array('Navigation', 'blogNavigation'));
 //FatApp::setViewDataProvider('_partial/brandFilters.php', array('Common', 'brandFilters'));
 FatApp::setViewDataProvider('_partial/seller/sellerSalesGraph.php', array('Statistics', 'sellerSalesGraph'));
 // FatApp::setViewDataProvider('_partial/faq-list.php', array('Common', 'faqList'));

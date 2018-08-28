@@ -279,4 +279,14 @@ class Navigation {
 		$seller_navigation_right=self::getNavigation( Navigations::NAVTYPE_SELLER_RIGHT );
 		$template->set('seller_navigation_right', $seller_navigation_right);
 	}
+	
+	public static function blogNavigation($template){
+		$siteLangId = CommonHelper::getLangId();
+		$blog = new BlogController();
+		$srchFrm = $blog->getBlogSearchForm();
+		$categoriesArr = BlogPostCategory::getRootBlogPostCatArr( $siteLangId );
+		$template->set('srchFrm',$srchFrm);
+		$template->set('categoriesArr',$categoriesArr);
+		$template->set('siteLangId',$siteLangId);
+	}
 }

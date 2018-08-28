@@ -167,4 +167,8 @@ class BlogPost extends MyAppModel{
 		}
 		return true;
 	}
+	
+	public static function convertArrToSrchFiltersAssocArr($arr){
+		return SearchItem::convertArrToSrchFiltersAssocArr($arr);
+	}
 }

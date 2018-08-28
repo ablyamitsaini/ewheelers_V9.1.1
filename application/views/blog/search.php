@@ -37,7 +37,7 @@ if(!empty($postList)){ ?>
 						<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 						<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 						<div class="share-this">
-						<ul class="list__socials">
+						<ul class="blogs-listing list__socials">
 							<li><?php echo Labels::getLabel('LBL_Share_On',$siteLangId); ?></li>
 							<li class="social--fb"><a class='st_facebook_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
 							<li class="social--tw"><a class='st_twitter_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
@@ -71,7 +71,7 @@ if(!empty($postList)){ ?>
 									<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
-										<ul class="list__socials">
+										<ul class="blogs-listing list__socials">
 											<li><?php echo Labels::getLabel('LBL_Share_On',$siteLangId); ?></li>
 											<li class="social--fb"><a class='st_facebook_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
 											<li class="social--tw"><a class='st_twitter_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>

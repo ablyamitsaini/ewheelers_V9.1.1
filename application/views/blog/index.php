@@ -11,6 +11,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 </div>
 	<script>
 	var bpCategoryId = <?php echo !empty($bpCategoryId) ? $bpCategoryId : 0; ?>;
+	var keyword = '<?php echo !empty($keyword) ? $keyword : ''; ?>';
 	</script>
 	<?php $this->includeTemplate( '_partial/shareThisScript.php' );?>
 </div>

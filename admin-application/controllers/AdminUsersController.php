@@ -370,7 +370,6 @@ class AdminUsersController extends AdminBaseController {
 		if($adminId != 1){
 			$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'admin_active',$activeInactiveArr,'',array(),'');	
 		}
-											
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));		
 		return $frm;
 	}
