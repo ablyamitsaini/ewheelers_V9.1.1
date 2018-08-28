@@ -394,3 +394,5 @@ CREATE TABLE `tbl_order_product_settings` (
 --
 ALTER TABLE `tbl_order_product_settings`
   ADD UNIQUE KEY `opsetting_op_id` (`opsetting_op_id`);
+ALTER TABLE `tbl_order_products` DROP `op_tax_collected_by_seller`; 
+  
