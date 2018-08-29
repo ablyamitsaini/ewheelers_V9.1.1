@@ -203,8 +203,8 @@ class OrderProductSearch extends SearchBase {
 		
 	 	$subSrch = Stats::getSalesStatsObj($startDate,$endDate,$alias.'_t');
 		$subSrch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', $alias.'_tc.opcharge_op_id = '.$alias.'_t.op_id', $alias.'_tc');
-		$cnd = $subSrch->addCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_SHIPPING);
-		$cnd->attachCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_TAX,'OR');
+		/* $cnd = $subSrch->addCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_SHIPPING);
+		$cnd->attachCondition($alias.'_tc.opcharge_type','=',OrderProduct::CHARGE_TYPE_TAX,'OR'); */
 		$subSrch->addFld($alias.'_tc.opcharge_op_id,SUM('.$alias.'_tc.opcharge_amount) as opcharge_amount');
 		$subSrch->addGroupBy($alias.'_tc.opcharge_op_id');
 		
