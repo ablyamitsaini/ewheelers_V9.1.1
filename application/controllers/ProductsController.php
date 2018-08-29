@@ -737,7 +737,7 @@ class ProductsController extends MyAppController {
 		FatUtility::dieJsonSuccess($json);
 	}
 
-	public function view( $selprod_id = 0){ 
+	public function view( $selprod_id = 0){
 		$productImagesArr = array();
 		$selprod_id = FatUtility::int($selprod_id);
 		$prodSrchObj = new ProductSearch( $this->siteLangId );

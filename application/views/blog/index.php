@@ -4,13 +4,13 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 ?>
 <div id="body" class="body bg--grey">
 	<div class="container--fluid">
-		<div class="gap"></div>
 		<div class="posts--all" id='listing'></div>
 	</div>
 	<div class="gap"></div>
 </div>
 	<script>
 	var bpCategoryId = <?php echo !empty($bpCategoryId) ? $bpCategoryId : 0; ?>;
+	var keyword = '<?php echo !empty($keyword) ? $keyword : ''; ?>';
 	</script>
 	<?php $this->includeTemplate( '_partial/shareThisScript.php' );?>
 </div>

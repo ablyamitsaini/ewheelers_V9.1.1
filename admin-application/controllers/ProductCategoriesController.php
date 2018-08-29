@@ -313,7 +313,6 @@ class ProductCategoriesController extends AdminBaseController {
 	private function getForm($prodcat_id = 0) {
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$prodCatObj = new ProductCategory();
-		//$categories = $prodCatObj->getProdCategories();
 		$arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId, $prodcat_id);
 		$categories = $prodCatObj->makeAssociativeArray( $arrCategories );
 		
@@ -327,7 +326,7 @@ class ProductCategoriesController extends AdminBaseController {
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 		
 		$frm->addSelectBox(Labels::getLabel('LBL_Category_Status',$this->adminLangId), 'prodcat_active', $activeInactiveArr, '',array('class'=>'small'),'');
-		$frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'prodcat_featured', 1, array(),false,0);
+		/* $frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'prodcat_featured', 1, array(),false,0); */
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 
 		return $frm;

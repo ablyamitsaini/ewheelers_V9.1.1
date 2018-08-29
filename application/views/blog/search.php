@@ -37,13 +37,13 @@ if(!empty($postList)){ ?>
 						<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 						<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 						<div class="share-this">
-						<ul class="list__socials">
-							<li><?php echo Labels::getLabel('LBL_Share_On',$siteLangId); ?></li>
-							<li class="social--fb"><a class='st_facebook_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
-							<li class="social--tw"><a class='st_twitter_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
-							<li class="social--pt"><a class='st_pinterest_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
-							<li class="social--mail"><a class='st_email_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
-							<li class="social--wa"><a class='st_whatsapp_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
+						<ul class="blogs-listing list__socials">
+							<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>
+							<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
+							<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
+							<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
+							<li class="social--mail"><a class='st_email_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
+							<li class="social--wa"><a class='st_whatsapp_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
 						</ul>
 						</div>
 					</div>
@@ -71,13 +71,13 @@ if(!empty($postList)){ ?>
 									<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
-										<ul class="list__socials">
-											<li><?php echo Labels::getLabel('LBL_Share_On',$siteLangId); ?></li>
-											<li class="social--fb"><a class='st_facebook_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
-											<li class="social--tw"><a class='st_twitter_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
-											<li class="social--pt"><a class='st_pinterest_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
-											<li class="social--mail"><a class='st_email_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
-											<li class="social--wa"><a class='st_whatsapp_large' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
+										<ul class="blogs-listing list__socials">
+											<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>
+											<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
+											<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
+											<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
+											<li class="social--mail"><a class='st_email_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
+											<li class="social--wa"><a class='st_whatsapp_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
 										</ul>
 									</div>
 								</div>
@@ -107,7 +107,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 <script type="text/javascript">
 	$(document).ready(function() {
 		if(langLbl.layoutDirection == 'rtl'){
-			$('.posts-slider').slick({
+			$('.js-posts-slider').slick({
 				centerMode: true,
 				centerPadding: '28%',
 				slidesToShow: 1,
@@ -116,6 +116,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 				responsive: [{
 						breakpoint: 768,
 						settings: {
+							dots: true,
 							arrows: false,
 							centerMode: false,
 							centerPadding: '0px',
@@ -125,6 +126,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 					{
 						breakpoint: 480,
 						settings: {
+							dots: true,
 							arrows: false,
 							centerMode: false,
 							centerPadding: '0px',
@@ -134,7 +136,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 				]
 			});
 		}else{
-			$('.posts-slider').slick({
+			$('.js-posts-slider').slick({
 				centerMode: true,
 				centerPadding: '28%',
 				slidesToShow: 1,
@@ -142,6 +144,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 				responsive: [{
 						breakpoint: 768,
 						settings: {
+							dots: true,
 							arrows: false,
 							centerMode: false,
 							centerPadding: '0px',
@@ -151,6 +154,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 					{
 						breakpoint: 480,
 						settings: {
+							dots: true,
 							arrows: false,
 							centerMode: false,
 							centerPadding: '0px',

@@ -19,13 +19,17 @@ $(document).ready(function(){
 	});		
 	
 });
+function pageRedirect(op_id) {
+	window.location.replace(fcom.makeUrl('SellerOrders', 'view',[op_id]));
+}
 (function() {
 	updateStatus = function(frm){		
 		if (!$(frm).validate()) return;
 		var op_id = $(frm.op_id).val();		
 		var data = fcom.frmData(frm);		
 		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'changeOrderStatus'), data, function(t) {				
-			window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]);
+			/* window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]); */
+			setTimeout("pageRedirect("+op_id+")", 1000);
 		});
 	};	
 	
@@ -33,7 +37,9 @@ $(document).ready(function(){
 		var data = fcom.frmData(frm);	
 		var op_id = $(frm.op_id).val();				
 		if (!$(frm).validate()) return;
-		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'updateShippingCompany'), data, function(t) {			window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]);
+		fcom.updateWithAjax(fcom.makeUrl('SellerOrders', 'updateShippingCompany'), data, function(t) {
+			/* window.location.href = fcom.makeUrl('SellerOrders', 'view',[op_id]); */
+			setTimeout("pageRedirect("+op_id+")", 1000);
 		});
 	};
 })();

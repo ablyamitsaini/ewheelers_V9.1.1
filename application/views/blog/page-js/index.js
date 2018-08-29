@@ -38,8 +38,11 @@ $(document).ready(function(){
 		if(bpCategoryId){
 			data +='&categoryId='+bpCategoryId;
 		}
+		if(keyword){
+			data +='&keyword='+keyword;
+		}
 		
-		fcom.updateWithAjax(fcom.makeUrl('Blog','search'), data, function(ans){
+		fcom.updateWithAjax(fcom.makeUrl('Blog','blogList'), data, function(ans){
 			$.mbsmessage.close();			
 			if( append == 1 ){
 				$(dv).find('.loader-yk').remove();

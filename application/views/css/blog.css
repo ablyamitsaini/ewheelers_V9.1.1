@@ -218,8 +218,8 @@
 	position: absolute;
 	top: 50%;
 	margin-top: -40px;
-	width: 80px;
-	height: 80px;
+	width: 50px;
+	height: 50px;
 	border-radius: 50%;
 	border: none;
 	text-indent: -999999px;
@@ -228,14 +228,14 @@
 
 .posts-slider .slick-arrow.slick-prev {
 	background: #fff url(/images/retina/left-arrow.svg) no-repeat center;
-	background-size: 40px;
-	left: 10%;
+	background-size: 25px;
+	left: 5%;
 }
 
 .posts-slider .slick-arrow.slick-next {
 	background: #fff url(/images/retina/right-arrow.svg) no-repeat center;
-	background-size: 40px;
-	right: 10%;
+	background-size: 25px;
+	right: 5%;
 }
 
 .posts-slider .slick-arrow:hover {
@@ -328,10 +328,10 @@
 	margin-bottom: 15px;
 }
 
-.posts-slider .post-item.slick-active .post-data {
+/* .posts-slider .post-item.slick-active .post-data {
 	opacity: 1;
 	top: 50%;
-}
+} */
 
 .posts-slider .post-item .links {
 	color: var(--first-color);
@@ -339,6 +339,11 @@
 	text-transform: uppercase;
 	font-size: 0.875em;
 }
+
+.posts-slider .slick-dots { 
+	margin: 30px auto; text-align: center; 
+} 
+.posts-slider .slick-dots li { border: 1px solid transparent; border-radius: 50%; display: inline-block; margin: 0 2px; padding: 3px; } .posts-slider .slick-dots li button { background: #c9c8c8; border: medium none; border-radius: 50%; display: block; height: 11px; position: relative; text-indent: -9999px; width: 11px; } .posts-slider .slick-dots li.slick-active button { background: var(--first-color); border-color: #fff; } .posts-slider .slick-dots li.slick-active { border: 1px solid var(--first-color); } 
 
 .searchform-holder {
 	position: relative;
@@ -1229,6 +1234,7 @@
 .nav--centered li:last-child {
 	margin-right: 40px;
 }
+
 }
 
 /* [ added on 2 August */
@@ -1252,3 +1258,33 @@
 .nav--toggled > ul > li > ul ul{margin:0 0 0 15px;}
 
 /* added on 2 August ] */
+
+.sharethis_custom{
+	background: url(/images/retina/social-icons/share.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+}
+
+.st_facebook_custom{
+	background: url(/images/retina/social-icons/facebook.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+} 
+
+.st_twitter_custom{
+	background: url(/images/retina/social-icons/twitter.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+}
+
+.st_email_custom{
+	background: url(/images/retina/social-icons/envelope.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+}
+
+.st_plusone_custom{
+	background: url(/images/retina/social-icons/google-plus.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+} 
+
+.st_pinterest_custom{
+	background: url(/images/retina/social-icons/pinterest.svg) no-repeat scroll center transparent;
+	/* padding:0px 16px 0 0; */
+} 

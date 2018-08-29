@@ -1,10 +1,11 @@
 <?php
 class BlogController extends MyAppController{
-	public function __construct($action){
+	public function __construct($action=''){
 		parent::__construct($action);
 		$this->set('blogPage',true);
 		$this->set('bodyClass','is--blog');
 		$this->_template->addCss('css/blog.css');	
+		$this->_template->addJs('js/blog.js');	
 	}
 
 	public function getBreadcrumbNodes($action) {
@@ -66,7 +67,20 @@ class BlogController extends MyAppController{
 	}
 	
 	public function search(){
-		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = BlogPost::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		$frm = $this->getBlogSearchForm();
+		$frm->fill( $headerFormParamsAssocArr );
+		if(isset($headerFormParamsAssocArr['keyword'])){
+			$keyword = $headerFormParamsAssocArr['keyword'];
+			$this->set('keyword',$keyword);
+		}
+		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addCss('css/slick.css');
+		$this->_template->render(true , true , 'blog/index.php');
+	}
+	
+	public function blogList(){
 		$post = FatApp::getPostedData();
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
 		$pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
@@ -82,6 +96,7 @@ class BlogController extends MyAppController{
 			$keywordCond->attachCondition('post_short_description','like',"%$keyword%");
 			$keywordCond->attachCondition('post_description','like',"%$keyword%");
 		}
+		
 		$srch->addCondition('post_published','=',applicationConstants::YES);
 		$srch->addOrder('post_added_on','desc');
 		$srch->setPageSize($pageSize);
@@ -98,7 +113,7 @@ class BlogController extends MyAppController{
 		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'blog/load-more-btn.php', true, false);
 		FatUtility::dieJsonSuccess($json);
 	}
-	
+
     public function postDetail($blogPostId){
 		$blogPostId = FatUtility::int($blogPostId);
 		if($blogPostId <= 0){
@@ -405,4 +420,10 @@ class BlogController extends MyAppController{
 		return $frm;
 	}
 
+	public function getBlogSearchForm(){
+		$frm = new Form('frmBlogSearch');
+		$frm->addTextBox('','keyword','',array('id'=>'keyword'));
+		$frm->addSubmitButton('','btnProductSrchSubmit','');
+		return $frm;
+	}
 }
