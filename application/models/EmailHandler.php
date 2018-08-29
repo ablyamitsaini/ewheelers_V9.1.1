@@ -77,7 +77,7 @@ class EmailHandler extends FatModel {
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 
-		$headers .= 'From: ' . FatApp::getConfig("CONF_FROM_NAME_".$langId) ."<".FatApp::getConfig("CONF_FROM_EMAIL").">" . "\r\nReply-to: ".FatApp::getConfig("CONF_REPLY_TO_EMAIL");
+		$headers .= 'From: ' . FatApp::getConfig("CONF_FROM_NAME_".$langId, FatUtility::VAR_STRING, '') ."<".FatApp::getConfig("CONF_FROM_EMAIL").">" . "\r\nReply-to: ".FatApp::getConfig("CONF_REPLY_TO_EMAIL");
 		
 		if ($extra_headers != '') $headers .= $extra_headers;
 		if(!FatApp::getDb()->insertFromArray('tbl_email_archives', array(

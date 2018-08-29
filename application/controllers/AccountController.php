@@ -1720,7 +1720,7 @@ class AccountController extends LoggedUserController {
 			$action = 'A'; //Added to favorite
 			$this->set('msg', Labels::getLabel('LBL_Product_has_been_marked_as_favourite_successfully', $this->siteLangId) );
 		} else {
-			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $product_id)))){
+			if( !$db->deleteRecords( Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $selprodId)))){
 				Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
 				FatUtility::dieWithError(Message::getHtml());
 			}
