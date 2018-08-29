@@ -467,9 +467,10 @@ select {
 	padding: 0 0 0 0;
 	color: var(--txt-color);
 	line-height: 30px;
+	margin:0 auto;
 }
 .list__socials li:first-child {
-	padding-right: 10px;
+	/* padding-right: 10px; */
 }
 .list__socials li a {
 	font-size: 1.1em;
@@ -478,9 +479,10 @@ select {
 	border: none;
 	height: 30px;
 	display: block;
-	border-radius: 100%;
+	/* border-radius: 100%; */
 	line-height: 28px;
 	text-align: center;
+	background-size: 20px;
 }
 .list__socials li a:hover {
 	border-color: inherit;

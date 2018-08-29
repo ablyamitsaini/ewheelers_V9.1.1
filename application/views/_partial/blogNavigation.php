@@ -13,11 +13,11 @@
 	<nav class="nav-blog">
 		<ul>
 			<li><a href="<?php echo CommonHelper::generateUrl('Blog'); ?>"><?php echo Labels::getLabel('LBL_Blog_Home', $siteLangId); ?></a> </li>
-			<?php $mainNavigation = array_slice($categoriesArr, 0, $navLinkCount); foreach($mainNavigation as $id => $cat){ ?>
+			<?php $mainNavigation = array_slice($categoriesArr, 0, $navLinkCount, true); foreach($mainNavigation as $id => $cat){ ?>
 			<li><a href="<?php echo CommonHelper::generateUrl('Blog','category', array($id)); ?>"><?php echo $cat; ?></a> </li>
 			<?php }?>
 		</ul>
-		<?php $subMoreNavigation = ( count($categoriesArr) > $navLinkCount ) ? array_slice($categoriesArr, $navLinkCount) : array(); 
+		<?php $subMoreNavigation = ( count($categoriesArr) > $navLinkCount ) ? array_slice($categoriesArr, $navLinkCount, true) : array(); 
 		if( count( $subMoreNavigation ) ){ ?>
 		<div class="wrapper-menu">
 			<div class="line-menu half start"></div>
@@ -49,6 +49,7 @@
 			$keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_the_text_to_Search', $siteLangId));
 			echo $srchFrm->getFormTag(); 
 			echo $srchFrm->getFieldHTML('keyword');
+			echo $srchFrm->getFieldHTML('btnProductSrchSubmit');
 			echo $srchFrm->getExternalJS();
 			?>
 			</form>

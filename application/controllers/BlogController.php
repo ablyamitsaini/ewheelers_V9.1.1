@@ -71,10 +71,12 @@ class BlogController extends MyAppController{
 		$headerFormParamsAssocArr = BlogPost::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		$frm = $this->getBlogSearchForm();
 		$frm->fill( $headerFormParamsAssocArr );
-		$keyword = $headerFormParamsAssocArr['keyword'];
+		if(isset($headerFormParamsAssocArr['keyword'])){
+			$keyword = $headerFormParamsAssocArr['keyword'];
+			$this->set('keyword',$keyword);
+		}
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss('css/slick.css');
-		$this->set('keyword',$keyword);
 		$this->_template->render(true , true , 'blog/index.php');
 	}
 	
