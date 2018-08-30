@@ -207,7 +207,7 @@ class MyAppController extends FatController {
 
 	protected function getLoginForm() {
 		$siteLangId = CommonHelper::getLangId();
-		$frm = new Form('frmLogin');
+		$frm = new Form('frmLogin');			
 		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email',$siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
 		$pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password',$siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD',$siteLangId)));
 		$pwd->requirements()->setRequired();
