@@ -43,8 +43,8 @@ class AffiliateCommission extends MyAppModel{
 			WHEN afcommsetting_prodcat_id > 0 ".$categoryArrCondition." THEN 1 
 			WHEN afcommsetting_prodcat_id = 0 THEN 2
 		END 
-		AS matches FROM ".static::DB_TBL." where afcommsetting_user_id = " . $affiliateUserId . " 
-		ORDER BY matches ASC, afcommsetting_fees DESC LIMIT 0,1";
+		AS matches FROM ".static::DB_TBL." where afcommsetting_user_id = " . $affiliateUserId . " or afcommsetting_user_id = 0
+		ORDER BY matches ASC, afcommsetting_user_id DESC, afcommsetting_fees DESC LIMIT 0,1";
 		
 		$rs = FatApp::getDb()->query( $sql );	
 		if( $row = FatApp::getDb()->fetch($rs) ) {

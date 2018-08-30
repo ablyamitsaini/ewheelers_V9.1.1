@@ -38,6 +38,7 @@ $(document).ready(function(){
 		fcom.ajax(fcom.makeUrl('Notifications','search'),data,function(res){
 			$("#notificationListing").html(res);
 		});
+		$('.check-all').prop('checked', false);
 	};
 
 	deleteRecords = function(){
@@ -59,8 +60,7 @@ $(document).ready(function(){
 			
 		fcom.updateWithAjax(fcom.makeUrl('Notifications', 'deleteRecords'), data, function(t) {						
 			reloadList();	
-		});		
-		$('.check-all').attr('checked', false);		
+		});	
 	};
 	
 	changeStatus = function(status){

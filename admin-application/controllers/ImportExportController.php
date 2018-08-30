@@ -483,12 +483,14 @@ class ImportExportController extends AdminBaseController {
 					break;						
 				}
 				$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:',$langId), 'import_file', array('id' => 'import_file') );
+				/* $fldImg->requirement->setRequired(true); */
 				$fldImg->setFieldTagAttribute('onChange','$(\'#importFileName\').html(this.value)');
 				$fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
 				$fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$langId).'</label></div>';
 			break;			
 			case 'IMPORT_MEDIA':				
 				$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:',$langId), 'import_file', array('id' => 'import_file') );
+				/* $fldImg->requirement->setRequired(true); */
 				$fldImg->setFieldTagAttribute('onChange','$(\'#importFileName\').html(this.value)');
 				$fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
 				$fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$langId).'</label></div>';
