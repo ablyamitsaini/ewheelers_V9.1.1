@@ -14,6 +14,7 @@ Fixes:
 	. Fixed Seller dashboard order sales stats.
 	. Fixes "Invalid access" error message display in case of change order status. 
 	. Reward point discount with volume discount issue fixed.
+	. Affiliate commission.
 
 Updates/Enhancements:
 
