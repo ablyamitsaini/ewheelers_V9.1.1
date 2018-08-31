@@ -32,18 +32,6 @@
 <?php }?>
 
 <div class="box box--white box--space">
-   <h5></h5>
-   <div class="search search--sort">
-		<?php echo $blogSrchFrm->getFormTag(); ?>
-		<div class="search__field">
-			<?php echo 
-			$blogSrchFrm->getFieldHTML('keyword') , 
-			$blogSrchFrm->getFieldHTML('btn_submit');
-			?>
-			<i class="fa fa-search"></i>
-		</div>
-		</form> <?php echo $blogSrchFrm->getExternalJS(); ?>
-	</div>
 	<span class="gap"></span>
 	<a href="<?php echo CommonHelper::generateUrl('Blog','contributionForm'); ?>" class="btn btn--secondary btn--block ripplelink "><?php echo Labels::getLabel('Lbl_Contribute',$siteLangId); ?></a>
 </div>
