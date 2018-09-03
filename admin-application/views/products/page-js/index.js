@@ -187,7 +187,7 @@ $(document).delegate('.language-js','change',function(){
 							var ans = $.parseJSON(t);
 							productImages( $('#imageFrm input[name=product_id]').val(), $('.option-js').val(), $('.language-js').val() );
 							if( ans.status == 1 ){
-								fcom.displaySuccessMessage( ans.msg, ' ');
+								fcom.displaySuccessMessage( ans.msg );
 							}else {
 								fcom.displayErrorMessage( ans.msg, ' ' );
 							}
