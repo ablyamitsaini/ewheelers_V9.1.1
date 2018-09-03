@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('class','form form--horizontal');
 
-$frm->developerTags['colClassPrefix'] = 'col-md-';
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frm->developerTags['fld_default_col'] = 12; 	
 
 $variables = array('siteLangId'=>$siteLangId,'action'=>$action);

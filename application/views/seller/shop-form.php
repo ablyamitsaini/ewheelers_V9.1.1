@@ -2,7 +2,7 @@
 	$shopFrm->setFormTagAttribute('onsubmit', 'setupShop(this); return(false);');
 	$shopFrm->setFormTagAttribute('class','form form--horizontal');
 	
-	$shopFrm->developerTags['colClassPrefix'] = 'col-md-';
+	$shopFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$shopFrm->developerTags['fld_default_col'] = 12; 
 	
 	$countryFld = $shopFrm->getField('shop_country_id');

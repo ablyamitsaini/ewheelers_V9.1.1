@@ -9,19 +9,6 @@
 					$this->includeTemplate('shops/shop-layout-navigation.php',$variables,false);  ?>
 				  </div>
 				</div>
-				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-10">
-				  <div class="product-search">
-					  <?php 
-						echo $searchFrm->getFormTag();
-						$fld=$searchFrm->getField('keyword');
-						$fld->addFieldTagAttribute("class","input-field no--focus");
-						echo $searchFrm->getFieldHTML('keyword');
-						echo $searchFrm->getFieldHTML('shop_id');
-						echo '</form>';
-						echo $searchFrm->getExternalJS();
-					   ?>
-					</div>
-				</div>
 			  </div>
 			</div>
 		</div>

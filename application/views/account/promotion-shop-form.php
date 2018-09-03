@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$frmPromote->setFormTagAttribute('onsubmit', 'setupPromotionForm(this); return(false);');
 	$frmPromote->setFormTagAttribute('class','form form--horizontal');
-	$frmPromote->developerTags['colClassPrefix'] = 'col-md-';
+	$frmPromote->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$frmPromote->developerTags['fld_default_col'] = 12;
 ?>
 

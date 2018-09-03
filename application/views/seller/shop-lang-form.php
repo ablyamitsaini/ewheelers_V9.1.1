@@ -2,7 +2,7 @@
 /* $shopLangFrm->setFormTagAttribute('onsubmit', 'setupShopLang(this); return(false);'); */
 $shopLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
 
-$shopLangFrm->developerTags['colClassPrefix'] = 'col-md-';
+$shopLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $shopLangFrm->developerTags['fld_default_col'] = 12;
 
 $paymentPolicyfld = $shopLangFrm->getField('shop_payment_policy');

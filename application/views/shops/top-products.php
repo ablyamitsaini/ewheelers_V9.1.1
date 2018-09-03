@@ -34,7 +34,7 @@
     </div>
 
 	<?php 
-	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'searchFrm'=>$searchFrm,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
+	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
 	if(!isset($template_id) || ($template_id<0)){
 		$template_id=10001;
 	}
@@ -55,6 +55,7 @@
 							<?php
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
+								$productFiltersArr['searchFrm']=$searchFrm;
 								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
 							}
 							/* ] */

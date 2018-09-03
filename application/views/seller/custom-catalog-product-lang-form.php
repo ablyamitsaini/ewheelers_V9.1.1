@@ -26,7 +26,7 @@
 						<?php
 							//$customProductLangFrm->setFormTagAttribute('onsubmit','setUpCustomSellerProductLang(this); return(false);');
 							$customProductLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
-							$customProductLangFrm->developerTags['colClassPrefix'] = 'col-md-';
+							$customProductLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 							$customProductLangFrm->developerTags['fld_default_col'] = 12; 	
 							echo $customProductLangFrm->getFormHtml(); ?> 
 					</div>

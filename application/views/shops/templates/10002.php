@@ -6,19 +6,6 @@
       <div class="col-lg-2 col-md-2 col-sm-6  col-xs-12"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'MEDIUM')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
       </div>
-      <div class="col-lg-10 col-md-10 col-sm-6  col-xs-12">
-        <div class="product-search">
-          <?php 
-			echo $searchFrm->getFormTag();
-			$fld=$searchFrm->getField('keyword');
-			$fld->addFieldTagAttribute("class","input-field no--focus");
-			echo $searchFrm->getFieldHTML('keyword');
-			echo $searchFrm->getFieldHTML('shop_id');
-			echo '</form>';
-			echo $searchFrm->getExternalJS();
-		   ?>
-        </div>
-      </div>
     </div>
   </div>
 </div>

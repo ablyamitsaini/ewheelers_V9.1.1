@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $tagLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
+$tagLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$tagLangFrm->developerTags['fld_default_col'] = 12;
 $tagLangFrm->setFormTagAttribute('onsubmit', 'setupTagLang(this); return(false);');
-
-
 ?>
 <div class="box__head">
 	<h4><?php echo Labels::getLabel('LBL_Add_Tags',$siteLangId); ?></h4>

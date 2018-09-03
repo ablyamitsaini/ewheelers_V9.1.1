@@ -13,7 +13,8 @@
               
                	<?php 
 					
-					echo $frm->getFieldHtml('btnSubmit');
+					echo $frm->getFieldHtml('email');
+					/* echo $frm->getFieldHtml('btnSubmit'); */
 				?>
               </form>
 			  <?php echo $frm->getExternalJS(); ?>

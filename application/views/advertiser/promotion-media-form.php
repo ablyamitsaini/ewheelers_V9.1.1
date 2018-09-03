@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $mediaFrm->setFormTagAttribute('class', 'form form--horizontal');
+$mediaFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$mediaFrm->developerTags['fld_default_col'] = 12;
 $mediaFrm->setFormTagAttribute('onsubmit', 'setupPromotionMedia(this); return(false);');
 
 $fld1 = $mediaFrm->getField('banner_image');	

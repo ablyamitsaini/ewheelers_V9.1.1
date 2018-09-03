@@ -19,7 +19,7 @@
 		<?php
 		$langFrm->setFormTagAttribute('onsubmit','setupLang(this); return(false);');
 		$langFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
-		$langFrm->developerTags['colClassPrefix'] = 'col-md-';
+		$langFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 		$langFrm->developerTags['fld_default_col'] = 8; 
 		echo $langFrm->getFormHtml();
 		?>

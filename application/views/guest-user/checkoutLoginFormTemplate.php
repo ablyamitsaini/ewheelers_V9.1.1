@@ -11,7 +11,7 @@
 		$loginFrm->setValidatorJsObjectName('loginFormObj');
 		
 		$loginFrm->setFormTagAttribute('onsubmit','return '. $onSubmitFunctionName . '(this, loginFormObj);');
-		$loginFrm->developerTags['colClassPrefix'] = 'col-md- col-xs-';
+		$loginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
 		$loginFrm->developerTags['fld_default_col'] = 12;
 		$loginFrm->removeField($loginFrm->getField('remember_me'));
 		$fldforgot = $loginFrm->getField('forgot');

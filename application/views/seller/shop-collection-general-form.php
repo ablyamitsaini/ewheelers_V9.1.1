@@ -26,7 +26,7 @@
 				<?php 
 				$colectionForm->setFormTagAttribute('class', 'form form--horizontal');
 				$colectionForm->setFormTagAttribute('onsubmit', 'setupShopCollection(this); return(false);');
-				$colectionForm->developerTags['colClassPrefix'] = 'col-md-';
+				$colectionForm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 				$colectionForm->developerTags['fld_default_col'] = 8; 
 				$urlFld = $colectionForm->getField('urlrewrite_custom');
 				$urlFld->setFieldTagAttribute('id',"urlrewrite_custom");

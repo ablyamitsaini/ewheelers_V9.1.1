@@ -13,6 +13,8 @@
   <?php 
 		$redeemRewardFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
 		$redeemRewardFrm->setFormTagAttribute('onsubmit','useRewardPoints(this); return false;');
+		$redeemRewardFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+		$redeemRewardFrm->developerTags['fld_default_col'] = 12;
 		echo $redeemRewardFrm->getFormTag(); 
 		echo $redeemRewardFrm->getFieldHtml('redeem_rewards'); 
 		echo $redeemRewardFrm->getFieldHtml('btn_submit'); 

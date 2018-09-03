@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $categoryReqLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
+$categoryReqLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$categoryReqLangFrm->developerTags['fld_default_col'] = 12;
 $categoryReqLangFrm->setFormTagAttribute('onsubmit', 'setupCategoryReqLang(this); return(false);');
 $categoryFld = $categoryReqLangFrm->getField('scategoryreq_name');
 $categoryFld->setFieldTagAttribute('onblur','checkUniqueCategoryName(this,$("input[name=lang_id]").val(),'.$categoryReqId.')');

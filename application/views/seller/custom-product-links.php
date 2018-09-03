@@ -10,6 +10,8 @@
         <?php 
 			$frmLinks->setFormTagAttribute('class', 'form form--horizontal');
 			$frmLinks->setFormTagAttribute('onsubmit', 'setupProductLinks(this); return(false);');
+			$frmLinks->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+			$frmLinks->developerTags['fld_default_col'] = 12;
 			$frmLinks->removeField($frmLinks->getField('product_name'));
 			$fld1=$frmLinks->getField('tag_name');
 			// $fld1->fieldWrapper = array('<div class="col-md-8">', '</div>');

@@ -21,6 +21,8 @@
 						<div class="form__subcontent">
 						<?php 
 						$customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
+						$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+						$customProductFrm->developerTags['fld_default_col'] = 12;
 						$customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
 						
 						$shippingCountryFld = $customProductFrm->getField('shipping_country');	

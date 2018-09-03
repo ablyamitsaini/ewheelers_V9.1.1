@@ -1243,7 +1243,7 @@ class CheckoutController extends MyAppController{
 		}
 		
 		if( empty($post['redeem_rewards']) ){ 
-			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			Message::addErrorMessage( Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		

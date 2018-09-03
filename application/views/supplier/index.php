@@ -18,7 +18,9 @@
 			<div class="seller-register-form">
 			  <div class="heading3"><?php echo Labels::getLabel('L_Register_Today', $siteLangId); ?></div>
 			  <div class="gap"></div>
-			  <?php echo $sellerFrm->getFormHtml(); ?>
+			  <?php $sellerFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+					$sellerFrm->developerTags['fld_default_col'] = 12;
+					echo $sellerFrm->getFormHtml(); ?>
 			  <div class="row">
 				  <div class="col-md-12">
 					<div class="padding20"><?php echo FatUtility::decodeHtmlEntities($formText['epage_content'] );?></div>

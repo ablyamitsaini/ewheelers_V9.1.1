@@ -151,7 +151,7 @@
 
 									$frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
 									$frmMsg->setFormTagAttribute('class', 'form'); 
-									$frmMsg->developerTags['colClassPrefix'] = 'col-md-';
+									$frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 									$frmMsg->developerTags['fld_default_col'] = 12;
 									?>
 									<ul class="media media--details">

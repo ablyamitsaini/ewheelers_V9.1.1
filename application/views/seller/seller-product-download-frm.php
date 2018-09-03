@@ -10,7 +10,7 @@
 				<?php				
 				$selprodDownloadFrm->setFormTagAttribute('id', 'frmDownload');
 				$selprodDownloadFrm->setFormTagAttribute('class','form form--horizontal');
-				$selprodDownloadFrm->developerTags['colClassPrefix'] = 'col-md-';
+				$selprodDownloadFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 				$selprodDownloadFrm->developerTags['fld_default_col'] = 8; 
 				
 				$langFld = $selprodDownloadFrm->getField('lang_id');	

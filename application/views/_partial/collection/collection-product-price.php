@@ -4,6 +4,6 @@
                   <div class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></div>
                   <?php } ?>
 				  <?php if($product['selprod_sold_count']>0){?>
-	<span class="product_price_sold"><?php echo $product['selprod_sold_count'];?> <?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></span> 
+	<span class="product_price_sold"><?php echo $product['selprod_sold_count'];?> <?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></span>
 	<?php }?>
                 </div>

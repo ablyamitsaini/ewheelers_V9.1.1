@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $mediaFrm->setFormTagAttribute('onsubmit', 'setupShopMedia(this); return(false);');
 $mediaFrm->setFormTagAttribute('class','form--horizontal');
-$mediaFrm->developerTags['colClassPrefix'] = 'col-md-';
+$mediaFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $mediaFrm->developerTags['fld_default_col'] = 8; 
 $fld = $mediaFrm->getField('category_banner');
 $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
