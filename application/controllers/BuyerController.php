@@ -47,8 +47,13 @@ class BuyerController extends LoggedUserController {
 		$countPurchasedItemsRs = $getPurchasedsrch->getResultSet();
 		$totalPurchasedItems = FatApp::getDb()->fetch($countPurchasedItemsRs,'totalPurchasedItems');
 		
-		$totalFavouriteItems = UserFavorite::getUserFavouriteItemCount( $userId,$this->siteLangId );
-		$totalWishlistItems = UserWishList::getUserWishlistItemCount( $userId );
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$totalFavouriteItems = UserFavorite::getUserFavouriteItemCount( $userId,$this->siteLangId );
+		}else{
+			$totalFavouriteItems = UserWishList::getUserWishlistItemCount( $userId );
+		}
+		
+		
 		
 		$oObj = new Orders();
 		foreach($orders as &$order){
@@ -81,7 +86,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('orders', $orders);
 		$this->set('ordersCount', $srch->recordCount());
 		$this->set('totalFavouriteItems', $totalFavouriteItems);
-		$this->set('totalWishlistItems', $totalWishlistItems);
+		/* $this->set('totalWishlistItems', $totalWishlistItems); */
 		$this->set('totalPurchasedItems', $totalPurchasedItems);
 		$this->set('yesterdayOrderCount', FatUtility::int($ordersStats['yesterdayOrderCount']));
 		$this->set('todayUnreadMessageCount', $todayUnreadMessageCount);

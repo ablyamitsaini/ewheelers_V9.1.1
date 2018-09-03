@@ -1234,7 +1234,7 @@ class CheckoutController extends MyAppController{
 		$this->_template->render(false, false, 'json-success.php');
 	}
 	
-	public function useRewardPoints(){	
+	public function useRewardPoints(){
 		$post = FatApp::getPostedData();
 	
 		if( false == $post ){
@@ -1559,7 +1559,8 @@ class CheckoutController extends MyAppController{
 	private function getRewardsForm($langId){
 		$langId = FatUtility::int($langId);
 		$frm = new Form('frmRewards');
-		$frm->addTextBox(Labels::getLabel('LBL_Reward_Points',$langId),'redeem_rewards','',array('placeholder'=>Labels::getLabel('LBL_Use_Reward_Point',$langId)));
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_Reward_Points',$langId),'redeem_rewards','',array('placeholder'=>Labels::getLabel('LBL_Use_Reward_Point',$langId)));
+		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
 	}

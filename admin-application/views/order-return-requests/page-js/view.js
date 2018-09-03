@@ -15,6 +15,7 @@ $(document).ready(function(){
 			$(dv).html(fcom.getLoader());
 		}
 		fcom.updateWithAjax(fcom.makeUrl('OrderReturnRequests','messageSearch'), data, function(ans){
+			$.systemMessage.close();
 			if( append == 1 ){
 				$(dv).find('.loader-Js').remove();
 				$(dv).prepend(ans.html);
