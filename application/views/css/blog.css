@@ -206,7 +206,7 @@
 
 .container {
 	margin: 0 auto;
-	max-width: 1250px;
+	max-width: 1450px;
 	padding: 0 15px;
 }
 
@@ -340,10 +340,10 @@
 	font-size: 0.875em;
 }
 
-.posts-slider .slick-dots { 
-	margin: 30px auto; text-align: center; 
-} 
-.posts-slider .slick-dots li { border: 1px solid transparent; border-radius: 50%; display: inline-block; margin: 0 2px; padding: 3px; } .posts-slider .slick-dots li button { background: #c9c8c8; border: medium none; border-radius: 50%; display: block; height: 11px; position: relative; text-indent: -9999px; width: 11px; } .posts-slider .slick-dots li.slick-active button { background: var(--first-color); border-color: #fff; } .posts-slider .slick-dots li.slick-active { border: 1px solid var(--first-color); } 
+.posts-slider .slick-dots {
+	margin: 30px auto; text-align: center;
+}
+.posts-slider .slick-dots li { border: 1px solid transparent; border-radius: 50%; display: inline-block; margin: 0 2px; padding: 3px; } .posts-slider .slick-dots li button { background: #c9c8c8; border: medium none; border-radius: 50%; display: block; height: 11px; position: relative; text-indent: -9999px; width: 11px; } .posts-slider .slick-dots li.slick-active button { background: var(--first-color); border-color: #fff; } .posts-slider .slick-dots li.slick-active { border: 1px solid var(--first-color); }
 
 .searchform-holder {
 	position: relative;
@@ -506,7 +506,7 @@
 
 .post-data {
 	padding: 25px;
-	box-shadow: 0px -4px 7px rgba(0, 0, 0, 0.33);
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.13);
 }
 
 .posted-content {
@@ -1207,7 +1207,7 @@
 }
 
 @media only screen and (max-width: 767px) {
-	
+
 .nav--centered ul {
 	white-space: nowrap;
 	overflow-y: hidden;
@@ -1267,7 +1267,7 @@
 .st_facebook_custom{
 	background: url(/images/retina/social-icons/facebook.svg) no-repeat scroll center transparent;
 	/* padding:0px 16px 0 0; */
-} 
+}
 
 .st_twitter_custom{
 	background: url(/images/retina/social-icons/twitter.svg) no-repeat scroll center transparent;
@@ -1282,9 +1282,9 @@
 .st_plusone_custom{
 	background: url(/images/retina/social-icons/google-plus.svg) no-repeat scroll center transparent;
 	/* padding:0px 16px 0 0; */
-} 
+}
 
 .st_pinterest_custom{
 	background: url(/images/retina/social-icons/pinterest.svg) no-repeat scroll center transparent;
 	/* padding:0px 16px 0 0; */
-} 
+}

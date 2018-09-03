@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $brandReqLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
+$brandReqLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$brandReqLangFrm->developerTags['fld_default_col'] = 12;
 $brandReqLangFrm->setFormTagAttribute('onsubmit', 'setupBrandReqLang(this); return(false);');
 $brandFld = $brandReqLangFrm->getField('brand_name');
 $brandFld->setFieldTagAttribute('onblur','checkUniqueBrandName(this,$("input[name=lang_id]").val(),'.$brandReqId.')');

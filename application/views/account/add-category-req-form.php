@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $frmCategoryReq->setFormTagAttribute('class', 'form form--horizontal');
+$frmCategoryReq->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frmCategoryReq->developerTags['fld_default_col'] = 12;
 $frmCategoryReq->setFormTagAttribute('onsubmit', 'setupCategoryReq(this); return(false);');
 $identifierFld = $frmCategoryReq->getField(CategoryRequest::DB_TBL_PREFIX.'id');
 $identifierFld->setFieldTagAttribute('id',CategoryRequest::DB_TBL_PREFIX.'id');

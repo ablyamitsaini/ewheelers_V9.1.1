@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $frm->setFormTagAttribute('class', 'form');
 $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Questionnaire','setup'));
-$frm->developerTags['colClassPrefix'] = 'col-md-';
+$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
 $frm->developerTags['fld_default_col'] = 6;
 $formFields = $frm->getAllFields();
 ?>

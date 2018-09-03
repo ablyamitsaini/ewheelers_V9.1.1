@@ -15,6 +15,7 @@
 	<?php 
 		$redeemRewardFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
 		$redeemRewardFrm->setFormTagAttribute('onsubmit','useRewardPoints(this); return false;');
+		$redeemRewardFrm->setJsErrorDisplay('afterfield');
 		echo $redeemRewardFrm->getFormTag(); 
 		echo $redeemRewardFrm->getFieldHtml('redeem_rewards'); 
 		echo $redeemRewardFrm->getFieldHtml('btn_submit'); 

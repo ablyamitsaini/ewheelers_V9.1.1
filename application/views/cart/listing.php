@@ -142,6 +142,8 @@
 					<?php 
 						$PromoCouponsFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
 						$PromoCouponsFrm->setFormTagAttribute('onsubmit','applyPromoCode(this); return false;');
+						$PromoCouponsFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+						$PromoCouponsFrm->developerTags['fld_default_col'] = 12;
 						echo $PromoCouponsFrm->getFormTag(); 
 						echo $PromoCouponsFrm->getFieldHtml('coupon_code'); 
 						echo $PromoCouponsFrm->getFieldHtml('btn_submit'); 

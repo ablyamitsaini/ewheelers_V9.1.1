@@ -13,7 +13,7 @@
 					<?php 
 					$productSeoLangForm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
 					$productSeoLangForm->setFormTagAttribute('onsubmit', 'setupProductLangMetaTag(this); return(false);');
-					$productSeoLangForm->developerTags['colClassPrefix'] = 'col-md-';
+					$productSeoLangForm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 					$productSeoLangForm->developerTags['fld_default_col'] = 8; 
 					//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
 					echo $productSeoLangForm->getFormHtml();

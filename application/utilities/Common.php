@@ -220,10 +220,10 @@ class Common {
 	static function getNewsLetterForm($langId){
 		$frm = new Form('frmNewsLetter');
 		$frm->setRequiredStarWith('');
-		$fld1 = $frm->addSubmitButton('','btnSubmit',Labels::getLabel('LBL_Subscribe',$langId));
-		$fld2 = $frm->addEmailField('','email');
-		
+		$fld1 = $frm->addEmailField('','email');
+		$fld2 = $frm->addSubmitButton('','btnSubmit',Labels::getLabel('LBL_Subscribe',$langId));
 		$fld1->attachField($fld2);
+		$frm->setJsErrorDisplay('afterfield');
 		return $frm;
 	}
 	

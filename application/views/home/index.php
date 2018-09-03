@@ -1,36 +1,36 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div id="body" class="body"> 
+<div id="body" class="body">
   <!--slider[-->
   <?php if( isset($slides) && count($slides) ){
-		$this->includeTemplate( '_partial/homePageSlides.php', array( 'slides' =>$slides, 'siteLangId' => $siteLangId ),false ); 
+		$this->includeTemplate( '_partial/homePageSlides.php', array( 'slides' =>$slides, 'siteLangId' => $siteLangId ),false );
 	} ?>
   <!--]-->
-  <?php 
+  <?php
 	/* collection Layout1[ */
 	if(count($sponsoredProds)>0){
 		$this->includeTemplate( '_partial/collection/sponsored-products.php', array( 'products' => $sponsoredProds, 'siteLangId' => $siteLangId ),false );
 	}
-	
+
 	if( isset( $collections[Collections::COLLECTION_LAYOUT1_TYPE] ) ){
 		$this->includeTemplate( '_partial/collection/collection-layout-1.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT1_TYPE], 'siteLangId' => $siteLangId ),false );
 	}
-	/* ] */ 
-	
+	/* ] */
+
 	/* Banner After First Layout[ */
 	if( isset($banners['Home_Page_After_First_Layout'] ) ){
 		$this->includeTemplate( '_partial/banners/banner-after-first-layout.php', array( 'bannerLayout1' => $banners['Home_Page_After_First_Layout'], 'siteLangId' => $siteLangId ),false );
 	}
-	/* ] */ 
-	
-		
+	/* ] */
+
+
 
 	/* collection Layout2  and  collection Layout3[ */
 	if(isset( $collections[Collections::COLLECTION_LAYOUT2_TYPE] ) || isset( $collections[Collections::COLLECTION_LAYOUT3_TYPE] ) ||
 	isset($banners['Home_Page_After_Third_Layout'] )){
 		?>
   <section class="clearfix">
-    <?php 
+    <?php
 		if( isset( $collections[Collections::COLLECTION_LAYOUT2_TYPE] ) ){
 			$this->includeTemplate( '_partial/collection/collection-layout-2.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT2_TYPE], 'siteLangId' => $siteLangId,'action'=>$action ) ,false);
 		}
@@ -57,14 +57,14 @@
 			if( isset( $collections[Collections::COLLECTION_LAYOUT4_TYPE] ) ){
 				$this->includeTemplate( '_partial/collection/collection-layout-4.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT4_TYPE], 'siteLangId' => $siteLangId ,'action'=>$action),false );
 			}
-			
-			
+
+
 			/* ] */
 		?>
     </div>
   </section>
   <?php } ?>
-  
+
    <?php  if( count( $sponsoredShops ) > 0 ){ ?>
   <section class="bg-gray-light padd40">
     <div class="fixed-container">
@@ -72,7 +72,7 @@
   if( count( $sponsoredShops)>0 ){
 	$this->includeTemplate( '_partial/collection/sponsored-shops.php', array( 'sponsoredShops' => $sponsoredShops, 'siteLangId' => $siteLangId ,'action'=>$action),false );
 	}
-  
+
   	?>
     </div>
   </section>
@@ -93,7 +93,7 @@
     </div>
   </section>
   <?php } ?>
-  <?php 
+  <?php
 	/* collection Layout6[ */
 	if( isset( $collections[Collections::COLLECTION_LAYOUT6_TYPE] ) ){
 		$this->includeTemplate( '_partial/collection/collection-layout-1.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT6_TYPE], 'siteLangId' => $siteLangId ,'action'=>$action) ,false);

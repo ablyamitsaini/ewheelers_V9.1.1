@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchRewardPoints(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form'); 
-$frmSrch->developerTags['colClassPrefix'] = 'col-md-';
+$frmSrch->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frmSrch->developerTags['fld_default_col'] = 12;
 ?>  
 <div id="body" class="body bg--gray">

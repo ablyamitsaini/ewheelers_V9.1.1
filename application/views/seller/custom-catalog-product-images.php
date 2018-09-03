@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $imagesFrm->setFormTagAttribute('id', 'frmCustomCatalogProductImage');
+$imagesFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$imagesFrm->developerTags['fld_default_col'] = 12;
 $optionFld = $imagesFrm->getField('option_id');	
 $optionFld->addFieldTagAttribute('class','option-js');
 $langFld = $imagesFrm->getField('lang_id');	

@@ -13,11 +13,10 @@
 		$PromoCouponsFrm->setFormTagAttribute('class','form apply--coupon--form custom-form');
 		$PromoCouponsFrm->setFormTagAttribute('onsubmit','applyPromoCode(this); return false;');
 		$PromoCouponsFrm->getField('onsubmit','applyPromoCode(this); return false;');
-		$PromoCouponsFrm->developerTags['colClassPrefix'] = 'col-md-';
-		$PromoCouponsFrm->developerTags['fld_default_col'] = 6;
+		$PromoCouponsFrm->setJsErrorDisplay('afterfield');
 		echo $PromoCouponsFrm->getFormTag(); 
-		echo $PromoCouponsFrm->getFieldHtml('btn_submit'); 
 		echo $PromoCouponsFrm->getFieldHtml('coupon_code'); 
+		echo $PromoCouponsFrm->getFieldHtml('btn_submit');
 		echo $PromoCouponsFrm->getExternalJs();
 	?>
 	</form>

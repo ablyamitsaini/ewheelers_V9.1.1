@@ -30,5 +30,5 @@ $counter = 1; ?>
 <div class="section_action cta"> <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="btn btn--secondary ripplelink"><?php echo Labels::getLabel('LBL_View_All',$siteLangId); ?></a> </div>
 <?php }  ?>
 <?php } ?>
-<?php $counter++; } 
+<?php $counter++; }
 } ?>

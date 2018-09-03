@@ -19,3 +19,4 @@ Note : hit the url http://domainname.com/dummy/update-order-prod-setting
 
 16. Reward point discount with volume discount issue fixed.
 
+17. Updated frontend Bootstrap version and added column classes to all forms.

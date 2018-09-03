@@ -1,25 +1,25 @@
-<?php  
+<?php
 if( isset( $collections ) && count($collections) ){
-	
+
 	$counter = 1;
-	
+
 	foreach( $collections as $collection_id => $row ){
 
 			/* category listing design [ */
 			if( isset($row['shops']) && count( $row['shops'] ) ) { ?>
 				<div class="section-head">
 					<?php echo ($row['collection_name'] != '') ? ' <div class="section_heading">' . $row['collection_name'] .'</div>' : ''; ?>
-					
+
 					<?php if( count($row['shops']) > Collections::COLLECTION_LAYOUT4_LIMIT ){ ?>
 						<div class="section_action"> <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_All',$siteLangId); ?></a> </div>
 					<?php }  ?>
 				</div>
-				<div class="ftshops row"> 
+				<div class="ftshops row">
 						<?php $i=0; foreach( $row['shops'] as $shop ){?>
 							<div class="col-lg-6 col-md-6 col-sm-6 ">
 								<div class="ftshops_item">
 								  <div class="ftshops_item_head">
-									<div class="row ">
+									<div class="row align-items-center">
 									  <div class="col-lg-8">
 										<div class="ftshops_item_head_left">
 										  <div class="ftshops_logo"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','shopLogo', array($shop['shopData']['shop_id'], $siteLangId, "THUMB", 0, false),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg') ?>" alt="<?php echo $shop['shopData']['shop_name']; ?>"> </div>
@@ -33,14 +33,14 @@ if( isset( $collections ) && count($collections) ){
 						l-0.768,4.464c-0.009,0.063-0.018,0.116-0.018,0.179c0,0.232,0.116,0.445,0.375,0.445c0.125,0,0.241-0.043,0.357-0.106l4.008-2.106
 						l4.008,2.106c0.107,0.063,0.232,0.106,0.357,0.106c0.259,0,0.366-0.213,0.366-0.445c0-0.063,0-0.116-0.009-0.179l-0.768-4.464
 						l3.241-3.159C14.737,5.803,14.854,5.65,14.854,5.49z"/>
-											  </svg> </i><span class="rate"><?php echo  round($row['rating'][$shop['shopData']['shop_id']],1);?></span> 
+											  </svg> </i><span class="rate"><?php echo  round($row['rating'][$shop['shopData']['shop_id']],1);?></span>
 											  </div>
 											<?php }?>
 										  </div>
 										</div>
 									  </div>
 									  <div class="col-lg-4">
-										<div class="ftshops_item_head_right"> <a href="<?php echo CommonHelper::generateUrl('shops','view', array($shop['shopData']['shop_id'])); ?>" class="btn btn--primary ripplelink" tabindex="0"><?php echo Labels::getLabel('LBL_SHOP_NOW',$siteLangId);?></a> </div>
+										<div class="ftshops_item_head_right"> <a href="<?php echo CommonHelper::generateUrl('shops','view', array($shop['shopData']['shop_id'])); ?>" class="btn btn--primary btn--sm ripplelink" tabindex="0"><?php echo Labels::getLabel('LBL_SHOP_NOW',$siteLangId);?></a> </div>
 									  </div>
 									</div>
 								  </div>
@@ -59,14 +59,14 @@ if( isset( $collections ) && count($collections) ){
 										 <?php include(CONF_THEME_PATH.'_partial/collection-product-price.php');?>
 									  </div>
 									</div>
-									
+
 								  <?php } ?>
 								  </div>
 								</div>
 							  </div>
 							<?php
 							$i++;
-							if($i==Collections::COLLECTION_LAYOUT4_LIMIT) break; 
+							if($i==Collections::COLLECTION_LAYOUT4_LIMIT) break;
 						}
 						?>
 				</div>
@@ -75,4 +75,3 @@ if( isset( $collections ) && count($collections) ){
 	}
 }	/* ] */
 			?>
-		

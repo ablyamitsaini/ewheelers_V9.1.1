@@ -1,14 +1,14 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
-$currencySymbolLeft = isset($currencySymbolLeft) ? $currencySymbolLeft : CommonHelper::getCurrencySymbolLeft(); 
-$currencySymbolRight = isset($currencySymbolRight) ? $currencySymbolRight : CommonHelper::getCurrencySymbolRight(); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$currencySymbolLeft = isset($currencySymbolLeft) ? $currencySymbolLeft : CommonHelper::getCurrencySymbolLeft();
+$currencySymbolRight = isset($currencySymbolRight) ? $currencySymbolRight : CommonHelper::getCurrencySymbolRight();
 
 if( !empty($priceArr) ){
 	$priceArr = array_map( function( $item ){ return CommonHelper::displayMoneyFormat( $item, false, false ,false ); } , $priceArr );
 }
 
  $catCodeArr = array();
- 
- if(isset($prodcat_code)){ 
+
+ if(isset($prodcat_code)){
 $currentCategoryCode= substr($prodcat_code,0,-1);
 $catCodeArr =  explode("_",$currentCategoryCode);
 array_walk($catCodeArr,function(&$n) {
@@ -18,6 +18,23 @@ array_walk($catCodeArr,function(&$n) {
 ?>
 <?php /* CommonHelper::printArray($conditionsArr); */ ?>
 <div id="fixed__panel" class="filter section__filter fixed__panel">
+<?php if(FatApp::getController()=='ShopsController'){ ?>
+<div class="product-search">
+	<!--<form>
+		<input placeholder="Search" class="input-field nofocus" value="" type="text">
+		<input name="btnSrchSubmit" value="" class="input-submit" type="submit">
+	</form>-->
+	<?php 
+	echo $searchFrm->getFormTag();
+	$fld=$searchFrm->getField('keyword');
+	$fld->addFieldTagAttribute("class","input-field nofocus");
+	echo $searchFrm->getFieldHTML('keyword');
+	echo $searchFrm->getFieldHTML('shop_id');
+	echo '</form>';
+	echo $searchFrm->getExternalJS();
+   ?>
+</div>
+<?php } ?>
    <!--Filters[ -->
   <div class="widgets filter-search">
 	<div class="widgets-head">
@@ -27,18 +44,18 @@ array_walk($catCodeArr,function(&$n) {
   </div>
   <div class="divider"></div>
   <!-- ] -->
-  
+
   <!--Categories Filters[ resetAll-->
-  
- 
-  <?php   
+
+
+  <?php
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
   <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !isset( $shopCatFilters ) ){ ?>
   <div id="accordian" class="cat-accordion toggle-target scrollbar">
 	<ul class="">
 		<?php foreach( $categoriesArr as $cat ){
-			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id'])); ?>			
+			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id'])); ?>
 			<li>
 				<?php if( count($cat['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
 				<a class="filter_categories" data-id = "<?php echo $cat['prodcat_id']; ?>" href="<?php echo $catUrl; ?>"><?php echo $cat['prodcat_name']; ?></a>
@@ -48,23 +65,23 @@ array_walk($catCodeArr,function(&$n) {
 						<li>
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
 							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>"  href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
-							
+
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){
 								echo '<ul>';
 								foreach( $children['children'] as $subChildren ){ ?>
 								<li>
 									<?php if( isset($subChildren['children']) && count($subChildren['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
 									<a class="filter_categories" data-id = "<?php echo $subChildren['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($subChildren['prodcat_id'])); ?>"><?php echo $subChildren['prodcat_name']; ?></a>
-									
+
 									<?php if( isset($subChildren['children']) && count($subChildren['children']) > 0 ){
 										echo '<ul>';
 										foreach( $subChildren['children'] as $subSubChildren ){ ?>
-										
+
 										<li>
 											<?php if(  isset($subSubChildren['children']) && count($subSubChildren['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
 											<a class="filter_categories" data-id = "<?php echo $subSubChildren['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($subSubChildren['prodcat_id'])); ?>"><?php echo $subSubChildren['prodcat_name']; ?></a>
 										</li>
-										<?php	
+										<?php
 										}
 										echo '</ul>';
 									 } ?>
@@ -78,18 +95,18 @@ array_walk($catCodeArr,function(&$n) {
 					}
 					echo '</ul>';
 				} ?>
-				
+
 			</li>
-		<?php } ?>	  
+		<?php } ?>
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_more', $siteLangId); ?> </a> -->
    </div>
   <?php }else{ //Work in Progress  ?>
 	  <div class="brands-list toggle-target scrollbar">
 	<ul>
-		<?php 		
+		<?php
 		$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
-		foreach($categoriesArr as $cat){			
+		foreach($categoriesArr as $cat){
 			$catName= $cat['prodcat_name'];
 			$productCatCode = explode("_",$cat['prodcat_code']);
 			$productCatName = '';
@@ -97,7 +114,7 @@ array_walk($catCodeArr,function(&$n) {
 			foreach($productCatCode as $code){
 				$code = FatUtility::int($code);
 				if($code){
-					if(isset( $productCategories[$code]['prodcat_name'])){						
+					if(isset( $productCategories[$code]['prodcat_name'])){
 						$productCatName.= $seprator. $productCategories[$code]['prodcat_name'];
 						$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
 					}
@@ -106,19 +123,19 @@ array_walk($catCodeArr,function(&$n) {
 			<li>
 				<label class="checkbox brand" id="prodcat_<?php echo $cat['prodcat_id']; ?>" ><input name="category" value="<?php echo $cat['prodcat_id']; ?>" type="checkbox" data-title="<?php echo $catName; ?>" <?php if(in_array($cat['prodcat_id'],$prodcatArr)){echo "checked";}?>><i class="input-helper"></i><?php echo $productCatName; ?></label></a>
 			</li>
-			
+
 	<?php } ?>
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_More', $siteLangId); ?> </a> -->
 	</div>
-	  
+
 	  <?php
 		}?>
    <div class="divider"></div>
  <?php }
   ?>
   <!-- ] -->
-  
+
   <!--Price Filters[ -->
   <?php if( isset($priceArr) && $priceArr ){ ?>
     <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
@@ -147,10 +164,10 @@ array_walk($catCodeArr,function(&$n) {
 	<div class="divider"></div>
 	<?php } ?>
 	<!-- ] -->
-	
-	
+
+
 	<!--Brand Filters[ -->
-    <?php if(isset($brandsArr) && $brandsArr){ 
+    <?php if(isset($brandsArr) && $brandsArr){
 	 $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array();
 	?>
 	<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
@@ -165,23 +182,23 @@ array_walk($catCodeArr,function(&$n) {
 	<div class="divider"></div>
 	<?php }?>
 	<!-- ] -->
-	
+
 	<!-- Option Filters[ -->
-	<?php 
+	<?php
 		$optionIds = array();
 		$optionValueCheckedArr = (isset($optionValueCheckedArr) && !empty($optionValueCheckedArr))? $optionValueCheckedArr : array();
-		
-		if(isset($options) && $options){ 
+
+		if(isset($options) && $options){
 		function sortByOrder($a, $b) {
 			return $a['option_id'] - $b['option_id'];
 		}
-		
-		usort($options, 'sortByOrder');	
+
+		usort($options, 'sortByOrder');
 		$optionName = '';
 		$liData = '';
-		
+
 		foreach( $options as $optionRow ){
-			if( $optionName != $optionRow['option_name'] ){ 
+			if( $optionName != $optionRow['option_name'] ){
 				if($optionName!=''){
 					echo "</ul></div><div class='divider'></div>";
 				}
@@ -189,21 +206,21 @@ array_walk($catCodeArr,function(&$n) {
 				<div class="widgets-heading"><?php echo $optionRow['option_name']; ?></div>
 				<div class="brands-list toggle-target scrollbar">
 				<ul><?php
-			}	
-			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];	
-				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>"; 				
+			}
+			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];
+				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>";
 			?>
-				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionRow['optionvalue_id'],$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>			
-			
+				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionRow['optionvalue_id'],$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>
+
 		<?php }
 			echo "</ul></div>
 			<div class='divider'></div>";
 		}?>
 	<!-- ]->
-	
+
 	<!--Condition Filters[ -->
-	
-	<?php if( isset($conditionsArr) && $conditionsArr ){ 
+
+	<?php if( isset($conditionsArr) && $conditionsArr ){
 	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
 	?>
 	<div class="widgets">
@@ -219,7 +236,7 @@ array_walk($catCodeArr,function(&$n) {
 	<div class="divider"></div>
 	<?php } ?>
 	<!-- ] -->
-	
+
 	<!--Availability Filters[ -->
 	<?php $availability = isset($availability)?$availability:0;?>
 	<div class="widgets ">
@@ -232,10 +249,10 @@ array_walk($catCodeArr,function(&$n) {
 	</div>
 	<div class="divider "></div>
 	<!-- ] -->
-	
+
 </div>
-	
-	
+
+
 <!--Shipping Filters[ -->
 <!--<div class="widgets">
 	<div class="widgets-head"><h6>Shipping </h6></div>
@@ -253,7 +270,7 @@ array_walk($catCodeArr,function(&$n) {
 			$("ul li a[data-id='" + value +"']").parent().find('span:first').addClass('is--active');
 			$("ul li a[data-id='" + value +"']").parent().find('ul:first').css('display','block');
 		}
-	  
+
 	});
   </script>
 
@@ -290,7 +307,7 @@ $("document").ready(function(){
 		// grid_num: 1,
 		prefix: '<?php echo $currencySymbolLeft; ?>',
 		postfix: '<?php echo $currencySymbolRight; ?>',
-		
+
 		input_values_separator: '-',
 		onFinish: function () {
 			var minMaxArr = $("#price_range").val().split('-');
@@ -334,12 +351,12 @@ $from.on("change", function () {
         from = max;
     }
 
-    updateValues();    
+    updateValues();
     updateRange();
 });
 
 $to.on("change", function () {
-	
+
     to = $(this).prop("value");
 	if(!$.isNumeric(to)){
 		to = 0;
@@ -351,13 +368,13 @@ $to.on("change", function () {
         to = min;
     }
 
-    updateValues();    
+    updateValues();
     updateRange();
 });
 
 
 <?php } ?>
-	
+
 	/* left side filters scroll bar[ */
 	<?php /* if( isset($brandsArr) && $brandsArr && count($brandsArr) > 5 ){ */
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
@@ -370,7 +387,7 @@ $to.on("change", function () {
 	}
 	<?php /* } */ ?>
 	/* ] */
-	
+
 	/* left side filters expand-collapse functionality [ */
 	$('.span--expand').bind('click',function(){
 		$(this).parent('li.level').toggleClass('is-active');
@@ -378,7 +395,7 @@ $to.on("change", function () {
 		$(this).next('ul').toggle("");
 	});
 	$('.span--expand').click();
-	/* ] */	
+	/* ] */
 });
 
 /*  $(window).load(function(){

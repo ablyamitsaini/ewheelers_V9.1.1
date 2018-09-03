@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $approvalFrm->setFormTagAttribute('onsubmit', 'setupSupplierApproval(this); return(false);');
 $approvalFrm->setFormTagAttribute('class','form');
-$approvalFrm->developerTags['colClassPrefix'] = 'col-md-';
+$approvalFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $approvalFrm->developerTags['fld_default_col'] = '12';
 
 ?>

@@ -3,14 +3,14 @@ if( isset($products) && count($products) ) { ?>
 <section class="padd40">
   <div class="fixed-container">
     <div class="section-head"> <div class="section_heading"><?php echo FatApp::getConfig('CONF_PPC_PRODUCTS_HOME_PAGE_CAPTION_'.$siteLangId,FatUtility::VAR_STRING,Labels::getLabel('LBL_SPONSORED_PRODUCTS',$siteLangId)); ?></div>
-      
+
     </div>
     <div class="shops">
       <div class="row trending-corner">
-        <?php foreach( $products as $product ){ 
+        <?php foreach( $products as $product ){
 			include('collection-1-products-list.php');
-			
-			Promotion::updateImpressionData($product['promotion_id']);	
+
+			Promotion::updateImpressionData($product['promotion_id']);
 		} ?>
       </div>
     </div>

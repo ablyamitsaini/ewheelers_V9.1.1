@@ -1,9 +1,9 @@
-				<div class="ftshops row"> 
+				<div class="ftshops row">
 						<?php $i=0; foreach( $row['shops'] as $shop ){?>
 							<div class="col-lg-6 col-md-6 col-sm-6 ">
 								<div class="ftshops_item">
 								  <div class="ftshops_item_head">
-									<div class="row ">
+									<div class="row align-items-center">
 									  <div class="col-lg-8">
 										<div class="ftshops_item_head_left">
 										  <div class="ftshops_logo"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','shopLogo', array($shop['shopData']['shop_id'], $siteLangId, "THUMB", 0, false),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $shop['shopData']['shop_name']; ?>"> </div>
@@ -23,7 +23,7 @@
 										</div>
 									  </div>
 									  <div class="col-lg-4">
-										<div class="ftshops_item_head_right"> <a href="<?php echo (!isset($shop['shopData']['promotion_id'])?CommonHelper::generateUrl('shops','view', array($shop['shopData']['shop_id'])):CommonHelper::generateUrl('shops','track', array($shop['shopData']['promotion_record_id'],Promotion::REDIRECT_SHOP,$shop['shopData']['promotion_record_id']))); ?>" class="btn btn--primary ripplelink" tabindex="0"><?php echo Labels::getLabel('LBL_SHOP_NOW',$siteLangId);?></a> </div>
+										<div class="ftshops_item_head_right"> <a href="<?php echo (!isset($shop['shopData']['promotion_id'])?CommonHelper::generateUrl('shops','view', array($shop['shopData']['shop_id'])):CommonHelper::generateUrl('shops','track', array($shop['shopData']['promotion_record_id'],Promotion::REDIRECT_SHOP,$shop['shopData']['promotion_record_id']))); ?>" class="btn btn--primary btn--sm ripplelink" tabindex="0"><?php echo Labels::getLabel('LBL_SHOP_NOW',$siteLangId);?></a> </div>
 									  </div>
 									</div>
 								  </div>
@@ -42,17 +42,16 @@
 										 <?php include(CONF_THEME_PATH.'_partial/collection-product-price.php');?>
 									  </div>
 									</div>
-									
+
 								  <?php } ?>
 								  </div>
 								</div>
 							  </div>
 							<?php
 							$i++;
-							
-							isset($shop['shopData']['promotion_id'])?Promotion::updateImpressionData($shop['shopData']['promotion_id']):'';	
-							if($i==Collections::COLLECTION_LAYOUT4_LIMIT) break; 
+
+							isset($shop['shopData']['promotion_id'])?Promotion::updateImpressionData($shop['shopData']['promotion_id']):'';
+							if($i==Collections::COLLECTION_LAYOUT4_LIMIT) break;
 						}
 						?>
 				</div>
-		

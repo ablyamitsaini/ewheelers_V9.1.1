@@ -1243,7 +1243,7 @@ class CheckoutController extends MyAppController{
 		}
 		
 		if( empty($post['redeem_rewards']) ){ 
-			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			Message::addErrorMessage( Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
@@ -1559,7 +1559,8 @@ class CheckoutController extends MyAppController{
 	private function getRewardsForm($langId){
 		$langId = FatUtility::int($langId);
 		$frm = new Form('frmRewards');
-		$frm->addTextBox(Labels::getLabel('LBL_Reward_Points',$langId),'redeem_rewards','',array('placeholder'=>Labels::getLabel('LBL_Use_Reward_Point',$langId)));
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_Reward_Points',$langId),'redeem_rewards','',array('placeholder'=>Labels::getLabel('LBL_Use_Reward_Point',$langId)));
+		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
 	}

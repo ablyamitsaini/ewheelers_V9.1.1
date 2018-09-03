@@ -4,8 +4,8 @@ $this->includeTemplate('_partial/blogTopFeaturedCategories.php');
 $frm->setFormTagAttribute('class','form');
 /* $frm->setFormTagAttribute('onsubmit','setupContribution(this);return false;'); */
 $frm->setFormTagAttribute('action',CommonHelper::generateUrl('Blog','setupContribution'));
-$frm->developerTags['colClassPrefix'] = 'col-md-';
-$frm->developerTags['fld_default_col'] = '12';
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['fld_default_col'] = 12;
 $fileFld = $frm->getField('file');
 $preferredDimensionsStr = '<small class="text--small">'.Labels::getLabel('MSG_Allowed_Extensions',$siteLangId).'</small>';
 $fileFld->htmlAfterField = $preferredDimensionsStr;

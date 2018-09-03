@@ -3,7 +3,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 $frmOrderSrch->setFormTagAttribute('onSubmit','searchOrders(this); return false;');
 $frmOrderSrch->setFormTagAttribute('class', 'form'); 
-$frmOrderSrch->developerTags['colClassPrefix'] = 'col-md-';
+$frmOrderSrch->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frmOrderSrch->developerTags['fld_default_col'] = 12;
 	
 

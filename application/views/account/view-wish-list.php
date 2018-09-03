@@ -1,6 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 $randomId = rand( 1, 1000 );
 $frm->setFormTagAttribute('class', 'custom-form setupWishList-Js' );
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['fld_default_col'] = 12;
 $frm->setFormTagAttribute('id', 'setupWishList_Js_'.$randomId );
 $frm->setFormTagAttribute('onsubmit', 'setupWishList(this,event); return(false);');
 $uwlist_title_fld = $frm->getField('uwlist_title');

@@ -21,7 +21,7 @@
 					<?php 
 					$shopColLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
 					$shopColLangFrm->setFormTagAttribute('onsubmit', 'setupShopCollectionlangForm(this); return(false);');
-					$shopColLangFrm->developerTags['colClassPrefix'] = 'col-md-';
+					$shopColLangFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 					$shopColLangFrm->developerTags['fld_default_col'] = 8; 
 					echo $shopColLangFrm->getFormHtml();
 					?>

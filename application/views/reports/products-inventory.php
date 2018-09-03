@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchProductsInventory(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form'); 
-$frmSrch->developerTags['colClassPrefix'] = 'col-md-';
+$frmSrch->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
 $frmSrch->developerTags['fld_default_col'] = 6;
 	
 $keyFld = $frmSrch->getField('keyword');

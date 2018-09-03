@@ -28,7 +28,7 @@
 					<?php
 					$frmSellerProdLangFrm->setFormTagAttribute('onsubmit','setUpSellerProductLang(this); return(false);');
 					$frmSellerProdLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
-					$frmSellerProdLangFrm->developerTags['colClassPrefix'] = 'col-md-';
+					$frmSellerProdLangFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 					$frmSellerProdLangFrm->developerTags['fld_default_col'] = 8;
 					//$selprod_return_policy_fld = $frmSellerProdLangFrm->getField('selprod_return_policy');
 					

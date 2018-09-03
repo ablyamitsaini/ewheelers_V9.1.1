@@ -363,6 +363,10 @@
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+.close:hover,
+.system_message .closeMsg:hover{	-ms-transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+	transform: rotate(135deg);}
 
 .close:before,
 .system_message .closeMsg:before {

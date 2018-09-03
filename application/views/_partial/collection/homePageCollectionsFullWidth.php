@@ -34,25 +34,25 @@ if( isset( $collections ) && count($collections) ){
 									<span class="item__badge" title="<?php echo Product::getConditionArr($siteLangId)[$product['selprod_condition']]; ?>"><?php echo Product::getConditionArr($siteLangId)[$product['selprod_condition']]; ?></span>
 							<?php } ?>
 							<figure class="item__pic"><a href="<?php echo $productUrl; ?>" ><img src="<?php echo  FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL),CONF_IMG_CACHE_TIME, '.jpg'); ?>" title="<?php echo $product['selprod_title'];?>" alt="<?php echo $product['selprod_title']; ?>"></a></figure>
-							
-								
+
+
 							  <span class="item__title"><a href="<?php echo $productUrl; ?>" title="<?php echo $product['selprod_title']; ?>" ><?php echo $product['selprod_title']; ?></a></span>
-							  
+
 							  <?php if($product['special_price_found']){ ?>
 								<span class="item__info"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
 								<span class="item__price--old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
 							  <?php } ?>
-							  
+
 							  <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
 						  </div>
 						</div>
 					<?php
 					$itrIndex++;
-					} ?> 
+					} ?>
 					</div>
 					<?php } ?>
-					
+
 				</div>
-			</div>    
+			</div>
 		</section>
 <?php } } ?>

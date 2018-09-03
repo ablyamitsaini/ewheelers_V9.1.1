@@ -19,7 +19,7 @@
 		<?php
 		$frm->setFormTagAttribute('onsubmit','setup(this); return(false);');
 		$frm->setFormTagAttribute('class','form form--horizontal');
-		$frm->developerTags['colClassPrefix'] = 'col-md-';
+		$frm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 		$frm->developerTags['fld_default_col'] = 8; 
 		$urlFld = $frm->getField('splatform_url');
 		$urlFld->htmlAfterField = '<span class="text--small">'.Labels::getLabel('LBL_Example_Url', $siteLangId).'</span>';
