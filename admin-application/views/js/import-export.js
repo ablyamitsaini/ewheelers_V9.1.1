@@ -45,18 +45,18 @@
 	}
 	importMediaForm = function(actionType){
 		//$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('ImportExport', 'importMediaForm',[actionType]), '', function(t) {
-				fcom.updateFaceboxContent(t,'faceboxWidth');
-			});
-	//	});
+		fcom.ajax(fcom.makeUrl('ImportExport', 'importMediaForm',[actionType]), '', function(t) {
+			fcom.updateFaceboxContent(t,'faceboxWidth');
+		});
+		//	});
 	};
-			
-	importFile = function(method,actionType){ 
+	
+	importFile = function(method,actionType){
 		var data = new FormData(  );
 		$inputs = $('#frmImportExport input[type=text],#frmImportExport select,#frmImportExport input[type=hidden]');
-		$inputs.each(function() { data.append( this.name,$(this).val());});		
-		fcom.displayProcessing(langLbl.processing,' ',true);
+		$inputs.each(function() { data.append( this.name,$(this).val());});	
 		$.each( $('#import_file')[0].files, function(i, file) {
+			fcom.displayProcessing(langLbl.processing,' ',true);
 			$('#fileupload_div').html(fcom.getLoader());			
 			data.append('import_file', file);
 			$.ajax({

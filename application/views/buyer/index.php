@@ -108,7 +108,7 @@
 													}
 													$prodOrBatchImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($row['selprod_product_id'], "SMALL", $row['op_selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg');
 											}  ?>
-											<figure class="item__pic"><a href="<?php echo $row['op_selprod_id'];?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure></td>
+											<figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure></td>
 												<td>
 												<div class="item-yk item__description">
 													<div class="item-yk-head-date"><?php echo FatDate::format($row['order_date_added']);?></div>
