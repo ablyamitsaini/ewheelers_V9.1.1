@@ -13,12 +13,13 @@ $(document).ready(function(){
 		});
 	});
 });
+
 (function() {
 	updateStatus = function(frm){
 		if ( !$(frm).validate() ) return;
 		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'changeOrderStatus'), data, function(t) {			
-			window.location.reload();
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'changeOrderStatus'), data, function(t) {
+			setTimeout(location.reload.bind(location), 1000);
 		});
 	};	
 })();
