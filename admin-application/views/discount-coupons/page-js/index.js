@@ -74,6 +74,11 @@ $(document).delegate('.language-js','change',function(){
 				addCouponLangForm(t.couponId, t.langId);
 				return ;
 			}
+			if(t.openMediaForm)
+			{
+				couponMediaForm(t.couponId);
+				return;
+			}
 			$(document).trigger('close.facebox');
 		});
 	};
