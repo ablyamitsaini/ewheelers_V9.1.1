@@ -1,5 +1,30 @@
 $(document).ready(function(){
 	searchUserRequests();
+	
+	$('input[name=\'keyword\']').autocomplete({
+		'source': function(request, response) {		
+			$.ajax({
+				url: fcom.makeUrl('Users', 'autoCompleteJson'),
+				data: {keyword: request, fIsAjax:1},
+				dataType: 'json',
+				type: 'post',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return { label: item['name'] +'(' + item['username'] + ')', value: item['id'], name: item['username']	};
+					}));
+				},
+			});
+		},
+		'select': function(item) {
+			$("input[name='user_id']").val( item['value'] );
+			$("input[name='keyword']").val( item['name'] );
+		}
+	});
+	
+	$('input[name=\'keyword\']').keyup(function(){
+		$('input[name=\'user_id\']').val('');
+	});
+	
 });
 
 (function() {
@@ -48,6 +73,12 @@ $(document).ready(function(){
 				searchUserRequests();
 			}	
 		});
+	};
+	
+	clearSearch = function(){
+		document.frmUserSearch.reset();
+		document.frmUserSearch.user_id.value = '';
+		searchUsers( document.frmUserSearch );
 	};
 	
 	/* deleteUserRequest = function (reqId){
