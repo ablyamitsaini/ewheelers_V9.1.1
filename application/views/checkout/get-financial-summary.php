@@ -31,7 +31,7 @@
         <td class="text-left"><?php echo Labels::getLabel('LBL_Sub_Total', $siteLangId); ?></td>
         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
       </tr>
-      <?php if( $cartSummary['shippingTotal'] ){ ?>
+      <?php if( $cartSummary['originalShipping'] ){ ?>
       <tr>
         <td class="text-left"><?php echo Labels::getLabel('LBL_Delivery_Charges', $siteLangId); ?></td>
         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['shippingTotal']); ?></td>

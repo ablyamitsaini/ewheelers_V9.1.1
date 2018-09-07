@@ -75,7 +75,12 @@ $shippingapi_idFld->developerTags['col'] = 6;
                      
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
-								$product["shipping_free_availbilty"];	$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : "Shipping Free";
+								$product["shipping_free_availbilty"];	
+								if($product['shop_free_shipping_eligibility'] > 0) {
+									$shipping_charges = 0;
+								}else{
+									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
+								}
 								$shippingDurationTitle = ShippingDurations::getShippingDurationTitle( $sval, $siteLangId );
                                 $shipping_options[$product['product_id']][$sval['pship_id']] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
                             endforeach;	
