@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('class', 'form form--horizontal');
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['fld_default_col'] = 12;
 $frm->setFormTagAttribute( 'onSubmit', 'exportMedia(this,'.$actionType.'); return false;' );
 if($actionType == Importexport::TYPE_PRODUCTS || $actionType == Importexport::TYPE_SELLER_PRODUCTS){
 	$startIdFld = $frm->getField('start_id');	

@@ -33,7 +33,7 @@ $fld->htmlAfterField = $htmlAfterField;
 							<?php } 
 						}
 						?>
-						<li class="current"><a href="javascript:void(0);" <?php if($coupon_id>0){?> onclick="couponMediaForm(<?php echo $coupon_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$adminLangId);?></a></li>
+						<li><a class="active" href="javascript:void(0);" <?php if($coupon_id>0){?> onclick="couponMediaForm(<?php echo $coupon_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$adminLangId);?></a></li>
 					</ul>
 					<div class="tabs_panel_wrap">
 						<div class="tabs_panel">

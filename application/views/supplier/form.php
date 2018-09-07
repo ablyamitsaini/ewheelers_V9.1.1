@@ -1,7 +1,7 @@
 <?php $frm->setFormTagAttribute('class', 'form form--normal');
 $frm->setFormTagAttribute('onsubmit', 'register(this); return(false);');
 
-$frm->developerTags['colClassPrefix'] = 'col-md-';
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frm->developerTags['fld_default_col'] = 12;
 ?>
 

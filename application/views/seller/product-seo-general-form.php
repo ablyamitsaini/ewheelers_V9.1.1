@@ -14,7 +14,7 @@
 					<?php 
 					$productSeoForm->setFormTagAttribute('class', 'form form--horizontal');
 					$productSeoForm->setFormTagAttribute('onsubmit', 'setupProductMetaTag(this); return(false);');
-					$productSeoForm->developerTags['colClassPrefix'] = 'col-md-';
+					$productSeoForm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 					$productSeoForm->developerTags['fld_default_col'] = 8; 
 					
 					//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');

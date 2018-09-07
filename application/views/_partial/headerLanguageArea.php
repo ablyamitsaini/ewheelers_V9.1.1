@@ -1,15 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 
-	<?php 
+	<?php
 	$showDefalultLi = true;
-	if($languages && count($languages) > 1){ 
+	if($languages && count($languages) > 1){
 		$showDefalultLi = false;
 	?>
 	<li class="dropdown dropdown--arrow">
 		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
-		
+
 		<?php if($languages[$siteLangId]['language_flag']){?>
-			
+
 			<i class="icn-language"><img class="icon--img" alt="<?php echo Labels::getLabel('LBL_Language_Flag', $siteLangId);?>" src="<?php echo CONF_WEBROOT_URL; ?>images/flags/<?php echo $languages[$siteLangId]['language_flag']; ?>">	</i>
 		<?php }else{ echo'<i class="fa fa-language"></i>'; } ?>
 		 <span><?php echo $languages[$siteLangId]['language_name']; ?></span> </a>
@@ -28,7 +28,7 @@
 	<?php if($currencies && count($currencies) > 1){
 		$showDefalultLi = false;
 		?>
-	<li class="dropdown dropdown--arrow">			
+	<li class="dropdown dropdown--arrow">
 		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><i class="icn-currency"><?php echo CommonHelper::getCurrencySymbol();?> </i><span> <?php echo Labels::getLabel('LBL_Currency', $siteLangId);?></span> </a>
 		<div class="dropdown__target dropdown__target-lang dropdown__target-js">
 			<div class="box box--white">
@@ -46,11 +46,11 @@
 		if($showDefalultLi){
 			?>
 			<li class="dropdown dropdown--arrow">
-		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">	
+		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
 
 		<i class="icn-language"><img class="icon--img">	</i>
 		<span></span> </a>
 
 		</li>
-			<?php 
+			<?php
 		}	?>

@@ -20,7 +20,7 @@
 		<?php 
 		$themeColorFrm->setFormTagAttribute('onsubmit','setUpThemeColor(this); return(false);');
 		$themeColorFrm->setFormTagAttribute('class','form form--horizontal');
-		$themeColorFrm->developerTags['colClassPrefix'] = 'col-md-';
+		$themeColorFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 		$themeColorFrm->developerTags['fld_default_col'] = 8; 
 		$submitFld= $themeColorFrm->getField('btn_submit');
 		$submitFld->setFieldTagAttribute('class','block-on-mobile');

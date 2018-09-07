@@ -8,7 +8,7 @@
 	$shippingFrm->setFormTagAttribute('onsubmit', 'setupSellerShipping(this); return(false);');
 	$countryFld = $shippingFrm->getField('shipping_country');
 	
-	$shippingFrm->developerTags['colClassPrefix'] = 'col-md-';
+	$shippingFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
     $shippingFrm->developerTags['fld_default_col'] = 12;
 	$countryFld = $shippingFrm->getField('shipping_country');
 	$countryFld->setWrapperAttribute('class','col-md-6');

@@ -11,6 +11,12 @@ class UserGdprRequestsController extends AdminBaseController {
 	
 	public function index() {
 		$this->objPrivilege->canViewUserRequests();
+		$frmSearch = $this->getUsersRequestSearchForm();
+		$data = FatApp::getPostedData();
+		if($data){
+			$frmSearch->fill($data);
+		}
+		$this->set('frmSearch', $frmSearch);
 		$this->_template->render();		
 	}
 	
@@ -26,8 +32,31 @@ class UserGdprRequestsController extends AdminBaseController {
 		$srch->joinUser();
 		$srch->addMultipleFields(array('user_id','user_name','user_phone','credential_email','credential_username','ureq_id','ureq_status','ureq_type','ureq_date'));
 		$srch->addCondition('ureq_deleted','=',applicationConstants::NO);
-		$srch->addOrder('ureq_date','DESC');
+		$user_id = FatApp::getPostedData('user_id', FatUtility::VAR_INT, -1);
+		if( $user_id > 0 ){
+			$srch->addCondition('user_id', '=', $user_id );
+		} else {
+			$keyword = FatApp::getPostedData('keyword', null, '');
+			if( !empty($keyword) ) {
+				$cond = $srch->addCondition('uc.credential_username', 'like', '%'.$keyword.'%' );
+				$cond->attachCondition('uc.credential_email','like','%'.$keyword.'%','OR');
+				$cond->attachCondition('u.user_name', 'like', '%'. $keyword .'%' );
+			}
+		}
+		$request_type = FatApp::getPostedData( 'request_type', FatUtility::VAR_INT, -1 );
+		if( $request_type > -1 ){
+			$srch->addCondition('ureq_type', '=', $request_type );
+		}
+		$user_request_from = FatApp::getPostedData('user_request_from', FatUtility::VAR_DATE, '') ;
+		if ( !empty($user_request_from) ) {
+			$srch->addCondition('ureq_date', '>=', $user_request_from. ' 00:00:00');
+		}
 		
+		$user_request_to = FatApp::getPostedData('user_request_to', FatUtility::VAR_DATE, '') ;
+		if ( !empty($user_request_to) ) {
+			$srch->addCondition('ureq_date', '<=', $user_request_to. ' 23:59:59');
+		}
+		$srch->addOrder('ureq_date','DESC');
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);	
 		
@@ -44,6 +73,24 @@ class UserGdprRequestsController extends AdminBaseController {
 		$this->set('pageSize', $pagesize);					
 		$this->set('recordCount', $srch->recordCount());
 		$this->_template->render(false,false);
+	}
+	
+	private function getUsersRequestSearchForm() {
+		$frm = new Form('frmUserRequestSearch');
+		$keyword = $frm->addTextBox(Labels::getLabel('LBL_Name_Or_Email',$this->adminLangId), 'keyword','',array('id'=>'keyword','autocomplete'=>'off'));
+		/* $keyword->setFieldTagAttribute('onKeyUp','usersAutocomplete(this)'); */
+		$requestType = array('-1'=>Labels::getLabel('LBL_Does_Not_Matter',$this->adminLangId))+UserGdprRequest::getUserRequestTypesArr($this->adminLangId);
+		$frm->addSelectBox(Labels::getLabel('LBL_Request_Type',$this->adminLangId), 'request_type', $requestType, -1, array(),'');
+		
+		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_From',$this->adminLangId), 'user_request_from');
+		$frm->addDateField(Labels::getLabel('LBL_Reg._Date_To',$this->adminLangId), 'user_request_to');
+		
+		$frm->addHiddenField('','page',1);
+		$frm->addHiddenField('','user_id',0);
+		$fld_submit=$frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Search',$this->adminLangId));
+		$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->adminLangId));
+		$fld_submit->attachField($fld_cancel);			
+		return $frm;
 	}
 	
 	public function updateRequestStatus(){

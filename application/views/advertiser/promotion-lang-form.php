@@ -2,7 +2,7 @@
 $langFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
 $langFrm->setFormTagAttribute('onsubmit', 'setupPromotionLang(this); return(false);');
 
-$langFrm->developerTags['colClassPrefix'] = 'col-md-';
+$langFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $langFrm->developerTags['fld_default_col'] = 12; 
 ?>
 <div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js rtl">

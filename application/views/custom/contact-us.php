@@ -8,7 +8,7 @@
 	$captchaFld->htmlAfterField = '</div></div></div>';
 	
 	$contactFrm->setFormTagAttribute('action', CommonHelper::generateUrl('Custom', 'contactSubmit')); 
-	$contactFrm->developerTags['colClassPrefix'] = 'col-md-';
+	$contactFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$contactFrm->developerTags['fld_default_col'] = 12;
 ?>
 

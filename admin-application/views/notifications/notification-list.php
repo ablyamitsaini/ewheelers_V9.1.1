@@ -13,7 +13,7 @@ if(count($arr_listing) > 0){
 		$li->appendElement('a', array('href'=>'javascript:void(0)','onclick'=>'redirectfunc("'.$url.'","'.$row['notification_record_id'].'","'.$row['notification_id'].'")'),'<span class="grid first"><figure class="avtar">'.$img.'</figure></span><span class="grid"><span class="name">'.$uname.'</span><span class="desc">'.$labelArr[$row['notification_label_key']][0].'</span></span>', true);	
 	}
 }else{
-	$li = $ul->appendElement("li");
+	$li = $ul->appendElement("li",array('class'=>'padd15'));
 	$li->appendElement('plaintext',array(),Labels::getLabel('MSG_currently_no_new_notification',$adminLangId),true);
 }
 

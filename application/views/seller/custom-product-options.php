@@ -10,8 +10,8 @@
       <div class="col-md-12">
         <?php 
 			$customProductOptionFrm->setFormTagAttribute('class', 'form form--horizontal');
-			$fld1=$customProductOptionFrm->getField('option_name');
-			$fld1->fieldWrapper = array('<div class="col-md-8">', '</div>');
+			$customProductOptionFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+			$customProductOptionFrm->developerTags['fld_default_col'] = 12;
 			echo $customProductOptionFrm->getFormHtml();
 		?>
       </div>

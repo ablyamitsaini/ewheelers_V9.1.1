@@ -8,7 +8,7 @@
 				<div class="col-md-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
-							   <h2><?php echo Labels::getLabel('Lbl_Change_password',$siteLangId);?></h2>							   
+							   <h2><?php echo Labels::getLabel('Lbl_Change_password',$siteLangId);?></h2>		   
 						   </div>
 						<div class="panel__body">
 							<div class="box box--white box--space">                                  
@@ -16,7 +16,7 @@
 									<div class="tabs__content">
 										<div class="row">                                                    
 											<div class="form__content">
-												<div class="col-md-8" id="changePassFrmBlock">
+												<div id="changePassFrmBlock">
 													<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 												</div>
 											</div>                                                     

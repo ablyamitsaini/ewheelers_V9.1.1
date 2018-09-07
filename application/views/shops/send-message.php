@@ -1,6 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 <?php 
 	$frm->setFormTagAttribute('class','form form--horizontal');
+	$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+	$frm->developerTags['fld_default_col'] = 12;	
 	$frm->setFormTagAttribute('onSubmit', 'setUpSendMessage(this); return false;');
 	$fromFld = $frm->getField('send_message_from');
 	$toFld = $frm->getField('send_message_to');

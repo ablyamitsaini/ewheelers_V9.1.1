@@ -4,7 +4,7 @@
 	$keywordFld = $searchFrm->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
 	$keywordFld->htmlAfterField = '<input value="" type="submit" class="input-submit">';
-	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id)); 
+	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id));
  ?>
 <div id="body" class="body bg--shop" <?php if($showBgImage){ echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; } ?>>
 	<div class="shop-bar">
@@ -20,9 +20,21 @@
 	l4.008,2.106c0.107,0.063,0.232,0.106,0.357,0.106c0.259,0,0.366-0.213,0.366-0.445c0-0.063,0-0.116-0.009-0.179l-0.768-4.464
 	l3.241-3.159C14.737,5.803,14.854,5.65,14.854,5.49z"></path>
                 </svg> </i> <span class="rate"> <?php echo round($shopRating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a><?php } ?> </span> </div>
-              <div class="btn-groups"> <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary ripplelink block-on-mobile <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0"><?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a> 
-				  <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
-				  <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile"><?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a>
+              <div class="btn-groups">
+				<ul>
+					<li> <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary ripplelink block-on-mobile <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
+				<i class="icn"> <img src="images/retina/loveshop.svg"></i> <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a></li>
+
+
+					<li>
+				<a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"> <i class="icn"> <img src="images/retina/loveshop.svg"></i>  <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
+				 </li>
+
+
+					<li>
+				  <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile"><i class="icn"> <img src="images/retina/loveshop.svg"></i>  <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a>
+				 </li>
+				</ul>
 			  </div>
             </div>
           </div>
@@ -33,17 +45,16 @@
       </div>
     </div>
 
-	<?php 
-	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'searchFrm'=>$searchFrm,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
+	<?php
+	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
 	if(!isset($template_id) || ($template_id<0)){
 		$template_id=10001;
 	}
-	
+
 	$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 
 	?>
-	
-	
+
 	<section class="top-space">
 		<div class="fixed-container">
 			<div class="gap"></div>
@@ -55,7 +66,8 @@
 							<?php
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
-								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
+								$productFiltersArr['searchFrm']=$searchFrm;
+								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false);
 							}
 							/* ] */
 							?>
@@ -63,7 +75,7 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col--right">
-					<?php $blockTitle = Labels::getLabel('LBL_Shop_products' , $siteLangId); ?>				
+					<?php $blockTitle = Labels::getLabel('LBL_Shop_products' , $siteLangId); ?>
 					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId),false);  ?>
 					<div class="col-md-3 col--left col--left-adds">
 						<?php if(!empty($pollQuest)){ ?>
@@ -73,8 +85,8 @@
 						</div>
 						<?php } ?>
 						<div class="wrapper--adds">
-							<div class="grids" id="allProductsBanners"></div>   
-						</div>  
+							<div class="grids" id="allProductsBanners"></div>
+						</div>
 					</div>
 				</div>
 			</div>

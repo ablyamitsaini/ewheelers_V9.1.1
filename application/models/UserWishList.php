@@ -106,14 +106,22 @@ class UserWishList extends MyAppModel {
 	}
 	
 	public static function getUserWishlistItemCount( $userId = 0 ){
-		$wislistPSrchObj = new UserWishListProductSearch();
-		$wislistPSrchObj->joinWishLists();
-		$wislistPSrchObj->doNotCalculateRecords();
-		$wislistPSrchObj->addCondition( 'uwlist_user_id', '=', $userId );
-		$wislistPSrchObj->addGroupBy( 'uwlp.uwlp_selprod_id' );
-		$wislistPSrchObj->addfld('count(uwlist_user_id) as totalWishlistItems'); 
-		$countWishlistItemsRs = $wislistPSrchObj->getResultSet();
-		$totalWishlistItems = FatApp::getDb()->fetch($countWishlistItemsRs,'totalWishlistItems');
-		return $totalWishlistItems['totalWishlistItems'];
+		$srch = new UserWishListProductSearch();
+		$srch->joinSellerProducts();
+		$srch->joinProducts();
+		$srch->joinBrands();
+		$srch->joinSellers();
+		$srch->joinShops();
+		$srch->joinProductToCategory();
+		$srch->joinSellerSubscription(0,true);
+		$srch->addSubscriptionValidCondition();
+		$srch->joinSellerProductSpecialPrice();
+		$srch->joinFavouriteProducts( $userId );
+		$srch->addCondition('selprod_deleted',  '=', applicationConstants::NO );
+		$srch->addCondition('selprod_active', '=', applicationConstants::YES);
+		$srch->addGroupBy('selprod_id');
+		$srch->addFld('selprod_id');
+		$srch->getResultSet();
+		return $totalWishlistItems['totalWishlistItems'] = $srch->recordCount();
 	}
 }

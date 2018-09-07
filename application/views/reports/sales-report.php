@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchSalesReport(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form'); 
-$frmSrch->developerTags['colClassPrefix'] = 'col-md-';
+$frmSrch->developerTags['colClassPrefix'] = 'col-lg-4 col-md-4 col-sm-';
 $frmSrch->developerTags['fld_default_col'] = 4;
 ?>
 

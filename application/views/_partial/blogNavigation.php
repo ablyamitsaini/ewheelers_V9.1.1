@@ -44,6 +44,8 @@
 		<div class="search-form active">
 			<?php $srchFrm->setFormTagAttribute ( 'onSubmit', 'submitBlogSearch(this); return(false);' ); 
 			$srchFrm->setFormTagAttribute('class','form-main-search');
+			$srchFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+			$srchFrm->developerTags['fld_default_col'] = 12;
 			$keywordFld = $srchFrm->getField('keyword');
 			$keywordFld->setFieldTagAttribute('class','no-focus');
 			$keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_the_text_to_Search', $siteLangId));

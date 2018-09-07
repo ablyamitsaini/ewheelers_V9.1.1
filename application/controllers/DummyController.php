@@ -7,8 +7,9 @@ class DummyController extends MyAppController {
 	}
 	
 	function mytest(){
-		$orders = new Orders();
-		$orders->getOrderProductsByOpId(48,1);
+		
+		$keyword = 'Bébé & enfant';
+		echo mb_strlen($keyword); exit;
 	}
 	
 	function updateOrderProdSetting(){

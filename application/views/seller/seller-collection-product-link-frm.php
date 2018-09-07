@@ -21,7 +21,7 @@
 		<?php 
 		$sellerCollectionproductLinkFrm->setFormTagAttribute('onsubmit','setUpSellerCollectionProductLinks(this); return(false);');
 		$sellerCollectionproductLinkFrm->setFormTagAttribute('class','form form--horizontal');
-		$sellerCollectionproductLinkFrm->developerTags['colClassPrefix'] = 'col-md-';
+		$sellerCollectionproductLinkFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 		$sellerCollectionproductLinkFrm->developerTags['fld_default_col'] = 8; 
 
 	echo $sellerCollectionproductLinkFrm->getFormHtml(); ?>

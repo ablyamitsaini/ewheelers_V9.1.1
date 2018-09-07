@@ -15,7 +15,7 @@ if( $onSubmitFunctionName ){
 $frm->setFormTagAttribute('class', 'form form--normal');
 $fld = $frm->getField('btn_submit');
 
-$frm->developerTags['colClassPrefix'] = 'col-md-';
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frm->developerTags['fld_default_col'] = 12;					
 
 // $frm->getField('user_password')->addFieldTagAttribute('title' , Labels::getLabel('LBL_checkout_Sign_Up_Help_Points', $siteLangId));

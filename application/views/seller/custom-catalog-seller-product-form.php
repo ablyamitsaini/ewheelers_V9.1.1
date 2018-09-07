@@ -26,7 +26,7 @@
 						<?php
 							$frmSellerProduct->setFormTagAttribute('onsubmit','setUpCustomSellerProduct(this); return(false);');
 							$frmSellerProduct->setFormTagAttribute('class','form form--horizontal');
-							$frmSellerProduct->developerTags['colClassPrefix'] = 'col-md-';
+							$frmSellerProduct->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 							$frmSellerProduct->developerTags['fld_default_col'] = 12; 	
 							/* $optionSectionHeading = $frmSellerProduct->getField('optionSectionHeading');
 							$optionSectionHeading->value = '<h2>Set Up Options</h2>'; //TODO:: Make, final word from language labels. */

@@ -26,7 +26,7 @@
 								<?php 
 								$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
 								$frmRechargeWallet->setFormTagAttribute('class', 'form'); 
-								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-md-';
+								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
 								$frmRechargeWallet->developerTags['fld_default_col'] = 6;
 								$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
 

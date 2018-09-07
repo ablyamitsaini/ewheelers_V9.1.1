@@ -4,7 +4,7 @@
 </div>
 <div class="box__body">
 	<?php $frm->setFormTagAttribute('class','form');
-	$frm->developerTags['colClassPrefix'] = 'col-md-';
+	$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
 	$frm->developerTags['fld_default_col'] = 6;
 	$frm->setFormTagAttribute('onsubmit', 'setupWithdrawalReq(this); return(false);');
 	$ifscFld = $frm->getField('ub_ifsc_swift_code');

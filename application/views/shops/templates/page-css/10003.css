@@ -6,27 +6,16 @@
 }
 .shop-logo {
 	margin: 25px auto;
-	padding: 0;
+	padding: 10px;
 	text-align: center;
 	display: block;
 	overflow: hidden;
 	max-width: 240px;
 	height: 50px;
-	position: relative;
+	position: relative;display: flex;
+align-items: center;
 }
-.shop-logo img {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
-	margin: 0 auto;
-	max-width: 100%;
-}
-.shop-logo img {
-	text-align: center;
-	margin: 0 auto;
-}
+
 .shops-sliders {
 	text-align: center;
 	position: relative;
@@ -77,36 +66,6 @@
 .shops-sliders .slick-next {
 	right: 50%;
 	margin-right: -650px;
-}
-.product-search {
-	float: right;
-	margin: 25px auto;
-}
-.product-search input[type="text"] {
-	background: none;
-	border: none;
-	color: #fff;
-}
-.product-search .input-field {
-	background: none;
-	border: none;
-	font-weight: 300;
-	vertical-align: middle;
-	color: #fff;
-	float: none;
-	display: inline-block;
-	width: auto;
-	height: 20px;
-}
-.product-search .input-submit {
-	background: url(../images/retina/magni.svg) no-repeat 0 0;
-	background-size: 100% auto;
-	width: 20px;
-	height: 20px;
-	border: none;
-	padding: 0;
-	margin: 0;
-	float: left;
 }
 .shop-nav-bar {
 	background-color: #ffff66;

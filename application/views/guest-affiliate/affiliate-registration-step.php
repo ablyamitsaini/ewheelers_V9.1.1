@@ -1,6 +1,8 @@
 <?php 
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $registerForm->setFormTagAttribute('class', 'form form--normal');
+$registerForm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$registerForm->developerTags['fld_default_col'] = 12;
 
 if( !$affiliate_register_step_number ){
 	$btnSubmitFld = $registerForm->getField('btn_submit');

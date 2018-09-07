@@ -11,7 +11,7 @@
 <?php
 	$passwordFrm->setFormTagAttribute('onsubmit', 'setupPasswordForm(this); return(false);');
 	$passwordFrm->setFormTagAttribute('class','form form--normal');
-	$passwordFrm->developerTags['colClassPrefix'] = 'col-md-';
+	$passwordFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$passwordFrm->developerTags['fld_default_col'] = 12;	
 	echo $passwordFrm->getFormHtml();
 ?>

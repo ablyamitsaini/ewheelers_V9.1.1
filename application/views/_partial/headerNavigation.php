@@ -16,19 +16,19 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 <div class="navigation-wrapper">
 	<ul class="navigations">
 		<?php
-		$noOfCharAllowedInNav = 90;	
+		$noOfCharAllowedInNav = 90;
 		$rightNavCharCount = 5;
 		if( !$isUserLogged ){
 			$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel('LBL_Sign_In', $siteLangId));
-		}else{			
+		}else{
 			$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName);
-		}		
-		$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel("LBL_Cart", $siteLangId)); 
+		}
+		$rightNavCharCount = $rightNavCharCount + mb_strlen(Labels::getLabel("LBL_Cart", $siteLangId));
 		$noOfCharAllowedInNav = $noOfCharAllowedInNav - $rightNavCharCount;
-		
+
 		$navLinkCount = 0;
-		
-			
+
+
 			foreach( $headerNavigation as $nav ){
 				if( !$nav['pages'] ){ break;}
 				foreach($nav['pages'] as $link){
@@ -37,14 +37,14 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 						break;
 					}
 					$navLinkCount++;
-				}				
-			}	
-			
+				}
+			}
+
 			foreach( $headerNavigation as $nav ){
 				if( $nav['pages'] ){
 					$mainNavigation = array_slice($nav['pages'], 0, $navLinkCount);
 					foreach( $mainNavigation as $link ){
-						
+
 						$navUrl = CommonHelper::getnavigationUrl( $link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'] );
 						?>
 						<li class="<?php if( count($link['children']) ){ ?>navchild<?php } ?>"><a target="<?php echo $link['nlink_target']; ?>" href="<?php echo $navUrl; ?>"><?php echo $link['nlink_caption']; ?></a>
@@ -125,7 +125,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 										if( count($link['children']) > 0 ){
 											foreach( $link['children'] as $subCat ) {
 												$catUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id'])); ?>
-												<li><a href="<?php echo $catUrl; ?>"><?php echo $subCat['prodcat_name'];?></a>					
+												<li><a href="<?php echo $catUrl; ?>"><?php echo $subCat['prodcat_name'];?></a>
 												<?php if(isset($subCat['children'])){
 													?>
 													<ul>
@@ -155,7 +155,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 				</li>
 			<?php }
 		} ?>
-		
+
 	</ul>
 </div>
 <?php } ?>

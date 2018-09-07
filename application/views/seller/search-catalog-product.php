@@ -69,7 +69,7 @@ foreach ($arr_listing as $sn => $row){
 				'<i class="fa fa-eye"></i>', true);
 
 				
-				if(0 == $row['product_added_by_admin_id']){
+				if(0 != $row['product_seller_id']){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array( 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"href"=>CommonHelper::generateUrl('seller','customProductForm',array($row['product_id']))),
