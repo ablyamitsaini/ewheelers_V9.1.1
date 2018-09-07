@@ -1322,7 +1322,19 @@ class Cart extends FatModel {
     }
 	
 	public function getCarrierShipmentServicesList($product_key, $carrier_id = 0 ,$lang_id =0 ) {
-
+		$products = $this->getProducts($this->cart_lang_id);
+		$sellerPrice = $this->getSellersProductItemsPrice($products);
+		foreach($products as $cartkey=>$cartval)
+		{
+			$products[$cartkey]['shop_free_shipping_eligibility'] = 0;	
+			if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
+				$products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
+				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
+					$products[$cartkey]['shop_free_shipping_eligibility'] = 1;
+				}
+			}	
+		}
+		
         $services = $this->getCarrierShipmentServices($product_key, $carrier_id,$lang_id );
         $servicesList = array();
 
@@ -1332,6 +1344,9 @@ class Cart extends FatModel {
             foreach ($services as $key => $value) {
                 $code = $value->serviceCode;
                 $price = $value->shipmentCost + $value->otherCost;
+				if($products[$cartkey]['shop_free_shipping_eligibility'] > 0){
+					$price = 0;
+				}	
                 $name = $value->serviceName;
                 $label = $name . " (" . CommonHelper::displayMoneyFormat($price) . " )";
                 $servicesList[$code . "-" . $price] = $label;

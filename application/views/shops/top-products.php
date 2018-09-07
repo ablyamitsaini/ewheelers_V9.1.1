@@ -65,7 +65,7 @@
 				</div>
 				<div class="col-lg-9 col--right">
 					<?php $blockTitle=Labels::getLabel('LBL_TOP_PRODUCTS', $siteLangId);?>				
-					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId),false);  ?>
+					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId,'doNotdisplaySortBy'=>true),false);  ?>
 				<!--	<div class="col-md-3 col--left col--left-adds">
 						<?php if(!empty($pollQuest)){ ?>
 						<span class="gap"></span>
