@@ -1340,6 +1340,7 @@ class Cart extends FatModel {
 
         return $servicesList;
     }
+	
 	public function getProductByKey($find_key) {
 
         if (!$this->hasPhysicalProduct()) {
@@ -1354,6 +1355,7 @@ class Cart extends FatModel {
         }
         return false;
     }
+	
     public function getCarrierShipmentServices($product_key, $carrier_id ,$lang_id ) {
 
         if (!$key = $this->getProductByKey($product_key)) {
@@ -1408,6 +1410,7 @@ class Cart extends FatModel {
 
         return $product_rates;
     }
+	
 	function ConvertWeightInOunce($productWeight, $productWeightClass) {
 
         $coversionRate = 1;
