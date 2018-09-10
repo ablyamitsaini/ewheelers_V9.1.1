@@ -671,22 +671,37 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){
 
     this.eventdefault = function() {
       current.eventopen = function(element) {
+		if (!current.options.adaptive && $(window).width() < 767) {
+			return;
+		}
         element.xon('mouseenter', current.openzoom);
       }
 
       current.eventleave = function(element) {
+		if (!current.options.adaptive && $(window).width() < 767) {
+			return;
+		}
         element.xon('mouseleave', current.closezoom);
       }
 
       current.eventmove = function(element) {
+		if (!current.options.adaptive && $(window).width() < 767) {
+			return;
+		}
         element.xon('mousemove', current.movezoom);
       }
 
       current.eventscroll = function(element) {
+		if (!current.options.adaptive && $(window).width() < 767) {
+			return;
+		}
         element.xon('mousewheel DOMMouseScroll', current.xscroll);
       }
 
       current.eventclick = function(element) {
+		if (!current.options.adaptive && $(window).width() < 767) {
+			return;
+		}
         element.xon('click', function(event) {
           mObj.trigger('click');
         });
