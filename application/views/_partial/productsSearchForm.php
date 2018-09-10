@@ -52,6 +52,7 @@
 			echo $frmProductSearch->getFieldHtml('join_price');
 			echo $frmProductSearch->getFieldHtml('featured');
 			echo $frmProductSearch->getFieldHtml('currency_id');
+			echo $frmProductSearch->getFieldHtml('top_products');
 			echo $frmProductSearch->getExternalJS();
 		?>
 		</form>

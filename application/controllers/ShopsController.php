@@ -493,8 +493,8 @@ class ShopsController extends MyAppController {
 		$fld=$frm->getField('sortBy');
 		$fld->value='popularity_desc';
 		$fld->fldType ='hidden';
-		$frmData = array('shop_id' => $shop_id);
-		$frm->fill($frmData);
+		$frmData = array('shop_id' => $shop_id,'top_products' => $shop_id);
+		$frm->fill($frmData);		
 		$searchFrm->fill($frmData);
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchFrm', $searchFrm);
