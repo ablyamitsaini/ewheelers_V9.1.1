@@ -28,7 +28,7 @@ class ReportsController extends LoggedUserController {
 		$this->_template->render( );
 	}
 	
-	public function searchProductsPerformance( $orderBy = "DESC", $export = "" ){
+	public function searchProductsPerformance( $topPerformed = 0, $export = "" ){
 		if( !User::canAccessSupplierDashboard() ){
 			Message::addErrorMessage( Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId) );
 			FatUtility::dieWithError(Message::getHtml());
@@ -58,32 +58,53 @@ class ReportsController extends LoggedUserController {
 		/* ] */
 		
 		$srch = new OrderProductSearch( $this->siteLangId, true );
+		$srch->joinPaymentMethod();
 		$srch->joinTable( '(' . $uWsrch->getQuery() . ')', 'LEFT OUTER JOIN', 'tquwl.uwlp_selprod_id = op.op_selprod_id', 'tquwl' );
 		$srch->addCondition( 'op_shop_id', '=', $shopDetails['shop_id'] );
 		//$srch->doNotCalculateRecords();
 		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")) );
-		$srch->addCondition( 'order_is_paid', '=', Orders::ORDER_IS_PAID );
-		$srch->addMultipleFields(array( 'op_selprod_title', 'op_product_name', 'op_selprod_options', 'op_brand_name', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlist_user_counts' ));
+		$cnd = $srch->addCondition( 'order_is_paid', '=', Orders::ORDER_IS_PAID );
+		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
+		$srch->addMultipleFields(array( 'op_selprod_title', 'op_product_name', 'op_selprod_options', 'op_brand_name', 'SUM(op_refund_qty) as totRefundQty', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlist_user_counts' ));
 		$srch->addGroupBy('op.op_selprod_id');
 		$srch->addGroupBy('op.op_is_batch');
-		$srch->addOrder ( 'totSoldQty', $orderBy );
+		if($topPerformed){
+			$srch->addOrder ( 'totSoldQty', 'desc' );
+			$srch->addHaving('totSoldQty','>',0);	
+		}else{
+			$srch->addOrder ( 'totRefundQty', 'desc' );
+			$srch->addHaving('totRefundQty','>',0);	
+		}
 		
 		if( $export == "export" ){
 			$srch->doNotCalculateRecords();
 			$srch->doNotLimitRecords();
 			$rs = $srch->getResultSet();
 			$sheetData = array();
-			$arr = array( Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title', $this->siteLangId), Labels::getLabel('LBL_Options', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Sold_Quantity',$this->siteLangId), Labels::getLabel('LBL_WishList_User_Counts', $this->siteLangId));
+			$arr = array( Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title', $this->siteLangId), Labels::getLabel('LBL_Options', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_WishList_User_Counts', $this->siteLangId));
+			if( $topPerformed){
+				array_push( $arr, Labels::getLabel('LBL_Sold_Quantity',$this->siteLangId) );
+			}else{
+				array_push( $arr, Labels::getLabel('LBL_Refund_Quantity',$this->siteLangId) );
+			}				
+			
 			array_push( $sheetData, $arr );
 			while( $row = FatApp::getDb()->fetch($rs) ){
-				$arr = array( $row['op_product_name'], $row['op_selprod_title'], $row['op_selprod_options'],  $row['op_brand_name'], $row['totSoldQty'], $row['wishlist_user_counts'] );
+				$arr = array( $row['op_product_name'], $row['op_selprod_title'], $row['op_selprod_options'],  $row['op_brand_name'], $row['wishlist_user_counts'] );
+				
+				if( $topPerformed){
+					array_push($arr,$row['totSoldQty']);
+				}else{
+					array_push($arr,$row['totRefundQty']);
+				}					
+				
 				array_push($sheetData,$arr);
 			}
 			$csvName = '';
-			if( $orderBy == "DESC" ){
+			if( $topPerformed){
 				$csvName = Labels::getLabel('LBL_Top_Performing_Products_Report', $this->siteLangId).date("Y-m-d").'.csv';
 			} else {
-				$csvName = Labels::getLabel('LBL_Bad_Performing_Products_Report', $this->siteLangId).date("Y-m-d").'.csv';
+				$csvName = Labels::getLabel('LBL_Most_Refunded_Products_Report', $this->siteLangId).date("Y-m-d").'.csv';
 			}
 			CommonHelper::convertToCsv( $sheetData, $csvName, ','); exit;
 		} else {
@@ -92,7 +113,7 @@ class ReportsController extends LoggedUserController {
 			$rs = $srch->getResultSet();
 			$arrListing = FatApp::getDb()->fetchAll($rs);
 			$this->set('arrListing', $arrListing);
-			$this->set('orderBy', $orderBy);
+			$this->set('topPerformed', $topPerformed);
 			$this->set('page', $page);
 			$this->set('pageCount', $srch->pages());
 			$this->set('recordCount', $srch->recordCount());

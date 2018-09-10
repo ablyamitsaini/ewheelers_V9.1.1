@@ -447,7 +447,7 @@
 						<li><a href="<?php echo CommonHelper::generateUrl('TopProductsReport'); ?>"><?php echo Labels::getLabel('LBL_Top_Products',$adminLangId);?></a></li>
 					<?php }	?>
 					<?php if( $objPrivilege->canViewPerformanceReport( AdminAuthentication::getLoggedAdminId(), true ) ){ ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('BadProductsReport'); ?>"><?php echo Labels::getLabel('LBL_Bad_Products',$adminLangId);?></a></li>
+						<li><a href="<?php echo CommonHelper::generateUrl('BadProductsReport'); ?>"><?php echo Labels::getLabel('LBL_Most_Refunded_Products',$adminLangId);?></a></li>
 					<?php }	?>
 					<?php if( $objPrivilege->canViewPerformanceReport( AdminAuthentication::getLoggedAdminId(), true ) ){ ?>
 						<li><a href="<?php echo CommonHelper::generateUrl('TopCategoriesReport'); ?>"><?php echo Labels::getLabel('LBL_Top_Categories',$adminLangId);?></a></li>
