@@ -654,4 +654,8 @@ class CustomController extends MyAppController {
 	public function requestDemo(){
 		$this->_template->render( false, false ); 
 	}
+	
+	public function feedback(){
+		$this->_template->render( );
+	}
 }

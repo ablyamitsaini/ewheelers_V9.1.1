@@ -8053,3 +8053,61 @@ form.custom-form input[type="submit"] {
   border-color: var(--first-color);
   color: var(--first-color);
 }
+
+.crcle-btn svg {
+	display: inline-block;
+	height: 25px;
+	margin: -3px 0 0;
+	vertical-align: middle;
+}
+
+.crcle-btn svg path {
+	fill: #fff;
+}
+
+.cap {
+	color: #ec5d3f;
+	display: inline-block;
+	font-size: 10px;
+	margin-top: 12px;
+	padding: 3px 8px;
+	vertical-align: middle;
+	position: relative;
+	opacity: 0;
+	margin-right: 0;
+	text-transform: uppercase;
+}
+
+.feedback-btn:hover .cap {
+	opacity: 1;
+	margin-right: 10px;
+}
+
+.crcle-btn svg {
+	margin: -8px 0 0 -17px;
+	height: 30px;
+}
+
+.crcle-btn {
+	background-color: #FF3A59;
+	border-radius: 50%;
+	height: 45px;
+	line-height: 45px;
+	text-align: center;
+	position: relative;
+	display: block;
+	width: 45px;
+	float: right;
+	cursor: pointer;
+	z-index: 99999;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+	padding: 0;
+}
+
+.feedback-btn {
+	position: fixed;
+	bottom: 130px;
+	right: 6px;
+	z-index: 9999;
+}
