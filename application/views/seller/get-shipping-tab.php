@@ -16,7 +16,7 @@
 			if(!empty($shipping_rates) && count($shipping_rates)>0){
 			$shipping_row = 0;
 			foreach ($shipping_rates as $shipping) { ?>
-				 
+
 				<tr id="shipping-row<?php echo $shipping_row; ?>">
 				<td><input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][pship_id]" value="<?php echo $shipping['pship_id']; ?>" />
 				<input type="text" name="product_shipping[<?php echo $shipping_row; ?>][country_name]" value="<?php echo $shipping["pship_country"]!="-1"?$shipping["country_name"]:"&#8594;".Labels::getLabel('LBL_EveryWhere_Else',$siteLangId);?>" placeholder="<?php echo Labels::getLabel('LBL_Shipping',$siteLangId)?>" /><input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][country_id]" value="<?php echo $shipping["pship_country"]?>" /></td>
@@ -56,7 +56,7 @@
 		<script >
 		var shipping_row = <?php echo $shipping_row;?>;
 		addShipping = function(){
-		
+
 			html  = '<tr id="shipping-row' + shipping_row + '">';
 			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][country_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Ships_To',$siteLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][country_id]' value='' /></td>";
 			html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][company_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Shipping_Company',$siteLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][company_id]' value='' /></td>";
@@ -72,8 +72,8 @@
 			$('#shipping tbody').append(html);
 			shippingautocomplete(shipping_row);
 			shipping_row++;
-			
-	}	
+
+	}
 
 	$('#shipping tbody tr').each(function(index, element) {
 		shippingautocomplete(index);

@@ -36,7 +36,7 @@ class TopProductsReportController extends AdminBaseController {
 		$post = $srchFrm->getFormDataFromArray( FatApp::getPostedData() );
 		$page = FatApp::getPostedData( 'page', FatUtility::VAR_INT, 1 );
 		$pageSize = FatApp::getPostedData( 'pagesize', FatUtility::VAR_INT, 10 );
-		$orderBy = FatApp::getPostedData( 'order_by', FatUtility::VAR_STRING, 'DESC' );
+		$topPerformed = FatApp::getPostedData( 'top_perfomed', FatUtility::VAR_INT, 0 );
 		
 		
 		/* Sub Query to get, how many users added current product in his/her wishlist[ */
@@ -54,12 +54,17 @@ class TopProductsReportController extends AdminBaseController {
 		$srch->doNotCalculateRecords();
 		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")) );
 		$cnd = $srch->addCondition( 'order_is_paid', '=', Orders::ORDER_IS_PAID );
-		$cnd->attachCondition('pmethod_code', '=','cashondelivery');
-		/* $srch->addMultipleFields(array('IF(op_selprod_title is null or op_selprod_title = "",CONCAT(op_product_name,op_selprod_options) , op_selprod_title) as product_name','SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'count(distinct tquwl.uwlist_user_id) as followers' )); */
-		$srch->addMultipleFields(array('op_selprod_title', 'op_product_name', 'op_shop_name', 'op_selprod_options', 'op_brand_name', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'count(distinct tquwl.uwlist_user_id) as followers', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlistUserCounts'));
+		$cnd->attachCondition('pmethod_code', '=','cashondelivery');		
+		$srch->addMultipleFields(array('op_selprod_title', 'op_product_name', 'op_shop_name', 'op_selprod_options', 'op_brand_name','SUM(op_refund_qty) as totRefundQty', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'count(distinct tquwl.uwlist_user_id) as followers', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlistUserCounts'));
 		$srch->addGroupBy('op.op_selprod_id');
 		$srch->addGroupBy('op.op_is_batch');		
-		$srch->addOrder ( 'totSoldQty', $orderBy );
+		if($topPerformed){
+			$srch->addOrder ( 'totSoldQty', 'desc' );
+			$srch->addHaving('totSoldQty','>',0);	
+		}else{
+			$srch->addOrder ( 'totRefundQty', 'desc' );
+			$srch->addHaving('totRefundQty','>',0);	
+		}
 		/* echo $srch->getQuery(); die; */
 		$reportType = FatApp::getPostedData('report_type',FatUtility::VAR_INT, 0);
 		if( $reportType ){
@@ -88,16 +93,27 @@ class TopProductsReportController extends AdminBaseController {
 		if( $export == 'export' ){
 			$rs = $srch->getResultSet();
 			$sheetData = array();
-			$arr = array('Product Name', 'Custom Title(if any)', 'Options(if any)', 'Brand', 'Shop', 'Sold Quantity', 'Favorites');
+			$arr = array( Labels::getLabel('LBL_Product', $this->adminLangId), Labels::getLabel('LBL_Custom_Title', $this->adminLangId), Labels::getLabel('LBL_Options', $this->adminLangId), Labels::getLabel('LBL_Brand', $this->adminLangId),Labels::getLabel('LBL_Shop', $this->adminLangId), Labels::getLabel('LBL_WishList_User_Counts', $this->adminLangId));
+			if( $topPerformed){
+				array_push( $arr, Labels::getLabel('LBL_Sold_Quantity',$this->adminLangId) );
+			}else{
+				array_push( $arr, Labels::getLabel('LBL_Refund_Quantity',$this->adminLangId) );
+			}
 			array_push( $sheetData, $arr );
+			
 			while( $row = $db->fetch($rs) ){
-				$arr = array( $row['op_product_name'], $row['op_selprod_title'], $row['op_selprod_options'], $row['op_brand_name'], $row['op_shop_name'], $row['totSoldQty'], $row['followers'] );
+				$arr = array( $row['op_product_name'], $row['op_selprod_title'], $row['op_selprod_options'], $row['op_brand_name'], $row['op_shop_name'], $row['followers'] );
+				if( $topPerformed){
+					array_push($arr,$row['totSoldQty']);
+				}else{
+					array_push($arr,$row['totRefundQty']);
+				}	
 				array_push($sheetData,$arr);
 			}
-			if( $orderBy == "DESC" ){
+			if( $topPerformed ){
 				CommonHelper::convertToCsv( $sheetData, 'Top_Products_Report_'.date("d-M-Y").'.csv', ','); exit;
 			} else {
-				CommonHelper::convertToCsv( $sheetData, 'Bad_Products_Report_'.date("d-M-Y").'.csv', ','); exit;
+				CommonHelper::convertToCsv( $sheetData, 'Most_Refunded_Products_Report_'.date("d-M-Y").'.csv', ','); exit;
 			}
 		} else {
 			$rs = $srch->getResultSet();
@@ -107,6 +123,7 @@ class TopProductsReportController extends AdminBaseController {
 			$this->set('recordCount', $srch->recordCount());
 			$this->set('page', $page);
 			$this->set('pageSize', $pageSize);
+			$this->set('topPerformed', $topPerformed);
 			$this->set('postedData', $post);
 			$this->_template->render(false,false);
 		}
@@ -121,7 +138,7 @@ class TopProductsReportController extends AdminBaseController {
 		$frm->addSelectBox( Labels::getLabel('LBL_Type',$this->adminLangId), 'report_type', $this->getReportTypeArr(), '', array(), 'OverAll' );
 		$frm->addHiddenField('','page',1);
 		$frm->addSelectBox( Labels::getLabel('LBL_Record_Per_Page',$this->adminLangId), 'pagesize', array( 10 => '10', 20 => '20', 30 => '30', 50 => '50'), '', array(), '' );
-		$frm->addHiddenField( '', 'order_by', 'DESC' );
+		$frm->addHiddenField( '', 'top_perfomed',1);
 		$fld_submit = $frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Search',$this->adminLangId));
 		$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->adminLangId),array('onclick'=>'clearSearch();'));
 		$fld_submit->attachField($fld_cancel);

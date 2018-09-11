@@ -52,7 +52,7 @@ $cancelBtnFld->developerTags['col'] = 2;
       <div class="row">
         <?php //$this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
         <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-md-10 panel__right--full" >
+        <div class="col-xs-10 panel__right--full" >
           <div class="cols--group">
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_My_Subscriptions', $siteLangId); ?></h2>

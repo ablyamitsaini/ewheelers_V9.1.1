@@ -11,10 +11,10 @@
         </div>
       </div>
     </div>
-    
+
     <div class="fixed-container">
       <div class="packages-box">
-	  <?php 
+	  <?php
 	  $packageArrClass= SellerPackages::getPackageClass();
 	  $totalPackages = count($packagesArr);
 	  if($totalPackages>0){
@@ -25,17 +25,17 @@
 		$ColsinRow  = ceil(12/$lgCols);
 		$chunkedPackagesArr = array_chunk($packagesArr,$ColsinRow,1);
 		$inc=1;
-		foreach($chunkedPackagesArr as $chunkedPackages) {	
+		foreach($chunkedPackagesArr as $chunkedPackages) {
 			echo '<div class="row">';
-			
-			foreach($chunkedPackages as $package) {	
+
+			foreach($chunkedPackages as $package) {
 			$planIds = array_column($package['plans'],SellerPackagePlans::DB_TBL_PREFIX.'id');
 			$selectedClass ='';
 			if(in_array($currentActivePlanId,$planIds)){
 				$selectedClass ='is--active';
 			}
-			
-			
+
+
 			?>
 			<div class=" col-lg-<?php echo $lgCols;?> col-md-<?php echo $mdCols;?> col-sm-6 col-xs-12 box <?php echo $packageArrClass[$inc]." ".$selectedClass ?>">
 			  <div class="box-inner">
@@ -50,7 +50,7 @@
 				</div>
 				<?php /* if($package[SellerPackages::DB_TBL_PREFIX.'free_trial_days']>0 && $includeFreeSubscription){
 					?>
-				<a class="btn btn--secondary ripplelink buyFreeSubscription" data-id= "<?php echo $package[SellerPackages::DB_TBL_PREFIX.'id'];?>"  href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Free_Trial',$siteLangId);?></a> <?php  
+				<a class="btn btn--secondary ripplelink buyFreeSubscription" data-id= "<?php echo $package[SellerPackages::DB_TBL_PREFIX.'id'];?>"  href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Free_Trial',$siteLangId);?></a> <?php
 				} */ ?></div>
 			  <div class="after-box">
 				<h3><?php echo sprintf(Labels::getLabel('Lbl_Select_Your_%s_Price',$siteLangId),$package['spackage_name']) ;?></h3>
@@ -62,7 +62,7 @@
 					  <i class="input-helper"></i>  <?php echo SellerPackagePlans::getPlanPriceWithPeriod($plan,$plan[SellerPackagePlans::DB_TBL_PREFIX.'price']);?></label>
 				  </li>
 				<?php } ?>
-				
+
 				</ul>
 				<?php if($currentActivePlanId){
 					$buyPlanText = Labels::getLabel('LBL_Change_Plan',$siteLangId);
@@ -71,18 +71,17 @@
 				}?>
 				<a href="javascript:void(0)	" data-id= "<?php echo $package[SellerPackages::DB_TBL_PREFIX.'id'];?>"   class="btn btn--secondary ripplelink buySubscription--js "><?php echo $buyPlanText;?></a> </div>
 			</div>
-		  <?php 
-		  
-			$inc++;	
+		  <?php
+
+			$inc++;
 			}
 			echo'</div><div class="gap"></div>';
 		}
-	  }	  ?> 
+	  }	  ?>
 	  </div>
       <div class="gap"></div>
     </div>
     </section>
 	<div class="gap"></div>
 </div>
-<script>var currentActivePlanId = <?php echo  ($currentActivePlanId)?$currentActivePlanId:0;?></script>			
-	
+<script>var currentActivePlanId = <?php echo  ($currentActivePlanId)?$currentActivePlanId:0;?></script>

@@ -5,7 +5,7 @@
     <div class="fixed-container">
       <div class="row">
         <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-md-10 panel__right--full" >
+        <div class="col-xs-10 panel__right--full" >
           <div class="cols--group">
             <div class="panel__head no-print">
               <h2><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
@@ -82,7 +82,7 @@
                         <th> <?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?></th>
                         <th><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></th>
                       </tr>
-                      <?php 
+                      <?php
 						$cartTotal = 0;
 						$shippingCharges = 0;
 						$total = 0;
@@ -100,7 +100,7 @@
                       <tr>
                         <td class="no-print"><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
                           <div class="pic--cell-left">
-                            <?php 
+                            <?php
 								$prodOrBatchUrl = 'javascript:void(0)';
 								if($childOrder['op_is_batch']){
 									$prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($childOrder['op_selprod_id']));
@@ -172,30 +172,30 @@
                   </table>
                   <div class="grids--colum">
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-6"> 
+                      <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="grid">
                           <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
                           <?php $billingAddress = $orderDetail['billingAddress']['oua_name'].'<br>';
 								if($orderDetail['billingAddress']['oua_address1']!=''){
 									$billingAddress.=$orderDetail['billingAddress']['oua_address1'].'<br>';
 								}
-								
+
 								if($orderDetail['billingAddress']['oua_address2']!=''){
 									$billingAddress.=$orderDetail['billingAddress']['oua_address2'].'<br>';
 								}
-								
+
 								if($orderDetail['billingAddress']['oua_city']!=''){
 									$billingAddress.=$orderDetail['billingAddress']['oua_city'].',';
 								}
-								
+
 								if($orderDetail['billingAddress']['oua_zip']!=''){
 									$billingAddress.=$orderDetail['billingAddress']['oua_state'];
 								}
-								
+
 								if($orderDetail['billingAddress']['oua_zip']!=''){
 									$billingAddress.= '-'.$orderDetail['billingAddress']['oua_zip'];
 								}
-								
+
 								if($orderDetail['billingAddress']['oua_phone']!=''){
 									$billingAddress.= '<br>'.$orderDetail['billingAddress']['oua_phone'];
 								}
@@ -211,23 +211,23 @@
 								if($orderDetail['shippingAddress']['oua_address1']!=''){
 									$shippingAddress.=$orderDetail['shippingAddress']['oua_address1'].'<br>';
 								}
-								
+
 								if($orderDetail['shippingAddress']['oua_address2']!=''){
 									$shippingAddress.=$orderDetail['shippingAddress']['oua_address2'].'<br>';
 								}
-								
+
 								if($orderDetail['shippingAddress']['oua_city']!=''){
 									$shippingAddress.=$orderDetail['shippingAddress']['oua_city'].',';
 								}
-								
+
 								if($orderDetail['shippingAddress']['oua_zip']!=''){
 									$shippingAddress.=$orderDetail['shippingAddress']['oua_state'];
 								}
-								
+
 								if($orderDetail['shippingAddress']['oua_zip']!=''){
 									$shippingAddress.= '-'.$orderDetail['shippingAddress']['oua_zip'];
 								}
-								
+
 								if($orderDetail['shippingAddress']['oua_phone']!=''){
 									$shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
 								}
@@ -303,24 +303,24 @@
                           <th><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></th>
                         </tr>
                         <?php $sr_no = 1;
-							foreach( $digitalDownloads as $key=>$row ){ 							
+							foreach( $digitalDownloads as $key=>$row ){
 								$lang_name = Labels::getLabel('LBL_All',$siteLangId);
 								if( $row['afile_lang_id'] > 0 ){
 									$lang_name = $languages[$row['afile_lang_id']];
 								}
-								
+
 								if($row['downloadable']){
 									$fileName = '<a href="'.CommonHelper::generateUrl('Buyer','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'])).'">'.$row['afile_name'].'</a>';
 								}else{
 									$fileName = $row['afile_name'];
 								}
 								$downloads = '<li><a href="'.CommonHelper::generateUrl('Buyer','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'])).'"><i class="fa fa-download"></i></a></li>';
-								
+
 								$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
 								if($row['expiry_date']!=''){
 									$expiry = FatDate::Format($row['expiry_date']);
 								}
-								
+
 								$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
 								if($row['downloadable_count'] != -1){
 									$downloadableCount = $row['downloadable_count'];
@@ -333,14 +333,14 @@
                           <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></span><?php echo $downloadableCount;?></td>
                           <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></span><?php echo $row['afile_downloaded_times'];?></td>
                           <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></span><?php if($row['downloadable']){?><ul class="actions"><?php echo $downloads;?></ul><?php }?></td>                          
+                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></span><?php if($row['downloadable']){?><ul class="actions"><?php echo $downloads;?></ul><?php }?></td>
                         </tr>
                         <?php $sr_no++; } ?>
                       </tbody>
                     </table>
                   </div>
                   <?php } ?>
-				  
+
 				  <span class="gap"></span>
 					<?php if( !empty( $digitalDownloadLinks ) ){ ?>
 					  <div class="section--repeated">
@@ -356,17 +356,17 @@
 							</tr>
 							<?php $sr_no = 1;
 							foreach( $digitalDownloadLinks as $key=>$row ){
-									
+
 								$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
 								if($row['expiry_date']!=''){
 									$expiry = FatDate::Format($row['expiry_date']);
 								}
-								
+
 								$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
 								if($row['downloadable_count'] != -1){
 									$downloadableCount = $row['downloadable_count'];
 								}
-								
+
 								$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
 								$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
 								$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
@@ -377,7 +377,7 @@
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></span><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></span><?php echo $downloadableCount;?></td>
 							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></span><?php echo $row['opddl_downloaded_times'];?></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>                        
+							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>
 							</tr>
 							<?php $sr_no++; } ?>
 						  </tbody>
@@ -406,6 +406,6 @@
 			window.location.href= dataLink; */
 			location.reload();
 			return true;
-		}); 
+		});
 	}
 </script>

@@ -7,7 +7,7 @@
 					<div class="row">
 						<div class="col--first col-lg-6">
 							<span class="page__icon"><i class="ion-android-star"></i></span>
-							<h5><?php echo Labels::getLabel('LBL_Bad_Products_Report',$adminLangId); ?></h5>
+							<h5><?php echo Labels::getLabel('LBL_Most_Refunded_Products_Report',$adminLangId); ?></h5>
 							<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
 						</div>
 					</div>
@@ -32,7 +32,7 @@
 	<div class="col-sm-12"> -->		
 		<section class="section">
 		<div class="sectionhead">
-			<h4><?php echo Labels::getLabel('LBL_Bad_Products_Report',$adminLangId); ?> </h4>
+			<h4><?php echo Labels::getLabel('LBL_Most_Refunded_Products_Report',$adminLangId); ?> </h4>
 			<?php
 				$ul = new HtmlElement( "ul",array("class"=>"actions actions--centered") );
 				$li = $ul->appendElement("li",array('class'=>'droplink'));

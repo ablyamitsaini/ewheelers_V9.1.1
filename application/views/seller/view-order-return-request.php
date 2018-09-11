@@ -5,7 +5,7 @@
 		<div class="fixed-container">
 			<div class="row">
 				<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>  
-				<div class="col-md-10 panel__right--full" >
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
 							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': ' . $request['orrequest_reference'] /* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']) */; ?></h2>

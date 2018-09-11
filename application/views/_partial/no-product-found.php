@@ -19,9 +19,9 @@
 			<?php echo Labels::getLabel('LBL_Please_check_if_you_misspelt_something_or_try_searching_again_with_fewer_keywords.', $siteLangId); ?>
 		</div>
 		<div class="query-form">
-			<?php echo $pSrchFrm->getFormTag(); ?>			
+			<?php echo $pSrchFrm->getFormTag(); ?>	
+			<?php echo $pSrchFrm->getFieldHTML('keyword'); ?>			
 			<?php echo $pSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
-            <?php echo $pSrchFrm->getFieldHTML('keyword'); ?>
 			</form>
 			<?php echo $pSrchFrm->getExternalJS(); ?>
 			<?php if (count($top_searched_keywords)>0): /* CommonHelper::printArray($top_searched_keywords); die; */ ?>

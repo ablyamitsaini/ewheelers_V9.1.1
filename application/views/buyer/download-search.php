@@ -1,8 +1,8 @@
-<?php 
+<?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 $frmSrch->setFormTagAttribute('onSubmit','searchBuyerDownloads(this); return false;');
-$frmSrch->setFormTagAttribute('class', 'form'); 
+$frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmSrch->developerTags['fld_default_col'] = 12;
 
@@ -42,7 +42,7 @@ $canReturnRefund = true;
 foreach ($digitalDownloads as $sn => $row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array( 'class' => '' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -69,8 +69,8 @@ foreach ($digitalDownloads as $sn => $row){
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$expiry,true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);				
-				if($row['downloadable']){				
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				if($row['downloadable']){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=> CommonHelper::generateUrl('Buyer','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'])), 'class'=>'',
 				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
@@ -83,7 +83,7 @@ foreach ($digitalDownloads as $sn => $row){
 		}
 	}
 }
-if (count($digitalDownloads) == 0){	
+if (count($digitalDownloads) == 0){
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 } else {
 	echo $tbl->getHtml();

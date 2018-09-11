@@ -18,8 +18,8 @@ $sr_no = 0;
 foreach ($orders as $sn => $order){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($order['op_id']) );	
-	
+	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($order['op_id']) );
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -35,14 +35,14 @@ foreach ($orders as $sn => $order){
 					$txt .= '<div class="item-yk-head-title">'.$order['op_selprod_title'].'</div>';
 				}
 				$txt .= '<div class="item-yk-head-sub-title">'.$order['op_product_name'].'</div>';
-				
+
 				$txt .= '<div class="item-yk-head-specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$order['op_brand_name'];
 				if( $order['op_selprod_options'] != '' ){
 					$txt .= ' | ' . $order['op_selprod_options'];
 				}
-				$txt .= '</div>';				
+				$txt .= '</div>';
 				$td->appendElement('plaintext', array(), $txt , true);
-			break;			
+			break;
 			case 'total':
 				$txt = '<span class="caption--td">'.$val.'</span>';
 				// $txt .= CommonHelper::displayMoneyFormat($order['order_net_amount']);
@@ -52,10 +52,10 @@ foreach ($orders as $sn => $order){
 			case 'status':
 				$txt = '<span class="caption--td">'.$val.'</span>'.$order['orderstatus_name'];
 				$td->appendElement('plaintext', array(), $txt , true);
-			break;			
+			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
-				
+
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> $orderDetailUrl, 'class'=>'',
 				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
@@ -64,7 +64,7 @@ foreach ($orders as $sn => $order){
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id']) ), 'class'=>'',
 				'title'=>Labels::getLabel('LBL_Cancel_Order',$siteLangId)),
-				'<i class="fa fa-close"></i>', true);				
+				'<i class="fa fa-close"></i>', true);
 			break;
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$order[$key],true);

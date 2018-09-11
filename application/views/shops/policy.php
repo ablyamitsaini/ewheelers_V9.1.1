@@ -23,7 +23,17 @@
               </svg> </i> <span class="rate"> <?php echo round($shopRating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a>
               <?php } ?>
               </span> </div>
-            <div class=""> <a href="javascript:void(0)" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a> <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a> <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile"><?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a> </div>
+            <div class="shop-actions">
+				<ul>
+				<li><a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="<?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
+					<i class="icn"> <img src="images/retina/loveshop.svg"></i>
+				 <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
+				</li>
+				<li> <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="" tabindex="0"> <i class="icn"> <img src="images/retina/send-meg.svg"></i> <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a></li>
+
+				<li> <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class=""><i class="icn"> <img src="images/retina/spam.svg"></i> <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a></li>
+				</ul>
+			  </div>
           </div>
         </div>
      <div class="col-lg-5 col-md-5 col-sm-5  col-xs-12">

@@ -302,7 +302,7 @@ class MyAppController extends FatController {
 		return $frm;
 	}
 
-	protected function getProductSearchForm(){
+	protected function getProductSearchForm(){ 
 		$sortByArr = array( 'price_asc' => Labels::getLabel('LBL_Price_(Low_to_High)', $this->siteLangId), 'price_desc' => Labels::getLabel('LBL_Price_(High_to_Low)', $this->siteLangId), 'popularity_desc' => Labels::getLabel('LBL_Sort_by_Popularity', $this->siteLangId), 'rating_desc' => Labels::getLabel('LBL_Sort_by_Rating', $this->siteLangId) );
 
 		$pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
@@ -325,6 +325,7 @@ class MyAppController extends FatController {
 		$frm->addHiddenField('', 'collection_id',0);
 		$frm->addHiddenField('', 'join_price',0);
 		$frm->addHiddenField('', 'featured',0);
+		$frm->addHiddenField('', 'top_products',0);				
 		$frm->addHiddenField( '', 'currency_id', $this->siteCurrencyId );
 		$frm->addSubmitButton('','btnProductSrchSubmit','');
 		return $frm;

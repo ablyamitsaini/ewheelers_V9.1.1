@@ -1,9 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $frmOrderReturnRequestsSrch->setFormTagAttribute('onSubmit','searchOrderReturnRequests(this); return false;');
-$frmOrderReturnRequestsSrch->setFormTagAttribute('class', 'form'); 
+$frmOrderReturnRequestsSrch->setFormTagAttribute('class', 'form');
 $frmOrderReturnRequestsSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderReturnRequestsSrch->developerTags['fld_default_col'] = 12;
-	
+
 $keywordFld = $frmOrderReturnRequestsSrch->getField('keyword');
 $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
 $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Search_in_Order_Id/Invoice_number,_Product_Name,_Brand_Name,_SKU,_Model,_,Request_reference_number', $siteLangId).'</small>';
@@ -13,7 +13,7 @@ $keywordFld->developerTags['col'] = 8;
 $statusFld = $frmOrderReturnRequestsSrch->getField('orrequest_status');
 $statusFld->setWrapperAttribute('class','col-sm-6');
 $statusFld->developerTags['col'] = 4;
-	
+
 $orrequestDateFromFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_from');
 $orrequestDateFromFld->setFieldTagAttribute('class','field--calender');
 $orrequestDateFromFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_From', $siteLangId));
@@ -25,7 +25,7 @@ $orrequestDateToFld->setFieldTagAttribute('class','field--calender');
 $orrequestDateToFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_to', $siteLangId));
 $orrequestDateToFld->setWrapperAttribute('class','col-sm-6');
 $orrequestDateToFld->developerTags['col'] = 4;
-	
+
 $submitBtnFld = $frmOrderReturnRequestsSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
 $submitBtnFld->setWrapperAttribute('class','col-sm-6');
@@ -38,11 +38,11 @@ $cancelBtnFld->developerTags['col'] = 2;
 ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>  
-				<div class="col-md-10 panel__right--full" >
+				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
 							<h2><?php echo Labels::getLabel('LBL_Order_Return_Requests', $siteLangId); ?></h2>
