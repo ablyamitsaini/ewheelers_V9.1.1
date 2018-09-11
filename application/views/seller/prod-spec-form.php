@@ -11,17 +11,17 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
 <div class="row">
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12 ">
-<div class="row"> 
+<div class="row">
 <div class="col-md-12">
    <div class="field-set">
      <div class="caption-wraper">
        <h5><?php  echo $langName;?></h5>
      </div>
-    
+
    </div>
- </div> 
  </div>
- 
+ </div>
+
  </div>
 
 
@@ -29,7 +29,7 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
 </div>
 <div class="row">
 <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
-<div class="row"> 
+<div class="row">
  <div class="col-lg-6 col-md-6 col-md-12 <?php echo 'layout--'.Language::getLayoutDirection($langId); ?>">
    <div class="field-set">
      <div class="caption-wraper">
@@ -43,7 +43,7 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
        </div>
      </div>
    </div>
- </div> 
+ </div>
 
  <div class="col-lg-6 col-md-6 col-md-12 <?php echo 'layout--'.Language::getLayoutDirection($langId); ?>">
    <div class="field-set">
@@ -52,7 +52,7 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
      </div>
      <div class="field-wraper">
        <div class="field_cover">
-        <?php   if(isset($data['prod_spec_value['.$langId.']']))  $fld->value= $data['prod_spec_value['.$langId.']']; 
+        <?php   if(isset($data['prod_spec_value['.$langId.']']))  $fld->value= $data['prod_spec_value['.$langId.']'];
 		echo $prodSpecFrm->getFieldHtml('prod_spec_value['.$langId.']');?>
        </div>
      </div>
@@ -63,7 +63,7 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
 
 <?php  } ?>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
-	<div class="row"> 
+	<div class="row">
 		<div class="col-md-12">
 		   <div class="field-set">
 			 <div class="caption-wraper">
@@ -78,7 +78,7 @@ $prodSpecFrm->developerTags['fld_default_col']=6;
 			   </div>
 			 </div>
 		   </div>
-		 </div> 
+		 </div>
 	 </div>
 </div>
 

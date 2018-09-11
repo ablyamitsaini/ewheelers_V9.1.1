@@ -1,7 +1,7 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute ( 'onSubmit', 'searchCategory(this); return(false);' );
 
-$frm->setFormTagAttribute('class', 'form'); 
+$frm->setFormTagAttribute('class', 'form');
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 
@@ -22,11 +22,11 @@ echo $frm->getFormHtml(); ?>
 <div class="search-form"></div>
 <h5><?php echo Labels::getLabel('Lbl_Select_Your_Product_category',$siteLangId);?></h5>
 <div id="categories-js" class="categories-add-step">
-	<div class="row select-categories-slider select-categories-slider-js slick-slider" id="categoryListing" dir="<?php echo CommonHelper::getLayoutDirection();?>">		
-	</div>	
+	<div class="row select-categories-slider select-categories-slider-js slick-slider" id="categoryListing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+	</div>
 </div>
 <div id="categorySearchListing"></div>
 <p><?php echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId);?></p>
 <script>
 $('.select-categories-slider-js').slick( getSlickSliderSettings(3,1,langLbl.layoutDirection) );
-</script>	
+</script>

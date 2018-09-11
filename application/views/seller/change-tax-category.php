@@ -6,5 +6,5 @@
 	$frm->setFormTagAttribute('class','form');
 	$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$frm->developerTags['fld_default_col'] = 12; 	
-	echo $frm->getFormHtml(); ?>	
+	echo $frm->getFormHtml(); ?>
 </div>

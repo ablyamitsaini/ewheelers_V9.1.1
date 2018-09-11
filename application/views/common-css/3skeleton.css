@@ -8019,9 +8019,9 @@ form.custom-form input[type="submit"] {
   display: -ms-flexbox;
   display: flex;
   margin: 5px 0;
-  -webkit-box-align: center;
+  /*-webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
+  align-items: center;*/
 }
 
 .shop-actions li a {
@@ -8038,15 +8038,16 @@ form.custom-form input[type="submit"] {
   font-size: 0.875em;
   background-color: #fff;
   color: var(--txt-color-light);
+height: 100%;
 }
 
 .shop-actions .icn {
   margin: 0 5px;
-  min-width: 14px;
+  min-width: 15px;
 }
 
 .shop-actions .icn img {
-  opacity: 0.5;
+  opacity: 0.5; max-width: 15px;
 }
 
 .shop-actions li a.is-active {

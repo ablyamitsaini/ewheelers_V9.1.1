@@ -1,7 +1,7 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSearchCustomCatalogProducts->setFormTagAttribute ( 'onSubmit', 'searchCustomCatalogProducts(this); return(false);' );
 
-$frmSearchCustomCatalogProducts->setFormTagAttribute('class', 'form'); 
+$frmSearchCustomCatalogProducts->setFormTagAttribute('class', 'form');
 $frmSearchCustomCatalogProducts->developerTags['colClassPrefix'] = 'col-md-';
 $frmSearchCustomCatalogProducts->developerTags['fld_default_col'] = 12;
 
@@ -22,11 +22,11 @@ $cancelBtnFld->developerTags['col'] = 2;
 ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-                <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>                      
-				<div class="col-md-10 panel__right--full " >
+                <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full " >
 					<div class="cols--group">
 						<div class="panel__head">
 						   <h2><?php echo Labels::getLabel('LBL_Requested_Products',$siteLangId); ?></h2>
@@ -38,7 +38,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 									<div class="group--btns panel__head_action">
 									<?php if( User::canAddCustomProductAvailableToAllSellers() ){?>
 										<a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProductForm');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Request_New_Product', $siteLangId);?></a>
-									<?php }?>										
+									<?php }?>
 									</div>
 								</div>
 								<div class="box__body">
@@ -47,9 +47,9 @@ $cancelBtnFld->developerTags['col'] = 2;
 									</div>
 									<span class="gap"></span>
 									<?php echo $frmSearchCustomCatalogProducts->getExternalJS();?>
-									<div id="listing"> 
+									<div id="listing">
 										<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
-									</div> 									
+									</div>
 								</div>
 							</div>
 						</div>

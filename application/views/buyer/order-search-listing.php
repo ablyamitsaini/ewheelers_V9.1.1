@@ -20,7 +20,7 @@ foreach ($orders as $sn => $order){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array( 'class' => '' ));
 	$orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($order['order_id'],$order['op_id']) );
-	
+
 	if( $order['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
 		$canCancelOrder = ( in_array($order["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
 		$canReturnRefund = ( in_array( $order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true) ) );
@@ -28,7 +28,7 @@ foreach ($orders as $sn => $order){
 		$canCancelOrder = ( in_array($order["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) );
 		$canReturnRefund = ( in_array( $order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses() ) );
 	}
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -77,25 +77,25 @@ foreach ($orders as $sn => $order){
 				$txt = '<span class="caption--td">'.$val.'</span>'.$order['orderstatus_name'].$pMethod;
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
-			
-			
+
+
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
-				
+
 				$opCancelUrl = CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($order['op_id']) );
-				
+
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> $orderDetailUrl, 'class'=>'',
 				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
 				'<i class="fa fa-eye"></i>', true);
-				
+
 				if( $canCancelOrder ){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=> $opCancelUrl, 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Cancel_Order',$siteLangId)),
 					'<i class="fa fa-close"></i>', true);
 				}
-				
+
 				if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){
 					$opFeedBackUrl = CommonHelper::generateUrl('Buyer', 'orderFeedback', array($order['op_id']) );
 					$li = $ul->appendElement("li");
@@ -103,7 +103,7 @@ foreach ($orders as $sn => $order){
 					'title'=>Labels::getLabel('LBL_Feedback',$siteLangId)),
 					'<i class="fa fa-star"></i>', true);
 				}
-				
+
 				if( $canReturnRefund ){
 					$opRefundRequestUrl = CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($order['op_id']) );
 					$li = $ul->appendElement("li");
@@ -111,7 +111,7 @@ foreach ($orders as $sn => $order){
 					'title'=>Labels::getLabel('LBL_Refund',$siteLangId)),
 					'<i class="fa fa-dollar"></i>', true);
 				}
-				
+
 				$cartUrl = CommonHelper::generateUrl('cart');
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)' , 'onClick'=>'return addItemsToCart("'.$order['order_id'].'");',

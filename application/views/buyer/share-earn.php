@@ -16,7 +16,7 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
     <div class="fixed-container">
       <div class="row">
         <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-md-10 panel__right--full">
+        <div class="col-xs-10 panel__right--full">
           <div class="cols--group">
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></h2>
@@ -104,12 +104,12 @@ function twitter_shared(name){
 	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
 }
 </script>
-<?php 
-	if ($request_token) {		
+<?php
+	if ($request_token) {
 		$_SESSION["TWITTER_URL"] = CommonHelper::generateFullUrl('Buyer','twitterCallback',array(),'',false);
 		$_SESSION['oauth_token'] = $request_token['oauth_token'];
-		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];		
-		
+		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+
 		if ($twitteroauth->http_code == 200) {
 			$url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
 ?>

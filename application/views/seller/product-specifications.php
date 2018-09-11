@@ -1,5 +1,5 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
- 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+
 $arr_lang_flds = array(
 	'prodspec_name' => $languages[$siteLangId]
 );
@@ -20,18 +20,18 @@ foreach ($prodSpec as $key => $specification){
 	$row = $specification[$siteLangId];
 	// commonHelper::printArray($row);
 		$td = $tr->appendElement('td',array("width"=>"80%"));
-		
-			switch ($key){			
-				
+
+			switch ($key){
+
 				default:
 					$td->appendElement('plaintext', array(), $row['prodspec_name'].': '.$row['prodspec_value'],true);
 				break;
 			}
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td',array("width"=>"20%"));
 		switch ($key){
-			
+
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
 				$li = $ul->appendElement("li");
@@ -57,7 +57,7 @@ if (count($prodSpec) == 0){
 			'href'=>'javascript:void(0);',
 			'label'=>Labels::getLabel('LBL_Add_Specification', $siteLangId),
 			'onClick'=>"addProdSpec(".$productId.",0)",
-			)	
+			)
 		);
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
 	/* $this->includeTemplate('_partial/no-record-found.php',array('siteLangId' => $siteLangId),false); */

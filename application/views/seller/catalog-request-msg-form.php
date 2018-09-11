@@ -1,15 +1,15 @@
 <div class="popup__body">
-	
+
 	<div class="col-md-12">
 	<?php echo $searchFrm->getFormHtml(); ?>
 		<h5><?php echo Labels::getLabel('LBL_Catelog_Request_Messages', $siteLangId); ?> </h5>
 		<div id="loadMoreBtnDiv"></div>
 		<ul class="media media--details" id="messagesList">
 		</ul>
-		
+
 		<?php
 		$frm->setFormTagAttribute('onSubmit','setUpCatalogRequestMessage(this); return false;');
-		$frm->setFormTagAttribute('class', 'form'); 
+		$frm->setFormTagAttribute('class', 'form');
 		$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 		$frm->developerTags['fld_default_col'] = 12;
 		?>
@@ -28,6 +28,6 @@
 				</div>
 			</li>
 		</ul>
-		
+
 	</div>
 </div>

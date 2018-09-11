@@ -5,7 +5,7 @@
 		<div class="fixed-container">
 			<div class="row">
 				<?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
-				<div class="col-md-10 panel__right--full" >
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
 							<h2><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></h2>
@@ -13,7 +13,7 @@
 							  <li><a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>"><strong><?php echo $totalFavouriteItems;?></strong> <?php echo Labels::getLabel('LBL_Favorite_Items',$siteLangId);?> </a></li>
 							  <li><a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>"><strong><?php echo $totalPurchasedItems['totalPurchasedItems'];?></strong> <?php echo Labels::getLabel('LBL_Purchased_Items',$siteLangId);?> </a></li>
 							</ul>
-						</div>                           
+						</div>
 						<div class="panel__body">
 							<div class="col__right">
 								<div class="statistics">
@@ -85,7 +85,7 @@
 													$canCancelOrder = true;
 													$canReturnRefund = true;
 													foreach($orders as $orderId=>$row){
-													$orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id']) );	
+													$orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id']) );
 													if( $row['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
 														$canCancelOrder = ( in_array($row["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
 														$canReturnRefund = ( in_array( $row["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true) ) );
@@ -96,10 +96,10 @@
 												?>
 											<tr>
 											<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
-											<?php 
+											<?php
 											$prodOrBatchUrl = 'javascript:void(0)';
 											if($row['op_is_batch']){
-											
+
 													$prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($row['op_selprod_id']));
 													$prodOrBatchImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','BatchProduct', array($row['op_selprod_id'],$siteLangId, "SMALL"),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg');
 											}else{
@@ -113,7 +113,7 @@
 												<div class="item-yk item__description">
 													<div class="item-yk-head-date"><?php echo FatDate::format($row['order_date_added']);?></div>
 													<div class="item-yk-head-title">
-													<?php $prodName =''; 
+													<?php $prodName ='';
 													if($row['op_selprod_title']!=''){
 														$prodName.= $row['op_selprod_title'].'<br/>';
 													}

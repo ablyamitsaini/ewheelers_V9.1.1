@@ -1,21 +1,21 @@
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-                <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>                                 
-				<div class="col-md-10 panel__right--full" >
+                <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head no-print">
-						   <h2><?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?></h2>                       
-						</div>                           
-						<div class="panel__body">                            
-                             <div class="box box--white box--space">								
+						   <h2><?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?></h2>
+						</div>
+						<div class="panel__body">
+                             <div class="box box--white box--space">
                                <div class="box__head no-print" >
                                    <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
                                    <div class="group--btns"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
                                </div>
-                                <div class="box__body">                                    
+                                <div class="box__body">
                                      <div class="grids--offset">
                                          <div class="grid-layout">
                                              <div class="row">
@@ -30,13 +30,13 @@
                                                  <div class="col-lg-6 col-md-6 col-sm-6">
 														<div class="info--order">
                                                         <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $orderDetail['op_invoice_number'];?></p>
-                                                        <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>                                                        
+                                                        <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>
 														</div>
                                                  </div>
                                              </div>
                                          </div>
                                      </div>
-                                     
+
                                      <table class="table table--orders">
                                            <tbody><tr class="">
                                                <th colspan="2"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
@@ -48,7 +48,7 @@
                                            </tr>
                                            <tr>
                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
-											   <?php 
+											   <?php
 											   $prodOrBatchUrl = 'javascript:void(0)';
 												if($orderDetail['op_is_batch']){
 													$prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($orderDetail['op_selprod_id']));
@@ -65,7 +65,7 @@
                                                        <span class="item__title"><a title="<?php echo $orderDetail['op_product_name'];?>" href="<?php echo $prodOrBatchUrl;?>">
 													   <?php if($orderDetail['op_selprod_title']!=''){
 															echo  $orderDetail['op_selprod_title'].'<br/>';
-														} 
+														}
 														echo $orderDetail['op_product_name'];
 														?>
 													   </a></span>
@@ -80,8 +80,8 @@
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'shipping'));?></td>
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail));?></td>
-                                            </tr>                                            
-                                     </tbody></table>                                     
+                                            </tr>
+                                     </tbody></table>
                                      <div class="grids--colum">
                                          <div class="row">
                                              <div class="col-lg-6 col-md-6 col-sm-6">
@@ -91,23 +91,23 @@
 														if($orderDetail['billingAddress']['oua_address1']!=''){
 															$billingAddress.=$orderDetail['billingAddress']['oua_address1'].'<br>';
 														}
-														
+
 														if($orderDetail['billingAddress']['oua_address2']!=''){
 															$billingAddress.=$orderDetail['billingAddress']['oua_address2'].'<br>';
 														}
-														
+
 														if($orderDetail['billingAddress']['oua_city']!=''){
 															$billingAddress.=$orderDetail['billingAddress']['oua_city'].',';
 														}
-														
+
 														if($orderDetail['billingAddress']['oua_zip']!=''){
 															$billingAddress.=$orderDetail['billingAddress']['oua_state'];
 														}
-														
+
 														if($orderDetail['billingAddress']['oua_zip']!=''){
 															$billingAddress.= '-'.$orderDetail['billingAddress']['oua_zip'];
 														}
-														
+
 														if($orderDetail['billingAddress']['oua_phone']!=''){
 															$billingAddress.= '<br>'.$orderDetail['billingAddress']['oua_phone'];
 														}
@@ -123,23 +123,23 @@
 														if($orderDetail['shippingAddress']['oua_address1']!=''){
 															$shippingAddress.=$orderDetail['shippingAddress']['oua_address1'].'<br>';
 														}
-														
+
 														if($orderDetail['shippingAddress']['oua_address2']!=''){
 															$shippingAddress.=$orderDetail['shippingAddress']['oua_address2'].'<br>';
 														}
-														
+
 														if($orderDetail['shippingAddress']['oua_city']!=''){
 															$shippingAddress.=$orderDetail['shippingAddress']['oua_city'].',';
 														}
-														
+
 														if($orderDetail['shippingAddress']['oua_zip']!=''){
 															$shippingAddress.=$orderDetail['shippingAddress']['oua_state'];
 														}
-														
+
 														if($orderDetail['shippingAddress']['oua_zip']!=''){
 															$shippingAddress.= '-'.$orderDetail['shippingAddress']['oua_zip'];
 														}
-														
+
 														if($orderDetail['shippingAddress']['oua_phone']!=''){
 															$shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
 														}
@@ -150,7 +150,7 @@
 											 <?php }?>
                                          </div>
                                      </div>
-                                     
+
                                      <span class="gap"></span>
 									 <?php if(!empty($orderDetail['comments'])){?>
                                      <div class="section--repeated">
@@ -161,7 +161,7 @@
                                                 <th><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></th>
                                                 <th><?php echo Labels::getLabel('LBL_Comments',$siteLangId);?></th>
                                             </tr>
-											<?php 											
+											<?php
 											foreach($orderDetail['comments'] as $row){?>
                                             <tr>
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></span><?php echo FatDate::format($row['oshistory_date_added']);?></td>
@@ -169,25 +169,25 @@
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></span><?php echo $orderStatuses[$row['oshistory_orderstatus_id']];?></td>
                                                 <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Comments',$siteLangId);?></span> <?php echo nl2br($row['oshistory_comments']);?></td>
                                               </tr>
-											  <?php } ?>											  
+											  <?php } ?>
 											</tbody></table>
                                     </div>
 									<?php }?>
-									<?php if (!$notEligible){?> 									 
+									<?php if (!$notEligible){?>
                                      <div class="section--repeated no-print">
 										<h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
-                                        <?php 
+                                        <?php
 										$frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
 										$frm->setFormTagAttribute('class','form');
 										$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-										$frm->developerTags['fld_default_col'] = 12; 
-										
-										echo $frm->getFormHtml();?>                                         
+										$frm->developerTags['fld_default_col'] = 12;
+
+										echo $frm->getFormHtml();?>
                                      </div>
 									 <?php }?>
-                                </div>                                 
-                            </div>                             
-						</div>						
+                                </div>
+                            </div>
+						</div>
 					</div>
 				</div>
             </div>

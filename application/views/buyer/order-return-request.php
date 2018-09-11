@@ -1,19 +1,19 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmOrderReturnRequest->setFormTagAttribute( 'class', 'form form--horizontal' );
 $frmOrderReturnRequest->setFormTagAttribute('onsubmit', 'setupOrderReturnRequest(this); return(false);');
 $frmOrderReturnRequest->developerTags['colClassPrefix'] = 'col-md-';
-$frmOrderReturnRequest->developerTags['fld_default_col'] = 12;	
+$frmOrderReturnRequest->developerTags['fld_default_col'] = 12;
 
 $orRequestTypeFld = $frmOrderReturnRequest->getField('orrequest_type');
 $orRequestTypeFld->setOptionListTagAttribute('class', 'list-inline');
 ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>  
-				<div class="col-md-10 panel__right--full" >
+				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
 							<h2><?php echo Labels::getLabel('LBL_Order_Return/Refund/Replace_Request', $siteLangId); ?></h2>

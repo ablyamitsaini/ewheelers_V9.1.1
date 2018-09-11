@@ -44,13 +44,13 @@ foreach ($requests as $sn => $row){
 				if( $row['op_selprod_options'] != '' ){
 					$txt .= ' | ' . $row['op_selprod_options'];
 				}
-				$txt .='</div>';				
+				$txt .='</div>';
 				if( $row['op_selprod_sku'] != '' ){
 					$txt .= '<div class="item-yk-head-sku">'.Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $row['op_selprod_sku'].'</div>';
 				}
 				if( $row['op_product_model'] != '' ){
 					$txt .= '<div class="item-yk-head-model">'.Labels::getLabel('LBL_Model', $siteLangId).':  ' . $row['op_product_model'].'</div>';
-				}				
+				}
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$txt , true);
 			break;
 			case 'orrequest_status':
@@ -58,7 +58,7 @@ foreach ($requests as $sn => $row){
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
-				
+
 				if( $buyerPage ){
 					$url = CommonHelper::generateUrl('Buyer', 'ViewOrderReturnRequest', array($row['orrequest_id']) );
 				}

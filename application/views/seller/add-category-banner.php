@@ -2,7 +2,7 @@
 $mediaFrm->setFormTagAttribute('onsubmit', 'setupShopMedia(this); return(false);');
 $mediaFrm->setFormTagAttribute('class','form--horizontal');
 $mediaFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$mediaFrm->developerTags['fld_default_col'] = 8; 
+$mediaFrm->developerTags['fld_default_col'] = 8;
 $fld = $mediaFrm->getField('category_banner');
 $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 ?>
@@ -12,7 +12,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 		<div class="form__content ">
 			<div class="col-md-12">
 				<div class="preview">
-				 <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*319')?></small>	
+				 <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*319')?></small>
 				<?php echo $mediaFrm->getFormHtml();?>
 				<div class="">
 					<?php foreach($attachments as $img){?>

@@ -17,7 +17,7 @@ $sr_no = 0;
 foreach ($requests as $sn => $row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){

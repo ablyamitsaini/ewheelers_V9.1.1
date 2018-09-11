@@ -12,12 +12,12 @@ $frm->setFormTagAttribute('class','form form--horizontal'); */
 		<a href="javascript:void(0);" onClick="reloadList()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back',$siteLangId); ?></a>
 	</div>
 </div>
-<div class="box__body">	
-	<?php 
+<div class="box__body">
+	<?php
 		echo $frm->getFormTag();
 		echo $frm->getFormHtml(false);
 		echo '</form>';
-	?>		
+	?>
 </div>
 <span class="gap"></span>
 </div>

@@ -4,7 +4,7 @@
     <div class="fixed-container">
       <div class="row">
         <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
-        <div class="col-md-10 panel__right--full" >
+        <div class="col-xs-10 panel__right--full" >
           <div class="cols--group">
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_Seller',$siteLangId);?></h2>
@@ -90,7 +90,7 @@
                       </tr>
                       <?php if( count( $orders ) > 0 ){
 								foreach( $orders as $orderId => $row ){
-									$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($row['op_id']) );	
+									$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewOrder', array($row['op_id']) );
 									$prodOrBatchUrl = 'javascript:void(0)';
 									if( $row['op_is_batch'] ){
 										$prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($row['op_selprod_id']));
@@ -101,7 +101,7 @@
 										}
 										$prodOrBatchImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($row['selprod_product_id'], "SMALL", $row['op_selprod_id'], 0, $siteLangId),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg');
 								   }
-									/* $prodName = ''; 
+									/* $prodName = '';
 								   if($row['op_selprod_title']!=''){
 									$prodName.= $row['op_selprod_title'].'<br/>';
 								   }
@@ -111,7 +111,7 @@
 								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
 									<figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure>
 								</td>
-								<td><div class="item__description"> <span class="item__date"><?php echo FatDate::format($row['order_date_added']);?></span> 
+								<td><div class="item__description"> <span class="item__date"><?php echo FatDate::format($row['order_date_added']);?></span>
 									<span class="item__title">
 									<?php if($row['op_selprod_title'] != ''){ ?>
 									<a title="<?php echo $row['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $row['op_selprod_title']; ?></a></span>
@@ -121,7 +121,7 @@
 									</a>
 									<?php } ?>
 									</span>
-									
+
 									<p><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$row['op_brand_name']);?></p>
 									<?php if( $row['op_selprod_options'] != '' ){ ?><p><?php echo $row['op_selprod_options'];?></p><?php } ?>
 									<p><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>: <?php echo $row['orderstatus_name'];?></p>
@@ -137,12 +137,12 @@
 								  </ul>
 								 </td>
 							  </tr>
-						  <?php } 
+						  <?php }
 						} ?>
                     </table>
                   </div>
                 </div>
-              
+
               </div>
               <div class="col__right">
                 <?php $this->includeTemplate('_partial/userDashboardMessages.php'); ?>
@@ -156,14 +156,14 @@
 	<div class="gap"></div>
 </div>
 <script>
- /******** for tooltip ****************/ 
+ /******** for tooltip ****************/
 
 $('.info--tooltip-js').hover(function(){
     $(this).toggleClass("is-active");
-    return false; 
+    return false;
 },function(){
     $(this).toggleClass("is-active");
-    return false; 
+    return false;
 });
 
 </script>

@@ -16,16 +16,16 @@
         <div class="up-footer padd40">
             <div class="row">
                 <?php $this->includeTemplate( '_partial/footerNavigation.php'); ?>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                <div class="col-lg-2 col-md-2 col-sm-12">
                     <div class="">
                         <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
-                        <?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,''); 
+                        <?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
 			if( $site_conatct ){ ?>
                         <div class="f-heading">
                             <?php echo Labels::getLabel('LBL_Call_Us',$siteLangId); ?> <span><?php echo $site_conatct;?></span></div>
                         <?php } ?>
                         <div class="gap"></div>
-                        <?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,''); 
+                        <?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,'');
 			if( $email_id ){ ?>
                         <div class="f-heading">
                             <?php echo Labels::getLabel('LBL_Email_Us',$siteLangId); ?><span><a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a></span></div>
@@ -42,13 +42,13 @@
                     <div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="bg-light">
                     <div class="subscription">
 						<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){?>
                         <div class="f-heading">
                             <?php echo Labels::getLabel('LBL_GET_MORE_FROM_Yo-Kart', $siteLangId);?>
-                        </div>						
+                        </div>
                         <?php } $this->includeTemplate( '_partial/footerNewsLetterForm.php'); ?>
                         <div class="row">
                             <div class="col-lg-12">
@@ -171,7 +171,7 @@ s0.parentNode.insertBefore(s1,s0);
 <?php }?>
 </body>
 </html>
-<?php 
+<?php
 //$content  = ob_get_clean();
-//echo CommonHelper::minify_html($content); 
+//echo CommonHelper::minify_html($content);
 ?>

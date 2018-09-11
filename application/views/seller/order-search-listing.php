@@ -17,10 +17,10 @@ foreach ($arr_flds as $val) {
 $sr_no = 0;
 foreach ($orders as $sn => $order){
 	$sr_no++;
-	
+
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewSubscriptionOrder', array($order['ossubs_id']) );	
-	
+	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewSubscriptionOrder', array($order['ossubs_id']) );
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -34,13 +34,13 @@ foreach ($orders as $sn => $order){
 			case 'product':
 				$txt = '<span class="caption--td">'.$val.'</span>';
 				if( $order['ossubs_subscription_name'] != '' ){
-					$txt .= 
-					
+					$txt .=
+
 					OrderSubscription::getSubscriptionTitle($order,$order['order_language_id']).'<br/>';
 				}
-			
+
 				$td->appendElement('plaintext', array(), $txt , true);
-			break;	
+			break;
 			case 'ossubs_status_id':
 				$txt = '<span class="caption--td">'.$val.'</span>';
 				if($order['ossubs_status_id']==FatApp::getConfig('CONF_DEFAULT_SUBSCRIPTION_PAID_ORDER_STATUS') && $order['ossubs_till_date']<date("Y-m-d") )
@@ -51,13 +51,13 @@ foreach ($orders as $sn => $order){
 				{
 					$txt .= $orderStatuses[$order['ossubs_status_id']];
 				}
-				
+
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'total':
 				$txt = '<span class="caption--td">'.$val.'</span>';
 				// $txt .= CommonHelper::displayMoneyFormat($order['order_net_amount']);
-				 $txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderSubscriptionAmount($order)); 
+				 $txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderSubscriptionAmount($order));
 				$td->appendElement('plaintext', array(), $txt, true);
 			break;
 			case 'status':
@@ -71,12 +71,12 @@ foreach ($orders as $sn => $order){
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
-				
+
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> $orderDetailUrl, 'class'=>'',
 				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
 				'<i class="fa fa-eye"></i>', true);
-				
+
 				if(!$order['user_autorenew_subscription'] && date("Y-m-d")>=$order['ossubs_till_date'] && $order['ossubs_status_id']==FatApp::getConfig('CONF_DEFAULT_SUBSCRIPTION_PAID_ORDER_STATUS') && $order['ossubs_type']==SellerPackages::PAID_TYPE){
 					$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> CommonHelper::generateUrl('SubscriptionCheckout', 'renewSubscriptionOrder', array($order['ossubs_id']) )	, 'class'=>'',
