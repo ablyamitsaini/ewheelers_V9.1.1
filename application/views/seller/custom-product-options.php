@@ -12,6 +12,8 @@
 			$customProductOptionFrm->setFormTagAttribute('class', 'form form--horizontal');
 			$customProductOptionFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 			$customProductOptionFrm->developerTags['fld_default_col'] = 12;
+			$fld1=$customProductOptionFrm->getField('option_name');
+			$fld1->fieldWrapper = array('<div class="row">', '</div>');
 			echo $customProductOptionFrm->getFormHtml();
 		?>
       </div>

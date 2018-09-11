@@ -22,7 +22,7 @@
 									<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
 										<ul>
 											<li class="is-active"><a href="javascript:void(0);" onClick="topPerformingProducts()"><?php echo Labels::getLabel('LBL_Top_Performing_Products',$siteLangId);?></a></li>
-											<li><a href="javascript:void(0);" onClick="badPerformingProducts()"><?php echo Labels::getLabel('LBL_Bad_Performing_Products',$siteLangId);?></a></li>
+											<li><a href="javascript:void(0);" onClick="badPerformingProducts()"><?php echo Labels::getLabel('LBL_Most_Refunded_Products_Report',$siteLangId);?></a></li>
 											<li><a href="javascript:void(0);" onClick="mostWishListAddedProducts()"><?php echo Labels::getLabel('LBL_Most_WishList_Added_Products',$siteLangId);?></a></li>
 										</ul>
 									</div>

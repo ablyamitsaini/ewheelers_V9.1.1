@@ -202,15 +202,15 @@ array_walk($catCodeArr,function(&$n) {
 				if($optionName!=''){
 					echo "</ul></div><div class='divider'></div>";
 				}
-				$optionName = $optionRow['option_name'];?>
-				<div class="widgets-heading"><?php echo $optionRow['option_name']; ?></div>
+				$optionName = ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier'];?>
+				<div class="widgets-heading"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
 				<div class="brands-list toggle-target scrollbar">
 				<ul><?php
 			}
-			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];
-				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>";
+			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];	
+				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>"; 				
 			?>
-				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionRow['optionvalue_id'],$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $optionRow['optionvalue_name'];?> </label></li>
+				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionValueId,$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo ($optionRow['optionvalue_name']) ? $optionRow['optionvalue_name'] : $optionRow['optionvalue_identifier'];?> </label></li>			
 
 		<?php }
 			echo "</ul></div>

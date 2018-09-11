@@ -1137,7 +1137,12 @@ class AdvertiserController extends LoggedUserController {
 			foreach($row as $key=>$val){
 				$locationArr[$key] = $val['blocation_name'] .' ( '.CommonHelper::displayMoneyFormat($val['blocation_promotion_cost']).' )';
 			}
-		}	
+		}
+		
+		$fld = $frm->addTextBox(Labels::getLabel('LbL_Budget'.'_['.commonHelper::getDefaultCurrencySymbol().']',$this->siteLangId),'promotion_budget');
+		$fld->requirements()->setRequired();
+		$fld->requirements()->setFloatPositive(true);
+		
 		$locIdFld = $frm->addSelectBox(Labels::getLabel('LBL_Location',$this->siteLangId), 'banner_blocation_id', $locationArr, '',array(),Labels::getLabel('LBL_Select',$this->siteLangId));
 		$locIdFldUnReqObj = new FormFieldRequirement( 'banner_blocation_id', Labels::getLabel('LBL_Location', $this->siteLangId));
 		$locIdFldUnReqObj->setRequired(false);
@@ -1151,9 +1156,6 @@ class AdvertiserController extends LoggedUserController {
 			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_PRODUCT, 'eq', 'banner_url', $locIdFldUnReqObj);	
 		}
 		
-		$fld = $frm->addTextBox(Labels::getLabel('LbL_Budget'.'_['.commonHelper::getDefaultCurrencySymbol().']',$this->siteLangId),'promotion_budget');
-		$fld->requirements()->setRequired();
-		$fld->requirements()->setFloatPositive(true);
 		
 		$fldDuration = $frm->addSelectBox(Labels::getLabel('LBL_Duration', $this->siteLangId) , 'promotion_duration', Promotion::getPromotionBudgetDurationArr($this->siteLangId), '', array('id'=>'promotion_duration'))->requirements()->setRequired();
 		

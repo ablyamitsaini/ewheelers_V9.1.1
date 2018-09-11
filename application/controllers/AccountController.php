@@ -2419,12 +2419,12 @@ class AccountController extends LoggedUserController {
 		$endRecord = $page * $pageSize;
 		$totalRecords = $srch->recordCount();
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
-		$json['totalRecords'] = $totalRecords;
-		$json['startRecord'] = $startRecord;
-		$json['endRecord'] = $endRecord;
-		$json['html'] = $this->_template->render( false, false, 'account/order-return-request-messages-list.php', true, false);
-		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, '_partial/load-previous-btn.php', true, false);
-		FatUtility::dieJsonSuccess($json);
+		$this->set('totalRecords',$totalRecords); 
+		$this->set('startRecord',$startRecord); 
+		$this->set('endRecord',$endRecord);
+		$this->set('loadMoreBtnHtml',$this->_template->render( false, false, '_partial/load-previous-btn.php',true));
+		$this->set('html',$this->_template->render( false, false, 'account/order-return-request-messages-list.php', true, false)); 
+		$this->_template->render(false,false,'json-success.php',true,false);
 	}
 	
 	public function shareWithTag(){

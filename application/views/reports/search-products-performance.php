@@ -1,9 +1,14 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
-	'name'	=>	Labels::getLabel('LBL_Product', $siteLangId),
-	'totSoldQty'	=>	Labels::getLabel('LBL_Sold_Quantity',$siteLangId),
+	'name'	=>	Labels::getLabel('LBL_Product', $siteLangId),	
 	'wishlist_user_counts'	=>	Labels::getLabel('LBL_WishList_User_Counts', $siteLangId)
 );
+
+if($topPerformed){
+	$arr_flds['totSoldQty'] = Labels::getLabel('LBL_Sold_Quantity',$siteLangId);
+}else{
+	$arr_flds['totRefundQty'] = Labels::getLabel('LBL_Refund_Quantity',$siteLangId);
+}
 
 $tbl = new HtmlElement('table', array('class'=>'table'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
@@ -38,6 +43,10 @@ foreach ($arrListing as $sn => $listing){
 			
 			case 'totSoldQty':
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['totSoldQty'],true);
+			break;
+			
+			case 'totRefundQty':
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['totRefundQty'],true);
 			break;
 			
 			case 'wishlist_user_counts':

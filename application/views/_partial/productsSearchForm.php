@@ -25,10 +25,12 @@
 					<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></a>
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm switch--grind switch--link-js grid hide--mobile"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
 					<a href="javascript:void(0)" class="btn btn--secondary btn--sm switch--list switch--link-js list hide--mobile"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></a>
-					<div class="gap"></div>
+					<div class="gap"></div>					
 					<div class="sort-by">
 						<ul>
+							<?php if(!isset($doNotdisplaySortBy)){?>
 						  <li class="sort"><?php echo Labels::getLabel('LBL_Sort_By', $siteLangId); ?> </li>
+							<?php }?>
 						  <li>
 							<?php echo $frmProductSearch->getFieldHTML('keyword'); ?>
 							<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
@@ -50,6 +52,7 @@
 			echo $frmProductSearch->getFieldHtml('join_price');
 			echo $frmProductSearch->getFieldHtml('featured');
 			echo $frmProductSearch->getFieldHtml('currency_id');
+			echo $frmProductSearch->getFieldHtml('top_products');
 			echo $frmProductSearch->getExternalJS();
 		?>
 		</form>

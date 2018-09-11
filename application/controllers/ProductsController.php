@@ -608,11 +608,16 @@ class ProductsController extends MyAppController {
 		if( $category_id ) {			
 			$srch->addCategoryCondition($category_id);
 		}
-
+		
 		$shop_id = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
 		if( $shop_id ) {			
 			$srch->addShopIdCondition($shop_id);
 		}
+		
+		$top_products = FatApp::getPostedData('top_products',FatUtility::VAR_INT, 0);
+		if( $top_products ) {						
+			$srch->addHaving('prod_rating','>=',3);
+		}		
 
 		$collection_id = FatApp::getPostedData('collection_id', FatUtility::VAR_INT, 0);
 		if( $collection_id ) {			

@@ -1,9 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arrFlds = array(
-	'name'	=>	Labels::getLabel('LBL_Products',$adminLangId),
-	'totSoldQty'	=>	Labels::getLabel('LBL_Sold_Quantity',$adminLangId),
+	'name'	=>	Labels::getLabel('LBL_Products',$adminLangId),	
 	'wishlistUserCounts'	=>	Labels::getLabel('LBL_WishList_User_Counts',$adminLangId)
 );
+if($topPerformed){
+	$arrFlds['totSoldQty'] = Labels::getLabel('LBL_Sold_Quantity',$adminLangId);
+}else{
+	$arrFlds['totRefundQty'] = Labels::getLabel('LBL_Refund_Quantity',$adminLangId);
+}
 
 $tbl = new HtmlElement('table', 
 array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
@@ -49,8 +53,12 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 			
-			case 'sold':
-				$td->appendElement('plaintext', array(), $row['sold'], true);
+			case 'totSoldQty':
+				$td->appendElement('plaintext', array(), $row['totSoldQty'], true);
+			break;
+			
+			case 'totRefundQty':
+				$td->appendElement('plaintext', array(), $row['totRefundQty'],true);
 			break;
 			
 			default:

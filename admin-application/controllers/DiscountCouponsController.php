@@ -151,11 +151,21 @@ class DiscountCouponsController extends AdminBaseController {
 				break;
 			}			
 		}
-		
+		if( $newTabLangId == 0 && !$this->isMediaUploaded($coupon_id)){
+			$this->set('openMediaForm', true);
+		}
 		$this->set('msg', Labels::getLabel('MSG_Coupon_Setup_Successful.',$this->adminLangId));
 		$this->set('couponId', $coupon_id);
 		$this->set('langId', $newTabLangId);
 		$this->_template->render(false, false, 'json-success.php');
+	}
+	
+	private function isMediaUploaded($coupon_id){
+		if($attachment = AttachedFile::getAttachment(AttachedFile::FILETYPE_DISCOUNT_COUPON_IMAGE , $coupon_id, 0 ))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public function form($coupon_id = 0){

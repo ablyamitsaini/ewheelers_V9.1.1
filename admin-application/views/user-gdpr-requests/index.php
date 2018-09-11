@@ -14,6 +14,23 @@
                             </div>
 						</div>
 					</div>
+					<section class="section searchform_filter">
+						<div class="sectionhead">
+							<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
+						</div>
+						<div class="sectionbody space togglewrap" style="display:none;">
+							<?php 
+								$frmSearch->setFormTagAttribute ( 'onsubmit', 'searchUserRequests(this,1); return(false);');
+								$frmSearch->setFormTagAttribute ( 'class', 'web_form' );
+								$frmSearch->developerTags['colClassPrefix'] = 'col-md-';					
+								$frmSearch->developerTags['fld_default_col'] = 6;					
+
+								$fld = $frmSearch->getField('btn_clear');
+								$fld->addFieldTagAttribute('onclick','clearSearch()');
+								echo  $frmSearch->getFormHtml();
+							?>
+						</div>
+					</section>
                     <section class="section">
 						<div class="sectionhead">
 							<h4><?php echo Labels::getLabel('LBL_User_Requests_List',$adminLangId); ?> </h4>

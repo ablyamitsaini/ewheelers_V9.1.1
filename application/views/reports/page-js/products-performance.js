@@ -30,8 +30,8 @@ $(document).ready(function(){
 		}
 		$(dv).html(fcom.getLoader());
 		var data = fcom.frmData(frm);
-		fcom.ajax(fcom.makeUrl('Reports', 'searchProductsPerformance', ["DESC"]), data, function(t) {
-			$('#performanceReportExport').attr('onClick', "exportProdPerformanceReport('DESC')");
+		fcom.ajax(fcom.makeUrl('Reports', 'searchProductsPerformance', [1]), data, function(t) {
+			$('#performanceReportExport').attr('onClick', "exportProdPerformanceReport(1)");
 			$(dv).html(t);
 		});
 	};
@@ -39,8 +39,8 @@ $(document).ready(function(){
 	badPerformingProducts = function(frm){
 		$(dv).html( fcom.getLoader() );
 		var data = fcom.frmData(frm);
-		fcom.ajax(fcom.makeUrl('Reports', 'searchProductsPerformance', ["ASC"] ), data, function(t) {			
-			$('#performanceReportExport').attr('onClick', "exportProdPerformanceReport('ASC')");
+		fcom.ajax(fcom.makeUrl('Reports', 'searchProductsPerformance'), data, function(t) {			
+			$('#performanceReportExport').attr('onClick', "exportProdPerformanceReport(0)");
 			$(dv).html(t);
 		});
 	};
@@ -64,14 +64,14 @@ $(document).ready(function(){
 		document.frmMostWishListAddedProdSrchPaging.submit();
 	};
 	
-	exportProdPerformanceReport = function( orderBy ){
+	exportProdPerformanceReport = function( topPerformed ){
 		/* if( orderBy == "ASC"){
 			document.frmProdPerformanceSrch;
 			//topPerformingProducts
 		} else {
 			
 		} */
-		document.frmProdPerformanceSrch.action = fcom.makeUrl('Reports','exportProductPerformance', [orderBy] );
+		document.frmProdPerformanceSrch.action = fcom.makeUrl('Reports','exportProductPerformance', [topPerformed] );
 		document.frmProdPerformanceSrch.submit();
 	}
 	
