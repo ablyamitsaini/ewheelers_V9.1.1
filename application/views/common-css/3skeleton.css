@@ -8053,3 +8053,4 @@ form.custom-form input[type="submit"] {
   border-color: var(--first-color);
   color: var(--first-color);
 }
+. ovrflow-none{overflow: visible;}

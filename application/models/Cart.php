@@ -173,8 +173,6 @@ class Cart extends FatModel {
 	}
 		
 	public function getProducts( $siteLangId = 0 ){
-		/* CommonHelper::printArray($this->SYSTEM_ARR['cart']); die(); */
-		
 		/* if( !$siteLangId ){
 			trigger_error("Language Id not specified.", E_USER_ERROR);
 		} */

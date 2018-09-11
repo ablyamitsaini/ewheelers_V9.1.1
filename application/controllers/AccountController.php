@@ -827,10 +827,10 @@ class AccountController extends LoggedUserController {
 		$frm->fill($data);
 		$stateId = $data['user_state_id'];
 		
-		$mode = Labels::getLabel( 'LBL_Add', $this->siteLangId );
+		$mode = 'Add';
 		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId );
 		if( $file_row != false ){
-			$mode = Labels::getLabel( 'LBL_Edit', $this->siteLangId );
+			$mode = 'Edit';
 		}
 		
 		$this->set('data', $data);

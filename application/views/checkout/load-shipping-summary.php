@@ -4,7 +4,6 @@
   <div class="selected-panel-data">
 	<?php 
 		if( count($products) ){
-			
 		foreach( $products as $product ){?>
 		<p><?php echo $product['selprod_title']; ?> - <span class="shipping-price"><?php echo CommonHelper::displayMoneyFormat($product['shipping_cost']); ?></span></p>
 		<?php } 
