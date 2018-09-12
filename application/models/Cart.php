@@ -316,6 +316,17 @@ class Cart extends FatModel {
 					$this->products[$key]['seller_address'] =  Shop::getShopAddress($sellerProductRow['shop_id'],true , $siteLangId);
 				}
 			}
+			
+			$sellerPrice = $this->getSellersProductItemsPrice($this->products);
+			foreach($this->products as $cartkey=>$cartval)
+			{
+				if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
+					$this->products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
+					if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
+						$this->products[$cartkey]['shop_eligible_for_free_shipping'] = 1;						
+					}
+				}	
+			}	
 		}	
 		/* CommonHelper::printArray($this->products); die();		 */
 		return $this->products;
@@ -683,10 +694,7 @@ class Cart extends FatModel {
 	
 	public function getCartFinancialSummary( $langId ){
 		$products = $this->getProducts( $langId );
-		
-		$sellerPrice = $this->getSellersProductItemsPrice($products);
-		
-		
+				
 		$cartTotal = 0;
 		$cartTotalNonBatch = 0;
 		$cartTotalBatch = 0;
@@ -724,12 +732,9 @@ class Cart extends FatModel {
 				$originalShipping += $product['shipping_cost'];
 				$totalSiteCommission += $product['commission'];
 				
-				if(array_key_exists($product['selprod_user_id'],$sellerPrice)){
-					if($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] < $sellerPrice[$product['selprod_user_id']]['totalPrice']){
-						continue;
-					}
+				if(!$product['shop_eligible_for_free_shipping']){
 					$shippingTotal += $product['shipping_cost'];
-				}
+				}				
 
 			}
 		}
@@ -746,23 +751,6 @@ class Cart extends FatModel {
 		$orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount,$cartRewardPoints);		
 		$WalletAmountCharge = ( $this->isCartUserWalletSelected() ) ? min( $orderNetAmount, $userWalletBalance ) : 0;
 		$orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
-		/* $cartSummary = array(
-			'cartProductPriceTotal'  => $cartProductPriceTotal,
-			'cartTotal'		=>	$cartTotal,
-			'shippingTotal'	=>	$shippingTotal,
-			'cartTaxTotal'	=>	$cartTaxTotal,
-			'cartDiscounts'	=>	$cartDiscounts,
-			'netTotalWithoutDiscount' => $netTotalWithoutDiscount,
-			'netTotalAfterDiscount' => $netTotalAfterDiscount,
-			'cartWalletSelected'	=>	$this->isCartUserWalletSelected(),
-			'siteCommission' => $totalSiteCommission,
-			'cartActualPaid' => max(round($netTotalAfterDiscount,2),0),
-			'items'  => $this->countProducts(),
-			'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
-			'orderNetAmount'	=>	$orderNetAmount,
-			'WalletAmountCharge' => $WalletAmountCharge
-		); */
-		
 		
 		$cartSummary = array(
 			'cartTotal'			=>	$cartTotal,
@@ -1321,21 +1309,11 @@ class Cart extends FatModel {
         return $cache->set($key, $value, 60 * 60);
     }
 	
-	public function getCarrierShipmentServicesList($product_key, $carrier_id = 0 ,$lang_id =0 ) {
+	public function getCarrierShipmentServicesList($cartKey, $carrier_id = 0 ,$lang_id =0 ) {
 		$products = $this->getProducts($this->cart_lang_id);
-		$sellerPrice = $this->getSellersProductItemsPrice($products);
-		foreach($products as $cartkey=>$cartval)
-		{
-			$products[$cartkey]['shop_free_shipping_eligibility'] = 0;	
-			if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
-				$products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
-				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
-					$products[$cartkey]['shop_free_shipping_eligibility'] = 1;
-				}
-			}	
-		}
-		
-        $services = $this->getCarrierShipmentServices($product_key, $carrier_id,$lang_id );
+		$prodKey = $this->getProductByKey($cartKey);
+			
+        $services = $this->getCarrierShipmentServices($cartKey, $carrier_id,$lang_id );
         $servicesList = array();
 
         $servicesList[0] = Labels::getLabel('MSG_Select_Services', $lang_id);
@@ -1343,12 +1321,14 @@ class Cart extends FatModel {
         if (!empty($carrier_id)) {
             foreach ($services as $key => $value) {
                 $code = $value->serviceCode;
-                $price = $value->shipmentCost + $value->otherCost;
-				if($products[$cartkey]['shop_free_shipping_eligibility'] > 0){
-					$price = 0;
-				}	
+                $price = $value->shipmentCost + $value->otherCost;					
                 $name = $value->serviceName;
-                $label = $name . " (" . CommonHelper::displayMoneyFormat($price) . " )";
+				if($products[$prodKey]['shop_eligible_for_free_shipping'] > 0){ 
+					$displayPrice =	CommonHelper::displayMoneyFormat(0);				
+				}else{
+					$displayPrice = CommonHelper::displayMoneyFormat($price);
+				}				
+                $label = $name . " (" . $displayPrice . " )";
                 $servicesList[$code . "-" . $price] = $label;
             }
         }

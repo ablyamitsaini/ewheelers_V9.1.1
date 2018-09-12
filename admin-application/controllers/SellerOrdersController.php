@@ -115,7 +115,6 @@ class SellerOrdersController extends AdminBaseController {
 			$srch->addMaxPriceCondition($priceTo);
 		}
 		
-
 		$rs = $srch->getResultSet();
 		$vendorOrdersList = FatApp::getDb()->fetchAll($rs);
 		

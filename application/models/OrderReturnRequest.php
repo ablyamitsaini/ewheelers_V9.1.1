@@ -202,71 +202,7 @@ class OrderReturnRequest extends MyAppModel{
 			return false;
 		}
 		
-		if($requestRow['orrequest_type'] == static::RETURN_REQUEST_TYPE_REFUND){
-			/* $volumeDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount']):0;	
-			
-			$couponDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount']):0;
-
-			$taxCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_TAX]['opcharge_amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_TAX]['opcharge_amount']:0;
-			
-			$cartAmount = $requestRow["op_unit_price"] * $requestRow["orrequest_qty"];
-			
-			$op_refund_commission = round( (($requestRow["op_unit_price"]*$requestRow['op_qty']) * $requestRow['op_commission_percentage'])/100, 2 );
-			$op_refund_commission = min($op_refund_commission,FatApp::getConfig("CONF_MAX_COMMISSION"));
-			$perProdRefundCommission = round($op_refund_commission /$requestRow['op_qty'] ,2 );
-			$op_refund_commission = $perProdRefundCommission * $requestRow["orrequest_qty"];
-			
-			$op_refund_affiliate_commission = round( ($cartAmount * $requestRow['op_affiliate_commission_percentage'])/100, 2 );
-						
-			$opOtherCharges = 0;
-			if($requestRow["op_other_charges"]){
-				$opOtherCharges = $requestRow["op_other_charges"]/$requestRow['op_qty'];
-				$opOtherCharges = round($opOtherCharges,2);
-			}
-			
-			$taxPerQty = 0;
-			$taxToRefund = 0;			
-			if($taxCharges > 0){
-				$taxPerQty = ($taxCharges/$requestRow['op_qty']);
-				$taxToRefund = ($taxPerQty * ($requestRow['orrequest_qty']));
-			}
-			
-			$volumeDiscountPerQty = 0;
-			$deductVolumeDiscountFromRefund = 0;			
-			if($volumeDiscount > 0){
-				$volumeDiscountPerQty = ($volumeDiscount/$requestRow['op_qty']);
-				$deductVolumeDiscountFromRefund = ($volumeDiscountPerQty * $requestRow['orrequest_qty']);
-			}
-			
-			$couponDiscountPerQty = 0;
-			$deductCouponDiscountFromRefund = 0;	
-			if( $couponDiscount > 0 ){
-				$couponDiscountPerQty = ($couponDiscount/$requestRow['op_qty']);
-				$deductCouponDiscountFromRefund = ($couponDiscountPerQty * $requestRow['orrequest_qty']);
-			}
-				
-			$totalPaidAmtBuyer = ($requestRow["op_unit_price"]*$requestRow['op_qty']) + $requestRow["op_other_charges"];
-			if($requestRow['op_qty'] == $requestRow['orrequest_qty']){
-				$op_refund_amount = $totalPaidAmtBuyer;
-			}else{
-				$op_refund_amount = $cartAmount + $taxToRefund - $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund;
-			}							
-				
-			$op_refund_shipping = 0;	
-			if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
-				$shipCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
-				$unitShipCharges = round(($shipCharges / $requestRow['op_qty']),2);
-				$op_refund_shipping = round(($unitShipCharges * $requestRow["orrequest_qty"]),2);
-				$op_refund_amount = $op_refund_amount + $op_refund_shipping;
-			}
-			
-			$opDataToUpdate = array(
-				'op_refund_qty'			=>	$requestRow['orrequest_qty'],
-				'op_refund_amount'		=>	round($op_refund_amount,2),
-				'op_refund_shipping'		=>	$op_refund_shipping,
-				'op_refund_commission'	=>	$op_refund_commission,
-				'op_refund_affiliate_commission' => $op_refund_affiliate_commission
-			); */
+		if($requestRow['orrequest_type'] == static::RETURN_REQUEST_TYPE_REFUND){			
 			$opDataToUpdate = CommonHelper::getOrderProductRefundAmtArr($requestRow);
 			unset($opDataToUpdate['op_cart_amount']);
 			unset($opDataToUpdate['op_prod_price']);
