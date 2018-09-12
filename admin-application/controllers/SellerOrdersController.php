@@ -436,6 +436,12 @@ class SellerOrdersController extends AdminBaseController {
 	public function CancelOrder( $op_id ){
 		$this->objPrivilege->canEditSellerOrders();
 		$op_id = FatUtility::int( $op_id );
+		
+		if(false !== OrderCancelRequest::getCancelRequestById($op_id)){
+			Message::addErrorMessage( Labels::getLabel('MSG_User_have_already_sent_the_cancellation_request_for_this_order', $this->adminLangId) );
+			CommonHelper::redirectUserReferer();
+		}
+				
 		$srch = new OrderProductSearch( $this->adminLangId, true, true );
 		$srch->joinOrderUser();
 		$srch->joinPaymentMethod();
@@ -497,6 +503,11 @@ class SellerOrdersController extends AdminBaseController {
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_access',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
+		
+		if(false !== OrderCancelRequest::getCancelRequestById($op_id)){
+			Message::addErrorMessage( Labels::getLabel('MSG_User_have_already_sent_the_cancellation_request_for_this_order', $this->adminLangId) );
+			CommonHelper::redirectUserReferer();
+		}		
 		
 		$orderObj = new Orders();
 		$processingStatuses = $orderObj->getVendorAllowedUpdateOrderStatuses();

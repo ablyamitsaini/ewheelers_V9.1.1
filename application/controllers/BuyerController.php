@@ -474,15 +474,10 @@ class BuyerController extends LoggedUserController {
 			}
 		}
 		
-		$ocRequestSrch = new OrderCancelRequestSearch();
-		$ocRequestSrch->doNotCalculateRecords();
-		$ocRequestSrch->doNotLimitRecords();
-		$ocRequestSrch->addCondition( 'ocrequest_op_id', '=', $opDetail['op_id'] );
-		$ocRequestRs = $ocRequestSrch->getResultSet();
-		if( FatApp::getDb()->fetch($ocRequestRs) ){
+		if(false !== OrderCancelRequest::getCancelRequestById($opDetail['op_id'])){
 			Message::addErrorMessage( Labels::getLabel('MSG_You_have_already_sent_the_cancellation_request_for_this_order', $this->siteLangId) );
 			CommonHelper::redirectUserReferer();
-		}
+		}		
 		
 		$frm = $this->getOrderCancelRequestForm( $this->siteLangId );
 		$frm->fill( array('op_id' => $opDetail['op_id'] ) );
