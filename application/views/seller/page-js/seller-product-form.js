@@ -286,8 +286,8 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					contentType: false,
 					success: function(t){
 						var ans = $.parseJSON(t);
-						if( ans.status == 0 ){
-							$.systemMessage( ans.msg,'alert alert--danger' );
+						if( ans.status == 0 ){ 
+							$.mbsmessage( ans.msg,true,'alert alert--danger' );
 							sellerProductDownloadFrm(selprod_id, download_type);
 							return;
 						}
@@ -305,7 +305,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 			fcom.ajax(fcom.makeUrl('Seller', 'uploadDigitalFile'), data, function(t) {
 				var ans = $.parseJSON(t);
 				if( ans.status == 0 ){
-					$.systemMessage( ans.msg,'alert alert--danger' );
+					$.mbsmessage( ans.msg,true,'alert alert--danger' );
 					return;
 				}
 				$.systemMessage( ans.msg,'alert alert--success' );
