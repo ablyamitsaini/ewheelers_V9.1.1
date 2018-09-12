@@ -7,7 +7,7 @@ class DummyController extends MyAppController {
 	}
 	
 	function mytest(){
-		if(false !== OrderCancelRequest::getCancelRequestById(1210)){
+		if(false !== OrderCancelRequest::getCancelRequestById(120)){
 			die('dsds');
 		}
 		 exit;

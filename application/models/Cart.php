@@ -310,7 +310,7 @@ class Cart extends FatModel {
 				$this->products[$key]['is_shipping_selected'] = false;
 				$this->products[$key]['affiliate_commission_percentage'] = $affiliateCommissionPercentage;
 				$this->products[$key]['affiliate_commission'] = $affiliateCommission;
-				$this->products[$key]['affiliate_user_id'] = $associatedAffiliateUserId;
+				$this->products[$key]['affiliate_user_id'] = $associatedAffiliateUserId;				
 				if( UserAuthentication::isUserLogged() ){
 					$this->products[$key]['shipping_address'] =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(),$siteLangId, 0, $this->getCartShippingAddress() );
 					$this->products[$key]['seller_address'] =  Shop::getShopAddress($sellerProductRow['shop_id'],true , $siteLangId);
@@ -320,6 +320,7 @@ class Cart extends FatModel {
 			$sellerPrice = $this->getSellersProductItemsPrice($this->products);
 			foreach($this->products as $cartkey=>$cartval)
 			{
+				$this->products[$cartkey]['shop_eligible_for_free_shipping'] = 0;
 				if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
 					$this->products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
 					if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
