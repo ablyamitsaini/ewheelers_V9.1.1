@@ -1200,7 +1200,7 @@ class ProductsController extends MyAppController {
 		$srch->setDefinedCriteria( $this->siteLangId );
 		$srch->doNotCalculateRecords();
 		$srch->addMultipleFields(array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'ifNULL(shop_name,shop_identifier)as shop_name', 'shop_description',
-		'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city' ));
+		'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city','shop_free_ship_upto' ));
 		$srch->addCondition( 'shop_id', '=', $product['shop_id'] );
 		$shopRs = $srch->getResultSet();
 		$shop = FatApp::getDb()->fetch( $shopRs );

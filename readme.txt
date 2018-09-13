@@ -8,4 +8,6 @@ Fixes:
 	. Error notification icon update in product digital file upload.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
-	. Added most refunded products in place of Bad products report.	
+	. Added most refunded products in place of Bad products report.
+	. Free shipping label display on product detail page.
+	

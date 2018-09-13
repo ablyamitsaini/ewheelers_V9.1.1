@@ -63,8 +63,13 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 <?php if($product['special_price_found']){ ?>
                 <span class="product_price_old"> <?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
                 <div class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></div>
-                <?php } ?>
+                <?php } ?>				
               </div>
+			  <?php if($shop['shop_free_ship_upto'] > 0){ 
+					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
+				?>
+				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>
+			<?php }?>
               <?php if( count($productSpecifications)>0 ){
 												 ?>
               <div class="gap"></div>
