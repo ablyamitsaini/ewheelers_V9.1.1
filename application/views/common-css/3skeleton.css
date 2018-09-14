@@ -1451,7 +1451,7 @@ body.fixed .top_bar {
 
 .item-yk .collections-ui {
   position: absolute;
-  right: 40px;
+  right: 0px;
   bottom: 0;
   z-index: 1;
   -webkit-transition-delay: 500ms;
@@ -2748,6 +2748,7 @@ span.subheading {
 .scrollbar {
   max-height: 250px;
   position: relative;
+  overflow-y: auto;
 }
 
 .scroll__track {
