@@ -10892,3 +10892,5 @@ body.page--front .page__cell #footer {
    background: #DCDCDC;
    margin: 15px 0;
 }
+
+.tabs_nav_container.flat.ovrflow-none{overflow: visible;} 

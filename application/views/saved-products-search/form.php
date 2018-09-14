@@ -11,8 +11,8 @@ $search_title_fld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Sear
 <div class="collection__form form">
   <?php 
 		echo $frm->getFormTag();
-		echo $frm->getFieldHtml('btn_submit');
 		echo $frm->getFieldHtml('pssearch_name');
+		echo $frm->getFieldHtml('btn_submit');
 	?>
   </form>
   <?php echo $frm->getExternalJs(); ?> 

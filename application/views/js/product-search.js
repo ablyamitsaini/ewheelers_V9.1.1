@@ -511,7 +511,6 @@ function updatePriceFilter(minPrice,maxPrice){
 	};
 	
 	saveProductSearch = function() {
-		event.stopPropagation();
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
 			return false;
@@ -527,7 +526,7 @@ function updatePriceFilter(minPrice,maxPrice){
 		return false;
 	};
 	
-	setupSaveProductSearch = function(frm){	
+	setupSaveProductSearch = function(frm){
 		if ( !$(frm).validate() ) return false;
 		var data = fcom.frmData(frm);
 		data = data+"&pssearch_type="+$productSearchPageType;
