@@ -316,15 +316,20 @@ function removePriceFilter(){
 }
 
 function updatePriceFilter(minPrice,maxPrice){
+	var addPriceFilter = true;
 	if(typeof minPrice == 'undefined' || typeof maxPrice == 'undefined'){
 		minPrice = $("#filterDefaultMinValue").val();
 		maxPrice = $("#filterDefaultMaxValue").val();
-	}else{
-		addPricefilter();
-	}	
+		addPriceFilter = false;
+	}
 	
 	$('input[name="priceFilterMinValue"]').val(minPrice);				
 	$('input[name="priceFilterMaxValue"]').val(maxPrice);
+	
+	if(addPriceFilter){
+		addPricefilter();
+	}
+	
 	var frm = document.frmProductSearch;	
 	var $range = $("#price_range");
 	range = $range.data("ionRangeSlider");		
