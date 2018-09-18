@@ -10,7 +10,11 @@ class ProductsController extends MyAppController {
 
 		$this->includeProductPageJsCss();
 		$frm = $this->getProductSearchForm();
-		$frm->fill(array('join_price'=>1));
+		
+		$headerFormParamsArr = FatApp::getParameters();
+		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+		$headerFormParamsAssocArr['join_price'] = 1;
+		$frm->fill( $headerFormParamsAssocArr );
 
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
 		$prodSrchObj->setDefinedCriteria();
@@ -104,10 +108,36 @@ class ProductsController extends MyAppController {
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
 		/* ] */
-
+		
+		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){			
+			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
+			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
+			$priceInFilter = true;
+		}
 		
+		$brandsCheckedArr = array();
+		if(array_key_exists('brand',$headerFormParamsAssocArr)){
+			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+		}
+		
+		$optionValueCheckedArr = array();
+		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
+			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
+		}
+		
+		$conditionsCheckedArr = array();
+		if(array_key_exists('condition',$headerFormParamsAssocArr)){
+			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
+		}
+		
+		$availability = 0;
+		if(array_key_exists('availability',$headerFormParamsAssocArr)){
+			$availability = current($headerFormParamsAssocArr['availability']);
+		}	
+	
 		$productFiltersArr = array(
 			'categoriesArr'		=>	$categoriesArr,
 			'brandsArr'			=>	$brandsArr,
@@ -129,8 +159,12 @@ class ProductsController extends MyAppController {
 		if(empty($record)){
 			$this->set('noProductFound', 'noProductFound');
 		}
+		
+		$this->set('priceArr', $priceArr);
+		$this->set('priceInFilter', $priceInFilter);
 		$this->set('frmProductSearch', $frm);
 		$this->set('productFiltersArr', $productFiltersArr );
+		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Products','index') );
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
 		$this->_template->render();
