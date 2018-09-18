@@ -139,13 +139,19 @@ class ProductsController extends MyAppController {
 		}	
 	
 		$productFiltersArr = array(
-			'categoriesArr'		=>	$categoriesArr,
-			'brandsArr'			=>	$brandsArr,
-			'conditionsArr'		=>	$conditionsArr,
-			'priceArr'			=>	$priceArr,
-			'currencySymbolLeft'	=>	CommonHelper::getCurrencySymbolLeft(),
-			'currencySymbolRight' 	=>	CommonHelper::getCurrencySymbolRight(),
-			'siteLangId'		=>	$this->siteLangId,
+			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
+			'categoriesArr'			  =>	$categoriesArr,
+			'brandsArr'			  	  =>	$brandsArr,
+			'brandsCheckedArr'		  =>	$brandsCheckedArr,
+			'optionValueCheckedArr'	  =>	$optionValueCheckedArr,
+			'conditionsArr'			  =>	$conditionsArr,
+			'conditionsCheckedArr'	  =>	$conditionsCheckedArr,
+			'availability'	          =>	 $availability,
+			'priceArr'				  =>	$priceArr,
+			'currencySymbolLeft'	  =>	CommonHelper::getCurrencySymbolLeft(),
+			'currencySymbolRight' 	  =>	CommonHelper::getCurrencySymbolRight(),
+			'siteLangId'			  =>	$this->siteLangId,
+			'priceInFilter'			  =>	$priceInFilter,		 
 			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
 			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 		);
