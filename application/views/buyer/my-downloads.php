@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>  
-				<div class="col-md-10 panel__right--full" >
+				<?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
 							<h2><?php echo Labels::getLabel('LBL_My_Downloads', $siteLangId); ?></h2>

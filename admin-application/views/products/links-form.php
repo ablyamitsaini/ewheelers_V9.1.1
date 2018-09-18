@@ -25,7 +25,7 @@ $frmLinks->developerTags['fld_default_col'] = 12;
 
 <div class="col-sm-12">
 
-	<div class="tabs_nav_container responsive flat">
+	<div class="tabs_nav_container responsive flat ovrflow-none">
 		<div class="tabs_panel_wrap">
 			<div class="tabs_panel">
 				<?php echo $frmLinks->getFormHtml(); ?>

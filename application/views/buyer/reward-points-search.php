@@ -1,5 +1,5 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
-if (count($arr_listing) > 0){	
+if (count($arr_listing) > 0){
 $arr_flds = array(
 	'urp_points'	=>	Labels::getLabel('LBL_Points', $siteLangId),
 	'urp_comments'	=>	Labels::getLabel('LBL_Description', $siteLangId),
@@ -7,7 +7,7 @@ $arr_flds = array(
 	'urp_date_expiry'	=>	Labels::getLabel('LBL_Expiry_Date', $siteLangId),
 );
 
-if($convertReward == 'coupon'){		
+if($convertReward == 'coupon'){
 	$arr_flds = array_merge(array('select_option'=>''),$arr_flds);
 }
 
@@ -21,11 +21,11 @@ $sr_no = 0;
 foreach ($arr_listing as $sn => $row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
-			case 'select_option':				
+			case 'select_option':
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><input class="rewardOptions-Js" type="checkbox" name="rewardOptions[]" value="'.$row['urp_id'].'">' , true);
 			break;
 			/* case 'urp_used':
@@ -43,14 +43,14 @@ foreach ($arr_listing as $sn => $row){
 				$expiryDate = $row[$key];
 				$expiryDate = ($expiryDate =='0000-00-00')?CommonHelper::displayNotApplicable($siteLangId,''):FatDate::format($row[$key]);
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$expiryDate , true);
-			break;			
+			break;
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
 			break;
 		}
 	}
 }
-	echo $tbl->getHtml();	
+	echo $tbl->getHtml();
 }else{
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 }

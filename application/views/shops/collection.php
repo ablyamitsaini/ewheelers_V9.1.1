@@ -20,20 +20,15 @@
 	l4.008,2.106c0.107,0.063,0.232,0.106,0.357,0.106c0.259,0,0.366-0.213,0.366-0.445c0-0.063,0-0.116-0.009-0.179l-0.768-4.464
 	l3.241-3.159C14.737,5.803,14.854,5.65,14.854,5.49z"></path>
                 </svg> </i> <span class="rate"> <?php echo round($shopRating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a><?php } ?> </span> </div>
-              <div class="btn-groups">
+              <div class="shop-actions">
 				<ul>
-					<li> <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary ripplelink block-on-mobile <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
-				<i class="icn"> <img src="images/retina/loveshop.svg"></i> <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a></li>
+				<li><a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="<?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
+					<i class="icn"> <img src="images/retina/loveshop.svg"></i>
+				 <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
+				</li>
+				<li> <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="" tabindex="0"> <i class="icn"> <img src="images/retina/send-meg.svg"></i> <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a></li>
 
-
-					<li>
-				<a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"> <i class="icn"> <img src="images/retina/loveshop.svg"></i>  <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
-				 </li>
-
-
-					<li>
-				  <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile"><i class="icn"> <img src="images/retina/loveshop.svg"></i>  <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a>
-				 </li>
+				<li> <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class=""><i class="icn"> <img src="images/retina/spam.svg"></i> <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a></li>
 				</ul>
 			  </div>
             </div>

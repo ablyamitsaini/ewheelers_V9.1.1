@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
-<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?> 
+<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
 <div class="box__body">
   <div class="tabs tabs--small tabs--scroll clearfix">
     <?php require_once('sellerCustomProductTop.php');?>
   </div>
   <div class="row">
-    <div class="col-md-12 panel__right--full">
+    <div class="col-xs-12 panel__right--full">
       <div class="cols--group">
         <div class="box__head panel__head">
           <h5><?php echo Labels::getLabel('LBL_Product_Specifications',$siteLangId); ?></h5>

@@ -26,7 +26,7 @@
 		  <div class="heading5"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?>:</div>
 		  <div class="bullet-list">
 			<ul>
-			  <?php $count=1; 
+			  <?php $count=1;
 					foreach($productSpecifications as $key => $specification){
 						if($count>5) continue;
 						?>

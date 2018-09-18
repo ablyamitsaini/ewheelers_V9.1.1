@@ -4,7 +4,6 @@
   <div class="selected-panel-data">
 	<?php 
 		if( count($products) ){
-			
 		foreach( $products as $product ){?>
 		<p><?php echo $product['selprod_title']; ?> - <span class="shipping-price"><?php 
 		if($product['shop_eligible_for_free_shipping']){

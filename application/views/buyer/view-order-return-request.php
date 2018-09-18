@@ -1,11 +1,11 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="fixed-container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>   
-				<div class="col-md-10 panel__right--full" >
+				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head no-print">
 							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': ' . $request['orrequest_reference'] /* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']) */; ?></h2>
@@ -37,9 +37,9 @@
 													<div class="info--order">
 														<h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
 														<p>
-														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name:', $siteLangId).':</strong>'.$request['op_shop_owner_name'] : ''; ?></p>	
+														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name:', $siteLangId).':</strong>'.$request['op_shop_owner_name'] : ''; ?></p>
 														<p>
-														<?php 
+														<?php
 														$vendorShopUrl = CommonHelper::generateUrl( 'Shops', 'View', array($request['op_shop_id']) );
 														echo ( $request['op_shop_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Shop_Name', $siteLangId).':</strong><a href="'.$vendorShopUrl.'">'.$request['op_shop_name'].'</a><br/>' : ''; ?>
 														</p>
@@ -51,13 +51,13 @@
 									<?php if( $canEscalateRequest ){ ?>
 									<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
 									<?php } ?>
-									
+
 									<?php if( $canWithdrawRequest ){ ?>
 									<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Buyer','WithdrawOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Withdraw_Request', $siteLangId); ?></a>
 									<?php } ?>
 										</div>
-									</div>							
-									
+									</div>
+
 									<?php if( !empty($request) ){ ?>
 									<table class="table table--orders">
 										<tbody>
@@ -74,22 +74,22 @@
 												</td>
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Product', $siteLangId ); ?></span>
 													<div class="item__description">
-														<?php if($request['op_selprod_title'] != ''){ ?> 
+														<?php if($request['op_selprod_title'] != ''){ ?>
 															<div class="item-yk-head-title" title="<?php echo $request['op_selprod_title']; ?>"><?php echo $request['op_selprod_title']; ?></div>
 															<div class="item-yk-head-sub-title"><?php echo $request['op_product_name']; ?></div>
 															<?php } else { ?>
 															<div class="item-yk-head-title" title="<?php echo $request['op_product_name']; ?>"><?php echo $request['op_product_name']; ?></div>
 															<?php } ?>
 														<div class="item-yk-head-brand"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo $request['op_brand_name']; ?></div>
-														<?php 
+														<?php
 														if( $request['op_selprod_options'] != '' ){ ?>
 															<div class="item-yk-head-specification"><?php echo $request['op_selprod_options']; ?></div>
 														<?php }	?>
-														
+
 														<?php if( $request['op_selprod_sku'] != '' ){ ?>
 															<div class="item-yk-head-sku"><?php echo Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $request['op_selprod_sku']; ?> </div>
 														<?php } ?>
-														
+
 														<?php if( $request['op_product_model'] != '' ){ ?>
 															<div class="item-yk-head-model"><?php echo Labels::getLabel('LBL_Model', $siteLangId).':  ' . $request['op_product_model']; ?></div>
 														<?php }	?>
@@ -99,8 +99,8 @@
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Request_Type', $siteLangId ); ?></span> <?php echo $returnRequestTypeArr[$request['orrequest_type']]; ?></td>
 											</tr>
 										</tbody>
-									</table>						
-									
+									</table>
+
 									<table class="table table--orders">
 										<tbody>
 											<tr class="">
@@ -120,19 +120,19 @@
 													</div>
 												</td>
 												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></span><?php echo $requestRequestStatusArr[$request['orrequest_status']]; ?></td>
-												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></span><?php 
+												<td><span class="caption--td"><?php echo Labels::getLabel( 'LBL_Amount', $siteLangId ); ?></span><?php
 												$returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);
 												/* $priceTotalPerItem = CommonHelper::orderProductAmount($request,'netamount',true);
 
-												$price = 0;	
+												$price = 0;
 												if($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED){
 													if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
 														$shipCharges = isset($request['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$request['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
 														$unitShipCharges = round(($shipCharges / $request['op_qty']),2);
-														$priceTotalPerItem = $priceTotalPerItem + $unitShipCharges;		
+														$priceTotalPerItem = $priceTotalPerItem + $unitShipCharges;
 														$price = $priceTotalPerItem * $request['orrequest_qty'];
-													}	
-												}												
+													}
+												}
 												if(!$price){
 													$price = $priceTotalPerItem * $request['orrequest_qty'];
 													$price = $price + $request['op_refund_shipping'];
@@ -152,11 +152,11 @@
 									<div id="loadMoreBtnDiv"></div>
 									<ul class="media media--details" id="messagesList">
 									</ul>
-									
+
 									<?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
 
 									$frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
-									$frmMsg->setFormTagAttribute('class', 'form'); 
+									$frmMsg->setFormTagAttribute('class', 'form');
 									$frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 									$frmMsg->developerTags['fld_default_col'] = 12;
 									?>
