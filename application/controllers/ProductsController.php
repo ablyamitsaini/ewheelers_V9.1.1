@@ -105,6 +105,9 @@ class ProductsController extends MyAppController {
 		$priceArr = $db->fetch($priceRs);
 		/* ] */
 
+		$filterDefaultMinValue = $priceArr['minPrice'];
+		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
 		$productFiltersArr = array(
 			'categoriesArr'		=>	$categoriesArr,
 			'brandsArr'			=>	$brandsArr,
@@ -112,7 +115,9 @@ class ProductsController extends MyAppController {
 			'priceArr'			=>	$priceArr,
 			'currencySymbolLeft'	=>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	=>	CommonHelper::getCurrencySymbolRight(),
-			'siteLangId'		=>	$this->siteLangId
+			'siteLangId'		=>	$this->siteLangId,
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 		);
 		/* commonHelper::printArray($productFiltersArr); die; */
 		/* Get generic Polls [ */
