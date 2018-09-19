@@ -2,7 +2,7 @@
 <?php if(!empty($categoriesArr)){ ?>
 <h3 class="widget__title "><?php echo Labels::getLabel('Lbl_categories',$siteLangId); ?></h3>
 <div class="">
-	<nav class="nav nav--toggled nav--toggled-js">
+	<nav class="">
 		<ul class="blog_lnks accordion">
 			<?php foreach($categoriesArr as $cat){ ?>
 			<li class="<?php echo (count($cat['children'])>0) ? "has-child" : "" ?>"><a href="<?php echo CommonHelper::generateUrl('Blog','category', array($cat['bpcategory_id'])); ?>"><?php echo $cat['bpcategory_name']; echo !empty($cat['countChildBlogPosts'])?" <span class='badge'>($cat[countChildBlogPosts])</span>":''; ?></a>
@@ -10,7 +10,7 @@
 				<span class="link--toggle link--toggle-js"></span>
 				<ul style="display:none">
 					<?php foreach($cat['children'] as $children){ ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('Blog','category',array($children['bpcategory_id'])); ?>"><?php echo $children['bpcategory_name']; echo !empty($children['countChildBlogPosts'])?" <span class='badge'>($children[countChildBlogPosts])</span>":''; ?></a> 
+						<li><a href="<?php echo CommonHelper::generateUrl('Blog','category',array($children['bpcategory_id'])); ?>"><?php echo $children['bpcategory_name']; echo !empty($children['countChildBlogPosts'])?" <span class='badge'>($children[countChildBlogPosts])</span>":''; ?></a>
 						<?php if(count($children['children'])){ ?>
 							<ul class="">
 							<?php foreach($children['children'] as $subChildren){ ?>
@@ -31,13 +31,11 @@
 </div>
 <?php }?>
 
-<div class="box box--white box--space">
-	<span class="gap"></span>
 	<a href="<?php echo CommonHelper::generateUrl('Blog','contributionForm'); ?>" class="btn btn--secondary btn--block ripplelink "><?php echo Labels::getLabel('Lbl_Contribute',$siteLangId); ?></a>
-</div>
+
 
 <script>
-        /* for blog links */	 
+        /* for blog links */
         $('.link--toggle-js').click(function(){
         if($(this).hasClass('is-active')){
             $(this).removeClass('is-active');

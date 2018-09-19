@@ -51,24 +51,22 @@
 	<circle id="oval" stroke="#3CBC83" stroke-width="2" fill="none" cx="896" cy="680" r="3"></circle>
 	<polygon id="diamond" stroke="#C46F82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" points="886 705 889 708 886 711 883 708"></polygon>
 	<path d="M736,577 C737.65825,577 739,578.34175 739,580 C739,578.34175 740.34175,577 742,577 C740.34175,577 739,575.65825 739,574 C739,575.65825 737.65825,577 736,577 Z" id="bubble-rounded" stroke="#3CBC83" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-	</svg> 
+	</svg>
   </div>
   <h2><?php echo Labels::getLabel('LBL_Your_Shopping_Bag_is_Empty',$siteLangId); ?></h2>
-  <a href="<?php echo CommonHelper::generateUrl('Home'); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Go_To_Homepage',$siteLangId); ?></a> <span class="gap"></span> 
+  <a href="<?php echo CommonHelper::generateUrl('Home'); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Go_To_Homepage',$siteLangId); ?></a> <span class="gap"></span>
 </div>
 <?php if( $EmptyCartItems ) { ?>
 	<ul class="top-brands-list">
-		<?php 
-		$counter = 1; 
-		foreach( $EmptyCartItems as $item ){ 
-			$itemUrl = str_replace('{SITEROOT}', CommonHelper::generateFullUrl(), $item['emptycartitem_url'] ); 
-			$itemUrl = str_replace('{siteroot}', CommonHelper::generateFullUrl(), $itemUrl ); 
+		<?php
+		$counter = 1;
+		foreach( $EmptyCartItems as $item ){
+			$itemUrl = str_replace('{SITEROOT}', CommonHelper::generateFullUrl(), $item['emptycartitem_url'] );
+			$itemUrl = str_replace('{siteroot}', CommonHelper::generateFullUrl(), $itemUrl );
 		?>
 			<li><a target="<?php echo $item['emptycartitem_url_is_newtab']?"_blank":"_self"?>" href="<?php echo $itemUrl; ?>"><?php echo $item['emptycartitem_title']; ?></a> <?php echo ( $counter < count($EmptyCartItems) ) ? '|' : ''; ?> </li>
-			<?php 
-			$counter ++; 
+			<?php
+			$counter ++;
 		} ?>
 	</ul>
 <?php }	?>
-
-    

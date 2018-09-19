@@ -3,10 +3,13 @@
 <div class="shop-header shop--header04">
   <div class="fixed-container">
     <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-4  col-xs-12"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
+      <div class="col-xl-2 col-lg-6">
+        <div class="flex-align-center"><a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'EXTRA-SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
+        </div>
+
       </div>
-      <div class="col-lg-10 col-md-10 col-sm-4 col-xs-12">
+      <div class="col-xl-10 col-lg-6">
         <div class="shop-nav">
           <?php $variables= array('template_id'=>$template_id,'shop_id'=>$shop['shop_id'],'collectionData'=>$collectionData,'action'=>$action,'siteLangId'=>$siteLangId);
 			$this->includeTemplate('shops/shop-layout-navigation.php',$variables,false);  ?>

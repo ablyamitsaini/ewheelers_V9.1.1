@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-//$_SESSION['geo_location'] = true;	
+//$_SESSION['geo_location'] = true;
 if( $controllerName != 'GuestUser' && $controllerName != 'Error' ){
-	$_SESSION['referer_page_url'] = CommonHelper::getCurrUrl(); 
-} 
+	$_SESSION['referer_page_url'] = CommonHelper::getCurrUrl();
+}
 ?><!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 <head>
@@ -31,18 +31,18 @@ if( $controllerName != 'GuestUser' && $controllerName != 'Error' ){
 <link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image','appleTouchIcon', array($siteLangId)); ?>">
 <link rel="apple-touch-icon" sizes="72x72" href="<?php echo CONF_WEBROOT_URL; ?>images/apple-touch-icon-72x72.png">
 <link rel="apple-touch-icon" sizes="114x114" href="<?php echo CONF_WEBROOT_URL; ?>images/apple-touch-icon-114x114.png">
-<?php 
+<?php
 	if($canonicalUrl == ''){
 		$canonicalUrl = CommonHelper::generateFullUrl($controllerName,FatApp::getAction(),!empty(FatApp::getParameters())?FatApp::getParameters():array());
 	}
 ?>
-<link rel="canonical" href="<?php echo $canonicalUrl;?>" /> 
-<?php 
+<link rel="canonical" href="<?php echo $canonicalUrl;?>" />
+<?php
 
 
 echo $str = '<script type="text/javascript">
 		var langLbl = ' . json_encode(
-			$jsVariables 
+			$jsVariables
 		) . ';
 		var CONF_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 0) . ';
 		var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';

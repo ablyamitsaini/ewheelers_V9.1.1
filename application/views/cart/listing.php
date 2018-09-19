@@ -13,10 +13,10 @@
       </tr>
     </thead>
     <tbody>
-      <?php 
+      <?php
 			if( count($products) ){
 					foreach( $products as $product ){
-						$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ); 
+						$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) );
 						$shopUrl = CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) );
 						$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 						?>
@@ -42,17 +42,20 @@
           <a href="javascript:void(0)" class="btn btn--sm btn--gray ripplelink" onclick="cart.remove('<?php echo md5($product['key']); ?>','cart')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?></a>
           </td>
         <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Quantity',$siteLangId); ?></span>
-          <div class="qty">
+
+<div class="qty-wrapper">  <div class="qty">
 			<span class="decrease decrease-js">-</span>
             <input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="text" />
 			<span class="increase increase-js">+</span>
             </div>
 			<a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>
-          <?php 
+          <?php
 			$stockText = ($product['in_stock']) ? Labels::getLabel('LBL_In_Stock',$siteLangId) : Labels::getLabel('LBL_Out_of_Stock',$siteLangId);
-			$stockTextClass = ($product['in_stock']) ? 'text--normal-primary' : 'text--normal-secondary';	
+			$stockTextClass = ($product['in_stock']) ? 'text--normal-primary' : 'text--normal-secondary';
 			?>
-          <span class="text--normal <?php echo $stockTextClass; ?>"><?php echo $stockText; ?></span></td>
+          <span class="text--normal <?php echo $stockTextClass; ?>"><?php echo $stockText; ?></span>
+</div>
+</td>
         <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Price',$siteLangId); ?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
           <?php if( $product['special_price_found'] ){ ?>
           <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
@@ -63,8 +66,8 @@
 					}
 				}
 			/* if( count($products['single']) ){
-				foreach( $products['single'] as $product ){ 					
-					$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ); 
+				foreach( $products['single'] as $product ){
+					$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) );
 					$shopUrl = CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) );
 					$imageUrl = CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId));
 			?>
@@ -109,9 +112,9 @@
 					<div class="qty">
 						<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" maxlength="3" type="text" /><a href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>
 					</div>
-					<?php 
+					<?php
 					$stockText = ($product['in_stock']) ? Labels::getLabel('LBL_In_Stock',$siteLangId) : Labels::getLabel('LBL_Out_of_Stock',$siteLangId);
-					$stockTextClass = ($product['in_stock']) ? 'text--normal-primary' : 'text--normal-secondary';	
+					$stockTextClass = ($product['in_stock']) ? 'text--normal-primary' : 'text--normal-secondary';
 					?>
 					<span class="text--normal <?php echo $stockTextClass; ?>"><?php echo $stockText; ?></span>
 				</td>
@@ -127,38 +130,38 @@
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
 				</td>
 			</tr>
-			
-			
+
+
 			<?php } } */ ?>
     </tbody>
   </table>
-  
+
   <!-- cart Footer[ -->
-  <div class="cart-footer"> 
+  <div class="cart-footer">
     <!--div class="row">
 			<div class="col-md-offset-7 col-md-5">
 				<div class="form__cover">
 				   <h6><?php echo Labels::getLabel('LBL_Apply_Promo_Coupons',$siteLangId);?></h6>
-					<?php 
+					<?php
 						$PromoCouponsFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
 						$PromoCouponsFrm->setFormTagAttribute('onsubmit','applyPromoCode(this); return false;');
 						$PromoCouponsFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 						$PromoCouponsFrm->developerTags['fld_default_col'] = 12;
-						echo $PromoCouponsFrm->getFormTag(); 
-						echo $PromoCouponsFrm->getFieldHtml('coupon_code'); 
-						echo $PromoCouponsFrm->getFieldHtml('btn_submit'); 
+						echo $PromoCouponsFrm->getFormTag();
+						echo $PromoCouponsFrm->getFieldHtml('coupon_code');
+						echo $PromoCouponsFrm->getFieldHtml('btn_submit');
 						echo $PromoCouponsFrm->getExternalJs();
 						?>
-					</form>	
-					<span class="gap"></span>	
+					</form>
+					<span class="gap"></span>
 					<?php if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
 					<div class="alert alert--success">
 						<a href="javascript:void(0)" class="close" onClick="removePromoCode()"></a>
 						<p><?php echo Labels::getLabel('LBL_Promo_Code',$siteLangId);?> <strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong> <?php echo Labels::getLabel('LBL_Successfully_Applied',$siteLangId);?></p>
 					</div>
 					<?php }?>
-				</div>		
-			</div>		
+				</div>
+			</div>
 		</div-->
     <div class="cartdetail__footer">
       <table>

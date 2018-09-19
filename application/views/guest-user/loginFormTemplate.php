@@ -1,18 +1,18 @@
-<?php 
-	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true; 
+<?php
+	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true;
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
 <div id="sign-in" >
 	<div class="login-wrapper">
 	  <div class="form-side">
 		<div class="heading"><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></div>
-		<?php 
+		<?php
 		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
 		$loginFrm->setFormTagAttribute('class', 'form');
 		$loginFrm->setFormTagAttribute('name', 'formLoginPage');
 		$loginFrm->setFormTagAttribute('id', 'formLoginPage');
 		$loginFrm->setValidatorJsObjectName('loginFormObj');
-		
+
 		$loginFrm->setFormTagAttribute('onsubmit','return '. $onSubmitFunctionName . '(this, loginFormObj);');
 		$loginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
 		$loginFrm->developerTags['fld_default_col'] = 12;
@@ -20,18 +20,18 @@
 		$remembermeField->setWrapperAttribute("class", "rememberme-text");
 		/* $loginFrm->removeField($loginFrm->getField('remember_me')); */
 		$fldforgot = $loginFrm->getField('forgot');
-		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'" 
+		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
 		class="forgot">'.Labels::getLabel('LBL_Forgot_Password',$siteLangId).'?</a>';
 		$fldSubmit = $loginFrm->getField('btn_submit');
-		
+
 		echo $loginFrm->getFormHtml();?>
-	
+
 		<?php if( $showSignUpLink ){ ?>
 		<div class="row">
 			<div class="col-md-12 col-xs-12"> <a class="last-button" href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>?</a> </div>
 		</div>
 		<?php } ?>
-		
+
 	  </div>
 		<?php
 			$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
@@ -52,22 +52,9 @@
 	c-3.906,0-7.094-3.234-7.094-7.234s3.188-7.234,7.094-7.234c2.234,0,3.719,0.953,4.563,1.766L19.125,3c-2-1.875-4.578-3-7.672-3
 	C5.125,0,0,5.125,0,11.453s5.125,11.453,11.453,11.453C18.063,22.906,22.453,18.266,22.453,11.719z M36,9.813h-3.266V6.547h-3.281
 	v3.266h-3.266v3.281h3.266v3.266h3.281v-3.266H36V9.813z"/>
-		  </svg> </i> <?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a> 
+		  </svg> </i> <?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a>
 		<?php } ?> </div>
 	  </div>
 	  <?php } ?>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-

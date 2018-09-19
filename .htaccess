@@ -1,3 +1,4 @@
+satisfy any
 RewriteEngine on
 RewriteRule ^sitemap/list_([0-9]+).xml$ user-uploads/sitemap/list_$1.xml [L]
 

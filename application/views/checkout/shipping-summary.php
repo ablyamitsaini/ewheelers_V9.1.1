@@ -14,4 +14,3 @@
 	echo $frmShippingApi->getFormHtml(); ?>
 </div>
 <div id="shipping-summary-inner"></div>
-

@@ -18,13 +18,14 @@ array_walk($catCodeArr,function(&$n) {
 ?>
 <?php /* CommonHelper::printArray($conditionsArr); */ ?>
 <div id="fixed__panel" class="filter section__filter fixed__panel">
+<div class="">
 <?php if(FatApp::getController()=='ShopsController'){ ?>
 <div class="product-search">
 	<!--<form>
 		<input placeholder="Search" class="input-field nofocus" value="" type="text">
 		<input name="btnSrchSubmit" value="" class="input-submit" type="submit">
 	</form>-->
-	<?php 
+	<?php
 	echo $searchFrm->getFormTag();
 	$fld=$searchFrm->getField('keyword');
 	$fld->addFieldTagAttribute("class","input-field nofocus");
@@ -38,7 +39,7 @@ array_walk($catCodeArr,function(&$n) {
    <!--Filters[ -->
   <div class="widgets filter-search">
 	<div class="widgets-head">
-	  <div class="heading4"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>  <a  class="btn btn--link action ripplelink" id="resetAll"><?php echo Labels::getLabel('LBL_RESET_ALL',$siteLangId);?></a></div>
+	  <div class="heading4"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>  <a  class="btn--link action ripplelink" id="resetAll"><?php echo Labels::getLabel('LBL_RESET_ALL',$siteLangId);?></a></div>
 	</div>
 	<div class="selected-filters" id="filters"> </div>
   </div>
@@ -207,10 +208,10 @@ array_walk($catCodeArr,function(&$n) {
 				<div class="brands-list toggle-target scrollbar">
 				<ul><?php
 			}
-			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];	
-				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>"; 				
+			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];
+				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>";
 			?>
-				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionValueId,$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo ($optionRow['optionvalue_name']) ? $optionRow['optionvalue_name'] : $optionRow['optionvalue_identifier'];?> </label></li>			
+				<li><label class="checkbox optionvalue" id="optionvalue_<?php echo $optionRow['optionvalue_id']; ?>"><input name="optionvalues" value="<?php echo $optionValueId; ?>" type="checkbox" <?php if(in_array($optionValueId,$optionValueCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo ($optionRow['optionvalue_name']) ? $optionRow['optionvalue_name'] : $optionRow['optionvalue_identifier'];?> </label></li>
 
 		<?php }
 			echo "</ul></div>
@@ -250,6 +251,7 @@ array_walk($catCodeArr,function(&$n) {
 	<div class="divider "></div>
 	<!-- ] -->
 
+</div>
 </div>
 
 

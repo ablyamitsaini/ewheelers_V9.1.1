@@ -36,15 +36,15 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
     <section class="top-space">
       <div class="fixed-container">
         <div class="box box--white box--space">
-		<?php 
+		<?php
 			$arr_flds = array(
 				'shop_name'	=>	Labels::getLabel('LBL_Seller', $siteLangId),
 				'theprice'	=>	Labels::getLabel('LBL_Price', $siteLangId),
 				'COD'	=>	Labels::getLabel('LBL_COD_AVAILABLE', $siteLangId),
 				'viewDetails'	=>	'',
 				'Action'	=>	'',
-			
-			); 
+
+			);
 $tbl = new HtmlElement('table', array('class'=>'table'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
@@ -53,12 +53,12 @@ foreach ($arr_flds as $val) {
 
 $sr_no = 0;
 foreach ($product['moreSellersArr'] as $sn => $moresellers){
-	
+
 	$sr_no++;
-	
+
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
 
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -77,13 +77,13 @@ foreach ($product['moreSellersArr'] as $sn => $moresellers){
 			}
 			$td->appendElement('plaintext', array(), $txt , true);
 			break;
-			
+
 			case 'theprice':
 			 $txt = ' <div class="item-yk"><div class="product_price">'.CommonHelper::displayMoneyFormat($moresellers['theprice']);
-                  if($moresellers['special_price_found']){ 
+                  if($moresellers['special_price_found']){
                   $txt.='  <span class="product_price_old">'.CommonHelper::displayMoneyFormat($moresellers['selprod_price']).'</span>
                   <div class="product_off">'.CommonHelper::showProductDiscountedText($moresellers, $siteLangId).'</div>';
-                  } 
+                  }
 				  $txt .='</div></div>';
 				  $td->appendElement('plaintext', array(), $txt, true);
 			break;
@@ -98,7 +98,7 @@ foreach ($product['moreSellersArr'] as $sn => $moresellers){
 					$td->appendElement('a', array('href'=>CommonHelper::generateUrl('products','view',array($moresellers['selprod_id'])), 'class'=>'link--arrow','title'=>Labels::getLabel('LBL_View_Details',$siteLangId),true),
 					Labels::getLabel('LBL_View_Details',$siteLangId), true);
 			break;
-			
+
 			case 'Action':
 				if($moresellers['selprod_available_from']<= FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d')){
 					$txt ='<div class="buy-group align--right"> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary btn--h-large ripplelink block-on-mobile btnProductBuy--js"><i class="fa  fa-shopping-cart"></i> '.Labels::getLabel('LBL_Buy_Now',$siteLangId).'</a> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--secondary btn--h-large ripplelink block-on-mobile btnAddToCart--js"><i class="fa fa-cart-plus"></i> '.Labels::getLabel('LBL_Add_To_Cart',$siteLangId).'</a> </div>';
@@ -106,9 +106,9 @@ foreach ($product['moreSellersArr'] as $sn => $moresellers){
 					$txt = str_replace('{available-date}',FatDate::Format($moresellers['selprod_available_from']),Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId));
 				}
 				$td->appendElement('plaintext', array(), $txt, true);
-				  
+
 			break;
-			
+
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$moresellers[$key],true);
 			break;

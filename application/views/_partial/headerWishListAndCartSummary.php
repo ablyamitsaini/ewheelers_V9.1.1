@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $user_is_buyer = 0;
 if( UserAuthentication::isUserLogged() ){
 	$user_is_buyer = User::getAttributesById( UserAuthentication::getLoggedUserId(), 'user_is_buyer' );
@@ -7,15 +7,16 @@ if( UserAuthentication::isUserLogged() ){
 <?php if( $user_is_buyer > 0 || (!UserAuthentication::isUserLogged()) ){ ?>
 <a href="javascript:void(0)"><span class="icn-txt"><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></span> <span class="icn"> <span class="cartQuantity"><?php echo $totalCartItems; ?></span></span></a>
 <div class="dropsection cart-detail">
+<a href="javascript:void(0)" id="close-cart-js" class="close close30 close-black"></a>
   <?php if($totalCartItems>0) { ?>
   <div class="cartdetail__body">
     <div class="short-detail">
       <table class="cart-summary item-yk">
         <tbody>
-          <?php 
+          <?php
 					if( count($products) ){
 						foreach( $products as $product ){
-							$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ); 
+							$productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) );
 							$shopUrl = CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) );
 							$imageUrl =  FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "EXTRA-SMALL", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 							?>
@@ -35,12 +36,13 @@ if( UserAuthentication::isUserLogged() ){
 							?>
                   | <?php echo Labels::getLabel('LBL_Quantity:', $siteLangId) ?> <?php echo $product['quantity']; ?> </div>
               </div></td>
-            <td class="text-right" ><div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
+            <td ><div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
                 <?php if( $product['special_price_found'] ){ ?>
                 <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                 <?php } ?>
               </div>
-              <a href="javascript:void(0)" class="btn btn--sm btn--gray ripplelink" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?></a></td>
+              </td>
+<td class="text-right"><a href="javascript:void(0)" class="cart-remove" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_', $siteLangId); ?></a></td>
           </tr>
           <?php } } else {
 							echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);

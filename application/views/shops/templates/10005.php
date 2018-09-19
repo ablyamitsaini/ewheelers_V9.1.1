@@ -23,7 +23,7 @@
 			<?php } ?>
 		</div>
 	<?php } ?>
-	
+
 <script type="text/javascript">
 	(function($){
 		if(langLbl.layoutDirection == 'rtl'){
@@ -33,7 +33,7 @@
 				autoplay:true,
 				rtl:true,
 				pauseOnHover:false,
-			}); 
+			});
 		}
 		else
 		{
@@ -42,8 +42,8 @@
 			arrows:true,
 			autoplay:true,
 			pauseOnHover:false,
-			}); 
-		} 
-	})(jQuery); 
+			});
+		}
+	})(jQuery);
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>

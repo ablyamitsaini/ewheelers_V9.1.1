@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$frmProductSearch->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
@@ -15,7 +15,7 @@
 	<?php }?>
       <div class="row">
 		<?php if(!isset($noProductFound)) { ?>
-        <div class="col-lg-3 col--left"> 
+        <div class="col-lg-3 col--left">
           <!--<h5 class="hide--mobile hide--tab hide--ipad"><?php echo Labels::getLabel('LBL_Quick_Filters', $siteLangId); ?></h5>-->
           <div class="overlay overlay--filter"></div>
           <div class="filters">
@@ -23,7 +23,7 @@
               <?php
 				/* Left Side Filters Side Bar [ */
 				if( $productFiltersArr ){
-					$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
+					$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false);
 				}
 				/* ] */
 				?>
@@ -33,7 +33,7 @@
 		<?php }
 		if(!isset($noProductFound)){
 			$blockTitle=Labels::getLabel('LBL_All_Products', $siteLangId);
-			$class ='col-lg-9';
+			$class ='col-xl-9';
 		}else{
 			$class= 'col-lg-12';
 			$blockTitle = '';
@@ -68,5 +68,5 @@ $(document).ready(function(){
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
 	searchProducts(document.frmProductSearch);
-});	 
-</script> 
+});
+</script>

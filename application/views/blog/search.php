@@ -17,12 +17,12 @@ if(!empty($postList)){ ?>
 		</div>
 	</section>
 
-	
-	
-	<?php $outerSectionCount=1; $innerListcount = 1; 
-	foreach($postList as $blogPost ){ 
-		if($outerSectionCount%2!=0) {   
-			if($innerListcount == 1){ ?>	
+
+
+	<?php $outerSectionCount=1; $innerListcount = 1;
+	foreach($postList as $blogPost ){
+		if($outerSectionCount%2!=0) {
+			if($innerListcount == 1){ ?>
 				<section class="section">
 					<div class="container">
 						<div class="post-list">
@@ -49,17 +49,17 @@ if(!empty($postList)){ ?>
 					</div>
 				</div>
 			</article>
-			<?php  if($innerListcount == 2){?>	
+			<?php  if($innerListcount == 2){?>
 				</div>
 			</div>
-		</section><?php $outerSectionCount++; } 		
-		$innerListcount++;								
-		} else {  
+		</section><?php $outerSectionCount++; }
+		$innerListcount++;
+		} else {
 			if($innerListcount == 3){?>
 			<section class="bg-pattern">
 				<div class="container">
 					<div class="row">
-				<?php }?>	
+				<?php }?>
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 						<div class="recent-posts">
 							<div class="posted-media">
@@ -84,21 +84,21 @@ if(!empty($postList)){ ?>
 							</div>
 						</div>
 					</div>
-				<?php if($innerListcount >= 5){?>	
+				<?php if($innerListcount >= 5){?>
 					</div>
 				</div>
 			</section>
-		<?php $innerListcount = 1; 
+		<?php $innerListcount = 1;
 				$outerSectionCount++;
 				}else{
 				$innerListcount++;
-			} 
-		} 
-		
+			}
+		}
+
 	} ?>
-	
-	
-<?php 
+
+
+<?php
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmBlogSearchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToSearchPage');
@@ -164,7 +164,7 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 				]
 			});
 		}
-		
+
 	});
 </script>
 

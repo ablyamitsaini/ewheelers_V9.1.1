@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$frmProductSearch->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
@@ -20,33 +20,33 @@
 					<!--<h5 class="hide--mobile hide--tab hide--ipad"><?php echo Labels::getLabel('LBL_Quick_Filters', $siteLangId); ?></h5>-->
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
-						<div class="box box--white">
-							<?php 
+						<div class="">
+							<?php
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
-								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
+								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false);
 							}
 							/* ] */
 							?>
 						</div>
 					</div>
 				</div>
-				<?php } 
+				<?php }
 				if(!isset($noProductFound)){
 					$blockTitle=Labels::getLabel('LBL_All_PRODUCTS', $siteLangId);
-					$class ='col-lg-9';
+					$class ='col-xl-9';
 				}else{
 					$class= 'col-lg-12';
 					$blockTitle = '';
 				}
-				?>				
+				?>
 				<div class="<?php echo $class;?>">
 					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId),false);  ?>
 				</div>
 				<div class="col-md-3 col--left col--left-adds">
 					<div class="wrapper--adds" >
-						<div class="grids" id="searchPageBanners"></div>   
-					</div>  
+						<div class="grids" id="searchPageBanners"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -54,13 +54,13 @@
 	<div class="gap"></div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){ 
-	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','search'); ?>';	
+$(document).ready(function(){
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','search'); ?>';
 	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_PRODUCT; ?>';
 	$recordId = 0;
-	<?php if($priceInFilter){?>			
+	<?php if($priceInFilter){?>
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
 	searchProducts(document.frmProductSearch);
-});	 
-</script>	
+});
+</script>

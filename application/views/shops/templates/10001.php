@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 <script type="text/javascript">
 	(function($){
 		if(langLbl.layoutDirection == 'rtl'){
@@ -38,7 +38,7 @@
 				autoplay:true,
 				rtl:true,
 				pauseOnHover:false,
-			}); 
+			});
 		}
 		else
 		{
@@ -47,10 +47,10 @@
 			arrows:true,
 			autoplay:true,
 			pauseOnHover:false,
-			}); 
-		} 
-	})(jQuery); 
-	$(document).ready(function(){ 
-		$currentPageUrl = '<?php echo $canonicalUrl; ?>';			
+			});
+		}
+	})(jQuery);
+	$(document).ready(function(){
+		$currentPageUrl = '<?php echo $canonicalUrl; ?>';
 	});
 </script>

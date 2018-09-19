@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php 
+<?php
 $frmShippingApi->developerTags['colClassPrefix'] = 'col-md-';
 $frmShippingApi->developerTags['fld_default_col'] = 12;
 
@@ -11,22 +11,22 @@ $shippingapi_idFld->developerTags['col'] = 6;
 ?>
 <div class="review-wrapper">
 	<div class="section-head step__head">3. <?php echo Labels::getLabel('LBL_Shipping_Summary', $siteLangId); ?></div>
-	<div class="short-detail">	
+	<div class="short-detail">
 		<table class="cart-summary item-yk">
 			<tbody>
 				<?php usort($products, function($a, $b) {
 					  return $a['shop_id'] - $b['shop_id'];
 					});
-					
+
 					$prevShopId = 0;
 				if( count($products) ){
 					foreach( $products as $product ){
 						if( $product['shop_id'] != $prevShopId){ ?>
 							<tr class="-row-heading">
-								<td colspan="2"><?php echo $product['shop_name']; ?></td>
-								<td class="text-right" colspan="2"><?php 
+								<td colspan="3"><?php echo $product['shop_name']; ?></td>
+								<td class="text-right" colspan="2"><?php
 								if($product['shop_eligible_for_free_shipping'] > 0) {
-									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ; 
+									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ;
 								}
 								elseif($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']){
 									$str = Labels::getLabel('LBL_Upto_{amount}_you_will_get_free_shipping', $siteLangId);
@@ -37,7 +37,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 								</td>
 							</tr>
 						<?php } $prevShopId = $product['shop_id']; $newShippingMethods = $shippingMethods;
-						$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)'; 
+						$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)';
 						$shopUrl = !$isAppUser?CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) ):'javascript:void(0)';
 						$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 						?>
@@ -66,11 +66,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
                         $selectedShippingType = "";
                         $displayManualOptions = "style='display:none'";
                         $displayShipStationOption = "style='display:none'";
-					 	$shipping_options = array(); 
+					 	$shipping_options = array();
                         $shipping_options[$product['product_id']][0] = Labels::getLabel("LBL_Select_Shipping",$siteLangId);
-						
+
                         if (count($product["shipping_rates"])) {
-                     
+
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
 								$product["shipping_free_availbilty"];	
@@ -81,22 +81,22 @@ $shippingapi_idFld->developerTags['col'] = 6;
 								}
 								$shippingDurationTitle = ShippingDurations::getShippingDurationTitle( $sval, $siteLangId );
                                 $shipping_options[$product['product_id']][$sval['pship_id']] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
-                            endforeach;	
+                            endforeach;
                             if ($product['is_shipping_selected']== ShippingMethods::MANUAL_SHIPPING) {
 
                                  $selectedShippingType = ShippingMethods::MANUAL_SHIPPING;
 								 $displayManualOptions = "style='display:block'";
-                            } 
+                            }
                         }
-						
+
 						$servicesList = array();
 						$cartObj = new Cart();
-                        if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) { 
-						
+                        if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) {
+
                             $carrierCode = "";
 							$selectedService ='';
-                            if ($product['is_shipping_selected'] == ShippingMethods::SHIPSTATION_SHIPPING) { 
-                            
+                            if ($product['is_shipping_selected'] == ShippingMethods::SHIPSTATION_SHIPPING) {
+
                                 $service_code = str_replace("_", " ", $product['selected_shipping_option']['mshipapi_key']);
 								$shippingCodes = explode(" ", $service_code);
 								$carrierCode = $shippingCodes[0];
@@ -111,44 +111,44 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                 }
                             }
 							$courierProviders = CommonHelper::createDropDownFromArray('shipping_carrier[' . md5($product['key']) . ']', $shipStationCarrierList, $carrierCode, 'class="form-control courier_carriers" onChange="loadShippingCarriers(this);"  data-product-key=\'' . md5($product['key']) . '\'', '');
-							$serviceProviders = CommonHelper::createDropDownFromArray('shipping_services[' . md5($product['key']) . ']', $servicesList, $selectedService, 'class="form-control courier_services "  ', ''); 
+							$serviceProviders = CommonHelper::createDropDownFromArray('shipping_services[' . md5($product['key']) . ']', $servicesList, $selectedService, 'class="form-control courier_services "  ', '');
                         }
                         $select_shipping_options = CommonHelper:: createDropDownFromArray('shipping_locations[' . md5($product['key']) . ']', $shipping_options[$product['product_id']], isset($product["pship_id"])?$product["pship_id"]:'', 'class="form-control "', '');
-						
+
                         ?>
                         <?php Labels::getLabel('M_Select_Shipping', $siteLangId) ?>
 						<ul class="shipping-selectors">
                         <?php
-                       
-						
+
+
 						if(sizeof($shipping_options[$product['product_id']])<2){
-							
+
 							unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
 						}
-					
+
 						if( !$product['is_physical_product'] && $product['is_digital_product'] ){
 								echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
 							}
 							else{
-								
-							
+
+
 								if(sizeof($newShippingMethods)>0){
-									
+
 								   echo '<li>'. CommonHelper::createDropDownFromArray('shipping_type[' . md5($product['key']) . ']', $newShippingMethods, $selectedShippingType, 'class="form-control shipping_method"  data-product-key="' . md5($product['key']) . '" ', Labels::getLabel('LBL_Select_Shipping_Method',$siteLangId)) .'</li>';
 								}
 								else{
 									echo '<li class="info-message">'.Labels::getLabel('MSG_Product_is_not_available_for_shipping',$siteLangId).'</li>';
 								}?>
-								
+
 								<li class='manual_shipping' <?php echo $displayManualOptions ?>>
 									<?php  Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?>
 
 									<?php echo $select_shipping_options ?>
 								</li>
-								
+
 								<?php if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods) ) { ?>
-									
-							
+
+
 								<li class='shipstation_selectbox' <?php echo $displayShipStationOption;?>>
 									<?php echo Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?>
 									<?php echo $courierProviders ?>
@@ -158,8 +158,8 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									<div class="services_loader"></div>
 									<?php echo $serviceProviders ?>
 								</li>
-							
-									
+
+
 								<?php } ?>
 								</ul>
 								<?php
@@ -169,7 +169,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									$shippingOptions = '<select class="sduration_id-Js" name="sduration_id['.$product['selprod_id'].']" onChange="getProductShippingComment( this, '.$product['selprod_id'].')">';
 									$shippingOptions .= '<option value="">'.Labels::getLabel('LBL_Select_Shipping', $siteLangId).'</option>';
 									$isSuccess = false;
-									foreach( $product['shipping_rates'] as $shippingRates ){									
+									foreach( $product['shipping_rates'] as $shippingRates ){
 										$shippingOptions .= '<option  value="'.$shippingRates['sduration_id'].'">' . $shippingRates['sduration_name'] .'</option>';
 									}
 								}
@@ -177,11 +177,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									$shippingOptions = Labels::getLabel('MSG_No_Shipping_duration_set', $siteLangId);
 								}
 								echo $shippingOptions; */
-								
+
 								/* if( !empty($shippingDurations) && $product['is_physical_product'] ){
 									$shippingOptions = '<select class="sduration_id-Js" name="sduration_id['.$product['selprod_id'].']" onChange="getProductShippingComment( this, '.$product['selprod_id'].')">';
 									$shippingOptions .= '<option value="">'.Labels::getLabel('LBL_Select_Shipping', $siteLangId).'</option>';
-									$isSuccess = false;	
+									$isSuccess = false;
 									foreach( $shippingDurations as $shippingDuration ){
 										$sduration_id = $shippingDuration['sduration_id'];
 										$price_filter_data = array(
@@ -208,29 +208,29 @@ $shippingapi_idFld->developerTags['col'] = 6;
 										} else {
 											$isSuccess = true;
 											$shippingPriceArr[$sduration_id] = $shippingPriceInfo;
-											
+
 											$selectedString = '';
 											if( isset($selectedProductShippingMethod['product'][$product['selprod_id']]['sduration_id']) ){
 												$selectedString = ( $sduration_id == $selectedProductShippingMethod['product'][$product['selprod_id']]['sduration_id'] ) ? 'selected = "selected"' : '';
 											}
 											$shippingDurationName = $shippingDuration['sduration_name'];
-											
+
 											$shippingDurationTitle = ShippingDurations::getShippingDurationTitle($shippingDuration, $siteLangId);
 											$shippingDurationName .= ' - '. $shippingDurationTitle;
-											
+
 											$shippingDurationName .= ' - '.CommonHelper::displayMoneyFormat($shippingPriceArr[$sduration_id]['mshipapi_cost']);
-											
+
 											$shippingOptions .= '<option '.$selectedString.' value="'.$sduration_id.'">' . $shippingDurationName .'</option>';
-										}					
+										}
 									}
 									$shippingOptions.= '</select>';
-									
+
 									if($isSuccess ){
 										foreach( $shippingPriceArr as $sduration_id => $info ){
 											$shippingOptions .= '<div class = "text--small shipping_comment_'.$product['selprod_id'].'" style="display:none;" id="shipping_comment_'.$product['selprod_id'].'_'.$sduration_id.'">'.$info['mshipapi_comment'].'</div>';
 										}
 									}
-									
+
 								} else {
 									$shippingOptions = Labels::getLabel('MSG_No_Shipping_duration_set', $siteLangId);
 								}
@@ -288,7 +288,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 		  </tr>
 		  <tr>
 			<td></td>
-			<td class="text-right"><a class="btn btn--secondary btn--h-large" onClick="setUpShippingMethod();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a></td>
+			<td class="text-right"><a class="btn btn--secondary " onClick="setUpShippingMethod();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a></td>
 		  </tr>
 		</table>
 	</div>
@@ -296,12 +296,12 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
 <script>
  $('.shipping_method').on("change", function () {
-	
+
         if ($(this).val() == "0") {
             $(this).parent().parent().find('.shipstation_selectbox').hide();
             $(this).parent().parent().find('.manual_shipping').hide();
         } else if ($(this).val() == "1") {
-           
+
             $(this).parent().parent().find('.shipstation_selectbox').hide();
             $(this).parent().parent().find('.manual_shipping').show();
         }
@@ -318,26 +318,26 @@ $shippingapi_idFld->developerTags['col'] = 6;
         return true;
     }
 	 function loadShippingCarriers(obj) {
-               
-                
+
+
         $(obj).parent().next().find('.services_loader').html(fcom.getLoader());
         $(obj).parent().next().find('.courier_services ').hide();
 		 /* $(".shipstation_selectbox").LoadingOverlay("show",{'image':''}); */
 		 var carrier_id = $(obj).val();
 		 var product_key = $(obj).attr('data-product-key');
-	 
+
 		   var href = fcom.makeUrl('checkout', 'getCarrierServicesList',[product_key,carrier_id]);
-		   
+
 		   fcom.ajax(href, '', function(response) {
 			    $(obj).parent().next().find('.services_loader').html('');
 				 $(obj).parent().next().find('.courier_services ').show();
 				$(obj).parent().next().find('.courier_services').html(response);
-				
-				
+
+
 			});
-			
-			
-               
-            
+
+
+
+
         }
 </script>

@@ -20,7 +20,7 @@ $commonHead1Data = array(
 	'currencySymbolRight' =>    $currencySymbolRight,
 	'canonicalUrl' =>    isset($canonicalUrl)?$canonicalUrl:'',
 	);
-$this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data,false); 
+$this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data,false);
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */
 echo $this->writeMetaTags();
 if(CommonHelper::demoUrl() && $controllerName == 'Blog'){ 
@@ -29,12 +29,12 @@ if(CommonHelper::demoUrl() && $controllerName == 'Blog'){
 
 /* ] */
 echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
-	
+
 $commonHead2Data = array(
 	'siteLangId'		=>	$siteLangId,
 	'controllerName'	=>	$controllerName,
 );
-	
+
 if( isset($layoutTemplate) && $layoutTemplate != '' ){
 	$commonHead2Data['layoutTemplate']	= $layoutTemplate;
 	$commonHead2Data['layoutRecordId']	= $layoutRecordId;
@@ -42,7 +42,7 @@ if( isset($layoutTemplate) && $layoutTemplate != '' ){
 if( isset($socialShareContent) && $socialShareContent != '' ){
 	$commonHead2Data['socialShareContent']	= $socialShareContent;
 }
-$this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false); 
+$this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false);
 ?>
 
 <header class="header-blog">

@@ -1,7 +1,12 @@
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 <div class="shop-header">
-	<div class="fixed-container"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
-	   <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'LARGE')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
+	<div class="fixed-container">
+	<div class="flex-align-center">
+
+
+ <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
+	   <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'LARGE')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>	</div>
+
 	</div>
 	<div class="shop-nav-bar clearfix">
 		<div class="shop-nav">
@@ -26,7 +31,7 @@
 				autoplay:true,
 				rtl:true,
 				pauseOnHover:false,
-			}); 
+			});
 		}
 		else
 		{
@@ -35,8 +40,8 @@
 			arrows:true,
 			autoplay:true,
 			pauseOnHover:false,
-			}); 
-		} 
-	})(jQuery); 
-$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';	
+			});
+		}
+	})(jQuery);
+$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>

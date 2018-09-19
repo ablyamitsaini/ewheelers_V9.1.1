@@ -83,7 +83,7 @@
         <?php echo sprintf(Labels::getLabel('LBL_copyright_text', $siteLangId),date("Y"))?>
     </div>
     </div>
-    <div class="common_overlay"></div>
+    
 </footer>
 <?php if(FatApp::getConfig('CONF_ENABLE_COOKIES', FatUtility::VAR_INT, 1) && !CommonHelper::getUserCookiesEnabled()){ ?>
 <div class="cc-window cc-banner cc-type-info cc-theme-block cc-bottom cookie-alert">
