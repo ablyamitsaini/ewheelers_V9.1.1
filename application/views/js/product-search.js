@@ -453,8 +453,9 @@ function updatePriceFilter(minPrice,maxPrice){
 			$( ".filters" ).addClass( "filter-disabled" );
 		}
 		
-		if(useFilterInurl > 0){
-			history.pushState(null, null, getSearchQueryUrl(true));	
+		if(useFilterInurl > 0){			
+			//history.pushState(null, null, getSearchQueryUrl(true));	
+			window.history.pushState("","",getSearchQueryUrl(true));	
 		}
 
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){

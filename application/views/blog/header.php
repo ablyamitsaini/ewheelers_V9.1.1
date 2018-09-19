@@ -23,6 +23,10 @@ $commonHead1Data = array(
 $this->includeTemplate( '_partial/header/commonHead1.php', $commonHead1Data,false);
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */
 echo $this->writeMetaTags();
+if(CommonHelper::demoUrl() && $controllerName == 'Blog'){ 
+	echo '<meta name="robots" content="noindex">';
+}
+
 /* ] */
 echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 
