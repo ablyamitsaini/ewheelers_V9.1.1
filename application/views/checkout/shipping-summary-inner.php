@@ -70,25 +70,23 @@ $shippingapi_idFld->developerTags['col'] = 6;
                         $shipping_options[$product['product_id']][0] = Labels::getLabel("LBL_Select_Shipping",$siteLangId);
 
                         if (count($product["shipping_rates"])) {
-
+                     
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
-								$product["shipping_free_availbilty"];
-								if($product['shop_free_shipping_eligibility'] > 0) {
 								$product["shipping_free_availbilty"];	
-								if($product['shop_eligible_for_free_shipping'] > 0) {
+								if($product['shop_free_shipping_eligibility'] > 0) {
 									$shipping_charges = 0;
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
 								}
 								$shippingDurationTitle = ShippingDurations::getShippingDurationTitle( $sval, $siteLangId );
                                 $shipping_options[$product['product_id']][$sval['pship_id']] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
-                            endforeach;
+                            endforeach;	
                             if ($product['is_shipping_selected']== ShippingMethods::MANUAL_SHIPPING) {
 
                                  $selectedShippingType = ShippingMethods::MANUAL_SHIPPING;
 								 $displayManualOptions = "style='display:block'";
-                            }
+                            } 
                         }
 
 						$servicesList = array();
