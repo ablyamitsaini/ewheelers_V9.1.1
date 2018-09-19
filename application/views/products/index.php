@@ -60,7 +60,13 @@
   <div class="gap"></div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){ 
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','index'); ?>';	
+	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_PRODUCT_INDEX; ?>';
+	$recordId = 0;
+	<?php if($priceInFilter){?>			
+		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
+	<?php }?>
 	searchProducts(document.frmProductSearch);
 });
 </script>

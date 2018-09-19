@@ -157,7 +157,7 @@ array_walk($catCodeArr,function(&$n) {
 			<div class="price-input">
 			  <div class="price-text-box">
 				<input value="<?php echo ceil($priceArr['maxPrice']); ?>" class="input-filter form-control " name="priceFilterMaxValue" type="text">
-				<span class="rsText"><?php echo CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft(); ?></span> </div>
+				<span class="rsText"><?php echo CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft(); ?></span> </div>				
 			</div>
 		</div>
 		<!--<input value="GO" class="btn " name="toVal" type="submit">-->

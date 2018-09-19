@@ -8,6 +8,7 @@ class SavedSearchProduct extends MyAppModel{
 	const PAGE_BRAND = 3;
 	const PAGE_SHOP = 4;
 	const PAGE_FEATURED_PRODUCT = 5;
+	const PAGE_PRODUCT_INDEX = 6;
 	
 	public function __construct($id = 0) {
 		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id );
@@ -18,6 +19,7 @@ class SavedSearchProduct extends MyAppModel{
 		return array(
 			static::PAGE_CATEGORY	=>	'Category/view/',	
 			static::PAGE_PRODUCT	=>	'Products/search/',
+			static::PAGE_PRODUCT_INDEX	=>	'Products/index/',
 			static::PAGE_BRAND	=>	'Brands/view/',
 			static::PAGE_SHOP	=>	'Shops/view/',
 			static::PAGE_FEATURED_PRODUCT	=>	'Products/featured/'
@@ -36,6 +38,9 @@ class SavedSearchProduct extends MyAppModel{
 			break;
 			case static::PAGE_PRODUCT:
 				return CommonHelper::generateFullUrl('Products','search');
+			break;
+			case static::PAGE_PRODUCT_INDEX:
+				return CommonHelper::generateFullUrl('Products','index');
 			break;
 			case static::PAGE_BRAND:
 				return CommonHelper::generateFullUrl('Brands','view',array($recordId));

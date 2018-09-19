@@ -1286,12 +1286,11 @@ class Orders extends MyAppModel{
 				} else {
 					$comments = sprintf(Labels::getLabel('LBL_Order_has_been_Cancelled',$langId),$formattedRequestValue);
 				}
-				/* $comments = sprintf(Labels::getLabel('LBL_Cancel_Request_Approved',$langId),$formattedRequestValue); */
+				
 				$txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]); 
 				
 				/*Refund to Buyer[*/
-				if ( $txnAmount > 0 ){		
-					
+				if ( $txnAmount > 0 ){
 					$txnDataArr = array(
 						'utxn_user_id'	=>	$childOrderInfo['order_user_id'],
 						'utxn_credit'	=>	$txnAmount,
@@ -1305,12 +1304,11 @@ class Orders extends MyAppModel{
 					if($txnId = $transObj->addTransaction( $txnDataArr )){
 						$emailNotificationObj->sendTxnNotification( $txnId, $langId );
 					}
-				}
+				}				
 				/*]*/
-				
-				/* Deduct Shipping Charges [ */
-				if( 0 < $childOrderInfo["op_free_ship_upto"] && $childOrderInfo['op_status_id'] >= FatApp::getConfig("CONF_DEFAULT_SHIPPING_ORDER_STATUS") ){
-					$sellerPrice = 0;
+				/*Deduct Shipping Amount[*/
+				if(0 < $childOrderInfo["op_free_ship_upto"]){
+					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
@@ -1319,63 +1317,66 @@ class Orders extends MyAppModel{
 						if( $row['op_refund_qty'] == $row['op_qty'] ){
 							continue;
 						}
-						$qty = $row['op_qty'];
-						if(0 < $row['op_refund_qty']){
-							$qty = $row['op_qty'] - $row['op_refund_qty'];
-						}
-						$sellerPrice+= $row['op_unit_price'] * $qty;
+						$qty = $row['op_qty'] - $row['op_refund_qty'];						
+						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
-					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
-						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
-						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
-						
-						if(0 < $actualShipCharges){
-							$comments = sprintf(Labels::getLabel('LBL_Deducted_Shipping_Charges',$langId),$formattedRequestValue);
-							$txnDataArr = array(
-								'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
-								'utxn_comments'	=> $comments,						
-								'utxn_status'	=> Transactions::STATUS_COMPLETED,
-								'utxn_debit'	=> $actualShipCharges,
-								'utxn_op_id'	=> $childOrderInfo['op_id'],
-								'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
-							);
-							$transObj = new Transactions();
-							if($txnId = $transObj->addTransaction($txnDataArr)){
-								$emailNotificationObj->sendTxnNotification($txnId,$langId);
-							}
+					$actualShipCharges = 0;
+					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){				
+						if(!FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
+							$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
+						}					
+					}				
+					//$actualShipCharges = min($txnAmount,$actualShipCharges);
+					
+					if(0 < $actualShipCharges){
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
+							'utxn_comments'	=> $comments,						
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
 						}
 					}
 				}
-				/* ] */
+				/* ]*/				
 			}
 		}
 		/* ] */
 		
 		/* If current order status is not return request approved but new status is return request approved then commence the order operation [ */
 		if ( !in_array( $childOrderInfo['op_status_id'], (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS") ) && in_array($opStatusId, (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS") ) && ( $childOrderInfo["order_is_paid"] == Orders::ORDER_IS_PAID || strtolower($childOrderInfo['pmethod_code']) == "cashondelivery") ) {
-		if($moveRefundToWallet){
-			$formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
-			$comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved',$langId),$formattedRequestValue);
-			$txnAmount = $childOrderInfo['op_refund_amount'];
-			
-			/*Refund to Buyer[*/
-			if ( $txnAmount > 0 ){
-				$txnArray["utxn_user_id"] = $childOrderInfo['order_user_id'];
-				$txnArray["utxn_credit"] = $txnAmount;
-				$txnArray["utxn_status"] = Transactions::STATUS_COMPLETED;
-				$txnArray["utxn_op_id"] = $childOrderInfo['op_id'];
-				$txnArray["utxn_comments"] = $comments;
-				$txnArray["utxn_type"] = Transactions::TYPE_ORDER_REFUND;
-				$transObj = new Transactions();
-				if($txnId = $transObj->addTransaction($txnArray)){
-					$emailNotificationObj->sendTxnNotification($txnId,$langId);
+			if($moveRefundToWallet){
+				$formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
+				$comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved',$langId),$formattedRequestValue);
+				$txnAmount = $childOrderInfo['op_refund_amount'];
+							
+				$txnAmount = $txnAmount;
+				/*Refund to Buyer[*/
+				if ( $txnAmount > 0 ){
+					$txnArray["utxn_user_id"] = $childOrderInfo['order_user_id'];
+					$txnArray["utxn_credit"] = $txnAmount;
+					$txnArray["utxn_status"] = Transactions::STATUS_COMPLETED;
+					$txnArray["utxn_op_id"] = $childOrderInfo['op_id'];
+					$txnArray["utxn_comments"] = $comments;
+					$txnArray["utxn_type"] = Transactions::TYPE_ORDER_REFUND;
+					$transObj = new Transactions();
+					if($txnId = $transObj->addTransaction($txnArray)){
+						$emailNotificationObj->sendTxnNotification($txnId,$langId);
+					}
 				}
-			/* ] */	
-			
-			/* Deduct Shipping Charges [ */
+				/* ] */	
+				
+				/*Deduct Shipping Amount[*/
 				if(0 < $childOrderInfo["op_free_ship_upto"]){
-					$sellerPrice = 0;
+					$actualShipCharges = 0 ;
+					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
 						if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
@@ -1384,40 +1385,40 @@ class Orders extends MyAppModel{
 						if( $row['op_refund_qty'] == $row['op_qty'] ){
 							continue;
 						}
-						$qty = $row['op_qty'];
-						if(0 < $row['op_refund_qty'] && $row['op_id'] != $childOrderInfo["op_id"]){
-							$qty = $row['op_qty'] - $row['op_refund_qty'];
-						}
-						$sellerPrice+= $row['op_unit_price'] * $qty;
+						$qty = $row['op_qty'] - $row['op_refund_qty'];						
+						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
 					
-					$refundedSellerPrice = $sellerPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $refundedSellerPrice ){
-						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
-						/* $txnAmount = $txnAmount - $childOrderInfo['op_actual_shipping_charges']; */
-						
-						if(0 < $actualShipCharges){
-							$comments = sprintf(Labels::getLabel('LBL_Deducted_Shipping_Charges',$langId),$formattedRequestValue);
-							$txnDataArr = array(
-								'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
-								'utxn_comments'	=> $comments,						
-								'utxn_status'	=> Transactions::STATUS_COMPLETED,
-								'utxn_debit'	=> $actualShipCharges,
-								'utxn_op_id'	=> $childOrderInfo['op_id'],
-								'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
-							);
-							$transObj = new Transactions();
-							if($txnId = $transObj->addTransaction($txnDataArr)){
-								$emailNotificationObj->sendTxnNotification($txnId,$langId);
-							}
+					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+						$unitShipCharges = round($childOrderInfo['op_actual_shipping_charges']/$childOrderInfo["op_qty"],2);
+						$returnShipChargesToCust = 0;
+						if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
+							$returnShipChargesToCust = $unitShipCharges * $childOrderInfo["op_refund_qty"];
 						}
+						
+						$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'] - $returnShipChargesToCust;						
 					}
+					//$actualShipCharges = min($txnAmount,$actualShipCharges);
+					if(0 < $actualShipCharges){
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['order_user_id'],			
+							'utxn_comments'	=> $comments,						
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
+						}
+					}					
 				}
-				/* ] */
-
+				/* ]*/
 			}
 		}
-	}
 		/* ] */
 		
 		/* If current order status is not shipped but new status is shipped then commence shipping the order [ */

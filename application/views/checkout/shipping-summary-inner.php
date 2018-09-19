@@ -24,9 +24,9 @@ $shippingapi_idFld->developerTags['col'] = 6;
 						if( $product['shop_id'] != $prevShopId){ ?>
 							<tr class="-row-heading">
 								<td colspan="3"><?php echo $product['shop_name']; ?></td>
-								<td class="text-right" colspan="2"><?php
+								<td class="text-right" colspan="2"><?php 
 								if($product['shop_free_shipping_eligibility'] > 0) {
-									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ;
+									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ; 
 								}
 								elseif($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']){
 									$str = Labels::getLabel('LBL_Upto_{amount}_you_will_get_free_shipping', $siteLangId);
@@ -63,8 +63,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 							</td>
 							<td>
 								<?php
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 4383d66ba7c55eacb7b0a0f1ca81e6d3187fbee5
                         $selectedShippingType = "";
                         $displayManualOptions = "style='display:none'";
                         $displayShipStationOption = "style='display:none'";
@@ -75,8 +78,13 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
+<<<<<<< HEAD
 								$product["shipping_free_availbilty"];
 								if($product['shop_free_shipping_eligibility'] > 0) {
+=======
+								$product["shipping_free_availbilty"];	
+								if($product['shop_eligible_for_free_shipping'] > 0) {
+>>>>>>> 4383d66ba7c55eacb7b0a0f1ca81e6d3187fbee5
 									$shipping_charges = 0;
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;

@@ -394,8 +394,7 @@ class CheckoutController extends MyAppController{
 		
 		/* get user shipping address[ */
 		$shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
-		$sellerPrice = $this->cartObj->getSellersProductItemsPrice($cart_products);
-		
+				
 		/* ] */
 		foreach($cart_products as $cartkey=>$cartval)
 		{
@@ -419,15 +418,7 @@ class CheckoutController extends MyAppController{
 			
 			}
 			$cart_products[$cartkey]['shipping_rates']=$shipping_options;
-			$cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;
-			$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 0;
-			
-			if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
-				$cart_products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
-				if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
-					$cart_products[$cartkey]['shop_free_shipping_eligibility'] = 1;
-				}
-			}
+			$cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;		
 			
 		}
 		if(count($cart_products)==0){
@@ -454,7 +445,7 @@ class CheckoutController extends MyAppController{
 		}
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
-	
+	var_dump($carrierList);
         $this->set('options', $carrierList);
         $this->_template->render(false, false);
     }
@@ -895,9 +886,7 @@ class CheckoutController extends MyAppController{
 		
 		/* order products[ */
 		$cartProducts = $this->cartObj->getProducts($this->siteLangId);
-		
-		$sellerPrice = $this->cartObj->getSellersProductItemsPrice($cartProducts);
-		
+				
 		$orderData['products'] = array();
 		$orderData['prodCharges'] = array();
 		
@@ -1045,28 +1034,24 @@ class CheckoutController extends MyAppController{
 						if(array_key_exists($productInfo['selprod_id'],$cartSummary["cartDiscounts"]["discountedSelProdIds"])){
 							$discount = $cartSummary["cartDiscounts"]["discountedSelProdIds"][$productInfo['selprod_id']];
 						}
-					}			
+					}	
 					
-					$shippingTotal = 0;
-					
-					if(array_key_exists($cartProduct['selprod_user_id'],$sellerPrice)){
-						if($cartProduct['shop_free_ship_upto'] > 0 && $cartProduct['shop_free_ship_upto'] < $sellerPrice[$cartProduct['selprod_user_id']]['totalPrice']){
-							continue;
-						}
-						$shippingTotal += $cartProduct['shipping_cost'];
+					$shippingCost = $cartProduct['shipping_cost'];	
+					if($cartProduct['shop_eligible_for_free_shipping']){
+						$shippingCost = 0;
 					}
 					
 					$rewardPoints = 0;
 					$rewardPoints = $orderData['order_reward_point_value'];
 					$usedRewardPoint = 0;
 					if($rewardPoints > 0){
-						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingTotal +  $cartProduct['tax']  - $discount - $cartProduct['volume_discount_total'] ;
+						$selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingCost +  $cartProduct['tax']  - $discount - $cartProduct['volume_discount_total'] ;
 						$usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)),2);
 					}
 					
 					$orderData['prodCharges'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
 						OrderProduct::CHARGE_TYPE_SHIPPING => array(
-							'amount' => $shippingTotal
+							'amount' => $shippingCost
 						),
 						OrderProduct::CHARGE_TYPE_TAX =>array(
 							'amount' => $cartProduct['tax']

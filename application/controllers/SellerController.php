@@ -3578,7 +3578,7 @@ class SellerController extends LoggedUserController {
 				$fld->requirements()->setRequired();
 			}
 		}else{
-			$productData = Product::getAttributesById($product_id,array('product_type','product_min_selling_price'));
+			$productData = Product::getAttributesById($product_id,array('product_type','product_min_selling_price','product_cod_enabled'));
 			if($productData['product_type'] == Product::PRODUCT_TYPE_DIGITAL){
 				$defaultProductCond = Product::CONDITION_NEW;
 			}
@@ -3639,9 +3639,13 @@ class SellerController extends LoggedUserController {
 			$codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD',$this->siteLangId), 'selprod_cod_enabled', $yesNoArr, '0', array(), '');
 			
 			$paymentMethod = new PaymentMethods;
-			if(!$paymentMethod->cashOnDeliveryIsActive()){
+			if(!$paymentMethod->cashOnDeliveryIsActive() || $productData['product_cod_enabled'] != applicationConstants::YES){
 				$codFld->addFieldTagAttribute('disabled','disabled');
-				$codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings',$this->siteLangId).'</small>';
+				if($productData['product_cod_enabled'] != applicationConstants::YES){
+					$codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_Product',$this->siteLangId).'</small>';
+				}else{
+					$codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings',$this->siteLangId).'</small>';
+				}
 			}
 		}
 		

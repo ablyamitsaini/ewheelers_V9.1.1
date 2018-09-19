@@ -7,9 +7,10 @@ class DummyController extends MyAppController {
 	}
 	
 	function mytest(){
-		
-		$keyword = 'Bébé & enfant';
-		echo mb_strlen($keyword); exit;
+		if(false !== OrderCancelRequest::getCancelRequestById(120)){
+			die('dsds');
+		}
+		 exit;
 	}
 	
 	function updateOrderProdSetting(){
