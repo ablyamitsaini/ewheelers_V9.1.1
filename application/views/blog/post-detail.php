@@ -10,7 +10,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
         <div class="colums clearfix">
           <div class="col-md-9 colums__left">
 				<div class="posted-content">
-					
+
 					<div class="posted-media">
 					<?php if(!empty($post_images)){ ?>
 					  <div class="post__pic">
@@ -20,7 +20,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 					  </div>
 					  <?php } ?>
 					</div>
-					
+
 					<div class="post-data">
 					<div class="post-meta-detail">
 						<div class="posted-by">
@@ -51,7 +51,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 								<li><i class="icn-msg"><img src="<?php echo CONF_WEBROOT_URL; ?>images/comments.svg"></i><?php echo $commentsCount,' ',Labels::getLabel('Lbl_Comments',$siteLangId); ?></li>
 							<?php  } ?>
 						</ul>
-					</div>					
+					</div>
 					<div class="divider"></div>
 					<div class="post__detail cms">
 						<?php echo FatUtility::decodeHtmlEntities($blogPostData['post_description']); ?>
@@ -99,7 +99,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 						?>
 					</div>
 					<?php }?>
-					
+
 					</div>
 				</div>
 		  </div>
@@ -119,5 +119,5 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 </div>
 <script>
 var boolLoadComments = (<?php echo FatUtility::int($blogPostData['post_comment_opened']); ?>)?true:false ;
-</script> 
+</script>
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>

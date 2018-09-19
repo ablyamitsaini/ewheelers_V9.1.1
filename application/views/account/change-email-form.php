@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('id', 'changeEmailFrm');
 $frm->setFormTagAttribute('class','form');
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['colClassPrefix'] = 'col-xl-6 col-lg-6 col-md-6 col-sm-';
 $frm->developerTags['fld_default_col'] = 12;
 $frm->setFormTagAttribute('autocomplete', 'off');
 $frm->setFormTagAttribute('onsubmit', 'updateEmail(this); return(false);');

@@ -3,7 +3,7 @@
 <div class="shop-header">
   <div class="fixed-container">
     <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-6  col-xs-12"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
+      <div class="col-lg-12 col-md-12 col-sm-6  col-xs-12"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'MEDIUM')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
       </div>
     </div>
@@ -32,7 +32,7 @@
 				autoplay:true,
 				rtl:true,
 				pauseOnHover:false,
-			}); 
+			});
 		}
 		else
 		{
@@ -41,8 +41,8 @@
 			arrows:true,
 			autoplay:true,
 			pauseOnHover:false,
-			}); 
-		} 
-	})(jQuery); 
+			});
+		}
+	})(jQuery);
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>

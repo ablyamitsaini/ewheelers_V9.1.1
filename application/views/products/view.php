@@ -20,7 +20,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
           <div id="img-static"  class="">
             <div class="product-gallery ">
               <?php $data['product'] = $product;
-				$data['productImagesArr'] = $productImagesArr; 
+				$data['productImagesArr'] = $productImagesArr;
 				$data['imageGallery'] = true;
 				/* $this->includeTemplate('products/product-gallery.php',$data,false); */
 			   ?>
@@ -34,8 +34,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				  ?>
 				  <img class="xzoom" id="xzoom-default" src="<?php echo $mainImgUrl; ?>" xoriginal="<?php echo $originalImgUrl; ?>">
 				<?php break; }?>
-				<?php } else { 
-					$mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array(0, 'MEDIUM', 0 ) ), CONF_IMG_CACHE_TIME, '.jpg'); 
+				<?php } else {
+					$mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array(0, 'MEDIUM', 0 ) ), CONF_IMG_CACHE_TIME, '.jpg');
 					$originalImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array(0, 'ORIGINAL', 0 ) ), CONF_IMG_CACHE_TIME, '.jpg');?>
 				  <img class="xzoom" src="<?php echo $mainImgUrl; ?>" xoriginal="<?php echo $originalImgUrl; ?>">
 				  <?php } ?>
@@ -71,7 +71,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <div class="heading3"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?>:</div>
               <div class="bullet-list">
                 <ul>
-                  <?php $count=1; 
+                  <?php $count=1;
 						foreach($productSpecifications as $key => $specification){
 							if($count>5) continue;
 							?>
@@ -85,9 +85,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <?php } ?>
               <div class="divider"></div>
               <?php if( !empty($optionRows) ){
-				
-				$selectedOptionsArr = $product['selectedOptionValues'];	
-				
+
+				$selectedOptionsArr = $product['selectedOptionValues'];
+
 				foreach($optionRows as $option){ ?>
               <div class="heading3"><?php echo $option['option_name']; ?>:</div>
               <div class="<?php echo ($option['option_is_color']) ? 'select-color' : 'select-size'; ?>">
@@ -117,9 +117,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 </ul>
                 <?php } ?>
               </div>
-              <?php } 
+              <?php }
 				}	 ?>
-              <?php /* Volume Discounts[ */ 
+              <?php /* Volume Discounts[ */
 				if( isset($volumeDiscountRows) && !empty($volumeDiscountRows) ){
 					//$product['theprice']
 				?>
@@ -128,7 +128,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 <label class="field_label"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)',$siteLangId);?>:</label>
                 <div class="selector-container">
                   <ul class="selector selector--qty selector--qty-js">
-                    <?php foreach($volumeDiscountRows as $volumeDiscountRow ){ 
+                    <?php foreach($volumeDiscountRows as $volumeDiscountRow ){
 							$volumeDiscount = $product['theprice'] * ( $volumeDiscountRow['voldiscount_percentage'] / 100 );
 							$price = ($product['theprice'] - $volumeDiscount);
 					?>
@@ -151,7 +151,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <?php }?>
             </div>
             <div class="gap"></div>
-            <div class=""> 
+            <div class="">
               <!-- Upsell Products [ -->
               <?php if (count($upsellProducts)>0) { ?>
               <div id="product">
@@ -188,7 +188,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                           <span class="increase increase-js">+</span> </div></td>
                       <td class="<?php echo $cancelClass;?>"><label class="checkbox">
                           <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
-                          <i class="input-helper"></i> </label>						 
+                          <i class="input-helper"></i> </label>
 						</td>
                     </tr>
                     <?php } ?>
@@ -197,35 +197,35 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               </div>
               <div class="gap"></div>
               <?php } ?>
-              <!-- ] --> 
-              
+              <!-- ] -->
+
               <!-- Add To Cart [ -->
               <?php if( $product['in_stock'] ){
 					echo $frmBuyProduct->getFormTag();
-					$qtyField =  $frmBuyProduct->getField('quantity'); 
-					$qtyFieldName =  $qtyField->getCaption(); 
+					$qtyField =  $frmBuyProduct->getField('quantity');
+					$qtyFieldName =  $qtyField->getCaption();
 					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
 					?>
               <div class="form__group">
                 <label><?php echo $qtyFieldName;?></label>
                 <div class="qty"> <span class="decrease decrease-js">-</span>
-                  <?php 					
+                  <?php
 				  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
                   <span class="increase increase-js">+</span></div>
               </div>
 			  <?php }?>
               <div class="gap"></div>
               <div class="buy-group">
-                <?php 
+                <?php
 					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
-						echo $frmBuyProduct->getFieldHtml('btnProductBuy');					
-						echo $frmBuyProduct->getFieldHtml('btnAddToCart'); 
+						echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+						echo $frmBuyProduct->getFieldHtml('btnAddToCart');
 					}
-					echo $frmBuyProduct->getFieldHtml('selprod_id'); 
+					echo $frmBuyProduct->getFieldHtml('selprod_id');
 					?>
               </div>
               </form>
-              <?php echo $frmBuyProduct->getExternalJs(); 
+              <?php echo $frmBuyProduct->getExternalJs();
 					} else { ?>
               <div class="sold">
                 <h3 class="text--normal-secondary"><?php echo Labels::getLabel('LBL_Sold_Out',$siteLangId); ?></h3>
@@ -238,8 +238,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<p class="text--normal-secondary"><?php echo str_replace('{available-date}',FatDate::Format($product['selprod_available_from']),Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId)); ?></p>
 				  </div>
 			  <?php }?>
-              <!-- ] --> 
-              
+              <!-- ] -->
+
             </div>
           </div>
         </div>
@@ -300,15 +300,15 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             </table>
             <?php } ?>
             <div class="gap"></div>
-			<?php 
+			<?php
 				$youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]);
 				if( $youtube_embed_code || $product['product_description']!=''){
-				
+
 				?>
 				<h2><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h2>
 				<div class="tab_content desc-txt" id="tab1">
-				  <?php 
-					  
+				  <?php
+
 								if($youtube_embed_code!=""):?>
 				  <div class="videowrap">
 					<iframe width="60%" height="300" src="//www.youtube.com/embed/<?php echo $youtube_embed_code?>" frameborder="0" allowfullscreen></iframe>
@@ -347,8 +347,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBl_Reviews', $siteLangId); ?></h4>
             <?php echo $frmReviewSearch->getFormHtml(); ?> </div>
-          <div class="section__body">           
-              <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>           
+          <div class="section__body">
+              <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
           </div>
         </div>
         <?php } ?>
@@ -365,7 +365,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					continue;
 				}else{
 					$slideArr = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId );
-					foreach($slideArr as $slideScreen){						
+					foreach($slideArr as $slideScreen){
 						switch($slideScreen['afile_screen']){
 							case applicationConstants::SCREEN_MOBILE:
 								$mobile_url = '<480:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).",";
@@ -384,9 +384,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             <?php } ?>
           </div>
         </div>
-        <?php } 
+        <?php }
 			if(isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
-				Promotion::updateImpressionData($val['banner_record_id']);	 
+				Promotion::updateImpressionData($val['banner_record_id']);
 			}
 			?>
       </div>
@@ -404,7 +404,7 @@ $("document").ready(function(){
 	zheight = $( window ).height() - 180;
 	zwidth = $( window ).width()/2 - 50;
 	$('.xzoom, .xzoom-gallery').xzoom({adaptive:false, zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 15});
-	
+
 	window.setInterval(function(){
 		var scrollPos = $(window).scrollTop();
 		if(scrollPos > 0){
@@ -416,12 +416,12 @@ $("document").ready(function(){
   <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 $(function () {
 	 if($(window).width()>1050){
-            $(window).scroll(sticky_relocate);			
+            $(window).scroll(sticky_relocate);
 				sticky_relocate();
 			 }
         });
  <?php }?>
 </script>
 
-<!--Here is the facebook OG for this product  --> 
+<!--Here is the facebook OG for this product  -->
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>

@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$frmProductSearch->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
@@ -16,19 +16,19 @@
 				<div class="col-lg-3 col--left <?php if(isset($noProductFound)) { echo "hidden"; }?>">
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
-						<div class="box box--white">
+						<div class="">
 							<?php
 							if( $productFiltersArr ){
-								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
+								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false);
 							}
 							?>
 						</div>
 					</div>
 				</div>
-				<?php 
+				<?php
 				if(!isset($noProductFound)){
 					if(!empty($brandData)){
-					$blockTitle=$brandData['brand_name'];			
+					$blockTitle=$brandData['brand_name'];
 					}else $blockTitle='';
 					$class ='col-lg-9';
 				}else{
@@ -48,14 +48,14 @@
 					  </div>
 					  <?php }
 					}
-					$this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId ),false);  ?>				
+					$this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId ),false);  ?>
 				</div>
 				<div class="col-md-3 col--left col--left-adds">
 					<div class="wrapper--adds" >
 						<div class="grids" id="brandBanners">
-							
-						</div>   
-					</div>  
+
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -68,9 +68,9 @@ $(document).ready(function(){
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Brands','view',array($brandId)); ?>';
 	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_BRAND; ?>';
 	$recordId = <?php echo $brandId; ?>;
-	<?php if($priceInFilter){?>			
+	<?php if($priceInFilter){?>
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
 	searchProducts(document.frmProductSearch);
-});	 
-</script>	
+});
+</script>

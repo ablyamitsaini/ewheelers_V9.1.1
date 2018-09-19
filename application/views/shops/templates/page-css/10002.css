@@ -386,10 +386,8 @@
   .shop-header {
     margin-bottom: 10px;
   }
-  .shop-logo {
-    text-align: center;
-    display: table-cell;
-  }
+
+
 }
 
 @media only screen and (max-width: 767px) {

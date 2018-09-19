@@ -25,18 +25,20 @@ if($isUserLogged){
 ?>
 
 <div id="body" class="body bg--grey">
-  <div class="fixed-container">
-    <div class="row">
-      <div class="panel">
-        <div class="container">
-          <div class="box box--white box--space box--fixed ">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-6  col-md-6 col-12">
+
+          <div class="box box--white box--space box--fixed cols--group ">
             <div class="box__head">
               <h4><?php echo Labels::getLabel('Lbl_Blog_Contribution',$siteLangId); ?></h4>
-              <a href="<?php echo CommonHelper::generateUrl('Blog'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('Lbl_Back',$siteLangId); ?></a> </div>
+            <div class="group--btns panel__head_action">  <a href="<?php echo CommonHelper::generateUrl('Blog'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('Lbl_Back',$siteLangId); ?></a> </div> </div>
+<div class="gap"></div>
             <?php echo $frm->getFormHtml(); ?> </div>
-        </div>
+<div class="gap"></div>
+
       </div>
     </div>
   </div>
-  <script src='https://www.google.com/recaptcha/api.js'></script> 
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 </div>

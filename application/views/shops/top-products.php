@@ -4,7 +4,7 @@
 	$keywordFld = $searchFrm->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
 	$keywordFld->htmlAfterField = '<input value="" type="submit" class="input-submit">';
-	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id)); 
+	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id));
  ?>
 <div id="body" class="body bg--shop" <?php if($showBgImage){ echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; } ?>>
 	<div class="shop-bar">
@@ -40,17 +40,17 @@
       </div>
     </div>
 
-	<?php 
+	<?php
 	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
 	if(!isset($template_id) || ($template_id<0)){
 		$template_id=10001;
 	}
-	
+
 	$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 
 	?>
-	
-	
+
+
 	<section class="top-space">
 		<div class="fixed-container">
 			<div class="gap"></div>
@@ -58,12 +58,12 @@
 				<div class="col-lg-3">
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
-						<div class="box box--white">
+						<div class="">
 							<?php
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){
 								$productFiltersArr['searchFrm']=$searchFrm;
-								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false); 
+								$this->includeTemplate('_partial/productFilters.php',$productFiltersArr,false);
 							}
 							/* ] */
 							?>
@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col--right">
-					<?php $blockTitle=Labels::getLabel('LBL_TOP_PRODUCTS', $siteLangId);?>				
+					<?php $blockTitle=Labels::getLabel('LBL_TOP_PRODUCTS', $siteLangId);?>
 					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId,'doNotdisplaySortBy'=>true),false);  ?>
 				<!--	<div class="col-md-3 col--left col--left-adds">
 						<?php if(!empty($pollQuest)){ ?>
@@ -81,8 +81,8 @@
 						</div>
 						<?php } ?>
 						<div class="wrapper--adds">
-							<div class="grids" id="allProductsBanners"></div>   
-						</div>  
+							<div class="grids" id="allProductsBanners"></div>
+						</div>
 					</div>-->
 				</div>
 			</div>

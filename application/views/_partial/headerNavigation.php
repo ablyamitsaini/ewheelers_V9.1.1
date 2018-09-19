@@ -16,16 +16,16 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 <div class="navigation-wrapper">
 	<ul class="navigations">
 		<?php
-		$noOfCharAllowedInNav = 90;	
+		$noOfCharAllowedInNav = 90;
 		$rightNavCharCount = 5;
 		if( !$isUserLogged ){
 			$rightNavCharCount = $rightNavCharCount + mb_strlen(html_entity_decode(Labels::getLabel('LBL_Sign_In', $siteLangId),ENT_QUOTES,'UTF-8'));
-		}else{			
+		}else{
 			$rightNavCharCount = $rightNavCharCount + mb_strlen(html_entity_decode(Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName,ENT_QUOTES,'UTF-8'));
-		}		
-		$rightNavCharCount = $rightNavCharCount + mb_strlen(html_entity_decode(Labels::getLabel("LBL_Cart", $siteLangId),ENT_QUOTES,'UTF-8')); 
+		}
+		$rightNavCharCount = $rightNavCharCount + mb_strlen(html_entity_decode(Labels::getLabel("LBL_Cart", $siteLangId),ENT_QUOTES,'UTF-8'));
 		$noOfCharAllowedInNav = $noOfCharAllowedInNav - $rightNavCharCount;
-		
+
 		$navLinkCount = 0;
 		foreach( $headerNavigation as $nav ){
 			if( !$nav['pages'] ){ break;}
@@ -35,7 +35,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 					break;
 				}
 				$navLinkCount++;
-			}				
+			}
 		}
 
 			foreach( $headerNavigation as $nav ){

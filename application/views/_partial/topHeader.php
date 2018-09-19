@@ -1,6 +1,7 @@
 <div id="wrapper">
 <!--header start here-->
 <header id="header" class="no-print">
+<div class="common_overlay"></div>
   <div class="top_bar">
     <div class="fixed-container">
       <div class="row">
@@ -30,5 +31,5 @@
 </header>
 <div class="after-header no-print"></div>
 
-<!--header end here--> 
-<!--body start here--> 
+<!--header end here-->
+<!--body start here-->

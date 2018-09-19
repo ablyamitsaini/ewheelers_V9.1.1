@@ -11,7 +11,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 	<meta property="og:description" content="<?php echo $socialShareContent['description']; ?>" />
 	<!-- ]   -->
 
-	<!--Here is the Twitter Card code for this product  --> 
+	<!--Here is the Twitter Card code for this product  -->
 	<?php if (!empty(FatApp::getConfig("CONF_TWITTER_USERNAME",FatUtility::VAR_STRING,''))){ ?>
 	<meta name="twitter:card" content="product">
 	<meta name="twitter:site" content="@<?php echo FatApp::getConfig("CONF_TWITTER_USERNAME",FatUtility::VAR_STRING,''); ?>">
@@ -19,10 +19,10 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 	<meta name="twitter:description" content="<?php echo $socialShareContent['description']; ?>">
 	<meta name="twitter:image:src" content="<?php echo $socialShareContent['image']; ?>">
 	<?php }; ?>
-	<!-- End Here is the Twitter Card code for this product  --> 
+	<!-- End Here is the Twitter Card code for this product  -->
 <?php }  if(isset($includeEditor) && $includeEditor){ ?>
 <script language="javascript" type="text/javascript" src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/innovaeditor.js"></script>
-<script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>	
+<script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>
 <?php  }  ?>
 
 </head>
@@ -37,7 +37,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 	<div class="system_message alert--positioned-top-full alert <?php echo Message::getErrorCount()>0 ? "alert--danger" : "alert--success"; ?>" hidden='hidden'>
 		<a class="closeMsg" href="javascript:void(0)" ></a>
 		<div class="content">
-			<?php 
+			<?php
 			$haveMsg = false;
 			if( Message::getMessageCount() || Message::getErrorCount() || Message::getDialogCount() || Message::getInfoCount() ){
 				$haveMsg = true;

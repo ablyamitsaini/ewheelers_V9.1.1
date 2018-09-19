@@ -57,7 +57,7 @@
 				<div class="col-lg-3">
 					<div class="overlay overlay--filter"></div>
 					<div class="filters">
-						<div class="box box--white">
+						<div class="">
 							<?php
 							/* Left Side Filters Side Bar [ */
 							if( $productFiltersArr ){

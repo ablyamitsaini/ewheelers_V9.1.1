@@ -11,18 +11,18 @@
 				(<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())));?>) <?php echo Labels::getLabel('LBL_You_can_use_upto_', $siteLangId); ?> <strong><?php echo min(min($rewardPoints,CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])),FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0)); ?></strong></p>
 			</div>
 		</li>
-	</ul>	
-	<?php 
+	</ul>
+	<?php
 		$redeemRewardFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
 		$redeemRewardFrm->setFormTagAttribute('onsubmit','useRewardPoints(this); return false;');
 		$redeemRewardFrm->setJsErrorDisplay('afterfield');
-		echo $redeemRewardFrm->getFormTag(); 
-		echo $redeemRewardFrm->getFieldHtml('redeem_rewards'); 
-		echo $redeemRewardFrm->getFieldHtml('btn_submit'); 
+		echo $redeemRewardFrm->getFormTag();
+		echo $redeemRewardFrm->getFieldHtml('redeem_rewards');
+		echo $redeemRewardFrm->getFieldHtml('btn_submit');
 		echo $redeemRewardFrm->getExternalJs();
 		?>
-	</form>	
-	<span class="gap"></span>	
+	</form>
+	<span class="gap"></span>
 		<?php if(!empty($cartSummary['cartRewardPoints'])){?>
 		<div class="alert alert--success relative">
 		<a href="javascript:void(0)" class="close" onClick="removeRewardPoints()"></a>
@@ -45,7 +45,7 @@
 			echo Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>:  (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)
 		<?php } ?></h6>
 	</label>
-	
+
 	<?php if( $cartSummary["cartWalletSelected"] ){ ?>
 	<div class="listing--grids">
 		<ul>
@@ -75,10 +75,10 @@
 			<?php } */ ?>
 			<?php if($userWalletBalance >= $cartSummary['orderNetAmount']){ ?>
 			<li>
-				<?php 
+				<?php
 				$btnSubmitFld = $WalletPaymentForm->getField('btn_submit');
 				$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
-				
+
 				$WalletPaymentForm->developerTags['colClassPrefix'] = 'col-md-';
 				$WalletPaymentForm->developerTags['fld_default_col'] = 12;
 				echo $WalletPaymentForm->getFormHtml(); ?>
@@ -111,10 +111,10 @@
 				</div>
 			</li>
 			<li>
-				<?php 
+				<?php
 				$btnSubmitFld = $confirmForm->getField('btn_submit');
 				$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
-				
+
 				$confirmForm->developerTags['colClassPrefix'] = 'col-md-';
 				$confirmForm->developerTags['fld_default_col'] = 12;
 				echo $confirmForm->getFormHtml(); ?>
@@ -131,7 +131,7 @@
   <div class="row">
 	<div class="col-lg-4 col-md-4 col-sm-12 col-xm-12">
 	  <?php if($paymentMethods){ ?>
-	  <div class="payment_methods_list">
+	  <div class="payment_methods_list scrollbar">
 		<ul id="payment_methods_tab">
 			<?php $count=0; foreach($paymentMethods as $key => $val ){
 				if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) continue;
@@ -150,20 +150,27 @@
 		<li><p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']);  ?></p></li>
 		<?php } ?></strong></div>
 		<div class="gap"></div>
-	
+
 		<div id="tabs-container"></div>
 	  </div>
 	</div>
   </div>
   <?php } ?>
 </div>
-	
+<script>
+if($(window).width()>1050){
+	$('.scrollbar').enscroll({
+		verticalTrackClass: 'scroll__track',
+		verticalHandleClass: 'scroll__handle'
+	});
+}
+</script>
 <?php if($cartSummary['orderPaymentGatewayCharges']){ ?>
 <script type="text/javascript">
 var containerId = '#tabs-container';
 var tabsId = '#payment_methods_tab';
 $(document).ready(function(){
-     if($(tabsId + ' LI A.is-active').length > 0){ 
+     if($(tabsId + ' LI A.is-active').length > 0){
          loadTab( $(tabsId + ' LI A.is-active') );
      }
      $(tabsId + ' A').click(function(){
@@ -187,5 +194,5 @@ function loadTab( tabObj ){
 		//$(containerId).fadeIn('fast');
 	}); */
 }
-</script>  
+</script>
 <?php } ?>

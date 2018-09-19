@@ -925,3 +925,9 @@ $("document").ready(function(){
 			
 		}); 	
 }); 	
+
+/* nice select */
+$(document).ready(function() {
+  $('select').niceSelect();
+  $('#category--js').niceSelect('destroy');
+});

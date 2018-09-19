@@ -184,7 +184,7 @@ align-items: center;
 	width: 30px;
 	z-index: 1;
 	float: left;
-	margin-top: 25px;
+
 	margin-right: 20px;
 }
 .shop_navs_toggle span {
@@ -353,9 +353,7 @@ body.toggled_shop-nav .shop-nav {
 .shop-header {
 	margin-bottom: 10px;
 }
-.shop-logo {
-	display: table-cell;
-}
+
 .product-search {
 	float: right;
 }

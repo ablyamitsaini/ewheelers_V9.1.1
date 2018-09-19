@@ -1,18 +1,16 @@
 #facebox {
-    position: fixed;
-    top: 100px;
-    left: 0;
-    z-index: 100;
-    text-align: left;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  z-index: 100;
+  text-align: left;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
-
 /*animation by pawan*/
-
 
 /*@-webkit-keyframes hvr-pop {
     50% {
@@ -35,47 +33,47 @@
 }*/
 
 @-webkit-keyframes fadeInUp {
-    from {
-        opacity: 0;
-        visibility: hidden;
-        /*-webkit-transform: translate3d(0, 100%, 0);
+  from {
+    opacity: 0;
+    visibility: hidden;
+    /*-webkit-transform: translate3d(0, 100%, 0);
 		transform: translate3d(0, 100%, 0);*/
-        -webkit-transform: translate3d(0, 40px, 0);
-        transform: translate3d(0, 40px, 0);
-    }
-    to {
-        opacity: 1;
-        /*visibility: visible;*/
-        -webkit-transform: none;
-        transform: none;
-    }
+    -webkit-transform: translate3d(0, 40px, 0);
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    /*visibility: visible;*/
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        visibility: hidden;
-        /*-webkit-transform: translate3d(0, 100%, 0);
+  from {
+    opacity: 0;
+    visibility: hidden;
+    /*-webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);*/
-        -webkit-transform: translate3d(0, 40px, 0);
-        transform: translate3d(0, 40px, 0);
-    }
-    to {
-        visibility: visible;
-        opacity: 1;
-        -webkit-transform: none;
-        transform: none;
-    }
+    -webkit-transform: translate3d(0, 40px, 0);
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 #facebox {
-    -webkit-animation-name: fadeInUp;
-    animation-name: fadeInUp;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
 }
 
 #facebox .popup {
-    position: relative;
-    /*  border:3px solid rgba(0,0,0,0);
+  position: relative;
+  /*  border:3px solid rgba(0,0,0,0);
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
@@ -85,80 +83,83 @@
 }
 
 #facebox .content {
-    display: table;
-    width: 100%;
-    padding: 15px;
-    padding-top: 40px;
-    background: #fff;
+  display: table;
+  width: 100%;
+  padding: 15px;
+  padding-top: 40px;
+  background: #fff;
 }
 
 #facebox .content.faceboxWidth {
-    width: 850px;
-    min-width: 350px;
-    min-height: 150px;
+  width: 850px;
+  min-width: 350px;
+  min-height: 150px;
 }
 
 #facebox .content.fbminwidth {
-    min-width: 350px;
-    min-height: 150px;
+  min-width: 350px;
+  min-height: 150px;
 }
 
 #facebox .content.productQuickView {
-    display: block; padding: 20px 0 0 0; width: 900px;
+  display: block;
+  /* padding: 20px 0 0 0; */
+  width: 900px;
 }
 
 #facebox .content.productQuickView .product-detail {
-    max-height: 430px;
-    overflow-y: auto;
-    overflow-x: hidden;
+  max-height: 430px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #facebox .content.loginpopup {
-    padding: 0;
+  padding: 0;
 }
 
 #facebox .content>p:first-child {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #facebox .content>p:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 #facebox .close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    padding: 0px;
-    width: 30px;
-    height: 30px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0px;
+  width: 30px;
+  height: 30px;
 }
 
 #facebox .close:before {
-    width: 1px;
-    height: 30px;
-    left: 50%;
-    margin: 0 0 0 -1px;
-    position: absolute;
-    top: 0;
-    content: "";
-    background: #000;
+  width: 1px;
+  height: 30px;
+  left: 50%;
+  margin: 0 0 0 -1px;
+  position: absolute;
+  top: 0;
+  content: "";
+  background: #000;
 }
 
 #facebox .close:after {
-    width: 30px;
-    height: 1px;
-    left: 0px;
-    top: 50%;
-    margin: -0px 0 0 0;
-    position: absolute;
-    content: "";
-    background: #000;
+  width: 30px;
+  height: 1px;
+  left: 0px;
+  top: 50%;
+  margin: -0px 0 0 0;
+  position: absolute;
+  content: "";
+  background: #000;
 }
 
 /* #facebox .content.faceboxFixed {
     position: fixed;
 } */
+
 /*
 #facebox .close:hover{animation: spin180 0.4s;-webkit-animation: spin180 0.4s;}
 
@@ -184,63 +185,63 @@
 }*/
 
 #facebox .close img {
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
 #facebox .close:hover img {
-    opacity: 1.0;
+  opacity: 1.0;
 }
 
 #facebox .loading {
-    text-align: center;
+  text-align: center;
 }
 
 #facebox .image {
-    text-align: center;
+  text-align: center;
 }
 
 #facebox img {
-    border: 0;
-    margin: 0;
+  border: 0;
+  margin: 0;
 }
 
 #facebox_overlay {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
 }
 
 .facebox_hide {
-    z-index: -100;
+  z-index: -100;
 }
 
 .facebox_overlayBG {
-    opacity: 0.7;
-    background-color: #000;
-    z-index: 99;
+  opacity: 0.7;
+  background-color: #000;
+  z-index: 99;
 }
 
 @media only screen and (max-width: 1025px) {
-    #facebox {
-        left: 0 !important;
-        right: 0 !important;
-    }
-    #facebox .content {
-        display: block;
-        padding: 10px;
-    }
-    #facebox .content.faceboxWidth {
-        width: auto;
-    }
+  #facebox {
+    left: 0 !important;
+    right: 0 !important;
+  }
+  #facebox .content {
+    display: block;
+    padding: 10px;
+  }
+  #facebox .content.faceboxWidth {
+    width: auto;
+  }
 }
 
 @media only screen and (max-width: 767px) {
-    #facebox .content {
-        padding-top: 30px;
-    }
-    #facebox .content.fbminwidth {
-        min-width: inherit;
-    }
+  #facebox .content {
+    padding-top: 30px;
+  }
+  #facebox .content.fbminwidth {
+    min-width: inherit;
+  }
 }

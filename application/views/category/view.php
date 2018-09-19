@@ -21,7 +21,7 @@
 		<div class="col-md-3 col--left">
 		  <div class="overlay overlay--filter"></div>
 		  <div class="filters">
-			<div class="box box--white">
+			<div class="">
 			  <?php
 				//var_dump($productFiltersArr+$categoryData);
 				/* Left Side Filters Side Bar [ */
@@ -79,9 +79,9 @@ $(document).ready(function(){
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Category','view',array($category_id)); ?>';
 	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_CATEGORY; ?>';
 	$recordId = <?php echo $category_id; ?>;
-	<?php if($priceInFilter){?>			
+	<?php if($priceInFilter){?>
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
-	searchProducts(document.frmProductSearch);	
+	searchProducts(document.frmProductSearch);
 });
 </script>

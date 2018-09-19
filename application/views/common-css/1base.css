@@ -27,7 +27,7 @@
 /* #Reset & Basics
 ================================================== */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video, button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1353,7 +1353,7 @@ img {
   position: relative;
   display: inline-block;
   box-sizing: border-box;
-  margin: 0 8px;
+  margin: 0 0px;
   border: none;
   border-radius: 2px;
   padding: 0 16px;
@@ -1779,6 +1779,7 @@ img {
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33333;
+  height: auto;
 }
 
 .btn--sm, .btn--sm.btn--white, .form input[type="submit"].btn--sm, .form input[type="button"].btn--sm {
@@ -1792,19 +1793,23 @@ img {
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
+  height: auto;
 }
 
 .btn--h-large {
   min-width: 170px;
+  height: auto;
 }
 
 .btn--block {
   display: block;
   width: 100%;
+  height: auto;
 }
 
 .btn--block+.btn--block {
   margin-top: 5px;
+  height: auto;
 }
 
 input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="button"].btn-block {
@@ -2036,6 +2041,8 @@ input[type="text"][disabled], input[type="password"][disabled] {
   left: 0;
   border: 1px solid var(--border-color);
   background: #fff;
+border-radius: 2px;
+box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
 }
 
 .checkbox.disabled, .radio.disabled {
@@ -2350,9 +2357,14 @@ input[type="text"][disabled], input[type="password"][disabled] {
   padding: 15px;
 }
 
+.form--singlefield {
+  display: flex;
+}
+
 .form--singlefield input[type="text"] {
   width: 70%;
   float: left;
+  margin: 0 5px;
 }
 
 .form--singlefield input[type="submit"] {
@@ -5239,21 +5251,10 @@ html {
 
 .nice-select {
   -webkit-tap-highlight-color: transparent;
-  background-color: #fff;
-  border-radius: 5px;
-  border: solid 1px #e8e8e8;
-  box-sizing: border-box;
   clear: both;
   cursor: pointer;
   display: block;
-  float: left;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: normal;
-  height: 42px;
-  line-height: 40px;
-  outline: none;
-  padding-left: 18px;
+/*  float: left;*/
   padding-right: 30px;
   position: relative;
   text-align: left !important;
@@ -5265,6 +5266,18 @@ html {
   user-select: none;
   white-space: nowrap;
   width: auto;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  padding-right: 32px;
+  width: 100%;
+  color: var(--txt-color);
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: normal;
+  border-radius: 2px;
 }
 
 .nice-select:hover {
@@ -5272,19 +5285,24 @@ html {
 }
 
 .nice-select:active, .nice-select.open, .nice-select:focus {
-  border-color: #999;
+  border-color: rgba(0, 0, 0, 0.22);
+  outline: 0;
+  outline: thin dotted \9;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
 }
 
 .nice-select:after {
-  border-bottom: 2px solid #999;
-  border-right: 2px solid #999;
+  border-bottom: 2px solid var(--first-color);
+  border-right: 2px solid var(--first-color);
   content: '';
   display: block;
-  height: 5px;
+  height: 8px;
   margin-top: -4px;
   pointer-events: none;
   position: absolute;
-  right: 12px;
+  right: 13px;
   top: 50%;
   -webkit-transform-origin: 66% 66%;
   -ms-transform-origin: 66% 66%;
@@ -5294,7 +5312,7 @@ html {
   transform: rotate(45deg);
   -webkit-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
-  width: 5px;
+  width: 8px;
 }
 
 .nice-select.open:after {

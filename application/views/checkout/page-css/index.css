@@ -31,8 +31,9 @@
 }
 
 .fixed .header-checkout .logo {
+  /*
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto;*/
 }
 
 .logo svg {
@@ -47,24 +48,44 @@
 
 .trust-banners {
   float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .trust-banners li {
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
+/*  border-left: 1px solid rgba(255, 255, 255, 0.3);*/
   display: table-cell;
   padding: 15px 18px;
   color: #fff;
   vertical-align: top;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .trust-banners li .svg-icn {
   float: left;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .trust-banners li .svg-icn svg {
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   fill: #fff;
 }
 
@@ -74,7 +95,7 @@
 
 .trust-banners li p {
   display: inline-block;
-  font-size: 12px;
+  font-size: 1em;
   color: #fff;
   font-weight: 400;
   line-height: 1.2;
@@ -86,7 +107,8 @@
   width: 100%;
   padding: 0;
   border: solid 1px var(--border-color);
-  border-bottom: none;
+  margin: 0 0 10px 0;
+  border-radius: 3px;
 }
 
 .section.is-current {
@@ -96,9 +118,9 @@
 .section.login {}
 
 .section-head {
-  background: #f8f8f8;
+  /*background: #f8f8f8;*/
   border-bottom: solid 1px var(--border-color);
-  padding: 15px 20px;
+  padding: 15px 15px;
   color: #000;
   font-size: 1.2em;
   margin: 0;
@@ -139,7 +161,7 @@
 }
 
 .check-login-wrapper, .address-wrapper, .make-payment-wrapper {
-  padding: 20px 20px 0 20px;
+  padding: 15px 15px 0 15px;
   margin: 0 auto;
 }
 
@@ -335,6 +357,7 @@
 .summary-listing .product_qty {
   float: left;
   clear: left;
+  display: flex;
 }
 
 .summary-listing .product_qty .qty .increase, .summary-listing .product_qty .qty .decrease, .summary-listing .product_qty .qty input {
@@ -368,13 +391,19 @@
 }
 
 .selected-panel {
-  background: #f8f8f8;
+  /*background: #f8f8f8;*/
   color: #666666;
   font-weight: 300;
-  padding: 15px 20px;
+  padding: 15px 15px;
   display: table;
-  width: 100%;
+  width: auto;
   table-layout: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .selected-panel-type {
@@ -400,9 +429,13 @@
   font-weight: 500;
 }
 
+.selected-panel-data p {
+  margin: 0;
+}
+
 .selected-panel-type, .selected-panel-data, .selected-panel-action {
-  display: inline-block;
-  width: 32%;
+  flex: 0 0 33%;
+  max-width: 33%;
   vertical-align: middle;
 }
 
@@ -475,12 +508,16 @@
   }
   .selected-panel {
     table-layout: auto;
+    flex-direction: column;
+    align-items: flex-start;
   }
   .selected-panel-type, .selected-panel-data, .selected-panel-action {
     display: block;
     text-align: left;
     margin: 10px 0;
     width: auto;
+    max-width: none;
+    flex: auto;
   }
   .cart-summary th, .cart-summary td {
     display: block;
