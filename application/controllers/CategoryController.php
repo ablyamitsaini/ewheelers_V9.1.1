@@ -60,12 +60,14 @@ class CategoryController extends MyAppController {
 		$prodSrchObj->joinSellerSubscription();
 		$prodSrchObj->addSubscriptionValidCondition();
 		$prodSrchObj->doNotCalculateRecords();
-		$prodSrchObj->setPageSize(FatApp::getConfig('CONF_PAGE_SIZE',FatUtility::VAR_INT, 10));
+		$prodSrchObj->doNotLimitRecords();
 		$prodSrchObj->addCategoryCondition($category_id);
-
-		//$prodSrchObj->addMultipleFields(array('selprod_id','prodcat_id'));
-		$rs = $prodSrchObj->getResultSet();
-		$record = FatApp::getDb()->fetchAll($rs);
+						
+		$objCat = clone $prodSrchObj;
+		$objCat->setPageSize(1);
+		//$objCat->addMultipleFields(array('selprod_id','prodcat_id'));
+		$rs = $objCat->getResultSet();
+		$record = FatApp::getDb()->fetch($rs);
 
 		$brandsArr = array();
 		$conditionsArr  = array();
@@ -136,17 +138,8 @@ class CategoryController extends MyAppController {
 
 
 		/* Price Filters[ */				
-		$priceSrch = new ProductSearch( $this->siteLangId );
-		$priceSrch->setDefinedCriteria();
-		$priceSrch->joinProductToCategory();
-		$priceSrch->joinSellerSubscription();
-		$priceSrch->addSubscriptionValidCondition();
-		$priceSrch->doNotCalculateRecords();
-		$priceSrch->doNotLimitRecords();
-		$priceSrch->addCategoryCondition($category_id);
+		$priceSrch = clone $prodSrchObj;		
 		$priceSrch->addMultipleFields( array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice') );
-		
-	
 		$qry = $priceSrch->getQuery();
 		$qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
 		
