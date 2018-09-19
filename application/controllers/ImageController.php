@@ -911,7 +911,7 @@ class ImageController extends FatController{
 			break;
 			case 'BANNER':
 				$w = 945;
-				$h = 535;
+				$h = 532;
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
 			break;
 			default:
