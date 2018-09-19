@@ -63,11 +63,6 @@ $shippingapi_idFld->developerTags['col'] = 6;
 							</td>
 							<td>
 								<?php
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 4383d66ba7c55eacb7b0a0f1ca81e6d3187fbee5
                         $selectedShippingType = "";
                         $displayManualOptions = "style='display:none'";
                         $displayShipStationOption = "style='display:none'";
@@ -78,13 +73,10 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
-<<<<<<< HEAD
 								$product["shipping_free_availbilty"];
 								if($product['shop_free_shipping_eligibility'] > 0) {
-=======
 								$product["shipping_free_availbilty"];	
 								if($product['shop_eligible_for_free_shipping'] > 0) {
->>>>>>> 4383d66ba7c55eacb7b0a0f1ca81e6d3187fbee5
 									$shipping_charges = 0;
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
