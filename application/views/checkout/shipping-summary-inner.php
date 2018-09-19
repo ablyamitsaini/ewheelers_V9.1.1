@@ -24,9 +24,9 @@ $shippingapi_idFld->developerTags['col'] = 6;
 						if( $product['shop_id'] != $prevShopId){ ?>
 							<tr class="-row-heading">
 								<td colspan="3"><?php echo $product['shop_name']; ?></td>
-								<td class="text-right" colspan="2"><?php 
+								<td class="text-right" colspan="2"><?php
 								if($product['shop_free_shipping_eligibility'] > 0) {
-									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ; 
+									echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ;
 								}
 								elseif($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']){
 									$str = Labels::getLabel('LBL_Upto_{amount}_you_will_get_free_shipping', $siteLangId);
@@ -70,23 +70,23 @@ $shippingapi_idFld->developerTags['col'] = 6;
                         $shipping_options[$product['product_id']][0] = Labels::getLabel("LBL_Select_Shipping",$siteLangId);
 
                         if (count($product["shipping_rates"])) {
-                     
+
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
 								$product["shipping_free_availbilty"];	
-								if($product['shop_free_shipping_eligibility'] > 0) {
+								if($product['shop_eligible_for_free_shipping'] > 0) {
 									$shipping_charges = 0;
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
 								}
 								$shippingDurationTitle = ShippingDurations::getShippingDurationTitle( $sval, $siteLangId );
                                 $shipping_options[$product['product_id']][$sval['pship_id']] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
-                            endforeach;	
+                            endforeach;
                             if ($product['is_shipping_selected']== ShippingMethods::MANUAL_SHIPPING) {
 
                                  $selectedShippingType = ShippingMethods::MANUAL_SHIPPING;
 								 $displayManualOptions = "style='display:block'";
-                            } 
+                            }
                         }
 
 						$servicesList = array();
