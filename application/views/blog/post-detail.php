@@ -2,13 +2,10 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 /* $this->includeTemplate('_partial/blogTopFeaturedCategories.php'); */
 ?>
-<div id="body" class="body bg--grey">
-<div class="gap"></div>
-  <div class="fixed-container">
-    <div class="row">
-      <div class="panel">
-        <div class="colums clearfix">
-          <div class="col-md-9 colums__left">
+<section class="">
+	<div class="container">
+		<div class="row">
+			<div class=" col-lg-9 col-md-9 col-sm-9 col-xs-12">
 				<div class="posted-content">
 
 					<div class="posted-media">
@@ -112,11 +109,8 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
             </div>
           </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="gap"></div>
-</div>
+</section>
 <script>
 var boolLoadComments = (<?php echo FatUtility::int($blogPostData['post_comment_opened']); ?>)?true:false ;
 </script>
