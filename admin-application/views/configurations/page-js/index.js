@@ -27,15 +27,13 @@ $(document).ready(function(){
 	};
 	
 	getLangForm = function(frmType,langId){
-		
 		fcom.resetEditorInstance();	
 		$(dv).html(fcom.getLoader());
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('Configurations', 'langForm', [frmType,langId]), '', function(t) {
-			
 			$(dv).html(t);
 			fcom.setEditorLayout(langId);
-			if(frmType == 11){
+			if(frmType == FORM_MEDIA){
 				$('input[name=btn_submit]').hide();
 			}
 			var frm = $(dv+' form')[0];
