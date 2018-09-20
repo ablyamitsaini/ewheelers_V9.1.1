@@ -68,7 +68,12 @@ if(!empty($postList)){ ?>
 							<div class="posted-data-side">
 								<div class="posted-data">
 									<div class="posted-by"><span class="auther"><?php echo Labels::getLabel('Lbl_By',$siteLangId)." "; ?> <?php echo CommonHelper::displayName($blogPost['post_author_name']); ?></span> <span class="time"><?php echo FatDate::format($blogPost['post_published_on']); ?></span></div>
-									<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
+									<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php 
+									$strLen = mb_strlen($blogPost['post_title']);	
+									if($strLen > 50){
+											echo mb_substr($blogPost['post_title'],0,50).'...';}
+									else{	echo $blogPost['post_title'];
+									}?></a></h2>
 									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
 										<ul class="blogs-listing list__socials">
