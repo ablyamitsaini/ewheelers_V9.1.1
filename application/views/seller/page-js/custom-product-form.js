@@ -463,6 +463,7 @@ $(document).ready(function(){
 			reloadProductLinks(product_id);
 		});
 	}
+	
 	removeProductCategory = function(product_id, option_id){
 		var agree = confirm(langLbl.confirmDeleteOption);
 		if(!agree){ return false; }
@@ -470,12 +471,13 @@ $(document).ready(function(){
 			reloadProductLinks(product_id);
 		});
 	};
+	
 	reloadProductLinks = function( product_id ){
 		$("#product_links_list").html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller', 'productLinks', [product_id]), '', function(t) {
 			$("#product_links_list").html(t);
 		});
-	}	
+	}
 	
 	setupProductLinks = function(frm){
 		$('input[name="product_category"]').val($('input[name="list_category"]').val());

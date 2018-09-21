@@ -95,31 +95,34 @@
 			$('#product-tag').append('<li id="product-tag<?php echo $val['tag_id'];?>"><i class="remove_tag remove_param fa fa-trash"></i> <?php echo $val['tag_name'].' ('.$val['tag_identifier'].')';?><input type="hidden" name="product_tag[]" value="<?php echo $val['tag_id'];?>" /></li>');
 		<?php } ?>
 		
-	$('input[name=\'choose_links\']').autocomplete({
-	'source': function(request, response) {
-			/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
-				response($.map(json, function(item) {
-						return { label: item['name'],	value: item['id']	};
-					}));
-			}); */
-			$("#product_links_list").html(fcom.getLoader());
-			$.ajax({
-				url: fcom.makeUrl('products', 'links_autocomplete'),
-				data: {keyword: request,fIsAjax:1},
-				dataType: 'json',
-				type: 'post',
-				success: function(json) {
+		$('input[name=\'choose_links\']').autocomplete({
+		'source': function(request, response) {
+				/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
 					response($.map(json, function(item) {
-						return { label: item['name'],	value: item['id']	};
-					}));
-					$("#product_links_list").html('');
-				},
-			});
-		},
-		'select': function(item) {			
-			updateProductLink(<?= $product_id;?>, item['value'] );		
-		}
-	});
-		
+							return { label: item['name'],	value: item['id']	};
+						}));
+				}); */
+				/* $("#product_links_list").html(fcom.getLoader()); */
+				$.ajax({
+					url: fcom.makeUrl('products', 'links_autocomplete'),
+					data: {keyword: request,fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+						response($.map(json, function(item) {
+							return { label: item['name'],	value: item['id']	};
+						}));
+						fcom.ajax(fcom.makeUrl('Seller', 'productLinks', [<?= $product_id;?>]), '', function(t) {
+							$("#product_links_list").html(t);
+						});
+						/* $("#product_links_list").html(''); */
+					},
+				});
+			},
+			'select': function(item) {			
+				updateProductLink(<?= $product_id;?>, item['value'] );		
+			}
+		});
+	
 	});
 </script> 
