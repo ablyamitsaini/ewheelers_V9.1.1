@@ -778,9 +778,9 @@ class ProductsController extends MyAppController {
 		$searchObj=new SearchItem();
 		$this->set('top_searched_keywords',$searchObj->getTopSearchedKeywords());
 		if( $totalRecords > 0 ){
-			$json['html'] = $this->_template->render( false, false, 'products/products-list.php', true, false);
+			$json['html'] = $this->_template->render( false, false, 'products/products-list.php', true);
 		} else {
-			$json['html'] = $this->_template->render( false, false, '_partial/no-product-found.php', true, false);
+			$json['html'] = $this->_template->render( false, false, '_partial/no-product-found.php', true);
 		}
 
 		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'products/products-list-load-more-btn.php', true, false);
