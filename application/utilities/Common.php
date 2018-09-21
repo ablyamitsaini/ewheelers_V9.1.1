@@ -310,11 +310,10 @@ class Common {
 		$template->set('siteLangId', $siteLangId );
 	}
 	
-	static function getBlogSearchForm(){
-		
+	static function getBlogSearchForm(){		
 		$frm = new Form('frmBlogSearch');
 		$frm->setFormTagAttribute('autocomplete','off');
-		$frm->addTextBox('', 'keyword','',array('placeholder'=>Labels::getLabel('Lbl_Search',CommonHelper::getLangId())));
+		$frm->addTextBox('', 'keyword','');
 		$frm->addHiddenField('', 'page',1);
 		$frm->addSubmitButton('','btn_submit','');
 		return $frm;
