@@ -17,5 +17,7 @@ Enhancements:
 	. Product listing page updated speed optimization work.	
 	
 Database changes:
-	Altered product category table.
+	Use database/db-updates.sql
+	Altered product category table. 
+	Update Category table data Hit the url domainname.com/dummy/update-category-table
 	

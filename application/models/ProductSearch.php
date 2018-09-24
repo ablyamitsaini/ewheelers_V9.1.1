@@ -254,11 +254,8 @@ class ProductSearch extends SearchBase {
 
 	public function joinSellers(){
 		$this->sellerUserJoined = true;
-		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'selprod_user_id = seller_user.user_id','seller_user');
-		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'credential_user_id = seller_user.user_id','seller_user_cred' );
-		$this->addCondition( 'seller_user.user_is_supplier','=', applicationConstants::YES );
-		$this->addCondition('credential_active', '=', applicationConstants::ACTIVE );
-		$this->addCondition('credential_verified', '=', applicationConstants::YES );
+		$this->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = seller_user.user_id and seller_user.user_is_supplier = '.applicationConstants::YES, 'seller_user');
+		$this->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = seller_user.user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES, 'seller_user_cred');		
 	}
 
 	public function joinProductShippedBySeller($sellerId = 0){
@@ -283,7 +280,7 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Shop::DB_TBL, 'LEFT OUTER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
+		$this->joinTable( Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
 		
 		if( $isActive ){
 			$this->addCondition( 'shop.shop_active', '=', applicationConstants::ACTIVE );
@@ -302,7 +299,7 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Countries::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
+		$this->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
 
 		if( $langId ){
 			$this->joinTable( Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_country.country_id = shop_country_l.countrylang_country_id AND shop_country_l.countrylang_lang_id = '.$langId, 'shop_country_l' );
@@ -317,7 +314,7 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( States::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
+		$this->joinTable( States::DB_TBL, 'INNER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
 
 		if( $langId ){
 			$this->joinTable( States::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_state.state_id = shop_state_l.statelang_state_id AND shop_state_l.statelang_lang_id = '.$langId, 'shop_state_l' );
@@ -332,7 +329,7 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Brand::DB_TBL, 'LEFT OUTER JOIN', 'p.product_brand_id = brand.brand_id', 'brand' );
+		$this->joinTable( Brand::DB_TBL, 'INNER JOIN', 'p.product_brand_id = brand.brand_id', 'brand' );
 		if( $isActive ){
 			$this->addCondition( 'brand.brand_active', '=', applicationConstants::ACTIVE );
 		}
@@ -350,8 +347,8 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
-		$this->joinTable( ProductCategory::DB_TBL, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
+		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
+		$this->joinTable( ProductCategory::DB_TBL, 'INNER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
 		
 		if($isActive){
 			$this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE );
