@@ -673,6 +673,7 @@ class Importexport extends ImportexportCommon{
 				}
 				
 				if($categoryId){
+									
 					if(!$useCategoryId && !isset($categoriesIdentifiers[$data['prodcat_identifier']])){
 						$categoriesIdentifiers[$identifier] = $categoryId;
 					}	
@@ -689,13 +690,17 @@ class Importexport extends ImportexportCommon{
 					
 					/* ]*/
 					
+					/* Update cat code[*/
+					$category = new ProductCategory($categoryId);
+					$category->updateCatCode();
+					/*]*/
+					
 					/* Url rewriting [*/
 					if($this->isDefaultSheetData($langId)){
 						if(trim($seoUrl) == ''){
 							$seoUrl = $identifier;
 						}	
-						$prodcatData = ProductCategory::getAttributesById($categoryId,array('prodcat_parent'));
-						$category = new ProductCategory($categoryId);
+						$prodcatData = ProductCategory::getAttributesById($categoryId,array('prodcat_parent'));	
 						$category->rewriteUrl($seoUrl,true,$prodcatData['prodcat_parent']);
 					}
 					/* ]*/					

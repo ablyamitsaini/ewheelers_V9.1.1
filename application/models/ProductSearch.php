@@ -280,9 +280,9 @@ class ProductSearch extends SearchBase {
 			trigger_error( Labels::getLabel('ERR_joinShops_cannot_be_joined,_unless_joinSellers_is_not_applied.',$this->commonLangId),E_USER_ERROR );
 		}
 		$langId = FatUtility::int( $langId );
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		$this->joinTable( Shop::DB_TBL, 'LEFT OUTER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
 		
 		if( $isActive ){
@@ -299,9 +299,9 @@ class ProductSearch extends SearchBase {
 
 	public function joinShopCountry( $langId = 0, $isActive = true ){
 		$langId = FatUtility::int($langId);
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		$this->joinTable( Countries::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
 
 		if( $langId ){
@@ -314,9 +314,9 @@ class ProductSearch extends SearchBase {
 
 	public function joinShopState( $langId = 0, $isActive = true ){
 		$langId = FatUtility::int($langId);
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		$this->joinTable( States::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
 
 		if( $langId ){
@@ -329,9 +329,9 @@ class ProductSearch extends SearchBase {
 
 	public function joinBrands( $langId = 0, $isActive = true, $isDeleted = true ){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		$this->joinTable( Brand::DB_TBL, 'LEFT OUTER JOIN', 'p.product_brand_id = brand.brand_id', 'brand' );
 		if( $isActive ){
 			$this->addCondition( 'brand.brand_active', '=', applicationConstants::ACTIVE );
@@ -347,9 +347,9 @@ class ProductSearch extends SearchBase {
 
 	public function joinProductToCategory( $langId = 0, $isActive = true, $isDeleted = true ){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
 		$this->joinTable( ProductCategory::DB_TBL, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
 		
@@ -391,7 +391,8 @@ class ProductSearch extends SearchBase {
 			if( !$category_id ){
 				return;
 			}
-			$this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
+			/* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
+			$this->addCondition('prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
 		}else{
 			$category = explode(",", $category);
 			$category = FatUtility::int($category);
@@ -682,9 +683,9 @@ class ProductSearch extends SearchBase {
 	
 	public function joinSellerSubscription($langId= 0 ,$joinSeller = false){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 			
 		if($joinSeller){
 			$this->joinSellers();
@@ -707,9 +708,9 @@ class ProductSearch extends SearchBase {
 		
 	/* public function joinSellerProductOptionsWithSelProdCode($langId = 0){
 		$langId = FatUtility::int( $langId );
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		
 		$this->joinTable( OptionValue::DB_TBL, 'LEFT OUTER JOIN', "selprod_code LIKE CONCAT('%_', ov.optionvalue_id)" , 'ov' );
 		$this->joinTable( Option::DB_TBL, 'INNER JOIN', 'spo.option_id = ov.optionvalue_option_id', 'spo' );

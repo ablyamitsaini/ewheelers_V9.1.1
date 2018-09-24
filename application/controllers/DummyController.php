@@ -7,10 +7,30 @@ class DummyController extends MyAppController {
 	}
 	
 	function mytest(){
-		if(false !== OrderCancelRequest::getCancelRequestById(120)){
-			die('dsds');
+		$categoryId = 'a';
+		
+		$parentCatData = ProductCategory::getAttributesById($categoryId,array('prodcat_parent'));
+		
+		if(array_key_exists('prodcat_parent',$parentCatData) && $parentCatData['prodcat_parent'] > 0){
+		  array_push();
 		}
-		 exit;
+		die('aaa');
+		$srch = ProductCategory::getSearchObject();
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addMultipleFields(array('prodcat_id','GETCATCODE(`prodcat_id`) as cat_code'));
+		$srch->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT) . '%', 'AND', true);
+		$rs = $srch->getResultSet();
+		$catCode = FatApp::getDb()->fetchAll($rs);
+		foreach($catCode as $row){
+			$record = new ProductCategory($row['prodcat_id']);
+			$data = array('prodcat_code'=>$row['cat_code']);
+			$record->assignValues($data);
+			if (!$record->save()) {
+				Message::addErrorMessage($record->getError());
+			}	
+		}
+		
 	}
 	
 	function updateOrderProdSetting(){

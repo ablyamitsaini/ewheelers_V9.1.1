@@ -12,4 +12,10 @@ Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
 	. Free shipping label display on product detail page.
+
+Enhancements:
+	. Product listing page updated speed optimization work.	
+	
+Database changes:
+	Altered product category table.
 	
