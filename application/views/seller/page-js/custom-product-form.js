@@ -199,12 +199,13 @@ $(document).ready(function(){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
 		fcom.ajax(fcom.makeUrl('seller','deleteSellerOption'),data,function(t){
-			try{
-				res= jQuery.parseJSON(t);
-				$.facebox(res.msg,'faceboxWidth');
-			}catch (e){				
-				reloadList();
-			}						
+			var ans= jQuery.parseJSON(t);
+			if(ans.status!=1){
+				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+			}
+			$.mbsmessage(ans.msg, true, 'alert alert--success');
+			reloadList();		
+			
 		});
 	};
 	
