@@ -8,7 +8,7 @@ if($products){
 
 <div class="col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:4;?> col-xs-6 col-sm-6">
   <div class="item-yk item <?php echo (!$product['in_stock']) ? 'item--sold' : '';?>"> <span class="overlay--collection"></span>
-    <?php include(CONF_THEME_PATH.'_partial/product-listing-head-section.php');?>
+    <?php include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); ?>
     <div class="item-yk_body">
       <?php if(!$product['in_stock']){ ?>
       <span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId); ?></span>

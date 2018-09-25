@@ -490,17 +490,17 @@ class ProductCategoriesController extends AdminBaseController {
 		$prodcat_parent = FatUtility::int($post['prodcat_parent']);
 		unset($post['prodcat_id']);
 
-		$record = new ProductCategory($prodcat_id);
+		$productCategory = new ProductCategory($prodcat_id);
 		$isnew = false;
 		if($prodcat_id==0){
-			$display_order=$record->getMaxOrder($prodcat_parent);
+			$display_order=$productCategory->getMaxOrder($prodcat_parent);
 			$post['prodcat_display_order']=$display_order;
 			$isnew = true;
 		}
-		$record->assignValues($post);
+		$productCategory->assignValues($post);
 		
 		//FatApp::getDb()->startTransaction();
-		if (!$record->save()) {
+		if (!$productCategory->save()) {
 			
 			if($categoryId = ProductCategory::getDeletedProductCategoryByIdentifier($post['prodcat_identifier']))
 			{
@@ -528,10 +528,13 @@ class ProductCategoriesController extends AdminBaseController {
 			//	$this->_template->render(false, false, 'json-error.php');
 			}
 		}else{
+			
+			$productCategory->updateCatCode();
+			
 			if( $post['urlrewrite_custom'] == '' ){
 				FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($catOriginalUrl)));
 			}else{
-				$record->rewriteUrl($post['urlrewrite_custom'],true,$prodcat_parent);
+				$productCategory->rewriteUrl($post['urlrewrite_custom'],true,$prodcat_parent);
 			}
 			/* ] */
 			
@@ -546,7 +549,7 @@ class ProductCategoriesController extends AdminBaseController {
 					}
 				}
 			}else{
-				$catId = $record->getMainTableRecordId();
+				$catId = $productCategory->getMainTableRecordId();
 				$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
 			}
 			if( $newTabLangId == 0 && !$this->isMediaUploaded($prodcat_id) ){

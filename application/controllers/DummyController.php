@@ -6,11 +6,18 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
-	function mytest(){
-		if(false !== OrderCancelRequest::getCancelRequestById(120)){
-			die('dsds');
-		}
-		 exit;
+	function updateCategoryTable(){
+		$srch = ProductCategory::getSearchObject();
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();		
+		$srch->addCondition('prodcat_parent','=',0);
+		$rs = $srch->getResultSet();
+		$result = FatApp::getDb()->fetchAll($rs);
+		foreach($result as $row){
+			$productCategory = new ProductCategory($row['prodcat_id']);
+			$productCategory->updateCatCode();			
+		}	
+		echo "Done";	
 	}
 	
 	function updateOrderProdSetting(){
@@ -921,39 +928,6 @@ var_dump($logArr);
 	}
 	
 	
-	/* function getStates($arr = array()){
-		$srch = new SearchBase('tbl_states_temp');
-		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs,'state_id');
-		foreach($records as $state){
-			$assignValues = array(
-				'state_id' => $state['state_id'],
-				'state_zone_id' => $state['zone_id'],
-				'state_country_id' => $arr[$state['country_id']],
-				'state_identifier' => $state['state_name'],
-				'state_active' => applicationConstants::ACTIVE,
-			);
-			FatApp::getDb()->insertFromArray('tbl_states',$assignValues,false,array(),$assignValues);
-
-			$assignData = array(
-				'statelang_state_id' => $state['state_id'],
-				'statelang_lang_id' => 1,
-				'state_name' => $state['state_name'],
-			);
-			FatApp::getDb()->insertFromArray('tbl_states_lang',$assignData,false,array(),$assignData);
-		}
-	} */
-
-	/*
-	this country and states not added from yokart.
-	array(
-	8,13,31,32,35,47,54,58,70,71,75,78,81,86,98,99,102,107,113,115,117,119,123,124,127,132,
-	137,144,151,152,153,171,182,188,189,191,200,202,206,211,213,214,217,221,224,227,233,244,245,246
-	247,248,251,254
-	) */
-	
 	function truncateTables( $type = 'orders' ){
 		if ( $type == 'orders' ){
 			$tables = array('tbl_orders','tbl_orders_lang','tbl_orders_status_history','tbl_order_cancel_reasons','tbl_order_cancel_reasons_lang','tbl_order_cancel_requests','tbl_order_extras','tbl_order_payments','tbl_order_products','tbl_order_products_lang','tbl_order_product_charges','tbl_order_product_charges_lang','tbl_order_product_digital_download_links','tbl_order_product_shipping','tbl_order_product_shipping_lang','tbl_order_product_to_shipping_users','tbl_order_return_reasons','tbl_order_return_reasons_lang','tbl_order_return_requests','tbl_order_return_request_messages','tbl_order_seller_subscriptions','tbl_order_seller_subscriptions_lang','tbl_order_user_address','tbl_user_reward_points','tbl_user_reward_point_breakup','tbl_rewards_on_purchase','tbl_user_transactions','tbl_coupons_history','tbl_coupons_hold','tbl_user_cart','tbl_order_product_settings');
@@ -987,25 +961,6 @@ var_dump($logArr);
 		}
 	}
 	
-	function orderDetailTable(){
-		$order_id = 'O1515415434';
-		$langId = 1 ;
-		
-		$obj = new Orders();
-		$orderDetail = $obj->getOrderById($order_id);
-		if ($orderDetail) {
-				$orderVendors = $obj->getChildOrders(array("order"=>$order_id),$orderDetail['order_type'],$orderDetail['order_language_id']);	
-				
-				//echo "<pre>"; print_r($orderProducts);
-				foreach($orderVendors as $key=>$val){
-				$tpl = new FatTemplate('', '');
-				//$tpl->set('orderInfo', $orderDetail);
-				$tpl->set('orderProducts', $val);
-				$tpl->set('siteLangId', $langId);
-				echo	$orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email.php', true);
-			}
-		}
-	}
 	
 	function testOrder()
 	{
@@ -1077,55 +1032,7 @@ var_dump($logArr);
 		CommonHelper::printArray($row); die;
 	}
 	
-	function textChange(){
-
-		$conn = new mysqli(CONF_DB_SERVER,CONF_DB_USER, CONF_DB_PASS, CONF_DB_NAME);
-		// Check connection
-		if ($conn->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
-		} 
-		$langId = 2;
-		/* $tablename = "tbl_language_labels"; 
-		$sql = 'SELECT * FROM '.$tablename .' where label_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('label_key' => $row['label_key'],'label_lang_id'=>$row['label_lang_id'],'label_caption'=>$row['label_caption']), array('smt' => 'label_id = ?', 'vals' => array($row['label_id'])))){
-			echo $row['label_id']."<br>";
-			}   
-			}
-		} */
-		
-		/* $tablename = "tbl_navigations_lang"; 
-		$sql = 'SELECT * FROM '.$tablename .' where navlang_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('nav_name' => $row['nav_name']), array('smt' => 'navlang_nav_id = ? and navlang_lang_id = ?', 'vals' => array($row['navlang_nav_id'],$row['navlang_lang_id'])))){
-			echo $row['navlang_nav_id']."<br>";
-			}   
-			}
-		}  */
-		
-		/* $tablename = "tbl_navigation_links_lang"; 
-		$sql = 'SELECT * FROM '.$tablename .' where nlinklang_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('nlink_caption' => $row['nlink_caption']), array('smt' => 'nlinklang_nlink_id = ? and nlinklang_lang_id = ?', 'vals' => array($row['nlinklang_nlink_id'],$row['nlinklang_lang_id'])))){
-			echo $row['nlinklang_nlink_id']."<br>";
-			}   
-			}
-		}  */
-		
-		die('done');
-	}
+	
 	
 	function changeCustomUrl1(){
 		$urlSrch = UrlRewrite::getSearchObject();

@@ -12,4 +12,12 @@ Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
 	. Free shipping label display on product detail page.
+
+Enhancements:
+	. Product listing page updated speed optimization work.	
+	
+Database changes:
+	Use database/db-updates.sql
+	Altered product category table. 
+	Update Category table data Hit the url domainname.com/dummy/update-category-table
 	

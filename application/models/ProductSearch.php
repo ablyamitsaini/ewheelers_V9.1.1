@@ -254,11 +254,8 @@ class ProductSearch extends SearchBase {
 
 	public function joinSellers(){
 		$this->sellerUserJoined = true;
-		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'selprod_user_id = seller_user.user_id','seller_user');
-		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'credential_user_id = seller_user.user_id','seller_user_cred' );
-		$this->addCondition( 'seller_user.user_is_supplier','=', applicationConstants::YES );
-		$this->addCondition('credential_active', '=', applicationConstants::ACTIVE );
-		$this->addCondition('credential_verified', '=', applicationConstants::YES );
+		$this->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = seller_user.user_id and seller_user.user_is_supplier = '.applicationConstants::YES, 'seller_user');
+		$this->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = seller_user.user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES, 'seller_user_cred');		
 	}
 
 	public function joinProductShippedBySeller($sellerId = 0){
@@ -280,10 +277,10 @@ class ProductSearch extends SearchBase {
 			trigger_error( Labels::getLabel('ERR_joinShops_cannot_be_joined,_unless_joinSellers_is_not_applied.',$this->commonLangId),E_USER_ERROR );
 		}
 		$langId = FatUtility::int( $langId );
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
-		$this->joinTable( Shop::DB_TBL, 'LEFT OUTER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
+		$this->joinTable( Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
 		
 		if( $isActive ){
 			$this->addCondition( 'shop.shop_active', '=', applicationConstants::ACTIVE );
@@ -299,10 +296,10 @@ class ProductSearch extends SearchBase {
 
 	public function joinShopCountry( $langId = 0, $isActive = true ){
 		$langId = FatUtility::int($langId);
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
-		$this->joinTable( Countries::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
+		$this->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
 
 		if( $langId ){
 			$this->joinTable( Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_country.country_id = shop_country_l.countrylang_country_id AND shop_country_l.countrylang_lang_id = '.$langId, 'shop_country_l' );
@@ -314,10 +311,10 @@ class ProductSearch extends SearchBase {
 
 	public function joinShopState( $langId = 0, $isActive = true ){
 		$langId = FatUtility::int($langId);
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
-		$this->joinTable( States::DB_TBL, 'LEFT OUTER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
+		$this->joinTable( States::DB_TBL, 'INNER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
 
 		if( $langId ){
 			$this->joinTable( States::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_state.state_id = shop_state_l.statelang_state_id AND shop_state_l.statelang_lang_id = '.$langId, 'shop_state_l' );
@@ -329,10 +326,10 @@ class ProductSearch extends SearchBase {
 
 	public function joinBrands( $langId = 0, $isActive = true, $isDeleted = true ){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
-		$this->joinTable( Brand::DB_TBL, 'LEFT OUTER JOIN', 'p.product_brand_id = brand.brand_id', 'brand' );
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
+		$this->joinTable( Brand::DB_TBL, 'INNER JOIN', 'p.product_brand_id = brand.brand_id', 'brand' );
 		if( $isActive ){
 			$this->addCondition( 'brand.brand_active', '=', applicationConstants::ACTIVE );
 		}
@@ -347,11 +344,11 @@ class ProductSearch extends SearchBase {
 
 	public function joinProductToCategory( $langId = 0, $isActive = true, $isDeleted = true ){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
-		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
-		$this->joinTable( ProductCategory::DB_TBL, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
+		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc' );
+		$this->joinTable( ProductCategory::DB_TBL, 'INNER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
 		
 		if($isActive){
 			$this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE );
@@ -391,7 +388,8 @@ class ProductSearch extends SearchBase {
 			if( !$category_id ){
 				return;
 			}
-			$this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
+			/* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
+			$this->addCondition('prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
 		}else{
 			$category = explode(",", $category);
 			$category = FatUtility::int($category);
@@ -682,9 +680,9 @@ class ProductSearch extends SearchBase {
 	
 	public function joinSellerSubscription($langId= 0 ,$joinSeller = false){
 		$langId = FatUtility::int($langId);
-		if($this->langId){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 			
 		if($joinSeller){
 			$this->joinSellers();
@@ -707,9 +705,9 @@ class ProductSearch extends SearchBase {
 		
 	/* public function joinSellerProductOptionsWithSelProdCode($langId = 0){
 		$langId = FatUtility::int( $langId );
-		if( $this->langId ){
-			$langId = $this->langId;
-		}
+		if ($this->langId && 1 > $langId) {
+            $langId = $this->langId;
+        }
 		
 		$this->joinTable( OptionValue::DB_TBL, 'LEFT OUTER JOIN', "selprod_code LIKE CONCAT('%_', ov.optionvalue_id)" , 'ov' );
 		$this->joinTable( Option::DB_TBL, 'INNER JOIN', 'spo.option_id = ov.optionvalue_option_id', 'spo' );
