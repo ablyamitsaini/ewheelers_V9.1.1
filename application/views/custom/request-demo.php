@@ -6,7 +6,7 @@
 			<div class="get-started-wrapper">
 				<div class="started-box">
 					<div class="illus"><img src="<?php echo CONF_WEBROOT_URL; ?>images/get-started.png" alt=""></div>
-					<p>I Realy Liked The Features Of Yo!Kart And Want To Discuss My Project</p>
+					<p>I Really Liked The Features Of Yo!Kart And Want To Discuss My Project</p>
 					<a href="https://www.yo-kart.com/contact-us.html" target="_blank" class="btn btn--primary">Get Started</a>
 				</div>
 				<div class="started-box">
