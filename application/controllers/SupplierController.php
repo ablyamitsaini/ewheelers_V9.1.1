@@ -27,7 +27,18 @@ class SupplierController extends MyAppController {
 		$block2 = $obj->getContentByPageType( Extrapage::SELLER_PAGE_BLOCK2, $this->siteLangId );
 		$block3 = $obj->getContentByPageType( Extrapage::SELLER_PAGE_BLOCK3, $this->siteLangId );
 		$slogan = $obj->getContentByPageType( Extrapage::SELLER_BANNER_SLOGAN, $this->siteLangId );
+		
+		$srch = FaqCategory::getSearchObject($this->siteLangId);
+		$srch->joinTable('tbl_faqs' , 'LEFT OUTER JOIN','faq_faqcat_id = faqcat_id and faq_active = '.applicationConstants::ACTIVE.'  and faq_deleted = '.applicationConstants::NO);
+		$srch->joinTable('tbl_faqs_lang' , 'LEFT OUTER JOIN','faqlang_faq_id = faq_id');
+		$srch->addCondition('faqlang_lang_id', '=', $this->siteLangId);
+		$srch->addCondition('faqcat_active', '=', applicationConstants::ACTIVE );
+		$srch->addCondition( 'faqcat_type', '=', FaqCategory::SELLER_PAGE );
+		$rs = $srch->getResultSet();
+		$records = FatApp::getDb()->fetchAll($rs);		
+		
 		$this->set('formText' , $formText);
+		$this->set('faqCount' , $srch->recordCount());
 		$this->set('block1' , $block1);
 		$this->set('block2' , $block2);
 		$this->set('block3' , $block3);
@@ -469,6 +480,7 @@ class SupplierController extends MyAppController {
 		$srch->joinTable('tbl_faqs_lang' , 'LEFT OUTER JOIN','faqlang_faq_id = faq_id');
 		$srch->addCondition('faqlang_lang_id', '=', $this->siteLangId);
 		$srch->addCondition('faqcat_active', '=', applicationConstants::ACTIVE );
+		$srch->addCondition( 'faqcat_type', '=', FaqCategory::SELLER_PAGE );
 		if(!empty($faqCatId))
 		{
 		   $srch->addCondition('faqcat_id', 'IN', $faqCatId); 
@@ -506,8 +518,6 @@ class SupplierController extends MyAppController {
 		$srch->addCondition('faqlang_lang_id', '=', $this->siteLangId);
 		$srch->addCondition( 'faqcat_active', '=', applicationConstants::ACTIVE );
 		$srch->addCondition( 'faqcat_type', '=', FaqCategory::SELLER_PAGE );
-		$qry= $srch->getQuery();
-		
 		$srch->addOrder('faqcat_display_order','asc');
 		$srch->addOrder('faq_faqcat_id','asc');
 		$srch->addOrder('faq_display_order','asc');
