@@ -4,6 +4,7 @@ $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr_no.',$adminLangId),
 		/* 'promotion_id'=>Labels::getLabel('LBL_Id',$adminLangId),			 */
 		'promotion_name'=>Labels::getLabel('LBL_Name',$adminLangId),			
+		'user_name'=>Labels::getLabel('LBL_User',$adminLangId),			
 		'promotion_type'=>Labels::getLabel('LBL_Type',$adminLangId),			
 		'blocation_promotion_cost'=>Labels::getLabel('LBL_CPC',$adminLangId),			
 		'promotion_budget'=>Labels::getLabel('LBL_budget',$adminLangId),			
@@ -37,6 +38,11 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'promotion_name':
 				$td->appendElement('plaintext', array(), $row[$key], true);
+			break;
+			case 'user_name':
+				$userDetail = '<strong>'.Labels::getLabel('LBL_N:', $adminLangId).' </strong>'.$row['user_name'].'<br/>';
+				$userDetail .= '<strong>'.Labels::getLabel('LBL_UN:', $adminLangId).' </strong>'.$row['credential_username'].'<br/>';
+				$td->appendElement( 'plaintext', array(), $userDetail, true );
 			break;	
 			case 'promotion_type':
 				$td->appendElement('plaintext', array(), $typeArr[$row[$key]], true);
