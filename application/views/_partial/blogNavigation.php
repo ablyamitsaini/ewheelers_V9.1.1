@@ -54,7 +54,7 @@
 			$srchFrm->developerTags['fld_default_col'] = 12;
 			$keywordFld = $srchFrm->getField('keyword');
 			$keywordFld->setFieldTagAttribute('class','no-focus');
-			$keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_the_text_to_Search', $siteLangId));
+			$keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_Keyword', $siteLangId));
 			echo $srchFrm->getFormTag(); 
 			echo $srchFrm->getFieldHTML('keyword');
 			echo $srchFrm->getFieldHTML('btnProductSrchSubmit');

@@ -9,7 +9,7 @@ $img_fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 $langFld = $imagesFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class','language-js');
 
-$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'1000*566').'</small>';
+$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'1000*563').'</small>';
 $htmlAfterField = $preferredDimensionsStr;
 $img_fld->htmlAfterField = $htmlAfterField; 
 ?>
@@ -34,7 +34,6 @@ $img_fld->htmlAfterField = $htmlAfterField;
 
 <section class="section">
 	<div class="sectionhead">
-
 		<h4><?php echo Labels::getLabel('LBL_Blog_Post_Setup',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">

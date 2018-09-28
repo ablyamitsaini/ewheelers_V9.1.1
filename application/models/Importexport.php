@@ -1356,6 +1356,7 @@ class Importexport extends ImportexportCommon{
 		}
 		
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
+			
 			if(empty($line[0])){
 				continue;
 			}

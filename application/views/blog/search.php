@@ -1,5 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-if(!empty($postList)){ ?>
+if(!empty($postList)){ 
+	if(count($postList)>2){ ?>
 	<section>
 		<div class="js-posts-slider posts-slider" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 		 <?php foreach($postList as $blogPost ){ ?>
@@ -16,7 +17,7 @@ if(!empty($postList)){ ?>
 			<?php } ?>
 		</div>
 	</section>
-
+	<?php }?>
 
 
 	<?php $outerSectionCount=1; $innerListcount = 1;
