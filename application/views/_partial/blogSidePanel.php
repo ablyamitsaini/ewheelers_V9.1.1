@@ -6,7 +6,7 @@
 	 echo $blogSrchFrm->getFormTag(); 
 	 $keywordFld = $blogSrchFrm->getField('keyword');
 	 $keywordFld->addFieldTagAttribute('class','no-focus');
-	 $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('Lbl_Enter_The_Text_To_Search',$siteLangId));
+	 $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('Lbl_Search_Keyword',$siteLangId));
 	 echo $blogSrchFrm->getFieldHTML('keyword');
 	 echo $blogSrchFrm->getFieldHTML('btn_submit'); ?>
 	 </form> <?php echo $blogSrchFrm->getExternalJS(); ?>
