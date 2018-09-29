@@ -799,6 +799,41 @@ class ConfigurationsController extends AdminBaseController {
 				$fld = $frm->addIntegerField(Labels::getLabel("LBL_Reward_Point_Validity",$this->adminLangId) ,'CONF_REWARDS_VALIDITY_ON_PURCHASE');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Reward_Point_Validity_in_days_from_date_of_credit",$this->adminLangId)."</small>";
 				
+				$frm->addHtml('','Birthday_Rewards','<h3>'.Labels::getLabel("LBL_Birthday_Reward_Points",$this->adminLangId).'</h3>');
+				
+				$frm->addRadioButtons(Labels::getLabel("LBL_Enable_birthday_discount",$this->adminLangId),'CONF_ENABLE_BIRTHDAY_DISCOUNT_REWARDS',
+				applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Birthday_Reward_Points",$this->adminLangId),'CONF_BIRTHDAY_REWARD_POINTS');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_his_birthday.",$this->adminLangId)."</small>";
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_reward_Points_Validity",$this->adminLangId),'CONF_BIRTHDAY_REWARD_POINTS_VALIDITY');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Reward_Points_validity_in_days_from_the_date_of_credit._Please_leave_it_blank_if_you_don't_want_reward_points_to_expire.",$this->adminLangId)."</small>";
+				
+				$frm->addHtml('','Buying Year Rewards','<h3>'.Labels::getLabel("LBL_Buying_in_an_Year_Reward_Points",$this->adminLangId).'</h3>');
+				
+				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Module",$this->adminLangId),'CONF_ENABLE_BUYING_IN_AN_YEAR_REWARDS',
+				applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Enable_Buying_in_an_year_reward_points_module", $this->adminLangId)."</small>";
+				
+				$orderStatusArr = Orders::getOrderProductStatusArr($this->adminLangId);
+				$buyingInAnYearOrderSelected = (!empty($arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']))?$arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']:0;
+				$fld = $frm->addCheckBoxes(Labels::getLabel("LBL_Buying_Completion_Order_Status",$this->adminLangId),'CONF_BUYING_YEAR_REWARD_ORDER_STATUS',$orderStatusArr,$buyingInAnYearOrderSelected,array('class'=>'list-inline'));
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_order_status_the_customer's_order_must_reach_before_they_are_considered_completed_and_payment_released_to_Sellers.",$this->adminLangId)."</small>";
+				/* $orderStatusArr = Orders::getOrderProductStatusArr($this->adminLangId);
+				$buyingInAnYearOrderSelected = (!empty($arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']))?$arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']:0;
+				$fld = $frm->addCheckBoxes('Buying in an Year Order Status','CONF_BUYING_YEAR_REWARD_ORDER_STATUS[]',$orderStatusArr,$buyingInAnYearOrderSelected,array('class'=>'list-inline'));
+				$fld->htmlAfterField = "<small>Set the order status the customer's order considered completed to earn rewards points.</small>"; */
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Minimum_buying_value",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_MIN_VALUE');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_min_buying_value_in_an_year.",$this->adminLangId)."</small>";
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Reward_Points",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_REWARD_POINTS');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_his_birthday.",$this->adminLangId)."</small>";
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Reward_Points_Validity",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_REWARD_POINTS_VALIDITY');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Reward_Points_validity_in_days_from_the_date_of_credit",$this->adminLangId)."</small>";
+				
 			break;
 			
 			case Configurations::FORM_REVIEWS:
@@ -1008,41 +1043,6 @@ class ConfigurationsController extends AdminBaseController {
 				
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_Discount_Coupon_Validity",$this->adminLangId),'CONF_FIRST_TIME_BUYER_COUPON_VALIDITY');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Coupon_validity_in_days_from_the_date_of_credit",$this->adminLangId)."</small>";
-			
-				$frm->addHtml('','Birthday_Rewards','<h3>'.Labels::getLabel("LBL_Birthday_Reward_Points",$this->adminLangId).'</h3>');
-				
-				$frm->addRadioButtons(Labels::getLabel("LBL_Enable_birthday_discount",$this->adminLangId),'CONF_ENABLE_BIRTHDAY_DISCOUNT_REWARDS',
-				applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
-				
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Birthday_Reward_Points",$this->adminLangId),'CONF_BIRTHDAY_REWARD_POINTS');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_his_birthday.",$this->adminLangId)."</small>";
-				
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_reward_Points_Validity",$this->adminLangId),'CONF_BIRTHDAY_REWARD_POINTS_VALIDITY');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Reward_Points_validity_in_days_from_the_date_of_credit._Please_leave_it_blank_if_you_don't_want_reward_points_to_expire.",$this->adminLangId)."</small>";
-				
-				$frm->addHtml('','Buying Year Rewards','<h3>'.Labels::getLabel("LBL_Buying_in_an_Year_Reward_Points",$this->adminLangId).'</h3>');
-				
-				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Module",$this->adminLangId),'CONF_ENABLE_BUYING_IN_AN_YEAR_REWARDS',
-				applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Enable_Buying_in_an_year_reward_points_module", $this->adminLangId)."</small>";
-				
-				$orderStatusArr = Orders::getOrderProductStatusArr($this->adminLangId);
-				$buyingInAnYearOrderSelected = (!empty($arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']))?$arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']:0;
-				$fld = $frm->addCheckBoxes(Labels::getLabel("LBL_Buying_Completion_Order_Status",$this->adminLangId),'CONF_BUYING_YEAR_REWARD_ORDER_STATUS',$orderStatusArr,$buyingInAnYearOrderSelected,array('class'=>'list-inline'));
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_order_status_the_customer's_order_must_reach_before_they_are_considered_completed_and_payment_released_to_Sellers.",$this->adminLangId)."</small>";
-				/* $orderStatusArr = Orders::getOrderProductStatusArr($this->adminLangId);
-				$buyingInAnYearOrderSelected = (!empty($arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']))?$arrValues['CONF_BUYING_YEAR_REWARD_ORDER_STATUS']:0;
-				$fld = $frm->addCheckBoxes('Buying in an Year Order Status','CONF_BUYING_YEAR_REWARD_ORDER_STATUS[]',$orderStatusArr,$buyingInAnYearOrderSelected,array('class'=>'list-inline'));
-				$fld->htmlAfterField = "<small>Set the order status the customer's order considered completed to earn rewards points.</small>"; */
-				
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Minimum_buying_value",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_MIN_VALUE');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_min_buying_value_in_an_year.",$this->adminLangId)."</small>";
-				
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Reward_Points",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_REWARD_POINTS');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_User_get_this_reward_points_on_his_birthday.",$this->adminLangId)."</small>";
-				
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Reward_Points_Validity",$this->adminLangId),'CONF_BUYING_IN_AN_YEAR_REWARD_POINTS_VALIDITY');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Reward_Points_validity_in_days_from_the_date_of_credit",$this->adminLangId)."</small>";
 				
 			break;
 			case Configurations::FORM_SUBSCRIPTION:
