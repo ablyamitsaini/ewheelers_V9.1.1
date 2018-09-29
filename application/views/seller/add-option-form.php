@@ -5,3 +5,8 @@ $frmOptions->developerTags['fld_default_col'] = 12;
 $frmOptions->setFormTagAttribute('onsubmit', 'submitOptionForm(this); return(false);');
 echo $frmOptions->getFormHtml();
 ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	fcom.resetFaceboxHeight();
+});
+</script>
