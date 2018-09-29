@@ -103,3 +103,80 @@ if($product_added_by_admin == 1 && $totalProducts >0 ){
 </div>
 </div>
 </section>
+<script  type="text/javascript">
+	//var prodTypeDigital = <?php echo Product::PRODUCT_TYPE_DIGITAL;?>;
+	//var productId=<?php echo $product_id;?>;
+	var product_added_by_admin = <?php echo $product_added_by_admin; ?>;
+	var totalProducts = <?php echo $totalProducts; ?>;
+	
+	var productOptions =[];
+	var dv =$("#listing");
+	
+	$(document).ready(function(){
+		/* Shipping Information */
+		$('input[name=\'shipping_country\']').autocomplete({
+			'source': function(request, response) {
+			
+				$.ajax({
+					url: fcom.makeUrl('products', 'countries_autocomplete'),
+					data: {keyword: request,fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+						response($.map(json, function(item) {
+						
+							return { 
+								label: item['name'] ,
+								value: item['id']
+								};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+					$('input[name=\'shipping_country\']').val(item.label);
+					$('input[name=\'ps_from_country_id\']').val(item.value);
+			}
+				 
+		});
+//debugger;
+
+		$('input[name=\'shipping_country\']').keyup(function(){
+			$('input[name=\'ps_from_country_id\']').val('');
+		});
+
+		
+	if( product_added_by_admin == 1 && totalProducts ==0 )
+	{
+		//$('input[name=\'selprod_user_shop_name\']').val('');
+		$('input[name=\'selprod_user_shop_name\']').autocomplete({
+			'source': function(request, response) {
+				$.ajax({
+					url: fcom.makeUrl('sellerProducts', 'autoCompleteUserShopName'),
+					data: {keyword: request, fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+						response($.map(json, function(item) {
+							return { label: item['user_name'] +' - '+item['shop_identifier'],	value: item['user_id']	};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+				$("input[name='product_seller_id']").val( item['value'] );
+				$("input[name='selprod_user_shop_name']").val( item['label'] );
+			}
+		});
+	}else{
+		$('input[name=\'selprod_user_shop_name\']').addClass('readonly-field');
+		$('input[name=\'selprod_user_shop_name\']').attr('readonly', true);
+	}
+	
+	$('input[name=\'selprod_user_shop_name\']').change(function(){
+		if($(this).val()==''){
+			$("input[name='product_seller_id']").val(0);
+		}
+	});
+});
+</script>

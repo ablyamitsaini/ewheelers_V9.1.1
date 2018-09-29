@@ -158,10 +158,11 @@ class AdminUsersController extends AdminBaseController {
 		
 		$record->assignValues($post);
 		
-		if (!$record->save()) { 	
+		if (!$record->save()) {
+			
 			Message::addErrorMessage($record->getError());
 			FatUtility::dieJsonError( Message::getHtml() );			
-		} 
+		}
 		
 		$this->set('msg', Labels::getLabel('MSG_Setup_Successful',$this->adminLangId));
 		$this->set('adminId', $adminId);
