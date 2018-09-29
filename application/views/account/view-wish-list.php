@@ -22,9 +22,9 @@ $uwlist_title_fld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_New_
 <div class="collection__form form">
   <?php 
 		echo $frm->getFormTag();
-		echo $frm->getFieldHtml('btn_submit');
 		echo $frm->getFieldHtml('uwlist_title');
 		echo $frm->getFieldHtml('selprod_id');
+		echo $frm->getFieldHtml('btn_submit');
 	?>
   </form>
   <?php echo $frm->getExternalJs(); ?> </div>

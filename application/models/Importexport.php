@@ -2774,7 +2774,7 @@ class Importexport extends ImportexportCommon{
 	
 	public function importSellerProdGeneralData($csvFilePointer,$post,$langId, $sellerId = null){ 
 		$sellerId = FatUtility::int($sellerId);
-				
+	
 		$rowCount = 0;
 		$usernameArr = array();
 		$prodIndetifierArr = array();
@@ -2842,7 +2842,7 @@ class Importexport extends ImportexportCommon{
 				if(!$userId) { continue;}
 			}
 
-			if($this->isDefaultSheetData($langId)){	
+			if($this->isDefaultSheetData($langId)){
 				$price  = $this->getCell($line,$colCount++,0);
 				/* $cost  = $this->getCell($line,$colCount++,0); */
 				$stock  = $this->getCell($line,$colCount++,0);
@@ -2865,7 +2865,7 @@ class Importexport extends ImportexportCommon{
 				}	
 				$selprod_max_download_times = $this->getCell($line,$colCount++,0);
 				$selprod_download_validity_in_days = $this->getCell($line,$colCount++,0);
-			}	
+			}
 			
 			$title = $this->getCell($line,$colCount++,'');			
 			$comments = $this->getCell($line,$colCount++,'');
@@ -2907,8 +2907,11 @@ class Importexport extends ImportexportCommon{
 					'selprod_user_id'=>$userId,
 					'selprod_product_id'=>$productId,	
 				);
-				
-				if($this->isDefaultSheetData($langId)){	
+				$prodData = Product::getAttributesById($productId,array('product_min_selling_price'));
+				if($price < $prodData['product_min_selling_price']){
+					$price = $prodData['product_min_selling_price'];
+				}
+				if($this->isDefaultSheetData($langId)){
 					$data['selprod_price'] = $price;
 					/* $data['selprod_cost'] = $cost; */
 					$data['selprod_stock'] = $stock;

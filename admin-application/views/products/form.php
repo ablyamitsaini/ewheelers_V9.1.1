@@ -172,5 +172,11 @@ if($product_added_by_admin == 1 && $totalProducts >0 ){
 		$('input[name=\'selprod_user_shop_name\']').addClass('readonly-field');
 		$('input[name=\'selprod_user_shop_name\']').attr('readonly', true);
 	}
+	
+	$('input[name=\'selprod_user_shop_name\']').change(function(){
+		if($(this).val()==''){
+			$("input[name='product_seller_id']").val(0);
+		}
+	});
 });
 </script>

@@ -136,18 +136,16 @@ class AdminUsersController extends AdminBaseController {
 	public function setup(){
 		$this->objPrivilege->canEditAdminUsers();
 
-		$post = FatApp::getPostedData();
+		$post = FatApp::getPostedData(); 
 		$adminId = FatUtility::int($post['admin_id']);
-		unset($post['admin_id']);
+		
 		$frm = $this->getForm($adminId);
-		
 		$post = $frm->getFormDataFromArray($post);
-		
 		if (false === $post) {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
-		
+		unset($post['admin_id']);
 		$record = new AdminUsers($adminId);
 		if($adminId == 0)
 		{
@@ -158,10 +156,11 @@ class AdminUsersController extends AdminBaseController {
 		
 		$record->assignValues($post);
 		
-		if (!$record->save()) { 	
+		if (!$record->save()) {
+			
 			Message::addErrorMessage($record->getError());
 			FatUtility::dieJsonError( Message::getHtml() );			
-		} 
+		}
 		
 		$this->set('msg', Labels::getLabel('MSG_Setup_Successful',$this->adminLangId));
 		$this->set('adminId', $adminId);
@@ -348,14 +347,14 @@ class AdminUsersController extends AdminBaseController {
 		$adminId =  FatUtility::int($adminId);
 		
 		$frm = new Form('frmAdminUser');		
-		$frm->addHiddenField('', 'admin_id',$adminId);
+		$frm->addHiddenField('', 'admin_id', $adminId);
 		$frm->addRequiredField(Labels::getLabel('LBL_Full_Name',$this->adminLangId), 'admin_name');
 		$fld = $frm->addTextBox(Labels::getLabel('LBL_Username',$this->adminLangId), 'admin_username','',array('id'=>'admin_username'));
-		$fld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'username',AdminUsers::DB_TBL_PREFIX.'id','admin_username','admin_username');
+		$fld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'username','admin_id','admin_id','admin_id');
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setUsername();
 		$emailFld = $frm->addRequiredField(Labels::getLabel('LBL_Email',$this->adminLangId), 'admin_email','',array('id'=>'admin_username'));
-		$emailFld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'email',AdminUsers::DB_TBL_PREFIX.'id','admin_email','admin_email');
+		$emailFld->setUnique(AdminUsers::DB_TBL,AdminUsers::DB_TBL_PREFIX.'email','admin_id','admin_id','admin_id');
 
 		if($adminId == 0)
 		{
