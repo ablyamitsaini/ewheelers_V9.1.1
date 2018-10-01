@@ -186,17 +186,6 @@ class MobileAppApiController extends MyAppController {
 		$productSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		$productSrchObj->addGroupBy('selprod_id');
 		
-		/* $selProdReviewObj = new SelProdReviewSearch();
-		$selProdReviewObj->joinSelProdRating();
-		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
-		$selProdReviewObj->doNotCalculateRecords();
-		$selProdReviewObj->doNotLimitRecords();
-		$selProdReviewObj->addGroupBy('spr.spreview_product_id');
-		$selProdReviewObj->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
-		$selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
-		$selProdRviewSubQuery = $selProdReviewObj->getQuery();
-		$productSrchObj->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating' ); */
-
 		$productSrchObj->addMultipleFields( array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 
 		'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
 		'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews','selprod_sold_count','ufp_id','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty') );
@@ -436,7 +425,7 @@ class MobileAppApiController extends MyAppController {
 		/* ] */
 		$banners = new ArrayObject();
 		$bannerSrch = Banner::getBannerLocationSrchObj(true);
-		$bannerSrch->addCondition('blocation_id','<=',0);
+		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_AFTER_THIRD_LAYOUT);
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = $this->db->fetchAll( $rs ,'blocation_key');
 		if(!empty($bannerLocation)){

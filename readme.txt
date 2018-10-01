@@ -7,7 +7,8 @@ Fixes:
 	. Order cancellation validation at admin side if cancellation request already placed.
 	. Error notification icon update in product digital file upload.
 	. Disabled COD option at inventory level when disabled at product level.
-	. Saved search filter url with different currency value.	
+	. Saved search filter url with different currency value.
+	. PPC banners fixes in api.	
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
