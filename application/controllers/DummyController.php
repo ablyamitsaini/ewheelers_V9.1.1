@@ -6,11 +6,18 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
-	function mytest(){
-		if(false !== OrderCancelRequest::getCancelRequestById(120)){
-			die('dsds');
-		}
-		 exit;
+	function updateCategoryTable(){
+		$srch = ProductCategory::getSearchObject();
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();		
+		$srch->addCondition('prodcat_parent','=',0);
+		$rs = $srch->getResultSet();
+		$result = FatApp::getDb()->fetchAll($rs);
+		foreach($result as $row){
+			$productCategory = new ProductCategory($row['prodcat_id']);
+			$productCategory->updateCatCode();			
+		}	
+		echo "Done";	
 	}
 	
 	function updateOrderProdSetting(){
@@ -565,197 +572,13 @@ echo $str;
 	}
 	
 	function test(){
-		echo CommonHelper::generateFullUrl('','',array(),CONF_WEBROOT_FRONTEND); exit;
-		$d = array();
-		echo $user_id = FatUtility::convertToType($d['user_id'],FatUtility::VAR_INT,0); exit;
-		
-		
-		$couponProductData = DiscountCoupons::getCouponProducts(1);
-		var_dump($couponProductData);
-		
-		$couponCategoryData = DiscountCoupons::getCouponCategories(1);
-		var_dump($couponCategoryData);
-		$prodObj  = new Product();
-		$prodCategories = $prodObj->getProductCategories(1);
-		var_dump($prodCategories);
-		exit;
-		
-		$limit = 25 ;
-		
-		$srch = RecommendationActivityBrowsing::getSearchObject();
-		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		$srch->addCondition('rab_weightage_key', '=' ,SmartWeightageSettings::PRODUCT_ORDER_PAID);
-		$srch->addCondition('rab_record_type', '=' ,SmartUserActivityBrowsing::TYPE_PRODUCT);
-		$rs = $srch->getResultSet();
-		$row = FatApp::getDb()->fetchAll($rs);
-		//var_dump($row);
-		
-		foreach($row as $val){		
-			$srch = RecommendationActivityBrowsing::getSearchObject();
-			$srch->doNotCalculateRecords();
-			$srch->setPageSize($limit);
-			$srch->addMultipleFields(array('sum(rab_weightage) as weightage','rab_session_id','rab_user_id','rab_record_id','rab_record_type','rab_weightage_key'));
-			$srch->addCondition('rab_session_id', '=' ,$val['rab_session_id']);
-			$srch->addCondition('rab_user_id', '=' ,$val['rab_user_id']);
-			$srch->addCondition('rab_record_type', '=' ,$val['rab_record_type']);			
-			$srch->addCondition('rab_record_id', '!=' ,$val['rab_record_id']);			
-			$srch->addCondition('rab_last_action_datetime', '<=' ,$val['rab_last_action_datetime']);
-			$srch->addGroupBy('rab_record_id');
-			$srch->addOrder('weightage','DESC');			
-			$rs = $srch->getResultSet();
-			$recommendedProdRes = FatApp::getDb()->fetchAll($rs,'rab_record_id');	
-			//var_dump($recommendedProdRes);
-			
-			$relatedTagProdQuery  = FatApp::getDb()->query("select tptot.ptt_product_id as product_id,tptot.ptt_tag_id as tag_id from (select ptt.ptt_tag_id from tbl_product_to_tags ptt where ptt.ptt_product_id = '".(int)$val['rab_record_id']."') as tptt Left outer join tbl_product_to_tags tptot on (tptot.ptt_tag_id = tptt.ptt_tag_id) where tptot.ptt_product_id != '".(int)$val['rab_record_id']."' group by tptot.ptt_product_id");
-			$relatedTagProdArr = FatApp::getDb()->fetchAll($relatedTagProdQuery,'product_id');
-			//var_dump($relatedTagProdArr);
-			
-			foreach($recommendedProdRes as $prodId=>$recommendedProd){
-				
-				/*Tag Product Recommendation*/	
-				if(array_key_exists($prodId,$relatedTagProdArr)){
-					$tagProd = array(
-						'tpr_tag_id'=>$relatedTagProdArr[$prodId]['tag_id'],
-						'tpr_product_id'=>$prodId,
-						'tpr_weightage'=>$recommendedProd['weightage'],
-					);
-					$onDuplicateKeyTagProdUpdate = array_merge($tagProd,array('tpr_weightage'=>'mysql_func_tpr_weightage + '.$recommendedProd['weightage']));
-					FatApp::getDb()->insertFromArray('tbl_tag_product_recommendation',$tagProd,true,array(),$onDuplicateKeyTagProdUpdate);
-					//echo FatApp::getDb()->getError();
-				}
-				
-				/*Product Product Recommendation*/				
-				$prodRecommendation = array(
-					'ppr_viewing_product_id'=>$prodId,
-					'ppr_recommended_product_id'=>$val['rab_record_id'],
-					'ppr_weightage'=>$recommendedProd['weightage']
-				);
-				$onDuplicateKeyProdRecommendationUpdate = array_merge($prodRecommendation,array('ppr_weightage'=>'mysql_func_ppr_weightage + '.$recommendedProd['weightage']));
-				FatApp::getDb()->insertFromArray('tbl_product_product_recommendation',$prodRecommendation,true,array(),$onDuplicateKeyProdRecommendationUpdate);
-				//echo FatApp::getDb()->getError();
-				
-				/*User Product Recommendation*/				
-				$userProdRecommendation = array(
-					'upr_user_id'=>$val['rab_user_id'],
-					'upr_product_id'=>$prodId,
-					'upr_weightage'=>$recommendedProd['weightage']
-				);
-				$onDuplicateKeyUserProdRecommendationUpdate = array_merge($userProdRecommendation,array('upr_weightage'=>'mysql_func_upr_weightage + '.$recommendedProd['weightage']));
-				FatApp::getDb()->insertFromArray('tbl_user_product_recommendation',$userProdRecommendation,true,array(),$onDuplicateKeyUserProdRecommendationUpdate);
-				//echo FatApp::getDb()->getError();					
-			}				
-			FatApp::getDb()->deleteRecords(RecommendationActivityBrowsing::DB_TBL,array('smt'=>'rab_session_id = ? and rab_record_type = ?', 'vals'=>array($val['rab_session_id'],SmartUserActivityBrowsing::TYPE_PRODUCT)));
-			//	echo FatApp::getDb()->getError();
-		}
-		
-		
-		
-	echo $lastCrawled = date('Y-m-d H:i:s',strtotime(date('Y-m-d H:i:s').'-15 days'));
-
-	exit;
-	$product_id = 21;
-	$selprod_code = '21_';	
-	$currDate = date('Y-m-d');
-	$limit = 50;
-	
-	echo "select tptot.ptt_product_id as product_id from (select ptt.ptt_tag_id from tbl_product_to_tags ptt where ptt.ptt_product_id = '".(int)$product_id."') as tptt Left outer join tbl_product_to_tags tptot on (tptot.ptt_tag_id = tptt.ptt_tag_id) group by tptot.ptt_product_id";
-	echo "<br>=====<br>";
-	
-	echo "SELECT pbhistory_sessionid from tbl_products_browsing_history WHERE (pbhistory_product_id='" .(int)$product_id . "' or pbhistory_selprod_code ='".$selprod_code."')";
-	echo "<br>=====<br>";
-	
-	
-	echo "<br>=====<br>";
-	$sqlJoinQuery =  "Select distinct tsp.product_id from(Select distinct ptt.ptt_product_id as product_id from tbl_product_to_tags ptt where ptt.ptt_tag_id in(SELECT tptot.ptt_tag_id FROM `tbl_product_to_tags` tptot INNER JOIN tbl_product_to_tags tpt on tptot.ptt_tag_id = tpt.ptt_tag_id WHERE tptot.`ptt_product_id` = '".(int)$product_id."')
-	
-	UNION ALL (SELECT LEFT(op_selprod_code,LOCATE('_',op_selprod_code) - 1) as product_id FROM tbl_order_products op INNER JOIN `tbl_orders` o ON (o.order_id = op.op_order_id) INNER JOIN `tbl_seller_products` sp ON (LEFT(op_selprod_code,LOCATE('_',op_selprod_code) - 1) = sp.selprod_product_id) INNER JOIN `tbl_products` p on(p.product_id = sp.selprod_product_id) WHERE EXISTS (SELECT LEFT(op1.op_selprod_code,LOCATE('_',op1.op_selprod_code) - 1) as product_id ,op1.op_selprod_code FROM tbl_order_products op1  WHERE op1.op_order_id = op.op_order_id group by op1.op_selprod_code having product_id = '" .(int)$product_id . "') AND   o.order_is_paid = '1' GROUP BY product_id having product_id <> '" . (int)$product_id . "' order by count(product_id) desc LIMIT 25)
-	
-	UNION ALL(Select `pbhistory_product_id` as product_id from tbl_products_browsing_history where pbhistory_sessionid in ( SELECT distinct pbhistory_sessionid FROM `tbl_products_browsing_history` WHERE (pbhistory_product_id='" .(int)$product_id . "' or pbhistory_selprod_code ='".$selprod_code."')) and pbhistory_product_id!='" .(int)$product_id . "' group by `pbhistory_product_id` order by count(`pbhistory_product_id`) LIMIT 25)
-	)as tsp INNER JOIN tbl_products tpa ON tpa.product_id = tsp.product_id where tsp.product_id !='" .(int)$product_id."'";
-		
-	$srch = new SearchBase('(' . $sqlJoinQuery . ')','tsjq');
-	$srch->joinTable('tbl_smart_products_weightage', 'LEFT OUTER JOIN', 'tspw.spw_product_id = tsjq.product_id', 'tspw');
-	$srch->addOrder("if (spw_custom_weightage_valid_till > '".$currDate."',spw_weightage+spw_custom_weightage,spw_weightage)",'desc');
-	$srch->addMultipleFields(array('tsjq.*,tspw.*'));
-	echo $srch->getQuery();
-	
-	
-	
-	/* $srch->setPagesize($limit);
-	$rs = $srch->getResultSet();
-	while ($row = FatApp::getDb->fetch($rs)){
-		//$record = new TableRecord('tbl_smart_products_weightage');
-	} */
-	
-	/* echo "<br>=====<br>";
-	echo "Select distinct ptt.ptt_product_id as product_id from tbl_product_to_tags ptt where ptt.ptt_tag_id in(SELECT tptot.ptt_tag_id FROM `tbl_product_to_tags` tptot INNER JOIN tbl_product_to_tags tpt on tptot.ptt_tag_id = tpt.ptt_tag_id WHERE tptot.`ptt_product_id` = '".(int)$product_id."')";
-	echo "<br>=====<br>";
-	
-	echo "SELECT LEFT(op_selprod_code,LOCATE('_',op_selprod_code) - 1) as product_id FROM tbl_order_products op INNER JOIN `tbl_orders` o ON (o.order_id = op.op_order_id) INNER JOIN `tbl_seller_products` sp ON (LEFT(op_selprod_code,LOCATE('_',op_selprod_code) - 1) = sp.selprod_product_id) INNER JOIN `tbl_products` p on(p.product_id = sp.selprod_product_id) WHERE EXISTS (SELECT LEFT(op1.op_selprod_code,LOCATE('_',op1.op_selprod_code) - 1) as product_id ,op1.op_selprod_code FROM tbl_order_products op1  WHERE op1.op_order_id = op.op_order_id group by op1.op_selprod_code having product_id = '" .(int)$product_id . "') AND   o.order_is_paid = '1' GROUP BY product_id having product_id <> '" . (int)$product_id . "' order by count(product_id) desc LIMIT 25";
-	echo "<br>=====<br>";
-	echo  $sql_join_query = "Select `pbhistory_product_id` as product_id from tbl_products_browsing_history where pbhistory_sessionid in ( SELECT distinct pbhistory_sessionid FROM `tbl_products_browsing_history` WHERE (pbhistory_product_id='" .(int)$product_id . "' or pbhistory_selprod_code ='".$selprod_code."')) and pbhistory_product_id!='" .(int)$product_id . "' group by `pbhistory_product_id` order by count(`pbhistory_product_id`) LIMIT 25"; */
-	
-	exit;
-	$db = FatApp::getDb();
-		$logArr = array(
-					'slog_ip' =>'192.168.1.1',
-					'slog_datetime' =>date('Y-m-d H:i:s'),
-					'slog_swsetting_key' =>1,
-					'slog_record_code' =>'1_1_4',
-					'slog_type' =>SmartUserActivityBrowsing::TYPE_PRODUCT,
-				);	
-var_dump($logArr);				
-				if($db->insertFromArray('tbl_smart_log_actions',$logArr)){
-					die('executed');
-				}else{
-					die('not executed');
-				}
-		echo FatApp::getConfig('CONF_LIVE_CHAT_CODE'); exit;
-		$order_id = 'O1479370282';
-		$langId = 1 ;
-		$billingArr = array();	
-		$shippingArr = array();	
-		
-		$obj = new Orders();
-		$orderDetail = $obj->getOrderById($order_id);
-		if ($orderDetail) {			
-				$orderVendors = $obj->getChildOrders(array("order"=>$order_id),$orderDetail['order_type'],$orderDetail['order_language_id']);	
-				
-				//echo "<pre>"; print_r($orderProducts);
-				foreach($orderVendors as $key=>$val){
-				$tpl = new FatTemplate('', '');
-				//$tpl->set('orderInfo', $orderDetail);
-				$tpl->set('orderProducts', $val);
-				$tpl->set('siteLangId', $langId);
-				echo	$orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email.php', true);
-			}
-		}
-		//var_dump($childOrderInfo);
-		exit;
-		exit;
-		/* $childOrderInfo['op_status_id'] = 2;
-		$opStatusId = 8;
-		
-		$arr = array_merge(
-			unserialize( FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS") ),
-			unserialize( FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS") )
-		);
-		if (!in_array( $childOrderInfo['op_status_id'], $arr ) && in_array( $opStatusId, array_diff($arr,array(FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS"))) ) ) {
-			echo "stock decrease";
-		}
-		
-		if ( in_array($childOrderInfo['op_status_id'], array_merge($arr,array(FatApp::getConfig("CONF_RETURN_REQUEST_ORDER_STATUS")))) && in_array($opStatusId, array(FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS"),FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS"))) ) {
-			echo "stock reset";
-		} 
-		$arr = $arr;
-		*/
-		var_dump($arr);
-		
-		/* $img = new ImageResize($pth);		
-		$img->displayImage(); */		
-		//echo '---' . IMAGETYPE_PNG;
-		exit;		
+		$orders = new Orders('O1538197607');	
+		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
+		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
+		if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
+			die('dsds');
+		}	
+		CommonHelper::printArray($childOrderInfo); exit;
 	}
 	
 	private function getShopInfo($shop_id){
@@ -921,39 +744,6 @@ var_dump($logArr);
 	}
 	
 	
-	/* function getStates($arr = array()){
-		$srch = new SearchBase('tbl_states_temp');
-		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
-		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs,'state_id');
-		foreach($records as $state){
-			$assignValues = array(
-				'state_id' => $state['state_id'],
-				'state_zone_id' => $state['zone_id'],
-				'state_country_id' => $arr[$state['country_id']],
-				'state_identifier' => $state['state_name'],
-				'state_active' => applicationConstants::ACTIVE,
-			);
-			FatApp::getDb()->insertFromArray('tbl_states',$assignValues,false,array(),$assignValues);
-
-			$assignData = array(
-				'statelang_state_id' => $state['state_id'],
-				'statelang_lang_id' => 1,
-				'state_name' => $state['state_name'],
-			);
-			FatApp::getDb()->insertFromArray('tbl_states_lang',$assignData,false,array(),$assignData);
-		}
-	} */
-
-	/*
-	this country and states not added from yokart.
-	array(
-	8,13,31,32,35,47,54,58,70,71,75,78,81,86,98,99,102,107,113,115,117,119,123,124,127,132,
-	137,144,151,152,153,171,182,188,189,191,200,202,206,211,213,214,217,221,224,227,233,244,245,246
-	247,248,251,254
-	) */
-	
 	function truncateTables( $type = 'orders' ){
 		if ( $type == 'orders' ){
 			$tables = array('tbl_orders','tbl_orders_lang','tbl_orders_status_history','tbl_order_cancel_reasons','tbl_order_cancel_reasons_lang','tbl_order_cancel_requests','tbl_order_extras','tbl_order_payments','tbl_order_products','tbl_order_products_lang','tbl_order_product_charges','tbl_order_product_charges_lang','tbl_order_product_digital_download_links','tbl_order_product_shipping','tbl_order_product_shipping_lang','tbl_order_product_to_shipping_users','tbl_order_return_reasons','tbl_order_return_reasons_lang','tbl_order_return_requests','tbl_order_return_request_messages','tbl_order_seller_subscriptions','tbl_order_seller_subscriptions_lang','tbl_order_user_address','tbl_user_reward_points','tbl_user_reward_point_breakup','tbl_rewards_on_purchase','tbl_user_transactions','tbl_coupons_history','tbl_coupons_hold','tbl_user_cart','tbl_order_product_settings');
@@ -987,25 +777,6 @@ var_dump($logArr);
 		}
 	}
 	
-	function orderDetailTable(){
-		$order_id = 'O1515415434';
-		$langId = 1 ;
-		
-		$obj = new Orders();
-		$orderDetail = $obj->getOrderById($order_id);
-		if ($orderDetail) {
-				$orderVendors = $obj->getChildOrders(array("order"=>$order_id),$orderDetail['order_type'],$orderDetail['order_language_id']);	
-				
-				//echo "<pre>"; print_r($orderProducts);
-				foreach($orderVendors as $key=>$val){
-				$tpl = new FatTemplate('', '');
-				//$tpl->set('orderInfo', $orderDetail);
-				$tpl->set('orderProducts', $val);
-				$tpl->set('siteLangId', $langId);
-				echo	$orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email.php', true);
-			}
-		}
-	}
 	
 	function testOrder()
 	{
@@ -1077,55 +848,7 @@ var_dump($logArr);
 		CommonHelper::printArray($row); die;
 	}
 	
-	function textChange(){
-
-		$conn = new mysqli(CONF_DB_SERVER,CONF_DB_USER, CONF_DB_PASS, CONF_DB_NAME);
-		// Check connection
-		if ($conn->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
-		} 
-		$langId = 2;
-		/* $tablename = "tbl_language_labels"; 
-		$sql = 'SELECT * FROM '.$tablename .' where label_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('label_key' => $row['label_key'],'label_lang_id'=>$row['label_lang_id'],'label_caption'=>$row['label_caption']), array('smt' => 'label_id = ?', 'vals' => array($row['label_id'])))){
-			echo $row['label_id']."<br>";
-			}   
-			}
-		} */
-		
-		/* $tablename = "tbl_navigations_lang"; 
-		$sql = 'SELECT * FROM '.$tablename .' where navlang_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('nav_name' => $row['nav_name']), array('smt' => 'navlang_nav_id = ? and navlang_lang_id = ?', 'vals' => array($row['navlang_nav_id'],$row['navlang_lang_id'])))){
-			echo $row['navlang_nav_id']."<br>";
-			}   
-			}
-		}  */
-		
-		/* $tablename = "tbl_navigation_links_lang"; 
-		$sql = 'SELECT * FROM '.$tablename .' where nlinklang_lang_id = '.$langId ;
-		$result = $conn->query($sql);
-		
-		$db = FatApp::getDb();
-		if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {			
-			if($db->updateFromArray($tablename, array('nlink_caption' => $row['nlink_caption']), array('smt' => 'nlinklang_nlink_id = ? and nlinklang_lang_id = ?', 'vals' => array($row['nlinklang_nlink_id'],$row['nlinklang_lang_id'])))){
-			echo $row['nlinklang_nlink_id']."<br>";
-			}   
-			}
-		}  */
-		
-		die('done');
-	}
+	
 	
 	function changeCustomUrl1(){
 		$urlSrch = UrlRewrite::getSearchObject();

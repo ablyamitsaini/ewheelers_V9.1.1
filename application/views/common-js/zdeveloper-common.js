@@ -92,7 +92,7 @@ function getCardType(number){
 	
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Account','viewWishList', [selprod_id]), '' ,function(ans){
-			$.facebox(ans,'faceboxWidth collection-ui-popup');
+			fcom.updateFaceboxContent(ans,'faceboxWidth collection-ui-popup');
 			//$(dv).next().html(ans);
 			$("input[name=uwlist_title]").bind('focus',function(e){
 				e.stopPropagation();
@@ -428,7 +428,11 @@ function defaultSetUpLogin(frm, v) {
 }
 	
 (function($){
-	
+	var screenHeight = $(window).height() - 100;
+	window.onresize = function(event) { 
+		var screenHeight = $(window).height() - 100;		
+	};
+
 	$.extend(fcom, {
 		getLoader: function(){
 			return '<div class="loader-yk"><div class="loader-yk-inner"></div></div>';
@@ -450,30 +454,54 @@ function defaultSetUpLogin(frm, v) {
 				oUtil.arrEditor = [];
 			} 
 		},
-			setEditorLayout:function(lang_id){
-				if(extendEditorJs == true ){ 
-					var editors = oUtil.arrEditor;
-					layout = langLbl['language'+lang_id];							
-					for (x in editors){					
-						$('#idContent'+editors[x]).contents().find("body").css('direction',layout);				
-					}	
-				}
-			},
+		setEditorLayout:function(lang_id){
+			if(extendEditorJs == true ){ 
+				var editors = oUtil.arrEditor;
+				layout = langLbl['language'+lang_id];							
+				for (x in editors){					
+					$('#idContent'+editors[x]).contents().find("body").css('direction',layout);				
+				}	
+			}
+		},
+		resetFaceboxHeight:function(){ 			
+			$('html').css('overflow','hidden');
+			facebocxHeight  = screenHeight;		
+			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);	
+			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-50 + 'px');			
+			if(fbContentHeight >= screenHeight){ 
+				$('#facebox .content').css('overflow-y', 'scroll');
+				$('#facebox .content').css('display', 'block');
+			}else{				
+				$('#facebox .content').css('max-height', '');
+				$('#facebox .content').css('overflow', '');			
+			}			
+		},
+		updateFaceboxContent:function(t,cls){
+			if(typeof cls == 'undefined' || cls == 'undefined'){
+				cls = '';
+			}
+			$.facebox(t,cls);
+			$.systemMessage.close();			
+			fcom.resetFaceboxHeight();			
+		},
 	});
 	
-	$(document).bind('loading.facebox', function() {
+	$(document).bind('reveal.facebox', function() {	
+		fcom.resetFaceboxHeight();		
+	});
 	
-			$('#facebox .content').addClass('fbminwidth');
-		
-		
+	$(window).on("orientationchange",function(){
+		fcom.resetFaceboxHeight();
+	});
+	
+	$(document).bind('loading.facebox', function() {	
+		$('#facebox .content').addClass('fbminwidth');				
 	});
 	
 	$(document).bind('afterClose.facebox', fcom.resetEditorInstance);
-	$(document).bind('beforeReveal.facebox', function() {
-		
-			$('#facebox .content').addClass('fbminwidth');
-		
-		
+	$(document).bind('beforeReveal.facebox', function() {		
+		$('#facebox .content').addClass('fbminwidth');	
+		$('html').css('overflow','') 
 	});
 	
 	$(document).bind('reveal.facebox', function() {		
@@ -580,7 +608,7 @@ $(document).ready(function(){
 	addCatalogPopup = function(){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller','addCatalogPopup'), '', function(t){	
-				$.facebox(t,'faceboxWidth loginpopup');
+				fcom.updateFaceboxContent(t,'faceboxWidth loginpopup');
 				
 			});
 		});
@@ -607,13 +635,10 @@ $(document).ready(function(){
 		
 	}
 	
-	openSignInForm = function(){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(t){	
-				$.facebox(t,'faceboxWidth loginpopup');
-				
-			});
-		});
+	openSignInForm = function(){		
+		fcom.ajax(fcom.makeUrl('GuestUser','LogInFormPopUp'), '', function(t){	
+			fcom.updateFaceboxContent(t,'faceboxWidth loginpopup');			
+		});		
 	}
 	
 	$(".sign-in").click(function(){
@@ -704,7 +729,7 @@ function quickDetail(selprod_id)
 {
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
-			$.facebox(t,'faceboxWidth productQuickView');
+			fcom.updateFaceboxContent(t,'faceboxWidth productQuickView');
 		});
 	});
 }
@@ -731,7 +756,7 @@ $(document).delegate('.readMore' ,'click' , function(){
 $(document).delegate('#btn-demo' ,'click' , function(){
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Custom','requestDemo'), '', function(t){	
-			$.facebox(t,'faceboxWidth requestdemo');
+			fcom.updateFaceboxContent(t,'faceboxWidth requestdemo');
 		});
 	});
 });

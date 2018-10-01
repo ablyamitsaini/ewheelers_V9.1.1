@@ -48,7 +48,7 @@
 		</div>
 	</div>
 	<?php } ?>
-	
+	<?php if($faqCount > 0) { ?>
 	<div class="questions-section">
 	  <div class="fixed-container">
 		<div class="row">
@@ -65,8 +65,9 @@
 		</div>
 	  </div>
 	</div>
-	
 	<div class="divider"></div>
+	<?php } ?>
+	<div class="gap"></div>
 	<div class="fixed-container">
 		<div class="align--center">
 		  <div class="heading3"><?php echo Labels::getLabel( 'LBL_Still_need_help', $siteLangId)?> ?</div>

@@ -1,6 +1,24 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<div class="page-search">
+	 <h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_Search',$siteLangId); ?></h3>
+	 <?php $blogSrchFrm->setFormTagAttribute ( 'onSubmit', 'submitBlogSearch(this); return(false);' ); 
+	 $blogSrchFrm->addFormTagAttribute('class','form-main-search');
+	 echo $blogSrchFrm->getFormTag(); 
+	 $keywordFld = $blogSrchFrm->getField('keyword');
+	 $keywordFld->addFieldTagAttribute('class','no-focus');
+	 $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('Lbl_Search_Keyword',$siteLangId));
+	 echo $blogSrchFrm->getFieldHTML('keyword');
+	 echo $blogSrchFrm->getFieldHTML('btn_submit'); ?>
+	 </form> <?php echo $blogSrchFrm->getExternalJS(); ?>
+ </div>
+ 
+<div class="gap"></div>
+<a href="<?php echo CommonHelper::generateUrl('Blog','contributionForm'); ?>" class="btn btn--primary btn--lg btn--block ripplelink btn--contribute">
+	<img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjY0cHgiIGhlaWdodD0iNjRweCIgdmlld0JveD0iMCAwIDUxMCA1MTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMCA1MTA7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8ZyBpZD0iYWRkLWNpcmNsZSI+CgkJPHBhdGggZD0iTTI1NSwwQzExNC43NSwwLDAsMTE0Ljc1LDAsMjU1czExNC43NSwyNTUsMjU1LDI1NXMyNTUtMTE0Ljc1LDI1NS0yNTVTMzk1LjI1LDAsMjU1LDB6IE0zODIuNSwyODAuNWgtMTAydjEwMmgtNTF2LTEwMiAgICBoLTEwMnYtNTFoMTAydi0xMDJoNTF2MTAyaDEwMlYyODAuNXoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
+	<?php echo Labels::getLabel('Lbl_Contribute',$siteLangId); ?></a>
+	<div class="gap"></div>
 <?php if(!empty($categoriesArr)){ ?>
-<h3 class="widget__title "><?php echo Labels::getLabel('Lbl_categories',$siteLangId); ?></h3>
+<h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_categories',$siteLangId); ?></h3>
 <div class="">
 	<nav class="">
 		<ul class="blog_lnks accordion">
@@ -30,9 +48,6 @@
 	</nav>
 </div>
 <?php }?>
-
-	<a href="<?php echo CommonHelper::generateUrl('Blog','contributionForm'); ?>" class="btn btn--secondary btn--block ripplelink "><?php echo Labels::getLabel('Lbl_Contribute',$siteLangId); ?></a>
-
 
 <script>
         /* for blog links */

@@ -62,7 +62,7 @@ class CategoryController extends MyAppController {
 		$prodSrchObj->doNotCalculateRecords();
 		$prodSrchObj->doNotLimitRecords();
 		$prodSrchObj->addCategoryCondition($category_id);
-						
+								
 		$objCat = clone $prodSrchObj;
 		$objCat->setPageSize(1);
 		//$objCat->addMultipleFields(array('selprod_id','prodcat_id'));

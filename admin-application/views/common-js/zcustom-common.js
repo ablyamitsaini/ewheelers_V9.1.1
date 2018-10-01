@@ -46,13 +46,12 @@
 		resetFaceboxHeight:function(){
 			$('html').css('overflow','hidden');
 			facebocxHeight  = screenHeight;
+			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);
 			$('#facebox .content').css('max-height', facebocxHeight-50 + 'px');
-			if($('#facebox .content').height()+100 >= screenHeight){			
-			
+			if(fbContentHeight >= screenHeight){			
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
-			}else{
-				
+			}else{				
 				$('#facebox .content').css('max-height', '');
 				$('#facebox .content').css('overflow', '');			
 			}

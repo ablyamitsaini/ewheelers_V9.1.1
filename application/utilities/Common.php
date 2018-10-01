@@ -106,7 +106,7 @@ class Common {
 		$prodSrchObj->joinSellerSubscription( $siteLangId, true );
 		$prodSrchObj->addSubscriptionValidCondition();
 		$prodSrchObj->addGroupBy( 'prodcat_id' );
-		$prodSrchObj->addMultipleFields( array('GETCATCODE(prodcat_id) AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
+		$prodSrchObj->addMultipleFields( array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
 
 		$rs = $prodSrchObj->getResultSet();
 
@@ -141,7 +141,11 @@ class Common {
 		}
 		$catSrch->setPageSize(25);
 		$catRs = $catSrch->getResultSet();
-		$categoriesArr = FatApp::getDb()->fetchAllAssoc($catRs);
+		$categoriesArr = [];
+		while($row = FatApp::getDb()->fetch($catRs)){
+			$categoriesArr[$row['prodcat_id']] = strip_tags($row['category_name']);
+		}
+		//$categoriesArr = FatApp::getDb()->fetchAllAssoc($catRs);
 		
 		$frm = new Form('frmSiteSearch');
 		$frm->setFormTagAttribute('autocomplete','off');
@@ -310,11 +314,10 @@ class Common {
 		$template->set('siteLangId', $siteLangId );
 	}
 	
-	static function getBlogSearchForm(){
-		
+	static function getBlogSearchForm(){		
 		$frm = new Form('frmBlogSearch');
 		$frm->setFormTagAttribute('autocomplete','off');
-		$frm->addTextBox('', 'keyword','',array('placeholder'=>Labels::getLabel('Lbl_Search',CommonHelper::getLangId())));
+		$frm->addTextBox('', 'keyword','');
 		$frm->addHiddenField('', 'page',1);
 		$frm->addSubmitButton('','btn_submit','');
 		return $frm;

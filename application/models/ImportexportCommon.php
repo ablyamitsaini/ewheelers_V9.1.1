@@ -810,7 +810,12 @@ class ImportexportCommon extends FatModel{
 	public function getAllCategoryIdentifiers($byId = true,$catIdOrIdentifier = false){
 		$srch = ProductCategory::getSearchObject(false,false,false);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		if($catIdOrIdentifier){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+				
 		if($byId){
 			$srch->addMultipleFields(array('prodcat_id','prodcat_identifier'));
 			if($catIdOrIdentifier){
@@ -829,7 +834,13 @@ class ImportexportCommon extends FatModel{
 	public function getAllProductsIdentifiers($byId = true,$productIdOrIdentifier = false){
 		$srch = Product::getSearchObject();
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		
+		if($productIdOrIdentifier){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+		
 		if($byId){
 			$srch->addMultipleFields(array('product_id','product_identifier'));				
 			if($productIdOrIdentifier){
@@ -848,7 +859,13 @@ class ImportexportCommon extends FatModel{
 	public function getAllUserArr($byId = true,$userIdOrUsername = false){		
 		$srch = User::getSearchObject(true);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		
+		if($userIdOrUsername){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+		
 		if($byId){			
 			$srch->addMultipleFields(array('user_id','credential_username'));
 			if($userIdOrUsername){
@@ -861,7 +878,6 @@ class ImportexportCommon extends FatModel{
 			}
 		}
 		
-				
 		$rs = $srch->getResultSet();
 		return $row = $this->db->fetchAllAssoc($rs);
 	}
@@ -869,7 +885,13 @@ class ImportexportCommon extends FatModel{
 	public function getTaxCategoryArr($byId = true,$taxCatIdOrIdentifier = false){
 		$srch = Tax::getSearchObject(false,false);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		
+		if($taxCatIdOrIdentifier){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+		
 		if($byId){
 			$srch->addMultipleFields(array('taxcat_id','taxcat_identifier'));
 			if($taxCatIdOrIdentifier){
@@ -899,7 +921,13 @@ class ImportexportCommon extends FatModel{
 	public function getAllBrandsArr($byId = true,$brandIdOrIdentifier = false){
 		$srch = Brand::getSearchObject(false,false,false);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		
+		if($brandIdOrIdentifier){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+		
 		if($byId){
 			$srch->addMultipleFields(array('brand_id','brand_identifier'));
 			if($brandIdOrIdentifier){
@@ -931,7 +959,13 @@ class ImportexportCommon extends FatModel{
 	public function getCountriesArr($byId = true,$countryIdOrCode = false){		
 		$srch = Countries::getSearchObject(false,false);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		
+		if($countryIdOrCode){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+		
 		if($byId){
 			$srch->addMultipleFields(array('country_id','country_code'));
 			if($countryIdOrCode){

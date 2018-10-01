@@ -2813,6 +2813,12 @@ class SellerController extends LoggedUserController {
 			$selprod_price = FatUtility::float($dataArray[3]);
 			$selprod_stock = FatUtility::int($dataArray[4]);
 			
+			$productId = SellerProduct::getAttributesById($selprod_id , 'selprod_product_id' , false );
+			$prodData = Product::getAttributesById($productId,array('product_min_selling_price'));
+			if($selprod_price < $prodData['product_min_selling_price']){
+				$selprod_price = $prodData['product_min_selling_price'];
+			}
+			
 			$assignValues = array();
 			if( $selprod_price != '' ){
 				$assignValues['selprod_price'] = $selprod_price;

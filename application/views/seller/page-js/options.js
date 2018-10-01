@@ -132,7 +132,7 @@ $(document).ready(function(){
 		});	
 	};		
 
-	searchOptions = function(form){		
+	searchOptions = function(form){
 		/*[ this block should be written before overriding html of 'form's parent div/element, otherwise it will through exception in ie due to form being removed from div */
 		var data = '';
 		if (form) {
@@ -150,13 +150,12 @@ $(document).ready(function(){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
 		fcom.ajax(fcom.makeUrl('seller','deleteSellerOption'),data,function(t){
-			try{
-					res= jQuery.parseJSON(t);
-					$.facebox(res.msg,'faceboxWidth');
-				}catch (e){
-					
-					reloadList();
-				}			
+			var ans= jQuery.parseJSON(t);
+			if(ans.status!=1){
+				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+			}
+			$.mbsmessage(ans.msg, true, 'alert alert--success');
+			reloadList();		
 			
 		});
 	};

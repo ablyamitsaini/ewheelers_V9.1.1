@@ -1643,7 +1643,7 @@ class CommonHelper extends FatUtility{
 			$str = json_encode($str);
 		}
 		//Something to write to txt log
-		$log  = "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a").PHP_EOL.				
+		$log  = "User: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i:s:u a").PHP_EOL.				
 				"data: ".$str.PHP_EOL.
 				"-------------------------".PHP_EOL;
 		$file = CONF_UPLOADS_PATH.'./log_'.date("Y-m-d").'.txt';

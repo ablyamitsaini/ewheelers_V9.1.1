@@ -309,7 +309,7 @@ $(document).on('click','.uploadFile-Js',function(){
 							brandImages(ans.brandId,langId);
 							reloadList();
 						}else{
-							fcom.displayErrorMessage(ans.msg);
+							fcom.displayErrorMessage(ans.msg,'');
 						}
 					},
 					error: function(xhr, ajaxOptions, thrownError) {

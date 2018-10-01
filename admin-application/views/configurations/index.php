@@ -57,4 +57,5 @@
 <script type="text/javascript">
 	var YES = <?php echo applicationConstants::YES; ?>;
 	var NO = <?php echo applicationConstants::NO; ?>;
+	var FORM_MEDIA = <?php echo Configurations::FORM_MEDIA; ?>;
 </script>
