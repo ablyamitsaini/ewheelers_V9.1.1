@@ -1,6 +1,6 @@
 <?php
-defined('SYSTEM_INIT') or die('Invalid Usage.'); 
-$showLogInLink = isset($showLogInLink) ? $showLogInLink : true; 
+defined('SYSTEM_INIT') or die('Invalid Usage.');
+$showLogInLink = isset($showLogInLink) ? $showLogInLink : true;
 $onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : false;
 
 $frm->setFormTagAttribute('action', CommonHelper::generateUrl('GuestUser', 'register'));
@@ -11,17 +11,17 @@ if( $onSubmitFunctionName ){
 }
 ?>
 <h3><?php echo Labels::getLabel('LBL_Register',$siteLangId);?></h3>
-<?php 
+<?php
 $frm->setFormTagAttribute('class', 'form form--normal');
 $fld = $frm->getField('btn_submit');
 
 $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;					
+$frm->developerTags['fld_default_col'] = 12;
 
 // $frm->getField('user_password')->addFieldTagAttribute('title' , Labels::getLabel('LBL_checkout_Sign_Up_Help_Points', $siteLangId));
 
 echo $frm->getFormTag();  ?>
-  
+
 <div class="row">
    <div class="col-md-12">
 	   <div class="field-set">
@@ -62,7 +62,7 @@ echo $frm->getFormTag();  ?>
 		   <div class="field-wraper">
 			   <div class="field_cover"><?php echo $frm->getFieldHtml('user_password'); ?></div>
 			  <span class="text--small"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),
-'User@123') ?></span> 
+'User@123') ?></span>
 		   </div>
 
 	   </div>
@@ -84,8 +84,8 @@ echo $frm->getFormTag();  ?>
    <div class="col-md-12">
 	   <div class="field-set">
 		   <label class="checkbox">
-		   <?php 	
-				$fld = $frm->getFieldHTML('agree');  
+		   <?php
+				$fld = $frm->getFieldHTML('agree');
 				$fld = str_replace("<label >","",$fld);
 				$fld = str_replace("</label>","",$fld);
 				echo $fld;
@@ -97,8 +97,8 @@ echo $frm->getFormTag();  ?>
 		   <?php if($frm->getField('user_newsletter_signup')) { ?>
 		   <span class="gap"></span>
 		   <label class="checkbox">
-		   <?php 	
-				$fld = $frm->getFieldHTML('user_newsletter_signup');  
+		   <?php
+				$fld = $frm->getFieldHTML('user_newsletter_signup');
 				$fld = str_replace("<label >","",$fld);
 				$fld = str_replace("</label>","",$fld);
 				echo $fld;
@@ -107,7 +107,7 @@ echo $frm->getFormTag();  ?>
 		   </label>
 		   <?php }
 			if($frm->getField('isCheckOutPage')) {
-				echo $frm->getFieldHTML('isCheckOutPage');  
+				echo $frm->getFieldHTML('isCheckOutPage');
 			} ?>
 	   </div>
    </div>
@@ -128,6 +128,6 @@ echo $frm->getFormTag();  ?>
 </form>
 <?php echo $frm->getExternalJs(); ?>
 <?php if( $showLogInLink ){ ?>
-<p class="text--dark"><?php echo sprintf(Labels::getLabel( 'LBL_Already_to', $siteLangId ), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?> 
+<p class="text--dark"><?php echo sprintf(Labels::getLabel( 'LBL_Already_to', $siteLangId ), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>
 <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_in',$siteLangId); ?></a></p>
 <?php } ?>

@@ -16,8 +16,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
     </div>
     <div class="white--bg padding20">
       <div class="row">
-        <div class="col-lg-5 col-md-5 col-sm-12 col-xm-12 details__body clearfix">
-          <div id="img-static"  class="">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xm-12 details__body clearfix">
+          <div id="img-static"  class="img-sticky80">
             <div class="product-gallery ">
               <?php $data['product'] = $product;
 				$data['productImagesArr'] = $productImagesArr;
@@ -54,7 +54,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             </div>
           </div>
         </div>
-        <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xm-12">
           <div class="product-detail">
             <div class="item-yk detail_head ">
               <?php $firstToReview=true; include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); ?>
@@ -63,9 +63,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 <?php if($product['special_price_found']){ ?>
                 <span class="product_price_old"> <?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
                 <div class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></div>
-                <?php } ?>				
+                <?php } ?>
               </div>
-			  <?php if($shop['shop_free_ship_upto'] > 0){ 
+			  <?php if($shop['shop_free_ship_upto'] > 0){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
 				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>

@@ -502,6 +502,7 @@
   font-weight: 600;
   color: #2e2f2f;
   margin-bottom: 15px;
+  min-height: 70px;
 }
 
 .posted-data h2 a {
@@ -1271,6 +1272,8 @@
   .nav__secondary ul {
     flex-direction: column;
   }
+
+.posted-data h2{ min-height: auto;}
 }
 
 /* [ added on 2 August */

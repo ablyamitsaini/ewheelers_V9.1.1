@@ -1,21 +1,21 @@
 <?php 
-	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true; 
+	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true;
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
 	<div class="col-lg-6 form-side">
-		<?php 
+		<?php
 		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
 		$loginFrm->setFormTagAttribute('class', 'form');
 		$loginFrm->setFormTagAttribute('name', 'formLoginPage');
 		$loginFrm->setFormTagAttribute('id', 'formLoginPage');
 		$loginFrm->setValidatorJsObjectName('loginFormObj');
-		
+
 		$loginFrm->setFormTagAttribute('onsubmit','return '. $onSubmitFunctionName . '(this, loginFormObj);');
 		$loginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
 		$loginFrm->developerTags['fld_default_col'] = 12;
 		$loginFrm->removeField($loginFrm->getField('remember_me'));
 		$fldforgot = $loginFrm->getField('forgot');
-		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'" 
+		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
 		class="forgot">'.Labels::getLabel('LBL_Forgot_Password',$siteLangId).'?</a>';
 		$fldSubmit = $loginFrm->getField('btn_submit');
 		$fldSubmit->addFieldTagAttribute("class","btn--block");
@@ -27,7 +27,7 @@
 	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
 		<div class=" col-lg-6 add-side">
 		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
-		  <div class="connect"> 
+		  <div class="connect">
 		  <?php if ($facebookLogin) { ?>
 		  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('facebook')); ?>" class="link  fb"><i class="svg"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 		width="13.5px" height="26px" viewBox="0 0 13.5 26" enable-background="new 0 0 13.5 26" xml:space="preserve">
