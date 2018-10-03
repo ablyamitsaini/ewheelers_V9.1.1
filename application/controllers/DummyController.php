@@ -572,6 +572,8 @@ echo $str;
 	}
 	
 	function test(){
+		var_dump($_SERVER); exit;
+		
 		$orders = new Orders('O1538197607');	
 		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
 		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
