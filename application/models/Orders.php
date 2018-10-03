@@ -1307,7 +1307,7 @@ class Orders extends MyAppModel{
 				}				
 				/*]*/
 				/*Deduct Shipping Amount[*/
-				if(0 < $childOrderInfo["op_free_ship_upto"]){
+				if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
@@ -1374,7 +1374,7 @@ class Orders extends MyAppModel{
 				/* ] */	
 				
 				/*Deduct Shipping Amount[*/
-				if(0 < $childOrderInfo["op_free_ship_upto"]){
+				if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 					$actualShipCharges = 0 ;
 					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
@@ -1519,7 +1519,7 @@ class Orders extends MyAppModel{
 				
 				$txnAmount = ($availQty * $childOrderInfo['op_unit_price']) - $deductVolumeDiscount + $shipCharges;
 				
-				if(/* FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0) */$childOrderInfo['op_tax_collected_by_seller']){
+				if($childOrderInfo['op_tax_collected_by_seller']){
 					$unitTaxCharges = round(($taxCharges / $childOrderInfo['op_qty']),2);
 					$txnAmount = $txnAmount + ($unitTaxCharges * $availQty);						
 				}

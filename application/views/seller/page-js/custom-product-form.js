@@ -1,11 +1,10 @@
 $(document).ready(function(){
 	customProductForm(productId);
-	var productOptions=[] ;	
-
+	var productOptions=[] ;		
 });
 (function() {
 	var runningAjaxReq = false;
-	
+			
 	checkRunningAjax = function(){
 		if( runningAjaxReq == true ){
 			console.log(runningAjaxMsg);
@@ -63,21 +62,20 @@ $(document).ready(function(){
 	productOptionsForm = function( id ){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller', 'customProductOptionsForm', [id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+				fcom.updateFaceboxContent(t,'faceboxWidth');
 				reloadProductOptions(id);
 			});
 		});
 	};
 	
-	optionForm = function(optionId){
-		$.facebox(function() {
+	optionForm = function(optionId){ optionId = 10;		
+		$.facebox(function() { 
 			fcom.ajax(fcom.makeUrl('Seller', 'optionForm', [optionId]), '', function(t) {	
 				try{
 					res = jQuery.parseJSON(t);
-					$.facebox(res.msg,'faceboxWidth');
-				}catch (e){
-					
-					$.facebox(t,'faceboxWidth');
+					fcom.updateFaceboxContent(res.msg,'faceboxWidth');
+				}catch (e){					
+					fcom.updateFaceboxContent(t,'faceboxWidth');
 					addOptionForm(optionId);	
 					optionValueListing(optionId);
 				}
@@ -87,9 +85,9 @@ $(document).ready(function(){
 	};
 	
 	addOptionForm = function(optionId){
-		var dv = $('#loadForm');
+		var dv = $('#loadForm');		
 		fcom.ajax(fcom.makeUrl('Seller', 'addOptionForm', [optionId]), '', function(t) {				
-			dv.html(t);					
+			dv.html(t);				
 		});
 	};
 	
@@ -99,7 +97,8 @@ $(document).ready(function(){
 		dv.html('Loading....');
 		var data = 'option_id='+optionId;		
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
-			dv.html(res);
+			dv.html(res);	
+			fcom.resetFaceboxHeight();
 		});
 	};
 	

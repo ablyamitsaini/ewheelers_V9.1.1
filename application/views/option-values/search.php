@@ -57,10 +57,14 @@ if (count($arr_listing) == 0){
 }
 echo $tbl->getHtml();
 ?>
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
-	
-	$('#optionvalues').tableDnD({
+	fcom.resetFaceboxHeight();
+});
+</script>
+<script>
+$(document).ready(function(){	
+	/* $('#optionvalues').tableDnD({
 		onDrop: function (table, row) {
 			
 			var order = $.tableDnD.serialize('id');			
@@ -75,6 +79,6 @@ $(document).ready(function(){
 			});
 		},
 		dragHandle: ".dragHandle",		
-	});
+	}); */
 });
 </script>
