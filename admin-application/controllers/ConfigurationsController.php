@@ -909,10 +909,23 @@ class ConfigurationsController extends AdminBaseController {
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Push_Notification_API_KEY",$this->adminLangId),'CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_api_key_used_in_push_notifications.",$this->adminLangId)."</small>";
 				
+				
+				$frm->addHtml('','Engagespot','<h3>'.Labels::getLabel("LBL_Engagespot_Push_Notifications_(WEB)",$this->adminLangId).'</h3>');
+				
+				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Engagespot",$this->adminLangId),'CONF_ENABLE_ENGAGESPOT',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
+				
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_API_Key",$this->adminLangId),'CONF_ENGAGESPOT_API_KEY');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_API_key_provided_by_Engagespot.",$this->adminLangId)."</small>";
+				
+			 	$fld = $frm->addTextarea(Labels::getLabel("LBL_Engagespot_Code",$this->adminLangId),'CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_the_engagespot_for_integration.",$this->adminLangId)."</small>";
+				
+				
+				
 				$frm->addHtml('','GoogleMap','<h3>'.Labels::getLabel("LBL_Google_Map_API",$this->adminLangId).'</h3>');
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Map_API_Key",$this->adminLangId),'CONF_GOOGLEMAP_API_KEY');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_Google_map_api_key_used_to_get_user_current_location.",$this->adminLangId)."</small>";
-								
+					
 				$frm->addHtml('','Newsletter','<h3>'.Labels::getLabel("LBL_Newsletter_Subscription",$this->adminLangId).'</h3>');
 				
 				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Activate_Newsletter_Subscription",$this->adminLangId),'CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));

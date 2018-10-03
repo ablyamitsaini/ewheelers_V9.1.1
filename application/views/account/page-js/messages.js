@@ -18,6 +18,15 @@ $(document).ready(function(){
 		}); 
 	};
 	
+	goToMessageSearchPage = function(page) {
+		if(typeof page==undefined || page == null){
+			page =1;
+		}
+		var frm = document.frmMessageSrchPaging;		
+		$(frm.page).val(page);
+		searchMessages(frm);
+	};
+	
 	clearSearch = function(){
 		document.frmMessageSrch.reset();
 		searchMessages(document.frmMessageSrch);
