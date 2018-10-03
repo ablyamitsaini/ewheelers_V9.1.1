@@ -15,7 +15,8 @@ Updates:
 	. Added most refunded products in place of Bad products report.
 	. Free shipping label display on product detail page.
 	. Front end - updated popup with scroll option.
-
+	. Implemented Engagespot integration.
+	
 Enhancements:
 	. Product listing page updated speed optimization work.	
 	

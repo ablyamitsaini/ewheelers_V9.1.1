@@ -912,7 +912,7 @@ class ConfigurationsController extends AdminBaseController {
 				
 				$frm->addHtml('','Engagespot','<h3>'.Labels::getLabel("LBL_Engagespot_Push_Notifications_(WEB)",$this->adminLangId).'</h3>');
 				
-				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Engagespot",$this->adminLangId),'CONF_ENABLE_ENGAGESPOT',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
+				$fld = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Engagespot",$this->adminLangId),'CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION',applicationConstants::getYesNoArr($this->adminLangId),'',array('class'=>'list-inline'));
 				
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_API_Key",$this->adminLangId),'CONF_ENGAGESPOT_API_KEY');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_API_key_provided_by_Engagespot.",$this->adminLangId)."</small>";
