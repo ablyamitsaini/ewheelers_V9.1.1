@@ -2,7 +2,8 @@
 	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true;
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
-	<div class="col-lg-6 form-side">
+	<div class="col-lg-4 form-side add-side">
+	<div class="heading"><?php echo Labels::getLabel('LBL_Existing_User', $siteLangId); ?></div>
 		<?php
 		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
 		$loginFrm->setFormTagAttribute('class', 'form');
@@ -25,7 +26,7 @@
 	<?php
 	$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
 	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
-		<div class=" col-lg-6 add-side">
+		<div class=" col-lg-4 add-side">
 		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
 		  <div class="connect">
 		  <?php if ($facebookLogin) { ?>
@@ -47,3 +48,18 @@
 		  </div>
 		</div>
 	  <?php } ?>
+	  <div class=" col-lg-4 add-side">
+	  <div class="heading"><?php echo Labels::getLabel('LBL_Guest_User', $siteLangId); ?></div>
+		<?php 
+		$guestLoginFrm->setFormTagAttribute('class', 'form');
+		$guestLoginFrm->setFormTagAttribute('name', 'formLoginPage');
+		$guestLoginFrm->setFormTagAttribute('id', 'formLoginPage');
+		$guestLoginFrm->setValidatorJsObjectName('guestLoginFormObj');
+
+		$guestLoginFrm->setFormTagAttribute('onsubmit','return guestUserLogin(this, guestLoginFormObj);');
+		$guestLoginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
+		$guestLoginFrm->developerTags['fld_default_col'] = 12;
+		$fldSubmit = $guestLoginFrm->getField('btn_submit');
+		$fldSubmit->addFieldTagAttribute("class","btn--block");
+		echo $guestLoginFrm->getFormHtml(); ?>
+	  </div>

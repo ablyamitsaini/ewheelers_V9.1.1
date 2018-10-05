@@ -205,6 +205,15 @@ class MyAppController extends FatController {
 		$this->_template->render(false, false, 'json-success.php');
 	}
 
+	protected function getGuestUserForm($langId = 0){
+		$siteLangId = FatUtility::int($langId);
+		$frm = new Form('frmGuestLogin');
+		$frm->addTextBox(Labels::getLabel('LBL_Name',$siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_Name',$siteLangId)));		
+		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Email',$siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
+		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Guest_Sign_in',$siteLangId));
+		return $frm;
+	}
+	
 	protected function getLoginForm() {
 		$siteLangId = CommonHelper::getLangId();
 		$frm = new Form('frmLogin');			
