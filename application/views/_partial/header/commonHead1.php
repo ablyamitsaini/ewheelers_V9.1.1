@@ -38,8 +38,6 @@ if( $controllerName != 'GuestUser' && $controllerName != 'Error' ){
 ?>
 <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
 <?php
-
-
 echo $str = '<script type="text/javascript">
 		var langLbl = ' . json_encode(
 			$jsVariables
@@ -54,4 +52,17 @@ echo $str = '<script type="text/javascript">
 			CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = 3;
 		}
 	</script>' . "\r\n";
+?>
+<?php
+if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION")) {
+	echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE");
+	if (UserAuthentication::getLoggedUserId(true) > 0) {
+		?>
+		<script type="text/javascript">
+			Engagespot.init()
+			Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
+		</script>
+		<?php
+	}
+}
 ?>

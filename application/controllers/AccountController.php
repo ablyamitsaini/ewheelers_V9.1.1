@@ -1765,12 +1765,12 @@ class AccountController extends LoggedUserController {
 			$cnd = $srch->addCondition('tth.thread_subject','like',"%".$post['keyword']."%");
 			$cnd->attachCondition('tfr.user_name','like',"%".$post['keyword']."%",'OR');
 			$cnd->attachCondition('tfr_c.credential_username','like',"%".$post['keyword']."%",'OR');
-		}		
+		}	
 		
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
 		$srch->setPageNumber($page);
-		$srch->setPageSize($pagesize);
+		$srch->setPageSize(1);
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
 		/* CommonHelper::printArray($records); die; */
@@ -1983,6 +1983,7 @@ class AccountController extends LoggedUserController {
 		$frm->addTextBox('','keyword');
 		$fldSubmit = $frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$langId) );
 		$fldCancel = $frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();') );
+		$frm->addHiddenField('','page');
 		return $frm;
 	}
 	
