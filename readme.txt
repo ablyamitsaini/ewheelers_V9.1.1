@@ -10,6 +10,8 @@ Fixes:
 	. Saved search filter url with different currency value.
 	. PPC banners fixes in api.	
 	. Security fixes (scripting injection with category drop down on header search form).
+	. Mime type issue in display original image function when file not exist.
+	
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
