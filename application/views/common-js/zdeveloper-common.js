@@ -498,7 +498,11 @@ function defaultSetUpLogin(frm, v) {
 		$('#facebox .content').addClass('fbminwidth');				
 	});
 	
-	$(document).bind('afterClose.facebox', fcom.resetEditorInstance);
+	$(document).bind('afterClose.facebox', function() {
+		$('html').css('overflow','') ;
+	});
+	
+	/* $(document).bind('afterClose.facebox', fcom.resetEditorInstance); */
 	$(document).bind('beforeReveal.facebox', function() {		
 		$('#facebox .content').addClass('fbminwidth');	
 		$('html').css('overflow','') 

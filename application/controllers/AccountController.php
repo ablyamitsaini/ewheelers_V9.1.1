@@ -2720,12 +2720,10 @@ class AccountController extends LoggedUserController {
 		$cPageSrch = ContentPage::getSearchObject($this->siteLangId);
 		$cPageSrch->addCondition('cpage_id','=',FatApp::getConfig('CONF_GDPR_POLICY_PAGE' , FatUtility::VAR_INT , 0));
 		$cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
+		$gdprPolicyLinkHref = '';
 		if(!empty($cpage) && is_array($cpage)) {
 			$gdprPolicyLinkHref = CommonHelper::generateUrl('Cms','view',array($cpage['cpage_id']));
-		} else {
-			$gdprPolicyLinkHref = 'javascript:void(0)';
 		}
-		
 		$frm = $this->getRequestDataForm();
 		$frm->fill($data);
 		$this->set('frm', $frm);
