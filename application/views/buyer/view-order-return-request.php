@@ -37,7 +37,7 @@
 													<div class="info--order">
 														<h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
 														<p>
-														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name:', $siteLangId).':</strong>'.$request['op_shop_owner_name'] : ''; ?></p>
+														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name', $siteLangId).':</strong>'.$request['op_shop_owner_name'] : ''; ?></p>
 														<p>
 														<?php
 														$vendorShopUrl = CommonHelper::generateUrl( 'Shops', 'View', array($request['op_shop_id']) );
