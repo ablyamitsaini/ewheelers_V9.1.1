@@ -80,6 +80,7 @@
 <script  type="text/javascript">
 	var productOptions =[];
 	var productId=<?php echo $product_id;?>;
+	var productCatId=<?php echo $prodcat_id;?>;
 	var prodTypeDigital = <?php echo Product::PRODUCT_TYPE_DIGITAL;?>;
 	var dv =$("#listing");
 	

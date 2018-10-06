@@ -59,7 +59,6 @@ class ReviewsController extends MyAppController {
 		$srch->joinSelProdRating();
 		$srch->joinUser();
 		$srch->joinSelProdReviewHelpful();
-		
 		$srch->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$srch->addCondition('spr.spreview_product_id', '=', $productId);
 		$srch->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
@@ -78,6 +77,7 @@ class ReviewsController extends MyAppController {
 			break;
 		}
 		$records = FatApp::getDb()->fetchAll($srch->getResultSet());
+		
 		$this->set('reviewsList',$records);
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());

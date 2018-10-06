@@ -49,7 +49,7 @@ class SelProdReviewSearch extends SearchBase {
 		}
 	}
 	
-	public function joinSellerProducts($langId = 0, $active = true, $deleted = false){	
+	public function joinSellerProducts($langId = 0, $active = true, $deleted = false){
 		$langId = FatUtility::int($langId);
 		if( $this->langId ){
 			$langId = $this->langId;

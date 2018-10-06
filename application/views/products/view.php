@@ -352,9 +352,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBl_Reviews', $siteLangId); ?></h4>
             <?php echo $frmReviewSearch->getFormHtml(); ?> </div>
-          <div class="section__body">
+			<div class="section__body">
               <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
-          </div>
+			</div>
         </div>
         <?php } ?>
       </div>

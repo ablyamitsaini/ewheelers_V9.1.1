@@ -7,15 +7,36 @@
                 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 				<div class="col-xs-10 panel__right--full " >
 					<div class="cols--group">
+						<?php $this->includeTemplate('_partial/productPagesTabs.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action),false); ?>
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h2>
+						   <h2><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?></h2>
+							<div class="delivery-term">
+								<div class="dropdown"> 
+									<a href="#catalogToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
+									<div id="catalogToolTip" style="display:none">
+										<div class="delivery-term-data-inner">
+											<ol class="list-nested">
+												<li>This page lists all the marketplace products added by admin and seller.
+													Marketplace products are of two types:-
+													<ul class="listing--bullet">
+														<li>System Products: Available to all sellers and any seller can add to their own store.</li>
+														<li>My Products: Available only for you. No other seller can add to their own store.</li>
+													</ul>
+												</li>
+												<li>On clicking "Add Product" button, seller can add new product to marketplace products.</li>
+												<li>On click of "Add to Store" the seller can pick the product and add the products to his store inventory.</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
 								<div class="box__head">
 								   <h4><?php echo Labels::getLabel('LBL_Search_Products',$siteLangId); ?></h4>
 								   <div class="group--btns panel__head_action">
-								   <div class="-inline-element" id="tour-step-2" ><a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a></div>
+								   <div class="-inline-element" id="tour-step-2" ><a href="<?php echo CommonHelper::generateUrl('seller','customProductForm');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a></div>
 								   <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
 
 								   <?php if((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true )){?>
@@ -89,5 +110,9 @@ $(document).ready(function(){
 
 $(".btn-inline-js").click(function(){
     $(".box-slide-js").slideToggle();
+}); 
+
+jQuery(document).ready(function($) {
+	$('a[rel*=facebox]').facebox() 
 });
 </script>

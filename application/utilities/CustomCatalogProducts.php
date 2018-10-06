@@ -80,7 +80,7 @@ trait CustomCatalogProducts{
 		$this->_template->render(false, false);
 	}	
 	
-	public function customCatalogProductForm($preqId = 0,$preqCatId = 0){	
+	public function customCatalogProductForm($preqId = 0,$preqCatId = 0){
 		$this->canAddCustomCatalogProduct(true);
 		$preqId = FatUtility::int($preqId);
 		$preqCatId = FatUtility::int($preqCatId);

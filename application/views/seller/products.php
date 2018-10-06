@@ -28,8 +28,23 @@ $cancelBtnFld->developerTags['col'] = 2;
                 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 				<div class="col-xs-10 panel__right--full " >
 					<div class="cols--group">
+						<?php $this->includeTemplate('_partial/productPagesTabs.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action),false); ?>
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); ?></h2>
+						   <h2><?php echo Labels::getLabel('LBL_Store_Inventory',$siteLangId); ?></h2>
+							<div class="delivery-term">
+								<div class="dropdown"> 
+									<a href="#inventoryToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
+									<div id="inventoryToolTip" style="display:none">
+										<div class="delivery-term-data-inner">
+											<ol class="list-nested">
+												<li>This tab lists all the products available to your front end store.</li>
+												<li>For each product variant, separate copy need to be created by seller either from Marketplace product tab or clone product icon.</li>
+												<li>To add new product to your store inventory, seller will have to pick the products from the marketplace products tabs from "Add to Store" button</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+							</div>						   
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
@@ -62,3 +77,9 @@ $cancelBtnFld->developerTags['col'] = 2;
 	<div class="gap"></div>
 </div>
 <?php echo FatUtility::createHiddenFormFromData ( array('product_id'=>$product_id), array ('name' => 'frmSearchSellerProducts') );?>
+
+<script>
+jQuery(document).ready(function($) {
+	$('a[rel*=facebox]').facebox() 
+});
+</script>
