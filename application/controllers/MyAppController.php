@@ -210,6 +210,7 @@ class MyAppController extends FatController {
 		$frm = new Form('frmGuestLogin');
 		$frm->addTextBox(Labels::getLabel('LBL_Name',$siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_Name',$siteLangId)));		
 		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Email',$siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
+		$frm->addHtml('','space','');
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Guest_Sign_in',$siteLangId));
 		return $frm;
 	}
