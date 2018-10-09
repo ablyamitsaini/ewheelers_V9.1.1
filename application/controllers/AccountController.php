@@ -2108,6 +2108,7 @@ class AccountController extends LoggedUserController {
 		$frm->addRequiredField('','uwlist_title');
 		$frm->addHiddenField('','selprod_id');
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Add', $this->siteLangId));
+		$frm->setJsErrorDisplay('afterfield');
 		return $frm;
 	}
 	
