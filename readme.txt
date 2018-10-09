@@ -18,6 +18,7 @@ Updates:
 	. Free shipping label display on product detail page.
 	. Front end - updated popup with scroll option.
 	. Implemented Engagespot integration.
+	. Shop search page optimization.
 	
 Enhancements:
 	. Product listing page updated speed optimization work.	
