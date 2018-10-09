@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
 	<section class="top-space body bg--gray">
-		<div class="fixed-container">
+		<div class="container">
 		   <div class="panel panel--centered">
 				<div class="box box--white box--tabled">
 				   <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right' : '';?>">

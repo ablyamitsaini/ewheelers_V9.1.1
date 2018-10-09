@@ -1,12 +1,12 @@
 <div id="body" class="body bg--gray">
   <div class="section section--pagebar">
-      <div class="fixed-container container--fixed">
+      <div class="container container--fixed">
         <h4><?php echo Labels::getLabel('Lbl_Advertiser' , $siteLangId); ?></h4>
       </div>
     </div>
   <section class="dashboard">
     <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="fixed-container">
+    <div class="container">
       <div class="row">
         <?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
         <div class="col-xs-10 panel__right--full" >

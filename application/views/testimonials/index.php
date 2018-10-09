@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
 	<section class="top-space bg--white">
-	  <div class="fixed-container">
+	  <div class="container">
 		<div class="breadcrumb">
 		   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>

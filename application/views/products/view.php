@@ -10,13 +10,13 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 
 <div id="body" class="body bg--gray">
 <section>
-  <div class="fixed-container">
+  <div class="container">
     <div class="breadcrumb">
       <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
     </div>
     <div class="white--bg padding20">
       <div class="row">
-        <div class="col-lg-5 col-md-5 col-sm-5 col-xm-12 details__body clearfix">
+        <div class="col-lg-5 col-md-6 col-sm-6 col-xm-12 details__body clearfix">
           <div id="img-static"  class="img-sticky80">
             <div class="product-gallery ">
               <?php $data['product'] = $product;
@@ -54,7 +54,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             </div>
           </div>
         </div>
-        <div class="col-lg-7 col-md-7 col-sm-7 col-xm-12">
+        <div class="col-lg-7 col-md-6 col-sm-6 col-xm-12">
           <div class="product-detail">
             <div class="item-yk detail_head ">
               <?php $firstToReview=true; include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); ?>
@@ -360,8 +360,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
-        <div class="fixed__panel">
-          <div  id="fixed__panel"  class="promotion">
+        <div class="fixed__panel promotion-sticky">
+          <div  id="fixed__panelx"  class="promotion">
             <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
 				$desktop_url = '';
 				$tablet_url = '';

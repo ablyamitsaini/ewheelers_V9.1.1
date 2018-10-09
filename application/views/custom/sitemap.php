@@ -1,6 +1,6 @@
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-        <div class="fixed-container">
+        <div class="container">
             <div class="breadcrumb">
                 <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
             </div>

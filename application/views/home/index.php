@@ -52,7 +52,7 @@
 	?>
   <?php if( isset( $collections[Collections::COLLECTION_LAYOUT4_TYPE] )  ){ ?>
   <section class="bg-gray-light padd40">
-    <div class="fixed-container">
+    <div class="container">
       <?php
 			if( isset( $collections[Collections::COLLECTION_LAYOUT4_TYPE] ) ){
 				$this->includeTemplate( '_partial/collection/collection-layout-4.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT4_TYPE], 'siteLangId' => $siteLangId ,'action'=>$action),false );
@@ -67,7 +67,7 @@
 
    <?php  if( count( $sponsoredShops ) > 0 ){ ?>
   <section class="bg-gray-light padd40">
-    <div class="fixed-container">
+    <div class="container">
   <?php
   if( count( $sponsoredShops)>0 ){
 	$this->includeTemplate( '_partial/collection/sponsored-shops.php', array( 'sponsoredShops' => $sponsoredShops, 'siteLangId' => $siteLangId ,'action'=>$action),false );
@@ -84,7 +84,7 @@
 	/* CommonHelper::printArray($bgImageUrl);die; */
    ?>
   <section class="trending-bg padd40" style="<?php echo $bgImageUrl; ?>">
-    <div class="fixed-container">
+    <div class="container">
 	  <?php
 		if( isset( $collections[Collections::COLLECTION_LAYOUT5_TYPE] ) ){
 			$this->includeTemplate( '_partial/collection/collection-layout-5.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT5_TYPE], 'siteLangId' => $siteLangId,'action'=>$action ),false );

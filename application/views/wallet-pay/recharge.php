@@ -4,7 +4,7 @@
   <div class="section-head"><?php echo Labels::getLabel("LBL_Add_Money_to_wallet", $siteLangId); ?></div>
  
  
- <div class="fixed-container"> <div class="make-payment-wrapper">
+ <div class="container"> <div class="make-payment-wrapper">
     <?php if( $orderInfo['order_net_amount'] ){ ?>
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-12 col-xm-12">

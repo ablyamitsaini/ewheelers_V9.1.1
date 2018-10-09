@@ -5,7 +5,7 @@
 	<?php $haveBgImage =AttachedFile::getAttachment( AttachedFile::FILETYPE_SELLER_PAGE_SLOGAN_BG_IMAGE, $slogan['epage_id'], 0, $siteLangId );
 	$bgImageUrl = ($haveBgImage) ? "background-image:url(" . CommonHelper::generateUrl( 'Image', 'cblockBackgroundImage', array($slogan['epage_id'], $siteLangId, 'DEFAULT', AttachedFile::FILETYPE_SELLER_PAGE_SLOGAN_BG_IMAGE) ) . ")" : "background-image:url(".CONF_WEBROOT_URL."images/seller-bg.jpg);"; ?>
 	<div  class="banner" style="<?php echo $bgImageUrl; ?>">
-	  <div class="fixed-container">
+	  <div class="container">
 		<div class="row">
 		<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
 			<div class="seller-slogan">
@@ -32,25 +32,25 @@
 	  </div>
 	</div>
 	<?php if(!empty($block1)) { ?>
-		<div class="features"><div class="fixed-container"><?php echo FatUtility::decodeHtmlEntities($block1['epage_content'] );?></div></div>
+		<div class="features"><div class="container"><?php echo FatUtility::decodeHtmlEntities($block1['epage_content'] );?></div></div>
 	<?php } ?>
 	<?php if(!empty($block2)) { ?>
 	<div class="simple-step">
-		<div class="fixed-container">
+		<div class="container">
 			<?php echo FatUtility::decodeHtmlEntities( $block2['epage_content'] );?> 
 		</div>
 	</div>
 	<?php } ?>
 	<?php if(!empty($block3)) { ?>
 	<div class="simple-price">
-		<div class="fixed-container">
+		<div class="container">
 		   <?php echo FatUtility::decodeHtmlEntities( $block3['epage_content'] );?> 
 		</div>
 	</div>
 	<?php } ?>
 	<?php if($faqCount > 0) { ?>
 	<div class="questions-section">
-	  <div class="fixed-container">
+	  <div class="container">
 		<div class="row">
 		  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<div id="listing"></div>
@@ -68,7 +68,7 @@
 	<div class="divider"></div>
 	<?php } ?>
 	<div class="gap"></div>
-	<div class="fixed-container">
+	<div class="container">
 		<div class="align--center">
 		  <div class="heading3"><?php echo Labels::getLabel( 'LBL_Still_need_help', $siteLangId)?> ?</div>
 		  <a href="<?php echo CommonHelper::generateUrl('custom' , 'contact-us'); ?>" class="btn btn--secondary btn--lg ripplelink" ><?php echo Labels::getLabel( 'LBL_Contact_Customer_Care', $siteLangId)?> </a>

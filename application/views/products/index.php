@@ -7,7 +7,7 @@
 
 <div id="body" class="body bg--gray">
   <section class="dashboard">
-    <div class="fixed-container">
+    <div class="container">
 	<?php if(!isset($noProductFound)) { ?>
       <div class="breadcrumb">
         <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
@@ -19,7 +19,7 @@
           <!--<h5 class="hide--mobile hide--tab hide--ipad"><?php echo Labels::getLabel('LBL_Quick_Filters', $siteLangId); ?></h5>-->
           <div class="overlay overlay--filter"></div>
           <div class="filters">
-            <div class="box box--white">
+            <div class="">
               <?php
 				/* Left Side Filters Side Bar [ */
 				if( $productFiltersArr ){
@@ -60,11 +60,11 @@
   <div class="gap"></div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){ 
-	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','index'); ?>';	
+$(document).ready(function(){
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Products','index'); ?>';
 	$productSearchPageType = '<?php echo SavedSearchProduct::PAGE_PRODUCT_INDEX; ?>';
 	$recordId = 0;
-	<?php if($priceInFilter){?>			
+	<?php if($priceInFilter){?>
 		updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 	<?php }?>
 	searchProducts(document.frmProductSearch);

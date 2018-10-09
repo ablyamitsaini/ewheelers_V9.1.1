@@ -2,7 +2,7 @@
  <div id="body"  class="body">
 	<section class="top-space">
       <div class="packages-banner">
-      <div class="fixed-container">
+      <div class="container">
 		<div class="breadcrumb">
 		   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="fixed-container">
+    <div class="container">
       <div class="packages-box">
 	  <?php
 	  $packageArrClass= SellerPackages::getPackageClass();

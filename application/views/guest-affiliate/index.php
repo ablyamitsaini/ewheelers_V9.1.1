@@ -4,7 +4,7 @@
 	<?php $haveBgImage =AttachedFile::getAttachment( AttachedFile::FILETYPE_AFFILIATE_PAGE_SLOGAN_BG_IMAGE, $bannerSlogan['epage_id'], 0, $siteLangId );
 	$bgImageUrl = ($haveBgImage) ? "background-image:url(" . CommonHelper::generateUrl( 'Image', 'cblockBackgroundImage', array($bannerSlogan['epage_id'], $siteLangId, 'DEFAULT', AttachedFile::FILETYPE_AFFILIATE_PAGE_SLOGAN_BG_IMAGE) ) . ")" : "background-image:url(".CONF_WEBROOT_URL."images/seller-bg.jpg);"; ?>
 	<div  class="banner" style="<?php echo $bgImageUrl; ?>">
-		<div class="fixed-container">
+		<div class="container">
 			<div class="row">
 			 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
 					<div class="seller-slogan">

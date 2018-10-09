@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchSalesReport(this); return false;');
-$frmSrch->setFormTagAttribute('class', 'form'); 
+$frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-lg-4 col-md-4 col-sm-';
 $frmSrch->developerTags['fld_default_col'] = 4;
 ?>
@@ -8,10 +8,10 @@ $frmSrch->developerTags['fld_default_col'] = 4;
 <div id="body" class="body bg--gray">
   <section class="dashboard">
     <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="fixed-container">
+    <div class="container">
       <div class="row">
         <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-md-10 panel__right--full">
+        <div class="col-xs-10 panel__right--full ">
           <div class="cols--group">
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_Sales_Report',$siteLangId);?></h2>

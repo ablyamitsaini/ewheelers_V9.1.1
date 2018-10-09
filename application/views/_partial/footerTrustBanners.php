@@ -2,7 +2,7 @@
 
 <?php if($footerData){ ?>
 <section class="upperContent-footer">
-    <div class="fixed-container">
+    <div class="container">
 	 <?php echo FatUtility::decodeHtmlEntities($footerData['epage_content'] );?>
 	</div>
 </section>

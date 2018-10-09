@@ -2,13 +2,13 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $shop_city = $shop['shop_city'];
 $shop_state = ( strlen($shop['shop_city']) > 0 ) ? ', '. $shop['shop_state_name'] : $shop['shop_state_name'];
-$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name']; 
+$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name'];
 $shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 
 <div id="body" class="body bg--gray">
     <div class="section section--pagebar">
-      <div class="fixed-container container--fixed">
+      <div class="container container--fixed">
         <div class="row">
           <div class="col-md-8">
             <div class="cell">
@@ -28,10 +28,10 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
       </div>
     </div>
 	<section class="top-space">
-      <div class="fixed-container container--fixed">
-        <div class="row">
+      <div class="container container--fixed">
+        <div class="">
           <div class="panel panel--centered clearfix">
-            <div class="fixed-container container--fluid">
+            <div class="">
               <div id="itemRatings" class="section section--info clearfix">
                 <div class="section__head">
                   <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. $shop['shop_name'];?></h4>

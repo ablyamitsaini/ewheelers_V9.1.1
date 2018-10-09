@@ -6,7 +6,7 @@
 <div id="body" class="body bg--gray">
   <section class="top-space">
     <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="fixed-container">
+    <div class="container">
       <div class="cols--group">
         <div class="panel__head ">
           <h2><?php echo Labels::getLabel('LBL_Inventory_Setup',$siteLangId); ?></h2>

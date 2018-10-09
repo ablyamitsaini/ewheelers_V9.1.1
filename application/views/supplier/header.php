@@ -44,7 +44,7 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
 <div id="wrapper">
   <div class="header-seller" id="header">
 	<div class="top_bar">
-	  <div class="fixed-container">
+	  <div class="container">
 		<div class="row">
 		  <div class="col-lg-6 col-xs-6 hide--mobile ">
 			<div class="slogan"><?php echo Labels::getLabel('L_Instant_Multi_Vendor_eCommerce_System_Builder',$siteLangId); ?></div>
@@ -60,7 +60,7 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
 	  </div>
 	</div>
     <div class="top-head">
-      <div class="fixed-container">
+      <div class="container">
         <div class="row">
           <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
             <?php if(!empty($seller_navigation_left)) { ?>
@@ -78,7 +78,7 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
       </div>
     </div>
     <div class="bottom-head">
-      <div class="fixed-container">
+      <div class="container">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="short-nav">

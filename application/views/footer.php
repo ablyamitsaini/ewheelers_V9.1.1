@@ -20,7 +20,7 @@
         </div>
     </section>
     <?php if( $controllerName == 'home' && $action == 'index' ) $this->includeTemplate( '_partial/footerTrustBanners.php'); ?>
-    <div class="fixed-container">
+    <div class="container">
         <div class="up-footer padd40">
             <div class="row">
                 <?php $this->includeTemplate( '_partial/footerNavigation.php'); ?>
@@ -72,7 +72,7 @@
         </div>
     </div>
     <div class="bottom-footer">
-        <div class="fixed-container">
+        <div class="container">
             <div class="accordion-footer">
                 <?php $this->includeTemplate( '_partial/footerTopBrands.php'); ?>
                 <?php $this->includeTemplate( '_partial/footerTopCategories.php'); ?>
