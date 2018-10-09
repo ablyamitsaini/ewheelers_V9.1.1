@@ -100,7 +100,8 @@ class MyAppController extends FatController {
 			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
 			'siteCurrencyId' =>$this->siteCurrencyId,
 			'controllerName' =>$controllerName,
-			'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information',$this->siteLangId),					
+			'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information',$this->siteLangId),
+			'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s',$this->siteLangId),			
 		);
 
 		$languages = Language::getAllNames(false);

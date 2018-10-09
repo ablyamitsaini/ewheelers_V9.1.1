@@ -41,3 +41,26 @@ $fld1->htmlAfterField = $htmlAfterField;
         </div>
 	</div>
 </div>
+
+<script>
+	$(document).on('change','.banner-screen-js',function(){
+		var promotionType = <?php echo $promotionType ?>;
+		var screenDesktop = <?php echo applicationConstants::SCREEN_DESKTOP ?>;
+		var screenIpad = <?php echo applicationConstants::SCREEN_IPAD ?>;
+
+		if(promotionType==<?php echo Promotion::TYPE_SLIDES ?>){
+			if($(this).val() == screenDesktop)
+			{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1920 x 550'));
+			}
+			else if($(this).val() == screenIpad)
+			{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 500'));
+			}
+			else{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));
+			}
+		}
+		
+	});
+</script>

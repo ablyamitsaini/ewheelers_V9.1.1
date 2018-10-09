@@ -22,7 +22,7 @@
 	
 	customProductForm = function( productId, prodcat_id ){
 		$(dv).html( fcom.getLoader() );	
-		if(typeof productId == 'undefined' || productId == 0){
+		if( (typeof productId == 'undefined' || productId == 0) && (typeof prodcat_id == 'undefined' || prodcat_id == 0) ){
 			customCatalogProductCategoryForm( );
 			return;
 		}
@@ -68,7 +68,7 @@
 
 	customCatalogProductForm = function( id, prodcat_id ){
 		$(dv).html( fcom.getLoader() );	
-		if(/* typeof id == 'undefined' || id == 0 && */ (typeof prodcat_id == 'undefined' || prodcat_id == 0)){
+		if( typeof id == 'undefined' || id == 0 && (typeof prodcat_id == 'undefined' || prodcat_id == 0)){
 			customCatalogProductCategoryForm( );
 			return;
 		}

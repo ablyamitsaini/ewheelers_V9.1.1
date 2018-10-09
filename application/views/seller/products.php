@@ -52,9 +52,9 @@ $cancelBtnFld->developerTags['col'] = 2;
 								   <h4><?php echo Labels::getLabel('LBL_Search_your_inventory',$siteLangId); ?></h4>
 									<div class="group--btns">
 										<!--<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php /* echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId); */?></a>-->
-										<?php if( User::canAddCustomProduct() ){ ?>
+										<?php /* if( User::canAddCustomProduct() ){ ?>
 											<a href="<?php echo commonHelper::generateUrl('seller','catalog');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Products_list', $siteLangId);?></a>
-										<?php } ?>
+										<?php } */ ?>
 									</div>
 								</div>
 								<div class="box__body">

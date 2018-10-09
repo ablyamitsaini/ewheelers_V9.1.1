@@ -456,6 +456,7 @@ class ReviewsController extends MyAppController {
 		$srch->addDirectCondition('order_user_id ='.$loggedUserId.' and ( FIND_IN_SET(op_selprod_id,(\''.$allowedSelProdId.'\')) and op_is_batch = 0) and  FIND_IN_SET(op_status_id,(\''.$allowedReviewStatus.'\')) ');
 		/* $srch->addOrder('order_date_added'); */
 		$orderProduct = FatApp::getDb()->fetch($srch->getResultSet()); 
+		
 		if(empty($orderProduct)){
 			Message::addErrorMessage(Labels::getLabel('Msg_Review_can_be_posted_on_bought_product',$this->siteLangId));
 			CommonHelper::redirectUserReferer();

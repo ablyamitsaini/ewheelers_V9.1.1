@@ -71,12 +71,14 @@ trait CustomProducts{
 		$prodId = FatUtility::int($prodId);
 		$prodCatId = FatUtility::int($prodCatId);
 		
-		if($prodId > 0){
+		/* if($prodCatId == 0){
 			$product = new Product();
 			$records = $product->getProductCategories($prodId);
-			$prodcatArr = array_column($records, 'prodcat_id');
-			$prodCatId = reset($prodcatArr);
-		}
+			if(!empty($records)){
+				$prodcatArr = array_column($records, 'prodcat_id');
+				$prodCatId = reset($prodcatArr);
+			}
+		} */
 		
 		$this->set('prodId',$prodId);
 		$this->set('prodCatId',$prodCatId);
@@ -85,7 +87,7 @@ trait CustomProducts{
 		$this->_template->render(); 
 	}
 	
-	public function customProductFormOld( $product_id=0){
+	/* public function customProductFormOld( $product_id=0){
 		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
@@ -99,7 +101,7 @@ trait CustomProducts{
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}	
 		
-		/* Validate product belongs to current logged seller[ */
+		// Validate product belongs to current logged seller[ 
 		if($product_id){
 			$productRow = Product::getAttributesById( $product_id, array('product_seller_id','product_brand_id') );
 			if( $productRow['product_seller_id'] != UserAuthentication::getLoggedUserId()){
@@ -107,7 +109,7 @@ trait CustomProducts{
 				FatApp::redirectUser(CommonHelper::generateUrl('Seller','customProduct'));
 			}
 		}
-		/* ] */
+		// ] 
 		
 		
 		$this->set('customActiveTab','GENERAL');
@@ -121,7 +123,7 @@ trait CustomProducts{
 		$this->_template->addJs('js/multi-list.js');
 		$this->_template->addCss('css/multi-list.css');
 		$this->_template->render();
-	}
+	} */
 	
 	public function customProductGeneralForm($product_id= 0, $prodcat_id = 0){
 		$product_id = FatUtility::int($product_id);
@@ -136,7 +138,7 @@ trait CustomProducts{
 		$optionsData = array();
 		$customProductFrm = $this->getCustomProductForm('CUSTOM_PRODUCT',$prodcat_id);
 		if ($product_id > 0 ) {
-				$productAttrToGet =  array(
+				/* $productAttrToGet =  array(
 					Product::DB_TBL_PREFIX.'id',
 					Product::DB_TBL_PREFIX.'identifier',
 					Product::DB_TBL_PREFIX.'type',
@@ -157,7 +159,22 @@ trait CustomProducts{
 					Product::DB_TBL_PREFIX.'upc',
 					Product::DB_TBL_PREFIX.'brand_id',
 				);
-			$row_data = Product::getAttributesById($product_id, $productAttrToGet);
+			$row_data = Product::getAttributesById($product_id, $productAttrToGet); */
+			
+			
+			$srch = Product::getSearchObject($this->siteLangId);
+			$srch->joinTable( Brand::DB_TBL, 'LEFT OUTER JOIN','tp.product_brand_id = brand.brand_id','brand');
+			$srch->joinTable( Brand::DB_LANG_TBL , 'LEFT OUTER JOIN','brandlang_brand_id = brand.brand_id AND brandlang_lang_id = ' . $this->siteLangId );
+			$srch->addMultipleFields(array('product_id', 'product_identifier', 'product_type', 'product_model', 'product_min_selling_price', 'product_active', 'product_approved', 'product_featured', 'product_length','product_width', 'product_height', 'product_dimension_unit', 'product_weight', 'product_weight_unit', 'product_ship_country', 'product_ship_free', 'product_cod_enabled', 'product_upc', 'product_brand_id', 'IFNULL(brand_name,brand_identifier) as brand_name'));
+			$srch->addCondition( 'product_id', '=', $product_id );
+			$srch->addCondition( 'brand.brand_active', '=', applicationConstants::YES );
+			$srch->addCondition( 'brand.brand_deleted', '=', applicationConstants::NO );
+			$rs = $srch->getResultSet();
+			$row_data = FatApp::getDb()->fetch($rs);
+			
+			
+			
+			
 			$taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
 			
 			if(!empty($taxData)){
@@ -291,11 +308,13 @@ trait CustomProducts{
 				/*]*/
 		}
 		
-		
-		if( !$prodObj->addUpdateProductCategory($product_id, $data_to_be_save['preq_prodcat_id'] ) ){
-			Message::addErrorMessage( Labels::getLabel($prodObj->getError(),$this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
+		if($data_to_be_save['preq_prodcat_id'] > 0){
+			if( !$prodObj->addUpdateProductCategory($product_id, $data_to_be_save['preq_prodcat_id'] ) ){
+				Message::addErrorMessage( Labels::getLabel($prodObj->getError(),$this->siteLangId) );
+				FatUtility::dieWithError( Message::getHtml() );
+			}
 		}
+		
 		
 		
 		$this->set('msg', Labels::getLabel('LBL_Product_Setup_Successful', $this->siteLangId) );
@@ -413,10 +432,14 @@ trait CustomProducts{
 			FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
 		}
 	
+		$prodCatId = 0;
 		$product = new Product();
 		$records = $product->getProductCategories($product_id);
-		$prodcatArr = array_column($records, 'prodcat_id');
-		$prodCatId = reset($prodcatArr);
+		if(!empty($records)){
+			$prodcatArr = array_column($records, 'prodcat_id');
+			$prodCatId = reset($prodcatArr);
+		}
+		
 		//$optionsData = Product::getProductOptions( $product_id, $this->siteLangId);
 		
 		$customProductOptionFrm = $this->getCustomProductOptionForm();
@@ -428,7 +451,6 @@ trait CustomProducts{
 		$this->set( 'activeTab', 'OPTIONS');
 		$this->set( 'siteLangId', $this->siteLangId );
 		$this->_template->render(false,false);
-		
 		
 	}
 	
@@ -787,10 +809,13 @@ trait CustomProducts{
 	public function customProductSpecifications($product_id){
 		$productSpecifications = Product::getProductSpecifications( $product_id, $this->siteLangId);
 		
+		$prodCatId = 0;
 		$product = new Product();
 		$records = $product->getProductCategories($product_id);
-		$prodcatArr = array_column($records, 'prodcat_id');
-		$prodCatId = reset($prodcatArr);
+		if(!empty($records)){
+			$prodcatArr = array_column($records, 'prodcat_id');
+			$prodCatId = reset($prodcatArr);
+		}
 		
 		$alertToShow = $this->CheckProductLinkWithCatBrand($product_id);
 		$this->set('alertToShow', $alertToShow);
@@ -1113,10 +1138,14 @@ trait CustomProducts{
 		$alertToShow = $this->CheckProductLinkWithCatBrand($productId);
 		$this->set('alertToShow', $alertToShow);
 		
+		$prodCatId = 0;
 		$product = new Product();
 		$records = $product->getProductCategories($productId);
-		$prodcatArr = array_column($records, 'prodcat_id');
-		$prodCatId = reset($prodcatArr);
+		if(!empty($records)){
+			$prodcatArr = array_column($records, 'prodcat_id');
+			$prodCatId = reset($prodcatArr);
+		}
+		
 		
 		$frm->fill($product_row);
 		
@@ -1765,8 +1794,8 @@ trait CustomProducts{
 
 		$frm = new Form('frmLinks', array('id'=>'frmLinks'));
 		$frm->addTextBox(Labels::getLabel('LBL_Product_Name',$this->siteLangId),'product_name');
-		$brndFld = $frm->addTextBox(Labels::getLabel('LBL_Brand/Manufacturer',$this->siteLangId),'brand_name');
-		$brndFld->htmlAfterField= '<div class="col-md-4"><small><a href="javascript:void(0);" onClick="addBrandReqForm(0);">'.Labels::getLabel('LBL_Brand_Not_Found?_Click_here_to_',$this->siteLangId).Labels::getLabel('LBL_Request_New_Brand',$this->siteLangId).'</a></small></div>';
+		/* $brndFld = $frm->addTextBox(Labels::getLabel('LBL_Brand/Manufacturer',$this->siteLangId),'brand_name');
+		$brndFld->htmlAfterField= '<div class="col-md-4"><small><a href="javascript:void(0);" onClick="addBrandReqForm(0);">'.Labels::getLabel('LBL_Brand_Not_Found?_Click_here_to_',$this->siteLangId).Labels::getLabel('LBL_Request_New_Brand',$this->siteLangId).'</a></small></div>'; */
 
 		$fld1 = $frm->addTextBox(Labels::getLabel('LBL_Category',$this->siteLangId),'choose_links');
 		$fld2 = $frm->addHtml('','addNewOptionLink','</a><div id="product_links_list" class="col-xs-10" ></div>');
