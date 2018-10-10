@@ -95,6 +95,7 @@ class BlogController extends MyAppController{
 			$keywordCond= $srch->addCondition('post_title','like',"%$keyword%");
 			$keywordCond->attachCondition('post_short_description','like',"%$keyword%");
 			$keywordCond->attachCondition('post_description','like',"%$keyword%");
+			$this->set('keyword', $keyword);
 		}
 		
 		$srch->addCondition('post_published','=',applicationConstants::YES);
@@ -103,7 +104,7 @@ class BlogController extends MyAppController{
 		$srch->setPageNumber($page);
 		$srch->addGroupby('post_id');
 		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs);			
+		$records = FatApp::getDb()->fetchAll($rs);
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
 		$this->set("postList",$records);

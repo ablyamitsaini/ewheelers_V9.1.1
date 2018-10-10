@@ -30,8 +30,11 @@ class PromotionSearch extends SearchBase{
             'pr.promotion_type = '.$type.' and '.$alias.'.slide_type = '.Slides::TYPE_PPC.' and '.$alias.'.slide_record_id = pr.promotion_id',$alias);
 	}
 	
-	public function joinBannersAndLocation($langId = 0 , $type = Promotion::TYPE_BANNER , $alias ='b'){
+	public function joinBannersAndLocation($langId = 0 , $type = Promotion::TYPE_BANNER , $alias ='b' , $deviceType = 0){
 		$langId = FatUtility::int($langId);
+		$deviceType = FatUtility::int($deviceType);
+		
+		$deviceType = ($deviceType > 0) ? $deviceType : applicationConstants::SCREEN_DESKTOP;
 		if( $this->langId ){
 			$langId = $this->langId;
 		}	
@@ -46,11 +49,15 @@ class PromotionSearch extends SearchBase{
 		
 		$this->joinTable( BannerLocation::DB_TBL, 'LEFT OUTER JOIN',
 			$alias.'bl.blocation_id = '.$alias.'.banner_blocation_id', $alias.'bl');
+			
+		$this->joinTable( BannerLocation::DB_DIMENSIONS_TBL, 'LEFT OUTER JOIN',
+			$alias.'bld.bldimension_blocation_id = '.$alias.'.banner_blocation_id
+			AND bldimension_device_type = ' . $deviceType, $alias.'bld');
 
 		if ( $langId > 0) {
 			$this->joinTable( BannerLocation::DB_LANG_TBL, 'LEFT OUTER JOIN',
             $alias.'bl_l.blocationlang_blocation_id = '.$alias.'bl.blocation_id and '.$alias.'bl_l.blocationlang_lang_id = '.$langId,$alias.'bl_l');
-		}	
+		}
 	}
 	
 	public function joinPromotionsLogForCount($fromDate = '', $todate = '' , $groupBy = 'plog_promotion_id' ){

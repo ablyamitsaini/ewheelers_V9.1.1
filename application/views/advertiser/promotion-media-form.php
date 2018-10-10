@@ -51,15 +51,22 @@ $fld1->htmlAfterField = $htmlAfterField;
 		if(promotionType==<?php echo Promotion::TYPE_SLIDES ?>){
 			if($(this).val() == screenDesktop)
 			{
-				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1920 x 550'));
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1920 * 550'));
 			}
 			else if($(this).val() == screenIpad)
 			{
-				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 500'));
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 * 500'));
 			}
 			else{
-				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '640 * 360'));
 			}
+		}else if(promotionType==<?php echo Promotion::TYPE_BANNER ?>){
+			var deviceType = $(this).val();
+			fcom.ajax(fcom.makeUrl('Advertiser', 'getBannerLocationDimensions', [<?php echo $promotionId;?>,deviceType]), '', function(t) {
+				var ans = $.parseJSON(t);
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, ans.bannerWidth +' * '+ ans.bannerHeight));
+			});
+			
 		}
 		
 	});
