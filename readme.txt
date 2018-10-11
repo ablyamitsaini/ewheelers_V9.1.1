@@ -1,3 +1,5 @@
+Features:
+	. Guest Checkout feature.
 Fixes: 
 	. Shop top products page removed sort by label.
 	. Fixed Rewards on purchase related issue.
