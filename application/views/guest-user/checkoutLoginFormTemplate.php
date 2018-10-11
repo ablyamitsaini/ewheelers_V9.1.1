@@ -28,8 +28,8 @@
 		<div class="heading"><?php echo Labels::getLabel('LBL_Guest_User', $siteLangId); ?></div>
 		<?php 
 		$guestLoginFrm->setFormTagAttribute('class', 'form');
-		$guestLoginFrm->setFormTagAttribute('name', 'formLoginPage');
-		$guestLoginFrm->setFormTagAttribute('id', 'formLoginPage');
+		$guestLoginFrm->setFormTagAttribute('name', 'frmGuestLogin');
+		$guestLoginFrm->setFormTagAttribute('id', 'frmGuestLogin');
 		$guestLoginFrm->setValidatorJsObjectName('guestLoginFormObj');
 
 		$guestLoginFrm->setFormTagAttribute('onsubmit','return guestUserLogin(this, guestLoginFormObj);');
