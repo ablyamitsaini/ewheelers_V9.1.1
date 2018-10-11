@@ -263,6 +263,20 @@ class EmailHandler extends FatModel {
 		return false;
 	}
 	
+	function sendWelcomeEmailToGuestUser($langId,$d){
+		$tpl = 'guest_welcome_registration';
+				
+		$vars = array(
+			'{name}' => $d['user_name'],
+			'{contact_us_email}' => FatApp::getConfig('CONF_CONTACT_EMAIL'),
+		);
+		
+		if(self::sendMailTpl($d['user_email'], $tpl,$langId, $vars)){
+			return true;
+		}
+		return false;
+	}
+	
 	function sendWelcomeEmail($langId,$d){
 		$tpl = 'welcome_registration';
 		

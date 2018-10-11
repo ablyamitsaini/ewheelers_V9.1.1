@@ -219,7 +219,15 @@ class UserAuthentication extends FatModel {
 				$db->rollbackTransaction();				
 				return false;
 			}
-		}		
+		}
+
+		if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1)){			
+			if(!$userObj->guestUserWelcomeEmail($data, $this->commonLangId)){				
+			    $this->error = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT",$this->commonLangId);
+				$db->rollbackTransaction();				
+				return false;
+			}
+		}	
 		
 		$db->commitTransaction();
 			

@@ -1508,6 +1508,25 @@ class User extends MyAppModel {
 		return true;
 	}
 	
+	public function guestUserWelcomeEmail($data, $langId){
+		$link = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
+		
+		$data = array(
+            'user_name' => $data['user_name'],                                   
+			'user_email' => $data['user_email'],
+			'link' => $link,
+        );
+		
+		$email = new EmailHandler();
+		
+		if(!$email->sendWelcomeEmailToGuestUser($langId,$data)){
+			Message::addMessage(Labels::getLabel("ERR_ERROR_IN_SENDING_WELCOME_EMAIL",$langId));
+			return false;
+		}
+		
+		return true;
+	}	
+	
 	public function userWelcomeEmailRegistration($userObj, $data, $langId){
 		
 		$link = CommonHelper::generateFullUrl('GuestUser', 'loginForm');

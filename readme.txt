@@ -23,6 +23,7 @@ Updates:
 	. Front end - updated popup with scroll option.
 	. Implemented Engagespot integration.
 	. Shop search page optimization.
+	. Guest user welcome email.
 	
 Enhancements:
 	. Product listing page updated speed optimization work.	
