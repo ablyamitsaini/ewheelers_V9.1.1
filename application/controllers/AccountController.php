@@ -18,6 +18,10 @@ class AccountController extends LoggedUserController {
 	
 	public function index() {
 		/* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
+		if(UserAuthentication::isGuestUserLogged()){
+			FatApp::redirectUser(CommonHelper::generateUrl('home'));
+		}
+		
 		if( ( User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' ){
 			FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
 		} else if( ( User::isSeller() || User::isSigningUpForSeller() )&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' ){

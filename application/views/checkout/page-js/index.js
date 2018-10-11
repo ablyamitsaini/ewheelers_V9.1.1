@@ -86,6 +86,27 @@ $("document").ready(function()
 		return false;
 	};
 	
+	guestUserLogin = function(frm, v) {
+		v.validate();
+		if ( !v.isValid() ) return;		
+		fcom.ajax(fcom.makeUrl('GuestUser', 'guestLogin'), fcom.frmData(frm), function(t) {
+			var ans = JSON.parse(t);
+			if(ans.notVerified==1)
+			{
+				var autoClose = false;
+			}else{
+				var autoClose = true;
+			}
+			if( ans.status == 1 ){
+				$.mbsmessage(ans.msg, autoClose, 'alert alert--success');
+				location.href = ans.redirectUrl;
+				return;
+			}
+			$.mbsmessage(ans.msg, autoClose, 'alert alert--danger');
+		});
+		return false;
+	};
+	
 	loadloginDiv = function(){
 		fcom.ajax(fcom.makeUrl('Checkout', 'loadLoginDiv'), '', function(ans) {
 			$(loginDiv).html(ans);
