@@ -23,6 +23,8 @@ $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $si
               <div class="box box--white box--space">
                 <div class="box__head">
                   <h4><?php echo Labels::getLabel('LBL_Products_Inventory_Report',$siteLangId);?></h4>
+				  <?php
+				  echo '<div class="box__head"><div class="group--btns"><a href="javascript:void(0)" onClick="exportProductsInventoryReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>';?>
                 </div>
                 <div class="box__body">
                   <div class="grids--profile">

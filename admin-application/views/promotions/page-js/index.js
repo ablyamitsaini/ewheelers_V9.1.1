@@ -3,13 +3,13 @@ $(document).ready(function(){
 });
 $(document).delegate('.language-js','change',function(){
 	var langId = $(this).val();
-	var promotion_id = $("input[name='promotion_id']").val();
+	var promotion_id = $("form#frm_fat_id_frmPromotionMedia input[name='promotion_id']").val();
 	var screen = $(".display-js").val();
 	images(promotion_id,langId,screen);
 });
 $(document).delegate('.display-js','change',function(){
 	var screen = $(this).val();
-	var promotion_id = $("input[name='promotion_id']").val();
+	var promotion_id = $("form#frm_fat_id_frmPromotionMedia input[name='promotion_id']").val();
 	var langId = $(".language-js").val();
 	images(promotion_id,langId,screen);
 });

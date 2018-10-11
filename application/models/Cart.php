@@ -19,7 +19,7 @@ class Cart extends FatModel {
 		}
 		
 		$this->cart_user_id = session_id();
-		if ( UserAuthentication::isUserLogged() || ( $user_id > 0 ) ){			
+		if ( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() || ( $user_id > 0 ) ){			
 			if ( $user_id > 0 ){
 				$this->cart_user_id = $user_id;
 			}else{
@@ -56,7 +56,7 @@ class Cart extends FatModel {
 	
 	public static function getCartUserId(){
 		$cart_user_id = session_id();
-		if ( UserAuthentication::isUserLogged()  ){
+		if ( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() ){
 			$cart_user_id = UserAuthentication::getLoggedUserId();
 		}
 		return $cart_user_id;
@@ -186,7 +186,7 @@ class Cart extends FatModel {
 			
 			$associatedAffiliateUserId = 0;
 			/* detect current logged user has associated affiliate user[ */
-			if( UserAuthentication::isUserLogged() ){
+			if( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()){
 				$loggedUserId = UserAuthentication::getLoggedUserId();
 				$associatedAffiliateUserId = User::getAttributesById( $loggedUserId, 'user_affiliate_referrer_user_id');
 				if( $associatedAffiliateUserId > 0 ){
@@ -309,7 +309,7 @@ class Cart extends FatModel {
 				$this->products[$key]['affiliate_commission_percentage'] = $affiliateCommissionPercentage;
 				$this->products[$key]['affiliate_commission'] = $affiliateCommission;
 				$this->products[$key]['affiliate_user_id'] = $associatedAffiliateUserId;				
-				if( UserAuthentication::isUserLogged() ){
+				if( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() ){
 					$this->products[$key]['shipping_address'] =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(),$siteLangId, 0, $this->getCartShippingAddress() );
 					$this->products[$key]['seller_address'] =  Shop::getShopAddress($sellerProductRow['shop_id'],true , $siteLangId);
 				}
@@ -1102,7 +1102,7 @@ class Cart extends FatModel {
 		unset($this->SYSTEM_ARR['shopping_cart']['discount_coupon']);
 		
 		/* Removing from temp hold[ */
-		if( UserAuthentication::isUserLogged() && $couponCode != '' ){
+		if( (UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) && $couponCode != '' ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
 			
 			$srch = DiscountCoupons::getSearchObject(0, false, false);

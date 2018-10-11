@@ -84,6 +84,7 @@ class SavedProductsSearchController extends LoggedUserController {
 		$frm->setRequiredStarWith('NONE');
 		$frm->addRequiredField('','pssearch_name');
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Add', $this->siteLangId));
+		$frm->setJsErrorDisplay('afterfield');
 		return $frm;
 	}
 }	

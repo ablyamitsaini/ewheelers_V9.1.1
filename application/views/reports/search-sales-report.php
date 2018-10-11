@@ -67,7 +67,6 @@ if( count($arrListing) == 0 ){
 	if(!empty($orderDate)){
 		echo '<a href="'.CommonHelper::generateUrl('Reports','SalesReport').'" class="btn btn--primary btn--sm">'.Labels::getLabel('LBL_Back',$siteLangId).'</a>';
 	}
-	echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a>';
 	echo '</div></div>';
 	echo $tbl->getHtml();
 }

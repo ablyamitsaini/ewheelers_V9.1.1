@@ -18,6 +18,10 @@ class AccountController extends LoggedUserController {
 
 	public function index() {
 		/* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
+		if(UserAuthentication::isGuestUserLogged()){
+			FatApp::redirectUser(CommonHelper::generateUrl('home'));
+		}
+
 		if( ( User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' ){
 			FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
 		} else if( ( User::isSeller() || User::isSigningUpForSeller() )&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' ){
@@ -1766,11 +1770,10 @@ class AccountController extends LoggedUserController {
 			$cnd->attachCondition('tfr.user_name','like',"%".$post['keyword']."%",'OR');
 			$cnd->attachCondition('tfr_c.credential_username','like',"%".$post['keyword']."%",'OR');
 		}
-
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
 		$srch->setPageNumber($page);
-		$srch->setPageSize($pagesize);
+		$srch->setPageSize(1);
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
 		/* CommonHelper::printArray($records); die; */
@@ -1983,6 +1986,7 @@ class AccountController extends LoggedUserController {
 		$frm->addTextBox('','keyword');
 		$fldSubmit = $frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$langId) );
 		$fldCancel = $frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();') );
+		$frm->addHiddenField('','page');
 		return $frm;
 	}
 
@@ -2107,6 +2111,7 @@ class AccountController extends LoggedUserController {
 		$frm->addRequiredField('','uwlist_title');
 		$frm->addHiddenField('','selprod_id');
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Add', $this->siteLangId));
+		$frm->setJsErrorDisplay('afterfield');
 		return $frm;
 	}
 
@@ -2719,10 +2724,9 @@ class AccountController extends LoggedUserController {
 		$cPageSrch = ContentPage::getSearchObject($this->siteLangId);
 		$cPageSrch->addCondition('cpage_id','=',FatApp::getConfig('CONF_GDPR_POLICY_PAGE' , FatUtility::VAR_INT , 0));
 		$cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
+		$gdprPolicyLinkHref = '';
 		if(!empty($cpage) && is_array($cpage)) {
 			$gdprPolicyLinkHref = CommonHelper::generateUrl('Cms','view',array($cpage['cpage_id']));
-		} else {
-			$gdprPolicyLinkHref = 'javascript:void(0)';
 		}
 
 		$frm = $this->getRequestDataForm();

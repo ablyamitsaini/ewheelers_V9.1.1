@@ -39,7 +39,7 @@ if(!empty($postList)){
 						<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 						<div class="share-this">
 						<ul class="blogs-listing list__socials">
-							<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>
+							<!--<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>-->
 							<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
 							<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
 							<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
@@ -78,7 +78,7 @@ if(!empty($postList)){
 									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="btn btn--bordered"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
 										<ul class="blogs-listing list__socials">
-											<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>
+											<!--<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>-->
 											<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
 											<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
 											<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>

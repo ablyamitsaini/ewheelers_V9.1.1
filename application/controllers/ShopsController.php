@@ -37,10 +37,10 @@ class ShopsController extends MyAppController {
 		$prodShopSrch->doNotLimitRecords();
 		$prodShopSrch->joinSellerSubscription( $this->siteLangId, true );
 		$prodShopSrch->addSubscriptionValidCondition();
-		$prodShopSrch->addMultipleFields( array('shop_id'));
-		$rs = $prodShopSrch->getResultSet();
-		$productRows = FatApp::getDb()->fetchAll($rs);
-		$shopMainRootArr = array_unique(array_column($productRows,'shop_id'));
+		$prodShopSrch->addMultipleFields( array('distinct(shop_id)'));
+		//$rs = $prodShopSrch->getResultSet();
+		/* $productRows = FatApp::getDb()->fetchAll($rs);
+		$shopMainRootArr = array_unique(array_column($productRows,'shop_id')); */
 		/* ] */
 		
 		$srch = new ShopSearch( $this->siteLangId );
@@ -48,9 +48,10 @@ class ShopsController extends MyAppController {
 		$srch->joinShopCountry();
 		$srch->joinShopState();
 		$srch->joinSellerSubscription();
-		if($shopMainRootArr){
+		$srch->joinTable('('. $prodShopSrch->getQuery() . ')','INNER JOIN','temp.shop_id = s.shop_id','temp');
+		/* if($shopMainRootArr){			
 			$srch->addCondition('shop_id', 'in', $shopMainRootArr);
-		}
+		} */
 		$loggedUserId = 0;
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
@@ -62,10 +63,10 @@ class ShopsController extends MyAppController {
 		$favSrchObj->doNotLimitRecords();
 		$favSrchObj->addMultipleFields(array('ufs_shop_id','ufs_id'));
 		$favSrchObj->addCondition( 'ufs_user_id', '=', $loggedUserId );
-		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = shop_id', 'ufs' );
+		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = s.shop_id', 'ufs' );
 		/* ] */
 		
-		$srch->addMultipleFields(array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
+		$srch->addMultipleFields(array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
 		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
 		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		
@@ -76,7 +77,7 @@ class ShopsController extends MyAppController {
 		
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
-		$srch->setPageNumber($page);
+		$srch->setPageNumber($page);		
 		$srch->setPageSize($pagesize);
 		
 		$srch->addOrder('shop_created_on');

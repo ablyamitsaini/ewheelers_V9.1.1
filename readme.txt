@@ -1,3 +1,5 @@
+Features:
+	. Guest Checkout feature.
 Fixes: 
 	. Shop top products page removed sort by label.
 	. Fixed Rewards on purchase related issue.
@@ -9,13 +11,21 @@ Fixes:
 	. Disabled COD option at inventory level when disabled at product level.
 	. Saved search filter url with different currency value.
 	. PPC banners fixes in api.	
-	. Security fixes (scription injection with category drop down on header search form).
+	. Security fixes (scripting injection with category drop down on header search form).
+	. Mime type issue in display original image function when file not exist.
+	. Fetal error in refund api.
+	. Fixed some fatal errors issue from import-export functionality
+	. Updated banner dimensions tables and its functionality.
+	. Removed favorite/wishlist section from seller's account.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
 	. Free shipping label display on product detail page.
 	. Front end - updated popup with scroll option.
-
+	. Implemented Engagespot integration.
+	. Shop search page optimization.
+	. Guest user welcome email.
+	
 Enhancements:
 	. Product listing page updated speed optimization work.	
 	

@@ -23,7 +23,7 @@ class UserAuthentication extends FatModel {
 		$this->commonLangId = CommonHelper::getLangId();
 		
 	}
-
+		
 	public static function getAffiliateRegisterationStepArr( $langId ){
 		$langId = FatUtility::int($langId);
 		if( $langId == 0 ){ 
@@ -79,9 +79,7 @@ class UserAuthentication extends FatModel {
 		
 		return ($row['total'] > 3);
 	}
-	
-	
-	
+			
 	public static function doAppLogin($token, $userType = 0) {
 		$authRow = self::checkLoginTokenInDB($token);
 		
@@ -156,6 +154,104 @@ class UserAuthentication extends FatModel {
 			return true;
 		}			
 		return false;
+	}
+	
+	public function guestLogin($useremail, $name, $ip){
+		$db = FatApp::getDb();		
+		$srch = User::getSearchObject(true,false);				
+		$srch->addCondition('credential_email', '=', $useremail);		
+		$rs = $srch->getResultSet();		
+		$row = $db->fetch($rs);
+		if (!empty($row)) {
+			if($row['user_is_buyer'] != 1){
+				$this->error = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->commonLangId);;
+				return false;
+			}
+
+			if($row['credential_verified'] == 1 && $row['credential_active'] == 1 ){
+				$this->error = Labels::getLabel('ERR_YOUR_ACCOUNT_ALREADY_EXIST._PLEASE_LOGIN',$this->commonLangId);
+				return false;
+			}
+			
+			$rowUser = User::getAttributesById($row['user_id']);
+		
+			$rowUser['user_ip'] = $ip;
+			$rowUser['user_is_guest'] = true;
+			$rowUser['user_email'] = $row['credential_email'];
+			$this->setSession($rowUser);
+			
+			Cart::setCartAttributes( $row['user_id'] );
+			return true;
+		}
+	
+			
+		$userObj = new User();		
+		$db->startTransaction();
+		
+		$data = array(
+			'user_name'=>$name,
+			'user_username'=>$useremail,
+			'user_email'=>$useremail,
+			'user_is_buyer'=>1,
+			'user_preferred_dashboard'=>User::USER_BUYER_DASHBOARD,
+			'user_registered_initially_for'=>User::USER_TYPE_BUYER,			
+		);
+		$userObj->assignValues($data);
+		if ( !$userObj->save() ) {
+			$db->rollbackTransaction();
+			$this->error = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->commonLangId) . $userObj->getError();			
+			return false;
+		}
+		
+		$active = FatApp::getConfig('CONF_ADMIN_APPROVAL_REGISTRATION',FatUtility::VAR_INT,1) ? 0: 1;
+		$verify = FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION',FatUtility::VAR_INT,1) ? 0 : 1;
+		
+		$pass =  CommonHelper::getRandomPassword(5);
+		if ( !$userObj->setLoginCredentials($useremail,$useremail, $pass, $active, $verify) ) {
+			$this->error =Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET",$this->commonLangId) . $userObj->getError();
+			$db->rollbackTransaction();
+			return false;
+		}
+		
+		if(FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION',FatUtility::VAR_INT,1)){
+			if(!$userObj->notifyAdminRegistration($data,$this->commonLangId)){
+				$this->error =Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT",$this->commonLangId);
+				$db->rollbackTransaction();				
+				return false;
+			}
+		}
+
+		if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1)){			
+			if(!$userObj->guestUserWelcomeEmail($data, $this->commonLangId)){				
+			    $this->error = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT",$this->commonLangId);
+				$db->rollbackTransaction();				
+				return false;
+			}
+		}	
+		
+		$db->commitTransaction();
+			
+		$srch = User::getSearchObject(true,false);				
+		$srch->addCondition('credential_email', '=', $useremail);		
+		$rs = $srch->getResultSet();
+		if ( !$row = $db->fetch($rs) ) {
+			$this->logFailedAttempt($ip, $useremail);
+			$this->error = Labels::getLabel('ERR_INVALID_USERNAME_OR_PASSWORD',$this->commonLangId);
+			return false;
+		}
+		
+		$rowUser = User::getAttributesById($row['credential_user_id']);
+		
+		$rowUser['user_ip'] = $ip;
+		$rowUser['user_is_guest'] = true;
+		$rowUser['user_email'] = $row['credential_email'];
+		$this->setSession($rowUser);
+		
+		Cart::setCartAttributes( $row['credential_user_id'] );
+		
+		$this->clearFailedAttempt($ip , $useremail);
+			
+		return true;	
 	}
 		
 	public function login($username, $password, $ip, $encryptPassword = true,$isAdmin = false) {
@@ -247,6 +343,7 @@ class UserAuthentication extends FatModel {
 			'user_name' => $data['user_name'],			
 			'user_ip' => $data['user_ip'],
 			'user_email' => $data['user_email'],
+			'user_is_guest' => isset($data['user_is_guest'])?$data['user_is_guest']:false,
 		);
 		return true;
 	}
@@ -324,14 +421,30 @@ class UserAuthentication extends FatModel {
 		setcookie($_COOKIE[static::YOKARTUSER_COOKIE_NAME], '', time() - 3600, CONF_WEBROOT_URL);
 		return true;
 	}
+		
+	public static function isGuestUserLogged($ip = ''){
+		if ($ip == '') {			
+			$ip = CommonHelper::getClientIp();
+		}
+		
+		if (isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
+				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip 
+				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_is_guest'] == true 
+				&& is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
+				&& 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {			
+			return true;
+		}
+		return false;
+	}
 	
 	public static function isUserLogged($ip = '', $token = '') {
 		if ($ip == '') {			
 			$ip = CommonHelper::getClientIp();
 		}
-				
+		
 		if (isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
-				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip 
+				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip
+				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_is_guest'] == false 
 				&& is_numeric ( $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) 
 				&& 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {
 			return true;
@@ -349,11 +462,13 @@ class UserAuthentication extends FatModel {
 	}
 	
 	public static function getLoggedUserAttribute($attr, $returnNullIfNotLogged = false) {
-		if ( ! static::isUserLogged() ) {
+		
+		if ( ! static::isUserLogged() && ! static::isGuestUserLogged()) {
 			if ( $returnNullIfNotLogged ) return null;
 			Message::addErrorMessage(Labels::getLabel('MSG_USER_NOT_LOGGED',CommonHelper::getLangId()));
 			FatUtility::dieWithError(Message::getHtml());
 		}
+				
 	
 		if ( array_key_exists($attr, $_SESSION [static::SESSION_ELEMENT_NAME]) ) {
 			return $_SESSION [static::SESSION_ELEMENT_NAME][$attr];
@@ -362,10 +477,10 @@ class UserAuthentication extends FatModel {
 		return User::getAttributesById($_SESSION[static::SESSION_ELEMENT_NAME]['user_id'], $attr);
 	}
 	
-	public static function getLoggedUserId($returnZeroIfNotLogged = false) {
+	public static function getLoggedUserId($returnZeroIfNotLogged = false) {		
 		return FatUtility::int(static::getLoggedUserAttribute('user_id', $returnZeroIfNotLogged));
 	}
-	
+		
 	public function getUserByEmail($email, $isActive = true,  $isVerfied = true){		
 		$db = FatApp::getDb();
 		$srch = new SearchBase(User::DB_TBL);
@@ -540,21 +655,22 @@ class UserAuthentication extends FatModel {
 		return false;
 	}
 	
-	public static function checkLogin( $redirect = true ){
-		 if (!static::isUserLogged()) {
-			if ( FatUtility::isAjaxCall() ) {
-				Message::addErrorMessage(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
-				FatUtility::dieWithError(Message::getHtml());
-			}
-			
-			$_SESSION['referer_page_url'] = CommonHelper::getCurrUrl();
-			if( $redirect==true ) {
-				FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-			} else {
-				return false;
-			}
-		}
-		return true;
+	public static function checkLogin( $redirect = true ){ 
+		if (static::isUserLogged() || static::isGuestUserLogged()) {
+			return true;
+		}	
+
+		if ( FatUtility::isAjaxCall() ) {
+			Message::addErrorMessage(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
+			FatUtility::dieWithError(Message::getHtml());
+		}	
+		
+		$_SESSION['referer_page_url'] = CommonHelper::getCurrUrl();
+		if( $redirect == true ) { 
+			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
+		} 
+		
+		return false;
 	}
 	
 	

@@ -649,8 +649,8 @@ class PromotionsController extends AdminBaseController {
 		}
 	
 		$mediaFrm = $this->getPromotionMediaForm($promotionId,$promotionType);
-		$bannerWidth = 'xxxxx';
-		$bannerHeight = 'xxxxx';
+		$bannerWidth = '1920';
+		$bannerHeight = '550';
 		if($promotionType == Promotion::TYPE_BANNER){
 			$bannerWidth = FatUtility::convertToType($promotionDetails['blocation_banner_width'] , FatUtility::VAR_FLOAT);
 			$bannerHeight = FatUtility::convertToType($promotionDetails['blocation_banner_height'] , FatUtility::VAR_FLOAT);
@@ -993,5 +993,18 @@ class PromotionsController extends AdminBaseController {
 			FatUtility::dieJsonError( Labels::getLabel("MSG_Budget_should_be_greater_than_CPC", $this->adminLangId) );		
 		}
 		FatUtility::dieJsonSuccess(Message::getHtml());
+	}
+	
+	public function getBannerLocationDimensions($promotionId, $deviceType){
+
+		$srch = new PromotionSearch($this->adminLangId);	
+		$srch->joinBannersAndLocation($this->adminLangId,Promotion::TYPE_BANNER,'b',$deviceType);			
+		$srch->addCondition('promotion_id','=',$promotionId);
+		$srch->addMultipleFields(array('blocation_banner_width','blocation_banner_height'));
+		$rs = $srch->getResultSet();
+		$bannerDimensions = FatApp::getDb()->fetch($rs);
+		$this->set('bannerWidth', $bannerDimensions['blocation_banner_width']);		
+		$this->set('bannerHeight', $bannerDimensions['blocation_banner_height']);		
+		$this->_template->render(false, false, 'json-success.php'); 
 	}
 }

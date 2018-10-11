@@ -1713,7 +1713,7 @@ class Orders extends MyAppModel{
 		$op_id = FatUtility::int($op_id);
 		$langId = FatUtility::int($langId);
 		$srch = new OrderProductSearch($langId, true);
-		$srch->joinPaymentMethod();		
+		$srch->joinPaymentMethod();
 		$srch->joinShippingUsers();
 		//$srch->joinTable(Orders::DB_TBL,'LEFT OUTER JOIN','o.order_id = op.op_order_id','o');
 		$srch->joinTable(OrderProduct::DB_TBL_CHARGES,'LEFT OUTER JOIN','opc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = op.op_id','opc');

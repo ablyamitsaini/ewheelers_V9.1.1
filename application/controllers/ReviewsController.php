@@ -59,7 +59,6 @@ class ReviewsController extends MyAppController {
 		$srch->joinSelProdRating();
 		$srch->joinUser();
 		$srch->joinSelProdReviewHelpful();
-		
 		$srch->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
 		$srch->addCondition('spr.spreview_product_id', '=', $productId);
 		$srch->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
@@ -78,6 +77,7 @@ class ReviewsController extends MyAppController {
 			break;
 		}
 		$records = FatApp::getDb()->fetchAll($srch->getResultSet());
+		
 		$this->set('reviewsList',$records);
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
@@ -456,6 +456,7 @@ class ReviewsController extends MyAppController {
 		$srch->addDirectCondition('order_user_id ='.$loggedUserId.' and ( FIND_IN_SET(op_selprod_id,(\''.$allowedSelProdId.'\')) and op_is_batch = 0) and  FIND_IN_SET(op_status_id,(\''.$allowedReviewStatus.'\')) ');
 		/* $srch->addOrder('order_date_added'); */
 		$orderProduct = FatApp::getDb()->fetch($srch->getResultSet()); 
+		
 		if(empty($orderProduct)){
 			Message::addErrorMessage(Labels::getLabel('Msg_Review_can_be_posted_on_bought_product',$this->siteLangId));
 			CommonHelper::redirectUserReferer();

@@ -395,8 +395,8 @@ class CustomController extends MyAppController {
 	}
 	
 	public function paymentCancel(){
-		echo FatApp::getConfig('CONF_MAINTAIN_WALLET_ON_PAYMENT_CANCEL',FatUtility::VAR_INT,applicationConstants::NO);
-		echo $_SESSION['cart_order_id'];
+		/* echo FatApp::getConfig('CONF_MAINTAIN_WALLET_ON_PAYMENT_CANCEL',FatUtility::VAR_INT,applicationConstants::NO);
+		echo $_SESSION['cart_order_id']; */
 		if(FatApp::getConfig('CONF_MAINTAIN_WALLET_ON_PAYMENT_CANCEL',FatUtility::VAR_INT,applicationConstants::NO)&& isset( $_SESSION['cart_order_id']) &&  $_SESSION['cart_order_id']!=''){
 			
 			$cartOrderId = $_SESSION['cart_order_id'];
@@ -448,7 +448,7 @@ class CustomController extends MyAppController {
 			FatUtility::exitWithErrorCode(404);
 		}
 		
-		if ( !UserAuthentication::isUserLogged() ) {
+		if ( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
 			$textMessage = sprintf(Labels::getLabel('MSG_guest_success_order',$this->siteLangId),CommonHelper::generateUrl('custom','contactUs'));
 		}
 		
@@ -461,6 +461,11 @@ class CustomController extends MyAppController {
 			unset($_SESSION['cart_user_id']);
 		} */
 		/* ] */
+		
+		if(UserAuthentication::isGuestUserLogged()){
+			unset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]);
+		}
+		
 		$this->set('textMessage',$textMessage);
 		if(CommonHelper::isAppUser()){
 			$this->set('exculdeMainHeaderDiv', true); 

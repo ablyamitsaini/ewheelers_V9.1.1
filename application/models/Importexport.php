@@ -1265,8 +1265,8 @@ class Importexport extends ImportexportCommon{
 				$sheetArr[] = $row['product_min_selling_price'];
 
 				if($this->settings['CONF_USE_TAX_CATEOGRY_ID']){
-					$sheetArr[] = $row['ptt_taxcat_id'];
-				}else{										
+					$sheetArr[] = isset($row['ptt_taxcat_id']) ? $row['ptt_taxcat_id'] : 0;
+				}else{
 					if(isset($row['ptt_taxcat_id'])){
 					$sheetArr[] = isset($taxCategoryIdentifierById[$row['ptt_taxcat_id']])?$taxCategoryIdentifierById[$row['ptt_taxcat_id']]:0;
 					}else{
@@ -1386,7 +1386,7 @@ class Importexport extends ImportexportCommon{
 				$identifier = trim($this->getCell($line,$colCount++,''));
 				if($identifier == '') { continue;}
 			}
-			
+			$userId = 0;
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = $this->getCell($line,$colCount++,0);
@@ -1406,7 +1406,7 @@ class Importexport extends ImportexportCommon{
 				if($sellerId && ( $sellerId != $userId || 1 > $userId)){
 					continue;
 				}
-			}	
+			}
 
 			$name = $this->getCell($line,$colCount++,'');	
 			/* $shortDescription = $this->getCell($line,$colCount++,'');	 */
@@ -1574,7 +1574,6 @@ class Importexport extends ImportexportCommon{
 						$data['product_cod_enabled'] = (strtoupper($CODavailable) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 					}		
 				}
-				
 				$sellerTempId = 0;
 				if($useProductId){
 					$sellerTempId = $productId;

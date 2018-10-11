@@ -389,21 +389,18 @@ class AttachedFile extends MyAppModel {
 		}else{
 			$uploadedFilePath = CONF_UPLOADS_PATH;
 		}
+
+		$fileMimeType = ''; 
+		if(file_exists($uploadedFilePath . $image_name)){
+			$fileMimeType = mime_content_type($uploadedFilePath . $image_name);
+		}			
 		
-		/* header("content-type: image/jpeg");
-		$filename = basename($uploadedFilePath . $image_name);
-		$file_extension = strtolower(substr(strrchr($filename,"."),1));
-		if ($file_extension!="svg"){
-			header("content-type: image/jpeg");
-		}else{
-			header("Content-type: image/svg+xml");
-		} */
-		$fileMimeType = mime_content_type($uploadedFilePath . $image_name);
 		if($fileMimeType != ''){
 			header("content-type: ".$fileMimeType);
 		}else{
 			header("content-type: image/jpeg");	
 		}
+		
 		$cacheKey = $_SERVER['REQUEST_URI'];  
 		if ( !empty($image_name) && file_exists($uploadedFilePath . $image_name) ) {
 			$image_name = $uploadedFilePath . $image_name;
@@ -417,19 +414,21 @@ class AttachedFile extends MyAppModel {
 				header("Pragma: public");
 				header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime( $image_name)).' GMT', true, 200);
 				header("Expires: " . date('r', strtotime("+30 Day")));
-				echo file_get_contents($image_name);
-				if($cache){
-					
-					FatCache::set($cacheKey, file_get_contents($image_name), '.jpg');
+				$fileContent =  file_get_contents($image_name);
+				echo $fileContent;
+				if($cache){					
+					FatCache::set($cacheKey, $fileContent, '.jpg');
 				}
 			}
 			catch (Exception $e) { 
-				echo file_get_contents($no_image);
-				FatCache::set($cacheKey, file_get_contents($no_image), '.jpg');
+				$fileContent = file_get_contents($no_image);
+				echo $fileContent;
+				FatCache::set($cacheKey, $fileContent, '.jpg');
 			}
 		}else{
-			echo file_get_contents($no_image);
-			FatCache::set($cacheKey, file_get_contents($no_image), '.jpg');
+			$fileContent = file_get_contents($no_image);
+			echo $fileContent;
+			FatCache::set($cacheKey, $fileContent, '.jpg');
 		}		
 	}
 	

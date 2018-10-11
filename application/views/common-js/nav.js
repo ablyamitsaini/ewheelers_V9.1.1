@@ -4,12 +4,16 @@ $(document).ready(function() {
 		$('.navchild').hover(function() {
             var el = $("body");
             if($(window).width()>1025){
+				/* if($(this).hasClass('active')){
+					$('.navchild').removeClass('active');
+					el.removeClass('nav_show');
+				} */	 
             $(this).toggleClass("active");
             el.toggleClass("nav_show");
             }    
             return false; 
         });
-		
+			
 		
 		/* for mobile navigations */	
           $('.link__mobilenav').click(function(){

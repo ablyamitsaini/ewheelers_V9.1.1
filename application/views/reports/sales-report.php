@@ -20,6 +20,7 @@ $frmSrch->developerTags['fld_default_col'] = 4;
               <div class="box box--white box--space">
                 <div class="box__head">
                   <h4><?php echo Labels::getLabel('LBL_Sales_Report',$siteLangId);?></h4>
+				  <div class="group--btns panel__head_action"> <?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a>'; ?></div>
                 </div>
                 <div class="box__body">
                   <div class="grids--profile">

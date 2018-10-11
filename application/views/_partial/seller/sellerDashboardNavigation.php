@@ -40,13 +40,15 @@ $action = strtolower($action);
 				<!--<li class="<?php //echo ($controller == 'seller' && $action == 'categorybanners') ? 'is-active' : ''; ?>"><a href="<?php // echo CommonHelper::generateUrl('Seller','CategoryBanners'); ?>"><i class="fa fa-th-large"></i><?php // echo Labels::getLabel('LBL_Category_Banners',$siteLangId);?></a></li>-->
 			   <?php } ?>
 				<li class="<?php echo ($controller == 'seller' && ($action == 'customProductForm' || $action == 'customproduct'|| $action == 'catalog')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Products',$siteLangId); ?></a></li>
-			    <li class="<?php echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); ?></a></li>
 
-				<?php if( User::canAddCustomProductAvailableToAllSellers() ){?>
+				<!--<li class="<?php /* echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); */ ?></a></li>-->
+
+				<?php /* if( User::canAddCustomProductAvailableToAllSellers() ){?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'customcatalogproducts') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProducts'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Requested_Products', $siteLangId); ?></a></li>
 				<?php }else if((User::canAddCustomProduct() === false) && (User::canRequestProduct() === true)){ ?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'requestedcatalog') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','requestedCatalog'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId); ?></a></li>
-				<?php }?>
+				<?php } */ ?>
+
 
 				<li class="<?php echo ($controller == 'seller' && ($action == 'inventoryupdate')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','InventoryUpdate' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Inventory_Update',$siteLangId); ?></a></li>
 				<?php  if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){?>
@@ -101,7 +103,7 @@ $action = strtolower($action);
 				<li class="<?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>"><i class="fa fa-user"></i><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></a></li>
 				<li class="<?php echo ($controller == 'account' && $action == 'messages') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>"><i class="fa fa-envelope"></i><?php echo Labels::getLabel("LBL_Messages",$siteLangId); ?> <?php if($todayUnreadMessageCount > 0) { ?><span class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span> <?php } ?></a></li>
 				<li class="<?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><i class="fa fa-credit-card-alt"></i><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></a></li>
-			   <li class="<?php echo ($controller == 'account' && $action == 'wishlist') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>"><i class="fa fa-heart"></i><?php echo Labels::getLabel('LBL_Wishlist/Favorites',$siteLangId);?></a></li>
+			   <!--<li class="<?php /* echo ($controller == 'account' && $action == 'wishlist') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>"><i class="fa fa-heart"></i><?php echo Labels::getLabel('LBL_Wishlist/Favorites',$siteLangId); */?></a></li>-->
 				<li class="<?php echo ($controller == 'SavedProductsSearch' && $action == 'listing') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('SavedProductsSearch','listing');?>"><i class="fa fa-search-plus"></i><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId);?></a></li>
 			   <li class="<?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><i class="fa  fa-unlock-alt"></i><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></a></li>
 			   <li class="<?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>"><i class="fa fa-envelope"></i><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></a></li>

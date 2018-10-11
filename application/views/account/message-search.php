@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<?php if (!empty($arr_listing) && is_array($arr_listing) ){?>
+<?php if (!empty($arr_listing) && is_array($arr_listing) ){ ?>
 <ul class="media">
 	<?php foreach ($arr_listing as $sn => $row){
 		$liClass = 'is-read';
@@ -33,5 +33,5 @@ else{
 
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmMessageSrchPaging') );
-$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToOrderSearchPage');
+$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToMessageSearchPage');
 $this->includeTemplate('_partial/pagination.php', $pagingArr,false);

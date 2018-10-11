@@ -80,6 +80,7 @@
 <script  type="text/javascript">
 	var productOptions =[];
 	var productId=<?php echo $product_id;?>;
+	var productCatId=<?php echo $prodcat_id;?>;
 	var prodTypeDigital = <?php echo Product::PRODUCT_TYPE_DIGITAL;?>;
 	var dv =$("#listing");
 	
@@ -88,47 +89,47 @@
 	$(document).ready(function(){
 		addShippingTab(productId);
 		$("select[name='product_type']").change(function(){
-		if( $(this).val() == PRODUCT_TYPE_PHYSICAL ){
-			$(".product_length_fld").show();
-			$(".product_width_fld").show();
-			$(".product_height_fld").show();
-			$(".product_dimension_unit_fld").show();
-			$(".product_weight_fld").show();
-			$(".product_weight_unit_fld").show();
-			$(".product_cod_enabled_fld").show();
-			$(".product_shipped_by_me_fld").show();
-			$('.not-digital-js').show();
-			$('#tab_shipping').show();
-			addShippingTab(productId);
-		}
-		
-		if( $(this).val() == PRODUCT_TYPE_DIGITAL ){
-			$(".product_length_fld").hide();
-			$(".product_width_fld").hide();
-			$(".product_height_fld").hide();
-			$(".product_dimension_unit_fld").hide();
-			$(".product_weight_fld").hide();
-			$(".product_weight_unit_fld").hide();
-			$(".product_cod_enabled_fld").hide();
-			$(".product_shipped_by_me_fld").hide();
-			$('.not-digital-js').hide();
-			$('#tab_shipping').hide();
-		}
-	});
-	
-	$("select[name='product_type']").trigger('change');
-	$("select[name='product_shipped_by_me']").change(function(){
-		if( $(this).val() == 1 && $("select[name='product_type']").val() == PRODUCT_TYPE_PHYSICAL){
-			$('.not-digital-js').show();
-			$('#tab_shipping').show();
-		}else{
-			if( $(this).val() == 0 ){
-			$('.not-digital-js').hide();
-			$('#tab_shipping').hide();
+			if( $(this).val() == PRODUCT_TYPE_PHYSICAL ){
+				$(".product_length_fld").show();
+				$(".product_width_fld").show();
+				$(".product_height_fld").show();
+				$(".product_dimension_unit_fld").show();
+				$(".product_weight_fld").show();
+				$(".product_weight_unit_fld").show();
+				$(".product_cod_enabled_fld").show();
+				$(".product_shipped_by_me_fld").show();
+				$('.not-digital-js').show();
+				$('#tab_shipping').show();
+				addShippingTab(productId);
 			}
-		}
-	});
-	$("select[name='product_shipped_by_me']").trigger('change');
+			
+			if( $(this).val() == PRODUCT_TYPE_DIGITAL ){
+				$(".product_length_fld").hide();
+				$(".product_width_fld").hide();
+				$(".product_height_fld").hide();
+				$(".product_dimension_unit_fld").hide();
+				$(".product_weight_fld").hide();
+				$(".product_weight_unit_fld").hide();
+				$(".product_cod_enabled_fld").hide();
+				$(".product_shipped_by_me_fld").hide();
+				$('.not-digital-js').hide();
+				$('#tab_shipping').hide();
+			}
+		});
+		
+		$("select[name='product_type']").trigger('change');
+		$("select[name='product_shipped_by_me']").change(function(){
+			if( $(this).val() == 1 && $("select[name='product_type']").val() == PRODUCT_TYPE_PHYSICAL){
+				$('.not-digital-js').show();
+				$('#tab_shipping').show();
+			}else{
+				if( $(this).val() == 0 ){
+				$('.not-digital-js').hide();
+				$('#tab_shipping').hide();
+				}
+			}
+		});
+		$("select[name='product_shipped_by_me']").trigger('change');
 		
 		/* Shipping Information */
 		$('input[name=\'shipping_country\']').autocomplete({
@@ -162,6 +163,36 @@
 			addShippingTab(productId,prodTypeDigital);
 		});		
 		addShippingTab(productId,prodTypeDigital); */
+		
+		$('input[name=\'brand_name\']').autocomplete({
+			'source': function(request, response) {
+				/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
+					response($.map(json, function(item) {
+							return { label: item['name'],	value: item['id']	};
+						}));
+				}); */
+				$.ajax({
+					url: fcom.makeUrl('brands', 'autoComplete'),
+					data: {keyword: request,fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+						response($.map(json, function(item) {
+							return { label: item['name'],	value: item['id']	};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+				$('input[name=\'brand_name\']').val(item['label']);
+				$('input[name=\'product_brand_id\']').val(item['value']);
+			}
+		});
+		
+		$('input[name=\'brand_name\']').keyup(function(){
+			$('input[name=\'product_brand_id\']').val('');
+		});
+		
 	});
 </script>
 	</div>

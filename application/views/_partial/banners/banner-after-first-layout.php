@@ -23,21 +23,20 @@ if( $bannerLayout1['blocation_active']){ ?>
 		}else{
 			$slideArr = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId );
 			foreach($slideArr as $slideScreen){
-				
-			switch($slideScreen['afile_screen']){
-				case applicationConstants::SCREEN_MOBILE:
-					$mobile_url = '<480:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
-					break;
-				case applicationConstants::SCREEN_IPAD:
-					$tablet_url = ' <768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).','.'  <1024:' .CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)), CONF_IMG_CACHE_TIME, '.jpg').",";
-					break;
-				case applicationConstants::SCREEN_DESKTOP:
-					$desktop_url = ' >1024:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
-					break;
-			}
+				switch($slideScreen['afile_screen']){
+					case applicationConstants::SCREEN_MOBILE:
+						$mobile_url = '<480:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+						break;
+					case applicationConstants::SCREEN_IPAD:
+						$tablet_url = ' <768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).','.'  <1024:' .CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)), CONF_IMG_CACHE_TIME, '.jpg').",";
+						break;
+					case applicationConstants::SCREEN_DESKTOP:
+						$desktop_url = ' >1024:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+						break;
+				}
 			}
 		}
-				
+	
 		if($val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
 			Promotion::updateImpressionData($val['banner_record_id']);	
 		}/* else{
@@ -49,3 +48,6 @@ if( $bannerLayout1['blocation_active']){ ?>
 	</section>
 <?php } 	?>
 <section class="clearfix"></section>
+<script>
+/* alert($( window ).width()); */
+</script>

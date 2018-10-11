@@ -64,7 +64,7 @@ $(document).ready(function(){
 </script>
 <script>
 $(document).ready(function(){	
-	/* $('#optionvalues').tableDnD({
+	$('#optionvalues').tableDnD({
 		onDrop: function (table, row) {
 			
 			var order = $.tableDnD.serialize('id');			
@@ -79,6 +79,6 @@ $(document).ready(function(){
 			});
 		},
 		dragHandle: ".dragHandle",		
-	}); */
+	});
 });
 </script>
