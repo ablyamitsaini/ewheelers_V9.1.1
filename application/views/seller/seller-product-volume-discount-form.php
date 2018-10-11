@@ -9,5 +9,5 @@
 
 	$btnCancelFld = $frmSellerProductVolDiscount->getField('btn_cancel');
 	$btnCancelFld->setFieldTagAttribute('onClick', 'sellerProductVolumeDiscounts(' . $selprod_id . ');');
-	echo $frmSellerProductVolDiscount->getFormHtml(); ?>	
+	echo $frmSellerProductVolDiscount->getFormHtml(); ?>
 </div>

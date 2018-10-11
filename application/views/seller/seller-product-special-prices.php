@@ -2,18 +2,18 @@
 <div class="box__head box__head--large">
    <h4><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h4>
    <div class="group--btns">
-		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Special_Price', $siteLangId)?></a>	
+		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Special_Price', $siteLangId)?></a>
 	</div>
 </div>
-<div class="box__body">	
+<div class="box__body">
 	<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
-	<div class="tabs__content form">	
-		<div class="form__content">	
+	<div class="tabs__content form">
+		<div class="form__content">
 			<div class="col-md-12">
-				<div class="form__subcontent">						
-				<?php 
+				<div class="form__subcontent">
+				<?php
 				$arr_flds = array(
 					'listserial'=> Labels::getLabel( 'LBL_Sr.', $siteLangId ),
 					'splprice_price' => Labels::getLabel( 'LBL_Special_Price', $siteLangId ),
@@ -53,7 +53,7 @@
 								$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 								'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"sellerProductSpecialPriceForm(".$selprod_id.", ".$row['splprice_id'].")"),
 								'<i class="fa fa-edit"></i>', true);
-								
+
 								$li = $ul->appendElement("li");
 								$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 								'title'=>Labels::getLabel('LBL_Delete',$siteLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"),
@@ -72,10 +72,10 @@
 							'href'=>'javascript:void(0);',
 							'label'=>Labels::getLabel('LBL_Add_New_Special_Price', $siteLangId),
 							'onClick'=>'sellerProductSpecialPriceForm('.$selprod_id.', 0);',
-							)	
+							)
 					);
 					$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
-					
+
 					// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Special_Price_added_to_this_product', $siteLangId));
 					/* $this->includeTemplate('_partial/no-record-found.php',array('siteLangId' => $siteLangId),false); */
 				}
@@ -83,8 +83,8 @@
 					echo $tbl->getHtml();
 				}
 				?>
-				</div>	
-			</div>	
-		</div>		
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

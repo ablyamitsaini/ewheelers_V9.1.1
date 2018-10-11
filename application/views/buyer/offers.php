@@ -12,15 +12,15 @@
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
-								<div class="box__body">
-									<div class="tabs__content">
-										<div class="form__content">
+							
+
+
 											<div id="listing" class="row">
 												<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 											</div>
-										</div>
-									</div>
-							   </div>
+
+
+
 							</div>
 						</div>
 					</div>

@@ -5,7 +5,7 @@
 	<?php echo Labels::getLabel('LBL_General',$siteLangId);?></a></li>
 	<li class="<?php echo ($activeTab == 'SEO')?'is-active':''; echo $inactive;?>">
 	<a href="javascript:void(0)" <?php if($selprod_id>0){?>onClick="productSeo(<?php echo $selprod_id;?>)"<?php }?>>
-	<?php echo Labels::getLabel('LBL_Seo',$siteLangId);?></a></li>	
+	<?php echo Labels::getLabel('LBL_Seo',$siteLangId);?></a></li>
 	<li class="<?php echo ($activeTab == 'SPECIAL_PRICE')?'is-active':''; echo $inactive;?>">
 	<a href="javascript:void(0)" <?php if($selprod_id>0){?>onClick="sellerProductSpecialPrices(<?php echo $selprod_id;?>)"<?php }?>>
 	<?php echo Labels::getLabel('LBL_Special_Price',$siteLangId);?></a></li>

@@ -447,7 +447,7 @@
 	background: #f8f8f8;
 	padding: 20px;
 	text-align: center;
- 
+
 }
 
 /*
@@ -864,7 +864,7 @@ ul.tabs-js li a.active {
 @media only screen and (max-width: 1025px) {
 	.buy-group .btn {
 		padding-right: 20px;
-		padding-left: 20px;
+		padding-left: 20px; min-width: inherit;
 	}
 
 	.img-static-scroll {

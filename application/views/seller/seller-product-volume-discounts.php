@@ -2,17 +2,17 @@
 <div class="box__head box__head--large">
    <h4><?php echo $productCatalogName; ?></h4>
 	<div class="group--btns">
-		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Volume_Discount', $siteLangId)?></a>	
+		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Volume_Discount', $siteLangId)?></a>
 	</div>
 </div>
-<div class="box__body">	
+<div class="box__body">
 	<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
-	<div class="tabs__content form">	
-		<div class="form__content">				
-			<div class="form__subcontent">						
-			<?php 
+	<div class="tabs__content form">
+		<div class="form__content">
+			<div class="form__subcontent">
+			<?php
 			$arr_flds = array(
 				'listserial'=> Labels::getLabel( 'LBL_Sr.', $siteLangId ),
 				'voldiscount_min_qty' => Labels::getLabel( 'LBL_Minimum_Quantity', $siteLangId ),
@@ -42,7 +42,7 @@
 							$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 							'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"sellerProductVolumeDiscountForm(".$selprod_id.", ".$row['voldiscount_id'].")"),
 							'<i class="fa fa-edit"></i>', true);
-							
+
 							$li = $ul->appendElement("li");
 							$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 							'title'=>Labels::getLabel( 'LBL_Delete', $siteLangId ),"onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"),
@@ -71,7 +71,7 @@
 					'href'=>'javascript:void(0);',
 					'label'=>Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId),
 					'onClick'=>'sellerProductVolumeDiscountForm('.$selprod_id.', 0);',
-					)	
+					)
 				);
 				$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
 				/* $this->includeTemplate('_partial/no-record-found.php',array('siteLangId' => $siteLangId),false); */
@@ -80,7 +80,7 @@
 				echo $tbl->getHtml();
 			}
 			?>
-			</div>	
-		</div>		
+			</div>
+		</div>
 	</div>
 </div>

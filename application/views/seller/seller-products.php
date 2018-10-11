@@ -17,7 +17,7 @@ foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
 }
 if($page ==1){
-	
+
 	$sr_no = 0;
 }else{
 	$sr_no = ($page-1) * $pageSize;
@@ -55,10 +55,10 @@ foreach ($arrListing as $sn => $row){
 				if(applicationConstants::ACTIVE == $row['selprod_active']){
 					$active = 'checked';
 				}
-				
+
 
 				$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" value="'.$row['selprod_id'].'" id="switch'.$row['selprod_id'].'" onclick="toggleSellerProductStatus(event,this)"/><label for="switch'.$row['selprod_id'].'">Toggle</label></div>';
-			
+
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'action':
@@ -79,7 +79,7 @@ foreach ($arrListing as $sn => $row){
 					'title'=>Labels::getLabel('LBL_Clone',$siteLangId),"onclick"=>"sellerProductCloneForm(".$row['selprod_product_id'].",".$row['selprod_id'].")"),
 					'<i class="fa fa-clone"></i>', true);
 				}
-				
+
 			break;
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
@@ -98,7 +98,7 @@ if (count($arrListing) == 0){ ?>
 } else {
 	echo $tbl->getHtml();
 }
-	
+
 if( !$product_id ){
   $postedData['page'] = $page;
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSellerProductSearchPaging') );

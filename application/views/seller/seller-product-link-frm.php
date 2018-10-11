@@ -2,24 +2,24 @@
 <div class="box__head">
 	<h4><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h4>
 </div>
-<div class="box__body">	
+<div class="box__body">
 	<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
 	<div class="tabs__content form">
-		
+
 		<div class="form__content">
-			
+
 			<div class="form__subcontent">
 				<?php
 				$sellerproductLinkFrm->setFormTagAttribute('onsubmit','setUpSellerProductLinks(this); return(false);');
 				$sellerproductLinkFrm->setFormTagAttribute('class','form form--horizontal');
-				$sellerproductLinkFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
-				$sellerproductLinkFrm->developerTags['fld_default_col'] = 8;
+				$sellerproductLinkFrm->developerTags['colClassPrefix'] = 'col-lg-8 col- ';
+				$sellerproductLinkFrm->developerTags['fld_default_col'] = 12;
 				echo $sellerproductLinkFrm->getFormHtml(); ?>
-			</div>	
-		</div>	
-		
+			</div>
+		</div>
+
 	</div>
 </div>
 
@@ -51,7 +51,7 @@ $("document").ready(function(){
 		}
 	});
 	$('#buy-together-products').delegate('.remove_buyTogether', 'click', function() {
-	
+
 		$(this).parent().remove();
 	});
 	$('input[name=\'products_related\']').autocomplete({
@@ -80,19 +80,19 @@ $("document").ready(function(){
 		}
 	});
 	$('#related-products').delegate('.remove_related', 'click', function() {
-	
+
 		$(this).parent().remove();
 	});
 	<?php foreach($upsellProducts as $key => $val){
-		
+
 		?>
-	
+
        	$('#buy-together-products').append("<li id=\"productBuyTogether<?php echo $val['selprod_id'];?>\"><i class=\"remove_buyTogether remove_param fa fa-remove\"></i><?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_upsell[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
-    <?php } 
+    <?php }
 	foreach($relatedProducts as $key => $val){
-		
+
 		?>
-	
+
        	$('#related-products').append("<li id=\"productRelated<?php echo $val['selprod_id'];?>\"><i class=\"remove_related remove_param fa fa-remove\"></i><?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_related[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
     <?php } ?>
 });

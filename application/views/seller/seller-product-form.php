@@ -10,9 +10,9 @@
       <div class="cols--group">
         <div class="panel__head ">
           <h2><?php echo Labels::getLabel('LBL_Inventory_Setup',$siteLangId); ?></h2>
-          <div class="group--btns panel__head_action"> 
-			  <a href="<?php echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back_To_My_Inventory', $siteLangId)?></strong> </a> 
-			  <a href="<?php echo CommonHelper::generateUrl('seller','catalog');?>" class="btn btn--secondary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back_To_Products', $siteLangId)?></strong> </a> 
+          <div class="group--btns panel__head_action">
+			  <a href="<?php echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back_To_My_Inventory', $siteLangId)?></strong> </a>
+			  <a href="<?php echo CommonHelper::generateUrl('seller','catalog');?>" class="btn btn--secondary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back_To_Products', $siteLangId)?></strong> </a>
 		  </div>
         </div>
         <div class="panel__body">
