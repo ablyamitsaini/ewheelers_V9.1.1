@@ -3420,11 +3420,11 @@ class SellerController extends LoggedUserController {
 			$fld_model->requirements()->setRequired();
 		}
 		
-		if($type == 'CATALOG_PRODUCT'){
+		/* if($type == 'CATALOG_PRODUCT'){ */
 			$fld = $frm->addRequiredField(Labels::getLabel('LBL_Brand/Manfacturer', $this->siteLangId),'brand_name');		
 			$fld->htmlAfterField = '<br/><small class="text--small"><a href="javascript:void(0)" onClick="addBrandReqForm(0);">'. Labels::getLabel('LBL_Brand_not_found?_select_other_and_request_for_brand', $this->siteLangId).'</a></small>';
 			$frm->addHiddenField('','product_brand_id');			
-		}
+		/* } */
 		
 		$frm->addCheckBox(Labels::getLabel('LBL_Product_Featured',$this->siteLangId), 'product_featured', 1, array(), false, 0);
 		

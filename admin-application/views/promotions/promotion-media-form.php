@@ -10,8 +10,10 @@ $langFld->addFieldTagAttribute('class','language-js');
 $screenFld = $mediaFrm->getField('banner_screen');
 $screenFld->addFieldTagAttribute('class','display-js');
 
-$preferredDimensionsStr = '<span class="uploadimage--info" > '.Labels::getLabel('LBL_Preferred_Dimensions_width_*_height',$adminLangId).' '.$bannerWidth . ' * ' . $bannerHeight . '.</span>';
-
+$preferredDimensionsStr = '<span class="uploadimage--info" > '.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),$bannerWidth . ' * ' . $bannerHeight).'</span>';
+$htmlAfterField = $preferredDimensionsStr; 
+/* $htmlAfterField.='<div id="image-listing-js"></div>'; */
+$fld1->htmlAfterField = $htmlAfterField;
 ?>
 <section class="section">
 	<div class="sectionhead">
@@ -42,3 +44,31 @@ $preferredDimensionsStr = '<span class="uploadimage--info" > '.Labels::getLabel(
 		</div>
 	</div>						
 </section>
+
+<script>
+	$(document).on('change','.display-js',function(){
+		var promotionType = <?php echo $promotionType ?>;
+		var screenDesktop = <?php echo applicationConstants::SCREEN_DESKTOP ?>;
+		var screenIpad = <?php echo applicationConstants::SCREEN_IPAD ?>;
+
+		if(promotionType == <?php echo Promotion::TYPE_SLIDES ?>){
+			if($(this).val() == screenDesktop)
+			{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1920 * 550'));
+			}
+			else if($(this).val() == screenIpad)
+			{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 * 500'));
+			}
+			else{
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '640 * 360'));
+			}
+		}else if(promotionType==<?php echo Promotion::TYPE_BANNER ?>){
+			var deviceType = $(this).val();
+			fcom.ajax(fcom.makeUrl('Promotions', 'getBannerLocationDimensions', [<?php echo $promotionId;?>,deviceType]), '', function(t) {
+				var ans = $.parseJSON(t);
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, ans.bannerWidth +' * '+ ans.bannerHeight));
+			});
+		}
+	});
+</script>

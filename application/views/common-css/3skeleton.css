@@ -8308,3 +8308,16 @@ form.custom-form input[type="submit"] {
 	right: 6px;
 	z-index: 9999;
 }
+
+.list-nested {}
+.list-nested li {
+ margin: 10px 0;
+ list-style-position: inside;
+}
+
+.list-nested li li {
+ margin: 10px;
+ list-style: disc;
+ list-style-position: inside;
+ font-size: 0.875em;
+}

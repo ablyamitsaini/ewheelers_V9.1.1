@@ -41,7 +41,7 @@ foreach ($arrListing as $sn => $row){
 						$variantStr .= '<div class="item-yk-head-specification">'.$op['option_name'].': '.$op['optionvalue_name'].'</div>';
 					}
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$variantStr , true);
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.wordwrap($variantStr,150,"<br>\n"), true);
 			break;
 			case 'selprod_price':
 				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat( $row[$key], true, true),true );

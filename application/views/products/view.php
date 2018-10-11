@@ -45,7 +45,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 						<?php foreach( $productImagesArr as $afile_id => $image ){
 							$originalImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'ORIGINAL', 0, $image['afile_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');
 							$mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $image['afile_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');
-							$thumbImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'THUMB', 0, $image['afile_id']) ), CONF_IMG_CACHE_TIME, '.jpg');
+							/* $thumbImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'THUMB', 0, $image['afile_id']) ), CONF_IMG_CACHE_TIME, '.jpg'); */
 						?>
 						<div class="thumb"><a href="<?php echo $originalImgUrl; ?>"><img class="xzoom-gallery" width="80" src="<?php echo $mainImgUrl; ?>"></a></div>
 					  <?php } ?>
@@ -352,9 +352,9 @@ $buyQuantity->addFieldTagAttribute('class','qty');
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBl_Reviews', $siteLangId); ?></h4>
             <?php echo $frmReviewSearch->getFormHtml(); ?> </div>
-          <div class="section__body">
+			<div class="section__body">
               <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
-          </div>
+			</div>
         </div>
         <?php } ?>
       </div>

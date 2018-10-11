@@ -489,7 +489,7 @@ class ReportsController extends LoggedUserController {
 			$frm->addDateField('', 'date_from','',array('placeholder' => Labels::getLabel('LBL_Date_From',$this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender' ));
 			$frm->addDateField('', 'date_to' , '', array('placeholder' => Labels::getLabel('LBL_Date_To',$this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender'));
 			$fld_submit = $frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Search',$this->siteLangId));
-			$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->siteLangId),array('onclick'=>'clearSearch();'));
+			$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear',$this->siteLangId),array('onclick'=>'clearSearch();'));
 			$fld_submit->attachField($fld_cancel);
 		}
 		return $frm;

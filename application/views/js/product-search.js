@@ -523,7 +523,7 @@ function updatePriceFilter(minPrice,maxPrice){
 		}
 		$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('SavedProductsSearch','form'), '' ,function(ans){
-			$.facebox(ans,'faceboxWidth collection-ui-popup');
+			$.facebox(ans,'small-fb-width collection-ui-popup');
 				if( ans.status ){
 					$(document).trigger('close.facebox');
 				}

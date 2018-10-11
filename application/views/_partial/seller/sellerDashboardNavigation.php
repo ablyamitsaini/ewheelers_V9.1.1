@@ -40,13 +40,14 @@ $action = strtolower($action);
 				<!--<li class="<?php //echo ($controller == 'seller' && $action == 'categorybanners') ? 'is-active' : ''; ?>"><a href="<?php // echo CommonHelper::generateUrl('Seller','CategoryBanners'); ?>"><i class="fa fa-th-large"></i><?php // echo Labels::getLabel('LBL_Category_Banners',$siteLangId);?></a></li>-->
 			   <?php } ?>
 				<li class="<?php echo ($controller == 'seller' && ($action == 'customProductForm' || $action == 'customproduct'|| $action == 'catalog')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Products',$siteLangId); ?></a></li>
-			    <li class="<?php echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); ?></a></li>
 			    
-				<?php if( User::canAddCustomProductAvailableToAllSellers() ){?>
+				<!--<li class="<?php /* echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); */ ?></a></li>-->
+			    
+				<?php /* if( User::canAddCustomProductAvailableToAllSellers() ){?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'customcatalogproducts') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProducts'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Requested_Products', $siteLangId); ?></a></li>
 				<?php }else if((User::canAddCustomProduct() === false) && (User::canRequestProduct() === true)){ ?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'requestedcatalog') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','requestedCatalog'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId); ?></a></li>
-				<?php }?>	
+				<?php } */ ?>	
 				
 				<li class="<?php echo ($controller == 'seller' && ($action == 'inventoryupdate')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','InventoryUpdate' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Inventory_Update',$siteLangId); ?></a></li>
 				<?php  if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){?>	

@@ -32,7 +32,8 @@ if($isUserLogged){
           <div class="box box--white box--space box--fixed cols--group ">
             <div class="box__head">
               <h4><?php echo Labels::getLabel('Lbl_Blog_Contribution',$siteLangId); ?></h4>
-            <div class="group--btns panel__head_action">  <a href="<?php echo CommonHelper::generateUrl('Blog'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('Lbl_Back',$siteLangId); ?></a> </div> </div>
+			  <?php $backPageUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : CommonHelper::generateUrl('Blog') ;?>
+            <div class="group--btns panel__head_action">  <a href="<?php echo $backPageUrl; ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('Lbl_Back',$siteLangId); ?></a> </div> </div>
 <div class="gap"></div>
             <?php echo $frm->getFormHtml(); ?> </div>
 <div class="gap"></div>
