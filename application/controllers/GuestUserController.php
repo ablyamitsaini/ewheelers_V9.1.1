@@ -1166,7 +1166,7 @@ class GuestUserController extends MyAppController {
 		$this->set('msg', Labels::getLabel('MSG_CHANGE_EMAIL_REQUEST_SENT_SUCCESSFULLY',$this->siteLangId));	
 		$this->_template->render(false, false, 'json-success.php');	
 	}
-	
+		
 	public function logout(){
 		// Delete googleplus session if exist
 		if(isset($_SESSION['access_token'])){
@@ -1195,7 +1195,7 @@ class GuestUserController extends MyAppController {
 		unset($_SESSION['registered_supplier']['id']);
 		UserAuthentication::clearLoggedUserLoginCookie();
 		
-		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
+		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));		
 	}
 	
 	private function getForgotForm(){

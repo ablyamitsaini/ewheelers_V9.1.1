@@ -161,17 +161,26 @@ class UserAuthentication extends FatModel {
 		$srch = User::getSearchObject(true,false);				
 		$srch->addCondition('credential_email', '=', $useremail);		
 		$rs = $srch->getResultSet();		
-		if ( $row = $db->fetch($rs)) {			
-			/* $this->error = Labels::getLabel('ERR_YOUR_ACCOUNT_ALREADY_EXIST._PLEASE_LOGIN',$this->commonLangId);
-			return false; */
-			$rowUser = User::getAttributesById($row['credential_user_id']);
+		$row = $db->fetch($rs);
+		if (!empty($row)) {
+			if($row['user_is_buyer'] != 1){
+				$this->error = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->commonLangId);;
+				return false;
+			}
+
+			if($row['credential_verified'] == 1 && $row['credential_active'] == 1 ){
+				$this->error = Labels::getLabel('ERR_YOUR_ACCOUNT_ALREADY_EXIST._PLEASE_LOGIN',$this->commonLangId);
+				return false;
+			}
+			
+			$rowUser = User::getAttributesById($row['user_id']);
 		
 			$rowUser['user_ip'] = $ip;
 			$rowUser['user_is_guest'] = true;
 			$rowUser['user_email'] = $row['credential_email'];
 			$this->setSession($rowUser);
 			
-			Cart::setCartAttributes( $row['credential_user_id'] );
+			Cart::setCartAttributes( $row['user_id'] );
 			return true;
 		}
 	

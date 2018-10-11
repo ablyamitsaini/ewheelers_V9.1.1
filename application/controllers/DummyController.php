@@ -572,14 +572,15 @@ echo $str;
 	}
 	
 	function test(){
-				
-		$orders = new Orders('O1538197607');	
-		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
-		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
-		if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
-			die('dsds');
-		}	
-		CommonHelper::printArray($childOrderInfo); exit;
+		$useremail = 'guest@dummyid.com';	
+		$srch = User::getSearchObject(true,false);				
+		$srch->addCondition('credential_email', '=', $useremail);		
+		$rs = $srch->getResultSet();		
+		$row = FatApp::getDb()->fetch($rs);
+		if(empty($row)){
+			die('dsd');
+		}
+		CommonHelper::printArray($row); exit;
 	}
 	
 	private function getShopInfo($shop_id){
