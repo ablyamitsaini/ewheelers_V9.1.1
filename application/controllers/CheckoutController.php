@@ -4,8 +4,8 @@ class CheckoutController extends MyAppController{
 	
 	public function __construct($action) {
 		parent::__construct($action);
-		$user_id = 0;
-		if( UserAuthentication::isUserLogged() ){
+		$user_id = 0;			
+		if( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()){  
 			$user_is_buyer = User::getAttributesById( UserAuthentication::getLoggedUserId(), 'user_is_buyer' );
 			if( !$user_is_buyer ){
 				$errMsg = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->siteLangId);
@@ -26,7 +26,7 @@ class CheckoutController extends MyAppController{
 		foreach( $criteria as $key => $val ) {
             switch( $key ) {
 				case 'isUserLogged':
-					if( !UserAuthentication::isUserLogged() ){
+					if( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){		
 						$key = false;
 						Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
 						return false;
@@ -182,10 +182,11 @@ class CheckoutController extends MyAppController{
 	public function loadLoginDiv(){
 		$this->_template->render( false, false );
 	}
-	
+		
 	public function login(){
 		$loginFormData = array(
 			'loginFrm' 		=> $this->getLoginForm(),
+			'guestLoginFrm' => $this->getGuestUserForm($this->siteLangId),
 			'siteLangId'	=> $this->siteLangId,
 			'showSignUpLink' => true,
 			'onSubmitFunctionName' => 'setUpLogin'
@@ -224,6 +225,7 @@ class CheckoutController extends MyAppController{
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
 			FatUtility::dieWithError( Message::getHtml() );
 		}
+		
 		$addressFrm = $this->getUserAddressForm( $this->siteLangId );
 		$addresses = UserAddress::getUserAddresses( UserAuthentication::getLoggedUserId(), $this->siteLangId );
 		
@@ -269,7 +271,7 @@ class CheckoutController extends MyAppController{
 	}
 	
 	public function setUpAddressSelection(){
-		if( !UserAuthentication::isUserLogged() ){
+		if( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
 			$this->set('redirectUrl', CommonHelper::generateUrl('GuestUser','LoginForm'));
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
 			FatUtility::dieWithError( Message::getHtml() );
@@ -281,7 +283,8 @@ class CheckoutController extends MyAppController{
 		$isShippingSameAsBilling = isset($post['isShippingSameAsBilling']) ? FatUtility::int($post['isShippingSameAsBilling']) : 0;
 		
 		// Validate cart has products and has stock.
-		//$this->cartObj = new Cart();
+		//$this->cartObj = new Cart(); 
+		
 		$hasProducts = $this->cartObj->hasProducts();
 		$hasStock = $this->cartObj->hasStock();
 		
@@ -439,13 +442,12 @@ class CheckoutController extends MyAppController{
 	}
 	
 	public function getCarrierServicesList( $product_key, $carrier_id = 0) {
-		if( !UserAuthentication::isUserLogged() ){
+		if( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
-        $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
-	var_dump($carrierList);
+        $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);	
         $this->set('options', $carrierList);
         $this->_template->render(false, false);
     }
@@ -1141,7 +1143,7 @@ class CheckoutController extends MyAppController{
 			FatUtility::dieWithError( Labels::getLabel("MSG_Invalid_Request!", $this->siteLangId) );
 		}
 		
-		if( !UserAuthentication::isUserLogged() ){
+		if( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
 			/* Message::addErrorMessage( Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() ); */
 			FatUtility::dieWithError( Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId) ); 
@@ -1346,7 +1348,7 @@ class CheckoutController extends MyAppController{
 		$cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
 		$userWalletBalance = User::getUserBalance($user_id,true);
 		$pmethod_id = FatApp::getPostedData( 'pmethod_id', FatUtility::VAR_INT, 0  );
-			
+		
 		if( $cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'],FatUtility::VAR_FLOAT) ) && !$pmethod_id ){ 
 			$this->_template->render(false, false, 'json-success.php');
 			exit;
@@ -1603,7 +1605,7 @@ class CheckoutController extends MyAppController{
 	}
 	
 	public function getCouponForm(){
-		/* if( !UserAuthentication::isUserLogged() ){
+		/* if( !UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
 			Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
 			FatUtility::dieWithError( Message::getHtml() );
 		} */

@@ -5,7 +5,7 @@
     <div class="row ">
       <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
         <section class="section">
-          <?php if (!UserAuthentication::isUserLogged()) { ?>
+          <?php if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) { ?>
           <div id="login-register" class="step is-current">
             <div class="section-head step__head">1. <?php echo Labels::getLabel('LBL_Login', $siteLangId); ?> </div>
             <div class="check-login-wrapper step__body" style="display:none;"></div>
@@ -14,7 +14,10 @@
           <div class="selected-panel " id="alreadyLoginDiv">
             <div class="selected-panel-type">1. <?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></div>
             <div class="selected-panel-data"><?php echo UserAuthentication::getLoggedUserAttribute('user_email'); ?></div>
+			<?php if(UserAuthentication::isGuestUserLogged()){?>
+			<div class="selected-panel-action"><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout');?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></div>	
             <!--<div class="selected-panel-action"><a onClick="showLoginDiv();" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Change_Login', $siteLangId); ?></a></div>-->
+			<?php }?>
           </div>
           <?php } ?>
         </section>

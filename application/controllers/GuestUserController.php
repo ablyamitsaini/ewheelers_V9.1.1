@@ -21,6 +21,7 @@ class GuestUserController extends MyAppController {
 	
 	public function login() {
 		$authentication = new UserAuthentication();
+
 		if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'])) {
 			Message::addErrorMessage(Labels::getLabel($authentication->getError(),$this->siteLangId));
 			FatUtility::dieJsonError( FatUtility::decodeHtmlEntities(Message::getHtml()));
@@ -59,6 +60,49 @@ class GuestUserController extends MyAppController {
 		$this->set('redirectUrl',$redirectUrl);
 		$this->set('msg', Labels::getLabel("MSG_LOGIN_SUCCESSFULL",$this->siteLangId));
 		$this->_template->render(false, false, 'json-success.php'); 
+	}
+	
+	public function guestLogin(){ 
+		$frm = $this->getGuestUserForm($this->siteLangId);
+		$post = FatApp::getPostedData();
+		
+		if ( $post == false ) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieJsonError( Message::getHtml());
+		}
+					
+		$authentication = new UserAuthentication();
+		if (!$authentication->guestLogin(FatApp::getPostedData('user_email'), FatApp::getPostedData('user_name'), $_SERVER['REMOTE_ADDR'])) {
+			Message::addErrorMessage(Labels::getLabel($authentication->getError(),$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml());
+		}
+		
+		$userId = UserAuthentication::getLoggedUserId();
+		setcookie('uc_id', $userId, time()+3600*24*30,CONF_WEBROOT_URL);	
+		
+		$data = User::getAttributesById($userId,array('user_preferred_dashboard'));	
+		
+		$preferredDashboard = 0;
+		if($data != false){
+			$preferredDashboard = $data['user_preferred_dashboard'];
+		}
+		
+		$redirectUrl = '';
+		
+		if(isset($_SESSION['referer_page_url'])){
+			$redirectUrl = $_SESSION['referer_page_url'];
+			unset($_SESSION['referer_page_url']);
+		}
+		if($redirectUrl == ''){
+			$redirectUrl = User::getPreferedDashbordRedirectUrl($preferredDashboard);
+		}
+		
+		if($redirectUrl == ''){
+			$redirectUrl = CommonHelper::generateUrl('Home');
+		}
+		$this->set('redirectUrl',$redirectUrl);
+		$this->set('msg', Labels::getLabel("MSG_GUEST_LOGIN_SUCCESSFULL",$this->siteLangId));
+		$this->_template->render(false, false, 'json-success.php');
 	}
 	
 	private function setUserLoginCookie(){
@@ -105,6 +149,9 @@ class GuestUserController extends MyAppController {
 	public function checkAjaxUserLoggedIn(){
 		$json = array();
 		$json['isUserLogged'] = FatUtility::int( UserAuthentication::isUserLogged() );
+		if(!$json['isUserLogged']){
+			$json['isUserLogged'] = FatUtility::int( UserAuthentication::isGuestUserLogged() );
+		}
 		die(json_encode($json));
 	}
 	
@@ -1119,7 +1166,7 @@ class GuestUserController extends MyAppController {
 		$this->set('msg', Labels::getLabel('MSG_CHANGE_EMAIL_REQUEST_SENT_SUCCESSFULLY',$this->siteLangId));	
 		$this->_template->render(false, false, 'json-success.php');	
 	}
-	
+		
 	public function logout(){
 		// Delete googleplus session if exist
 		if(isset($_SESSION['access_token'])){
@@ -1148,7 +1195,7 @@ class GuestUserController extends MyAppController {
 		unset($_SESSION['registered_supplier']['id']);
 		UserAuthentication::clearLoggedUserLoginCookie();
 		
-		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
+		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));		
 	}
 	
 	private function getForgotForm(){

@@ -2,7 +2,9 @@
 	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true;
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
-	<div class="col-lg-6 form-side">
+<div class="row">
+	<div class="col-lg-6 form-side add-side">
+	<div class="heading"><?php echo Labels::getLabel('LBL_Existing_User', $siteLangId); ?></div>
 		<?php
 		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
 		$loginFrm->setFormTagAttribute('class', 'form');
@@ -21,11 +23,32 @@
 		$fldSubmit->addFieldTagAttribute("class","btn--block");
 		echo $loginFrm->getFormHtml();
 		?>
+	</div>	
+	  <div class=" col-lg-6 form-side add-side">
+		<div class="heading"><?php echo Labels::getLabel('LBL_Guest_User', $siteLangId); ?></div>
+		<?php 
+		$guestLoginFrm->setFormTagAttribute('class', 'form');
+		$guestLoginFrm->setFormTagAttribute('name', 'frmGuestLogin');
+		$guestLoginFrm->setFormTagAttribute('id', 'frmGuestLogin');
+		$guestLoginFrm->setValidatorJsObjectName('guestLoginFormObj');
+
+		$guestLoginFrm->setFormTagAttribute('onsubmit','return guestUserLogin(this, guestLoginFormObj);');
+		$guestLoginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
+		$guestLoginFrm->developerTags['fld_default_col'] = 12;
+		
+		$fldSpace = $guestLoginFrm->getField('space');
+		$fldSpace->value ='<a href="#" class="forgot">&nbsp;</a>';
+		
+		$fldSubmit = $guestLoginFrm->getField('btn_submit');
+		$fldSubmit->addFieldTagAttribute("class","btn--block");
+		echo $guestLoginFrm->getFormHtml(); ?>
 	</div>
+</div>
+<div class="row">
 	<?php
 	$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
 	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
-		<div class=" col-lg-6 add-side">
+		<div class="col-lg-12 add-side">
 		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
 		  <div class="connect">
 		  <?php if ($facebookLogin) { ?>
@@ -35,7 +58,7 @@
 		V14.141h3.969l0.609-4.625H8.766V6.563c0-1.328,0.359-2.25,2.281-2.25H13.5V0.188z"/>
 			  </svg> </i> <?php echo Labels::getLabel('LBL_Login_With_Facebook',$siteLangId);?></a>
 		  <?php } if ($googleLogin ) { ?>
-			  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="link gp"> <i class="svg"> <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="link gp"> <i class="svg"> <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 		width="36px" height="22.906px" viewBox="0 0 36 22.906" enable-background="new 0 0 36 22.906" xml:space="preserve">
 			  <path   d="M22.453,11.719c0-0.75-0.078-1.328-0.188-1.906H11.453l0,0v3.938h6.5c-0.266,1.672-1.969,4.938-6.5,4.938
 		c-3.906,0-7.094-3.234-7.094-7.234s3.188-7.234,7.094-7.234c2.234,0,3.719,0.953,4.563,1.766L19.125,3c-2-1.875-4.578-3-7.672-3
@@ -46,4 +69,5 @@
 			<?php if( $showSignUpLink ){ ?><p class="text--dark"><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>? <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a></p><?php } ?>
 		  </div>
 		</div>
-	  <?php } ?>
+	  <?php } ?> 
+</div>	  

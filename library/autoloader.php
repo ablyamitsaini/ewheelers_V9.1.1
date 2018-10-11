@@ -1,5 +1,5 @@
 <?php
-function fatAutoLoader($className) {
+function fatAutoLoader($className) { 
 	if (strpos($className, '\\') !== false) {
 		$arr = explode('\\', $className);
 		$className = end($arr);

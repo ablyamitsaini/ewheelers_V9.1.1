@@ -1,11 +1,11 @@
 <?php
 class AddressesController extends LoggedUserController {
 	public function __construct($action){
-		parent::__construct($action);
+		parent::__construct($action);   
 		//$this->set('bodyClass','is--dashboard');
 	}
 	
-	public function setUpAddress(){
+	public function setUpAddress(){ 
 		$frm = $this->getUserAddressForm($this->siteLangId);
 		$post = FatApp::getPostedData();
 		if($post == false){

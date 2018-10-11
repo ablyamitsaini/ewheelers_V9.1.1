@@ -2,19 +2,14 @@
 class LoggedUserController extends MyAppController {
 	public function __construct($action) {
 		parent::__construct($action);
+		
 		UserAuthentication::checkLogin();
-		/* if (!UserAuthentication::isUserLogged()) {
-			if ( FatUtility::isAjaxCall() ) {
-				FatUtility::dieWithError(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
-			}
-			$_SESSION['referer_page_url'] = CommonHelper::getCurrUrl();
-			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		
 		$userObj = new User(UserAuthentication::getLoggedUserId());
 		$userInfo = $userObj->getUserInfo(array(),false,false);	
 		
 		//var_dump($userInfo); exit;
-		if(false == $userInfo || $userInfo['credential_active'] != applicationConstants::ACTIVE ){			
+		if(false == $userInfo || (!UserAuthentication::isGuestUserLogged() && $userInfo['credential_active'] != applicationConstants::ACTIVE )){			
 			if ( FatUtility::isAjaxCall() ) {
 				// FatUtility::dieWithError(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
 				Message::addErrorMessage(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
@@ -39,9 +34,11 @@ class LoggedUserController extends MyAppController {
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
 			break;
 		}
-		if($userInfo['credential_verified'] != 1 && !($_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME] && $_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME]>0)){
+		
+		if((!UserAuthentication::isGuestUserLogged() && $userInfo['credential_verified'] != 1 ) && !($_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME] && $_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME]>0)){
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'logout'));
 		}
+		
 		if(UserAuthentication::getLoggedUserId() < 1){			
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'logout'));
 		}
