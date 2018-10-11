@@ -36,7 +36,7 @@ if( $bannerLayout1['blocation_active']){ ?>
 				}
 			}
 		}
-				
+	
 		if($val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
 			Promotion::updateImpressionData($val['banner_record_id']);	
 		}/* else{

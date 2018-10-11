@@ -13,7 +13,7 @@ Fixes:
 	. Mime type issue in display original image function when file not exist.
 	. Fixed some fatal errors issue from import-export functionality
 	. Updated banner dimensions tables and its functionality.
-	
+	. Removed favorite/wishlist section from seller's account. 
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.

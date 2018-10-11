@@ -22,7 +22,7 @@
 			  <div class="col-md-7 col-xs-12 col-sm-12">
 				<div class="right_panel_head_right">
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm link__filter hide--desktop"><i class="icn"><img src="/images/retina/filter.svg"></i><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></a>
-					<?php if(UserAuthentication::isUserLogged() && (User::isBuyer())) { ?>
+					<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>
 						<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></a>
 					<?php }?>
 					<a href="javascript:void(0)" class="btn btn--primary btn--sm switch--grind switch--link-js grid hide--mobile"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
