@@ -1947,32 +1947,34 @@ body {
   width: 100%;
   vertical-align: top;
   position: relative;
+  display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
 }
 
 .banners .banners_left,
 .banners .banners_right {
-  width: 50%;
+ flex: 0 0 50%; max-width: 50%;
   height: inherit;
   position: relative;
-  display: block;
-  padding-bottom: 20%;
+  display: flex;
   overflow: hidden;
 }
 
 .banners img {
-  position: absolute;
-  overflow: hidden;
-  width: 100%;
+
 }
 
-.banners .banners_left {
-  float: left;
-  text-align: right;
+.banners .banners_left { justify-content: flex-end;
 }
+.banners .banners_right { justify-content: flex-start;
 
-.banners .banners_right {
-  float: right;
-  text-align: left;
 }
 
 .unique-heading {
@@ -2104,7 +2106,7 @@ body {
 }
 
 .store-banner img {
-  display: inline-block;
+  display: block;
   margin: 0 auto;
 }
 
@@ -7000,6 +7002,7 @@ form.custom-form input[type="submit"] {
 .custom-form input[type="text"] {
   width: auto;
   margin: 0 5px;
+  flex: 1;
 }
 
 .image-listing li {
