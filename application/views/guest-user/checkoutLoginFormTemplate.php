@@ -44,11 +44,11 @@
 		echo $guestLoginFrm->getFormHtml(); ?>
 	</div>
 </div>
-<div class="row">
+<div class="row justify-content-center">
 	<?php
 	$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
 	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
-		<div class="col-lg-12 add-side">
+		<div class="col-lg-6 add-side">
 		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
 		  <div class="connect">
 		  <?php if ($facebookLogin) { ?>
@@ -70,4 +70,4 @@
 		  </div>
 		</div>
 	  <?php } ?>
-</div>	  
+</div>
