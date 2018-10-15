@@ -17,6 +17,7 @@ Fixes:
 	. Fixed some fatal errors issue from import-export functionality
 	. Updated banner dimensions tables and its functionality.
 	. Removed favorite/wishlist section from seller's account.
+	. Admin shop collection url-rewriting fixes.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
