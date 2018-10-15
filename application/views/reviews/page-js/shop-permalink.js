@@ -18,7 +18,7 @@ function setupReviewAbuse(frm){
 }
 
 (function() {
-	
+
 	markReviewHelpful = function(reviewId , isHelpful){
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
@@ -30,5 +30,5 @@ function setupReviewAbuse(frm){
 			$.mbsmessage.close();
 		});
 	}
-	
+
 })();

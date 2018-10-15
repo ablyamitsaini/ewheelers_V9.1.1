@@ -4,7 +4,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 <div id="body" class="body bg--gray">
   <div class="section section--pagebar">
-    <div class="fixed-container container--fixed">
+    <div class="container container--fixed">
       <div class="row">
         <div class="col-md-8">
           <div class="cell">
@@ -28,17 +28,17 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
     </div>
   </div>
   <section class="top-space">
-    <div class="fixed-container container--fixed">
-      <div class="row">
+    <div class="container container--fixed">
+      <div>
         <div class="panel panel--centered clearfix">
-          <div class="container container--fluid">
+          <div class="">
             <div id="itemRatings" class="section section--info clearfix">
               <div class="section__head">
                 <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']) , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
               </div>
               <div class="section__body">
                 <div class="box box--white">
-                  <div class="listings__repeated">
+                  <div class="row listings__repeated">
                     <div class="col-md-3">
                       <div class="item__ratings">
                         <ul class="rating">

@@ -1,6 +1,6 @@
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<div class="fixed-container">
+		<div class="container">
 			<div class="row">
 				<div id="categories-js" class="">
 					<div class="row select-categories-slider select-categories-slider-js" >

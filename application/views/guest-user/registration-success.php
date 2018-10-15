@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div class="fixed-container">
+<div class="container">
   <div class="row">
     <div class="container container--fluid">
       <div class="panel panel--centered">

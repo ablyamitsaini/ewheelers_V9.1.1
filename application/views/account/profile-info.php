@@ -1,19 +1,19 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
-		<div class="fixed-container">
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+		<div class="container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> 						   
-				<div class="col-md-10 panel__right--full">
+				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+				<div class="col-xs-10 panel__right--full ">
 					<div class="cols--group">
 					   <div class="panel__head">
 						   <h2><?php echo Labels::getLabel('LBL_Profile',$siteLangId);?></h2>
-						  
+
 						  <?php  if( $showSellerActivateButton ){ ?>
                            	<a href="<?php echo CommonHelper::generateUrl('Seller');?>" class="btn btn--secondary btn--sm panel__head_action" title="<?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?>" ><strong> <?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?></strong> </a>
 						  <?php  } ?>
-						 
+
 					   </div>
 					   <div class="panel__body">
 						 <div class="box box--white box--space">
@@ -37,7 +37,7 @@
 								 <?php if( User::canViewBuyerTab() && User::canViewSupplierTab() ){ ?>
 									<label class="field_label"><strong><?php echo Labels::getLabel('LBL_Preferred_Dashboard',$siteLangId);?> </strong></label>
 									<?php } ?>
-									 <ul class="switch setactive-js">										
+									 <ul class="switch setactive-js">
 										<?php if( User::canViewBuyerTab() && ( User::canViewSupplierTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() ) ){ ?>
 										<li <?php echo (User::USER_BUYER_DASHBOARD == $userPreferredDashboard)?'class="is-active"':''?>><a href="javascript:void(0)" onClick="setPreferredDashboad(<?php echo User::USER_BUYER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></a></li>
 										<?php } ?>
@@ -50,12 +50,12 @@
 									 <a class="btn btn--block btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
 								 </div>
 								 <div class="grid__left" id="profileInfoFrmBlock">
-									<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>										 
+									<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 								 </div>
-								</div>   
+								</div>
 							</div>
 						 </div>
-					   </div> 
+					   </div>
 					</div>
 				</div>
 			</div>

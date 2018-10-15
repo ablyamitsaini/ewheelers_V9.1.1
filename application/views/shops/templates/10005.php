@@ -1,7 +1,7 @@
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 	<div class="shop-header">
 		<div class="shop-nav-bar clearfix">
-			<div class="fixed-container">
+			<div class="container">
 			  <div class="row">
 				<div class="col-lg-9 col-md-6 col-sm-6 col-xs-2"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
 				  <div class="shop-nav">
@@ -12,7 +12,7 @@
 			  </div>
 			</div>
 		</div>
-		<div class="fixed-container">
+		<div class="container">
 			<div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'EXTRA-LARGE')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
 		</div>
 	</div>

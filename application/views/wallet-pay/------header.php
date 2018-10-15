@@ -27,7 +27,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data);
 
 <div class="wrapper">
   <div class="header-checkout">
-    <div class="fixed-container">
+    <div class="container">
       <div class="logo zoomIn"> <a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a> </div>
       <div class="right-info">
         <ul class="trust-banners">

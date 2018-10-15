@@ -11,8 +11,8 @@
 		<?php foreach( $addresses as $address ){
 				$selected_billing_address_id = (!$selected_billing_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_billing_address_id; ?>
 				<div class="col-lg-6 col-md-6 col-xs-12  address-<?php echo $address['ua_id'];?>">
-					<label>
-						<div class="address">
+					<label class="address">
+						<div class="address-inner">
 						<span class="radio">
 							<input <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="billing_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
 				    	</span>

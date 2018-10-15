@@ -1,7 +1,7 @@
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 
 <div class="shop-header">
-  <div class="fixed-container">
+  <div class="container">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-6  col-xs-12"> <a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'MEDIUM')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
@@ -14,7 +14,7 @@
   $this->includeTemplate('shops/shop-layout-navigation.php',$variables,false);  ?>
 </div>
 <div class="clearfix"></div>
-<div class="fixed-container">
+<div class="container">
   <?php if( $haveBannerImage ){ ?>
   <div class="shops-sliders">
     <?php foreach($haveBannerImage as $banner){ ?>

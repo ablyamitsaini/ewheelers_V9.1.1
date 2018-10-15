@@ -7,7 +7,7 @@ $frm->developerTags['fld_default_col'] = 12;
 <div class="panel">
 	<div class="container container--fixed">
 	   <div class="row">
-			<div class="col-md-10 panel__right--full" >
+			<div class="col-xs-10 panel__right--full " >
 				<div class="cols--group">
 					<div class="panel__head">
 						<h2><?php echo Labels::getLabel('LBL_Report_Abuse', $siteLangId); ?></h2>

@@ -94,10 +94,10 @@ if($totReviews){
 	</div>
 
 	<div class="listings__body">
-		<div class="listings__sort">
+		<div class="row listings__sort">
 			<div class="col-md-6 col-sm-6"><span id='reviews-pagination-strip--js' hidden><?php echo Labels::getLabel('Lbl_Displaying_Reviews',$siteLangId); ?>  <span id='reviewStartIndex'></span>-<span id='reviewEndIndex'></span> <?php echo Labels::getLabel('Lbl_of',$siteLangId); ?> <span id='reviewsTotal'></span></span></div>
 			<div class="col-md-6 col-sm-6">
-				<ul class="links--inline align--right">
+				<ul class="links--inline">
 					<li><?php echo Labels::getLabel('Lbl_Sort_By',$siteLangId); ?>:</li>
 					<li><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
 					<li class="is-active"><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
@@ -106,7 +106,7 @@ if($totReviews){
 		</div>
 
 		<div class="listing__all">
-		
+
 		</div>
 		<div id="loadMoreReviewsBtnDiv"  class="align--center">
 		</div>

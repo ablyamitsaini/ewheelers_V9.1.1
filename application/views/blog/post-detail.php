@@ -5,7 +5,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 <section class="">
 	<div class="container">
 		<div class="row">
-			<div class=" col-lg-9 col-md-9 col-sm-9 col-xs-12">
+			<div class=" col-lg-9 col-md-8 col-sm-9 col-xs-12">
 				<div class="posted-content">
 
 					<div class="posted-media">
@@ -165,7 +165,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 					</div>
 				</div>
 		  </div>
-		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+		  <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
             <?php $this->includeTemplate('_partial/blogSidePanel.php'); ?>
           </div>
           <!--<div class="col-md-3 colums__right">
@@ -178,8 +178,8 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 </section>
 <script>
 var boolLoadComments = (<?php echo FatUtility::int($blogPostData['post_comment_opened']); ?>)?true:false ;
-	
-/* for social sticky */	 
+
+/* for social sticky */
 	$(window).scroll(function(){
 		body_height = $(".post-data").position();
 		scroll_position = $(window).scrollTop();
@@ -187,8 +187,8 @@ var boolLoadComments = (<?php echo FatUtility::int($blogPostData['post_comment_o
 			$(".post-data").addClass("is-fixed");
 		else
 			$(".post-data").removeClass("is-fixed");
-		
+
 	});
-	
+
 </script>
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>

@@ -10,5 +10,5 @@
 	<?php echo Labels::getLabel('LBL_Options',$siteLangId);?></a></li>
 	<li class="<?php echo ($activeTab == 'SPECIFICATIONS')?'is-active':''; echo $inactive;?>">
 	<a href="javascript:void(0)" <?php if($product_id>0){?>onClick="sellerCustomProductSpecifications(<?php echo $product_id;?>)"<?php }?>>
-	<?php echo Labels::getLabel('LBL_Specifications',$siteLangId);?></a></li>	
+	<?php echo Labels::getLabel('LBL_Specifications',$siteLangId);?></a></li>
 </ul>

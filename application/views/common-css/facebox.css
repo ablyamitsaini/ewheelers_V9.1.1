@@ -11,7 +11,6 @@
 }
 
 /*animation by pawan*/
-
 /*@-webkit-keyframes hvr-pop {
     50% {
         -webkit-transform: scale(1.2);
@@ -31,7 +30,6 @@
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px transparent;
 }*/
-
 @-webkit-keyframes fadeInUp {
   from {
     opacity: 0;
@@ -41,6 +39,7 @@
     -webkit-transform: translate3d(0, 40px, 0);
     transform: translate3d(0, 40px, 0);
   }
+
   to {
     opacity: 1;
     /*visibility: visible;*/
@@ -58,6 +57,7 @@
     -webkit-transform: translate3d(0, 40px, 0);
     transform: translate3d(0, 40px, 0);
   }
+
   to {
     visibility: visible;
     opacity: 1;
@@ -88,7 +88,21 @@
   padding: 15px;
   padding-top: 40px;
   background: #fff;
+  border-radius: 4px;
 }
+
+#facebox .content .pop-up-title {
+  color: var(--txt-color);
+  font-size: 1em; text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: solid 1px var(--border-color);
+}
+
+#facebox .content.small-fb-width {  width: 100%;  max-width: 350px;}
+#facebox .content.medium-fb-width {  width: 100%;  max-width: 650px;}
+#facebox .content.large-fb-width { width: 100%;  max-width: 800px; min-width: 350px;}
 
 #facebox .content.faceboxWidth {
   width: 850px;
@@ -159,7 +173,6 @@
 /* #facebox .content.faceboxFixed {
     position: fixed;
 } */
-
 /*
 #facebox .close:hover{animation: spin180 0.4s;-webkit-animation: spin180 0.4s;}
 
@@ -183,7 +196,6 @@
 	from {-ms-transform: rotate(0deg);}
 	to {-ms-transform: rotate(360deg);}
 }*/
-
 #facebox .close img {
   opacity: 0.3;
 }
@@ -228,10 +240,12 @@
     left: 0 !important;
     right: 0 !important;
   }
+
   #facebox .content {
     display: block;
     padding: 10px;
   }
+
   #facebox .content.faceboxWidth {
     width: auto;
   }
@@ -241,6 +255,7 @@
   #facebox .content {
     padding-top: 30px;
   }
+
   #facebox .content.fbminwidth {
     min-width: inherit;
   }

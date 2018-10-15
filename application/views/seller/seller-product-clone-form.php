@@ -5,7 +5,7 @@
 <div class="box__body">
     <?php
 		$frm->setFormTagAttribute('class', 'form form--horizontal');
-		$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+		$frm->developerTags['colClassPrefix'] = 'col-lg-12';
 		$frm->developerTags['fld_default_col'] = 12;
 		$frm->setFormTagAttribute('onsubmit','setUpSellerProductClone(this); return(false);');
 		echo $frm->getFormHtml();

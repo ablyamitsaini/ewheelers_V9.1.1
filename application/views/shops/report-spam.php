@@ -12,7 +12,7 @@
 
 <div id="body" class="body bg--gray">
   <section class="top-space">
-    <div class="fixed-container">
+    <div class="container">
       <div class="row">
         <div class="col-md-8 col-sm-8">
           <div class="cell">

@@ -5,7 +5,7 @@ if(!empty($offers)){
 		$discountValue = ($row['coupon_discount_in_percent'] == ApplicationConstants::PERCENTAGE)?$row['coupon_discount_value'].' %':CommonHelper::displayMoneyFormat($row['coupon_discount_value']);
 		?>
 			<div class="col-md-6">
-			   <div class="box box--white box--space box--offer">
+			   <div class="box--offer">
 				   <div class="row">
 						<div class="col-md-4 col-sm-4">
 						   <div class="offer">

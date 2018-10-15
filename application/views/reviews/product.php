@@ -2,7 +2,7 @@
 
 <div id="body" class="body bg--gray">
   <div class="section section--pagebar">
-    <div class="fixed-container container--fixed">
+    <div class="container container--fixed">
       <div class="row">
         <div class="col-md-8">
           <div class="cell">
@@ -26,10 +26,10 @@
     </div>
   </div>
   <section class="top-space">
-    <div class="fixed-container container--fixed">
-      <div class="row">
+    <div class="container container--fixed">
+      <div class="">
         <div class="panel panel--centered clearfix">
-          <div class="fixed-container container--fluid">
+          <div class="">
             <div id="itemRatings" class="section   clearfix">
               <div class="section__head">
                 <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']);?></h4>

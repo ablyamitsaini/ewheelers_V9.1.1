@@ -9,7 +9,7 @@
 
 <div id="body" class="body bg--shop" <?php if($showBgImage){ echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; } ?>>
   <div class="shop-bar">
-    <div class="fixed-container">
+    <div class="container">
       <div class="row">
       <div class="col-lg-7 col-md-7 col-sm-7  col-xs-12">
           <div class="shops-detail">
@@ -53,7 +53,7 @@
 
 	?>
 	<section class="top-space">
-		<div class="fixed-container">
+		<div class="container">
 		  <div class="white--bg padding20">
 			<div class="row">
 			  <div class="col-lg-12 col-md-12 col-sm-12  col-xs-12">

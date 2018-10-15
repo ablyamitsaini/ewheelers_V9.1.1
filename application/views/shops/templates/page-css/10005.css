@@ -291,7 +291,7 @@
     width: 260px;
     z-index: 110;
   }
-  .shop-nav .fixed-container {
+  .shop-nav .container {
     padding: 0;
   }
   .shop-navigations {
@@ -371,7 +371,7 @@
     visibility: visible;
     width: 100%;
   }
-  .subnav__wrapper .fixed-container, .shop-navigations>li .subnav__wrapper.addspace {
+  .subnav__wrapper .container, .shop-navigations>li .subnav__wrapper.addspace {
     padding: 0;
   }
 }

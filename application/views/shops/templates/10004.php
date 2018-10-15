@@ -1,7 +1,7 @@
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 
 <div class="shop-header shop--header04">
-  <div class="fixed-container">
+  <div class="container">
     <div class="row">
       <div class="col-xl-2 col-lg-6">
         <div class="flex-align-center"><a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>

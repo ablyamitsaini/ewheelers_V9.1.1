@@ -4,7 +4,7 @@ if( isset( $collections ) && count($collections) ){
 	foreach( $collections as $collection_id => $row ){ ?>
 	<?php if( isset($row['products']) && count($row['products']) ) { ?>
 	 <section class="padd40">
-      <div class="fixed-container">
+      <div class="container">
         <div class="section-head">
 			<?php echo ($row['collection_name'] != '') ? ' <div class="section_heading">' . $row['collection_name'] .'</div>' : ''; ?>
 			<?php echo ($row['collection_description'] != '') ? '<p>' . nl2br($row['collection_description']) . '</p>' : ''; ?>

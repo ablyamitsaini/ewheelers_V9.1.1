@@ -51,7 +51,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 							<span class="link__mobilenav"></span>
 							<div class="subnav">
 								<div class="subnav__wrapper ">
-									<div class="fixed-container">
+									<div class="container">
 										<div class="subnav_row">
 											<ul class="sublinks">
 												<?php $subyChild=0;
@@ -111,7 +111,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 					<span class="link__mobilenav"></span>
 					<div class="subnav">
 						<div class="subnav__wrapper ">
-							<div class="fixed-container">
+							<div class="container">
 								<div class="subnav_row">
 									<ul class="sublinks">
 									<?php

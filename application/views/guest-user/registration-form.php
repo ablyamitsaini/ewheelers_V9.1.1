@@ -2,7 +2,7 @@
 
 <div id="body" class="body bg--gray">
   <section class="top-space ">
-    <div class="fixed-container">
+    <div class="container">
       <div class="panel panel--centered">
         <div class="box box--white box--tabled">
           <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right' : '';?>">

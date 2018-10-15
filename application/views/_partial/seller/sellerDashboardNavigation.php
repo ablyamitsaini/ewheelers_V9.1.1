@@ -5,7 +5,7 @@ $action = strtolower($action);
 <div class="col-md-2 hide--mobile hide--tab no-print">
 	<div class="box box--white box--space">
 	   <h6><?php echo Labels::getLabel('LBL_Seller_Dashboard',$siteLangId); ?></h6>
-		
+
 		<?php if(User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab()){?>
 		<div class="gap"></div>
 		<div class="dashboard-togles dropdown"><span><?php echo Labels::getLabel('LBL_Seller',$siteLangId); ?> </span><a href="javascript:void(0)" class="ripplelink fa fa-ellipsis-v dropdown__trigger-js"><span class="ink animate" ></span></a>
@@ -34,28 +34,29 @@ $action = strtolower($action);
 		   <h6><?php echo Labels::getLabel('LBL_Shop',$siteLangId);?></h6>
 		   <ul class="links--vertical">
 			   <li class="<?php echo ($controller == 'seller' && $action == 'shop') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','shop'); ?>"><i class="fa fa-shopping-basket"></i><?php echo Labels::getLabel('LBL_Manage_Shop',$siteLangId);?></a></li>
-			   
+
 			   <?php if( $isShopActive && $shop_id > 0 ){ ?>
 			   <li><a target="_blank" href="<?php echo CommonHelper::generateUrl('Shops','view', array($shop_id)); ?>"><i class="fa fa-shopping-cart"></i><?php echo Labels::getLabel('LBL_View_Shop',$siteLangId);?></a></li>
 				<!--<li class="<?php //echo ($controller == 'seller' && $action == 'categorybanners') ? 'is-active' : ''; ?>"><a href="<?php // echo CommonHelper::generateUrl('Seller','CategoryBanners'); ?>"><i class="fa fa-th-large"></i><?php // echo Labels::getLabel('LBL_Category_Banners',$siteLangId);?></a></li>-->
 			   <?php } ?>
 				<li class="<?php echo ($controller == 'seller' && ($action == 'customProductForm' || $action == 'customproduct'|| $action == 'catalog')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Products',$siteLangId); ?></a></li>
-			    
+
 				<!--<li class="<?php /* echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); */ ?></a></li>-->
-			    
+
 				<?php /* if( User::canAddCustomProductAvailableToAllSellers() ){?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'customcatalogproducts') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProducts'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Requested_Products', $siteLangId); ?></a></li>
 				<?php }else if((User::canAddCustomProduct() === false) && (User::canRequestProduct() === true)){ ?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'requestedcatalog') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','requestedCatalog'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId); ?></a></li>
-				<?php } */ ?>	
-				
+				<?php } */ ?>
+
+
 				<li class="<?php echo ($controller == 'seller' && ($action == 'inventoryupdate')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','InventoryUpdate' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Inventory_Update',$siteLangId); ?></a></li>
-				<?php  if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){?>	
+				<?php  if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){?>
 				<li class="<?php echo ($controller == 'importexport' && ($action == 'index')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('ImportExport','index' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Import_Export',$siteLangId); ?></a></li>
 				<?php }?>
 		   </ul>
 		</div>
-		
+
 		<div class="box box--list">
 		   <h6><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></h6>
 		   <ul class="links--vertical">
@@ -70,9 +71,9 @@ $action = strtolower($action);
 				<li class="<?php echo ($controller == 'seller' && $action == 'taxcategories') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','taxCategories'); ?>"><i class="fa fa fa-usd"></i><?php echo Labels::getLabel('LBL_Tax_Category',$siteLangId);?></a></li>
 				<?php /*?><li class="<?php echo ($controller == 'seller' && $action == 'socialplatforms') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','socialPlatforms'); ?>"><i class="fa fa-share-alt"></i><?php echo Labels::getLabel('LBL_Social_Platforms',$siteLangId);?></a></li><?php */?>
 				<li class="<?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','options'); ?>"><i class="fa fa-plus-square-o"></i><?php echo Labels::getLabel('LBL_Options',$siteLangId);?></a></li>
-			</ul>	   
+			</ul>
 		</div>
-		<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>  
+		<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>
 		<div class="box box--list">
 		    <h6><?php echo Labels::getLabel("LBL_Subscriptions",$siteLangId); ?></h6>
 		    <ul class="links--vertical">
@@ -81,7 +82,7 @@ $action = strtolower($action);
 			</ul>
 		</div>
 		<?php } ?>
-	
+
 		<?php /* if(User::canViewAdvertiserTab()) { ?>
 			<div class="box box--list">
 				<h6><?php echo Labels::getLabel("LBL_Promotions",$siteLangId); ?></h6>

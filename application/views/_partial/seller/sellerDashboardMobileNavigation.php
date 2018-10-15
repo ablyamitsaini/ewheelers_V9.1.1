@@ -2,7 +2,7 @@
 $controller = strtolower($controller);
 $action = strtolower($action);
 ?>
-<ul class="list--vertical hide--desktop">	
+<ul class="list--vertical hide--desktop">
 	<li class="<?php echo ($controller == 'seller' && $action == 'index')?'is-active':''?>"><a href="<?php echo CommonHelper::generateUrl('Seller'); ?>"><?php echo Labels::getLabel('LBL_Dashboard',$siteLangId);?></a></li>
 	<li class="has-child"><span class="parents--link"><?php echo Labels::getLabel('LBL_Shop',$siteLangId);?></span>
 		<ul class="childs">
@@ -29,7 +29,7 @@ $action = strtolower($action);
 			<li class="<?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl(	'Seller','options'); ?>"><?php echo Labels::getLabel('LBL_Options', $siteLangId); ?></a></li>
 		</ul>
 	</li>
-	<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?> 
+	<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>
 		<li class="has-child"><span class="parents--link"><?php echo Labels::getLabel('LBL_Subscriptions', $siteLangId); ?></span>
 			<ul class="childs">
 				<li class="<?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions'); ?>"><?php echo Labels::getLabel('LBL_My_Subscriptions', $siteLangId); ?></a></li>

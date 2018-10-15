@@ -310,7 +310,7 @@ body.toggled_left .navigation-wrapper {
 	width: 260px;
 	z-index: 110;
 }
-.navigation-wrapper .fixed-container {
+.navigation-wrapper .container {
 	padding: 0;
 }
 .navigations {
@@ -410,7 +410,7 @@ body.toggled_left .navigation-wrapper {
 	visibility: visible;
 	width: 100%;
 }
-.subnav__wrapper .fixed-container, .navigations > li .subnav__wrapper.addspace {
+.subnav__wrapper .container, .navigations > li .subnav__wrapper.addspace {
 	padding: 0;
 }
 .subnav_row {

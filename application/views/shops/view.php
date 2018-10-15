@@ -9,7 +9,7 @@
  ?>
 <div id="body" class="body bg--shop" <?php if($showBgImage){ echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; } ?> >
 	<div class="shop-bar">
-      <div class="fixed-container">
+      <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-8 col-md-8 col-sm-8  col-xs-12">
             <div class="shops-detail">
@@ -48,7 +48,7 @@
 		$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 	?>
 	<section class="top-space">
-		<div class="fixed-container">
+		<div class="container">
 			<div class="gap"></div>
 			<div class="row">
 				<?php if(!isset($noProductFound)) { ?>
@@ -70,7 +70,7 @@
 				<?php }
 				if(!isset($noProductFound)){
 					$blockTitle=Labels::getLabel('LBL_SHOP_PRODUCTS', $siteLangId);
-					$class ='col-lg-9';
+					$class ='col-xl-9';
 				}else{
 					$class= 'col-lg-12';
 					$blockTitle = '';
