@@ -1143,17 +1143,19 @@ class AdvertiserController extends LoggedUserController {
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setFloatPositive(true);
 		
-		$locIdFld = $frm->addSelectBox(Labels::getLabel('LBL_Location',$this->siteLangId), 'banner_blocation_id', $locationArr, '',array(),Labels::getLabel('LBL_Select',$this->siteLangId));
+		$locIdFld = $frm->addSelectBox(Labels::getLabel('LBL_Location',$this->siteLangId), 'banner_blocation_id', $locationArr, '',array(),Labels::getLabel('LBL_Select',$this->siteLangId))->requirements()->setRequired(true);
 		$locIdFldUnReqObj = new FormFieldRequirement( 'banner_blocation_id', Labels::getLabel('LBL_Location', $this->siteLangId));
 		$locIdFldUnReqObj->setRequired(false);
 		
 		$locIdFldReqObj = new FormFieldRequirement( 'banner_blocation_id', Labels::getLabel('LBL_Location', $this->siteLangId));
 		$locIdFldReqObj->setRequired(true);
-	
+		
+		$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_BANNER, 'eq', 'banner_blocation_id', $locIdFldReqObj);
+		$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_SLIDES, 'eq', 'banner_blocation_id', $locIdFldReqObj);
+		
 		if(User::isSeller()){
-			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_BANNER, 'eq', 'banner_url', $locIdFldReqObj);
-			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_SHOP, 'eq', 'banner_url', $locIdFldUnReqObj);
-			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_PRODUCT, 'eq', 'banner_url', $locIdFldUnReqObj);	
+			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_SHOP, 'eq', 'banner_blocation_id', $locIdFldUnReqObj);
+			$pTypeFld->requirements()->addOnChangerequirementUpdate(Promotion::TYPE_PRODUCT, 'eq', 'banner_blocation_id', $locIdFldUnReqObj);	
 		}
 		
 		
