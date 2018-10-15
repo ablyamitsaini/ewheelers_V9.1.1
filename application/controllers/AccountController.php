@@ -2179,7 +2179,7 @@ class AccountController extends LoggedUserController {
 		$fld1 =  $frm->addButton('','user_profile_image',Labels::getLabel('LBL_Change',$this->siteLangId),array('class'=>'userFile-Js','id'=>'user_profile_image'));
 		return $frm; */
 		$frm = new Form('frmProfile',array('id'=>'frmProfile'));
-		$frm->addFileUpload(Labels::getLabel('LBL_Profile_Picture',$this->siteLangId), 'user_profile_image',array('id'=>'user_profile_image','accept'=>'image/*'));
+		$frm->addFileUpload(Labels::getLabel('LBL_Profile_Picture',$this->siteLangId), 'user_profile_image',array('id'=>'user_profile_image','onchange'=>'popupImage(this)','accept'=>'image/*'));
 		$frm->addHiddenField('', 'update_profile_img', Labels::getLabel('LBL_Update_Profile_Picture',$this->siteLangId), array('id'=>'update_profile_img'));
 		$frm->addHiddenField('', 'rotate_left', Labels::getLabel('LBL_Rotate_Left',$this->siteLangId), array('id'=>'rotate_left'));
 		$frm->addHiddenField('', 'rotate_right', Labels::getLabel('LBL_Rotate_Right',$this->siteLangId), array('id'=>'rotate_right'));
