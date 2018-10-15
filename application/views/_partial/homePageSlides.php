@@ -19,19 +19,19 @@
 				
 				switch($slideScreen['afile_screen']){
 					case applicationConstants::SCREEN_MOBILE:
-						$mobile_url = '<480:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_MOBILE, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
+						$mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_MOBILE, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
 						break;
 					case applicationConstants::SCREEN_IPAD:
-						$tablet_url = ' <768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_IPAD, $siteLangId)),
+						$tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_IPAD, $siteLangId)),
 						CONF_IMG_CACHE_TIME, '.jpg').','.'  <1024:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_IPAD, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
 						break;
 					case applicationConstants::SCREEN_DESKTOP:
-						$desktop_url = ' >1024:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
+						$desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
 						break;
 				}
 			}
 		}
-				
+	
 		$out = '<div class="item">';
 		if($haveUrl){
 			if($slide['promotion_id']>0){

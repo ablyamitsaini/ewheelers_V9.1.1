@@ -49,6 +49,18 @@ class BlogController extends MyAppController{
 	}
 	
     public function index(){
+		
+		$srch = BlogPost::getSearchObject($this->siteLangId,true,false,true);	
+		$srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
+		$srch->addCondition('postlang_post_id','is not','mysql_func_null','and',true);
+		$srch->addCondition('post_published','=',applicationConstants::YES);
+		$srch->addOrder('post_added_on','desc');
+		$srch->setPageSize(5);
+		$srch->addGroupby('post_id');
+		$rs = $srch->getResultSet();
+		$records = FatApp::getDb()->fetchAll($rs);
+		
+		$this->set("postList",$records);
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss('css/slick.css');
 		$this->_template->render();
@@ -74,10 +86,11 @@ class BlogController extends MyAppController{
 		if(isset($headerFormParamsAssocArr['keyword'])){
 			$keyword = $headerFormParamsAssocArr['keyword'];
 			$this->set('keyword',$keyword);
+			$this->set('srchFrm',$frm);
 		}
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss('css/slick.css');
-		$this->_template->render(true , true , 'blog/index.php');
+		$this->_template->render(true , true);
 	}
 	
 	public function blogList(){
@@ -105,12 +118,21 @@ class BlogController extends MyAppController{
 		$srch->addGroupby('post_id');
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
+		
+		$startRecord = ( $page - 1 ) * $pageSize + 1 ;
+		$endRecord = $page * $pageSize;
+		$totalRecords = $srch->recordCount();
+		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
 		$this->set("postList",$records);
-		$this->set('recordCount', $srch->recordCount());
+		$this->set('recordCount', $totalRecords);
 		$this->set('postedData', $post);
-		$json['html'] = $this->_template->render( false,false,'blog/search.php', true, false);
+		
+		$json['totalRecords'] = $totalRecords;
+		$json['startRecord'] = ( $totalRecords > 0 ) ? 1 : 0 ;
+		$json['endRecord'] = $endRecord;
+		$json['html'] = $this->_template->render( false,false,'blog/blog-listing.php', true, false);
 		$json['loadMoreBtnHtml'] = $this->_template->render( false, false, 'blog/load-more-btn.php', true, false);
 		FatUtility::dieJsonSuccess($json);
 	}
