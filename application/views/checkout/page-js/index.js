@@ -88,7 +88,8 @@ $("document").ready(function()
 	
 	guestUserLogin = function(frm, v) {
 		v.validate();
-		if ( !v.isValid() ) return;		
+		if ( !v.isValid() ) return;	
+		$.mbsmessage(langLbl.processing,true,'alert alert--process'); 
 		fcom.ajax(fcom.makeUrl('GuestUser', 'guestLogin'), fcom.frmData(frm), function(t) {
 			var ans = JSON.parse(t);
 			if(ans.notVerified==1)
