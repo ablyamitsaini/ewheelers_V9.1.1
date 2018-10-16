@@ -27,7 +27,10 @@ if(!empty($arrListing)){?>
 				<div class="date"><?php echo FatDate::format($row['pssearch_added_on']); ?></div>
 			</div>
 			<div class="results-side">
-				<strong><a href="<?php echo $row['search_url'];?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a></strong>
+				<div class="btn--group">
+					<a href="<?php echo $row['search_url'];?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a>
+					<a href="javascript:void(0)" onclick="deleteSavedSearch(<?php echo $row['pssearch_id'];?>)" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
+				</div>
 			</div>
 		</li>
 	  <?php }?>

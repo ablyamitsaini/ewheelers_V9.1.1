@@ -15,7 +15,7 @@ $("document").ready(function(){
 	deleteSavedSearch = function( pssearch_id ){
 		var agree = confirm( langLbl.confirmDelete );
 		if( !agree ){ return false; };
-		fcom.updateWithAjax(fcom.makeUrl('Account', 'deleteSavedSearch'), 'pssearch_id=' + pssearch_id, function(ans) {
+		fcom.updateWithAjax(fcom.makeUrl('SavedProductsSearch', 'deleteSavedSearch'), 'pssearch_id=' + pssearch_id, function(ans) {
 			if( ans.status ){
 				searchSavedSearchList();
 			}
@@ -29,7 +29,7 @@ $("document").ready(function(){
 			}
 		});
 	};
-			
+	
 	goToSearchPage = function(page){
 		if(typeof page==undefined || page == null){
 			page =1;
