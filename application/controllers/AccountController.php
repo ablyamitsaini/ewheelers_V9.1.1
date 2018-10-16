@@ -1545,28 +1545,6 @@ class AccountController extends LoggedUserController {
 		$this->_template->render(false, false, 'account/wish-list-items.php');
 	}
 
-	public function deleteSavedSearch(){
-		$post = FatApp::getPostedData();
-		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
-
-		$srch = new SearchBase( Product::DB_PRODUCT_SAVED_SEARCH );
-		$srch->addCondition( 'pssearch_id', '=', $pssearch_id );
-		$rs = $srch->getResultSet();
-		$row = FatApp::getDb()->fetch($rs);
-		if( !$row ){
-			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
-
-		if(!FatApp::getDb()->deleteRecords( Product::DB_PRODUCT_SAVED_SEARCH, array('smt' => 'pssearch_id = ?', 'vals' => array($pssearch_id) ) )){
-			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );
-		}
-
-		$this->set('msg', Labels::getLabel( 'LBL_Record_deleted_successfully', $this->siteLangId ) );
-		$this->_template->render( false, false, 'json-success.php' );
-	}
-
 	public function updateSearchdate(){
 		$post = FatApp::getPostedData();
 		$pssearch_id = FatUtility::int( $post['pssearch_id'] );

@@ -106,10 +106,11 @@ class WalletPayController extends MyAppController{
 		}
 		if( $orderId == '' || ((isset($_SESSION['wallet_recharge_cart']) && $orderId != $_SESSION['wallet_recharge_cart']["order_id"])) ){ 
 			Message::addErrorMessage( Labels::getLabel('MSG_Invalid_Access', $this->siteLangId) );
-			if( $isAjaxCall ){
+			FatUtility::dieWithError( Message::getHtml() );
+			/* if( $isAjaxCall ){
 				FatUtility::dieWithError( Message::getHtml() );
 			}
-			CommonHelper::redirectUserReferer();
+			CommonHelper::redirectUserReferer(); */
 		}
 		
 		$loggedUserId = UserAuthentication::getLoggedUserId();
