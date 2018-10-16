@@ -92,7 +92,7 @@ function getCardType(number){
 	
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Account','viewWishList', [selprod_id]), '' ,function(ans){
-			fcom.updateFaceboxContent(ans,'faceboxWidth collection-ui-popup');
+			fcom.updateFaceboxContent(ans,'faceboxWidth collection-ui-popup small-fb-width');
 			//$(dv).next().html(ans);
 			$("input[name=uwlist_title]").bind('focus',function(e){
 				e.stopPropagation();

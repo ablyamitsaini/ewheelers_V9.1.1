@@ -11,6 +11,8 @@ if( !$affiliate_register_step_number ){
 
 switch( $affiliate_register_step_number ){
 	case UserAuthentication::AFFILIATE_REG_STEP1:
+		$registerForm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
+		$registerForm->developerTags['fld_default_col'] = 6;
 		/* script to make terms&condition checkbox wrap in a particular html, so that upon validation, error must display after caption not after checkbox itself[ */
 		$termsAndConditionsLink = sprintf(Labels::getLabel('LBL_I_agree_to_the_terms_conditions',$siteLangId),"<a target='_blank' href='$termsAndConditionsLinkHref'>".Labels::getLabel('LBL_Terms_Conditions',$siteLangId).'</a>');
 		

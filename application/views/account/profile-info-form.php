@@ -45,12 +45,13 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 				echo $imgFrm->getFieldHtml('remove_profile_img'); 
 				echo $imgFrm->getFieldHtml('action'); 
 				echo $imgFrm->getFieldHtml('img_data'); 				
-				?>						
+				?>	
+				<?php if($mode == 'Edit'){?>
+					<a class="btn btn--secondary btn--sm" href="javascript:void(0)" onClick="removeProfileImage()"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
+				 <?php }?>				
 				</form>
 				<?php echo $imgFrm->getExternalJS();?>
-				 <?php if($mode == 'Edit'){?>
-					<a class="btn btn--secondary btn--sm" href="javascript:void(0)" onClick="removeProfileImage()"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
-				 <?php }?>
+				 
 				<div id="dispMessage"></div> 
 			</div>
 		</div>

@@ -15,7 +15,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	<?php echo $frm->getFormTag(); ?>                        
 
     <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_NAME',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
@@ -23,9 +23,7 @@ $frm->developerTags['fld_default_col'] = 12;
 			   </div>
 		   </div>
 	   </div>
-   </div>
-   <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PHONE',$siteLangId);?></label></div>
 			   <div class="field-wraper">
@@ -35,7 +33,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
    </div>
    <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_USERNAME',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
@@ -43,9 +41,7 @@ $frm->developerTags['fld_default_col'] = 12;
 			   </div>
 		   </div>
 	   </div>
-   </div>
-   <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_EMAIL',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
@@ -55,7 +51,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
    </div>
    <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PASSWORD',$siteLangId);?></label></div>
 			   <div class="field-wraper">
@@ -65,9 +61,7 @@ $frm->developerTags['fld_default_col'] = 12;
 			   </div>
 		   </div>
 	   </div>
-   </div>
-   <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId);?></label></div>
 			   <div class="field-wraper">
@@ -77,7 +71,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
    </div>
    <div class="row">
-	   <div class="col-md-12">
+	   <div class="col-md-6">
 		   <div class="field-set">
 			   <div class="caption-wraper"><label class="field_label"></label></div>
 			   <div class="field-wraper">

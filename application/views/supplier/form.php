@@ -1,8 +1,8 @@
 <?php $frm->setFormTagAttribute('class', 'form form--normal');
 $frm->setFormTagAttribute('onsubmit', 'register(this); return(false);');
 
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;
+/* $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['fld_default_col'] = 12; */
 ?>
 
 <div class="heading3"><?php echo Labels::getLabel('LBL_Seller_Registration',$siteLangId);?></div>
@@ -15,7 +15,7 @@ $frm->developerTags['fld_default_col'] = 12;
 </div>
 <?php echo $frm->getFormTag(); ?>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_NAME',$siteLangId);?> <span class="mandatory">*</span></label>
@@ -25,9 +25,7 @@ $frm->developerTags['fld_default_col'] = 12;
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_USERNAME',$siteLangId);?> <span class="mandatory">*</span></label>
@@ -37,9 +35,7 @@ $frm->developerTags['fld_default_col'] = 12;
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_EMAIL',$siteLangId);?> <span class="mandatory">*</span></label>
@@ -49,9 +45,7 @@ $frm->developerTags['fld_default_col'] = 12;
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_PASSWORD',$siteLangId);?></label>
@@ -62,9 +56,7 @@ $frm->developerTags['fld_default_col'] = 12;
 'User@123') ?></span> </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId);?></label>
@@ -75,6 +67,8 @@ $frm->developerTags['fld_default_col'] = 12;
     </div>
   </div>
 </div>
+
+
 <div class="row">
   <div class="col-md-12">
     <div class="field-set">
