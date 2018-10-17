@@ -1059,7 +1059,7 @@ class SellerController extends LoggedUserController {
 		}
 		
 		
-		$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
+		/* $srch->addCondition('product_active','=',applicationConstants::ACTIVE); */
 		$srch->addCondition('product_deleted','=',applicationConstants::NO);
 
 		$keyword = FatApp::getPostedData('keyword', null, '');
@@ -1108,6 +1108,7 @@ class SellerController extends LoggedUserController {
 			'product_approved',
 			) 
 		);
+		$srch->addOrder('product_active','DESC');
 		$srch->addOrder('product_added_on','DESC');
 		$srch->addGroupBy('product_id');
 		$srch->setPageNumber($page);

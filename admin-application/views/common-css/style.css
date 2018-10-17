@@ -5370,7 +5370,7 @@ fieldset[disabled] .field_control.disabled {
 }
 
 .tabs_nav > li > a {
-    padding: 15px 20px;
+    padding: 10px 20px;
     background: rgba(0, 0, 0, 0.02);
     border-radius: 5px 5px 0 0;
     display: block;

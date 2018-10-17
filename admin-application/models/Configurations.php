@@ -7,7 +7,7 @@ class Configurations extends FatModel{
 	const FORM_GENERAL = 1;
 	const FORM_LOCAL = 2;
 	const FORM_SEO = 3;
-	const FORM_OPTIONS = 4;
+	const FORM_PRODUCT = 4;
 	const FORM_AFFILIATE = 5;
 	const FORM_REWARD_POINTS = 6;
 	const FORM_REVIEWS = 7;
@@ -24,6 +24,9 @@ class Configurations extends FatModel{
 	const FORM_PPC = 18;
 	const FORM_IMPORT_EXPORT = 19;
 	const FORM_CHECKOUT_PROCESS = 20;
+	const FORM_USER_ACCOUNT = 21;
+	const FORM_CART_WISHLIST = 22;
+	const FORM_COMMISSION = 23;
 	
 	function __construct(){
 		parent::__construct();	
@@ -50,19 +53,23 @@ class Configurations extends FatModel{
 			Configurations::FORM_GENERAL =>Labels::getLabel('MSG_General',$adminLangId),
 			Configurations::FORM_LOCAL =>Labels::getLabel('MSG_Local',$adminLangId),
 			Configurations::FORM_SEO =>Labels::getLabel('MSG_Seo',$adminLangId),
-			Configurations::FORM_OPTIONS =>Labels::getLabel('MSG_Options',$adminLangId),
-			Configurations::FORM_AFFILIATE => Labels::getLabel('MSG_AFFILIATE',$adminLangId),
+			Configurations::FORM_USER_ACCOUNT =>Labels::getLabel('MSG_Account',$adminLangId),
+			Configurations::FORM_PRODUCT =>Labels::getLabel('MSG_Product',$adminLangId),
+			Configurations::FORM_CART_WISHLIST =>Labels::getLabel('MSG_Cart/Wishlist',$adminLangId),
+			Configurations::FORM_CHECKOUT_PROCESS =>Labels::getLabel('MSG_Checkout',$adminLangId),
+			Configurations::FORM_COMMISSION =>Labels::getLabel('MSG_Commission',$adminLangId),
+			Configurations::FORM_DISCOUNT => Labels::getLabel('MSG_Discount',$adminLangId),
 			Configurations::FORM_REWARD_POINTS => Labels::getLabel('MSG_REWARD_POINTS',$adminLangId),
+			Configurations::FORM_AFFILIATE => Labels::getLabel('MSG_AFFILIATE',$adminLangId),
 			Configurations::FORM_REVIEWS => Labels::getLabel('MSG_REVIEWS',$adminLangId),
-			Configurations::FORM_LIVE_CHAT =>Labels::getLabel('MSG_Live_Chat',$adminLangId),
 			Configurations::FORM_THIRD_PARTY_API =>Labels::getLabel('MSG_Third_Party_API',$adminLangId),
 			Configurations::FORM_EMAIL =>Labels::getLabel('MSG_Email',$adminLangId),
-			Configurations::FORM_SHARING =>Labels::getLabel('MSG_Sharing',$adminLangId),
-			Configurations::FORM_REFERAL =>Labels::getLabel('MSG_Referal',$adminLangId), 
 			Configurations::FORM_MEDIA => Labels::getLabel('MSG_Media',$adminLangId),
-			Configurations::FORM_DISCOUNT => Labels::getLabel('MSG_Discount',$adminLangId),
 			Configurations::FORM_SUBSCRIPTION => Labels::getLabel('MSG_Subscription',$adminLangId),
+			Configurations::FORM_REFERAL =>Labels::getLabel('MSG_Referal',$adminLangId), 
+			Configurations::FORM_SHARING =>Labels::getLabel('MSG_Sharing',$adminLangId),
 			Configurations::FORM_SYSTEM => Labels::getLabel('MSG_System',$adminLangId),
+			Configurations::FORM_LIVE_CHAT =>Labels::getLabel('MSG_Live_Chat',$adminLangId),
 			Configurations::FORM_PPC => Labels::getLabel('MSG_PPC_Management',$adminLangId),
 			Configurations::FORM_SERVER => Labels::getLabel('MSG_SERVER',$adminLangId),
 		);
