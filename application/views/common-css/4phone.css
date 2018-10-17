@@ -961,6 +961,7 @@
   .grids--colum .grid {
     min-height: inherit;
     padding: 10px;
+    margin: 5px 0;
   }
 
   .form input[type="submit"].block-on-mobile, .form input[type="button"].block-on-mobile {
@@ -976,8 +977,11 @@
     min-height: inherit;
     margin-bottom: 10px;
   }
+
   .sort-by>ul {
     justify-content: flex-start;
   }
-
 }
+
+/*media*/
+@media only screen and (max-width: 480px) {}
