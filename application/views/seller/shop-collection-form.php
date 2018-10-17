@@ -23,7 +23,7 @@
 				  <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1000*250')?></small>
 				  <?php echo $shopBannerFrm->getFormHtml();?>
 					<?php foreach($bannerAttachments as $img){?>
-					<div class="row">
+				 
 						<div class="profile__pic">
 							<img src="<?php echo CommonHelper::generateUrl('Image','shopBanner',array($img['afile_record_id'],$img['afile_lang_id'],'PREVIEW')).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId);?>">
 						</div>
@@ -31,7 +31,7 @@
 						<div class="btngroup--fix">
 							<a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removeShopBanner(<?php echo $img['afile_record_id']; ?>,<?php echo $img['afile_lang_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
 						</div>
-					</div>
+
 					<span class="gap"></span>
 					<?php }?>
 				</div>

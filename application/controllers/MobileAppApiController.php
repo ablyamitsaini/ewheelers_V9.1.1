@@ -424,8 +424,9 @@ class MobileAppApiController extends MyAppController {
 		}
 		/* ] */
 		$banners = new ArrayObject();
-		$bannerSrch = Banner::getBannerLocationSrchObj(true);
+		$bannerSrch = Banner::getBannerLocationSrchObj(true,applicationConstants::SCREEN_MOBILE);
 		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_AFTER_THIRD_LAYOUT);
+		
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = $this->db->fetchAll( $rs ,'blocation_key');
 		if(!empty($bannerLocation)){
@@ -1525,7 +1526,7 @@ class MobileAppApiController extends MyAppController {
 
 		/*   [ Promotional Banner   */
 
-		$bannerSrch = Banner::getBannerLocationSrchObj(true);
+		$bannerSrch = Banner::getBannerLocationSrchObj(true,applicationConstants::SCREEN_MOBILE);
 		$bannerSrch->addCondition('blocation_id','=',3);
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = FatApp::getDb()->fetchAll( $rs ,'blocation_key');
@@ -1563,7 +1564,7 @@ class MobileAppApiController extends MyAppController {
 			$bannerListing = FatApp::getDb()->fetchAll( $rs,'banner_id');
 								
 			foreach($bannerListing as $bkey=>$bval){
-				$product_bannerListing[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Banner','HomePageAfterFirstLayout',array($bval['banner_id'], $this->siteLangId))));
+				$product_bannerListing[] = array_merge($val,$bval, array("image_url"=>CommonHelper::generateFullUrl('Banner','HomePageAfterFirstLayout',array($bval['banner_id'], $this->siteLangId))));
 			}
 			
 			$banners[$val['blocation_key']]['banners'] = $product_bannerListing;

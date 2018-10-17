@@ -30,7 +30,15 @@ class BannerSearch extends SearchBase {
 		$this->joinTable(Banner::DB_TBL_LOCATIONS,'LEFT OUTER JOIN','bl.blocation_id = b.banner_blocation_id','bl');
 		if( $langId > 0 ){
 			$this->joinTable( Banner::DB_LANG_TBL_LOCATIONS, 'LEFT OUTER JOIN','bl_l.blocationlang_blocation_id = bl.blocation_id AND bl_l.blocationlang_lang_id = ' . $langId, 'bl_l');
+		}		
+	}
+	
+	public function joinLocationDimension($deviceType = 0){
+		$deviceType = FatUtility::int($deviceType);
+		if(1 > $deviceType){
+			$deviceType = applicationConstants::SCREEN_DESKTOP;
 		}
+		$this->joinTable( BannerLocation::DB_DIMENSIONS_TBL, 'LEFT OUTER JOIN','bldim.bldimension_blocation_id = bl.blocation_id AND bldim.bldimension_device_type = ' . $deviceType, 'bldim');
 	}
 	
 	public function joinPromotions($langId = 0, $activeOnly = true, $approvedOnly = true , $deleted = true){

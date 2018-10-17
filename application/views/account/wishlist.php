@@ -24,7 +24,7 @@
 										<h5><?php echo Labels::getLabel('LBL_Products_That_I_Love',$siteLangId);?></h5>
 										<a class="btn btn--primary btn--sm btn--positioned" onClick="searchWishList();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
 									</div>
-									<div class="row" id="listingDiv"></div>
+									<div class="" id="listingDiv"></div>
 								</div>
 								<div class="gap"></div>
 								<div id="loadMoreBtnDiv"></div>

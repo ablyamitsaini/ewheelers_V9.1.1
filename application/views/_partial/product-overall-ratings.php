@@ -25,7 +25,7 @@ if($totReviews){
 	<div class="listings__head">
 		<div class="row">
 		<?php
-				
+
 			?>
 			<div class="col-md-8">
 				<div class="ratings--overall">
@@ -91,7 +91,7 @@ if($totReviews){
 			<div class="col-md-4 border--left">
 				<div class="have-you">
 					<p><?php echo Labels::getLabel('Lbl_Have_You_Used_This_Product',$siteLangId); ?>?</p>
-					<a onClick = "rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--secondary ripplelink"><?php echo Labels::getLabel('Lbl_Rate_And_Review_Product',$siteLangId); ?></a>
+					<a onClick = "rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--secondary btn--sm ripplelink"><?php echo Labels::getLabel('Lbl_Rate_And_Review_Product',$siteLangId); ?></a>
 				</div>
 			</div>
 		</div>
