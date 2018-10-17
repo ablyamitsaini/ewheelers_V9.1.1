@@ -463,11 +463,11 @@ function defaultSetUpLogin(frm, v) {
 				}	
 			}
 		},
-		resetFaceboxHeight:function(){ 			
+		resetFaceboxHeight:function(){		
 			$('html').css('overflow','hidden');
 			facebocxHeight  = screenHeight;		
 			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);	
-			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-50 + 'px');			
+			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-200 + 'px');			
 			if(fbContentHeight >= screenHeight){ 
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
