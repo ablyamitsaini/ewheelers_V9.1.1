@@ -7,9 +7,7 @@ $langFld->addFieldTagAttribute('class','language-js');
 $img_fld = $imagesFrm->getField('prod_image');
 $img_fld->setFieldTagAttribute( 'onchange','setupCustomProductImages(); return false;');
 ?>
-<div class="popup-title">
-  <h3><?php echo Labels::getLabel('LBL_Product_Images', $siteLangId); ?></h3>
-</div>
+<div class="pop-up-title"><?php echo Labels::getLabel('LBL_Product_Images', $siteLangId); ?></div>
 <div class="divider"> </div>
 <?php 
 		$imagesFrm->developerTags['colClassPrefix'] = 'col-md-';

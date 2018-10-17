@@ -229,6 +229,8 @@ class ReportsController extends LoggedUserController {
 		$srch->joinTable( Brand::DB_TBL, 'INNER JOIN', 'p.product_brand_id = b.brand_id', 'b' );
 		$srch->joinTable( Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'b.brand_id = b_l.brandlang_brand_id  AND brandlang_lang_id = '.$this->siteLangId, 'b_l' );
 		$srch->addCondition( 'selprod_user_id', '=', $loggedUserId );
+		$srch->addCondition( 'selprod_active', '=', applicationConstants::ACTIVE );
+		$srch->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
 		$srch->addOrder('selprod_active', 'DESC');
 		$srch->addOrder('product_name');
 		$srch->addMultipleFields(array(

@@ -9,7 +9,7 @@
 					<div class="cols--group">
 						<?php $this->includeTemplate('_partial/productPagesTabs.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action),false); ?>
 						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?></h2>
+						   <h2><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?>
 							<div class="delivery-term">
 								<div class="dropdown"> 
 									<a href="#catalogToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
@@ -30,6 +30,7 @@
 									</div>
 								</div>
 							</div>
+							</h2>
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">

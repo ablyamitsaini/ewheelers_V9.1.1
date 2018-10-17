@@ -467,7 +467,8 @@ function defaultSetUpLogin(frm, v) {
 			$('html').css('overflow','hidden');
 			facebocxHeight  = screenHeight;		
 			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);	
-			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-200 + 'px');			
+			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-150 + 'px');			
+			
 			if(fbContentHeight >= screenHeight){ 
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
