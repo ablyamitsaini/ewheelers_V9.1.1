@@ -35,7 +35,7 @@ $frm->developerTags['fld_default_col'] = 12; */
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="field-set">
       <div class="caption-wraper">
         <label class="field_label"><?php echo Labels::getLabel('LBL_EMAIL',$siteLangId);?> <span class="mandatory">*</span></label>

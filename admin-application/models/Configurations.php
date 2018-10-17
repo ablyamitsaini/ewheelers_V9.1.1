@@ -23,6 +23,7 @@ class Configurations extends FatModel{
 	const FORM_SYSTEM = 17;
 	const FORM_PPC = 18;
 	const FORM_IMPORT_EXPORT = 19;
+	const FORM_CHECKOUT_PROCESS = 20;
 	
 	function __construct(){
 		parent::__construct();	

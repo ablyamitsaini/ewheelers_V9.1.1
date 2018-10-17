@@ -342,7 +342,7 @@ class GuestAffiliateController extends MyAppController {
 				$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
 				
 				$frm->addRequiredField(Labels::getLabel('LBL_NAME',$siteLangId), 'user_name');
-				
+				$fld = $frm->addTextBox( Labels::getLabel('LBL_Phone', $siteLangId), 'user_phone' );
 				$fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD',$siteLangId), 'user_password');
 				$fld->requirements()->setRequired();
 				$fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
@@ -352,7 +352,6 @@ class GuestAffiliateController extends MyAppController {
 				$fld1->requirements()->setRequired();
 				$fld1->requirements()->setCompareWith('user_password', 'eq',Labels::getLabel('LBL_PASSWORD',$siteLangId)); 
 				
-				$fld = $frm->addTextBox( Labels::getLabel('LBL_Phone', $siteLangId), 'user_phone' );
 				/* $fld->requirements()->setInt(); */
 				
 				$frm->addHtml( '', 'agree_fld_html_div', '&nbsp;' );

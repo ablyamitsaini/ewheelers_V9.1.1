@@ -13,6 +13,11 @@ switch( $affiliate_register_step_number ){
 	case UserAuthentication::AFFILIATE_REG_STEP1:
 		$registerForm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
 		$registerForm->developerTags['fld_default_col'] = 6;
+		
+		$termsFld = $registerForm->getField('agree_fld_html_div');
+		$termsFld->setWrapperAttribute('class','col-lg-12 col-md-12 col-sm-');
+		$termsFld->developerTags['col'] = 12;
+		
 		/* script to make terms&condition checkbox wrap in a particular html, so that upon validation, error must display after caption not after checkbox itself[ */
 		$termsAndConditionsLink = sprintf(Labels::getLabel('LBL_I_agree_to_the_terms_conditions',$siteLangId),"<a target='_blank' href='$termsAndConditionsLinkHref'>".Labels::getLabel('LBL_Terms_Conditions',$siteLangId).'</a>');
 		
@@ -33,6 +38,8 @@ switch( $affiliate_register_step_number ){
 	break;
 	
 	case UserAuthentication::AFFILIATE_REG_STEP2:
+		$registerForm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
+		$registerForm->developerTags['fld_default_col'] = 6;
 		$stateId = isset( $stateId ) ? $stateId : 0;
 		?>
 		<script language="javascript">

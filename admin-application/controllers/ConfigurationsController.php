@@ -466,6 +466,9 @@ class ConfigurationsController extends AdminBaseController {
 				$frm->addSelectBox(Labels::getLabel('LBL_Cookies_Policies_Page',$this->adminLangId),'CONF_COOKIES_BUTTON_LINK',$cpagesArr);
 				$fld1 = $frm->addCheckBox(Labels::getLabel('LBL_Cookies_Policies',$this->adminLangId),'CONF_ENABLE_COOKIES',1,array(),false,0);
 				$fld1->htmlAfterField = "<br><small>".Labels::getLabel("LBL_cookies_policies_section_will_be_shown_on_frontend",$this->adminLangId)."</small>";	
+				$fld3 = $frm->addTextBox(Labels::getLabel("LBL_Admin_Default_Items_Per_Page",$this->adminLangId),"CONF_ADMIN_PAGESIZE");
+				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_items_are_shown_per_page_(user_listing,_categories,_etc)",$this->adminLangId).".</small>";
+				
 			break;
 			
 			case Configurations::FORM_LOCAL:				
@@ -502,9 +505,6 @@ class ConfigurationsController extends AdminBaseController {
 			
 			case Configurations::FORM_OPTIONS:
 			
-				$frm->addHtml('','Admin','<h3>'.Labels::getLabel('LBL_Admin',$this->adminLangId).'</h3>');
-				$fld3 = $frm->addTextBox(Labels::getLabel("LBL_Default_Items_Per_Page",$this->adminLangId),"CONF_ADMIN_PAGESIZE");
-				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_items_are_shown_per_page_(user_listing,_categories,_etc)",$this->adminLangId).".</small>";
 				$frm->addHtml('','Checkout','<h3>'.Labels::getLabel('LBL_Checkout_Process',$this->adminLangId).'</h3>');
 				$fld1 = $frm->addCheckBox(Labels::getLabel('LBL_Activate_Live_Payment_Transaction_Mode',$this->adminLangId),'CONF_TRANSACTION_MODE',1,array(),false,0);
 				$fld1->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Set_Transaction_Mode_to_live_environment",$this->adminLangId)."</small>";
