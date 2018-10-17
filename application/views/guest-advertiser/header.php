@@ -45,6 +45,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,fals
 
 <div id="wrapper">
 	<div class="header-seller" id="header">
+		<div class="common_overlay"></div>
 		<div class="top_bar">
 		  <div class="container">
 			<div class="row">

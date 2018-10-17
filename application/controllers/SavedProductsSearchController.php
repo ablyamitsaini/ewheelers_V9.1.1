@@ -87,4 +87,35 @@ class SavedProductsSearchController extends LoggedUserController {
 		$frm->setJsErrorDisplay('afterfield');
 		return $frm;
 	}
+	
+	public function deleteSavedSearch(){		
+		$post = FatApp::getPostedData();
+		if($post == false){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		
+		$pssearch_id = FatUtility::int( $post['pssearch_id'] );
+		if(1 > $pssearch_id){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		
+		$srch = SavedSearchProduct::getSearchObject();
+		$srch->addCondition( 'pssearch_id', '=', $pssearch_id );
+		$rs = $srch->getResultSet();
+		$data = FatApp::getDb()->fetchAll($rs,'pssearch_id');
+		if ($data === false) {
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request',$this->siteLangId));
+			FatUtility::dieWithError( Message::getHtml() );				
+		}
+		
+		$savedSearch = new SavedSearchProduct($pssearch_id);
+		if(!$savedSearch->deleteRecord()){
+			Message::addErrorMessage($addressObj->getError());
+			FatUtility::dieWithError( Message::getHtml() );	
+		}
+		
+		FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Deleted_successfully',$this->siteLangId));		
+	}
 }	
