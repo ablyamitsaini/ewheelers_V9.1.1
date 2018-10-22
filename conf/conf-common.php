@@ -4,7 +4,7 @@
  * General configurations
  */
 
-define('CONF_DEVELOPMENT_MODE', (strpos(($_SERVER['SERVER_NAME']),'4demo.biz')>0   )?true:true);
+define('CONF_DEVELOPMENT_MODE', (strpos(($_SERVER['SERVER_NAME']),'4demo.biz')>0   )?true:false);
 //define('CONF_DEVELOPMENT_MODE', false);
 define('CONF_LIB_HALDLE_ERROR_IN_PRODUCTION', true);
 define ('CONF_URL_REWRITING_ENABLED', true);
