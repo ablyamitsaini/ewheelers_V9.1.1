@@ -67,7 +67,18 @@ trait CustomProducts{
 	}
 	
 	public function customProductForm($prodId = 0,$prodCatId = 0){
-		$this->canAddCustomCatalogProduct(true);
+		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
+		}
+		if( !User::canAddCustomProduct() ){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','customProduct'));
+			
+		}
+		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
+			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
+		}	
 		$prodId = FatUtility::int($prodId);
 		$prodCatId = FatUtility::int($prodCatId);
 		

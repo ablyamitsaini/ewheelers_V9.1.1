@@ -37,7 +37,11 @@
 								<div class="box__head">
 								   <h4><?php echo Labels::getLabel('LBL_Search_Products',$siteLangId); ?></h4>
 								   <div class="group--btns panel__head_action">
-								   <div class="-inline-element" id="tour-step-2" ><a href="<?php echo CommonHelper::generateUrl('seller','customProductForm');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a></div>
+								   <?php if( User::canAddCustomProduct() ){ ?>
+								   <div class="-inline-element" id="tour-step-2" >
+									<a href="<?php echo CommonHelper::generateUrl('seller','customProductForm');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a>
+								   </div>
+								   <?php }?>
 								   <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
 
 								   <?php if((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true )){?>
