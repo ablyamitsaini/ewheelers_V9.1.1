@@ -56,13 +56,7 @@ function restoreDatabase($backupFile,$concate_path=true) {
 		  }
 	}
 	$cmd ="mysql --user=" . $db_user . " --password='" . $db_password . "' " . $db_databasename . " < " . $backupFile;
-	//return system($cmd);	
-	exec($cmd, $out, $status);
-	if (0 === $status) {
-		echo "Database restored.<br/>";
-	} else {
-		echo "Database restore failed with status: $status"; exit;
-	}	
+	system($cmd);	
 }
 
 
@@ -153,9 +147,7 @@ try{
 	if(!isset($_GET['passkey']) || $_GET['passkey']!='fatbit2017') {		
 		throw new Exception('Access denied!!');
 	}
-	
-	set_time_limit(0);
-	
+		
 	$source = CONF_INSTALLATION_PATH."restore/user-uploads";
 	$target = CONF_UPLOADS_PATH;
 	echo 'source:'.$source.'<br>target:-'.$target;
@@ -166,11 +158,11 @@ try{
 	$rs = fwrite($f, time());
 	fclose($f);
 	
-	echo $file = CONF_INSTALLATION_PATH."restore/database/db_withdata.sql";
-	//echo $file = CONF_INSTALLATION_PATH."restore/database/yokart-db.sql";
-	echo "Database restore in-process...<br/>"; 
-	restoreDatabase($file,false);
-			
+	echo $file = CONF_INSTALLATION_PATH."restore/database/yokart-db.sql";
+	//restoreDatabase($file,false);
+	echo "Database restored.<br/>"; 
+	
+	restoreCssThemeFiles();
 	@unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
 	
 }catch(Exception $e) {

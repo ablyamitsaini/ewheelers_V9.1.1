@@ -77,14 +77,15 @@ class GuestUserController extends MyAppController {
 			FatUtility::dieJsonError( Message::getHtml());
 		}
 		
-		/* $userId = UserAuthentication::getLoggedUserId();
-				
+		$userId = UserAuthentication::getLoggedUserId();
+		setcookie('uc_id', $userId, time()+3600*24*30,CONF_WEBROOT_URL);	
+		
 		$data = User::getAttributesById($userId,array('user_preferred_dashboard'));	
 		
 		$preferredDashboard = 0;
 		if($data != false){
 			$preferredDashboard = $data['user_preferred_dashboard'];
-		} */
+		}
 		
 		$redirectUrl = '';
 		
@@ -92,9 +93,9 @@ class GuestUserController extends MyAppController {
 			$redirectUrl = $_SESSION['referer_page_url'];
 			unset($_SESSION['referer_page_url']);
 		}
-		/* if($redirectUrl == ''){
+		if($redirectUrl == ''){
 			$redirectUrl = User::getPreferedDashbordRedirectUrl($preferredDashboard);
-		} */
+		}
 		
 		if($redirectUrl == ''){
 			$redirectUrl = CommonHelper::generateUrl('Home');
