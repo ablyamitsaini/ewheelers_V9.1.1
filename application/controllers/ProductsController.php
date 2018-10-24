@@ -184,7 +184,9 @@ class ProductsController extends MyAppController {
 		$headerFormParamsArr = FatApp::getParameters();
 
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
-		
+		if( isset($headerFormParamsAssocArr['keyword']) ) {
+			$frm = $this->getProductSearchForm(true);
+		}
 		$headerFormParamsAssocArr['join_price'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
 		$this->includeProductPageJsCss();
@@ -354,7 +356,6 @@ class ProductsController extends MyAppController {
 			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'count_for_view_more'     =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
-
 
 		$this->set('priceArr', $priceArr);
 		$this->set('priceInFilter', $priceInFilter);
@@ -672,7 +673,7 @@ class ProductsController extends MyAppController {
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if(!empty($keyword)) {
 			$srch->addKeywordSearch($keyword);
-			$srch->addOrder( 'keyword_relevancy', 'DESC' );
+			/* $srch->addOrder( 'keyword_relevancy', 'DESC' ); */
 		}
 
 		$brand = FatApp::getPostedData('brand', null, '');				
@@ -715,6 +716,7 @@ class ProductsController extends MyAppController {
 		$srch->addOrder('in_stock','DESC');
 		$sortBy = FatApp::getPostedData('sortBy', null, 'popularity');
 		$sortOrder = FatApp::getPostedData('sortOrder', null, 'asc');
+		
 		if(!in_array($sortOrder,array('asc','desc'))){
 			$sortOrder = 'asc';
 		}
@@ -724,6 +726,9 @@ class ProductsController extends MyAppController {
 			$sortBy = isset($sortByArr[0]) ? $sortByArr[0] : $sortBy;
 			$sortOrder = isset($sortByArr[1]) ? $sortByArr[1] : $sortOrder;
 			switch($sortBy){
+				case 'keyword':
+					$srch->addOrder( 'keyword_relevancy', 'DESC' );
+				break;
 				case 'price':
 					$srch->addOrder('theprice',$sortOrder);
 				break;
