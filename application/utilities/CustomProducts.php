@@ -39,7 +39,7 @@ trait CustomProducts{
 			$cnd->attachCondition('product_model', 'like', '%' . $keyword . '%');
 		}
 		
-		$srch->addMultipleFields( 
+		$srch->addMultipleFields(
 			array(	'product_id',
 					'product_identifier',
 					'product_active',
