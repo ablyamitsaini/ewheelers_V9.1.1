@@ -178,18 +178,13 @@ trait CustomProducts{
 			$srch->joinTable( Brand::DB_LANG_TBL , 'LEFT OUTER JOIN','brandlang_brand_id = brand.brand_id AND brandlang_lang_id = ' . $this->siteLangId );
 			$srch->addMultipleFields(array('product_id', 'product_identifier', 'product_type', 'product_model', 'product_min_selling_price', 'product_active', 'product_approved', 'product_featured', 'product_length','product_width', 'product_height', 'product_dimension_unit', 'product_weight', 'product_weight_unit', 'product_ship_country', 'product_ship_free', 'product_cod_enabled', 'product_upc', 'product_brand_id', 'IFNULL(brand_name,brand_identifier) as brand_name'));
 			$srch->addCondition( 'product_id', '=', $product_id );
-			$srch->addCondition( 'brand.brand_active', '=', applicationConstants::YES );
-			$srch->addCondition( 'brand.brand_deleted', '=', applicationConstants::NO );
 			$rs = $srch->getResultSet();
 			$row_data = FatApp::getDb()->fetch($rs);
 			
-			
-			
-			
 			$taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
-			
+			/* CommonHelper::printArray($row_data); die; */
 			if(!empty($taxData)){
-				$row_data = 	array_merge($row_data,$taxData);
+				$row_data = array_merge($row_data,$taxData);
 			}
 			$shippingDetails = Product::getProductShippingDetails($product_id, $this->siteLangId,UserAuthentication::getLoggedUserId());
 		
@@ -356,6 +351,15 @@ trait CustomProducts{
 			}
 		}
 		/* ] */
+		
+		$prodCatId = 0;
+		$product = new Product();
+		$records = $product->getProductCategories($product_id);
+		if(!empty($records)){
+			$prodcatArr = array_column($records, 'prodcat_id');
+			$prodCatId = reset($prodcatArr);
+		}
+		
 		$customProductLangFrm = $this->getCustomProductLangForm($lang_id);
 		$prodObj = new Product( $product_id );
 		$customProductLangData = $prodObj->getAttributesByLangId( $lang_id, $product_id );
@@ -371,6 +375,7 @@ trait CustomProducts{
 		$this->set('product_id', $product_id);
 		$this->set('siteLangId', $this->siteLangId);
 		$this->set('product_lang_id', $lang_id);
+		$this->set('prodcat_id', $prodCatId);
 		$this->set('customProductLangFrm', $customProductLangFrm);
 		$this->_template->render(false, false);
 	}
