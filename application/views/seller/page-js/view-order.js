@@ -19,7 +19,12 @@ $(document).ready(function(){
 		if ( !$(frm).validate() ) return;
 		var data = fcom.frmData(frm);		
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'changeOrderStatus'), data, function(t) {
-			setTimeout(location.reload.bind(location), 1000);
+			/* setTimeout(location.reload.bind(location), 1000); */
+			setTimeout("pageRedirect("+t.op_id+")", 1000);
 		});
 	};	
 })();
+
+function pageRedirect(op_id) {
+	window.location.replace(fcom.makeUrl('Seller', 'viewOrder',[op_id]));
+}
