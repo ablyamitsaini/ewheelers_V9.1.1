@@ -129,6 +129,7 @@ class AdminBaseController extends FatController {
 			'pleaseSelect' =>Labels::getLabel('VLBL_Please_select',$this->adminLangId),
 			'to' =>Labels::getLabel('VLBL_to',$this->adminLangId),
 			'options' =>Labels::getLabel('VLBL_options',$this->adminLangId),
+			'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available',$this->adminLangId),
 			'confirmRestoreBackup' =>Labels::getLabel('LBL_Do_you_want_to_restore_database_to_this_record',$this->adminLangId),
 			'confirmChangeRequestStatus' =>Labels::getLabel('LBL_Do_you_want_to_change_request_status',$this->adminLangId),
 			'confirmTruncateUserData' =>Labels::getLabel('LBL_Do_you_want_to_truncate_User_Data',$this->adminLangId),

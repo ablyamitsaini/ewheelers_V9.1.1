@@ -96,6 +96,7 @@ class MyAppController extends FatController {
 			'pleaseSelect' =>Labels::getLabel('VLBL_Please_select',$this->siteLangId),
 			'to' =>Labels::getLabel('VLBL_to',$this->siteLangId),
 			'options' =>Labels::getLabel('VLBL_options',$this->siteLangId),
+			'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available',$this->siteLangId),
 			'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list',$this->siteLangId),
 			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
 			'siteCurrencyId' =>$this->siteCurrencyId,
