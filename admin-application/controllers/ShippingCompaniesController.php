@@ -164,7 +164,7 @@ class ShippingCompaniesController extends AdminBaseController {
 		$newTabLangId=0;	
 		$languages = Language::getAllNames();	
 		foreach($languages as $langId =>$langName ){			
-			if(!$row = PaymentMethods::getAttributesByLangId($langId,$scompany_id)){
+			if(!$row = ShippingCompanies::getAttributesByLangId($langId,$scompany_id)){
 				$newTabLangId = $langId;
 				break;
 			}			

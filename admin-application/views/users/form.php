@@ -14,6 +14,10 @@ $frmUser->developerTags['fld_default_col'] = 12;
 $frmUser->setFormTagAttribute('class', 'web_form form_horizontal');
 $frmUser->setFormTagAttribute('onsubmit', 'setupUsers(this); return(false);');
 
+$dobFld = $frmUser->getField('user_dob');
+$dobFld->setFieldTagAttribute('class','user_dob_js');
+
+
 $countryFld = $frmUser->getField('user_country_id');
 $countryFld->setFieldTagAttribute('id','user_country_id');
 $countryFld->setFieldTagAttribute('onChange','getCountryStates(this.value,'.$stateId.',\'#user_state_id\')');
@@ -44,5 +48,6 @@ $stateFld->setFieldTagAttribute('id','user_state_id');
 <script language="javascript">
 	$(document).ready(function(){
 		getCountryStates($( "#user_country_id" ).val(),<?php echo $stateId ;?>,'#user_state_id');
+		$('.user_dob_js').datepicker({  maxDate: new Date() });
 	});	
 </script>
