@@ -309,7 +309,7 @@ class TestimonialsController extends AdminBaseController {
 		$this->_template->render(false, false, 'json-success.php');	
 	}
 	
-	private function getForm($testimonialId = 0){	
+	private function getForm($testimonialId = 0){
 		$this->objPrivilege->canViewTestimonial();
 		$testimonialId =  FatUtility::int($testimonialId);
 		
@@ -330,7 +330,8 @@ class TestimonialsController extends AdminBaseController {
 		$frm->addHiddenField('', 'testimonial_id',$testimonialId);
 		$frm->addHiddenField('', 'lang_id',$lang_id);
 		$frm->addRequiredField(Labels::getLabel('LBL_Testimonial_Title',$this->adminLangId), 'testimonial_title');
-		$frm->addTextarea(Labels::getLabel('LBL_Testimonial_Text',$this->adminLangId), 'testimonial_text');
+		$fld = $frm->addTextarea(Labels::getLabel('LBL_Testimonial_Text',$this->adminLangId), 'testimonial_text');
+		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 		return $frm;
 	}
