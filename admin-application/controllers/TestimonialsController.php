@@ -260,29 +260,25 @@ class TestimonialsController extends AdminBaseController {
 		$this->objPrivilege->canEditTestimonial();	
 		$post = FatApp::getPostedData();
 		if( empty($post) ){
-			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->adminLangId));
-			FatUtility::dieJsonError(Message::getHtml());
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->adminLangId));
 		}
 		$testimonialId = FatApp::getPostedData( 'testimonialId', FatUtility::VAR_INT, 0 );
 		$lang_id = FatApp::getPostedData( 'lang_id', FatUtility::VAR_INT, 0 );
 		if ( !$testimonialId  ) {
-			Message::addErrorMessage( $this->str_invalid_request_id );
-			FatUtility::dieJsonError( Message::getHtml() );	
+			FatUtility::dieJsonError( $this->str_invalid_request_id );	
 		}
 		
 		if ( !is_uploaded_file( $_FILES['file']['tmp_name'] ) ) {
-			Message::addErrorMessage(Labels::getLabel('MSG_Please_Select_A_File',$this->adminLangId));
-			FatUtility::dieJsonError(Message::getHtml());
+			FatUtility::dieJsonError(Labels::getLabel('MSG_Please_Select_A_File',$this->adminLangId));
 		}
 		
 		$fileHandlerObj = new AttachedFile();
 		$fileHandlerObj->deleteFile( $fileHandlerObj::FILETYPE_TESTIMONIAL_IMAGE, $testimonialId, 0, 0, $lang_id );
 		
-		if(!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], $fileHandlerObj::FILETYPE_TESTIMONIAL_IMAGE, 
+		if(!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'], $fileHandlerObj::FILETYPE_TESTIMONIAL_IMAGE, 
 		$testimonialId, 0,  $_FILES['file']['name'], -1, $unique_record = false, $lang_id)
 		){
-			Message::addErrorMessage($fileHandlerObj->getError());
-			FatUtility::dieJsonError( Message::getHtml() );
+			FatUtility::dieJsonError( $fileHandlerObj->getError() );
 		}
 		
 		$this->set('testimonialId',$testimonialId);
