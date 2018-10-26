@@ -1,3 +1,4 @@
+<?php if (count($messages) > 0){ ?>
 <div class="box box--white box--space ">
 	<div class="box__head">
 	   <h4><?php echo Labels::getLabel('LBL_Message',$siteLangId);?></h4>
@@ -5,8 +6,8 @@
 	</div>
 	<div class="box__body">
 	   <ul class="media media--small">
-		<?php if (count($messages) > 0){
-				foreach($messages as $row){
+		
+				<?php foreach($messages as $row){
 					$liClass = 'is-read';
 					if($row['message_is_unread'] == Thread::MESSAGE_IS_UNREAD ) {
 						$liClass = '';
@@ -26,7 +27,8 @@
 				<div class="media__description"><?php  echo CommonHelper::truncateCharacters($row['message_text'],85,'','',true);?></div>
 		   </div>
 		</li>
-		<?php }}?>
+		<?php }?>
 	   </ul>
 	</div>
 </div>
+<?php }?>
