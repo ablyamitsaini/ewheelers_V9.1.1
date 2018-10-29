@@ -572,7 +572,19 @@ echo $str;
 	}
 	
 	function test(){
-				
+		$db = FatApp::getDb();
+		$useremail = 'guest@dummyids.com';
+		$srch = User::getSearchObject(true,false);				
+		$srch->addCondition('credential_email', '=', $useremail);		
+		$rs = $srch->getResultSet();		
+		$row = $db->fetch($rs);
+		var_dump($row);
+		echo "<br>";
+		$rowUser = User::getAttributesById($row['user_id']);
+		
+		var_dump($rowUser);
+		exit;	
+		
 		$orders = new Orders('O1538197607');	
 		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
 		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
