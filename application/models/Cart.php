@@ -1322,8 +1322,9 @@ class Cart extends FatModel {
                 $code = $value->serviceCode;
                 $price = $value->shipmentCost + $value->otherCost;					
                 $name = $value->serviceName;
-				if($products[$prodKey]['shop_eligible_for_free_shipping'] > 0){ 
-					$displayPrice =	CommonHelper::displayMoneyFormat(0);				
+				if($products[$prodKey]['shop_eligible_for_free_shipping'] > 0){
+					/* $displayPrice =	CommonHelper::displayMoneyFormat(0); */
+					$displayPrice =	Labels::getLabel('LBL_Free_Shipping',$lang_id);	
 				}else{
 					$displayPrice = CommonHelper::displayMoneyFormat($price);
 				}				
