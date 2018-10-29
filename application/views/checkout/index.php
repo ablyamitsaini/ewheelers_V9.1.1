@@ -15,7 +15,7 @@
             <div class="selected-panel-type">1. <?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></div>
             <div class="selected-panel-data"><?php echo UserAuthentication::getLoggedUserAttribute('user_email'); ?></div>
 			<?php if(UserAuthentication::isGuestUserLogged()){?>
-			<div class="selected-panel-action"><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout');?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></div>	
+			<div class="selected-panel-action"><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout');?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Change_User', $siteLangId); ?></a></div>	
             <!--<div class="selected-panel-action"><a onClick="showLoginDiv();" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Change_Login', $siteLangId); ?></a></div>-->
 			<?php }?>
           </div>
