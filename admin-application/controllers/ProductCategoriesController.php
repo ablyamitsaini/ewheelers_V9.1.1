@@ -798,6 +798,7 @@ class ProductCategoriesController extends AdminBaseController {
 						$cntInc=1;
 						$prodCateObj = new ProductCategory();
 						$category_structure = $prodCateObj->getCategoryStructure($parent);
+						$category_structure = array_reverse($category_structure);
 						foreach($category_structure as $catKey=>$catVal){
 							if ($cntInc<count($category_structure)){
 								$nodes[] = array('title'=>$catVal["prodcat_identifier"], 'href'=>CommonHelper::generateUrl('ProductCategories','index',array($catVal['prodcat_id'])));
