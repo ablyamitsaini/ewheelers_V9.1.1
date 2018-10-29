@@ -3690,9 +3690,9 @@ body.toggled-right .rightoverlay {
 }
 
 .actions.actions--centered .dropwrap {
-    min-width: 130px;
+    min-width: 160px;
     left: 50%;
-    margin: 0 0 0 -65px;
+    margin: 0 0 0 -80px;
     transform-origin: center top;
     -webkit-transform-origin: center top;
     -ms-transform-origin: center top;

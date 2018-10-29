@@ -492,23 +492,20 @@ class BannersController extends AdminBaseController {
 		$banner_id = FatUtility::int($banner_id);
 		
 		if(1 > $banner_id){
-			Message::addErrorMessage($this->str_invalid_request);
-			FatUtility::dieJsonError( Message::getHtml() );
+			FatUtility::dieJsonError( $this->str_invalid_request );
 		}
 		
 		$post = FatApp::getPostedData();
 		if( empty($post) ){
-			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->adminLangId));
-			FatUtility::dieJsonError(Message::getHtml());
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->adminLangId));
 		}
 		$blocation_id = FatUtility::int($post['blocation_id']);
 		$lang_id = FatUtility::int($post['lang_id']);
 		
 		$banner_screen = FatUtility::int($post['banner_screen']);
 		
-		if (1 > $blocation_id) {		
-			Message::addErrorMessage($this->str_invalid_request);
-			FatUtility::dieJsonError( Message::getHtml() );	
+		if (1 > $blocation_id) {
+			FatUtility::dieJsonError( $this->str_invalid_request );	
 		}
 		/* if (!isset($post['file_type']) || FatUtility::int($post['file_type']) == 0 ) {			
 			Message::addErrorMessage($this->str_invalid_request);
@@ -524,17 +521,15 @@ class BannersController extends AdminBaseController {
 		} */
 		
 		if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
-			Message::addErrorMessage(Labels::getLabel('MSG_Please_Select_A_File',$this->adminLangId));
-			FatUtility::dieJsonError(Message::getHtml());
+			FatUtility::dieJsonError(Labels::getLabel('MSG_Please_Select_A_File',$this->adminLangId));
 		}
 		
 		$fileHandlerObj = new AttachedFile();
 		
-		if(!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'],AttachedFile::FILETYPE_BANNER, $banner_id, 0,
+		if(!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'],AttachedFile::FILETYPE_BANNER, $banner_id, 0,
 		$_FILES['file']['name'], -1, true,$lang_id,$banner_screen)
 		){
-			Message::addErrorMessage($fileHandlerObj->getError());
-			FatUtility::dieJsonError( Message::getHtml() );
+			FatUtility::dieJsonError( $fileHandlerObj->getError() );
 		}
 		
 		$this->set('bannerId', $banner_id);

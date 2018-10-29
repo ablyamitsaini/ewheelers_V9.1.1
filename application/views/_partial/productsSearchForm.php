@@ -71,3 +71,14 @@
 <?php /*?>
 <div id="loadMoreBtnDiv"></div>
 <?php */?>
+<script>
+/* $(document).ready(function(){
+	
+	if($('input[name="keyword"]').val() == ''){
+		$(".sortby option[value='keyword_relevancy_desc']").each(function() {
+			$(".sortby option[value='keyword_relevancy_desc']").remove();
+		});
+	}
+	
+}); */
+</script>

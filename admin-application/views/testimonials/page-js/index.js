@@ -218,7 +218,7 @@ $(document).on('click','.uploadFile-Js',function(){
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+			});			
 		}
 	}, 500);
 });

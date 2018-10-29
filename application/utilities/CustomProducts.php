@@ -39,7 +39,7 @@ trait CustomProducts{
 			$cnd->attachCondition('product_model', 'like', '%' . $keyword . '%');
 		}
 		
-		$srch->addMultipleFields( 
+		$srch->addMultipleFields(
 			array(	'product_id',
 					'product_identifier',
 					'product_active',
@@ -67,7 +67,18 @@ trait CustomProducts{
 	}
 	
 	public function customProductForm($prodId = 0,$prodCatId = 0){
-		$this->canAddCustomCatalogProduct(true);
+		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
+		}
+		if( !User::canAddCustomProduct() ){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','customProduct'));
+			
+		}
+		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
+			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
+			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
+		}	
 		$prodId = FatUtility::int($prodId);
 		$prodCatId = FatUtility::int($prodCatId);
 		
@@ -167,18 +178,13 @@ trait CustomProducts{
 			$srch->joinTable( Brand::DB_LANG_TBL , 'LEFT OUTER JOIN','brandlang_brand_id = brand.brand_id AND brandlang_lang_id = ' . $this->siteLangId );
 			$srch->addMultipleFields(array('product_id', 'product_identifier', 'product_type', 'product_model', 'product_min_selling_price', 'product_active', 'product_approved', 'product_featured', 'product_length','product_width', 'product_height', 'product_dimension_unit', 'product_weight', 'product_weight_unit', 'product_ship_country', 'product_ship_free', 'product_cod_enabled', 'product_upc', 'product_brand_id', 'IFNULL(brand_name,brand_identifier) as brand_name'));
 			$srch->addCondition( 'product_id', '=', $product_id );
-			$srch->addCondition( 'brand.brand_active', '=', applicationConstants::YES );
-			$srch->addCondition( 'brand.brand_deleted', '=', applicationConstants::NO );
 			$rs = $srch->getResultSet();
 			$row_data = FatApp::getDb()->fetch($rs);
 			
-			
-			
-			
 			$taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
-			
+			/* CommonHelper::printArray($row_data); die; */
 			if(!empty($taxData)){
-				$row_data = 	array_merge($row_data,$taxData);
+				$row_data = array_merge($row_data,$taxData);
 			}
 			$shippingDetails = Product::getProductShippingDetails($product_id, $this->siteLangId,UserAuthentication::getLoggedUserId());
 		
@@ -345,6 +351,15 @@ trait CustomProducts{
 			}
 		}
 		/* ] */
+		
+		$prodCatId = 0;
+		$product = new Product();
+		$records = $product->getProductCategories($product_id);
+		if(!empty($records)){
+			$prodcatArr = array_column($records, 'prodcat_id');
+			$prodCatId = reset($prodcatArr);
+		}
+		
 		$customProductLangFrm = $this->getCustomProductLangForm($lang_id);
 		$prodObj = new Product( $product_id );
 		$customProductLangData = $prodObj->getAttributesByLangId( $lang_id, $product_id );
@@ -360,6 +375,7 @@ trait CustomProducts{
 		$this->set('product_id', $product_id);
 		$this->set('siteLangId', $this->siteLangId);
 		$this->set('product_lang_id', $lang_id);
+		$this->set('prodcat_id', $prodCatId);
 		$this->set('customProductLangFrm', $customProductLangFrm);
 		$this->_template->render(false, false);
 	}
@@ -1831,7 +1847,7 @@ trait CustomProducts{
 		$frm = new Form( 'imageFrm', array('id' => 'imageFrm'));
 		$frm->addSelectBox( Labels::getLabel('LBL_Image_File_Type',$this->siteLangId),'option_id', $imgTypesArr, 0, array('class'=>'option'), '' );
 		$languagesAssocArr = Language::getAllNames();
-		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->siteLangId), 'lang_id', array( 0 => 'All Languages' ) + $languagesAssocArr, '', array('class'=>'language'), '' );
+		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->siteLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_All_Languages',$this->siteLangId) ) + $languagesAssocArr, '', array('class'=>'language'), '' );
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Photo(s)',$this->siteLangId), 'prod_image', array('id' => 'prod_image', 'multiple' => 'multiple') );
 		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
 		$fldImg->htmlAfterField='</div><small>'.Labels::getLabel('LBL_Please_keep_image_dimensions_greater_than_500_x_500._You_can_upload_multiple_photos_from_here',$this->siteLangId).'</small>';

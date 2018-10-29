@@ -537,6 +537,7 @@ class SellerController extends LoggedUserController {
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
 		
+		$this->set('op_id', $op_id);
 		$this->set('msg', Labels::getLabel('MSG_Updated_Successfully',$this->siteLangId));
 		$this->_template->render(false, false, 'json-success.php');
 	}

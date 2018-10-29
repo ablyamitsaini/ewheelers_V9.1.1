@@ -181,11 +181,12 @@ $(document).on('click','.bannerFile-Js',function(){
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if (typeof timer != 'undefined') {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();	
+
 			$.ajax({
 				url: fcom.makeUrl('Banners', 'upload',[bannerId]),
 				type: 'post',

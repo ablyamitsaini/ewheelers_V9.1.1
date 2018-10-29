@@ -96,6 +96,7 @@ class MyAppController extends FatController {
 			'pleaseSelect' =>Labels::getLabel('VLBL_Please_select',$this->siteLangId),
 			'to' =>Labels::getLabel('VLBL_to',$this->siteLangId),
 			'options' =>Labels::getLabel('VLBL_options',$this->siteLangId),
+			'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available',$this->siteLangId),
 			'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list',$this->siteLangId),
 			'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list',$this->siteLangId),
 			'siteCurrencyId' =>$this->siteCurrencyId,
@@ -313,8 +314,13 @@ class MyAppController extends FatController {
 		return $frm;
 	}
 
-	protected function getProductSearchForm(){ 
+	protected function getProductSearchForm($addKeywordRelvancy = false){
 		$sortByArr = array( 'price_asc' => Labels::getLabel('LBL_Price_(Low_to_High)', $this->siteLangId), 'price_desc' => Labels::getLabel('LBL_Price_(High_to_Low)', $this->siteLangId), 'popularity_desc' => Labels::getLabel('LBL_Sort_by_Popularity', $this->siteLangId), 'rating_desc' => Labels::getLabel('LBL_Sort_by_Rating', $this->siteLangId) );
+		$sortBy = 'price_asc';
+		if($addKeywordRelvancy){
+			$sortByArr = array('keyword_relevancy' => Labels::getLabel('LBL_Keyword_Relevancy', $this->siteLangId)) + $sortByArr;
+			$sortBy = 'keyword_relevancy';
+		}
 
 		$pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
 		//$pageSize = 10;
@@ -327,7 +333,7 @@ class MyAppController extends FatController {
 		$pageSizeArr[50] = 50 . ' '.$itemsTxt;
 		$frm = new Form('frmProductSearch');
 		$frm->addTextBox('','keyword','',array('id'=>'keyword'));
-		$frm->addSelectBox( '', 'sortBy', $sortByArr, 'price_asc', array('id'=>'sortBy'), '');
+		$frm->addSelectBox( '', 'sortBy', $sortByArr, $sortBy, array('id'=>'sortBy'), '');
 		$frm->addSelectBox( '', 'pageSize', $pageSizeArr, $pageSize, array('id'=>'pageSize'), '' );
 		$frm->addHiddenField('', 'page', 1);
 		$frm->addHiddenField('', 'sortOrder', 'asc');

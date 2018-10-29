@@ -321,7 +321,7 @@ class ProductCategoriesController extends AdminBaseController {
 		$frm->addRequiredField(Labels::getLabel('LBL_Category_Identifier',$this->adminLangId), 'prodcat_identifier');
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_Category_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
 		$fld->requirements()->setRequired();
-		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'prodcat_parent', array( 0 => 'Root Category' ) + $categories, '',array('class'=>'small') , '');
+		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'prodcat_parent', array( 0 => Labels::getLabel('LBL_Root_Category',$this->adminLangId) ) + $categories, '',array('class'=>'small') , '');
 		
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 		

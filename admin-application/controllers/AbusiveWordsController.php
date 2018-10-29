@@ -1,7 +1,7 @@
 <?php
 class AbusiveWordsController extends AdminBaseController {
 	private $canView;
-	private $canEdit;	
+	private $canEdit;
 	
 	public function __construct($action){
 		$ajaxCallArray = array('deleteRecord','form','search','setup');
@@ -59,7 +59,7 @@ class AbusiveWordsController extends AdminBaseController {
 		$this->_template->render(false, false);
 	}
 	
-	public function form($abusive_id){	
+	public function form($abusive_id){
 		$this->objPrivilege->canViewAbusiveWords();
 		
 		$abusive_id = FatUtility::int($abusive_id);
@@ -142,7 +142,7 @@ class AbusiveWordsController extends AdminBaseController {
 		return $frm;
 	}
 	
-	private function getForm($abusiveId = 0){		
+	private function getForm($abusiveId = 0){
 		$this->objPrivilege->canViewAbusiveWords();
 		$frm = new Form('frmAbusiveWord');	
 		$frm->addHiddenField('','abusive_id',$abusiveId);
@@ -152,4 +152,4 @@ class AbusiveWordsController extends AdminBaseController {
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 		return $frm;
 	}
-}	
+}

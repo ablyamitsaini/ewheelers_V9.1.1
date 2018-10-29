@@ -12,5 +12,5 @@ if( !empty($list) ){
 	</div>
 <?php }
 } else {
-	echo 'No records';
+	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 }

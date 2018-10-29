@@ -363,7 +363,7 @@ class BlogPostCategoriesController extends AdminBaseController {
 		$frm->addRequiredField(Labels::getLabel('LBL_Category_Identifier',$this->adminLangId), 'bpcategory_identifier');
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
 		$fld->requirements()->setRequired();
-		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'bpcategory_parent', array(0=>'Root Category') + $categories, '',array('class'=>'small') , '');
+		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'bpcategory_parent', array(0=>Labels::getLabel('LBL_Root_Category',$this->adminLangId)) + $categories, '',array('class'=>'small') , '');
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 		$frm->addSelectBox(Labels::getLabel('LBL_Category_Status',$this->adminLangId), 'bpcategory_active', $activeInactiveArr, '',array('class'=>'small'),'');
 		$frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'bpcategory_featured', 1, array(),false,0);

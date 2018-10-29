@@ -56,8 +56,7 @@ echo $str = '<script type="text/javascript">
 <?php 
 if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION",FatUtility::VAR_STRING,'')) {	
 	echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE",FatUtility::VAR_STRING,'');
-	if (UserAuthentication::getLoggedUserId(true) > 0) {
-		?>
+	if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
 		<script type="text/javascript">
 			Engagespot.init()
 			Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
