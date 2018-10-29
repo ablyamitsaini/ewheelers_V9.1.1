@@ -91,6 +91,7 @@ class GuestUserController extends MyAppController {
 		if($redirectUrl == ''){
 			$redirectUrl = CommonHelper::generateUrl('Home');
 		}
+		
 		$this->set('redirectUrl',$redirectUrl);
 		$this->set('msg', Labels::getLabel("MSG_GUEST_LOGIN_SUCCESSFULL",$this->siteLangId));
 		$this->_template->render(false, false, 'json-success.php');
