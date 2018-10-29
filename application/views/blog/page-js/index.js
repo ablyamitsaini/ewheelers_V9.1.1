@@ -42,19 +42,24 @@ $(document).ready(function(){
 			data +='&keyword='+keyword;
 		}
 		
-		fcom.updateWithAjax(fcom.makeUrl('Blog','blogList'), data, function(ans){
-			$.mbsmessage.close();			
-			if( append == 1 ){
-				$(dv).find('.loader-yk').remove();
-				$(dv).append(ans.html);
-			} else {
-				$(dv).html(ans.html);
+		fcom.ajax(fcom.makeUrl('Blog', 'blogList'), data, function (ans) {
+			$.mbsmessage.close();
+			var res = $.parseJSON(ans);
+			$(dv).html(res.html);
+			
+			if( $('#start_record').length > 0  ){
+				$('#start_record').html(res.startRecord);
+			}
+			if( $('#end_record').length > 0  ){
+				$('#end_record').html(res.endRecord);
+			}
+			if( $('#total_records').length > 0  ){
+				$('#total_records').html(res.totalRecords);
 			}
 			if($("#loadMoreBtnDiv").length){
-				$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
+				$("#loadMoreBtnDiv").html( res.loadMoreBtnHtml );
 			}
-			
-		}); 
+		});
 	};
 	
 	goToSearchPage = function(page){

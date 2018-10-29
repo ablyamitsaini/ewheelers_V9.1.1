@@ -64,8 +64,15 @@ class SellerOrdersController extends AdminBaseController {
 		}
 		
 		$user_id = FatApp::getPostedData('user_id','', -1);
-		if( $user_id ){
+		if( $user_id > 0){
 			$srch->addCondition( 'user_id', '=', $user_id );
+		}else{
+			$customer_name = FatApp::getPostedData('buyer', null, '');
+			if( !empty($customer_name) ) {
+				$cnd = $srch->addCondition('ou.user_name', 'like', '%' . $customer_name . '%');
+				$cnd->attachCondition('ou.user_phone', 'like', '%' . $customer_name . '%','OR');
+				$cnd->attachCondition('ouc.credential_email', 'like', '%' . $customer_name . '%','OR');			
+			}
 		}
 		
 		$shipping_company_user_id = FatApp::getPostedData( 'shipping_company_user_id', FatUtility::VAR_INT, 0 );
@@ -86,13 +93,6 @@ class SellerOrdersController extends AdminBaseController {
 			$cnd->attachCondition('op.op_shop_owner_username', 'like', '%' . $shop_name . '%','OR');
 			$cnd->attachCondition('op.op_shop_owner_email', 'like', '%' . $shop_name . '%','OR');
 			$cnd->attachCondition('op.op_shop_owner_phone', 'like', '%' . $shop_name . '%','OR');
-		}
-		
-		$customer_name = FatApp::getPostedData('customer_name', null, '');
-		if( !empty($customer_name) ) {
-			$cnd = $srch->addCondition('ou.user_name', 'like', '%' . $customer_name . '%');
-			$cnd->attachCondition('ou.user_phone', 'like', '%' . $customer_name . '%','OR');
-			$cnd->attachCondition('ouc.credential_email', 'like', '%' . $customer_name . '%','OR');			
 		}
 		
 		$dateFrom = FatApp::getPostedData('date_from', null, '');
@@ -608,7 +608,7 @@ class SellerOrdersController extends AdminBaseController {
 		$frm->addTextBox(Labels::getLabel('LBL_Buyer',$this->adminLangId), 'buyer', '');
 		$frm->addSelectBox( Labels::getLabel('LBL_Status',$this->adminLangId), 'op_status_id', Orders::getOrderProductStatusArr( $langId ), '', array(), Labels::getLabel('LBL_All',$this->adminLangId) );
 		$frm->addTextBox(Labels::getLabel('LBL_Seller_Shop',$this->adminLangId),'shop_name');
-		$frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name');
+		/* $frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name'); */
 		
 		$frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From',$this->adminLangId), 'readonly' => 'readonly' ) );
 		$frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To',$this->adminLangId), 'readonly' => 'readonly' ) );

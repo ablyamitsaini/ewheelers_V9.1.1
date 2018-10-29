@@ -20,6 +20,10 @@ $(document).ready(function(){
 		}
 	});
 	
+	$('input[name=\'buyer\']').keyup(function(){
+		$('input[name=\'user_id\']').val('');
+	});
+	
 	$(document).on('click','ul.linksvertical li a.redirect--js',function(event){
 		window.location = event.target();
 	});	

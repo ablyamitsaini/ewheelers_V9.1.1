@@ -275,7 +275,7 @@ class AdminBaseController extends FatController {
 		$frm->addTextBox(Labels::getLabel('LBL_Buyer',$this->adminLangId), 'buyer', '');
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'op_status_id', Orders::getOrderStatusArr( $langId ), '', array(), Labels::getLabel('LBL_All',$langId));
 		$frm->addTextBox(Labels::getLabel('LBL_Seller/Shop',$this->adminLangId),'shop_name');
-		$frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name');
+		/* $frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name'); */
 		
 		$frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From',$this->adminLangId), 'readonly' => 'readonly' ) );
 		$frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To',$this->adminLangId), 'readonly' => 'readonly' ) );
