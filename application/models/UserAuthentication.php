@@ -163,16 +163,16 @@ class UserAuthentication extends FatModel {
 		$rs = $srch->getResultSet();		
 		$row = $db->fetch($rs);
 		if (!empty($row)) {
-			if($row['user_is_buyer'] != 1){
-				$this->error = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->commonLangId);;
+			if($row['user_is_buyer'] != applicationConstants::YES){
+				$this->error = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->commonLangId);
 				return false;
 			}
 
-			if($row['credential_verified'] == 1 && $row['credential_active'] == 1 ){
+			if($row['credential_verified'] == applicationConstants::YES && $row['credential_active'] == applicationConstants::ACTIVE ){
 				$this->error = Labels::getLabel('ERR_YOUR_ACCOUNT_ALREADY_EXIST._PLEASE_LOGIN',$this->commonLangId);
 				return false;
 			}
-			
+
 			$rowUser = User::getAttributesById($row['user_id']);
 		
 			$rowUser['user_ip'] = $ip;
@@ -197,6 +197,7 @@ class UserAuthentication extends FatModel {
 			'user_registered_initially_for'=>User::USER_TYPE_BUYER,			
 		);
 		$userObj->assignValues($data);
+		
 		if ( !$userObj->save() ) {
 			$db->rollbackTransaction();
 			$this->error = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->commonLangId) . $userObj->getError();			
@@ -221,7 +222,7 @@ class UserAuthentication extends FatModel {
 			}
 		}
 
-		if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1)){			
+		if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1)){		
 			if(!$userObj->guestUserWelcomeEmail($data, $this->commonLangId)){				
 			    $this->error = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT",$this->commonLangId);
 				$db->rollbackTransaction();				

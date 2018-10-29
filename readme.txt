@@ -29,6 +29,7 @@ Updates:
 	
 Enhancements:
 	. Product listing page updated speed optimization work.	
+	. Guest checkout code enhancements.
 	
 Database changes:
 	Use database/db-updates.sql

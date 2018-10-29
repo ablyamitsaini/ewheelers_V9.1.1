@@ -76,30 +76,22 @@ class GuestUserController extends MyAppController {
 			Message::addErrorMessage(Labels::getLabel($authentication->getError(),$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml());
 		}
-		
-		$userId = UserAuthentication::getLoggedUserId();
-		setcookie('uc_id', $userId, time()+3600*24*30,CONF_WEBROOT_URL);	
-		
-		$data = User::getAttributesById($userId,array('user_preferred_dashboard'));	
-		
-		$preferredDashboard = 0;
-		if($data != false){
-			$preferredDashboard = $data['user_preferred_dashboard'];
-		}
-		
+				
 		$redirectUrl = '';
 		
 		if(isset($_SESSION['referer_page_url'])){
 			$redirectUrl = $_SESSION['referer_page_url'];
 			unset($_SESSION['referer_page_url']);
 		}
+		
 		if($redirectUrl == ''){
-			$redirectUrl = User::getPreferedDashbordRedirectUrl($preferredDashboard);
+			$redirectUrl = User::getPreferedDashbordRedirectUrl(User::USER_BUYER_DASHBOARD);
 		}
 		
 		if($redirectUrl == ''){
 			$redirectUrl = CommonHelper::generateUrl('Home');
 		}
+		
 		$this->set('redirectUrl',$redirectUrl);
 		$this->set('msg', Labels::getLabel("MSG_GUEST_LOGIN_SUCCESSFULL",$this->siteLangId));
 		$this->_template->render(false, false, 'json-success.php');
