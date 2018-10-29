@@ -48,6 +48,6 @@ $stateFld->setFieldTagAttribute('id','user_state_id');
 <script language="javascript">
 	$(document).ready(function(){
 		getCountryStates($( "#user_country_id" ).val(),<?php echo $stateId ;?>,'#user_state_id');
-		$('.user_dob_js').datepicker({  maxDate: new Date() });
+		$('.user_dob_js').datepicker('option', {maxDate: new Date()});
 	});	
 </script>
