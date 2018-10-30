@@ -60,7 +60,7 @@ class BlogController extends MyAppController{
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
 		
-		$this->set("postList",$records);
+		$this->set('postList',$records);
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss('css/slick.css');
 		$this->_template->render();
@@ -72,6 +72,19 @@ class BlogController extends MyAppController{
 			Message::addErrorMessage(Labels::getLabel('Lbl_Invalid_Request',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
 		}
+		
+		$srch = BlogPost::getSearchObject($this->siteLangId,true,false,true);	
+		$srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
+		$srch->addCondition('postlang_post_id','is not','mysql_func_null','and',true);
+		$srch->addCondition('ptc_bpcategory_id','=',$categoryId);
+		$srch->addCondition('post_published','=',applicationConstants::YES);
+		$srch->addOrder('post_added_on','desc');
+		$srch->setPageSize(5);
+		$srch->addGroupby('post_id');
+		$rs = $srch->getResultSet();
+		$records = FatApp::getDb()->fetchAll($rs);
+		
+		$this->set('postList',$records);
 		$this->_template->addJs('js/slick.min.js'); 
 		$this->_template->addCss('css/slick.css');
 		$this->set('bpCategoryId',$categoryId);
@@ -104,6 +117,7 @@ class BlogController extends MyAppController{
 		
 		if( $categoryId = FatApp::getPostedData('categoryId',FatUtility::VAR_INT , 0) ){
 			$srch->addCondition('ptc_bpcategory_id','=',$categoryId);
+			$this->set('bpCategoryId', $categoryId);
 		}elseif( $keyword = FatApp::getPostedData('keyword',FatUtility::VAR_STRING , '') ){
 			$keywordCond= $srch->addCondition('post_title','like',"%$keyword%");
 			$keywordCond->attachCondition('post_short_description','like',"%$keyword%");
@@ -125,7 +139,7 @@ class BlogController extends MyAppController{
 		if ($totalRecords < $endRecord) { $endRecord = $totalRecords; }
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
-		$this->set("postList",$records);
+		$this->set('postList',$records);
 		$this->set('recordCount', $totalRecords);
 		$this->set('postedData', $post);
 		

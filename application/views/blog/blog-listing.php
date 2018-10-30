@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 if(!empty($postList)){ ?>
-	<?php if(isset($keyword)){
+	<?php if(isset($keyword) || isset($bpCategoryId)){
 		$innerListcount = 1;
 		foreach($postList as $blogPost ){ ?>
 			<section class="section">

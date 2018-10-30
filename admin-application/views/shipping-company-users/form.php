@@ -12,7 +12,10 @@ if( $user_id > 0 ){
 }
 
 $frmUser->developerTags['colClassPrefix'] = 'col-md-';
-$frmUser->developerTags['fld_default_col'] = 12;	
+$frmUser->developerTags['fld_default_col'] = 12;
+
+$dobFld = $frmUser->getField('user_dob');
+$dobFld->setFieldTagAttribute('class','user_dob_js');	
 
 $countryFld = $frmUser->getField('user_country_id');
 $countryFld->setFieldTagAttribute('id','user_country_id');
@@ -29,11 +32,11 @@ $stateFld->setFieldTagAttribute('id','user_state_id');
 		<div class="border-box border-box--space">
 			<?php echo $frmUser->getFormHtml(); ?>
 		</div>
-	</div>						
-					
+	</div>
 </section>
 <script language="javascript">
 $(document).ready(function(){
 	getCountryStates($( "#user_country_id" ).val(),<?php echo $stateId ;?>,'#user_state_id');
-});	
+	$('.user_dob_js').datepicker('option', {maxDate: new Date()});
+});
 </script>

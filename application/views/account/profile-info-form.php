@@ -13,6 +13,8 @@ if(!empty($data['user_dob']) && strtotime($data['user_dob']) > 0 ){
 	$userDobFld->setFieldTagAttribute('disabled','disabled');
 }
 
+$userDobFld->setFieldTagAttribute('class','user_dob_js');
+
 $emailFld = $frm->getField('credential_email');
 $emailFld->setFieldTagAttribute('disabled','disabled');
 
@@ -63,5 +65,6 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 <script language="javascript">
 	$(document).ready(function(){
 		getCountryStates($( "#user_country_id" ).val(),<?php echo $stateId ;?>,'#user_state_id');
+		$('.user_dob_js').datepicker('option', {maxDate: new Date()});
 	});
 </script>

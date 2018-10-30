@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 /* $this->includeTemplate('_partial/blogTopFeaturedCategories.php'); */
-if(count($postList)>2 && (!isset($keyword))){ require_once(CONF_THEME_PATH.'_partial/blogSlides.php'); }
+if(count($postList)>2 && (!isset($keyword)) && (!isset($bpCategoryId))){ require_once(CONF_THEME_PATH.'_partial/blogSlides.php'); }
 	?>
 <div class="posts--all" id='listing'></div>
 <script>

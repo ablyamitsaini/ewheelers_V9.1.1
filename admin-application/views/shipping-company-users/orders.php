@@ -27,7 +27,7 @@
 								$frmSearch->developerTags['fld_default_col'] = 12;
 								
 								$keywordFld = $frmSearch->getField('keyword');
-								$keywordFld->developerTags['col'] = 12;
+								$keywordFld->developerTags['col'] = 6;
 								$keywordFld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Search_In_Keywords_For_Orders',$adminLangId).'</small>';
 								
 								$buyerFld = $frmSearch->getField('buyer');
@@ -41,9 +41,9 @@
 								$shopFld->developerTags['col'] = 6;
 								$shopFld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Search_In_Shop_Details_For_Orders',$adminLangId).'</small>';
 								
-								$customerFld = $frmSearch->getField('customer_name');
+								/* $customerFld = $frmSearch->getField('customer_name');
 								$customerFld->developerTags['col'] = 6;
-								$customerFld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Search_In_Customer_Details_For_Orders',$adminLangId).'</small>';
+								$customerFld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Search_In_Customer_Details_For_Orders',$adminLangId).'</small>'; */
 								
 								$dateFromFld = $frmSearch->getField('date_from');
 								$dateFromFld->setFieldTagAttribute('class','field--calender');
