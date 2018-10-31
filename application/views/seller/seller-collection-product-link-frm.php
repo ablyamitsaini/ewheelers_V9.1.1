@@ -1,5 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-
+<?php $variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
+	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
 <div class="col-md-12">
 	<div class="container container--fluid">
 		<div class="tabs--inline tabs--scroll clearfix">
@@ -28,19 +29,13 @@
 	</div>
 </div>
 
-
-
-
 <script type="text/javascript">
 $("document").ready(function(){
 
-
-		$('#selprod-products').delegate('.remove_link', 'click', function() {
+	$('#selprod-products').delegate('.remove_link', 'click', function() {
 
 		$(this).parent().remove();
 	});
-
-
 
 });
 

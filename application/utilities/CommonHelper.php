@@ -155,16 +155,16 @@ class CommonHelper extends FatUtility{
 	}	
 	
 	
-	static function generateUrl($controller = '', $action = '', $queryData = array(), $use_root_url = '', $url_rewriting = null, $encodeUrl = false) {
+	static function generateUrl($controller = '', $action = '', $queryData = array(), $use_root_url = '', $url_rewriting = null, $encodeUrl = false, $getOriginalUrl = false) {
 		
 		if(self::isThemePreview()){
 			array_push($queryData,'?theme-preview');
 		}
 		$url = FatUtility::generateUrl($controller, $action, $queryData, $use_root_url, $url_rewriting);
 		
-		/* if(FatUtility::isAjaxCall()){
+		if($getOriginalUrl){
 			return $url;
-		} */
+		}
 		
 		if(!$use_root_url){
 			$use_root_url = CONF_WEBROOT_URL;
@@ -758,16 +758,16 @@ class CommonHelper extends FatUtility{
 		return false;
 	}
 	
-	public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0  ) {
+	public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0, $getOriginalUrl = false  ) {
 		
 		if( $type == NavigationLinks::NAVLINK_TYPE_CMS ){	
-			$url = CommonHelper::generateUrl('cms','view',array($nav_cpage_id));
+			$url = CommonHelper::generateUrl('cms','view',array($nav_cpage_id),'',null,false,$getOriginalUrl);	
 		} else if( $type==NavigationLinks::NAVLINK_TYPE_EXTERNAL_PAGE ){
 			$url = str_replace('{SITEROOT}', CONF_WEBROOT_URL, $nav_url) ;
 			$url = str_replace('{siteroot}', CONF_WEBROOT_URL, $url) ;
 			$url = CommonHelper::processURLString( $url );		
 		} else if( $type == NavigationLinks::NAVLINK_TYPE_CATEGORY_PAGE ){
-			$url= CommonHelper::generateUrl('category','view',array($nav_category_id));
+			$url = CommonHelper::generateUrl('category','view',array($nav_category_id),'',null,false,$getOriginalUrl);
 		}
 		
 		if(self::isThemePreview()){

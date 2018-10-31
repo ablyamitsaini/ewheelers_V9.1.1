@@ -97,6 +97,7 @@
 						$selected_shipping_address_id = (!$selected_shipping_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_shipping_address_id; ?>
 						<div class="col-lg-6 col-md-6 col-xs-12" >
 
+
 								<label class="address">
 										<div class="address-inner">
 									<span class="radio">
@@ -147,6 +148,8 @@
 									</p>
 									</div>
 								</label>
+
+
 
 						</div>
 			  <?php } ?>

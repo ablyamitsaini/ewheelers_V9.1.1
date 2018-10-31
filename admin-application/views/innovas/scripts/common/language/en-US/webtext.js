@@ -12,7 +12,7 @@
     document.getElementById("lblWordSpacing").innerHTML = "WORD SPACING:";
     document.getElementById("lblNote").innerHTML = "This feature is not currently supported in IE.";
     document.getElementById("divShadowClear").innerHTML = "CLEAR";    
-}
+} 
 function writeTitle() {
     document.write("<title>" + "Text" + "</title>")
 }

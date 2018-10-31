@@ -548,6 +548,6 @@
 	};
 	
 	checkUniqueErrorNotify = function (caption, value) {
-		alert(caption + " '" + value + "' is not available");
+		alert(caption + " '" + value + " " +langLbl.isNotAvailable);
 	};
 })();

@@ -767,7 +767,7 @@
 }
 
 .post__detail ol.list-spl li ul li {
-  background: url(../images/bullet.png) no-repeat left 6px;
+  background: url(images/bullet.png) no-repeat left 6px;
   font-size: 13px;
   color: #000;
   line-height: 20px;

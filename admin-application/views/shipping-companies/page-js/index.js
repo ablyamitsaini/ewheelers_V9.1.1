@@ -70,7 +70,7 @@ $(document).ready(function(){
 		if (!$(frm).validate()) return;		
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('ShippingCompanies', 'langSetup'), data, function(t) {
-			reloadList();			
+			reloadList();		
 			if (t.langId>0) {
 				editLangForm(t.sCompanyId, t.langId);
 				return ;

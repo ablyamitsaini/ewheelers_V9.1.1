@@ -2,7 +2,7 @@
 <div id="" >
   <div class="">
     <div class="product-options">
-      <div class="popup-title"><h3><?php echo Labels::getLabel('LBL_Product',$siteLangId);?></h3></div>
+      <div class="pop-up-title"><?php echo Labels::getLabel('LBL_Product',$siteLangId);?></div>
       <ul>
         <?php if( User::canAddCustomProduct() ){ ?>
         <li  data-heading="OR" ><a href="<?php echo CommonHelper::generateUrl('seller','customProductForm' );?>"><i class="icn fa  fa-camera"></i>

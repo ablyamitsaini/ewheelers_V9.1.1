@@ -163,6 +163,7 @@ $("document").ready(function(){
 		}
 	});
 	$('#close-cart-js').click(function(){
+		alert('hi');
 		if($('html').hasClass('cart-is-active')){
 			$('html').removeClass('cart-is-active');
 			$('.cart').toggleClass("cart-is-active");

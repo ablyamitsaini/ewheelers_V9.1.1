@@ -98,7 +98,6 @@
 			<?php }?>
 			<?php if(
 				$objPrivilege->canViewUsers( AdminAuthentication::getLoggedAdminId(), true ) || 
-				$objPrivilege->canViewShippingCompanyUsers( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewSellerApprovalForm( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewSellerApprovalRequests( AdminAuthentication::getLoggedAdminId(), true ) || 
 				$objPrivilege->canViewSellerCatalogRequests( AdminAuthentication::getLoggedAdminId(), true ) || 
@@ -109,10 +108,6 @@
 				<ul>
 					<?php if($objPrivilege->canViewUsers(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users');?>"><?php echo Labels::getLabel('LBL_Users',$adminLangId);?></a></li>
-					<?php }?>
-					
-					<?php if($objPrivilege->canViewShippingCompanyUsers( AdminAuthentication::getLoggedAdminId(), true )){?>
-					<li><a href="<?php echo CommonHelper::generateUrl('ShippingCompanyUsers');?>"><?php echo Labels::getLabel('LBL_Shipping_Company_Users',$adminLangId);?></a></li>
 					<?php }?>
 					
 					<?php if($objPrivilege->canViewSellerApprovalForm(AdminAuthentication::getLoggedAdminId(), true)){?>
@@ -217,6 +212,7 @@
 			<?php }?>
 			<?php if(
 				$objPrivilege->canViewShippingMethods(AdminAuthentication::getLoggedAdminId(), true) || 
+				$objPrivilege->canViewShippingCompanyUsers( AdminAuthentication::getLoggedAdminId(), true ) ||
 				$objPrivilege->canViewShippingDurationLabels(AdminAuthentication::getLoggedAdminId(), true) || 
 				$objPrivilege->canViewManualShippingApi(AdminAuthentication::getLoggedAdminId(), true)  
 			){ ?>
@@ -234,9 +230,13 @@
 					<li><a href="<?php echo CommonHelper::generateUrl('ShippingCompanies'); ?>"><?php echo Labels::getLabel('LBL_Shipping_Companies',$adminLangId);?></a></li>	
 					<?php }?>
 					
-					<!-- <?php if($objPrivilege->canViewManualShippingApi(AdminAuthentication::getLoggedAdminId(), true)){?>
+					<?php if($objPrivilege->canViewShippingCompanyUsers( AdminAuthentication::getLoggedAdminId(), true )){?>
+					<li><a href="<?php echo CommonHelper::generateUrl('ShippingCompanyUsers');?>"><?php echo Labels::getLabel('LBL_Shipping_Company_Users',$adminLangId);?></a></li>
+					<?php }?>
+					
+					<?php /* if($objPrivilege->canViewManualShippingApi(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('ManualShippingApi'); ?>"><?php echo Labels::getLabel('LBL_Manual_Shipping_Api',$adminLangId);?></a></li>	
-					<?php }?> -->
+					<?php } */ ?>
 				</ul>
 			</li>
 			<?php }?>

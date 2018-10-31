@@ -89,21 +89,15 @@ $("document").ready(function()
 	guestUserLogin = function(frm, v) {
 		v.validate();
 		if ( !v.isValid() ) return;	
-		$.mbsmessage(langLbl.processing,true,'alert alert--process'); 
+		$.mbsmessage(langLbl.processing,false,'alert alert--process'); 
 		fcom.ajax(fcom.makeUrl('GuestUser', 'guestLogin'), fcom.frmData(frm), function(t) {
-			var ans = JSON.parse(t);
-			if(ans.notVerified==1)
-			{
-				var autoClose = false;
-			}else{
-				var autoClose = true;
-			}
+			var ans = JSON.parse(t);			
 			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, autoClose, 'alert alert--success');
+				$.mbsmessage(ans.msg, true, 'alert alert--success');
 				location.href = ans.redirectUrl;
 				return;
 			}
-			$.mbsmessage(ans.msg, autoClose, 'alert alert--danger');
+			$.mbsmessage(ans.msg, true, 'alert alert--danger');
 		});
 		return false;
 	};

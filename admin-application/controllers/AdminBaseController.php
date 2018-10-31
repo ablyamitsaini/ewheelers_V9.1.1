@@ -129,6 +129,7 @@ class AdminBaseController extends FatController {
 			'pleaseSelect' =>Labels::getLabel('VLBL_Please_select',$this->adminLangId),
 			'to' =>Labels::getLabel('VLBL_to',$this->adminLangId),
 			'options' =>Labels::getLabel('VLBL_options',$this->adminLangId),
+			'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available',$this->adminLangId),
 			'confirmRestoreBackup' =>Labels::getLabel('LBL_Do_you_want_to_restore_database_to_this_record',$this->adminLangId),
 			'confirmChangeRequestStatus' =>Labels::getLabel('LBL_Do_you_want_to_change_request_status',$this->adminLangId),
 			'confirmTruncateUserData' =>Labels::getLabel('LBL_Do_you_want_to_truncate_User_Data',$this->adminLangId),
@@ -274,7 +275,7 @@ class AdminBaseController extends FatController {
 		$frm->addTextBox(Labels::getLabel('LBL_Buyer',$this->adminLangId), 'buyer', '');
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'op_status_id', Orders::getOrderStatusArr( $langId ), '', array(), Labels::getLabel('LBL_All',$langId));
 		$frm->addTextBox(Labels::getLabel('LBL_Seller/Shop',$this->adminLangId),'shop_name');
-		$frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name');
+		/* $frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name'); */
 		
 		$frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From',$this->adminLangId), 'readonly' => 'readonly' ) );
 		$frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To',$this->adminLangId), 'readonly' => 'readonly' ) );

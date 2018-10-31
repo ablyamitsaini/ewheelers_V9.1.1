@@ -1163,9 +1163,8 @@ class Product extends MyAppModel{
 		if(!in_array($sortOrder,array('asc','desc'))){
 			$sortOrder = 'asc';
 		}		
-				
-				
-		$srch->setPageNumber($page);		
+
+ 		$srch->setPageNumber($page);		
 		if( $pageSize ){
 			$srch->setPageSize($pageSize);
 		}

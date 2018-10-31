@@ -570,7 +570,7 @@ echo $str;
 		exit;
 		
 	}
-	
+			
 	function test(){
 				
 		$orders = new Orders('O1538197607');	

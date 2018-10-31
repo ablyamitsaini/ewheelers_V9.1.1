@@ -75,7 +75,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
 								$product["shipping_free_availbilty"];	
 								if($product['shop_eligible_for_free_shipping'] > 0) {
-									$shipping_charges = 0;
+									$shipping_charges = Labels::getLabel('LBL_Free_Shipping',$siteLangId);
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
 								}
@@ -100,7 +100,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                 $service_code = str_replace("_", " ", $product['selected_shipping_option']['mshipapi_key']);
 								$shippingCodes = explode(" ", $service_code);
 								$carrierCode = $shippingCodes[0];
-                                $servicesList = $cartObj->getCarrierShipmentServicesList(md5($product['key']), $carrierCode);
+                                $servicesList = $cartObj->getCarrierShipmentServicesList(md5($product['key']), $carrierCode,$siteLangId);
 								$selectedShippingType = ShippingMethods::SHIPSTATION_SHIPPING;
                                 $displayShipStationOption = "style='display:block'";
                                 foreach ($servicesList as $key => $value) {

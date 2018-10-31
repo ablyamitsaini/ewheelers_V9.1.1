@@ -261,8 +261,8 @@
                     </table>
                   </div>
                   <?php } ?>
-                  <span class="gap"></span>
                   <?php if( !empty( $orderDetail['payments'] ) ){ ?>
+				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Payment_History',$siteLangId);?></h5>
                     <table class="table align--left">
@@ -287,8 +287,8 @@
                     </table>
                   </div>
                   <?php } ?>
-				    <span class="gap"></span>
 				  <?php if( !empty( $digitalDownloads ) ){ ?>
+				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Downloads',$siteLangId);?></h5>
                     <table class="table align--left">
@@ -341,8 +341,8 @@
                   </div>
                   <?php } ?>
 
-				  <span class="gap"></span>
 					<?php if( !empty( $digitalDownloadLinks ) ){ ?>
+					<span class="gap"></span>
 					  <div class="section--repeated">
 						<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
 						<table class="table align--left">

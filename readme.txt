@@ -29,6 +29,7 @@ Updates:
 	
 Enhancements:
 	. Product listing page updated speed optimization work.	
+	. Guest checkout code enhancements and send email verification in case of forgot password.	
 	
 Database changes:
 	Use database/db-updates.sql

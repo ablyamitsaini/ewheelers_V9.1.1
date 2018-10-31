@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div class="popup-title">
-  <h3><?php echo Labels::getLabel('LBL_OPTION_SETUP',$langId);?></h3>
+<div class="pop-up-title">
+  <?php echo Labels::getLabel('LBL_OPTION_SETUP',$langId);?>
 </div>
 <div class="divider"> </div>
 <div id="loadForm"><?php echo Labels::getLabel('LBL_LOADING',$langId);?></div>

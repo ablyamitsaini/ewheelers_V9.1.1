@@ -309,7 +309,7 @@ class TaxController extends AdminBaseController {
 		}  */
 		
 		$typeArr = applicationConstants::getYesNoArr($this->adminLangId);
-		$frm->addSelectBox('%age','taxval_is_percent',$typeArr,'',array(),'');	
+		$frm->addSelectBox(Labels::getLabel('LBL_Percentage',$this->adminLangId),'taxval_is_percent',$typeArr,'',array(),'');	
 		
 		$fld = $frm->addFloatField(Labels::getLabel('LBL_Value',$this->adminLangId),'taxval_value');
 		$fld->requirements()->setPositive();

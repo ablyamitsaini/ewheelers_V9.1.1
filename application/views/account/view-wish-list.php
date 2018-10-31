@@ -8,8 +8,7 @@ $frm->setFormTagAttribute('onsubmit', 'setupWishList(this,event); return(false);
 $uwlist_title_fld = $frm->getField('uwlist_title');
 $uwlist_title_fld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_New_List', $siteLangId));
 ?>
-
-<span class="collection__title"><?php echo Labels::getLabel('LBL_Your_List', $siteLangId); ?></span>
+<div class="pop-up-title"><?php echo Labels::getLabel('LBL_Your_List', $siteLangId); ?></div>
 <?php if( $wishLists ){ ?>
 <div class="collection__list">
   <ul class="listing--check">
