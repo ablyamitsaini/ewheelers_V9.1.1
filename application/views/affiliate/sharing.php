@@ -2,7 +2,8 @@
 <?php
 $sharingFrm->addFormTagAttribute('class','form');
 $sharingFrm->addFormTagAttribute('onsubmit','setUpMailAffiliateSharing(this);return false;');
-
+$sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
+$sharingFrm->developerTags['fld_default_col'] = 12;
 ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
