@@ -772,11 +772,11 @@ class GuestUserController extends MyAppController {
 		$db = FatApp::getDb();
 		$db->startTransaction();
 		
-		/* if (!$userObj->verifyUserEmailVerificationCode($code)){
+		if (!$userObj->verifyUserEmailVerificationCode($code)){
 			$db->rollbackTransaction();
 			Message::addErrorMessage(Labels::getLabel("ERR_MSG_INVALID_VERIFICATION_REQUEST",$this->siteLangId));
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		}
 		
 		if( $userData['user_is_affiliate'] != applicationConstants::YES ){
 			$srch = new SearchBase('tbl_user_credentials');
