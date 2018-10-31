@@ -28,7 +28,7 @@ $sharingFrm->addFormTagAttribute('onsubmit','setUpMailAffiliateSharing(this);ret
 								<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
 								<h2><?php echo Labels::getLabel('L_Facebook',$siteLangId)?></h2>
 								<p><?php echo sprintf(Labels::getLabel('L_Post_your_wall_facebook',$siteLangId),'<strong>'.Labels::getLabel('L_Facebook',$siteLangId).'</strong>')?></p>
-								</a> 
+								</a>
 								<span class="ajax_message thanks-msg" id="fb_ajax"></span>
 							  </li>
 							  <?php } ?>
@@ -44,8 +44,8 @@ $sharingFrm->addFormTagAttribute('onsubmit','setUpMailAffiliateSharing(this);ret
 								<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
 								<h2><?php echo Labels::getLabel('L_Email',$siteLangId)?></h2>
 								<p><?php echo Labels::getLabel('L_Email',$siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself',$siteLangId)?></p>
-								</a> 
-								<span class="ajax_message thanks-msg"></span> 
+								</a>
+								<span class="ajax_message thanks-msg"></span>
 								</li>
 							</ul>
 							<span class="gap"></span>
@@ -83,7 +83,7 @@ function facebook_redirect(response_token){
 		picture: "<?php echo CommonHelper::generateFullUrl('image', 'socialFeed',array($siteLangId ,''),"/")?>",
 		caption: "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
 		description: "<?php echo str_replace(array("\n","\r","\r\n"),' ',sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_".$siteLangId,FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_".$siteLangId)))?>",
-		
+
 	},
 	function( response ) {
 		if ( response !== null && typeof response.post_id !== 'undefined' ) {

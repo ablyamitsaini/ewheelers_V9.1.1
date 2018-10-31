@@ -576,7 +576,7 @@ body {
 .common_overlay {
   visibility: hidden;
   opacity: 0;
-  z-index: 10;
+  z-index: 9;
   left: 0;
   right: 0;
   top: 0;
@@ -995,6 +995,7 @@ body {
   /*height: 360px;*/
   position: relative;
   text-align: center;
+
 }
 
 .yk-slides .item {
@@ -2735,6 +2736,7 @@ body {
   padding: 0 25px 0 0;
   font-size: 1em;
   vertical-align: top;
+  line-height: inherit;
 }
 
 .breadcrumb ul li:before {
@@ -2747,7 +2749,7 @@ body {
 .breadcrumb ul li a {
   color: inherit;
   font-size: inherit;
-  display: block;
+  display: block; line-height: inherit;
 }
 
 .breadcrumb ul li:last-child:before {
@@ -4879,6 +4881,14 @@ body.is--dashboard {
   text-align: center;
   color: #333;
   font-size: 1.2em;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .actions li a:hover {
@@ -5730,15 +5740,15 @@ input.qty {
 }
 
 .preview .profile__pic {
-	margin: 10px 0;
-	border: solid 1px var(--border-color);
-	display: flex;
-	width: 100%;
-	padding: 10px;
-	align-items: center;
-	justify-content: center;
-	background: #fff;
-	min-height: 170px;
+  margin: 10px 0;
+  border: solid 1px var(--border-color);
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  min-height: 170px;
 }
 
 .preview h4 {
@@ -5784,7 +5794,6 @@ input.qty {
 }
 
 .btngroup--fix .btn {
-
   margin: 0 10px 0 0;
 }
 
@@ -8364,4 +8373,51 @@ form.custom-form input[type="submit"] {
   list-style: disc;
   list-style-position: inside;
   font-size: 0.875em;
+}
+
+.saved-search-list {}
+
+.saved-search-list li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 3px;
+  padding: 15px 0;
+  /* -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.11); */
+  /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.11); */
+  margin: 10px auto;
+  background: #fff;
+  border-bottom: solid 1px var(--border-color);
+}
+
+.detail-side .heading3 {
+  color: var(--first-color);
+  /* font-weight: 600; */
+}
+
+.detail-side .date {
+  margin: 8px auto;
+  color: #bababa;
+}
+
+.results-side {
+  font-size: 1em;
+  color: var(--txt-color);
+}
+
+.results-side .newly-added {
+  font-size: 2.5rem;
+  line-height: 1;
+  display: block;
+  font-weight: 600;
+}
+
+.results-side strong {
+  display: block;
 }

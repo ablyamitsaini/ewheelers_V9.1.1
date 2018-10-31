@@ -96,8 +96,9 @@
 			  <?php foreach( $addresses as $address ){
 						$selected_shipping_address_id = (!$selected_shipping_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_shipping_address_id; ?>
 						<div class="col-lg-6 col-md-6 col-xs-12" >
-							<div class="address">
-								<label>
+
+								<label class="address">
+										<div class="address-inner">
 									<span class="radio">
 										<input <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="shipping_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
 									</span>
@@ -144,9 +145,9 @@
 									<?php echo (strlen($address['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).$address['ua_zip'].'<br>':'';?>
 									<?php echo (strlen($address['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$address['ua_phone'].'<br>':'';?>
 									</p>
-
+									</div>
 								</label>
-							</div>
+
 						</div>
 			  <?php } ?>
 			</div>
