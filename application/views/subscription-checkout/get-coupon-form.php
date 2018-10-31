@@ -15,9 +15,10 @@
 		$PromoCouponsFrm->getField('onsubmit','applyPromoCode(this); return false;');
 		$PromoCouponsFrm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
 		$PromoCouponsFrm->developerTags['fld_default_col'] = 6;
-		echo $PromoCouponsFrm->getFormTag(); 
-		echo $PromoCouponsFrm->getFieldHtml('btn_submit'); 
+		$PromoCouponsFrm->setJsErrorDisplay('afterfield');
+		echo $PromoCouponsFrm->getFormTag();
 		echo $PromoCouponsFrm->getFieldHtml('coupon_code'); 
+		echo $PromoCouponsFrm->getFieldHtml('btn_submit');
 		echo $PromoCouponsFrm->getExternalJs();
 	?>
 	</form>

@@ -20,7 +20,7 @@
 <?php if(!empty($categoriesArr)){ ?>
 <h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_categories',$siteLangId); ?></h3>
 <div class="">
-	<nav class="">
+	<nav class="nav nav--toggled nav--toggled-js">
 		<ul class="blog_lnks accordion">
 			<?php foreach($categoriesArr as $cat){ ?>
 			<li class="<?php echo (count($cat['children'])>0) ? "has-child" : "" ?>"><a href="<?php echo CommonHelper::generateUrl('Blog','category', array($cat['bpcategory_id'])); ?>"><?php echo $cat['bpcategory_name']; echo !empty($cat['countChildBlogPosts'])?" <span class='badge'>($cat[countChildBlogPosts])</span>":''; ?></a>

@@ -728,7 +728,8 @@ class SubscriptionCheckoutController extends MyAppController{
 	private function getPromoCouponsForm($langId){
 		$langId = FatUtility::int($langId);
 		$frm = new Form('frmPromoCoupons');
-		$frm->addTextBox(Labels::getLabel('LBL_Coupon_code',$langId),'coupon_code','',array('placeholder'=>Labels::getLabel('LBL_Enter_Your_code',$langId)));
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_Coupon_code',$langId),'coupon_code','',array('placeholder'=>Labels::getLabel('LBL_Enter_Your_code',$langId)));
+		$fld->requirements()->setRequired();
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
 	}

@@ -6,7 +6,7 @@ if( isset($products) && count($products) ) { ?>
 
     </div>
     <div class="shops">
-      <div class="row trending-corner">
+      <div class="trending-corner">
         <?php foreach( $products as $product ){
 			include('collection-1-products-list.php');
 
