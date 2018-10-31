@@ -951,6 +951,11 @@ class GuestUserController extends MyAppController {
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));		
 		}
 		
+		if($row['user_is_shipping_company'] == applicationConstants::YES){			
+			Message::addErrorMessage(Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request',$this->siteLangId));	
+			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));				
+		}
+		
 		if($userAuthObj->checkUserPwdResetRequest($row['user_id'])){
 			Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(),$this->siteLangId));	
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
