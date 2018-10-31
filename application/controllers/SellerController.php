@@ -659,7 +659,7 @@ class SellerController extends LoggedUserController {
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
-			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
+			Message::addErrorMessage( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}
 		$this->_template->addCss(array('css/bootstrap-tour.css'), false);

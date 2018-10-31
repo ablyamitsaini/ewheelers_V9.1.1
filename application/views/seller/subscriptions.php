@@ -2,10 +2,7 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 $frmOrderSrch->setFormTagAttribute('onSubmit','searchOrders(this); return false;');
-$frmOrderSrch->setFormTagAttribute('class', 'form');
-$frmOrderSrch->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frmOrderSrch->developerTags['fld_default_col'] = 12;
-
+$frmOrderSrch->setFormTagAttribute('class', 'form'); 
 
 $keywordFld = $frmOrderSrch->getField('keyword');
 $keywordFld->setWrapperAttribute('class','col-lg-4 col-sm-4 col-md-4 ');
