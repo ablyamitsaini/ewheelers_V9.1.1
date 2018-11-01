@@ -56,13 +56,26 @@ foreach ($digitalDownloadLinks as $sn => $row){
 
 				$td->appendElement('a', array('href'=> $linkUrl, 'class'=>'', 'title'=>$linkTitle, 'onClick'=>$linkOnClick),
 				$link, true); */
-				if($row['downloadable']!=1){
+				/* if($row['downloadable']!=1){
 					$td->appendElement('plaintext', array(), Labels::getLabel('LBL_N/A',$siteLangId), true);
-				}else{
-					$td->appendElement('a', array('href'=> $row['opddl_downloadable_link'],'target'=>'_blank', 'class'=>'',
-					'title'=>Labels::getLabel('LBL_Click_to_download',$siteLangId), 'onClick'=>'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].');' ),
-				$row['opddl_downloadable_link'], true);
-				}
+				}else{ */
+				
+				
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				
+				$li = $ul->appendElement("li");
+				$li->appendElement('a', array('href'=> $row['opddl_downloadable_link'], 'class'=>'',
+				'title'=>Labels::getLabel('LBL_Click_to_open',$siteLangId)),
+				'<i class="fa fa-download"></i>', true);
+
+				
+				$li = $ul->appendElement("li");
+				$li->appendElement('a', array('href'=> 'javascript:void(0)', 'id'=>'dataLink', 'data-link'=>$row['opddl_downloadable_link'], 'onclick'=>'copyToClipboard(this)',
+				'title'=>Labels::getLabel('LBL_copy_to_clipboard',$siteLangId)),
+				'<i class="fa fa-copy"></i>', true);
+				
+			
+				/* } */
 			break;
 			case 'downloadable_count':
 				$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
@@ -94,3 +107,15 @@ $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSrchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToLinksSearchPage');
 $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
+
+?>
+<script>
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($('#dataLink').attr("data-link")).select();
+  document.execCommand("copy");
+  $temp.remove();
+  alert('<?php echo Labels::getLabel('LBL_Your_link_is_copied_to_clipboard',$siteLangId); ?>');
+}
+</script>
