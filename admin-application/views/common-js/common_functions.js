@@ -170,6 +170,12 @@ $(document).ready(function(){
                 $('.droplink').removeClass('active');
             }
         }); 
+		/* $(document).delegate('ul.linksvertical li','click',function(){
+			console.log($(this).closest('li.droplink'));
+            if($(this).closest('li.droplink').hasClass('active')){
+                $(this).closest('li.droplink').removeClass('active');
+            }
+        });  */
 		$(document).on('click', '.droplink', function(event) { 
             event.stopPropagation();
         });
