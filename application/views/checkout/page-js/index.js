@@ -77,11 +77,11 @@ $("document").ready(function()
 				var autoClose = true;
 			}
 			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, autoClose, 'alert alert--success');
+				$.mbsmessage(ans.msg, autoClose, 'alert--success');
 				location.href = ans.redirectUrl;
 				return;
 			}
-			$.mbsmessage(ans.msg, autoClose, 'alert alert--danger');
+			$.mbsmessage(ans.msg, autoClose, 'alert--danger');
 		});
 		return false;
 	};
@@ -89,15 +89,15 @@ $("document").ready(function()
 	guestUserLogin = function(frm, v) {
 		v.validate();
 		if ( !v.isValid() ) return;	
-		$.mbsmessage(langLbl.processing,false,'alert alert--process'); 
+		$.mbsmessage(langLbl.processing,false,'alert--process'); 
 		fcom.ajax(fcom.makeUrl('GuestUser', 'guestLogin'), fcom.frmData(frm), function(t) {
 			var ans = JSON.parse(t);			
 			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, true, 'alert alert--success');
+				$.mbsmessage(ans.msg, true, 'alert--success');
 				location.href = ans.redirectUrl;
 				return;
 			}
-			$.mbsmessage(ans.msg, true, 'alert alert--danger');
+			$.mbsmessage(ans.msg, true, 'alert--danger');
 		});
 		return false;
 	};

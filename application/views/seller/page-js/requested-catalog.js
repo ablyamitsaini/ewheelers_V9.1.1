@@ -115,7 +115,7 @@ $(document).ready(function(){
 				processData: false,
 				
 				success: function(ans) {
-					$.mbsmessage(ans.msg, true, 'alert alert--success');
+					$.mbsmessage(ans.msg, true, 'alert--success');
 					if(ans.status == true){
 						$.mbsmessage(t.msg);
 						searchRequestedCatalog(document.frmCatalogReqSearchPaging);

@@ -152,9 +152,9 @@ $(document).ready(function(){
 		fcom.ajax(fcom.makeUrl('seller','deleteSellerOption'),data,function(t){
 			var ans= jQuery.parseJSON(t);
 			if(ans.status!=1){
-				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
-			$.mbsmessage(ans.msg, true, 'alert alert--success');
+			$.mbsmessage(ans.msg, true, 'alert--success');
 			reloadList();		
 			
 		});

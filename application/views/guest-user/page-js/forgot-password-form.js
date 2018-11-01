@@ -6,7 +6,7 @@
 			if( t.status == 1){
 				location.href = fcom.makeUrl('GuestUser', 'loginForm');
 			}else{
-				$.systemMessage(t.msg,'alert alert--danger');				
+				$.systemMessage(t.msg,'alert--danger');				
 			}
 			$.mbsmessage.close();
 			return;

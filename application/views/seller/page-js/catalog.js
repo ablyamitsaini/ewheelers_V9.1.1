@@ -142,7 +142,7 @@ $(document).delegate('.language-js','change',function(){
 					contentType: false,
 					success: function(t){
 						var ans = $.parseJSON(t);
-						$.systemMessage( ans.msg,'alert alert--success' );
+						$.systemMessage( ans.msg,'alert--success' );
 						productImages( $('#frmCustomProductImage input[name=product_id]').val(), $('.option').val(), $('.language').val() );
 					},
 					error: function(jqXHR, textStatus, errorThrown){

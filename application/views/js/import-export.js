@@ -64,16 +64,16 @@
 							reloadList();
 							$(document).trigger('close.facebox');
 							$(document).trigger('close.mbsmessage');
-							$.systemMessage(ans.msg, 'alert alert--success');
+							$.systemMessage(ans.msg, 'alert--success');
 						} else {
 							$('#fileupload_div').html('');
 							$(document).trigger('close.mbsmessage');
-							$.systemMessage(ans.msg, 'alert alert--danger');
+							$.systemMessage(ans.msg, 'alert--danger');
 						}												
 					}
 					catch(exc){	
 						$(document).trigger('close.mbsmessage');
-						$.systemMessage( t ,'alert alert--danger' );
+						$.systemMessage( t ,'alert--danger' );
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

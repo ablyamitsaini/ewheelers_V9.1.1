@@ -40,7 +40,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 	?>
 	
 	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" hidden='hidden'>
-		<div class="close" src="<?php echo CONF_WEBROOT_URL; ?>/img/mbsmessage/close.gif"></div>
+		<div class="close"></div>
 		<div class="content">
 			<?php
 			$haveMsg = false;

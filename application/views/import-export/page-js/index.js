@@ -64,10 +64,10 @@ $(document).ready(function(){
 		$inputs = $('#frmImportExport input[type=text],#frmImportExport select,#frmImportExport input[type=hidden]');
 		$inputs.each(function() { data.append( this.name,$(this).val());});
 		if($('#import_file')[0].files.length == 0){
-			$.mbsmessage(langLbl.selectFile,false,'alert alert--danger');
+			$.mbsmessage(langLbl.selectFile,false,'alert--danger');
 		}
 		$.each( $('#import_file')[0].files, function(i, file) {
-			$.mbsmessage(langLbl.processing,false,'alert alert--process');
+			$.mbsmessage(langLbl.processing,false,'alert--process');
 			$('#fileupload_div').html(fcom.getLoader());			
 			data.append('import_file', file);
 			$.ajax({
@@ -82,7 +82,7 @@ $(document).ready(function(){
 						if( ans.status == 1 || ans.status == true ){														
 							$(document).trigger('close.facebox');
 							$(document).trigger('close.mbsmessage');
-							$.systemMessage(ans.msg, 'alert alert--success');
+							$.systemMessage(ans.msg, 'alert--success');
 							if('importData' == method){
 								importForm(actionType);	
 							}else{
@@ -91,11 +91,11 @@ $(document).ready(function(){
 						} else {
 							$('#fileupload_div').html('');							
 							$(document).trigger('close.mbsmessage');
-							$.systemMessage(ans.msg, 'alert alert--danger');
+							$.systemMessage(ans.msg, 'alert--danger');
 						}												
 					}catch(exc){	
 						$(document).trigger('close.mbsmessage');
-						$.systemMessage( exc.message ,'alert alert--danger' );
+						$.systemMessage( exc.message ,'alert--danger' );
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

@@ -8,7 +8,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 	fcom.ajax(fcom.makeUrl('Seller', 'checkSellProdAvailableForUser'), data, function(t) {
 		var ans = $.parseJSON(t);
 		if( ans.status == 0 ){
-			$.mbsmessage( ans.msg,false,'alert alert--danger');
+			$.mbsmessage( ans.msg,false,'alert--danger');
 			return;
 		}
 		$.mbsmessage.close();
@@ -287,7 +287,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					success: function(t){
 						var ans = $.parseJSON(t);
 						if( ans.status == 0 ){ 
-							$.mbsmessage( ans.msg,true,'alert alert--danger' );
+							$.mbsmessage( ans.msg,true,'alert--danger' );
 							sellerProductDownloadFrm(selprod_id, download_type);
 							return;
 						}
@@ -305,10 +305,10 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 			fcom.ajax(fcom.makeUrl('Seller', 'uploadDigitalFile'), data, function(t) {
 				var ans = $.parseJSON(t);
 				if( ans.status == 0 ){
-					$.mbsmessage( ans.msg,true,'alert alert--danger' );
+					$.mbsmessage( ans.msg,true,'alert--danger' );
 					return;
 				}
-				$.systemMessage( ans.msg,'alert alert--success' );
+				$.systemMessage( ans.msg,'alert--success' );
 				sellerProductDownloadFrm(selprod_id, download_type);
 			});	
 		}
@@ -435,11 +435,11 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 					$('.text-danger').remove();
 					//$('#input-field'+fileType).html(ans.msg);						
 					if(ans.status == true){
-						$.mbsmessage( ans.msg,'','alert alert--success');						
+						$.mbsmessage( ans.msg,'','alert--success');						
 						$('#form-upload').remove();
 						sellerProductDownloadFrm(selprod_id);
 					}else{
-						$.mbsmessage(ans.msg,'','alert alert--danger');						
+						$.mbsmessage(ans.msg,'','alert--danger');						
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {

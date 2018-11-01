@@ -26,7 +26,7 @@ function resendVerificationLink(user){
 	$(document).trigger('close.systemMessage');
 	$.mbsmessage(langLbl.processing,false,'alert--process alert');
 	fcom.updateWithAjax( fcom.makeUrl('GuestUser','resendVerification',[user]),'',function(ans){
-		$.mbsmessage(ans.msg, false, 'alert alert--success');
+		$.mbsmessage(ans.msg, false, 'alert--success');
 	});
 }
 
@@ -418,11 +418,11 @@ function defaultSetUpLogin(frm, v) {
 			var autoClose = true;
 		}
 		if( ans.status == 1 ){
-			$.mbsmessage(ans.msg, autoClose, 'alert alert--success');
+			$.mbsmessage(ans.msg, autoClose, 'alert--success');
 			location.href = ans.redirectUrl;
 			return;
 		}
-		$.mbsmessage(ans.msg, autoClose, 'alert alert--danger');
+		$.mbsmessage(ans.msg, autoClose, 'alert--danger');
 	});
 	return false;
 }

@@ -6,7 +6,6 @@
 	};
 	$.extend($.mbsmessage, {
 		settings:{
-			closeimage:siteConstants.webroot + 'img/mbsmessage/close.gif',
 			leftimage:siteConstants.webroot + 'img/mbsmessage/left.png',
 			rightimage:siteConstants.webroot + 'img/mbsmessage/right.png',
 			mbshtml: '\
@@ -27,7 +26,7 @@
 				 $('#mbsmessage').removeClass('alert--process');
 				 $('#mbsmessage').removeClass('alert--danger');
 				 $('#mbsmessage').removeClass('alert--success');
-				 $('#mbsmessage').removeClass('alert');
+				 $('#mbsmessage').removeClass('alert--info');
 			
 				 $('#mbsmessage').addClass(cls);
 			}
