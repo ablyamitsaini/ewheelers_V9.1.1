@@ -6,13 +6,21 @@
 		  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
 		<div class="row">
-		  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<div id="listing"></div>
-		  </div>
-		  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<div class="heading3"><?php echo Labels::getLabel( 'LBL_Browse_By_Category', $siteLangId)?></div>
-			<div id="categoryPanel" class="row"></div>
-		  </div>
+			<?php if($recordCount > 0) { ?>
+			  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div id="listing"></div>
+			  </div>
+			  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="heading3"><?php echo Labels::getLabel( 'LBL_Browse_By_Category', $siteLangId)?></div>
+				<div id="categoryPanel" class="row"></div>
+			  </div>
+			<?php } else { ?>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="gap"> </div>
+				<div id="listing"></div>
+				<div class="gap"> </div>
+			</div>
+			<?php }?>
 		</div>
 		<div class="divider"></div>
 		<div class="align--center">

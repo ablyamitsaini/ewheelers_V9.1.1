@@ -26,7 +26,7 @@
 	$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
 	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ;
 	if ($facebookLogin || $googleLogin ){?>
-	  <h3><?php echo Labels::getLabel('LBL_Or', $siteLangId); ?></h3>
+	  <h3 class="or"><?php echo Labels::getLabel('LBL_Or', $siteLangId); ?></h3>
 	   <div class="group group--social group--social-onehalf ">
 	  <?php if ($facebookLogin) { ?>
 	  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('facebook')); ?>" class="btn  btn--social fb-color"><i class="fa fa-facebook"></i> <?php echo Labels::getLabel('LBL_Facebook',$siteLangId);?></a>

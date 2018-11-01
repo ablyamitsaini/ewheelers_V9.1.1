@@ -8,7 +8,7 @@ if(isset($keyword)) { ?>
 				<input class="query no--focus" id="search-keyword-js" placeholder="<?php echo $keyword ?>" value="<?php echo $keyword ?>" type="search">
 			</div>
 		</div>
-	</section>	
+	</section>
 <?php } ?>
 <div id="blogs-listing-js"></div>
 

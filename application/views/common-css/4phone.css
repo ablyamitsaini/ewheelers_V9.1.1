@@ -1,6 +1,7 @@
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: 1280px) {}
 
+/*media*/
 @media only screen and (max-width: 1025px) {
   .container {
     padding: 0 10px;
@@ -11,12 +12,70 @@
     margin-left: -10px;
   }
 
-  .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12 {
     padding-left: 10px;
     padding-right: 10px;
   }
 
-  .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  .col-xs-1,
+  .col-sm-1,
+  .col-md-1,
+  .col-lg-1,
+  .col-xs-2,
+  .col-sm-2,
+  .col-md-2,
+  .col-lg-2,
+  .col-xs-3,
+  .col-sm-3,
+  .col-md-3,
+  .col-lg-3,
+  .col-xs-4,
+  .col-sm-4,
+  .col-md-4,
+  .col-lg-4,
+  .col-xs-5,
+  .col-sm-5,
+  .col-md-5,
+  .col-lg-5,
+  .col-xs-6,
+  .col-sm-6,
+  .col-md-6,
+  .col-lg-6,
+  .col-xs-7,
+  .col-sm-7,
+  .col-md-7,
+  .col-lg-7,
+  .col-xs-8,
+  .col-sm-8,
+  .col-md-8,
+  .col-lg-8,
+  .col-xs-9,
+  .col-sm-9,
+  .col-md-9,
+  .col-lg-9,
+  .col-xs-10,
+  .col-sm-10,
+  .col-md-10,
+  .col-lg-10,
+  .col-xs-11,
+  .col-sm-11,
+  .col-md-11,
+  .col-lg-11,
+  .col-xs-12,
+  .col-sm-12,
+  .col-md-12,
+  .col-lg-12 {
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -33,7 +92,8 @@
     display: block !important;
   }
 
-  .padding15, .padding20 {
+  .padding15,
+  .padding20 {
     padding: 10px;
   }
 
@@ -68,7 +128,8 @@
     line-height: 45px;
   }
 
-  .logo img, .logo svg {
+  .logo img,
+  .logo svg {
     display: inline-block;
     line-height: 33px;
     max-height: 33px;
@@ -117,7 +178,8 @@
     display: block;
   }
 
-  .form--search-popup .form__cover input[type="text"], .form--search-popup .form__cover select {
+  .form--search-popup .form__cover input[type="text"],
+  .form--search-popup .form__cover select {
     display: block;
     width: 100%;
     border: none;
@@ -141,7 +203,9 @@
     padding: 10px;
   }
 
-  .toggle--search .icn-txt, .cart .icn-txt, .login-account .icn-txt {
+  .toggle--search .icn-txt,
+  .cart .icn-txt,
+  .login-account .icn-txt {
     display: none;
   }
 
@@ -213,7 +277,8 @@
     padding: 10px 10px;
   }
 
-  .featured-product, .featured-desc {
+  .featured-product,
+  .featured-desc {
     display: block;
   }
 
@@ -304,7 +369,9 @@
   }
 
   /*login*/
-  .login-wrapper, .login-wrapper .form-side, .login-wrapper .add-side {
+  .login-wrapper,
+  .login-wrapper .form-side,
+  .login-wrapper .add-side {
     display: block;
     width: auto;
   }
@@ -329,13 +396,20 @@
     font-size: 1.5em;
     right: 0;
     cursor: pointer;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     background: #fff;
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     text-align: center;
     padding: 0;
@@ -401,7 +475,8 @@
     overflow-x: auto;
   }
 
-  .table td, .table th {
+  .table td,
+  .table th {
     /*white-space: pre-wrap;*/
   }
 
@@ -673,6 +748,7 @@
   }
 }
 
+/*media*/
 @media only screen and (max-width: 992px) {
   .btn-groups {
     margin-top: 10px;
@@ -755,7 +831,12 @@
   }
 
   .panel__head {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
     align-items: flex-start;
   }
 
@@ -772,13 +853,15 @@
     padding: 0 5px 0 0;
   }
 
-  .cols--group .col__left, .cols--group .col__right {
+  .cols--group .col__left,
+  .cols--group .col__right {
     clear: none;
     float: none;
     width: auto;
   }
 
-  .cols--group .box__head .group--btns .btn, .group--btns .btn {}
+  .cols--group .box__head .group--btns .btn,
+  .group--btns .btn {}
 
   .table {
     white-space: nowrap;
@@ -812,7 +895,9 @@
     display: block;
   }
 
-  .listing-products--list .item-yk-head, .listing-products--list .item-yk_body, .listing-products--list .item-yk_footer {
+  .listing-products--list .item-yk-head,
+  .listing-products--list .item-yk_body,
+  .listing-products--list .item-yk_footer {
     display: block;
     width: auto;
   }
@@ -827,7 +912,8 @@
     margin-bottom: 10px;
   }
 
-  .grids--profile .grid__right, .grids--profile .grid__left {
+  .grids--profile .grid__right,
+  .grids--profile .grid__left {
     float: none;
     width: auto;
   }
@@ -964,12 +1050,18 @@
     margin: 5px 0;
   }
 
-  .form input[type="submit"].block-on-mobile, .form input[type="button"].block-on-mobile {
+  .form input[type="submit"].block-on-mobile,
+  .form input[type="button"].block-on-mobile {
     margin: 5px 0;
   }
 
   .cols--group .box__head {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
     align-items: flex-start;
   }
 
@@ -979,9 +1071,23 @@
   }
 
   .sort-by>ul {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
     justify-content: flex-start;
   }
 }
 
 /*media*/
-@media only screen and (max-width: 480px) {}
+@media only screen and (max-width: 576px) {
+  .saved-search-list li {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+  }
+}
+
+/*media end*/

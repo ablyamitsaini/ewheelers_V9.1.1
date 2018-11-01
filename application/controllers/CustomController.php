@@ -68,6 +68,17 @@ class CustomController extends MyAppController {
 			$cpages = FatApp::getDb()->fetchAll($rs);
 			$this->set('cpages' ,$cpages);
 		}
+		
+		$srch = FaqCategory::getSearchObject($this->siteLangId);
+		$srch->joinTable('tbl_faqs' , 'LEFT OUTER JOIN','faq_faqcat_id = faqcat_id and faq_active = ' . applicationConstants::ACTIVE . '  and faq_deleted = '.applicationConstants::NO);
+		$srch->joinTable('tbl_faqs_lang' , 'LEFT OUTER JOIN','faqlang_faq_id = faq_id');
+		$srch->addCondition('faqlang_lang_id', '=', $this->siteLangId);
+		$srch->addCondition( 'faqcat_active', '=', applicationConstants::ACTIVE );
+		$srch->addCondition( 'faqcat_type', '=', FaqCategory::FAQ_PAGE );
+		$srch->doNotLimitRecords();
+		$rs = $srch->getResultSet();
+		
+		$this->set('recordCount',$srch->recordCount());
 		$this->set('siteLangId',$this->siteLangId);
 		$this->set('frm' ,$this->getSearchFaqForm());
 		$this->_template->render();

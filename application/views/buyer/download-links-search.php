@@ -11,6 +11,9 @@ $submitBtnFld->setFieldTagAttribute('class','btn--block');
 $submitBtnFld->setWrapperAttribute('class','col-sm-6');
 $submitBtnFld->developerTags['col'] = 2;
 
+$clearFld = $frmSrch->getField('btn_clear');
+$clearFld->setFieldTagAttribute('onclick','clearSearch(1)');
+
 $cancelBtnFld = $frmSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-6');

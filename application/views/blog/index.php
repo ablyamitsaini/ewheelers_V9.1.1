@@ -7,7 +7,7 @@ if(count($postList)>2 && (!isset($keyword)) && (!isset($bpCategoryId))){ require
 <script>
 	var bpCategoryId = <?php echo !empty($bpCategoryId) ? $bpCategoryId : 0; ?>;
 	var keyword = '<?php echo !empty($keyword) ? $keyword : ''; ?>';
-	
+
 	$(document).ready(function() {
 		if(langLbl.layoutDirection == 'rtl'){
 			$('.js-posts-slider').slick({
@@ -69,6 +69,6 @@ if(count($postList)>2 && (!isset($keyword)) && (!isset($bpCategoryId))){ require
 		}
 
 	});
-	
+
 </script>
 <?php $this->includeTemplate( '_partial/shareThisScript.php' );?>
