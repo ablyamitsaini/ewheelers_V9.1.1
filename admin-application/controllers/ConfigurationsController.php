@@ -481,7 +481,7 @@ class ConfigurationsController extends AdminBaseController {
 				$countriesArr = $countryObj->getCountriesArr($this->adminLangId);
 				$frm->addSelectBox(Labels::getLabel('LBL_Country',$this->adminLangId),'CONF_COUNTRY',$countriesArr);
 				
-				$frm->addSelectBox(Labels::getLabel('LBL_date_Format',$this->adminLangId),'CONF_DATEPICKER_FORMAT',Configurations::dateFormatPhpArr(),false,array(),'');
+				$frm->addSelectBox(Labels::getLabel('LBL_date_Format',$this->adminLangId),'CONF_DATE_FORMAT',Configurations::dateFormatPhpArr(),false,array(),'');
 				
 				$currencyArr = Currency::getCurrencyNameWithCode($this->adminLangId);				
 				$frm->addSelectBox(Labels::getLabel('LBL_Default_Site_Currency',$this->adminLangId),'CONF_CURRENCY',$currencyArr,false,array(),'');

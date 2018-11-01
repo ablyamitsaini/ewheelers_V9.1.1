@@ -295,6 +295,12 @@ class UserAuthentication extends FatModel {
 			return false;
 		}
 		
+		if($row['user_is_shipping_company'] == applicationConstants::YES){
+			$this->logFailedAttempt($ip, $username);
+			$this->error = Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_login',$this->commonLangId);
+			return false;
+		}
+		
 		if ( (!(strtolower($row['credential_username']) === strtolower($username) || strtolower($row['credential_email']) === strtolower($username))) || $row['credential_password'] !== $password) {
 			$this->logFailedAttempt($ip, $username);
 			$this->error = Labels::getLabel('ERR_INVALID_USERNAME_OR_PASSWORD',$this->commonLangId);
@@ -545,7 +551,8 @@ class UserAuthentication extends FatModel {
 		$srch->addMultipleFields(
 				array(
 					User::tblFld('id'),
-					User::tblFld('name'),														
+					User::tblFld('name'),													
+					User::tblFld('is_shipping_company'),							
 					User::tblFld('deleted'),														
 					User::DB_TBL_CRED_PREFIX . 'email',
 					User::DB_TBL_CRED_PREFIX . 'password'

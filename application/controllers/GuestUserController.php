@@ -772,11 +772,11 @@ class GuestUserController extends MyAppController {
 		$db = FatApp::getDb();
 		$db->startTransaction();
 		
-		/* if (!$userObj->verifyUserEmailVerificationCode($code)){
+		if (!$userObj->verifyUserEmailVerificationCode($code)){
 			$db->rollbackTransaction();
 			Message::addErrorMessage(Labels::getLabel("ERR_MSG_INVALID_VERIFICATION_REQUEST",$this->siteLangId));
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		}
 		
 		if( $userData['user_is_affiliate'] != applicationConstants::YES ){
 			$srch = new SearchBase('tbl_user_credentials');
@@ -949,6 +949,11 @@ class GuestUserController extends MyAppController {
 		if(!$row || false === $row){
 			Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(),$this->siteLangId));	
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));		
+		}
+		
+		if($row['user_is_shipping_company'] == applicationConstants::YES){			
+			Message::addErrorMessage(Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request',$this->siteLangId));	
+			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));				
 		}
 		
 		if($userAuthObj->checkUserPwdResetRequest($row['user_id'])){

@@ -18,6 +18,10 @@ Fixes:
 	. Updated banner dimensions tables and its functionality.
 	. Removed favorite/wishlist section from seller's account.
 	. Admin shop collection url-rewriting fixes.
+	. Admin top products and top search items displayed max 10 records.
+	. Add shipping company user added email validation in email field and restricted to login and forgot password request.
+	. User email verification issue resolved.
+	. Displayed date format as per configuration.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.

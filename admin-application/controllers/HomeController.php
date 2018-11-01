@@ -151,7 +151,7 @@ class HomeController extends AdminBaseController {
 				
 			}
 			
-			$dashboardInfo['topProducts'] = $statsObj->getTopProducts('YEARLY',$this->adminLangId);
+			$dashboardInfo['topProducts'] = $statsObj->getTopProducts('YEARLY',$this->adminLangId,10);
 			$dashboardInfo['visits_chart_data'] = isset($visits_chart_data)?rtrim($visits_chart_data,','):'';
 			$dashboardInfo['visitsCount'] = (isset($visitCount))?$visitCount:'';
 			$dashboardInfo['socialVisits'] = isset($socialVisits)?$socialVisits:'';
@@ -308,7 +308,7 @@ class HomeController extends AdminBaseController {
 		if($result == null) { 
 			if(strtoupper($type) == 'TOP_PRODUCTS'){
 				$statsObj = new Statistics();		
-				$result = $statsObj->getTopProducts($interval,$this->adminLangId);
+				$result = $statsObj->getTopProducts($interval,$this->adminLangId,10);
 			}else{
 				try{
 					$analytics = new Ykart_analytics($analyticArr);		
@@ -328,7 +328,7 @@ class HomeController extends AdminBaseController {
 						case 'TOP_SEARCH_KEYWORD':
 							//$result=$analytics->getSearchTerm($interval,9);						
 							$statsObj = new Statistics();		
-							$result = $statsObj->getTopSearchKeywords($interval);								
+							$result = $statsObj->getTopSearchKeywords($interval,10);								
 						break;
 						case 'TRAFFIC_SOURCE':
 							$result = $analytics->getTrafficSource($interval);							
@@ -338,7 +338,7 @@ class HomeController extends AdminBaseController {
 						break;
 						case 'TOP_PRODUCTS': 
 							$statsObj = new Statistics();		
-							$result = $statsObj->getTopProducts($interval,$this->adminLangId);	
+							$result = $statsObj->getTopProducts($interval,$this->adminLangId,10);	
 						break;				
 					}
 				}catch(exception $e){
