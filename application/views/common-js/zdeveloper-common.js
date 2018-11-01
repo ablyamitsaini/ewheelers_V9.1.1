@@ -23,7 +23,7 @@ function resendVerificationLink(user){
 	{
 		return false;
 	}
-	$(document).trigger('closeMsg.systemMessage');
+	$(document).trigger('close.systemMessage');
 	$.mbsmessage(langLbl.processing,false,'alert--process alert');
 	fcom.updateWithAjax( fcom.makeUrl('GuestUser','resendVerification',[user]),'',function(ans){
 		$.mbsmessage(ans.msg, false, 'alert alert--success');
@@ -541,16 +541,16 @@ function defaultSetUpLogin(frm, v) {
 			/* $('.system_message').css({top:10}); */
 		},
 		close:function(){
-			$(document).trigger('closeMsg.systemMessage');
+			$(document).trigger('close.systemMessage');
 		},
 	});
 	
-	$(document).bind('closeMsg.systemMessage', function() {		
+	$(document).bind('close.systemMessage', function() {		
 		$('.system_message').fadeOut();
 	});
 	
 	function initialize(){
-		$('.system_message .closeMsg').click($.systemMessage.close);
+		$('.system_message .close').click($.systemMessage.close);
 	}
 	/* [ */
 	$.fn.serialize_without_blank = function () {
@@ -603,11 +603,11 @@ $(document).ready(function(){
 	if( $('.system_message').find('.div_error').length > 0 || $('.system_message').find('.div_msg').length > 0 || 	$('.system_message').find('.div_info').length > 0 || $('.system_message').find('.div_msg_dialog').length > 0 ){
 		$('.system_message').show();
 	}
-	$('.closeMsg').click(function(){
-		$('.system_message').find('.div_error').remove();
+	$('.close').click(function(){
+		/* $('.system_message').find('.div_error').remove();
 		$('.system_message').find('.div_msg').remove();
 		$('.system_message').find('.div_info').remove();
-		$('.system_message').find('.div_msg_dialog').remove();
+		$('.system_message').find('.div_msg_dialog').remove(); */
 		$('.system_message').hide();
 	});
 	addCatalogPopup = function(){

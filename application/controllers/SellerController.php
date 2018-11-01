@@ -658,7 +658,7 @@ class SellerController extends LoggedUserController {
 		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
-		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
+		if( UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}

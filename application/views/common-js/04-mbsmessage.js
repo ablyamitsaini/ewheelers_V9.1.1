@@ -10,7 +10,7 @@
 			leftimage:siteConstants.webroot + 'img/mbsmessage/left.png',
 			rightimage:siteConstants.webroot + 'img/mbsmessage/right.png',
 			mbshtml: '\
-				<div id="mbsmessage" class="alert--positioned-top-full alert "> \
+				<div id="mbsmessage" class="alert alert--positioned-top-full "> \
 				<div class="close"></div> \
 				<div>\
 				<div class="content">Content</div> \
