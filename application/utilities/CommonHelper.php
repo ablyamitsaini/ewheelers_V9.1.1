@@ -864,7 +864,7 @@ class CommonHelper extends FatUtility{
 		}
 		
 		if( $dateFormat == null){
-			$dateFormat = FatApp::getConfig('CONF_DATEPICKER_FORMAT', FatUtility::VAR_STRING, 'Y-m-d');
+			$dateFormat = FatApp::getConfig('CONF_DATE_FORMAT', FatUtility::VAR_STRING, 'Y-m-d');
 		}
 		
 		if( $dateTime ){
