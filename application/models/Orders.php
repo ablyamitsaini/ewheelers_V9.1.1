@@ -789,6 +789,7 @@ class Orders extends MyAppModel{
 			$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id', 'opcc');
 			$srch->joinTable( OrderProduct::DB_TBL_OP_TO_SHIPPING_USERS, 'LEFT OUTER JOIN', 'optosu.optsu_op_id = op.op_id', 'optosu' );
 			$srch->joinTable( Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING, 'LEFT OUTER JOIN', 'ops.opshipping_op_id = op.op_id', 'ops' );
+			$srch->joinTable( OrderProduct::DB_TBL_SETTINGS, 'LEFT OUTER JOIN', 'op.op_id = opst.opsetting_op_id', 'opst' );
 			$srch->addOrder("op_id","desc");
 			$rs = $srch->getResultSet();		
 			$childOrders = array();
