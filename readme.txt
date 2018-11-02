@@ -30,7 +30,7 @@ Updates:
 	. Implemented Engagespot integration.
 	. Shop search page optimization.
 	. Guest user welcome email.
-	
+	. Rewards on every purchase issue fixed.
 Enhancements:
 	. Product listing page updated speed optimization work.	
 	. Guest checkout code enhancements and send email verification in case of forgot password.	
