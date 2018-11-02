@@ -113,7 +113,7 @@
 											  </g>
 											  </svg> </i>
 										</a>
-										<a title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId)?>" class="action ripplelink" href="javascript:void(0)" tabindex="0"><i class="icon"> <svg xml:space="preserve" style="enable-background:new 0 0 482.428 482.429;" viewBox="0 0 482.428 482.429" height="482.429px" width="482.428px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" >
+										<a title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId)?>" class="action ripplelink" onclick="removeAddress('<?php echo $address['ua_id']; ?>')" href="javascript:void(0)" tabindex="0"><i class="icon"> <svg xml:space="preserve" style="enable-background:new 0 0 482.428 482.429;" viewBox="0 0 482.428 482.429" height="482.429px" width="482.428px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" >
 											  <g>
 												<g>
 												  <path d="M381.163,57.799h-75.094C302.323,25.316,274.686,0,241.214,0c-33.471,0-61.104,25.315-64.85,57.799h-75.098
