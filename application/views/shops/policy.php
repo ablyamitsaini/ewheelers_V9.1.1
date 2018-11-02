@@ -11,7 +11,7 @@
   <div class="shop-bar">
     <div class="container">
       <div class="row">
-      <div class="col-lg-7 col-md-7 col-sm-7  col-xs-12">
+		<div class="col-lg-7 col-md-7 col-sm-7  col-xs-12">
           <div class="shops-detail">
             <div class="shops-detail-name"> <?php echo $shop['shop_name']; ?></div>
             <div class="item-yk_rating"><i class="svg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14.854px" height="14.166px" viewBox="0 0 14.854 14.166" enable-background="new 0 0 14.854 14.166" xml:space="preserve">
@@ -25,18 +25,23 @@
               </span> </div>
             <div class="shop-actions">
 				<ul>
-				<li><a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="<?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
-					<i class="icn"> <img src="images/retina/loveshop.svg"></i>
-				 <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
-				</li>
-				<li> <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="" tabindex="0"> <i class="icn"> <img src="images/retina/send-meg.svg"></i> <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a></li>
-
-				<li> <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class=""><i class="icn"> <img src="images/retina/spam.svg"></i> <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a></li>
+				<?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer()) ) $showAddToFavorite = false; ?>
+				<?php if($showAddToFavorite) { ?>
+					<li><a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="<?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>" tabindex="0">
+						<i class="icn"> <img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/loveshop.svg"></i>
+					 <?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
+					</li>
+				<?php }?>
+				<?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) $showMoreButtons = false; ?>
+				<?php if($showMoreButtons){ ?>
+					<li> <a href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'])); ?>" class="" tabindex="0"> <i class="icn"> <img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/send-meg.svg"></i> <?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a></li>
+					<li> <a href="<?php echo CommonHelper::generateUrl('Shops','ReportSpam', array($shop['shop_id'])); ?>" class=""><i class="icn"> <img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/spam.svg"></i> <?php echo Labels::getLabel('LBL_Report_Spam',$siteLangId); ?></a></li>
+				<?php }?>
 				</ul>
 			  </div>
           </div>
         </div>
-     <div class="col-lg-5 col-md-5 col-sm-5  col-xs-12">
+		<div class="col-lg-5 col-md-5 col-sm-5  col-xs-12">
           <div class="shop-opened text-right"> <?php echo Labels::getLabel('LBL_Shop_Opened_By', $siteLangId); ?> <strong> <?php echo $shop['user_name'];?> </strong></div>
         </div>
       </div>
