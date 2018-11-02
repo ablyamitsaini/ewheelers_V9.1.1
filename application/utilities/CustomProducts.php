@@ -93,6 +93,7 @@ trait CustomProducts{
 		
 		$this->set('prodId',$prodId);
 		$this->set('prodCatId',$prodCatId);
+		$this->set('includeEditor', true);
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/slick.css');
 		$this->_template->render(); 

@@ -18,7 +18,7 @@ foreach($allShops as $val){ ?>
 				</div>
 				<span class="text--normal"><?php echo round($val["shopRating"],1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5' ?> - <a target='_blank' href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($val['shop_id'])) ?>"><?php echo ($val['shopTotalReviews']) ? $val['shopTotalReviews'] . ' ' . Labels::getLabel('Lbl_Reviews',$siteLangId) .' | ' : ''; ?></a>  </span>
 				
-				<?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer())) $showAddToFavorite = false; ?>
+				<?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer()) ) $showAddToFavorite = false; ?>
 				<?php if($showAddToFavorite) { ?>	
 					<?php if($val['is_favorite']){ ?>
 					<a class="link--normal" href="javascript:void(0);" onClick="unFavoriteShopFavorite(<?php echo $val['shop_id']; ?>,this)"><?php echo Labels::getLabel('LBL_UnFavorite_to_Shop', $siteLangId); ?></a>
