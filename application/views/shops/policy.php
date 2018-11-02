@@ -57,6 +57,7 @@
 	$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 
 	?>
+	<?php if( $shop['shop_payment_policy'] != '' || $shop['shop_delivery_policy'] != '' || $shop['shop_refund_policy'] != '' || $shop['shop_additional_info'] != '' ||  $shop['shop_seller_info'] != ''){ ?>
 	<section class="top-space">
 		<div class="container">
 		  <div class="white--bg padding20">
@@ -102,6 +103,7 @@
 		  </div>
 		</div>
     </section>
+	<?php } ?>
 	<div class="gap"></div>
 </div>
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>
