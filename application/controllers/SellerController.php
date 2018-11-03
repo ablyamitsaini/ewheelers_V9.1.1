@@ -40,7 +40,9 @@ class SellerController extends LoggedUserController {
 		
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
 		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS",FatUtility::VAR_STRING,'')) );
-		$srch->joinSellerProducts();	
+		$srch->joinSellerProducts();
+		$srch->joinShippingUsers();
+		$srch->joinShippingCharges();
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		//$srch->addSellerOrderCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d'),'yesterdayOrder');
@@ -51,7 +53,7 @@ class SellerController extends LoggedUserController {
 		$srch->setPageSize(5);
 		
 		$srch->addMultipleFields(
-			array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name') ); 
+			array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id') ); 
 		
 		$rs = $srch->getResultSet();
 		$orders = FatApp::getDb()->fetchAll($rs);
@@ -151,7 +153,7 @@ class SellerController extends LoggedUserController {
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
 		$srch->joinSellerProducts();
 		$srch->joinShippingUsers();
-		$srch->joinShippingCharges();		
+		$srch->joinShippingCharges();
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		$srch->addCondition( 'op_selprod_user_id', '=', $userId );

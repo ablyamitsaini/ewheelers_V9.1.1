@@ -65,7 +65,7 @@ foreach ($arr_listing as $sn => $row){
 	}
 }
 if (count($arr_listing) == 0){
-	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found', $siteLangId));
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_tax_categories_found', $siteLangId));
 }
 echo $tbl->getHtml();
 $postedData['page'] = $page;

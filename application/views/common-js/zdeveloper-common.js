@@ -140,6 +140,11 @@ setupWishList = function(frm,event){
 					e.stopPropagation();
 				});
 			});
+			if( ans.productIsInAnyList){
+				$( "[data-id="+selprod_id+"]").addClass("is-active");
+			} else {
+				$( "[data-id="+selprod_id+"]").removeClass("is-active");
+			}
 		}
 	});
 }
@@ -957,6 +962,6 @@ $("document").ready(function(){
 
 /* nice select */
 $(document).ready(function() {
-  $('select').niceSelect();
-  $('#category--js').niceSelect('destroy');
+  /* $('select').niceSelect();
+  $('#category--js').niceSelect('destroy'); */
 });
