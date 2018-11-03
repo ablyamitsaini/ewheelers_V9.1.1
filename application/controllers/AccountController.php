@@ -1766,7 +1766,7 @@ class AccountController extends LoggedUserController {
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
 		$srch->setPageNumber($page);
-		$srch->setPageSize(1);
+		$srch->setPageSize($pagesize);
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
 		/* CommonHelper::printArray($records); die; */
