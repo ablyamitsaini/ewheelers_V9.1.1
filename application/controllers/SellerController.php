@@ -2808,15 +2808,17 @@ class SellerController extends LoggedUserController {
 		}
 		/* ] */
 		
-		$firstLine = fgetcsv( $fileHandle );
-		if( !$firstLine ){
+		$firstLine = fgetcsv( $fileHandle );		
+		$defaultColArr = $this->getInventorySheetColoum($this->siteLangId);
+		if($firstLine != $defaultColArr){			
 			/* Message::addErrorMessage(Labels::getLabel('LBL_Sheet_seems_to_be_empty', $this->siteLangId )); */
-			FatUtility::dieJsonError(Labels::getLabel('LBL_Sheet_seems_to_be_empty', $this->siteLangId ));
+			FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Coloum_CSV_File', $this->siteLangId ));
 		}
 		$processFile = false;
 		$db = FatApp::getDb();
 		
-		while( ($dataArray = fgetcsv($fileHandle)) !== false ){
+		while( ($dataArray = fgetcsv($fileHandle)) !== false ){			
+			//
 			$selprod_id = FatUtility::int($dataArray[0]);
 			$selprod_sku = $dataArray[1];
 			$selprod_price = FatUtility::float($dataArray[3]);
@@ -2876,13 +2878,7 @@ class SellerController extends LoggedUserController {
 		
 		$sheetData = array();
 		/* $arr = array('selprod_id','selprod_sku','selprod_title', 'selprod_price','selprod_stock'); */
-		$arr = array(
-			Labels::getLabel("LBL_Seller_Product_Id", $this->siteLangId),
-			Labels::getLabel("LBL_SKU", $this->siteLangId),
-			Labels::getLabel("LBL_Product", $this->siteLangId),
-			Labels::getLabel("LBL_Price", $this->siteLangId),
-			Labels::getLabel("LBL_Stock/Quantity", $this->siteLangId)
-		);
+		$arr = $this->getInventorySheetColoum($this->siteLangId);
 		array_push($sheetData,$arr);
 		
 		foreach($inventoryData as $key=>$val){
@@ -2895,6 +2891,17 @@ class SellerController extends LoggedUserController {
 		}
 		
 		CommonHelper::convertToCsv($sheetData, str_replace(' ','_',Labels::getLabel('LBL_Inventory_Report',$this->siteLangId)).'_'.date("Y-m-d").'.csv', ','); exit;
+	}
+	
+	private function getInventorySheetColoum($langId){
+		$arr = array(
+			Labels::getLabel("LBL_Seller_Product_Id", $langId),
+			Labels::getLabel("LBL_SKU", $langId),
+			Labels::getLabel("LBL_Product", $langId),
+			Labels::getLabel("LBL_Price", $langId),
+			Labels::getLabel("LBL_Stock/Quantity", $langId)
+		);
+		return $arr;
 	}
 	
 	/* private function isMediaUploaded($shopId){
