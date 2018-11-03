@@ -140,6 +140,11 @@ setupWishList = function(frm,event){
 					e.stopPropagation();
 				});
 			});
+			if( ans.productIsInAnyList){
+				$( "[data-id="+selprod_id+"]").addClass("is-active");
+			} else {
+				$( "[data-id="+selprod_id+"]").removeClass("is-active");
+			}
 		}
 	});
 }

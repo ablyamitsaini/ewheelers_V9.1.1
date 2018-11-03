@@ -1114,7 +1114,7 @@ class AccountController extends LoggedUserController {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
 			FatUtility::dieWithError(Message::getHtml());
 		}
-
+		$loggedUserId = UserAuthentication::getLoggedUserId();
 		$wListObj = new UserWishList( );
 		$data_to_save_arr = $post;
 		$data_to_save_arr['uwlist_added_on'] = date('Y-m-d H:i:s');
@@ -1140,6 +1140,21 @@ class AccountController extends LoggedUserController {
 			}
 		}
 		/* ] */
+		//UserWishList
+		$srch = UserWishList::getSearchObject( $loggedUserId );
+		$srch->joinTable( UserWishList::DB_TBL_LIST_PRODUCTS, 'LEFT OUTER JOIN', 'uwlist_id = uwlp_uwlist_id' );
+		$srch->addCondition('uwlp_selprod_id', '=', $selprod_id );
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addMultipleFields( array('uwlist_id') );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch( $rs );
+		$productIsInAnyList = false;
+		if( $row ){
+			$productIsInAnyList = true;
+		}
+
+		$this->set( 'productIsInAnyList', $productIsInAnyList );
 		$this->set( 'wish_list_id', $uwlp_uwlist_id );
 		$this->set('msg', $successMsg );
 		$this->_template->render(false, false, 'json-success.php');
