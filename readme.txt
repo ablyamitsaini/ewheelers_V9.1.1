@@ -21,7 +21,7 @@ Fixes:
 	. Admin top products and top search items displayed max 10 records.
 	. Add shipping company user added email validation in email field and restricted to login and forgot password request.
 	. User email verification issue resolved.
-	. Displayed date format as per configuration.
+	. Displayed date format as per configuration.	
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
@@ -30,7 +30,8 @@ Updates:
 	. Implemented Engagespot integration.
 	. Shop search page optimization.
 	. Guest user welcome email.
-	
+	. Rewards on every purchase issue fixed.
+	. Applied coloms checks in inventory file upload.	
 Enhancements:
 	. Product listing page updated speed optimization work.	
 	. Guest checkout code enhancements and send email verification in case of forgot password.	

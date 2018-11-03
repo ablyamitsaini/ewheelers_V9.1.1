@@ -297,10 +297,10 @@ class Cronjob extends FatModel {
 		}
 		
 		$srch = RewardsOnPurchase::getSearchObject();
-		$srch->addCondition('rop_purchase_upto','>=',$row['order_net_amount']);
+		$srch->addCondition('rop_purchase_upto','<=',$row['order_net_amount']);
 		$srch->addMultipleFields(array('rop_purchase_upto','rop_reward_point'));
 		$srch->addOrder('rop_purchase_upto','asc');
-		$rs = $srch->getResultSet();
+		$rs = $srch->getResultSet();		
 		$rewardPoint = FatApp::getDb()->fetch($rs);
 
 	
