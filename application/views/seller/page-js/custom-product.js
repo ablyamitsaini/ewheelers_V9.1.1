@@ -83,8 +83,13 @@ $(document).delegate('.language','change',function(){
 					processData: false,
 					contentType: false,
 					success: function(t){
+						$.systemMessage.close();
 						var ans = $.parseJSON(t);
-						$.systemMessage( ans.msg,'alert--success' );
+						if(ans.status == 1){
+							$.systemMessage( ans.msg,'alert--success' );
+						}else{
+							$.systemMessage( ans.msg,'alert--danger' );
+						}
 						productImages( $('#frmCustomProductImage input[name=product_id]').val(), $('.option').val(), $('.language').val() );
 					},
 					error: function(jqXHR, textStatus, errorThrown){
@@ -99,7 +104,7 @@ $(document).delegate('.language','change',function(){
 		if( !agree ){ return false; }
 		fcom.ajax( fcom.makeUrl( 'Seller', 'deleteCustomProductImage', [productId, image_id] ), '' , function(t) {
 			var ans = $.parseJSON(t);
-			$.systemMessage( ans.msg,'alert alert-success');
+			$.systemMessage( ans.msg,'alert--success');
 			if( ans.status == 0 ){
 				return;
 			}
