@@ -56,26 +56,21 @@ foreach ($digitalDownloadLinks as $sn => $row){
 
 				$td->appendElement('a', array('href'=> $linkUrl, 'class'=>'', 'title'=>$linkTitle, 'onClick'=>$linkOnClick),
 				$link, true); */
-				/* if($row['downloadable']!=1){
+				if($row['downloadable']!=1){
 					$td->appendElement('plaintext', array(), Labels::getLabel('LBL_N/A',$siteLangId), true);
-				}else{ */
-				
-				
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
-				
-				$li = $ul->appendElement("li");
-				$li->appendElement('a', array('href'=> $row['opddl_downloadable_link'], 'class'=>'',
-				'title'=>Labels::getLabel('LBL_Click_to_open',$siteLangId)),
-				'<i class="fa fa-download"></i>', true);
+				}else{
+					$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+					
+					$li = $ul->appendElement("li");
+					$li->appendElement('a', array('href'=> $row['opddl_downloadable_link'], 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Click_to_open',$siteLangId)),
+					'<i class="fa fa-download"></i>', true);
 
-				
-				$li = $ul->appendElement("li");
-				$li->appendElement('a', array('href'=> 'javascript:void(0)', 'id'=>'dataLink', 'data-link'=>$row['opddl_downloadable_link'], 'onclick'=>'copyToClipboard(this)',
-				'title'=>Labels::getLabel('LBL_copy_to_clipboard',$siteLangId)),
-				'<i class="fa fa-copy"></i>', true);
-				
-			
-				/* } */
+					/* $li = $ul->appendElement("li");
+					$li->appendElement('a', array('href'=> 'javascript:void(0)', 'id'=>'dataLink', 'data-link'=>$row['opddl_downloadable_link'], 'onclick'=>'copyToClipboard(this)',
+					'title'=>Labels::getLabel('LBL_copy_to_clipboard',$siteLangId)),
+					'<i class="fa fa-copy"></i>', true); */
+				}
 			break;
 			case 'downloadable_count':
 				$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
