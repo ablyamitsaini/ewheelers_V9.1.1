@@ -165,4 +165,5 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 {social_media_icons} <br>
 {contact_us_url} <br>
 ', '1');
-delete FROM `tbl_configurations` WHERE `conf_name` = 'conf_yokart_version'
+delete FROM `tbl_configurations` WHERE `conf_name` = 'conf_yokart_version';
+ALTER TABLE `tbl_languages` CHANGE `language_code` `language_code` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

@@ -20,8 +20,9 @@
 								 <table class="table table--orders">
 									   <tbody>
 										<tr class="">
-										   <th ><?php echo Labels::getLabel('LBL_Date',$siteLangId);?></th>
-										   <th ><?php echo $threadTypeArr[$threadDetails['thread_type']];?></th>
+										   <th><?php echo Labels::getLabel('LBL_Date',$siteLangId);?></th>
+										   <th><?php echo $threadTypeArr[$threadDetails['thread_type']];?></th>
+										   <th><?php echo Labels::getLabel('LBL_Subject',$siteLangId);?></th>
 										   <th><?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT) {
 												echo Labels::getLabel('LBL_Amount',$siteLangId); 
 											}  elseif ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_PRODUCT) { 
@@ -47,6 +48,8 @@
 														<span class="item__title"><?php echo $threadDetails["selprod_title"];?></span>
 													<?php }?>
 												</div>
+											</td>
+											<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Subject',$siteLangId);?></span><?php echo $threadDetails["thread_subject"];?>
 											</td>
 											<td>
 												<span class="caption--td">
