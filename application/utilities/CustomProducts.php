@@ -730,10 +730,10 @@ trait CustomProducts{
 	
 	function setupCustomProductImages(){
 		if( !User::canAddCustomProduct() ){
-			FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
+			FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
 		}
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
-			FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
+			FatUtility::dieJsonError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
 		}
 		// $this->objPrivilege->canEditProducts();
 		$post = FatApp::getPostedData();
@@ -745,7 +745,6 @@ trait CustomProducts{
 		$option_id = FatUtility::int($post['option_id']);
 		$lang_id = FatUtility::int($post['lang_id']);
 		
-			
 		/* Validate product belongs to current logged seller[ */
 		if($product_id){
 			$productRow = Product::getAttributesById( $product_id, array('product_seller_id') );
@@ -755,12 +754,56 @@ trait CustomProducts{
 		}
 		/* ] */
 		
-		if (!is_uploaded_file($_FILES['prod_image']['tmp_name'])) {			
+		/* Check allowed images [ */
+		$productImagesArr = array();
+		$sellerId = UserAuthentication::getLoggedUserId();
+		
+		$subscription = false;
+		$allowed_images =-1;
+		if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE'))
+		{
+			$allowed_images = OrderSubscription::getUserCurrentActivePlanDetails($this->siteLangId,$sellerId,array('ossubs_images_allowed'));
+			$subscription = true;
+		}
+		
+		/* Current Product option Values[ */
+		$options = Product::getProductOptions( $product_id, $this->siteLangId, true, 1 );	
+		$productSelectedOptionValues = array();
+		$productGroupImages= array();
+		
+		$productOptionId = ($option_id == 0) ? -1 : $option_id ;
+		
+		$images = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_PRODUCT_IMAGE, $product_id, $productOptionId, $this->siteLangId,true,'',$allowed_images );
+		if( $images ){
+			$productImagesArr += $images;
+		}
+
+
+		if($productImagesArr){
+			foreach($productImagesArr as $image){
+			  $afileId = $image['afile_id'];
+			  if(!array_key_exists($afileId, $productGroupImages)){
+				$productGroupImages[$afileId] = array();
+			  }
+			  $productGroupImages[$afileId] = $image;
+			}
+		}
+
+		/* ] */
+		
+		if($allowed_images > 0 && count($productImagesArr) >= $allowed_images){
+			FatUtility::dieJsonError(Labels::getLabel("MSG_Cant_upload_more_than_allowed_images",$this->siteLangId));
+		}
+		
+		/* ] */
+		
+		
+		if (!is_uploaded_file($_FILES['prod_image']['tmp_name'])) {
 			FatUtility::dieJsonError(Labels::getLabel("MSG_Please_select_a_file",$this->siteLangId));
 		}
 		$fileHandlerObj = new AttachedFile();
 		if(!$res = $fileHandlerObj->saveImage($_FILES['prod_image']['tmp_name'], AttachedFile::FILETYPE_PRODUCT_IMAGE, $product_id, $option_id,  $_FILES['prod_image']['name'], -1, $unique_record = false, $lang_id )
-		){			
+		){
 			FatUtility::dieJsonError($fileHandlerObj->getError() );
 		}
 		

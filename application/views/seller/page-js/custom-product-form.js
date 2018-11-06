@@ -139,7 +139,7 @@
 		});
 	};
 	
-	optionForm = function(optionId){ optionId = 10;		
+	optionForm = function(optionId){
 		$.facebox(function() { 
 			fcom.ajax(fcom.makeUrl('Seller', 'optionForm', [optionId]), '', function(t) {	
 				try{

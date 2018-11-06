@@ -551,10 +551,6 @@ function defaultSetUpLogin(frm, v) {
 	});
 	
 	$(document).bind('close.systemMessage', function() {
-		$('.system_message').removeClass('alert--danger');
-		$('.system_message').removeClass('alert--success');
-		$('.system_message').removeClass('alert--info');
-		$('.system_message').removeClass('div_msg_dialog');		
 		$('.system_message').fadeOut();
 	});
 	

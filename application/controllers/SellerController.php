@@ -664,10 +664,7 @@ class SellerController extends LoggedUserController {
 			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}
-		$this->_template->addCss(array('css/bootstrap-tour.css'), false);
-		$this->_template->addJs(array('js/tour-script.js'), false);
-		$this->_template->addJs(array('js/bootstrap.js'), false);
-		$this->_template->addJs(array('js/bootstrap-tour.js'), false);
+
 		$frmSearchCatalogProduct = $this->getCatalogProductSearchForm();
 		$this->set("frmSearchCatalogProduct", $frmSearchCatalogProduct);
 		$this->set("displayDefaultListing", $displayDefaultListing);		
