@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$sharingfrm->addFormTagAttribute('class','form');
-$sharingfrm->addFormTagAttribute('onsubmit','sendMailShareEarn(this);return false;');
+$sharingFrm->addFormTagAttribute('class','form');
+$sharingFrm->addFormTagAttribute('onsubmit','sendMailShareEarn(this);return false;');
 $sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
 $sharingFrm->developerTags['fld_default_col'] = 12;
 /* Get Twitter request token[ */
@@ -56,7 +56,7 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
                   <span class="gap"></span>
                   <div style="display:none;" class="borderwrap showwrap">
                     <h4><?php echo Labels::getLabel('L_Invite_friends_through_email',$siteLangId)?></h4>
-                    <?php echo $sharingfrm->getFormHtml(); ?>
+                    <?php echo $sharingFrm->getFormHtml(); ?>
                     <div class="gap"> </div>
                     <h3><span class="ajax_message" id="custom_ajax"></span> </h3>
                   </div>
