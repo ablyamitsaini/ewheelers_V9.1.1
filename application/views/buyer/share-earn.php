@@ -1,7 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $sharingfrm->addFormTagAttribute('class','form');
 $sharingfrm->addFormTagAttribute('onsubmit','sendMailShareEarn(this);return false;');
-
+$sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
+$sharingFrm->developerTags['fld_default_col'] = 12;
 /* Get Twitter request token[ */
 $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
 
