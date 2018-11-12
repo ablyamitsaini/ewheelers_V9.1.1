@@ -3681,11 +3681,11 @@ class SellerController extends LoggedUserController {
 	
 	function catalogInfo($product_id = 0){
 		$product_id = FatUtility::int($product_id);
-		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false );
+		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false,false );
 		/* fetch requested product[ */
 		$prodSrch = clone $prodSrchObj;
-		$prodSrch->joinProductToCategory(0, false, false);
-		$prodSrch->joinBrands(0, false, false);
+		$prodSrch->joinProductToCategory(0, false, false, false);
+		$prodSrch->joinBrands(0, false, false, false);
 		$prodSrch->addCondition( 'product_id', '=', $product_id );
 		$prodSrch->doNotLimitRecords();
 

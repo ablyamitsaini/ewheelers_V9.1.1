@@ -11,9 +11,9 @@
 	  <div class="product-detail">
 		<div class="item-yk detail_head">
 			<div class="item-yk-head">
-				<div class="item-yk-head-category"><a href="javascript:void(0);"><?php echo $product['prodcat_name']; ?> </a></div>
+				<div class="item-yk-head-category"><?php echo $product['prodcat_name']; ?></div>
 				<div class="item-yk-head-title">
-					<a title="<?php echo $product['product_name']; ?>" href="javascript:void(0);"><?php echo $product['product_name']; ?></a>
+					<?php echo $product['product_name']; ?>
 				</div>
 				<div class="heading5"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo ($product['brand_name']) ? $product['brand_name'] : Labels::getLabel('LBL_NA', $siteLangId); ?></div>
 				<div class="heading5"><?php echo Labels::getLabel('LBL_Product_Model', $siteLangId); ?>: <?php echo $product['product_model']; ?></div>
