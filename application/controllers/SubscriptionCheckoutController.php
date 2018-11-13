@@ -574,6 +574,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		
 		
 		if( $pmethod_id ){
+			$_SESSION['order_type'] = Orders::ORDER_SUBSCRIPTION;
 			$orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id) );
 			$this->scartObj->clear();
 			$this->scartObj->updateUserSubscriptionCart();

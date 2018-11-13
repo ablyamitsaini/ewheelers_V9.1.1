@@ -1436,6 +1436,7 @@ class CheckoutController extends MyAppController{
 				
 		if( $pmethod_id ){
 			$_SESSION['cart_order_id'] = $order_id;
+			$_SESSION['order_type'] = $order_type;
 			$orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id) );
 			$this->cartObj->clear();
 			$this->cartObj->updateUserCart(); 
