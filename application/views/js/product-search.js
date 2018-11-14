@@ -457,7 +457,14 @@ function updatePriceFilter(minPrice,maxPrice){
 			//history.pushState(null, null, getSearchQueryUrl(true));	
 			window.history.pushState("","",getSearchQueryUrl(true));	
 		}
-
+		
+		/*[ Need to remove when we update functionality and load pages based on search filetrs*/
+		urlData = 'urlString='+getSearchQueryUrl(true);
+		fcom.ajax(fcom.makeUrl('Products','setUrlString'),urlData,function(ans){
+			
+		});
+		/* ] */
+		
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;
