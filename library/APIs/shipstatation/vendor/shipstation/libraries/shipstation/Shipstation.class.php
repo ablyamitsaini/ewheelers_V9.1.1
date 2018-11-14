@@ -847,7 +847,8 @@ class ShipStation
      
 
         // API cap handling + error handling //
-        if(is_object($response))
+        /* if(is_object($response)) */
+		if(is_object($response) && isset($response->headers['X-Rate-Limit-Remaining']) && isset($response->headers['X-Rate-Limit-Reset']) )
         {
 
             $this->remainingRequests    = $response->headers['X-Rate-Limit-Remaining'];
