@@ -818,16 +818,17 @@ class Cart extends FatModel {
 				}
 				
 				if( !empty($productIdsArr) ){
-					if( empty($couponInfo['grouped_coupon_products']) ){
+					if( empty($couponInfo['grouped_coupon_products']) || $this->cart_user_id == $couponInfo['grouped_coupon_users'] ){
 						$couponInfo['grouped_coupon_products'] = $productIdsArr;
 					} else {
 						$couponInfo['grouped_coupon_products'] = array_merge( $couponInfo['grouped_coupon_products'], $productIdsArr );
 					}
 				}
+				
 			}
 			/* ] */
 			
-			if ( empty($couponInfo['grouped_coupon_products']) ) {
+			if ( empty($couponInfo['grouped_coupon_products'])|| $this->cart_user_id == $couponInfo['grouped_coupon_users'] ) {
 				$subTotal = $cartSubTotal;
 			} else {
 				$subTotal = 0;
@@ -850,7 +851,7 @@ class Cart extends FatModel {
 			
 			foreach ( $cartProducts as $cartProduct ) {
 				$discount = 0;
-				if ( empty($couponInfo['grouped_coupon_products']) ) {
+				if ( empty($couponInfo['grouped_coupon_products']) || $this->cart_user_id == $couponInfo['grouped_coupon_users'] ) {
 					$status = true;
 				} else {
 					if( $cartProduct['is_batch'] ){
@@ -867,9 +868,8 @@ class Cart extends FatModel {
 						}
 					}
 				}
-				
-				
-				if ($status) {
+												
+				if ($status) { 
 					if( $cartProduct['is_batch'] ){
 						/* if (!$couponInfo['coupon_discount_in_percent']) {
 							$discount = $couponInfo['coupon_discount_value'] * ($cartProduct['prodgroup_total'] / $subTotal);
@@ -883,7 +883,7 @@ class Cart extends FatModel {
 							$discount = ( $cartProduct['total'] / 100 ) * $couponInfo['coupon_discount_value'];
 						}	
 					}					
-				}				
+				}						
 				$discountTotal += $discount;
 			}
 			
@@ -897,13 +897,13 @@ class Cart extends FatModel {
 			/*[ Calculate discounts for each Seller Products*/
 			$discountedSelProdIds = array();
 			$discountedProdGroupIds = array();
-			if ( empty($couponInfo['grouped_coupon_products']) ) {
+			if ( empty($couponInfo['grouped_coupon_products']) || $this->cart_user_id == $couponInfo['grouped_coupon_users'] ) { 
 				foreach ( $cartProducts as $cartProduct ) {
 					if( $cartProduct['is_batch'] ){
 						/* $totalSelProdDiscount = round(($discountTotal*$cartProduct['prodgroup_total'])/$subTotal,2);
 						$selProdDiscountTotal += $totalSelProdDiscount;
 						$discountedProdGroupIds[$cartProduct['prodgroup_id']] = round($totalSelProdDiscount,2); */
-					}else{
+					}else{ 
 						$totalSelProdDiscount = round(($discountTotal*$cartProduct['total'])/$subTotal,2);
 						$selProdDiscountTotal += $totalSelProdDiscount;
 						$discountedSelProdIds[$cartProduct['selprod_id']] = round($totalSelProdDiscount,2);
