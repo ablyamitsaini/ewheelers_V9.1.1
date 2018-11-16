@@ -471,7 +471,7 @@ class Statistics extends MyAppModel{
 		}
 	}
 	
-	function getTopProducts($type,$langId = 0){
+	function getTopProducts($type,$langId = 0, $pageSize = 0){
 		$langId = FatUtility::int($langId);
 		if($langId < 1){
 			$langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
@@ -480,7 +480,12 @@ class Statistics extends MyAppModel{
 		$srch->joinPaymentMethod();
 		$srch->joinSellerProducts($langId);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		if($pageSize > 0){
+			$srch->setPageSize($pageSize);	
+		}else{			
+			$srch->doNotLimitRecords();
+		}
+		
 		$cnd = $srch->addCondition( 'order_is_paid', '=', Orders::ORDER_IS_PAID );
 		$cnd->attachCondition('pmethod_code','=','CashOnDelivery');
 		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")) );
@@ -507,7 +512,7 @@ class Statistics extends MyAppModel{
 		return $this->db->fetchAll($rs);	
 	}
 	
-	public function getTopSearchKeywords($type){
+	public function getTopSearchKeywords($type,$pageSize = 0){
 		$srch = new SearchBase('tbl_search_items', 'tsi');
 			switch(strtoupper($type)){
 				case 'TODAY':
@@ -527,6 +532,10 @@ class Statistics extends MyAppModel{
 		$srch->addOrder ('searchitem_count','desc');
 		$srch->addOrder ('search_count','desc');
 		$srch->addGroupBy('tsi.searchitem_keyword');
+		if($pageSize > 0){
+			$srch->setPageSize($pageSize);
+		}
+		
 		$rs = $srch->getResultSet();					
 		return $this->db->fetchAll($rs);		
 	}

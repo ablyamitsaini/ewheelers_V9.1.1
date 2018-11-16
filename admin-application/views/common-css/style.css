@@ -9961,7 +9961,8 @@ body.switchtoggled .color_pallete .pallete_control {
 }
 
 .table tr:last-child .actions .dropwrap,
-.table tr:nth-last-child(2) .actions .dropwrap {
+.table tr:nth-last-child(2) .actions .dropwrap,
+.table tr:nth-last-child(3) .actions .dropwrap {
     top: auto;
     bottom: 0;
     transform-origin: bottom center;

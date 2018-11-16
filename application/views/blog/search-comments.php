@@ -8,7 +8,7 @@ if($commentsCount){
 		<header class="comment-meta comment-author vcard">
 			<img alt="" src="<?php echo CommonHelper::generateUrl('image','user', array($comment['bpcomment_user_id'], "THUMB",1),CONF_WEBROOT_FRONT_URL); ?>" class="avatar avatar-60 photo" width="60" height="60">
 			<cite class="fn"><?php echo CommonHelper::displayName($comment['bpcomment_author_name']); ?></cite>
-			<a class="comment-time-link" href="javascript:void(0)"><time datetime="<?php echo FatDate::format($comment['bpcomment_added_on']); ?>"><?php echo FatDate::format($comment['bpcomment_added_on']); ?></time></a>
+			<span class="comment-time-link"><time datetime="<?php echo FatDate::format($comment['bpcomment_added_on']); ?>"><?php echo FatDate::format($comment['bpcomment_added_on']); ?></time></span>
 		</header>
 		<!-- .comment-meta -->
 		<section class="comment-content comment">

@@ -31,5 +31,5 @@
 	<link rel="shortcut icon" href="<?php echo CommonHelper::generateUrl('image', 'favicon', array($adminLangId), CONF_WEBROOT_FRONT_URL) ?>">
 	<?php } ?>
 	
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,500i,700,700i,900,900i" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,500i,700,700i,900,900i" rel="stylesheet">
 	

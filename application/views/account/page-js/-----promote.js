@@ -174,7 +174,7 @@ $(document).ready(function(){
 						$(node).val($val);
 					},
 					success: function(ans) {
-						$.mbsmessage(ans.msg, true, 'alert alert--success');
+						$.mbsmessage(ans.msg, true, 'alert--success');
 						$('.text-danger').remove();
 						$('#input-field'+fileType).html(ans.msg);						
 						if(ans.status == true){

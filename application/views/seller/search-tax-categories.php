@@ -31,6 +31,20 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);			
 			break;
 			case 'taxval_value':
+				/* Error Handling[ */
+				if( !isset($row['taxval_value']) ){
+					$row['taxval_value'] = 0;
+				}
+				
+				if( !isset($row['default']['taxval_value']) ){
+					$row['default']['taxval_value'] = 0;
+				}
+				
+				if( !isset($row['taxval_is_percent']) ){
+					$row['taxval_is_percent'] = 0;
+				}
+				/* ] */
+				
 				$str = '';
 				if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 					if($row['default']['taxval_value'] != $row['taxval_value']){
@@ -50,6 +64,10 @@ foreach ($arr_listing as $sn => $row){
 					'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"changeTaxRates(".$row['taxcat_id'].")"),
 					'<i class="fa fa-edit"></i>', true);
 					
+					/* Error Handling[ */
+					if( !isset($row['taxval_seller_user_id']) ){ $row['taxval_seller_user_id'] = 0; }
+					/* ] */
+					
 					if($row['taxval_seller_user_id'] == $userId){	
 						$li = $ul->appendElement("li");
 						$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
@@ -65,7 +83,7 @@ foreach ($arr_listing as $sn => $row){
 	}
 }
 if (count($arr_listing) == 0){
-	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found', $siteLangId));
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_tax_categories_found', $siteLangId));
 }
 echo $tbl->getHtml();
 $postedData['page'] = $page;

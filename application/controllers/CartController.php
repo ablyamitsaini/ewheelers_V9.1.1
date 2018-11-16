@@ -156,7 +156,7 @@ class CartController extends MyAppController{
 				Message::addErrorMessage($productErr);
 				FatUtility::dieWithError( Message::getHtml() );
 			}
-			$this->set('alertType','alert alert--info');
+			$this->set('alertType','alert--info');
 			
 		}else{
 			

@@ -21,6 +21,7 @@ class Extrapage extends MyAppModel {
 	const CHECKOUT_PAGE_RIGHT_BLOCK = 23;
 	const SELLER_PAGE_FORM_TEXT = 24;
 	const FOOTER_TRUST_BANNERS = 26;
+	const CHECKOUT_PAGE_HEADER_BLOCK = 27;
 	
 	CONST REWRITE_URL_PREFIX = 'custom/view/';
 	

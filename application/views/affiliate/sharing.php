@@ -88,13 +88,13 @@ function facebook_redirect(response_token){
 	},
 	function( response ) {
 		if ( response !== null && typeof response.post_id !== 'undefined' ) {
-			$.mbsmessage(langLbl.thanksForSharing, true, 'alert alert--success');
+			$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
 			/* $("#fb_ajax").html(langLbl.thanksForSharing); */
 		}
 	});
 }
 function twitter_shared(name){
-	$.mbsmessage(langLbl.thanksForSharing, true, 'alert alert--success');
+	$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
 	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
 }
 </script>

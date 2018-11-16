@@ -40,7 +40,9 @@ class SellerController extends LoggedUserController {
 		
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
 		$srch->addStatusCondition( unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS",FatUtility::VAR_STRING,'')) );
-		$srch->joinSellerProducts();	
+		$srch->joinSellerProducts();
+		$srch->joinShippingUsers();
+		$srch->joinShippingCharges();
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		//$srch->addSellerOrderCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d'),'yesterdayOrder');
@@ -51,7 +53,7 @@ class SellerController extends LoggedUserController {
 		$srch->setPageSize(5);
 		
 		$srch->addMultipleFields(
-			array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name') ); 
+			array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id') ); 
 		
 		$rs = $srch->getResultSet();
 		$orders = FatApp::getDb()->fetchAll($rs);
@@ -151,7 +153,7 @@ class SellerController extends LoggedUserController {
 		$srch = new OrderProductSearch( $this->siteLangId, true, true );
 		$srch->joinSellerProducts();
 		$srch->joinShippingUsers();
-		$srch->joinShippingCharges();		
+		$srch->joinShippingCharges();
 		$srch->addCountsOfOrderedProducts();
 		$srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
 		$srch->addCondition( 'op_selprod_user_id', '=', $userId );
@@ -659,13 +661,10 @@ class SellerController extends LoggedUserController {
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
-			Message::addErrorMessage( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
+			Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
 		}
-		$this->_template->addCss(array('css/bootstrap-tour.css'), false);
-		$this->_template->addJs(array('js/tour-script.js'), false);
-		$this->_template->addJs(array('js/bootstrap.js'), false);
-		$this->_template->addJs(array('js/bootstrap-tour.js'), false);
+
 		$frmSearchCatalogProduct = $this->getCatalogProductSearchForm();
 		$this->set("frmSearchCatalogProduct", $frmSearchCatalogProduct);
 		$this->set("displayDefaultListing", $displayDefaultListing);		
@@ -2806,15 +2805,17 @@ class SellerController extends LoggedUserController {
 		}
 		/* ] */
 		
-		$firstLine = fgetcsv( $fileHandle );
-		if( !$firstLine ){
+		$firstLine = fgetcsv( $fileHandle );		
+		$defaultColArr = $this->getInventorySheetColoum($this->siteLangId);
+		if($firstLine != $defaultColArr){			
 			/* Message::addErrorMessage(Labels::getLabel('LBL_Sheet_seems_to_be_empty', $this->siteLangId )); */
-			FatUtility::dieJsonError(Labels::getLabel('LBL_Sheet_seems_to_be_empty', $this->siteLangId ));
+			FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Coloum_CSV_File', $this->siteLangId ));
 		}
 		$processFile = false;
 		$db = FatApp::getDb();
 		
-		while( ($dataArray = fgetcsv($fileHandle)) !== false ){
+		while( ($dataArray = fgetcsv($fileHandle)) !== false ){			
+			//
 			$selprod_id = FatUtility::int($dataArray[0]);
 			$selprod_sku = $dataArray[1];
 			$selprod_price = FatUtility::float($dataArray[3]);
@@ -2874,13 +2875,7 @@ class SellerController extends LoggedUserController {
 		
 		$sheetData = array();
 		/* $arr = array('selprod_id','selprod_sku','selprod_title', 'selprod_price','selprod_stock'); */
-		$arr = array(
-			Labels::getLabel("LBL_Seller_Product_Id", $this->siteLangId),
-			Labels::getLabel("LBL_SKU", $this->siteLangId),
-			Labels::getLabel("LBL_Product", $this->siteLangId),
-			Labels::getLabel("LBL_Price", $this->siteLangId),
-			Labels::getLabel("LBL_Stock/Quantity", $this->siteLangId)
-		);
+		$arr = $this->getInventorySheetColoum($this->siteLangId);
 		array_push($sheetData,$arr);
 		
 		foreach($inventoryData as $key=>$val){
@@ -2893,6 +2888,17 @@ class SellerController extends LoggedUserController {
 		}
 		
 		CommonHelper::convertToCsv($sheetData, str_replace(' ','_',Labels::getLabel('LBL_Inventory_Report',$this->siteLangId)).'_'.date("Y-m-d").'.csv', ','); exit;
+	}
+	
+	private function getInventorySheetColoum($langId){
+		$arr = array(
+			Labels::getLabel("LBL_Seller_Product_Id", $langId),
+			Labels::getLabel("LBL_SKU", $langId),
+			Labels::getLabel("LBL_Product", $langId),
+			Labels::getLabel("LBL_Price", $langId),
+			Labels::getLabel("LBL_Stock/Quantity", $langId)
+		);
+		return $arr;
 	}
 	
 	/* private function isMediaUploaded($shopId){
@@ -3675,11 +3681,11 @@ class SellerController extends LoggedUserController {
 	
 	function catalogInfo($product_id = 0){
 		$product_id = FatUtility::int($product_id);
-		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false );
+		$prodSrchObj = new ProductSearch( $this->siteLangId,null,null,false,false );
 		/* fetch requested product[ */
 		$prodSrch = clone $prodSrchObj;
-		$prodSrch->joinProductToCategory(0, false, false);
-		$prodSrch->joinBrands(0, false, false);
+		$prodSrch->joinProductToCategory(0, false, false, false);
+		$prodSrch->joinBrands(0, false, false, false);
 		$prodSrch->addCondition( 'product_id', '=', $product_id );
 		$prodSrch->doNotLimitRecords();
 

@@ -120,7 +120,7 @@ var fcom = {
 			this.ajax(url, data, function(ans) {
 				if (ans.status != 1) {
 					$(document).trigger('close.mbsmessage');
-					$.systemMessage(ans.msg,'alert alert--danger');
+					$.systemMessage(ans.msg,'alert--danger');
 					/* Custom Code[ */
 					if( ans.redirectUrl ){
 						setTimeout(function(){ window.location.href = ans.redirectUrl }, 3000);
@@ -132,7 +132,7 @@ var fcom = {
 				if(ans.alertType){
 					$alertType = ans.alertType;
 				}else{
-					$alertType = 'alert alert--success';
+					$alertType = 'alert--success';
 				}
 				$.mbsmessage(ans.msg,true, $alertType);
 				

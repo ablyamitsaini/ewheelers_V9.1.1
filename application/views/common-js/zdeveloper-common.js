@@ -23,10 +23,10 @@ function resendVerificationLink(user){
 	{
 		return false;
 	}
-	$(document).trigger('closeMsg.systemMessage');
+	$(document).trigger('close.systemMessage');
 	$.mbsmessage(langLbl.processing,false,'alert--process alert');
 	fcom.updateWithAjax( fcom.makeUrl('GuestUser','resendVerification',[user]),'',function(ans){
-		$.mbsmessage(ans.msg, false, 'alert alert--success');
+		$.mbsmessage(ans.msg, false, 'alert--success');
 	});
 }
 
@@ -140,6 +140,11 @@ setupWishList = function(frm,event){
 					e.stopPropagation();
 				});
 			});
+			if( ans.productIsInAnyList){
+				$( "[data-id="+selprod_id+"]").addClass("is-active");
+			} else {
+				$( "[data-id="+selprod_id+"]").removeClass("is-active");
+			}
 		}
 	});
 }
@@ -418,11 +423,11 @@ function defaultSetUpLogin(frm, v) {
 			var autoClose = true;
 		}
 		if( ans.status == 1 ){
-			$.mbsmessage(ans.msg, autoClose, 'alert alert--success');
+			$.mbsmessage(ans.msg, autoClose, 'alert--success');
 			location.href = ans.redirectUrl;
 			return;
 		}
-		$.mbsmessage(ans.msg, autoClose, 'alert alert--danger');
+		$.mbsmessage(ans.msg, autoClose, 'alert--danger');
 	});
 	return false;
 }
@@ -541,16 +546,16 @@ function defaultSetUpLogin(frm, v) {
 			/* $('.system_message').css({top:10}); */
 		},
 		close:function(){
-			$(document).trigger('closeMsg.systemMessage');
+			$(document).trigger('close.systemMessage');
 		},
 	});
 	
-	$(document).bind('closeMsg.systemMessage', function() {		
+	$(document).bind('close.systemMessage', function() {
 		$('.system_message').fadeOut();
 	});
 	
 	function initialize(){
-		$('.system_message .closeMsg').click($.systemMessage.close);
+		$('.system_message .close').click($.systemMessage.close);
 	}
 	/* [ */
 	$.fn.serialize_without_blank = function () {
@@ -603,11 +608,11 @@ $(document).ready(function(){
 	if( $('.system_message').find('.div_error').length > 0 || $('.system_message').find('.div_msg').length > 0 || 	$('.system_message').find('.div_info').length > 0 || $('.system_message').find('.div_msg_dialog').length > 0 ){
 		$('.system_message').show();
 	}
-	$('.closeMsg').click(function(){
-		$('.system_message').find('.div_error').remove();
+	$('.close').click(function(){
+		/* $('.system_message').find('.div_error').remove();
 		$('.system_message').find('.div_msg').remove();
 		$('.system_message').find('.div_info').remove();
-		$('.system_message').find('.div_msg_dialog').remove();
+		$('.system_message').find('.div_msg_dialog').remove(); */
 		$('.system_message').hide();
 	});
 	addCatalogPopup = function(){
@@ -957,6 +962,6 @@ $("document").ready(function(){
 
 /* nice select */
 $(document).ready(function() {
-  $('select').niceSelect();
-  $('#category--js').niceSelect('destroy');
+  /* $('select').niceSelect();
+  $('#category--js').niceSelect('destroy'); */
 });

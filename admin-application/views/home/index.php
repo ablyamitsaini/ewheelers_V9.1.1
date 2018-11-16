@@ -26,7 +26,7 @@
                                  <div class="box__body">
                                     <img src="<?php echo CONF_WEBROOT_URL ?>images/stats_icon_1.svg" alt="" class="stats__icon">
                                     <h6 class="-txt-uppercase"><?php echo Labels::getLabel('LBL_Order_Sales',$adminLangId); ?></h6>
-                                    <h3 class="counter" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalsales"];?>">0</h3>
+                                    <h3 class="counter" data-currency = "1" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalsales"];?>">0</h3>
                                     <p><?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong><?php echo CommonHelper::displayMoneyFormat($dashboardInfo["stats"]["totalSales"][2]["totalsales"]);?></strong></p>
 									<?php if($objPrivilege->canViewOrders(AdminAuthentication::getLoggedAdminId(), true)){?>
                                             <a href="<?php echo CommonHelper::generateUrl('orders');?>" class="stats__link"></a>
@@ -40,7 +40,7 @@
                                 <div class="box__body">
                                     <img src="<?php echo CONF_WEBROOT_URL ?>images/stats_icon_2.svg" alt="" class="stats__icon">
                                     <h6 class="-txt-uppercase"><?php echo Labels::getLabel('LBL_Sales_Earnings',$adminLangId); ?></h6>
-                                    <h3 class="counter" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalcommission"];?>">0</h3>
+                                    <h3 class="counter" data-currency = "1" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalcommission"];?>">0</h3>
                                     <p><?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong><?php echo CommonHelper::displayMoneyFormat($dashboardInfo["stats"]["totalSales"][2]["totalcommission"])?></span></strong></p>
                                      <?php if($objPrivilege->canViewSalesReport(AdminAuthentication::getLoggedAdminId(), true)){?>
 										<a href="<?php echo CommonHelper::generateUrl('salesReport');?>" class="stats__link"></a>
@@ -53,7 +53,7 @@
                                 <div class="box__body">
                                     <img src="<?php echo CONF_WEBROOT_URL ?>images/stats_icon_3.svg" alt="" class="stats__icon">
                                     <h6 class="-txt-uppercase"><?php echo Labels::getLabel('LBL_New_Users',$adminLangId); ?></h6>
-                                    <h3 class="counter" data-count="<?php echo $dashboardInfo["stats"]["totalUsers"]['-1']; ?>">0</h3>
+                                    <h3 class="counter" data-currency = "0" data-count="<?php echo $dashboardInfo["stats"]["totalUsers"]['-1']; ?>">0</h3>
                                     <p><?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong><?php echo $dashboardInfo["stats"]["totalUsers"]['30']; ?></strong></p>
                                     <?php if($objPrivilege->canViewUsers(AdminAuthentication::getLoggedAdminId(), true)){?>
 										<a href="<?php echo CommonHelper::generateUrl('users');?>" class="stats__link"></a>
@@ -66,7 +66,7 @@
                                 <div class="box__body">
                                     <img src="<?php echo CONF_WEBROOT_URL ?>images/stats_icon_4.svg" alt="" class="stats__icon">
                                     <h6 class="-txt-uppercase"><?php echo Labels::getLabel('LBL_New_Shops',$adminLangId); ?></h6>
-                                    <h3 class="counter" data-count="<?php echo $dashboardInfo["stats"]["totalShops"]['-1']?>">0</h3>
+                                    <h3 class="counter" data-currency = "0" data-count="<?php echo $dashboardInfo["stats"]["totalShops"]['-1']?>">0</h3>
                                     <p><?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong><?php echo $dashboardInfo["stats"]["totalShops"]['30']?></strong></p>
                                     <?php if($objPrivilege->canViewShops(AdminAuthentication::getLoggedAdminId(), true)){?>
 									<a href="<?php echo CommonHelper::generateUrl('shops');?>" class="stats__link"></a>

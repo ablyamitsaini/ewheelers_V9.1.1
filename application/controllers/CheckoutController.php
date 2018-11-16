@@ -168,6 +168,9 @@ class CheckoutController extends MyAppController{
 			$cartHasPhysicalProduct = true;
 		}
 		
+		$obj = new Extrapage();
+		$headerData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId );
+		
 		$products = $this->cartObj->getProducts($this->siteLangId);
 		$this->set('products', $products );
 		$this->cartObj->removeProductShippingMethod( );
@@ -176,6 +179,7 @@ class CheckoutController extends MyAppController{
 		$obj = new Extrapage();
 		$pageData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_RIGHT_BLOCK, $this->siteLangId );
 		$this->set('pageData' , $pageData);
+		$this->set('headerData' , $headerData);
 		$this->_template->render(true,false);
 	}
 	
@@ -1436,6 +1440,7 @@ class CheckoutController extends MyAppController{
 				
 		if( $pmethod_id ){
 			$_SESSION['cart_order_id'] = $order_id;
+			$_SESSION['order_type'] = $order_type;
 			$orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id) );
 			$this->cartObj->clear();
 			$this->cartObj->updateUserCart(); 

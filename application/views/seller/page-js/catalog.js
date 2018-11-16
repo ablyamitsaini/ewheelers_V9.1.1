@@ -142,7 +142,11 @@ $(document).delegate('.language-js','change',function(){
 					contentType: false,
 					success: function(t){
 						var ans = $.parseJSON(t);
-						$.systemMessage( ans.msg,'alert alert--success' );
+						if(ans.status == 1){
+							$.mbsmessage(ans.msg, true, 'alert--success');
+						}else{
+							$.mbsmessage(ans.msg, true, 'alert--danger');
+						}
 						productImages( $('#frmCustomProductImage input[name=product_id]').val(), $('.option').val(), $('.language').val() );
 					},
 					error: function(jqXHR, textStatus, errorThrown){
@@ -157,7 +161,7 @@ $(document).delegate('.language-js','change',function(){
 		if( !agree ){ return false; }
 		fcom.ajax( fcom.makeUrl( 'Seller', 'deleteCustomProductImage', [productId, image_id] ), '' , function(t) {
 			var ans = $.parseJSON(t);
-			$.systemMessage( ans.msg,'alert alert-success');
+			$.mbsmessage(ans.msg, true, 'alert--success');
 			if( ans.status == 0 ){
 				return;
 			}

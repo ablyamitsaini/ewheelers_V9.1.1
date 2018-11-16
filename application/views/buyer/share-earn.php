@@ -1,7 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $sharingfrm->addFormTagAttribute('class','form');
 $sharingfrm->addFormTagAttribute('onsubmit','sendMailShareEarn(this);return false;');
-
+$sharingfrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
+$sharingfrm->developerTags['fld_default_col'] = 12;
 /* Get Twitter request token[ */
 $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
 
@@ -94,13 +95,13 @@ function facebook_redirect(response_token){
 	},
 	function( response ) {
 		if ( response !== null && typeof response.post_id !== 'undefined' ) {
-			$.mbsmessage(langLbl.thanksForSharing, true, 'alert alert--success');
+			$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
 			/* $("#fb_ajax").html(langLbl.thanksForSharing); */
 		}
 	});
 }
 function twitter_shared(name){
-	$.mbsmessage(langLbl.thanksForSharing, true, 'alert alert--success');
+	$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
 	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
 }
 </script>

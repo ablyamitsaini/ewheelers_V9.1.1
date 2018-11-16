@@ -414,13 +414,13 @@ $(document).on('click','.shopFile-Js',function(){
 					$('.text-danger').remove();
 					$('#input-field'+fileType).html(ans.msg);						
 					if(ans.status == true){
-						$.mbsmessage( ans.msg,'','alert alert--success');
+						$.mbsmessage( ans.msg,'','alert--success');
 						$('#input-field'+fileType).removeClass('text-danger');
 						$('#input-field'+fileType).addClass('text-success');
 						$('#form-upload').remove();
 						shopImages(imageType,lang_id);
 					}else{
-						$.mbsmessage(ans.msg,'','alert alert--danger');
+						$.mbsmessage(ans.msg,'','alert--danger');
 						$('#input-field'+fileType).removeClass('text-success');
 						$('#input-field'+fileType).addClass('text-danger');
 					}
@@ -469,17 +469,17 @@ $(document).on('click','.catFile-Js',function(){
 				success: function(ans) {
 					$.mbsmessage.close();
 					$.systemMessage.close();
-					//$.mbsmessage(ans.msg, true, 'alert alert--success');
+					//$.mbsmessage(ans.msg, true, 'alert--success');
 					var dv = '#mediaResponse';						
 					$('.text-danger').remove();
 					if( ans.status == true ){
-						$.systemMessage( ans.msg,'alert alert--success');
+						$.systemMessage( ans.msg,'alert--success');
 						$(dv).removeClass('text-danger');
 						$(dv).addClass('text-success');
 						reloadCategoryBannerList();
 						addCategoryBanner( prodcat_id);
 					} else {
-						$.systemMessage(ans.msg,'alert alert--danger');
+						$.systemMessage(ans.msg,'alert--danger');
 						$(dv).removeClass('text-success');
 						$(dv).addClass('text-danger');
 					}												

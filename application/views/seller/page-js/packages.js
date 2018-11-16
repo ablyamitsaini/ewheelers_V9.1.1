@@ -2,13 +2,13 @@ $("document").ready(function(){
 	$(".buySubscription--js").on('click', function(event){
 		event.preventDefault();
 		if( $(this).parent().find('input[name=packages]:checked').val()=='' ||  $(this).parent().find('input[name=packages]:checked').val()== 0||  $(this).parent().find('input[name=packages]:checked').val()== undefined){
-			$.mbsmessage(langLbl.selectPlan,true,'alert alert--danger');
+			$.mbsmessage(langLbl.selectPlan,true,'alert--danger');
 			return false;
 		}
 	
 		if(currentActivePlanId!=undefined && currentActivePlanId ==  $(this).parent().find('input[name=packages]:checked').val() ){
 			str = htmlDecode(htmlDecode(langLbl.alreadyHaveThisPlan));
-			$.mbsmessage(str,true,'alert alert--danger');
+			$.mbsmessage(str,true,'alert--danger');
 			return false;
 		}
 		

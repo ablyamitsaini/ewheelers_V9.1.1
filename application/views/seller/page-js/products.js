@@ -11,7 +11,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 		var ans = $.parseJSON(t);
 		$( frm.selprod_id ).val(selprodId);
 		if( ans.status == 0 ){
-			$.mbsmessage( ans.msg,false,'alert alert--danger');
+			$.mbsmessage( ans.msg,false,'alert--danger');
 			return;
 		}
 		$.mbsmessage.close();
@@ -105,9 +105,9 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 		fcom.ajax(fcom.makeUrl('Seller','changeProductStatus'),data,function(res){
 			var ans = $.parseJSON(res);
 			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, true, 'alert alert--success');
+				$.mbsmessage(ans.msg, true, 'alert--success');
 			} else {
-				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
 			/* loadSellerProducts(document.frmSearchSellerProducts); */
 		}); 

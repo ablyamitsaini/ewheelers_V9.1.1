@@ -139,7 +139,7 @@
 		});
 	};
 	
-	optionForm = function(optionId){ optionId = 10;		
+	optionForm = function(optionId){
 		$.facebox(function() { 
 			fcom.ajax(fcom.makeUrl('Seller', 'optionForm', [optionId]), '', function(t) {	
 				try{
@@ -271,9 +271,9 @@
 		fcom.ajax(fcom.makeUrl('seller','deleteSellerOption'),data,function(t){
 			var ans= jQuery.parseJSON(t);
 			if(ans.status!=1){
-				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
-			$.mbsmessage(ans.msg, true, 'alert alert--success');
+			$.mbsmessage(ans.msg, true, 'alert--success');
 			reloadList();		
 			
 		});
@@ -659,7 +659,7 @@
 				if($res.status==0){
 					$(obj).val('');
 					
-					$alertType = 'alert alert--danger';
+					$alertType = 'alert--danger';
 				
 					$.mbsmessage($res.msg,true, $alertType);
 				}		

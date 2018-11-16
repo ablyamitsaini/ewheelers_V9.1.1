@@ -51,10 +51,10 @@ $(document).on('click','.csvFile-Js',function(){
 				//$('.text-danger').remove();	
 				/* $.systemMessage.close();				 */
 				if(ans.status == true){
-					$.mbsmessage(ans.msg,true,'alert alert--success');
+					$.mbsmessage(ans.msg,true,'alert--success');
 					inventoryUpdateForm();
 				} else {
-					$.mbsmessage(ans.msg,true,'alert alert--danger');
+					$.mbsmessage(ans.msg,true,'alert--danger');
 				}
 			},
 			error: function( xhr, ajaxOptions, thrownError ) {

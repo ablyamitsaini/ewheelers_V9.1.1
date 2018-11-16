@@ -53,6 +53,7 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
 		  <div class="col-lg-6 col-xs-12">
 			<div class="short-links">
 			  <ul>
+				<?php $this->includeTemplate('_partial/headerTopNavigation.php'); ?>
 				<?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?>
 			  </ul>
 			</div>

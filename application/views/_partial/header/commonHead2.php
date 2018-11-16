@@ -39,8 +39,8 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 		$alertClass = (Message::getErrorCount()>0) ? 'alert--danger' : (Message::getMessageCount()>0) ? 'alert--success' : (Message::getInfoCount()>0) ? 'alert--info' : '' ;
 	?>
 	
-	<div class="system_message alert--positioned-top-full alert <?php echo $alertClass; ?>" hidden='hidden'>
-		<a class="closeMsg" href="javascript:void(0)" ></a>
+	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" hidden='hidden'>
+		<div class="close"></div>
 		<div class="content">
 			<?php
 			$haveMsg = false;

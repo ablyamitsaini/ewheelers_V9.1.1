@@ -59,7 +59,7 @@ $(document).ready(function(){
 		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {
 			var ans = $.parseJSON(t);
 			if( ans.status == 0 ){
-				$.systemMessage( ans.msg, 'alert alert--danger');
+				$.systemMessage( ans.msg, 'alert--danger');
 				return false;
 			}
 			location.reload();

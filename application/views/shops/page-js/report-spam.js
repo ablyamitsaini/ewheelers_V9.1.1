@@ -11,10 +11,13 @@
 		fcom.updateWithAjax(fcom.makeUrl('Shops', 'setUpShopSpam'), data, function(t) {
 			runningAjaxReq = false;
 			if( t.status ){
-				/* window.location.href = fcom.makeUrl('Shops', 'view', [frm.elements["shop_id"].value]); */
-				document.frmShopReportSpam.reset();
+				/* window.location.href = fcom.makeUrl('Shops', 'reportSpam', [frm.elements["shop_id"].value]); */
+				setTimeout("pageRedirect("+frm.elements["shop_id"].value+")", 1000);
 			}
 		});
 		return false;
 	}
 })();
+function pageRedirect(shopId) {
+	window.location.replace(fcom.makeUrl('Shops', 'reportSpam',[shopId]));
+}

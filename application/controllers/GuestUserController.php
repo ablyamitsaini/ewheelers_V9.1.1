@@ -49,6 +49,17 @@ class GuestUserController extends MyAppController {
 		if(isset($_SESSION['referer_page_url'])){
 			$redirectUrl = $_SESSION['referer_page_url'];
 			unset($_SESSION['referer_page_url']);
+			
+			if( User::isBuyer()  || User::isSigningUpBuyer()){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+			} else if( User::isSeller() || User::isSigningUpForSeller() ){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+			} else if( User::isAdvertiser() || User::isSigningUpAdvertiser() ){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+			} else if( User::isAffiliate()  || User::isSigningUpAffiliate()){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+			}
+			
 		}
 		if($redirectUrl == ''){
 			$redirectUrl = User::getPreferedDashbordRedirectUrl($preferredDashboard);
@@ -772,11 +783,11 @@ class GuestUserController extends MyAppController {
 		$db = FatApp::getDb();
 		$db->startTransaction();
 		
-		/* if (!$userObj->verifyUserEmailVerificationCode($code)){
+		if (!$userObj->verifyUserEmailVerificationCode($code)){
 			$db->rollbackTransaction();
 			Message::addErrorMessage(Labels::getLabel("ERR_MSG_INVALID_VERIFICATION_REQUEST",$this->siteLangId));
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		}
 		
 		if( $userData['user_is_affiliate'] != applicationConstants::YES ){
 			$srch = new SearchBase('tbl_user_credentials');
@@ -949,6 +960,11 @@ class GuestUserController extends MyAppController {
 		if(!$row || false === $row){
 			Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(),$this->siteLangId));	
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));		
+		}
+		
+		if($row['user_is_shipping_company'] == applicationConstants::YES){			
+			Message::addErrorMessage(Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request',$this->siteLangId));	
+			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));				
 		}
 		
 		if($userAuthObj->checkUserPwdResetRequest($row['user_id'])){
@@ -1223,7 +1239,7 @@ class GuestUserController extends MyAppController {
 		$fld_np->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),'User@123').'</span>';
 		$fld_np->requirements()->setRequired();
 		$fld_np->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
-		$fld_np->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_password', $siteLangId));
+		$fld_np->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));
 		$fld_cp = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD',$siteLangId), 'confirm_pwd');
 		$fld_cp->requirements()->setRequired();
 		$fld_cp->requirements()->setCompareWith('new_pwd', 'eq','');

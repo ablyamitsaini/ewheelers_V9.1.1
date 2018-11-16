@@ -264,7 +264,7 @@ $(document).delegate('.language-js','change',function(){
 					contentType: false,
 					success: function(t){
 						var ans = $.parseJSON(t);
-						$.mbsmessage( ans.msg,true,'alert alert--success');
+						$.mbsmessage( ans.msg,true,'alert--success');
 						//$.systemMessage( ans.msg );
 						productImages( $('#frmCustomCatalogProductImage input[name=preq_id]').val(), $('.option').val(), $('.language').val() );
 					},
@@ -280,7 +280,7 @@ $(document).delegate('.language-js','change',function(){
 		if( !agree ){ return false; }
 		fcom.ajax( fcom.makeUrl( 'Seller', 'deleteCustomCatalogProductImage', [preqId, image_id] ), '' , function(t) {
 			var ans = $.parseJSON(t);
-			$.mbsmessage( ans.msg,true,'alert alert--success');
+			$.mbsmessage( ans.msg,true,'alert--success');
 			if( ans.status == 0 ){
 				return;
 			}
@@ -362,7 +362,7 @@ $(document).delegate('.language-js','change',function(){
 				if($res.status==0){
 					$(obj).val('');
 					
-					$alertType = 'alert alert--danger';
+					$alertType = 'alert--danger';
 				
 					$.mbsmessage($res.msg,true, $alertType);
 				}		

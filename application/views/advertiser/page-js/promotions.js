@@ -19,7 +19,7 @@ $(document).delegate("input[name='promotion_budget']",'blur',function(){
 	fcom.ajax(fcom.makeUrl('Advertiser', 'checkValidPromotionBudget'), data, function(t) {
 		var ans = $.parseJSON(t);
 		if( ans.status == 0 ){
-			$.mbsmessage( ans.msg,false,'alert alert--danger');
+			$.mbsmessage( ans.msg,false,'alert--danger');
 			return;
 		}
 		$.mbsmessage.close();
@@ -189,7 +189,7 @@ $(document).on('click','.bannerFile-Js',function(){
 				success: function(ans) {
 					$('#form-upload').remove();
 					images(promotionId,langId,banner_screen);
-					$.systemMessage( ans.msg, 'alert alert--success');					
+					$.systemMessage( ans.msg, 'alert--success');					
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

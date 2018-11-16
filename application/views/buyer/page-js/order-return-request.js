@@ -13,11 +13,11 @@
 		
 		success: function(ans) {
 			if(ans.status == true){
-				$.mbsmessage(ans.msg, true, 'alert alert--success');
+				$.mbsmessage(ans.msg, true, 'alert--success');
 				document.frmOrderReturnRequest.reset();
 				window.location.href = fcom.makeUrl('Buyer' ,'Orders');
 			}else{
-				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {

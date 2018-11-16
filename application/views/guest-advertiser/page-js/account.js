@@ -19,7 +19,7 @@ $(document).ready(function(){
 		fcom.ajax(fcom.makeUrl('GuestAdvertiser', 'validateDetails'), data, function(t) {
 			var ans = $.parseJSON(t);
 			if(ans.status==0) {
-				$.mbsmessage(ans.msg, true, 'alert alert--danger');
+				$.mbsmessage(ans.msg, true, 'alert--danger');
 				return;
 			}
 			companyDetailsForm(data);

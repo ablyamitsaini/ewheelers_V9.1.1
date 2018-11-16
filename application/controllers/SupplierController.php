@@ -586,7 +586,7 @@ class SupplierController extends MyAppController {
 		$fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD',$this->siteLangId), 'user_password');
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
-		$fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_password', $this->siteLangId));
+		$fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
 		
 		$fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD',$this->siteLangId), 'password1');
 		$fld1->requirements()->setRequired();

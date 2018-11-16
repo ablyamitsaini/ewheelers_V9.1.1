@@ -1114,7 +1114,7 @@ class AccountController extends LoggedUserController {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
 			FatUtility::dieWithError(Message::getHtml());
 		}
-
+		$loggedUserId = UserAuthentication::getLoggedUserId();
 		$wListObj = new UserWishList( );
 		$data_to_save_arr = $post;
 		$data_to_save_arr['uwlist_added_on'] = date('Y-m-d H:i:s');
@@ -1140,6 +1140,21 @@ class AccountController extends LoggedUserController {
 			}
 		}
 		/* ] */
+		//UserWishList
+		$srch = UserWishList::getSearchObject( $loggedUserId );
+		$srch->joinTable( UserWishList::DB_TBL_LIST_PRODUCTS, 'LEFT OUTER JOIN', 'uwlist_id = uwlp_uwlist_id' );
+		$srch->addCondition('uwlp_selprod_id', '=', $selprod_id );
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addMultipleFields( array('uwlist_id') );
+		$rs = $srch->getResultSet();
+		$row = FatApp::getDb()->fetch( $rs );
+		$productIsInAnyList = false;
+		if( $row ){
+			$productIsInAnyList = true;
+		}
+
+		$this->set( 'productIsInAnyList', $productIsInAnyList );
 		$this->set( 'wish_list_id', $uwlp_uwlist_id );
 		$this->set('msg', $successMsg );
 		$this->_template->render(false, false, 'json-success.php');
@@ -1751,7 +1766,7 @@ class AccountController extends LoggedUserController {
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
 		$srch->setPageNumber($page);
-		$srch->setPageSize(1);
+		$srch->setPageSize($pagesize);
 		$rs = $srch->getResultSet();
 		$records = FatApp::getDb()->fetchAll($rs);
 		/* CommonHelper::printArray($records); die; */
@@ -2194,7 +2209,7 @@ class AccountController extends LoggedUserController {
 		$newPwd->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password',$this->siteLangId),'User@123').'</span>';
 		$newPwd->requirements()->setRequired();
 		$newPwd->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
-		$newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_password', $this->siteLangId));
+		$newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
 		$conNewPwd = $frm->addPasswordField(
 							Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD',$this->siteLangId),
 							'conf_new_password'
