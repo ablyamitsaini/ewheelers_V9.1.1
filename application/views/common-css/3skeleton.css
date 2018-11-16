@@ -5758,7 +5758,7 @@ input.qty {
 }
 
 .preview--profile {
-  margin: 0 0 10px 0;
+  margin: 0 0 10px 0; height: auto;
 }
 
 .preview--profile .btngroup--fix {
