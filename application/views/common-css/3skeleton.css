@@ -848,7 +848,7 @@ body {
   margin: 0 auto 5px;
   width: 60px;
   height: 60px;
-  border-radius: 100%;
+  border-radius: 50%;
   background: #fff;
   padding: 2px;
 }
@@ -858,7 +858,7 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  border-radius: 100%;
+  border-radius: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -995,7 +995,6 @@ body {
   /*height: 360px;*/
   position: relative;
   text-align: center;
-
 }
 
 .yk-slides .item {
@@ -1227,16 +1226,7 @@ body {
 }
 
 .avtar--rounded img {
-  border-radius: 100% !important;
-}
-
-.avtar img {
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  position: absolute;
-  right: 0;
-  top: 0;
+  border-radius: 50% !important;
 }
 
 /*shops*/
@@ -2749,7 +2739,8 @@ body {
 .breadcrumb ul li a {
   color: inherit;
   font-size: inherit;
-  display: block; line-height: inherit;
+  display: block;
+  line-height: inherit;
 }
 
 .breadcrumb ul li:last-child:before {
@@ -4065,7 +4056,7 @@ a.loadmore.loading {
 
 .progress--radial .progress__circle .progress__count {
   position: absolute;
-  border-radius: 100%;
+  border-radius: 50%;
   left: 20px;
   top: 20px;
   right: 20px;
@@ -4297,7 +4288,7 @@ a.loadmore.loading {
 }
 
 .group--social-onehalf .btn {
-  width: 48%;
+  width: 50%;
   float: left;
 }
 
@@ -5817,19 +5808,17 @@ input.qty {
 .avtar {
   width: 60px;
   height: 60px;
-  border-radius: 100%;
+  border-radius: 50%;
   border: 1px solid var(--border-color);
   position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avtar img {
-  border-radius: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  margin: auto;
+  max-height: 100%;
 }
 
 .avtar--large {
@@ -6719,7 +6708,7 @@ input.qty {
   width: 24px;
   height: 24px;
   background: #fff;
-  border-radius: 100%;
+  border-radius: 50%;
   -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   -webkit-transition: left 0.15s ease-out;
@@ -7734,7 +7723,7 @@ form.custom-form input[type="submit"] {
   width: 20px;
   height: 20px;
   border: 1px solid #333;
-  border-radius: 100%;
+  border-radius: 50%;
   content: "";
   position: absolute;
   left: 15px;
@@ -8420,4 +8409,9 @@ form.custom-form input[type="submit"] {
 
 .results-side strong {
   display: block;
+}
+
+.img-container  {
+  max-height: 500px;
+  overflow-y: auto;
 }
