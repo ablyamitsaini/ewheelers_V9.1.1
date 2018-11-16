@@ -2209,7 +2209,7 @@ class AccountController extends LoggedUserController {
 		$newPwd->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password',$this->siteLangId),'User@123').'</span>';
 		$newPwd->requirements()->setRequired();
 		$newPwd->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
-		$newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_password', $this->siteLangId));
+		$newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
 		$conNewPwd = $frm->addPasswordField(
 							Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD',$this->siteLangId),
 							'conf_new_password'
