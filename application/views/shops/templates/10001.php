@@ -49,8 +49,7 @@
 			pauseOnHover:false,
 			});
 		}
-	})(jQuery);
-	$(document).ready(function(){
-		$currentPageUrl = '<?php echo $canonicalUrl; ?>';
-	});
+	})(jQuery);	
+	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
+	
 </script>

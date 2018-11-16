@@ -86,7 +86,7 @@ class ShopsController extends MyAppController {
 
 		$totalProdCountToDisplay = 4;
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
-		$prodSrchObj->setDefinedCriteria();	
+		$prodSrchObj->setDefinedCriteria(1);	
 		$prodSrchObj->joinProductToCategory();		
 		$prodSrchObj->setPageSize($totalProdCountToDisplay);
 		foreach($allShops as $val){

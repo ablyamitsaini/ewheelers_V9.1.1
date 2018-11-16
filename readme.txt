@@ -21,7 +21,8 @@ Fixes:
 	. Admin top products and top search items displayed max 10 records.
 	. Add shipping company user added email validation in email field and restricted to login and forgot password request.
 	. User email verification issue resolved.
-	. Displayed date format as per configuration.	
+	. Displayed date format as per configuration.
+	. product count mismatch issue on featured shop page and details page.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.
