@@ -49,6 +49,17 @@ class GuestUserController extends MyAppController {
 		if(isset($_SESSION['referer_page_url'])){
 			$redirectUrl = $_SESSION['referer_page_url'];
 			unset($_SESSION['referer_page_url']);
+			
+			if( User::isBuyer()  || User::isSigningUpBuyer()){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+			} else if( User::isSeller() || User::isSigningUpForSeller() ){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+			} else if( User::isAdvertiser() || User::isSigningUpAdvertiser() ){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+			} else if( User::isAffiliate()  || User::isSigningUpAffiliate()){
+				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+			}
+			
 		}
 		if($redirectUrl == ''){
 			$redirectUrl = User::getPreferedDashbordRedirectUrl($preferredDashboard);
