@@ -717,7 +717,7 @@ select {
 	padding: 0 0 0 0;
 	color: var(--txt-color);
 	line-height: 30px;
-	margin: 5px auto;
+	margin: 5px 0;
 }
 
 .list__socials li:first-child {

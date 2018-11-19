@@ -60,7 +60,7 @@ if (!$isAppUser){
 		case 'checkout':
 		case 'walletpay':
 		case 'subscriptioncheckout':
-			$this->includeTemplate('_partial/header/checkout-header.php',array('siteLangId'=>$siteLangId),false);
+			$this->includeTemplate('_partial/header/checkout-header.php',array('siteLangId'=>$siteLangId,'headerData'=>$headerData),false);
 		break;
 	}
 }
