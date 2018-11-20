@@ -50,11 +50,14 @@ class SubscriptionCheckoutController extends MyAppController{
 		if( !$this->isEligibleForNextStep( $criteria ) ){
 			FatApp::redirectUser(CommonHelper::generateUrl('seller','packages'));
 		}
+		$obj = new Extrapage();
+		$headerData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId );
 		$this->_template->addCss('checkout/page-css/index.css');
 		$this->set( 'sCartSummary', $this->scartObj->getSubscriptionCartFinancialSummary($this->siteLangId) );
 		$obj = new Extrapage();
 		$pageData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_RIGHT_BLOCK, $this->siteLangId );
 		$this->set('pageData' , $pageData);
+		$this->set('headerData' , $headerData);
 		$this->_template->render();
 	}
 	
@@ -720,6 +723,8 @@ class SubscriptionCheckoutController extends MyAppController{
 		$rs = $srch->getResultSet();
 		$couponsList = FatApp::getDb()->fetchAll($rs, 'coupon_id');
 		$this->set( 'couponsList', $couponsList );
+		
+		$this->set( 'spackage_type', $cartSubscription['spackage_type'] );
 		
 		$PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId); 
 		$this->set('PromoCouponsFrm', $PromoCouponsFrm ); 

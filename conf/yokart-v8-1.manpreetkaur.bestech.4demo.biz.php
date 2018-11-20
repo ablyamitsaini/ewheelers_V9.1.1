@@ -1,8 +1,8 @@
 <?php
 define('CONF_DB_SERVER', 'localhost');
-define('CONF_DB_USER', 'anuprawat');
-define('CONF_DB_PASS', 'anuprawat');
-define('CONF_DB_NAME', 'anuprawat_yokart_v8_1_demo_data');
+define('CONF_DB_USER', 'manpreetkaur');
+define('CONF_DB_PASS', 'manpreetkaur');
+define('CONF_DB_NAME', 'manpreetkaur_yokart_v8_1');
 /* define('CONF_DB_USER', 'staging');
 define('CONF_DB_PASS', 'staging');
 define('CONF_DB_NAME', 'staging_yokart_v8_1'); */
