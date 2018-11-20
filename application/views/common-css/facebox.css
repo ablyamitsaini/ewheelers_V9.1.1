@@ -89,6 +89,7 @@
   padding-top: 40px;
   background: #fff;
   border-radius: 4px;
+  margin: 0 auto;
 }
 
 #facebox .content .pop-up-title {
@@ -247,7 +248,7 @@
   }
 
   #facebox .content.faceboxWidth {
-    width: auto;
+    width: auto; max-width: 750px;
   }
 }
 

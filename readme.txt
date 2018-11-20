@@ -23,6 +23,7 @@ Fixes:
 	. User email verification issue resolved.
 	. Displayed date format as per configuration.
 	. product count mismatch issue on featured shop page and details page.
+	. Discount coupon displaying to user and apply.
 Updates:
 	. List out shop top products based on product rating (greater then 2).
 	. Added most refunded products in place of Bad products report.

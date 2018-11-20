@@ -339,11 +339,12 @@
 	opacity: 1;
 	top: 50%;
 } */
-.posts-slider .post-item .links {
+.posts-slider .post-item .links, .links {
   color: var(--first-color);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.875em;
+  text-decoration: underline;
 }
 
 .posts-slider .slick-dots {
