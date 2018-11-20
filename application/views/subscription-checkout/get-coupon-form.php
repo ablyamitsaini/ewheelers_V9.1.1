@@ -26,7 +26,7 @@
 
 <div class="gap"></div><div class="gap"></div>
 <div>
-	<?php if($couponsList && $spackage_type != SellerPackages::FREE_TYPE){ ?>
+	<?php if($couponsList){ ?>
 	<div>
 		<div class="heading3 align--center"><?php echo Labels::getLabel("LBL_Available_Coupons", $siteLangId); ?></div>
 		<ul class="coupon-offers">

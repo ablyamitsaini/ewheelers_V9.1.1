@@ -374,7 +374,9 @@ class SubscriptionCheckoutController extends MyAppController{
 	public function getFinancialSummary(){
 		//$this->scartObj->adjustPreviousPlan($this->siteLangId);
 		$cartSummary = $this->scartObj->getSubscriptionCartFinancialSummary($this->siteLangId);
-		
+		$cartSubscription = $this->scartObj->getSubscription($this->siteLangId);
+		$cartSubscription = current($cartSubscription);
+		$this->set( 'spackage_type', $cartSubscription['spackage_type'] );
 		$this->set('cartSummary', $cartSummary );
 		$this->_template->render(false, false );
 	}
@@ -711,6 +713,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		
 		/* checking current coupon is valid for current subscription plan[ */
 		$cartSubscription = $this->scartObj->getSubscription($this->siteLangId);
+
 		foreach( $cartSubscription as $cartSubscription ){
 			$srch->addDirectCondition( 'IF(grouped_coupon_plans != "NULL", FIND_IN_SET('.$cartSubscription['spplan_id'].', grouped_coupon_plans), 1 = 1 )');
 		}
@@ -739,6 +742,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
 	}
+	
 	public function applyPromoCode(){
 		UserAuthentication::checkLogin();
 		
