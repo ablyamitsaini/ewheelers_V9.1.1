@@ -689,7 +689,15 @@ class ProductCategory extends MyAppModel{
 					$globalCatTree[$catId][$key] = $val;
 				}
 			}else{
-				$globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name');
+				/* $globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name'); */
+				
+				$prodCatSrch = new ProductCategorySearch( $siteLangId );
+				$prodCatSrch->addFld('IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name');
+				$prodCatSrch->addCondition('prodcat_id','=',$catId);
+				$rs = $prodCatSrch->getResultSet();
+				$rows = FatApp::getDb()->fetch($rs);
+				
+				$globalCatTree[$catId]['prodcat_name'] = $rows['prodcat_name'];
 				$globalCatTree[$catId]['prodcat_id'] = $catId;
 			}
 			//$globalCatTree[$catId]['prodcat_id']['children'] = '';
@@ -702,7 +710,6 @@ class ProductCategory extends MyAppModel{
 	}
 
 	public  function getCategoryTreeArr($siteLangId,$categoriesDataArr, $attr = array()){
-
 		foreach($categoriesDataArr as $categoriesData){
 			
 			$categoryCode = substr($categoriesData['prodcat_code'],0,-1);
@@ -726,7 +733,14 @@ class ProductCategory extends MyAppModel{
 					$this->categoryTreeArr [$parentId][$key] = $val;
 				}
 			}else{
-				$this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name');
+				/* $this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name'); */
+				$prodCatSrch = new ProductCategorySearch( $siteLangId );
+				$prodCatSrch->addFld( 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name' );
+				$prodCatSrch->addCondition('prodcat_id','=',FatUtility::int($prodCats[0]));
+				$rs = $prodCatSrch->getResultSet();
+				$row = FatApp::getDb()->fetch($rs);
+				
+				$this->categoryTreeArr [$parentId]['prodcat_name'] = $row['prodcat_name'];
 				$this->categoryTreeArr [$parentId]['prodcat_id'] =  FatUtility::int($prodCats[0]); 
 			}
 
@@ -736,8 +750,6 @@ class ProductCategory extends MyAppModel{
 			productCategory::getCategoryTreeForSearch($siteLangId,$remaingCategories,$this->categoryTreeArr[$parentId]['children'],$attr);
 
 		}
-
-		
 		return $this->categoryTreeArr ;
 	}
 	
