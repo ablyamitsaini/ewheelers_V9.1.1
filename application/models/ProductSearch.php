@@ -704,7 +704,7 @@ class ProductSearch extends SearchBase {
 			$this->addCondition('ossubs_status_id', 'IN ',Orders::getActiveSubscriptionStatusArr());
 		}
 	}
-		
+	
 	/* public function joinSellerProductOptionsWithSelProdCode($langId = 0){
 		$langId = FatUtility::int( $langId );
 		if ($this->langId && 1 > $langId) {
