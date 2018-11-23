@@ -16,6 +16,12 @@ class ProfileController extends AdminBaseController{
 		$this->_template->render();
 	}
 	
+	public function profileImageForm(){
+		$imgFrm = $this->getImageForm();
+		$this->set('imgFrm', $imgFrm);
+		$this->_template->render(false,false);
+	}
+	
 	public function profileInfoForm(){
 		$imgFrm = $this->getImageForm();
 		$admin_row = AdminUsers::getAttributesById($this->_adminId);

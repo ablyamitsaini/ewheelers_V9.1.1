@@ -33,7 +33,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 ?>
 <div class="row">
 	<div class="col-md-5">
-		<div class="preview preview--profile">
+		<div class="preview preview--profile" id="profileImageFrmBlock">
 			<div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account','userProfileImage',array(UserAuthentication::getLoggedUserId(),'croped',true)).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Profile_Image', $siteLangId);?>"></div>
 			<span class="gap"></span>
 			<div class="btngroup--fix">

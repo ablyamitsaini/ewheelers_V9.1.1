@@ -845,6 +845,20 @@ class AccountController extends LoggedUserController {
 		$this->set('siteLangId',$this->siteLangId);
 		$this->_template->render(false, false);
 	}
+	
+	public function ProfileImageForm(){
+		$userId = UserAuthentication::getLoggedUserId();
+		$imgFrm = $this->getProfileImageForm();
+		$mode = 'Add';
+		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId );
+		if( $file_row != false ){
+			$mode = 'Edit';
+		}
+		$this->set('mode',$mode);
+		$this->set('imgFrm', $imgFrm);
+		$this->set('siteLangId',$this->siteLangId);
+		$this->_template->render(false, false);
+	}
 
 	public function uploadProfileImage(){
 		$userId = UserAuthentication::getLoggedUserId();

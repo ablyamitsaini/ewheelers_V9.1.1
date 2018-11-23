@@ -156,8 +156,8 @@ class RewardsOnPurchaseController extends AdminBaseController {
 	
 		$frm = new Form('frmRewardsOnPurchase');		
 		$frm->addHiddenField('', 'rop_id',0);
-		$frm->addFloatField('Purchase upto','rop_purchase_upto');
-		$frm->addFloatField('Reward Point','rop_reward_point');		
+		$frm->addFloatField(Labels::getLabel('LBL_Purchase_upto',$this->adminLangId),'rop_purchase_upto');
+		$frm->addFloatField(Labels::getLabel('LBL_Reward_Point',$this->adminLangId),'rop_reward_point');		
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));		
 		return $frm;
 	}
