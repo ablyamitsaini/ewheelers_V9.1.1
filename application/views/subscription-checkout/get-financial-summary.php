@@ -11,9 +11,8 @@
 		<a class="coupon-input btn btn--secondary btn--block ripplelink" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId);?></a>
 	</div>
 	<div class="gap"></div>
-	<div class="heading4 align--center"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> </div>
 <?php } } ?>
-
+<div class="heading4 align--center"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> </div>
 <div class="cartdetail__footer">
   <table>
     <tbody>
