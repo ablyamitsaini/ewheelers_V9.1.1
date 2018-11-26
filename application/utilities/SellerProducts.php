@@ -198,7 +198,7 @@ trait SellerProducts{
 			FatUtility::dieWithError( Message::getHtml() );	
 		}
 		
-		$productLangRow = Product::getProductDataById(CommonHelper::getLangId(), $product_id, array('IFNULL(product_name,product_identifier) as product_url_keyword') );
+		$productLangRow = Product::getProductDataById(CommonHelper::getLangId(), $product_id, array('product_identifier') );
 		$frmSellerProduct = $this->getSellerProductForm( $product_id );
 		
 		if( $selprod_id ){			
@@ -233,7 +233,7 @@ trait SellerProducts{
 		}else{
 			$sellerProductRow['selprod_available_from'] = date('Y-m-d');
 			$sellerProductRow['selprod_cod_enabled'] = $productRow['product_cod_enabled'];
-			$sellerProductRow['selprod_url_keyword']= strtolower(CommonHelper::createSlug($productLangRow['product_url_keyword']));
+			$sellerProductRow['selprod_url_keyword']= strtolower(CommonHelper::createSlug($productLangRow['product_identifier']));
 			$frmSellerProduct->fill( $sellerProductRow );
 		}
 		
