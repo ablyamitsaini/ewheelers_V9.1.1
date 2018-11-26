@@ -10894,4 +10894,8 @@ body.page--front .page__cell #footer {
    margin: 15px 0;
 }
 
+.temp-hide{
+	display: none;
+}
+
 .tabs_nav_container.flat.ovrflow-none{overflow: visible;} 

@@ -18,7 +18,7 @@ if($cpage_layout == ContentPage::CONTENT_PAGE_LAYOUT1_TYPE)
 		}
 		$htmlAfterField.='</li></ul>';
 	} else {
-		$htmlAfterField.='<div class="hide"><ul class="image-listing grids--onethird"><li><div class="uploaded--image"></div></li></ul></div>';
+		$htmlAfterField.='<div class="temp-hide"><ul class="image-listing grids--onethird"><li><div class="uploaded--image"></div></li></ul></div>';
 	}
 	$fld->htmlAfterField = $htmlAfterField;
 }

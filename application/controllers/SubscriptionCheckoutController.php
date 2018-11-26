@@ -50,11 +50,14 @@ class SubscriptionCheckoutController extends MyAppController{
 		if( !$this->isEligibleForNextStep( $criteria ) ){
 			FatApp::redirectUser(CommonHelper::generateUrl('seller','packages'));
 		}
+		$obj = new Extrapage();
+		$headerData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId );
 		$this->_template->addCss('checkout/page-css/index.css');
 		$this->set( 'sCartSummary', $this->scartObj->getSubscriptionCartFinancialSummary($this->siteLangId) );
 		$obj = new Extrapage();
 		$pageData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_RIGHT_BLOCK, $this->siteLangId );
 		$this->set('pageData' , $pageData);
+		$this->set('headerData' , $headerData);
 		$this->_template->render();
 	}
 	
@@ -371,7 +374,9 @@ class SubscriptionCheckoutController extends MyAppController{
 	public function getFinancialSummary(){
 		//$this->scartObj->adjustPreviousPlan($this->siteLangId);
 		$cartSummary = $this->scartObj->getSubscriptionCartFinancialSummary($this->siteLangId);
-		
+		$cartSubscription = $this->scartObj->getSubscription($this->siteLangId);
+		$cartSubscription = current($cartSubscription);
+		$this->set( 'spackage_type', $cartSubscription['spackage_type'] );
 		$this->set('cartSummary', $cartSummary );
 		$this->_template->render(false, false );
 	}
@@ -708,6 +713,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		
 		/* checking current coupon is valid for current subscription plan[ */
 		$cartSubscription = $this->scartObj->getSubscription($this->siteLangId);
+
 		foreach( $cartSubscription as $cartSubscription ){
 			$srch->addDirectCondition( 'IF(grouped_coupon_plans != "NULL", FIND_IN_SET('.$cartSubscription['spplan_id'].', grouped_coupon_plans), 1 = 1 )');
 		}
@@ -720,6 +726,8 @@ class SubscriptionCheckoutController extends MyAppController{
 		$rs = $srch->getResultSet();
 		$couponsList = FatApp::getDb()->fetchAll($rs, 'coupon_id');
 		$this->set( 'couponsList', $couponsList );
+		
+		$this->set( 'spackage_type', $cartSubscription['spackage_type'] );
 		
 		$PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId); 
 		$this->set('PromoCouponsFrm', $PromoCouponsFrm ); 
@@ -734,6 +742,7 @@ class SubscriptionCheckoutController extends MyAppController{
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Apply',$langId));		
 		return $frm;
 	}
+	
 	public function applyPromoCode(){
 		UserAuthentication::checkLogin();
 		

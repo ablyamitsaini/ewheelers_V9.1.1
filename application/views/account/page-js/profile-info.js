@@ -5,11 +5,19 @@ $(document).ready(function(){
 (function() {
 	var runningAjaxReq = false;
 	var dv = '#profileInfoFrmBlock';
+	var imgdv = '#profileImageFrmBlock';
 	
 	profileInfoForm = function(){				
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Account', 'ProfileInfoForm'), '', function(t) {			
 			$(dv).html(t);
+		});
+	};
+	
+	profileImageForm = function(){				
+		$(imgdv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Account', 'profileImageForm'), '', function(t) {			
+			$(imgdv).html(t);
 		});
 	};
 	
@@ -55,7 +63,7 @@ $(document).ready(function(){
 	
 	removeProfileImage = function(){
 		fcom.ajax(fcom.makeUrl('Account','removeProfileImage'),'',function(t){
-			profileInfoForm();
+			profileImageForm();
 		});
 	};
 	
@@ -64,7 +72,7 @@ $(document).ready(function(){
 			delegation: true,
 			success: function(json){
 				json = $.parseJSON(json);
-				profileInfoForm();
+				profileImageForm();
 				$(document).trigger('close.facebox');
 			}
 		});

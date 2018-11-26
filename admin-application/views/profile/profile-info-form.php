@@ -16,7 +16,7 @@
 ?>
 <div class="col-lg-4 col-md-4 col-sm-4">
    
-	<div class="section section--profile-box -align-center">
+	<div class="section section--profile-box -align-center" id="profileImageFrmBlock">
 		<div class="sectionbody space">
 			<span class="-gap"></span><span class="-gap"></span>
 			<div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Image','profileImage',array(AdminAuthentication::getLoggedAdminId(),'croped',true)).'?'.time();?>" alt=""></div>

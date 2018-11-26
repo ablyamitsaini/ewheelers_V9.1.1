@@ -6500,3 +6500,7 @@ html {
 .no-csspointerevents .nice-select.open .list {
 	display: block;
 }
+.display-in-print {
+	margin: 10px;
+	display: none;
+}

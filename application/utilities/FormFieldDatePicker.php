@@ -6,8 +6,11 @@ class FormFieldDatePicker {
 * @param HtmlElement $htmlElement
 */
 	public static function addJs($fld, $htmlElement) {
+		
+		/* Note: Date format for datepicker should be 'Y-m-d'. */
+		
 		$dateformat = FatDate::convertDateFormatFromPhp (
-		FatApp::getConfig ( 'CONF_DATE_FORMAT', FatUtility::VAR_STRING, 'Y-m-d' ),FatDate::FORMAT_JQUERY_UI );
+		FatApp::getConfig ( 'CONF_DATEPICKER_FORMAT', FatUtility::VAR_STRING, 'Y-m-d' ),FatDate::FORMAT_JQUERY_UI );
 
 		if($fld->fldType == 'datetime'){
 			$calhtml = '<script type="text/javascript">//<![CDATA[

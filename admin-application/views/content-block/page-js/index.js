@@ -186,8 +186,8 @@ $(document).on('click','.bgImageFile-Js',function(){
 					},
 					success: function(ans) {
 						fcom.displaySuccessMessage(ans.msg);
-						$(".hide").show();
-						addBlockLangForm(ans.epage_id,ans.lang_id);
+						$(".temp-hide").show();
+						/* addBlockLangForm(ans.epage_id,ans.lang_id); */
 						var dt = new Date();
 						var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 						$(".uploaded--image").html('<img src="'+fcom.makeUrl('image', 'cblockBackgroundImage', [ans.epage_id,ans.lang_id,'THUMB',file_type], SITE_ROOT_URL)+'?'+time+'"> <a href="javascript:void(0);" onclick="removeBgImage('+[ans.epage_id,ans.lang_id,ans.file_type]+')" class="remove--img"><i class="ion-close-round"></i></a>');

@@ -670,6 +670,27 @@ class ImageController extends FatController{
 		}
 	}
 	
+	function invoiceLogo( $lang_id = 0, $sizeType = '' ){
+		$lang_id = FatUtility::int( $lang_id );
+		$recordId = 0;
+		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_INVOICE_LOGO, $recordId, 0, $lang_id );
+		$image_name = isset( $file_row['afile_physical_path'] ) ?  $file_row['afile_physical_path'] : '';
+		$default_image = '';
+
+		switch( strtoupper($sizeType) ){
+			case 'THUMB':
+				$w = 100;
+				$h = 100;
+				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
+			break;
+			default:
+				$h = 37;
+				$w = 168;
+				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
+			break;
+		}
+	}
+	
 	public function CategoryCollectionBgImage( $langId = 0, $sizeType = '' ){
 		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, $recordId, 0, $langId );
 		$image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';

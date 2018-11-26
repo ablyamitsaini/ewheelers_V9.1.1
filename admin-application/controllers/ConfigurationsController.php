@@ -263,6 +263,7 @@ class ConfigurationsController extends AdminBaseController {
 			AttachedFile::FILETYPE_APPLE_TOUCH_ICON,
 			AttachedFile::FILETYPE_MOBILE_LOGO,
 			AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE,
+			AttachedFile::FILETYPE_INVOICE_LOGO,
 			);
 
 		if( !in_array( $file_type, $allowedFileTypeArr ) ){
@@ -426,6 +427,18 @@ class ConfigurationsController extends AdminBaseController {
 		$lang_id = FatUtility::int( $lang_id );
 		$fileHandlerObj = new AttachedFile();
 		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_MOBILE_LOGO, 0, 0, 0, $lang_id )){
+			Message::addErrorMessage($fileHandlerObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$this->set('msg',Labels::getLabel('MSG_Deleted_Successfully',$this->adminLangId));
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
+	public function removeInvoiceLogo( $lang_id = 0 ){
+		$lang_id = FatUtility::int( $lang_id );
+		$fileHandlerObj = new AttachedFile();
+		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_INVOICE_LOGO, 0, 0, 0, $lang_id )){
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
@@ -1346,6 +1359,15 @@ class ConfigurationsController extends AdminBaseController {
 				}
 				
 				$ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Invoice_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
+
+				
+				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_INVOICE_LOGO, 0, 0, $langId ) ){
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','invoiceLogo',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeInvoiceLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
+				}
+				
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="invoice_logo" class="logoFiles-Js btn-xs" id="invoice_logo" data-file_type='.AttachedFile::FILETYPE_INVOICE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
 				
 				$ul->htmlAfterField .='</ul>';
 			break;

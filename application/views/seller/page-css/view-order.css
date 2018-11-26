@@ -11,6 +11,12 @@ size: A4;
 .no-print, .no-print * {
 	display: none !important;
 }
+.display-in-print {
+	display: block;
+}
+.display-in-print img{
+	margin:0 auto;
+}
 .grids--offset {
 	margin: 0 -20px 20px;
 }

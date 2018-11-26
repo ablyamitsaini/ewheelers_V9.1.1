@@ -193,7 +193,7 @@ $(document).on('click','.bgImageFile-Js',function(){
 						fcom.makeUrl('Questionnaires', 'generateLink', [questionnaireId]);
 						generateUrl('cart', 'cart_summary');
 						*/
-						$(".hide").show();
+						$(".temp-hide").show();
 						var dt = new Date();
 						var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 						$(".uploaded--image").html('<img src="'+fcom.makeUrl('image', 'cpageBackgroundImage', [ans.cpage_id,ans.lang_id,'THUMB'], SITE_ROOT_URL)+'?'+time+'"> <a href="javascript:void(0);" onclick="removeBgImage('+[ans.cpage_id,ans.lang_id,ans.cpage_layout]+')" class="remove--img"><i class="ion-close-round"></i></a>');
