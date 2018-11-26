@@ -90,6 +90,7 @@
   background: #fff;
   border-radius: 4px;
   margin: 0 auto;
+  position: relative;
 }
 
 #facebox .content .pop-up-title {

@@ -431,8 +431,8 @@ input[type="text"].p-cards.meastro {
 
 @media only screen and (max-width: 768px) {
   .logo {
-    float: right;
-    margin: 5px auto;
+    float: none;
+    margin: 5px auto !important;
   }
   .f-links h3:after, .f-links h3:before {
     right: auto;

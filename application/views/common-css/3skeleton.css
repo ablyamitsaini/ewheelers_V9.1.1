@@ -582,7 +582,7 @@ body {
   top: 0;
   bottom: 0;
   position: fixed;
-  background: rgba(0, 0, 0, 0.77);
+  background: rgba(0, 0, 0, 0.50);
   -webkit-transform: scale(0.9);
   transform: scale(0.9);
   -webkit-transition: -webkit-transform 0.2s, opacity 0.2s, visibility 0s 0.2s;
@@ -5758,7 +5758,8 @@ input.qty {
 }
 
 .preview--profile {
-  margin: 0 0 10px 0; height: auto;
+  margin: 0 0 10px 0;
+  height: auto;
 }
 
 .preview--profile .btngroup--fix {
@@ -8411,7 +8412,7 @@ form.custom-form input[type="submit"] {
   display: block;
 }
 
-.img-container  {
+.img-container {
   max-height: 500px;
   overflow-y: auto;
 }
