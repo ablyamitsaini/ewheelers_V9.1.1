@@ -200,7 +200,7 @@ class GuestUserController extends MyAppController {
 			Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_REQUEST',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
 		}
-		
+		/* CommonHelper::printArray($userProfile); die; */
 		# User info ok? Let's print it (Here we will be adding the login and registering routines)
 		$facebookName = $userProfile['name'];
 		$userFacebookId = $userProfile['id'];
@@ -212,12 +212,14 @@ class GuestUserController extends MyAppController {
 		if(!empty($facebookEmail)){
 			$srch->addCondition('credential_email','=',$facebookEmail);
 		}else{
-			Message::addErrorMessage(Labels::getLabel("MSG_THERE_WAS_SOME_PROBLEM_IN_AUTHENTICATING_YOUR_ACCOUNT_WITH_FACEBOOK,_PLEASE_TRY_WITH_DIFFERENT_LOGIN_OPTIONS",$this->siteLangId));
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
-			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-			//$srch->addCondition('user_facebook_id','=',$userFacebookId);
+			if(empty($userFacebookId)){
+				Message::addErrorMessage(Labels::getLabel("MSG_THERE_WAS_SOME_PROBLEM_IN_AUTHENTICATING_YOUR_ACCOUNT_WITH_FACEBOOK,_PLEASE_TRY_WITH_DIFFERENT_LOGIN_OPTIONS",$this->siteLangId));
+				unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
+				unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
+				unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
+				FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
+			}
+			$srch->addCondition('user_facebook_id','=',$userFacebookId);
 		}
 		
 		$rs = $srch->getResultSet();
@@ -305,7 +307,7 @@ class GuestUserController extends MyAppController {
 		}
 		
 		$userInfo = $userObj->getUserInfo(array('user_facebook_id','user_preferred_dashboard','credential_username','credential_password'));
-		
+		/* CommonHelper::printArray($userInfo); die; */
 		if(!$userInfo || ($userInfo && $userInfo['user_facebook_id']!= $userFacebookId)){
 			Message::addErrorMessage(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->siteLangId));
 			CommonHelper::redirectUserReferer();

@@ -539,12 +539,10 @@ class CollectionsController extends AdminBaseController {
 	
 	public function autoCompleteSelprods(){
 		$this->objPrivilege->canViewCollections();
+		$post = FatApp::getPostedData();
 		$db = FatApp::getDb();
 		$srch = new ProductSearch($this->adminLangId);
-		$srch->joinSellerProducts();
-
-		// $srch = SellerProduct::getSearchObject($this->adminLangId);		
-		$post = FatApp::getPostedData();
+		$srch->setDefinedCriteria(0);
 		$srch->addCondition('selprod_id', '>',0);
 		if (!empty($post['keyword'])) {
 			/* $srch->addCondition('selprod_title', 'LIKE', '%' . $post['keyword'] . '%');
