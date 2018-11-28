@@ -243,8 +243,8 @@ class AdminUsersController extends AdminBaseController {
 		$status=($data['admin_active'] == applicationConstants::ACTIVE)?0:1;
 		
 		$adminObj = new AdminUsers($adminId);
-		if (!$adminObj->changeStatus($status)) {
-			Message::addErrorMessage($userObj->getError());
+		if ($adminObj->changeStatus($status)) {
+			Message::addErrorMessage($adminObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );				
 		}
 		

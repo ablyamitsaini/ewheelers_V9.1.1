@@ -527,6 +527,10 @@ class ProductCategoriesController extends AdminBaseController {
 				
 			//	$this->_template->render(false, false, 'json-error.php');
 			}
+			$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
+			$this->set('msg', Labels::getLabel('LBL_Category_Setup_Successful',$this->adminLangId));
+			$this->set('catId', $categoryId);
+			$this->set('langId', $newTabLangId);
 		}else{
 			
 			$productCategory->updateCatCode();
@@ -559,8 +563,8 @@ class ProductCategoriesController extends AdminBaseController {
 			$this->set('msg', Labels::getLabel('LBL_Category_Setup_Successful',$this->adminLangId));
 			$this->set('catId', $catId);
 			$this->set('langId', $newTabLangId);
-			$this->_template->render(false, false, 'json-success.php');
 		}
+		$this->_template->render(false, false, 'json-success.php');
 	}
 
 	public function langSetup()	{

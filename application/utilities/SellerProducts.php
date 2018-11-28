@@ -27,7 +27,7 @@ trait SellerProducts{
 	
 	public function sellerProducts( $product_id = 0 ){
 		$srch = SellerProduct::getSearchObject( $this->siteLangId );
-		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.'and p.product_active = '.applicationConstants::YES, 'p' );
+		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.' and p.product_active = '.applicationConstants::YES, 'p' );
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l' );
 		
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
