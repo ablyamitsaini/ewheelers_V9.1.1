@@ -23,7 +23,7 @@ class MyAppController extends FatController {
 			'siteLangId'	=> $this->siteLangId,
 			'showSignUpLink' => true);
 		$this->set('loginData',$loginData);
-
+		define('CONF_MESSAGE_ERROR_HEADING', Labels::getLabel('LBL_Following_error_occurred',$this->siteLangId));
 		$controllerName = get_class($this);		
 		$arr = explode('-', FatUtility::camel2dashed($controllerName));
 		array_pop($arr);

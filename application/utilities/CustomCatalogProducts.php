@@ -926,7 +926,7 @@ trait CustomCatalogProducts{
 		$this->_template->render(false,false);
 	}	
 
-	public function approveCustomCatalogProducts($preqId = 0){	
+	public function approveCustomCatalogProducts($preqId = 0){
 		$this->canAddCustomCatalogProduct(true);
 		$preqId = FatUtility::int($preqId);
 		if(!$preqId){
@@ -978,7 +978,7 @@ trait CustomCatalogProducts{
 		
 		Message::addMessage(Labels::getLabel('MSG_Your_catalog_request_submitted_for_approval',$this->siteLangId));
 		FatApp::redirectUser(CommonHelper::generateUrl('Seller','customCatalogProducts'));	
-	}	
+	}
 	
 	private function getCustomCatalogProductCategoryForm(){
 		$frm = new Form('frmCustomCatalogProductCategoryForm');

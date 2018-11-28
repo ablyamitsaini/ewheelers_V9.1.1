@@ -133,7 +133,8 @@ class WalletPayController extends MyAppController{
 		}
 		$this->set( 'orderInfo', $orderInfo );
 		//CommonHelper::printArray( $orderInfo );
-		
+		$obj = new Extrapage();
+		$headerData = $obj->getContentByPageType( Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId );
 		$pmSrch = PaymentMethods::getSearchObject( $this->siteLangId );
 		$pmSrch->doNotCalculateRecords();
 		$pmSrch->doNotLimitRecords();
@@ -143,6 +144,7 @@ class WalletPayController extends MyAppController{
 		$excludePaymentGatewaysArr = applicationConstants::getExcludePaymentGatewayArr();
 		$this->set( 'paymentMethods', $paymentMethods );
 		$this->set( 'excludePaymentGatewaysArr', $excludePaymentGatewaysArr );
+		$this->set( 'headerData', $headerData );
 		$this->_template->render( true, false );	
 	}
 	
