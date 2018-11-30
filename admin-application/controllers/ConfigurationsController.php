@@ -1394,12 +1394,10 @@ class ConfigurationsController extends AdminBaseController {
 		try {
 				if(EmailHandler::sendMailTpl(FatApp::getConfig('CONF_SITE_OWNER_EMAIL'),'test_email',$this->adminLangId))
 				{
-					Message::addMessage("Mail sent to - ".FatApp::getConfig('CONF_SITE_OWNER_EMAIL'));
-					FatUtility::dieJsonSuccess( Message::getHtml() );
+					FatUtility::dieJsonSuccess( "Mail sent to - ".FatApp::getConfig('CONF_SITE_OWNER_EMAIL') );
 				}
 			}catch (Exception $e) {
-				Message::addErrorMessage( $e->getMessage() );
-				FatUtility::dieJsonError( Message::getHtml() );
+				FatUtility::dieJsonError( $e->getMessage() );
 		 	}
 	}
 }
