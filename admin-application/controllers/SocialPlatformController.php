@@ -197,6 +197,12 @@ class SocialPlatformController extends AdminBaseController {
 		
 		$post = FatApp::getPostedData();
 		
+		/* $fileMimeType = mime_content_type($_FILES['file']['tmp_name']);
+		if($fileMimeType == 'image/svg+xml'){
+			Message::addErrorMessage(Labels::getLabel('LBL_SVG_images_are_not_supported_in_emails',$this->adminLangId));
+			FatUtility::dieJsonError(Message::getHtml());
+		} */
+		
 		if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
 			Message::addErrorMessage(Labels::getLabel('LBL_Please_select_a_file',$this->adminLangId));
 			FatUtility::dieJsonError(Message::getHtml());

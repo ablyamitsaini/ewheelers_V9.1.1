@@ -458,7 +458,9 @@ class BlogPostsController extends AdminBaseController {
 		$frm->addHiddenField('', 'lang_id',$lang_id);
 		$frm->addRequiredField(Labels::getLabel('LBL_Title',$this->adminLangId), 'post_title');
 		$frm->addRequiredField(Labels::getLabel('LBL_Post_Author_Name',$this->adminLangId), 'post_author_name');
-		$frm->addTextarea(Labels::getLabel('LBL_Short_Description',$this->adminLangId), 'post_short_description')->requirements()->setRequired(true);
+		$fld = $frm->addTextarea(Labels::getLabel('LBL_Short_Description',$this->adminLangId), 'post_short_description');
+		$fld->requirements()->setRequired(true);
+		$fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_only_250_characters_will_be_shown_on_frontend",$this->adminLangId).'</small>';
 		$frm->addHtmlEditor(Labels::getLabel('LBL_Description',$this->adminLangId), 'post_description')->requirements()->setRequired(true);
 		
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Update',$this->adminLangId));
