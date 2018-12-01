@@ -54,12 +54,20 @@ $frm->developerTags['fld_default_col'] = 12;
 				<dt><?php echo Labels::getLabel('LBL_Review_Title',$adminLangId); ?></dt>
 				<dd><?php 
 				$findKeywordStr = implode('|', $abusiveWords);
-				echo preg_replace('/'.$findKeywordStr.'/i', '<span class="highlight">$0</span>', $data['spreview_title']);
+				if($findKeywordStr==''){
+					echo $data['spreview_title'];
+				}else{
+					echo preg_replace('/'.$findKeywordStr.'/i', '<span class="highlight">$0</span>', $data['spreview_title']);
+				}
 				?></dd>
 			</dl>
 			<dl class="list">
 				<dt><?php echo Labels::getLabel('LBL_Review_Comments',$adminLangId); ?></dt>
-				<dd><?php echo preg_replace('/'.$findKeywordStr.'/i', '<span class="highlight">$0</span>', nl2br($data['spreview_description']));?></dd>
+				<?php if($findKeywordStr==''){ ?>
+				<dd><?php echo nl2br($data['spreview_description']);?></dd>
+				<?php }else{ ?>
+					<dd><?php echo preg_replace('/'.$findKeywordStr.'/i', '<span class="highlight">$0</span>', nl2br($data['spreview_description']));?></dd>
+				<?php } ?>
 			</dl>				
 		</div>		
 	</div>
