@@ -813,7 +813,7 @@ trait CustomCatalogProducts{
 					//$arrow = "<i class='fa  fa-long-arrow-right'></i>";
 					$arrow = ' ('.$category['child_count'].')';
 				}
-				$str.= "<li onClick='customCategoryListing(".$category['prodcat_id'].",this)'><a class='selectCategory' href='javascript:void(0)'>".$category['prodcat_name'].$arrow."</a></li>";
+				$str.= "<li onClick='customCategoryListing(".$category['prodcat_id'].",this)'><a class='selectCategory' href='javascript:void(0)'>".strip_tags($category['prodcat_name']).$arrow."</a></li>";
 			}
 			$str.= "</ul>";	
 			//$result['msg'] = Labels::getLabel('MSG_updated_successfully',$this->siteLangId);			
@@ -825,7 +825,7 @@ trait CustomCatalogProducts{
 			$db = FatApp::getDb();
 			$rs = $srch->getResultSet();	
 			$category = $db->fetch($rs);
-			$str.= "<ul><li>".$category['prodcat_name']." <a href='javascript:void(0)' onClick='customCatalogProductForm(0,".$category['prodcat_id'].")' ></a></li><li class='align--center'><a onClick='customCatalogProductForm(0,".$category['prodcat_id'].")' class='btn btn--primary'>".Labels::getLabel('LBL_Select',$this->siteLangId)."</a></li>";
+			$str.= "<ul><li>".strip_tags($category['prodcat_name'])." <a href='javascript:void(0)' onClick='customCatalogProductForm(0,".$category['prodcat_id'].")' ></a></li><li class='align--center'><a onClick='customCatalogProductForm(0,".$category['prodcat_id'].")' class='btn btn--primary'>".Labels::getLabel('LBL_Select',$this->siteLangId)."</a></li>";
 			$str.= "</ul>";
 			//$result['msg'] = Labels::getLabel('MSG_updated_successfully',$this->siteLangId);				
 		}	
