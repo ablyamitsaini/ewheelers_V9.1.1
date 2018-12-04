@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$frmSearch->setFormTagAttribute ( 'onSubmit', 'sellerProducts(); return(false);' );
+$frmSearch->setFormTagAttribute ( 'onSubmit', 'sellerProducts(0,1); return(false);' );
 
 $frmSearch->setFormTagAttribute('class', 'form');
 $frmSearch->developerTags['colClassPrefix'] = 'col-md-';

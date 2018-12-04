@@ -3,3 +3,4 @@ Fixed slides promotions related issues. Slide promotion was not getting added on
 Added blog short description on listing page.
 
 #022521 - Security fixes in category listing on product setup page.
+#021859 - Inventory listing - search with keyword and pagination.
