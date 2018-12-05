@@ -27,7 +27,7 @@ trait SellerProducts{
 	
 	public function sellerProducts( $product_id = 0 ){
 		$srch = SellerProduct::getSearchObject( $this->siteLangId );
-		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p' );
+		$srch->joinTable( Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.' and p.product_active = '.applicationConstants::YES, 'p' );
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l' );
 		
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
@@ -198,7 +198,7 @@ trait SellerProducts{
 			FatUtility::dieWithError( Message::getHtml() );	
 		}
 		
-		$productLangRow = Product::getProductDataById(CommonHelper::getLangId(), $product_id, array('IFNULL(product_name,product_identifier) as product_url_keyword') );
+		$productLangRow = Product::getProductDataById(CommonHelper::getLangId(), $product_id, array('product_identifier') );
 		$frmSellerProduct = $this->getSellerProductForm( $product_id );
 		
 		if( $selprod_id ){			
@@ -233,7 +233,7 @@ trait SellerProducts{
 		}else{
 			$sellerProductRow['selprod_available_from'] = date('Y-m-d');
 			$sellerProductRow['selprod_cod_enabled'] = $productRow['product_cod_enabled'];
-			$sellerProductRow['selprod_url_keyword']= strtolower(CommonHelper::createSlug($productLangRow['product_url_keyword']));
+			$sellerProductRow['selprod_url_keyword']= strtolower(CommonHelper::createSlug($productLangRow['product_identifier']));
 			$frmSellerProduct->fill( $sellerProductRow );
 		}
 		

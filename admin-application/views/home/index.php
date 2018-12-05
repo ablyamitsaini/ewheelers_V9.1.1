@@ -445,6 +445,7 @@
 </div>
 <?php }?>
 <script type="text/javascript">
+var dataCurrency = '<?php echo CommonHelper::getCurrencySymbol(true); ?>';
 var w = $('.tabs_panel_wrap').width();
 google.load('visualization', '1', {'packages':['corechart', 'bar']});
 //set callback

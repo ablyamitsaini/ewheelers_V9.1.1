@@ -187,9 +187,14 @@ $(document).on('click','.bannerFile-Js',function(){
 					$(node).val($val);
 				},
 				success: function(ans) {
+					$.mbsmessage.close();
+					if(ans.status == true){
+						$.mbsmessage( ans.msg, '', 'alert--success');
+					}else{
+						$.mbsmessage( ans.msg, '', 'alert--danger');
+					}
 					$('#form-upload').remove();
-					images(promotionId,langId,banner_screen);
-					$.systemMessage( ans.msg, 'alert--success');					
+					images(promotionId,langId,banner_screen);	
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

@@ -131,7 +131,7 @@ class Labels extends MyAppModel{
 	}
 	
 	public static function isAPCUcacheAvailable(){		
-		return $cacheAvailable = extension_loaded('apcu') && ini_get('apcu.enabled') ;
+		return $cacheAvailable = extension_loaded('apcu') && (ini_get('apcu.enabled') || ini_get('apc.enabled')) ;
 	}
 	
 	public static function getAPCUcacheKey($key, $langId){

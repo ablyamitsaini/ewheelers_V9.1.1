@@ -1633,7 +1633,7 @@ class MobileAppApiController extends MyAppController {
 		//die($prodSrchObj->getquery());
 		$productRs = $prodSrchObj->getResultSet();
 		$product = FatApp::getDb()->fetch($productRs);
-		echo $product["product_description"];
+		echo str_replace('/editor/editor-image/',FatUtility::generateFullUrl().'editor/editor-image/',$product["product_description"]);
 	}
 	
 	function product_reviews($selprod_id){

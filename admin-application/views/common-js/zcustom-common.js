@@ -84,7 +84,7 @@
 		displayErrorMessage: function(msg,cls,autoclose){			
 			if(typeof cls == 'undefined' || cls == 'undefined'){
 				cls = 'alert--danger';
-			}
+			}	
 			$.systemMessage(msg,cls,autoclose);
 		}
 	});

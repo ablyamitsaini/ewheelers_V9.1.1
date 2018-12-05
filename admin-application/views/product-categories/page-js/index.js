@@ -267,9 +267,13 @@ $(document).on('click','.catFile-Js',function(){
 
 				},
 				success: function(ans) {
-						fcom.displaySuccessMessage(ans.msg);
-						$('#form-upload').remove();
-						categoryImages(prodcat_id,imageType,lang_id);
+						if(ans.status == 1){
+							fcom.displaySuccessMessage(ans.msg);
+							$('#form-upload').remove();
+							categoryImages(prodcat_id,imageType,lang_id);
+						}else{
+							fcom.displayErrorMessage(ans.msg);
+						}
 					},
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

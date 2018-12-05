@@ -315,7 +315,7 @@ class ProductsController extends MyAppController {
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
 		}
-		/* CommonHelper::printArray($priceArr); die; */
+		/* CommonHelper::printArray($headerFormParamsAssocArr); die; */
 		/* ] */
 		
 		$brandsCheckedArr = array();
