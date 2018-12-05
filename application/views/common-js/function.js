@@ -162,12 +162,7 @@ $("document").ready(function(){
 			$('.open-menu').toggleClass('open-menu');
 		}
 	});
-	$('#close-cart-js').click(function(){
-		if($('html').hasClass('cart-is-active')){
-			$('html').removeClass('cart-is-active');
-			$('.cart').toggleClass("cart-is-active");
-		}
-	});
+
 	$('.cart').click(function(e){
 		e.stopPropagation();
 	});
