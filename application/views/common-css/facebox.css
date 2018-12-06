@@ -95,16 +95,29 @@
 
 #facebox .content .pop-up-title {
   color: var(--txt-color);
-  font-size: 1em; text-transform: uppercase;
+  font-size: 1em;
+  text-transform: uppercase;
   text-align: center;
   margin-bottom: 20px;
   padding: 10px;
   border-bottom: solid 1px var(--border-color);
 }
 
-#facebox .content.small-fb-width {  width: 100%;  max-width: 350px;}
-#facebox .content.medium-fb-width {  width: 100%;  max-width: 650px;}
-#facebox .content.large-fb-width { width: 100%;  max-width: 800px; min-width: 350px;}
+#facebox .content.small-fb-width {
+  width: 100%;
+  max-width: 350px;
+}
+
+#facebox .content.medium-fb-width {
+  width: 100%;
+  max-width: 650px;
+}
+
+#facebox .content.large-fb-width {
+  width: 100%;
+  max-width: 800px;
+  min-width: 350px;
+}
 
 #facebox .content.faceboxWidth {
   width: 850px;
@@ -249,7 +262,8 @@
   }
 
   #facebox .content.faceboxWidth {
-    width: auto; max-width: 750px;
+    width: auto;
+    max-width: 750px;
   }
 }
 
@@ -260,5 +274,16 @@
 
   #facebox .content.fbminwidth {
     min-width: inherit;
+  }
+
+  #facebox .content.productQuickView {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  #facebox .content.productQuickView .product-detail {
+    max-height: none;
+    overflow-y: visible;
+    overflow-x: visible;
   }
 }
