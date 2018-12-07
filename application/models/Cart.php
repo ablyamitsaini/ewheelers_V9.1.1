@@ -358,7 +358,7 @@ class Cart extends FatModel {
 		$prodSrch->addCondition('selprod_id', '=', $selprod_id );
 		$prodSrch->addMultipleFields(array( 'product_id', 'product_type', 'product_length', 'product_width', 'product_height','product_ship_free' ,
 		'product_dimension_unit', 'product_weight', 'product_weight_unit', 
-		'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock',
+		'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_min_order_qty',
 		'special_price_found', 'theprice', 'shop_id', 'shop_free_ship_upto',
 		'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled'));
 		
@@ -507,6 +507,16 @@ class Cart extends FatModel {
 			if( is_array($cartProducts) ){
 				foreach($cartProducts as $cartKey => $product){
 					if( md5($product['key']) == $key ){
+						
+						/* minimum quantity check[ */
+						$minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
+						if( $quantity < $minimum_quantity ){
+							$this->warning = Labels::getLabel('LBL_Please_add_minimum',$this->cart_lang_id). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($product['product_name']);
+							break;
+						}
+						/* ] */
+						
+						
 						$tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
 						$availableStock = $cartProducts[$cartKey]['selprod_stock'] - $tempHoldStock;
 						$userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'],$cart_user_id,0,true);
@@ -1485,6 +1495,14 @@ class Cart extends FatModel {
 			}
 		}
 		return $sellerPrice;
+	}
+	
+	public function getSelprodIdByKey($key){
+		$keyDecoded = unserialize( base64_decode($key) );
+		if( strpos($keyDecoded, static::CART_KEY_PREFIX_PRODUCT ) !== FALSE ){
+			$selprod_id = FatUtility::int(str_replace( static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded ));
+			return $selprod_id;
+		}
 	}
 
 }

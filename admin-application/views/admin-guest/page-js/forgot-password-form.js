@@ -17,7 +17,7 @@
 			}
 			else
 			{
-				$.systemMessage(t.msg,'');
+				$.systemMessage(t.msg,'alert--danger');
 			}
 		});  
 		if($(".g-recaptcha").html()){			

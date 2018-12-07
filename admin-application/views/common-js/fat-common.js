@@ -120,7 +120,7 @@ var fcom = {
 			this.ajax(url, data, function(ans) {
 				if (ans.status != 1) {
 					$(document).trigger('close.mbsmessage');
-					$.systemMessage(ans.msg, '');
+					$.systemMessage(ans.msg, 'alert--danger');
 					return ;
 				}
 				$.systemMessage(ans.msg,  'alert--success');
