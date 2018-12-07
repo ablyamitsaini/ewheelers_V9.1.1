@@ -245,9 +245,14 @@ class Orders extends MyAppModel{
 	
 	private function addUpdateProductOrder( $data = array() , $langId = 1){
 		$db  = FatApp::getDb();
+		
 		$ordersLangData = $data['orderLangData'];
 		unset($data['orderLangData']);
 		
+		$discountInfo = array();
+		if(array_key_exists('order_discount_info',$data)){
+			$discountInfo = json_decode($data['order_discount_info'],true);
+		}
 		
 		$products = $data['products'];
 		unset( $data['products'] );
@@ -266,6 +271,26 @@ class Orders extends MyAppModel{
 			$data['order_id'] = $order_id;
 		}
 		$this->order_id = $data['order_id'];
+				
+		if(array_key_exists('coupon_id',$discountInfo)){
+			$couponInfo = DiscountCoupons::getValidCoupons( $data['order_user_id'], $data['order_language_id'], $data['order_discount_coupon_code'], $this->order_id );			
+			if( $couponInfo == false ){				
+				$this->error = Labels::getLabel('LBL_Invalid_Coupon_Code', $data['order_language_id']);
+				return false;
+			}
+			
+			$holdCouponData = array(
+				'ochold_order_id'=>$this->getOrderId(),
+				'ochold_coupon_id'=>$discountInfo['coupon_id'],
+				'ochold_added_on'=>date('Y-m-d H:i:s')
+			);
+			if( !FatApp::getDb()->insertFromArray( DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, $holdCouponData, true,array(),$holdCouponData)) {
+				$db->rollbackTransaction();
+				$this->error = FatApp::getDb()->getError();
+				return false;
+			}
+		}
+		
 		
 		$recordObj = new TableRecord( static::DB_TBL );
 		$recordObj->assignValues($data);
@@ -480,7 +505,7 @@ class Orders extends MyAppModel{
 				return false;
 			}
 		}
-				
+			
 		$db->commitTransaction();
 		return $this->getOrderId();
 	}

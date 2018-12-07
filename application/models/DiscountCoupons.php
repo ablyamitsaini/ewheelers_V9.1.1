@@ -11,6 +11,7 @@ class DiscountCoupons extends MyAppModel{
 	const DB_TBL_COUPON_TO_USER = 'tbl_coupon_to_users';
 	const DB_TBL_COUPON_TO_PLAN = 'tbl_coupon_to_plan';
 	const DB_TBL_COUPON_HOLD = 'tbl_coupons_hold';
+	const DB_TBL_COUPON_HOLD_PENDING_ORDER = 'tbl_coupons_hold_pending_order';
 	const DB_TBL_COUPON_HISTORY = 'tbl_coupons_history';
 	
 	private $db;
@@ -384,9 +385,10 @@ class DiscountCoupons extends MyAppModel{
 		}		
 	}
 	
-	public static function getValidCoupons( $userId, $langId, $coupon_code = '' ){
+	public static function getValidCoupons( $userId, $langId, $coupon_code = '',$orderId = '' ){
 		$userId = FatUtility::int( $userId );
 		$langId = FatUtility::int( $langId );
+				
 		if( $userId <= 0 ){ trigger_error( Labels::getLabel("ERR_User_id_is_mandatory",$this->commonLangId), E_USER_ERROR ); }
 		if( $langId <= 0 ){ trigger_error( Labels::getLabel("ERR_Language_id_is_mandatory",$this->commonLangId), E_USER_ERROR ); }
 		
@@ -414,13 +416,26 @@ class DiscountCoupons extends MyAppModel{
 		//$userCouponHistorySrch->addMultipleFields(array('count(couponhistory_id) as user_coupon_used_count'));
 		/* ] */
 		
+		/* coupon temp hold for order[ */
+		
+		if($orderId !='' ){ 
+			$pendingOrderHoldSrch = new SearchBase(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER);
+			$pendingOrderHoldSrch->addCondition('ochold_order_id','!=',$orderId);		
+			$pendingOrderHoldSrch->addMultipleFields( array('count(ochold_order_id) as pending_order_hold_count','ochold_coupon_id') );
+			$pendingOrderHoldSrch->doNotLimitRecords();
+			$pendingOrderHoldSrch->addGroupBy( 'ochold_coupon_id' );
+			$pendingOrderHoldSrch->doNotCalculateRecords();
+		}
+		/* ] */
+				
 		/* coupon temp hold[ */
 		$cHoldSrch = new SearchBase(DiscountCoupons::DB_TBL_COUPON_HOLD);
 		$cHoldSrch->addCondition('couponhold_added_on','>=',$interval);
 		$cHoldSrch->addCondition('couponhold_user_id','!=',$userId);
+		/* $cHoldSrch->addCondition('couponhold_usercart_id','!=',$cartObj->cart_id); */
 		$cHoldSrch->addMultipleFields( array('couponhold_coupon_id') );
 		$cHoldSrch->doNotLimitRecords();
-		$cHoldSrch->doNotCalculateRecords();
+		$cHoldSrch->doNotCalculateRecords();		
 		/* ] */
 		
 		/* Coupon Users[ */
@@ -459,6 +474,12 @@ class DiscountCoupons extends MyAppModel{
 		$srch->joinTable( '('.$cProductSrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctp.ctp_coupon_id', 'ctp' );
 		$srch->joinTable( '('.$cCategorySrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctc.ctc_coupon_id', 'ctc' );
 		
+		
+		if($orderId !='' ){
+			$srch->joinTable( '('.$pendingOrderHoldSrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctop.ochold_coupon_id', 'ctop' );
+		}
+		
+		
 		$srch->addCondition( 'coupon_type', '=', DiscountCoupons::TYPE_DISCOUNT );
 		
 		$cnd = $srch->addCondition('coupon_start_date','=','0000-00-00','AND');
@@ -475,7 +496,11 @@ class DiscountCoupons extends MyAppModel{
 		
 		/* $srch->addMultipleFields(array( 'dc.*', 'dc_l.coupon_description', 'IFNULL(dc_l.coupon_title, dc.coupon_identifier) as coupon_title', 'IFNULL(COUNT(coupon_history.couponhistory_id), 0) as coupon_used_count', 'IFNULL(COUNT(coupon_hold.couponhold_coupon_id), 0) as coupon_hold_count','count(user_coupon_history.couponhistory_id) as user_coupon_used_count', 'ctu.grouped_coupon_users', 'ctp.grouped_coupon_products', 'ctc.grouped_coupon_categories')); */
 		
-		$srch->addMultipleFields(array( 'dc.*', 'dc_l.coupon_description', 'IFNULL(dc_l.coupon_title, dc.coupon_identifier) as coupon_title', 'IFNULL(coupon_history.coupon_used_count, 0) as coupon_used_count', 'IFNULL(COUNT(coupon_hold.couponhold_coupon_id), 0) as coupon_hold_count','count(user_coupon_history.couponhistory_id) as user_coupon_used_count', 'ctu.grouped_coupon_users', 'ctp.grouped_coupon_products', 'ctc.grouped_coupon_categories'));
+		$selectArr = array( 'dc.*', 'dc_l.coupon_description', 'IFNULL(dc_l.coupon_title, dc.coupon_identifier) as coupon_title', 'IFNULL(coupon_history.coupon_used_count, 0) as coupon_used_count', 'IFNULL(COUNT(coupon_hold.couponhold_coupon_id), 0) as coupon_hold_count','count(user_coupon_history.couponhistory_id) as user_coupon_used_count', 'ctu.grouped_coupon_users', 'ctp.grouped_coupon_products', 'ctc.grouped_coupon_categories');
+		if($orderId !='' ){
+			$selectArr =  array_merge($selectArr,array('IFNULL(ctop.pending_order_hold_count,0) as pending_order_hold_count'));
+		} 		
+		$srch->addMultipleFields($selectArr);
 		
 		/* checking current coupon is valid for current logged user[ */
 		$directCondtion1 = ' (grouped_coupon_users IS NULL AND grouped_coupon_products IS NULL AND grouped_coupon_categories IS NULL) ';
@@ -509,8 +534,14 @@ class DiscountCoupons extends MyAppModel{
 		$srch->addDirectCondition( "(". $directCondtion1.' OR ( '. $directCondtion2 . $directCondtion3 . $directCondition4 .' )' . " )", 'AND' );
 		
 		$srch->addGroupBy( 'dc.coupon_id' );
-		$srch->addHaving( 'coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count','AND', true );
-		$srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+		if($orderId !=''  ){
+			$srch->addHaving( 'coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count + pending_order_hold_count','AND', true );
+			$srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+		}else{
+			$srch->addHaving( 'coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count','AND', true );
+			$srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+		}
+		
 		
 		$rs = $srch->getResultSet();
 		if( $coupon_code != '' ){
