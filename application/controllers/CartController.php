@@ -230,14 +230,16 @@ class CartController extends MyAppController{
 		$quantity = isset($post['quantity']) ? FatUtility::int($post['quantity']) : 1;
 		$cartObj = new Cart();
 		if( !$cartObj->update($key, $quantity) ){
-			Message::addMessage($cartObj->getError());
+			Message::addErrorMessage($cartObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		$cartObj->removeUsedRewardPoints();
 		$cartObj->removeProductShippingMethod();
 		
 		if(!empty($cartObj->getWarning())){
-			$this->set( 'msg', $cartObj->getWarning() );
+			Message::addInfo($cartObj->getWarning());
+			FatUtility::dieWithError( Message::getHtml() );
+			/* $this->set( 'msg', $cartObj->getWarning() ); */
 		}else{
 			$this->set( 'msg', Labels::getLabel("MSG_cart_updated_successfully", $this->siteLangId) );
 		}

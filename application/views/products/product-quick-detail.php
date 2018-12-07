@@ -132,7 +132,7 @@
 <script>
 	$(document).ready(function(){
 		$("#btnAddToCart").addClass("quickView");
-		$('#quickView-slider-for').slick( getSlickGallerySettings(false) );
-		$('#quickView-slider-nav').slick( getSlickGallerySettings(true) );
+		$('#quickView-slider-for').slick( getSlickGallerySettings(false,'<?php echo CommonHelper::getLayoutDirection();?>') );
+		$('#quickView-slider-nav').slick( getSlickGallerySettings(true,'<?php echo CommonHelper::getLayoutDirection();?>') );
 	});
 </script>
