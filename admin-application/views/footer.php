@@ -1,40 +1,41 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 </div>
-    <!--footer start here-->
-		<footer id="footer">
-			<p><?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId, FatUtility::VAR_STRING, 'Copyright &copy; '.date('Y').' <a href="javascript:void(0);">FATbit.com'); echo " ".CONF_WEB_APP_VERSION;?> </p>
-		</footer>
-		<!--footer start here-->    
-	</div>
-	<?php $haveMsg = false; 
-	if( Message::getMessageCount() || Message::getErrorCount() ){
-		$haveMsg = true;
-	}
+	<!--footer start here-->
+	<footer id="footer">
+		<p><?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId, FatUtility::VAR_STRING, 'Copyright &copy; '.date('Y').' <a href="javascript:void(0);">FATbit.com'); echo " ".CONF_WEB_APP_VERSION;?> </p>
+	</footer>
+	<!--footer start here-->    
+</div>
+
+<?php
+	$alertClass = (Message::getErrorCount()>0) ? 'alert--danger' : (Message::getMessageCount()>0) ? 'alert--success' : /* (Message::getInfoCount()>0) ? 'alert--info' : */ '' ;
+?>
 	
-	?>
-<div  class="alert alert--positioned " <?php if($haveMsg) echo 'style="display:block"';?>>
+<div class="system_message alert alert--positioned-bottom-center alert--positioned-small <?php echo $alertClass; ?>" hidden='hidden'>
 	<div class="close"></div>
-	<div class="sysmsgcontent content ">
-		<?php 
-		
-		if( $haveMsg ){ 
-			
+	<div class="sysmsgcontent content">
+		<?php
+		$haveMsg = false;
+		if( Message::getMessageCount() || Message::getErrorCount() ){
+			$haveMsg = true;
 			echo html_entity_decode( Message::getHtml() );
 		} ?>
 	</div>
 </div>
-		<?php if( $haveMsg ){ ?>
-		<script type="text/javascript">
-			$("document").ready(function(){
-				if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
-					var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
-					setTimeout(function(){
-						$.systemMessage.close();
-					}, time);
-				}
-			});
-		</script>
-		<?php } ?>
+
+<?php if( $haveMsg ){ ?>
+<script type="text/javascript">
+	$("document").ready(function(){
+		if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
+			var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
+			setTimeout(function(){
+				$.systemMessage.close();
+			}, time);
+		}
+	});
+</script>
+<?php } ?>
+
 	<!--wrapper end here-->
 		
 	<?php if($isAdminLogged){?>	
