@@ -35,10 +35,7 @@ class Cart extends FatModel {
 		$rs = $srch->getResultSet();
 		$this->cartSameSessionUser = true;
 		if( $row = FatApp::getDb()->fetch($rs) ){		
-			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );
-			if($row['usercart_last_session_id']!= $this->cart_id){
-				$this->cartSameSessionUser = false;				
-			}
+			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );			
 			//CommonHelper::printArray($this->SYSTEM_ARR['cart']); exit;
 			if( isset($this->SYSTEM_ARR['cart']['shopping_cart']) ){
 				$this->SYSTEM_ARR['shopping_cart'] = $this->SYSTEM_ARR['cart']['shopping_cart'];
@@ -51,13 +48,7 @@ class Cart extends FatModel {
 		}
 		if( !isset($this->SYSTEM_ARR['shopping_cart']) || !is_array($this->SYSTEM_ARR['shopping_cart']) ){
 			$this->SYSTEM_ARR['shopping_cart'] = array();
-		}
-		//echo $_SESSION['shopping_cart']["order_id"];
-		/* if(!$this->cartSameSessionUser){
-		//unset($this->SYSTEM_ARR['cart']['discount_coupon']);
-			$this->removeCartDiscountCoupon();
-			$this->removeUsedRewardPoints();
-		} */
+		}		
 	}
 	
 	public static function getCartKeyPrefixArr(){
