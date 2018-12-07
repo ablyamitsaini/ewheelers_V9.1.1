@@ -8,7 +8,10 @@
 </div>
 
 <?php
-	$alertClass = (Message::getErrorCount()>0) ? 'alert--danger' : (Message::getMessageCount()>0) ? 'alert--success' : /* (Message::getInfoCount()>0) ? 'alert--info' : */ '' ;
+	$alertClass = '';
+	if(Message::getInfoCount()>0) $alertClass = 'alert--info';
+	elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
+	elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 ?>
 	
 <div class="system_message alert alert--positioned-bottom-center alert--positioned-small <?php echo $alertClass; ?>" hidden='hidden'>

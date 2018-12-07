@@ -1,6 +1,7 @@
 Fixes:
 Fixed slides promotions related issues. Slide promotion was not getting added on advertiser dashboard.
 Added blog short description on listing page.
+mbsmessages and systemmessages related issues has been fixed. HTML and CSS updated in admin panel.
 
 #022521 - Security fixes in category listing on product setup page.
 #021859 - Inventory listing - search with keyword and pagination.
