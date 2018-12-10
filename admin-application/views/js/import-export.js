@@ -72,16 +72,16 @@
 							//reloadList();
 							$(document).trigger('close.facebox');
 							$(document).trigger('close.mbsmessage');
-							fcom.displaySuccessMessage(ans.msg,' ');
+							fcom.displaySuccessMessage(ans.msg);
 						} else {
 							$('#fileupload_div').html('');
 							$(document).trigger('close.mbsmessage');
-							fcom.displayErrorMessage(ans.msg, ' ');
+							fcom.displayErrorMessage(ans.msg);
 						}												
 					}
 					catch(exc){	
 						$(document).trigger('close.mbsmessage');
-						fcom.displayErrorMessage(t,' ');
+						fcom.displayErrorMessage(t);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

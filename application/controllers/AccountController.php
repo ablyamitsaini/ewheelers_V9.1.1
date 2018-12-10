@@ -2416,7 +2416,7 @@ class AccountController extends LoggedUserController {
 		$srch->addOrder('orrmsg_id','DESC');
 		$srch->addMultipleFields( array( 'orrmsg_id', 'orrmsg_from_user_id', 'orrmsg_msg',
 		'orrmsg_date', 'msg_user.user_name as msg_user_name', 'orrequest_status',
-		'orrmsg_from_admin_id', 'admin_name' ) );
+		'orrmsg_from_admin_id', 'admin_name', 'shop_identifier' ) );
 
 		$rs = $srch->getResultSet();
 		$messagesList = FatApp::getDb()->fetchAll($rs,'orrmsg_id');
