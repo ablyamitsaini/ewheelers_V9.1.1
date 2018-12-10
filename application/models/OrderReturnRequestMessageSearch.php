@@ -22,7 +22,6 @@ class OrderReturnRequestMessageSearch extends SearchBase {
 	public function joinMessageUser(){
 		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'orrequestmsg.orrmsg_from_user_id = msg_user.user_id', 'msg_user' );
 		$this->joinTable( User::DB_TBL_CRED, 'LEFt OUTER JOIN', 'msg_user.user_id = msg_user_cred.credential_user_id', 'msg_user_cred' );
-		$this->joinTable('tbl_shops', 'LEFt OUTER JOIN', 'msg_user.user_id = ts.shop_user_id', 'ts');
 	}
 	
 	public function joinMessageAdmin(){
