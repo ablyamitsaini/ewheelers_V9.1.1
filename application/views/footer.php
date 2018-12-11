@@ -176,14 +176,10 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 
 window.onbeforeprint = function () {
-	if (Tawk_API) {
-		Tawk_API.hideWidget(); 
-	}
+	Tawk_API.hideWidget(); 
 };
 window.onafterprint = function () {
-	if (Tawk_API) {
-		Tawk_API.showWidget(); 
-	}
+	Tawk_API.showWidget(); 
 };
 </script>
 <!--End of Tawk.to Script-->
