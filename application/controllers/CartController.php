@@ -358,8 +358,8 @@ class CartController extends MyAppController{
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
-		$cartObj = new Cart();
-		if( !$cartObj->updateCartDiscountCoupon($couponInfo['coupon_code']) ){
+		$cartObj = new Cart(); 		
+		if(!$cartObj->updateCartDiscountCoupon($couponInfo['coupon_code']) ){ 
 			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
@@ -367,6 +367,7 @@ class CartController extends MyAppController{
 		$holdCouponData = array(
 			'couponhold_coupon_id'=>$couponInfo['coupon_id'],
 			'couponhold_user_id'=>UserAuthentication::getLoggedUserId(),
+			/* 'couponhold_usercart_id'=>$cartObj->cart_id, */
 			'couponhold_added_on'=>date('Y-m-d H:i:s'),
 		);
 		

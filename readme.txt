@@ -7,4 +7,5 @@ mbsmessages and systemmessages related issues has been fixed. HTML and CSS updat
 #021859 - Inventory listing - search with keyword and pagination.
 #022488 #022307 #022394 #022398 #022332 - Invalid request issue on page reaload via ajax.
 #022559 - Menu toggle issue on page load.
+#022348 - Discount coupon in case of multiple browser.
 
