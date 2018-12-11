@@ -2,8 +2,12 @@
 
 
 <?php if(!empty($messagesList)){ ?>
-
-	<?php foreach($messagesList as $message){ ?>
+	<?php foreach($messagesList as $message){
+	$shop_name = '';
+	if($message['orrmsg_from_user_id']==$message['op_selprod_user_id'] && $message['shop_identifier']!='')
+	{
+		$shop_name =' - '.$message['shop_identifier'];
+	} ?>
 	<li>
 		<div class="grid grid--first">
 			<div class="avtar">
@@ -15,7 +19,7 @@
 			</div>
 		</div>
 		<div class="grid grid--second">
-			<span class="media__title"><?php echo ($message['orrmsg_from_admin_id']) ? $message['admin_name']: $message['msg_user_name']; ?></span>
+			<span class="media__title"><?php echo ($message['orrmsg_from_admin_id']) ? $message['admin_name']: $message['msg_user_name'].$shop_name; ?></span>
 			<span class="media__date"><?php echo FatDate::format($message['orrmsg_date'], true); ?></span>
 		</div>
 		<div class="grid grid--third">

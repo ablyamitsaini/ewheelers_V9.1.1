@@ -2409,6 +2409,7 @@ class AccountController extends LoggedUserController {
 		$srch->joinOrderReturnRequests();
 		$srch->joinMessageUser();
 		$srch->joinMessageAdmin();
+		$srch->joinOrderProducts();
 		$srch->addCondition( 'orrmsg_orrequest_id', '=', $orrequest_id );
 		//$srch->addCondition( 'orrequest_user_id', '=', $user_id );
 		$srch->setPageNumber($page);
@@ -2416,7 +2417,7 @@ class AccountController extends LoggedUserController {
 		$srch->addOrder('orrmsg_id','DESC');
 		$srch->addMultipleFields( array( 'orrmsg_id', 'orrmsg_from_user_id', 'orrmsg_msg',
 		'orrmsg_date', 'msg_user.user_name as msg_user_name', 'orrequest_status',
-		'orrmsg_from_admin_id', 'admin_name' ) );
+		'orrmsg_from_admin_id', 'admin_name', 'shop_identifier', 'op_selprod_user_id' ) );
 
 		$rs = $srch->getResultSet();
 		$messagesList = FatApp::getDb()->fetchAll($rs,'orrmsg_id');
