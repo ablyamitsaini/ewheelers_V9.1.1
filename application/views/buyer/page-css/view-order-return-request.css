@@ -105,4 +105,5 @@ size: A4;
 	display: block;
 	max-width: 100%;
 }
+.panel__right--full{ width:100%}
 }
