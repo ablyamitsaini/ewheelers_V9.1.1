@@ -161,8 +161,8 @@
 $fl = 'js/variables.js';
 echo FatUtility::generateUrl ( 'JsCss', 'js', array (), '', false ). '&f=' . rawurlencode ( $fl );
 ?>"></script>
-
-<?php if(CommonHelper::demoUrl()){?>
+<div class="no-print">
+<?php if(CommonHelper::demoUrl()){ ?>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -174,9 +174,21 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
+
+window.onbeforeprint = function () {
+	if (Tawk_API) {
+		Tawk_API.hideWidget(); 
+	}
+};
+window.onafterprint = function () {
+	if (Tawk_API) {
+		Tawk_API.showWidget(); 
+	}
+};
 </script>
 <!--End of Tawk.to Script-->
-<?php }?>
+<?php } ?>
+</div>
 </body>
 </html>
 <?php
