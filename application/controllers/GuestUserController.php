@@ -37,7 +37,7 @@ class GuestUserController extends MyAppController {
 		$userId = UserAuthentication::getLoggedUserId();
 		setcookie('uc_id', $userId, time()+3600*24*30,CONF_WEBROOT_URL);	
 		
-		$data = User::getAttributesById($userId,array('user_preferred_dashboard'));	
+		$data = User::getAttributesById($userId,array('user_preferred_dashboard','user_registered_initially_for'));	
 		
 		$preferredDashboard = 0;
 		if($data != false){
@@ -50,7 +50,26 @@ class GuestUserController extends MyAppController {
 			$redirectUrl = $_SESSION['referer_page_url'];
 			unset($_SESSION['referer_page_url']);
 			
-			if( User::isBuyer()  || User::isSigningUpBuyer()){
+			
+			$userPreferedDashboardType = ($data['user_preferred_dashboard'])?$data['user_preferred_dashboard']:$data['user_registered_initially_for'];
+		
+			switch($userPreferedDashboardType){
+				case User::USER_TYPE_BUYER:
+					$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+				break;
+				case User::USER_TYPE_SELLER:
+					$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+				break;
+				case User::USER_TYPE_AFFILIATE:
+					$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+				break;
+				case User::USER_TYPE_ADVERTISER:
+					$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+				break;
+			}
+			
+			
+			/* if( User::isBuyer()  || User::isSigningUpBuyer()){
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
 			} else if( User::isSeller() || User::isSigningUpForSeller() ){
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
@@ -58,7 +77,7 @@ class GuestUserController extends MyAppController {
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
 			} else if( User::isAffiliate()  || User::isSigningUpAffiliate()){
 				$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-			}
+			} */
 			
 		}
 		if($redirectUrl == ''){
