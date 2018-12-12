@@ -462,6 +462,17 @@ class BuyerController extends LoggedUserController {
 			CommonHelper::redirectUserReferer();
 		}
 		
+		$oReturnRequestSrch = new OrderReturnRequestSearch();
+		$oReturnRequestSrch->doNotCalculateRecords();
+		$oReturnRequestSrch->doNotLimitRecords();
+		$oReturnRequestSrch->addCondition( 'orrequest_op_id', '=', $opDetail['op_id'] );
+		$oReturnRequestSrch->addCondition( 'orrequest_status', '!=', OrderReturnRequest::RETURN_REQUEST_STATUS_CANCELLED );
+		$oReturnRequestRs = $oReturnRequestSrch->getResultSet();
+		if( FatApp::getDb()->fetch($oReturnRequestRs) ){
+			Message::addErrorMessage( Labels::getLabel('MSG_Already_submitted_return_request', $this->siteLangId) );
+			CommonHelper::redirectUserReferer();
+		}
+		
 		if($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL){
 			if ( !in_array($opDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) ){
 				Message::addErrorMessage( Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId) );
@@ -1215,6 +1226,17 @@ class BuyerController extends LoggedUserController {
 	
 	public function orderReturnRequest( $op_id ){
 		$op_id = FatUtility::int( $op_id );
+
+		$oCancelRequestSrch = new OrderCancelRequestSearch();
+		$oCancelRequestSrch->doNotCalculateRecords();
+		$oCancelRequestSrch->doNotLimitRecords();
+		$oCancelRequestSrch->addCondition( 'ocrequest_op_id', '=', $op_id );
+		$oCancelRequestSrch->addCondition( 'ocrequest_status', '!=', OrderCancelRequest::CANCELLATION_REQUEST_STATUS_DECLINED );
+		$oCancelRequestRs = $oCancelRequestSrch->getResultSet();
+		if( FatApp::getDb()->fetch($oCancelRequestRs) ){
+			Message::addErrorMessage( Labels::getLabel('MSG_Already_submitted_cancel_request', $this->siteLangId) );
+			CommonHelper::redirectUserReferer();
+		}
 		
 		$user_id = UserAuthentication::getLoggedUserId();
 		$srch = new OrderProductSearch( $this->siteLangId, true);
