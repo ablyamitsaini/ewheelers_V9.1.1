@@ -170,11 +170,21 @@ $(document).ready(function(){
 			});
 		});
 	};
+	
 	collectionShopForm = function(collection_id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Collections', 'collectionShopForm', [collection_id]), '', function(t) {
 				$.facebox(t,'faceboxWidth');
 				reloadCollectionShops(collection_id);
+			});
+		});
+	};
+	
+	collectionBrandsForm = function(collection_id) {
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Collections', 'collectionBrandsForm', [collection_id]), '', function(t) {
+				$.facebox(t,'faceboxWidth');
+				reloadCollectionBrands(collection_id);
 			});
 		});
 	};
@@ -192,10 +202,18 @@ $(document).ready(function(){
 			$("#categories_list").html(t);
 		});
 	}
+	
 	reloadCollectionShops =  function( collection_id ){
 		$("#shops_list").html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Collections', 'collectionShops', [collection_id]), '', function(t) {
 			$("#shops_list").html(t);
+		});
+	}
+	
+	reloadCollectionBrands =  function( collection_id ){
+		$("#brands_list").html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Collections', 'collectionBrands', [collection_id]), '', function(t) {
+			$("#brands_list").html(t);
 		});
 	}
 	
@@ -210,9 +228,16 @@ $(document).ready(function(){
 			reloadCollectionCategories(collection_id);
 		});
 	};
+	
 	updateCollectionShops = function (collection_id, shop_id){
 		fcom.updateWithAjax(fcom.makeUrl('Collections', 'updateCollectionShops'), 'collection_id='+collection_id+'&shop_id='+shop_id, function(t) {
 			reloadCollectionShops(collection_id);
+		});
+	};
+	
+	updateCollectionBrands = function (collection_id, brand_id){
+		fcom.updateWithAjax(fcom.makeUrl('Collections', 'updateCollectionBrands'), 'collection_id='+collection_id+'&brand_id='+brand_id, function(t) {
+			reloadCollectionBrands(collection_id);
 		});
 	};
 	
@@ -231,11 +256,20 @@ $(document).ready(function(){
 			reloadCollectionCategories( collection_id );
 		});
 	}
+	
 	removeCollectionShop = function( collection_id,shop_id ){
 		var agree = confirm(langLbl.confirmRemoveShop);
 		if( !agree ){ return false; }
 		fcom.updateWithAjax(fcom.makeUrl('Collections', 'removeCollectionShop'), 'collection_id='+collection_id+'&shop_id='+shop_id, function(t) {
 			reloadCollectionShops( collection_id );
+		});
+	}
+	
+	removeCollectionBrand = function( collection_id,brand_id ){
+		var agree = confirm(langLbl.confirmRemoveBrand);
+		if( !agree ){ return false; }
+		fcom.updateWithAjax(fcom.makeUrl('Collections', 'removeCollectionBrand'), 'collection_id='+collection_id+'&brand_id='+brand_id, function(t) {
+			reloadCollectionBrands( collection_id );
 		});
 	}
 	

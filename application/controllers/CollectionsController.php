@@ -54,7 +54,7 @@ class CollectionsController extends MyAppController {
 		$shopSearchObj ->setDefinedCriteria($this->siteLangId);
 		$shopSearchObj->joinShopCountry();
 		$shopSearchObj->joinShopState();
-		
+		$brandSearchObj = Brand::getSearchObject($this->siteLangId, true, true);
 		/* sub query to find out that logged user have marked shops as favorite or not[ */
 		$favSrchObj = new UserFavoriteShopSearch();
 		$favSrchObj->doNotCalculateRecords();
@@ -220,7 +220,36 @@ class CollectionsController extends MyAppController {
 				$this->set('collections',$collections);
 				$this->set('totalProdCountToDisplay',$totalProdCountToDisplay);
 			break;
+			case Collections::COLLECTION_TYPE_BRAND:
+				$tempObj = clone $collectionObj;
+				$tempObj->addCondition('collection_id', '=', $collection_id);
+				$tempObj->joinCollectionBrands($this->siteLangId);
+				$tempObj->addMultipleFields(array('ctpb_brand_id'));
+				$tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
+				$tempObj->setPageSize($collection['collection_primary_records']);
+				$rs = $tempObj->getResultSet();
+				$brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
+				
+				unset($tempObj);
+				if (empty($brandIds)) {
+					continue;
+				}
+
+				/* fetch Categories data[ */
+				$brandSearchTempObj = clone $brandSearchObj;
+				$brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
+				$brandSearchTempObj->addOrder( 'brand_name', 'ASC' );
+				/* echo $brandSearchTempObj->getQuery(); die; */
+				$rs = $brandSearchTempObj->getResultSet();
+				/* ] */
+
+				$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+				$collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
+				unset($brandSearchTempObj);
+				$this->set('collections',$collections);
+			break;
 		}
+		
 		$this->set('collection',$collection);
 		$this->set('siteLangId',CommonHelper::getLangId());
 		$this->_template->render(false,false);

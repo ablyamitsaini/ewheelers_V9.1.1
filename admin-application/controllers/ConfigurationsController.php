@@ -263,6 +263,7 @@ class ConfigurationsController extends AdminBaseController {
 			AttachedFile::FILETYPE_APPLE_TOUCH_ICON,
 			AttachedFile::FILETYPE_MOBILE_LOGO,
 			AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE,
+			AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE,
 			AttachedFile::FILETYPE_INVOICE_LOGO,
 			);
 
@@ -452,6 +453,19 @@ class ConfigurationsController extends AdminBaseController {
 		
 		$fileHandlerObj = new AttachedFile();
 		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, 0, 0, 0, $lang_id)){
+			Message::addErrorMessage($fileHandlerObj->getError());
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
+		$this->set('msg',Labels::getLabel('MSG_Deleted_Successfully',$this->adminLangId));
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
+	public function removeBrandCollectionBgImage( $lang_id = 0 ){
+		$lang_id = FatUtility::int( $lang_id );
+		
+		$fileHandlerObj = new AttachedFile();
+		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, 0, 0, 0, $lang_id)){
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
@@ -1358,7 +1372,16 @@ class ConfigurationsController extends AdminBaseController {
 					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','CategoryCollectionBgImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
 				}
 				
-				$ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 168*37</small></li>';
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
+				
+				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Brand_Background_Image',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
+
+				
+				if( AttachedFile::getAttachment( AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, 0, 0, $langId ) ){
+					$ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image','BrandCollectionBgImage',array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeBrandCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
+				}
+				
+				$ul->htmlAfterField .= ' </div></div><input type="button" name="brand_collection" class="logoFiles-Js btn-xs" id="brand_collection" data-file_type='.AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
 				
 				$ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Invoice_Logo',$this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 

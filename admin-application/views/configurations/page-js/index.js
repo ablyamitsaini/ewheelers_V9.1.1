@@ -167,6 +167,13 @@ $(document).ready(function(){
 		});
 	};
 	
+	removeBrandCollectionBgImage = function(lang_id){
+		if(!confirm(langLbl.confirmDeleteImage)){return;}
+		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeBrandCollectionBgImage', [lang_id]), '', function(t) {
+			getLangForm( document.frmConfiguration.form_type.value, lang_id );
+		});
+	};
+	
 	changedMessageAutoCloseSetting = function(val){
 		if( val == YES ){
 			

@@ -5,6 +5,7 @@ class CollectionSearch extends SearchBase {
 	private $joinCollectionProducts = false;
 	private $joinCollectionCategories = false;
 	private $joinCollectionShops = false;
+	private $joinCollectionBrands = false;
 	private $commonLangId;
 	public function __construct( $langId = 0 ) {
 		$langId = FatUtility::int($langId);
@@ -36,11 +37,18 @@ class CollectionSearch extends SearchBase {
 		$this->joinTable( Collections::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES,'LEFT OUTER JOIN',
 			'ctpc.'.Collections::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX.'collection_id = c.'.Collections::tblFld('id'),'ctpc');
 	}
+	
 	public function joinCollectionShops(){
 		$this->joinCollectionShops = true;
 		$this->joinTable( Collections::DB_TBL_COLLECTION_TO_SHOPS,'LEFT OUTER JOIN',
 			'ctps.'.Collections::DB_TBL_COLLECTION_TO_SHOPS_PREFIX.'collection_id = c.'.Collections::tblFld('id'),'ctps');
 	}
+	
+	public function joinCollectionBrands()
+    {
+        $this->joinCollectionBrands = true;
+        $this->joinTable(Collections::DB_TBL_COLLECTION_TO_BRANDS, 'LEFT OUTER JOIN', 'ctpb.' . Collections::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'collection_id = c.' . Collections::tblFld('id'), 'ctpb');
+    }
 	
 	public function joinSellerProductsForPrice($langId = 0, $forDate = ''){
 		$langId = FatUtility::int($langId);

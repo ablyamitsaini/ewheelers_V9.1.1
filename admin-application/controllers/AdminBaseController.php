@@ -80,6 +80,7 @@ class AdminBaseController extends FatController {
 			'confirmRemove' =>Labels::getLabel('LBL_Do_you_want_to_remove',$this->adminLangId),
 			'confirmRemoveOption' =>Labels::getLabel('LBL_Do_you_want_to_remove_this_option',$this->adminLangId),
 			'confirmRemoveShop' =>Labels::getLabel('LBL_Do_you_want_to_remove_this_shop',$this->adminLangId),
+			'confirmRemoveBrand' =>Labels::getLabel('LBL_Do_you_want_to_remove_this_brand',$this->adminLangId),
 			'confirmRemoveProduct' =>Labels::getLabel('LBL_Do_you_want_to_remove_this_product',$this->adminLangId),
 			'confirmRemoveCategory' =>Labels::getLabel('LBL_Do_you_want_to_remove_this_category',$this->adminLangId),
 			'confirmReset' =>Labels::getLabel('LBL_Do_you_want_to_reset_settings',$this->adminLangId),

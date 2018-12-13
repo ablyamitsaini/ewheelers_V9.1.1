@@ -14,6 +14,10 @@ if(!empty($collections)){ ?>
 		case Collections::COLLECTION_TYPE_SHOP:
 			$this->includeTemplate('shops/search.php',array('allShops'=>$collections,'siteLangId'=>$siteLangId,'totalProdCountToDisplay'=>$totalProdCountToDisplay),false);
 		break;
+		
+		case Collections::COLLECTION_TYPE_BRAND:
+			$this->includeTemplate('brands/brands-list.php',array('brandsArr'=>$collections,'siteLangId'=>$siteLangId),false);
+		break;
 	} ?>	
 <?php } else {
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);

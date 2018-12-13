@@ -9,6 +9,9 @@ class Collections extends MyAppModel{
 	const DB_TBL_COLLECTION_TO_SELPROD = 'tbl_collection_to_seller_products';
 	const DB_TBL_COLLECTION_TO_SELPROD_PREFIX = 'ctsp_';
 	
+	const DB_TBL_COLLECTION_TO_BRANDS = 'tbl_collection_to_brands';
+    const DB_TBL_COLLECTION_TO_BRANDS_PREFIX = 'ctpb_';
+	
 	const DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES = 'tbl_collection_to_product_categories';
 	const DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX = 'ctpc_';
 	
@@ -18,6 +21,7 @@ class Collections extends MyAppModel{
 	const COLLECTION_TYPE_PRODUCT = 1;
 	const COLLECTION_TYPE_CATEGORY = 2;
 	const COLLECTION_TYPE_SHOP = 3;
+	const COLLECTION_TYPE_BRAND = 4;
 	
 	const COLLECTION_LAYOUT1_TYPE = 1;
 	const COLLECTION_LAYOUT2_TYPE = 2;
@@ -25,6 +29,7 @@ class Collections extends MyAppModel{
 	const COLLECTION_LAYOUT4_TYPE = 4;
 	const COLLECTION_LAYOUT5_TYPE = 5;
 	const COLLECTION_LAYOUT6_TYPE = 6;
+	const COLLECTION_LAYOUT7_TYPE = 7;
 	
 	const COLLECTION_LAYOUT1_LIMIT = 4;
 	const COLLECTION_LAYOUT2_LIMIT = 3;
@@ -32,6 +37,7 @@ class Collections extends MyAppModel{
 	const COLLECTION_LAYOUT4_LIMIT = 2;
 	const COLLECTION_LAYOUT5_LIMIT = 4;
 	const COLLECTION_LAYOUT6_LIMIT = 4;
+	const COLLECTION_LAYOUT7_LIMIT = 4;
 	
 	const COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH = 1;
 	const COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW = 2;
@@ -69,6 +75,7 @@ class Collections extends MyAppModel{
 			self::COLLECTION_TYPE_PRODUCT => Labels::getLabel('LBL_Product', $langId),
 			self::COLLECTION_TYPE_CATEGORY => Labels::getLabel('LBL_Category', $langId),
 			self::COLLECTION_TYPE_SHOP => Labels::getLabel('LBL_Shop', $langId),
+			self::COLLECTION_TYPE_BRAND => Labels::getLabel('LBL_Brand', $langId),
 		);
 	}
 	
@@ -85,6 +92,7 @@ class Collections extends MyAppModel{
 			self::COLLECTION_LAYOUT4_TYPE => Labels::getLabel('LBL_Collection_Layout4', $langId),
 			self::COLLECTION_LAYOUT5_TYPE => Labels::getLabel('LBL_Collection_Layout5', $langId),
 			self::COLLECTION_LAYOUT6_TYPE => Labels::getLabel('LBL_Collection_Layout6', $langId),
+			self::COLLECTION_LAYOUT7_TYPE => Labels::getLabel('LBL_Collection_Layout7', $langId),
 		);
 	}
 	
@@ -151,6 +159,26 @@ class Collections extends MyAppModel{
 		}
 		return true; 
 	}
+	
+	public function addUpdateCollectionBrands($collectionId, $brandId)
+    {
+        $brandId = FatUtility::int($brandId);
+        $collectionId = FatUtility::int($collectionId);
+        if (!$brandId || !$collectionId) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            return false;
+        }
+        $record = new TableRecord(static::DB_TBL_COLLECTION_TO_BRANDS);
+        
+        $brandData[static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'collection_id'] = $collectionId;
+        $brandData[static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'brand_id'] = $brandId;
+        $record->assignValues($brandData);
+        if (!$record->addNew(array(), $brandData)) {
+            $this->error = $record->getError();
+            return false;
+        }
+        return true;
+    }
 	
 	public function addUpdateData($data){
 		unset($data['collection_id']);
@@ -243,6 +271,23 @@ class Collections extends MyAppModel{
 		return true;
 	}
 	
+	public function removeCollectionBrands($collectionId, $brandId)
+    {
+        $db = FatApp::getDb();
+        $collection_id = FatUtility::int($collectionId);
+        $brandId = FatUtility::int($brandId);
+        if (!$collectionId || !$brandId) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            ;
+            return false;
+        }
+        if (!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_BRANDS, array('smt' => static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'collection_id = ? AND ' . static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'brand_id = ?', 'vals' => array($collectionId, $brandId)))) {
+            $this->error = $db->getError();
+            return false;
+        }
+        return true;
+    }
+	
 	public function canRecordMarkDelete($collection_id){
 		$srch = static::getSearchObject();
 		$srch->addCondition('collection_deleted', '=', applicationConstants::NO);
@@ -305,4 +350,29 @@ class Collections extends MyAppModel{
 		return $data;
 	}
 	
+	public static function getBrands($collectionId, $langId)
+    {
+        $collectionId = FatUtility::convertToType($collectionId, FatUtility::VAR_INT);
+
+        $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
+        if (!$collectionId || !$langId) {
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            return false;
+        }
+
+        $srch = new SearchBase(static::DB_TBL_COLLECTION_TO_BRANDS);
+        $srch->doNotLimitRecords();
+        $srch->doNotCalculateRecords();
+        $srch->addCondition(static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'collection_id', '=', $collectionId);
+
+        $srch->joinTable(Brand::DB_TBL, 'INNER JOIN', Brand::DB_TBL_PREFIX . 'id = ' . static::DB_TBL_COLLECTION_TO_BRANDS_PREFIX . 'brand_id');
+
+        $srch->joinTable(Brand::DB_LANG_TBL, 'LEFT JOIN', 'lang.brandlang_brand_id = ' . Brand::DB_TBL_PREFIX . 'id AND brandlang_lang_id = ' . $langId, 'lang');
+        $srch->addMultipleFields(array('brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name'));
+        $rs = $srch->getResultSet();
+
+        $db = FatApp::getDb();
+        $data = $db->fetchAll($rs);
+        return $data;
+    }	
 }
