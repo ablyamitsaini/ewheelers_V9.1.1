@@ -203,7 +203,10 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <div class="gap"></div>
               <?php } ?>
               <!-- ] -->
-
+			  <?php if($product['product_upc']!='') { ?>
+				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
+				<div class="gap"></div>
+			  <?php }?>
               <!-- Add To Cart [ -->
               <?php if( $product['in_stock'] ){
 					echo $frmBuyProduct->getFormTag();
