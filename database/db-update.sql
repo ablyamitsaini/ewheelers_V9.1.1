@@ -27,3 +27,6 @@ CREATE TABLE `tbl_collection_to_brands` (
 
 ALTER TABLE `tbl_collection_to_brands`
   ADD PRIMARY KEY (`ctpb_collection_id`,`ctpb_brand_id`);
+  
+  
+ALTER TABLE `tbl_seller_products` ADD UNIQUE( `selprod_user_id`, `selprod_code`);

@@ -94,6 +94,10 @@ trait CustomProducts{
 		$this->set('prodId',$prodId);
 		$this->set('prodCatId',$prodCatId);
 		$this->set('includeEditor', true);
+		$this->_template->addJs('js/jscolor.js');
+		$this->_template->addJs('js/multi-list.js');
+		$this->_template->addCss('css/multi-list.css');
+		$this->_template->addJs('js/jquery.tablednd.js');
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/slick.css');
 		$this->_template->render(); 

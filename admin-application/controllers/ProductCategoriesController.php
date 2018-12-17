@@ -521,7 +521,7 @@ class ProductCategoriesController extends AdminBaseController {
 				
 			}else{
 
-				Message::addErrorMessage($record->getError());
+				Message::addErrorMessage($productCategory->getError());
 				FatUtility::dieJsonError( Message::getHtml() );
 				//$this->set('msg', $record->getError());
 				
