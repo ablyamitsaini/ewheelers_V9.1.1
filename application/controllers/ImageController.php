@@ -447,6 +447,11 @@ class ImageController extends FatController{
 				$h = 61;
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
 			break;
+			case 'COLLECTION_PAGE':
+				$w = 48;
+				$h = 48;
+				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
+			break;
 			default:
 				$h = 118;
 				$w = 276;
@@ -693,6 +698,22 @@ class ImageController extends FatController{
 	
 	public function CategoryCollectionBgImage( $langId = 0, $sizeType = '' ){
 		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, $recordId, 0, $langId );
+		$image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
+
+		switch( strtoupper($sizeType) ){
+			case 'THUMB':
+				$w = 100;
+				$h = 100;
+				AttachedFile::displayImage( $image_name, $w, $h );
+			break;
+			default:
+				AttachedFile::displayOriginalImage( $image_name );
+			break;
+		}
+	}
+	
+	public function BrandCollectionBgImage( $langId = 0, $sizeType = '' ){
+		$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, $recordId, 0, $langId );
 		$image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
 		switch( strtoupper($sizeType) ){

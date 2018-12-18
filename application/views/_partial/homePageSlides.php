@@ -23,7 +23,7 @@
 						break;
 					case applicationConstants::SCREEN_IPAD:
 						$tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_IPAD, $siteLangId)),
-						CONF_IMG_CACHE_TIME, '.jpg').','.'  <1024:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_IPAD, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
+						CONF_IMG_CACHE_TIME, '.jpg').",";
 						break;
 					case applicationConstants::SCREEN_DESKTOP:
 						$desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";

@@ -14,7 +14,6 @@
 							<div class="section section--info clearfix">                         
 								<div class="section__body">
 									<div id="listing">
-										 
 									</div>
 									<span class="gap"></span>
 									<div id="loadMoreBtnDiv"></div>

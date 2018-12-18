@@ -203,7 +203,10 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <div class="gap"></div>
               <?php } ?>
               <!-- ] -->
-
+			  <?php if($product['product_upc']!='') { ?>
+				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
+				<div class="gap"></div>
+			  <?php }?>
               <!-- Add To Cart [ -->
               <?php if( $product['in_stock'] ){
 					echo $frmBuyProduct->getFormTag();
@@ -289,6 +292,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
         <div class="gap"></div>
         <?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
         <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
+		<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]);
+		if( count($productSpecifications)>0 || $youtube_embed_code || $product['product_description']!='' || !empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || !empty($product['selprodComments']) ){ ?>
         <div class="white--bg padding20 product--specifications">
           <div class="cms-editor">
             <?php if( count($productSpecifications)>0 ){?>
@@ -306,9 +311,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             <?php } ?>
             <div class="gap"></div>
 			<?php
-				$youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]);
 				if( $youtube_embed_code || $product['product_description']!=''){
-
 				?>
 				<h2><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h2>
 				<div class="tab_content desc-txt" id="tab1">
@@ -346,6 +349,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
             <?php } ?>
           </div>
         </div>
+		<?php } ?>
         <div class="gap"></div>
         <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
         <div class="white--bg padding20" id="itemRatings">
@@ -376,7 +380,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 								$mobile_url = '<736:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).",";
 								break;
 							case applicationConstants::SCREEN_IPAD:
-								$tablet_url = ' >768:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).','.'  <1024:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).",";
+								$tablet_url = ' >768:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).",";
 								break;
 							case applicationConstants::SCREEN_DESKTOP:
 								$desktop_url = ' >1025:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)).",";

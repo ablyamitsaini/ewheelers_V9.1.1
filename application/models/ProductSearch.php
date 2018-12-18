@@ -254,7 +254,7 @@ class ProductSearch extends SearchBase {
 
 	public function joinSellers(){
 		$this->sellerUserJoined = true;
-		$this->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = seller_user.user_id and seller_user.user_is_supplier = '.applicationConstants::YES, 'seller_user');
+		$this->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = seller_user.user_id and seller_user.user_is_supplier = '.applicationConstants::YES.' AND seller_user.user_deleted = '.applicationConstants::NO, 'seller_user');
 		$this->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = seller_user.user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES, 'seller_user_cred');		
 	}
 

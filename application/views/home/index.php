@@ -100,5 +100,25 @@
 	}
 	/* collection Layout3[ */
 	?>
+	
+	
+	<?php if( isset( $collections[Collections::COLLECTION_LAYOUT7_TYPE] ) ){
+	$haveBgImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, 0, 0, $siteLangId );
+	$bgImageUrl = ($haveBgImage) ? "background-image:url(" . CommonHelper::generateUrl( 'Image', 'BrandCollectionBgImage', array($siteLangId) ) . ")" : '';
+   ?>
+  <section class="trending-bg padd40" style="<?php echo $bgImageUrl; ?>">
+    <div class="container">
+	  <?php
+	 
+		if( isset( $collections[Collections::COLLECTION_LAYOUT7_TYPE] ) ){
+			$this->includeTemplate( '_partial/collection/collection-layout-7.php', array( 'collections' => $collections[Collections::COLLECTION_LAYOUT7_TYPE], 'siteLangId' => $siteLangId,'action'=>$action ),false );
+	    }
+		?>
+    </div>
+  </section>
+  <?php } ?>
+	
+	
+	
   <!--<div class="gap"></div>-->
 </div>

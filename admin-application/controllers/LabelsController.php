@@ -267,10 +267,14 @@ class LabelsController extends AdminBaseController {
 		$firstLineLangArr = $firstLine;
 		$langIndexLangIds = array();
 		foreach( $firstLineLangArr as $key => $langCode ){
+			if (!array_key_exists($langCode, $languages)){
+				Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $this->adminLangId ) );
+				FatUtility::dieJsonError( Message::getHtml() );
+			}
+			
 			$langIndexLangIds[$key] = $languages[$langCode]['language_id'];
 		}
-		//CommonHelper::printArray($langIndexLangIds); die();
-				
+		/* CommonHelper::printArray($langIndexLangIds); die(); */	
 		while( ($line = fgetcsv($csvFilePointer) ) !== FALSE ){
 			if( $line[0] != ''){
 				$labelKey = array_shift($line);

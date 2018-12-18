@@ -16,7 +16,7 @@
   <div class="form--search form--search-popup"> <a class="link__close" href="javascript:void(0)"></a>
     <div class="form__cover"> <?php echo $headerSrchFrm->getFormTag(); ?>
       <div class="select__cover"> <span class="select__value select_value-js"></span> <?php echo $headerSrchFrm->getFieldHTML('category'); ?> </div>  
-	  <div class="field__cover">    <?php echo $headerSrchFrm->getFieldHTML('keyword'); ?> <?php echo $headerSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?> </div>
+	  <div class="field__cover"><div id="autoSuggest"><?php echo $headerSrchFrm->getFieldHTML('keyword'); ?></div> <?php echo $headerSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?> </div>
       </form>
       <?php echo $headerSrchFrm->getExternalJS(); ?> </div>
   </div>

@@ -52,7 +52,7 @@
 		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
 		  <div class="connect">
 		  <?php if ($facebookLogin) { ?>
-		  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('facebook')); ?>" class="link  fb"><i class="svg"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+		  <a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="link  fb"><i class="svg"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 		width="13.5px" height="26px" viewBox="0 0 13.5 26" enable-background="new 0 0 13.5 26" xml:space="preserve">
 			  <path  d="M13.5,0.188C13.078,0.125,11.625,0,9.938,0C6.406,0,3.984,2.156,3.984,6.109v3.406H0v4.625h3.984V26h4.781
 		V14.141h3.969l0.609-4.625H8.766V6.563c0-1.328,0.359-2.25,2.281-2.25H13.5V0.188z"/>
@@ -71,3 +71,55 @@
 		</div>
 	  <?php } ?>
 </div>
+<script>
+/*Facebook Login API JS SDK*/
+
+	function dofacebookInLoginForBuyerpopup()
+	{
+		FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+				//user is authorized
+				getUserData();
+			} else {
+				//user is not authorized
+			}
+		});
+
+		FB.login(function(response) {
+			if (response.authResponse) {
+				//user just authorized your app
+					getUserData();
+			}
+		}, {scope: 'email,public_profile', return_scopes: true});
+	}
+
+	function getUserData()
+	{
+		FB.api('/me?fields=id,name,email, first_name, last_name', function(response) {
+			response['type'] = <?php echo User::USER_TYPE_BUYER; ?>;
+			fcom.updateWithAjax(fcom.makeUrl('GuestUser', 'loginFacebook'), response, function(t) {
+				location.href = t.url;
+			});
+		}, {scope: 'public_profile,email'});
+	}
+
+	window.fbAsyncInit = function() {
+		//SDK loaded, initialize it
+		FB.init({
+			appId      : '<?php echo FatApp::getConfig('CONF_FACEBOOK_APP_ID',FatUtility::VAR_STRING,'') ?>',
+			xfbml      : true,
+			version    : 'v2.2'
+		});
+	};
+
+	//load the JavaScript SDK
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "https://connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+	/*Facebook Login API JS SDK*/
+</script>

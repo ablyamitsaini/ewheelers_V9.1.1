@@ -5,7 +5,6 @@ $catTab = 1; ?>
 
 
 <?php foreach($listCategories as $faqCat){ ?>
-	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<div class="browsed-box">
 				  <div class="category-q"><?php echo $faqCat['faqcat_name']; ?></div>
 				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn--link selectedCat"><i class="svg-icn"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -22,5 +21,4 @@ $catTab = 1; ?>
 	c0-0.161,0.125-0.286,0.286-0.286h6.285c0.16,0,0.285,0.125,0.285,0.286V7.712z"/>
 				  </svg> </i> <?php echo $faqCat['faq_count']; ?> <?php echo Labels::getLabel( 'LBL_Questions', $siteLangId)?></a> <br class="clear">
 				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn btn--white btn--block ripplelink selectedCat"><?php echo Labels::getLabel( 'LBL_View_All_Questions', $siteLangId)?></a> </div>
-	</div>
 <?php } } ?>

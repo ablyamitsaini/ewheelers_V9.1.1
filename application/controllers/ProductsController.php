@@ -873,10 +873,14 @@ class ProductsController extends MyAppController {
 
 		/* Current Product option Values[ */
 		$options = SellerProduct::getSellerProductOptions($selprod_id, false);
+		/* CommonHelper::printArray($options); die; */
 		$productSelectedOptionValues = array();
 		$productGroupImages= array();
 		if($options){
 			foreach($options as $op){
+				/* Product UPC code [ */
+					$product['product_upc'] = UpcCode::getUpcCode( $product['product_id'] , $op['selprodoption_optionvalue_id'] );
+				/* ] */
 				$images = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_PRODUCT_IMAGE, $product['product_id'], $op['selprodoption_optionvalue_id'], $this->siteLangId,true,'',$allowed_images );
 				if( $images ){
 					$productImagesArr += $images;
@@ -1903,6 +1907,9 @@ class ProductsController extends MyAppController {
 		$productGroupImages= array();
 		if($options){
 			foreach($options as $op){
+				/* Product UPC code [ */
+					/* $product['product_upc'] = UpcCode::getUpcCode( $product['product_id'] , $op['selprodoption_optionvalue_id'] ); */
+				/* ] */
 				$images = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_PRODUCT_IMAGE, $product['product_id'], $op['selprodoption_optionvalue_id'], $this->siteLangId,true,'',$allowed_images );
 				if( $images ){
 					$productImagesArr += $images;

@@ -12,7 +12,7 @@
           <h3><?php echo Labels::getLabel('LBL_All_Top_Brands',$siteLangId);?></h3>
           <div class="cell-container">
             <div class="panel panel--centered">
-				<?php /* CommonHelper::printArray($allBrands); die; */ if(!empty($allBrands)){ $firstCharacter = '';
+				<?php if(!empty($allBrands)){ $firstCharacter = '';
 						foreach($allBrands as $brands){
 						
 						/* if($layoutDirection == 'rtl'){
