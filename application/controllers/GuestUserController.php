@@ -942,8 +942,10 @@ class GuestUserController extends MyAppController {
 	public function registrationSuccess() {
 		if( FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION',FatUtility::VAR_INT,1) ){
 			$this->set('registrationMsg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP_EMAIL_VERIFICATION_PENDING",$this->siteLangId));
-		}else{
+		}elseif( FatApp::getConfig('CONF_ADMIN_APPROVAL_REGISTRATION',FatUtility::VAR_INT,1) ){
 			$this->set('registrationMsg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP_ADMIN_APPROVAL_PENDING",$this->siteLangId));
+		}else{
+			$this->set('registrationMsg', Labels::getLabel("MSG_REGISTERED_SUCCESSFULLY",$this->siteLangId));
 		}
 		
 		$this->_template->render();

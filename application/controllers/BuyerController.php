@@ -1462,6 +1462,7 @@ class BuyerController extends LoggedUserController {
 		
 		
 		Message::addMessage(Labels::getLabel('MSG_Your_return_request_submitted', $this->siteLangId));
+		FatUtility::dieJsonSuccess(Message::getHtml());
 		$this->_template->render( false, false, 'json-success.php' );
 	}
 	
