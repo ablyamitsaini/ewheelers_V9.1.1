@@ -771,7 +771,7 @@ class SellerProductsController extends AdminBaseController {
 		$pagesize = 10;
 		$post = FatApp::getPostedData();
 		$srch = new SearchBase(User::DB_TBL,'tu');
-		$srch->joinTable('tbl_shops', 'LEFT JOIN', 'tu.user_id=ts.shop_user_id', 'ts');
+		$srch->joinTable('tbl_shops', 'INNER JOIN', 'tu.user_id=ts.shop_user_id', 'ts');
 		$srch->addOrder('user_name','asc');
 		if ( !empty($post['keyword']) ) {
 			$cnd = $srch->addCondition('user_name', 'LIKE', '%' . $post['keyword'] . '%');
