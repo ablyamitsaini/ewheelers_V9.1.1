@@ -1,7 +1,7 @@
 window.recordCount = 0;
 $(document).ready(function(){
 	$(document).delegate('.acc_ctrl','click',function(e){
-		$(".questions-section").hide();
+		/* $(".questions-section").hide(); */
 		e.preventDefault();
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');

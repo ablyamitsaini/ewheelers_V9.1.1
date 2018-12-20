@@ -53,6 +53,7 @@ class AttachedFile extends MyAppModel {
 	const FILETYPE_AFFILIATE_PAGE_SLOGAN_BG_IMAGE = 47;
 	const FILETYPE_CUSTOM_PRODUCT_IMAGE = 48;
 	const FILETYPE_INVOICE_LOGO = 49;
+	const FILETYPE_BRAND_COLLECTION_BG_IMAGE = 50;
 	const FILETYPE_PRODCAT_IMAGE_PATH = 'category/';
 	const FILETYPE_PRODUCT_IMAGE_PATH = 'product/';
 	const FILETYPE_BLOG_POST_IMAGE_PATH = 'blog-post/';
@@ -579,7 +580,7 @@ class AttachedFile extends MyAppModel {
 		$record_subid = FatUtility::int($record_subid);
 		$langId = FatUtility::int($langId);
 		
-		if( !in_array($fileType , array(AttachedFile::FILETYPE_ADMIN_LOGO , AttachedFile::FILETYPE_FRONT_LOGO , AttachedFile::FILETYPE_EMAIL_LOGO , AttachedFile::FILETYPE_FAVICON ,  AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE,  AttachedFile::FILETYPE_PAYMENT_PAGE_LOGO,  AttachedFile::FILETYPE_WATERMARK_IMAGE,  AttachedFile::FILETYPE_APPLE_TOUCH_ICON,  AttachedFile::FILETYPE_MOBILE_LOGO,  AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, AttachedFile::FILETYPE_INVOICE_LOGO )) && ( !$fileType || !$recordId ) ) {
+		if( !in_array($fileType , array(AttachedFile::FILETYPE_ADMIN_LOGO , AttachedFile::FILETYPE_FRONT_LOGO , AttachedFile::FILETYPE_EMAIL_LOGO , AttachedFile::FILETYPE_FAVICON ,  AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE,  AttachedFile::FILETYPE_PAYMENT_PAGE_LOGO,  AttachedFile::FILETYPE_WATERMARK_IMAGE,  AttachedFile::FILETYPE_APPLE_TOUCH_ICON,  AttachedFile::FILETYPE_MOBILE_LOGO,  AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE,  AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, AttachedFile::FILETYPE_INVOICE_LOGO )) && ( !$fileType || !$recordId ) ) {
 			$this->error = Labels::getLabel('MSG_INVALID_REQUEST',$this->commonLangId);
 			return false;
 		}

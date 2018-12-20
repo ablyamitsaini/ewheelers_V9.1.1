@@ -1085,6 +1085,7 @@ class CheckoutController extends MyAppController{
 		$orderObj = new Orders();
 		if( $orderObj->addUpdateOrder( $orderData ,$this->siteLangId) ){
 			$order_id = $orderObj->getOrderId();
+			$_SESSION['order_id'] = $order_id;			
 		} else {			
 			Message::addErrorMessage($orderObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
@@ -1615,8 +1616,8 @@ class CheckoutController extends MyAppController{
 			FatUtility::dieWithError( Message::getHtml() );
 		} */
 		$loggedUserId = UserAuthentication::getLoggedUserId();
-		
-		$couponsList = DiscountCoupons::getValidCoupons( $loggedUserId, $this->siteLangId );
+		$orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+		$couponsList = DiscountCoupons::getValidCoupons( $loggedUserId, $this->siteLangId,'',$orderId );
 		$this->set( 'couponsList', $couponsList );
 		
 		$PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId); 

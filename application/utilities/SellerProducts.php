@@ -264,8 +264,9 @@ trait SellerProducts{
 		
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			Message::addErrorMessage( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
-			FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
+			FatUtility::dieWithError( Message::getHtml() );	
 		}
+		
 		if( !$selprod_product_id ){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request',$this->siteLangId));
 			FatUtility::dieWithError( Message::getHtml() );		
@@ -278,14 +279,14 @@ trait SellerProducts{
 		}
 		if( ($productRow['product_seller_id'] != UserAuthentication::getLoggedUserId()) && $productRow['product_added_by_admin_id']==0 ){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request',$this->siteLangId));
-			FatApp::redirectUser($_SESSION['referer_page_url']);
+			FatUtility::dieWithError( Message::getHtml() );	
 		}
 		$frm = $this->getSellerProductForm( $selprod_product_id );
 		$post = $frm->getFormDataFromArray( $post );
 		
 		if ( false === $post ) {
 			Message::addErrorMessage(current($frm->getValidationErrors()));
-			FatApp::redirectUser($_SESSION['referer_page_url']);		
+			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
 		/* Validate product belongs to current logged seller[ */
@@ -330,7 +331,7 @@ trait SellerProducts{
 
 		if ( !$sellerProdObj->save() ) {
 			Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
-			FatApp::redirectUser($_SESSION['referer_page_url']);				
+			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
@@ -386,7 +387,7 @@ trait SellerProducts{
 		if( $selprod_id ){
 			if( !$sellerProdObj->addUpdateSellerProductOptions( $selprod_id, $options )){
 				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
-				FatApp::redirectUser($_SESSION['referer_page_url']);				
+				FatUtility::dieWithError( Message::getHtml() );				
 			}
 		}
 		/* ] */

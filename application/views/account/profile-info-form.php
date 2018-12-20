@@ -9,7 +9,7 @@ $usernameFld = $frm->getField('credential_username');
 $usernameFld->setFieldTagAttribute('disabled','disabled');
 
 $userDobFld = $frm->getField('user_dob');
-if(!empty($data['user_dob']) && strtotime($data['user_dob']) > 0 ){
+if(!empty($data['user_dob']) && $data['user_dob'] != '0000-00-00'){
 	$userDobFld->setFieldTagAttribute('disabled','disabled');
 }
 

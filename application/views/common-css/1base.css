@@ -6504,3 +6504,6 @@ html {
 	margin: 10px;
 	display: none;
 }
+.dragHandle {
+    cursor: move;
+}

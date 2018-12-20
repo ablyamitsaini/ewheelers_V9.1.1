@@ -1,18 +1,22 @@
 $(document).ready(function() {
 	
 	/* for navigation drop down */    
+		var isOnDiv = false;
+		$('.navchild').mouseenter(function(){isOnDiv=true;});
+		$('.navchild').mouseleave(function(){isOnDiv=false;});
+
 		$('.navchild').hover(function() {
-            var el = $("body");
-            if($(window).width()>1025){
-				/* if($(this).hasClass('active')){
-					$('.navchild').removeClass('active');
-					el.removeClass('nav_show');
-				} */	 
-            $(this).toggleClass("active");
-            el.toggleClass("nav_show");
-            }    
-            return false; 
-        });
+			var el = $("body");
+			if(isOnDiv === true){
+				$('.navchild').removeClass('active');
+				el.removeClass('nav_show'); 
+			}
+		   if($(window).width()>1025){ 
+				$(this).toggleClass("active");
+				el.toggleClass("nav_show");
+			}    
+		   return false; 
+	   });
 			
 		
 		/* for mobile navigations */	

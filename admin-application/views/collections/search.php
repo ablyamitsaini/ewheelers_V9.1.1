@@ -82,6 +82,13 @@ foreach ( $arr_listing as $sn => $row ){
 						'title'=>Labels::getLabel('LBL_Shops',$adminLangId),"onclick"=>"collectionShopForm(".$row['collection_id'].")"),Labels::getLabel('LBL_Shops',$adminLangId), 
 					true);
 				}
+				
+				if( $row['collection_type'] == Collections::COLLECTION_TYPE_BRAND ){
+					$innerLiCollectionTypeBrand=$innerUl->appendElement('li');					
+					$innerLiCollectionTypeBrand->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 
+						'title'=>Labels::getLabel('LBL_Brands',$adminLangId),"onclick"=>"collectionBrandsForm(".$row['collection_id'].")"),Labels::getLabel('LBL_Brands',$adminLangId), 
+					true);
+				}
 
 				$innerLiDelete=$innerUl->appendElement('li');					
 				$innerLiDelete->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 

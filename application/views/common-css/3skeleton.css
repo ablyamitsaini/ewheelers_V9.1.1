@@ -352,15 +352,17 @@ body {
 .form--search-popup .search-dropdown-menu {}
 
 .form--search-popup .search-dropdown-menu {
-  border-radius: 2px;
-  margin: 10px;
-  background: #ccc;
-  background: -webkit-gradient(linear, left top, right bottom, from(white), to(hsla(0, 0%, 100%, .8)));
-  background: linear-gradient(to bottom right, white, hsla(0, 0%, 100%, .8));
-  border: 1px solid rgba(0, 0, 0, .3);
-  -webkit-box-shadow: .05em .2em .6em rgba(0, 0, 0, .2);
-  box-shadow: .05em .2em .6em rgba(0, 0, 0, .2);
-  text-shadow: none;
+  border: none;
+  box-shadow: none;
+  /*border-radius: 2px;
+	margin: 10px;
+	background: #ccc;
+	background: -webkit-gradient(linear, left top, right bottom, from(white), to(hsla(0, 0%, 100%, .8)));
+	background: linear-gradient(to bottom right, white, hsla(0, 0%, 100%, .8));
+	border: 1px solid rgba(0, 0, 0, .3);
+	-webkit-box-shadow: .05em .2em .6em rgba(0, 0, 0, .2);
+	box-shadow: .05em .2em .6em rgba(0, 0, 0, .2);
+	text-shadow: none;*/
 }
 
 .form--search-popup .autocomplete[hidden],
@@ -1082,7 +1084,7 @@ body {
 .section--pagebar .cell__left .avtar {
   border: 1px solid #eee;
   padding: 5px;
-  border-radius: 0; margin-right: 10px;
+  border-radius: 0;
 }
 
 .section--pagebar .cell__left .avtar img {

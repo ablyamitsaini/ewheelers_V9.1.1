@@ -337,6 +337,17 @@ class SellerOrdersController extends AdminBaseController {
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
 		
+		$oCancelRequestSrch = new OrderCancelRequestSearch();
+		$oCancelRequestSrch->doNotCalculateRecords();
+		$oCancelRequestSrch->doNotLimitRecords();
+		$oCancelRequestSrch->addCondition( 'ocrequest_op_id', '=', $op_id );
+		$oCancelRequestSrch->addCondition( 'ocrequest_status', '!=', OrderCancelRequest::CANCELLATION_REQUEST_STATUS_DECLINED );
+		$oCancelRequestRs = $oCancelRequestSrch->getResultSet();
+		if( FatApp::getDb()->fetch($oCancelRequestRs) ){
+			Message::addErrorMessage(Labels::getLabel('MSG_Cancel_request_is_submitted_for_this_order',$this->adminLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+		
 		$orderObj = new Orders();
 		
 		$srch = new OrderProductSearch( $this->adminLangId, true, true );

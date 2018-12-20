@@ -136,6 +136,16 @@ class CollectionsController extends AdminBaseController {
 		$this->_template->render(false, false);		
 	}
 	
+	public function collectionBrandsForm( $collectionId )
+	{
+		$this->objPrivilege->canViewCollections();
+		$collectionId =  FatUtility::int($collectionId);
+		$frm = $this->getCollectionBrandsForm($collectionId);
+		$this->set('collection_id', $collectionId);
+		$this->set('frm', $frm);
+		$this->_template->render(false, false);		
+	}
+	
 	public function setup(){
 		$this->objPrivilege->canEditCollections();
 		$frm = $this->getForm();
@@ -320,6 +330,7 @@ class CollectionsController extends AdminBaseController {
 		$frm->addTextbox(Labels::getLabel('LBL_Categories',$this->adminLangId), 'categories');
 		return $frm;
 	}
+	
 	private function getCollectionShopForm( $collectionId = 0 ){
 		$this->objPrivilege->canViewCollections();
 		$collectionId =  FatUtility::int($collectionId);
@@ -327,6 +338,20 @@ class CollectionsController extends AdminBaseController {
 		$frm = new Form('frmCollectionShop');		
 		$frm->addHiddenField( '', 'collection_id', $collectionId );
 		$frm->addTextbox(Labels::getLabel('LBL_Shops',$this->adminLangId), 'shops');
+		return $frm;
+	}
+	
+	private function getCollectionBrandsForm( $collectionId = 0 )
+	{
+		$this->objPrivilege->canViewCollections();
+		$collectionId =  FatUtility::int($collectionId);
+		
+		$frm = new Form('frmCollectionBrands');
+		$fld = $frm->addHiddenField( '', 'collection_id', $collectionId );
+		
+		$fld->requirements()->setInt();
+		$fld->requirements()->setIntPositive();
+		$frm->addTextbox(Labels::getLabel('LBL_Brands',$this->adminLangId), 'brands');
 		return $frm;
 	}
 	
@@ -469,6 +494,66 @@ class CollectionsController extends AdminBaseController {
 		$collectionShops = Collections::getShops( $collection_id, $this->adminLangId );
 		$this->set( 'collectionshops', $collectionShops );
 		$this->set( 'collection_id', $collection_id );
+		$this->_template->render(false, false);
+	}
+	
+	function updateCollectionBrands()
+	{
+		$this->objPrivilege->canEditCollections();
+		$post = FatApp::getPostedData();
+		if ( false === $post ) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		
+		$collectionId = FatUtility::int($post['collection_id']);
+		$brandId = FatUtility::int($post['brand_id']);
+		if( !$collectionId || !$brandId ){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request',$this->adminLangId));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		$collectionObj = new Collections($collectionId);
+		if( !$collectionObj->addUpdateCollectionBrands($collectionId, $brandId ) ){
+			Message::addErrorMessage( Labels::getLabel($collectionObj->getError(),$this->adminLangId) );
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		$this->set('msg',Labels::getLabel('MSG_Record_Updated_Successfully',$this->adminLangId));
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
+	function removeCollectionBrand(){
+		$this->objPrivilege->canEditCollections();
+		$post = FatApp::getPostedData();
+		if ( false === $post ) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		$collectionId = FatUtility::int($post['collection_id']);
+		$brandId = FatUtility::int($post['brand_id']);
+		if( 1 > $collectionId || 1 > $brandId ){
+			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request',$this->adminLangId));
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		$collectionObj = new Collections();
+		if( !$collectionObj->removeCollectionBrands( $collectionId, $brandId ) ){
+			Message::addErrorMessage( Labels::getLabel($collectionObj->getError(),$this->adminLangId) );
+			FatUtility::dieWithError(Message::getHtml());
+		}
+		$this->set('msg',Labels::getLabel('MSG_Brand_Removed_Successfully',$this->adminLangId));
+		$this->_template->render(false, false, 'json-success.php');
+	}
+	
+	function collectionBrands( $collectionId )
+	{
+		$this->objPrivilege->canViewCollections();
+		
+		if(1 > $collectionId){
+			FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request',$this->adminLangId));
+		}
+		
+		$collectionBrands = Collections::getBrands( $collectionId, $this->adminLangId );
+		$this->set( 'collectionBrands', $collectionBrands );
+		$this->set( 'collectionId', $collectionId );
 		$this->_template->render(false, false);
 	}
 
@@ -766,6 +851,10 @@ class CollectionsController extends AdminBaseController {
 								),
 						Collections::COLLECTION_TYPE_SHOP => array(
 								Collections::COLLECTION_LAYOUT4_TYPE => Labels::getLabel('LBL_Collection_Layout4', $this->adminLangId),
+								
+								),
+						Collections::COLLECTION_TYPE_BRAND => array(
+								Collections::COLLECTION_LAYOUT7_TYPE => Labels::getLabel('LBL_Collection_Layout7', $this->adminLangId),
 								
 								)
 						);

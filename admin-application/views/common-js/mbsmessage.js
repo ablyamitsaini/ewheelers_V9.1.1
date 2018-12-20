@@ -6,14 +6,15 @@
 	};
 	$.extend($.mbsmessage, {
 		settings:{
-			closeimage:siteConstants.webroot + 'img/mbsmessage/close.gif',
 			leftimage:siteConstants.webroot + 'img/mbsmessage/left.png',
 			rightimage:siteConstants.webroot + 'img/mbsmessage/right.png',
 			mbshtml: '\
-			<div id="mbsmessage" class="alert alert--positioned-bottom record-scroll"> \
-			<div class="close"></div> \
-			<div class="content">Content</div> \
-			</div>'
+				<div id="mbsmessage" class="alert alert--positioned-bottom-center alert--positioned-small "> \
+				<div class="close"></div> \
+				<div>\
+				<div class="content">Content</div> \
+				</div> \
+				</div>'
 		},
 		loading: function(){
 			initialize();
@@ -21,12 +22,15 @@
 		},
 		fillMbsmessage:function(data, cls){
 			if(cls){
+				
 				 $('#mbsmessage').removeClass('alert--process');
 				 $('#mbsmessage').removeClass('alert--danger');
 				 $('#mbsmessage').removeClass('alert--success');
+				 $('#mbsmessage').removeClass('alert--info');
 			
 				 $('#mbsmessage').addClass(cls);
 			}
+			
 			$('#mbsmessage .content').html(data);
 			$('#mbsmessage').fadeIn();
 			//$('#mbsmessage').css({top:10, left:10});
@@ -74,8 +78,9 @@
 		preload[2].src=$.mbsmessage.settings.rightimage;
 		$('#mbsmessage .left').html('<img src="' + $.mbsmessage.settings.leftimage + '" />');
 		$('#mbsmessage .right').html('<img src="' + $.mbsmessage.settings.rightimage + '" />');
+		//$('#mbsmessage .close').html('<img src="' + $.mbsmessage.settings.closeimage + '" />');
 		$('#mbsmessage .close').click($.mbsmessage.close);
-		/* $('#mbsmessage .close').attr({src:$.mbsmessage.settings.closeimage}); */
+		$('#mbsmessage .close').attr({src:$.mbsmessage.settings.closeimage});
 		
 	}
 	

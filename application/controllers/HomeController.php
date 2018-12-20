@@ -64,7 +64,8 @@ class HomeController extends MyAppController {
 				//$collectionObj->doNotLimitRecords();
 				
 				$shopSearchObj = new ShopSearch( $this->siteLangId );
-				$shopSearchObj ->setDefinedCriteria($this->siteLangId);
+				$shopSearchObj->setDefinedCriteria($this->siteLangId);
+				$brandSearchObj = Brand::getSearchObject($this->siteLangId, true, true);
 				
 				foreach( $collectionsDbArr as $collection_id => $collection ){
 					if(!$collection['collection_primary_records'])
@@ -178,6 +179,32 @@ class HomeController extends MyAppController {
 							} 
 							$rs = $tempObj->getResultSet();
 							unset( $tempObj );
+						break;
+						case Collections::COLLECTION_TYPE_BRAND:
+							$tempObj = clone $collectionObj;
+							$tempObj->addCondition('collection_id', '=', $collection_id);
+							$tempObj->joinCollectionBrands($this->siteLangId);
+							$tempObj->addMultipleFields(array('ctpb_brand_id'));
+							$tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
+							$tempObj->setPageSize($collection['collection_primary_records']);
+							$rs = $tempObj->getResultSet();
+
+							$brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
+							
+							unset($tempObj);
+							if (empty($brandIds)) {
+								continue;
+							}
+
+							/* fetch Brand data[ */
+							$brandSearchTempObj = clone $brandSearchObj;
+							$brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
+							$rs = $brandSearchTempObj->getResultSet();
+							/* ] */
+
+							$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+							$collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
+							unset($brandSearchTempObj);
 						break;
 					}
 				}

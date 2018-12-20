@@ -60,6 +60,14 @@
 								</a>
 							</div>
 						</div>
+						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+							<div class="shop-template fixed-height-div">
+								<a rel="facebox" onClick="displayImageInFacebox('<?php echo CommonHelper::generateFullUrl(); ?><?php echo CONF_WEBROOT_FRONT_URL; ?>images/collection_layouts/layout-6.jpg');" href="javascript:void(0)">
+									<figure class="thumb--square"><img width="400px;" src="<?php echo CONF_WEBROOT_URL; ?>images/collection_layouts/layout-6.jpg" /></figure>
+									<p><?php echo Labels::getLabel('LBL_Layout_7',$adminLangId);?></p>
+								</a>
+							</div>
+						</div>
 					</div>
 				</section>
 			</div>

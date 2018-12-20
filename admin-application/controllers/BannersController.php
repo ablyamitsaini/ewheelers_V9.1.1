@@ -527,7 +527,7 @@ class BannersController extends AdminBaseController {
 		$fileHandlerObj = new AttachedFile();
 		
 		if(!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'],AttachedFile::FILETYPE_BANNER, $banner_id, 0,
-		$_FILES['file']['name'], -1, true,$lang_id,$banner_screen)
+		$_FILES['file']['name'], -1, true,$lang_id,'',$banner_screen)
 		){
 			FatUtility::dieJsonError( $fileHandlerObj->getError() );
 		}

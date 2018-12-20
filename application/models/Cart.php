@@ -10,6 +10,7 @@ class Cart extends FatModel {
 	const TYPE_SUBSCRIPTION = 2;
 	public function __construct( $user_id = 0, $langId = 0) {
 		parent::__construct();
+		
 		$user_id = FatUtility::int($user_id);
 		$langId = FatUtility::int($langId);
 		
@@ -18,6 +19,7 @@ class Cart extends FatModel {
 			$this->cart_lang_id = CommonHelper::getLangId();	
 		}
 		
+		$this->cart_id = session_id();
 		$this->cart_user_id = session_id();
 		if ( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() || ( $user_id > 0 ) ){			
 			if ( $user_id > 0 ){
@@ -31,8 +33,13 @@ class Cart extends FatModel {
 		$srch->addCondition('usercart_user_id', '=', $this->cart_user_id );
 		$srch->addCondition('usercart_type', '=',CART::TYPE_PRODUCT);
 		$rs = $srch->getResultSet();
-		if( $row = FatApp::getDb()->fetch($rs) ){
+		$this->cartSameSessionUser = true;
+		if( $row = FatApp::getDb()->fetch($rs) ){		
 			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );
+			if($row['usercart_last_session_id']!= $this->cart_id){
+				$this->cartSameSessionUser = false;				
+			}
+			//CommonHelper::printArray($this->SYSTEM_ARR['cart']); exit;
 			if( isset($this->SYSTEM_ARR['cart']['shopping_cart']) ){
 				$this->SYSTEM_ARR['shopping_cart'] = $this->SYSTEM_ARR['cart']['shopping_cart'];
 				unset($this->SYSTEM_ARR['cart']['shopping_cart']);
@@ -45,6 +52,12 @@ class Cart extends FatModel {
 		if( !isset($this->SYSTEM_ARR['shopping_cart']) || !is_array($this->SYSTEM_ARR['shopping_cart']) ){
 			$this->SYSTEM_ARR['shopping_cart'] = array();
 		}
+		//echo $_SESSION['shopping_cart']["order_id"];
+		/* if(!$this->cartSameSessionUser){
+		//unset($this->SYSTEM_ARR['cart']['discount_coupon']);
+			$this->removeCartDiscountCoupon();
+			$this->removeUsedRewardPoints();
+		} */
 	}
 	
 	public static function getCartKeyPrefixArr(){
@@ -345,7 +358,7 @@ class Cart extends FatModel {
 		$prodSrch->addCondition('selprod_id', '=', $selprod_id );
 		$prodSrch->addMultipleFields(array( 'product_id', 'product_type', 'product_length', 'product_width', 'product_height','product_ship_free' ,
 		'product_dimension_unit', 'product_weight', 'product_weight_unit', 
-		'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock',
+		'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_min_order_qty',
 		'special_price_found', 'theprice', 'shop_id', 'shop_free_ship_upto',
 		'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled'));
 		
@@ -494,6 +507,16 @@ class Cart extends FatModel {
 			if( is_array($cartProducts) ){
 				foreach($cartProducts as $cartKey => $product){
 					if( md5($product['key']) == $key ){
+						
+						/* minimum quantity check[ */
+						$minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
+						if( $quantity < $minimum_quantity ){
+							$this->warning = Labels::getLabel('LBL_Please_add_minimum',$this->cart_lang_id). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($product['product_name']);
+							break;
+						}
+						/* ] */
+						
+						
 						$tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
 						$availableStock = $cartProducts[$cartKey]['selprod_stock'] - $tempHoldStock;
 						$userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'],$cart_user_id,0,true);
@@ -771,7 +794,7 @@ class Cart extends FatModel {
 		return $cartSummary;
 	}
 	
-	public function getCouponDiscounts(){
+	public function getCouponDiscounts(){ 
 		$couponObj = new DiscountCoupons();
 		if( !self::getCartDiscountCoupon() ){ return false; }
 		$couponInfo = $couponObj->getValidCoupons( $this->cart_user_id, $this->cart_lang_id, self::getCartDiscountCoupon() );
@@ -930,6 +953,7 @@ class Cart extends FatModel {
 			
 			$labelArr = array(
 				'coupon_label'=>$couponInfo["coupon_title"],
+				'coupon_id'=>$couponInfo["coupon_id"],
 				'coupon_discount_in_percent'=>$couponInfo["coupon_discount_in_percent"],
 				'max_discount_value' =>$couponInfo["coupon_max_discount_value"] 
 			);
@@ -1093,7 +1117,7 @@ class Cart extends FatModel {
 	
 	public function updateCartDiscountCoupon($val) {
 		$this->SYSTEM_ARR['shopping_cart']['discount_coupon'] = $val;
-		$this->updateUserCart();
+		$this->updateUserCart(); 
 		return true;
 	}
 	
@@ -1116,21 +1140,29 @@ class Cart extends FatModel {
 				FatApp::getDb()->deleteRecords( DiscountCoupons::DB_TBL_COUPON_HOLD, array( 'smt' => 'couponhold_coupon_id = ? AND couponhold_user_id = ?', 'vals'=> array( $couponRow['coupon_id'], $loggedUserId ) ) );
 			}
 		}
+		
+		$orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+		if($orderId != ''){
+			FatApp::getDb()->deleteRecords( DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, array( 'smt' => 'ochold_order_id = ?', 'vals'=> array( $orderId ) ) );
+		}
+		
 		/* ] */
 		
 		$this->updateUserCart();
 		return true;
 	}
 	
-	public function updateCartUseRewardPoints($val){
+	public function updateCartUseRewardPoints($val){		
 		$this->SYSTEM_ARR['shopping_cart']['reward_points'] = $val;
 		$this->updateUserCart();
 		return true;
 	}
 	
 	public function removeUsedRewardPoints(){
-		unset($this->SYSTEM_ARR['shopping_cart']['reward_points']);
-		$this->updateUserCart();
+		if(array_key_exists('reward_points',$this->SYSTEM_ARR['shopping_cart'])){
+			unset($this->SYSTEM_ARR['shopping_cart']['reward_points']);
+			$this->updateUserCart();
+		}
 		return true;
 	}
 	
@@ -1158,8 +1190,8 @@ class Cart extends FatModel {
 				$cart_arr["shopping_cart"] = $this->SYSTEM_ARR['shopping_cart'];
 			}
 			$cart_arr = serialize($cart_arr);
-			$record->assignValues( array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ) ) );
-			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ), "usercart_sent_reminder" => 0 ) ) ){
+			$record->assignValues( array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ),"usercart_last_used_date" => date ( 'Y-m-d H:i:s' ),"usercart_last_session_id" => $this->cart_id ) );
+			if( !$record->addNew( array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date ( 'Y-m-d H:i:s' ),"usercart_last_used_date" => date ( 'Y-m-d H:i:s' ),"usercart_last_session_id" => $this->cart_id, "usercart_sent_reminder" => 0 ) ) ){
 				Message::addErrorMessage( $record->getError() );
 				throw new Exception('');
 			}
@@ -1463,6 +1495,14 @@ class Cart extends FatModel {
 			}
 		}
 		return $sellerPrice;
+	}
+	
+	public function getSelprodIdByKey($key){
+		$keyDecoded = unserialize( base64_decode($key) );
+		if( strpos($keyDecoded, static::CART_KEY_PREFIX_PRODUCT ) !== FALSE ){
+			$selprod_id = FatUtility::int(str_replace( static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded ));
+			return $selprod_id;
+		}
 	}
 
 }

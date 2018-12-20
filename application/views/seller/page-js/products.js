@@ -32,10 +32,14 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 	};
 	
 	loadSellerProducts = function(frm){
-		sellerProducts($( frm.product_id ).val());
+		sellerProducts($( frm.product_id ).val(),0);
 	};
 	
-	sellerProducts = function(product_id){
+	sellerProducts = function(product_id, page){
+		if(typeof page!==undefined && page == 1){ 
+			var frm = document.frmSearch;		
+			$(frm.page).val(page);
+		}
 		$('#listing').html(fcom.getLoader());
 		/* if product id is not passed, then it will become or will fetch custom products of that seller. */
 		if( typeof product_id == undefined || product_id == null ){
@@ -115,7 +119,9 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 	
 	clearSearch = function(){
 		document.frmSearch.reset();
-		loadSellerProducts(document.frmSearchSellerProducts);
+		var frm = document.frmSearch;		
+		$(frm.page).val(1);
+		loadSellerProducts(document.frmSearch);		
 	};
 	
 })();	

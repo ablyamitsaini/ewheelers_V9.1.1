@@ -41,4 +41,5 @@
 .pic--cell-left{width: 130px;display: inline-block; margin: 0;vertical-align: top;}    
 .pic--cell-left + .item__description{display: inline-block; margin: 0;vertical-align: top;}    
 .table .item__description .item__title{display: block; max-width: 100%;}
+.panel__right--full{ width:100%}
 }

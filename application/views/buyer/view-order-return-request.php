@@ -12,9 +12,9 @@
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
-								<div class="box__head no-print">
+								<div class="box__head">
 									<h4><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h4>
-									<div class="group--btns"><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequests'); ?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+									<div class="group--btns no-print"><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequests'); ?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
 								</div>
 								<div class="box__body">
 									<div class="grids--offset">

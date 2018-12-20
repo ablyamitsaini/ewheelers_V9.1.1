@@ -29,7 +29,7 @@
 	  <h3 class="or"><?php echo Labels::getLabel('LBL_Or', $siteLangId); ?></h3>
 	   <div class="group group--social group--social-onehalf ">
 	  <?php if ($facebookLogin) { ?>
-	  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('facebook')); ?>" class="btn  btn--social fb-color"><i class="fa fa-facebook"></i> <?php echo Labels::getLabel('LBL_Facebook',$siteLangId);?></a>
+	  <a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn  btn--social fb-color"><i class="fa fa-facebook"></i> <?php echo Labels::getLabel('LBL_Facebook',$siteLangId);?></a>
 <?php } if ($googleLogin ) { ?>
 	  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="btn btn--social gp-color"><i class="fa fa-google-plus"></i> <?php echo Labels::getLabel('LBL_Google_Plus',$siteLangId);?></a>
 <?php }?>
@@ -42,3 +42,55 @@
 
 
 	?>
+<script>
+/*Facebook Login API JS SDK*/
+
+	function dofacebookInLoginForBuyerpopup()
+	{
+		FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+				//user is authorized
+				getUserData();
+			} else {
+				//user is not authorized
+			}
+		});
+
+		FB.login(function(response) {
+			if (response.authResponse) {
+				//user just authorized your app
+					getUserData();
+			}
+		}, {scope: 'email,public_profile', return_scopes: true});
+	}
+
+	function getUserData()
+	{
+		FB.api('/me?fields=id,name,email, first_name, last_name', function(response) {
+			response['type'] = <?php echo User::USER_TYPE_BUYER; ?>;
+			fcom.updateWithAjax(fcom.makeUrl('GuestUser', 'loginFacebook'), response, function(t) {
+				location.href = t.url;
+			});
+		}, {scope: 'public_profile,email'});
+	}
+
+	window.fbAsyncInit = function() {
+		//SDK loaded, initialize it
+		FB.init({
+			appId      : '<?php echo FatApp::getConfig('CONF_FACEBOOK_APP_ID',FatUtility::VAR_STRING,'') ?>',
+			xfbml      : true,
+			version    : 'v2.2'
+		});
+	};
+
+	//load the JavaScript SDK
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "https://connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+	/*Facebook Login API JS SDK*/
+</script>

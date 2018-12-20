@@ -126,10 +126,10 @@
 			$('.alert').removeClass('alert--success');
 			$('.alert').removeClass('alert--danger');
 			$('.alert').removeClass('alert--process');
-			if(cls) $('.alert').addClass(cls);
 			
-			$('.alert .sysmsgcontent').html(data);
-			$('.alert').fadeIn();
+			if(cls) $('.system_message').addClass(cls);
+			$('.system_message .content').html(data);
+			$('.system_message').fadeIn();
 			
 			if(!autoClose && CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
 				var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;

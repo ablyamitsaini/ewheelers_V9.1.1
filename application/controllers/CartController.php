@@ -230,14 +230,16 @@ class CartController extends MyAppController{
 		$quantity = isset($post['quantity']) ? FatUtility::int($post['quantity']) : 1;
 		$cartObj = new Cart();
 		if( !$cartObj->update($key, $quantity) ){
-			Message::addMessage($cartObj->getError());
+			Message::addErrorMessage($cartObj->getError());
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		$cartObj->removeUsedRewardPoints();
 		$cartObj->removeProductShippingMethod();
 		
 		if(!empty($cartObj->getWarning())){
-			$this->set( 'msg', $cartObj->getWarning() );
+			Message::addInfo($cartObj->getWarning());
+			FatUtility::dieWithError( Message::getHtml() );
+			/* $this->set( 'msg', $cartObj->getWarning() ); */
 		}else{
 			$this->set( 'msg', Labels::getLabel("MSG_cart_updated_successfully", $this->siteLangId) );
 		}
@@ -356,8 +358,8 @@ class CartController extends MyAppController{
 			FatUtility::dieWithError( Message::getHtml() );
 		}
 		
-		$cartObj = new Cart();
-		if( !$cartObj->updateCartDiscountCoupon($couponInfo['coupon_code']) ){
+		$cartObj = new Cart(); 		
+		if(!$cartObj->updateCartDiscountCoupon($couponInfo['coupon_code']) ){ 
 			Message::addErrorMessage( Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId) );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
@@ -365,6 +367,7 @@ class CartController extends MyAppController{
 		$holdCouponData = array(
 			'couponhold_coupon_id'=>$couponInfo['coupon_id'],
 			'couponhold_user_id'=>UserAuthentication::getLoggedUserId(),
+			/* 'couponhold_usercart_id'=>$cartObj->cart_id, */
 			'couponhold_added_on'=>date('Y-m-d H:i:s'),
 		);
 		

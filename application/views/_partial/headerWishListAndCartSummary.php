@@ -79,3 +79,14 @@ if( UserAuthentication::isUserLogged() ){
   <?php } ?>
 </div>
 <?php } ?>
+
+<script>
+$("document").ready(function(){
+	$('#close-cart-js').click(function(){
+		if($('html').hasClass('cart-is-active')){
+			$('html').removeClass('cart-is-active');
+			$('.cart').toggleClass("cart-is-active");
+		}
+	});
+});
+</script>
