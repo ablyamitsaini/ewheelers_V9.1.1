@@ -128,6 +128,5 @@ echo $frm->getFormTag();  ?>
 </form>
 <?php echo $frm->getExternalJs(); ?>
 <?php if( $showLogInLink ){ ?>
-<p class="text--dark"><?php echo sprintf(Labels::getLabel( 'LBL_Already_to', $siteLangId ), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>
-<a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_in',$siteLangId); ?></a></p>
+<p class="text--dark"><?php echo sprintf(Labels::getLabel( 'LBL_Already_to', $siteLangId ), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?> <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_in',$siteLangId); ?></a></p>
 <?php } ?>

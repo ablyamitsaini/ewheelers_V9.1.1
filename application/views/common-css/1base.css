@@ -534,6 +534,10 @@ select {
 	border-right: none !important;
 }
 
+.noborder--left {
+	border-left: none !important;
+}
+
 .nofocus {
 	border: none !important;
 }
