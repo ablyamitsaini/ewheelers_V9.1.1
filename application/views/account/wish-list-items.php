@@ -4,7 +4,7 @@
 		<h5><?php echo $wishListRow['uwlist_title']; ?><input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" /></h5>
 		<a class="btn btn--primary btn--sm btn--positioned" onClick="searchWishList();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
 	</div>
-	
+
 	<div id="wishListItems" class="row">
 	</div>
 </div>

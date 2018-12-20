@@ -1656,7 +1656,7 @@ select {
 	margin-right: 0;
 }
 
-.column {}
+.column { margin-bottom: 15px;}
 
 .float-left {
 	float: left;
