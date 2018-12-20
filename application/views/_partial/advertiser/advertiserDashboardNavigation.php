@@ -37,7 +37,7 @@ $action = strtolower($action);
 	   <h6><?php echo Labels::getLabel("LBL_Promotions",$siteLangId); ?></h6>
 	   <ul class="links--vertical">
 			<li class="<?php echo ($controller == 'advertiser' && ($action == 'promotions' || $action == 'viewpromotions')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('advertiser','promotions'); ?>"><i class="fa fa-file-text-o"></i><?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?></a></li>
-			<li class="<?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><i class="fa fa-cog"></i><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></a></li>
+			<li class="<?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><i class="fa fa-credit-card-alt"></i><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></a></li>
 	   </ul>
 	</div>
 	<?php } ?>
@@ -45,8 +45,8 @@ $action = strtolower($action);
 	   <h6><?php echo Labels::getLabel('LBL_Profile',$siteLangId);?></h6>
 	   <ul class="links--vertical">
 		   <li class="<?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>"><i class="fa fa-user"></i><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></a></li>
-		   <li class="<?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><i class="fa fa-cog"></i><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></a></li>
-		   <li class="<?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>"><i class="fa fa-cog"></i><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></a></li>
+		   <li class="<?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><i class="fa  fa-unlock-alt"></i><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></a></li>
+		   <li class="<?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>"><i class="fa fa-envelope"></i><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></a></li>
 	   </ul>
     </div>
   </div>
