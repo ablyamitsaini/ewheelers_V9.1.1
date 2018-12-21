@@ -610,7 +610,6 @@
 .post__detail h1, .post__detail h2, .post__detail h3, .post__detail h4, .post__detail h5, .post__detail h6 {
   clear: both;
   margin: 25px 0 10px;
-  text-align: left;
 }
 
 .post__detail p a {
@@ -889,7 +888,7 @@
 }
 
 .comment-element article.comment:not(.comment-content) {
-  padding-left: 95px;
+  /*padding-left: 95px;*/
 }
 
 .comment-element .comment-respond {
@@ -898,7 +897,7 @@
 
 .comment-element .avatar {
   float: left;
-  margin-left: -95px;
+  margin-left: 0;
 }
 
 .comments ul {
@@ -920,26 +919,28 @@
   border-top: 1px solid #ebeaea;
 }
 
+.comment-meta {
+  display: flex;
+}
+
 .comment-element .avatar {
   display: block;
   width: 75px;
   height: 75px;
-  border-radius: 75px;
-  -webkit-border-radius: 75px;
+  border-radius: 50%;
   overflow: hidden;
   float: left;
-  margin-left: -95px;
+  margin: 0 5px;
+}
+
+.comment-time-link {
+  display: block;
+  font-size: 1rem;
 }
 
 .comment-element .comment-author .fn {
   display: block;
-  font-size: 17px;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.comment-element .comment-author .fn:after {
-  content: " says:";
+  font-size: 1rem; margin: 0 5px;
 }
 
 .comment-respond {}
@@ -1653,8 +1654,6 @@ input.query {
   text-transform: uppercase;
   font-size: 0.875em;
 }
-
-
 
 @media(min-width:1600px) {
   .post-data.is-fixed .sticky-element {

@@ -25,6 +25,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		$shippingPrice = CommonHelper::orderProductAmount($val,'SHIPPING');
 		$discountedPrice = CommonHelper::orderProductAmount($val,'DISCOUNT');
 		$taxCharged = $taxCharged + CommonHelper::orderProductAmount($val,'TAX');
+		$productTaxCharged = CommonHelper::orderProductAmount($val,'TAX');
 		$netAmount = $netAmount + CommonHelper::orderProductAmount($val,'NETAMOUNT');
 		$volumeDiscount=  CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT');
 		$volumeDiscountTotal = $volumeDiscountTotal + abs(CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT'));
@@ -53,9 +54,9 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val["op_unit_price"]).'</td>			
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($shippingPrice).'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($volumeDiscount).'</td>	
-			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($taxCharged).'</td>
+			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($productTaxCharged).'</td>
 					
-			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($opCustomerBuyingPrice + $shippingPrice +$taxCharged - abs($volumeDiscount)).'</td>
+			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($opCustomerBuyingPrice + $shippingPrice +$productTaxCharged - abs($volumeDiscount)).'</td>
 		</tr>';	
 	}
 	

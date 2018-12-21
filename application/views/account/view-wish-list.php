@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $randomId = rand( 1, 1000 );
 $frm->setFormTagAttribute('class', 'custom-form setupWishList-Js' );
 $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
@@ -19,7 +19,7 @@ $uwlist_title_fld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_New_
 </div>
 <?php } ?>
 <div class="collection__form form">
-  <?php 
+  <?php
 		echo $frm->getFormTag();
 		echo $frm->getFieldHtml('uwlist_title');
 		echo $frm->getFieldHtml('selprod_id');

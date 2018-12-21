@@ -26,19 +26,16 @@ th {
 }
 
 /*float:right*/
-
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .main-search, .navigations>li, .breadcrumb ul li, .listing--progress>li .grid--left, .listing--progress>li .grid--right, .sub-form input[type="text"], .summary-listing .item-yk-head-category, .pagination li, .rating-f .br-widget, .tabs li {
   float: right;
 }
 
 /*float:left*/
-
 .login-account, .cart, .section-head .section_action, .panel__head .panel__head_action, .panel__head .links--inline, .seller-register-form, .group__info, .cols--group .box__head .group--btns, .cart-footer .cartdetail__footer, .btn-action, .right-info, .sub-form input[type="submit"], .apply--coupon--form input[type="submit"], .widgets-head .action, .cols--group .box__head .link--arrow, .summary-listing .product_price, .accordion_triger span, .media>li .grid--fourth, form.custom-form input[type="submit"], .dashboard-togles .fa, .auto-renew, .statistics__box .value--total {
   float: left;
 }
 
 /* float: none;*/
-
 .align--right, .text-right, .align--right {
   text-align: left !important;
 }
@@ -310,6 +307,7 @@ th {
   right: 0;
 }
 
+/*
 .alert--success {
   background: url(../images/icon--success.svg) no-repeat calc(100% - 15px) 16px #00b6ad;
   background-size: 30px;
@@ -334,6 +332,10 @@ th {
   text-align: right;
   background: url(../images/icon--attention.svg) no-repeat calc(100% - 15px) 15px #f35f5f;
   background-size: 30px;
+}*/
+#mbsmessage .content::before, .system_message .content::before {
+  left: auto;
+  right: -45px;
 }
 
 .box__head .btn {
@@ -398,34 +400,115 @@ input[type="text"].p-cards.meastro {
   left: auto;
   right: 4px;
 }
-.media--details > li .grid--first{ padding-right: 0; padding-left: 20px;}
+
+.media--details>li .grid--first {
+  padding-right: 0;
+  padding-left: 20px;
+}
+
+.post-data .sticky-element {
+  left: auto;
+  right: -90px;
+}
+
+.post-data.is-fixed .sticky-element {
+  left: auto;
+  right: 50%;
+  margin: 0 -700px 0 0;
+}
+
+.search-form {
+  right: auto;
+  left: 0;
+}
+
+.nav-blog {
+  text-align: left;
+}
+
+.likes-count li .icn-like, .likes-count li .icn-msg {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.post__detail {
+  text-align: right;
+}
+
+.nav--toggled>ul>li>a {
+  padding: 12px 10px 12px 40px;
+}
+.nav--toggled > ul > li ul li a{ padding: 10px 15px 10px 40px;}
+.nav--toggled>ul>li .link--toggle {
+  right: auto;
+  left: 0;
+}
+
+@media only screen and (max-width: 1600px) {
+  .post-data.is-fixed .sticky-element {
+    margin: 0;
+  }
+}
+
 @media only screen and (max-width: 1024px) {
   .navs_toggle {
     left: auto;
     right: 8px;
   }
+
   .ftshops .ftshops_item_head_right, .seller-login {
     text-align: right;
   }
+
   .navigations>li {
     float: none;
   }
+
   .fixed .logo {
     margin-right: 45px;
     margin-left: 0;
   }
+
   .main-search {
     float: left;
   }
+
   .form input[type="submit"] {
     margin-right: 0;
   }
+
   .social-networks {
     left: 100px;
   }
+
   .list--vertical li .parents--link:after {
     right: auto;
     left: 10px;
+  }
+
+  .wrapper-menu {
+    right: auto;
+    left: 0;
+  }
+
+  .wrapper-menu.open .line-menu.start {
+    transform: rotate(-90deg) translateX(-5px);
+  }
+
+  .wrapper-menu.open .line-menu.end {
+    transform: rotate(-90deg) translateX(5px);
+  }
+
+  .wrapper-menu .line-menu.start {
+    transform-origin: left;
+  }
+
+  .wrapper-menu .line-menu.end {
+    transform-origin: right;
+  }
+
+  .nav__secondary li a {
+    text-align: inherit;
   }
 }
 
@@ -434,40 +517,54 @@ input[type="text"].p-cards.meastro {
     float: none;
     margin: 5px auto !important;
   }
+
+  .header-blog .logo {
+    flex: 1;
+  }
+
   .f-links h3:after, .f-links h3:before {
     right: auto;
     left: 0;
   }
+
   .cart-footer .cartdetail__footer {
     float: none;
   }
+
   .tabs--scroll:after {
     right: auto;
     left: 0px;
     transform: rotate(-180deg);
   }
+
   .toggle--nav-vertical:after, .toggle--nav-vertical:before {
     right: auto;
     left: 15px;
   }
+
   .panel__head .links--inline {
     float: none;
   }
+
   .cols--group .col__left, .cols--group .col__right {
     clear: none;
     float: none;
     width: auto;
   }
+
   .box--tabled .box__cell:first-child {
     border-left: none;
     padding-left: 0;
   }
+
   .social-networks {
     left: 0;
   }
+
   .tabs li {
     float: none;
   }
+
   .right_panel_head_right {
     float: right;
     text-align: right;

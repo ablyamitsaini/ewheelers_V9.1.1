@@ -757,6 +757,7 @@
 
 /*media*/
 @media only screen and (max-width: 767px) {
+  .column{ margin-bottom: 15px;}
   .hide--mobile {
     display: none !important;
   }

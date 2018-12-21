@@ -5,7 +5,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 <section class="">
 	<div class="container">
 		<div class="row">
-			<div class=" col-lg-9 col-md-8 col-sm-9 col-xs-12">
+			<div class=" col-lg-9 col-md-8 column">
 				<div class="posted-content">
 
 					<div class="posted-media">
@@ -165,7 +165,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 					</div>
 				</div>
 		  </div>
-		  <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
+		  <div class="col-lg-3 col-md-4">
             <?php $this->includeTemplate('_partial/blogSidePanel.php'); ?>
           </div>
           <!--<div class="col-md-3 colums__right">
