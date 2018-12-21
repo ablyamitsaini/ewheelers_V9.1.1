@@ -1,9 +1,9 @@
 <?php 
 defined('SYSTEM_INIT') or die('Invalid Usage.'); 
-$frmSearch->setFormTagAttribute ( 'class', 'web_form last_td_nowrap' );
+/* $frmSearch->setFormTagAttribute ( 'class', 'web_form last_td_nowrap' );
 $frmSearch->setFormTagAttribute ( 'onsubmit', 'searchSlides(this); return(false);' );
 $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
-$frmSearch->developerTags['fld_default_col'] = 4;
+$frmSearch->developerTags['fld_default_col'] = 4; */
 
 /* $btn_clear = $frmSearch->getField('btn_clear');
 $btn_clear->addFieldTagAttribute('onClick', 'clearSearch()'); */
@@ -23,11 +23,11 @@ $btn_clear->addFieldTagAttribute('onClick', 'clearSearch()'); */
 					</div>
 				</div>
 
-				<section class="section searchform_filter">
+				<!-- <section class="section searchform_filter">
 					<div class="sectionbody space togglewrap" style="display:none;">
-						<?php echo $frmSearch->getFormHtml(); ?>    
+						<?php /* echo $frmSearch->getFormHtml(); */ ?>    
 					</div>
-				</section>
+				</section> -->
 
 				<section class="section">
 					<div class="sectionhead">
