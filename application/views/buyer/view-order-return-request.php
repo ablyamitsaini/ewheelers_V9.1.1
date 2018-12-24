@@ -37,11 +37,11 @@
 													<div class="info--order">
 														<h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
 														<p>
-														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name', $siteLangId).':</strong>'.$request['op_shop_owner_name'] : ''; ?></p>
+														<?php echo ($request['op_shop_owner_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Vendor_Name', $siteLangId).':</strong> '.$request['op_shop_owner_name'] : ''; ?></p>
 														<p>
 														<?php
 														$vendorShopUrl = CommonHelper::generateUrl( 'Shops', 'View', array($request['op_shop_id']) );
-														echo ( $request['op_shop_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Shop_Name', $siteLangId).':</strong><a href="'.$vendorShopUrl.'">'.$request['op_shop_name'].'</a><br/>' : ''; ?>
+														echo ( $request['op_shop_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Shop_Name', $siteLangId).':</strong> <a href="'.$vendorShopUrl.'">'.$request['op_shop_name'].'</a><br/>' : ''; ?>
 														</p>
 														<span class="gap"></span>
 														<a href="javascript:window.print();" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>

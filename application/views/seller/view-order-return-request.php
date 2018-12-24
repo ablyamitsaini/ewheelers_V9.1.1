@@ -38,7 +38,7 @@
 											<div class="info--order">
 												<h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
 												<p>
-												<?php echo ($request['buyer_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Customer_Name:', $siteLangId).'</strong>'.$request['buyer_name'] : ''; ?></p>
+												<?php echo ($request['buyer_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Customer_Name:', $siteLangId).'</strong> '.$request['buyer_name'] : ''; ?></p>
 												
 												<?php if(isset($attachedFile) && !empty($attachedFile)) { ?>
 												<p>
