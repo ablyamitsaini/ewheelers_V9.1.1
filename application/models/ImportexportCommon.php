@@ -254,6 +254,7 @@ class ImportexportCommon extends FatModel{
 			}
 			$arr[] = Labels::getLabel('LBL_Approved', $langId);
 			$arr[] = Labels::getLabel('LBL_Active', $langId);
+			$arr[] = Labels::getLabel('LBL_Deleted', $langId);
 		}	
 		
 		return $arr;

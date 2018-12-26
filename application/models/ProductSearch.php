@@ -18,7 +18,7 @@ class ProductSearch extends SearchBase {
 	private $commonLangId;
 	private $sellerSubscriptionOrderJoined = false;
 	
-    public function __construct( $langId = 0, $otherTbl = null, $prodIdColumName = null, $isProductActive = true, $isProductApproved = true ) {
+    public function __construct( $langId = 0, $otherTbl = null, $prodIdColumName = null, $isProductActive = true, $isProductApproved = true, $isProductDeleted = true) {
 		$this->langId = FatUtility::int($langId);
 		$this->commonLangId = CommonHelper::getLangId();
 		
@@ -34,7 +34,7 @@ class ProductSearch extends SearchBase {
 			$this->joinTable( Product::DB_TBL, 'INNER JOIN', 'sp.selprod_product_id = p.product_id', 'p' );
 			/* ] */
 			$this->addOrder('ptg_is_main_product','DESC');
-			$this->addCondition('p.product_deleted','=',applicationConstants::NO);
+			/* $this->addCondition('p.product_deleted','=',applicationConstants::NO); */
 		}
 
 		if ( $this->langId > 0) {
@@ -45,6 +45,10 @@ class ProductSearch extends SearchBase {
 		
 		if( $isProductActive ){
 			$this->addCondition( 'product_active', '=', applicationConstants::ACTIVE );
+		}
+		
+		if( $isProductDeleted ){
+			$this->addCondition( 'product_deleted', '=', applicationConstants::NO );
 		}
 		
 		if( $isProductApproved ){
