@@ -248,7 +248,7 @@ class SellerProductsController extends AdminBaseController {
 		$post['selprod_code'] = $productRow['product_id'].'_'.implode('_',$options);
 		$selProdCode = $post['selprod_code'];
 		
-		if( $sellerProductRow && !Product::IsSellProdAvailableForUser($selProdCode , $this->adminLangId, $sellerProductRow['selprod_user_id'] ,$selprod_id) ){
+		if( $sellerProductRow && !empty(Product::IsSellProdAvailableForUser($selProdCode , $this->adminLangId, $sellerProductRow['selprod_user_id'] ,$selprod_id)) ){
 			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_user", $this->adminLangId) );
 			FatUtility::dieWithError( Message::getHtml() );	
 		}
