@@ -50,7 +50,13 @@ class ConfirmPayController extends MyAppController{
 		}
 		if ( $orderPaymentFinancials["order_payment_gateway_charge"] == 0 ){
 			$orderPaymentObj = new OrderPayment($orderId);
-			$orderPaymentObj->chargeFreeOrder();	
+			if(!$orderPaymentObj->chargeFreeOrder()){
+				Message::addErrorMessage($orderPaymentObj->getError());
+				if( $isAjaxCall ){
+					FatUtility::dieWithError( Message::getHtml() );
+				}
+				CommonHelper::redirectUserReferer();
+			}	
 		}
 		if($orderId == $_SESSION['subscription_shopping_cart']["order_id"]){
 			$scartObj = new SubscriptionCart();

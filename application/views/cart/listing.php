@@ -45,7 +45,7 @@
 
 <div class="qty-wrapper">  <div class="qty">
 			<span class="decrease decrease-js">-</span>
-            <input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="text" />
+            <input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="number" min="0"/>
 			<span class="increase increase-js">+</span>
             </div>
 			<a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>

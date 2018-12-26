@@ -28,7 +28,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); 
 <div class="tabs__content">                                               
 	<div class="form__content ">
 		<div class="row">
-			<div class="col-md-12" id="shopFormBlock">
+			<div class="col-md-8" id="shopFormBlock">
 				<?php echo $shopLangFrm->getFormTag();
 				echo $shopLangFrm->getFormHtml(false);
 				echo '</form>'; ?>
