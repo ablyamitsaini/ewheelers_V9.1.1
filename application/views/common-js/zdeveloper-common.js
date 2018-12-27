@@ -970,7 +970,9 @@ $(document).ready(function() {
 });
 
 /* Scroll Hint */
-
 $(document).ready(function() {
+  new ScrollHint('.table');
+});
+$(document).ajaxComplete(function() {
   new ScrollHint('.table');
 });

@@ -116,10 +116,3 @@ echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmCa
 
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'callBackJsFunc' => 'goToCatalogProductSearchPage');
 $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
-
-?>
-<script>
-$(document).ready(function() {
-  new ScrollHint('.table');
-});
-</script>
