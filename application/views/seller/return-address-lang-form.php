@@ -9,17 +9,17 @@ $frm->setFormTagAttribute('onsubmit', 'setReturnAddressLang(this); return(false)
 
 	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
 
-<div class="tabs__content">
+<div class="tabs__content">                                               
 	<div class="form__content">
-        <div class="row">
+        <div class="row">	
 			<div class="col-md-8">
-				<div class="">
+				<div class="container container--fluid">
 					<div class="tabs--inline tabs--scroll clearfix">
 						<ul class="setactive-js">
 							<li ><a href="javascript:void(0)" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 							<?php foreach($language as $langId => $langName){?>
 							<li <?php echo ($formLangId == $langId)?'class="is-active"':'';?>><a href="javascript:void(0);" onclick="returnAddressLangForm(<?php echo $langId;?>);"><?php echo $langName;?></a></li>
-						<?php } ?>
+						<?php } ?>								
 						</ul>
 					</div>
 				</div>

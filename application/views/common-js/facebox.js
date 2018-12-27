@@ -92,7 +92,7 @@
       <div class="popup"> \
         <div class="content"> \
         </div> \
-        <a href="#" class="close close--white"></a> \
+        <a href="#" class="close"></a> \
       </div> \
     </div>'
     },
@@ -252,7 +252,7 @@
   }
 
   function fillFaceboxFromImage(href, klass) {
-
+	  
     var image = new Image()
     image.onload = function() {
       $.facebox.reveal('<div class="image"><img src="' + image.src + '" /></div>', klass)

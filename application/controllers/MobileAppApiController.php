@@ -13,16 +13,11 @@ class MobileAppApiController extends MyAppController {
 
 		if (array_key_exists('HTTP_X_TOKEN',$_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])){
 			$this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';	
-		}else if(('1.0' == MOBILE_APP_API_VERSION || $action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token',$post)){
+		}else if(('v1' == MOBILE_APP_API_VERSION || $action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token',$post)){
 			$this->appToken = ($post['_token']!='')?$post['_token']:'';				
-		}	
-
-		$this->app_user['temp_user_id'] = 0;
-		if (array_key_exists('HTTP_X_TEMP_USER_ID',$_SERVER) && !empty($_SERVER['HTTP_X_TEMP_USER_ID'])){
-			$this->app_user['temp_user_id'] = ($_SERVER['HTTP_X_TEMP_USER_ID'] != '')?$_SERVER['HTTP_X_TEMP_USER_ID']:0;				
-		}		
+		}			
 		
-		if($this->appToken){ 			
+		if($this->appToken){			
 			if (!UserAuthentication::isUserLogged('',$this->appToken)) {                    
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
 				die(json_encode($arr));	
@@ -34,8 +29,7 @@ class MobileAppApiController extends MyAppController {
 				$arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token',$this->siteLangId));	
 				die(json_encode($arr));
 			}			
-			$this->app_user = $row;	
-			$this->app_user['temp_user_id'] = 0;	
+			$this->app_user = $row;			
 		}		
 			
 		if (array_key_exists('language',$post)){
@@ -87,27 +81,24 @@ class MobileAppApiController extends MyAppController {
 										'about_us',
 										'language_labels'
 									);
-		if(MOBILE_APP_API_VERSION > '1.1'){
-			$public_api_requests = array_merge($public_api_requests,array('add_to_cart','remove_cart_item','update_cart_qty','get_cart_details'));
-		}
-		
+									
+									
 		if(!in_array($action,$public_api_requests)){
 			if(!isset($this->app_user["user_id"]) || (!$this->app_user["user_id"]>0)){
 				FatUtility::dieJsonError(Labels::getLabel('L_MOBILE_Please_login_or_login_again',$this->siteLangId));
 			}
 		}
-		
 		$user_id = $this->getAppLoggedUserId();
 		$userObj = new User($user_id);			
 		$srch = $userObj->getUserSearchObj();
 		$srch->addMultipleFields(array('u.*'));
 		$rs = $srch->getResultSet();
 		$this->user_details = $this->db->fetch($rs,'user_id');
-					
-		$cObj = new Cart($user_id,0,$this->app_user['temp_user_id']);				
+		
+		$cObj = new Cart($user_id);
         $this->cart_items = $cObj->countProducts();
 		$this->totalFavouriteItems = UserFavorite::getUserFavouriteItemCount( $user_id );
-				
+		
 		$threadObj = new Thread();
 		$this->totalUnreadMessageCount = $threadObj->getMessageCount($user_id);
 		
@@ -2029,10 +2020,9 @@ class MobileAppApiController extends MyAppController {
 	function login(){ 
 		$post = FatApp::getPostedData();		
 		$authentication = new UserAuthentication();
-		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'],true,false,$this->app_user['temp_user_id'])) {		
+		if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'])) {		
 			FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(),$this->siteLangId)));
 		}
-		$this->app_user['temp_user_id'] = 0;
 		$userId = UserAuthentication::getLoggedUserId();
 		$uObj = new User($userId);				
 		if ( !$generatedToken = $uObj->setMobileAppToken()){
@@ -2048,14 +2038,6 @@ class MobileAppApiController extends MyAppController {
 					'user_id'=>$userInfo["user_id"],
 					'user_image'=>CommonHelper::generateFullUrl('image','user', array($userInfo['user_id'],'thumb',1)).'?'.time()
 				);			
-		die ($this->json_encode_unicode($arr));
-	}
-	
-	function logout(){
-		UserAuthentication::logout();
-		$arr = array(
-				'status'=>1,
-			);	
 		die ($this->json_encode_unicode($arr));
 	}
 	
@@ -2192,10 +2174,9 @@ class MobileAppApiController extends MyAppController {
 			FatUtility::dieJsonError(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->siteLangId));
 		}
 		$authentication = new UserAuthentication();
-		if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false,false,$this->app_user['temp_user_id'])) {
+		if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false)) {
 			FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
 		}
-		$this->app_user['temp_user_id'] = 0;
 		if ( !$token = $userObj->setMobileAppToken()){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
@@ -2272,10 +2253,9 @@ class MobileAppApiController extends MyAppController {
 				FatUtility::dieJsonError(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->siteLangId));
 			}
 			$authentication = new UserAuthentication();
-			if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false,false,$this->app_user['temp_user_id'])) {
+			if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'],false)) {
 				FatUtility::dieJsonError(Labels::getLabel($authentication->getError(),$this->siteLangId));
 			}
-			$this->app_user['temp_user_id'] = 0;
 			if ( !$token = $userObj->setMobileAppToken()){
 				FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 			}
@@ -2704,8 +2684,8 @@ class MobileAppApiController extends MyAppController {
 
 	}
 	
-	function add_to_cart(){ 
-		$userId = $this->getAppLoggedUserId();					
+	function add_to_cart(){
+		$userId = $this->getAppLoggedUserId();
 		$post = FatApp::getPostedData();
 		//$addons = array("41"=>2,"38"=>3);
 		//$post = array("selprod_id"=>"14","quantity"=>"1");
@@ -2719,7 +2699,6 @@ class MobileAppApiController extends MyAppController {
 			}
 			$user_id = $userId;
 		}
-		
 		$json = array();
 		$selprod_id = FatApp::getPostedData( 'selprod_id', FatUtility::VAR_INT, '' ); //FatUtility::int($post['selprod_id']);
 		$quantity = FatApp::getPostedData( 'quantity', FatUtility::VAR_INT, '1' ); //FatUtility::int($post['quantity']);
@@ -2765,9 +2744,10 @@ class MobileAppApiController extends MyAppController {
 				FatUtility::dieJsonError(Labels::getLabel('LBL_Please_add_minimum',$this->siteLangId). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));				
 			}
 			/* ] */
-						
+
 			/* product availability date check covered in product search model[ ] */
-			$cartObj = new Cart($userId,0,$this->getAppTempUserId());			
+			$cartObj = new Cart($userId);
+			
 			/* cannot add quantity more than stock of the product[ */
 			$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
 			if( $quantity > $selprod_stock ){
@@ -2780,8 +2760,7 @@ class MobileAppApiController extends MyAppController {
 				$ProductAdded = true;
 			}
 		}
-			
-		die($this->json_encode_unicode(array('status'=>1, 'msg'=>Labels::getLabel("MSG_Added_to_cart", $this->siteLangId), 'cart_count'=>$cartObj->countProducts(),'temp_user_id'=>$this->app_user['temp_user_id'])));
+		die($this->json_encode_unicode(array('status'=>1, 'msg'=>Labels::getLabel("MSG_Added_to_cart", $this->siteLangId), 'cart_count'=>$cartObj->countProducts())));
 		
 	}
 	
@@ -2794,7 +2773,7 @@ class MobileAppApiController extends MyAppController {
 		if( !isset($post['key']) ){
 			FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST',$this->siteLangId));
 		}
-		$cartObj = new Cart($userId,0,$this->app_user['temp_user_id']);
+		$cartObj = new Cart($userId);
 		if( !$cartObj->remove(md5($post['key'])) ){
 			FatUtility::dieJsonError($cartObj->getError());
 		}
@@ -2814,7 +2793,7 @@ class MobileAppApiController extends MyAppController {
 		$quantity = isset($post['quantity']) ? FatUtility::int($post['quantity']) : 1;
 		//$key = "czo1OiJTUF8xMyI7";
 		//$quantity = 5;
-		$cartObj = new Cart($userId,0,$this->app_user['temp_user_id']);
+		$cartObj = new Cart($userId);
 		if( !$cartObj->update(md5($key), $quantity) ){
 			FatUtility::dieJsonError($cartObj->getError());
 		}
@@ -2970,10 +2949,10 @@ class MobileAppApiController extends MyAppController {
 	function get_cart_details(){
 		/*$BillingAddressDetail = "";
 		$ShippingddressDetail = "";*/
-			
+		
 		$loggedUserId = $this->getAppLoggedUserId();
 		//die($loggedUserId."#");
-		$cartObj = new Cart($loggedUserId,0,$this->app_user['temp_user_id']);
+		$cartObj = new Cart($loggedUserId);
 		$productsArr = $cartObj->getProducts($this->siteLangId);
 		$cartProductsArr = array();
 		foreach($productsArr as $ckey=>$cval){
@@ -6905,21 +6884,5 @@ class MobileAppApiController extends MyAppController {
 	
 	private function getAppLoggedUserId(){
 		return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
-	}
-	
-	private function getAppTempUserId(){		
-		if(array_key_exists('temp_user_id',$this->app_user) && !empty($this->app_user["temp_user_id"])){
-			return $this->app_user["temp_user_id"];
-		}
-		
-		if($this->appToken && UserAuthentication::isUserLogged('',$this->appToken)){
-			$userId = UserAuthentication::getLoggedUserId();
-			if($userId > 0){
-				return $userId;
-			}
-		}
-		
-		$generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0,UserAuthentication::TOKEN_LENGTH);
-		return $this->app_user['temp_user_id'] = $generatedTempId;		
 	}
 }

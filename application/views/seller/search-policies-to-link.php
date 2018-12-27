@@ -2,7 +2,7 @@
 <?php
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._no.',$siteLangId),
-		'ppoint_title'=>Labels::getLabel('LBL_Policy',$siteLangId),
+		'ppoint_title'=>Labels::getLabel('LBL_Policy',$siteLangId),			
 		'action' => Labels::getLabel('LBL_Action',$siteLangId),
 	);
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
@@ -13,7 +13,7 @@ foreach ($arr_flds as $val) {
 }
 
 $sr_no = $page==1?0:$pageSize*($page-1);
-foreach ($arr_listing as $sn=>$row){
+foreach ($arr_listing as $sn=>$row){ 
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
 	if($row['ppoint_active'] != applicationConstants::ACTIVE) {
@@ -24,7 +24,7 @@ foreach ($arr_listing as $sn=>$row){
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
-			break;
+			break;	
 			case 'ppoint_identifier':
 				if(!empty($row['ppoint_title'])){
 					$td->appendElement('plaintext', array(), $row['ppoint_title'].'<br/>('.$row['ppoint_identifier'].')',true);
@@ -38,10 +38,10 @@ foreach ($arr_listing as $sn=>$row){
 					$active = 'checked';
 				}
 				$statucAct = (!$row['sppolicy_ppoint_id']) ? 'addPolicyPoint('.$selprod_id.",".$row['ppoint_id'].')' : 'removePolicyPoint('.$selprod_id.",".$row['ppoint_id'].')' ;
-
+				
 				$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['ppoint_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['ppoint_id'].'">Toggle</label></div>';
 				$td->appendElement('plaintext', array(), $str,true);
-
+				
 			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key], true);
@@ -51,7 +51,7 @@ foreach ($arr_listing as $sn=>$row){
 }
 if (count($arr_listing) == 0){
 	$tbl->appendElement('tr')->appendElement('td', array(
-	'colspan'=>count($arr_flds)),
+	'colspan'=>count($arr_flds)), 
 	'No records found'
 	);
 }

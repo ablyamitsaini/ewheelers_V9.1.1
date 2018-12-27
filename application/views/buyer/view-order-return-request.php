@@ -167,13 +167,12 @@
 											</div>
 											<div class="grid grid--second">
 												<span class="media__title"><?php echo $logged_user_name; ?></span>
-                        	<div class="grid grid--third">
-      												<div class="form__cover">
-      												<?php echo $frmMsg->getFormHtml(); ?>
-      												</div>
-      											</div>
 											</div>
-
+											<div class="grid grid--third">
+												<div class="form__cover">
+												<?php echo $frmMsg->getFormHtml(); ?>
+												</div>
+											</div>
 										</li>
 									</ul>
 									<?php } ?>

@@ -5,7 +5,7 @@
 	<div class="form__content ">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="">
+				<div class="container container--fluid">
 					<div class="tabs--inline tabs--scroll clearfix">
 						<ul>
 							<li class="is-active"><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>
@@ -19,7 +19,7 @@
 							<li class=""><a href="javascript:void(0)" <?php if($scollection_id>0) { ?> onClick="editShopCollectionLangForm(<?php echo $scollection_id ?>, <?php echo $lang_id;?>)" <?php } ?>>
 							<?php echo $langName;?></a></li>
 							<?php } ?>
-
+							
 							<li class=""><a <?php if($scollection_id>0) { ?> onclick="sellerCollectionProducts(<?php echo $scollection_id; ?>);" <?php } ?> href="javascript:void(0);"><?php echo Labels::getLabel('TXT_LINK', $siteLangId);?></a></li>
 						</ul>
 					</div>

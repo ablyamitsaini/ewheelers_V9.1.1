@@ -5,7 +5,7 @@
 <div class="container">
   <div class="shop-header">
     <div class="row">
-      <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <div class="white--bg shop-nav-wrapper">
           <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
           <div class="clear"></div>
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
         <!--<div class="shop-banner"><img src="<?php /* echo CommonHelper::generateUrl('image','shopBanner',array($shop['shop_id'],$siteLangId,'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); */ ?>"></div>-->
 		<?php if( $haveBannerImage ){ ?>
 		  <div class="shops-sliders">

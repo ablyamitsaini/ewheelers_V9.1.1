@@ -5,7 +5,7 @@
 	<div class="form__content ">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="">
+				<div class="container container--fluid">
 					<div class="tabs--inline tabs--scroll clearfix">
 						<ul>
 							<li ><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>

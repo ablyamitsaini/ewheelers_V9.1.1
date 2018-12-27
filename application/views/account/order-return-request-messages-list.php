@@ -21,17 +21,16 @@
 		<div class="grid grid--second">
 			<span class="media__title"><?php echo ($message['orrmsg_from_admin_id']) ? $message['admin_name']: $message['msg_user_name'].$shop_name; ?></span>
 			<span class="media__date"><?php echo FatDate::format($message['orrmsg_date'], true); ?></span>
-			<div class="grid grid--third">
-			<div class="media__description"><?php echo nl2br($message['orrmsg_msg']); ?> </div>
-			</div>
 		</div>
-
+		<div class="grid grid--third">
+		<div class="media__description"><?php echo nl2br($message['orrmsg_msg']); ?> </div>
+		</div>
 	</li>
 	<?php } ?>
-<?php
+<?php 
 	$postedData['page'] = $page;
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmOrderReturnRequestMsgsSrchPaging') );
-
+	
 } else {
 	//echo Labels::getLabel('MSG_No_Record_Found', $siteLangId);
 } ?>

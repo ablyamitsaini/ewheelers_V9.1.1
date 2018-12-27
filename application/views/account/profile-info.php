@@ -32,11 +32,8 @@
 										<?php } ?>
 									</ul>
 								</div>
-								<div class="row">
-
-								 <div class="col-lg-9 col-md-9" id="profileInfoFrmBlock">
-									<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
-								 </div><div class="col-lg-3 col-md-3 ">
+								<div class="grids--profile">
+								 <div class="grid__right">
 								 <?php if( User::canViewBuyerTab() && User::canViewSupplierTab() ){ ?>
 									<label class="field_label"><strong><?php echo Labels::getLabel('LBL_Preferred_Dashboard',$siteLangId);?> </strong></label>
 									<?php } ?>
@@ -51,6 +48,9 @@
 									 <div class="gap"></div>
 									 <a class="btn btn--block btn--secondary btn--sm" href="javascript:void(0)" onclick="truncateDataRequestPopup()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data',$siteLangId); ?></a>
 									 <a class="btn btn--block btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
+								 </div>
+								 <div class="grid__left" id="profileInfoFrmBlock">
+									<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 								 </div>
 								</div>
 							</div>

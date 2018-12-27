@@ -7,7 +7,7 @@
 	<div class="tabs__content form">
 		<div class="form__content">
 			<div class="col-md-12">
-				<div class="">
+				<div class="container container--fluid">
 					<div class="tabs--inline tabs--scroll clearfix">
 						<ul>
 							<li class="is-active"><a href="javascript:void(0)" <?php if($selprod_id>0){?> onClick="sellerProductForm(<?php echo $product_id,',',$selprod_id ?>)" <?php }?>><?php echo Labels::getLabel('LBL_Basic',$siteLangId); ?></a></li>

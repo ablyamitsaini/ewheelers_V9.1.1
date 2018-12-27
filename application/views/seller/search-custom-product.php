@@ -1,4 +1,4 @@
-<?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
+<?php  defined('SYSTEM_INIT') or die('Invalid Usage.');  
 $arr_flds = array(
 	'listserial'=>'Sr.',
 	'product_identifier' => Labels::getLabel('LBL_Product', $siteLangId),
@@ -31,12 +31,12 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row['product_name'] . '<br>', true);
 				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 			break;
-
-			case 'product_approved':
+			
+			case 'product_approved':				
 					$approveUnApproveArr = Product::getApproveUnApproveArr($siteLangId);
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$approveUnApproveArr[$row[$key]] ,true);
+					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$approveUnApproveArr[$row[$key]] ,true);				
 			break;
-
+			
 			case 'product_active':
 				$activeInactiveArr = applicationConstants::getActiveInactiveArr($siteLangId);
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$activeInactiveArr[$row[$key]] ,true);
@@ -47,7 +47,7 @@ foreach ($arr_listing as $sn => $row){
 				$li->appendElement('a', array( 'class'=>'',
 				'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"href"=>CommonHelper::generateUrl('seller','customProductForm',array($row['product_id']))),
 				'<i class="fa fa-edit"></i>', true);
-
+				
 				$li = $ul->appendElement("li");
 				$li->appendElement("a", array('title' => Labels::getLabel('LBL_Product_Images', $siteLangId),
 				'onclick' => 'customProductImages('.$row['product_id'].')', 'href'=>'javascript:void(0)'),
@@ -77,4 +77,4 @@ echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmCu
 
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'callBackJsFunc' => 'goToCustomProductSearchPage');
 $this->includeTemplate('_partial/pagination.php', $pagingArr,false);
-?>
+?> 

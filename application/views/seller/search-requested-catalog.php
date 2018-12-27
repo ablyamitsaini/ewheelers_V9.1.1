@@ -6,13 +6,13 @@
 		<a href="javascript:void(0);" onClick="addNewCatalogRequest()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Request_to_add_catalog',$siteLangId); ?></a>
 	</div>
 </div>
-<div class="box__body">
+<div class="box__body">																				
 <?php
 $arr_flds = array(
 	'listserial'=>'Sr.',
 	'scatrequest_reference' => Labels::getLabel('LBL_Reference_number', $siteLangId),
 	'scatrequest_title' => Labels::getLabel('LBL_Title', $siteLangId),
-	'scatrequest_status' => Labels::getLabel('LBL_Status', $siteLangId),
+	'scatrequest_status' => Labels::getLabel('LBL_Status', $siteLangId),	
 	'action' => Labels::getLabel('LBL_Action', $siteLangId)
 );
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
@@ -33,7 +33,7 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
 			break;
 			case 'scatrequest_title':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);				
 			break;
 			case 'scatrequest_status':
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$catalogReqStatusArr[$row[$key]],true);

@@ -4,7 +4,7 @@ var  productId  =  <?php echo $productId ;?>
 </script>
 <div id="body" class="body bg--gray">
     <section class="top-space">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
 		<div class="fixed-container">
 			<div class="cols--group">
 				<div class="panel__head">
@@ -13,7 +13,7 @@ var  productId  =  <?php echo $productId ;?>
 				<div class="panel__body">
 					<div class="box box--white box--space box--height">
 						<div id="listing">
-
+							
 						</div>
 					</div>
 				</div>

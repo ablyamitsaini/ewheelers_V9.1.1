@@ -8,7 +8,7 @@ class Cart extends FatModel {
 	const CART_KEY_PREFIX_BATCH = 'SB_'; /* SB stands for Seller Batch/Combo Product */
 	const TYPE_PRODUCT = 1;
 	const TYPE_SUBSCRIPTION = 2;
-	public function __construct( $user_id = 0, $langId = 0, $tempCartUserId = 0) {
+	public function __construct( $user_id = 0, $langId = 0) {
 		parent::__construct();
 		
 		$user_id = FatUtility::int($user_id);
@@ -19,14 +19,8 @@ class Cart extends FatModel {
 			$this->cart_lang_id = CommonHelper::getLangId();	
 		}
 		
-		if($tempCartUserId == 0){
-			$this->cart_id = session_id();
-			$tempCartUserId = session_id();
-		}		
-		
-		$this->cart_user_id = $tempCartUserId;
-		$this->cart_id = $tempCartUserId;
-		
+		$this->cart_id = session_id();
+		$this->cart_user_id = session_id();
 		if ( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() || ( $user_id > 0 ) ){			
 			if ( $user_id > 0 ){
 				$this->cart_user_id = $user_id;
@@ -35,16 +29,16 @@ class Cart extends FatModel {
 			}
 		}
 		
-		/* echo "hi--".$this->cart_user_id.'--'.$this->cart_id; exit; */
-		
 		$srch = new SearchBase('tbl_user_cart');
 		$srch->addCondition('usercart_user_id', '=', $this->cart_user_id );
 		$srch->addCondition('usercart_type', '=',CART::TYPE_PRODUCT);
 		$rs = $srch->getResultSet();
 		$this->cartSameSessionUser = true;
-		if( $row = FatApp::getDb()->fetch($rs) ){	
-			
-			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );			
+		if( $row = FatApp::getDb()->fetch($rs) ){		
+			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );
+			if($row['usercart_last_session_id']!= $this->cart_id){
+				$this->cartSameSessionUser = false;				
+			}
 			//CommonHelper::printArray($this->SYSTEM_ARR['cart']); exit;
 			if( isset($this->SYSTEM_ARR['cart']['shopping_cart']) ){
 				$this->SYSTEM_ARR['shopping_cart'] = $this->SYSTEM_ARR['cart']['shopping_cart'];
@@ -57,7 +51,13 @@ class Cart extends FatModel {
 		}
 		if( !isset($this->SYSTEM_ARR['shopping_cart']) || !is_array($this->SYSTEM_ARR['shopping_cart']) ){
 			$this->SYSTEM_ARR['shopping_cart'] = array();
-		}		
+		}
+		//echo $_SESSION['shopping_cart']["order_id"];
+		/* if(!$this->cartSameSessionUser){
+		//unset($this->SYSTEM_ARR['cart']['discount_coupon']);
+			$this->removeCartDiscountCoupon();
+			$this->removeUsedRewardPoints();
+		} */
 	}
 	
 	public static function getCartKeyPrefixArr(){
@@ -67,11 +67,8 @@ class Cart extends FatModel {
 		);
 	}
 	
-	public static function getCartUserId($tempUserId = 0){
+	public static function getCartUserId(){
 		$cart_user_id = session_id();
-		if($tempUserId != 0){
-			$cart_user_id = $tempUserId;
-		}
 		if ( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged() ){
 			$cart_user_id = UserAuthentication::getLoggedUserId();
 		}
@@ -505,7 +502,7 @@ class Cart extends FatModel {
 		$quantity = FatUtility::int($quantity);
 		if ( $quantity > 0 ){
 			$cartProducts = $this->getProducts($this->cart_lang_id);
-			$cart_user_id = $this->cart_user_id;
+			$cart_user_id = static::getCartUserId();
 			
 			if( is_array($cartProducts) ){
 				foreach($cartProducts as $cartKey => $product){
@@ -552,7 +549,7 @@ class Cart extends FatModel {
 		$prodgroup_id = FatUtility::int($prodgroup_id);
 		$quantity = FatUtility::int($quantity);
 		
-		$cart_user_id = $this->cart_user_id;
+		$cart_user_id = static::getCartUserId();
 		/* not handled the case, if any product from the group is added separately, stock sum from that product and product in group is not checked, need to handle the same. */
 		
 		if ( $quantity > 0 ){
@@ -1253,24 +1250,19 @@ class Cart extends FatModel {
 		unset($_SESSION['wallet_recharge_cart']["order_id"]);
 	}
 	
-	static function setCartAttributes( $userId = 0, $tempUserId = 0 ){
+	static function setCartAttributes( $userId = 0 ){
 		$db = FatApp::getDb();
 		
-		$cart_user_id = static::getCartUserId($tempUserId);
-		
-		if($tempUserId == 0){
-			$tempUserId = session_id();			
-		}
-		
-		/* to keep track of temporary hold the product stock[ */		
-		$db->updateFromArray( 'tbl_product_stock_hold', array( 'pshold_user_id' => $cart_user_id ), array('smt' => 'pshold_user_id = ?', 'vals' => array($tempUserId) ) );
+		/* to keep track of temporary hold the product stock[ */
+		$cart_user_id = static::getCartUserId();
+		$db->updateFromArray( 'tbl_product_stock_hold', array( 'pshold_user_id' => $cart_user_id ), array('smt' => 'pshold_user_id = ?', 'vals' => array(session_id()) ) );
 		/* 	] */
 		
 		$userId = FatUtility::int($userId);
-		if($userId == 0 && $tempUserId == 0) { return false;}
+		if($userId == 0) { return false;}
 		
 		$srch = new SearchBase('tbl_user_cart');
-		$srch->addCondition('usercart_user_id', '=', $tempUserId );
+		$srch->addCondition('usercart_user_id', '=', session_id() );
 		$srch->addCondition('usercart_type', '=', CART::TYPE_PRODUCT );
 		$rs = $srch->getResultSet();
 		
@@ -1280,7 +1272,7 @@ class Cart extends FatModel {
 		
 		$cartInfo = unserialize( $row["usercart_details"] );
 		
-		$cartObj = new Cart($userId,0,$tempUserId);
+		$cartObj = new Cart($userId);
 		
 		foreach($cartInfo as $key => $quantity){
 			
@@ -1299,7 +1291,7 @@ class Cart extends FatModel {
 			
 			$cartObj->add($selprod_id, $quantity,$prodgroup_id);	
 			
-			$db->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and usercart_type=?', 'vals'=>array($tempUserId,CART::TYPE_PRODUCT)));
+			$db->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and usercart_type=?', 'vals'=>array(session_id(),CART::TYPE_PRODUCT)));
 		}
 		$cartObj->updateUserCart();
 	}

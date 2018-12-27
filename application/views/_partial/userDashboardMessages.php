@@ -6,7 +6,7 @@
 	</div>
 	<div class="box__body">
 	   <ul class="media media--small">
-
+		
 				<?php foreach($messages as $row){
 					$liClass = 'is-read';
 					if($row['message_is_unread'] == Thread::MESSAGE_IS_UNREAD ) {
@@ -22,11 +22,10 @@
 		   <div class="grid grid--second">
 			   <span class="media__date"><?php echo FatDate::format($row['message_date'],true);?></span>
 			   <span class="media__title"><?php echo htmlentities($row['message_from_name']);?></span>
-				 <div class="grid grid--third">
-				 <div class="media__description"><?php  echo CommonHelper::truncateCharacters($row['message_text'],85,'','',true);?></div>
-				</div>
 		   </div>
-
+		   <div class="grid grid--third">
+				<div class="media__description"><?php  echo CommonHelper::truncateCharacters($row['message_text'],85,'','',true);?></div>
+		   </div>
 		</li>
 		<?php }?>
 	   </ul>

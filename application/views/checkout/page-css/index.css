@@ -308,10 +308,9 @@
 	display: block;
 	padding: 20px;
 	padding-left: 45px;
-	position: relative;
 }
 
-.payment_methods_list li a:before {
+.payment_methods_list li:before {
 	border-radius: 50%;
 	width: 20px;
 	height: 20px;
@@ -327,7 +326,7 @@
 	border-width: 2px;
 }
 
-.payment_methods_list li.is-active a:before {
+.payment_methods_list li.is-active:before {
 	background: #000;
 }
 
