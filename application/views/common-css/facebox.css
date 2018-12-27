@@ -72,6 +72,7 @@
 }
 
 #facebox .popup {
+  padding: 30px;
   position: relative;
   /*  border:3px solid rgba(0,0,0,0);
   -webkit-border-radius:5px;
@@ -85,8 +86,7 @@
 #facebox .content {
   display: table;
   width: 100%;
-  padding: 15px;
-  padding-top: 40px;
+  padding: 15px; 
   background: #fff;
   border-radius: 4px;
   margin: 0 auto;
@@ -156,15 +156,16 @@
 
 #facebox .close {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
   padding: 0px;
   width: 30px;
   height: 30px;
+  opacity: 0.6;
 }
 
 #facebox .close:before {
-  width: 1px;
+  width: 2px;
   height: 30px;
   left: 50%;
   margin: 0 0 0 -1px;
@@ -176,13 +177,19 @@
 
 #facebox .close:after {
   width: 30px;
-  height: 1px;
+  height: 2px;
   left: 0px;
   top: 50%;
-  margin: -0px 0 0 0;
+  margin: -1px 0 0 0;
   position: absolute;
   content: "";
   background: #000;
+}
+
+#facebox .close.close--white {}
+
+#facebox .close.close--white:before, #facebox .close.close--white:after {
+  background: #ffffff;
 }
 
 /* #facebox .content.faceboxFixed {
@@ -254,6 +261,7 @@
   #facebox {
     left: 0 !important;
     right: 0 !important;
+    top: 0 !important;
   }
 
   #facebox .content {
@@ -268,16 +276,15 @@
 }
 
 @media only screen and (max-width: 767px) {
-  #facebox .content {
-    padding-top: 30px;
-  }
+
 
   #facebox .content.fbminwidth {
     min-width: inherit;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   #facebox .content.productQuickView {
-    max-height: 350px;
     overflow-y: auto;
   }
 

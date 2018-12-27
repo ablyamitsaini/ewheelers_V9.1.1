@@ -255,7 +255,7 @@ class UserAuthentication extends FatModel {
 		return true;	
 	}
 		
-	public function login($username, $password, $ip, $encryptPassword = true,$isAdmin = false) {
+	public function login($username, $password, $ip, $encryptPassword = true,$isAdmin = false,$tempUserId = 0) {
 		$db = FatApp::getDb();
 		if ($this->isBruteForceAttempt($ip, $username)) {
 			
@@ -335,7 +335,7 @@ class UserAuthentication extends FatModel {
 				'user_name'=>$rowUser['user_name'],
 				'user_ip'=>$ip
 		); */
-		Cart::setCartAttributes( $row['credential_user_id'] );
+		Cart::setCartAttributes( $row['credential_user_id'], $tempUserId);
 		
 		/* clear failed login attempt for the user [ */
 		$this->clearFailedAttempt($ip , $username);
@@ -442,6 +442,36 @@ class UserAuthentication extends FatModel {
 			return true;
 		}
 		return false;
+	}
+	
+	public static function logout(){
+		if(isset($_SESSION['access_token'])){
+			unset($_SESSION['access_token']);
+		}
+		
+		require_once (CONF_INSTALLATION_PATH . 'library/facebook/facebook.php');
+		$facebook = new Facebook(array(
+			'appId' => FatApp::getConfig("CONF_FACEBOOK_APP_ID"),
+			'secret' => FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"),
+		));
+		
+		$user = $facebook->getUser();
+		
+		if ($user) {
+			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
+			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
+			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
+		}
+		
+		unset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]);
+		
+		unset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]);
+		unset($_SESSION[UserAuthentication::AFFILIATE_SESSION_ELEMENT_NAME]);
+		unset($_SESSION['activeTab']);
+		unset($_SESSION['referer_page_url']);
+		unset($_SESSION['registered_supplier']['id']);
+		
+		self::clearLoggedUserLoginCookie();
 	}
 	
 	public static function isUserLogged($ip = '', $token = '') {
