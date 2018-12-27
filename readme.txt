@@ -8,6 +8,8 @@ Fixes:
 	. Invalid request issue on page reaload via ajax.
 	. Menu toggle issue on page load.
 	. Discount coupon in case of multiple browser.
+	. Resolved product count issue when use price filter and then change currency.
+
 
 Updates :
 	. Guest user cart functionality for app users.

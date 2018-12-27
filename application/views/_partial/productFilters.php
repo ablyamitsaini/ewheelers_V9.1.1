@@ -2,11 +2,11 @@
 $currencySymbolLeft = isset($currencySymbolLeft) ? $currencySymbolLeft : CommonHelper::getCurrencySymbolLeft();
 $currencySymbolRight = isset($currencySymbolRight) ? $currencySymbolRight : CommonHelper::getCurrencySymbolRight();
 
-if( !empty($priceArr) ){
+/* if( !empty($priceArr) ){
 	$priceArr = array_map( function( $item ){ return CommonHelper::displayMoneyFormat( $item, false, false ,false ); } , $priceArr );
-}
+} */
 
- $catCodeArr = array();
+$catCodeArr = array();
 
  if(isset($prodcat_code)){
 $currentCategoryCode= substr($prodcat_code,0,-1);
@@ -282,8 +282,8 @@ $("document").ready(function(){
 	var max=0;
 	<?php if( isset($priceArr) && $priceArr ){ ?>
 	var range,
-	min = Math.floor(<?php echo $filterDefaultMinValue; ?>),
-    max = Math.floor(<?php echo $filterDefaultMaxValue; ?>),
+	min = Math.floor(<?php echo $filterDefaultMinValue/* $filterDefaultMinValue */; ?>),
+    max = Math.floor(<?php echo $filterDefaultMaxValue/* $filterDefaultMaxValue */; ?>),
     from,
     to;
 	var $from = $('input[name="priceFilterMinValue"]');

@@ -733,6 +733,7 @@ function setSiteDefaultLang(langId){
 }
 
 function setSiteDefaultCurrency(currencyId){ 
+	var currUrl = window.location.href;	
 	fcom.ajax(fcom.makeUrl('Home','setCurrency',[currencyId]),'',function(res){
 		document.location.reload();
 	});
