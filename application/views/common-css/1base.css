@@ -534,6 +534,10 @@ select {
 	border-right: none !important;
 }
 
+.noborder--left {
+	border-left: none !important;
+}
+
 .nofocus {
 	border: none !important;
 }
@@ -1656,7 +1660,7 @@ select {
 	margin-right: 0;
 }
 
-.column {}
+.column { margin-bottom: 15px;}
 
 .float-left {
 	float: left;

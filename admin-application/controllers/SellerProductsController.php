@@ -248,7 +248,7 @@ class SellerProductsController extends AdminBaseController {
 		$post['selprod_code'] = $productRow['product_id'].'_'.implode('_',$options);
 		$selProdCode = $post['selprod_code'];
 		
-		if( $sellerProductRow && !Product::IsSellProdAvailableForUser($selProdCode , $this->adminLangId, $sellerProductRow['selprod_user_id'] ,$selprod_id) ){
+		if( $sellerProductRow && !empty(Product::IsSellProdAvailableForUser($selProdCode , $this->adminLangId, $sellerProductRow['selprod_user_id'] ,$selprod_id)) ){
 			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_user", $this->adminLangId) );
 			FatUtility::dieWithError( Message::getHtml() );	
 		}
@@ -771,7 +771,7 @@ class SellerProductsController extends AdminBaseController {
 		$pagesize = 10;
 		$post = FatApp::getPostedData();
 		$srch = new SearchBase(User::DB_TBL,'tu');
-		$srch->joinTable('tbl_shops', 'LEFT JOIN', 'tu.user_id=ts.shop_user_id', 'ts');
+		$srch->joinTable('tbl_shops', 'INNER JOIN', 'tu.user_id=ts.shop_user_id', 'ts');
 		$srch->addOrder('user_name','asc');
 		if ( !empty($post['keyword']) ) {
 			$cnd = $srch->addCondition('user_name', 'LIKE', '%' . $post['keyword'] . '%');

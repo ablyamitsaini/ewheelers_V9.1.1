@@ -6,7 +6,7 @@
   <div class="shop-header">
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div class="white--bg">
+        <div class="white--bg shop-nav-wrapper">
           <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
           <div class="clear"></div>
           <div class="shop-nav">
@@ -49,7 +49,7 @@
 			pauseOnHover:false,
 			});
 		}
-	})(jQuery);	
+	})(jQuery);
 	$currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
-	
+
 </script>

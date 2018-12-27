@@ -4,7 +4,7 @@
 		<div class="container">
 		   <div class="panel panel--centered">
 				<div class="box box--white box--tabled">
-				   <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right' : '';?>">
+				   <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right noborder--left' : '';?>">
 					   <h3><?php echo Labels::getLabel('LBL_Reset_Password',$siteLangId);?> </h3>
 					   <p><?php echo Labels::getLabel('LBL_Reset_Password_Msg',$siteLangId);?></p>
 						<?php

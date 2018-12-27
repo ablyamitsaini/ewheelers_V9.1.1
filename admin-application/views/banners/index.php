@@ -1,9 +1,9 @@
 <?php 
 defined('SYSTEM_INIT') or die('Invalid Usage.'); 
-$frmSearch->setFormTagAttribute ( 'class', 'web_form last_td_nowrap' );
+/* $frmSearch->setFormTagAttribute ( 'class', 'web_form last_td_nowrap' );
 $frmSearch->setFormTagAttribute ( 'onsubmit', 'searchLocations(this); return(false);' );
 $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
-$frmSearch->developerTags['fld_default_col'] = 4;
+$frmSearch->developerTags['fld_default_col'] = 4; */
 ?>
 
 <div class='page'>
@@ -19,11 +19,11 @@ $frmSearch->developerTags['fld_default_col'] = 4;
 						</div>
 					</div>
 				</div>
-		<section class="section searchform_filter">
+		<?php /* <section class="section searchform_filter">
 			<div class="sectionbody space togglewrap" style="display:none;">
 				<?php echo $frmSearch->getFormHtml(); ?>    
 			</div>
-		</section>
+		</section> */ ?>
 		<section class="section">
 		<div class="sectionhead">
 			<h4><?php echo Labels::getLabel('LBL_Banner_Locations_List',$adminLangId); ?> </h4>

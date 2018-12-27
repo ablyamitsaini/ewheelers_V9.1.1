@@ -307,31 +307,51 @@ trait SellerProducts{
 			unset($post['selprodoption_optionvalue_id']);
 		}
 		asort($options);
-		$sellerProdObj = new SellerProduct($selprod_id);
+		
 		$selProdCode = $productRow['product_id'].'_'.implode('_',$options);
 		$post['selprod_code']  = $selProdCode;
-		
-		
-		if( !$selprod_id && !Product::IsSellProdAvailableForUser($selProdCode , $this->siteLangId,UserAuthentication::getLoggedUserId() ,$selprod_id)){
-			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );	
-		}
-		
 		
 		if( $post['selprod_track_inventory'] == Product::INVENTORY_NOT_TRACK ){
 			$post['selprod_threshold_stock_level'] = 0;
 		}
-		
 		$data_to_be_save = $post;
 		if( !$selprod_id ){
 			$data_to_be_save['selprod_user_id'] = UserAuthentication::getLoggedUserId();
 			$data_to_be_save['selprod_added_on'] = date("Y-m-d H:i:s");
 		}
-		$sellerProdObj->assignValues( $data_to_be_save );
-
-		if ( !$sellerProdObj->save() ) {
-			Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
-			FatUtility::dieWithError( Message::getHtml() );
+		
+		$languages = Language::getAllNames();
+		
+		$selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
+		
+		if(!empty($selProdAvailable)){
+			if(!$selProdAvailable['selprod_deleted']){
+				Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId) );
+				FatUtility::dieWithError( Message::getHtml() );
+			}
+			$sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
+			$data_to_be_save['selprod_deleted'] = applicationConstants::NO;
+			$sellerProdObj->assignValues( $data_to_be_save );
+			if ( !$sellerProdObj->save() ) {
+				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
+				FatUtility::dieWithError( Message::getHtml() );
+			}
+			$newTabLangId = 0;
+			foreach($languages as $langId =>$langName){
+				$newTabLangId = $langId;
+				break;
+			}
+			$this->set('selprod_id',$selProdAvailable['selprod_id']);
+			$this->set('langId', $newTabLangId); 
+			$this->set( 'msg', Labels::getLabel('LBL_Product_was_deleted._Reactivate_the_same', $this->siteLangId) );
+			$this->_template->render(false, false, 'json-success.php');
+		}else{
+			$sellerProdObj = new SellerProduct($selprod_id);
+			$sellerProdObj->assignValues( $data_to_be_save );
+			if ( !$sellerProdObj->save() ) {
+				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
+				FatUtility::dieWithError( Message::getHtml() );
+			}
 		}
 		
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
@@ -391,7 +411,7 @@ trait SellerProducts{
 			}
 		}
 		/* ] */
-		$languages = Language::getAllNames();
+		
 		/* Add seller product title and SEO data automatically[ */
 		if(0 == FatApp::getPostedData('selprod_id',Fatutility::VAR_INT,0) ){
 			
@@ -502,9 +522,11 @@ trait SellerProducts{
 		$sellerProdObj = new SellerProduct($selprod_id);
 		$selProdCode = $productRow['product_id'].'_'.implode('_',$options);
 		
-		if( !Product::IsSellProdAvailableForUser($selProdCode , $this->siteLangId, UserAuthentication::getLoggedUserId(),$selprod_id)){
+		$selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
+		
+		if(!empty($selProdAvailable) && !$selProdAvailable['selprod_deleted']){
 			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId) );
-			FatUtility::dieJsonError( Message::getHtml() );
+			FatUtility::dieJsonError( Message::getHtml() );	
 		}else{
 			FatUtility::dieJsonSuccess(Message::getHtml());
 		}
@@ -1854,27 +1876,39 @@ trait SellerProducts{
 		$selProdCode = $productRow['product_id'].'_'.implode('_',$options);
 		$sellerProductRow['selprod_code']  = $selProdCode;
 		
-		
-		if( !Product::IsSellProdAvailableForUser($selProdCode , $this->siteLangId,UserAuthentication::getLoggedUserId() ,0)){
-			Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId) );
-			FatUtility::dieWithError( Message::getHtml() );	
-		}
+		$selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), 0);
 		
 		unset($sellerProductRow['selprod_id']);
 		$data_to_be_save = $sellerProductRow;
 		$data_to_be_save['selprod_price'] = $post['selprod_price'];
 		$data_to_be_save['selprod_stock'] = $post['selprod_stock'];
 		$data_to_be_save['selprod_available_from'] = $post['selprod_available_from'];
-		$data_to_be_save['selprod_user_id'] = UserAuthentication::getLoggedUserId();
-		$data_to_be_save['selprod_added_on'] = date("Y-m-d H:i:s");
 		
-		$sellerProdObj->assignValues( $data_to_be_save );
+		if(!empty($selProdAvailable)){
+			if(!$selProdAvailable['selprod_deleted']){
+				Message::addErrorMessage( Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId) );
+				FatUtility::dieWithError( Message::getHtml() );
+			}
+			$sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
+			$data_to_be_save['selprod_deleted'] = applicationConstants::NO;
+			$sellerProdObj->assignValues( $data_to_be_save );
+			if ( !$sellerProdObj->save() ) {
+				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
+				FatApp::redirectUser($_SESSION['referer_page_url']);	
+			}
+			$this->set( 'msg', Labels::getLabel('Product_was_deleted._Reactivate_the_same', $this->siteLangId) );
+			$this->_template->render(false, false, 'json-success.php');
+		}else{
+			$data_to_be_save['selprod_user_id'] = UserAuthentication::getLoggedUserId();
+			$data_to_be_save['selprod_added_on'] = date("Y-m-d H:i:s");
+			$sellerProdObj->assignValues( $data_to_be_save );
 		
-		if ( !$sellerProdObj->save() ) {
-			Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
-			FatApp::redirectUser($_SESSION['referer_page_url']);				
+			if ( !$sellerProdObj->save() ) {
+				Message::addErrorMessage(Labels::getLabel($sellerProdObj->getError(),$this->siteLangId));
+				FatApp::redirectUser($_SESSION['referer_page_url']);				
+			}
 		}
-		
+
 		$selprod_id = $sellerProdObj->getMainTableRecordId();
 		$sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
 		$sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
@@ -1925,7 +1959,6 @@ trait SellerProducts{
 		
 		$metaData['meta_controller'] = $tabsArr[$metaType]['controller'];
 		$metaData['meta_action'] = $tabsArr[$metaType]['action'];
-		
 		$metaData['meta_record_id'] = $selprod_id;
 		$metaIdentifier = SellerProduct::getProductDisplayTitle($selprod_id, FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
 		$meta = new MetaTag();

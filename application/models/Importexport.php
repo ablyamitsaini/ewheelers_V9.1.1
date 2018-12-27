@@ -1172,7 +1172,7 @@ class Importexport extends ImportexportCommon{
 			$weightUnitsArr = applicationConstants::getWeightUnitsArr($langId);
 		}	
 		
-		$srch = Product::getSearchObject($langId);
+		$srch = Product::getSearchObject($langId, false);
 		$srch->joinTable(User::DB_TBL,'LEFT OUTER JOIN','u.user_id = tp.product_seller_id','u');
 		$srch->joinTable(User::DB_TBL_CRED,'LEFT OUTER JOIN','uc.credential_user_id = tp.product_seller_id','uc');
 		$srch->joinTable(Brand::DB_TBL,'LEFT OUTER JOIN','b.brand_id = tp.product_brand_id','b');
@@ -1314,6 +1314,7 @@ class Importexport extends ImportexportCommon{
 					}
 					$sheetArr[] = $row['product_approved'];
 					$sheetArr[] = $row['product_active'];
+					$sheetArr[] = $row['product_deleted'];
 				}else{
 					$sheetArr[] = ($row['ps_free'])?'YES':'NO';
 					$sheetArr[] = ($row['product_cod_enabled'])?'YES':'NO';
@@ -1322,6 +1323,7 @@ class Importexport extends ImportexportCommon{
 					}	
 					$sheetArr[] = ($row['product_approved'])?'YES':'NO';
 					$sheetArr[] = ($row['product_active'])?'YES':'NO';					
+					$sheetArr[] = ($row['product_deleted'])?'YES':'NO';					
 				}					
 			}
 			array_push( $sheetData, $sheetArr );
@@ -1362,8 +1364,9 @@ class Importexport extends ImportexportCommon{
 			}
 			
 			if($rowCount == 0){
-				$coloumArr = $this->getProductsCatalogColoumArr($langId,$sellerId);				
-				if($line !== $coloumArr){ 
+				
+				$coloumArr = $this->getProductsCatalogColoumArr($langId,$sellerId);					
+				if($line !== $coloumArr){
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
@@ -1534,6 +1537,7 @@ class Importexport extends ImportexportCommon{
 				
 				$approved = 	$this->getCell($line,$colCount++,'');
 				$active = 	$this->getCell($line,$colCount++,'');				
+				$deleted = 	$this->getCell($line,$colCount++,'');				
 				
 				if(!$numcols || $numcols != $colCount){ 
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
@@ -1564,12 +1568,14 @@ class Importexport extends ImportexportCommon{
 						$product_ship_free = (FatUtility::int($freeShipping) == 1)?applicationConstants::YES:applicationConstants::NO;
 						$data['product_featured'] = (FatUtility::int($featured) == 1)?applicationConstants::YES:applicationConstants::NO;
 						$data['product_active'] = (FatUtility::int($active) == 1)?applicationConstants::YES:applicationConstants::NO;
+						$data['product_deleted'] = (FatUtility::int($deleted) == 1)?applicationConstants::YES:applicationConstants::NO;
 						$data['product_approved'] = (FatUtility::int($approved) == 1)?applicationConstants::YES:applicationConstants::NO;
 						$data['product_cod_enabled'] = (FatUtility::int($CODavailable) == 1)?applicationConstants::YES:applicationConstants::NO;
 					}else{
 						$product_ship_free = (strtoupper($freeShipping) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 						$data['product_featured'] = (strtoupper($featured) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 						$data['product_active'] = (strtoupper($active) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+						$data['product_deleted'] = (strtoupper($deleted) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 						$data['product_approved'] = (strtoupper($approved) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 						$data['product_cod_enabled'] = (strtoupper($CODavailable) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 					}		

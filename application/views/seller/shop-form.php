@@ -2,8 +2,8 @@
 	$shopFrm->setFormTagAttribute('onsubmit', 'setupShop(this); return(false);');
 	$shopFrm->setFormTagAttribute('class','form form--horizontal');
 	
-	$shopFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-	$shopFrm->developerTags['fld_default_col'] = 12; 
+	$shopFrm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
+	$shopFrm->developerTags['fld_default_col'] = 6; 
 	
 	$countryFld = $shopFrm->getField('shop_country_id');
 	$countryFld->setFieldTagAttribute('id','shop_country_id');
@@ -27,7 +27,7 @@
 <div class="tabs__content">                                               
 	<div class="form__content">
 		
-        <div class="row"><div class="col-md-8" id="shopFormBlock">
+        <div class="row"><div class="col-md-12" id="shopFormBlock">
 			<?php echo $shopFrm->getFormHtml(); ?>
 		</div>
         </div>

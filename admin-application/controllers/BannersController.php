@@ -14,8 +14,8 @@ class BannersController extends AdminBaseController {
 	
 	public function index() {
 		$this->objPrivilege->canViewBanners();	
-		$frmSearch = $this->getSearchForm();
-		$this->set('frmSearch',$frmSearch);	
+		/* $frmSearch = $this->getSearchForm();
+		$this->set('frmSearch',$frmSearch);	 */
 		$this->_template->render();
 	}
 	
@@ -26,11 +26,11 @@ class BannersController extends AdminBaseController {
 	public function search(){
 		$this->objPrivilege->canViewBanners();
 		$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);	
-		
-		$searchForm = $this->getSearchForm();
+		$post = FatApp::getPostedData();
+		/* $searchForm = $this->getSearchForm();
 		$data = FatApp::getPostedData();
 		$page = (empty($data['page']) || $data['page'] <= 0)?1:$data['page'];
-		$post = $searchForm->getFormDataFromArray($data);
+		$post = $searchForm->getFormDataFromArray($data); */
 		
 		$srch = BannerLocation::getSearchObject($this->adminLangId ,false);
 		$srch->addMultipleFields(array('blocation_banner_count','blocation_banner_width','blocation_banner_height','blocation_id','blocation_promotion_cost','blocation_active',"IFNULL(blocation_name,blocation_identifier) as blocation_name"));
@@ -604,11 +604,11 @@ class BannersController extends AdminBaseController {
 		return $data;
 	}
 	
-	private function getSearchForm(){
+	/* private function getSearchForm(){
 		$this->objPrivilege->canViewBanners();
 		$frm = new Form('frmBannerSearch');
 		return $frm;
-	}
+	} */
 		
 	private function getLocationForm(){
 		$this->objPrivilege->canViewBanners();

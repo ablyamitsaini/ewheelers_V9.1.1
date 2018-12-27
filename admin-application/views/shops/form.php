@@ -35,14 +35,14 @@ $urlFld->setFieldTagAttribute('onkeyup',"getSlugUrl(this,this.value,'')");
                                 </a>
                             </li>
                             <?php 
-			$inactive=($shop_id==0)?'fat-inactive':'';	
-			foreach($languages as $langId=>$langName){?>
-                                <li class="<?php echo $inactive;?>"><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);" <?php }?>><?php echo Labels::getLabel("LBL_".$langName,$adminLangId);?></a></li>
-                                <?php } ?>
-                                    <li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopMediaForm(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$adminLangId); ?></a></li>
-                                    <li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopTemplates(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Templates',$adminLangId); ?></a></li>
+							$inactive=($shop_id==0)?'fat-inactive':'';	
+							foreach($languages as $langId=>$langName){?>
+							<li class="<?php echo $inactive;?>"><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);" <?php }?>><?php echo Labels::getLabel("LBL_".$langName,$adminLangId);?></a></li>
+							<?php } ?>
+								<li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopTemplates(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Templates',$adminLangId); ?></a></li>
+							<li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopMediaForm(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$adminLangId); ?></a></li>
 
-                                    <li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopCollectionProducts(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Collection',$adminLangId); ?></a></li>
+							<li><a href="javascript:void(0);" <?php if($shop_id>0){?> onclick="shopCollectionProducts(<?php echo $shop_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Collection',$adminLangId); ?></a></li>
                         </ul>
 
                         <div class="tabs_panel_wrap">
