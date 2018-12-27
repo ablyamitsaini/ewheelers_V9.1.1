@@ -968,3 +968,16 @@ $(document).ready(function() {
   /* $('select').niceSelect();
   $('#category--js').niceSelect('destroy'); */
 });
+
+/* Scroll Hint */
+$(document).ready(function() {
+  new ScrollHint('.table');
+});
+$(document).delegate(".table", "touchstart", function(e) {
+	new ScrollHint('.table');
+});
+
+
+/* $(".table").load(function(){
+  new ScrollHint('.table');
+}); */

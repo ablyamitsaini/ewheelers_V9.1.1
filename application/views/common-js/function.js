@@ -233,6 +233,7 @@ $(document).ready(function(){
 		$('a.loadmore').removeClass("loading")
 		}, 2500);
 	});
+
 });
 
 
@@ -440,4 +441,3 @@ function moveToTargetDivssss(target, outer ,layout){
 	}, 800);
 	return false;
 }
-

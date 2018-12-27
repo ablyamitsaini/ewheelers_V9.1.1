@@ -34,20 +34,20 @@ foreach ($arr_listing as $sn => $row){
 			case 'attrgrp_name':
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayNotApplicable($siteLangId, $row[$key]),true);
 			break;
-			case 'product_approved':				
+			case 'product_approved':
 				$approveUnApproveArr = Product::getApproveUnApproveArr($siteLangId);
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$approveUnApproveArr[$row[$key]] ,true);				
-			break;	
+				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$approveUnApproveArr[$row[$key]] ,true);
+			break;
 			case 'product_active':
 				$activeInactiveArr = applicationConstants::getActiveInactiveArr($siteLangId);
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$activeInactiveArr[$row[$key]] ,true);
-			break;	
+			break;
 			case 'product_shipped_by':
 				$active = "";
 				if($row['psbs_user_id']){
 					$active = 'checked';
 				}
-				
+
 				$str =  Labels::getLabel('LBL_N/A',$siteLangId);
 				if(!$row['product_seller_id'] && $row['product_type'] != Product::PRODUCT_TYPE_DIGITAL){
 					$statucAct = (!$row['psbs_user_id']) ? 'setShippedBySeller('.$row['product_id'].')' : 'setShippedByAdmin('.$row['product_id'].')' ;
@@ -62,32 +62,32 @@ foreach ($arr_listing as $sn => $row){
 					$canAddToStore = false;
 				}
 				$td->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($canAddToStore) ? 'btn btn--primary btn--sm' : 'btn btn--primary btn--sm disabled','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId)), Labels::getLabel('LBL_Add_To_Store',$siteLangId), true);
-				
+
 				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'onclick'=>'catalogInfo('.$row['product_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_product_Info',$siteLangId), true),
 				'<i class="fa fa-eye"></i>', true);
 
-				
+
 				if(0 != $row['product_seller_id']){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array( 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"href"=>CommonHelper::generateUrl('seller','customProductForm',array($row['product_id']))),
 					'<i class="fa fa-edit"></i>', true);
-					
-					$li = $ul->appendElement("li");			
+
+					$li = $ul->appendElement("li");
 					$li->appendElement("a", array('title' => Labels::getLabel('LBL_Product_Images', $siteLangId),
 					'onclick' => 'customProductImages('.$row['product_id'].')', 'href'=>'javascript:void(0)'),
 					'<i class="fa fa-picture-o"></i>', true);
 				}
-				
+
 				if($row['product_added_by_admin_id'] && $row['psbs_user_id'] && $row['product_type'] == PRODUCT::PRODUCT_TYPE_PHYSICAL){
-					$li = $ul->appendElement("li");			
+					$li = $ul->appendElement("li");
 					$li->appendElement("a", array('title' => Labels::getLabel('LBL_Edit_Shipping', $siteLangId),
 					'onclick' => 'sellerShippingForm('.$row['product_id'].')', 'href'=>'javascript:void(0)'),
 					'<i class="fa fa-truck"></i>', true);
-				} 
-				
+				}
+
 			break;
 			default:
 				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
@@ -103,7 +103,7 @@ if (count($arr_listing) == 0){
 		0=>array(
 			'href'=>CommonHelper::generateUrl('Seller','CustomCatalogProductForm'),
 			'label'=>Labels::getLabel('LBL_Request_New_Product', $siteLangId),
-			)	
+			)
 		);
 	}
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
