@@ -15,8 +15,8 @@ CREATE TABLE `tbl_coupons_hold_pending_order` (
 --
 ALTER TABLE `tbl_coupons_hold_pending_order`
   ADD PRIMARY KEY (`ochold_order_id`,`ochold_coupon_id`);
-  
-  
+
+ALTER TABLE `tbl_user_cart` ADD `usercart_last_used_date` DATETIME NOT NULL AFTER `usercart_reminder_date`, ADD `usercart_last_session_id` VARCHAR(200) NOT NULL AFTER `usercart_last_used_date`;
   
   
 CREATE TABLE `tbl_collection_to_brands` (

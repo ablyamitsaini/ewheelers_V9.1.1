@@ -114,8 +114,13 @@ var fcom = {
 			});
 		},
 		
-		updateWithAjax: function(url, data, fn, options) {
-			$.mbsmessage(langLbl.requestProcessing,true,'alert--process alert');
+		updateWithAjax: function(url, data, fn, options, processMsg) {
+			if(typeof processMsg == undefined || processMsg == null){
+				processMsg = true;
+			}
+			if(processMsg){
+				$.mbsmessage(langLbl.requestProcessing,true,'alert--process alert');
+			}
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {
 				if (ans.status != 1) {
@@ -134,7 +139,10 @@ var fcom = {
 				}else{
 					$alertType = 'alert--success';
 				}
-				$.mbsmessage(ans.msg,true, $alertType);
+				
+				if(processMsg){
+					$.mbsmessage(ans.msg,true, $alertType);
+				}
 				
 				if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
 					var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;

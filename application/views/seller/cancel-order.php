@@ -65,8 +65,9 @@
                                                        <span class="item__title"><a title="<?php echo $orderDetail['op_product_name'];?>" href="<?php echo $prodOrBatchUrl;?>">
 													   <?php if($orderDetail['op_selprod_title']!=''){
 															echo  $orderDetail['op_selprod_title'].'<br/>';
+														}else{
+															echo $orderDetail['op_product_name'];
 														}
-														echo $orderDetail['op_product_name'];
 														?>
 													   </a></span>
                                                        <p><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$orderDetail['op_brand_name']);?></p>

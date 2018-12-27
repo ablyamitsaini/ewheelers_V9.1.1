@@ -14,8 +14,8 @@ class SlidesController extends AdminBaseController {
 	
 	public function index() {
 		$this->objPrivilege->canViewSlides();	
-		$frmSearch = $this->getSearchForm();
-		$this->set('frmSearch',$frmSearch);	
+		/* $frmSearch = $this->getSearchForm();
+		$this->set('frmSearch',$frmSearch); */	
 		$this->_template->render();
 	}
 	
@@ -23,8 +23,8 @@ class SlidesController extends AdminBaseController {
 		$this->objPrivilege->canViewSlides();
 		$post = FatApp::getPostedData();
 		
-		$searchForm = $this->getSearchForm();
-		$post = $searchForm->getFormDataFromArray($post);
+		/* $searchForm = $this->getSearchForm();
+		$post = $searchForm->getFormDataFromArray($post); */
 		
 		$srch = Slides::getSearchObject( $this->adminLangId, false );
 		$srch->addCondition('slide_type','=',Slides::TYPE_SLIDE);
@@ -402,10 +402,10 @@ class SlidesController extends AdminBaseController {
 		return $frm;
 	}
 	
-	private function getSearchForm(){
+	/* private function getSearchForm(){
 		$frm = new Form('frmSlideSearch',array('id'=>'frmSlideSearch'));
 		return $frm;
-	}
+	} */
 	
 	private function bannerTypeArr(){
 		return applicationConstants::bannerTypeArr();

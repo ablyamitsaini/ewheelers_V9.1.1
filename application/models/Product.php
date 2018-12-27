@@ -891,7 +891,7 @@ class Product extends MyAppModel{
 		}
 	}
 	
-	public static function IsSellProdAvailableForUser( $selProdCode , $langId, $userId= 0,$selprod_id ){
+	public static function IsSellProdAvailableForUser( $selProdCode , $langId, $userId= 0, $selprod_id){
 		$userId = FatUtility::int($userId);
 		$langId = FatUtility::int($langId);
 		if($langId < 1){
@@ -903,19 +903,18 @@ class Product extends MyAppModel{
 			$srch = SellerProduct::getSearchObject($langId);
 			$srch->addCondition('selprod_code','=',$selProdCode);
 			$srch->addCondition('selprod_user_id','=',$userId);
-			$srch->addCondition('selprod_deleted','=',applicationConstants::NO);
+			/* $srch->addCondition('selprod_deleted','=',applicationConstants::NO); */
 			if($selprod_id){
 				$srch->addCondition('selprod_id','!=',$selprod_id);
 			}
 			$db = FatApp::getDb();
-			$rs = $srch->getResultSet();
 			
-			$productCount  =  $srch->recordCount();
-			if($productCount>0){
-				return false;
-			}else{
-				return true;
-			}
+			$srch->addMultipleFields(array('selprod_id','selprod_deleted'));
+			$rs = $srch->getResultSet();
+			$row = $db->fetch($rs);
+			
+			if($row == false) return array();
+			else return $row;
 		}
 	}
 

@@ -970,14 +970,7 @@ $(document).ready(function() {
 });
 
 /* Scroll Hint */
+
 $(document).ready(function() {
   new ScrollHint('.table');
 });
-$(document).delegate(".table", "touchstart", function(e) {
-	new ScrollHint('.table');
-});
-
-
-/* $(".table").load(function(){
-  new ScrollHint('.table');
-}); */

@@ -1216,34 +1216,8 @@ class GuestUserController extends MyAppController {
 	}
 		
 	public function logout(){
-		// Delete googleplus session if exist
-		if(isset($_SESSION['access_token'])){
-			unset($_SESSION['access_token']);
-		}
-		
-		//Delete facebook session if exist
-		require_once (CONF_INSTALLATION_PATH . 'library/facebook/facebook.php');
-		$facebook = new Facebook(array(
-			'appId' => FatApp::getConfig("CONF_FACEBOOK_APP_ID"),
-			'secret' => FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"),
-		));
-		
-		$user = $facebook->getUser();
-		
-		if ($user) {
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
-			unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
-		}
-		
-		unset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]);
-		unset($_SESSION[UserAuthentication::AFFILIATE_SESSION_ELEMENT_NAME]);
-		unset($_SESSION['activeTab']);
-		unset($_SESSION['referer_page_url']);
-		unset($_SESSION['registered_supplier']['id']);
-		UserAuthentication::clearLoggedUserLoginCookie();
-		
-		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));		
+		UserAuthentication::logout();		
+		FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
 	}
 	
 	private function getForgotForm(){

@@ -16,8 +16,7 @@ class OrderPayment extends Orders{
     }
 	
 	private function getOrderInfo(){
-		$orderObj = new Orders();
-		return $orderInfo = $orderObj->getOrderById( $this->paymentOrderId);	
+		return $orderInfo = $this->getOrderById( $this->paymentOrderId);	
 	}
 	
 	public function getOrderPaymentGatewayAmount(){
@@ -353,7 +352,7 @@ class OrderPayment extends Orders{
 		$orderInfo = $this->attributes;
 		
 		if ( $amountToBeCharge > 0 ){
-			$this->error = Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Order',$defaultSiteLangId));
+			$this->error = Labels::getLabel('MSG_Invalid_Order',$defaultSiteLangId);
 			return false;
 		}
 		
@@ -368,13 +367,17 @@ class OrderPayment extends Orders{
 		$txnArray["utxn_comments"]= sprintf(Labels::getLabel('LBL_ORDER_PLACED_NUMBER',$defaultSiteLangId),$formattedOrderValue);
 		$transObj->assignValues($txnArray);
 		if (!$transObj->save()) { $this->error = $transObj->getError(); return false;} */
-		
+		if ($orderInfo['order_type'] == Orders::ORDER_PRODUCT){
+			$txnComment = sprintf(Labels::getLabel('LBL_Product_Purchased_%s',$defaultSiteLangId),$formattedOrderValue);
+		}else{
+			$txnComment = sprintf(Labels::getLabel('LBL_Subscription_Purchased_%s',$defaultSiteLangId),$formattedOrderValue);
+		}
 		$txnDataArr = array(
 			'utxn_user_id'	=>	$orderInfo["order_user_id"],
 			'utxn_debit'	=>	$amountToBeCharge,
 			'utxn_status'	=>	Transactions::STATUS_COMPLETED,
 			'utxn_order_id'	=>	$orderInfo["order_id"],
-			'utxn_comments'	=>	sprintf(Labels::getLabel('LBL_Subscription_Purchased_%s',$defaultSiteLangId),$formattedOrderValue),
+			'utxn_comments'	=>	$txnComment,
 			'utxn_type'		=>	Transactions::TYPE_ORDER_PAYMENT
 		);
 		if( !$txnId = $transObj->addTransaction( $txnDataArr ) ){

@@ -1751,7 +1751,7 @@ class ProductsController extends MyAppController {
 		$prodSrch->joinSellerSubscription();
 		$prodSrch->addSubscriptionValidCondition();
 		$prodSrch->doNotCalculateRecords();
-		$prodSrch->addCondition( 'selprod_id', '=', $selprod_id );
+		/* $prodSrch->addCondition( 'selprod_id', '=', $selprod_id ); */
 		$prodSrch->doNotLimitRecords();
 
 		/* sub query to find out that logged user have marked current product as in wishlist or not[ */

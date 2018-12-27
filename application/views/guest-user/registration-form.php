@@ -5,7 +5,7 @@
     <div class="container">
       <div class="panel panel--centered">
         <div class="box box--white box--tabled">
-          <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right' : '';?>">
+          <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right noborder--left' : '';?>">
             <?php $this->includeTemplate('guest-user/registerationFormTemplate.php', $data,false ); ?>
           </div>
           <?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData ,false); } ?>

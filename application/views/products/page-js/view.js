@@ -223,7 +223,7 @@ function setupReviewAbuse(frm){
 			}
 			$('#reviewsTotal').html(ans.totalRecords);
 			$("#loadMoreReviewsBtnDiv").html( ans.loadMoreBtnHtml );
-		});
+		}, '', false);
 	};
 
 	goToLoadMoreReviews = function(page){
@@ -238,7 +238,7 @@ function setupReviewAbuse(frm){
 
 	/*] */
 
-	markReviewHelpful = function(reviewId , isHelpful){
+	markReviewHelpful = function(reviewId, isHelpful){
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
 			return false;
