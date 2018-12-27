@@ -5,11 +5,11 @@ class CustomRouter{
 		
 		if ('mobile-app-api' == $controller) {			
 			define('MOBILE_APP_API_CALL', true);
-            define('MOBILE_APP_API_VERSION', 'v1');
+            define('MOBILE_APP_API_VERSION', '1.0');
 		}else if ('app-api' == $controller) {
 			$controller = 'mobile-app-api';
 			define('MOBILE_APP_API_CALL', true);
-			define('MOBILE_APP_API_VERSION', $action);
+			define('MOBILE_APP_API_VERSION', str_replace('v','',$action));
 			
 			if (!array_key_exists(0, $queryString)) {
                 $queryString[0] = '';

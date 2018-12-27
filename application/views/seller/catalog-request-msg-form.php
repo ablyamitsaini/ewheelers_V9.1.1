@@ -20,12 +20,13 @@
 				</div>
 				<div class="grid grid--second">
 					<span class="media__title"><?php echo $logged_user_name; ?></span>
-				</div>
-				<div class="grid grid--third">
-					<div class="form__cover">
-					<?php echo $frm->getFormHtml(); ?>
+					<div class="grid grid--third">
+						<div class="form__cover">
+						<?php echo $frm->getFormHtml(); ?>
+						</div>
 					</div>
 				</div>
+
 			</li>
 		</ul>
 

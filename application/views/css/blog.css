@@ -68,8 +68,10 @@
 }
 
 .after-header-blog {
-  height: 85px;
+  height: 70px;
 }
+
+.post-detail{ padding-top: 15px;}
 
 .nav-blog {
   position: relative;
@@ -222,6 +224,7 @@
 
 .posts-slider {
   position: relative;
+  padding-top: 15px;
 }
 
 .posts-slider .slick-arrow {
@@ -1342,6 +1345,8 @@
   align-items: center;
 }
 
+
+
 @media(min-width:1200px) {
   .related-posts h5, .comments h5, .comments h3 {}
 }
@@ -1444,7 +1449,7 @@
   }
 
   .after-header-blog {
-    height: 70px;
+    height: 60px;
   }
 
   .search-form {
@@ -1626,7 +1631,7 @@
 /*Query-container*/
 .query-container {
   background: rgb(247, 247, 247);
-  padding: 60px 0;
+  padding: 3.75rem 0;
 }
 
 .query-heading {
@@ -1649,7 +1654,7 @@ input.query {
   letter-spacing: 1px;
 }
 
-.results-message {
+.results-message { padding-top: 15px;
   margin-bottom: 0;
   text-transform: uppercase;
   font-size: 0.875em;
@@ -1698,36 +1703,5 @@ input.query {
   }
 }
 
-/*Query-container*/
-.query-container {
-  background: rgb(247, 247, 247);
-  padding: 60px 0;
-}
-
-.query-heading {
-  text-transform: uppercase;
-  font-size: 0.875em;
-  font-weight: 600;
-}
-
-input.query {
-  width: 100%;
-  height: auto;
-  padding: 5px 0;
-  color: rgb(0, 0, 0);
-  border: none;
-  line-height: 1.5;
-  border-bottom: solid 2px var(--border-color);
-  background: none;
-  font-size: 2.5em;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.results-message {
-  margin-bottom: 0;
-  text-transform: uppercase;
-  font-size: 0.875em;
-}
 
 /*pawan*/

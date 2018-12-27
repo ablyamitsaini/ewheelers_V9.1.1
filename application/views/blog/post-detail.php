@@ -2,7 +2,7 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 /* $this->includeTemplate('_partial/blogTopFeaturedCategories.php'); */
 ?>
-<section class="">
+<section class="post-detail">
 	<div class="container">
 		<div class="row">
 			<div class=" col-lg-9 col-md-8 column">
