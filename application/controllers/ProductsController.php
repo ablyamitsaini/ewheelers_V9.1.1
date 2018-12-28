@@ -112,10 +112,23 @@ class ProductsController extends MyAppController {
 		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
+		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
+			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
+			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
+			$priceArr['minPrice'] = $filterDefaultMinValue;
+			$priceArr['maxPrice'] = $filterDefaultMaxValue;
+		}	
+		
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){			
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
+		}
+		
+		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
+			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
+			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
 		
 		$brandsCheckedArr = array();
@@ -222,18 +235,7 @@ class ProductsController extends MyAppController {
 		}
 
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
-		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);
-			/* $tagSrch = Tag::getSearchObject($this->siteLangId);
-			$tagSrch->addMultipleFields(array('tag_id'));
-			$tagSrch->doNotCalculateRecords();
-			$tagSrch->doNotLimitRecords();
-			$cnd = $tagSrch->addCondition('tag_name','=',$headerFormParamsAssocArr['keyword'],'OR');
-			$cnd->attachCondition('tag_identifier','=',$headerFormParamsAssocArr['keyword']);
-			$rs = $tagSrch->getResultSet();
-			$row = $db->fetch($rs);
-			if(!empty($row) && $row['tag_id'] > 0){
-				Tag::recordTagWeightage($row['tag_id']);
-			} */
+		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);		
 		}
 
 		$rs = $prodSrchObj->getResultSet();
@@ -305,15 +307,28 @@ class ProductsController extends MyAppController {
 
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
-		 /* }  */
+		/* }  */
 		
 		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
+		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
+			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
+			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
+			$priceArr['minPrice'] = $filterDefaultMinValue;
+			$priceArr['maxPrice'] = $filterDefaultMaxValue;
+		}
+		
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){			
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
+		}
+		
+		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
+			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
+			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
 		/* CommonHelper::printArray($headerFormParamsAssocArr); die; */
 		/* ] */
@@ -507,10 +522,23 @@ class ProductsController extends MyAppController {
 		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
+		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
+			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
+			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
+			$priceArr['minPrice'] = $filterDefaultMinValue;
+			$priceArr['maxPrice'] = $filterDefaultMaxValue;
+		}
+		
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
+		}
+		
+		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
+			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
+			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
 		/* ] */
 		
@@ -573,13 +601,13 @@ class ProductsController extends MyAppController {
 		$srchFrm = $this->getProductSearchForm();
 		$post = FatApp::getPostedData();
 
-		$postedCurrencyId = FatApp::getPostedData( 'currency_id', FatUtility::VAR_INT, 0 );
+		/* $postedCurrencyId = FatApp::getPostedData( 'currency_id', FatUtility::VAR_INT, 0 );
 		if( $postedCurrencyId > 0 && $postedCurrencyId != $this->siteCurrencyId ){
 			Message::addErrorMessage( Labels::getLabel("LBL_Currency_data_updated,_So_Page_Reloaded", $this->siteLangId) );
 			$json['reload'] = 1;
 			$json['status'] = true;
 			die(json_encode($json));
-		}
+		} */
 
 		$colMdVal = FatApp::getPostedData('colMdVal', FatUtility::VAR_INT, 0 );
 

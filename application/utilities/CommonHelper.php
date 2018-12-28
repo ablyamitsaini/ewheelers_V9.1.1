@@ -474,7 +474,7 @@ class CommonHelper extends FatUtility{
 		$defaultCurrencyValue = $val / $currencyValue;
 		return static::displayMoneyFormat($defaultCurrencyValue,$format,true,$displaySymbol);
 	}
-	
+		
 	public static function displayComissionPercentage($value = 0){
 		if (round($value, 0) == $value)
 		{
@@ -510,6 +510,25 @@ class CommonHelper extends FatUtility{
 		return $number;
 	}
 
+	public static function convertExistingToOtherCurrency($currCurrencyId,$val,$otherCurrencyId,$numberFormat = true){
+			
+		$currencyData = Currency::getAttributesById($currCurrencyId,array('currency_value')
+			);
+		$currencyValue = $currencyData['currency_value'];
+		$val = $val/$currencyValue;	
+				
+		$currencyData = Currency::getAttributesById($otherCurrencyId,array('currency_value')
+			);
+		$currencyValue = $currencyData['currency_value'];
+		$val = $val* $currencyValue;
+		
+		if ( $numberFormat ){
+			$val = number_format( $val, 2 );
+		} 
+		
+		return $val;		
+	}
+	
 	public static function displayMoneyFormat( $val, $numberFormat = true, $showInConfiguredDefaultCurrency = false, $displaySymbol = true,$stringFormat = false){
 		$currencyValue = self::getCurrencyValue();
 		$currencySymbolLeft = self::getCurrencySymbolLeft();
