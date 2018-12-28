@@ -118,7 +118,7 @@
 		});
 		
 		$("select[name='product_type']").trigger('change');
-		
+
 		/* $("select[name='product_shipped_by_me']").change(function(){
 			if( $(this).val() == 1 && $("select[name='product_type']").val() == PRODUCT_TYPE_PHYSICAL){
 				$('.not-digital-js').show();
