@@ -9,12 +9,12 @@
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_Seller',$siteLangId);?></h2>
               <ul class="links--inline">
-			<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	?>
+			<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){ ?>
                 <li><a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a></li>
-				<?php  } else { ?>
+				<?php  } /* else { ?>
 				<li><a href="javascript:void(0)" onclick="addCatalogPopup()"><?php echo Labels::getLabel('LBL_Add_A_Product',$siteLangId); ?></a></li>
 				<?php
-				} ?>
+				} */ ?>
 			   <li><a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a></li>
                 <li><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>"><?php echo Labels::getLabel('LBL_My_Products',$siteLangId);?></a></li>
               </ul>
