@@ -3551,8 +3551,7 @@ class SellerController extends LoggedUserController {
 			$codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings',$langId).'</small>';
 		}
 		
-		$yesNoArr = applicationConstants::getYesNoArr($langId);
-		$frm->addSelectBox(Labels::getLabel('LBL_Shipped_by_me',$langId), 'product_shipped_by_me', $yesNoArr, applicationConstants::YES, array(), ''); 
+		/* $frm->addSelectBox(Labels::getLabel('LBL_Shipped_by_me',$langId), 'product_shipped_by_me', $yesNoArr, applicationConstants::YES, array(), ''); */ 
 		
 		if($type == 'CATALOG_PRODUCT'){
 			$fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Option_Groups',$this->siteLangId),'option_name');

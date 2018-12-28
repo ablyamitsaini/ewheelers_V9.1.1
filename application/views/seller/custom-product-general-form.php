@@ -58,8 +58,8 @@
 						$productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
 						$productCodEnabledFld->setWrapperAttribute( 'class' , 'product_cod_enabled_fld');
 						
-						$productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
-						$productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld');
+						/* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
+						$productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */
 						
 						/* $lengthFld = $customProductFrm->getField('product_length')->fieldWrapper = array('<div class="s">','</div>');
 						$widthFld = $customProductFrm->getField('product_width')->fieldWrapper = array('<div class="f">','</div>');
@@ -97,7 +97,7 @@
 				$(".product_weight_fld").show();
 				$(".product_weight_unit_fld").show();
 				$(".product_cod_enabled_fld").show();
-				$(".product_shipped_by_me_fld").show();
+				/* $(".product_shipped_by_me_fld").show(); */
 				$('.not-digital-js').show();
 				$('#tab_shipping').show();
 				addShippingTab(productId);
@@ -111,14 +111,15 @@
 				$(".product_weight_fld").hide();
 				$(".product_weight_unit_fld").hide();
 				$(".product_cod_enabled_fld").hide();
-				$(".product_shipped_by_me_fld").hide();
+				/* $(".product_shipped_by_me_fld").hide(); */
 				$('.not-digital-js').hide();
 				$('#tab_shipping').hide();
 			}
 		});
 		
 		$("select[name='product_type']").trigger('change');
-		$("select[name='product_shipped_by_me']").change(function(){
+		
+		/* $("select[name='product_shipped_by_me']").change(function(){
 			if( $(this).val() == 1 && $("select[name='product_type']").val() == PRODUCT_TYPE_PHYSICAL){
 				$('.not-digital-js').show();
 				$('#tab_shipping').show();
@@ -129,7 +130,7 @@
 				}
 			}
 		});
-		$("select[name='product_shipped_by_me']").trigger('change');
+		$("select[name='product_shipped_by_me']").trigger('change'); */
 		
 		/* Shipping Information */
 		$('input[name=\'shipping_country\']').autocomplete({
