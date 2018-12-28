@@ -1,8 +1,4 @@
 $(document).ready(function(){
-	$('#slider-for').slick(getSlickGallerySettings(false) );
-	$('#slider-nav').slick(getSlickGallerySettings(true) ); 
-	/* $('#quickView-slider-for').slick(getSlickGallerySettings(false) );
-	$('#quickView-slider-nav').slick( getSlickGallerySettings(true) ); */
 	$('.gallery').modaal({
 		type: 'image'
 	});

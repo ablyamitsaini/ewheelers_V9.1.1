@@ -431,6 +431,12 @@ $(function () {
         });
  <?php }?>
 </script>
-
+<script>
+	$(document).ready(function(){
+		$("#btnAddToCart").addClass("quickView");
+		$('#slider-for').slick( getSlickGallerySettings(false,'<?php echo CommonHelper::getLayoutDirection();?>') );
+		$('#slider-nav').slick( getSlickGallerySettings(true,'<?php echo CommonHelper::getLayoutDirection();?>') );
+	});
+</script>
 <!--Here is the facebook OG for this product  -->
 <?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>
