@@ -22,23 +22,23 @@ foreach ($requests as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'ocrequest_id':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>C'. str_pad($row[$key],5,'0',STR_PAD_LEFT), true);
+				$td->appendElement('plaintext', array(),  str_pad($row[$key],5,'0',STR_PAD_LEFT), true);
 			break;
 			case 'ocrequest_date':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]) , true);
+				$td->appendElement('plaintext', array(), FatDate::format($row[$key]) , true);
 			break;
 			case 'ocreason_title':
-				$txt = '<span class="caption--td">'.$val.'</span><strong>'.Labels::getLabel('LBL_Reason', $siteLangId).': </strong>';
+				$txt = '<strong>'.Labels::getLabel('LBL_Reason', $siteLangId).': </strong>';
 				$txt .= CommonHelper::displayNotApplicable( $siteLangId, $row['ocreason_title'] );
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Comments', $siteLangId).': </strong>';
 				$txt .= nl2br(CommonHelper::displayNotApplicable( $siteLangId, $row['ocrequest_message'] ));
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'ocrequest_status':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$OrderCancelRequestStatusArr[$row[$key]] , true);
+				$td->appendElement('plaintext', array(), $OrderCancelRequestStatusArr[$row[$key]] , true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

@@ -25,14 +25,14 @@ foreach ($orders as $sn => $order){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'order_id':
-			$txt = '<span class="caption--td">'.$val.'</span><a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.$orderDetailUrl.'">';
+			$txt = '<a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.$orderDetailUrl.'">';
 			$txt .= $order['ossubs_invoice_number'];
 			$txt .= '</a><br/>'. FatDate::format($order['order_date_added']);
 			$txt .=$order['order_id'];
 			$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'product':
-				$txt = '<span class="caption--td">'.$val.'</span>';
+				$txt = '';
 				if( $order['ossubs_subscription_name'] != '' ){
 					$txt .=
 
@@ -42,7 +42,7 @@ foreach ($orders as $sn => $order){
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'ossubs_status_id':
-				$txt = '<span class="caption--td">'.$val.'</span>';
+				$txt = '';
 				if($order['ossubs_status_id']==FatApp::getConfig('CONF_DEFAULT_SUBSCRIPTION_PAID_ORDER_STATUS') && $order['ossubs_till_date']<date("Y-m-d") )
 				{
 					$txt .= Labels::getLabel('LBL_Expired',$siteLangId);
@@ -55,22 +55,22 @@ foreach ($orders as $sn => $order){
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'total':
-				$txt = '<span class="caption--td">'.$val.'</span>';
+				$txt = '';
 				// $txt .= CommonHelper::displayMoneyFormat($order['order_net_amount']);
 				 $txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderSubscriptionAmount($order));
 				$td->appendElement('plaintext', array(), $txt, true);
 			break;
 			case 'status':
-				$txt = '<span class="caption--td">'.$val.'</span>'.$order['orderstatus_name'];
+				$txt = $order['orderstatus_name'];
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'ossubs_till_date':
 				if($order['ossubs_from_date']==0 || $order['ossubs_till_date']==0) $subscritpionValidTill = ''; else $subscritpionValidTill = FatDate::format($order['ossubs_from_date'])." - " .FatDate::format($order['ossubs_till_date']);
-				$txt = '<span class="caption--td">'.$val.'</span>'. $subscritpionValidTill;
+				$txt = $subscritpionValidTill;
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=> $orderDetailUrl, 'class'=>'',
@@ -85,7 +85,7 @@ foreach ($orders as $sn => $order){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$order[$key],true);
+				$td->appendElement('plaintext', array(), ''.$order[$key],true);
 			break;
 		}
 	}

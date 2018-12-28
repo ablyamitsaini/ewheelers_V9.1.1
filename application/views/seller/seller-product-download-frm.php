@@ -53,21 +53,21 @@
 						$td = $tr->appendElement('td');
 						switch ($key){
 							case 'listserial':
-								$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+								$td->appendElement('plaintext', array(), $sr_no,true);
 							break;
 							case 'afile_lang_id':
 								$lang_name = Labels::getLabel('LBL_All',$siteLangId);
 								if( $row['afile_lang_id'] > 0 ){
 									$lang_name = $languages[$row['afile_lang_id']];
 								}
-								$td->appendElement('plaintext', array(),  '<span class="caption--td">'.$val.'</span>'.$lang_name, true);
+								$td->appendElement('plaintext', array(),  $lang_name, true);
 							break;
 							case 'afile_name':
 								$fileName = '<a target="_blank" href="'.CommonHelper::generateUrl('seller','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'])).'">'.$row[$key].'</a>';
-								$td->appendElement('plaintext', array(),  '<span class="caption--td">'.$val.'</span>'.$fileName, true);
+								$td->appendElement('plaintext', array(),  $fileName, true);
 							break;
 							case 'action':
-								$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+								$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 
 								$li = $ul->appendElement("li");
 								$li->appendElement("a", array('title' => Labels::getLabel('LBL_Product_Images', $siteLangId),
@@ -76,7 +76,7 @@
 
 							break;
 							default:
-								$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+								$td->appendElement('plaintext', array(), $row[$key],true);
 							break;
 						}
 					}

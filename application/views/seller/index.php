@@ -108,7 +108,7 @@
 								   $prodName.= $row['op_product_name']; */
 							?>
 							  <tr>
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
+								<td>
 									<figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure>
 								</td>
 								<td><div class="item__description"> <span class="item__date"><?php echo FatDate::format($row['order_date_added']);?></span>
@@ -127,8 +127,8 @@
 									<p><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>: <?php echo $row['orderstatus_name'];?></p>
 								  </div>
 								 </td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Amount',$siteLangId)?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER)); ?></span></td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Action',$siteLangId)?></span>
+								<td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER)); ?></span></td>
+								<td>
 								  <ul class="actions">
 									<li><a title="<?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?>" href="<?php echo $orderDetailUrl;?>"><i class="fa fa-eye"></i></a></li>
 									<?php if (!in_array($row["op_status_id"],$notAllowedStatues)){ ?>

@@ -33,7 +33,7 @@ foreach ($orders as $sn => $order){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'order_id':
-			$txt = '<span class="caption--td">'.$val.'</span><a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.$orderDetailUrl.'">';
+			$txt = '<a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.$orderDetailUrl.'">';
 			if( $order['totOrders'] > 1 ){
 				$txt .= $order['op_invoice_number'];
 			} else {
@@ -43,7 +43,7 @@ foreach ($orders as $sn => $order){
 			$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'product':
-				$txt = '<span class="caption--td">'.$val.'</span>';
+				$txt = '';
 				if( $order['op_selprod_title'] != '' ){
 					$txt .= '<div class="item-yk-head-title">'.$order['op_selprod_title'].'</div>';
 				}
@@ -58,7 +58,7 @@ foreach ($orders as $sn => $order){
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'total':
-				$txt = '<span class="caption--td">'.$val.'</span>';
+				$txt = '';
 				/* if( $order['totOrders'] == 1 ){
 					$txt .= CommonHelper::displayMoneyFormat($order['order_net_amount'], true, true);
 				} else {
@@ -74,13 +74,13 @@ foreach ($orders as $sn => $order){
 				if( $order['order_pmethod_id']==PaymentSettings::CashOnDelivery && $order['order_status']==FatApp::getConfig('CONF_DEFAULT_ORDER_STATUS')){
 						$pMethod = " - ".$order['pmethod_name'] ;
 				}
-				$txt = '<span class="caption--td">'.$val.'</span>'.$order['orderstatus_name'].$pMethod;
+				$txt = $order['orderstatus_name'].$pMethod;
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 
 
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 
 				$opCancelUrl = CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($order['op_id']) );
 
@@ -119,7 +119,7 @@ foreach ($orders as $sn => $order){
 					'<i class="fa fa-cart-plus"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$order[$key],true);
+				$td->appendElement('plaintext', array(), $order[$key],true);
 			break;
 		}
 	}

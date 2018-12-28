@@ -3,7 +3,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
 	'listserial'=>'Sr.',
 	'taxcat_name' => Labels::getLabel('LBL_Tax_Category', $siteLangId),
-	'taxval_value' => Labels::getLabel('LBL_Value', $siteLangId),	 	
+	'taxval_value' => Labels::getLabel('LBL_Value', $siteLangId),
 );
 
 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
@@ -17,58 +17,58 @@ foreach ($arr_flds as $val) {
 }
 
 $sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
-foreach ($arr_listing as $sn => $row){ 
+foreach ($arr_listing as $sn => $row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' => ''));
 
-	foreach ($arr_flds as $key=>$val){ 
+	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'taxcat_name':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);			
+				$td->appendElement('plaintext', array(), $row[$key] . '<br>', true);
 			break;
 			case 'taxval_value':
 				/* Error Handling[ */
 				if( !isset($row['taxval_value']) ){
 					$row['taxval_value'] = 0;
 				}
-				
+
 				if( !isset($row['default']['taxval_value']) ){
 					$row['default']['taxval_value'] = 0;
 				}
-				
+
 				if( !isset($row['taxval_is_percent']) ){
 					$row['taxval_is_percent'] = 0;
 				}
 				/* ] */
-				
+
 				$str = '';
 				if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 					if($row['default']['taxval_value'] != $row['taxval_value']){
-						$str = '<span class="item__price--old strikethrough">'.CommonHelper::displayTaxFormat($row['default']['taxval_is_percent'],$row['default']['taxval_value']).'</span> ';					
+						$str = '<span class="item__price--old strikethrough">'.CommonHelper::displayTaxFormat($row['default']['taxval_is_percent'],$row['default']['taxval_value']).'</span> ';
 					}
 					$str.= CommonHelper::displayTaxFormat($row['taxval_is_percent'],$row['taxval_value']);
 				}else{
-					$str = '<span class="item__price--old">'.CommonHelper::displayTaxFormat($row['default']['taxval_is_percent'],$row['default']['taxval_value']).'</span> ';	
-				}				
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$str,true);
-			break; 
-			case 'action': 								
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+					$str = '<span class="item__price--old">'.CommonHelper::displayTaxFormat($row['default']['taxval_is_percent'],$row['default']['taxval_value']).'</span> ';
+				}
+				$td->appendElement('plaintext', array(), $str,true);
+			break;
+			case 'action':
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 				$li = $ul->appendElement("li");
 				if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 					$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"changeTaxRates(".$row['taxcat_id'].")"),
 					'<i class="fa fa-edit"></i>', true);
-					
+
 					/* Error Handling[ */
 					if( !isset($row['taxval_seller_user_id']) ){ $row['taxval_seller_user_id'] = 0; }
 					/* ] */
-					
-					if($row['taxval_seller_user_id'] == $userId){	
+
+					if($row['taxval_seller_user_id'] == $userId){
 						$li = $ul->appendElement("li");
 						$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 						'title'=>Labels::getLabel('LBL_Reset_to_Default',$siteLangId),"onclick"=>"resetCatTaxRates(".$row['taxcat_id'].")"),
@@ -77,7 +77,7 @@ foreach ($arr_listing as $sn => $row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

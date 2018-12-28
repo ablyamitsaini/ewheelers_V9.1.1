@@ -59,23 +59,23 @@
 								?>
 								<tr>
 								<td  colspan="2">
-								<span class="caption--td"><?php echo Labels::getLabel('LBL_Promotion',$siteLangId);?></span><?php echo $row['promotion_name'];?>
+								<?php echo $row['promotion_name'];?>
 								</td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Type',$siteLangId);?></span><?php echo $typeArr[$row['promotion_type']];?>
+								<td><?php echo $typeArr[$row['promotion_type']];?>
 								</td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_CPC',$siteLangId);?></span>
+								<td>
 								<?php echo CommonHelper::displayMoneyFormat($row['promotion_cpc']);?>
 								</td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Budget',$siteLangId);?></span>
+								<td>
 								<?php echo CommonHelper::displayMoneyFormat($row['promotion_budget']) ;?>
 								</td> 
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Clicks',$siteLangId);?></span>
+								<td>
 								<?php echo FatUtility::int($row['clicks']);?>
-								</td> <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Duration',$siteLangId);?></span>
+								</td> <td>
 								<?php   echo $duraionStr;?>
-								</td> <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Approved',$siteLangId);?></span>
+								</td> <td>
 								<?php echo $arrYesNo[$row['promotion_approved']];?>
-								</td> <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></span>
+								</td> <td>
 								<ul class="actions"><li><a  title="<?php echo Labels::getLabel('LBL_Analytics',$siteLangId);?>"   href="<?php echo CommonHelper::generateUrl('advertiser','analytics', array($row['promotion_id']));?>"><i class="fa fa-file-text-o"></i></a></li></ul>
 								</td>
 								</tr>

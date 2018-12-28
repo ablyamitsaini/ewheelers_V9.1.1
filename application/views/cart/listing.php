@@ -74,7 +74,6 @@
 			<tr class="<?php echo (!$product['in_stock']) ? 'disabled' : ''; ?>">
 				<td>
 					<div class="item__group">
-						<span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId); ?></span>
 						<div class="item__group--left">
 							<figure class="item__pic">
 								<a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a>
@@ -108,7 +107,6 @@
 					</div>
 				</td>
 				<td>
-					<span class="caption--td"><?php echo Labels::getLabel('LBL_Quantity',$siteLangId); ?></span>
 					<div class="qty">
 						<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" maxlength="3" type="text" /><a href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>
 					</div>
@@ -119,14 +117,12 @@
 					<span class="text--normal <?php echo $stockTextClass; ?>"><?php echo $stockText; ?></span>
 				</td>
 				<td>
-					<span class="caption--td"><?php echo Labels::getLabel('LBL_Price',$siteLangId); ?></span>
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
 					<?php if( $product['special_price_found'] ){ ?>
 					<span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
 					<?php } ?>
 				</td>
 				<td>
-					<span class="caption--td"><?php echo Labels::getLabel('LBL_SubTotal',$siteLangId); ?></span>
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
 				</td>
 			</tr>

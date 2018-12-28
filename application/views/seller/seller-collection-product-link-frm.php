@@ -2,7 +2,7 @@
 <?php $variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
 <div class="col-md-12">
-	<div class="container container--fluid">
+	<div class="">
 		<div class="tabs--inline tabs--scroll clearfix">
 			<ul>
 				<li ><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>

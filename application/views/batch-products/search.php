@@ -21,16 +21,16 @@ foreach ($arrListing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'prodgroup_name':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key], true);
+				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
 			case 'prodgroup_active':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.applicationConstants::getActiveInactiveArr($siteLangId)[$row[$key]], true);
+				$td->appendElement('plaintext', array(), applicationConstants::getActiveInactiveArr($siteLangId)[$row[$key]], true);
 			break;
 			case 'action':
-				$ul = new HtmlElement( 'ul', array('class'=>'actions'), '<span class="caption--td">' . $val . '</span>', true );
+				$ul = new HtmlElement( 'ul', array('class'=>'actions'), ' ', true );
 				
 				$li = $ul->appendElement( 'li', array(), '');
 				$li->appendElement( 'a', array('href'=>'javascript:void(0)', 'title' => Labels::getLabel('LBL_Edit', $siteLangId), 'onClick' => 'batchForm(' .$row['prodgroup_id']. ')' ), '<i class="fa fa-edit"></i>', true );
@@ -41,7 +41,7 @@ foreach ($arrListing as $sn => $row){
 				
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

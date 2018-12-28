@@ -281,7 +281,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <?php if(count($product['moreSellersArr'])>0){ ?>
-                  <div class="more--seller align--right"><a class="link--arrow"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_VIEW_%d_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
+                  <div class="more--seller align--right"><a class="link--arrow"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_View_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
                   <?php } ?>
                   <div class="ftshops_item_head_right"> <a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a> <a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a> </div>
                 </div>

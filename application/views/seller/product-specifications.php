@@ -33,7 +33,7 @@ foreach ($prodSpec as $key => $specification){
 		switch ($key){
 
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 				'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"addProdSpec(".$productId.",".$row['prodspec_id'].")"),
@@ -44,7 +44,7 @@ foreach ($prodSpec as $key => $specification){
 				'<i class="fa fa-trash"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

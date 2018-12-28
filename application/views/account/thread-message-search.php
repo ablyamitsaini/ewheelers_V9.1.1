@@ -8,10 +8,11 @@
 	   <div class="grid grid--second">
 		   <span class="media__date"><?php echo FatDate::format($row['message_date'],true);?></span>
 		   <span class="media__title"><?php echo $row['message_from_name'];?></span>
+			 <div class="grid grid--third">
+			 <div class="media__description"><?php echo nl2br($row['message_text']);?> </div>
+			</div>
 	   </div>
-	   <div class="grid grid--third">
-			<div class="media__description"><?php echo nl2br($row['message_text']);?> </div>
-	   </div>
+
 	</li>
 <?php } }
 $postedData['page'] = $page;

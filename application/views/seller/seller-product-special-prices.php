@@ -36,19 +36,19 @@
 						$td = $tr->appendElement('td');
 						switch ($key){
 							case 'listserial':
-								$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+								$td->appendElement('plaintext', array(), $sr_no,true);
 							break;
 							case 'splprice_price':
-								$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($row[$key] ,true,true ),true );
+								$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($row[$key] ,true,true ),true );
 							break;
 							case 'splprice_start_date';
-								$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]),true );
+								$td->appendElement( 'plaintext', array(), FatDate::format($row[$key]),true );
 							break;
 							case 'splprice_end_date';
-								$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]),true );
+								$td->appendElement( 'plaintext', array(), FatDate::format($row[$key]),true );
 							break;
 							case 'action':
-								$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+								$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 								$li = $ul->appendElement("li");
 								$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
 								'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"sellerProductSpecialPriceForm(".$selprod_id.", ".$row['splprice_id'].")"),
@@ -60,7 +60,7 @@
 								'<i class="fa fa-trash"></i>', true);
 							break;
 							default:
-								$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+								$td->appendElement('plaintext', array(), $row[$key],true);
 							break;
 						}
 					}

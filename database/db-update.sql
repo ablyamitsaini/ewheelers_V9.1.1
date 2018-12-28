@@ -30,3 +30,5 @@ ALTER TABLE `tbl_collection_to_brands`
   
   
 ALTER TABLE `tbl_seller_products` ADD UNIQUE( `selprod_user_id`, `selprod_code`);
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_VIEW_%d_More_Sellers'

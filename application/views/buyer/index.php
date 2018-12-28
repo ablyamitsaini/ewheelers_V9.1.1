@@ -95,7 +95,7 @@
 													}
 												?>
 											<tr>
-											<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
+											<td>
 											<?php
 											$prodOrBatchUrl = 'javascript:void(0)';
 											if($row['op_is_batch']){
@@ -130,8 +130,8 @@
 													<div class="item-yk-head-specification"><span><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>:</span> <?php echo $row['orderstatus_name'];?></div>
 													</div>
 												</td>
-												<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Amount',$siteLangId)?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */;?></span></td>
-												<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Action',$siteLangId)?></span>
+												<td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */;?></span></td>
+												<td>
 												<ul class="actions">
 													<li><a title="<?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?>" href="<?php echo $orderDetailUrl;?>"><i class="fa fa-eye"></i></a></li>
 													<?php if( $canCancelOrder ){ ?>

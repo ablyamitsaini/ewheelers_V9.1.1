@@ -1003,7 +1003,7 @@ class ProductsController extends MyAppController {
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
 		
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');
@@ -1779,7 +1779,7 @@ class ProductsController extends MyAppController {
 		$prodSrch->joinSellerSubscription();
 		$prodSrch->addSubscriptionValidCondition();
 		$prodSrch->doNotCalculateRecords();
-		/* $prodSrch->addCondition( 'selprod_id', '=', $selprod_id ); */
+		$prodSrch->addCondition( 'selprod_id', '=', $selprod_id );
 		$prodSrch->doNotLimitRecords();
 
 		/* sub query to find out that logged user have marked current product as in wishlist or not[ */
@@ -1821,7 +1821,7 @@ class ProductsController extends MyAppController {
 		}
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name', 'product_seller_id','product_id',
 		'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city','selprod_cod_enabled', 'product_cod_enabled','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_min_order_qty','selprod_available_from') );
 		$moreSellerSrch->addOrder('theprice');
@@ -1998,7 +1998,7 @@ class ProductsController extends MyAppController {
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');

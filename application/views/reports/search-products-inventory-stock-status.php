@@ -23,7 +23,7 @@ foreach ($arrListing as $sn => $listing){
 		$td = $tr->appendElement('td');
 		switch ( $key ){
 			case 'sr':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
 				$name = '<div class="item-yk-head-title">'.$listing['product_name'].'</div>';
@@ -35,28 +35,28 @@ foreach ($arrListing as $sn => $listing){
 					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
 				$td->setAttribute('width', '40%');
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$name,true);
+				$td->appendElement('plaintext', array(), $name,true);
 			break;
 			
 			case 'selprod_stock':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['selprod_stock'],true);
+				$td->appendElement('plaintext', array(), $listing['selprod_stock'],true);
 			break;
 			
 			case 'stock_on_order':
-				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['stock_on_order'],true);
+				$td->appendElement( 'plaintext', array(), $listing['stock_on_order'],true);
 			break;
 			
 			case 'selprod_price':
-				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($listing['selprod_price']),true);
+				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($listing['selprod_price']),true);
 			break;
 			
 			case 'total_value':
 				$total_value = $listing['selprod_stock'] * $listing['selprod_price'];
-				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($total_value),true);
+				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($total_value),true);
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing[$key],true);
+				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;
 		}
 	}

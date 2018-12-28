@@ -1385,7 +1385,7 @@ class AccountController extends LoggedUserController {
 		if( $products ){
 			foreach($products as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
@@ -1491,7 +1491,7 @@ class AccountController extends LoggedUserController {
 		if( $products ){
 			foreach($products as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();

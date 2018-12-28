@@ -47,7 +47,7 @@
                                                <th><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></th>
                                            </tr>
                                            <tr>
-                                               <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
+                                               <td>
 											   <?php
 											   $prodOrBatchUrl = 'javascript:void(0)';
 												if($orderDetail['op_is_batch']){
@@ -76,11 +76,11 @@
 													   <?php }?>
                                                    </div>
                                                </td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?></span><?php echo $orderDetail['op_shipping_durations'].'-'. $orderDetail['op_shipping_duration_name'];?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Qty',$siteLangId);?></span><?php echo $orderDetail['op_qty'];?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'shipping'));?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail));?></td>
+                                                <td><?php echo $orderDetail['op_shipping_durations'].'-'. $orderDetail['op_shipping_duration_name'];?></td>
+                                                <td><?php echo $orderDetail['op_qty'];?></td>
+                                                <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
+                                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'shipping'));?></td>
+                                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail));?></td>
                                             </tr>
                                      </tbody></table>
                                      <div class="grids--colum">
@@ -165,10 +165,10 @@
 											<?php
 											foreach($orderDetail['comments'] as $row){?>
                                             <tr>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></span><?php echo FatDate::format($row['oshistory_date_added']);?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Customer_Notified',$siteLangId);?></span><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></span><?php echo $orderStatuses[$row['oshistory_orderstatus_id']];?></td>
-                                                <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Comments',$siteLangId);?></span> <?php echo nl2br($row['oshistory_comments']);?></td>
+                                                <td><?php echo FatDate::format($row['oshistory_date_added']);?></td>
+                                                <td><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
+                                                <td><?php echo $orderStatuses[$row['oshistory_orderstatus_id']];?></td>
+                                                <td><?php echo nl2br($row['oshistory_comments']);?></td>
                                               </tr>
 											  <?php } ?>
 											</tbody></table>

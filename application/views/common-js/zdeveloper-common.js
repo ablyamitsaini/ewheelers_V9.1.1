@@ -969,3 +969,11 @@ $(document).ready(function() {
   /* $('select').niceSelect();
   $('#category--js').niceSelect('destroy'); */
 });
+
+/* Scroll Hint */
+$(document).ready(function() {
+  new ScrollHint('.table');
+});
+$(document).ajaxComplete(function() {
+  new ScrollHint('.table');
+});
