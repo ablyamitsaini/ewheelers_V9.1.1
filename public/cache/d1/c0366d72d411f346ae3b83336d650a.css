@@ -1,0 +1,19 @@
+/* CSS Document */
+
+/* #tab_shipping {
+	width: 100%;
+} */
+/* added css for Seller Dashboard, Products Form, categories listing for the selection[ */
+.box--scroller {
+	max-height: 200px;
+	overflow: auto;
+}
+.box--scroller ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.box--scroller ul li {
+	padding: 5px 0;
+}
+ 

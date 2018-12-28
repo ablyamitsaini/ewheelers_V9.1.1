@@ -31,15 +31,15 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['brand_name'] != '' ){
 					$name .= "<br/><strong>".Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'];
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$name,true);
+				$td->appendElement('plaintext', array(), $name,true);
 			break;
 			
 			case 'wishlist_user_counts':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['wishlist_user_counts'],true);
+				$td->appendElement('plaintext', array(), $listing['wishlist_user_counts'],true);
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing[$key],true);
+				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;
 		}
 	}

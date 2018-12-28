@@ -52,24 +52,24 @@ foreach ($digitalDownloads as $sn => $row){
 				}else{
 					$fileName = $row['afile_name'];
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$fileName,true);
+				$td->appendElement('plaintext', array(), $fileName,true);
 			break;
 			case 'downloadable_count':
 				$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
 				if($row['downloadable_count'] != -1){
 					$downloadableCount = $row['downloadable_count'];
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$downloadableCount,true);
+				$td->appendElement('plaintext', array(), $downloadableCount,true);
 			break;
 			case 'expiry_date':
 				$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
 				if($row['expiry_date']!=''){
 					$expiry = FatDate::Format($row['expiry_date']);
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$expiry,true);
+				$td->appendElement('plaintext', array(), $expiry,true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 				if($row['downloadable']){
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=> CommonHelper::generateUrl('Buyer','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'])), 'class'=>'',
@@ -78,7 +78,7 @@ foreach ($digitalDownloads as $sn => $row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

@@ -21,19 +21,19 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'banner':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><img src="'.CommonHelper::generateUrl('category','sellerBanner',array($row['shop_id'], $row['prodcat_id'], $siteLangId, 'thumb')).'?'.time().'">',true);
+				$td->appendElement('plaintext', array(), '<img src="'.CommonHelper::generateUrl('category','sellerBanner',array($row['shop_id'], $row['prodcat_id'], $siteLangId, 'thumb')).'?'.time().'">',true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)','onClick'=>'addCategoryBanner('.$row['prodcat_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_Media',$siteLangId)),
 				'<i class="fa fa-edit"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

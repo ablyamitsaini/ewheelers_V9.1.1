@@ -25,10 +25,10 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'taxcat_name':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);
+				$td->appendElement('plaintext', array(), $row[$key] . '<br>', true);
 			break;
 			case 'taxval_value':
 				/* Error Handling[ */
@@ -54,10 +54,10 @@ foreach ($arr_listing as $sn => $row){
 				}else{
 					$str = '<span class="item__price--old">'.CommonHelper::displayTaxFormat($row['default']['taxval_is_percent'],$row['default']['taxval_value']).'</span> ';
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$str,true);
+				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 				$li = $ul->appendElement("li");
 				if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 					$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
@@ -77,7 +77,7 @@ foreach ($arr_listing as $sn => $row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

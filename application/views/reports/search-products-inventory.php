@@ -20,7 +20,7 @@ foreach ($arrListing as $sn => $listing){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'sr':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
 				$name = '<div class="item-yk-head-title">'.$listing['product_name'].'</div>';
@@ -31,15 +31,15 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['brand_name'] != '' ){
 					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$name,true);
+				$td->appendElement('plaintext', array(), $name,true);
 			break;
 			
 			case 'selprod_stock':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['selprod_stock'],true);
+				$td->appendElement('plaintext', array(), $listing['selprod_stock'],true);
 			break;
 			
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing[$key],true);
+				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;
 		}
 	}

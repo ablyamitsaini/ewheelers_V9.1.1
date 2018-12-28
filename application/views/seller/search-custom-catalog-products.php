@@ -22,20 +22,20 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'product_identifier':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row['product_name'] . '<br>', true);
+				$td->appendElement('plaintext', array(), $row['product_name'] . '<br>', true);
 				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 			break;
 			case 'preq_status':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$statusArr[$row[$key]],true);
+				$td->appendElement('plaintext', array(), $statusArr[$row[$key]],true);
 			break;
 			case 'preq_added_on':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::Format($row[$key]),true);
+				$td->appendElement('plaintext', array(), FatDate::Format($row[$key]),true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);
 				$li = $ul->appendElement("li");
 				if($row['preq_status'] == ProductRequest::STATUS_PENDING){
 					$li->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','customCatalogProductForm',array($row['preq_id'])), 'class'=>'','title'=>Labels::getLabel('LBL_Edit',$siteLangId)),
@@ -48,7 +48,7 @@ foreach ($arr_listing as $sn => $row){
 				}
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}
