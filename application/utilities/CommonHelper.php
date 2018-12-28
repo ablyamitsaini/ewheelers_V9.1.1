@@ -1234,16 +1234,17 @@ class CommonHelper extends FatUtility{
 	public static function truncateCharacters($string, $limit, $break=" ", $pad="..." ,$nl2br = false){
 		if(strlen($string) <= $limit) { return ($nl2br)? nl2br($string) : $string ; }
 				
+				
 		$tempString = str_replace('\n','^',$string);
-		$tempString = substr($tempString, 0, $limit);
-		if(substr($tempString,-1) == "^") {
+		$tempString = mb_substr($tempString, 0, $limit);
+		if(mb_substr($tempString,-1) == "^") {
 			$limit = $limit - 1;
 		}
-		$string = substr($string, 0, $limit);
+		$string = mb_substr($string, 0, $limit);
 		
-		if(false !== ($breakpoint = strrpos($string, $break))) 
+		if(false !== ($breakpoint = mb_strrpos($string, $break))) 
 		{
-			$string = substr($string, 0, $breakpoint);
+			$string = mb_substr($string, 0, $breakpoint);
 		}
 		return (($nl2br)? nl2br($string) : $string) . $pad;
 	}
