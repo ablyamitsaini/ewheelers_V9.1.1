@@ -1167,7 +1167,7 @@ class Cart extends FatModel {
 	}
 	
 	public function removeUsedRewardPoints(){
-		if(array_key_exists('reward_points',$this->SYSTEM_ARR['shopping_cart'])){
+		if(isset($this->SYSTEM_ARR['shopping_cart']) && array_key_exists('reward_points',$this->SYSTEM_ARR['shopping_cart'])){
 			unset($this->SYSTEM_ARR['shopping_cart']['reward_points']);
 			$this->updateUserCart();
 		}
