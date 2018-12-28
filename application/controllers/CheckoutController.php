@@ -1240,7 +1240,9 @@ class CheckoutController extends MyAppController{
 		}
 		
 		$rewardPoints = $post['redeem_rewards'];
-		$totalBalance = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
+		$orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+		$totalBalance = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId(),$orderId);
+						
 		/* var_dump($totalBalance);exit; */
 		if($totalBalance == 0 || $totalBalance < $rewardPoints){
 			Message::addErrorMessage(Labels::getLabel('ERR_Insufficient_reward_point_balance',$this->siteLangId));

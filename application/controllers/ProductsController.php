@@ -1768,6 +1768,13 @@ class ProductsController extends MyAppController {
 
 	}
 
+	public function setUrlString(){
+		$urlString = FatApp::getPostedData('urlString',FatUtility::VAR_STRING,'');
+		if($urlString!=''){
+			$_SESSION['referer_page_url'] = rtrim($urlString,'/').'/';
+		}
+	}
+	
 	public function sellers($selprod_id){
 		$selprod_id = FatUtility::int($selprod_id);
 		$prodSrchObj = new ProductSearch( $this->siteLangId );

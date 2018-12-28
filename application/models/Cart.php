@@ -35,14 +35,15 @@ class Cart extends FatModel {
 			}
 		}
 		
-		/* echo "hi--".$this->cart_user_id.'--'.$this->cart_id; exit; */
-		
 		$srch = new SearchBase('tbl_user_cart');
 		$srch->addCondition('usercart_user_id', '=', $this->cart_user_id );
 		$srch->addCondition('usercart_type', '=',CART::TYPE_PRODUCT);
 		$rs = $srch->getResultSet();
 		$this->cartSameSessionUser = true;
 		if( $row = FatApp::getDb()->fetch($rs) ){	
+			if($row['usercart_last_session_id'] != $this->cart_id){
+				$this->cartSameSessionUser = false;
+			}
 			
 			$this->SYSTEM_ARR['cart'] = unserialize( $row["usercart_details"] );			
 			//CommonHelper::printArray($this->SYSTEM_ARR['cart']); exit;
@@ -52,6 +53,10 @@ class Cart extends FatModel {
 			}
 		}
 
+		if(!$this->cartSameSessionUser){
+			$this->removeUsedRewardPoints();
+		}
+		
 		if ( !isset( $this->SYSTEM_ARR['cart'] ) || !is_array( $this->SYSTEM_ARR['cart'] ) ) {
 			$this->SYSTEM_ARR['cart'] = array();
 		}

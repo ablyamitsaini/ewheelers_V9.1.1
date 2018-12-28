@@ -9,8 +9,9 @@ Fixes:
 	. Menu toggle issue on page load.
 	. Discount coupon in case of multiple browser.
 	. Resolved product count issue when use price filter and then change currency.
-
-
+	. Resolved filters issue - Applied filters get washed on login.	
+	. Rewards are getting applied on different orders for same user on accessing in multiple browsers.
+	
 Updates :
 	. Guest user cart functionality for app users.
 	
