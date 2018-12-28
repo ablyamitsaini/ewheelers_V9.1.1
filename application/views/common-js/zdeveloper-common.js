@@ -9,10 +9,14 @@ function getCountryStates( countryId, stateId, dv ){
 	});
 };
 
-function recentlyViewedProducts(){
+function recentlyViewedProducts(selprodId){
+	if(typeof selprodId == 'undefined'){
+		selprodId = 0;
+	}
+	
 	$("#recentlyViewedProductsDiv").html(fcom.getLoader());
 	
-	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts'),'',function(ans){
+	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
 		$('.slides--six-js').slick( getSlickSliderSettings(6) );
 	});

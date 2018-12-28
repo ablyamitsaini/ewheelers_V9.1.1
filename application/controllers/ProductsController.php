@@ -1413,7 +1413,8 @@ class ProductsController extends MyAppController {
 		$sellerId =  $post['sellerId'];
 	}
 
-	public function recentlyViewedProducts(){
+	public function recentlyViewedProducts($productId = 0){
+		$productId = FatUtility::int($productId);
 		$loggedUserId = 0;
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
@@ -1428,6 +1429,12 @@ class ProductsController extends MyAppController {
 			if( isset($cookiesProductsArr) && is_array($cookiesProductsArr) && count($cookiesProductsArr) ){
 				$cookiesProductsArr = array_map('intval', $cookiesProductsArr);
 				$cookiesProductsArr = array_reverse($cookiesProductsArr);
+				
+				if($productId && in_array($productId,$cookiesProductsArr)){
+					$pos = array_search($productId, $cookiesProductsArr);
+					unset($cookiesProductsArr[$pos]);
+				}
+				
 				$prodSrch = new ProductSearch( $this->siteLangId );
 				$prodSrch->setDefinedCriteria();
 				$prodSrch->joinSellerSubscription();
