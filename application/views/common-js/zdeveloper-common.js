@@ -18,7 +18,8 @@ function recentlyViewedProducts(selprodId){
 	
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6) );
+		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection) );
+		$('.slides--six-js').slick('reinit');
 	});
 }
 
@@ -310,7 +311,8 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
 			infinite: false, 
-			arrows: true, 
+			arrows: true,
+			autoplay:true,	
 			rtl:true,
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
@@ -345,7 +347,8 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
 			infinite: false, 
-			arrows: true,					
+			arrows: true,
+			autoplay:true,	
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
 			responsive: [{

@@ -14,4 +14,5 @@ Fixes:
 	. Recently viewed on Product detail page also displaying current page item.
 Updates :
 	. Guest user cart functionality for app users.
+	. auto scroll for recently viewed products.
 	
