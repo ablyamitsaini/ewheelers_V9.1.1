@@ -87,7 +87,7 @@ $("document").ready(function(){
 		'select': function(item) {
 			$('input[name=\'products_related\']').val('');
 			$('#productRelated' + item['value']).remove();
-			$('#related-products').append('<div id="productRelated' + item['value'] + '"><i class="remove_related remove_param ion-android-delete icon"></i> ' +item['label'] + '<input type="hidden" name="product_related[]" value="' + item['value'] + '" /></div>');
+			$('#related-products ul').append('<li id="productRelated' + item['value'] + '"><i class="remove_related remove_param ion-android-delete icon"></i> ' +item['label'] + '<input type="hidden" name="product_related[]" value="' + item['value'] + '" /></li>');
 		}
 	});
 	$('#related-products').delegate('.remove_related', 'click', function() {
@@ -98,13 +98,13 @@ $("document").ready(function(){
 		
 		?>
 	
-       	$('#buy-together-products').append("<div id=\"productBuyTogether<?php echo $val['selprod_id'];?>\"><i class=\"remove_buyTogether remove_param ion-android-delete icon\"></i><?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_upsell[]\" value=\"<?php echo $val['selprod_id'];?>\" /></div>");
+       	$('#buy-together-products ul').append("<li id=\"productBuyTogether<?php echo $val['selprod_id'];?>\"><i class=\"remove_buyTogether remove_param ion-android-delete icon\"></i> <?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_upsell[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
     <?php } 
 	foreach($relatedProducts as $key => $val){
 		
 		?>
 	
-       	$('#related-products').append("<div id=\"productRelated<?php echo $val['selprod_id'];?>\"><i class=\"remove_related remove_param ion-android-delete icon\"></i><?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_related[]\" value=\"<?php echo $val['selprod_id'];?>\" /></div>");
+       	$('#related-products ul').append("<li id=\"productRelated<?php echo $val['selprod_id'];?>\"><i class=\"remove_related remove_param ion-android-delete icon\"></i> <?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_related[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
     <?php } ?>
 });
 </script>
