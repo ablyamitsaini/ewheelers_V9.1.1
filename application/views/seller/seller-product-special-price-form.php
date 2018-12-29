@@ -6,6 +6,12 @@
 	$frmSellerProductSpecialPrice->setFormTagAttribute('class','form');
 	$frmSellerProductSpecialPrice->developerTags['colClassPrefix'] = 'col-md-';
 	$frmSellerProductSpecialPrice->developerTags['fld_default_col'] = 12;
+	
+	$startDateFld = $frmSellerProductSpecialPrice->getField('splprice_start_date');
+	$startDateFld->setFieldTagAttribute('class','start_date_js');	
+	
+	$endDateFld = $frmSellerProductSpecialPrice->getField('splprice_end_date');
+	$endDateFld->setFieldTagAttribute('class','end_date_js');	
 
 	/* $splprice_end_dateFld = $frmSellerProductSpecialPrice->getField('splprice_end_date');
 	$splprice_end_dateFld->htmlAfter */
@@ -26,3 +32,9 @@
 	$btnCancelFld->setFieldTagAttribute('onClick', 'sellerProductSpecialPrices(' . $selprod_id . ');');
 	echo $frmSellerProductSpecialPrice->getFormHtml(); ?>
 </div>
+<script>
+$(document).ready(function(){
+	$('.start_date_js').datepicker('option', {minDate: new Date()});
+	$('.end_date_js').datepicker('option', {minDate: new Date()});
+});
+</script>
