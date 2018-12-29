@@ -369,7 +369,8 @@ class Product extends MyAppModel{
 		
 		$product_id = FatUtility::convertToType($product_id, FatUtility::VAR_INT);
 		$lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
-		if( !$product_id || !$lang_id ){
+		$sellerId = FatUtility::convertToType($sellerId, FatUtility::VAR_INT);
+		if( !$product_id || !$lang_id || !$sellerId){
 			//trigger_error(Labels::getLabel("ERR_Arguments_not_specified.",$this->commonLangId), E_USER_ERROR);
 			return false;
 		}

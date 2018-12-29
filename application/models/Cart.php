@@ -293,7 +293,7 @@ class Cart extends FatModel {
 						$commissionCostValue = $commissionCostValue + ( $tax / $quantity ); 
 					}
 					
-					if(FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0) && $shippingCost ){
+					if(FatApp::getConfig('CONF_COMMISSION_INCLUDING_SHIPPING',FatUtility::VAR_INT,0) && $shippingCost && $this->products[$key]['psbs_user_id'] > 0){
 						$commissionCostValue = $commissionCostValue + ( $shippingCost / $quantity);
 					}	
 					
@@ -340,6 +340,7 @@ class Cart extends FatModel {
 			foreach($this->products as $cartkey=>$cartval)
 			{
 				$this->products[$cartkey]['shop_eligible_for_free_shipping'] = 0;
+			
 				if(array_key_exists($cartval['selprod_user_id'],$sellerPrice)){
 					$this->products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
 					if($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']){
@@ -762,7 +763,7 @@ class Cart extends FatModel {
 				$originalShipping += $product['shipping_cost'];
 				$totalSiteCommission += $product['commission'];
 				
-				if(!$product['shop_eligible_for_free_shipping']){
+				if(!$product['shop_eligible_for_free_shipping'] || $product['psbs_user_id'] == 0){
 					$shippingTotal += $product['shipping_cost'];
 				}				
 
@@ -1367,7 +1368,7 @@ class Cart extends FatModel {
                 $code = $value->serviceCode;
                 $price = $value->shipmentCost + $value->otherCost;					
                 $name = $value->serviceName;
-				if($products[$prodKey]['shop_eligible_for_free_shipping'] > 0){
+				if($products[$prodKey]['shop_eligible_for_free_shipping'] > 0 && $products[$prodKey]['psbs_user_id'] > 0){
 					/* $displayPrice =	CommonHelper::displayMoneyFormat(0); */
 					$displayPrice =	Labels::getLabel('LBL_Free_Shipping',$lang_id);	
 				}else{
@@ -1501,10 +1502,18 @@ class Cart extends FatModel {
 		$sellerPrice = array();
 		if( is_array($cartProducts) && count($cartProducts) ){
 			foreach( $cartProducts as $selprod ){
-				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice)){
+				$shipBy = 0;
+				if($selprod['psbs_user_id']){
+					$shipBy = $selprod['psbs_user_id'];
+				}
+				
+				if(!array_key_exists($selprod['selprod_user_id'],$sellerPrice) || $shipBy == 0){
 					$sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
 				}
-				$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
+				
+				if($shipBy){
+					$sellerPrice[$selprod['selprod_user_id']]['totalPrice']+= $selprod['theprice'] * $selprod['quantity'];
+				}
 			}
 		}
 		return $sellerPrice;

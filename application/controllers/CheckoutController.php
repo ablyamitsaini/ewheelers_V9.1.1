@@ -406,14 +406,16 @@ class CheckoutController extends MyAppController{
 		foreach($cart_products as $cartkey=>$cartval)
 		{
 			$cart_products[$cartkey]['pship_id']= 0;
-			$shipBy=0;
+			$shipBy = 0;
 			
 			if($cart_products[$cartkey]['psbs_user_id']){
-				  $shipBy =$cart_products[$cartkey]['psbs_user_id'];
+				$shipBy = $cart_products[$cartkey]['psbs_user_id'];
 			}
+			
 			/* $limit = 1; */
 			$ua_country_id = isset($shippingAddressDetail['ua_country_id'])?$shippingAddressDetail['ua_country_id']:0;
 			$shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId,$ua_country_id,$shipBy);
+			
 			$free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId,$ua_country_id,$shipBy);
 		
 			$cart_products[$cartkey]['is_shipping_selected'] =  isset($productSelectedShippingMethodsArr['product'][$cartval['selprod_id']])?$productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']:false;
@@ -424,7 +426,7 @@ class CheckoutController extends MyAppController{
 				$cart_products[$cartkey]['pship_id']=$productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['pship_id'];
 			
 			}
-			$cart_products[$cartkey]['shipping_rates']=$shipping_options;
+			$cart_products[$cartkey]['shipping_rates'] = $shipping_options;
 			$cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;		
 			
 		}
@@ -1043,7 +1045,7 @@ class CheckoutController extends MyAppController{
 					}	
 					
 					$shippingCost = $cartProduct['shipping_cost'];	
-					if($cartProduct['shop_eligible_for_free_shipping']){
+					if($cartProduct['shop_eligible_for_free_shipping'] && $cartProduct['psbs_user_id'] > 0){
 						$shippingCost = 0;
 					}
 					

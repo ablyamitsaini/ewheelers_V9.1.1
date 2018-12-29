@@ -59,6 +59,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									?>
 									| <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
 									</div>
+									<div class="item-yk-head-specification">
+									<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { 
+										echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);										
+									}?>
+									</div>
 								</div>
 							</td>
 							<td>
@@ -74,7 +79,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
 								$product["shipping_free_availbilty"];	
-								if($product['shop_eligible_for_free_shipping'] > 0) {
+								if($product['shop_eligible_for_free_shipping'] > 0 && $product['psbs_user_id'] > 0) {
 									$shipping_charges = Labels::getLabel('LBL_Free_Shipping',$siteLangId);
 								}else{
 									$shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;

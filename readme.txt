@@ -12,6 +12,8 @@ Fixes:
 	. Resolved filters issue - Applied filters get washed on login.	
 	. Rewards are getting applied on different orders for same user on accessing in multiple browsers.
 	. Recently viewed on Product detail page also displaying current page item.
+	. Product shipped by admin excluded from the shop free shipping amount.
+	. Commission charged including shipping excluded when shipped by admin.
 Updates :
 	. Guest user cart functionality for app users.
 	. auto scroll for recently viewed products.
