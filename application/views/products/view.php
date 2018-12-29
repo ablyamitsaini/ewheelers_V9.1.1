@@ -410,6 +410,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 <div class="gap"></div>
 <script type="text/javascript">
 $("document").ready(function(){
+	recentlyViewedProducts(<?php echo $product['selprod_id'];?>);
 	zheight = $( window ).height() - 180;
 	zwidth = $( window ).width()/2 - 50;
 	$('.xzoom, .xzoom-gallery').xzoom({adaptive:false, zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 15});

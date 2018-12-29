@@ -1997,7 +1997,7 @@ class BuyerController extends LoggedUserController {
 	public function addItemsToCart($orderId){
 		if(!$orderId){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
-			CommonHelper::redirectUserReferer();
+			return;
 		}
 	
 		$userId = UserAuthentication::getLoggedUserId();
@@ -2006,7 +2006,7 @@ class BuyerController extends LoggedUserController {
 		$orderDetail = $orderObj->getOrderById($orderId,$this->siteLangId);
 		if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
-			CommonHelper::redirectUserReferer();
+			return;
 		}
 		
 		$cartObj = new Cart();
@@ -2028,7 +2028,7 @@ class BuyerController extends LoggedUserController {
 		$cartObj->removeUsedRewardPoints();
 		$cartObj->removeCartDiscountCoupon();
 		$cartObj->removeProductShippingMethod();
-		
+			
 		/* Update existing cart [ */
 		
 		/* $db = FatApp::getDb();
@@ -2037,10 +2037,8 @@ class BuyerController extends LoggedUserController {
 			FatUtility::dieJsonError( Message::getHtml() );
 		} */
 		
-		/* ] */
-		
-		Message::addMessage(Labels::getLabel("MSG_Successfully_redirecting",$this->siteLangId));
-		FatUtility::dieJsonSuccess( Message::getHtml() );
+		/* ] */		
+		return;
 	}
 	
 	

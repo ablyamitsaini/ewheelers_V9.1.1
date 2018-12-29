@@ -32,26 +32,28 @@ class SavedSearchProduct extends MyAppModel{
 	}
 	
 	public static function getSearchPageFullUrl($type,$recordId){
+		$url = '';
 		switch($type){
 			case static::PAGE_CATEGORY:
-				return CommonHelper::generateFullUrl('Category','view',array($recordId));
+				$url = CommonHelper::generateFullUrl('Category','view',array($recordId));
 			break;
 			case static::PAGE_PRODUCT:
-				return CommonHelper::generateFullUrl('Products','search');
+				$url = CommonHelper::generateFullUrl('Products','search');
 			break;
 			case static::PAGE_PRODUCT_INDEX:
-				return CommonHelper::generateFullUrl('Products','index');
+				$url = CommonHelper::generateFullUrl('Products','index');
 			break;
 			case static::PAGE_BRAND:
-				return CommonHelper::generateFullUrl('Brands','view',array($recordId));
+				$url = CommonHelper::generateFullUrl('Brands','view',array($recordId));
 			break;
 			case static::PAGE_SHOP:
-				return CommonHelper::generateFullUrl('Shops','view',array($recordId));
+				$url = CommonHelper::generateFullUrl('Shops','view',array($recordId));
 			break;
 			case static::PAGE_FEATURED_PRODUCT:
-				return CommonHelper::generateFullUrl('Products','featured');
+				$url = CommonHelper::generateFullUrl('Products','featured');
 			break;
-		}		
+		}	
+		return $url;	
 	}
 	
 	public static function getSearhResultFormat($arr,$langId = 0){		

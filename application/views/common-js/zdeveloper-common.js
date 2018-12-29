@@ -9,12 +9,17 @@ function getCountryStates( countryId, stateId, dv ){
 	});
 };
 
-function recentlyViewedProducts(){
+function recentlyViewedProducts(selprodId){
+	if(typeof selprodId == 'undefined'){
+		selprodId = 0;
+	}
+	
 	$("#recentlyViewedProductsDiv").html(fcom.getLoader());
 	
-	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts'),'',function(ans){
+	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6) );
+		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection) );
+		$('.slides--six-js').slick('reinit');
 	});
 }
 
@@ -305,8 +310,9 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
-			arrows: true, 
+			infinite: true, 
+			arrows: true,
+			autoplay:true,	
 			rtl:true,
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
@@ -340,8 +346,9 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
-			arrows: true,					
+			infinite: true, 
+			arrows: true,
+			autoplay:true,	
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
 			responsive: [{

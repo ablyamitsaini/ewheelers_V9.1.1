@@ -28,7 +28,7 @@ if(!empty($arrListing)){?>
 			</div>
 			<div class="results-side">
 				<div class="btn--group">
-					<a href="<?php echo $row['search_url'];?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a>
+					<a href="<?php echo rtrim($row['search_url'],'/').'/';?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_View_results', $siteLangId); ?></a>
 					<a href="javascript:void(0)" onclick="deleteSavedSearch(<?php echo $row['pssearch_id'];?>)" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
 				</div>
 			</div>
