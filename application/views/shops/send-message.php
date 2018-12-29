@@ -62,13 +62,16 @@
         <div class="col-md-4 col-sm-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>  </div>
       </div>
        <div class="section clearfix">
-            <div class="section__head">
-              <h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
-            </div>
-            <div class="section__body">
-              <div class="box box--white  box--space"> <?php echo $frm->getFormHtml(); ?> </div>
-            </div>
-          </div>
+		  <div class="section__head">
+		    <h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
+			<?php if( $shop['shop_user_id'] === $loggedUserData['user_id']){ ?>
+			<div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $siteLangId); ?></div>
+			<?php } ?>
+		  </div>
+		  <div class="section__body">
+		    <div class="box box--white  box--space"> <?php echo $frm->getFormHtml(); ?> </div>
+		  </div>
+		</div>
     </div>
   </section>
 	<div class="gap"></div>
