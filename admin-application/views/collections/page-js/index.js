@@ -307,7 +307,7 @@ $(document).ready(function(){
 			//if cms Page
 			$("#collection_criteria_div").show();
 			$("#collection_child_records_div").hide();
-		}else if( val == 2 ){
+		}else if( val == 2 || val == 4 ){
 			$("#collection_criteria_div").hide();
 			$("#collection_child_records_div").hide();
 		}if( val == 3 ){

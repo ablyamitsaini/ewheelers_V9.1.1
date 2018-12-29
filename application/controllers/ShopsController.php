@@ -591,7 +591,7 @@ class ShopsController extends MyAppController {
 		
 		$frm = $this->getSendMessageForm( $this->siteLangId );
 		$userObj = new User($loggedUserId);
-		$loggedUserData = $userObj->getUserInfo( array('user_name', 'credential_username') );
+		$loggedUserData = $userObj->getUserInfo( array('user_id', 'user_name', 'credential_username') );
 		$frmData = array( 'shop_id' => $shop_id  );
 		
 		if($selprod_id > 0)
@@ -629,6 +629,10 @@ class ShopsController extends MyAppController {
 		$shopData = $this->getShopInfo($shop_id);
 		if( !$shopData ){
 			Message::addErrorMessage( Labels::getLabel('LBL_Invalid_Request', $this->siteLangId) );
+			FatUtility::dieJsonError( Message::getHtml() );	
+		}
+		if( $shopData['shop_user_id'] == $loggedUserId){
+			Message::addErrorMessage( Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId) );
 			FatUtility::dieJsonError( Message::getHtml() );	
 		}
 		

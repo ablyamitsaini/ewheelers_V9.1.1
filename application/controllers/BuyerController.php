@@ -65,10 +65,11 @@ class BuyerController extends LoggedUserController {
 		$orderSrch = new OrderProductSearch( $this->siteLangId, true, true );
 		$orderSrch->doNotCalculateRecords();
 		$orderSrch->doNotLimitRecords();
-		$orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder');
+		/* $orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder'); */
+		$orderSrch->addBuyerOrdersCounts(date('Y-m-d'),date('Y-m-d'),'todayOrder');
 		$orderSrch->addGroupBy('order_user_id');
 		$orderSrch->addCondition( 'order_user_id', '=', $userId );
-		$orderSrch->addMultipleFields(array('yesterdayOrderCount'));
+		$orderSrch->addMultipleFields(array('todayOrderCount'));
 		$rs = $orderSrch->getResultSet();
 		$ordersStats = FatApp::getDb()->fetch($rs);
 		/* ]*/
@@ -88,7 +89,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('totalFavouriteItems', $totalFavouriteItems);
 		/* $this->set('totalWishlistItems', $totalWishlistItems); */
 		$this->set('totalPurchasedItems', $totalPurchasedItems);
-		$this->set('yesterdayOrderCount', FatUtility::int($ordersStats['yesterdayOrderCount']));
+		$this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
 		$this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
 		$this->set('totalMessageCount', $totalMessageCount);
 		$this->set('userBalance', User::getUserBalance($userId));
