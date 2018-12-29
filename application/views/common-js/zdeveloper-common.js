@@ -310,7 +310,7 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
+			infinite: true, 
 			arrows: true,
 			autoplay:true,	
 			rtl:true,
@@ -346,7 +346,7 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
+			infinite: true, 
 			arrows: true,
 			autoplay:true,	
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
