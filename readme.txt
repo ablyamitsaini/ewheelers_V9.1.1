@@ -13,4 +13,5 @@ Fixes:
 
 Updates :
 	. Guest user cart functionality for app users.
+	. Updated frontend tables HTML to make them responsive.
 	
