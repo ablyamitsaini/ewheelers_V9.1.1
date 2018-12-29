@@ -28,7 +28,7 @@
 									<a href="<?php echo CommonHelper::generateUrl('Buyer','Orders');?>" class="box box--white box--space info--tooltip info--tooltip-js" title="<?php echo Labels::getLabel('Lbl_tooltip_buyer_dashboard_orders',$siteLangId); ?>">
 										<h4><span><?php echo Labels::getLabel('LBL_Order',$siteLangId);?></span></h4>
 										<span class="value--total"> <?php echo $ordersCount;?></span>
-										<span class="text--normal"><?php echo Labels::getLabel('LBL_Yesterday_Orders',$siteLangId);?> <?php echo $yesterdayOrderCount;?>  <br><strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span>
+										<span class="text--normal"><?php echo Labels::getLabel('LBL_Today_Orders',$siteLangId);?> <?php echo $todayOrderCount;?>  <br><strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span>
 									</a>
 									</div>
 									<div class="statistics__box">

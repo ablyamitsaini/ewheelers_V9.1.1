@@ -71,13 +71,15 @@ class SellerController extends LoggedUserController {
 		/* $orderSrch->addSellerOrdersCounts( date('Y-m-d',strtotime("-1 days") ), date('Y-m-d'), 'yesterdayOrder');
 		$orderSrch->addSellerCompletedOrdersStats( date('Y-m-d', strtotime("-1 days")),date('Y-m-d'), 'yesterdaySold' ); */
 		
-		$orderSrch->addSellerOrdersCounts( date('Y-m-d',strtotime("-1 days") ), date('Y-m-d',strtotime("-1 days") ), 'yesterdayOrder');
-		$orderSrch->addSellerCompletedOrdersStats( date('Y-m-d', strtotime("-1 days")),date('Y-m-d',strtotime("-1 days") ), 'yesterdaySold' );
+		/* $orderSrch->addSellerOrdersCounts( date('Y-m-d',strtotime("-1 days") ), date('Y-m-d',strtotime("-1 days") ), 'todayOrder'); */
+		$orderSrch->addSellerOrdersCounts( date('Y-m-d'), date('Y-m-d'), 'todayOrder');
+		/* $orderSrch->addSellerCompletedOrdersStats( date('Y-m-d', strtotime("-1 days")),date('Y-m-d',strtotime("-1 days") ), 'yesterdaySold' ); */
+		$orderSrch->addSellerCompletedOrdersStats( date('Y-m-d'),date('Y-m-d'), 'todaySold' );
 		
 		$orderSrch->addSellerCompletedOrdersStats( false, false, 'totalSold' );
 		$orderSrch->addGroupBy('op_selprod_user_id');
 		$orderSrch->addCondition( 'op_selprod_user_id', '=', $userId );
-		$orderSrch->addMultipleFields(array('yesterdayOrderCount' ,'yesterdaySoldCount','totalSoldCount','totalSoldSales' ));
+		$orderSrch->addMultipleFields(array('todayOrderCount' ,'todaySoldCount','totalSoldCount','totalSoldSales' ));
 		
 		$rs = $orderSrch->getResultSet();
 		$ordersStats = FatApp::getDb()->fetch($rs);
@@ -118,10 +120,10 @@ class SellerController extends LoggedUserController {
 		$this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
 		$this->set('totalMessageCount', $totalMessageCount);
 		$this->set('userBalance', User::getUserBalance($userId));
-		$this->set('yesterdayOrderCount', FatUtility::int($ordersStats['yesterdayOrderCount']));
+		$this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
 		$this->set('totalSoldCount', FatUtility::int($ordersStats['totalSoldCount']));
 		$this->set('totalSoldSales', $ordersStats['totalSoldSales']);
-		$this->set('yesterdaySoldCount', FatUtility::int($ordersStats['yesterdaySoldCount']));
+		$this->set('todaySoldCount', FatUtility::int($ordersStats['todaySoldCount']));
 		$this->set('dashboardStats',Stats::getUserSales($userId));
 				
 		$this->_template->addJs(array('js/chartist.min.js'));

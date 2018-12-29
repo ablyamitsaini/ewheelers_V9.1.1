@@ -37,13 +37,13 @@
 						<div class="statistics__box">
 							<a href="<?php echo CommonHelper::generateUrl('Seller','Sales');?>" class="box box--white box--space info--tooltip info--tooltip-js" title="<?php echo Labels::getLabel('Lbl_tooltip_seller_dashboard_orders',$siteLangId); ?>">
 							<h4><span><?php echo Labels::getLabel('LBL_Order',$siteLangId);?></span></h4>
-							<span class="value--total"> <?php echo $ordersCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Yesterday_Orders',$siteLangId);?> <?php echo $yesterdayOrderCount;?> <br>
+							<span class="value--total"> <?php echo $ordersCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Today_Orders',$siteLangId);?> <?php echo $todayOrderCount;?> <br>
 							<strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span> </a>
 						</div>
 						<div class="statistics__box">
 							<a href="<?php echo CommonHelper::generateUrl('Seller','Sales');?>" class="box box--white box--space info--tooltip info--tooltip-js" title="<?php echo Labels::getLabel('Lbl_tooltip_seller_dashboard_sold',$siteLangId); ?>">
 							<h4><span><?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></span></h4>
-							<span class="value--total"><?php echo $totalSoldCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Yesterday_Sold',$siteLangId);?> <?php echo $yesterdaySoldCount;?> <br>
+							<span class="value--total"><?php echo $totalSoldCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Today_Sold',$siteLangId);?> <?php echo $todaySoldCount;?> <br>
 							<strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span> </a>
 						</div>
 						<?php if( FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') ){ ?>
