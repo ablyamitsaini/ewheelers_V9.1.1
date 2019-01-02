@@ -161,9 +161,13 @@ $(document).on('click','.File-Js',function(){
 				complete: function() {
 					$(node).val($val);
 				},
-				success: function(ans) {	
-						mediaForm(ans.splatform_id);		
-						reloadList();						
+				success: function(ans) {
+						if( ans.status == 1 ){
+							fcom.displaySuccessMessage(ans.msg);
+							mediaForm(ans.splatform_id);		
+							reloadList();	
+						}
+						fcom.displayErrorMessage(ans.msg);						
 					},
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

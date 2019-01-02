@@ -191,8 +191,9 @@ class SocialPlatformController extends AdminBaseController {
 	public function setUpImage( $splatform_id ){
 		$splatform_id = FatUtility::int( $splatform_id );
 		if( !$splatform_id ){
-			Message::addErrorMessage($this->str_invalid_request);
-			FatUtility::dieJsonError( Message::getHtml() );	
+			die('here');
+			/* Message::addErrorMessage($this->str_invalid_request);
+			FatUtility::dieJsonError( Message::getHtml() );	 */
 		}
 		
 		$post = FatApp::getPostedData();
