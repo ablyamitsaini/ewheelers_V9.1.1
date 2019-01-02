@@ -210,7 +210,7 @@ class Tax extends MyAppModel{
 		return FatApp::getDb()->fetch($rs);
 	}
 	
-	public function calculateTaxRates( $productId, $prodPrice, $sellerId, $langId, $qty = 1 ){
+	public function calculateTaxRates( $productId, $prodPrice, $sellerId, $langId, $qty = 1, $extraDiscounts = array() ){
 		$tax = 0 ;
 		$res = $this->getTaxRates( $productId, $sellerId, $langId );
 		

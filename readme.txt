@@ -14,7 +14,7 @@ Fixes:
 	. Recently viewed on Product detail page also displaying current page item.
 	. Product shipped by admin excluded from the shop free shipping amount.
 	. Commission charged including shipping excluded when shipped by admin.
-	
+	. Excluded volume discount in tax.
 Updates :
 	. Guest user cart functionality for app users.
 	. auto scroll for recently viewed products.
