@@ -5,6 +5,8 @@ $brandMediaFrm->developerTags['colClassPrefix'] = 'col-md-';
 $brandMediaFrm->developerTags['fld_default_col'] = 12; 	
 $fld2 = $brandMediaFrm->getField('logo');	
 $fld2->addFieldTagAttribute('class','btn btn--primary btn--sm');
+$idFld = $brandMediaFrm->getField('brand_id');	
+$idFld->addFieldTagAttribute('id','id-js');
 $langFld = $brandMediaFrm->getField('brand_lang_id');	
 $langFld->addFieldTagAttribute('class','language-js');
 
