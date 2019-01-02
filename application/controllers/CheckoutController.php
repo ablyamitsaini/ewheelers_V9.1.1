@@ -1109,7 +1109,7 @@ class CheckoutController extends MyAppController{
 		$confirmForm = $this->getConfirmFormWithNoAmount( $this->siteLangId );
 		$userWalletBalance = User::getUserBalance($userId,true);
 
-		if( (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'],FatUtility::VAR_FLOAT) ) && $cartSummary['cartWalletSelected'] ){
+		if( (FatUtility::convertToType($userWalletBalance,FatUtility::VAR_FLOAT) > 0 ) && $cartSummary['cartWalletSelected'] && $cartSummary['orderNetAmount'] > 0 ){
 			$WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay','Charge', array($order_id)) );
 			$WalletPaymentForm->fill( array('order_id' => $order_id) );
 			$WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
