@@ -280,8 +280,9 @@ class Cart extends FatModel {
 					/*]*/
 					
 					/*[ Product Tax */
+					$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];		
 					$taxObj = new Tax();
-					$tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'],$sellerProductRow['theprice'],$sellerProductRow['selprod_user_id'],$siteLangId,$quantity);
+					$tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'],$taxableProdPrice,$sellerProductRow['selprod_user_id'],$siteLangId,$quantity);
 					$this->products[$key]['tax'] = $tax;
 					/*]*/
 					
@@ -432,9 +433,10 @@ class Cart extends FatModel {
 		$sellerProductRow['commission'] = ROUND( $commission * $quantity, 2 );
 		
 		$totalPrice = $sellerProductRow['theprice'] * $quantity;
+		$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
 		
 		$taxObj = new Tax();
-		$tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'],$sellerProductRow['theprice'],$sellerProductRow['selprod_user_id'],$siteLangId,$quantity);
+		$tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'],$taxableProdPrice,$sellerProductRow['selprod_user_id'],$siteLangId,$quantity);
 		
 		$sellerProductRow['tax'] = $tax;
 		/* ] */
@@ -450,7 +452,7 @@ class Cart extends FatModel {
 			$sellerProductRow['options'] = SellerProduct::getSellerProductOptions($selprod_id, true, $siteLangId);
 		} else {
 			$sellerProductRow['options'] = SellerProduct::getSellerProductOptions($selprod_id, false);
-		}	
+		}			
 		return $sellerProductRow;
 	}
 	
