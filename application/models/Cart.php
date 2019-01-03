@@ -19,7 +19,7 @@ class Cart extends FatModel {
 			$this->cart_lang_id = CommonHelper::getLangId();	
 		}
 		
-		if($tempCartUserId == 0){
+		if(empty($tempCartUserId)){
 			$this->cart_id = session_id();
 			$tempCartUserId = session_id();
 		}		

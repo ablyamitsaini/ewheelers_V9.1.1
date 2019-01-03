@@ -18,9 +18,9 @@ class MobileAppApiController extends MyAppController {
 		}	
 
 		$this->app_user['temp_user_id'] = 0;
-		if (array_key_exists('HTTP_X_TEMP_USER_ID',$_SERVER) && !empty($_SERVER['HTTP_X_TEMP_USER_ID'])){
-			$this->app_user['temp_user_id'] = ($_SERVER['HTTP_X_TEMP_USER_ID'] != '')?$_SERVER['HTTP_X_TEMP_USER_ID']:0;				
-		}		
+		if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
+			$this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
+		}			
 		
 		if($this->appToken){ 			
 			if (!UserAuthentication::isUserLogged('',$this->appToken)) {                    
@@ -2767,7 +2767,8 @@ class MobileAppApiController extends MyAppController {
 			/* ] */
 						
 			/* product availability date check covered in product search model[ ] */
-			$cartObj = new Cart($userId,0,$this->getAppTempUserId());			
+			$this->app_user['temp_user_id'] = $this->getAppTempUserId();
+			$cartObj = new Cart($userId,0,$this->app_user['temp_user_id']);			
 			/* cannot add quantity more than stock of the product[ */
 			$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
 			if( $quantity > $selprod_stock ){
