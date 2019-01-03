@@ -36,3 +36,7 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_Commission_fees';
 
 ALTER TABLE `tbl_product_special_prices` ADD UNIQUE( `splprice_selprod_id`, `splprice_start_date`, `splprice_end_date`);
 ALTER TABLE tbl_product_special_prices DROP INDEX price_selprod_id;
+
+/* After 3rd Jan 2019 */
+
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_This_order_is_In_Process_or_Completed_now,_so_not_eligible_for_cancellation'
