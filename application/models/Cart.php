@@ -379,8 +379,7 @@ class Cart extends FatModel {
 		$rs = $prodSrch->getResultSet();
 		$sellerProductRow = FatApp::getDb()->fetch($rs);
 		if( !$sellerProductRow || $sellerProductRow['selprod_stock'] <= 0 ){
-			Message::addErrorMessage( Labels::getLabel('MSG_Product_not_available_or_out_of_stock_so
-			_removed_from_cart_listing', $siteLangId) );
+			Message::addErrorMessage( Labels::getLabel('MSG_Product_not_available_or_out_of_stock_so_removed_from_cart_listing', $siteLangId) );
 			return false;
 		}
 		

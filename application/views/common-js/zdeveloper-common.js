@@ -18,7 +18,7 @@ function recentlyViewedProducts(selprodId){
 	
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection) );
+		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
 		$('.slides--six-js').slick('reinit');
 	});
 }
@@ -301,18 +301,19 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
+function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
 	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
 	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
+	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : false;
 	
 	if(layoutDirection == 'rtl'){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: true, 
+			infinite: autoInfinitePlay,
+			autoplay: autoInfinitePlay,
 			arrows: true,
-			autoplay:true,	
 			rtl:true,
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
@@ -346,9 +347,9 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: true, 
-			arrows: true,
-			autoplay:true,	
+			infinite: autoInfinitePlay,
+			autoplay: autoInfinitePlay,
+			arrows: true,			
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
 			responsive: [{

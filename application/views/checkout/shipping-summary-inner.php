@@ -59,11 +59,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									?>
 									| <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
 									</div>
+									<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { ?>
 									<div class="item-yk-head-specification note-messages">
-									<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { 
-										echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);										
-									}?>
-									</div>
+										<?php echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);	?>
+									</div>										
+									<?php } ?>
 								</div>
 							</td>
 							<td>
