@@ -1266,7 +1266,7 @@ class Cart extends FatModel {
 		
 		$cart_user_id = static::getCartUserId($tempUserId);
 		
-		if($tempUserId == 0){
+		if(empty($tempUserId)){
 			$tempUserId = session_id();			
 		}
 		
