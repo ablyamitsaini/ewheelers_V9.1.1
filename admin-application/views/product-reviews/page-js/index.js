@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	searchProductReviews(document.frmSearch);
 	
-	$('input[name=\'reviewed_by\']').autocomplete({
+	$('input[name=\'reviewed_for\']').autocomplete({
 		'source': function(request, response) {		
 			$.ajax({
 				url: fcom.makeUrl('Users', 'autoCompleteJson'),
@@ -16,9 +16,12 @@ $(document).ready(function(){
 			});
 		},
 		'select': function(item) {
-			$("input[name='reviewed_by_id']").val( item['value'] );
-			$("input[name='reviewed_by']").val( item['label'] );
+			$("input[name='reviewed_for_id']").val( item['value'] );
+			$("input[name='reviewed_for']").val( item['label'] );
 		}
+	});
+	$('input[name=\'reviewed_for\']').keyup(function(){
+		$('input[name=\'reviewed_for_id\']').val('');
 	});
 });
 (function() {

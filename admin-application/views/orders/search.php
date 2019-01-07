@@ -25,9 +25,17 @@ foreach ($ordersList as $sn=>$row){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
+			case 'order_id':
+				$td->appendElement('a', array('href' => CommonHelper::generateUrl('Orders','view',array($row[$key]))), $row[$key], true);
+			break;
 			case 'buyer_user_name':
-				$td->appendElement('plaintext', array(), $row[$key].'<br/>'.$row['buyer_email'], true);
-			break;			
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['user_id'].')'), $row[$key], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row[$key], true);
+				}
+				$td->appendElement('plaintext', array(), '<br/>'.$row['buyer_email'], true);
+			break;
 			case 'order_net_amount':
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row['order_net_amount'], true, true) );
 			break;

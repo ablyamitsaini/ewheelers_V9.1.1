@@ -23,19 +23,29 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'op_invoice_number':
-				$td->appendElement('plaintext', array(), $row['op_invoice_number']);
+				$td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerOrders','view',array($row['op_id']))), $row[$key], true);
 			break;
 			case 'vendor':
-				$txt = '<strong>'.Labels::getLabel('LBL_Shop',$adminLangId).':  </strong>'.$row['op_shop_name'];
-				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Seller_Name',$adminLangId).':  </strong>'.$row['op_shop_owner_name'];
+				$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_Seller_Name',$adminLangId).':  </strong>', true);
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['op_selprod_user_id'].')'), $row['op_shop_owner_name'], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row['op_shop_owner_name'], true);
+				}				
+				$txt = '<br/><strong>'.Labels::getLabel('LBL_Shop',$adminLangId).':  </strong>'.$row['op_shop_name'];
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_User_Name',$adminLangId).':  </strong>'.$row['op_shop_owner_username'];
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Email',$adminLangId).':   </strong><a href="mailto:'.$row['op_shop_owner_email'].'">'.$row['op_shop_owner_email'].'</a>';
-				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Phone',$adminLangId).':   </strong>'.$row['op_shop_owner_phone'];
+				/* $txt .= '<br/><strong>'.Labels::getLabel('LBL_Phone',$adminLangId).':   </strong>'.$row['op_shop_owner_phone']; */
 				$td->appendElement('plaintext', array(), $txt, true);
 			break;
 			case 'buyer_name':
-				$txt = '<strong>'.Labels::getLabel('LBL_Name',$adminLangId).':  </strong>'.$row[$key];
-				$txt .= '<br/><strong>'.Labels::getLabel('LBL_User_Name',$adminLangId).':  </strong>'.$row['buyer_username'];
+				$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_Name',$adminLangId).':  </strong>', true);
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['user_id'].')'), $row[$key], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row[$key], true);
+				}
+				$txt = '<br/><strong>'.Labels::getLabel('LBL_User_Name',$adminLangId).':  </strong>'.$row['buyer_username'];
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Email',$adminLangId).':  </strong><a href="mailto:'.$row['buyer_email'].'">'.$row['buyer_email'].'</a>';
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Phone',$adminLangId).':  </strong>'.$row['buyer_phone'];
 				$td->appendElement('plaintext', array(), $txt, true);

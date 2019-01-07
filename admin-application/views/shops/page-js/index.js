@@ -353,4 +353,5 @@ $(document).on('click','.shopFile-Js',function(){
 				});			
 		}
 	}, 500);
+	
 });

@@ -3,7 +3,7 @@
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._No',$adminLangId),
 		'product_name'=>Labels::getLabel('LBL_Product',$adminLangId),
-		'seller_username'=>Labels::getLabel('LBL_Reviewed_To',$adminLangId),
+		'seller_username'=>Labels::getLabel('LBL_Review_For',$adminLangId),
 		'reviewed_by'=>Labels::getLabel('LBL_Reviewed_By',$adminLangId),
 		'sprating_rating'=>Labels::getLabel('LBL_Rating',$adminLangId),		
 		'spreview_posted_on'=>Labels::getLabel('LBL_Date',$adminLangId),		
@@ -49,6 +49,24 @@ foreach ($arr_listing as $sn=>$row){
 			
 			case 'spreview_posted_on':
 				$td->appendElement('plaintext', array(), FatDate::format($row[$key],true));
+			break;
+			
+			case 'seller_username':
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['shop_user_id'].')'), $row[$key], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row[$key], true);
+				}
+				
+				$td->appendElement( 'plaintext', array(), '<br/>'.$row['shop_name'], true );
+			break;		
+			
+			case 'reviewed_by':
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['credential_user_id'].')'), $row[$key], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row[$key], true);
+				}
 			break;			
 		
 			case 'action':

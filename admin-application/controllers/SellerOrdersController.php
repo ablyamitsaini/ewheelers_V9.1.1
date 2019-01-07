@@ -48,7 +48,7 @@ class SellerOrdersController extends AdminBaseController {
 		$srch->setPageSize($pageSize);
 		$srch->addOrder('op_id', 'DESC');
 		
-		$srch->addMultipleFields( array('op_id', 'order_id', 'op_order_id', 'op_invoice_number', 'order_net_amount', 'order_date_added', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op.op_shop_owner_email', 'op.op_shop_owner_phone', 'op_shop_name','op_other_charges','op.op_qty','op.op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id') );
+		$srch->addMultipleFields( array('op_id', 'order_id', 'op_order_id', 'op_invoice_number', 'order_net_amount', 'order_date_added', 'ou.user_id', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op.op_shop_owner_email', 'op.op_shop_owner_phone', 'op_shop_name','op_other_charges','op.op_qty','op.op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id') );
 		if( isset($post['order_id']) && $post['order_id'] != '' ){
 			$srch->addCondition('op_order_id', '=', $post['order_id']);
 		}
@@ -130,6 +130,7 @@ class SellerOrdersController extends AdminBaseController {
 		$this->set('pageSize', $pageSize);
 		$this->set('postedData', $post);						
 		$this->set('recordCount', $srch->recordCount());
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers());
 		$this->_template->render(false, false);
 	}
 	
