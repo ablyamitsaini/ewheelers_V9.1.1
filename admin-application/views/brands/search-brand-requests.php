@@ -2,6 +2,7 @@
 <?php
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._No',$adminLangId),
+		'user_name'=>Labels::getLabel('LBL_Requested_BY',$adminLangId),
 		'brand_logo'=>Labels::getLabel('LBL_Logo',$adminLangId),
 		'brand_identifier'=>Labels::getLabel('LBL_Brand_Name',$adminLangId),
 		'action' => Labels::getLabel('LBL_Action',$adminLangId),
@@ -32,6 +33,9 @@ foreach ($arr_listing as $sn=>$row){
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
+			break;
+			case 'user_name':
+				$td->appendElement('plaintext', array(), $row[$key]);
 			break;
 			case 'brand_logo':
 				$td->appendElement('plaintext', array('style' => 'text-align:center'), 

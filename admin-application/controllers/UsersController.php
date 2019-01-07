@@ -120,7 +120,7 @@ class UsersController extends AdminBaseController {
 		$this->set('postedData', $post);						
 		$this->set('recordCount', $srch->recordCount());						
 		$this->set('canVerify', $this->objPrivilege->canVerifyUsers($this->admin_id,true));
-		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
+		$this->set('canViewShops', $this->objPrivilege->canViewShops($this->admin_id,true));
 		$this->_template->render(false,false);
 	}
 	

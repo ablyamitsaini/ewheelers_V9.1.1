@@ -37,7 +37,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'shop_name':
 				if($row[$key]!=''){
-					if($canViewUsers){
+					if($canViewShops){
 						$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Shops').'", '.$row['shop_id'].')'), $row[$key], true);
 					} else {
 						$td->appendElement('plaintext', array(), $row[$key], true);
