@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 
 <div class="col-md-12">
-	<div class="container container--fluid">
+	<div class="container container-fluid container--fluid">
 		<div class="tabs--inline clearfix">
 			<ul class="tabs_nav tabs_nav--internal">
 			<li ><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_GENERAL', $adminLangId);?></a></li>

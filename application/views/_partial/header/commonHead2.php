@@ -34,14 +34,14 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 		<div class="round"></div>
 	  </div>
 	</div-->
-	
+
 	<?php
 		$alertClass = '';
 		if(Message::getInfoCount()>0) $alertClass = 'alert--info';
 		elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
 		elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 	?>
-	
+
 	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" hidden='hidden'>
 		<div class="close"></div>
 		<div class="content">

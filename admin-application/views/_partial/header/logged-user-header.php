@@ -32,13 +32,13 @@
 									<li  <?php echo ($adminLangId==$langId)?'class="is--active"':'';?>><a href="javascript:void(0);" onClick="setSiteDefaultLang(<?php echo $langId;?>)"><?php echo $language['language_name']; ?></a></li>
 									<?php } ?>
                                 </ul>
-                            </div>    
+                            </div>
                         </div>
                     </li>
 					<li class="sitemap">
                         <a title="<?php echo Labels::getLabel('LBL_Update_Sitemap',$adminLangId);?>" href="<?php echo CommonHelper::generateUrl('sitemap', 'generate'); ?>"><img src="<?php echo CONF_WEBROOT_URL; ?>images/sitemap.svg" width="20" alt=""></a>
                     </li>
-                    
+
                     <!--li class="droplink" >
                         <a href="javascript:void(0)" title="User"><img src="<?php echo CONF_WEBROOT_URL; ?>images/avatar.svg" width="20" alt=""></a>
                         <div class="dropwrap">
@@ -50,26 +50,25 @@
                                     <li><a href="#">User</a></li>
                                     <li><a href="#">Affiliate</a></li>
                                 </ul>
-                            </div>    
+                            </div>
                         </div>
                     </li-->
-                    
+
                     <li class="logout">
                         <a href="<?php echo CommonHelper::generateUrl('profile','logout');?>" title="<?php echo Labels::getLabel('LBL_Logout',$adminLangId);?>"><img src="<?php echo CONF_WEBROOT_URL; ?>images/header_icon_3.svg" alt=""></a>
                     </li>
                 </ul>
             </div>
-        </div>  
-        
+        </div>
+
         <div class="searchwrap">
             <div class="searchform"><input type="text"></div><a href="javascript:void(0)" class="searchclose searchtoggle"></a>
         </div>
-        
-    </header>    
+
+    </header>
     <!--header end here-->
-	   
-    
+
+
     <!--body start here-->
     <div id="body">
         <?php $this->includeTemplate('_partial/header/left-navigation.php')?>
-       

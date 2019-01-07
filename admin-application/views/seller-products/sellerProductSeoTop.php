@@ -1,4 +1,4 @@
-<div class="container container--fluid">
+<div class="container container-fluid container--fluid">
 	<div class="tabs--inline clearfix">
 		<ul class="tabs_nav tabs_nav--internal">
 			<li><a class="<?php echo ($seoActiveTab == 'GENERAL')?'active':''?>" href="javascript:void(0)" onclick="getProductSeoGeneralForm(<?php echo "$selprod_id" ?>);"><?php echo Labels::getLabel('LBL_Basic',$adminLangId);?></a></li>
