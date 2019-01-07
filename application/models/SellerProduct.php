@@ -284,7 +284,7 @@ class SellerProduct extends MyAppModel{
 		$db = FatApp::getDb();
 		$record = new TableRecord( static::DB_TBL_SELLER_PROD_SPCL_PRICE );
 		$record->assignValues( $data );
-		if( !$record->addNew(array(), $data) ){
+		if( !$record->addNew(array()) ){
 			$this->error = $record->getError();
 			return false;
 		}

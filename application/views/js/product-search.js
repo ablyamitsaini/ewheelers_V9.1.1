@@ -434,8 +434,7 @@ function updatePriceFilter(minPrice,maxPrice){
 			}
 			if(typeof $("input[name=priceFilterMaxValue]").val() != "undefined"){
 				data = data+"&max_price_range="+$("input[name=priceFilterMaxValue]").val();
-			}
-		
+			}		
 		}
 		
 		if(($( "#filters" ).find('a').length)>0){
@@ -455,16 +454,15 @@ function updatePriceFilter(minPrice,maxPrice){
 		
 		if(useFilterInurl > 0){			
 			//history.pushState(null, null, getSearchQueryUrl(true));	
-			window.history.pushState("","",getSearchQueryUrl(true));	
+			window.history.pushState("","",getSearchQueryUrl(true)+'/');	
+			/*[ Need to remove when we update functionality and load pages based on search filters*/
+			var urlData = 'urlString='+getSearchQueryUrl(true);
+			fcom.ajax(fcom.makeUrl('Products','setUrlString'),urlData,function(ans){
+				
+			});
+			/* ] */
 		}
-		
-		/*[ Need to remove when we update functionality and load pages based on search filetrs*/
-		/* urlData = 'urlString='+getSearchQueryUrl(true);
-		fcom.ajax(fcom.makeUrl('Products','setUrlString'),urlData,function(ans){
-			
-		}); */
-		/* ] */
-		
+					
 		fcom.updateWithAjax(fcom.makeUrl('Products','productsList'),data,function(ans){
 			
 			processing_product_load = false;

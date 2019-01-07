@@ -474,7 +474,7 @@ class CommonHelper extends FatUtility{
 		$defaultCurrencyValue = $val / $currencyValue;
 		return static::displayMoneyFormat($defaultCurrencyValue,$format,true,$displaySymbol);
 	}
-	
+		
 	public static function displayComissionPercentage($value = 0){
 		if (round($value, 0) == $value)
 		{
@@ -510,6 +510,25 @@ class CommonHelper extends FatUtility{
 		return $number;
 	}
 
+	public static function convertExistingToOtherCurrency($currCurrencyId,$val,$otherCurrencyId,$numberFormat = true){
+			
+		$currencyData = Currency::getAttributesById($currCurrencyId,array('currency_value')
+			);
+		$currencyValue = $currencyData['currency_value'];
+		$val = $val/$currencyValue;	
+				
+		$currencyData = Currency::getAttributesById($otherCurrencyId,array('currency_value')
+			);
+		$currencyValue = $currencyData['currency_value'];
+		$val = $val* $currencyValue;
+		
+		if ( $numberFormat ){
+			$val = number_format( $val, 2 );
+		} 
+		
+		return $val;		
+	}
+	
 	public static function displayMoneyFormat( $val, $numberFormat = true, $showInConfiguredDefaultCurrency = false, $displaySymbol = true,$stringFormat = false){
 		$currencyValue = self::getCurrencyValue();
 		$currencySymbolLeft = self::getCurrencySymbolLeft();
@@ -1215,16 +1234,17 @@ class CommonHelper extends FatUtility{
 	public static function truncateCharacters($string, $limit, $break=" ", $pad="..." ,$nl2br = false){
 		if(strlen($string) <= $limit) { return ($nl2br)? nl2br($string) : $string ; }
 				
+				
 		$tempString = str_replace('\n','^',$string);
-		$tempString = substr($tempString, 0, $limit);
-		if(substr($tempString,-1) == "^") {
+		$tempString = mb_substr($tempString, 0, $limit);
+		if(mb_substr($tempString,-1) == "^") {
 			$limit = $limit - 1;
 		}
-		$string = substr($string, 0, $limit);
+		$string = mb_substr($string, 0, $limit);
 		
-		if(false !== ($breakpoint = strrpos($string, $break))) 
+		if(false !== ($breakpoint = mb_strrpos($string, $break))) 
 		{
-			$string = substr($string, 0, $breakpoint);
+			$string = mb_substr($string, 0, $breakpoint);
 		}
 		return (($nl2br)? nl2br($string) : $string) . $pad;
 	}

@@ -21,7 +21,7 @@ class CategoryController extends MyAppController {
 		$headerFormParamsArr = FatApp::getParameters();
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		
-		if(array_key_exists('currency',$headerFormParamsAssocArr)){
+		/* if(array_key_exists('currency',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
 		}
 		if(array_key_exists('sort',$headerFormParamsAssocArr)){
@@ -32,7 +32,7 @@ class CategoryController extends MyAppController {
 		}	
 		if(array_key_exists('collection',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
-		}
+		} */
 		$headerFormParamsAssocArr['category'] = $category_id;
 		$headerFormParamsAssocArr['join_price'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
@@ -150,11 +150,25 @@ class CategoryController extends MyAppController {
 		$priceInFilter = false;	
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
+		
+		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
+			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
+			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
+			$priceArr['minPrice'] = $filterDefaultMinValue;
+			$priceArr['maxPrice'] = $filterDefaultMaxValue;
+		}		
+		
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
 		}
+		
+		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
+			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
+			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
+		}
+		
 		/* ] */
 
 		$brandsCheckedArr = array();

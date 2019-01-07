@@ -12,7 +12,7 @@ $langFld->addFieldTagAttribute('class','language-js');
 $screenFld = $mediaFrm->getField('banner_screen');	
 $screenFld->addFieldTagAttribute('class','display-js');
 
-$preferredDimensionsStr = '<span class="uploadimage--info" >'.Labels::getLabel('LBL_Preferred_Dimensions_are',$adminLangId) .' Width : '.$bannerWidth . 'px & Height : ' . $bannerHeight . 'px .</span>';
+$preferredDimensionsStr = '<span class="uploadimage--info" ></span>';
 
 $htmlAfterField = $preferredDimensionsStr; 
 $htmlAfterField .= '<div id="image-listing"></div>';
@@ -49,3 +49,15 @@ $fld1->htmlAfterField = $htmlAfterField;
 </div>
 </div>
 </section>
+<script>
+	$(document).on('change','.display-js',function(){
+		var deviceType = $(this).val();
+		fcom.ajax(fcom.makeUrl('Promotions', 'getBannerLocationDimensions', [<?php echo $blocation_id;?>,deviceType]), '', function(t) {
+			var ans = $.parseJSON(t);
+			$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, ans.bannerWidth +' * '+ ans.bannerHeight));
+		});
+	});
+	$("document").ready(function(){
+		$(".display-js").trigger('change');
+	});
+</script>

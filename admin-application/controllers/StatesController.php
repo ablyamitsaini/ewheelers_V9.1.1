@@ -44,12 +44,12 @@ class StatesController extends AdminBaseController {
 		$post = $searchForm->getFormDataFromArray($data);
 		
 		$srch = States::getSearchObject(false ,$this->adminLangId);
-		$countrySearchObj = Countries::getSearchObject(false ,$this->adminLangId);
+		$countrySearchObj = Countries::getSearchObject(true ,$this->adminLangId);
 		$countrySearchObj->doNotCalculateRecords();
 		$countrySearchObj->doNotLimitRecords();
 		$countriesDbView = $countrySearchObj->getQuery();
 		
-		$srch->joinTable("($countriesDbView)",'LEFT OUTER JOIN',
+		$srch->joinTable("($countriesDbView)",'INNER JOIN',
 			'st.'.States::DB_TBL_PREFIX.'country_id = c.'.Countries::tblFld('id') ,'c');
 			
 		$srch->addMultipleFields(array('st.*' , 'st_l.state_name', 'c.country_name'));

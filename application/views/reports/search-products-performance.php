@@ -38,22 +38,22 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['op_brand_name'] != '' ){
 					$name .= '<div class="item-yk-head-brand"><strong>'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['op_brand_name'].'</div>';
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$name,true);
+				$td->appendElement('plaintext', array(), $name,true);
 			break;
 			
 			case 'totSoldQty':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['totSoldQty'],true);
+				$td->appendElement('plaintext', array(), $listing['totSoldQty'],true);
 			break;
 			
 			case 'totRefundQty':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['totRefundQty'],true);
+				$td->appendElement('plaintext', array(), $listing['totRefundQty'],true);
 			break;
 			
 			case 'wishlist_user_counts':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing['wishlist_user_counts'],true);
+				$td->appendElement('plaintext', array(), $listing['wishlist_user_counts'],true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$listing[$key],true);
+				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;
 		}
 	}

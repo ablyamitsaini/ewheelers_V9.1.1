@@ -605,9 +605,9 @@ class ProductSearch extends SearchBase {
 		}
 	}
 
-	public function addMoreSellerCriteria( $sellerId, $productCode ){
+	public function addMoreSellerCriteria( $productCode, $sellerId = 0 ){
 		$sellerId = FatUtility::int($sellerId);
-		if( !$sellerId || $productCode == '' ){
+		if( $productCode == '' ){
 			trigger_error(Labels::getLabel('ERR_Invalid_Argument_Passed',$this->commonLangId), E_USER_ERROR);
 		}
 
@@ -624,7 +624,9 @@ class ProductSearch extends SearchBase {
 		$this->doNotCalculateRecords();
 		$this->doNotLimitRecords();
 		$this->addCondition('selprod_deleted','=',applicationConstants::NO);
-		$this->addCondition('selprod_user_id', '!=', $sellerId );
+		if($sellerId > 0){
+			$this->addCondition('selprod_user_id', '!=', $sellerId );
+		}
 		$this->addCondition('selprod_code', '=', $productCode );
 	}
 

@@ -18,9 +18,9 @@ class MobileAppApiController extends MyAppController {
 		}	
 
 		$this->app_user['temp_user_id'] = 0;
-		if (array_key_exists('HTTP_X_TEMP_USER_ID',$_SERVER) && !empty($_SERVER['HTTP_X_TEMP_USER_ID'])){
-			$this->app_user['temp_user_id'] = ($_SERVER['HTTP_X_TEMP_USER_ID'] != '')?$_SERVER['HTTP_X_TEMP_USER_ID']:0;				
-		}		
+		if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
+			$this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
+		}			
 		
 		if($this->appToken){ 			
 			if (!UserAuthentication::isUserLogged('',$this->appToken)) {                    
@@ -965,7 +965,7 @@ class MobileAppApiController extends MyAppController {
 		if( $productsList ){
 			foreach($productsList as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
@@ -1234,7 +1234,7 @@ class MobileAppApiController extends MyAppController {
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');
@@ -2767,7 +2767,8 @@ class MobileAppApiController extends MyAppController {
 			/* ] */
 						
 			/* product availability date check covered in product search model[ ] */
-			$cartObj = new Cart($userId,0,$this->getAppTempUserId());			
+			$this->app_user['temp_user_id'] = $this->getAppTempUserId();
+			$cartObj = new Cart($userId,0,$this->app_user['temp_user_id']);			
 			/* cannot add quantity more than stock of the product[ */
 			$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
 			if( $quantity > $selprod_stock ){

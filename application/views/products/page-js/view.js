@@ -132,8 +132,7 @@ $("document").ready(function(){
 		$('html, body').animate({scrollTop: $("#itemRatings").offset().top - 130 }, 'slow');
 		fcom.scrollToTop( $("#itemRatings") );
 	});
-
-	recentlyViewedProducts();
+	
 	bannerAdds();
 	reviews(document.frmReviewSearch);
 });

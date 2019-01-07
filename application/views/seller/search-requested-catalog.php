@@ -30,16 +30,16 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'scatrequest_title':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key] . '<br>', true);
+				$td->appendElement('plaintext', array(), $row[$key] . '<br>', true);
 			break;
 			case 'scatrequest_status':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$catalogReqStatusArr[$row[$key]],true);
+				$td->appendElement('plaintext', array(), $catalogReqStatusArr[$row[$key]],true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)','onClick'=>'viewRequestedCatalog('.$row['scatrequest_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_View',$siteLangId)),
 				'<i class="fa fa-eye"></i>', true);
@@ -53,7 +53,7 @@ foreach ($arr_listing as $sn => $row){
 				'<i class="fa fa-envelope"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

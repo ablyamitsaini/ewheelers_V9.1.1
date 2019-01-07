@@ -750,3 +750,8 @@ input[type="text"].p-cards.meastro {
     margin-right: 0;
   }
 }
+
+.media>li .avtar {
+    margin-right: 0px;
+    margin-left: 10px;
+}

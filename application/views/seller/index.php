@@ -9,12 +9,12 @@
             <div class="panel__head">
               <h2><?php echo Labels::getLabel('LBL_Seller',$siteLangId);?></h2>
               <ul class="links--inline">
-			<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	?>
+			<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){ ?>
                 <li><a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a></li>
-				<?php  } else { ?>
+				<?php  } /* else { ?>
 				<li><a href="javascript:void(0)" onclick="addCatalogPopup()"><?php echo Labels::getLabel('LBL_Add_A_Product',$siteLangId); ?></a></li>
 				<?php
-				} ?>
+				} */ ?>
 			   <li><a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a></li>
                 <li><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>"><?php echo Labels::getLabel('LBL_My_Products',$siteLangId);?></a></li>
               </ul>
@@ -37,13 +37,13 @@
 						<div class="statistics__box">
 							<a href="<?php echo CommonHelper::generateUrl('Seller','Sales');?>" class="box box--white box--space info--tooltip info--tooltip-js" title="<?php echo Labels::getLabel('Lbl_tooltip_seller_dashboard_orders',$siteLangId); ?>">
 							<h4><span><?php echo Labels::getLabel('LBL_Order',$siteLangId);?></span></h4>
-							<span class="value--total"> <?php echo $ordersCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Yesterday_Orders',$siteLangId);?> <?php echo $yesterdayOrderCount;?> <br>
+							<span class="value--total"> <?php echo $ordersCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Today_Orders',$siteLangId);?> <?php echo $todayOrderCount;?> <br>
 							<strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span> </a>
 						</div>
 						<div class="statistics__box">
 							<a href="<?php echo CommonHelper::generateUrl('Seller','Sales');?>" class="box box--white box--space info--tooltip info--tooltip-js" title="<?php echo Labels::getLabel('Lbl_tooltip_seller_dashboard_sold',$siteLangId); ?>">
 							<h4><span><?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></span></h4>
-							<span class="value--total"><?php echo $totalSoldCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Yesterday_Sold',$siteLangId);?> <?php echo $yesterdaySoldCount;?> <br>
+							<span class="value--total"><?php echo $totalSoldCount;?></span> <span class="text--normal"><?php echo Labels::getLabel('LBL_Today_Sold',$siteLangId);?> <?php echo $todaySoldCount;?> <br>
 							<strong><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></strong></span> </a>
 						</div>
 						<?php if( FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') ){ ?>
@@ -108,7 +108,7 @@
 								   $prodName.= $row['op_product_name']; */
 							?>
 							  <tr>
-								<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
+								<td>
 									<figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure>
 								</td>
 								<td><div class="item__description"> <span class="item__date"><?php echo FatDate::format($row['order_date_added']);?></span>
@@ -127,8 +127,8 @@
 									<p><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>: <?php echo $row['orderstatus_name'];?></p>
 								  </div>
 								 </td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Amount',$siteLangId)?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER)); ?></span></td>
-								<td><span class="caption--td"><?php echo Labels::getLabel('Lbl_Action',$siteLangId)?></span>
+								<td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER)); ?></span></td>
+								<td>
 								  <ul class="actions">
 									<li><a title="<?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?>" href="<?php echo $orderDetailUrl;?>"><i class="fa fa-eye"></i></a></li>
 									<?php if (!in_array($row["op_status_id"],$notAllowedStatues)){ ?>

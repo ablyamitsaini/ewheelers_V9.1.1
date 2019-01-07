@@ -25,22 +25,22 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'product_identifier':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row['product_name'] . '<br>', true);
+				$td->appendElement('plaintext', array(), $row['product_name'] . '<br>', true);
 				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 			break;
 			case 'attrgrp_name':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayNotApplicable($siteLangId, $row[$key]),true);
+				$td->appendElement('plaintext', array(), CommonHelper::displayNotApplicable($siteLangId, $row[$key]),true);
 			break;
 			case 'product_approved':
 				$approveUnApproveArr = Product::getApproveUnApproveArr($siteLangId);
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$approveUnApproveArr[$row[$key]] ,true);
+				$td->appendElement('plaintext', array(), $approveUnApproveArr[$row[$key]] ,true);
 			break;
 			case 'product_active':
 				$activeInactiveArr = applicationConstants::getActiveInactiveArr($siteLangId);
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$activeInactiveArr[$row[$key]] ,true);
+				$td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]] ,true);
 			break;
 			case 'product_shipped_by':
 				$active = "";
@@ -63,7 +63,7 @@ foreach ($arr_listing as $sn => $row){
 				}
 				$td->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($canAddToStore) ? 'btn btn--primary btn--sm' : 'btn btn--primary btn--sm disabled','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId)), Labels::getLabel('LBL_Add_To_Store',$siteLangId), true);
 
-				$ul = $td->appendElement("ul",array('class'=>'actions'),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'onclick'=>'catalogInfo('.$row['product_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_product_Info',$siteLangId), true),
 				'<i class="fa fa-eye"></i>', true);
@@ -90,7 +90,7 @@ foreach ($arr_listing as $sn => $row){
 
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

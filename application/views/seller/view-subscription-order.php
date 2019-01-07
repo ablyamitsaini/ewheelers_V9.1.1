@@ -52,13 +52,13 @@
 													<th><?php echo Labels::getLabel('LBL_Product_Upload_Limit',$siteLangId);?></th>
 												</tr>
 												<tr>
-													<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></span><?php echo FatDate::format($orderDetail['order_date_added'],true);?></td>
-													<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Subscription_Name',$siteLangId);?></span><?php echo OrderSubscription::getSubscriptionTitle($orderDetail,$siteLangId);?></td>
-													<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Subscription_Period',$siteLangId);?></span>
+													<td><?php echo FatDate::format($orderDetail['order_date_added'],true);?></td>
+													<td><?php echo OrderSubscription::getSubscriptionTitle($orderDetail,$siteLangId);?></td>
+													<td>
 													<?php if($orderDetail['ossubs_from_date']==0 || $orderDetail['ossubs_till_date']==0) echo Labels::getLabel("LBL_NA",$siteLangId); else echo FatDate::format($orderDetail['ossubs_from_date'])." - " .FatDate::format($orderDetail['ossubs_till_date']); ?>
 													</td> 
-													<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Subscription_Amount',$siteLangId);?></span><?php echo CommonHelper::displayMoneyFormat($orderDetail['ossubs_price']);?></td> 
-													<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Product_Upload_Limit',$siteLangId);?></span><?php echo $orderDetail['ossubs_products_allowed'];?></td>
+													<td><?php echo CommonHelper::displayMoneyFormat($orderDetail['ossubs_price']);?></td> 
+													<td><?php echo $orderDetail['ossubs_products_allowed'];?></td>
 												</tr>
 											</tbody>
 										</table>

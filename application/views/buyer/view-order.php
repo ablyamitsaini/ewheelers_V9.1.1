@@ -98,7 +98,7 @@
 						$rewardPointDiscount = CommonHelper::orderProductAmount($childOrder,'REWARDPOINT');
 					?>
                       <tr>
-                        <td class="no-print"><span class="caption--td"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></span>
+                        <td class="no-print">
                           <div class="pic--cell-left">
                             <?php
 								$prodOrBatchUrl = 'javascript:void(0)';
@@ -129,14 +129,14 @@
                             <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></div>
 							<?php }?>
                           </div></td>
-                        <!--<td style="width:20%;" ><span class="caption--td"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?></span><?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></td>-->
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Qty',$siteLangId);?></span><?php echo $childOrder['op_qty'];?></td>
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat($childOrder['op_unit_price']);?></td>
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder,'shipping'));?></td>
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat($volumeDiscount);?></td>
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Tax_Charges',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder,'tax'));?></td>
-						<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></td>
-                        <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></span> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder));?></td>
+                        <!--<td style="width:20%;" ><?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></td>-->
+                        <td><?php echo $childOrder['op_qty'];?></td>
+                        <td><?php echo CommonHelper::displayMoneyFormat($childOrder['op_unit_price']);?></td>
+                        <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder,'shipping'));?></td>
+                        <td><?php echo CommonHelper::displayMoneyFormat($volumeDiscount);?></td>
+                        <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder,'tax'));?></td>
+						<td><?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></td>
+                        <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder));?></td>
                       </tr>
                       <?php } if(!$primaryOrder){?>
                       <tr>
@@ -251,10 +251,10 @@
                         </tr>
                         <?php foreach($orderDetail['comments'] as $row){ ?>
                         <tr>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></span><?php echo FatDate::format($row['oshistory_date_added']);?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Customer_Notified',$siteLangId);?></span><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></span><?php echo ($row['oshistory_orderstatus_id']>0)?$orderStatuses[$row['oshistory_orderstatus_id']]:CommonHelper::displayNotApplicable($siteLangId,''); echo ($row['oshistory_tracking_number'])? ': '.Labels::getLabel('LBL_Tracking_Number',$siteLangId).' '.$row['oshistory_tracking_number']." VIA <em>".$row['op_shipping_duration_name']."</em>" :'' ?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Comments',$siteLangId);?></span> <?php echo !empty(trim(($row['oshistory_comments']))) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_NA',$siteLangId) ;?></td>
+                          <td><?php echo FatDate::format($row['oshistory_date_added']);?></td>
+                          <td><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
+                          <td><?php echo ($row['oshistory_orderstatus_id']>0)?$orderStatuses[$row['oshistory_orderstatus_id']]:CommonHelper::displayNotApplicable($siteLangId,''); echo ($row['oshistory_tracking_number'])? ': '.Labels::getLabel('LBL_Tracking_Number',$siteLangId).' '.$row['oshistory_tracking_number']." VIA <em>".$row['op_shipping_duration_name']."</em>" :'' ?></td>
+                          <td><?php echo !empty(trim(($row['oshistory_comments']))) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_NA',$siteLangId) ;?></td>
                         </tr>
                         <?php } ?>
                       </tbody>
@@ -276,11 +276,11 @@
                         </tr>
                         <?php foreach( $orderDetail['payments'] as $row ){ ?>
                         <tr>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></span><?php echo FatDate::format($row['opayment_date']);?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Txn_Id',$siteLangId);?></span><?php echo $row['opayment_gateway_txn_id'];?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?></span><?php echo $row['opayment_method'];?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Amount',$siteLangId);?></span><?php echo CommonHelper::displayMoneyFormat($row['opayment_amount']);?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Comments',$siteLangId);?></span> <?php echo nl2br($row['opayment_comments']);?></td>
+                          <td><?php echo FatDate::format($row['opayment_date']);?></td>
+                          <td><?php echo $row['opayment_gateway_txn_id'];?></td>
+                          <td><?php echo $row['opayment_method'];?></td>
+                          <td><?php echo CommonHelper::displayMoneyFormat($row['opayment_amount']);?></td>
+                          <td><?php echo nl2br($row['opayment_comments']);?></td>
                         </tr>
                         <?php } ?>
                       </tbody>
@@ -327,13 +327,13 @@
 								}
 								?>
                         <tr>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></span><?php echo $sr_no;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_File',$siteLangId);?></span><?php echo $fileName;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Language',$siteLangId);?></span><?php echo $lang_name;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></span><?php echo $downloadableCount;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></span><?php echo $row['afile_downloaded_times'];?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>
-                          <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></span><?php if($row['downloadable']){?><ul class="actions"><?php echo $downloads;?></ul><?php }?></td>
+                          <td><?php echo $sr_no;?></td>
+                          <td><?php echo $fileName;?></td>
+                          <td><?php echo $lang_name;?></td>
+                          <td><?php echo $downloadableCount;?></td>
+                          <td><?php echo $row['afile_downloaded_times'];?></td>
+                          <td><?php echo $expiry;?></td>
+                          <td><?php if($row['downloadable']){?><ul class="actions"><?php echo $downloads;?></ul><?php }?></td>
                         </tr>
                         <?php $sr_no++; } ?>
                       </tbody>
@@ -373,11 +373,11 @@
 								$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
 							?>
 							<tr>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></span><?php echo $sr_no;?></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></span><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></span><?php echo $downloadableCount;?></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></span><?php echo $row['opddl_downloaded_times'];?></td>
-							  <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></span><?php echo $expiry;?></td>
+							  <td><?php echo $sr_no;?></td>
+							  <td><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
+							  <td><?php echo $downloadableCount;?></td>
+							  <td><?php echo $row['opddl_downloaded_times'];?></td>
+							  <td><?php echo $expiry;?></td>
 							</tr>
 							<?php $sr_no++; } ?>
 						  </tbody>

@@ -31,7 +31,7 @@ foreach ($arrListing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">' . $val . '</span>' . $sr_no,true);
+				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
 				$variantStr = '<div class="item-yk-head-title">'.$row['product_name'].'</div>';
@@ -41,16 +41,16 @@ foreach ($arrListing as $sn => $row){
 						$variantStr .= '<div class="item-yk-head-specification">'.$op['option_name'].': '.$op['optionvalue_name'].'</div>';
 					}
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.wordwrap($variantStr,150,"<br>\n"), true);
+				$td->appendElement('plaintext', array(), wordwrap($variantStr,150,"<br>\n"), true);
 			break;
 			case 'selprod_price':
-				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat( $row[$key], true, true),true );
+				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat( $row[$key], true, true),true );
 			break;
 			case 'selprod_available_from':
-				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key], false),true );
+				$td->appendElement( 'plaintext', array(), FatDate::format($row[$key], false),true );
 			break;
 			case 'selprod_active';
-				/* $td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$activeInactiveArr[$row[$key]],true ); */
+				/* $td->appendElement( 'plaintext', array(), $activeInactiveArr[$row[$key]],true ); */
 				$active = "";
 				if(applicationConstants::ACTIVE == $row['selprod_active']){
 					$active = 'checked';
@@ -62,7 +62,7 @@ foreach ($arrListing as $sn => $row){
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>CommonHelper::generateUrl('seller','sellerProductForm',array($row['selprod_product_id'],$row['selprod_id'])), 'class'=>'',
 				'title'=>Labels::getLabel('LBL_Edit',$siteLangId)),
@@ -82,7 +82,7 @@ foreach ($arrListing as $sn => $row){
 
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

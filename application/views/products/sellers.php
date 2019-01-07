@@ -1,6 +1,5 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
-
 ?>
 <div id="body" class="body bg--gray">
     <div class="section section--pagebar">
@@ -110,7 +109,7 @@ foreach ($product['moreSellersArr'] as $sn => $moresellers){
 			break;
 
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$moresellers[$key],true);
+				$td->appendElement('plaintext', array(), $moresellers[$key],true);
 			break;
 		}
 	}

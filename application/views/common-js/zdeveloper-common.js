@@ -9,12 +9,17 @@ function getCountryStates( countryId, stateId, dv ){
 	});
 };
 
-function recentlyViewedProducts(){
+function recentlyViewedProducts(selprodId){
+	if(typeof selprodId == 'undefined'){
+		selprodId = 0;
+	}
+	
 	$("#recentlyViewedProductsDiv").html(fcom.getLoader());
 	
-	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts'),'',function(ans){
+	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6) );
+		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
+		$('.slides--six-js').slick('reinit');
 	});
 }
 
@@ -296,17 +301,19 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
+function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
 	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
 	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
+	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : false;
 	
 	if(layoutDirection == 'rtl'){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
-			arrows: true, 
+			infinite: autoInfinitePlay,
+			autoplay: autoInfinitePlay,
+			arrows: true,
 			rtl:true,
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
@@ -340,8 +347,9 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll,layoutDirection ){
 		return {
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,     
-			infinite: false, 
-			arrows: true,					
+			infinite: autoInfinitePlay,
+			autoplay: autoInfinitePlay,
+			arrows: true,			
 			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
 			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',    
 			responsive: [{
@@ -733,6 +741,7 @@ function setSiteDefaultLang(langId){
 }
 
 function setSiteDefaultCurrency(currencyId){ 
+	var currUrl = window.location.href;	
 	fcom.ajax(fcom.makeUrl('Home','setCurrency',[currencyId]),'',function(res){
 		document.location.reload();
 	});

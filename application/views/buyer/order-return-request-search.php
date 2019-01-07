@@ -26,13 +26,13 @@ foreach ($requests as $sn => $row){
 		switch ($key){
 			case 'orrequest_id':
 				/* $requestId = CommonHelper::formatOrderReturnRequestNumber($row[$key]); */
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'. $row['orrequest_reference'], true);
+				$td->appendElement('plaintext', array(), $row['orrequest_reference'], true);
 			break;
 			case 'orrequest_date':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]) , true);
+				$td->appendElement('plaintext', array(), FatDate::format($row[$key]) , true);
 			break;
 			case 'orrequest_type':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$returnRequestTypeArr[$row[$key]] , true);
+				$td->appendElement('plaintext', array(), $returnRequestTypeArr[$row[$key]] , true);
 			break;
 			case 'products':
 				$txt = '';
@@ -51,13 +51,13 @@ foreach ($requests as $sn => $row){
 				if( $row['op_product_model'] != '' ){
 					$txt .= '<div class="item-yk-head-model">'.Labels::getLabel('LBL_Model', $siteLangId).':  ' . $row['op_product_model'].'</div>';
 				}
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$txt , true);
+				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'orrequest_status':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$OrderReturnRequestStatusArr[$row[$key]] , true);
+				$td->appendElement('plaintext', array(), $OrderReturnRequestStatusArr[$row[$key]] , true);
 			break;
 			case 'action':
-				$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+				$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
 
 				if( $buyerPage ){
 					$url = CommonHelper::generateUrl('Buyer', 'ViewOrderReturnRequest', array($row['orrequest_id']) );
@@ -71,7 +71,7 @@ foreach ($requests as $sn => $row){
 				'<i class="fa fa-eye"></i>', true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

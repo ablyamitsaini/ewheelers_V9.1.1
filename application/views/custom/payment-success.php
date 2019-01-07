@@ -21,3 +21,8 @@
     </div></div>
 	<div class="gap"></div>
 </div>
+<script>
+window.setTimeout(function() {
+    window.location.href = fcom.makeUrl('Home');
+}, 15000);
+</script>

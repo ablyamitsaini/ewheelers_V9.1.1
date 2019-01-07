@@ -24,31 +24,31 @@ foreach ($arrListing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'utxn_id':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'. Transactions::formatTransactionNumber($row[$key]), true);
+				$td->appendElement('plaintext', array(), Transactions::formatTransactionNumber($row[$key]), true);
 			break;
 			case 'utxn_date':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]) , true);
+				$td->appendElement('plaintext', array(), FatDate::format($row[$key]) , true);
 			break;
 			case 'utxn_status':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$statusArr[$row[$key]] , true);
+				$td->appendElement('plaintext', array(), $statusArr[$row[$key]] , true);
 			break;
 			case 'utxn_credit':
-				$txt = '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat( $row[$key] );
+				$txt = CommonHelper::displayMoneyFormat( $row[$key] );
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'utxn_debit':
-				$txt = '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat( $row[$key] );
+				$txt = CommonHelper::displayMoneyFormat( $row[$key] );
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'balance':
-				$txt = '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat( $row[$key] );
+				$txt = CommonHelper::displayMoneyFormat( $row[$key] );
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'utxn_comments':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.Transactions::formatTransactionComments($row[$key]),true);
+				$td->appendElement('plaintext', array(), Transactions::formatTransactionComments($row[$key]),true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

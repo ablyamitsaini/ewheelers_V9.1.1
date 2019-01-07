@@ -93,7 +93,7 @@ $("document").ready(function(){
 
 		?>
 
-       	$('#related-products').append("<li id=\"productRelated<?php echo $val['selprod_id'];?>\"><i class=\"remove_related remove_param fa fa-remove\"></i><?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_related[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
+       	$('#related-products').append("<li id=\"productRelated<?php echo $val['selprod_id'];?>\"><i class=\"remove_related remove_param fa fa-remove\"></i> <?php echo $val['product_name'];?>[<?php echo $val['product_identifier'];?>]<input type=\"hidden\" name=\"product_related[]\" value=\"<?php echo $val['selprod_id'];?>\" /></li>");
     <?php } ?>
 });
 </script>

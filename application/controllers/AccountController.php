@@ -1385,7 +1385,7 @@ class AccountController extends LoggedUserController {
 		if( $products ){
 			foreach($products as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
@@ -1491,7 +1491,7 @@ class AccountController extends LoggedUserController {
 		if( $products ){
 			foreach($products as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
-				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_user_id'], $product['selprod_code'] );
+				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
@@ -2148,7 +2148,7 @@ class AccountController extends LoggedUserController {
 		$frm->addTextBox(Labels::getLabel('LBL_Username',$this->siteLangId),'credential_username','');
 		$frm->addTextBox(Labels::getLabel('LBL_Email',$this->siteLangId),'credential_email','');
 		$frm->addRequiredField(Labels::getLabel('LBL_Customer_Name',$this->siteLangId), 'user_name');
-		$frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth',$this->siteLangId), 'user_dob','');
+		$frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth',$this->siteLangId), 'user_dob','',array('readonly'=>'readonly'));
 		$frm->addTextBox(Labels::getLabel('LBL_Phone',$this->siteLangId), 'user_phone');
 
 		if( User::isAffiliate() ){

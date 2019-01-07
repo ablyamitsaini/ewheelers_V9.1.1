@@ -65,10 +65,11 @@ class BuyerController extends LoggedUserController {
 		$orderSrch = new OrderProductSearch( $this->siteLangId, true, true );
 		$orderSrch->doNotCalculateRecords();
 		$orderSrch->doNotLimitRecords();
-		$orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder');
+		/* $orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder'); */
+		$orderSrch->addBuyerOrdersCounts(date('Y-m-d'),date('Y-m-d'),'todayOrder');
 		$orderSrch->addGroupBy('order_user_id');
 		$orderSrch->addCondition( 'order_user_id', '=', $userId );
-		$orderSrch->addMultipleFields(array('yesterdayOrderCount'));
+		$orderSrch->addMultipleFields(array('todayOrderCount'));
 		$rs = $orderSrch->getResultSet();
 		$ordersStats = FatApp::getDb()->fetch($rs);
 		/* ]*/
@@ -88,7 +89,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('totalFavouriteItems', $totalFavouriteItems);
 		/* $this->set('totalWishlistItems', $totalWishlistItems); */
 		$this->set('totalPurchasedItems', $totalPurchasedItems);
-		$this->set('yesterdayOrderCount', FatUtility::int($ordersStats['yesterdayOrderCount']));
+		$this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
 		$this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
 		$this->set('totalMessageCount', $totalMessageCount);
 		$this->set('userBalance', User::getUserBalance($userId));
@@ -1996,7 +1997,7 @@ class BuyerController extends LoggedUserController {
 	public function addItemsToCart($orderId){
 		if(!$orderId){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
-			CommonHelper::redirectUserReferer();
+			return;
 		}
 	
 		$userId = UserAuthentication::getLoggedUserId();
@@ -2005,7 +2006,7 @@ class BuyerController extends LoggedUserController {
 		$orderDetail = $orderObj->getOrderById($orderId,$this->siteLangId);
 		if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
-			CommonHelper::redirectUserReferer();
+			return;
 		}
 		
 		$cartObj = new Cart();
@@ -2027,7 +2028,7 @@ class BuyerController extends LoggedUserController {
 		$cartObj->removeUsedRewardPoints();
 		$cartObj->removeCartDiscountCoupon();
 		$cartObj->removeProductShippingMethod();
-		
+			
 		/* Update existing cart [ */
 		
 		/* $db = FatApp::getDb();
@@ -2036,10 +2037,8 @@ class BuyerController extends LoggedUserController {
 			FatUtility::dieJsonError( Message::getHtml() );
 		} */
 		
-		/* ] */
-		
-		Message::addMessage(Labels::getLabel("MSG_Successfully_redirecting",$this->siteLangId));
-		FatUtility::dieJsonSuccess( Message::getHtml() );
+		/* ] */		
+		return;
 	}
 	
 	

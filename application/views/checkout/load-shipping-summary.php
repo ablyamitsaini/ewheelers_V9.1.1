@@ -6,7 +6,7 @@
 		if( count($products) ){
 		foreach( $products as $product ){?>
 		<p><?php echo $product['selprod_title']; ?> - <span class="shipping-price"><?php 
-		if($product['shop_eligible_for_free_shipping']){
+		if($product['shop_eligible_for_free_shipping'] && $product['psbs_user_id'] > 0){
 			echo '<strike>'.CommonHelper::displayMoneyFormat($product['shipping_cost']).'</strike> '.CommonHelper::displayMoneyFormat(0);
 		}else{
 		echo CommonHelper::displayMoneyFormat($product['shipping_cost']);} ?></span></p>

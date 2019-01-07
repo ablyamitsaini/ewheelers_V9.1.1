@@ -32,7 +32,7 @@ $(document).ready(function(){
 					addOptionForm(optionId);	
 					optionValueListing(optionId);
 				}
-					
+				fcom.resetFaceboxHeight();
 			});
 		});
 	}
@@ -40,7 +40,8 @@ $(document).ready(function(){
 	addOptionForm = function(optionId){
 		var dv = $('#loadForm');
 		fcom.ajax(fcom.makeUrl('Seller', 'addOptionForm', [optionId]), '', function(t) {				
-			dv.html(t);					
+			dv.html(t);	
+			fcom.resetFaceboxHeight();			
 		});
 	};
 	
@@ -51,14 +52,16 @@ $(document).ready(function(){
 		var data = 'option_id='+optionId;		
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
 			dv.html(res);
+			/* fcom.resetFaceboxHeight();	 */
 		});
 	};
 	
 	optionValueForm = function (optionId,id){
 		var dv = $('#loadForm');
 		fcom.ajax(fcom.makeUrl('OptionValues', 'form', [optionId,id]), '', function(t) {				
-			dv.html(t);					
+			dv.html(t);		
 			jscolor.installByClassName('jscolor');
+			/* fcom.resetFaceboxHeight();	 */
 		});
 	};
 	
@@ -70,6 +73,7 @@ $(document).ready(function(){
 			if (t.optionId > 0 ) {
 				optionValueListing(t.optionId);
 				optionValueForm(t.optionId,0);
+				fcom.resetFaceboxHeight();
 				return ;
 			}
 			$(document).trigger('close.facebox');
@@ -83,6 +87,7 @@ $(document).ready(function(){
 			$.mbsmessage.close();
 			optionValueListing(optionId);
 			optionValueForm(optionId,0);
+			fcom.resetFaceboxHeight();
 		});
 	}
 	
@@ -103,6 +108,7 @@ $(document).ready(function(){
 		$("#optionValueListing").html('Loading....');
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
 			$("#optionValueListing").html(res);
+			/* fcom.resetFaceboxHeight(); */
 		});
 	};
 	
@@ -127,7 +133,8 @@ $(document).ready(function(){
 			$.mbsmessage.close();
 			if(t.optionId > 0){ 
 				optionForm(t.optionId); return;
-			}			
+			}
+			fcom.resetFaceboxHeight();			
 			$(document).trigger('close.facebox');
 		});	
 	};		
@@ -143,6 +150,7 @@ $(document).ready(function(){
 		
 		fcom.ajax(fcom.makeUrl('seller','searchOptions'),data,function(res){
 			$("#optionListing").html(res);
+			fcom.resetFaceboxHeight();
 		});
 	};
 	

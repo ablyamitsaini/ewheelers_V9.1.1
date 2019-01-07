@@ -35,27 +35,27 @@
 			switch ($key){
 				case 'promotion_image': 
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><div class="avtar"><img src="'.FatCache::getCachedUrl(CommonHelper::generateUrl('image','product',array($product['promotion_product_id'],'MINI',0,0,$siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').'" alt="'.$row["prod_name"].'"></div>' , true);
+					$td->appendElement('plaintext', array(), '<div class="avtar"><img src="'.FatCache::getCachedUrl(CommonHelper::generateUrl('image','product',array($product['promotion_product_id'],'MINI',0,0,$siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').'" alt="'.$row["prod_name"].'"></div>' , true);
 					} else if($row['promotion_type']==Promotions::PROMOTE_SHOP) {
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><div class="avtar"><img src="'.CommonHelper::generateUrl('image','shop',array($product['promotion_shop_id'],'MINI',0,0,$siteLangId)).'" alt="'.$row["shop_identifier"].'"></div>' , true);
+					$td->appendElement('plaintext', array(), '<div class="avtar"><img src="'.CommonHelper::generateUrl('image','shop',array($product['promotion_shop_id'],'MINI',0,0,$siteLangId)).'" alt="'.$row["shop_identifier"].'"></div>' , true);
 					} else if($row['promotion_type']==Promotions::PROMOTE_BANNER) {
-					// $td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><div class="avtar"><img src="'.CommonHelper::generateUrl('image','promotion-banner',array($row["promotion_banner_file"],'MINI')).'" alt=""></div>' , true);
+					// $td->appendElement('plaintext', array(), '<div class="avtar"><img src="'.CommonHelper::generateUrl('image','promotion-banner',array($row["promotion_banner_file"],'MINI')).'" alt=""></div>' , true);
 					}
 				break;
 				case 'promotion_id':
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row["promotion_number"] . '<br>', true);
+					$td->appendElement('plaintext', array(), $row["promotion_number"] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				break;
 				
 				case 'promotion_identifier':
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row["prod_name"] . '<br>', true);
+					$td->appendElement('plaintext', array(), $row["prod_name"] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					} elseif ($row['promotion_type']==Promotions::PROMOTE_SHOP) {
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row["shop_identifier"] . '<br>', true);
+					$td->appendElement('plaintext', array(), $row["shop_identifier"] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					} elseif ($row['promotion_type']==Promotions::PROMOTE_BANNER) {
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row["promotion_banner_name"] . '<br>', true);
+					$td->appendElement('plaintext', array(), $row["promotion_banner_name"] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					}
 					if(isset($row['promotion_min_balance'])) { if ($row['promotion_min_balance']==1) {
@@ -66,22 +66,22 @@
 				
 				case 'promotion_type':
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
-						$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.Labels::getLabel('LBL_Product',$siteLangId) . '<br>', true);
+						$td->appendElement('plaintext', array(), .Labels::getLabel('LBL_Product',$siteLangId) . '<br>', true);
 						$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					} elseif ($row['promotion_type']==Promotions::PROMOTE_SHOP) {
-					   $td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.Labels::getLabel('LBL_Shop',$siteLangId) . '<br>', true);
+					   $td->appendElement('plaintext', array(), Labels::getLabel('LBL_Shop',$siteLangId) . '<br>', true);
 						$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					} elseif ($row['promotion_type']==Promotions::PROMOTE_BANNER) {
-						$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.Labels::getLabel('LBL_Banner',$siteLangId) . '<br>', true);
+						$td->appendElement('plaintext', array(), Labels::getLabel('LBL_Banner',$siteLangId) . '<br>', true);
 						$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 					}
 				break;
 				case 'promotion_cost':
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($row["promotion_cost"]) . '<br>', true);
+					$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row["promotion_cost"]) . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				break;
 				case 'promotion_budget':
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($row["promotion_budget"]). '/'. $prm_budget_dur_arr[$row["promotion_budget_period"]] . '<br>', true);
+					$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row["promotion_budget"]). '/'. $prm_budget_dur_arr[$row["promotion_budget_period"]] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				break;
 				case 'promotion_clicks':
@@ -90,10 +90,10 @@
 					$row["totClicks"], true);
 				break;
 				case 'promotion_duration':
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row["promotion_start_date"]) .'-'. FatDate::format($row["promotion_end_date"]) .'<br/>'. Labels::getLabel('LBL_Time',$siteLangId) .':'. date(date('H:i',strtotime($row["promotion_start_time"]))) .'-'. date(date('H:i',strtotime($row["promotion_end_time"]))). '<br>', true);
+					$td->appendElement('plaintext', array(), FatDate::format($row["promotion_start_date"]) .'-'. FatDate::format($row["promotion_end_date"]) .'<br/>'. Labels::getLabel('LBL_Time',$siteLangId) .':'. date(date('H:i',strtotime($row["promotion_start_time"]))) .'-'. date(date('H:i',strtotime($row["promotion_end_time"]))). '<br>', true);
 				break;
 				case 'action':
-					$ul = $td->appendElement("ul",array("class"=>"actions"),'<span class="caption--td">'.$val.'</span>',true);
+					$ul = $td->appendElement("ul",array("class"=>"actions"),' ',true);
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array( 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"promotionGeneralForm(".$row['promotion_id'].")"),
@@ -125,7 +125,7 @@
 
 				break;
 				default:
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+					$td->appendElement('plaintext', array(), $row[$key],true);
 				break;
 			}
 		}

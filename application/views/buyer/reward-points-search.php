@@ -26,26 +26,26 @@ foreach ($arr_listing as $sn => $row){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'select_option':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span><input class="rewardOptions-Js" type="checkbox" name="rewardOptions[]" value="'.$row['urp_id'].'">' , true);
+				$td->appendElement('plaintext', array(), '<input class="rewardOptions-Js" type="checkbox" name="rewardOptions[]" value="'.$row['urp_id'].'">' , true);
 			break;
 			/* case 'urp_used':
 				$yesNoArr = applicationConstants::getYesNoArr($siteLangId);
 				if($row[$key] != applicationConstants::YES && $row['urp_date_expiry'] !='0000-00-00' && $row['urp_date_expiry'] < date('Y-m-d')){
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.Labels::getLabel('LBL_Expired',$siteLangId) , true);
+					$td->appendElement('plaintext', array(), Labels::getLabel('LBL_Expired',$siteLangId) , true);
 				}else{
-					$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$yesNoArr[$row[$key]] , true);
+					$td->appendElement('plaintext', array(), $yesNoArr[$row[$key]] , true);
 				}
 			break; */
 			case 'urp_date_added':
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.FatDate::format($row[$key]) , true);
+				$td->appendElement('plaintext', array(), FatDate::format($row[$key]) , true);
 			break;
 			case 'urp_date_expiry':
 				$expiryDate = $row[$key];
 				$expiryDate = ($expiryDate =='0000-00-00')?CommonHelper::displayNotApplicable($siteLangId,''):FatDate::format($row[$key]);
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$expiryDate , true);
+				$td->appendElement('plaintext', array(), $expiryDate , true);
 			break;
 			default:
-				$td->appendElement('plaintext', array(), '<span class="caption--td">'.$val.'</span>'.$row[$key],true);
+				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;
 		}
 	}

@@ -13,15 +13,15 @@
 			  <div class="by-name"><?php echo Labels::getLabel('Lbl_By',$siteLangId) ; ?> <?php echo CommonHelper::displayName($review['user_name']); ?> <?php echo Labels::getLabel('Lbl_On_Date',$siteLangId) , ' ',FatDate::format($review['spreview_posted_on']); ?> </div>
 			  <div class="his-long-comment cms-editor">
 				<h2><?php echo $review['spreview_title']; ?></h2>
-					<p>
-						<span class='lessText'><?php echo CommonHelper::truncateCharacters($review['spreview_description'],200,'','',true);?></span>
-						<?php if(strlen($review['spreview_description']) > 200) { ?>
-						<span class='moreText' hidden>
-						<?php echo nl2br($review['spreview_description']); ?>
-						</span>
-						<a class="readMore link--arrow" href="javascript:void(0);"> <?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId) ; ?> </a>
-						<?php } ?>
-					</p>
+				<p>
+					<span class='lessText'><?php echo CommonHelper::truncateCharacters($review['spreview_description'],200,'','',true);?></span>
+					<?php if(strlen($review['spreview_description']) > 200) { ?>
+					<span class='moreText' hidden>
+					<?php echo nl2br($review['spreview_description']); ?>
+					</span>
+					<a class="readMore link--arrow" href="javascript:void(0);"> <?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId) ; ?> </a>
+					<?php } ?>
+				</p>
 			  </div>
 			</div>
 		  </div>

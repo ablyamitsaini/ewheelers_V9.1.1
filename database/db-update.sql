@@ -30,3 +30,9 @@ ALTER TABLE `tbl_collection_to_brands`
   
   
 ALTER TABLE `tbl_seller_products` ADD UNIQUE( `selprod_user_id`, `selprod_code`);
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_VIEW_%d_More_Sellers';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_Commission_fees';
+
+ALTER TABLE `tbl_product_special_prices` ADD UNIQUE( `splprice_selprod_id`, `splprice_start_date`, `splprice_end_date`);
+ALTER TABLE tbl_product_special_prices DROP INDEX price_selprod_id;

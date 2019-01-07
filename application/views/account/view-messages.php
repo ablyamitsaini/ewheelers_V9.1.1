@@ -35,10 +35,9 @@
 											</th>
 									   </tr>
 									   <tr>
-										   <td><span class="caption--td"><?php echo Labels::getLabel('LBL_Date',$siteLangId);?></span><?php echo FatDate::format($threadDetails["thread_start_date"],false);?>
+										   <td><?php echo FatDate::format($threadDetails["thread_start_date"],false);?>
 										   </td>
 											<td>
-												<span class="caption--td"><?php echo $threadTypeArr[$threadDetails['thread_type']];?></span>
 												<div class="item__description">
 													<?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT){?>
 														<span class="item__title"><?php echo $threadDetails["op_invoice_number"];?></span>
@@ -49,16 +48,9 @@
 													<?php }?>
 												</div>
 											</td>
-											<td><span class="caption--td"><?php echo Labels::getLabel('LBL_Subject',$siteLangId);?></span><?php echo $threadDetails["thread_subject"];?>
+											<td><?php echo $threadDetails["thread_subject"];?>
 											</td>
 											<td>
-												<span class="caption--td">
-													<?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT) {
-														echo Labels::getLabel('LBL_Amount',$siteLangId);
-													}  elseif ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_PRODUCT) {
-														echo Labels::getLabel('LBL_Price',$siteLangId);
-													}?>
-												</span>
 												<span class="item__price">
 													<?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT){?>
 
@@ -70,11 +62,6 @@
 												</span>
 											</td>
 											<td>
-												<span class="caption--td">
-												<?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT){
-													echo Labels::getLabel('LBL_Status',$siteLangId) ;
-												} ?>
-												</span>
 												<?php if ($threadDetails["thread_type"] == THREAD::THREAD_TYPE_ORDER_PRODUCT){?>
 												<?php echo $threadDetails["orders_status_name"]?>
 												<?php }?>
