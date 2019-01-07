@@ -380,7 +380,6 @@ $(document).delegate('.language-js','change',function(){
 		$("#optionListing").html(langLbl.processing);		
 		fcom.ajax(fcom.makeUrl('seller','searchOptions'),data,function(res){
 			$("#optionListing").html(res);
-			fcom.resetFaceboxHeight();	
 		});
 	};
 	
@@ -399,8 +398,7 @@ $(document).delegate('.language-js','change',function(){
 					$.facebox(t,'faceboxWidth');
 					addOptionForm(optionId);	
 					optionValueListing(optionId);
-				}
-				fcom.resetFaceboxHeight();				
+				}					
 			});
 		});
 	};
@@ -413,8 +411,7 @@ $(document).delegate('.language-js','change',function(){
 			$.mbsmessage.close();
 			if(t.optionId > 0){ 
 				optionForm(t.optionId); return;
-			}
-			fcom.resetFaceboxHeight();	
+			}			
 			$(document).trigger('close.facebox');
 		});	
 	};
@@ -422,8 +419,7 @@ $(document).delegate('.language-js','change',function(){
 	addOptionForm = function(optionId){
 		var dv = $('#loadForm');
 		fcom.ajax(fcom.makeUrl('Seller', 'addOptionForm', [optionId]), '', function(t) {				
-			dv.html(t);	
-			fcom.resetFaceboxHeight();			
+			dv.html(t);					
 		});
 	};
 	optionValueListing = function(optionId){
@@ -452,7 +448,6 @@ $(document).delegate('.language-js','change',function(){
 			if (t.optionId > 0 ) {
 				optionValueListing(t.optionId);
 				optionValueForm(t.optionId,0);
-				fcom.resetFaceboxHeight();
 				return ;
 			}
 			$(document).trigger('close.facebox');
@@ -466,7 +461,6 @@ $(document).delegate('.language-js','change',function(){
 			$.mbsmessage.close();
 			optionValueListing(optionId);
 			optionValueForm(optionId,0);
-			fcom.resetFaceboxHeight();
 		});
 	};
 	
