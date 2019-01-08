@@ -30,7 +30,7 @@ class GuestUserController extends MyAppController {
 		$rememberme = FatApp::getPostedData('remember_me', FatUtility::VAR_INT, 0);
 		if ($rememberme == 1) {
             if(!$this->setUserLoginCookie()){
-				Message::addErrorMessage(Labels::getLabel('MSG_COOKIES_NOT_ADDED'),$this->siteLangId);				
+				Message::addErrorMessage(Labels::getLabel('MSG_COOKIES_NOT_ADDED',$this->siteLangId));				
 			}
         }
 		
