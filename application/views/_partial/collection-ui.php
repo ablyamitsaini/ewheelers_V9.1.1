@@ -39,7 +39,7 @@ $staticCollectionClass='static--collection';
 </div>
 <?php }?>
 <?php if(!$staticCollectionClass && (!isset($quickDetailIcon))){ ?>
-<div class="quickview">
+<div class="quickview hide--mobile">
 	<a name="<?php echo $controllerName;?>" onClick='quickDetail(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content"><?php echo Labels::getLabel('LBL_Quick_View', $siteLangId);?>
 	</a>
 </div>

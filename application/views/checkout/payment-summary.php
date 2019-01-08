@@ -125,10 +125,14 @@
 <?php }?>
 
 
-
+<?php $gatewayCount=0; foreach( $paymentMethods as $key => $val ){
+	if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) continue;
+	$gatewayCount++;
+} ?>
 <div class="make-payment-wrapper <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>">
   <?php if($cartSummary['orderPaymentGatewayCharges']){ ?>
   <div class="row">
+	<?php if( $gatewayCount > 0 ){ ?>
 	<div class="col-lg-4 col-md-4 col-sm-12 col-xm-12">
 	  <?php if($paymentMethods){ ?>
 	  <div class="payment_methods_list scrollbar">
@@ -154,6 +158,9 @@
 		<div id="tabs-container"></div>
 	  </div>
 	</div>
+	<?php }else{
+		  echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
+	  } ?>
   </div>
   <?php } ?>
 </div>
