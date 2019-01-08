@@ -10,9 +10,9 @@ $btn_clear->addFieldTagAttribute('onClick', 'clearSearch()'); */
 ?>
 
 <div class='page'>
-	<div class='fixed_container'>
+	<div class='container container-fluid'>
 		<div class="row">
-			<div class="space">
+			<div class="col-lg-12 col-md-12 space">
 				<div class="page__title">
 					<div class="row">
 						<div class="col--first col-lg-6">

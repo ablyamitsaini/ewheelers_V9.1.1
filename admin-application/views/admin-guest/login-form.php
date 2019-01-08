@@ -7,7 +7,7 @@
  $rememberMeFld->addFieldTagAttribute('class','switch-labels');
  ?>
     <div class="page__cell">
-        <div class="container container--narrow">
+        <div class="container container-fluid container--narrow">
             <div class="box box--white">
                 <figure class="logo"><img title="<?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId);?>" src="<?php echo CommonHelper::generateUrl('Image','siteAdminLogo', array(  $adminLangId)); ?>" alt="<?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId);?>"></figure>
                    

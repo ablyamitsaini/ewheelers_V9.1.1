@@ -488,11 +488,14 @@ input[type="text"].p-cards.master {
 input[type="text"].p-cards.meastro {
   background-position: -135px -141px;
 }
-
+.cat-accordion{ padding: 0;}
 .cat-accordion .acc-trigger {
   left: auto;
   right: 4px;
+  transform: rotate(45deg);
 }
+
+ 
 
 .media--details>li .grid--first {
   padding-right: 0;

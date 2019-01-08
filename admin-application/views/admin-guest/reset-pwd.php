@@ -4,7 +4,7 @@ defined( 'SYSTEM_INIT' ) or die( 'Invalid Usage.' );
   
 
           <div class="page__cell">
-        <div class="container container--narrow">
+        <div class="container container-fluid container--narrow">
 		
 			  <div class="box box--white">
                     <figure class="logo"><img src="<?php echo CommonHelper::generateUrl('Image','siteAdminLogo', array(  $adminLangId)); ?>" alt=""></figure>

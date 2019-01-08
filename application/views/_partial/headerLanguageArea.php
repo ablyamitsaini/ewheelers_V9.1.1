@@ -14,7 +14,7 @@
 		<?php }else{ echo'<i class="fa fa-language"></i>'; } ?>
 		 <span><?php echo $languages[$siteLangId]['language_name']; ?></span> </a>
 		<div class="dropdown__target dropdown__target-lang dropdown__target-js">
-			<div class="box box--white">
+			<div class="box">
 				<h4 class="align--center hide--desktop"><?php echo Labels::getLabel('LBL_Select_Language',$siteLangId);?></h4>
 				<ul class="list--vertical list--vertical-tabs">
 					<?php foreach($languages as $langId => $language){ ?>
@@ -31,7 +31,7 @@
 	<li class="dropdown dropdown--arrow">
 		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><i class="icn-currency"><?php echo CommonHelper::getCurrencySymbol();?> </i><span> <?php echo Labels::getLabel('LBL_Currency', $siteLangId);?></span> </a>
 		<div class="dropdown__target dropdown__target-lang dropdown__target-js">
-			<div class="box box--white">
+			<div class="box">
 				<h4 class="align--center hide--desktop"><?php echo Labels::getLabel('LBL_Select_Currency',$siteLangId);?></h4>
 				<ul class="list--vertical">
 					<?php foreach($currencies as $currencyId => $currency){ ?>

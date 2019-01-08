@@ -14,7 +14,7 @@
 		    <li><a href="<?php echo Utilities::generateUrl('ppcpaymentmethods'); ?>">PPC Payment Methods</a></li>
 		    <li>Payment Method Setup</li>
 		</ul>
-		<div class="fixed_container">
+		<div class="container container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
 					<section class="section">

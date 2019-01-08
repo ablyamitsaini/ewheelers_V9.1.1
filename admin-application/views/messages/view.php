@@ -1,9 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 
     <div class='page'>
-        <div class='fixed_container'>
+        <div class='container container-fluid'>
             <div class="row">				
-                <div class="space">		
+                <div class="col-lg-12 col-md-12 space">		
 					<?php echo $search->getFormHtml(); ?>					
                     <section class="section">
 						<div class="sectionhead">
