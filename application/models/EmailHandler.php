@@ -577,7 +577,7 @@ class EmailHandler extends FatModel {
 				self::sendMailTpl(FatApp::getConfig('CONF_SITE_OWNER_EMAIL'), "admin_order_email", $langId,  $arrReplacements);
 				
 				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS", FatUtility::VAR_STRING, ''));
-				if( !empty($email) ){
+				if( !empty($emails) ){
 					foreach ($emails as $email) {
 						if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 							self::sendMailTpl($email, "admin_order_email", $arrReplacements);
@@ -657,9 +657,9 @@ class EmailHandler extends FatModel {
 			);
 			
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "primary_order_payment_status_change_admin",$langId, $arrReplacements);
-			if(FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_INT,0)){
+			if(FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,'')){
 				
-				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 				foreach ($emails as $email) {
 					
 					if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -707,7 +707,7 @@ class EmailHandler extends FatModel {
 			
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "primary_order_payment_status_admin",$langId, $arrReplacements);
 			
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			foreach ($emails as $email) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 					self::sendMailTpl($email, "primary_order_payment_status_admin",$langId, $arrReplacements);
@@ -983,7 +983,7 @@ class EmailHandler extends FatModel {
 		
 		if ($adminOrUser == "A"){
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "withdrawal_request_admin",$langId, $arrReplacements);
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			foreach ($emails as $email) {
 				if (strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 					self::sendMailTpl($email, "withdrawal_request_admin",$langId , $arrReplacements);
@@ -1076,7 +1076,7 @@ class EmailHandler extends FatModel {
 		self::sendMailTpl($ocRequestRow["op_shop_owner_email"], "order_cancellation_notification", $langId, $arrReplacements);
 		$arrReplacements["{user_name}"] = Labels::getLabel("LBL_Admin", $langId);
 		self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "order_cancellation_notification", $langId, $arrReplacements);
-		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 		if( !empty($emails) && is_array($emails) ){
 			foreach ( $emails as $email ) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -1196,7 +1196,7 @@ class EmailHandler extends FatModel {
 		$arrReplacements["{user_name}"] = Labels::getLabel("LBL_Admin", $langId);
 		self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "product_return", $langId, $arrReplacements);
 		
-		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 		if( !empty($emails) && is_array($emails) ){
 			foreach ( $emails as $email ) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -1304,7 +1304,7 @@ class EmailHandler extends FatModel {
 			$arrReplacements["{click_here}"] = $adminReturnRequestUrl;
 			self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "return_request_message_user", $langId, $arrReplacements);
 			
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			if( !empty($emails) && is_array($emails) ){
 				foreach ( $emails as $email ) {
 					if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -1358,7 +1358,7 @@ class EmailHandler extends FatModel {
 				$arr_replacements["{user_full_name}"]="Admin";
 				$arr_replacements["{click_here}"]=$url;
 				sendMailTpl(Settings::getSetting("CONF_ADMIN_EMAIL"), "return_request_message_user", $arr_replacements);
-				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS"));
+				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 				foreach ($emails as $email) {
 					if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 						sendMailTpl($email, "return_request_message_user", $arr_replacements);
@@ -1427,7 +1427,7 @@ class EmailHandler extends FatModel {
 		$arrReplacements["{click_here}"] = $adminCatRequestUrl;
 		self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "catalog_request_message_user", $langId, $arrReplacements);
 		
-		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 		if( !empty($emails) && is_array($emails) ){
 			foreach ( $emails as $email ) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -1505,7 +1505,7 @@ class EmailHandler extends FatModel {
 			$arrReplacements["{user_full_name}"] = "Admin";
 			self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "return_request_status_change_notification", $langId, $arrReplacements);
 			
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			if( !empty($emails) && is_array($emails) ){
 				foreach ( $emails as $email ) {
 					if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
@@ -1546,7 +1546,7 @@ class EmailHandler extends FatModel {
 			if ($return_request['refund_request_action_by']=="U") {
 				$arr_replacements["{user_full_name}"]="Admin";
 				sendMailTpl(Settings::getSetting("CONF_ADMIN_EMAIL"), "return_request_status_change_notification", $arr_replacements);
-				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS"));
+				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 				foreach ($emails as $email) {
 					if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 						sendMailTpl($email, "return_request_status_change_notification", $arr_replacements);
@@ -1633,7 +1633,7 @@ class EmailHandler extends FatModel {
 		);
 		
 		self::sendMailTpl( FatApp::getConfig( 'CONF_SITE_OWNER_EMAIL', FatUtility::VAR_STRING ), 'report_shop', $langId, $arrReplacements );
-		$emails = explode(',', FatApp::getConfig('CONF_ADDITIONAL_ALERT_EMAILS', FatUtility::VAR_STRING) );
+		$emails = explode(',', FatApp::getConfig('CONF_ADDITIONAL_ALERT_EMAILS',FatUtility::VAR_STRING,'') );
 		foreach ($emails as $email) {
 			if ( !empty($email) && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 				self::sendMailTpl($email, "report_shop", $langId, $arrReplacements);
@@ -1807,7 +1807,7 @@ class EmailHandler extends FatModel {
 			'{comments}' => $row["urp_comments"],
 		);
 		self::sendMailTpl( $row['credential_email'], 'reward_points_credited_debited', $langId, $arrReplacements );
-		$emails = explode(',', FatApp::getConfig('CONF_ADDITIONAL_ALERT_EMAILS', FatUtility::VAR_STRING) );
+		$emails = explode(',', FatApp::getConfig('CONF_ADDITIONAL_ALERT_EMAILS',FatUtility::VAR_STRING,'') );
 		foreach ( $emails as $email ) {
 			if ( !empty($email) && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email) ) {
 				self::sendMailTpl($email, "reward_points_credited_debited", $langId, $arrReplacements);
@@ -1979,7 +1979,7 @@ class EmailHandler extends FatModel {
 			
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "new_subscription_purchase_admin",$langId, $arrReplacements);
 			self::sendMailTpl($userInfo["credential_email"], "new_subscription_purchase",$orderDetail['order_language_id'], $arrReplacements);
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			foreach ($emails as $email) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 					self::sendMailTpl($email, "new_subscription_purchase_admin",$langId, $arrReplacements);
@@ -2022,7 +2022,7 @@ class EmailHandler extends FatModel {
 			
 			self::sendMailTpl(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), "subscription_renew_admin",$langId, $arrReplacements);
 			self::sendMailTpl($userInfo["credential_email"], "subscription_renew_user",$orderDetail['order_language_id'], $arrReplacements);
-			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS"));
+			$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 			foreach ($emails as $email) {
 				if ($email && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
 					self::sendMailTpl($email, "subscription_renew_admin", $langId, $arrReplacements);

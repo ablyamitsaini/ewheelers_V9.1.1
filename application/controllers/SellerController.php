@@ -3453,6 +3453,16 @@ class SellerController extends LoggedUserController {
 		
 		if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1 ))
 		{
+			/* dimension unit[ */
+			$lengthUnitsArr = applicationConstants::getLengthUnitsArr($langId);
+			$frm->addSelectBox( Labels::getLabel('LBL_Dimensions_Unit', $langId), 'product_dimension_unit', $lengthUnitsArr, '', array(), Labels::getLabel('LBL_Select', $langId) )->requirements()->setRequired();
+			$pDimensionUnitUnReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
+			$pDimensionUnitUnReqObj->setRequired(false);
+			
+			$pDimensionUnitReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
+			$pDimensionUnitReqObj->setRequired(true);
+			/* ] */
+			
 			/* length [ */
 			$pLengthFld =  $frm->addFloatField( Labels::getLabel('LBL_Length', $langId), 'product_length', '0.00');
 			$pLengthUnReqObj = new FormFieldRequirement( 'product_length', Labels::getLabel('LBL_Length', $langId));
@@ -3486,25 +3496,6 @@ class SellerController extends LoggedUserController {
 			$pHeightReqObj->setRange('0.00001','9999999999');
 			/* ] */
 			
-			/* dimension unit[ */
-			$lengthUnitsArr = applicationConstants::getLengthUnitsArr($langId);
-			$frm->addSelectBox( Labels::getLabel('LBL_Dimensions_Unit', $langId), 'product_dimension_unit', $lengthUnitsArr, '', array(), Labels::getLabel('LBL_Select', $langId) )->requirements()->setRequired();
-			$pDimensionUnitUnReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
-			$pDimensionUnitUnReqObj->setRequired(false);
-			
-			$pDimensionUnitReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
-			$pDimensionUnitReqObj->setRequired(true);
-			/* ] */
-			
-			/* weight[ */
-			$pWeightFld = $frm->addFloatField( Labels::getLabel('LBL_Weight', $langId), 'product_weight', '0.00' );
-			$pWeightUnReqObj = new FormFieldRequirement( 'product_weight', Labels::getLabel('LBL_Weight', $langId));
-			$pWeightUnReqObj->setRequired(false);
-			
-			$pWeightReqObj = new FormFieldRequirement( 'product_weight', Labels::getLabel('LBL_Weight', $langId));
-			$pWeightReqObj->setRequired(true);
-			/* ] */
-			
 			/* weight unit[ */
 			$weightUnitsArr = applicationConstants::getWeightUnitsArr($langId);
 			$pWeightUnitsFld = $frm->addSelectBox( Labels::getLabel('LBL_Weight_Unit', $langId), 'product_weight_unit', $weightUnitsArr, '', array(), Labels::getLabel('LBL_Select', $langId) )->requirements()->setRequired();;
@@ -3514,6 +3505,15 @@ class SellerController extends LoggedUserController {
 			
 			$pWeightUnitReqObj = new FormFieldRequirement( 'product_weight_unit', Labels::getLabel('LBL_Weight_Unit', $langId));
 			$pWeightUnitReqObj->setRequired(true);
+			/* ] */
+			
+			/* weight[ */
+			$pWeightFld = $frm->addFloatField( Labels::getLabel('LBL_Weight', $langId), 'product_weight', '0.00' );
+			$pWeightUnReqObj = new FormFieldRequirement( 'product_weight', Labels::getLabel('LBL_Weight', $langId));
+			$pWeightUnReqObj->setRequired(false);
+			
+			$pWeightReqObj = new FormFieldRequirement( 'product_weight', Labels::getLabel('LBL_Weight', $langId));
+			$pWeightReqObj->setRequired(true);
 			/* ] */
 			
 			$pTypeFld->requirements()->addOnChangerequirementUpdate(Product::PRODUCT_TYPE_DIGITAL, 'eq', 'product_length', $pLengthUnReqObj);
