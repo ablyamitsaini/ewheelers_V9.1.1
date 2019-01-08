@@ -27,7 +27,7 @@
 						<h6 class="-txt-uppercase">
 							<?php echo Labels::getLabel('LBL_Order_Sales',$adminLangId); ?>
 						</h6>
-						<h3 class="counter" data-currency="1" data-count="<?php echo $dashboardInfo[" stats"]["totalSales"][4]["totalsales"];?>">0</h3>
+						<h3 class="counter" data-currency="1" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalsales"];?>">0</h3>
 						<p>
 							<?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong>
 								<?php echo CommonHelper::displayMoneyFormat($dashboardInfo["stats"]["totalSales"][2]["totalsales"]);?></strong></p>
@@ -45,7 +45,7 @@
 						<h6 class="-txt-uppercase">
 							<?php echo Labels::getLabel('LBL_Sales_Earnings',$adminLangId); ?>
 						</h6>
-						<h3 class="counter" data-currency="1" data-count="<?php echo $dashboardInfo[" stats"]["totalSales"][4]["totalcommission"];?>">0</h3>
+						<h3 class="counter" data-currency="1" data-count="<?php echo $dashboardInfo["stats"]["totalSales"][4]["totalcommission"];?>">0</h3>
 						<p>
 							<?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong>
 								<?php echo CommonHelper::displayMoneyFormat($dashboardInfo["stats"]["totalSales"][2]["totalcommission"])?></span></strong></p>
@@ -62,7 +62,7 @@
 						<h6 class="-txt-uppercase">
 							<?php echo Labels::getLabel('LBL_New_Users',$adminLangId); ?>
 						</h6>
-						<h3 class="counter" data-currency="0" data-count="<?php echo $dashboardInfo[" stats"]["totalUsers"]['-1']; ?>">0</h3>
+						<h3 class="counter" data-currency="0" data-count="<?php echo $dashboardInfo["stats"]["totalUsers"]['-1']; ?>">0</h3>
 						<p>
 							<?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong>
 								<?php echo $dashboardInfo["stats"]["totalUsers"]['30']; ?></strong></p>
@@ -79,7 +79,7 @@
 						<h6 class="-txt-uppercase">
 							<?php echo Labels::getLabel('LBL_New_Shops',$adminLangId); ?>
 						</h6>
-						<h3 class="counter" data-currency="0" data-count="<?php echo $dashboardInfo[" stats"]["totalShops"]['-1']?>">0</h3>
+						<h3 class="counter" data-currency="0" data-count="<?php echo $dashboardInfo["stats"]["totalShops"]['-1']?>">0</h3>
 						<p>
 							<?php echo Labels::getLabel('LBL_This_Month',$adminLangId); ?>- <strong>
 								<?php echo $dashboardInfo["stats"]["totalShops"]['30']?></strong></p>

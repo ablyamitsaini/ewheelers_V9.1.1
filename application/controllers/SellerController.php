@@ -1063,7 +1063,10 @@ class SellerController extends LoggedUserController {
 		if( User::canAddCustomProduct() ){
 			$cnd->attachCondition('product_seller_id', '=', UserAuthentication::getLoggedUserId(),'OR');
 		} */
-		
+		$srch->addDirectCondition('((CASE
+					WHEN product_seller_id = 0 THEN product_active = 1
+					WHEN product_seller_id > 0 THEN product_active IN (1, 0)
+					END ) )');
 		if( User::canAddCustomProduct() ){
 			$srch->addDirectCondition('((product_seller_id = 0 AND product_added_by_admin_id = '.applicationConstants::YES.') OR product_seller_id = '.UserAuthentication::getLoggedUserId().')');
 		}else{
@@ -1071,8 +1074,6 @@ class SellerController extends LoggedUserController {
 			$cnd->attachCondition( 'product_added_by_admin_id', '=', applicationConstants::YES,'AND');
 		}
 		
-		
-		/* $srch->addCondition('product_active','=',applicationConstants::ACTIVE); */
 		$srch->addCondition('product_deleted','=',applicationConstants::NO);
 
 		$keyword = FatApp::getPostedData('keyword', null, '');
@@ -1092,11 +1093,7 @@ class SellerController extends LoggedUserController {
 					$srch->addCondition('product_seller_id', '>', 0 );
 				} else {
 					$srch->addCondition('product_seller_id', '=', 0 );
-					$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
 				}
-			} else {
-				$srch->addCondition('product_active','=',applicationConstants::ACTIVE);
-				/* $srch->addCondition('product_seller_id', '=', 0 ); */
 			}
 		}
 		

@@ -14,7 +14,7 @@
 	elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 ?>
 	
-<div class="system_message alert alert--positioned-bottom-center alert--positioned-small <?php echo $alertClass; ?>" hidden='hidden'>
+<div class="system_message alert alert--positioned-bottom-center alert--positioned-small <?php echo $alertClass; ?>">
 	<div class="close"></div>
 	<div class="sysmsgcontent content">
 		<?php

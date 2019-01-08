@@ -174,12 +174,11 @@ class OrderCancellationRequestsController extends AdminBaseController {
 					unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")),
 					(array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")
 				);
-				
+				$status = Orders::getOrderStatusArr( $this->adminLangId );
 				if( in_array( $row['op_status_id'], $notAllowedStatusChangeArr ) ){
-					Message::addErrorMessage(Labels::getLabel('LBL_This_order_is_In_Process_or_Completed_now,_so_not_eligible_for_cancellation',$this->adminLangId));
+					Message::addErrorMessage(Labels::getLabel(str_replace('{currentStatus}', $status[$row['op_status_id']], 'LBL_This_order_is_{currentStatus}_now,_so_not_eligible_for_cancellation'),$this->adminLangId));
 					FatUtility::dieJsonError(Message::getHtml());
 				}
-				
 				$dataToUpdate = array( 'ocrequest_status' => OrderCancelRequest::CANCELLATION_REQUEST_STATUS_APPROVED ,'ocrequest_refund_in_wallet' => $post['ocrequest_refund_in_wallet'],'ocrequest_admin_comment' => $post['ocrequest_admin_comment'] );
 				$successMsgString = str_replace( strToLower('{updatedStatus}'), OrderCancelRequest::getRequestStatusArr($this->adminLangId)[OrderCancelRequest::CANCELLATION_REQUEST_STATUS_APPROVED], $msgString );
 				$oObj = new Orders();
