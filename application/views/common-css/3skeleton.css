@@ -1084,7 +1084,7 @@ body {
   border: 1px solid #eee;
   padding: 5px;
   border-radius: 0;
-  margin:0 5px;
+  margin: 0 5px;
 }
 
 .section--pagebar .cell__left .avtar img {
@@ -1103,7 +1103,10 @@ body {
   opacity: 0.9;
   font-size: 1em;
 }
-.section--pagebar  .item-yk_rating{ justify-content: flex-end;}
+
+.section--pagebar .item-yk_rating {
+  justify-content: flex-end;
+}
 
 .section--sorting {
   padding-bottom: 10px;
@@ -2032,12 +2035,12 @@ body {
 }
 
 .fetured-slider button.slick-prev.slick-arrow {
-  opacity: 0;
+  /*  opacity: 0;
   visibility: hidden;
-  display: none;
+  display: none;*/
 }
 
-.fetured-slider .slick-next {
+.fetured-slider .slick-next, .fetured-slider .slick-prev {
   position: absolute;
   top: 50%;
   left: 74%;
@@ -2054,7 +2057,7 @@ body {
   z-index: 1;
 }
 
-.fetured-slider .slick-next:after {
+.fetured-slider .slick-next:after, .fetured-slider .slick-prev:after {
   border-bottom: 3px solid #000000;
   border-right: 3px solid #000000;
   content: "";
@@ -2069,17 +2072,18 @@ body {
   width: 15px;
 }
 
-.fetured-slider .slick-next:hover {
+.fetured-slider .slick-prev:after {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+.fetured-slider .slick-next:hover, .fetured-slider .slick-prev:hover {
   background: var(--first-color);
 }
 
-.fetured-slider .slick-next:hover:after {
+.fetured-slider .slick-next:hover:after, .fetured-slider .slick-prev:hover:after {
   border-bottom-color: #fff;
   border-right-color: #fff;
-}
-
-.fetured-slider button.slick-prev {
-  display: none !important;
 }
 
 .fetured-slider .featured-desc {
@@ -2471,6 +2475,7 @@ body {
   color: #fff;
   vertical-align: top;
   float: right;
+  border-radius: 0;
 }
 
 .social {
@@ -5074,6 +5079,11 @@ body.is--dashboard {
   padding-left: 0;
 }
 
+.table td:last-child,
+.table th:last-child {
+  padding-right: 0;
+}
+
 .table--twocols table {
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -6762,9 +6772,14 @@ input.qty {
   padding: 6px 15px;
 }
 
+.listing--onefifth {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .listing--onefifth li {
-  float: left;
-  width: 20%;
+  flex: 0 0 20%;
+  max-width: 20%;
   padding: 8px 0 0;
   font-size: 1em;
 }
