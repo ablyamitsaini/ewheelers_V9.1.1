@@ -113,7 +113,7 @@ form.custom-form input[type="submit"],
 
 /* float: none;*/
 .align--right,
-.text-right,
+
 .align--right {
   text-align: left !important;
 }
@@ -129,7 +129,7 @@ form.custom-form input[type="submit"],
 
 .logo {
   float: right;
-  margin: 8px 0px 8px 30px;
+ 
 }
 
 .form--search-popup .select__value {

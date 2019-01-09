@@ -113,7 +113,7 @@ body {
 .logo {
   float: left;
   margin: 10px 0;
-  margin-right: 15px;
+  margin-inline-end: 15px;
   width: 180px;
   height: 50px;
   line-height: 50px;
@@ -766,7 +766,7 @@ body {
 
 .login-account {
   margin: 0;
-  margin-left: 30px;
+  margin-inline-start: 30px;
   float: right;
   position: relative;
 }
@@ -888,7 +888,7 @@ body {
 }
 
 .list--vertical .remove_buyTogether {
-  margin-right: 10px;
+  margin-inline-end: 10px;
   cursor: pointer;
 }
 
@@ -2057,6 +2057,8 @@ body {
   z-index: 1;
 }
 
+.fetured-slider .slick-prev{ left: 26%;}
+
 .fetured-slider .slick-next:after, .fetured-slider .slick-prev:after {
   border-bottom: 3px solid #000000;
   border-right: 3px solid #000000;
@@ -2075,6 +2077,7 @@ body {
 .fetured-slider .slick-prev:after {
   -webkit-transform: rotate(135deg);
   transform: rotate(135deg);
+  margin-left: -5px;
 }
 
 .fetured-slider .slick-next:hover, .fetured-slider .slick-prev:hover {
@@ -2150,7 +2153,7 @@ body {
   overflow: hidden;
   width: 80px;
   height: 80px;
-  margin-right: 20px;
+  margin-inline-end: 20px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2453,7 +2456,7 @@ body {
   font-size: 0.8em;
   padding: 5px 10px;
   margin: 0;
-  margin-right: -3px;
+  margin-inline-end: -3px;
   border: solid 1px #f0f0f0;
   border-radius: 0;
   color: var(--txt-color);
@@ -2934,7 +2937,7 @@ span.subheading {
 }
 
 .cat-accordion ul ul {
-  margin-left: 10px;
+  margin-inline-start: 10px;
 }
 
 .cat-accordion .acc-trigger {
@@ -3063,7 +3066,7 @@ span.subheading {
   color: #9e9e9e;
   font-size: 13px;
   left: 5px;
-  margin-right: 3px;
+margin-inline-end: 3px;
   padding-left: 3px;
   position: absolute;
   top: 11px;
@@ -3116,7 +3119,7 @@ span.subheading {
 
 .sort-by>ul>li {
   display: inline-block;
-  margin-left: 3px;
+  margin-inline-start: 3px;
 }
 
 .sort-by>ul>li.sort {
@@ -3204,7 +3207,7 @@ span.subheading {
   overflow: hidden;
   width: 150px;
   height: 150px;
-  margin-right: 20px;
+  margin-inline-end: 20px;
 }
 
 .abt-shops .ftshops_logo img {
@@ -3213,7 +3216,7 @@ span.subheading {
 
 .abt-shops .ftshops_detail {
   font-size: 1em;
-  margin-left: 170px;
+  margin-inline-start: 170px;
 }
 
 .abt-shops .ftshops_item_head_right {
@@ -3264,7 +3267,7 @@ span.subheading {
   width: 60px;
   height: 60px;
   overflow: hidden;
-  margin-left: 25px;
+  margin-inline-start: 25px;
   margin-top: -20px;
 }
 
@@ -4304,7 +4307,7 @@ a.loadmore.loading {
 
 .group--social-onehalf .fb-color {
   background: #3856a0;
-  margin-right: 10px;
+margin-inline-end: 10px;
 }
 
 .group--social-onehalf .gp-color {
@@ -5221,7 +5224,7 @@ body.is--dashboard {
 }
 
 .item__group--right {
-  margin-left: 120px;
+  margin-inline-start: 120px;
 }
 
 input.qty {
@@ -6077,11 +6080,11 @@ input.qty {
 
 .switch-links a:first-child {
   float: left;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 }
 
 .switch-links a:last-child {
-  margin-left: 10px;
+  margin-inline-start: 10px;
   float: right;
 }
 
@@ -6571,7 +6574,7 @@ input.qty {
 .uploadedphoto img {
   display: inline-block;
   vertical-align: top;
-  margin-right: 10px;
+  margin-inline-end: 10px;
   max-width: 150px;
 }
 
@@ -6625,7 +6628,7 @@ input.qty {
   border: solid 1px var(--border-color);
   border-radius: 2px;
   padding: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 }
 
 .inline-images li img {
@@ -7014,7 +7017,7 @@ input.qty {
 .product-options li .icn {
   font-size: 4em;
   float: left;
-  margin-right: 50px;
+  margin-inline-end: 50px;
 }
 
 .product-options li:before {
@@ -7326,8 +7329,8 @@ form.custom-form input[type="submit"] {
 .product-search .input-submit {
   background: url(../images/retina/magni-gray.svg) no-repeat center;
   background-size: 20px auto;
-  width: 30px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border: none;
   padding: 0;
   margin: 0;
@@ -7636,7 +7639,7 @@ form.custom-form input[type="submit"] {
   font-weight: bold;
   height: 25px;
   line-height: 25px;
-  margin-left: 10px;
+  margin-inline-start: 10px;
   padding: 0 10px;
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
@@ -8248,7 +8251,7 @@ form.custom-form input[type="submit"] {
   align-items: center;
   border: solid 1px var(--border-color);
   padding: 10px 8px;
-  margin: 0 5px 0 0;
+  margin-inline-end:5px;
   border-radius: 2px;
   font-size: 0.875em;
   background-color: #fff;
@@ -8317,7 +8320,7 @@ form.custom-form input[type="submit"] {
 
 .feedback-btn:hover .cap {
   opacity: 1;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 }
 
 .crcle-btn svg {
