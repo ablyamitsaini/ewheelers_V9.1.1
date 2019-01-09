@@ -12,15 +12,19 @@
 
 .shop-logo {
   margin: 10px auto;
-  padding: 10px;
+  padding: 0;
   text-align: center;
   display: block;
   overflow: hidden;
-  width: 100%;
-  height:50px;
   position: relative;
 	display: flex;
 	align-items: center;
+  max-width: 250px;
+  max-height: 140px;
+}
+
+.shop-logo img {
+  max-height: 100%;
 }
 
 
@@ -91,7 +95,7 @@
   text-align: center;
   z-index: 2;
   float: left;
- 
+
 }
 
 .shop_nav_show .common_overlay {

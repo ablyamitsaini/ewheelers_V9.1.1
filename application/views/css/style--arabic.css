@@ -43,7 +43,6 @@ th {
 }
 
 @media (min-width: 1200px) {
-
   .col-lg-1,
   .col-lg-2,
   .col-lg-3,
@@ -114,7 +113,7 @@ form.custom-form input[type="submit"],
 
 /* float: none;*/
 .align--right,
-.text-right,
+
 .align--right {
   text-align: left !important;
 }
@@ -130,7 +129,7 @@ form.custom-form input[type="submit"],
 
 .logo {
   float: right;
-  margin: 8px 0px 8px 30px;
+ 
 }
 
 .form--search-popup .select__value {
@@ -495,7 +494,7 @@ input[type="text"].p-cards.meastro {
   transform: rotate(45deg);
 }
 
- 
+
 
 .media--details>li .grid--first {
   padding-right: 0;
