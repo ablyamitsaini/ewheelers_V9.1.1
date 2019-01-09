@@ -8,7 +8,7 @@ if( isset( $collections ) && count($collections) ){
 <?php echo ($row['collection_name'] != '') ? '  <div class="unique-heading">' . $row['collection_name'] .'</div>' : ''; ?>
 <?php /* echo ($row['collection_description'] != '') ? '<p>' . nl2br($row['collection_description']) . '</p>' : '';  */?>
 
-<div class="fetured-slider <?php echo (count($row['products'])!=1)?'featured-item-js':''; ?>">
+<div class="fetured-slider <?php echo (count($row['products'])!=1)?'featured-item-js':''; ?>" dir="<?php echo CommonHelper::getLayoutDirection();?>">
   <?php foreach( $row['products'] as $product ){ ?>
   <div class="fetured-item">
     <div class="item-yk <?php if($product['selprod_stock']<=0){ ?> item--sold  <?php } ?>">

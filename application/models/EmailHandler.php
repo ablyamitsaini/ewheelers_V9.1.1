@@ -576,12 +576,19 @@ class EmailHandler extends FatModel {
 			if( FatApp::getConfig('CONF_NEW_ORDER_EMAIL', FatUtility::VAR_INT, 1) ){
 				self::sendMailTpl(FatApp::getConfig('CONF_SITE_OWNER_EMAIL'), "admin_order_email", $langId,  $arrReplacements);
 				
-				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS", FatUtility::VAR_STRING, ''));
+				/* $emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS", FatUtility::VAR_STRING, ''));
 				if( !empty($emails) ){
 					foreach ($emails as $email) {
-						if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
-							self::sendMailTpl($email, "admin_order_email", $arrReplacements);
+						if (strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
+							self::sendMailTpl($email, "admin_order_email", $langId, $arrReplacements);
 						}
+					}
+				} */
+				
+				$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
+				foreach ($emails as $email) {
+					if (strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
+						self::sendMailTpl($email, "admin_order_email", $langId , $arrReplacements);
 					}
 				}
 			}
@@ -1360,8 +1367,8 @@ class EmailHandler extends FatModel {
 				sendMailTpl(Settings::getSetting("CONF_ADMIN_EMAIL"), "return_request_message_user", $arr_replacements);
 				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 				foreach ($emails as $email) {
-					if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
-						sendMailTpl($email, "return_request_message_user", $arr_replacements);
+					if (strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
+						sendMailTpl($email, "return_request_message_user", $langId, $arr_replacements);
 					}
 				}
 			}
@@ -1548,8 +1555,8 @@ class EmailHandler extends FatModel {
 				sendMailTpl(Settings::getSetting("CONF_ADMIN_EMAIL"), "return_request_status_change_notification", $arr_replacements);
 				$emails = explode(',', Settings::getSetting("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
 				foreach ($emails as $email) {
-					if (utf8_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
-						sendMailTpl($email, "return_request_status_change_notification", $arr_replacements);
+					if (mb_strlen($email) > 0 && preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $email)) {
+						sendMailTpl($email, "return_request_status_change_notification", $langId, $arr_replacements);
 					}
 				}
 		

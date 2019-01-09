@@ -15,7 +15,7 @@ if( isset( $collections ) && count($collections) ){
       <?php }  ?>
     </div>
     <div class="shops">
-      <div class="trending-corner">
+      <div class="trending-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
         <?php foreach( $row['products'] as $product ){ include('collection-1-products-list.php'); } ?>
       </div>
     </div>

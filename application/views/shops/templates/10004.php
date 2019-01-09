@@ -19,7 +19,7 @@
   </div>
 </div>
 <?php if( $haveBannerImage ){ ?>
-<div class="shops-sliders">
+<div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
   <?php foreach($haveBannerImage as $banner){ ?>
   <div class="item"><img src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP4',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
   <?php } ?>

@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<section class="yk-slides">
+<section class="yk-slides" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 	<?php foreach($slides as $slide){
 		$desktop_url = '';
 		$tablet_url = '';

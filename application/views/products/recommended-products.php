@@ -3,7 +3,7 @@
 <div class="white--bg padding20">
   <div class="heading4 "><?php echo Labels::getLabel('LBL_Recommended_Products',$siteLangId); ?></div>
   <div class="border-bottom"></div>
-  <div id="similar-product" class="more-slider carousel carousel--onethird slides--four-js">
+  <div id="similar-product" class="more-slider carousel carousel--onethird slides--four-js" dir="<?php echo CommonHelper::getLayoutDirection();?>">
     <?php foreach($recommendedProducts as $rProduct){
 		$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 		?>
