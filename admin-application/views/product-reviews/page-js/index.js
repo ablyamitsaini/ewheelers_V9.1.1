@@ -62,8 +62,9 @@ $(document).ready(function(){
 	updateStatus = function(frm){
 		if (!$(frm).validate()) return;	
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('ProductReviews', 'updateStatus'), data, function(t) {									
+		fcom.updateWithAjax(fcom.makeUrl('ProductReviews', 'updateStatus'), data, function(t) {
 			reloadList();
+			$(document).trigger('close.facebox');
 			//viewReview(t.spreviewId);
 		});
 	};

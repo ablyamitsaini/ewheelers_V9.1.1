@@ -1731,19 +1731,28 @@ class EmailHandler extends FatModel {
 		
 		$schObj = new SelProdReviewSearch($langId);
 		$schObj->joinUser();
+		$schObj->joinProducts($langId);
+		$schObj->joinSellerProducts($langId);
 		$schObj->addCondition('spreview_id','=',$spreviewId);
 		$schObj->addCondition('spreview_status','!=',SelProdReview::STATUS_PENDING);
+		$schObj->addMultipleFields( array('spreview_selprod_id','spreview_status', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'user_name', 'credential_email',) );
 		$spreviewData = FatApp::getDb()->fetch($schObj->getResultSet());
+		
 		if(false == $spreviewData){
 			$this->error = Labels::getLabel('MSG_INVALID_REQUEST',$this->commonLangId);
 			return false;
 		}
+		
 		$reviewStatusArr = SelProdReview::getReviewStatusArr($langId);
 		$newStatus = $reviewStatusArr[$spreviewData['spreview_status']];
 		
+		$productUrl = CommonHelper::generateFullUrl('Products','View',array($spreviewData["spreview_selprod_id"]),CONF_WEBROOT_FRONT_URL);
+		$prodTitleAnchor = "<a href='" . $productUrl . "'>" . $spreviewData['selprod_title'] . "</a>";
+		
 		$arrReplacements = array(
 			'{user_full_name}' => trim($spreviewData["user_name"]),
-			'{new_status}' => $newStatus
+			'{new_status}' => $newStatus,
+			'{product_link}' => $prodTitleAnchor
 		);
 		
 		self::sendMailTpl($spreviewData["credential_email"], "buyer_notification_review_status_updated",$langId, $arrReplacements);	
