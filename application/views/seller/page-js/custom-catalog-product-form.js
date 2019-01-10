@@ -393,12 +393,13 @@ $(document).delegate('.language-js','change',function(){
 			fcom.ajax(fcom.makeUrl('Seller', 'optionForm', [optionId]), '', function(t) {	
 				try{
 					res= jQuery.parseJSON(t);
-					$.facebox(res.msg,'faceboxWidth');
+					fcom.updateFaceboxContent(res.msg,'faceboxWidth');
 				}catch (e){					
-					$.facebox(t,'faceboxWidth');
+					fcom.updateFaceboxContent(t,'faceboxWidth');
 					addOptionForm(optionId);	
 					optionValueListing(optionId);
-				}					
+				}	
+				fcom.resetFaceboxHeight();				
 			});
 		});
 	};
@@ -429,6 +430,7 @@ $(document).delegate('.language-js','change',function(){
 		var data = 'option_id='+optionId;		
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
 			dv.html(res);
+			fcom.resetFaceboxHeight();
 		});
 	};
 	

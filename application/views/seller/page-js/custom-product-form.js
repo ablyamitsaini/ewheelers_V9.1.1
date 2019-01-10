@@ -150,7 +150,7 @@
 					addOptionForm(optionId);	
 					optionValueListing(optionId);
 				}
-					
+				fcom.resetFaceboxHeight();	
 			});
 		});
 	};
