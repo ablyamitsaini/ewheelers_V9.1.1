@@ -1066,7 +1066,7 @@ class EmailHandler extends FatModel {
 		//$ocRequestSrch->joinShops();
 		$ocRequestSrch->joinOrderCancelReasons( $langId );
 		$ocRequestSrch->addCondition( 'ocrequest_id', '=', $ocrequest_id );
-		$ocRequestSrch->addMultipleFields( array( 'op_invoice_number', 'op_shop_owner_name', 'op_shop_owner_email', 'IFNULL(ocreason_title, ocreason_identifier) as ocreason_title', 'ocrequest_message','seller.user_id as seller_id' ) );
+		$ocRequestSrch->addMultipleFields( array( 'op_id','op_invoice_number', 'op_shop_owner_name', 'op_shop_owner_email', 'IFNULL(ocreason_title, ocreason_identifier) as ocreason_title', 'ocrequest_message','seller.user_id as seller_id' ) );
 		$ocRequestRs = $ocRequestSrch->getResultSet();
 		$ocRequestRow = FatApp::getDb()->fetch($ocRequestRs);
 		if( !$ocRequestRow ){
@@ -1074,13 +1074,21 @@ class EmailHandler extends FatModel {
 			return false;
 		}
 		
+		$sellerOrderDetailUrl = CommonHelper::generateFullUrl('Seller','ViewOrder',array($ocRequestRow["op_id"]));
+		$sellerOrderAnchor = "<a href='" . $sellerOrderDetailUrl . "'>" . $ocRequestRow["op_invoice_number"] . "</a>";
+		
 		$arrReplacements = array(
 			'{user_name}' => $ocRequestRow['op_shop_owner_name'],
-			'{invoice_number}' => $ocRequestRow["op_invoice_number"],
+			'{invoice_number}' => $sellerOrderAnchor,
 			'{cancel_reason}' => $ocRequestRow['ocreason_title'],
 			'{cancel_comments}' => nl2br($ocRequestRow['ocrequest_message']),
 		);
 		self::sendMailTpl($ocRequestRow["op_shop_owner_email"], "order_cancellation_notification", $langId, $arrReplacements);
+		
+		$adminOrderDetailUrl = CommonHelper::generateFullUrl('SellerOrders','View',array($ocRequestRow["op_id"]),CONF_WEBROOT_BACKEND);
+		$adminOrderAnchor = "<a href='" . $adminOrderDetailUrl . "'>" . $ocRequestRow["op_invoice_number"] . "</a>";
+		$arrReplacements['{invoice_number}'] = $adminOrderAnchor;
+		
 		$arrReplacements["{user_name}"] = Labels::getLabel("LBL_Admin", $langId);
 		self::sendMailTpl( FatApp::getConfig('CONF_SITE_OWNER_EMAIL',FatUtility::VAR_STRING), "order_cancellation_notification", $langId, $arrReplacements);
 		$emails = explode(',', FatApp::getConfig("CONF_ADDITIONAL_ALERT_EMAILS",FatUtility::VAR_STRING,''));
@@ -1095,7 +1103,7 @@ class EmailHandler extends FatModel {
 		$notificationObj = new Notifications();
 		$notificationDataArr = array(
 			'unotification_user_id'	=>	$ocRequestRow["seller_id"],
-			'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_BUYER_HAS_SUBMITTED_ORDER_CANCELLATION_REQUEST',$langId),$arrReplacements["{invoice_number}"]),
+			'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_BUYER_HAS_SUBMITTED_ORDER_CANCELLATION_REQUEST',$langId),$ocRequestRow["op_invoice_number"]),
 			'unotification_type'=>'ORDER_CANCELLATION_REQUEST',
 		);
 		if (!$notificationObj->addNotification($notificationDataArr)){
@@ -1746,7 +1754,7 @@ class EmailHandler extends FatModel {
 		$reviewStatusArr = SelProdReview::getReviewStatusArr($langId);
 		$newStatus = $reviewStatusArr[$spreviewData['spreview_status']];
 		
-		$productUrl = CommonHelper::generateFullUrl('Products','View',array($spreviewData["spreview_selprod_id"]),CONF_WEBROOT_FRONT_URL);
+		$productUrl = CommonHelper::generateFullUrl('Products','View',array($spreviewData["spreview_selprod_id"]));
 		$prodTitleAnchor = "<a href='" . $productUrl . "'>" . $spreviewData['selprod_title'] . "</a>";
 		
 		$arrReplacements = array(
