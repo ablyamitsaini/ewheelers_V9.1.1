@@ -9,7 +9,7 @@
 	 } else {
 		$userActiveTab = false;
 		if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;
-		$dashboardUrl = CommonHelper::generateUrl('Seller'); 
+		$dashboardUrl = CommonHelper::generateUrl('Seller');
 		}else if( User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) { $userActiveTab = true;
 		$dashboardUrl = CommonHelper::generateUrl('Buyer');
 		}else if( User::canViewAdvertiserTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ) ) { $userActiveTab = true;
@@ -22,7 +22,7 @@
 	 ?>
 	 <div class="login-account dropdown"> <a href="#" class="dropdown__trigger dropdown__trigger-js"><span class="icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span> <span class="icn"> </span></a>
           <div class="dropdown__target dropdown__target-account dropdown__target-js">
-            <div class="box box--white">
+            <div class="box">
               <div class="dropdown__target-head align--center"> <span class="iconavtar"><i class="icon fa fa-user"></i></span>
 				<a class="link" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a>
                 <p><?php echo $userEmail;?></p>
@@ -101,7 +101,7 @@
 							<?php } ?>
 						</ul>
 					<?php }?>
-				<?php } ?>	
+				<?php } ?>
               </div>
             </div>
           </div>

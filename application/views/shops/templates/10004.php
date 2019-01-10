@@ -2,12 +2,11 @@
 
 <div class="shop-header shop--header04">
   <div class="container">
-    <div class="row">
+    <div class="row flex-align-center">
       <div class="col-xl-2 col-lg-6">
         <div class="flex-align-center"><a class="shop_navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'EXTRA-SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
         </div>
-
       </div>
       <div class="col-xl-10 col-lg-6">
         <div class="shop-nav">
@@ -19,7 +18,7 @@
   </div>
 </div>
 <?php if( $haveBannerImage ){ ?>
-<div class="shops-sliders">
+<div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
   <?php foreach($haveBannerImage as $banner){ ?>
   <div class="item"><img src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP4',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
   <?php } ?>

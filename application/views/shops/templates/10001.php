@@ -19,7 +19,7 @@
       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
         <!--<div class="shop-banner"><img src="<?php /* echo CommonHelper::generateUrl('image','shopBanner',array($shop['shop_id'],$siteLangId,'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); */ ?>"></div>-->
 		<?php if( $haveBannerImage ){ ?>
-		  <div class="shops-sliders">
+		  <div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 			<?php foreach($haveBannerImage as $banner){ ?>
 			<div class="item"><img src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
 			<?php } ?>

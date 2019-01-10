@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="row select-categories-slider select-categories-slider-js">
+<div class="row select-categories-slider select-categories-slider-js" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 	<div class="slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js">
 		<div class="box-border box-categories scrollbar" id="child-category">
 			<?php if (!empty($rootCategoriesArr) ){ ?>

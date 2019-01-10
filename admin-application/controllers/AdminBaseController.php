@@ -332,6 +332,16 @@ class AdminBaseController extends FatController {
 		
 		if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1 ))
 		{
+			/* dimension unit[ */
+			$lengthUnitsArr = applicationConstants::getLengthUnitsArr($langId);
+			$frm->addSelectBox( Labels::getLabel('LBL_Dimensions_Unit', $langId), 'product_dimension_unit', $lengthUnitsArr )->requirements()->setRequired();
+			$pDimensionUnitUnReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
+			$pDimensionUnitUnReqObj->setRequired(false);
+			
+			$pDimensionUnitReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
+			$pDimensionUnitReqObj->setRequired(true);
+			/* ] */
+			
 			/* length [ */
 			$frm->addFloatField( Labels::getLabel('LBL_Length', $langId), 'product_length', '0.00');
 			
@@ -366,14 +376,14 @@ class AdminBaseController extends FatController {
 			$pHeightReqObj->setRange('0.00001','9999999999');
 			/* ] */
 			
-			/* dimension unit[ */
-			$lengthUnitsArr = applicationConstants::getLengthUnitsArr($langId);
-			$frm->addSelectBox( Labels::getLabel('LBL_Dimensions_Unit', $langId), 'product_dimension_unit', $lengthUnitsArr )->requirements()->setRequired();
-			$pDimensionUnitUnReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
-			$pDimensionUnitUnReqObj->setRequired(false);
+			/* weight unit[ */
+			$weightUnitsArr = applicationConstants::getWeightUnitsArr($langId);
+			$frm->addSelectBox( Labels::getLabel('LBL_Weight_Unit', $langId), 'product_weight_unit', $weightUnitsArr )->requirements()->setRequired();
+			$pWeightUnitUnReqObj = new FormFieldRequirement( 'product_weight_unit', Labels::getLabel('LBL_Weight_Unit', $langId));
+			$pWeightUnitUnReqObj->setRequired(false);
 			
-			$pDimensionUnitReqObj = new FormFieldRequirement( 'product_dimension_unit', Labels::getLabel('LBL_Dimensions_Unit', $langId));
-			$pDimensionUnitReqObj->setRequired(true);
+			$pWeightUnitReqObj = new FormFieldRequirement( 'product_weight_unit', Labels::getLabel('LBL_Weight_Unit', $langId));
+			$pWeightUnitReqObj->setRequired(true);
 			/* ] */
 			
 			/* weight[ */
@@ -385,16 +395,6 @@ class AdminBaseController extends FatController {
 			$pWeightReqObj->setRequired(true);
 			$pWeightReqObj->setFloatPositive();
 			$pWeightReqObj->setRange('0.01','9999999999');
-			/* ] */
-			
-			/* weight unit[ */
-			$weightUnitsArr = applicationConstants::getWeightUnitsArr($langId);
-			$frm->addSelectBox( Labels::getLabel('LBL_Weight_Unit', $langId), 'product_weight_unit', $weightUnitsArr )->requirements()->setRequired();
-			$pWeightUnitUnReqObj = new FormFieldRequirement( 'product_weight_unit', Labels::getLabel('LBL_Weight_Unit', $langId));
-			$pWeightUnitUnReqObj->setRequired(false);
-			
-			$pWeightUnitReqObj = new FormFieldRequirement( 'product_weight_unit', Labels::getLabel('LBL_Weight_Unit', $langId));
-			$pWeightUnitReqObj->setRequired(true);
 			/* ] */
 			
 			$pTypeFld->requirements()->addOnChangerequirementUpdate(Product::PRODUCT_TYPE_DIGITAL, 'eq', 'product_length', $pLengthUnReqObj);

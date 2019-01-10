@@ -12,7 +12,7 @@
 	$is_seller_for_file_manager = 0;
 	$is_admin_for_file_manager = 0;
 	
-	$admin = (isset($_SESSION[$adminSession]['admin_id']) && is_numeric($_SESSION[$adminSession]['admin_id']) && intval($_SESSION[$adminSession]['admin_id']) > 0 && strlen(trim($_SESSION[$adminSession]['admin_name'])) >= 4);
+	$admin = (isset($_SESSION[$adminSession]['admin_id']) && is_numeric($_SESSION[$adminSession]['admin_id']) && intval($_SESSION[$adminSession]['admin_id']) > 0 && strlen(trim($_SESSION[$adminSession]['admin_username'])) >= 4);
 		
 	$seller = (isset($_SESSION[$sellerSession]['user_id']) && is_numeric($_SESSION[$sellerSession]['user_id']) && intval($_SESSION[$sellerSession]['user_id']) > 0 && (strlen(trim($_SESSION[$sellerSession]['user_name'])) >= 4)); 
 	

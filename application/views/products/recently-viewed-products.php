@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if($recentViewedProducts){ ?>
 
-<div id="recently-viewed" class="more-slider carousel carousel--onefourth slides--six-js">
+<div id="recently-viewed" class="more-slider carousel carousel--onefourth slides--six-js" dir="<?php echo CommonHelper::getLayoutDirection();?>">
   <?php foreach($recentViewedProducts as $product){ 
 		$productUrl = CommonHelper::generateUrl('Products','View',array($product['selprod_id']));
 	?>

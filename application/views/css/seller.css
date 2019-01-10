@@ -168,6 +168,7 @@
 
 .seller-register-form .form {
   padding: 0 20px;
+  margin-bottom: 0;
 }
 
 .seller-register-form .message {
@@ -503,7 +504,9 @@
     font-size: 2.3em;
   }
 
-  .pricing-structure ul{ flex-direction: column;}
+  .pricing-structure ul {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: 1025px) {
@@ -521,7 +524,7 @@
 
   .after-header {
     /*height: 50px;*/
-    height:79px;
+    height: 79px;
   }
 
   .seller_nav_toggle {

@@ -6,7 +6,7 @@ if( isset($products) && count($products) ) { ?>
 
     </div>
     <div class="shops">
-      <div class="trending-corner">
+      <div class="trending-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
         <?php foreach( $products as $product ){
 			include('collection-1-products-list.php');
 

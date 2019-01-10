@@ -12,7 +12,7 @@ if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 }else{
 	$themeActive = 'false';
 }
-	
+
 array_walk($jsVariables, function( &$item1, $key ) { $item1 = html_entity_decode($item1,ENT_QUOTES,'UTF-8');});
 $commonHead1Data = array(
 	'siteLangId'		  =>    $siteLangId,

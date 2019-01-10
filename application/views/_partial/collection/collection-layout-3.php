@@ -7,7 +7,7 @@ $counter = 1; ?>
 <?php echo ($row['collection_name'] != '') ? '  <div class="unique-heading">' . $row['collection_name'] .'</div>' : ''; ?>
 <?php /* echo ($row['collection_description'] != '') ? '<p>' . nl2br($row['collection_description']) . '</p>' : ''; */ ?>
 <?php /* CommonHelper::printArray($row['products']); */ ?>
-<div id="fashion-corner" class="more-slider fashion-corner-js">
+<div id="fashion-corner" class="more-slider fashion-corner-js" dir="<?php echo CommonHelper::getLayoutDirection();?>">
   <?php foreach( $row['products'] as $product ){ ?>
   <div class="more_slider_item">
     <div class="item-yk <?php if($product['selprod_stock']<=0){ ?> item--sold  <?php } ?>">

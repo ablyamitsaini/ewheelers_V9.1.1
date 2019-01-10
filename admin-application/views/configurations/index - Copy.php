@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="fixed_container">
+<div class="container container-fluid">
 	<div class="section">
 		<div class="sectionhead">
 			<h4>General Settings</h4> 
