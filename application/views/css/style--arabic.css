@@ -129,7 +129,7 @@ form.custom-form input[type="submit"],
 
 .logo {
   float: right;
- 
+
 }
 
 .form--search-popup .select__value {
@@ -742,12 +742,7 @@ input[type="text"].p-cards.meastro {
     text-align: right;
   }
 
-  .form input[type="submit"],
-  .form input[type="button"],
-  .form input[type="submit"] {
-    margin-left: 0;
-    margin-right: 0;
-  }
+ 
 }
 
 .media>li .avtar {

@@ -2511,7 +2511,7 @@ input[type="file"] {
 
 .form input[type="submit"],
 .form input[type="button"] {
-	margin: 0 3px;
+  margin-inline-end:5px;
 }
 
 input[type="text"].p-cards {
