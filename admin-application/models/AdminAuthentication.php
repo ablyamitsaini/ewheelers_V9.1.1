@@ -73,6 +73,7 @@ class AdminAuthentication extends FatModel {
 		$_SESSION[static::SESSION_ELEMENT_NAME] = array(
 			'admin_id'=>$row['admin_id'],
 			'admin_name'=>$row['admin_name'],
+			'admin_username'=>$row['admin_username'],
 			'admin_ip'=>$row['admin_ip']
 		);
 	}

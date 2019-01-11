@@ -184,7 +184,7 @@
 						<?php } ?>
 					</div>
 					<div class="table__col">
-						<ul class="slider--stories slider--stories-js">
+						<ul class="slider--stories slider--stories-js" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 							<?php foreach( $stories as $story ){ ?>
 							<li>
 								<div class=" box--content">

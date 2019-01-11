@@ -98,6 +98,7 @@ trait CustomCatalogProducts{
 		$this->set('preqCatId',$preqCatId);
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/slick.css');
+		$this->_template->addJs('js/jquery.tablednd.js');
 		$this->_template->render(); 
 	}
 	

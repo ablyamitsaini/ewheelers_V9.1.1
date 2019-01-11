@@ -132,7 +132,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <div class="form__group form__group--qty">
                 <label class="field_label"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)',$siteLangId);?>:</label>
                 <div class="selector-container">
-                  <ul class="selector selector--qty selector--qty-js">
+                  <ul class="selector selector--qty selector--qty-js" dir="<?php echo CommonHelper::getLayoutDirection();?>" >
                     <?php foreach($volumeDiscountRows as $volumeDiscountRow ){
 							$volumeDiscount = $product['theprice'] * ( $volumeDiscountRow['voldiscount_percentage'] / 100 );
 							$price = ($product['theprice'] - $volumeDiscount);

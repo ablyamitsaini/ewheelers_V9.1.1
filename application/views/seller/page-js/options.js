@@ -40,8 +40,7 @@ $(document).ready(function(){
 	addOptionForm = function(optionId){
 		var dv = $('#loadForm');
 		fcom.ajax(fcom.makeUrl('Seller', 'addOptionForm', [optionId]), '', function(t) {				
-			dv.html(t);	
-			fcom.resetFaceboxHeight();			
+			dv.html(t);							
 		});
 	};
 	
@@ -52,7 +51,7 @@ $(document).ready(function(){
 		var data = 'option_id='+optionId;		
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
 			dv.html(res);
-			/* fcom.resetFaceboxHeight();	 */
+			fcom.resetFaceboxHeight();
 		});
 	};
 	
@@ -60,8 +59,7 @@ $(document).ready(function(){
 		var dv = $('#loadForm');
 		fcom.ajax(fcom.makeUrl('OptionValues', 'form', [optionId,id]), '', function(t) {				
 			dv.html(t);		
-			jscolor.installByClassName('jscolor');
-			/* fcom.resetFaceboxHeight();	 */
+			jscolor.installByClassName('jscolor');			
 		});
 	};
 	
@@ -72,8 +70,7 @@ $(document).ready(function(){
 			$.mbsmessage.close();
 			if (t.optionId > 0 ) {
 				optionValueListing(t.optionId);
-				optionValueForm(t.optionId,0);
-				fcom.resetFaceboxHeight();
+				optionValueForm(t.optionId,0);				
 				return ;
 			}
 			$(document).trigger('close.facebox');
@@ -86,8 +83,7 @@ $(document).ready(function(){
 		fcom.updateWithAjax(fcom.makeUrl('OptionValues','deleteRecord'),data,function(res){		
 			$.mbsmessage.close();
 			optionValueListing(optionId);
-			optionValueForm(optionId,0);
-			fcom.resetFaceboxHeight();
+			optionValueForm(optionId,0);			
 		});
 	}
 	
@@ -107,8 +103,7 @@ $(document).ready(function(){
 		}
 		$("#optionValueListing").html('Loading....');
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
-			$("#optionValueListing").html(res);
-			/* fcom.resetFaceboxHeight(); */
+			$("#optionValueListing").html(res);			
 		});
 	};
 	
@@ -133,8 +128,7 @@ $(document).ready(function(){
 			$.mbsmessage.close();
 			if(t.optionId > 0){ 
 				optionForm(t.optionId); return;
-			}
-			fcom.resetFaceboxHeight();			
+			}					
 			$(document).trigger('close.facebox');
 		});	
 	};		
@@ -149,8 +143,7 @@ $(document).ready(function(){
 		$("#optionListing").html('Loading....');
 		
 		fcom.ajax(fcom.makeUrl('seller','searchOptions'),data,function(res){
-			$("#optionListing").html(res);
-			fcom.resetFaceboxHeight();
+			$("#optionListing").html(res);			
 		});
 	};
 	
