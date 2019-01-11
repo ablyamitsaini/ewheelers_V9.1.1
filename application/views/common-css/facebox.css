@@ -86,8 +86,8 @@
 #facebox .content {
   display: table;
   width: 100%;
-  padding: 15px; 
-  background: #fff;
+  padding: 15px;
+  background-color: #fff;
   border-radius: 4px;
   margin: 0 auto;
   position: relative;

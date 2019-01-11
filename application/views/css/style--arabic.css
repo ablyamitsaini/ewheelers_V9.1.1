@@ -741,11 +741,11 @@ input[type="text"].p-cards.meastro {
     float: right;
     text-align: right;
   }
-
- 
 }
 
 .media>li .avtar {
     margin-right: 0px;
     margin-left: 10px;
 }
+
+.delivery-term-data-inner ul li:before{ left: auto; right: 0;}

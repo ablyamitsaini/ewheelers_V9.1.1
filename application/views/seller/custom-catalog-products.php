@@ -32,14 +32,15 @@ $cancelBtnFld->developerTags['col'] = 2;
 						<div class="panel__head">
 						   <h2><?php echo Labels::getLabel('LBL_Requested_Products',$siteLangId); ?>
 						   <div class="delivery-term">
-								<div class="dropdown"> 
+								<div class="dropdown">
 									<a href="#requestedProductsToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
 									<div id="requestedProductsToolTip" style="display:none">
 										<div class="delivery-term-data-inner">
-											<ol class="list-nested">
+                      	<div class="heading">Requested Products<span>All the information you need regarding this page</span></div>
+											<ul>
 												<li>This tab lists all the products requested by seller to the admin which are not available in the marketplace products.</li>
 												<li>On admin approval, the product will be added to the marketplace products and to the seller inventory.</li>
-											</ol>
+											</ul>
 										</div>
 									</div>
 								</div>
@@ -78,6 +79,9 @@ $cancelBtnFld->developerTags['col'] = 2;
 
 <script>
 jQuery(document).ready(function($) {
-	$('a[rel*=facebox]').facebox() 
+	$('a[rel*=facebox]').facebox();
+	$(document).bind('loading.facebox', function() {	
+		$('#facebox .content').addClass('catalog-bg');				
+	});
 });
 </script>

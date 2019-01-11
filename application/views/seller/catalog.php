@@ -11,21 +11,22 @@
 						<div class="panel__head">
 						   <h2><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?>
 							<div class="delivery-term">
-								<div class="dropdown"> 
+								<div class="dropdown">
 									<a href="#catalogToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
 									<div id="catalogToolTip" style="display:none">
 										<div class="delivery-term-data-inner">
-											<ol class="list-nested">
+											<div class="heading">Products<span>All the information you need regarding this page</span></div>
+											<ul class="">
 												<li>This page lists all the marketplace products added by admin and seller.
 													Marketplace products are of two types:-
-													<ul class="listing--bullet">
-														<li>System Products: Available to all sellers and any seller can add to their own store.</li>
-														<li>My Products: Available only for you. No other seller can add to their own store.</li>
+													<ul>
+														<li><strong>System Products</strong>: Available to all sellers and any seller can add to their own store.</li>
+														<li><strong>My Products</strong>: Available only for you. No other seller can add to their own store.</li>
 													</ul>
 												</li>
-												<li>On clicking "Add Product" button, seller can add new product to marketplace products.</li>
-												<li>On click of "Add to Store" the seller can pick the product and add the products to his store inventory.</li>
-											</ol>
+												<li>On clicking "<strong>Add Product</strong>" button, seller can add new product to marketplace products.</li>
+												<li>On click of "<strong>Add to Store</strong>" the seller can pick the product and add the products to his store inventory.</li>
+											</ul>
 										</div>
 									</div>
 								</div>
@@ -111,13 +112,15 @@ $(document).ready(function(){
 	<?php if(!$displayDefaultListing){?>
 	searchCatalogProducts(document.frmSearchCatalogProduct);
 	<?php }?>
+	
+	$('a[rel*=facebox]').facebox();
+	$(document).bind('loading.facebox', function() {	
+		$('#facebox .content').addClass('catalog-bg');				
+	});
+	
 });
 
 $(".btn-inline-js").click(function(){
     $(".box-slide-js").slideToggle();
-}); 
-
-jQuery(document).ready(function($) {
-	$('a[rel*=facebox]').facebox() 
 });
 </script>
