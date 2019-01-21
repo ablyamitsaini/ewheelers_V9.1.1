@@ -8665,3 +8665,5 @@ form.custom-form input[type="submit"] {
   margin-inline-start: 15px;
   margin-bottom: 20px;
 }
+
+span.number{ display:inline-block}

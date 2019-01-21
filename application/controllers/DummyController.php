@@ -6,11 +6,6 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
-	function test123(){
-		$adminOrderDetailUrl = CommonHelper::generateFullUrl('SellerOrders','View',array(1),CONF_WEBROOT_BACKEND);
-		echo $adminOrderDetailUrl; die;
-	}
-	
 	function updateCategoryTable(){
 		$srch = ProductCategory::getSearchObject();
 		$srch->doNotCalculateRecords();
