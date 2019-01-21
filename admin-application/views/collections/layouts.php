@@ -8,10 +8,10 @@
 		<div class="col-sm-12"> 
 			<h1><?php //echo Labels::getLabel('LBL_Collections_Layout_Instructions',$adminLangId);?></h1>
 		</div>
-		<div class="col-sm-12">
-			<div class="row"> 		
-				<section class="section">
-					<div class="sectionbody">
+		<div class="col-sm-12">	
+			<section class="section">
+				<div class="sectionbody">
+					<div class="row">
 						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
 							<div class="shop-template fixed-height-div"> 
 								<a rel="facebox" onClick="displayImageInFacebox('<?php echo CommonHelper::generateFullUrl(); ?><?php echo CONF_WEBROOT_FRONT_URL; ?>images/collection_layouts/layout-1.jpg');" href="javascript:void(0)">
@@ -69,8 +69,8 @@
 							</div>
 						</div>
 					</div>
-				</section>
-			</div>
+				</div>
+			</section>
 		</div>
 	</div>
 </div>

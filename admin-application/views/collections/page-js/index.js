@@ -302,17 +302,11 @@ $(document).ready(function(){
 		});
 	};
 	callCollectionTypePopulate = function(val){
-		
+		$("#collection_child_records_div").hide();
 		if( val == 1 ){
-			//if cms Page
 			$("#collection_criteria_div").show();
-			$("#collection_child_records_div").hide();
-		}else if( val == 2 || val == 4 ){
+		}else {
 			$("#collection_criteria_div").hide();
-			$("#collection_child_records_div").hide();
-		}if( val == 3 ){
-			$("#collection_criteria_div").hide();
-			$("#collection_child_records_div").show();
 		}
 	};
 })();
