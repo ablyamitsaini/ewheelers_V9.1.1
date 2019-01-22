@@ -20,10 +20,12 @@ $(function() {
 			mysortarr.push($(this).attr("id"));				
 		});
 		var preq_id=$('#imageFrm input[name=preq_id]').val();			
-		var sort = mysortarr.join('-');				
+		var sort = mysortarr.join('-');
+		var lang_id = $('.language-js').val();
+		var option_id = $('.option-js').val();		
 		data='&preq_id='+preq_id+'&ids='+sort;
 		fcom.updateWithAjax(fcom.makeUrl('products', 'setImageOrder' ), data, function (t) {
-			productImages(preq_id);
+			productImages(preq_id,option_id,lang_id);
 		});
 	  }
 	}).disableSelection();		

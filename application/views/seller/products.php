@@ -33,7 +33,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 						   <h2><?php echo Labels::getLabel('LBL_Store_Inventory',$siteLangId); ?>
 							<div class="delivery-term">
 								<div class="dropdown">
-									<a href="#inventoryToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
+									<a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
 									<div id="inventoryToolTip" style="display:none">
 										<div class="delivery-term-data-inner">
                       	<div class="heading">Store Inventory<span>All the information you need regarding this page</span></div>
@@ -82,9 +82,12 @@ $cancelBtnFld->developerTags['col'] = 2;
 
 <script>
 jQuery(document).ready(function($) {
-	$('a[rel*=facebox]').facebox();
+	/* $('a[rel*=facebox]').facebox();
 	$(document).bind('loading.facebox', function() {	
 		$('#facebox .content').addClass('catalog-bg');				
+	}); */
+	$(".initTooltip").click(function(){
+		$.facebox({ div: '#inventoryToolTip' }, 'catalog-bg');
 	});
 });
 </script>

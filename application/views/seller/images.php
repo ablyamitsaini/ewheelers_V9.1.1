@@ -10,9 +10,11 @@ $(function() {
 		});
 		var product_id=$('#frmCustomProductImage input[name=product_id]').val();
 		var sort = mysortarr.join('-');
+		var lang_id = $('.language-js').val();
+		var option_id = $('.option-js').val();
 		data='&product_id='+product_id+'&ids='+sort;
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setCustomProductImagesOrder' ), data, function (t) {
-			customProductImages(product_id);
+			productImages(product_id,option_id,lang_id);
 		});
 	  }
 	}).disableSelection();

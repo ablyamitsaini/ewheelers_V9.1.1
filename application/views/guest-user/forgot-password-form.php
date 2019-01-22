@@ -3,10 +3,9 @@
 	<section class="section ">
 		<div class="container">
 <div class="row justify-content-center">
-
 					<div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
 						<div class="box box--white box--space">
-					   <h3><?php echo Labels::getLabel('LBL_Forgot_Password',$siteLangId);?>?</h3>
+					   <h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
 					   <p><?php echo Labels::getLabel('LBL_Forgot_Password_Msg',$siteLangId);?></p>
 						<?php
 						$frm->setFormTagAttribute('class', 'form form--normal');

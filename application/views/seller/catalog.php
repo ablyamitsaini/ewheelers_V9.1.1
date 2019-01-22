@@ -12,7 +12,7 @@
 						   <h2><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?>
 							<div class="delivery-term">
 								<div class="dropdown">
-									<a href="#catalogToolTip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
+									<a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
 									<div id="catalogToolTip" style="display:none">
 										<div class="delivery-term-data-inner">
 											<div class="heading">Products<span>All the information you need regarding this page</span></div>
@@ -109,18 +109,22 @@
 </div>
 <script>
 $(document).ready(function(){
-	<?php if(!$displayDefaultListing){?>
+	<?php if(!$displayDefaultListing){ ?>
 	searchCatalogProducts(document.frmSearchCatalogProduct);
-	<?php }?>
+	<?php } ?>
 	
-	$('a[rel*=facebox]').facebox();
+	/* $('a[rel*=facebox]').facebox();
 	$(document).bind('loading.facebox', function() {	
 		$('#facebox .content').addClass('catalog-bg');				
-	});
-	
+	}); */
+
 });
 
 $(".btn-inline-js").click(function(){
     $(".box-slide-js").slideToggle();
+});
+
+$(".initTooltip").click(function(){
+    $.facebox({ div: '#catalogToolTip' }, 'catalog-bg');
 });
 </script>
