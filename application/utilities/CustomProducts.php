@@ -1898,7 +1898,7 @@ trait CustomProducts{
 		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->siteLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_All_Languages',$this->siteLangId) ) + $languagesAssocArr, '', array('class'=>'language'), '' );
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Photo(s)',$this->siteLangId), 'prod_image', array('id' => 'prod_image', 'multiple' => 'multiple') );
 		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
-		$fldImg->htmlAfterField='</div><small>'.Labels::getLabel('LBL_Please_keep_image_dimensions_greater_than_500_x_500._You_can_upload_multiple_photos_from_here',$this->siteLangId).'</small>';
+		$fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div><small>'.Labels::getLabel('LBL_Please_keep_image_dimensions_greater_than_500_x_500._You_can_upload_multiple_photos_from_here',$this->siteLangId).'</small>';
 		$frm->addHiddenField('', 'product_id', $product_id);
 		return $frm;
 	}

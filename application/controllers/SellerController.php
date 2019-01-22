@@ -3109,7 +3109,8 @@ class SellerController extends LoggedUserController {
 		$fld->htmlAfterField = '</div>'; */
 		$frm->addTextArea(Labels::getLabel('LBL_Content',$this->siteLangId), 'scatrequest_content');
 		$fileFld = $frm->addFileUpload( Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file' ,array('accept'=>'image/*,.zip' , 'enctype' => "multipart/form-data" ) );
-		$fileFld->htmlAfterField = '<span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
+		$fileFld->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+		$fileFld->htmlAfterField = '<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div><span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId ));
 		return $frm;
 	}

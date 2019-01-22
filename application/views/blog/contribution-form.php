@@ -7,7 +7,8 @@ $frm->setFormTagAttribute('action',CommonHelper::generateUrl('Blog','setupContri
 $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $frm->developerTags['fld_default_col'] = 12;
 $fileFld = $frm->getField('file');
-$preferredDimensionsStr = '<small class="text--small">'.Labels::getLabel('MSG_Allowed_Extensions',$siteLangId).'</small>';
+$fileFld->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+$preferredDimensionsStr = '<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$siteLangId).'</label><small class="text--small">'.Labels::getLabel('MSG_Allowed_Extensions',$siteLangId).'</small>';
 $fileFld->htmlAfterField = $preferredDimensionsStr;
 if(FatApp::getConfig('CONF_RECAPTCHA_SITEKEY',FatUtility::VAR_STRING,'')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY',FatUtility::VAR_STRING,'')!= ''){
 	$captchaFld = $frm->getField('htmlNote');
