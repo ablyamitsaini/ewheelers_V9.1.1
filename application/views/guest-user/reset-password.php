@@ -1,10 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div id="body" class="body">
-	<section class="top-space body bg--gray">
+<div id="body" class="body bg--gray">
+	<section class="section">
 		<div class="container">
-		   <div class="panel panel--centered">
-				<div class="box box--white box--tabled">
-				   <div class="box__cell <?php echo (empty($pageData)) ? 'noborder--right noborder--left' : '';?>">
+			<div class="row justify-content-center">
+
+				   <div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
+						 <div class="box box--white box--space">
 					   <h3><?php echo Labels::getLabel('LBL_Reset_Password',$siteLangId);?> </h3>
 					   <p><?php echo Labels::getLabel('LBL_Reset_Password_Msg',$siteLangId);?></p>
 						<?php
@@ -17,11 +18,11 @@
 						$frm->setFormTagAttribute('onSubmit', 'resetpwd(this, resetValObj); return(false);');
 						echo $frm->getFormHtml();
 						echo $frm->getExternalJs(); ?>
-					</div>
+					</div>	</div>
 					<?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData ,false); } ?>
-				</div>
-			</div>
+
+	</div>
 		</div>
 	</section>
-	<div class="gap"></div>
+
 </div>
