@@ -18,7 +18,7 @@
 		$loginFrm->removeField($loginFrm->getField('remember_me'));
 		$fldforgot = $loginFrm->getField('forgot');
 		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
-		class="forgot">'.Labels::getLabel('LBL_Forgot_Password',$siteLangId).'?</a>';
+		class="forgot">'.Labels::getLabel('LBL_Forgot_Password?',$siteLangId).'</a>';
 		$fldSubmit = $loginFrm->getField('btn_submit');
 		$fldSubmit->addFieldTagAttribute("class","btn--block");
 		echo $loginFrm->getFormHtml();

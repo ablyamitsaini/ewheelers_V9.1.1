@@ -16,7 +16,7 @@
 
 	$fldforgot = $loginFrm->getField('forgot');
 	$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
-		class="link link--normal">'.Labels::getLabel('LBL_Forgot_Password',$siteLangId).'?</a>';
+		class="link link--normal">'.Labels::getLabel('LBL_Forgot_Password?',$siteLangId).'</a>';
 	// $fldforgot->addFieldTagAttribute('class' , 'link');
 	$fldSubmit = $loginFrm->getField('btn_submit');
 	$fldSubmit->attachField($fldforgot);
