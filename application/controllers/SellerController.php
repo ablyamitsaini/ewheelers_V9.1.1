@@ -82,6 +82,7 @@ class SellerController extends LoggedUserController {
 		$orderSrch->addMultipleFields(array('todayOrderCount' ,'todaySoldCount','totalSoldCount','totalSoldSales' ));
 		
 		$rs = $orderSrch->getResultSet();
+		
 		$ordersStats = FatApp::getDb()->fetch($rs);
 		/* ]*/		
 		
@@ -365,7 +366,7 @@ class SellerController extends LoggedUserController {
 		} else {
 			$processingStatuses = $orderObj->getVendorAllowedUpdateOrderStatuses( false, $codOrder );
 		}
-				
+
 		/*[ if shipping not handled by seller then seller can not update status to ship and delived */
 		if(!CommonHelper::canAvailShippingChargesBySeller($orderDetail['op_selprod_user_id'],$orderDetail['opshipping_by_seller_user_id'])){ 
 			$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_SHIPPING_ORDER_STATUS"));
