@@ -6,16 +6,16 @@ $frm->setFormTagAttribute( 'onSubmit', 'exportData(this,'.$actionType.'); return
 $actionTypeArr = array(Importexport::TYPE_PRODUCTS,Importexport::TYPE_SELLER_PRODUCTS,Importexport::TYPE_USERS);
 
 if(in_array($actionType,$actionTypeArr)){
-	$startIdFld = $frm->getField('start_id');	
+	$startIdFld = $frm->getField('start_id');
 	$startIdFld->setWrapperAttribute( 'class' , 'range_fld');
 
-	$endIdFld = $frm->getField('end_id');	
+	$endIdFld = $frm->getField('end_id');
 	$endIdFld->setWrapperAttribute( 'class' , 'range_fld');
 
-	$batchCountFld = $frm->getField('batch_count');	
+	$batchCountFld = $frm->getField('batch_count');
 	$batchCountFld->setWrapperAttribute( 'class' , 'batch_fld');
 
-	$batchNumberFld = $frm->getField('batch_number');	
+	$batchNumberFld = $frm->getField('batch_number');
 	$batchNumberFld->setWrapperAttribute( 'class' , 'batch_fld');
 
 	$rangeTypeFld = $frm->getField('export_data_range');
@@ -28,7 +28,7 @@ if(in_array($actionType,$actionTypeArr)){
 			<li class="is-active"><a class="is-active" href="javascript:void(0);" onclick="exportForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
 			<?php if($displayMediaTab){?>
 			<li><a href="javascript:void(0);" onclick="exportMediaForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>
-			<?php }?>	
+			<?php }?>
 		</ul>
 	</div>
 </div>

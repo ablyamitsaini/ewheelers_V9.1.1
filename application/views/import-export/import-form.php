@@ -10,7 +10,7 @@ $frm->setFormTagAttribute( 'onSubmit', 'importFile("importData",'.$actionType.')
 			<li class="is-active"><a class="is-active" href="javascript:void(0);" onclick="importForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
 			<?php if($displayMediaTab){?>
 			<li><a href="javascript:void(0);" onclick="importMediaForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>
-			<?php }?>	
+			<?php }?>
 		</ul>
 	</div>
 </div>

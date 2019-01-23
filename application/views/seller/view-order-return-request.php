@@ -8,7 +8,8 @@
 				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
-							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': ' . $request['orrequest_reference'] /* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']) */; ?></h2>
+							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ;
+							/* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']); */ ?></h2>
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">

@@ -1392,7 +1392,8 @@ trait SellerProducts{
 		/* $frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();; */
 		
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
-		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';	
+		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+		$fldImg->htmlAfterField='<label class="filelabel">' . Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div>';		
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel("LBL_Save_Changes",$langId));		
 		$frm->addHiddenField('','selprod_id'); 		
 		return $frm;

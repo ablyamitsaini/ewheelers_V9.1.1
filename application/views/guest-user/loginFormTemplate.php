@@ -21,14 +21,14 @@
 		/* $loginFrm->removeField($loginFrm->getField('remember_me')); */
 		$fldforgot = $loginFrm->getField('forgot');
 		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
-		class="forgot">'.Labels::getLabel('LBL_Forgot_Password',$siteLangId).'?</a>';
+		class="forgot">'.Labels::getLabel('LBL_Forgot_Password?',$siteLangId).'</a>';
 		$fldSubmit = $loginFrm->getField('btn_submit');
 
 		echo $loginFrm->getFormHtml();?>
 
 		<?php if( $showSignUpLink ){ ?>
 		<div class="row">
-			<div class="col-md-12 col-xs-12"> <a class="last-button" href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>?</a> </div>
+			<div class="col-md-12 col-xs-12"> <a class="last-button" href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a> </div>
 		</div>
 		<?php } ?>
 

@@ -443,14 +443,16 @@ class ImportExportController extends LoggedUserController {
 				}
 				$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:',$langId), 'import_file', array('id' => 'import_file') );
 				$fldImg->setFieldTagAttribute('onChange','$(\'#importFileName\').html(this.value)');
-				$fldImg->htmlAfterField = "<small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed',$langId)."</small>";
+				$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+				$fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File',$this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed',$langId)."</small>";
 				/*$fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
 				$fldImg->htmlAfterField = '</div>'; */
 			break;			
 			case 'IMPORT_MEDIA':				
 				$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:',$langId), 'import_file', array('id' => 'import_file') );
 				$fldImg->setFieldTagAttribute('onChange','$(\'#importFileName\').html(this.value)');
-				$fldImg->htmlAfterField = "<small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed',$langId)."</small>";
+				$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+				$fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File',$this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed',$langId)."</small>";
 				/* $fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
 				$fldImg->htmlAfterField = '</div>'; */
 			break;

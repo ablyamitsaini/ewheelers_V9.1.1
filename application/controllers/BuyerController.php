@@ -1903,7 +1903,8 @@ class BuyerController extends LoggedUserController {
 		$frm->addHiddenField('','orrequest_type',OrderReturnRequest::RETURN_REQUEST_TYPE_REFUND);
 		
 		$fileFld = $frm->addFileUpload( Labels::getLabel('LBL_Upload_Images', $langId), 'file' ,array('accept'=>'image/*,.zip') );
-		$fileFld->htmlAfterField = '<span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
+		$fileFld->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+		$fileFld->htmlAfterField = '<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div><span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
 		$frm->addTextArea( Labels::getLabel('LBL_Comments', $langId), 'orrmsg_msg' )->requirements()->setRequired();
 		$frm->addHiddenField('','op_id');
 		$frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Send_Request',$langId) );
