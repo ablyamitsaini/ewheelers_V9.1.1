@@ -11,7 +11,7 @@ if( isset( $collections ) && count($collections) ){
 		  <div class="trending-list">
 			<ul>
 			  <?php $i=0; foreach( $row['brands'] as $brand ){	?>
-			  <li> <a href="<?php echo CommonHelper::generateUrl('brand', 'View', array($brand['brand_id'] )); ?>"> <i class="svg"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'brand', array($brand['brand_id'] , $siteLangId, 'collection_page')), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $brand['brand_name']; ?> " title= "<?php echo $brand['brand_name']; ?> "></i><span class="caption"><?php echo $brand['brand_name']; ?></span> </a> </li>
+			  <li> <a href="<?php echo CommonHelper::generateUrl('brands', 'View', array($brand['brand_id'] )); ?>"> <i class="svg"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'brand', array($brand['brand_id'] , $siteLangId, 'collection_page')), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $brand['brand_name']; ?> " title= "<?php echo $brand['brand_name']; ?> "></i><span class="caption"><?php echo $brand['brand_name']; ?></span> </a> </li>
 			  <?php
 				$i++;
 				/* if($i==Collections::COLLECTION_LAYOUT5_LIMIT) break;*/ }  ?>
