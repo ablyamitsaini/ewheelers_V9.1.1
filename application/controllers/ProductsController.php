@@ -770,9 +770,9 @@ class ProductsController extends MyAppController {
 		}
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-		$srch->addGroupBy('selprod_id');		
+		$srch->addGroupBy('product_id');		
 		/* ] */
-				
+		
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
