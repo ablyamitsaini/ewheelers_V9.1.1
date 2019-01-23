@@ -12,9 +12,15 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function index( $product_id = 0) {
+		$data = FatApp::getPostedData();
+		$srchFrm = $this->getSearchForm();
+		if($data){
+			$data['user_id'] = $data['id'];
+			unset($data['id']);
+			$srchFrm->fill( $data );
+		}
 		$this->objPrivilege->canViewSellerProducts();
 		$this->includeDateTimeFiles();
-		$srchFrm = $this->getSearchForm();
 		$this->set('includeEditor',true);
 		$this->set("frmSearch", $srchFrm);
 		$this->set("product_id", $product_id);
@@ -48,7 +54,6 @@ class SellerProductsController extends AdminBaseController {
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->adminLangId, 'p_l' );
 		$srch->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'selprod_user_id = u.user_id', 'u' );
 		$srch->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'u.user_id = uc.credential_user_id', 'uc' );
-		$srch->addOrder('product_name');
 		$srch->addCondition('selprod_deleted' ,'=' , 0);
 		
 		$pageSize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
@@ -129,6 +134,7 @@ class SellerProductsController extends AdminBaseController {
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email'));
 		
 		$srch->addOrder('selprod_active', 'DESC');
+		$srch->addOrder('selprod_title');
 		$db = FatApp::getDb();
 		$rs = $srch->getResultSet();
 		$arrListing = $db->fetchAll($rs);
@@ -137,10 +143,12 @@ class SellerProductsController extends AdminBaseController {
 				$arr['options'] = SellerProduct::getSellerProductOptions( $arr['selprod_id'], true, $this->adminLangId );
 			}
 		}
-		// CommonHelper::printArray($arrListing); die;
+		
 		$this->set("arrListing", $arrListing);
 		$this->set('product_id', $product_id);
 		$this->set('activeInactiveArr', applicationConstants::getActiveInactiveArr($this->adminLangId) );
+		$this->set('canViewProducts', $this->objPrivilege->canViewProducts() );
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers() );
 		
 		if( !$product_id ){
 			$this->set( 'page', $page );

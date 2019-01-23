@@ -38,7 +38,6 @@ ALTER TABLE `tbl_product_special_prices` ADD UNIQUE( `splprice_selprod_id`, `spl
 ALTER TABLE tbl_product_special_prices DROP INDEX price_selprod_id;
 
 
-
 /* After 3rd Jan 2019 */
 
 
@@ -52,3 +51,8 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<table width=\"100%\" border=\"0
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Have_You_Used_This_Product';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Forgot_Password';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Not_Register_Yet';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_This_order_is_In_Process_or_Completed_now,_so_not_eligible_for_cancellation';
+
+/* After 5th Jan 2019 */
+
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_Reviewed_To';

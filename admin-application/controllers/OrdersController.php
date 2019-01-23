@@ -45,7 +45,7 @@ class OrdersController extends AdminBaseController {
 		$srch->addCondition( 'order_type', '=',Orders::ORDER_PRODUCT);
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pageSize);
-		$srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'order_status', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount', 'order_wallet_amount_charge', 'order_pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'order_is_wallet_selected'));
+		$srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'order_status', 'buyer.user_id', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount', 'order_wallet_amount_charge', 'order_pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'order_is_wallet_selected'));
 		
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if( !empty($keyword) ) {
@@ -93,6 +93,7 @@ class OrdersController extends AdminBaseController {
 		$this->set('recordCount', $srch->recordCount());
 		
 		$this->set('canViewSellerOrders', $this->objPrivilege->canViewSellerOrders($this->admin_id,true));
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		
 		$this->_template->render(false, false);
 	}

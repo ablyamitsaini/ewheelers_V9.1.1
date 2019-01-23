@@ -4,6 +4,7 @@ $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._No',$adminLangId),
 		'user_name'=>Labels::getLabel('LBL_Owner',$adminLangId),	
 		'shop_identifier'=>Labels::getLabel('LBL_Name',$adminLangId),	
+		'numOfProducts'=>Labels::getLabel('LBL_Products',$adminLangId),	
 		'numOfReports'=>Labels::getLabel('LBL_Reports',$adminLangId),	
 		'numOfReviews'=>Labels::getLabel('LBL_Reviews',$adminLangId),	
 		'shop_featured'	=>	Labels::getLabel('LBL_Featured',$adminLangId),
@@ -44,6 +45,13 @@ foreach ($arr_listing as $sn=>$row){
                        <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
+			case 'numOfProducts':
+			if($canViewSellerProducts){
+				$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('SellerProducts').'", '.$row['shop_user_id'].')'), $row[$key]);
+			} else {
+				$td->appendElement('plaintext', array(), $row[$key], true);
+			}
+			break;
 			case 'shop_featured':
 				$td->appendElement('plaintext', array(), applicationConstants::getYesNoArr($adminLangId)[$row[$key]], true );
 			break;
@@ -71,7 +79,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 				$td->appendElement( 'br', array() );
 				$shopLink = CommonHelper::generateFullUrl("Shops", 'View', array($row['shop_id']), CONF_WEBROOT_FRONT_URL);
-				$td->appendElement( 'plaintext', array(), 'Shop Url: <a href="'.$shopLink.'" target="_blank">'.$shopLink.'</a>', true  );
+				$td->appendElement( 'plaintext', array(), '<a href="'.$shopLink.'" target="_blank">'.Labels::getLabel('LBL_Visit_Shop',$adminLangId).'</a>', true  );
 			break;
 			case 'shop_created_on':
 				$td->appendElement( 'plaintext', array(), FatDate::format($row[$key]) );

@@ -48,10 +48,11 @@ class ProductReviewsController extends AdminBaseController {
 		$srch = new SelProdReviewSearch($this->adminLangId);
 		$srch->joinUser();
 		$srch->joinSeller();
+		$srch->joinShops($this->adminLangId);
 		$srch->joinProducts();
 		$srch->joinSellerProducts($this->adminLangId);
 		$srch->joinSelProdRatingByType(SelProdRating::TYPE_PRODUCT);
-		$srch->addMultipleFields(array('IFNULL(product_name,product_identifier) as product_name', 'usc.credential_username as seller_username','uc.credential_username as reviewed_by','spreview_id','spreview_posted_on','spreview_status','sprating_rating'));
+		$srch->addMultipleFields(array('IFNULL(product_name,product_identifier) as product_name', 'usc.credential_username as seller_username','uc.credential_username as reviewed_by', 'uc.credential_user_id', 'spreview_id','spreview_posted_on','spreview_status','sprating_rating', 'shop_id', 'shop_user_id', 'IFNULL(shop_name, shop_identifier) as shop_name'));
 		$srch->addOrder('spreview_posted_on','DESC');		
 		
 		if(!empty($post['product'])){
@@ -59,13 +60,14 @@ class ProductReviewsController extends AdminBaseController {
 			$cnd->attachCondition('product_identifier','like','%'.$post['product'].'%');
 		}
 		
-		if($post['reviewed_by_id'] > 0){
-			$srch->addCondition('spreview_postedby_user_id','=',$post['reviewed_by_id']);		
+		if($post['reviewed_for_id'] > 0){
+			$srch->addCondition('shop_user_id','=',$post['reviewed_for_id']);		
 		}
 		
 		if($post['seller_id'] > 0){
 			$srch->addCondition('spreview_seller_user_id','=',$post['seller_id']);		
 		}
+
 		if($post['spreview_id'] > 0){
 			$srch->addCondition('spreview_id','=',$post['spreview_id']);		
 		}
@@ -98,6 +100,7 @@ class ProductReviewsController extends AdminBaseController {
 		$this->set('pageSize', $pagesize);
 		$this->set('postedData', $post);						
 		$this->set('reviewStatus', SelProdReview::getReviewStatusArr($this->adminLangId));						
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers());
 		$this->_template->render(false, false);		
 	}
 	
@@ -182,11 +185,11 @@ class ProductReviewsController extends AdminBaseController {
 	
 	private function getSearchForm(){
 		$frm = new Form('frmSearch');
-		$frm->addHiddenField('','reviewed_by_id');	
+		$frm->addHiddenField('','reviewed_for_id');	
 		$frm->addHiddenField('','seller_id',0);
 		$frm->addHiddenField('','spreview_id',0);
 		$frm->addTextBox(Labels::getLabel('LBL_Product',$this->adminLangId), 'product');
-		$frm->addTextBox(Labels::getLabel('LBL_Reviewed_By',$this->adminLangId), 'reviewed_by');
+		$frm->addTextBox(Labels::getLabel('LBL_Review_For',$this->adminLangId), 'reviewed_for');
 		$statusArr = SelProdReview::getReviewStatusArr($this->adminLangId);
 		unset($statusArr[SelProdReview::STATUS_PENDING]);
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'spreview_status',array( -1 =>'Does not Matter' ) + $statusArr,'',array(),'');

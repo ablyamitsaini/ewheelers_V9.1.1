@@ -3,6 +3,7 @@
 $arr_flds = array(
 	'listserial'=> Labels::getLabel('LBL_S.No.',$adminLangId),
 	'user'=>Labels::getLabel('LBL_User',$adminLangId),
+	'shop_name'=>Labels::getLabel('LBL_Shop',$adminLangId),
 	'type'	=> Labels::getLabel('LBL_User_Type',$adminLangId),
 	'user_regdate'=>Labels::getLabel('LBL_Reg._Date',$adminLangId),		
 	'credential_active'=>Labels::getLabel('LBL_Status',$adminLangId),
@@ -33,6 +34,17 @@ foreach ($arr_listing as $sn=>$row){
 				$userDetail .= '<strong>'.Labels::getLabel('LBL_Email:', $adminLangId).' </strong>'.$row['credential_email'].'<br/>';
 				$userDetail .= '<strong>'.Labels::getLabel('LBL_User_ID:', $adminLangId).' </strong>'.$row['user_id'].'<br/>';
 				$td->appendElement( 'plaintext', array(), $userDetail, true );
+			break;
+			case 'shop_name':
+				if($row[$key]!=''){
+					if($canViewShops){
+						$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Shops').'", '.$row['shop_id'].')'), $row[$key], true);
+					} else {
+						$td->appendElement('plaintext', array(), $row[$key], true);
+					}
+				}else{
+					$td->appendElement('plaintext', array(), Labels::getLabel('LBL_N/A', $adminLangId), true);
+				}
 			break;
 			case 'credential_active':
 				$active = "active";

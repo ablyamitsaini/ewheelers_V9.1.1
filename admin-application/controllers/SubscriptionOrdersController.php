@@ -35,7 +35,7 @@ class SubscriptionOrdersController extends AdminBaseController {
 		$srch->addCondition( 'order_type', '=',Orders::ORDER_SUBSCRIPTION);
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pageSize);
-		$srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount'));
+		$srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'buyer.user_id', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount'));
 		
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		if( !empty($keyword) ) {
@@ -83,6 +83,7 @@ class SubscriptionOrdersController extends AdminBaseController {
 		$this->set('recordCount', $srch->recordCount());
 		
 		$this->set('canViewSellerOrders', $this->objPrivilege->canViewSellerOrders($this->admin_id,true));
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		
 		$this->_template->render(false, false);
 	}
