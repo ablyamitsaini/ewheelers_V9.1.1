@@ -134,7 +134,7 @@ class SellerProductsController extends AdminBaseController {
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email'));
 		
 		$srch->addOrder('selprod_active', 'DESC');
-		$srch->addOrder('selprod_title');
+		$srch->addOrder('selprod_added_on');
 		$db = FatApp::getDb();
 		$rs = $srch->getResultSet();
 		$arrListing = $db->fetchAll($rs);
