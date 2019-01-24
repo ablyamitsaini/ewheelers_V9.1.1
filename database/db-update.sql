@@ -41,7 +41,7 @@ ALTER TABLE tbl_product_special_prices DROP INDEX price_selprod_id;
 /* After 3rd Jan 2019 */
 
 
-DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_This_order_is_In_Process_or_Completed_now,_so_not_eligible_for_cancellation'
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_This_order_is_In_Process_or_Completed_now,_so_not_eligible_for_cancellation';
 
 UPDATE `tbl_email_templates` SET `etpl_replacements` = '{user_full_name} Name of the email receiver<br/> {product_link} Product Link<br/> {new_status} New/Current Review Status<br/> {website_name} Name of our website<br> {website_url} URL of our website<br> {social_media_icons} <br> {contact_us_url} <br> ' WHERE `tbl_email_templates`.`etpl_code` = 'buyer_notification_review_status_updated' AND `tbl_email_templates`.`etpl_lang_id` = 1;
 

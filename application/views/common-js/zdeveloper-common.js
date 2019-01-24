@@ -936,7 +936,7 @@ $("document").ready(function(){
 		$(document).delegate('.add-to-cart--js' ,'click' , function(event){
 			$btn = $(this);
 			event.preventDefault();
-			var data = $("#frmBuyProduct").serialize();
+			var data = $(this).closest("#frmBuyProduct").serialize();
 			var yourArray = [];
     			$(".cart-tbl").find("input").each(function(e){
 					
