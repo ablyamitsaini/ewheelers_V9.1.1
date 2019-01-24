@@ -136,9 +136,9 @@ class CartController extends MyAppController{
 			$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
 			if( $quantity > $selprod_stock ){
 				if ( $productId != $selprod_id ){
-					$productErr['addon'][$productId]=Message::addInfo(Labels::getLabel('MSG_Requested_quantity_more_than_stock_available',$this->siteLangId)." ". $selprod_stock." " .FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+					$productErr['addon'][$productId]=Message::addInfo(Labels::getLabel('MSG_Requested_quantity_more_than_stock_available',$this->siteLangId)." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']));
 				} else {
-					$productErr['product']=Labels::getLabel('MSG_Requested_quantity_more_than_stock_available',$this->siteLangId)." ". $selprod_stock." " .FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
+					$productErr['product']=Labels::getLabel('MSG_Requested_quantity_more_than_stock_available',$this->siteLangId)." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']);
 				}
 			}		
 			/* ] */

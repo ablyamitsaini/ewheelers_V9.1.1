@@ -938,13 +938,16 @@ $("document").ready(function(){
 			event.preventDefault();
 			var data = $(this).closest("#frmBuyProduct").serialize();
 			var yourArray = [];
-    			$(".cart-tbl").find("input").each(function(e){
+			var selprodId = $(this).siblings('input[name="selprod_id"]').val();
+			if(selprodId == mainSelprodId){
+				$(".cart-tbl").find("input").each(function(e){
 					
 					console.log($(this).parent().parent().parent().attr('class'));
 					if (($(this).val()>0) && (!$(this).parent().parent().siblings().hasClass("cancelled--js"))){
 						 data = data+'&'+$(this).attr('lang')+"="+$(this).val();	 
 					}
 				});
+			}	
 			fcom.updateWithAjax(fcom.makeUrl('cart', 'add' ),data, function(ans) {
 				if (ans['redirect']) {
 					location = ans['redirect'];
