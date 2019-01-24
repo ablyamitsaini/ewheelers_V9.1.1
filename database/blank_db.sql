@@ -1,14 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.8.0.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 16, 2017 at 01:50 PM
--- Server version: 5.7.19-0ubuntu0.16.04.1
--- PHP Version: 7.0.22-0ubuntu0.16.04.1
+-- Generation Time: Jan 05, 2019 at 12:08 PM
+-- Server version: 5.7.24-0ubuntu0.16.04.1
+-- PHP Version: 7.0.32-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 
 -- --------------------------------------------------------
@@ -334,6 +335,21 @@ CREATE TABLE `tbl_banner_location_dimensions` (
   `blocation_banner_height` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_banner_location_dimensions`
+--
+
+INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldimension_device_type`, `blocation_banner_width`, `blocation_banner_height`) VALUES
+(1, 1, '960', '400'),
+(1, 2, '1024', '360'),
+(1, 3, '760', '360'),
+(2, 1, '1920', '400'),
+(2, 2, '1024', '360'),
+(2, 3, '760', '360'),
+(3, 1, '310', '460'),
+(3, 2, '310', '460'),
+(3, 3, '310', '460');
+
 -- --------------------------------------------------------
 
 --
@@ -526,6 +542,18 @@ CREATE TABLE `tbl_collections_lang` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_collection_to_brands`
+--
+
+CREATE TABLE `tbl_collection_to_brands` (
+  `ctpb_collection_id` int(11) NOT NULL,
+  `ctpb_brand_id` int(11) NOT NULL,
+  `ctpb_display_order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_collection_to_product_categories`
 --
 
@@ -637,7 +665,7 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_AFFILIATE_REFERRER_URL_VALIDITY', '5', 0),
 ('CONF_AFFILIATE_SIGNUP_COMMISSION', '10', 0),
 ('CONF_AFFILIATE_TERMS_AND_CONDITIONS_PAGE', '2', 0),
-('CONF_ALLOW_CANCELLATION_ORDER_STATUS', 'a:5:{i:0;s:2:"16";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}', 0),
+('CONF_ALLOW_CANCELLATION_ORDER_STATUS', 'a:5:{i:0;s:2:\"16\";i:1;s:1:\"2\";i:2;s:1:\"3\";i:3;s:1:\"4\";i:4;s:1:\"5\";}', 0),
 ('CONF_ALLOW_REVIEWS', '1', 0),
 ('CONF_ANALYTICS_ACCESS_TOKEN', '1/F4tffBs6LuMCx6QMwLI5-F9XTw4oIg2koqH6FIgyNQs', 0),
 ('CONF_ANALYTICS_CLIENT_ID', '', 0),
@@ -652,16 +680,16 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_BIRTHDAY_REWARD_POINTS_VALIDITY', '', 0),
 ('CONF_BRAND_REQUEST_APPROVAL', '1', 0),
 ('CONF_BUYER_CAN_SEE_SELLER_TAB', '0', 0),
-('CONF_BUYER_ORDER_STATUS', 'a:11:{i:0;s:1:"1";i:1;s:2:"16";i:2;s:2:"15";i:3;s:1:"2";i:4;s:1:"3";i:5;s:1:"4";i:6;s:1:"5";i:7;s:1:"6";i:8;s:1:"7";i:9;s:1:"8";i:10;s:1:"9";}', 0),
+('CONF_BUYER_ORDER_STATUS', 'a:11:{i:0;s:1:\"1\";i:1;s:2:\"16\";i:2;s:2:\"15\";i:3;s:1:\"2\";i:4;s:1:\"3\";i:5;s:1:\"4\";i:6;s:1:\"5\";i:7;s:1:\"6\";i:8;s:1:\"7\";i:9;s:1:\"8\";i:10;s:1:\"9\";}', 0),
 ('CONF_BUYING_IN_AN_YEAR_MIN_VALUE', '', 0),
 ('CONF_BUYING_IN_AN_YEAR_REWARD_POINTS', '', 0),
 ('CONF_BUYING_IN_AN_YEAR_REWARD_POINTS_VALIDITY', '', 0),
 ('CONF_BUYING_YEAR_REWARD_ORDER_STATUS', 'a:0:{}', 0),
-('conf_cms_pages_to_faq_page', 'a:1:{i:0;s:1:"1";}', 0),
+('conf_cms_pages_to_faq_page', 'a:1:{i:0;s:1:\"1\";}', 0),
 ('CONF_COD_ORDER_STATUS', '16', 0),
 ('CONF_COMMISSION_INCLUDING_SHIPPING', '1', 0),
 ('CONF_COMMISSION_INCLUDING_TAX', '1', 0),
-('CONF_COMPLETED_ORDER_STATUS', 'a:1:{i:0;s:1:"7";}', 0),
+('CONF_COMPLETED_ORDER_STATUS', 'a:1:{i:0;s:1:\"7\";}', 0),
 ('CONF_CONTACT_EMAIL', '', 0),
 ('conf_contact_to_email', '', 0),
 ('CONF_COOKIES_TEXT_1', 'Cookies Policy Text Will go here...', 0),
@@ -741,7 +769,7 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_MAINTAIN_WALLET_ON_PAYMENT_CANCEL', '0', 0),
 ('CONF_MAINTAIN_WALLET_ON_PAYMENT_FAILURE', '0', 0),
 ('CONF_MAINTENANCE', '0', 0),
-('CONF_MAINTENANCE_TEXT_1', '--Coming Soon<img src="/editor/editor-image/204x250_1.jpg" alt="" style="margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;;width:204px;;height:250px;" border="0" />', 0),
+('CONF_MAINTENANCE_TEXT_1', '--Coming Soon<img src=\"/editor/editor-image/204x250_1.jpg\" alt=\"\" style=\"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;;width:204px;;height:250px;\" border=\"0\" />', 0),
 ('CONF_MAINTENANCE_TEXT_2', 'Coming Soon', 0),
 ('CONF_MAX_COMMISSION', '5000', 0),
 ('CONF_MAX_REWARD_POINT', '500000', 0),
@@ -769,12 +797,13 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_PPC_SLIDES_HOME_PAGE', '4', 0),
 ('CONF_PPC_WALLET_BALANCE_ALERT', '100', 0),
 ('CONF_PPC_WALLET_CHARGE_DAYS_INTERVAL', '1', 0),
-('CONF_PROCESSING_ORDER_STATUS', 'a:3:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"5";}', 0),
-('CONF_PRODUCT_IS_ON_ORDER_STATUSES', 'a:4:{i:0;s:1:"2";i:1;s:1:"3";i:2;s:1:"4";i:3;s:1:"6";}', 0),
+('CONF_PROCESSING_ORDER_STATUS', 'a:3:{i:0;s:1:\"3\";i:1;s:1:\"4\";i:2;s:1:\"5\";}', 0),
+('CONF_PRODUCT_DIMENSIONS_ENABLE', '1', 0),
+('CONF_PRODUCT_IS_ON_ORDER_STATUSES', 'a:4:{i:0;s:1:\"2\";i:1;s:1:\"3\";i:2;s:1:\"4\";i:3;s:1:\"6\";}', 0),
 ('CONF_PRODUCT_MODEL_MANDATORY', '1', 1),
 ('CONF_PRODUCT_SKU_MANDATORY', '1', 1),
-('CONF_PURCHASE_ORDER_STATUS', 'a:6:{i:0;s:1:"2";i:1;s:1:"3";i:2;s:1:"4";i:3;s:1:"5";i:4;s:1:"7";i:5;s:1:"9";}', 0),
-('CONF_PRODUCT_DIMENSIONS_ENABLE', '1', 0),
+('CONF_PURCHASE_ORDER_STATUS', 'a:6:{i:0;s:1:\"2\";i:1;s:1:\"3\";i:2;s:1:\"4\";i:3;s:1:\"5\";i:4;s:1:\"7\";i:5;s:1:\"9\";}', 0),
+('CONF_READ_MORE_COOKIES_BUTTON_TEXT_1', 'Read More', 0),
 ('conf_recaptacha_sitekey', '', 0),
 ('CONF_RECAPTCHA_SECRETKEY', '', 0),
 ('CONF_RECAPTCHA_SITEKEY', '', 0),
@@ -785,15 +814,14 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_REGISTRATION_REFERRER_REWARD_POINTS_VALIDITY', '15', 0),
 ('CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART', '15', 0),
 ('CONF_REMINDER_INTERVAL_PRODUCTS_IN_WISHLIST', '15', 0),
-('CONF_READ_MORE_COOKIES_BUTTON_TEXT_1', 'Read More', 0),
 ('CONF_REPLY_TO_EMAIL', '', 1),
-('CONF_RETURN_EXCHANGE_READY_ORDER_STATUS', 'a:4:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"5";i:3;s:1:"7";}', 0),
+('CONF_RETURN_EXCHANGE_READY_ORDER_STATUS', 'a:4:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"5\";i:3;s:1:\"7\";}', 0),
 ('CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS', '9', 0),
 ('CONF_RETURN_REQUEST_ORDER_STATUS', '6', 0),
 ('CONF_RETURN_REQUEST_WITHDRAWN_ORDER_STATUS', '7', 0),
 ('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER', '0', 0),
 ('CONF_REVIEW_ALERT_EMAIL', '1', 0),
-('CONF_REVIEW_READY_ORDER_STATUS', 'a:3:{i:0;s:1:"5";i:1;s:1:"7";i:2;s:1:"9";}', 0),
+('CONF_REVIEW_READY_ORDER_STATUS', 'a:3:{i:0;s:1:\"5\";i:1;s:1:\"7\";i:2;s:1:\"9\";}', 0),
 ('conf_review_reminder_interval', '15', 0),
 ('CONF_REWARDS_VALIDITY_ON_PURCHASE', '1', 0),
 ('CONF_REWARD_POINT', '2', 0),
@@ -804,7 +832,7 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_SELLER_CAN_ADD_CUSTOM_PRODUCT', '1', 0),
 ('CONF_SELLER_CAN_REQUEST_PRODUCT', '1', 0),
 ('CONF_SELLER_PAGE_MAIN_CATEGORY', '', 0),
-('CONF_SELLER_SUBSCRIPTION_STATUS', 'a:3:{i:0;s:2:"10";i:1;s:2:"11";i:2;s:2:"12";}', 0),
+('CONF_SELLER_SUBSCRIPTION_STATUS', 'a:3:{i:0;s:2:\"10\";i:1;s:2:\"11\";i:2;s:2:\"12\";}', 0),
 ('CONF_SEND_EMAIL', '1', 1),
 ('CONF_SEND_SMTP_EMAIL', '0', 0),
 ('CONF_SENT_CART_REMINDER_COUNT', '2', 0),
@@ -834,7 +862,7 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_2', '', 0),
 ('CONF_SOCIAL_FEED_TWITTER_POST_TITLE1', 'Click on this link to enjoy discounts on %s Online Store.', 0),
 ('CONF_SOCIAL_FEED_TWITTER_POST_TITLE2', 'Click on this link to enjoy discounts on %s Online Store. Arabic', 0),
-('CONF_SUBSCRIPTION_ORDER_STATUS', 'a:3:{i:0;s:2:"10";i:1;s:2:"11";i:2;s:2:"12";}', 0),
+('CONF_SUBSCRIPTION_ORDER_STATUS', 'a:3:{i:0;s:2:\"10\";i:1;s:2:\"11\";i:2;s:2:\"12\";}', 0),
 ('CONF_SUBTRACT_STOCK', '1', 0),
 ('CONF_TAX_COLLECTED_BY_SELLER', '1', 0),
 ('CONF_TERMS_AND_CONDITIONS_PAGE', '2', 0),
@@ -860,14 +888,14 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('CONF_USE_TAX_CATEOGRY_ID', '1', 0),
 ('CONF_USE_USER_ID', '1', 0),
 ('CONF_USE_WEIGHT_UNIT_ID', '1', 0),
-('CONF_VENDOR_ORDER_STATUS', 'a:11:{i:0;s:1:"1";i:1;s:2:"16";i:2;s:2:"15";i:3;s:1:"2";i:4;s:1:"3";i:5;s:1:"4";i:6;s:1:"5";i:7;s:1:"6";i:8;s:1:"7";i:9;s:1:"8";i:10;s:1:"9";}', 0),
-('conf_website_name_', 'Copyright &copy; 2017 <a href="javascript:void(0);">FATbit.com', 0),
+('CONF_VENDOR_ORDER_STATUS', 'a:11:{i:0;s:1:\"1\";i:1;s:2:\"16\";i:2;s:2:\"15\";i:3;s:1:\"2\";i:4;s:1:\"3\";i:5;s:1:\"4\";i:6;s:1:\"5\";i:7;s:1:\"6\";i:8;s:1:\"7\";i:9;s:1:\"8\";i:10;s:1:\"9\";}', 0),
+('conf_website_name_', 'Copyright &copy; 2017 <a href=\"javascript:void(0);\">FATbit.com', 0),
 ('CONF_WEBSITE_NAME_1', 'Yo!kart', 0),
 ('CONF_WEBSITE_NAME_2', 'Yo!Kart', 0),
 ('conf_website_name_3', '', 0),
 ('CONF_WELCOME_EMAIL_AFFILIATE_REGISTRATION', '1', 0),
 ('CONF_WELCOME_EMAIL_REGISTRATION', '1', 0),
-('conf_yokart_version', 'V8.2', 0),
+('conf_yokart_version', 'V8.3', 0),
 ('email_logo', '', 0),
 ('favicon', '', 0),
 ('front_logo', '', 0),
@@ -930,11 +958,11 @@ CREATE TABLE `tbl_content_pages_block_lang` (
 --
 
 INSERT INTO `tbl_content_pages_block_lang` (`cpblocklang_id`, `cpblocklang_lang_id`, `cpblocklang_cpage_id`, `cpblocklang_block_id`, `cpblocklang_text`) VALUES
-(1, 1, 1, 1, '<h3> <em>Founded in 2002 and At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium \r\n            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</em></h3>          \r\n<div class="gap">&nbsp;</div>          \r\n<div class="gap">&nbsp;</div>          \r\n<div class="row">            \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>            </div>            \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>            </div>          </div>'),
-(2, 1, 1, 2, '<div class="row">            \r\n	<div class="col-lg-5 col-md-5 col-sm-12 col-xm-12"> <img src="/images/about-left-pic.png" alt="" style="float: none; margin: 0px;" /></div>            \r\n	<div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">              \r\n		<h2>Who We Are</h2>              \r\n		<p>Maecenas tempus neque pulvinar diam auctor faucibus. Vivamus in lacus eu elit hendrerit posuere. Maecenas sit amet urna nibh. In molestie enim nec ante rhoncus vulputate. Phasellus vulputate nec turpis eu lacinia. Etiam mauris justo, pretium ut imperdiet ac, posuere eget felis. Praesent eu aliquam urna. Pellentesque nisi dui, accumsan vel accumsan a, tempor in nunc. Mauris a magna bibendum libero condimentum luctus.<br />\r\n			                <br />\r\n			                Aenean tempor risus vitae nisl bibendum varius. Aenean sodales lorem ultrices ligula vestibulum bibendum. Cras ut pretium justo. Nam a eros elementum, ultricies orci id, convallis purus. Duis semper ultricies elit nec gravida. Pellentesque sit amet placerat mi, ac interdum orci. Mauris ullamcorper posuere mauris.</p>              \r\n		<ul>                \r\n			<li>Duis semper ultricies elit nec gravida </li>                \r\n			<li>Maecenas tempus neque pulvinar diam auctor faucibus </li>                \r\n			<li>Vivamus in lacus eu elit hendrerit posuere. Maecenas sit amet urna nibh </li>                \r\n			<li>Phasellus vulputate nec turpis eu lacinia. Etiam mauris justo </li>                \r\n			<li>Praesent eu aliquam urna. Pellentesque nisi dui, accumsan vel accumsan a, tempor in nunc </li>                \r\n			<li>Aenean tempor risus vitae nisl bibendum varius </li>                \r\n			<li>Aenean sodales lorem ultrices ligula vestibulum bibendum </li>                \r\n			<li>Cras ut pretium justo. Nam a eros elementum </li>              \r\n		</ul>            </div>          </div>'),
-(3, 1, 1, 3, '<div class="row">            \r\n	<div class="col-lg-5 col-md-5 col-sm-12 col-xm-12"> <img src="/images/about-what-we-do.jpg" alt="" style="float: none; margin: 0px;" /></div>            \r\n	<div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">              \r\n		<h2>What we do</h2>              \r\n		<p>Lorem ipsum \r\n			dolor \r\n			sit \r\n			amet, \r\n			consectetur \r\n			adipisicing \r\n			elit, sed \r\n			do \r\n			eiusmod \r\n			tempor \r\n			incididunt ut \r\n			labore et \r\n			dolore \r\n			magna \r\n			aliqua. Ut \r\n			enim ad minim \r\n			veniam, \r\n			quis \r\n			nostrud \r\n			exercitation \r\n			ullamco \r\n			laboris \r\n			nisi ut \r\n			aliquip \r\n			ex ea \r\n			commodo \r\n			consequat. Duis \r\n			aute \r\n			irure dolor in \r\n			reprehenderit in \r\n			voluptate \r\n			velit \r\n			esse \r\n			cillum \r\n			voluptatem.<br />\r\n			<br />\r\n			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p>              <a href="#" class="btn btn--primary btn--custom ripplelink ">Learn More</a> </div>          </div>'),
-(4, 1, 1, 4, '<div class="row">            \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>              <img src="/images/what-we.jpg" alt="" style="float: none; margin: 0px;" /> </div>            \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>              <img src="/images/what-we-do.jpg" alt="" style="float: none; margin: 0px;" /> </div>          </div>'),
-(5, 1, 1, 5, '<div class="align--center">            \r\n	<div class="heading3">Or Start your business with YoKart Multivendor Platform </div>            <a href="#" class="btn btn--secondary btn--lg ripplelink">Start Selling NOw</a> </div>');
+(1, 1, 1, 1, '<h3> <em>Founded in 2002 and At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium \r\n            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</em></h3>          \r\n<div class=\"gap\">&nbsp;</div>          \r\n<div class=\"gap\">&nbsp;</div>          \r\n<div class=\"row\">            \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xm-12\">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>            </div>            \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xm-12\">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>            </div>          </div>'),
+(2, 1, 1, 2, '<div class=\"row\">            \r\n	<div class=\"col-lg-5 col-md-5 col-sm-12 col-xm-12\"> <img src=\"/images/about-left-pic.png\" alt=\"\" style=\"float: none; margin: 0px;\" /></div>            \r\n	<div class=\"col-lg-7 col-md-7 col-sm-12 col-xm-12\">              \r\n		<h2>Who We Are</h2>              \r\n		<p>Maecenas tempus neque pulvinar diam auctor faucibus. Vivamus in lacus eu elit hendrerit posuere. Maecenas sit amet urna nibh. In molestie enim nec ante rhoncus vulputate. Phasellus vulputate nec turpis eu lacinia. Etiam mauris justo, pretium ut imperdiet ac, posuere eget felis. Praesent eu aliquam urna. Pellentesque nisi dui, accumsan vel accumsan a, tempor in nunc. Mauris a magna bibendum libero condimentum luctus.<br />\r\n			                <br />\r\n			                Aenean tempor risus vitae nisl bibendum varius. Aenean sodales lorem ultrices ligula vestibulum bibendum. Cras ut pretium justo. Nam a eros elementum, ultricies orci id, convallis purus. Duis semper ultricies elit nec gravida. Pellentesque sit amet placerat mi, ac interdum orci. Mauris ullamcorper posuere mauris.</p>              \r\n		<ul>                \r\n			<li>Duis semper ultricies elit nec gravida </li>                \r\n			<li>Maecenas tempus neque pulvinar diam auctor faucibus </li>                \r\n			<li>Vivamus in lacus eu elit hendrerit posuere. Maecenas sit amet urna nibh </li>                \r\n			<li>Phasellus vulputate nec turpis eu lacinia. Etiam mauris justo </li>                \r\n			<li>Praesent eu aliquam urna. Pellentesque nisi dui, accumsan vel accumsan a, tempor in nunc </li>                \r\n			<li>Aenean tempor risus vitae nisl bibendum varius </li>                \r\n			<li>Aenean sodales lorem ultrices ligula vestibulum bibendum </li>                \r\n			<li>Cras ut pretium justo. Nam a eros elementum </li>              \r\n		</ul>            </div>          </div>'),
+(3, 1, 1, 3, '<div class=\"row\">            \r\n	<div class=\"col-lg-5 col-md-5 col-sm-12 col-xm-12\"> <img src=\"/images/about-what-we-do.jpg\" alt=\"\" style=\"float: none; margin: 0px;\" /></div>            \r\n	<div class=\"col-lg-7 col-md-7 col-sm-12 col-xm-12\">              \r\n		<h2>What we do</h2>              \r\n		<p>Lorem ipsum \r\n			dolor \r\n			sit \r\n			amet, \r\n			consectetur \r\n			adipisicing \r\n			elit, sed \r\n			do \r\n			eiusmod \r\n			tempor \r\n			incididunt ut \r\n			labore et \r\n			dolore \r\n			magna \r\n			aliqua. Ut \r\n			enim ad minim \r\n			veniam, \r\n			quis \r\n			nostrud \r\n			exercitation \r\n			ullamco \r\n			laboris \r\n			nisi ut \r\n			aliquip \r\n			ex ea \r\n			commodo \r\n			consequat. Duis \r\n			aute \r\n			irure dolor in \r\n			reprehenderit in \r\n			voluptate \r\n			velit \r\n			esse \r\n			cillum \r\n			voluptatem.<br />\r\n			<br />\r\n			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p>              <a href=\"#\" class=\"btn btn--primary btn--custom ripplelink \">Learn More</a> </div>          </div>'),
+(4, 1, 1, 4, '<div class=\"row\">            \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xm-12\">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>              <img src=\"/images/what-we.jpg\" alt=\"\" style=\"float: none; margin: 0px;\" /> </div>            \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xm-12\">              \r\n		<h3>What We Do</h3>              \r\n		<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\n                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta \r\n                sunt explicabo.Eenim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia \r\n                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui \r\n                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi \r\n                tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. </p>              <img src=\"/images/what-we-do.jpg\" alt=\"\" style=\"float: none; margin: 0px;\" /> </div>          </div>'),
+(5, 1, 1, 5, '<div class=\"align--center\">            \r\n	<div class=\"heading3\">Or Start your business with YoKart Multivendor Platform </div>            <a href=\"#\" class=\"btn btn--secondary btn--lg ripplelink\">Start Selling NOw</a> </div>');
 
 -- --------------------------------------------------------
 
@@ -957,8 +985,8 @@ CREATE TABLE `tbl_content_pages_lang` (
 
 INSERT INTO `tbl_content_pages_lang` (`cpagelang_cpage_id`, `cpagelang_lang_id`, `cpage_title`, `cpage_content`, `cpage_image_title`, `cpage_image_content`) VALUES
 (1, 1, 'About Us', '', 'About Yo!Kart', 'Company Overview'),
-(2, 1, 'Terms & Conditions', '<div class="container__cms">\r\n	<p>Lorem \r\n		<g class="gr_ gr_91 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="91" data-gr-id="91">Ipsum </g>\r\n		<g class="gr_ gr_90 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar multiReplace" id="90" data-gr-id="90">\r\n			<g class="gr_ gr_91 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="91" data-gr-id="91">is</g> simply dummy</g> text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		<g class="gr_ gr_92 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Punctuation only-del replaceWithoutSep" id="92" data-gr-id="92">1500s,</g> when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It \r\n		<g class="gr_ gr_94 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="94" data-gr-id="94">was 			popularised</g> in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (\r\n		<g class="gr_ gr_99 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="99" data-gr-id="99">injected 			humour</g> and the like).</p>\r\n	<h4>1. Service.</h4>\r\n	<h6>1.1. General.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n	<h6>1.2. Design Contest.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, 			consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered \r\n		<g class="gr_ gr_102 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="102" data-gr-id="102">the 			undoubtable</g> source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem \r\n		<g class="gr_ gr_104 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="104" data-gr-id="104">ipsum 			dolor</g> sit amet..", comes from a line in section 1.10.32.<br />\r\n		 <br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>1.3. Ready-made Design Store.</h6>\r\n	<p>There are many variations of passages of Lorem Ipsum available, but the majority have \r\n		<g class="gr_ gr_112 gr-alert gr_gramm gr_hide gr_inline_cards gr_disable_anim_appear Style multiReplace replaceWithoutSep replaceWithoutSep" id="112" data-gr-id="112">suffered \r\n			<g class="gr_ gr_109 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar only-ins doubleReplace replaceWithoutSep" id="109" data-gr-id="109">alteration</g></g> in some form, by \r\n		<g class="gr_ gr_113 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="113" data-gr-id="113">injected 			humour</g>, \r\n		<g class="gr_ gr_114 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="114" data-gr-id="114">or 			randomised</g> words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle \r\n		<g class="gr_ gr_116 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="116" data-gr-id="116">of \r\n			<g class="gr_ gr_115 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar only-ins doubleReplace replaceWithoutSep" id="115" data-gr-id="115">text</g></g>. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, \r\n		<g class="gr_ gr_119 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="119" data-gr-id="119">injected 			humour</g>, or non-characteristic words etc.Lorem ipsum \r\n		<g class="gr_ gr_123 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="123" data-gr-id="123">dolor</g> 			sit \r\n		<g class="gr_ gr_135 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="135" data-gr-id="135">amet</g>, 			consectetur 			adipisicing \r\n		<g class="gr_ gr_127 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="127" data-gr-id="127">elit</g>, sed \r\n		<g class="gr_ gr_124 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="124" data-gr-id="124">do</g> \r\n		<g class="gr_ gr_128 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="128" data-gr-id="128">eiusmod</g> \r\n		<g class="gr_ gr_129 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="129" data-gr-id="129">tempor</g> \r\n		<g class="gr_ gr_130 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="130" data-gr-id="130">incididunt</g> ut \r\n		<g class="gr_ gr_131 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="131" data-gr-id="131">labore</g> et \r\n		<g class="gr_ gr_132 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="132" data-gr-id="132">dolore</g> \r\n		<g class="gr_ gr_133 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="133" data-gr-id="133">magna</g> \r\n		<g class="gr_ gr_134 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="134" data-gr-id="134">aliqua</g>. Ut \r\n		<g class="gr_ gr_137 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="137" data-gr-id="137">enim</g> ad minim \r\n		<g class="gr_ gr_138 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="138" data-gr-id="138">veniam</g>, \r\n		<g class="gr_ gr_146 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="146" data-gr-id="146">quis</g> \r\n		<g class="gr_ gr_139 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="139" data-gr-id="139">nostrud</g> \r\n		<g class="gr_ gr_140 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="140" data-gr-id="140">exercitation</g> \r\n		<g class="gr_ gr_141 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="141" data-gr-id="141">ullamco</g> \r\n		<g class="gr_ gr_142 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="142" data-gr-id="142">laboris</g> \r\n		<g class="gr_ gr_136 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="136" data-gr-id="136">nisi</g> ut \r\n		<g class="gr_ gr_121 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="121" data-gr-id="121">\r\n			<g class="gr_ gr_143 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="143" data-gr-id="143">aliquip</g> </g>\r\n		<g class="gr_ gr_120 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling multiReplace" id="120" data-gr-id="120">\r\n			<g class="gr_ gr_121 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="121" data-gr-id="121">ex</g> ea</g> \r\n		<g class="gr_ gr_144 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="144" data-gr-id="144">commodo</g> \r\n		<g class="gr_ gr_145 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="145" data-gr-id="145">consequat</g>. Duis \r\n		<g class="gr_ gr_147 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="147" data-gr-id="147">aute</g> \r\n		<g class="gr_ gr_148 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="148" data-gr-id="148">irure</g> dolor in \r\n		<g class="gr_ gr_149 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="149" data-gr-id="149">reprehenderit</g> in \r\n		<g class="gr_ gr_150 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="150" data-gr-id="150">voluptate</g> \r\n		<g class="gr_ gr_151 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="151" data-gr-id="151">velit</g> \r\n		<g class="gr_ gr_156 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="156" data-gr-id="156">esse</g> \r\n		<g class="gr_ gr_152 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="152" data-gr-id="152">cillum</g> \r\n		<g class="gr_ gr_153 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="153" data-gr-id="153">dolore</g> \r\n		<g class="gr_ gr_157 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="157" data-gr-id="157">eu</g> \r\n		<g class="gr_ gr_154 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="154" data-gr-id="154">fugiat</g> nulla \r\n		<g class="gr_ gr_155 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="155" data-gr-id="155">pariatur</g>. Excepteur \r\n		<g class="gr_ gr_158 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="158" data-gr-id="158">sint</g> \r\n		<g class="gr_ gr_159 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="159" data-gr-id="159">occaecat</g> \r\n		<g class="gr_ gr_160 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="160" data-gr-id="160">cupidatat</g> \r\n		<g class="gr_ gr_122 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling multiReplace" id="122" data-gr-id="122">non \r\n			<g class="gr_ gr_162 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="162" data-gr-id="162">proident</g></g>, \r\n		<g class="gr_ gr_163 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="163" data-gr-id="163">sunt</g> in culpa \r\n		<g class="gr_ gr_164 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="164" data-gr-id="164">qui</g> \r\n		<g class="gr_ gr_165 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="165" data-gr-id="165">officia</g> \r\n		<g class="gr_ gr_166 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="166" data-gr-id="166">deserunt</g> \r\n		<g class="gr_ gr_167 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="167" data-gr-id="167">mollit</g> \r\n		<g class="gr_ gr_169 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling" id="169" data-gr-id="169">anim</g> id est \r\n		<g class="gr_ gr_168 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace" id="168" data-gr-id="168">laborum</g>."</p>\r\n	<h4>2. License/Assignment.</h4>\r\n	<h6>2.1. Assignment.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, 			consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered \r\n		<g class="gr_ gr_97 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="97" data-gr-id="97">the 			undoubtable</g> source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem \r\n		<g class="gr_ gr_101 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="101" data-gr-id="101">ipsum 			dolor</g> sit amet..", comes from a line in section 1.10.32.<br />\r\n		 <br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>2.2. License.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n	<h4>3. Payment Terms.</h4>\r\n	<h6>3.1. Payment and Delivery.</h6>\r\n	<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />\r\n		 <br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	<h6>3.2. Refunds.</h6>\r\n	<p>Lorem 		Ipsum 		 			is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		<g class="gr_ gr_86 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Punctuation only-del replaceWithoutSep" id="86" data-gr-id="86">1500s,</g> when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. \r\n		<g class="gr_ gr_176 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="176" data-gr-id="176">It 		 \r\n			<g class="gr_ gr_89 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="89" data-gr-id="89">was</g></g>\r\n		<g class="gr_ gr_89 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="89" data-gr-id="89"> 			popularised</g> in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose ( \r\n		<g class="gr_ gr_108 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace" id="108" data-gr-id="108">injected 			humour</g> and the like).</p></div>', '', ''),
-(3, 1, 'Privacy Policy', '<div class="container__cms">\r\n	<p>Lorem Ipsum \r\n		is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was \r\n		popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected \r\n		humour and the like).</p>\r\n	<h4>1. Service.</h4>\r\n	<h6>1.1. General.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n	<h6>1.2. Design Contest.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, \r\n		consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the \r\n		undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.<br />\r\n		<br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>1.3. Ready-made Design Store.</h6>\r\n	<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered \r\n		alteration in some form, by injected \r\n		humour, or \r\n		randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of \r\n		text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected \r\n		humour, or non-characteristic words etc.Lorem ipsum dolor \r\n		sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \r\n		ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \r\n		non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n	<h4>2. License/Assignment.</h4>\r\n	<h6>2.1. Assignment.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, \r\n		consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the \r\n		undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.<br />\r\n		<br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>2.2. License.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>\r\n	<h4>3. Payment Terms.</h4>\r\n	<h6>3.1. Payment and Delivery.</h6>\r\n	<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />\r\n		<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	<h6>3.2. Refunds.</h6>\r\n	<p>Lorem Ipsum \r\n		is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was \r\n		popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose ( injected \r\n		humour and the like).</p></div>', '', '');
+(2, 1, 'Terms & Conditions', '<div class=\"container__cms\">\r\n	<p>Lorem \r\n		<g class=\"gr_ gr_91 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"91\" data-gr-id=\"91\">Ipsum </g>\r\n		<g class=\"gr_ gr_90 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar multiReplace\" id=\"90\" data-gr-id=\"90\">\r\n			<g class=\"gr_ gr_91 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"91\" data-gr-id=\"91\">is</g> simply dummy</g> text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		<g class=\"gr_ gr_92 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Punctuation only-del replaceWithoutSep\" id=\"92\" data-gr-id=\"92\">1500s,</g> when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It \r\n		<g class=\"gr_ gr_94 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"94\" data-gr-id=\"94\">was 			popularised</g> in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (\r\n		<g class=\"gr_ gr_99 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"99\" data-gr-id=\"99\">injected 			humour</g> and the like).</p>\r\n	<h4>1. Service.</h4>\r\n	<h6>1.1. General.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</p>\r\n	<h6>1.2. Design Contest.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, 			consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered \r\n		<g class=\"gr_ gr_102 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"102\" data-gr-id=\"102\">the 			undoubtable</g> source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem \r\n		<g class=\"gr_ gr_104 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"104\" data-gr-id=\"104\">ipsum 			dolor</g> sit amet..\", comes from a line in section 1.10.32.<br />\r\n		 <br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>1.3. Ready-made Design Store.</h6>\r\n	<p>There are many variations of passages of Lorem Ipsum available, but the majority have \r\n		<g class=\"gr_ gr_112 gr-alert gr_gramm gr_hide gr_inline_cards gr_disable_anim_appear Style multiReplace replaceWithoutSep replaceWithoutSep\" id=\"112\" data-gr-id=\"112\">suffered \r\n			<g class=\"gr_ gr_109 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar only-ins doubleReplace replaceWithoutSep\" id=\"109\" data-gr-id=\"109\">alteration</g></g> in some form, by \r\n		<g class=\"gr_ gr_113 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"113\" data-gr-id=\"113\">injected 			humour</g>, \r\n		<g class=\"gr_ gr_114 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"114\" data-gr-id=\"114\">or 			randomised</g> words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle \r\n		<g class=\"gr_ gr_116 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"116\" data-gr-id=\"116\">of \r\n			<g class=\"gr_ gr_115 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Grammar only-ins doubleReplace replaceWithoutSep\" id=\"115\" data-gr-id=\"115\">text</g></g>. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, \r\n		<g class=\"gr_ gr_119 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"119\" data-gr-id=\"119\">injected 			humour</g>, or non-characteristic words etc.Lorem ipsum \r\n		<g class=\"gr_ gr_123 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"123\" data-gr-id=\"123\">dolor</g> 			sit \r\n		<g class=\"gr_ gr_135 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"135\" data-gr-id=\"135\">amet</g>, 			consectetur 			adipisicing \r\n		<g class=\"gr_ gr_127 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"127\" data-gr-id=\"127\">elit</g>, sed \r\n		<g class=\"gr_ gr_124 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"124\" data-gr-id=\"124\">do</g> \r\n		<g class=\"gr_ gr_128 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"128\" data-gr-id=\"128\">eiusmod</g> \r\n		<g class=\"gr_ gr_129 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"129\" data-gr-id=\"129\">tempor</g> \r\n		<g class=\"gr_ gr_130 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"130\" data-gr-id=\"130\">incididunt</g> ut \r\n		<g class=\"gr_ gr_131 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"131\" data-gr-id=\"131\">labore</g> et \r\n		<g class=\"gr_ gr_132 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"132\" data-gr-id=\"132\">dolore</g> \r\n		<g class=\"gr_ gr_133 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"133\" data-gr-id=\"133\">magna</g> \r\n		<g class=\"gr_ gr_134 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"134\" data-gr-id=\"134\">aliqua</g>. Ut \r\n		<g class=\"gr_ gr_137 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"137\" data-gr-id=\"137\">enim</g> ad minim \r\n		<g class=\"gr_ gr_138 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"138\" data-gr-id=\"138\">veniam</g>, \r\n		<g class=\"gr_ gr_146 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"146\" data-gr-id=\"146\">quis</g> \r\n		<g class=\"gr_ gr_139 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"139\" data-gr-id=\"139\">nostrud</g> \r\n		<g class=\"gr_ gr_140 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"140\" data-gr-id=\"140\">exercitation</g> \r\n		<g class=\"gr_ gr_141 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"141\" data-gr-id=\"141\">ullamco</g> \r\n		<g class=\"gr_ gr_142 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"142\" data-gr-id=\"142\">laboris</g> \r\n		<g class=\"gr_ gr_136 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"136\" data-gr-id=\"136\">nisi</g> ut \r\n		<g class=\"gr_ gr_121 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"121\" data-gr-id=\"121\">\r\n			<g class=\"gr_ gr_143 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"143\" data-gr-id=\"143\">aliquip</g> </g>\r\n		<g class=\"gr_ gr_120 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling multiReplace\" id=\"120\" data-gr-id=\"120\">\r\n			<g class=\"gr_ gr_121 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"121\" data-gr-id=\"121\">ex</g> ea</g> \r\n		<g class=\"gr_ gr_144 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"144\" data-gr-id=\"144\">commodo</g> \r\n		<g class=\"gr_ gr_145 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"145\" data-gr-id=\"145\">consequat</g>. Duis \r\n		<g class=\"gr_ gr_147 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"147\" data-gr-id=\"147\">aute</g> \r\n		<g class=\"gr_ gr_148 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"148\" data-gr-id=\"148\">irure</g> dolor in \r\n		<g class=\"gr_ gr_149 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"149\" data-gr-id=\"149\">reprehenderit</g> in \r\n		<g class=\"gr_ gr_150 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"150\" data-gr-id=\"150\">voluptate</g> \r\n		<g class=\"gr_ gr_151 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"151\" data-gr-id=\"151\">velit</g> \r\n		<g class=\"gr_ gr_156 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"156\" data-gr-id=\"156\">esse</g> \r\n		<g class=\"gr_ gr_152 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"152\" data-gr-id=\"152\">cillum</g> \r\n		<g class=\"gr_ gr_153 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"153\" data-gr-id=\"153\">dolore</g> \r\n		<g class=\"gr_ gr_157 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"157\" data-gr-id=\"157\">eu</g> \r\n		<g class=\"gr_ gr_154 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"154\" data-gr-id=\"154\">fugiat</g> nulla \r\n		<g class=\"gr_ gr_155 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"155\" data-gr-id=\"155\">pariatur</g>. Excepteur \r\n		<g class=\"gr_ gr_158 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"158\" data-gr-id=\"158\">sint</g> \r\n		<g class=\"gr_ gr_159 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"159\" data-gr-id=\"159\">occaecat</g> \r\n		<g class=\"gr_ gr_160 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"160\" data-gr-id=\"160\">cupidatat</g> \r\n		<g class=\"gr_ gr_122 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling multiReplace\" id=\"122\" data-gr-id=\"122\">non \r\n			<g class=\"gr_ gr_162 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"162\" data-gr-id=\"162\">proident</g></g>, \r\n		<g class=\"gr_ gr_163 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"163\" data-gr-id=\"163\">sunt</g> in culpa \r\n		<g class=\"gr_ gr_164 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"164\" data-gr-id=\"164\">qui</g> \r\n		<g class=\"gr_ gr_165 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"165\" data-gr-id=\"165\">officia</g> \r\n		<g class=\"gr_ gr_166 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"166\" data-gr-id=\"166\">deserunt</g> \r\n		<g class=\"gr_ gr_167 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"167\" data-gr-id=\"167\">mollit</g> \r\n		<g class=\"gr_ gr_169 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling\" id=\"169\" data-gr-id=\"169\">anim</g> id est \r\n		<g class=\"gr_ gr_168 gr-alert gr_spell gr_inline_cards gr_disable_anim_appear ContextualSpelling ins-del multiReplace\" id=\"168\" data-gr-id=\"168\">laborum</g>.\"</p>\r\n	<h4>2. License/Assignment.</h4>\r\n	<h6>2.1. Assignment.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, 			consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered \r\n		<g class=\"gr_ gr_97 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"97\" data-gr-id=\"97\">the 			undoubtable</g> source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem \r\n		<g class=\"gr_ gr_101 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"101\" data-gr-id=\"101\">ipsum 			dolor</g> sit amet..\", comes from a line in section 1.10.32.<br />\r\n		 <br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>2.2. License.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</p>\r\n	<h4>3. Payment Terms.</h4>\r\n	<h6>3.1. Payment and Delivery.</h6>\r\n	<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />\r\n		 <br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	<h6>3.2. Refunds.</h6>\r\n	<p>Lorem 		Ipsum 		 			is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		<g class=\"gr_ gr_86 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Punctuation only-del replaceWithoutSep\" id=\"86\" data-gr-id=\"86\">1500s,</g> when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. \r\n		<g class=\"gr_ gr_176 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"176\" data-gr-id=\"176\">It 		 \r\n			<g class=\"gr_ gr_89 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"89\" data-gr-id=\"89\">was</g></g>\r\n		<g class=\"gr_ gr_89 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"89\" data-gr-id=\"89\"> 			popularised</g> in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose ( \r\n		<g class=\"gr_ gr_108 gr-alert gr_gramm gr_inline_cards gr_disable_anim_appear Style multiReplace\" id=\"108\" data-gr-id=\"108\">injected 			humour</g> and the like).</p></div>', '', ''),
+(3, 1, 'Privacy Policy', '<div class=\"container__cms\">\r\n	<p>Lorem Ipsum \r\n		is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was \r\n		popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected \r\n		humour and the like).</p>\r\n	<h4>1. Service.</h4>\r\n	<h6>1.1. General.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</p>\r\n	<h6>1.2. Design Contest.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, \r\n		consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the \r\n		undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.<br />\r\n		<br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>1.3. Ready-made Design Store.</h6>\r\n	<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered \r\n		alteration in some form, by injected \r\n		humour, or \r\n		randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of \r\n		text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected \r\n		humour, or non-characteristic words etc.Lorem ipsum dolor \r\n		sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \r\n		ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \r\n		non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</p>\r\n	<h4>2. License/Assignment.</h4>\r\n	<h6>2.1. Assignment.</h6>\r\n	<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, \r\n		consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the \r\n		undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.<br />\r\n		<br />\r\n		The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n	<h6>2.2. License.</h6>\r\n	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"</p>\r\n	<h4>3. Payment Terms.</h4>\r\n	<h6>3.1. Payment and Delivery.</h6>\r\n	<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />\r\n		<br />\r\n		At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n	<h6>3.2. Refunds.</h6>\r\n	<p>Lorem Ipsum \r\n		is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the \r\n		1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was \r\n		popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br />\r\n		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose ( injected \r\n		humour and the like).</p></div>', '', '');
 
 -- --------------------------------------------------------
 
@@ -1250,7 +1278,6 @@ CREATE TABLE `tbl_countries_lang` (
 --
 
 INSERT INTO `tbl_countries_lang` (`countrylang_country_id`, `countrylang_lang_id`, `country_name`) VALUES
-(258, 1, 'AAAA1'),
 (244, 1, 'Aaland Islands'),
 (1, 1, 'Afghanistan'),
 (2, 1, 'Albania'),
@@ -1499,14 +1526,8 @@ INSERT INTO `tbl_countries_lang` (`countrylang_country_id`, `countrylang_lang_id
 (233, 1, 'Wallis and Futuna Islands'),
 (234, 1, 'Western Sahara'),
 (235, 1, 'Yemen'),
-(256, 1, 'YY'),
 (238, 1, 'Zambia'),
-(239, 1, 'Zimbabwe'),
-(255, 1, 'ZZ_ENG'),
-(258, 2, 'AAAA2'),
-(1, 2, 'Afghanistan'),
-(256, 2, 'YY'),
-(255, 2, 'ZZ_ARAB');
+(239, 1, 'Zimbabwe');
 
 -- --------------------------------------------------------
 
@@ -1559,6 +1580,18 @@ CREATE TABLE `tbl_coupons_hold` (
   `couponhold_user_id` int(11) NOT NULL,
   `couponhold_added_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_coupons_hold_pending_order`
+--
+
+CREATE TABLE `tbl_coupons_hold_pending_order` (
+  `ochold_order_id` varchar(15) NOT NULL,
+  `ochold_coupon_id` int(11) NOT NULL,
+  `ochold_added_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1763,7 +1796,7 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 ('blog_contribution_status_changed', 1, 'Blog Contribution Status Change - Notification', 'Blog Contribution Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Blog Contribution Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n											Your blog contribution (posted on {posted_on_datetime}) status has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n											</td>\r\n										</tr>\r\n										\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_status} New/Current Order Status<br/>\r\n{posted_on_datetime} - Contribution Posted on date time.<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
 ('buyer_notification_review_order_product', 1, 'Buyer Review Order product - Notification', 'Review you order at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Order feedback survey</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												                                              Thanks for shoppint ( Order Invoice Number {invoice_number}) with <a href=\"{website_url}\">{website_name}</a>. Please feedback your experience to this order  <a href=\"{review_page_url}\" style=\"color:#ff3a59;\">Click Here</a></td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:5px 0 30px;\">{order_items_table_format}</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_order_status} New/Current Order Status<br/>\r\n{invoice_number} - Child Order Invoice Number.<br/>\r\n{order_items_table_format} - Child Order Items in Tabular Format.<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1);
 INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES
-('buyer_notification_review_status_updated', 1, 'Buyer Product Review Status Change - Notification', 'Product Review Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Review Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												Your Review status has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_status} New/Current Review Status<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
+('buyer_notification_review_status_updated', 1, 'Buyer Product Review Status Change - Notification', 'Product Review Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Review Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												Your Review status for {product_link} has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> {product_link} Product Link<br/> {new_status} New/Current Review Status<br/> {website_name} Name of our website<br> {website_url} URL of our website<br> {social_media_icons} <br> {contact_us_url} <br> ', 1),
 ('cancellation_request_approved_declined', 1, 'Cancellation Request Approved/Declined Email for User', 'Order Cancellation Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Order Cancellation Request</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												Your order cancellation request on {invoice_number} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{invoice_number} Order Invoice Number<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1),
 ('cancel_subscription_email', 1, 'Cancel Subscription Email', 'Cancel Subscription Email', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 30px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\"><br />\r\n										</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Cancel Subscription!</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name} </strong><br />\r\n													your &nbsp;{spackage_name}<span style=\"color: rgb(149, 149, 149); font-family: \" open=\"\" sans\",=\"\" sans-serif;=\"\" font-size:=\"\" 13px;=\"\" background-color:=\"\" rgb(255,=\"\" 255,=\"\" 255);\"=\"\"> plan has been canceled.</span></td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\"><br />\r\n													<br />\r\n													{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{user_full_name} Name of the email receiver<br>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{reset_url} URL to reset the password<br>\r\n{spackage_name} Package name <br>\r\n', 1),
 ('catalog_request_message_user', 1, 'Catalog request message notification', 'New message received on catalog request at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\"></h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Message Posted</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												{username} has posted a message on catalog request at <a href=\"{website_url}\">{website_name}</a><br />\r\n												Message is given as below:</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:0 0 30px;\">{message}</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:0 0 30px;\">Please {click_here} to reply to this message.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} - Name of the email receiver<br/>\n{username} username of the person posted a message.<br />\n{request_number} Request number on which message is posted.<br />\n{message} message body/comments sent by the sender<br />\n{click_here} Link to reply to the message <br />\n{social_media_icons} <br>\n{contact_us_url} <br>', 1),
@@ -1832,7 +1865,8 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 ('welcome_registration', 1, 'Welcome Mail on Registration', 'Welcome to {website_name}', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Congratulations</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Account Created!</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {name} </strong><br />\r\n													Thank you for signing up at <a href=\"{website_url}\">{website_name}</a>.</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\">We are thrilled to have you aboard! You have taken a great first step and we are so excited to connect directly with you.</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:0 0 30px;\">If you require any assistance in using our site, or have any feedback or suggestions, you can email us at {contact_us_email}</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{name} Name of the signed up user.<br>\r\n{email} Email Address of the signed up user.<br>\r\n{username} Username of the signed up User <br/>\r\n{contact_us_email} - Contact Us Email Address<br/>\r\n{website_name} Name of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
 ('withdrawal_request_admin', 1, 'Withdrawal Request - Admin', 'Withdrawal Request on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Request Received</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear Admin</strong><br />\r\n												{username} has submitted a withdrawal request on {website_name}. Please find the details below:</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\">\r\n												<table style=\"border:1px solid #ddd; border-collapse:collapse;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\r\n													<tbody>\r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Request ID</td>\r\n															<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{request_id}</td>\r\n														</tr>                                                        \r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Amount<span class=\"Apple-tab-span\" style=\"white-space:pre\"></span></td>\r\n															<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{request_amount}</td>\r\n														</tr>\r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" colspan=\"2\">Withdrawal details are as below:</td>\r\n														</tr>\r\n													</tbody>\r\n												</table>\r\n												\r\n												{withdrawal_detail_table_format_html}\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">We‘re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{username} Username of the person submitted the withdrawal request<br />\r\n{website_name} Name of the website<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount<br />\r\n{social_media_icons} <br>\r\n{withdrawal_detail_table_format_html}: Withdrawal Payment Details like Bank Details, Cheque Details, PayPal Details etc\r\n{contact_us_url} <br>', 1);
 INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES
-('withdrawal_request_approved_declined', 1, 'Withdrawal Request Approved/Declined Email for User', 'Fund Withdrawal Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												                                              Your fund withdrawal request {request_id} of {request_amount} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount.<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1);
+('withdrawal_request_approved_declined', 1, 'Withdrawal Request Approved/Declined Email for User', 'Fund Withdrawal Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												                                              Your fund withdrawal request {request_id} of {request_amount} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount.<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1),
+('new_seller_approved_admin', 1, 'New Seller Approval - Admin', 'New Seller Approval on {website_name}', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Seller Approved</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Seller Approval</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear Admin </strong><br />\r\n													<span style=\"color: rgb(153, 153, 153); font-family: Arial; text-align: center; background-color: rgb(255, 255, 255);\">New seller has been registered on</span> <a href=\"{website_url}\">{website_name}</a>. Please find the details below:</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\">\r\n													<table style=\"border:1px solid #ddd; border-collapse:collapse;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\r\n														<tbody>\r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Reference Number</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{reference_number}</td>\r\n															</tr>                                                        \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Username<span class=\"Apple-tab-span\" style=\"white-space:pre\"></span></td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{username}</td>\r\n															</tr>  \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Email</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{email}</td>\r\n															</tr> \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Name</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{name}</td>\r\n															</tr>                                                        \r\n														</tbody>\r\n													</table></td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ&euro;˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{website_name} Name of the website<br />\r\n{username} \r\n\r\nUsername of the person registered<br />\r\n{email} Email Address of the person registered<br />\r\n{name} Name of the person sent request<br />\r\n{reference_number} \r\n\r\nReference Number of the request<br />\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1);
 
 -- --------------------------------------------------------
 
@@ -1965,7 +1999,8 @@ INSERT INTO `tbl_extra_pages` (`epage_id`, `epage_identifier`, `epage_type`, `ep
 (23, 'Checkout Page', 23, 1, 0),
 (24, 'Become Seller Page Form Text', 24, 1, 0),
 (25, 'Seller page Block 3', 25, 1, 0),
-(26, 'Footer Trust Banners', 26, 0, 0);
+(26, 'Footer Trust Banners', 26, 0, 0),
+(27, 'Checkout page header block', 27, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1985,22 +2020,23 @@ CREATE TABLE `tbl_extra_pages_lang` (
 --
 
 INSERT INTO `tbl_extra_pages_lang` (`epagelang_epage_id`, `epagelang_lang_id`, `epage_label`, `epage_content`) VALUES
-(1, 1, 'Contact us eng', '<span style="font-weight: bold;">IMPORTANT INFORMATION REGARDING ONLINE PHISHING FRAUD </span>If you have recently received suspect correspondence or a link regarding your data <br />'),
-(13, 1, 'Login Page Right Block', '<ul class="listing--icons">   \r\n	<li><i class="fa fa-truck"></i>\r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p></li>   \r\n	<li><i class="fa fa-bell"></i>\r\n		<p><strong>Make Informed Decisions</strong> Get \r\n			<g class="gr_ gr_13 gr-alert gr_spell gr_inline_cards gr_run_anim ContextualSpelling ins-del multiReplace" id="13" data-gr-id="13">Relevant</g> alerts and recommendations</p></li>\r\n	<li><i class="fa fa-thumbs-o-up"></i>\r\n		<p><strong>Engage Socially</strong> With Wishlists, Reviews, Ratings</p></li>\r\n</ul>'),
-(14, 1, 'Registration Page Right Block', '<ul class="listing--icons">\r\n	<li>   <i class="fa fa-truck"></i> \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>\r\n	<li>   <i class="fa fa-bell"></i> \r\n		<p><strong>Make Informed Decisions</strong> Get \r\n			Relavant alerts and recommendations</p>   </li>\r\n	<li>   <i class="fa fa-thumbs-o-up"></i> \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
-(15, 1, 'Forgot Page Right Block', '<ul class="listing--icons">   \r\n	<li>   <i class="fa fa-truck"></i>   \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>   \r\n	<li>   <i class="fa fa-bell"></i>   \r\n		<p><strong>Make  Informed Decisions</strong> Get Relavant alerts and recommendations</p>   </li>   \r\n	<li>   <i class="fa fa-thumbs-o-up"></i>   \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
-(16, 1, 'Seller Page Block 1', '<div class="row">  \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">\r\n		<div class="growth" style="background-image:url(images/customer.png);"><strong>5+</strong><br />\r\n			  Millions Customers</div>\r\n		<div class="growth" style="background-image:url(images/bussiness.png);"><strong>1000+</strong><br />\r\n			  Business Growing rapidly with us </div>  </div>  \r\n	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">\r\n		<ul class="growth-txt">  \r\n			<li><i class="icn"><img src="images/star-unique.png" alt="" /></i>\r\n				<h4>Consectetur adipisicing</h4>\r\n				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do \r\n					  incididunt ut labore et dolore magna aliqua. </p>  </li>  \r\n			<li><i class="icn"><img src="images/folder.png" alt="" /></i>\r\n				<h4>Consectetur adipisicing</h4>\r\n				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do \r\n					  incididunt ut labore et dolore magna aliqua.</p>  </li>\r\n		</ul>  </div></div>'),
-(17, 1, 'Seller Page Block 2', '<div class="heading1">Simple steps to start selling online</div>        \r\n        \r\n<div class="seller-steps">  \r\n	<ul>      \r\n		<li><i class="icn"><img src="/images/easyto-use.png" alt="" width="84" height="105" /></i>  \r\n			<h3></h3>\r\n			<h3>Easy to Use</h3>  \r\n			<p>Set up simulation exercises for large group of students in a few steps.</p></li>      \r\n		<li><i class="icn"><img src="/images/real-market.png" alt="" /></i>  \r\n			<h3>Real Market Data</h3>  \r\n			<p>Use real financial markets data in simulation activities.</p></li>      \r\n		<li><i class="icn"><img src="/images/simulated.png" alt="" /></i>  \r\n			<h3>Simulated Market Data</h3>  \r\n			<p>Simulate past market events and data over a specific historical time period.</p></li>      \r\n		<li><i class="icn"><img src="/images/customization.png" alt="" /></i>  \r\n			<h3>Fully Customisable</h3>  \r\n			<p>Fully customize activities to meet various learning outcomes, disciplines and levels of difficulty.</p></li>  \r\n	</ul></div>'),
-(18, 1, 'Seller Banner Slogan', '<h3>Selling on YoKart is easy! <span class="">All you need is:</span> </h3>\r\n<ul>  \r\n	<li><i class="fa fa-check" aria-hidden="true"></i> VAT Number </li>  \r\n	<li><i class="fa fa-check" aria-hidden="true"></i> PAN Card </li>  \r\n	<li><i class="fa fa-check" aria-hidden="true"></i> Current Account Number </li>\r\n</ul>'),
-(19, 1, 'Reset Password Right Block', '<ul class="listing--icons">   \r\n	<li>   <i class="fa fa-truck"></i>   \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>   \r\n	<li>   <i class="fa fa-bell"></i>   \r\n		<p><strong>Make  Informed Decisions</strong> Get Relavant alerts and recommendations</p>   </li>   \r\n	<li>   <i class="fa fa-thumbs-o-up"></i>   \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
+(1, 1, 'Contact us eng', '<span style=\"font-weight: bold;\">IMPORTANT INFORMATION REGARDING ONLINE PHISHING FRAUD </span>If you have recently received suspect correspondence or a link regarding your data <br />'),
+(13, 1, 'Login Page Right Block', '<ul class=\"listing--icons\">   \r\n	<li><i class=\"fa fa-truck\"></i>\r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p></li>   \r\n	<li><i class=\"fa fa-bell\"></i>\r\n		<p><strong>Make Informed Decisions</strong> Get \r\n			<g class=\"gr_ gr_13 gr-alert gr_spell gr_inline_cards gr_run_anim ContextualSpelling ins-del multiReplace\" id=\"13\" data-gr-id=\"13\">Relevant</g> alerts and recommendations</p></li>\r\n	<li><i class=\"fa fa-thumbs-o-up\"></i>\r\n		<p><strong>Engage Socially</strong> With Wishlists, Reviews, Ratings</p></li>\r\n</ul>'),
+(14, 1, 'Registration Page Right Block', '<ul class=\"listing--icons\">\r\n	<li>   <i class=\"fa fa-truck\"></i> \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>\r\n	<li>   <i class=\"fa fa-bell\"></i> \r\n		<p><strong>Make Informed Decisions</strong> Get \r\n			Relavant alerts and recommendations</p>   </li>\r\n	<li>   <i class=\"fa fa-thumbs-o-up\"></i> \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
+(15, 1, 'Forgot Page Right Block', '<ul class=\"listing--icons\">   \r\n	<li>   <i class=\"fa fa-truck\"></i>   \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>   \r\n	<li>   <i class=\"fa fa-bell\"></i>   \r\n		<p><strong>Make  Informed Decisions</strong> Get Relavant alerts and recommendations</p>   </li>   \r\n	<li>   <i class=\"fa fa-thumbs-o-up\"></i>   \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
+(16, 1, 'Seller Page Block 1', '<div class=\"row\">  \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xs-12\">\r\n		<div class=\"growth\" style=\"background-image:url(images/customer.png);\"><strong>5+</strong><br />\r\n			  Millions Customers</div>\r\n		<div class=\"growth\" style=\"background-image:url(images/bussiness.png);\"><strong>1000+</strong><br />\r\n			  Business Growing rapidly with us </div>  </div>  \r\n	<div class=\"col-lg-6 col-md-6 col-sm-12 col-xs-12\">\r\n		<ul class=\"growth-txt\">  \r\n			<li><i class=\"icn\"><img src=\"images/star-unique.png\" alt=\"\" /></i>\r\n				<h4>Consectetur adipisicing</h4>\r\n				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do \r\n					  incididunt ut labore et dolore magna aliqua. </p>  </li>  \r\n			<li><i class=\"icn\"><img src=\"images/folder.png\" alt=\"\" /></i>\r\n				<h4>Consectetur adipisicing</h4>\r\n				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do \r\n					  incididunt ut labore et dolore magna aliqua.</p>  </li>\r\n		</ul>  </div></div>'),
+(17, 1, 'Seller Page Block 2', '<div class=\"heading1\">Simple steps to start selling online</div>        \r\n        \r\n<div class=\"seller-steps\">  \r\n	<ul>      \r\n		<li><i class=\"icn\"><img src=\"/images/easyto-use.png\" alt=\"\" width=\"84\" height=\"105\" /></i>  \r\n			<h3></h3>\r\n			<h3>Easy to Use</h3>  \r\n			<p>Set up simulation exercises for large group of students in a few steps.</p></li>      \r\n		<li><i class=\"icn\"><img src=\"/images/real-market.png\" alt=\"\" /></i>  \r\n			<h3>Real Market Data</h3>  \r\n			<p>Use real financial markets data in simulation activities.</p></li>      \r\n		<li><i class=\"icn\"><img src=\"/images/simulated.png\" alt=\"\" /></i>  \r\n			<h3>Simulated Market Data</h3>  \r\n			<p>Simulate past market events and data over a specific historical time period.</p></li>      \r\n		<li><i class=\"icn\"><img src=\"/images/customization.png\" alt=\"\" /></i>  \r\n			<h3>Fully Customisable</h3>  \r\n			<p>Fully customize activities to meet various learning outcomes, disciplines and levels of difficulty.</p></li>  \r\n	</ul></div>'),
+(18, 1, 'Seller Banner Slogan', '<h3>Selling on YoKart is easy! <span class=\"\">All you need is:</span> </h3>\r\n<ul>  \r\n	<li><i class=\"fa fa-check\" aria-hidden=\"true\"></i> VAT Number </li>  \r\n	<li><i class=\"fa fa-check\" aria-hidden=\"true\"></i> PAN Card </li>  \r\n	<li><i class=\"fa fa-check\" aria-hidden=\"true\"></i> Current Account Number </li>\r\n</ul>'),
+(19, 1, 'Reset Password Right Block', '<ul class=\"listing--icons\">   \r\n	<li>   <i class=\"fa fa-truck\"></i>   \r\n		<p><strong>Manage your orders</strong> Easily track orders, Create returns.</p>   </li>   \r\n	<li>   <i class=\"fa fa-bell\"></i>   \r\n		<p><strong>Make  Informed Decisions</strong> Get Relavant alerts and recommendations</p>   </li>   \r\n	<li>   <i class=\"fa fa-thumbs-o-up\"></i>   \r\n		<p><strong>Engage Socially</strong> With wishlists, Reviews, Ratings</p>   </li>   \r\n</ul>'),
 (20, 1, 'Simple Pricing With No Surprises', '<h3>Simple Pricing With No Surprises</h3>          \r\n<p>Subscription plans and At vero eos et accusamus et iusto odio dignissimos<br />\r\n	            ducimus qui blanditiis quas molestias excepturi sint occaecati cupiditate non provident. </p>'),
 (21, 1, 'Advertiser slogan Text', '<h3>Advertise With us<br />\r\n	</h3>                \r\n<p>YoKart advertising offers a great value to brands with the ability to target their commertial messaging using different categories and search keywords. Our Advertising Platform provides an in-depth knowledge of e-commerce audience. This will help you to connect with our exclusive user base through various Advertising models like Standard Banners.</p>'),
-(22, 1, 'Affiliate slogan Text', '<h3>Make Money <span class="">by becoming a Yo!kart Affiliate!</span></h3>\r\n<p>Our affiliate program is easy &amp; free to join! It enables you to earn revenue by referring potential customers to our website. Whether you are a large content network, social media butterfly or a seasoned blogger, you can earn our standard 5.00% commission on referred purchases. For more information, please visit our FAQ page and donâ€™t forget to read our Terms &amp; Conditions.</p>'),
+(22, 1, 'Affiliate slogan Text', '<h3>Make Money <span class=\"\">by becoming a Yo!kart Affiliate!</span></h3>\r\n<p>Our affiliate program is easy &amp; free to join! It enables you to earn revenue by referring potential customers to our website. Whether you are a large content network, social media butterfly or a seasoned blogger, you can earn our standard 5.00% commission on referred purchases. For more information, please visit our FAQ page and donâ€™t forget to read our Terms &amp; Conditions.</p>'),
 (23, 1, 'Checkout Page Text', ''),
-(24, 1, 'Become Seller Page Form Text', '<div>Need Help In Getting Pan/vat?</div>\r\n<div><a href="" class="">Click Here</a> To Contact Our Partners Near Your Location</div>'),
-(25, 1, 'Seller page Block 3', '<div class="heading1">Simple Pricing Structure</div>\r\n<div class="pricing-structure">  \r\n	<ul>\r\n		<li>10%  \r\n			<p>Commission Fee</p></li>\r\n		<li class="sign">+</li>\r\n		<li>$1  \r\n			<p>Shipping Fee</p></li>\r\n		<li class="sign">+</li>\r\n		<li>$4   \r\n			<p>Marketplace Fee</p></li>\r\n		<li class="sign">+</li>\r\n		<li>15%   \r\n			<p>Service Tax</p></li>\r\n		<li class="sign">+</li>\r\n		<li>Amt.   \r\n			<p>Amount You Earned</p></li>\r\n		<li class="sign">=</li>\r\n		<li>Price   \r\n			<p>Price You Decide</p></li>  \r\n	</ul></div>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p><a href="#" class="btn btn--primary btn--custom">Learn More About Pricing</a>'),
-(26, 1, 'Footer Trust Banners', '<ul>\n	<li> <i class="individualTupple"><img src="/images/retina/user.svg" alt="" /></i>\n	<h3>Certified User Identity</h3>  \n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\n	<li> <i class="individualTupple"><img src="/images/retina/locked.svg" alt="" /></i>\n	<h3>Secure payment and guaranteed</h3>  \n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\n <li> <i class="individualTupple"><img src="/images/retina/handshake2.svg" alt="" /></i>\n	<h3> Delivery of goods without risk</h3>  \n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\n	<li> <i class="individualTupple"><img src="/images/retina/shipped.svg" alt="" /></i> \n	<h3>Sell totally free</h3> \n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \n</ul>'),
-(26, 2, 'Footer Trust banners', '<ul>\r\n	<li> <i class="individualTupple"><img src="/images/retina/user.svg" alt="" /></i>\r\n	<h3>Certified User Identity</h3>  \r\n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\r\n	<li> <i class="individualTupple"><img src="/images/retina/locked.svg" alt="" /></i>\r\n	<h3>Secure payment and guaranteed</h3>  \r\n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\r\n	<li> <i class="individualTupple"><img src="/images/retina/handshake2.svg" alt="" /></i>\r\n	<h3> Delivery of goods without risk</h3>  \r\n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\r\n	<li> <i class="individualTupple"><img src="/images/retina/shipped.svg" alt="" /></i> \r\n	<h3>Sell totally free</h3> \r\n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \r\n</ul>');
+(24, 1, 'Become Seller Page Form Text', '<div>Need Help In Getting Pan/vat?</div>\r\n<div><a href=\"\" class=\"\">Click Here</a> To Contact Our Partners Near Your Location</div>'),
+(25, 1, 'Seller page Block 3', '<div class=\"heading1\">Simple Pricing Structure</div>\r\n<div class=\"pricing-structure\">  \r\n	<ul>\r\n		<li>10%  \r\n			<p>Commission Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$1  \r\n			<p>Shipping Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$4   \r\n			<p>Marketplace Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>15%   \r\n			<p>Service Tax</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>Amt.   \r\n			<p>Amount You Earned</p></li>\r\n		<li class=\"sign\">=</li>\r\n		<li>Price   \r\n			<p>Price You Decide</p></li>  \r\n	</ul></div>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p><a href=\"#\" class=\"btn btn--primary btn--custom\">Learn More About Pricing</a>'),
+(26, 1, 'Footer Trust Banners', '<ul>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/user.svg\" alt=\"\" /></i>\n	<h3>Certified User Identity</h3>  \n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/locked.svg\" alt=\"\" /></i>\n	<h3>Secure payment and guaranteed</h3>  \n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\n <li> <i class=\"individualTupple\"><img src=\"/images/retina/handshake2.svg\" alt=\"\" /></i>\n	<h3> Delivery of goods without risk</h3>  \n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/shipped.svg\" alt=\"\" /></i> \n	<h3>Sell totally free</h3> \n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \n</ul>'),
+(26, 2, 'Footer Trust banners', '<ul>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/user.svg\" alt=\"\" /></i>\r\n	<h3>Certified User Identity</h3>  \r\n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/locked.svg\" alt=\"\" /></i>\r\n	<h3>Secure payment and guaranteed</h3>  \r\n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/handshake2.svg\" alt=\"\" /></i>\r\n	<h3> Delivery of goods without risk</h3>  \r\n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/shipped.svg\" alt=\"\" /></i> \r\n	<h3>Sell totally free</h3> \r\n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \r\n</ul>'),
+(27, 1, 'Checkout page header block', '<ul class=\"trust-banners\">          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"22.852px\" height=\"27.422px\" viewbox=\"0 0 22.852 27.422\" enable-background=\"new 0 0 22.852 27.422\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M19.424,14.854c0,2.589-2.285,4.928-4.195,6.428c-1.429,1.124-2.893,1.963-3.803,2.445V3.428h7.998V14.854z M22.852,1.143C22.852,0.518,22.334,0,21.709,0H1.143C0.518,0,0,0.518,0,1.143v13.711c0,7.516,10.516,12.266,10.962,12.461 c0.143,0.072,0.303,0.107,0.464,0.107c0.16,0,0.321-0.035,0.464-0.107c0.446-0.195,10.962-4.945,10.962-12.461V1.143z\"></path>            </svg> </i>            \r\n		<p>Secure Payments</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"36.566px\" height=\"29.707px\" viewbox=\"0 0 36.566 29.707\" enable-background=\"new 0 0 36.566 29.707\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M3.787,11.426h5.766l5.356,11.872L3.787,11.426z M18.283,25.209l-6.23-13.783h12.461L18.283,25.209z M9.606,9.141H3.43l5.142-6.855h4.678L9.606,9.141z M21.657,23.298l5.356-11.872h5.766L21.657,23.298z M12.195,9.141l3.642-6.855 h4.892l3.643,6.855H12.195z M26.96,9.141l-3.643-6.855h4.678l5.142,6.855H26.96z M29.477,0.465C29.263,0.16,28.924,0,28.566,0H8 C7.643,0,7.304,0.16,7.09,0.465L0.234,9.605c-0.34,0.428-0.304,1.053,0.071,1.463L17.444,29.35c0.214,0.232,0.518,0.357,0.839,0.357 s0.625-0.125,0.839-0.357l17.139-18.281c0.375-0.41,0.411-1.035,0.071-1.463L29.477,0.465z\"></path>            </svg> </i>            \r\n		<p>Authentic Products</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"27.422px\" height=\"27.422px\" viewbox=\"0 0 27.422 27.422\" enable-background=\"new 0 0 27.422 27.422\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M15.996,7.427c0-0.321-0.25-0.571-0.571-0.571h-1.143c-0.321,0-0.571,0.25-0.571,0.571v6.284H9.712 c-0.321,0-0.571,0.25-0.571,0.571v1.143c0,0.321,0.25,0.571,0.571,0.571h5.713c0.321,0,0.571-0.25,0.571-0.571V7.427z M23.423,13.711c0,5.355-4.356,9.712-9.712,9.712s-9.712-4.356-9.712-9.712s4.356-9.712,9.712-9.712S23.423,8.355,23.423,13.711z M27.422,13.711C27.422,6.142,21.28,0,13.711,0S0,6.142,0,13.711c0,7.57,6.142,13.711,13.711,13.711S27.422,21.281,27.422,13.711z\"></path>            </svg> </i>            \r\n		<p>24x7 Customer Support</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"30.85px\" height=\"25.137px\" viewbox=\"0 0 30.85 25.137\" enable-background=\"new 0 0 30.85 25.137\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M10.283,20.566c0,1.25-1.035,2.285-2.285,2.285s-2.285-1.035-2.285-2.285c0-1.25,1.035-2.285,2.285-2.285 S10.283,19.317,10.283,20.566z M3.428,11.426V10.89c0-0.071,0.107-0.339,0.16-0.393l3.481-3.481 c0.054-0.053,0.321-0.161,0.394-0.161h2.82v4.57H3.428z M26.279,20.566c0,1.25-1.035,2.285-2.285,2.285s-2.285-1.035-2.285-2.285 c0-1.25,1.035-2.285,2.285-2.285S26.279,19.317,26.279,20.566z M30.85,1.143C30.85,0.518,30.332,0,29.707,0H11.426 c-0.625,0-1.143,0.518-1.143,1.143V4.57H7.427c-0.643,0-1.5,0.357-1.946,0.804L1.946,8.909c-0.982,0.982-0.804,2.392-0.804,3.66 v5.713C0.518,18.281,0,18.799,0,19.424c0,1.321,1.393,1.143,2.285,1.143h1.143c0,2.518,2.053,4.57,4.57,4.57s4.57-2.053,4.57-4.57 h6.855c0,2.518,2.053,4.57,4.57,4.57s4.57-2.053,4.57-4.57c0.893,0,2.285,0.179,2.285-1.143V1.143z\"></path>            </svg> </i>            \r\n		<p>Fast Delivery</p>          </li>        \r\n</ul>');
 
 -- --------------------------------------------------------
 
@@ -2142,7 +2178,7 @@ CREATE TABLE `tbl_import_export_settings` (
 
 CREATE TABLE `tbl_languages` (
   `language_id` int(11) NOT NULL,
-  `language_code` varchar(4) NOT NULL,
+  `language_code` varchar(5) NOT NULL,
   `language_flag` varchar(100) NOT NULL,
   `language_name` varchar(100) NOT NULL,
   `language_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -2402,7 +2438,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (234, 'LBL_General', 1, 'General'),
 (235, 'LBL_Username_Or_Email', 1, 'Username Or Email'),
 (236, 'ERR_LOGIN_ATTEMPT_LIMIT_EXCEEDED_PLEASE_TRY_LATER', 1, 'Login Attempt Limit Exceeded Please Try Later'),
-(237, 'LBL_Forgot_Password', 1, 'Forgot Password'),
+
 (238, 'LBL_New_to', 1, 'New To %s'),
 (239, 'LBL_Sign_Up', 1, 'Sign Up'),
 (240, 'LBL_Or', 1, 'OR'),
@@ -2612,7 +2648,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (455, 'LBL_All', 2, 'الكل'),
 (456, 'LBL_Opened_on', 1, 'Opened On'),
 (457, 'LBL_Username_Or_Email', 2, 'اسم المستخدم أو البريد الالكتروني'),
-(458, 'LBL_Forgot_Password', 2, 'هل نسيت كلمة المرور'),
+
 (459, 'LBL_Or', 2, 'أو'),
 (460, 'LBL_Facebook', 2, 'فيس بوك'),
 (461, 'LBL_Google_Plus', 2, 'جوجل بلس'),
@@ -2900,9 +2936,9 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (821, 'LBL_ORDER_TOTAL', 1, ''),
 (822, 'LBL_Order_Billing_Details', 1, 'Order Billing Details'),
 (823, 'LBL_Order_Shipping_Details', 1, 'Order Shipping Details'),
-(825, 'MSG_customer_failure_order', 1, '<p>There was a problem processing your payment and the order did not complete.</p>\n<p>Possible reasons are: </p>\n<ul>\n  <li>Insufficient funds</li>\n  <li>Verification failed</li>\n</ul>\n<p>Please try to order again using a different payment method.</p>\n<p>If the problem persists please <a href="%s">contact us</a> with the details of the order you are trying to place.</p>'),
-(826, 'MSG_guest_success_order', 1, 'Your order has been successfully processed!Please direct any questions you have to the <a href="%s">store owner</a>.\nThanks for shopping with us online!'),
-(827, 'MSG_customer_success_order', 1, '<p>Your order has been successfully processed!</p><p>You can view your order history by going to the <a href="%s">my account</a> page and by clicking on <a href="%s">history</a>.</p><p>Please direct any questions you have to the <a href="%s">store owner</a>.</p><p>Thanks for shopping with us online!'),
+(825, 'MSG_customer_failure_order', 1, '<p>There was a problem processing your payment and the order did not complete.</p>\n<p>Possible reasons are: </p>\n<ul>\n  <li>Insufficient funds</li>\n  <li>Verification failed</li>\n</ul>\n<p>Please try to order again using a different payment method.</p>\n<p>If the problem persists please <a href=\"%s\">contact us</a> with the details of the order you are trying to place.</p>'),
+(826, 'MSG_guest_success_order', 1, 'Your order has been successfully processed!Please direct any questions you have to the <a href=\"%s\">store owner</a>.\nThanks for shopping with us online!'),
+(827, 'MSG_customer_success_order', 1, '<p>Your order has been successfully processed!</p><p>You can view your order history by going to the <a href=\"%s\">my account</a> page and by clicking on <a href=\"%s\">history</a>.</p><p>Please direct any questions you have to the <a href=\"%s\">store owner</a>.</p><p>Thanks for shopping with us online!'),
 (828, 'LBL_Payable_Amount', 1, 'Payable Amount'),
 (829, 'LBL_Order_Invoice', 1, 'Order Invoice'),
 (830, 'MSG_We_are_redirecting_to_payment_page', 1, 'We are redirecting to payment page, please wait for few seconds.'),
@@ -3043,7 +3079,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (983, 'MSG_Message_is_mandatory', 1, 'Message Is Mandatory'),
 (984, 'MSG_Message_Submitted_Successfully!', 1, 'Message Submitted Successfully!'),
 (985, 'MSG_Withdrawal_Request_Minimum_Balance_Less', 1, 'Your account balance has to be greater than %s to place a withdrawal request.'),
-(986, 'MSG_WITHDRAWAL_REQUEST_DATE', 1, 'You sent last withdrawal request on "%s". You are allowed for next withdrawal only after "%s" (%d days).'),
+(986, 'MSG_WITHDRAWAL_REQUEST_DATE', 1, 'You sent last withdrawal request on \"%s\". You are allowed for next withdrawal only after \"%s\" (%d days).'),
 (987, 'MSG_WITHDRAWAL_REQUEST_LESS', 1, 'Your withdrawal request amount is less than minimum allowed %s.'),
 (988, 'MSG_Withdrawal_Request_Greater', 1, 'Your withdrawal request amount is greater than current balance.'),
 (989, 'LBL_Vendor_Detail', 1, 'Vendor Detail'),
@@ -3086,9 +3122,10 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1034, 'LBL_Edit_Address', 1, 'Edit Address'),
 (1035, 'LBL_PERCENTAGE', 1, 'Percentage'),
 (1036, 'LBL_FIXED', 1, ''),
-(1037, 'MSG_Approved_Return_Request', 1, 'Approved Return Requests');
+
+(1037, 'MSG_Approved_Return_Request', 1, 'Approved Return Requests'),
+(1038, 'L_debited', 1, 'Debited');
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
-(1038, 'L_debited', 1, 'Debited'),
 (1039, 'MSG_Request_Approved_Refund', 1, 'Refund Request Approved '),
 (1040, 'LBL_Yesterday_Orders', 1, 'Yesterday Orders'),
 (1041, 'LBL_Unread_Notification_Today', 1, 'Unread Notification Today'),
@@ -3725,7 +3762,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1717, 'LBL_Search_for_Product', 1, 'Search For Product'),
 (1718, 'LBL_Login_With_Facebook', 1, 'Login With Facebook'),
 (1719, 'LBL_Login_With_Google_Plus', 1, 'Login With Google Plus'),
-(1720, 'LBL_Not_Register_Yet', 1, 'Not Register Yet'),
+
 (1721, 'LBL_Collections_Layout_Instructions', 1, 'Collections Layout Instructions'),
 (1722, 'LBL_Layout1', 1, 'Layout 1'),
 (1723, 'LBL_Layout2', 1, 'Layout 2'),
@@ -3768,7 +3805,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1764, 'LBL_Enter_Your_Email_Address', 2, 'أدخل عنوان بريدك الالكتروني'),
 (1765, 'LBL_PAYMENT_OPTIONS', 2, 'خيارات الدفع'),
 (1766, 'LBL_Top_Categories', 2, 'أهم الفئات'),
-(1767, 'LBL_Not_Register_Yet', 2, 'لم تسجل بعد'),
+
 (1768, 'LBL_Or_Login_With', 2, 'أو تسجيل الدخول باستخدام'),
 (1769, 'LBL_Login_With_Facebook', 2, 'تسجيل الدخول الفيسبوك'),
 (1770, 'LBL_Login_With_Google', 2, 'تسجيل الدخول جوجل'),
@@ -3981,11 +4018,12 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1979, 'LBL_Link_Warranty_Policies', 1, 'Link Warranty Policies'),
 (1980, 'LBL_Link_Return_Policies', 1, 'Link Return Policies'),
 (1981, 'LBL_Coupon_Setup', 1, 'Coupon Setup'),
+
 (1983, 'LBL_Option_Not_Found_Click_here_to', 2, 'لم يتم العثور على الخيار'),
-(1984, 'LBL_One_Time', 1, 'One Time');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(1984, 'LBL_One_Time', 1, 'One Time'),
 (1985, 'LBL_Include_Recurring', 1, 'Include Recurring'),
-(1986, 'LBL_Discount_Valid_For', 1, 'Discount Valid For'),
+(1986, 'LBL_Discount_Valid_For', 1, 'Discount Valid For');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (1987, 'LBL_Language_Labels', 1, 'Language Labels'),
 (1988, 'LBL_Seller_Products', 1, 'Seller Products'),
 (1989, 'LBL_Link_Products', 1, 'Link Products'),
@@ -4059,7 +4097,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2058, 'MSG_Please_login_with_seller_account', 1, 'Please Login With Seller Account'),
 (2059, 'LBL_Sub_Total', 1, 'Sub Total'),
 (2060, 'LBL_Rate_and_Review_Product', 1, 'Rate And Review Product'),
-(2061, 'LBL_Have_you_used_this_product', 1, 'Have You Used This Product'),
+
 (2062, 'LBL_Shop_Opened_By', 1, 'Shop Opened By'),
 (2063, 'LBL_Invalid_Plan_Request', 1, 'Invalid Plan Request'),
 (2064, 'LBL_Love', 1, 'Love'),
@@ -4273,7 +4311,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2283, 'LBL_Rating', 2, 'تقييم'),
 (2284, 'LBL_Based_On', 2, 'مرتكز على'),
 (2285, 'LBL_Ratings', 2, 'تصنيفات'),
-(2286, 'LBL_Have_you_used_this_product', 2, 'هل استخدمت هذا المنتج'),
+
 (2287, 'LBL_Rate_and_Review_Product', 2, 'معدل ومراجعة المنتج'),
 (2288, 'Lbl_All_Shops', 2, 'جميع المحلات'),
 (2289, 'LBL_View_{n}_Product(s)', 2, 'عرض {n} المنتج (المنتجات)'),
@@ -4533,7 +4571,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2552, 'LBL_Product_Upload_Limit', 1, 'Product Upload Limit'),
 (2553, 'LBL_Subscription_Detail', 1, 'Subscription Detail'),
 (2554, 'LBL_Gateway_Identifier', 1, 'Gateway Identifier'),
-(2555, 'LBL_Commission_fees', 1, 'Commission Fees'),
 (2556, 'LBL_Request_Withdrawal', 1, 'Request Withdrawal'),
 (2557, 'LBL_Add_Money_to_wallet', 1, 'Add Money To Wallet'),
 (2558, 'LBL_Enter_amount_to_be_Added', 1, 'Enter Amount To Be Added'),
@@ -4619,9 +4656,9 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2638, 'MSG_Subscription_Successfully_renewed', 1, 'Subscription Renewed Successfully '),
 (2639, 'LBL_Subscription_Expire_on', 1, 'Subscription Expire On'),
 (2640, 'LBL_Subscription_Valid_till', 1, 'Subscription Valid Till'),
-(2641, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_Click_here', 1, '<p>Please Maintain Your Waller Balance To Renew Subscription <a href="%s">Click Here</a></p>'),
+(2641, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_Click_here', 1, '<p>Please Maintain Your Waller Balance To Renew Subscription <a href=\"%s\">Click Here</a></p>'),
 (2642, 'LBL_Key', 1, 'Key'),
-(2644, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_Click_here', 2, '<p>Please Maintain Your Waller Balance To Renew Subscription <a href="%s">Click Here</a></p>'),
+(2644, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_Click_here', 2, '<p>Please Maintain Your Waller Balance To Renew Subscription <a href=\"%s\">Click Here</a></p>'),
 (2651, 'ERR_LOGIN_ATTEMPT_LIMIT_EXCEEDED_PLEASE_TRY_LATERASD', 1, 'Login Attempt Limit Exceeded Please Try Later'),
 (2652, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_{Click_here}', 1, 'Please Maintain Your Waller Balance To Renew Subscription {click Here}'),
 (2653, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription_{clickhere}', 1, 'Please Maintain Your Waller Balance To Renew Subscription {clickhere}'),
@@ -4720,16 +4757,17 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2746, 'LBL_Meta_Title', 1, 'Meta Title'),
 (2747, 'LBL_Meta_Keywords', 1, 'Meta Keywords'),
 (2748, 'LBL_Meta_Description', 1, 'Meta Description'),
+
 (2749, 'LBL_Other_Meta_Tags', 1, 'Other Meta Tags'),
-(2750, 'LBL_Meta_Setup', 1, 'Meta Setup');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(2750, 'LBL_Meta_Setup', 1, 'Meta Setup'),
 (2751, 'LBL_Add_Meta_Tag', 1, 'Add Meta Tag'),
 (2752, 'LBL_Controller', 1, 'Controller'),
 (2753, 'LBL_Record_Id', 1, 'Record ID'),
 (2754, 'LBL_Sub_Record_Id', 1, 'Sub Record ID'),
 (2755, 'LBL_Has_Tags_Associated', 1, 'Has Tags Associated'),
 (2756, 'LBL_Brand_Name', 1, 'Brand Name'),
-(2757, 'LBL_Add_Address', 1, 'Add Address'),
+(2757, 'LBL_Add_Address', 1, 'Add Address');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (2758, 'LBL_Billing_here:', 1, 'Billing Here:'),
 (2759, 'LBL_Manage_Navigations', 1, 'Manage Navigations'),
 (2760, 'LBL_Navigation_Listing', 1, 'Navigation Listing'),
@@ -4760,7 +4798,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2785, 'LBL_Current_Time', 1, 'Current Time'),
 (2786, 'LBL_Manage_Product_Reviews', 1, 'Manage Product Reviews'),
 (2787, 'LBL_Product_Reviews_List', 1, 'Product Reviews List'),
-(2788, 'LBL_Reviewed_To', 1, 'Reviewed To'),
+
 (2789, 'LBL_Manage_States', 1, 'Manage States'),
 (2790, 'LBL_State_Listing', 1, 'State Listing'),
 (2791, 'LBL_Add_State', 1, 'Add State'),
@@ -5570,14 +5608,15 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (3642, 'Lbl_Advertiser', 2, 'معلن'),
 (3643, 'LBL_Promotions', 2, 'الترقيات'),
 (3644, 'LBL_My_Promotions', 2, 'عروضي الترويجية'),
-(3645, 'LBL_Product_has_been_removed_from_favourite_list', 2, 'تم إزالة المنتج من قائمة المفضلة');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(3645, 'LBL_Product_has_been_removed_from_favourite_list', 2, 'تم إزالة المنتج من قائمة المفضلة'),
+
 (3646, 'MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', 2, 'يبدو أن سلة التسوق فارغة، يرجى المحاولة بعد إعادة تحميل الصفحة.'),
 (3647, 'LBL_Go_To_Homepage', 2, 'انتقل إلى الصفحة الرئيسية'),
 (3648, 'L_View_All', 1, 'View All'),
 (3649, 'L_View_All', 2, 'عرض الكل'),
 (3650, 'MSG_Quantity_cannot_be_more_than_the_Stock_of_the_Product', 1, 'Quantity Cannot Be More Than The Stock Of The Product'),
-(3651, 'MSG_Image_Removed_Successfully', 1, 'Image Removed Successfully'),
+(3651, 'MSG_Image_Removed_Successfully', 1, 'Image Removed Successfully');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (3652, 'MSG_Ordered_Successfully', 1, 'Ordered Successfully'),
 (3653, 'MSG_Image_Uploaded_Successfully', 1, 'Image Uploaded Successfully'),
 (3654, 'LBL_Upload', 1, 'Upload'),
@@ -6385,15 +6424,15 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4562, 'LBL_Category_Name', 2, 'اسم التصنيف'),
 (4563, 'LBL_Subcategories', 2, 'الفئات الفرعية'),
 (4564, 'LBL_Brand_Name', 2, 'اسم العلامة التجارية'),
-(4565, 'LBL_Reviewed_To', 2, 'تمت المراجعة'),
+
 (4566, 'LBL_Seller_product_Status', 2, 'حالة المنتج البائع'),
 (4567, 'LBL_Delete_Product', 2, 'حذف المنتج'),
 (4568, 'LBL_Tag_Name', 2, 'اسم العلامة'),
 (4569, 'LBL_Sr_no.', 2, 'الأب رقم.'),
 (4570, 'LBL_Option_Name', 2, 'اسم الخيار'),
 (4571, 'LBL_Shop_Identifier', 2, 'متجر معرف'),
-(4572, 'LBL_Featured_Shops_will_be_listed_on_Featured_Shops_Page._Featured_Shops_will_get_priority,', 2, 'محلات مميزة سيتم إدراجها في صفحة المحلات المميزة. محلات مميزة سوف تحصل على الأولوية،');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(4572, 'LBL_Featured_Shops_will_be_listed_on_Featured_Shops_Page._Featured_Shops_will_get_priority,', 2, 'محلات مميزة سيتم إدراجها في صفحة المحلات المميزة. محلات مميزة سوف تحصل على الأولوية،'),
+
 (4573, 'LBL_Templates', 2, 'قوالب'),
 (4574, 'MSG_Upload_shop_background_image_text', 2, 'تحميل متجر نص صورة الخلفية'),
 (4575, 'LBL_Shop_Media_Setup', 2, 'شوب ميديا ​​سيتوب'),
@@ -6402,7 +6441,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4578, 'LBL_Category_Parent', 2, 'الفئة الأم'),
 (4579, 'LBL_Category_Status', 2, 'الفئة الحالة'),
 (4580, 'LBL_Product_Category_Setup', 2, 'إعداد فئة المنتج'),
-(4581, 'LBL_Manage_Shop_Reports', 2, 'إدارة التقارير متجر'),
+(4581, 'LBL_Manage_Shop_Reports', 2, 'إدارة التقارير متجر');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (4582, 'LBL_Shop_Reports_Listing', 2, 'شوب تقارير التقارير'),
 (4583, 'LBL_Back_to_Shop_Reports', 2, 'الرجوع إلى تقارير المتجر'),
 (4584, 'LBL_Reported_by', 2, 'تم عمل تقرير بواسطة'),
@@ -6768,7 +6808,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4966, 'LBL_Shop_Logo', 1, 'Shop Logo'),
 (4967, 'MSG_Subscription_Package_Selected', 1, 'Subscription Package Selected'),
 (4968, 'LBL_Review_Subscription_Details', 1, 'Review Subscription Details'),
-(4969, 'MSG_subscription_success_order', 1, '<p>Your subscription order has been successfully processed!</p><p>You can view your order history by going to the <a href="%s">my account</a> page and by clicking on <a href="%s">my subscriptions</a>.</p>'),
+(4969, 'MSG_subscription_success_order', 1, '<p>Your subscription order has been successfully processed!</p><p>You can view your order history by going to the <a href=\"%s\">my account</a> page and by clicking on <a href=\"%s\">my subscriptions</a>.</p>'),
 (4970, 'LBL_Shipped_by_me', 1, 'Shipped By Me'),
 (4971, 'MSG_Policy_Added_Successfully', 1, 'Policy Added Successfully'),
 (4972, 'LBL_Brand/Manufacturer', 1, 'Brand/Manufacturer'),
@@ -6790,7 +6830,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4988, 'LBL_Seller_Name', 1, 'Seller Name'),
 (4989, 'LBL_Seller_Email_Id', 1, 'Seller Email ID'),
 (4990, 'LBL_Refund_for_Qty.', 1, 'Refund For Qty.'),
-(4991, 'MSG_wallet_success_order', 1, '<p>Your wallet payment has been successfully processed!</p><p>You can check your credits history by going to the <a href="%s">my account</a> page and by clicking on <a href="%s">my credits</a>.</p>'),
+(4991, 'MSG_wallet_success_order', 1, '<p>Your wallet payment has been successfully processed!</p><p>You can check your credits history by going to the <a href=\"%s\">my account</a> page and by clicking on <a href=\"%s\">my credits</a>.</p>'),
 (4992, 'LBL_Product_Purchase', 1, 'Product Purchase'),
 (4993, 'LBL_History', 1, 'History'),
 (4994, 'LBL_N', 1, 'N'),
@@ -6849,8 +6889,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5054, 'LBL_Enter_amount_to_be_Added_[$]', 1, 'Enter Amount To Be Added [$]'),
 (5055, 'LBL_Options_(If_Any)', 1, 'Options (if Any)'),
 (5056, 'LBL_Custom_Title:', 1, 'Custom Title:'),
-(5058, 'MSG_subscription_success_order', 2, '<p> تمت معالجة طلب الاشتراك بنجاح! </p><p> يمكنك عرض سجل الطلبات بالانتقال إلى صفحة <a href="%s"> حسابي </a>  والنقر على <a href="%s"> اشتراكاتي </a>.</p>'),
-(5060, 'MSG_wallet_success_order', 2, '<p> تمت معالجة دفعتك بنجاح! </ p> <p> يمكنك التحقق من سجل الأرصدة عن طريق الانتقال إلى صفحة <a href="٪s"> حسابي </a> والنقر على <a href = "٪ s"> رصيداتي </a>. </ p>'),
+(5058, 'MSG_subscription_success_order', 2, '<p> تمت معالجة طلب الاشتراك بنجاح! </p><p> يمكنك عرض سجل الطلبات بالانتقال إلى صفحة <a href=\"%s\"> حسابي </a>  والنقر على <a href=\"%s\"> اشتراكاتي </a>.</p>'),
+(5060, 'MSG_wallet_success_order', 2, '<p> تمت معالجة دفعتك بنجاح! </ p> <p> يمكنك التحقق من سجل الأرصدة عن طريق الانتقال إلى صفحة <a href=\"٪s\"> حسابي </a> والنقر على <a href = \"٪ s\"> رصيداتي </a>. </ p>'),
 (5061, 'LBL_Note_Please_Maintain_Wallet_Balance_for_further_auto_renewal_payments', 1, 'Note: Please maintain your wallet balance for further recurring payments for the selected Subscription plan.'),
 (5062, 'ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', 1, 'Please Use Reward Point Between {MIN} To {max}'),
 (5064, 'ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', 2, 'الرجاء استخدام نقطة المكافأة بين{MIN} To {max}'),
@@ -7029,14 +7069,13 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5242, 'MSG_Your_request_to_reset_password_has_already_been_placed_within_last_24_hours._Please_check_your_emails_or_retry_after_24_hours_of_your_previous_request', 1, 'Your request to reset password has already been placed within last 24 Hours. Please check your emails or retry after 24 Hours of your previous request'),
 (5243, 'LBL_Commision_rate', 1, 'Commision Rate'),
 (5244, 'LBL_Enable_facebook_Login', 1, 'Enable Facebook Login'),
-(5245, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_facebook_account._Please_define_settings_for_facebook_login_if_enabled_under_"Third_Party_APIs"_Tab', 1, 'On Enabling This Feature,users Will Be Able To Login Using Facebook Account. Please Define Settings For Facebook Login If Enabled Under "Third Party APIs" Tab'),
+(5245, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_facebook_account._Please_define_settings_for_facebook_login_if_enabled_under_\"Third_Party_APIs\"_Tab', 1, 'On Enabling This Feature,users Will Be Able To Login Using Facebook Account. Please Define Settings For Facebook Login If Enabled Under \"Third Party APIs\" Tab'),
 (5246, 'LBL_Google_Plus_Login', 1, 'Google Plus Login'),
-(5247, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_google_plus_account._Please_define_settings_for_google_plus_login_if_enabled_under_"Third_Party_APIs"_Tab', 1, 'On Enabling This Feature,users Will Be Able To Login Using Google Plus Account. Please Define Settings For Google Plus Login If Enabled Under "Third Party APIs" Tab'),
+(5247, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_google_plus_account._Please_define_settings_for_google_plus_login_if_enabled_under_\"Third_Party_APIs\"_Tab', 1, 'On Enabling This Feature,users Will Be Able To Login Using Google Plus Account. Please Define Settings For Google Plus Login If Enabled Under \"Third Party APIs\" Tab'),
 (5248, 'LBL_Earned_Reward_Points_On_Purchase.', 1, 'Earned Reward Points On Purchase.'),
 (5249, 'LBL_Back_to_Subscription', 1, 'Back To Subscription'),
 (5250, 'LBL_Total_Balance_Available', 1, 'Total Balance Available'),
 (5251, 'MSG_Please_assign_shipping_user', 1, 'Please Assign Shipping User'),
-(5252, 'LBL_VIEW_%d_More_Sellers', 1, 'View %d More Sellers'),
 (5253, 'LBL_Return_request_has_been_withdrawn_successfully.', 1, 'Return Request Has Been Withdrawn Successfully.'),
 (5254, 'ERR_joinShops_cannot_be_joined,_unless_joinSellers_is_not_applied.', 1, 'Joinshops Cannot Be Joined, Unless Joinsellers Is Not Applied.'),
 (5255, 'Msg_Commission_Received_Order{invoicenumber}_Placed_by_Referrar_User', 1, 'Commission Received Order{invoicenumber} Placed By Referrar User'),
@@ -7066,16 +7105,15 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5279, 'LBL_COD_AVAILABLE', 1, 'Cod Available'),
 (5280, 'LBL_Cash_on_delivery_available', 1, 'Cash On Delivery Available'),
 (5281, 'LBL_Promotion_Status', 1, 'Promotion Status'),
-(5282, 'LBL_VIEW_%d_More_Sellers', 2, 'عرض٪ d المزيد من البائعين'),
 (5283, 'LBL_Default', 2, 'افتراضي'),
 (5284, 'MSG_First_time_buyer_discount_module_is_disabled', 1, 'First Time Buyer Discount Module Is Disabled'),
 (5285, 'Lbl_Personal_Message_From_Affiliate', 1, 'Personal Message From Affiliate'),
 (5286, 'LBL_Border_Color', 1, 'Border Color'),
 (5287, 'LBL_For_Example:', 1, 'For Example:'),
-(5288, 'LBL_FAQ_Listing', 1, 'FAQ Listing');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(5288, 'LBL_FAQ_Listing', 1, 'FAQ Listing'),
 (5289, 'MSG_Shipping_Method_is_not_selected_on_products_in_cart1', 1, 'Shipping Method Is Not Selected On Products In Cart1'),
 (5290, 'test', 1, 'Test'),
+
 (5291, 'MSG_Shipping_Method', 1, 'Shipping Method'),
 (5292, 'MSG', 1, ''),
 (5293, 'nop', 1, ''),
@@ -7086,7 +7124,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5298, 'LBL_Clear_Cache', 2, 'مسح ذاكرة التخزين المؤقت'),
 (5299, 'LBL_Brand_Requests', 2, 'طلبات العلامة التجارية'),
 (5300, 'LBL_Shipping_Company_Users', 2, 'مستخدمي شركة الشحن'),
-(5301, 'LBL_Rewards_on_every_purchase', 2, 'المكافآت على كل عملية شراء'),
+(5301, 'LBL_Rewards_on_every_purchase', 2, 'المكافآت على كل عملية شراء');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (5302, 'LBL_PPC_Promotions_Management', 2, 'إدارة عروض ترويجية للنقرة'),
 (5303, 'LBL_Product_Specifications', 2, 'مواصفات المنتج'),
 (5304, 'LBL_LOADING', 2, 'تحميل'),
@@ -7386,7 +7425,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (14710, 'M_Your_email_not_change', 1, 'Your Email Not Change'),
 (14711, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_{Click_here}', 1, 'Please Maintain Your Wallet Balance To Renew Subscription {click Here}'),
 (14712, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_{clickhere}', 1, 'Please Maintain Your Wallet Balance To Renew Subscription {clickhere}'),
-(14713, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_Click_here', 1, '<p>Please Maintain Your Wallet Balance To Renew Subscription <a href="%s">Click Here</a></p>'),
+(14713, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_Click_here', 1, '<p>Please Maintain Your Wallet Balance To Renew Subscription <a href=\"%s\">Click Here</a></p>'),
 (14714, 'MSG_ERROR_IN_SENDING_VERFICATION_EMAIL', 1, 'Error In Sending Verfication Email'),
 (14715, 'L_Instant_Mulit_Vendor_eCommerce_System_Builder', 1, 'Instant Mulit Vendor Ecommerce System Builder'),
 (14716, 'LBL_Sell_on_yokart', 1, 'Sell On Yokart'),
@@ -7448,7 +7487,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (14772, 'MSG_WITHDRAWAL_REQUEST_LESS', 2, 'مبلغ طلب السحب أقل من الحد الأدنى المسموح به٪ s.'),
 (14773, 'MSG_Withdrawal_Request_Greater', 2, 'مبلغ طلب السحب أكبر من الرصيد الحالي.'),
 (14774, 'MSG_Withdrawal_Request_Declined_Amount_Refunded', 2, 'طلب السحب مرفوض٪ s. المبلغ المسترد.'),
-(14775, 'MSG_WITHDRAWAL_REQUEST_DATE', 2, 'قد أرسلت طلب السحب الأخير على "٪ s". لا يسمح لك بالانسحاب التالي إلا بعد "٪ s" (٪ d من الأيام).'),
+(14775, 'MSG_WITHDRAWAL_REQUEST_DATE', 2, 'قد أرسلت طلب السحب الأخير على \"٪ s\". لا يسمح لك بالانسحاب التالي إلا بعد \"٪ s\" (٪ d من الأيام).'),
 (14776, 'MSG_We_are_redirecting_payment_page', 2, 'نحن نعيد توجيهك إلى صفحة الدفع'),
 (14777, 'MSG_Wallet_can_not_be_used_along_with_{COD}', 2, 'لا يمكن استخدام المحفظة مع {cod}'),
 (14778, 'MSG_Volume_and_weight_should_not_be_null', 2, 'يجب ألا يكون الحجم والوزن نول'),
@@ -7575,7 +7614,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (14899, 'MSG_Please_select_a_file', 2, 'الرجاء تحديد ملف'),
 (14900, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_{Click_here}', 2, 'يرجى الحفاظ على رصيد المحفظة لتجديد الاشتراك {كليك هير}'),
 (14901, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_{clickhere}', 2, 'يرجى الحفاظ على رصيد المحفظة لتجديد الاشتراك {كليك هير}'),
-(14902, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_Click_here', 2, '<p> يرجى الحفاظ على رصيد المحفظة لتجديد الاشتراك <a href="٪s"> انقر هنا </a> </ p>'),
+(14902, 'MSG_Please_Maintain_your_wallet_balance_to_renew_subscription_Click_here', 2, '<p> يرجى الحفاظ على رصيد المحفظة لتجديد الاشتراك <a href=\"٪s\"> انقر هنا </a> </ p>'),
 (14903, 'MSG_Please_Maintain_your_waller_balance_to_renew_subscription', 2, 'يرجى الحفاظ على رصيد والر الخاص بك لتجديد الاشتراك'),
 (14904, 'MSG_Please_login_with_seller_account', 2, 'لرجاء تسجيل الدخول باستخدام حساب البائع'),
 (14905, 'MSG_Please_Configure_Your_Email', 2, 'الرجاء تهيئة بريدك الإلكتروني'),
@@ -7645,7 +7684,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (14969, 'MSG_how_manay_PPC_products_shown_on_home_page', 2, 'عدد منتجات بيك المعروضة في الصفحة الرئيسية'),
 (14970, 'MSG_Home_Page_Slide_Management', 2, 'الصفحة الرئيسية إدارة الشرائح'),
 (14971, 'MSG_Home_Page_Elements', 2, 'عناصر الصفحة الرئيسية'),
-(14972, 'MSG_guest_success_order', 2, '"تمت معالجة طلبك بنجاح، يرجى توجيه أي أسئلة لديك إلى <a href=""٪s""> مالك المتجر </a>.\nشكرا للتسوق معنا عبر الإنترنت! "'),
+(14972, 'MSG_guest_success_order', 2, '\"تمت معالجة طلبك بنجاح، يرجى توجيه أي أسئلة لديك إلى <a href=\"\"٪s\"\"> مالك المتجر </a>.\nشكرا للتسوق معنا عبر الإنترنت! \"'),
 (14973, 'MSG_General_Settings', 2, 'الاعدادات العامة'),
 (14974, 'MSG_First_time_buyer_discount_module_is_disabled', 2, 'المرة الأولى المشتري الخصم وحدة معطلة'),
 (14975, 'MSG_File_uploaded_successfully_and_send_it_for_admin_approval', 2, 'تم تحميل الملف بنجاح وإرساله للحصول على موافقة المشرف'),
@@ -7664,8 +7703,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (14988, 'MSG_details_not_saved', 2, 'التفاصيل لم يتم الحفظ'),
 (14989, 'MSG_Deleted_successfully', 2, 'حذف بنجاح'),
 (14990, 'MSG_Days_Interval_to_Charge_Wallet', 2, 'الفاصل الزمني لتحصيل المحفظة'),
-(14991, 'MSG_customer_success_order', 2, '<p> تمت معالجة طلبك بنجاح! </ p> <p> يمكنك عرض سجل الطلبات بالانتقال إلى صفحة <a href="٪s"> حسابي </a> والنقر على <a href= "٪ s"> السجل </a>. </ p> <p> يرجى توجيه أي أسئلة لديك إلى <a href="٪s"> مالك المتجر </a>. </ p> <p> شكرا للتسوق معنا عبر الإنترنت!'),
-(14992, 'MSG_customer_failure_order', 2, '<p> حدثت مشكلة أثناء معالجة دفعتك ولم يكتمل الطلب. </ p>\r\n<p> الأسباب المحتملة هي: </ p>\r\n<UL>\r\n  <li> عدم كفاية الأموال </ li>\r\n  <li> أخفقت عملية التحقق </ li>\r\n</ UL>\r\n<p> الرجاء محاولة الطلب مرة أخرى باستخدام طريقة دفع مختلفة. </ p>\r\n<p> إذا استمرت المشكلة، فيرجى <a href="٪s"> الاتصال بنا </a> مع تفاصيل الطلب الذي تحاول وضعه. </ p>'),
+(14991, 'MSG_customer_success_order', 2, '<p> تمت معالجة طلبك بنجاح! </ p> <p> يمكنك عرض سجل الطلبات بالانتقال إلى صفحة <a href=\"٪s\"> حسابي </a> والنقر على <a href= \"٪ s\"> السجل </a>. </ p> <p> يرجى توجيه أي أسئلة لديك إلى <a href=\"٪s\"> مالك المتجر </a>. </ p> <p> شكرا للتسوق معنا عبر الإنترنت!'),
+(14992, 'MSG_customer_failure_order', 2, '<p> حدثت مشكلة أثناء معالجة دفعتك ولم يكتمل الطلب. </ p>\r\n<p> الأسباب المحتملة هي: </ p>\r\n<UL>\r\n  <li> عدم كفاية الأموال </ li>\r\n  <li> أخفقت عملية التحقق </ li>\r\n</ UL>\r\n<p> الرجاء محاولة الطلب مرة أخرى باستخدام طريقة دفع مختلفة. </ p>\r\n<p> إذا استمرت المشكلة، فيرجى <a href=\"٪s\"> الاتصال بنا </a> مع تفاصيل الطلب الذي تحاول وضعه. </ p>'),
 (14993, 'MSG_Currency_Management', 2, 'إدارة العملة'),
 (14994, 'MSG_Coupon_Setup_Successful.', 2, 'اكتمل إعداد القسيمة.'),
 (14995, 'MSG_Countries', 2, 'بلدان'),
@@ -7752,16 +7791,17 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15076, 'L_CART_TOTAL_(_QTY_*_Product_price_)', 2, 'كارت توتال (الكمية * سعر المنتج)'),
 (15077, 'L_CARD_HOLDER_NAME', 2, 'إسم صاحب البطاقة'),
 (15078, 'L_All_you_need_is', 2, 'كل ما تحتاجه هو'),
-(15079, 'L_Advertise_With_Us', 2, 'أعلن معنا');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(15079, 'L_Advertise_With_Us', 2, 'أعلن معنا'),
 (15080, 'LBL_{paymentMethodName}_is_not_available_as_Shipping_Company_is_not_added_by_admin_as_yet.', 2, ' {paymentmethodname}غير متوفر كما أن شركة الشحن لم تتم إضافتها بواسطة أدمين أس يت.'),
 (15081, 'LBL__Saved', 2, 'تم الحفظ'),
+
 (15082, 'LBL_[Save_nn_(XX%_Off)]', 2, '[حفظ ن (شكس٪ أوف)]'),
 (15083, 'LBL_You_Pay', 2, 'انت تدفع'),
 (15084, 'LBL_You_have_been_registered_successfully.', 2, 'لقد تم تسجيلك بنجاح.'),
 (15085, 'LBL_You_have_already_Bought_this_plan,_Please_choose_some_other_Plan123', 2, 'لقد اشتريت بالفعل هذه الخطة، يرجى اختيار بعض خطة أخرى 123'),
 (15086, 'LBL_You_can_upload_multiple_photos_from_here', 2, 'يمكنك تحميل صور متعددة من هنا'),
-(15087, 'LBL_You_Are_Logged_Out_Successfully', 2, 'لقد تم تسجيل دخولك بنجاح'),
+(15087, 'LBL_You_Are_Logged_Out_Successfully', 2, 'لقد تم تسجيل دخولك بنجاح');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (15088, 'LBL_You_are_already_logged_in', 2, 'انت بالفعل داخل'),
 (15089, 'LBL_Youtube_Icon', 2, 'رمز يوتيوب'),
 (15090, 'LBL_Your_Session_seems_to_be_expired.', 2, 'يبدو أن جلسة العمل ستنتهي.'),
@@ -8325,12 +8365,12 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15648, 'LBL_Open_In', 2, 'فتح في'),
 (15649, 'LBL_On_Payment_Failure_Maintain_Cart', 2, 'على فشل الدفع الحفاظ على السلة'),
 (15650, 'LBL_On_Payment_Cancel_Maintain_Cart', 2, 'على دفع إلغاء الحفاظ على السلة'),
-(15651, 'LBL_On_enabling_this_feature,_users_will_be_automatically_logged-in_after_registration', 2, 'على تمكين هذه الميزة، سيتم تسجيل المستخدمين تلقائيا في بعد التسجيل. (فقط عندما يكون "التحقق من البريد الإلكتروني" و "موافقة المشرف" معطل). لبوير والبائع (فقط إذا كان البائع منفصل الاشتراك نموذج معاق).'),
+(15651, 'LBL_On_enabling_this_feature,_users_will_be_automatically_logged-in_after_registration', 2, 'على تمكين هذه الميزة، سيتم تسجيل المستخدمين تلقائيا في بعد التسجيل. (فقط عندما يكون \"التحقق من البريد الإلكتروني\" و \"موافقة المشرف\" معطل). لبوير والبائع (فقط إذا كان البائع منفصل الاشتراك نموذج معاق).'),
 (15652, 'LBL_On_enabling_this_feature,_seller_will_be_able_to_return_shipping_charges_to_customer', 2, 'على تمكين هذه الميزة، البائع سوف تكون قادرة على العودة رسوم الشحن للعميل'),
-(15653, 'LBL_On_enabling_this_feature,_buyers_will_be_able_to_see_Seller_tab', 2, 'على تمكين هذه الميزة، سوف المشترين تكون قادرة على رؤية البائع تبويب. (فقط عندما \'تفعيل بائع منفصل اشترك نموذج "غير ممكن)'),
+(15653, 'LBL_On_enabling_this_feature,_buyers_will_be_able_to_see_Seller_tab', 2, 'على تمكين هذه الميزة، سوف المشترين تكون قادرة على رؤية البائع تبويب. (فقط عندما \'تفعيل بائع منفصل اشترك نموذج \"غير ممكن)'),
 (15654, 'LBL_On_enabling_this_feature,_admin_need_to_approve_Seller\'s_request_after_registration', 2, 'على تمكين هذه الميزة، التابعة سوف تتلقى ترحيب البريد الإلكتروني بعد التسجيل.'),
-(15655, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_google_plus_account._Please_define_settings_for_google_plus_login_if_enabled_under_"Third_Party_APIs"_Tab', 2, 'على تمكين هذه الميزة، وسيكون المستخدمون قادرين على تسجيل الدخول باستخدام حساب جوجل بلس. يرجى تحديد إعدادات ل غوغل بلوس تسجيل الدخول إذا كان ممكنا تحت "أبيس الطرف الثالث" علامة التبويب'),
-(15656, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_facebook_account._Please_define_settings_for_facebook_login_if_enabled_under_"Third_Party_APIs"_Tab', 2, 'على تمكين هذه الميزة، وسيكون المستخدمون قادرين على تسجيل الدخول باستخدام حساب الفيسبوك. يرجى تحديد إعدادات الفيسبوك تسجيل الدخول إذا تمكين تحت "واجهات برمجة التطبيقات الطرف الثالث" علامة التبويب'),
+(15655, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_google_plus_account._Please_define_settings_for_google_plus_login_if_enabled_under_\"Third_Party_APIs\"_Tab', 2, 'على تمكين هذه الميزة، وسيكون المستخدمون قادرين على تسجيل الدخول باستخدام حساب جوجل بلس. يرجى تحديد إعدادات ل غوغل بلوس تسجيل الدخول إذا كان ممكنا تحت \"أبيس الطرف الثالث\" علامة التبويب'),
+(15656, 'LBL_On_enabling_this_feature,users_will_be_able_to_login_using_facebook_account._Please_define_settings_for_facebook_login_if_enabled_under_\"Third_Party_APIs\"_Tab', 2, 'على تمكين هذه الميزة، وسيكون المستخدمون قادرين على تسجيل الدخول باستخدام حساب الفيسبوك. يرجى تحديد إعدادات الفيسبوك تسجيل الدخول إذا تمكين تحت \"واجهات برمجة التطبيقات الطرف الثالث\" علامة التبويب'),
 (15657, 'LBL_One_Time', 2, 'مره واحده'),
 (15658, 'LBL_Offer_till', 2, 'عرض حتى الآن'),
 (15659, 'Lbl_Offers', 2, 'عروض'),
@@ -8378,7 +8418,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15701, 'LBL_Min_Order_Value', 2, 'طلب الحد الأدنى القيمة'),
 (15702, 'LBL_Minimum_Reward_Point_Required_To_Use', 2, 'الحد الأدنى من مكافأة نقطة المطلوبة لاستخدام'),
 (15703, 'LBL_Minimum_order_value_on_which_the_coupon_can_be_applied.', 2, 'قيمة النظام الحد الأدنى الذي القسيمة يمكن تطبيقها.'),
-(15704, 'LBL_Minimum_order_value\'', 2, 'الحد الأدنى القيمة النظام "'),
+(15704, 'LBL_Minimum_order_value\'', 2, 'الحد الأدنى القيمة النظام \"'),
 (15705, 'LBL_Minimum_order_value', 2, 'الحد الأدنى للطلب القيمة'),
 (15706, 'LBL_Minimum_buying_value', 2, 'الحد الأدنى للشراء القيمة'),
 (15707, 'LBL_Meta_Tag_Setup', 2, 'إعداد العلامة الوصفية'),
@@ -8504,13 +8544,13 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15827, 'LBL_Image_Setup', 2, 'إعداد الصورة'),
 (15828, 'LBL_Image_removed_successfully.', 2, 'تمت إزالة الصورة بنجاح.'),
 (15829, 'LBL_Image_Removed_Successfully', 2, 'تمت إزالة الصورة بنجاح'),
-(15830, 'LBL_If_you_have_to_add_a_platform_icon_except_this_select_list', 2, 'إذا كان لديك لإضافة رمز منصة باستثناء هذه القائمة حدد، تحميل أيقونة في علامة التبويب وسائل الإعلام. رمز وسائل الإعلام تم تحميلها سوف تعطى أولوية أعلى من أيقونة مختارة من القائمة.');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(15830, 'LBL_If_you_have_to_add_a_platform_icon_except_this_select_list', 2, 'إذا كان لديك لإضافة رمز منصة باستثناء هذه القائمة حدد، تحميل أيقونة في علامة التبويب وسائل الإعلام. رمز وسائل الإعلام تم تحميلها سوف تعطى أولوية أعلى من أيقونة مختارة من القائمة.'),
 (15831, 'Lbl_Icon_Type_from_CSS', 2, 'نوع الرمز من كس'),
 (15832, 'LBL_Icon_Image', 2, 'صورة رمز'),
 (15833, 'LBL_History', 2, 'التاريخ'),
 (15834, 'LBL_HH:MM', 2, 'HH: MM'),
 (15835, 'LBL_Help_Shipping_Text', 2, 'مساعدة نص الشحن'),
+
 (15836, 'LBL_Headers', 2, 'رؤوس'),
 (15837, 'LBL_handmade_dubai_text', 2, 'مصنوعة يدويا مع٪ s في دبي'),
 (15838, 'LBL_Grow_your_business', 2, 'تنمو عملك'),
@@ -8519,7 +8559,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15841, 'LBL_Google_Plus_Login', 2, 'جوجل بلس تسجيل الدخول'),
 (15842, 'LBL_Google_Plus_Icon', 2, 'رمز غوغل بلوس'),
 (15843, 'LBL_Google_Plus_Developer_Key', 2, 'غوغل بلوس ديفيلوبر كي'),
-(15844, 'LBL_Google_Plus_Client_Secret', 2, 'غوغل بلوس كلينت سكريت'),
+(15844, 'LBL_Google_Plus_Client_Secret', 2, 'غوغل بلوس كلينت سكريت');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (15845, 'LBL_Google_Plus_Client_ID', 2, 'معرف عميل غوغل بلوس'),
 (15846, 'LBL_Google_Map_API_Key', 2, 'مفتاح واجهة برمجة تطبيقات خريطة غوغل'),
 (15847, 'LBL_Google_Map_API', 2, 'خريطة غوغل أبي'),
@@ -8694,7 +8735,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (16016, 'LBL_Company', 2, 'شركة'),
 (16017, 'LBL_Commission_Setup', 2, 'إعداد اللجنة'),
 (16018, 'LBL_Commission_History', 2, 'تاريخ اللجنة'),
-(16019, 'LBL_Commission_fees', 2, 'رسوم العمولة'),
 (16020, 'LBL_Commission_charged_including_tax_charges', 2, 'العمولة المشحونة بما في ذلك الرسوم الضريبية'),
 (16021, 'LBL_Commission_charged_including_tax', 2, 'عمولة مشحونة بما في ذلك الضرائب'),
 (16022, 'LBL_Commission_charged_including_shipping_charges', 2, 'عمولة مشحونة بما في ذلك رسوم الشحن'),
@@ -9118,7 +9158,6 @@ CREATE TABLE `tbl_meta_tags` (
   `meta_advanced` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 --
 -- Dumping data for table `tbl_meta_tags`
 --
@@ -9249,26 +9288,10 @@ CREATE TABLE `tbl_navigation_links_lang` (
   `nlink_caption` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_notifications`
---
-
-CREATE TABLE `tbl_notifications` (
-  `notification_id` bigint(15) NOT NULL,
-  `notification_record_type` int(11) NOT NULL,
-  `notification_record_id` bigint(15) NOT NULL,
-  `notification_user_id` bigint(15) NOT NULL,
-  `notification_marked_read` tinyint(1) NOT NULL,
-  `notification_label_key` int(11) NOT NULL,
-  `notification_deleted` tinyint(1) NOT NULL,
-  `notification_added_on` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 --
 -- Dumping data for table `tbl_navigation_links_lang`
 --
+
 INSERT INTO `tbl_navigation_links_lang` (`nlinklang_nlink_id`, `nlinklang_lang_id`, `nlink_caption`) VALUES
 (34, 1, 'About Us'),
 (34, 2, 'معلومات عنا'),
@@ -9296,6 +9319,24 @@ INSERT INTO `tbl_navigation_links_lang` (`nlinklang_nlink_id`, `nlinklang_lang_i
 (45, 2, 'خريطة الموقع'),
 (46, 1, 'Become an Affiliate'),
 (46, 2, 'كن حليفا');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_notifications`
+--
+
+CREATE TABLE `tbl_notifications` (
+  `notification_id` bigint(15) NOT NULL,
+  `notification_record_type` int(11) NOT NULL,
+  `notification_record_id` bigint(15) NOT NULL,
+  `notification_user_id` bigint(15) NOT NULL,
+  `notification_marked_read` tinyint(1) NOT NULL,
+  `notification_label_key` int(11) NOT NULL,
+  `notification_deleted` tinyint(1) NOT NULL,
+  `notification_added_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- --------------------------------------------------------
 
 --
@@ -9849,19 +9890,6 @@ CREATE TABLE `tbl_order_seller_subscriptions_lang` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_order_seller_subscriptions_lang_old`
---
-
-CREATE TABLE `tbl_order_seller_subscriptions_lang_old` (
-  `osslang_ossubs_id` int(11) NOT NULL,
-  `osslang_lang_id` int(11) NOT NULL,
-  `osslang_order_id` varchar(15) NOT NULL,
-  `oss_subscription_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_order_user_address`
 --
 
@@ -10131,7 +10159,7 @@ CREATE TABLE `tbl_products` (
   `product_ship_country` int(11) NOT NULL,
   `product_ship_free` tinyint(4) NOT NULL,
   `product_cod_enabled` tinyint(1) NOT NULL,
-  `product_min_selling_price` decimal(10,2) NOT NULL,
+  `product_min_selling_price` decimal(12,4) NOT NULL,
   `product_deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -11453,6 +11481,15 @@ CREATE TABLE `tbl_smart_weightage_settings` (
   `swsetting_name` varchar(100) NOT NULL,
   `swsetting_weightage` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_smart_weightage_settings`
+--
+
+INSERT INTO `tbl_smart_weightage_settings` (`swsetting_key`, `swsetting_name`, `swsetting_weightage`) VALUES
+(1, 'products#view', '3.00'),
+(2, 'products#order_paid', '1.00'),
+(3, 'products#time_spent', '1.00');
 
 -- --------------------------------------------------------
 
@@ -17270,9 +17307,7 @@ INSERT INTO `tbl_states_lang` (`statelang_state_id`, `statelang_lang_id`, `state
 (3200, 1, 'punjab-2'),
 (3204, 1, 'New York'),
 (3205, 1, 'Haryana-1'),
-(3211, 1, 'chandigarh'),
-(3213, 1, 'pl'),
-(3213, 2, 'pl');
+(3211, 1, 'chandigarh');
 
 -- --------------------------------------------------------
 
@@ -17450,25 +17485,25 @@ CREATE TABLE `tbl_theme_colors` (
 -- Dumping data for table `tbl_theme_colors`
 --
 
-INSERT INTO `tbl_theme_colors` (`tcolor_id`, `tcolor_identifier`, `tcolor_theme_id`, `tcolor_first_color`, `tcolor_second_color`, `tcolor_third_color`, `tcolor_text_color`, `tcolor_text_light_color`, `tcolor_border_first_color`, `tcolor_border_second_color`, `tcolor_second_btn_color`, `tcolor_display_order`, `tcolor_added_by`,`tcolor_header_text_color`) VALUES
-(1, 'Red - First [PINK]', 0, 'FF3A59', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(2, 'Red - Second', 0, 'F44336', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 2, 0,'FFFFFF'),
-(5, 'Watusi', 0, 'F6C7B7', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 2, 0,'FFFFFF'),
-(10, 'Tahiti Gold', 0, 'E67E22', 'E74C3C', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(12, 'Submarine', 0, '95A5A6', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 2, 0,'FFFFFF'),
-(14, 'Red - Third', 0, 'DC0028', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(15, 'Blue - First', 0, '1A8FE3', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(16, 'Blue - Second', 0, '007DC6', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(17, 'Blue - Third', 0, '003B64', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(18, 'Green - First', 0, '6BC452', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(19, 'Green - Second', 0, '00C853', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(20, 'Green - Third', 0, '14C06E', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(21, 'Yellow - First', 0, 'FFEB3B', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(22, 'Yellow - Second', 0, 'FFEA00', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(23, 'Yellow - Third', 0, 'FFD600', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 1, 0,'FFFFFF'),
-(29, 'Copy of Blue - First', 0, 'B52936', 'FF9351', '301BB9', '212121', '7C9C3C', 'CDCDCD', 'FF5E28', '2FB991', 1, 1,'FFFFFF'),
-(30, 'Copy of Blue - First', 0, '1A8FE3', '2D9FF3', '', '333333', '999999', 'DCDCDC', '', NULL, 0, 1,'FFFFFF'),
-(31, 'Copy of Green - Third', 0, 'FF9F00', 'FB641B', '', '333333', '999999', 'DCDCDC', '', NULL, 0, 1,'FFFFFF');
+INSERT INTO `tbl_theme_colors` (`tcolor_id`, `tcolor_identifier`, `tcolor_theme_id`, `tcolor_first_color`, `tcolor_second_color`, `tcolor_third_color`, `tcolor_text_color`, `tcolor_text_light_color`, `tcolor_border_first_color`, `tcolor_border_second_color`, `tcolor_second_btn_color`, `tcolor_header_text_color`, `tcolor_display_order`, `tcolor_added_by`) VALUES
+(1, 'Red - First [PINK]', 0, 'FF3A59', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(2, 'Red - Second', 0, 'F44336', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 'FFFFFF', 2, 0),
+(5, 'Watusi', 0, 'F6C7B7', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 'FFFFFF', 2, 0),
+(10, 'Tahiti Gold', 0, 'E67E22', 'E74C3C', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(12, 'Submarine', 0, '95A5A6', 'FFFFFF', 'FFFFFF', '465436', 'FFFFFF', '446655', 'FFFFFF', 'FFFFFF', 'FFFFFF', 2, 0),
+(14, 'Red - Third', 0, 'DC0028', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(15, 'Blue - First', 0, '1A8FE3', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(16, 'Blue - Second', 0, '007DC6', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(17, 'Blue - Third', 0, '003B64', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(18, 'Green - First', 0, '6BC452', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(19, 'Green - Second', 0, '00C853', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(20, 'Green - Third', 0, '14C06E', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(21, 'Yellow - First', 0, 'FFEB3B', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(22, 'Yellow - Second', 0, 'FFEA00', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(23, 'Yellow - Third', 0, 'FFD600', '2D9FF3', 'FFFFFF', '333333', '999999', 'DCDCDC', 'FFFFFF', 'FFFFFF', 'FFFFFF', 1, 0),
+(29, 'Copy of Blue - First', 0, 'B52936', 'FF9351', '301BB9', '212121', '7C9C3C', 'CDCDCD', 'FF5E28', '2FB991', 'FFFFFF', 1, 1),
+(30, 'Copy of Blue - First', 0, '1A8FE3', '2D9FF3', '', '333333', '999999', 'DCDCDC', '', NULL, 'FFFFFF', 0, 1),
+(31, 'Copy of Green - Third', 0, 'FF9F00', 'FB641B', '', '333333', '999999', 'DCDCDC', '', NULL, 'FFFFFF', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -17727,7 +17762,9 @@ CREATE TABLE `tbl_user_cart` (
   `usercart_details` mediumtext NOT NULL,
   `usercart_added_date` datetime NOT NULL,
   `usercart_sent_reminder` int(11) NOT NULL,
-  `usercart_reminder_date` datetime NOT NULL
+  `usercart_reminder_date` datetime NOT NULL,
+  `usercart_last_used_date` datetime NOT NULL,
+  `usercart_last_session_id` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -18040,18 +18077,6 @@ CREATE TABLE `tbl_user_transactions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_user_truncate_history`
---
-
-CREATE TABLE `tbl_user_truncate_history` (
-  `utruncate_id` int(11) NOT NULL,
-  `utruncate_user_id` int(11) NOT NULL,
-  `utruncate_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_user_wish_lists`
 --
 
@@ -18290,6 +18315,12 @@ ALTER TABLE `tbl_collections_lang`
   ADD PRIMARY KEY (`collectionlang_collection_id`,`collectionlang_lang_id`);
 
 --
+-- Indexes for table `tbl_collection_to_brands`
+--
+ALTER TABLE `tbl_collection_to_brands`
+  ADD PRIMARY KEY (`ctpb_collection_id`,`ctpb_brand_id`);
+
+--
 -- Indexes for table `tbl_collection_to_product_categories`
 --
 ALTER TABLE `tbl_collection_to_product_categories`
@@ -18385,6 +18416,12 @@ ALTER TABLE `tbl_coupons_history`
 ALTER TABLE `tbl_coupons_hold`
   ADD PRIMARY KEY (`couponhold_id`),
   ADD UNIQUE KEY `couponhold_coupon_id` (`couponhold_coupon_id`,`couponhold_user_id`);
+
+--
+-- Indexes for table `tbl_coupons_hold_pending_order`
+--
+ALTER TABLE `tbl_coupons_hold_pending_order`
+  ADD PRIMARY KEY (`ochold_order_id`,`ochold_coupon_id`);
 
 --
 -- Indexes for table `tbl_coupons_lang`
@@ -18820,14 +18857,6 @@ ALTER TABLE `tbl_order_seller_subscriptions_lang`
   ADD UNIQUE KEY `ossubslang_ossubs_id` (`ossubslang_ossubs_id`,`ossubslang_lang_id`,`ossubslang_order_id`);
 
 --
-
-
-
-
-
-
-
-
 -- Indexes for table `tbl_order_user_address`
 --
 ALTER TABLE `tbl_order_user_address`
@@ -18949,7 +18978,7 @@ ALTER TABLE `tbl_product_categories`
 --
 ALTER TABLE `tbl_product_categories_lang`
   ADD UNIQUE KEY `prodcatlang_prodcat_id` (`prodcatlang_prodcat_id`,`prodcatlang_lang_id`);
-  
+
 --
 -- Indexes for table `tbl_product_groups`
 --
@@ -19004,7 +19033,9 @@ ALTER TABLE `tbl_product_shipping_rates`
 --
 ALTER TABLE `tbl_product_special_prices`
   ADD PRIMARY KEY (`splprice_id`),
-  ADD KEY `price_selprod_id` (`splprice_selprod_id`);
+  ADD UNIQUE KEY `splprice_selprod_id` (`splprice_selprod_id`,`splprice_start_date`,`splprice_end_date`),
+  ADD UNIQUE KEY `splprice_selprod_id_2` (`splprice_selprod_id`,`splprice_start_date`,`splprice_end_date`),
+  ADD UNIQUE KEY `splprice_selprod_id_3` (`splprice_selprod_id`,`splprice_start_date`,`splprice_end_date`);
 
 --
 -- Indexes for table `tbl_product_specifications`
@@ -19243,6 +19274,7 @@ ALTER TABLE `tbl_seller_packages_plan`
 --
 ALTER TABLE `tbl_seller_products`
   ADD PRIMARY KEY (`selprod_id`),
+  ADD UNIQUE KEY `selprod_user_id_2` (`selprod_user_id`,`selprod_code`),
   ADD KEY `selprod_product_id` (`selprod_product_id`),
   ADD KEY `selprod_user_id` (`selprod_user_id`);
 
@@ -19743,12 +19775,6 @@ ALTER TABLE `tbl_user_transactions`
   ADD PRIMARY KEY (`utxn_id`);
 
 --
--- Indexes for table `tbl_user_truncate_history`
---
-ALTER TABLE `tbl_user_truncate_history`
-  ADD PRIMARY KEY (`utruncate_id`);
-
---
 -- Indexes for table `tbl_user_wish_lists`
 --
 ALTER TABLE `tbl_user_wish_lists`
@@ -19775,391 +19801,469 @@ ALTER TABLE `tbl_user_withdrawal_requests`
 --
 ALTER TABLE `tbl_abusive_words`
   MODIFY `abusive_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_admin`
 --
 ALTER TABLE `tbl_admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_affiliate_commission_settings`
 --
 ALTER TABLE `tbl_affiliate_commission_settings`
   MODIFY `afcommsetting_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_affiliate_commission_setting_history`
 --
 ALTER TABLE `tbl_affiliate_commission_setting_history`
-  MODIFY `acsh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;											
+  MODIFY `acsh_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_attached_files`
 --
 ALTER TABLE `tbl_attached_files`
   MODIFY `afile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
 --
 -- AUTO_INCREMENT for table `tbl_attached_files_temp`
 --
 ALTER TABLE `tbl_attached_files_temp`
   MODIFY `afile_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_attribute_groups`
 --
 ALTER TABLE `tbl_attribute_groups`
   MODIFY `attrgrp_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_attribute_group_attributes`
 --
 ALTER TABLE `tbl_attribute_group_attributes`
   MODIFY `attr_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_banners`
 --
 ALTER TABLE `tbl_banners`
   MODIFY `banner_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_banners_clicks`
 --
 ALTER TABLE `tbl_banners_clicks`
   MODIFY `bclick_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_banners_logs`
 --
 ALTER TABLE `tbl_banners_logs`
   MODIFY `lbanner_banner_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_banner_locations`
 --
 ALTER TABLE `tbl_banner_locations`
   MODIFY `blocation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `tbl_blog_contributions`
 --
 ALTER TABLE `tbl_blog_contributions`
   MODIFY `bcontributions_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_blog_post`
 --
 ALTER TABLE `tbl_blog_post`
   MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_blog_post_categories`
 --
 ALTER TABLE `tbl_blog_post_categories`
   MODIFY `bpcategory_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_blog_post_comments`
 --
 ALTER TABLE `tbl_blog_post_comments`
   MODIFY `bpcomment_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_brands`
 --
 ALTER TABLE `tbl_brands`
   MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_catalog_request_messages`
 --
 ALTER TABLE `tbl_catalog_request_messages`
   MODIFY `scatrequestmsg_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_collections`
 --
 ALTER TABLE `tbl_collections`
   MODIFY `collection_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_commission_settings`
 --
 ALTER TABLE `tbl_commission_settings`
   MODIFY `commsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `tbl_commission_setting_history`
 --
 ALTER TABLE `tbl_commission_setting_history`
   MODIFY `csh_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_content_pages`
 --
 ALTER TABLE `tbl_content_pages`
   MODIFY `cpage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `tbl_content_pages_block_lang`
 --
 ALTER TABLE `tbl_content_pages_block_lang`
   MODIFY `cpblocklang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `tbl_countries`
 --
 ALTER TABLE `tbl_countries`
   MODIFY `country_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
+
 --
 -- AUTO_INCREMENT for table `tbl_coupons`
 --
 ALTER TABLE `tbl_coupons`
   MODIFY `coupon_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_coupons_history`
 --
 ALTER TABLE `tbl_coupons_history`
   MODIFY `couponhistory_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_coupons_hold`
 --
 ALTER TABLE `tbl_coupons_hold`
   MODIFY `couponhold_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_cron_log`
 --
 ALTER TABLE `tbl_cron_log`
   MODIFY `cronlog_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_cron_schedules`
 --
 ALTER TABLE `tbl_cron_schedules`
-  MODIFY `cron_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cron_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `tbl_currency`
 --
 ALTER TABLE `tbl_currency`
   MODIFY `currency_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `tbl_email_archives`
 --
 ALTER TABLE `tbl_email_archives`
   MODIFY `emailarchive_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_empty_cart_items`
 --
 ALTER TABLE `tbl_empty_cart_items`
   MODIFY `emptycartitem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `tbl_extra_attributes`
 --
 ALTER TABLE `tbl_extra_attributes`
   MODIFY `eattribute_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_extra_attribute_groups`
 --
 ALTER TABLE `tbl_extra_attribute_groups`
   MODIFY `eattrgroup_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_extra_pages`
 --
 ALTER TABLE `tbl_extra_pages`
-  MODIFY `epage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `epage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
 --
 -- AUTO_INCREMENT for table `tbl_faqs`
 --
 ALTER TABLE `tbl_faqs`
   MODIFY `faq_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_faq_categories`
 --
 ALTER TABLE `tbl_faq_categories`
   MODIFY `faqcat_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_filters`
 --
 ALTER TABLE `tbl_filters`
   MODIFY `filter_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_filter_groups`
 --
 ALTER TABLE `tbl_filter_groups`
-  MODIFY `filtergroup_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;								   
+  MODIFY `filtergroup_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_languages`
 --
 ALTER TABLE `tbl_languages`
   MODIFY `language_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `tbl_language_labels`
 --
 ALTER TABLE `tbl_language_labels`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16241;
+  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16378;
+
 --
 -- AUTO_INCREMENT for table `tbl_layout_templates`
 --
 ALTER TABLE `tbl_layout_templates`
   MODIFY `ltemplate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10006;
+
 --
 -- AUTO_INCREMENT for table `tbl_manual_shipping_api`
 --
 ALTER TABLE `tbl_manual_shipping_api`
   MODIFY `mshipapi_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_meta_tags`
 --
 ALTER TABLE `tbl_meta_tags`
-  MODIFY `meta_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `tbl_navigations`
 --
 ALTER TABLE `tbl_navigations`
   MODIFY `nav_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `tbl_navigation_links`
 --
 ALTER TABLE `tbl_navigation_links`
-  MODIFY `nlink_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `nlink_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
 --
 -- AUTO_INCREMENT for table `tbl_notifications`
 --
 ALTER TABLE `tbl_notifications`
-  MODIFY `notification_id` bigint(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;							 
+  MODIFY `notification_id` bigint(15) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_options`
 --
 ALTER TABLE `tbl_options`
   MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_option_values`
 --
 ALTER TABLE `tbl_option_values`
   MODIFY `optionvalue_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_orders_status`
 --
 ALTER TABLE `tbl_orders_status`
   MODIFY `orderstatus_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 --
 -- AUTO_INCREMENT for table `tbl_orders_status_history`
 --
 ALTER TABLE `tbl_orders_status_history`
   MODIFY `oshistory_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_cancel_reasons`
 --
 ALTER TABLE `tbl_order_cancel_reasons`
   MODIFY `ocreason_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_cancel_requests`
 --
 ALTER TABLE `tbl_order_cancel_requests`
   MODIFY `ocrequest_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_payments`
 --
 ALTER TABLE `tbl_order_payments`
   MODIFY `opayment_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_products`
 --
 ALTER TABLE `tbl_order_products`
   MODIFY `op_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_product_charges`
 --
 ALTER TABLE `tbl_order_product_charges`
   MODIFY `opcharge_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_product_digital_download_links`
 --
 ALTER TABLE `tbl_order_product_digital_download_links`
   MODIFY `opddl_link_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_return_reasons`
 --
 ALTER TABLE `tbl_order_return_reasons`
-  MODIFY `orreason_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `orreason_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_return_requests`
 --
 ALTER TABLE `tbl_order_return_requests`
   MODIFY `orrequest_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_return_request_messages`
 --
 ALTER TABLE `tbl_order_return_request_messages`
   MODIFY `orrmsg_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_order_seller_subscriptions`
 --
 ALTER TABLE `tbl_order_seller_subscriptions`
   MODIFY `ossubs_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_payment_methods`
 --
 ALTER TABLE `tbl_payment_methods`
   MODIFY `pmethod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 --
 -- AUTO_INCREMENT for table `tbl_policy_points`
 --
 ALTER TABLE `tbl_policy_points`
   MODIFY `ppoint_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_polling`
 --
 ALTER TABLE `tbl_polling`
   MODIFY `polling_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_polling_feedback`
 --
 ALTER TABLE `tbl_polling_feedback`
   MODIFY `pollfeedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_products`
 --
 ALTER TABLE `tbl_products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_products_browsing_history`
 --
 ALTER TABLE `tbl_products_browsing_history`
   MODIFY `pbhistory_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_categories`
 --
 ALTER TABLE `tbl_product_categories`
-  MODIFY `prodcat_id` int(11) NOT NULL AUTO_INCREMENT;				
+  MODIFY `prodcat_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_groups`
 --
 ALTER TABLE `tbl_product_groups`
   MODIFY `prodgroup_id` int(11) NOT NULL AUTO_INCREMENT;
---  
+
+--
 -- AUTO_INCREMENT for table `tbl_product_requests`
 --
 ALTER TABLE `tbl_product_requests`
   MODIFY `preq_id` bigint(15) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_saved_search`
 --
 ALTER TABLE `tbl_product_saved_search`
   MODIFY `pssearch_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_shipping_rates`
 --
 ALTER TABLE `tbl_product_shipping_rates`
   MODIFY `pship_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_special_prices`
 --
 ALTER TABLE `tbl_product_special_prices`
   MODIFY `splprice_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_specifications`
 --
 ALTER TABLE `tbl_product_specifications`
   MODIFY `prodspec_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_stock_hold`
 --
 ALTER TABLE `tbl_product_stock_hold`
   MODIFY `pshold_id` bigint(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_product_volume_discount`
 --
 ALTER TABLE `tbl_product_volume_discount`
   MODIFY `voldiscount_id` bigint(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_promotions`
 --
 ALTER TABLE `tbl_promotions`
   MODIFY `promotion_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_promotions_charges`
 --
 ALTER TABLE `tbl_promotions_charges`
   MODIFY `pcharge_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_promotions_clicks`
 --
@@ -20171,273 +20275,322 @@ ALTER TABLE `tbl_promotions_clicks`
 --
 ALTER TABLE `tbl_promotion_item_charges`
   MODIFY `picharge_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_questionnaires`
 --
 ALTER TABLE `tbl_questionnaires`
   MODIFY `questionnaire_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_questionnaire_feedback`
 --
 ALTER TABLE `tbl_questionnaire_feedback`
   MODIFY `qfeedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_questions`
 --
 ALTER TABLE `tbl_questions`
   MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_question_banks`
 --
 ALTER TABLE `tbl_question_banks`
   MODIFY `qbank_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_report_reasons`
 --
 ALTER TABLE `tbl_report_reasons`
   MODIFY `reportreason_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `tbl_rewards_on_purchase`
 --
 ALTER TABLE `tbl_rewards_on_purchase`
   MODIFY `rop_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_search_items`
 --
 ALTER TABLE `tbl_search_items`
-  MODIFY `searchitem_id` int(11) NOT NULL AUTO_INCREMENT;									   
+  MODIFY `searchitem_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_brand_requests`
 --
 ALTER TABLE `tbl_seller_brand_requests`
   MODIFY `sbrandreq_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_catalog_requests`
 --
 ALTER TABLE `tbl_seller_catalog_requests`
   MODIFY `scatrequest_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_packages`
 --
 ALTER TABLE `tbl_seller_packages`
   MODIFY `spackage_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_packages_plan`
 --
 ALTER TABLE `tbl_seller_packages_plan`
   MODIFY `spplan_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_products`
 --
 ALTER TABLE `tbl_seller_products`
   MODIFY `selprod_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_seller_product_reviews`
 --
 ALTER TABLE `tbl_seller_product_reviews`
   MODIFY `spreview_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shippingapi_settings`
 --
 ALTER TABLE `tbl_shippingapi_settings`
   MODIFY `shipsetting_shippingapi_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shipping_apis`
 --
 ALTER TABLE `tbl_shipping_apis`
   MODIFY `shippingapi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `tbl_shipping_company`
 --
 ALTER TABLE `tbl_shipping_company`
   MODIFY `scompany_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shipping_durations`
 --
 ALTER TABLE `tbl_shipping_durations`
   MODIFY `sduration_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shops`
 --
 ALTER TABLE `tbl_shops`
   MODIFY `shop_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shops_to_theme`
 --
 ALTER TABLE `tbl_shops_to_theme`
   MODIFY `stt_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shop_collections`
 --
 ALTER TABLE `tbl_shop_collections`
   MODIFY `scollection_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_shop_reports`
 --
 ALTER TABLE `tbl_shop_reports`
   MODIFY `sreport_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_slides`
 --
 ALTER TABLE `tbl_slides`
   MODIFY `slide_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- AUTO_INCREMENT for table `tbl_smart_log_actions`
 --
 ALTER TABLE `tbl_smart_log_actions`
   MODIFY `slog_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_smart_user_activity_browsing`
 --
 ALTER TABLE `tbl_smart_user_activity_browsing`
   MODIFY `uab_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_social_platforms`
 --
 ALTER TABLE `tbl_social_platforms`
   MODIFY `splatform_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_states`
 --
 ALTER TABLE `tbl_states`
   MODIFY `state_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3214;
+
 --
 -- AUTO_INCREMENT for table `tbl_success_stories`
 --
 ALTER TABLE `tbl_success_stories`
   MODIFY `sstory_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_tags`
 --
 ALTER TABLE `tbl_tags`
   MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_tax_categories`
 --
 ALTER TABLE `tbl_tax_categories`
   MODIFY `taxcat_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_testimonials`
 --
 ALTER TABLE `tbl_testimonials`
   MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_theme`
 --
 ALTER TABLE `tbl_theme`
   MODIFY `theme_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_theme_colors`
 --
 ALTER TABLE `tbl_theme_colors`
   MODIFY `tcolor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
 --
 -- AUTO_INCREMENT for table `tbl_threads`
 --
 ALTER TABLE `tbl_threads`
   MODIFY `thread_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_thread_messages`
 --
 ALTER TABLE `tbl_thread_messages`
   MODIFY `message_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_tool_tips`
 --
 ALTER TABLE `tbl_tool_tips`
   MODIFY `tooltip_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_upc_codes`
 --
 ALTER TABLE `tbl_upc_codes`
-  MODIFY `upc_code_id` bigint(15) NOT NULL AUTO_INCREMENT;		 
+  MODIFY `upc_code_id` bigint(15) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_url_rewrite`
 --
 ALTER TABLE `tbl_url_rewrite`
   MODIFY `urlrewrite_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_address`
 --
 ALTER TABLE `tbl_user_address`
   MODIFY `ua_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_extras`
 --
 ALTER TABLE `tbl_user_extras`
   MODIFY `uextra_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_favourite_products`
 --
 ALTER TABLE `tbl_user_favourite_products`
   MODIFY `ufp_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_favourite_shops`
 --
 ALTER TABLE `tbl_user_favourite_shops`
   MODIFY `ufs_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_notifications`
 --
 ALTER TABLE `tbl_user_notifications`
-  MODIFY `unotification_id` bigint(20) NOT NULL AUTO_INCREMENT;	  
+  MODIFY `unotification_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_requests_history`
 --
 ALTER TABLE `tbl_user_requests_history`
   MODIFY `ureq_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_reward_points`
 --
 ALTER TABLE `tbl_user_reward_points`
   MODIFY `urp_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_reward_point_breakup`
 --
 ALTER TABLE `tbl_user_reward_point_breakup`
   MODIFY `urpbreakup_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_supplier_form_fields`
 --
 ALTER TABLE `tbl_user_supplier_form_fields`
-  MODIFY `sformfield_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sformfield_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_supplier_requests`
 --
 ALTER TABLE `tbl_user_supplier_requests`
   MODIFY `usuprequest_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_supplier_request_values`
 --
 ALTER TABLE `tbl_user_supplier_request_values`
   MODIFY `sfreqvalue_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_temp_token_requests`
 --
 ALTER TABLE `tbl_user_temp_token_requests`
   MODIFY `uttr_user_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_transactions`
 --
 ALTER TABLE `tbl_user_transactions`
   MODIFY `utxn_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `tbl_user_truncate_history`
---
-ALTER TABLE `tbl_user_truncate_history`
-  MODIFY `utruncate_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_wish_lists`
 --
 ALTER TABLE `tbl_user_wish_lists`
   MODIFY `uwlist_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tbl_user_withdrawal_requests`
 --
 ALTER TABLE `tbl_user_withdrawal_requests`
   MODIFY `withdrawal_id` bigint(20) NOT NULL AUTO_INCREMENT;
+COMMIT;
