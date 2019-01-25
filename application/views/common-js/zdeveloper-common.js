@@ -939,7 +939,7 @@ $("document").ready(function(){
 			var data = $(this).closest("#frmBuyProduct").serialize();
 			var yourArray = [];
 			var selprodId = $(this).siblings('input[name="selprod_id"]').val();
-			if(selprodId == mainSelprodId){
+			if( typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId ){
 				$(".cart-tbl").find("input").each(function(e){
 					
 					console.log($(this).parent().parent().parent().attr('class'));
@@ -947,7 +947,7 @@ $("document").ready(function(){
 						 data = data+'&'+$(this).attr('lang')+"="+$(this).val();	 
 					}
 				});
-			}	
+			}
 			fcom.updateWithAjax(fcom.makeUrl('cart', 'add' ),data, function(ans) {
 				if (ans['redirect']) {
 					location = ans['redirect'];
