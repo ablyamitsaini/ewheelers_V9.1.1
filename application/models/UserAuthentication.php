@@ -479,6 +479,10 @@ class UserAuthentication extends FatModel {
 			$ip = CommonHelper::getClientIp();
 		}
 		
+		if($token != '' && static::doAppLogin($token)){
+			return true;
+		}
+		
 		if (isset ( $_SESSION [static::SESSION_ELEMENT_NAME] )
 				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip
 				&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_is_guest'] == false 
@@ -486,11 +490,7 @@ class UserAuthentication extends FatModel {
 				&& 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'] ) {
 			return true;
 		}
-		
-		if($token != '' && static::doAppLogin($token)){
-			return true;
-		}
-		
+				
 		if(static::doCookieLogin(false)){
 			return true;
 		}

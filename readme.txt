@@ -19,5 +19,5 @@ Fixes:
 Updates :
 	. Guest user cart functionality for app users.
 	. auto scroll for recently viewed products.
-	. Updated frontend tables HTML to make them responsive.
+	. Updated front end tables HTML to make them responsive.
 	
