@@ -130,7 +130,7 @@ class SellerOrdersController extends AdminBaseController {
 		$this->set('pageSize', $pageSize);
 		$this->set('postedData', $post);						
 		$this->set('recordCount', $srch->recordCount());
-		$this->set('canViewUsers', $this->objPrivilege->canViewUsers());
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		$this->_template->render(false, false);
 	}
 	

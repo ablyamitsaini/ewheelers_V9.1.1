@@ -278,7 +278,7 @@
 					<?php if($objPrivilege->canViewEmailTemplates(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('EmailTemplates'); ?>"><?php echo Labels::getLabel('LBL_Email_Templates_Management',$adminLangId);?></a></li>	
 					<?php }?>
-					<?php if($objPrivilege->canViewSellerPackages(AdminAuthentication::getLoggedAdminId(), true)){?>
+					<?php if($objPrivilege->canViewOrderStatus(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('OrderStatus'); ?>"><?php echo Labels::getLabel('LBL_Order_Status_Management',$adminLangId);?></a></li>	
 					<?php }?>
 					<?php if($objPrivilege->canViewSellerPackages(AdminAuthentication::getLoggedAdminId(), true)){?>
