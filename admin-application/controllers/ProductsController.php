@@ -119,7 +119,7 @@ class ProductsController extends AdminBaseController {
 		$this->set('page', $page);
 		$this->set('pageSize', $pagesize);
 		$this->set('postedData', $post);
-		$this->set('canViewUsers', $this->objPrivilege->canViewUsers());
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		$this->set('canEdit', $this->objPrivilege->canEditProducts( AdminAuthentication::getLoggedAdminId(), true ));
 		$this->_template->render(false,false);
 	}
