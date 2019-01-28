@@ -154,7 +154,7 @@ class OrderPayment extends Orders{
 
 				$notificationData = array(
 											'notification_record_type' => Notification::TYPE_ORDER,
-											'notification_record_id' => $orderDetails['order_id'],
+											'notification_record_id' => $paymentOrderId,
 											'notification_user_id' => $orderInfo['order_user_id'],
 											'notification_label_key' => Notification::NEW_ORDER_STATUS_NOTIFICATION,
 											'notification_added_on' => date('Y-m-d H:i:s'),
