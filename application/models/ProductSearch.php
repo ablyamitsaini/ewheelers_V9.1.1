@@ -128,11 +128,18 @@ class ProductSearch extends SearchBase {
 			$srch->joinTable( Collections::DB_TBL_COLLECTION_TO_SELPROD,'INNER JOIN',
 			Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']);	
 		}
+		
+		$shopCondition = '';
+		
+		if(array_key_exists('shop_id',$criteria) && $criteria['shop_id'] > 0){ 
+		 	$shopId = FatUtility::int($criteria['shop_id']);
+			$shopCondition = ' and shop_id = '.FatApp::getDb()->quoteVariable($shopId); 
+		}	
 				
 		$srch->joinTable( Product::DB_TBL, 'INNER JOIN','product_id = selprod_product_id');
 		$srch->joinTable( User::DB_TBL, 'INNER JOIN', 'selprod_user_id = user_id AND user_is_supplier = '.applicationConstants::YES);
 		$srch->joinTable( User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES );
-		$srch->joinTable( Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES);
+		$srch->joinTable( Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES . $shopCondition);
 		$srch->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop_country_id = country_id and country_active = '.applicationConstants::YES);
 		$srch->joinTable( States::DB_TBL, 'INNER JOIN', 'shop_state_id = state_id and state_active = '.applicationConstants::YES);
 		$srch->joinTable( Brand::DB_TBL, 'INNER JOIN', 'product_brand_id = brand_id and brand_active = '.applicationConstants::YES.' and brand_deleted = '.applicationConstants::NO);

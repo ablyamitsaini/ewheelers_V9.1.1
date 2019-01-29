@@ -628,6 +628,7 @@ class ProductsController extends MyAppController {
 		$join_price = (isset($post['join_price']) && $post['join_price'] != '') ? FatUtility::int($post['join_price']) : 0 ;
 		
 		$criteria = array();
+		$criteria = $post; 
 		
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		$criteria['keyword'] = $keyword;
@@ -779,7 +780,7 @@ class ProductsController extends MyAppController {
 			$srch->addOrder('keywordmatched','desc');
 		}	
 		/* ] */
-			
+		
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
