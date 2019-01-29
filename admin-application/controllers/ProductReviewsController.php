@@ -100,7 +100,7 @@ class ProductReviewsController extends AdminBaseController {
 		$this->set('pageSize', $pagesize);
 		$this->set('postedData', $post);						
 		$this->set('reviewStatus', SelProdReview::getReviewStatusArr($this->adminLangId));						
-		$this->set('canViewUsers', $this->objPrivilege->canViewUsers());
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		$this->_template->render(false, false);		
 	}
 	

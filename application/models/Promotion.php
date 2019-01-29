@@ -110,7 +110,7 @@ class Promotion extends MyAppModel{
 				$srch->addFld('blocation_promotion_cost');
 				$rs = $srch->getResultSet();
 				$row = FatApp::getDb()->fetch($rs);
-				if(array_key_exists('blocation_promotion_cost',$row)){
+				if($row && array_key_exists('blocation_promotion_cost',$row)){
 					return $row['blocation_promotion_cost'];
 				}
 				return 0;

@@ -147,8 +147,8 @@ class SellerProductsController extends AdminBaseController {
 		$this->set("arrListing", $arrListing);
 		$this->set('product_id', $product_id);
 		$this->set('activeInactiveArr', applicationConstants::getActiveInactiveArr($this->adminLangId) );
-		$this->set('canViewProducts', $this->objPrivilege->canViewProducts() );
-		$this->set('canViewUsers', $this->objPrivilege->canViewUsers() );
+		$this->set('canViewProducts', $this->objPrivilege->canViewProducts($this->admin_id,true) );
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true) );
 		
 		if( !$product_id ){
 			$this->set( 'page', $page );
