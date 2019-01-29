@@ -626,12 +626,15 @@ class ProductsController extends MyAppController {
 
 		$srch = new ProductSearch( $this->siteLangId );
 		$join_price = (isset($post['join_price']) && $post['join_price'] != '') ? FatUtility::int($post['join_price']) : 0 ;
-
 		
 		$criteria = array();
+		
+		$keyword = FatApp::getPostedData('keyword', null, '');
+		$criteria['keyword'] = $keyword;
+		
 		$optionvalue = FatApp::getPostedData('optionvalue', null, '');
 		if($optionvalue){
-			$criteria['optionvalue'] = $optionvalue;
+			$criteria['optionvalue'] = $optionvalue;			
 		}
 				
 		$srch->setDefinedCriteria( $join_price,0,$criteria,true );
@@ -697,10 +700,10 @@ class ProductsController extends MyAppController {
 		if( $collection_id ) {			
 			$srch->addCollectionIdCondition($collection_id);
 		}
-
-		$keyword = FatApp::getPostedData('keyword', null, '');
+		
 		if(!empty($keyword)) {
 			$srch->addKeywordSearch($keyword);
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  1,   0  ) as keywordmatched');
 			/* $srch->addOrder( 'keyword_relevancy', 'DESC' ); */
 		}
 
@@ -770,9 +773,13 @@ class ProductsController extends MyAppController {
 		}
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-		$srch->addGroupBy('product_id');		
+		$srch->addGroupBy('product_id');
+		if(!empty($keyword)) {
+			$srch->addGroupBy('keywordmatched');
+			$srch->addOrder('keywordmatched','desc');
+		}	
 		/* ] */
-		
+			
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);

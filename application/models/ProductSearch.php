@@ -160,7 +160,12 @@ class ProductSearch extends SearchBase {
 		}	
 		$tmpQry = $srch->getQuery();		
 		
-		$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
+		if(!empty($criteria['keyword'])){
+			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', '((pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)) or (selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').'))', 'pricetbl');
+		}else{
+			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
+		}
+		
 
 		/*$srch = new SearchBase( SellerProduct::DB_TBL, 'sprods');
 		$srch->addMultipleFields( array('selprod_id','selprod_user_id','selprod_product_id','selprod_code','selprod_stock','selprod_condition','selprod_price','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count',
