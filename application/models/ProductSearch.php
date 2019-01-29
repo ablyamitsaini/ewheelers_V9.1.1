@@ -160,40 +160,13 @@ class ProductSearch extends SearchBase {
 		}	
 		$tmpQry = $srch->getQuery();		
 		
-		if(!empty($criteria['keyword'])){
+	/* 	if(!empty($criteria['keyword'])){
 			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', '((pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)) or (selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').'))', 'pricetbl');
 		}else{
 			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
-		}
+		} */
+		$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
 		
-
-		/*$srch = new SearchBase( SellerProduct::DB_TBL, 'sprods');
-		$srch->addMultipleFields( array('selprod_id','selprod_user_id','selprod_product_id','selprod_code','selprod_stock','selprod_condition','selprod_price','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count',
-			'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found',
-			'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-			'IFNULL(splprice_price, selprod_price) AS theprice','selprod_deleted') );
-		
-		if( $this->langId ){
-			$srch->joinTable( SellerProduct::DB_LANG_TBL ,'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId,'sprods_l');
-			$srch->addFld( array('selprod_title','selprod_warranty','selprod_return_policy') );
-		}
-		$srch->joinTable( SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN',
-            'splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN splprice_start_date AND splprice_end_date');
-
-		$srch->addCondition( 'selprod_active', '=', applicationConstants::ACTIVE );
-		$srch->addCondition( 'selprod_available_from', '<=', $now );
-		$srch->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
-		//$srch->addCondition( 'selprod_user_id', '=', 7 );
-		$srch->doNotLimitRecords();
-		$srch->doNotCalculateRecords();
-
-		$tmpQry = $srch->getQuery();
-
-		$qry = 'SELECT m.* FROM (' . $tmpQry . ') m LEFT OUTER JOIN (' . $tmpQry . ') s
-		ON m.selprod_code = s.selprod_code AND ((s.theprice < m.theprice AND m.in_stock = s.in_stock) OR m.in_stock < s.in_stock)
-		WHERE s.selprod_product_id IS NULL';
-
-		$this->joinTable('(' . $qry . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');*/
 	}
 
 	public function joinSellerProducts( $bySeller = 0, $splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true  ) {
