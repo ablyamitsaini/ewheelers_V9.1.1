@@ -3622,7 +3622,7 @@ class MobileAppApiController extends MyAppController {
 		$prodSrchObj->doNotCalculateRecords();
 		$prodSrchObj->doNotLimitRecords();
 		$prodSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$prodSrchObj->addGroupBy('selprod_id');
+		$prodSrchObj->addGroupBy('product_id');
 	
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
