@@ -934,6 +934,16 @@ class SellerProductsController extends AdminBaseController {
 			FatUtility::dieJsonError(current($frm->getValidationErrors()));
 		}
 		
+		/* Check if same date already exists [ */
+			$tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
+			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
+				$specialPriceRow = $tblRecord->getFlds();
+				if($specialPriceRow['splprice_id'] != $post['splprice_id']){
+					FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->adminLangId));
+				}
+			}
+		/* ] */
+		
 		$data_to_save = array(
 			'splprice_id'		=>	$splprice_id,
 			'splprice_selprod_id'	=>	$selprod_id,
@@ -946,7 +956,7 @@ class SellerProductsController extends AdminBaseController {
 		);
 		$sellerProdObj = new SellerProduct();
 		if( !$sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save) ){
-			FatUtility::dieJsonError( Labels::getLabel($sellerProdObj, $this->adminLangId) );
+			FatUtility::dieJsonError( Labels::getLabel($sellerProdObj->getError(), $this->adminLangId) );
 		}
 		
 		$this->set( 'msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId) );
