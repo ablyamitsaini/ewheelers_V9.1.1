@@ -2592,7 +2592,7 @@ class MobileAppApiController extends MyAppController {
 		$productSrchObj->joinProductRating( );
         $productSrchObj->doNotCalculateRecords();
 		$productSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$productSrchObj->addGroupBy('selprod_id');
+		$productSrchObj->addGroupBy('product_id');
 		
 		
 		/* $selProdReviewObj = new SelProdReviewSearch();
@@ -3419,7 +3419,7 @@ class MobileAppApiController extends MyAppController {
 		$productCustomSrchObj->joinFavouriteProducts( $loggedUserId );
 		$productCustomSrchObj->joinProductRating( );
 		$productCustomSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$productCustomSrchObj->addGroupBy('selprod_id');
+		$productCustomSrchObj->addGroupBy('product_id');
 		
 		
 		/* $selProdReviewObj = new SelProdReviewSearch();
@@ -3444,7 +3444,7 @@ class MobileAppApiController extends MyAppController {
 		foreach($allShops as $val){
 			$prodSrch = clone $productCustomSrchObj;
 			$prodSrch->addShopIdCondition( $val['shop_id'] );
-			$prodSrch->addGroupBy('selprod_id');
+			$prodSrch->addGroupBy('product_id');
 			//$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
 			//'IFNULL(product_name, product_identifier) as product_name', 
 			//'IF(selprod_stock > 0, 1, 0) AS in_stock') );
