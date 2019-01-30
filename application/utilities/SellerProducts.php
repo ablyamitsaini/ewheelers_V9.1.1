@@ -906,10 +906,11 @@ trait SellerProducts{
 		/* Check if same date already exists [ */
 			$tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
 			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
-				FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->siteLangId));
+				$specialPriceRow = $tblRecord->getFlds();
+				if($specialPriceRow['splprice_id'] != $post['splprice_id']){
+					FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->siteLangId));
+				}
 			}
-			$specialPriceRow = $tblRecord->getFlds();
-			
 		/* ] */
 		
 		$data_to_save = array(

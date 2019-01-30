@@ -282,10 +282,8 @@ class SellerProduct extends MyAppModel{
 	
 	public function addUpdateSellerProductSpecialPrice( $data ){
 		$db = FatApp::getDb();
-		$record = new TableRecord( static::DB_TBL_SELLER_PROD_SPCL_PRICE );
-		$record->assignValues( $data );
-		if( !$record->addNew(array()) ){
-			$this->error = $record->getError();
+		if(!$db->insertFromArray(static::DB_TBL_SELLER_PROD_SPCL_PRICE,$data,false,array(),$data)){			
+			$this->error = $db->getError();
 			return false;
 		}
 		return true;
