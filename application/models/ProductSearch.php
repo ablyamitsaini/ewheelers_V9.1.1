@@ -167,12 +167,12 @@ class ProductSearch extends SearchBase {
 		}	
 		$tmpQry = $srch->getQuery();		
 		
-	/* 	if(!empty($criteria['keyword'])){
+		if(!empty($criteria['keyword'])){
 			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', '((pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)) or (selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').'))', 'pricetbl');
 		}else{
 			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
-		} */
-		$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
+		}
+		/* $this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl'); */ 
 		
 	}
 
