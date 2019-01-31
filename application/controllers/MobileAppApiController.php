@@ -954,7 +954,11 @@ class MobileAppApiController extends MyAppController {
 		}
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-		$srch->addGroupBy('product_id');
+		if( $collection_product_id ) {
+			$srch->addGroupBy('product_id');
+		}else{
+			$srch->addGroupBy('selprod_id');	
+		}
 		/* ] */
 		//echo $srch->getQuery();
 
@@ -1234,12 +1238,19 @@ class MobileAppApiController extends MyAppController {
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');
 		$moreSellerRs = $moreSellerSrch->getResultSet();
 		$moreSellersArr = FatApp::getDb()->fetchAll($moreSellerRs);
+		if(!empty($moreSellersArr)){
+			foreach($moreSellersArr as $key=>$prod){
+				$moreSellersArr[$key]['discounted_text'] = CommonHelper::showProductDiscountedText($prod, $this->siteLangId);
+				$moreSellersArr[$key]['currency_selprod_price'] = CommonHelper::displayMoneyFormat($prod['selprod_price'],true,false,false);
+				$moreSellersArr[$key]['currency_theprice'] = CommonHelper::displayMoneyFormat($prod['theprice'],true,false,false);
+			}
+		}
 		$product['moreSellersArr'] = $moreSellersArr;
 		/* ] */
 
