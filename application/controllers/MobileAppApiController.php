@@ -811,6 +811,9 @@ class MobileAppApiController extends MyAppController {
 		$collection_product_id = FatApp::getPostedData('collection_product_id', FatUtility::VAR_INT, 0);						
 		$criteria = array('collection_product_id'=>$collection_product_id);
 		
+		$keyword = FatApp::getPostedData('keyword', null, '');
+		$criteria['keyword'] = $keyword;
+		
 		$shop_id = FatApp::getPostedData('shop_id', null, '');
 		if($shop_id > 0){
 			$srch->setDefinedCriteria(false,0,$criteria);
@@ -852,8 +855,8 @@ class MobileAppApiController extends MyAppController {
 				'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
 				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
-				'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-				'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
+				'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
+				 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
 				'selprod_sold_count','selprod_return_policy', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating','ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty'
 		 ));
 
@@ -881,10 +884,16 @@ class MobileAppApiController extends MyAppController {
 		}
 		/*]*/
 
-		$keyword = FatApp::getPostedData('keyword', null, '');
 		if(!empty($keyword)) {
 			$srch->addKeywordSearch($keyword);
-			//$srch->addOrder( 'keyword_relevancy', 'DESC' );
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  1,   0  ) as keywordmatched');
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  IFNULL(splprice_price, selprod_price),   theprice ) as theprice');
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
+END,   special_price_found ) as special_price_found');
+			
+		}else{
+			$srch->addFld('theprice');
+			$srch->addFld('special_price_found');
 		}
 
 		$brand = FatApp::getPostedData('brand', null, '');
@@ -955,13 +964,16 @@ class MobileAppApiController extends MyAppController {
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
 		if( $collection_product_id ) {
-			$srch->addGroupBy('product_id');
+			$srch->addGroupBy('selprod_id');
 		}else{
-			$srch->addGroupBy('selprod_id');	
+			$srch->addGroupBy('product_id');
+			if(!empty($keyword)) {
+				$srch->addGroupBy('keywordmatched');
+				$srch->addOrder('keywordmatched','desc');
+			}			
 		}
 		/* ] */
-		//echo $srch->getQuery();
-
+		echo $srch->getQuery(); exit;
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
