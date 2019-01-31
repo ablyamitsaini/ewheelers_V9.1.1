@@ -970,7 +970,7 @@ class MobileAppApiController extends MyAppController {
 			foreach($productsList as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
 				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
-				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
+				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice','special_price_found'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
 				$moreSellerRow = $db->fetch($moreSellerRs);
@@ -1238,6 +1238,7 @@ class MobileAppApiController extends MyAppController {
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
+		//$moreSellerSrch->setDefinedCriteria();
 		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
@@ -1252,6 +1253,7 @@ class MobileAppApiController extends MyAppController {
 				$moreSellersArr[$key]['currency_theprice'] = CommonHelper::displayMoneyFormat($prod['theprice'],true,false,false);
 			}
 		}
+		
 		$product['moreSellersArr'] = $moreSellersArr;
 		/* ] */
 
