@@ -1242,6 +1242,7 @@ class MobileAppApiController extends MyAppController {
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');
+		$moreSellerSrch->addGroupBy('shop_id');
 		$moreSellerRs = $moreSellerSrch->getResultSet();
 		$moreSellersArr = FatApp::getDb()->fetchAll($moreSellerRs);
 		if(!empty($moreSellersArr)){
