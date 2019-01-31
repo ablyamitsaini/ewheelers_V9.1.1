@@ -3371,12 +3371,9 @@ class MobileAppApiController extends MyAppController {
 		$prodShopSrch->joinSellerSubscription( $this->siteLangId, true );
 		$prodShopSrch->addSubscriptionValidCondition();
 		$prodShopSrch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$prodShopSrch->addGroupBy('selprod_id');
+		$prodShopSrch->addGroupBy('shop_id');
 		
-		$prodShopSrch->addMultipleFields( array('shop_id'));
-		$rs = $prodShopSrch->getResultSet();
-		$productRows = FatApp::getDb()->fetchAll($rs);
-		$shopMainRootArr = array_unique(array_column($productRows,'shop_id'));
+		$prodShopSrch->addMultipleFields( array('shop_id'));		
 		/* ] */
 		
 		$srch = new ShopSearch( $this->siteLangId );
@@ -3384,8 +3381,14 @@ class MobileAppApiController extends MyAppController {
 		$srch->joinShopCountry();
 		$srch->joinShopState();
 		$srch->joinSellerSubscription();
-		$srch->addCondition('shop_id', 'in', $shopMainRootArr);
+		$srch->joinTable('(' . $prodShopSrch->getQuery() . ')','INNER JOIN','stemp.shop_id = s.shop_id','stemp');
 		
+		$collection_id =  FatApp::getPostedData('collection_id',FatUtility::VAR_INT,0);	
+		
+		if($collection_id){
+			$srch->joinTable(Collections::DB_TBL_COLLECTION_TO_SHOPS,'INNER JOIN','cts.ctps_shop_id = s.shop_id','cts');
+			$srch->addCondition('ctps_collection_id','=',$collection_id);
+		}
 		
 		/* Sub query to find out that logged user have marked shops as favorite or not[ */
 		$favSrchObj = new UserFavoriteShopSearch();
@@ -3393,10 +3396,10 @@ class MobileAppApiController extends MyAppController {
 		$favSrchObj->doNotLimitRecords();
 		$favSrchObj->addMultipleFields(array('ufs_shop_id','ufs_id'));
 		$favSrchObj->addCondition( 'ufs_user_id', '=', $loggedUserId );
-		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = shop_id', 'ufs' );		
+		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = s.shop_id', 'ufs' );		
 		/* ] */
 		
-		$srch->addMultipleFields(array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
+		$srch->addMultipleFields(array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
 		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
 		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		
@@ -3416,6 +3419,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->setPageSize($pagesize);
 		
 		$srch->addOrder('shop_created_on');
+		
 		$shopRs = $srch->getResultSet();
 		$allShops = $db->fetchAll($shopRs);
 		
