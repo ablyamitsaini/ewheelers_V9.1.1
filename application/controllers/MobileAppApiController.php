@@ -973,7 +973,7 @@ END,   special_price_found ) as special_price_found');
 			}			
 		}
 		/* ] */
-		echo $srch->getQuery(); exit;
+		
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
