@@ -2,10 +2,9 @@ Fixes:
 	. Fixed slides promotions related issues. Slide promotion was not getting added on advertiser dashboard.
 	. Added blog short description on listing page.
 	. mbsmessages and systemmessages related issues has been fixed. HTML and CSS updated in admin panel.
-
 	. Security fixes in category listing on product setup page.
 	. Inventory listing - search with keyword and pagination.
-	. Invalid request issue on page reaload via ajax.
+	. Invalid request issue on page reload via ajax.
 	. Menu toggle issue on page load.
 	. Discount coupon in case of multiple browser.
 	. Resolved product count issue when use price filter and then change currency.
@@ -16,8 +15,20 @@ Fixes:
 	. Commission charged including shipping excluded when shipped by admin.
 	. Excluded volume discount in tax.
 	. Product Listing displayed single product of min price.
+	. Refined search listing page logic.
+	. Fixes in order cancellation requests.
+	. Buyer rewards on purchase.
+	. Product Quick view. 
+
+Enhancement:	
+	. Product listing pages - filters , options
+	. Product search logic - Exact match
+	
 Updates :
 	. Guest user cart functionality for app users.
 	. auto scroll for recently viewed products.
 	. Updated front end tables HTML to make them responsive.
+	. Responsive admin theme.
+	. Brand collection for home page.
+	
 	
