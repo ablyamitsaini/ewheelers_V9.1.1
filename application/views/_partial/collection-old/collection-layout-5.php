@@ -1,8 +1,6 @@
 <?php  
 if( isset( $collections ) && count($collections) ){
-
 	$counter = 1;
-
 	foreach( $collections as $collection_id => $row ){ 	/* category listing design [ */
 			if( isset($row['categories']) && count( $row['categories'] ) ) { ?>
 
@@ -21,6 +19,6 @@ if( isset( $collections ) && count($collections) ){
 		  </div>
 		</div>
 		<?php }
-		}
+	}
 }
 ?>

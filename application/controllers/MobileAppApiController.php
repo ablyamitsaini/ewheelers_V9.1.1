@@ -434,7 +434,7 @@ class MobileAppApiController extends MyAppController {
 		/* ] */
 		$banners = new ArrayObject();
 		$bannerSrch = Banner::getBannerLocationSrchObj(true,applicationConstants::SCREEN_MOBILE);
-		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_AFTER_THIRD_LAYOUT);
+		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_BOTTOM_BANNER);
 		
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = $this->db->fetchAll( $rs ,'blocation_key');

@@ -559,7 +559,7 @@ class ProductCategory extends MyAppModel{
 			$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts' );
 			$prodCatSrch->addCondition( 'qryProducts.productCounts', '>', 0 );
 		}
-		
+		/* echo $prodCatSrch->getQuery(); die; */
 		
 		$prodCatSrch->addMultipleFields( array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code') );
 		

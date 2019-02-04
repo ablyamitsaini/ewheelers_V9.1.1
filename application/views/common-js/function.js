@@ -329,11 +329,14 @@ $(document).ready(function(){
           $('#accordian').children('ul').children('li:gt(0)').hide();
         }
    }
-   function setSelectedCatValue(){
-		var e = document.getElementById("category--js");
+   
+   function setSelectedCatValue(id){
+		var currentId = 'category--js-'+id;
+		var e = document.getElementById(currentId);
 		if(e != undefined){
-			var strCat = e.options[e.selectedIndex].text;
-			$('.select_value-js').html(strCat);
+			var catName = e.text;
+			$('#selected__value-js').html(catName);
+			$('#selected__value-js').closest('form').find('input[name="category"]').val(id);
 		}
 	}
 

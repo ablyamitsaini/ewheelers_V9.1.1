@@ -459,7 +459,7 @@ class ProductsController extends MyAppController {
 		
 		
 		//Get All Categories which have products
-		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
+		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,true );
 	
 		/* ] */
 		$productCategory = new productCategory;

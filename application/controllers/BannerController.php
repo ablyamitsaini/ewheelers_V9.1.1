@@ -83,12 +83,8 @@ class BannerController extends MyAppController {
 		
 	}
 	
-	public function HomePageAfterFirstLayout($bannerId , $langId = 0, $screen = 0){
-		$this->showBanner($bannerId, $langId, 844, 338, $screen);
-	}
-	
-	public function HomePageAfterThirdLayout($bannerId , $langId = 0, $screen = 0){
-		$this->showOriginalBanner($bannerId, $langId, $screen);
+	public function HomePageBannerLayout($bannerId , $langId = 0, $screen = 0){
+		$this->showBanner($bannerId, $langId, 1200, 360, $screen);
 	}
 	
 	public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0){

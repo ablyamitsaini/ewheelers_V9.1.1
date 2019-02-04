@@ -103,6 +103,7 @@ class CollectionsController extends AdminBaseController {
 		$this->set('languages', Language::getAllNames());
 		$this->set('collection_id', $collectionId);
 		$this->set('collection_type', (isset($data['collection_type']))? $data['collection_type']: Collections::COLLECTION_TYPE_PRODUCT);
+		$this->set('collection_layout_type', (isset($data['collection_layout_type']))? $data['collection_layout_type']: Collections::TYPE_PRODUCT_LAYOUT1);
 		$this->set('frm', $frm);
 		$this->_template->render(false, false);		
 	}
@@ -164,7 +165,7 @@ class CollectionsController extends AdminBaseController {
 		
 		$collectionData = Collections::getAttributesById($collectionId );
 		if($collectionData['collection_type'] == Collections::COLLECTION_TYPE_SHOP){
-			$post['collection_child_records'] = 2;
+			$post['collection_child_records'] = 3;
 		}
 		
 		$record = new Collections($collectionId);
@@ -299,9 +300,9 @@ class CollectionsController extends AdminBaseController {
 
 		$frm->addTextBox( Labels::getLabel('LBL_Primary_Record',$this->adminLangId), 'collection_primary_records' )->requirements()->setRequired();
 		
-		if($collectionData['collection_type'] != Collections::COLLECTION_TYPE_SHOP){
+		/* if($collectionData['collection_type'] != Collections::COLLECTION_TYPE_SHOP){
 			$frm->addTextBox( Labels::getLabel('LBL_Child_Records',$this->adminLangId), 'collection_child_records' );
-		}
+		} */
 	
 		/* $frm->addTextBox( Labels::getLabel('LBL_Link_URL(If_Any)',$this->adminLangId), 'collection_link_url' ); */
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
@@ -832,7 +833,7 @@ class CollectionsController extends AdminBaseController {
 		$this->set('availableLayouts',$availableLayouts);
 		$this->_template->render(false,false);
 	}
-	
+
 	private function getLayoutAvailabale($collectionType){
 		if(!$collectionType){
 			return  Collections::getLayoutTypeArr($this->adminLangId);
@@ -840,21 +841,20 @@ class CollectionsController extends AdminBaseController {
 		$collectionLayouts = array(
 						
 						Collections::COLLECTION_TYPE_PRODUCT => array(
-								Collections::COLLECTION_LAYOUT1_TYPE => Labels::getLabel('LBL_Collection_Layout1', $this->adminLangId),
-								Collections::COLLECTION_LAYOUT2_TYPE => Labels::getLabel('LBL_Collection_Layout2', $this->adminLangId),
-								Collections::COLLECTION_LAYOUT3_TYPE => Labels::getLabel('LBL_Collection_Layout3', $this->adminLangId),
-								Collections::COLLECTION_LAYOUT6_TYPE => Labels::getLabel('LBL_Collection_Layout6', $this->adminLangId),
+								Collections::TYPE_PRODUCT_LAYOUT1 => Labels::getLabel('LBL_Product_Layout1', $this->adminLangId),
+								Collections::TYPE_PRODUCT_LAYOUT2 => Labels::getLabel('LBL_Product_Layout2', $this->adminLangId),
+								Collections::TYPE_PRODUCT_LAYOUT3 => Labels::getLabel('LBL_Product_Layout3', $this->adminLangId),
 								),
 						Collections::COLLECTION_TYPE_CATEGORY => array(
-								Collections::COLLECTION_LAYOUT5_TYPE => Labels::getLabel('LBL_Collection_Layout5', $this->adminLangId),
-								
+								Collections::TYPE_CATEGORY_LAYOUT1 => Labels::getLabel('LBL_Category_Layout1', $this->adminLangId),
+								Collections::TYPE_CATEGORY_LAYOUT2 => Labels::getLabel('LBL_Category_Layout2', $this->adminLangId),
 								),
 						Collections::COLLECTION_TYPE_SHOP => array(
-								Collections::COLLECTION_LAYOUT4_TYPE => Labels::getLabel('LBL_Collection_Layout4', $this->adminLangId),
+								Collections::TYPE_SHOP_LAYOUT1 => Labels::getLabel('LBL_Shop_Layout1', $this->adminLangId),
 								
 								),
 						Collections::COLLECTION_TYPE_BRAND => array(
-								Collections::COLLECTION_LAYOUT7_TYPE => Labels::getLabel('LBL_Collection_Layout7', $this->adminLangId),
+								Collections::TYPE_BRAND_LAYOUT1 => Labels::getLabel('LBL_Brand_Layout1', $this->adminLangId),
 								
 								)
 						);

@@ -5,9 +5,14 @@ if( UserAuthentication::isUserLogged() ){
 }
 ?>
 <?php if( $user_is_buyer > 0 || (!UserAuthentication::isUserLogged()) ){ ?>
-<a href="javascript:void(0)"><span class="icn-txt"><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></span> <span class="icn"> <span class="cartQuantity"><?php echo $totalCartItems; ?></span></span></a>
+<a href="javascript:void(0)">
+<span class="icn"> </span>
+<span class="icn-txt"><strong><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></strong>
+	<span class="cartQuantity"><?php echo $totalCartItems.' '.Labels::getLabel("LBL_Items", $siteLangId); ?></span>
+</span>
+</a>
 <div class="dropsection cart-detail">
-<a href="javascript:void(0)" id="close-cart-js" class="close close30 close-black"></a>
+<a href="javascript:void(0)" id="close-cart-js" class="close-layer"></a>
   <?php if($totalCartItems>0) { ?>
   <div class="cartdetail__body">
     <div class="short-detail">
