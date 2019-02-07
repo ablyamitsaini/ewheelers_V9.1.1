@@ -1,5 +1,6 @@
 <?php
 class GuestUserController extends MyAppController {
+	
 	public function loginForm() {
 		/* if(UserAuthentication::doCookieLogin()){
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
@@ -7,15 +8,29 @@ class GuestUserController extends MyAppController {
 		if (UserAuthentication::isUserLogged()) {
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
 		}
-		$frm = $this->getLoginForm();
-		$data = array(
-			'loginFrm' 			=> $frm,
+		$loginFrm = $this->getLoginForm();
+		$loginData = array(
+			'loginFrm' 			=> $loginFrm,
 			'siteLangId'	=> $this->siteLangId
 		);
-		$obj = new Extrapage();
-		$pageData = $obj->getContentByPageType( Extrapage::LOGIN_PAGE_RIGHT_BLOCK, $this->siteLangId );
-		$this->set('pageData' , $pageData);
-		$this->set('data', $data);
+		
+		$registerFrm = $this->getRegistrationForm();
+		$cPageSrch = ContentPage::getSearchObject($this->siteLangId);
+		$cPageSrch->addCondition('cpage_id','=',FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE' , FatUtility::VAR_INT , 0));
+		$cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
+		if(!empty($cpage) && is_array($cpage)){
+			$termsAndConditionsLinkHref = CommonHelper::generateUrl('Cms','view',array($cpage['cpage_id']));
+		} else {
+			$termsAndConditionsLinkHref = 'javascript:void(0)';
+		}
+		$registerdata = array(
+			'registerFrm'	=>	$registerFrm,
+			'termsAndConditionsLinkHref'	=>	$termsAndConditionsLinkHref,
+			'siteLangId'	=>	$this->siteLangId
+		);
+		
+		$this->set('loginData', $loginData);
+		$this->set('registerdata', $registerdata);
 		$this->_template->render();
 	}
 	

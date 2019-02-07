@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 
 <?php if( !$isUserLogged ){ ?>
-	<li> <a href="javascript:void(0)" class="sign-in"><i class="icn icn--login"><svg class="svg">
+	<li> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
 		<use xlink:href="images/retina/sprite.svg#login" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login"></use>
 	</svg></i> <span>
 	<strong><?php echo Labels::getLabel('LBL_Login_/_Sign_Up', $siteLangId); ?></strong></span></a></li>

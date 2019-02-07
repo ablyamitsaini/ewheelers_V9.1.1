@@ -9,6 +9,20 @@ $(document).on('click','.menu-toggle ',function() {
 	$(this).toggleClass("cross");
 });
 
+/* Expand/collapse/accordion */
+$(function () {
+	$('.js-acc-triger').on('click', function (e) {
+		e.preventDefault();
+		if ($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			$(this).next().stop().slideUp(300);
+		} else {
+			$(this).addClass('active');
+			$(this).next().stop().slideDown(300);
+		}
+	});
+});
+
 /* for search form */
  $(document).on('click','.toggle--search-js',function() {
 	$(this).toggleClass("is--active");

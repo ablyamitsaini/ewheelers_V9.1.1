@@ -88,7 +88,7 @@ class BannerController extends MyAppController {
 	}
 	
 	public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0){
-		$this->showBanner($bannerId, $langId, 310, 459, $screen);
+		$this->showBanner($bannerId, $langId, 1200, 360, $screen);
 	}
 	
 	public function Thumb($bannerId, $langId = 0, $screen = 0){
