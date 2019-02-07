@@ -1,24 +1,24 @@
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="container">
 			<div class="row">
-                <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>                                 
+                <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head no-print">
-						   <h2><?php echo Labels::getLabel('LBL_View_Subscription_Order',$siteLangId);?></h2>                     
+						   <h2><?php echo Labels::getLabel('LBL_View_Subscription_Order',$siteLangId);?></h2>
 						</div>
-						<div class="panel__body">                            
+						<div class="panel__body">
                             <div class="box box--white box--space">
                                <div class="box__head no-print" >
                                    <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
                                    <div class="group--btns">
 									   <?php /* <a href="javascript:window.print();" class="btn btn--secondary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>  */?>
-									   <a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Subscription',$siteLangId);?></a>                                 	
+									   <a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Subscription',$siteLangId);?></a>
                                    </div>
                                </div>
-                                <div class="box__body">                                    
+                                <div class="box__body">
                                     <div class="grids--offset">
                                          <div class="grid-layout">
                                             <div class="row">
@@ -35,7 +35,7 @@
                                                          <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $orderDetail['ossubs_invoice_number'];?></p>
                                                          <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>
                                                          <span class="gap"></span>
-                                                          
+
                                                      </div>
                                                 </div>
                                             </div>
@@ -56,16 +56,16 @@
 													<td><?php echo OrderSubscription::getSubscriptionTitle($orderDetail,$siteLangId);?></td>
 													<td>
 													<?php if($orderDetail['ossubs_from_date']==0 || $orderDetail['ossubs_till_date']==0) echo Labels::getLabel("LBL_NA",$siteLangId); else echo FatDate::format($orderDetail['ossubs_from_date'])." - " .FatDate::format($orderDetail['ossubs_till_date']); ?>
-													</td> 
-													<td><?php echo CommonHelper::displayMoneyFormat($orderDetail['ossubs_price']);?></td> 
+													</td>
+													<td><?php echo CommonHelper::displayMoneyFormat($orderDetail['ossubs_price']);?></td>
 													<td><?php echo $orderDetail['ossubs_products_allowed'];?></td>
 												</tr>
 											</tbody>
 										</table>
                                     </div>
-                                </div>                                 
-                            </div>                             
-						</div>						
+                                </div>
+                            </div>
+						</div>
 					</div>
 				</div>
             </div>
