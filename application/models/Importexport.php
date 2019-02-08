@@ -582,8 +582,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Categories');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Categories');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -732,12 +732,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -774,8 +773,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Category_Media');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Category_Media');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -866,12 +865,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 		$success['status'] = 1;
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -959,8 +957,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Brands');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Brands');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -1068,11 +1066,10 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -1438,15 +1435,14 @@ class Importexport extends ImportexportCommon{
 
 			if($rowCount == 0){
 				$coloumArr = $this->getProductsCatalogColoumArr($langId,$sellerId);
-				// print_r($line);
-				// print_r($coloumArr);
+
 				if($line !== $coloumArr){
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Products_catalog');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Products_catalog');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -1804,13 +1800,12 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true, $fileName );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -1890,8 +1885,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Product_Options');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Product_Options');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -1958,12 +1953,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -2044,8 +2038,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Product_Tags');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Product_Tags');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -2113,12 +2107,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -2214,8 +2207,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Product_Specifications');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Product_Specifications');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -2306,12 +2299,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -2422,8 +2414,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Product_Shipping');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Product_Shipping');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -2586,12 +2578,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -2605,7 +2596,7 @@ class Importexport extends ImportexportCommon{
 		$srch->joinTable(Option::DB_TBL,'LEFT OUTER JOIN','o.option_id = ov.optionvalue_option_id','o');
 		$srch->doNotCalculateRecords();
 		if($userId){
-			$cnd = $srch->addCondition('tp.product_seller_id','=',$userId,'OR');
+			$cnd = $srch->addCondition('tp.product_seller_id','=',$userId,'AND');
 			$cnd->attachCondition('tp.product_seller_id','=',0);
 		}
 
@@ -2696,8 +2687,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Product_Catalog_Media');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Product_Catalog_Media');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -2721,7 +2712,6 @@ class Importexport extends ImportexportCommon{
 			if($userId){
 				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
 			}
-
 			if(!$productId){
 				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
@@ -2772,6 +2762,7 @@ class Importexport extends ImportexportCommon{
 			}
 
 			if($optionId && !in_array($optionId,$selProdValidOptionArr[$productId])){
+				$errMsg = Labels::getLabel( "MSG_Option_Identifier_cannot_be_blank", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
@@ -2853,12 +2844,9 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
-
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -3058,8 +3046,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_General_Data');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_General_Data');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -3290,12 +3278,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -3377,8 +3364,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Option_Data');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Option_Data');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -3520,12 +3507,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -3604,8 +3590,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Seo_Data');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Seo_Data');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -3682,12 +3668,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -3766,8 +3751,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Special_Price');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Special_Price');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -3824,12 +3809,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -3892,8 +3876,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Volume_Discount');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Volume_Discount');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -3939,12 +3923,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4007,8 +3990,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Buy_Togther');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Buy_Togther');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4083,12 +4066,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4150,8 +4132,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Related_Product');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Related_Product');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4195,12 +4177,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4269,8 +4250,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Seller_Product_Policy');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Seller_Product_Policy');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4338,12 +4319,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4446,8 +4426,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Options');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Options');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4560,12 +4540,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4647,8 +4626,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Option_Values');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Option_Values');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4764,12 +4743,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -4841,8 +4819,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Tags');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Tags');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -4948,12 +4926,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -5049,8 +5026,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Countries');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Countries');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -5162,12 +5139,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -5268,8 +5244,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('States');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('States');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -5369,12 +5345,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
@@ -5465,8 +5440,8 @@ class Importexport extends ImportexportCommon{
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
-				$fileName = $this->logFileName('Policy_Points');
-				$errFile = $this->openErrorLogFile( $fileName, $langId );
+				$errfileName = $this->logFileName('Policy_Points');
+				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
@@ -5573,12 +5548,11 @@ class Importexport extends ImportexportCommon{
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
-		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
-		// FatUtility::dieJsonSuccess(Message::getHtml());
+
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
-		if(CommonHelper::checkLogFile( $fileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
+		if(CommonHelper::checkLogFile( $errfileName )){
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 			$success['msg'] .= ' <a href="'.$success['redirectUrl'].'">'.Labels::getLabel('LBL_Click_Here_to_download_error_log',$langId).'</a>';
 		}
 		FatUtility::dieJsonSuccess($success);
