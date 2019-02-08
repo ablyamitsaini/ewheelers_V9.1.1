@@ -734,7 +734,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -1304,7 +1304,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$sheetArr[] = $row['product_seller_id'];
 				}else{
-					$sheetArr[] = $row['credential_username'];
+					$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 				}
 			}
 
@@ -1482,10 +1482,12 @@ class Importexport extends ImportexportCommon{
 					$userId = $this->getCell($line,$colCount++,0);
 				}else{
 					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 					if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 						$res = $this->getAllUserArr(false,$colValue);
 						if(!$res){
-							CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, Labels::getLabel( "MSG_User_ID_must_be_blank.", $langId ) ) );
+							$errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+							CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $errMsg  ) );
 							continue;
 						}
 						$usernameArr = array_merge($usernameArr,$res);
@@ -1805,7 +1807,7 @@ class Importexport extends ImportexportCommon{
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
 
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -1958,7 +1960,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -2113,7 +2115,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -2306,7 +2308,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -2363,7 +2365,7 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_USER_ID']){
 				$sheetArr[] = $row['user_id'];
 			}else{
-				$sheetArr[] = (!empty($row['credential_username']) ? $row['credential_username'] : 'Admin');
+				$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 			}
 
 			if($this->settings['CONF_USE_COUNTRY_ID']){
@@ -2469,10 +2471,11 @@ class Importexport extends ImportexportCommon{
 				$userId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
 				$colValue = $this->getCell($line,$colCount++);
-				if(!array_key_exists($colValue,$usernameArr)){
+				$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
+				if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 					$res = $this->getAllUserArr(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_please_check_user_identifier.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -2585,7 +2588,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -2749,7 +2752,7 @@ class Importexport extends ImportexportCommon{
 						}
 						$optionIdentifierArr = array_merge($optionIdentifierArr,$res);
 					}
-					$optionId = isset($optionIdentifierArr[$colValue])?$optionIdentifierArr[$colValue]:0;;
+					$optionId = isset($optionIdentifierArr[$colValue])?$optionIdentifierArr[$colValue]:0;
 				}
 			}
 
@@ -2852,7 +2855,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -2968,7 +2971,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$sheetArr[] = $row['selprod_user_id'];
 				}else{
-					$sheetArr[] = $row['credential_username'];
+					$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 				}
 			}
 
@@ -3098,10 +3101,11 @@ class Importexport extends ImportexportCommon{
 					$userId = FatUtility::int($this->getCell($line,$colCount++,0));
 				}else{
 					$colValue = $this->getCell($line,$colCount++,'');
-					if(!array_key_exists($colValue,$usernameArr)){
+					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
+					if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 						$res = $this->getAllUserArr(false,$colValue);
 						if(!$res){
-							$errMsg = Labels::getLabel( "MSG_User_ID_must_be_blank.", $langId );
+							$errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
 							$err = array($rowIndex,$colCount,$errMsg);
 							CommonHelper::writeLogFile( $errFile,  $err);
 							continue;
@@ -3288,7 +3292,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -3518,7 +3522,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -3680,7 +3684,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -3822,7 +3826,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -3937,7 +3941,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4081,7 +4085,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4193,7 +4197,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4336,7 +4340,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4386,7 +4390,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['option_seller_id'];
 					}else{
-						$sheetArr[] = $row['credential_username'];
+						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 
 					/* if($this->settings['CONF_USE_OPTION_TYPE_ID']){
@@ -4479,11 +4483,12 @@ class Importexport extends ImportexportCommon{
 				}else{
 					$userId = 0;
 					$colValue = $this->getCell($line,$colCount++,'');
-					if($colValue){
+					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
+					if(!empty($colValue)){
 						if(!array_key_exists($colValue,$userArr)){
 							$res = $this->getAllOptions(false,$colValue);
 							if(!$res){
-								$errMsg = Labels::getLabel( "MSG_Option_not_found.", $langId );
+								$errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
 								$err = array($rowIndex,$colCount,$errMsg);
 								CommonHelper::writeLogFile( $errFile,  $err);
 								continue;
@@ -4557,7 +4562,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4761,7 +4766,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -4802,7 +4807,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['tag_user_id'];
 					}else{
-						$sheetArr[] = $row['credential_username'];
+						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 				}
 			}
@@ -4870,10 +4875,11 @@ class Importexport extends ImportexportCommon{
 				$userId = $this->getCell($line,$colCount++,0);
 			}else{
 				$colValue = $this->getCell($line,$colCount++,'');
-				if(!array_key_exists($colValue,$usernameArr)){
+				$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
+				if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 					$res = $this->getAllUserArr(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_User_ID_must_be_blank.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -4944,7 +4950,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -5158,7 +5164,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -5365,7 +5371,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );
@@ -5569,7 +5575,7 @@ class Importexport extends ImportexportCommon{
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
-		
+
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $fileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($fileName),CONF_WEBROOT_FRONTEND );

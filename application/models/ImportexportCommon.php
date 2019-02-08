@@ -830,7 +830,7 @@ class ImportexportCommon extends FatModel{
 		if(!$userId){
 			return $res;
 		}
-
+		
 		$srch = new SearchBase(Importexport::DB_TBL_SETTINGS, 's');
 		$srch->addCondition('impexp_setting_user_id','=',$userId);
 		$srch->doNotCalculateRecords();
