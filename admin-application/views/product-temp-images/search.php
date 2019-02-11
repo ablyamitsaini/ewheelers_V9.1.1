@@ -1,11 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arrFlds = array(
 	'listserial'=>Labels::getLabel('LBL_Sr._No',$adminLangId),
+	'product_name'=>Labels::getLabel('LBL_Product_Name',$adminLangId),
 	'afile_physical_path'	=>	Labels::getLabel('LBL_Path',$adminLangId),
 	'afile_downloaded' => Labels::getLabel('LBL_Is_Downloaded',$adminLangId),
-	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
-
+if($canEdit){
+	$arrFlds['action'] = Labels::getLabel('LBL_Action',$adminLangId);
+}
 $tbl = new HtmlElement('table',
 array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 
@@ -41,7 +43,7 @@ foreach ($arr_listing as $sn => $row){
 					$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
 
 					$innerLi=$innerUl->appendElement('li');
-					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"editProductTempImage(".$row['afile_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);	
+					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"editProductTempImage(".$row['afile_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
 				}
 			break;
 			default:

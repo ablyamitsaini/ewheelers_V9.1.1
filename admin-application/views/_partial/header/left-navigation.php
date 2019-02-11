@@ -352,7 +352,8 @@
 				$objPrivilege->canViewMetaTags(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewFaqCategories(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewUrlRewrite(AdminAuthentication::getLoggedAdminId(), true) ||
-				$objPrivilege->canViewThemeColor(AdminAuthentication::getLoggedAdminId(), true)
+				$objPrivilege->canViewThemeColor(AdminAuthentication::getLoggedAdminId(), true) ||
+                $objPrivilege->canViewProductTempImages(AdminAuthentication::getLoggedAdminId(), true)
 				){ ?>
 			<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Misc',$adminLangId);?></a>
 				<ul>

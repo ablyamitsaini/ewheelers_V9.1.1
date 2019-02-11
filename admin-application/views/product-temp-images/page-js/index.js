@@ -14,8 +14,7 @@
 		});
 	};
 	clearSearch = function(){
-		document.frmProductsTempImagesPaging.reset();
-		$('select[name=is_downloaded]').val('-1')
+		document.frmProductTempImages.reset();
 		searchProductsTempImages(document.frmProductTempImages);
 	};
 	goToSearchPage = function(page) {

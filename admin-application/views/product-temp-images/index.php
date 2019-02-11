@@ -1,4 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php
+	$submitBtn = $frmSearch->getField('btn_submit');
+	$clearBtn = $frmSearch->getField('btn_clear');
+	$submitBtn->attachField($clearBtn);
+?>
 <div class='page'>
 	<div class='container container-fluid'>
 		<div class="row">
@@ -12,31 +17,28 @@
 						</div>
 					</div>
 				</div>
-
-<!--<div class="row">
-	<div class="col-sm-12">-->
-			<section class="section searchform_filter">
-				<div class="sectionhead">
-					<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
-				</div>
-				<div class="sectionbody space togglewrap" style="display:none;">
-					<?php
-						$frmSearch->setFormTagAttribute ( 'onsubmit', 'searchProductsTempImages(this); return(false);');
-						$frmSearch->setFormTagAttribute ( 'class', 'web_form' );
-						$frmSearch->developerTags['colClassPrefix'] = 'col-md-';
-						$frmSearch->developerTags['fld_default_col'] = 6;
-						echo  $frmSearch->getFormHtml();
-					?>
-				</div>
-			</section>
-	<!--</div>
-	<div class="col-sm-12"> 	-->
-		<section class="section">
-		<div class="sectionbody">
-			<div class="tablewrap">
-				<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...',$adminLangId); ?></div>
+				<section class="section searchform_filter">
+					<div class="sectionhead">
+						<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
+					</div>
+					<div class="sectionbody space togglewrap" style="display:none;">
+						<?php
+							$frmSearch->setFormTagAttribute ( 'onsubmit', 'searchProductsTempImages(this); return(false);');
+							$frmSearch->setFormTagAttribute ( 'class', 'web_form' );
+							$frmSearch->developerTags['colClassPrefix'] = 'col-md-';
+							$frmSearch->developerTags['fld_default_col'] = 4;
+							echo  $frmSearch->getFormHtml();
+						?>
+					</div>
+				</section>
+				<section class="section">
+					<div class="sectionbody">
+						<div class="tablewrap">
+							<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...',$adminLangId); ?></div>
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
-		</section>
 	</div>
 </div>
