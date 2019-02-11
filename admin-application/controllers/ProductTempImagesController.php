@@ -107,7 +107,7 @@ class ProductTempImagesController extends AdminBaseController {
 	}
 
 	// Edit Form Structure
-	private function getForm($afile_id){
+	private function getForm($afile_id = 0){
 		$afile_id = FatUtility::int($afile_id);
 		$frm = new Form('frmImage');
 		$frm->addHiddenField('', 'afile_id',$afile_id);
