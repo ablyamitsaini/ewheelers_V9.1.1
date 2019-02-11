@@ -107,10 +107,8 @@ class ProductTempImagesController extends AdminBaseController {
 	}
 
 	// Edit Form Structure
-	private function getForm($afile_id = 0){
-		$afile_id = FatUtility::int($afile_id);
+	private function getForm(){
 		$frm = new Form('frmImage');
-		$frm->addHiddenField('', 'afile_id',$afile_id);
 		$frm->addRequiredField(Labels::getLabel('LBL_File_Name',$this->adminLangId),'afile_name','');
 		$frm->addRequiredField(Labels::getLabel('LBL_File_Path',$this->adminLangId), 'afile_physical_path');
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
@@ -129,8 +127,11 @@ class ProductTempImagesController extends AdminBaseController {
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
 
-		$afile_id = FatUtility::int($post['afile_id']);
-		unset($post['afile_id']);
+		$afile_id = FatApp::getPostedData('afile_id', FatUtility::VAR_INT, 0);
+		if(1 > $afile_id){
+			Message::addErrorMessage($this->str_invalid_request);
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
 
 		$imageObj = new ProductTempImage($afile_id);
 		$imageObj->assignValues($post);

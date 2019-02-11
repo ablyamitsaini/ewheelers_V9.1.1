@@ -6,7 +6,7 @@ $frmImage->developerTags['fld_default_col'] = 12;
 
 $frmImage->setFormTagAttribute('class', 'web_form form_horizontal');
 $frmImage->setFormTagAttribute('onsubmit', 'updateProductTempImage(this); return(false);');
-
+$frmImage->addHiddenField('', 'afile_id',$afile_id);
 ?>
 <section class="section">
 	<div class="sectionhead">
