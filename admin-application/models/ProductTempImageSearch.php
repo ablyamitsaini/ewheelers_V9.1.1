@@ -1,5 +1,6 @@
 <?php
 class ProductTempImageSearch extends SearchBase {
+    private $langId;
     public function __construct($langId = 0) {
 
         $this->langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
