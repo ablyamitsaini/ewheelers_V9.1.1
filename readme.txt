@@ -3,3 +3,7 @@ Enhancements :
     . Order Print layout and functionality.
     . Managing product temp images(Import/Export) in admin.
     . Managing notifications according to sub admin permissions.
+    . Managing email notifications
+        . Having additional alert emails
+        . Sending mail notification to super admin only
+        . Sending email notifications to sub admin according to their permissions.
