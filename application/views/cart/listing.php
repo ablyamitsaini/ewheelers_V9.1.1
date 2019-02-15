@@ -30,9 +30,9 @@
 				</td>
 				<td>
 					<div class="item__description">
-						<div class="item-yk-head-category"><?php echo Labels::getLabel('LBL_Brand', $siteLangId).': '; ?>: <span class="text--dark"><?php echo $product['brand_name']; ?></span></div>
+						<div class="item__category"><?php echo Labels::getLabel('LBL_Brand', $siteLangId).': '; ?>: <span class="text--dark"><?php echo $product['brand_name']; ?></span></div>
 						<div class="item__title"><a title="<?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
-						<div class="item-yk-head-specification">
+						<div class="item__specification">
 							<?php
 							if( isset($product['options']) && count($product['options']) ){
 								foreach($product['options'] as $option){
@@ -48,7 +48,7 @@
 					<div class="qty-wrapper">
 					<div class="qty qty--border qty--cart">
 						<span class="decrease decrease-js">-</span>
-						<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" class="no--focus" type="number" min="0"/>
+						<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox no--focus" value="<?php echo $product['quantity']; ?>" class="no--focus" type="number" min="0"/>
 						<span class="increase increase-js">+</span>
 					</div>
 					<a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>
@@ -80,20 +80,24 @@
 	</div>
 	</table>
 	<div class="cart-footer">
-		<div class="row">
-			<div class="col-lg-4 col-md-12 d-none d-xl-block d-lg-block">
+		<div class="row justify-content-between">
+			<div class="col-lg-6 d-none d-lg-block ">
 				<h5><?php echo Labels::getLabel('LBL_Delivery_And_Payment_Options',$siteLangId); ?></h5>
 				<div class="row">
 					<div class="col-lg-5">
-						<div class="advices-icons"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/icn-safe.svg"></i><?php echo Labels::getLabel('LBL_Safe_&_Secure',$siteLangId); ?></div>
+						<div class="advices-icons"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/icn-safe.svg"></i>
+						<div class="gap"></div>
+					 <h6><?php echo Labels::getLabel('LBL_Safe_&_Secure',$siteLangId); ?></h6>	</div>
 					</div>
 					<div class="col-lg-5">
-						<div class="advices-icons"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/icn-protection.svg"></i><?php echo Labels::getLabel('LBL_Payment_Protection',$siteLangId); ?></div>
+						<div class="advices-icons"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/icn-protection.svg"></i>
+						<div class="gap"></div>
+							<h6><?php echo Labels::getLabel('LBL_Payment_Protection',$siteLangId); ?></h6></div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-12"></div>
-			<div class="col-lg-5 col-md-12">
+			
+			<div class="col-lg-6">
 				<div class="cartdetail__footer">
 				<!--div class="row">
 						<div class="col-md-offset-7 col-md-5">
@@ -145,8 +149,13 @@
 						  <tr>
 							<td colspan="2" class="text-right">
 							<div class="gap"></div>
-							<div class="btns-group">
-								<a class="btn btn--primary btn--lg" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Continue_Shopping', $siteLangId); ?></a> <a class="btn btn--secondary btn--lg" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a>
+							<div class="row">
+							<div class="col-md-6"><a class="btn btn--primary btn--lg btn--block" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Continue_Shopping', $siteLangId); ?></a></div>
+							<div class="col-md-6"><a class="btn btn--secondary btn--lg btn--block" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></div>
+								
+								
+								
+								
 							</div>
 							</td>
 						  </tr>

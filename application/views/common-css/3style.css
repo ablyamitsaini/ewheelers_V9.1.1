@@ -2403,7 +2403,7 @@ body.fixed .top-bar {
 	text-align: right;
 }
 
-.cart .icn {
+.cart span.icn {
 	background: url(../images/retina/cart.svg) no-repeat center;
 	vertical-align: top;
 	background-size: 20px 20px;
@@ -2533,7 +2533,7 @@ body.fixed .top-bar {
 
 .cart-summary {
 	width: 100%;
-	table-layout: fixed;
+	/*table-layout: fixed;*/
 }
 
 .cart-summary tr {
@@ -2550,6 +2550,7 @@ body.fixed .top-bar {
 .cart-summary td {
 	vertical-align: top;
 	padding: 10px;
+	font-size: 0.8rem;
 }
 
 .cart-summary .products__img {
@@ -2583,20 +2584,11 @@ body.fixed .top-bar {
 	padding: 15px;
 }
 
-.advices-icons {
-	background: #fff;
-	border-radius: 4px;
-	padding: 20px;
-	display: flex;
-	font-weight: 600;
-	line-height: 1.2;
-	font-size: 1rem;
-	justify-content: center;
-	text-align: center;
-	flex-direction: column;
-	margin: 10px 0;
-	max-width: 125px;
-
+.cart-footer .cartdetail__footer {
+	padding: 0;
+}
+.cartdetail__footer {
+	padding: 1rem;
 }
 
 .cartdetail__footer table {
@@ -2614,6 +2606,22 @@ body.fixed .top-bar {
 
 	border-top: solid 1px var(--border-color);
 	border-bottom: solid 1px var(--border-color);
+}
+
+.advices-icons {
+	background: #fff;
+	border-radius: 4px;
+	padding: 20px;
+	display: flex;
+	font-weight: 600;
+	line-height: 1.2;
+	font-size: 1rem;
+	justify-content: center;
+	text-align: center;
+	flex-direction: column;
+	margin: 10px 0;
+
+
 }
 
 table.cart--full {
@@ -3251,7 +3259,7 @@ img {
 	font-family: 'Poppins', sans-serif;
 }
 
-.section-head .section__heading span {
+.section-head .section__heading h2 > span {
 	display: block;
 	font-size: 0.875rem;
 	text-align: center;
@@ -9065,21 +9073,32 @@ input.qty {
 	content: normal;
 }
 
+
 .custom-form {
-	display: table;
-	width: 100%;
-	margin: 0 auto;
+  display: table;
+  width: 100%;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 form.custom-form input[type="submit"] {
-	width: 100px;
-	float: right;
-	margin: 0;
+  margin: 0;
 }
 
 .custom-form input[type="text"] {
-	float: left;
-	width: calc(100% - 100px);
+  width: auto;
+  margin: 0 5px;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .image-listing li {
@@ -12475,15 +12494,6 @@ main.main {
 	font-size: 0.8em;
 	font-weight: 600;
 	margin-bottom: 15px;
-}
-
-.cartdetail__footer {
-	background: none;
-	float: right;
-}
-
-.cartdetail__footer table {
-	width: auto;
 }
 
 .payment_methods_list {

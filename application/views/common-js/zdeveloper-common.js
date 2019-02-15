@@ -756,7 +756,7 @@ function quickDetail(selprod_id)
 {
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
-			fcom.updateFaceboxContent(t,'faceboxWidth productQuickView');
+			fcom.updateFaceboxContent(t,'faceboxWidth');
 		});
 	});
 }

@@ -23,6 +23,22 @@ $(function () {
 	});
 });
 
+/*Tabs*/
+$(document).ready(function () {
+	$(".tabs-content-js").hide();
+	$(".tabs--flat-js li:first").addClass("is-active").show();
+	$(".tabs-content-js:first").show();
+	$(".tabs--flat-js li").click(function () {
+		$(".tabs--flat-js li").removeClass("is-active");
+		$(this).addClass("is-active");
+		$(".tabs-content-js").hide();
+		var activeTab = $(this).find("a").attr("href");
+		$(activeTab).fadeIn();
+		return false;
+		setSlider();
+	});
+});
+
 /* for search form */
  $(document).on('click','.toggle--search-js',function() {
 	$(this).toggleClass("is--active");

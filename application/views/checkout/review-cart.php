@@ -1,7 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="section-head">
-  <?php if( $cartHasPhysicalProduct ){ echo '4.'; } else { echo '3.'; } ?>
-  <?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></div>
+<h2><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h2>
 <div class="review-wrapper">
   <?php if( $cartHasDigitalProduct && $cartHasPhysicalProduct ){ ?>
   <div class="">
@@ -14,7 +12,7 @@
   </div>
   <?php }?>
   <div class="short-detail">
-    <table class="cart-summary item-yk">
+    <table class="table cart--full js-scrollable scroll-hint">
       <tbody>
         <?php 
 		if( count($products) ){
@@ -24,27 +22,40 @@
 				$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 				?>
 <tr class="<?php echo (!$product['in_stock']) ? 'disabled' : ''; echo ($product['is_digital_product'])?'digital_product_tab-js':'physical_product_tab-js'; ?>">
-<td class="text-center"><div class="product-img"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></div></td>
-<td class="text-left"><div class="item-yk-head">
-  <div class="item-yk-head-category"><a href="<?php echo $shopUrl; ?>"><?php echo $product['shop_name']; ?> </a></div>
-  <div class="item-yk-head-title"><a href="<?php echo $productUrl; ?>" title="<?php echo $product['product_name']; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?> </a></div>
-  <div class="item-yk-head-specification">
-	<?php
-	if(isset($product['options']) && count($product['options'])){
-	foreach($product['options'] as $option){ ?>
-	<?php echo ' | ' . $option['option_name'].':'; ?> <?php echo $option['optionvalue_name']; ?>
-	<?php
-	}
-	}
-	?>
-	| <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?> </div>
-</div></td>
-<td class="text-right" ><div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
-  <?php if( $product['special_price_found'] ){ ?>
-  <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
-  <?php } ?>
-</div>
-<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="btn btn--sm btn--gray ripplelink removeCart-Js"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a></td>
+<td><figure class="item__pic"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></figure></td>
+<td>
+	<div class="item__description">
+		<div class="item-yk-head-category"><?php echo Labels::getLabel('LBL_Shop', $siteLangId) ?>: <span class="text--dark"><?php echo $product['shop_name']; ?></span></div>
+		<div class="item__title"><a title="<?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
+		<div class="item-yk-head-specification">
+			<?php
+				if(isset($product['options']) && count($product['options'])){
+					foreach($product['options'] as $option){ ?>
+						<?php echo ' | ' . $option['option_name'].':'; ?>
+						<span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
+						<?php
+					}
+				}
+			?>
+			| <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
+			<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { ?>
+			<div class="item-yk-head-specification note-messages">
+				<?php echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);	?>
+			</div>										
+			<?php } ?>
+		</div>
+	</div>
+</td>
+<td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
+	<?php if( $product['special_price_found'] ){ ?>
+	<span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
+	<?php } ?>
+</td>
+<td class="text-right">
+	<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="images/retina/sprite.svg#bin"></use></svg></i></a>
+</td>
+
+
 </tr>
 <?php } } else {
 				echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);

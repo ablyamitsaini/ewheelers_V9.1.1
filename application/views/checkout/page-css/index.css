@@ -1,7 +1,7 @@
 /*@media only screen and (max-width: 767px) {}
 @media only screen and (max-width: 1025px) {}
 */
-.checkout-page .loader-yk {
+/* .checkout-page .loader-yk {
 	margin: 50px auto;
 }
 
@@ -36,9 +36,6 @@
 }
 
 .fixed .header-checkout .logo {
-	/*
-  margin-left: auto;
-  margin-right: auto;*/
 }
 
 .logo svg {
@@ -65,7 +62,6 @@
 }
 
 .trust-banners li {
-	/*  border-left: 1px solid rgba(255, 255, 255, 0.3);*/
 	display: table-cell;
 	padding: 15px 18px;
 	color: #fff;
@@ -128,7 +124,6 @@
 .section.login {}
 
 .section-head {
-	/*background: #f8f8f8;*/
 	border-bottom: solid 1px var(--border-color);
 	padding: 15px 15px;
 	color: #000;
@@ -420,7 +415,6 @@
 }
 
 .selected-panel {
-	/*background: #f8f8f8;*/
 	color: #666666;
 	font-weight: 300;
 	padding: 15px 15px;
@@ -605,3 +599,4 @@
 		position: static;
 	}
 }
+ */
