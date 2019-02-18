@@ -3396,7 +3396,7 @@ fieldset[disabled] .form--secondary input[type="submit"].focus {
 	position: absolute;
 	left: 14px;
 	top: 14px;
-	content: "";
+	/*content: "";*/
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
@@ -3409,7 +3409,7 @@ fieldset[disabled] .form--secondary input[type="submit"].focus {
 	position: absolute;
 	left: 10px;
 	top: 14px;
-	content: "";
+	/*content: "";*/
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
