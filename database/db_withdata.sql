@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 19, 2018 at 02:47 PM
+-- Generation Time: Jan 05, 2019 at 12:08 PM
 -- Server version: 5.7.24-0ubuntu0.16.04.1
 -- PHP Version: 7.0.32-0ubuntu0.16.04.1
 
@@ -842,6 +842,21 @@ CREATE TABLE `tbl_banner_location_dimensions` (
   `blocation_banner_height` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_banner_location_dimensions`
+--
+
+INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldimension_device_type`, `blocation_banner_width`, `blocation_banner_height`) VALUES
+(1, 1, '960', '400'),
+(1, 2, '1024', '360'),
+(1, 3, '760', '360'),
+(2, 1, '1920', '400'),
+(2, 2, '1024', '360'),
+(2, 3, '760', '360'),
+(3, 1, '310', '460'),
+(3, 2, '310', '460'),
+(3, 3, '310', '460');
+
 -- --------------------------------------------------------
 
 --
@@ -1225,6 +1240,18 @@ INSERT INTO `tbl_collections_lang` (`collectionlang_collection_id`, `collectionl
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_collection_to_brands`
+--
+
+CREATE TABLE `tbl_collection_to_brands` (
+  `ctpb_collection_id` int(11) NOT NULL,
+  `ctpb_brand_id` int(11) NOT NULL,
+  `ctpb_display_order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_collection_to_product_categories`
 --
 
@@ -1336,12 +1363,7 @@ CREATE TABLE `tbl_commission_settings` (
 --
 
 INSERT INTO `tbl_commission_settings` (`commsetting_id`, `commsetting_product_id`, `commsetting_user_id`, `commsetting_prodcat_id`, `commsetting_fees`, `commsetting_is_mandatory`, `commsetting_deleted`, `commsetting_by_package`) VALUES
-(1, 0, 4, 0, '4.00', 0, 0, 1),
-(2, 0, 5, 0, '4.00', 0, 0, 1),
-(3, 0, 6, 0, '4.00', 0, 0, 1),
-(4, 0, 0, 0, '10.00', 0, 0, 0),
-(5, 0, 11, 0, '5.00', 0, 0, 1),
-(8, 0, 12, 0, '5.00', 0, 0, 1);
+(1, 0, 0, 0, '3.00', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1650,7 +1672,7 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ('conf_website_name_3', '', 0),
 ('CONF_WELCOME_EMAIL_AFFILIATE_REGISTRATION', '1', 0),
 ('CONF_WELCOME_EMAIL_REGISTRATION', '1', 0),
-('conf_yokart_version', 'V8.2', 0),
+('conf_yokart_version', 'V8.3', 0),
 ('email_logo', '', 0),
 ('favicon', '', 0),
 ('front_logo', '', 0),
@@ -2348,6 +2370,18 @@ CREATE TABLE `tbl_coupons_hold` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_coupons_hold_pending_order`
+--
+
+CREATE TABLE `tbl_coupons_hold_pending_order` (
+  `ochold_order_id` varchar(15) NOT NULL,
+  `ochold_coupon_id` int(11) NOT NULL,
+  `ochold_added_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_coupons_lang`
 --
 
@@ -2576,7 +2610,7 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 ('blog_contribution_status_changed', 1, 'Blog Contribution Status Change - Notification', 'Blog Contribution Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Blog Contribution Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n											Your blog contribution (posted on {posted_on_datetime}) status has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n											</td>\r\n										</tr>\r\n										\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_status} New/Current Order Status<br/>\r\n{posted_on_datetime} - Contribution Posted on date time.<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
 ('buyer_notification_review_order_product', 1, 'Buyer Review Order product - Notification', 'Review you order at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Order feedback survey</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												                                              Thanks for shoppint ( Order Invoice Number {invoice_number}) with <a href=\"{website_url}\">{website_name}</a>. Please feedback your experience to this order  <a href=\"{review_page_url}\" style=\"color:#ff3a59;\">Click Here</a></td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:5px 0 30px;\">{order_items_table_format}</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_order_status} New/Current Order Status<br/>\r\n{invoice_number} - Child Order Invoice Number.<br/>\r\n{order_items_table_format} - Child Order Items in Tabular Format.<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1);
 INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES
-('buyer_notification_review_status_updated', 1, 'Buyer Product Review Status Change - Notification', 'Product Review Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Review Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												Your Review status has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> \r\n{new_status} New/Current Review Status<br/>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
+('buyer_notification_review_status_updated', 1, 'Buyer Product Review Status Change - Notification', 'Product Review Status Changed at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Changed</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Review Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												Your Review status for {product_link} has been changed to {new_status} at <a href=\"{website_url}\">{website_name}</a>.<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} Name of the email receiver<br/> {product_link} Product Link<br/> {new_status} New/Current Review Status<br/> {website_name} Name of our website<br> {website_url} URL of our website<br> {social_media_icons} <br> {contact_us_url} <br> ', 1),
 ('cancellation_request_approved_declined', 1, 'Cancellation Request Approved/Declined Email for User', 'Order Cancellation Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Order Cancellation Request</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												Your order cancellation request on {invoice_number} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{invoice_number} Order Invoice Number<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1),
 ('cancel_subscription_email', 1, 'Cancel Subscription Email', 'Cancel Subscription Email', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 30px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\"><br />\r\n										</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Cancel Subscription!</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name} </strong><br />\r\n													your &nbsp;{spackage_name}<span style=\"color: rgb(149, 149, 149); font-family: \" open=\"\" sans\",=\"\" sans-serif;=\"\" font-size:=\"\" 13px;=\"\" background-color:=\"\" rgb(255,=\"\" 255,=\"\" 255);\"=\"\"> plan has been canceled.</span></td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\"><br />\r\n													<br />\r\n													{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{user_full_name} Name of the email receiver<br>\r\n{website_name} Name of our website<br>\r\n{website_url} URL of our website<br>\r\n{reset_url} URL to reset the password<br>\r\n{spackage_name} Package name <br>\r\n', 1),
 ('catalog_request_message_user', 1, 'Catalog request message notification', 'New message received on catalog request at {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\"></h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Message Posted</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_full_name}</strong><br />\r\n												{username} has posted a message on catalog request at <a href=\"{website_url}\">{website_name}</a><br />\r\n												Message is given as below:</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:0 0 30px;\">{message}</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:0 0 30px;\">Please {click_here} to reply to this message.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_full_name} - Name of the email receiver<br/>\n{username} username of the person posted a message.<br />\n{request_number} Request number on which message is posted.<br />\n{message} message body/comments sent by the sender<br />\n{click_here} Link to reply to the message <br />\n{social_media_icons} <br>\n{contact_us_url} <br>', 1),
@@ -2645,7 +2679,8 @@ INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `et
 ('welcome_registration', 1, 'Welcome Mail on Registration', 'Welcome to {website_name}', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Congratulations</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Account Created!</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {name} </strong><br />\r\n													Thank you for signing up at <a href=\"{website_url}\">{website_name}</a>.</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\">We are thrilled to have you aboard! You have taken a great first step and we are so excited to connect directly with you.</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:0 0 30px;\">If you require any assistance in using our site, or have any feedback or suggestions, you can email us at {contact_us_email}</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{name} Name of the signed up user.<br>\r\n{email} Email Address of the signed up user.<br>\r\n{username} Username of the signed up User <br/>\r\n{contact_us_email} - Contact Us Email Address<br/>\r\n{website_name} Name of our website<br>\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1),
 ('withdrawal_request_admin', 1, 'Withdrawal Request - Admin', 'Withdrawal Request on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Request Received</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear Admin</strong><br />\r\n												{username} has submitted a withdrawal request on {website_name}. Please find the details below:</td>\r\n										</tr>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\">\r\n												<table style=\"border:1px solid #ddd; border-collapse:collapse;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\r\n													<tbody>\r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Request ID</td>\r\n															<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{request_id}</td>\r\n														</tr>                                                        \r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Amount<span class=\"Apple-tab-span\" style=\"white-space:pre\"></span></td>\r\n															<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{request_amount}</td>\r\n														</tr>\r\n														<tr>\r\n															<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" colspan=\"2\">Withdrawal details are as below:</td>\r\n														</tr>\r\n													</tbody>\r\n												</table>\r\n												\r\n												{withdrawal_detail_table_format_html}\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">We‘re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{username} Username of the person submitted the withdrawal request<br />\r\n{website_name} Name of the website<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount<br />\r\n{social_media_icons} <br>\r\n{withdrawal_detail_table_format_html}: Withdrawal Payment Details like Bank Details, Cheque Details, PayPal Details etc\r\n{contact_us_url} <br>', 1);
 INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES
-('withdrawal_request_approved_declined', 1, 'Withdrawal Request Approved/Declined Email for User', 'Fund Withdrawal Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												                                              Your fund withdrawal request {request_id} of {request_amount} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount.<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1);
+('withdrawal_request_approved_declined', 1, 'Withdrawal Request Approved/Declined Email for User', 'Fund Withdrawal Request {request_status} on {website_name}', '<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n				<!--\r\n				header start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n							<td style=\"text-align:right;\">{social_media_icons}</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				header end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td style=\"background:#ff3a59;\">\r\n				<!--\r\n				page title start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n								<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Updated</h4>\r\n								<h2 style=\"margin:0; font-size:34px; padding:0;\">Withdrawal Request Status</h2></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page title end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page body start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear {user_name}</strong><br />\r\n												                                              Your fund withdrawal request {request_id} of {request_amount} has been {request_status} on <a href=\"{website_url}\">{website_name}</a>.</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n										<tr>\r\n											<td style=\"padding:30px 0;border-top:1px solid #ddd;\">Get in touch in you have any questions regarding our Services.<br />\r\n												Feel free to contact us 24/7. We are here to help.<br />\r\n												<br />\r\n												All the best,<br />\r\n												The {website_name} Team<br />\r\n												</td>\r\n										</tr>\r\n										<!--\r\n										section footer\r\n										-->\r\n										   \r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page body end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<!--\r\n				page footer start here\r\n				-->\r\n				   \r\n				<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n					<tbody>\r\n						<tr>\r\n							<td style=\"height:30px;\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n												 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ€˜re here, ready to talk</a></td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n								<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n									<tbody>\r\n										<tr>\r\n											<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n												<!--\r\n												if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n												-->\r\n												</td>\r\n										</tr>\r\n									</tbody>\r\n								</table></td>\r\n						</tr>\r\n						<tr>\r\n							<td style=\"padding:0; height:50px;\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<!--\r\n				page footer end here\r\n				-->\r\n				   </td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '{user_name} Name of the email receiver<br />\r\n{request_id} Withdrawal Request ID<br />\r\n{request_amount} Withdrawal Request Amount.<br />\r\n{request_status} New Withdrawal Request Status<br />\r\n{website_name} Name of the website\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>', 1),
+('new_seller_approved_admin', 1, 'New Seller Approval - Admin', 'New Seller Approval on {website_name}', '<div style=\"margin:0; padding:0;background: #ecf0f1;\">\r\n	<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#ecf0f1\" style=\"font-family:Arial; color:#333; line-height:26px;\">\r\n		<tbody>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;padding:30px 0 10px;\">\r\n					<!--\r\n					header start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td><a href=\"{website_url}\">{Company_Logo}</a></td>\r\n								<td style=\"text-align:right;\">{social_media_icons}</td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					header end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td style=\"background:#ff3a59;\">\r\n					<!--\r\n					page title start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:20px 0 10px; text-align:center;\">\r\n									<h4 style=\"font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;\">Seller Approved</h4>\r\n									<h2 style=\"margin:0; font-size:34px; padding:0;\">Seller Approval</h2></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page title end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page body start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\"><strong style=\"font-size:18px;color:#333;\">Dear Admin </strong><br />\r\n													<span style=\"color: rgb(153, 153, 153); font-family: Arial; text-align: center; background-color: rgb(255, 255, 255);\">New seller has been registered on</span> <a href=\"{website_url}\">{website_name}</a>. Please find the details below:</td>\r\n											</tr>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px;\">\r\n													<table style=\"border:1px solid #ddd; border-collapse:collapse;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\r\n														<tbody>\r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Reference Number</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{reference_number}</td>\r\n															</tr>                                                        \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Username<span class=\"Apple-tab-span\" style=\"white-space:pre\"></span></td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{username}</td>\r\n															</tr>  \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Email</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{email}</td>\r\n															</tr> \r\n															<tr>\r\n																<td style=\"padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;\" width=\"153\">Name</td>\r\n																<td style=\"padding:10px;font-size:13px; color:#333;border:1px solid #ddd;\" width=\"620\">{name}</td>\r\n															</tr>                                                        \r\n														</tbody>\r\n													</table></td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n											<tr>\r\n												<td style=\"padding:30px 0;border-top:1px solid #ddd; \">Get in touch in you have any questions regarding our Services.<br />\r\n													Feel free to contact us 24/7. We are here to help.<br />\r\n													<br />\r\n													All the best,<br />\r\n													The {website_name} Team<br />\r\n													</td>\r\n											</tr>\r\n											<!--\r\n											section footer\r\n											-->\r\n											   \r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page body end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n			<tr>\r\n				<td>\r\n					<!--\r\n					page footer start here\r\n					-->\r\n					   \r\n					<table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n						<tbody>\r\n							<tr>\r\n								<td style=\"height:30px;\"></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:30px 0; font-size:20px; color:#000;\">Need more help?<br />\r\n													 <a href=\"{contact_us_url}\" style=\"color:#ff3a59;\">Weâ&euro;˜re here, ready to talk</a></td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; color:#999;vertical-align:top; line-height:20px;\">\r\n									<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\r\n										<tbody>\r\n											<tr>\r\n												<td style=\"padding:20px 0 30px; text-align:center; font-size:13px; color:#999;\">{website_name} Inc.\r\n													<!--\r\n													if these emails get annoying, please feel free to  <a href=\"#\" style=\"text-decoration:underline; color:#666;\">unsubscribe</a>.\r\n													-->\r\n													</td>\r\n											</tr>\r\n										</tbody>\r\n									</table></td>\r\n							</tr>\r\n							<tr>\r\n								<td style=\"padding:0; height:50px;\"></td>\r\n							</tr>\r\n						</tbody>\r\n					</table>\r\n					<!--\r\n					page footer end here\r\n					-->\r\n					   </td>\r\n			</tr>\r\n		</tbody>\r\n	</table></div>', '{website_name} Name of the website<br />\r\n{username} \r\n\r\nUsername of the person registered<br />\r\n{email} Email Address of the person registered<br />\r\n{name} Name of the person sent request<br />\r\n{reference_number} \r\n\r\nReference Number of the request<br />\r\n{social_media_icons} <br>\r\n{contact_us_url} <br>\r\n', 1);
 
 -- --------------------------------------------------------
 
@@ -2782,7 +2817,8 @@ INSERT INTO `tbl_extra_pages` (`epage_id`, `epage_identifier`, `epage_type`, `ep
 (23, 'Checkout Page', 23, 1, 0),
 (24, 'Become Seller Page Form Text', 24, 1, 0),
 (25, 'Seller page Block 3', 25, 1, 0),
-(26, 'Footer Trust Banners', 26, 0, 0);
+(26, 'Footer Trust Banners', 26, 0, 0),
+(27, 'Checkout page header block', 27, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -2831,7 +2867,8 @@ INSERT INTO `tbl_extra_pages_lang` (`epagelang_epage_id`, `epagelang_lang_id`, `
 (25, 1, 'Seller page Block 3', '<div class=\"heading1\">Simple Pricing Structure</div>\r\n<div class=\"pricing-structure\">  \r\n	<ul>\r\n		<li>10%  \r\n			<p>Commission Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$1  \r\n			<p>Shipping Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$4   \r\n			<p>Marketplace Fee</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>15%   \r\n			<p>Service Tax</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>Amt.   \r\n			<p>Amount You Earned</p></li>\r\n		<li class=\"sign\">=</li>\r\n		<li>Price   \r\n			<p>Price You Decide</p></li>  \r\n	</ul></div>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p><a href=\"#\" class=\"btn btn--primary btn--custom\">Learn More About Pricing</a>'),
 (25, 2, 'صفحة البائع بلوك 3', '<div class=\"heading1\">بسيطة التسعير هيكل</div>\r\n<div class=\"pricing-structure\">\r\n	<ul>\r\n		<li>10%\r\n			<p>رسوم العمولة</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$1\r\n			<p>رسوم الشحن</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>$4\r\n			<p>رسوم السوق</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>15%\r\n			<p>ضريبة الخدمة</p></li>\r\n		<li class=\"sign\">+</li>\r\n		<li>AMT.\r\n			<p>المبلغ الذي ربحته</p></li>\r\n		<li class=\"sign\">=</li>\r\n		<li>السعر\r\n			<p>السعر الذي تقرره</p></li>\r\n	</ul></div>\r\n<p>لوريم إيبسوم دولور سيت أميت، كونسكتيتور أديبيسيسينغ إليت، سيد دو إيسمود تيمبور إنسيدونت أوت لابور إت دولور ماغنا أليكوا. أوت إنيم أد مينيم فينيام، كويس نوسترود إكسيرسيساتيون أولامكو لابوريس نيسي أوت أليكيب إكس إي كومودو ثوسكات. دويس أوت إيرور دولور إن ريبرهندريت إن فولوبتات فيليت إيس سيلوم فولوبتاتم.</p><a href=\"http://yokart-v8.demo.4demo.biz/admin/content-block#\" class=\"btn btn--primary btn--custom\">معرفة المزيد حول التسعير</a>'),
 (26, 1, 'Footer Trust Banners', '<ul>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/user.svg\" alt=\"\" /></i>\n	<h3>Certified User Identity</h3>  \n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/locked.svg\" alt=\"\" /></i>\n	<h3>Secure payment and guaranteed</h3>  \n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\n <li> <i class=\"individualTupple\"><img src=\"/images/retina/handshake2.svg\" alt=\"\" /></i>\n	<h3> Delivery of goods without risk</h3>  \n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/shipped.svg\" alt=\"\" /></i> \n	<h3>Sell totally free</h3> \n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \n</ul>'),
-(26, 2, 'Footer Trust banners', '<ul>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/user.svg\" alt=\"\" /></i>\r\n	<h3>Certified User Identity</h3>  \r\n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/locked.svg\" alt=\"\" /></i>\r\n	<h3>Secure payment and guaranteed</h3>  \r\n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/handshake2.svg\" alt=\"\" /></i>\r\n	<h3> Delivery of goods without risk</h3>  \r\n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/shipped.svg\" alt=\"\" /></i> \r\n	<h3>Sell totally free</h3> \r\n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \r\n</ul>');
+(26, 2, 'Footer Trust banners', '<ul>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/user.svg\" alt=\"\" /></i>\r\n	<h3>Certified User Identity</h3>  \r\n	<p> Lorem Ipsum is simply  printing and typesetting </p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/locked.svg\" alt=\"\" /></i>\r\n	<h3>Secure payment and guaranteed</h3>  \r\n	<p> Lorem Ipsum is the printing and typesetting industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/handshake2.svg\" alt=\"\" /></i>\r\n	<h3> Delivery of goods without risk</h3>  \r\n	<p> Lorem Ipsum is simply dummy text of the  industry</p></li>\r\n	<li> <i class=\"individualTupple\"><img src=\"/images/retina/shipped.svg\" alt=\"\" /></i> \r\n	<h3>Sell totally free</h3> \r\n	<p> Lorem Ipsum is simply  of the printing and industry</p></li>  \r\n</ul>'),
+(27, 1, 'Checkout page header block', '<ul class=\"trust-banners\">          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"22.852px\" height=\"27.422px\" viewbox=\"0 0 22.852 27.422\" enable-background=\"new 0 0 22.852 27.422\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M19.424,14.854c0,2.589-2.285,4.928-4.195,6.428c-1.429,1.124-2.893,1.963-3.803,2.445V3.428h7.998V14.854z M22.852,1.143C22.852,0.518,22.334,0,21.709,0H1.143C0.518,0,0,0.518,0,1.143v13.711c0,7.516,10.516,12.266,10.962,12.461 c0.143,0.072,0.303,0.107,0.464,0.107c0.16,0,0.321-0.035,0.464-0.107c0.446-0.195,10.962-4.945,10.962-12.461V1.143z\"></path>            </svg> </i>            \r\n		<p>Secure Payments</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"36.566px\" height=\"29.707px\" viewbox=\"0 0 36.566 29.707\" enable-background=\"new 0 0 36.566 29.707\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M3.787,11.426h5.766l5.356,11.872L3.787,11.426z M18.283,25.209l-6.23-13.783h12.461L18.283,25.209z M9.606,9.141H3.43l5.142-6.855h4.678L9.606,9.141z M21.657,23.298l5.356-11.872h5.766L21.657,23.298z M12.195,9.141l3.642-6.855 h4.892l3.643,6.855H12.195z M26.96,9.141l-3.643-6.855h4.678l5.142,6.855H26.96z M29.477,0.465C29.263,0.16,28.924,0,28.566,0H8 C7.643,0,7.304,0.16,7.09,0.465L0.234,9.605c-0.34,0.428-0.304,1.053,0.071,1.463L17.444,29.35c0.214,0.232,0.518,0.357,0.839,0.357 s0.625-0.125,0.839-0.357l17.139-18.281c0.375-0.41,0.411-1.035,0.071-1.463L29.477,0.465z\"></path>            </svg> </i>            \r\n		<p>Authentic Products</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"27.422px\" height=\"27.422px\" viewbox=\"0 0 27.422 27.422\" enable-background=\"new 0 0 27.422 27.422\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M15.996,7.427c0-0.321-0.25-0.571-0.571-0.571h-1.143c-0.321,0-0.571,0.25-0.571,0.571v6.284H9.712 c-0.321,0-0.571,0.25-0.571,0.571v1.143c0,0.321,0.25,0.571,0.571,0.571h5.713c0.321,0,0.571-0.25,0.571-0.571V7.427z M23.423,13.711c0,5.355-4.356,9.712-9.712,9.712s-9.712-4.356-9.712-9.712s4.356-9.712,9.712-9.712S23.423,8.355,23.423,13.711z M27.422,13.711C27.422,6.142,21.28,0,13.711,0S0,6.142,0,13.711c0,7.57,6.142,13.711,13.711,13.711S27.422,21.281,27.422,13.711z\"></path>            </svg> </i>            \r\n		<p>24x7 Customer Support</p>          </li>          \r\n	<li><i class=\"svg-icn\"> \r\n			<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"30.85px\" height=\"25.137px\" viewbox=\"0 0 30.85 25.137\" enable-background=\"new 0 0 30.85 25.137\" xml:space=\"preserve\">            \r\n				<path fill=\"none\" d=\"M10.283,20.566c0,1.25-1.035,2.285-2.285,2.285s-2.285-1.035-2.285-2.285c0-1.25,1.035-2.285,2.285-2.285 S10.283,19.317,10.283,20.566z M3.428,11.426V10.89c0-0.071,0.107-0.339,0.16-0.393l3.481-3.481 c0.054-0.053,0.321-0.161,0.394-0.161h2.82v4.57H3.428z M26.279,20.566c0,1.25-1.035,2.285-2.285,2.285s-2.285-1.035-2.285-2.285 c0-1.25,1.035-2.285,2.285-2.285S26.279,19.317,26.279,20.566z M30.85,1.143C30.85,0.518,30.332,0,29.707,0H11.426 c-0.625,0-1.143,0.518-1.143,1.143V4.57H7.427c-0.643,0-1.5,0.357-1.946,0.804L1.946,8.909c-0.982,0.982-0.804,2.392-0.804,3.66 v5.713C0.518,18.281,0,18.799,0,19.424c0,1.321,1.393,1.143,2.285,1.143h1.143c0,2.518,2.053,4.57,4.57,4.57s4.57-2.053,4.57-4.57 h6.855c0,2.518,2.053,4.57,4.57,4.57s4.57-2.053,4.57-4.57c0.893,0,2.285,0.179,2.285-1.143V1.143z\"></path>            </svg> </i>            \r\n		<p>Fast Delivery</p>          </li>        \r\n</ul>');
 
 -- --------------------------------------------------------
 
@@ -2995,7 +3032,7 @@ CREATE TABLE `tbl_import_export_settings` (
 
 CREATE TABLE `tbl_languages` (
   `language_id` int(11) NOT NULL,
-  `language_code` varchar(4) NOT NULL,
+  `language_code` varchar(5) NOT NULL,
   `language_flag` varchar(100) NOT NULL,
   `language_name` varchar(100) NOT NULL,
   `language_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -3255,7 +3292,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (234, 'LBL_General', 1, 'General'),
 (235, 'LBL_Username_Or_Email', 1, 'Username Or Email'),
 (236, 'ERR_LOGIN_ATTEMPT_LIMIT_EXCEEDED_PLEASE_TRY_LATER', 1, 'Login Attempt Limit Exceeded Please Try Later'),
-(237, 'LBL_Forgot_Password', 1, 'Forgot Password'),
 (238, 'LBL_New_to', 1, 'New To %s'),
 (239, 'LBL_Sign_Up', 1, 'Sign Up'),
 (240, 'LBL_Or', 1, 'OR'),
@@ -3465,7 +3501,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (455, 'LBL_All', 2, 'الكل'),
 (456, 'LBL_Opened_on', 1, 'Opened On'),
 (457, 'LBL_Username_Or_Email', 2, 'اسم المستخدم أو البريد الالكتروني'),
-(458, 'LBL_Forgot_Password', 2, 'هل نسيت كلمة المرور'),
 (459, 'LBL_Or', 2, 'أو'),
 (460, 'LBL_Facebook', 2, 'فيس بوك'),
 (461, 'LBL_Google_Plus', 2, 'جوجل بلس'),
@@ -3938,10 +3973,10 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1033, 'L_Order_Shipping_Details', 1, 'Order Shipping Details'),
 (1034, 'LBL_Edit_Address', 1, 'Edit Address'),
 (1035, 'LBL_PERCENTAGE', 1, 'Percentage'),
-(1036, 'LBL_FIXED', 1, '');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(1036, 'LBL_FIXED', 1, ''),
 (1037, 'MSG_Approved_Return_Request', 1, 'Approved Return Requests'),
-(1038, 'L_debited', 1, 'Debited'),
+(1038, 'L_debited', 1, 'Debited');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (1039, 'MSG_Request_Approved_Refund', 1, 'Refund Request Approved '),
 (1040, 'LBL_Yesterday_Orders', 1, 'Yesterday Orders'),
 (1041, 'LBL_Unread_Notification_Today', 1, 'Unread Notification Today'),
@@ -4578,7 +4613,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1717, 'LBL_Search_for_Product', 1, 'Search For Product'),
 (1718, 'LBL_Login_With_Facebook', 1, 'Login With Facebook'),
 (1719, 'LBL_Login_With_Google_Plus', 1, 'Login With Google Plus'),
-(1720, 'LBL_Not_Register_Yet', 1, 'Not Register Yet'),
 (1721, 'LBL_Collections_Layout_Instructions', 1, 'Collections Layout Instructions'),
 (1722, 'LBL_Layout1', 1, 'Layout 1'),
 (1723, 'LBL_Layout2', 1, 'Layout 2'),
@@ -4621,7 +4655,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1764, 'LBL_Enter_Your_Email_Address', 2, 'أدخل عنوان بريدك الالكتروني'),
 (1765, 'LBL_PAYMENT_OPTIONS', 2, 'خيارات الدفع'),
 (1766, 'LBL_Top_Categories', 2, 'أهم الفئات'),
-(1767, 'LBL_Not_Register_Yet', 2, 'لم تسجل بعد'),
 (1768, 'LBL_Or_Login_With', 2, 'أو تسجيل الدخول باستخدام'),
 (1769, 'LBL_Login_With_Facebook', 2, 'تسجيل الدخول الفيسبوك'),
 (1770, 'LBL_Login_With_Google', 2, 'تسجيل الدخول جوجل'),
@@ -4833,12 +4866,12 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (1978, 'L_More', 1, 'More'),
 (1979, 'LBL_Link_Warranty_Policies', 1, 'Link Warranty Policies'),
 (1980, 'LBL_Link_Return_Policies', 1, 'Link Return Policies'),
-(1981, 'LBL_Coupon_Setup', 1, 'Coupon Setup');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(1981, 'LBL_Coupon_Setup', 1, 'Coupon Setup'),
 (1983, 'LBL_Option_Not_Found_Click_here_to', 2, 'لم يتم العثور على الخيار'),
 (1984, 'LBL_One_Time', 1, 'One Time'),
 (1985, 'LBL_Include_Recurring', 1, 'Include Recurring'),
-(1986, 'LBL_Discount_Valid_For', 1, 'Discount Valid For'),
+(1986, 'LBL_Discount_Valid_For', 1, 'Discount Valid For');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (1987, 'LBL_Language_Labels', 1, 'Language Labels'),
 (1988, 'LBL_Seller_Products', 1, 'Seller Products'),
 (1989, 'LBL_Link_Products', 1, 'Link Products'),
@@ -4912,7 +4945,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2058, 'MSG_Please_login_with_seller_account', 1, 'Please Login With Seller Account'),
 (2059, 'LBL_Sub_Total', 1, 'Sub Total'),
 (2060, 'LBL_Rate_and_Review_Product', 1, 'Rate And Review Product'),
-(2061, 'LBL_Have_you_used_this_product', 1, 'Have You Used This Product'),
 (2062, 'LBL_Shop_Opened_By', 1, 'Shop Opened By'),
 (2063, 'LBL_Invalid_Plan_Request', 1, 'Invalid Plan Request'),
 (2064, 'LBL_Love', 1, 'Love'),
@@ -5126,7 +5158,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2283, 'LBL_Rating', 2, 'تقييم'),
 (2284, 'LBL_Based_On', 2, 'مرتكز على'),
 (2285, 'LBL_Ratings', 2, 'تصنيفات'),
-(2286, 'LBL_Have_you_used_this_product', 2, 'هل استخدمت هذا المنتج'),
 (2287, 'LBL_Rate_and_Review_Product', 2, 'معدل ومراجعة المنتج'),
 (2288, 'Lbl_All_Shops', 2, 'جميع المحلات'),
 (2289, 'LBL_View_{n}_Product(s)', 2, 'عرض {n} المنتج (المنتجات)'),
@@ -5386,7 +5417,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2552, 'LBL_Product_Upload_Limit', 1, 'Product Upload Limit'),
 (2553, 'LBL_Subscription_Detail', 1, 'Subscription Detail'),
 (2554, 'LBL_Gateway_Identifier', 1, 'Gateway Identifier'),
-(2555, 'LBL_Commission_fees', 1, 'Commission Fees'),
 (2556, 'LBL_Request_Withdrawal', 1, 'Request Withdrawal'),
 (2557, 'LBL_Add_Money_to_wallet', 1, 'Add Money To Wallet'),
 (2558, 'LBL_Enter_amount_to_be_Added', 1, 'Enter Amount To Be Added'),
@@ -5571,8 +5601,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2744, 'LBL_Entity_Id', 1, 'Entity ID'),
 (2745, 'LBL_Meta_Tag_Setup', 1, 'Meta Tag Setup'),
 (2746, 'LBL_Meta_Title', 1, 'Meta Title'),
-(2747, 'LBL_Meta_Keywords', 1, 'Meta Keywords');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(2747, 'LBL_Meta_Keywords', 1, 'Meta Keywords'),
 (2748, 'LBL_Meta_Description', 1, 'Meta Description'),
 (2749, 'LBL_Other_Meta_Tags', 1, 'Other Meta Tags'),
 (2750, 'LBL_Meta_Setup', 1, 'Meta Setup'),
@@ -5582,7 +5611,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2754, 'LBL_Sub_Record_Id', 1, 'Sub Record ID'),
 (2755, 'LBL_Has_Tags_Associated', 1, 'Has Tags Associated'),
 (2756, 'LBL_Brand_Name', 1, 'Brand Name'),
-(2757, 'LBL_Add_Address', 1, 'Add Address'),
+(2757, 'LBL_Add_Address', 1, 'Add Address');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (2758, 'LBL_Billing_here:', 1, 'Billing Here:'),
 (2759, 'LBL_Manage_Navigations', 1, 'Manage Navigations'),
 (2760, 'LBL_Navigation_Listing', 1, 'Navigation Listing'),
@@ -5613,7 +5643,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (2785, 'LBL_Current_Time', 1, 'Current Time'),
 (2786, 'LBL_Manage_Product_Reviews', 1, 'Manage Product Reviews'),
 (2787, 'LBL_Product_Reviews_List', 1, 'Product Reviews List'),
-(2788, 'LBL_Reviewed_To', 1, 'Reviewed To'),
 (2789, 'LBL_Manage_States', 1, 'Manage States'),
 (2790, 'LBL_State_Listing', 1, 'State Listing'),
 (2791, 'LBL_Add_State', 1, 'Add State'),
@@ -6422,15 +6451,15 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (3641, 'LBL_Remaining_wallet_balance', 2, 'رصيد المحفظة المتبقي'),
 (3642, 'Lbl_Advertiser', 2, 'معلن'),
 (3643, 'LBL_Promotions', 2, 'الترقيات'),
-(3644, 'LBL_My_Promotions', 2, 'عروضي الترويجية');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(3644, 'LBL_My_Promotions', 2, 'عروضي الترويجية'),
 (3645, 'LBL_Product_has_been_removed_from_favourite_list', 2, 'تم إزالة المنتج من قائمة المفضلة'),
 (3646, 'MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', 2, 'يبدو أن سلة التسوق فارغة، يرجى المحاولة بعد إعادة تحميل الصفحة.'),
 (3647, 'LBL_Go_To_Homepage', 2, 'انتقل إلى الصفحة الرئيسية'),
 (3648, 'L_View_All', 1, 'View All'),
 (3649, 'L_View_All', 2, 'عرض الكل'),
 (3650, 'MSG_Quantity_cannot_be_more_than_the_Stock_of_the_Product', 1, 'Quantity Cannot Be More Than The Stock Of The Product'),
-(3651, 'MSG_Image_Removed_Successfully', 1, 'Image Removed Successfully'),
+(3651, 'MSG_Image_Removed_Successfully', 1, 'Image Removed Successfully');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (3652, 'MSG_Ordered_Successfully', 1, 'Ordered Successfully'),
 (3653, 'MSG_Image_Uploaded_Successfully', 1, 'Image Uploaded Successfully'),
 (3654, 'LBL_Upload', 1, 'Upload'),
@@ -7238,14 +7267,12 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4562, 'LBL_Category_Name', 2, 'اسم التصنيف'),
 (4563, 'LBL_Subcategories', 2, 'الفئات الفرعية'),
 (4564, 'LBL_Brand_Name', 2, 'اسم العلامة التجارية'),
-(4565, 'LBL_Reviewed_To', 2, 'تمت المراجعة'),
 (4566, 'LBL_Seller_product_Status', 2, 'حالة المنتج البائع'),
 (4567, 'LBL_Delete_Product', 2, 'حذف المنتج'),
 (4568, 'LBL_Tag_Name', 2, 'اسم العلامة'),
 (4569, 'LBL_Sr_no.', 2, 'الأب رقم.'),
 (4570, 'LBL_Option_Name', 2, 'اسم الخيار'),
-(4571, 'LBL_Shop_Identifier', 2, 'متجر معرف');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(4571, 'LBL_Shop_Identifier', 2, 'متجر معرف'),
 (4572, 'LBL_Featured_Shops_will_be_listed_on_Featured_Shops_Page._Featured_Shops_will_get_priority,', 2, 'محلات مميزة سيتم إدراجها في صفحة المحلات المميزة. محلات مميزة سوف تحصل على الأولوية،'),
 (4573, 'LBL_Templates', 2, 'قوالب'),
 (4574, 'MSG_Upload_shop_background_image_text', 2, 'تحميل متجر نص صورة الخلفية'),
@@ -7255,7 +7282,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (4578, 'LBL_Category_Parent', 2, 'الفئة الأم'),
 (4579, 'LBL_Category_Status', 2, 'الفئة الحالة'),
 (4580, 'LBL_Product_Category_Setup', 2, 'إعداد فئة المنتج'),
-(4581, 'LBL_Manage_Shop_Reports', 2, 'إدارة التقارير متجر'),
+(4581, 'LBL_Manage_Shop_Reports', 2, 'إدارة التقارير متجر');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (4582, 'LBL_Shop_Reports_Listing', 2, 'شوب تقارير التقارير'),
 (4583, 'LBL_Back_to_Shop_Reports', 2, 'الرجوع إلى تقارير المتجر'),
 (4584, 'LBL_Reported_by', 2, 'تم عمل تقرير بواسطة'),
@@ -7889,7 +7917,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5249, 'LBL_Back_to_Subscription', 1, 'Back To Subscription'),
 (5250, 'LBL_Total_Balance_Available', 1, 'Total Balance Available'),
 (5251, 'MSG_Please_assign_shipping_user', 1, 'Please Assign Shipping User'),
-(5252, 'LBL_VIEW_%d_More_Sellers', 1, 'View %d More Sellers'),
 (5253, 'LBL_Return_request_has_been_withdrawn_successfully.', 1, 'Return Request Has Been Withdrawn Successfully.'),
 (5254, 'ERR_joinShops_cannot_be_joined,_unless_joinSellers_is_not_applied.', 1, 'Joinshops Cannot Be Joined, Unless Joinsellers Is Not Applied.'),
 (5255, 'Msg_Commission_Received_Order{invoicenumber}_Placed_by_Referrar_User', 1, 'Commission Received Order{invoicenumber} Placed By Referrar User'),
@@ -7919,10 +7946,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5279, 'LBL_COD_AVAILABLE', 1, 'Cod Available'),
 (5280, 'LBL_Cash_on_delivery_available', 1, 'Cash On Delivery Available'),
 (5281, 'LBL_Promotion_Status', 1, 'Promotion Status'),
-(5282, 'LBL_VIEW_%d_More_Sellers', 2, 'عرض٪ d المزيد من البائعين'),
 (5283, 'LBL_Default', 2, 'افتراضي'),
-(5284, 'MSG_First_time_buyer_discount_module_is_disabled', 1, 'First Time Buyer Discount Module Is Disabled');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(5284, 'MSG_First_time_buyer_discount_module_is_disabled', 1, 'First Time Buyer Discount Module Is Disabled'),
 (5285, 'Lbl_Personal_Message_From_Affiliate', 1, 'Personal Message From Affiliate'),
 (5286, 'LBL_Border_Color', 1, 'Border Color'),
 (5287, 'LBL_For_Example:', 1, 'For Example:'),
@@ -7939,7 +7964,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (5298, 'LBL_Clear_Cache', 2, 'مسح ذاكرة التخزين المؤقت'),
 (5299, 'LBL_Brand_Requests', 2, 'طلبات العلامة التجارية'),
 (5300, 'LBL_Shipping_Company_Users', 2, 'مستخدمي شركة الشحن'),
-(5301, 'LBL_Rewards_on_every_purchase', 2, 'المكافآت على كل عملية شراء'),
+(5301, 'LBL_Rewards_on_every_purchase', 2, 'المكافآت على كل عملية شراء');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (5302, 'LBL_PPC_Promotions_Management', 2, 'إدارة عروض ترويجية للنقرة'),
 (5303, 'LBL_Product_Specifications', 2, 'مواصفات المنتج'),
 (5304, 'LBL_LOADING', 2, 'تحميل'),
@@ -8602,8 +8628,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15073, 'L_CVV_SECURITY_CODE', 2, 'قانون الأمن كفف'),
 (15074, 'L_Current_Account_Number', 2, 'رقم الحساب الحالي'),
 (15075, 'L_Confirm_Payment', 2, 'تأكيد الدفع'),
-(15076, 'L_CART_TOTAL_(_QTY_*_Product_price_)', 2, 'كارت توتال (الكمية * سعر المنتج)');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(15076, 'L_CART_TOTAL_(_QTY_*_Product_price_)', 2, 'كارت توتال (الكمية * سعر المنتج)'),
 (15077, 'L_CARD_HOLDER_NAME', 2, 'إسم صاحب البطاقة'),
 (15078, 'L_All_you_need_is', 2, 'كل ما تحتاجه هو'),
 (15079, 'L_Advertise_With_Us', 2, 'أعلن معنا'),
@@ -8614,7 +8639,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15084, 'LBL_You_have_been_registered_successfully.', 2, 'لقد تم تسجيلك بنجاح.'),
 (15085, 'LBL_You_have_already_Bought_this_plan,_Please_choose_some_other_Plan123', 2, 'لقد اشتريت بالفعل هذه الخطة، يرجى اختيار بعض خطة أخرى 123'),
 (15086, 'LBL_You_can_upload_multiple_photos_from_here', 2, 'يمكنك تحميل صور متعددة من هنا'),
-(15087, 'LBL_You_Are_Logged_Out_Successfully', 2, 'لقد تم تسجيل دخولك بنجاح'),
+(15087, 'LBL_You_Are_Logged_Out_Successfully', 2, 'لقد تم تسجيل دخولك بنجاح');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (15088, 'LBL_You_are_already_logged_in', 2, 'انت بالفعل داخل'),
 (15089, 'LBL_Youtube_Icon', 2, 'رمز يوتيوب'),
 (15090, 'LBL_Your_Session_seems_to_be_expired.', 2, 'يبدو أن جلسة العمل ستنتهي.'),
@@ -9356,8 +9382,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15826, 'LBL_Import_Categories', 2, 'استيراد الفئات'),
 (15827, 'LBL_Image_Setup', 2, 'إعداد الصورة'),
 (15828, 'LBL_Image_removed_successfully.', 2, 'تمت إزالة الصورة بنجاح.'),
-(15829, 'LBL_Image_Removed_Successfully', 2, 'تمت إزالة الصورة بنجاح');
-INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
+(15829, 'LBL_Image_Removed_Successfully', 2, 'تمت إزالة الصورة بنجاح'),
 (15830, 'LBL_If_you_have_to_add_a_platform_icon_except_this_select_list', 2, 'إذا كان لديك لإضافة رمز منصة باستثناء هذه القائمة حدد، تحميل أيقونة في علامة التبويب وسائل الإعلام. رمز وسائل الإعلام تم تحميلها سوف تعطى أولوية أعلى من أيقونة مختارة من القائمة.'),
 (15831, 'Lbl_Icon_Type_from_CSS', 2, 'نوع الرمز من كس'),
 (15832, 'LBL_Icon_Image', 2, 'صورة رمز'),
@@ -9372,7 +9397,8 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (15841, 'LBL_Google_Plus_Login', 2, 'جوجل بلس تسجيل الدخول'),
 (15842, 'LBL_Google_Plus_Icon', 2, 'رمز غوغل بلوس'),
 (15843, 'LBL_Google_Plus_Developer_Key', 2, 'غوغل بلوس ديفيلوبر كي'),
-(15844, 'LBL_Google_Plus_Client_Secret', 2, 'غوغل بلوس كلينت سكريت'),
+(15844, 'LBL_Google_Plus_Client_Secret', 2, 'غوغل بلوس كلينت سكريت');
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES
 (15845, 'LBL_Google_Plus_Client_ID', 2, 'معرف عميل غوغل بلوس'),
 (15846, 'LBL_Google_Map_API_Key', 2, 'مفتاح واجهة برمجة تطبيقات خريطة غوغل'),
 (15847, 'LBL_Google_Map_API', 2, 'خريطة غوغل أبي'),
@@ -9547,7 +9573,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (16016, 'LBL_Company', 2, 'شركة'),
 (16017, 'LBL_Commission_Setup', 2, 'إعداد اللجنة'),
 (16018, 'LBL_Commission_History', 2, 'تاريخ اللجنة'),
-(16019, 'LBL_Commission_fees', 2, 'رسوم العمولة'),
 (16020, 'LBL_Commission_charged_including_tax_charges', 2, 'العمولة المشحونة بما في ذلك الرسوم الضريبية'),
 (16021, 'LBL_Commission_charged_including_tax', 2, 'عمولة مشحونة بما في ذلك الضرائب'),
 (16022, 'LBL_Commission_charged_including_shipping_charges', 2, 'عمولة مشحونة بما في ذلك رسوم الشحن'),
@@ -9901,7 +9926,61 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (16377, 'LBL_Quick_View', 2, 'Quick View'),
 (16378, 'VLBL_is_not_available', 1, 'Is Not Available'),
 (16379, 'LBL_Do_you_really_want_to_remove_all_your_personal_information', 1, 'Do You Really Want To Remove All Your Personal Information'),
-(16380, 'LBL_Quick_View', 1, 'Quick View');
+(16380, 'LBL_Quick_View', 1, 'Quick View'),
+(16381, 'LBL_Do_you_want_to_change_request_status', 1, 'Do You Want To Change Request Status'),
+(16382, 'LBL_Do_you_want_to_truncate_User_Data', 1, 'Do You Want To Truncate User Data'),
+(16383, 'LBL_Year', 1, 'Year'),
+(16384, 'LBL_Last_3_Month', 1, 'Last 3 Month'),
+(16385, 'LBL_Dec', 1, 'Dec'),
+(16386, 'LBL_Nov', 1, 'Nov'),
+(16387, 'LBL_Oct', 1, 'Oct'),
+(16388, 'LBL_Sep', 1, 'Sep'),
+(16389, 'LBL_Aug', 1, 'Aug'),
+(16390, 'LBL_Users_GDPR_Requests', 1, 'Users Gdpr Requests'),
+(16391, 'LBL_Deleted_users', 1, 'Deleted Users'),
+(16392, 'LBL_Delete_User', 1, 'Delete User'),
+(16393, 'LBL_My_Downloads', 1, 'My Downloads'),
+(16394, 'LBL_Saved_Searches', 1, 'Saved Searches'),
+(16395, 'LBL_My_Inventory', 1, 'My Inventory'),
+(16396, 'LBL_Import_Export', 1, 'Import Export'),
+(16397, 'LBL_Free_Shipping_On', 1, 'Free Shipping On'),
+(16398, 'LBL_Recomended_Tag_Products', 1, 'Recomended Tag Products'),
+(16399, 'LBL_Smart_Recomended_Weightages', 1, 'Smart Recomended Weightages'),
+(16400, 'MSG_AFFILIATE', 1, 'Affiliate'),
+(16401, 'MSG_REWARD_POINTS', 1, 'Reward Points'),
+(16402, 'MSG_REVIEWS', 1, 'Reviews'),
+(16403, 'LBL_Configurations', 1, 'Configurations'),
+(16404, 'LBL_Privacy_Policy_Page', 1, 'Privacy Policy Page'),
+(16405, 'LBL_GDPR_policy_page', 1, 'Gdpr Policy Page'),
+(16406, 'LBL_Cookies_Policies_Page', 1, 'Cookies Policies Page'),
+(16407, 'LBL_Cookies_Policies', 1, 'Cookies Policies'),
+(16408, 'LBL_cookies_policies_section_will_be_shown_on_frontend', 1, 'Cookies Policies Section Will Be Shown On Frontend'),
+(16409, 'LBL_Product\'s_Dimensions', 1, 'Product\'s Dimensions'),
+(16410, 'LBL_On_enabling_this_feature,_dimensions_of_the_product_will_be_required_to_be_filled._Dimensions_are_required_in_case_of_Shipstation_API_(If_Enabled)_for_Live_Shipping_Charges', 1, 'On Enabling This Feature, Dimensions Of The Product Will Be Required To Be Filled. Dimensions Are Required In Case Of Shipstation Api (if Enabled) For Live Shipping Charges'),
+(16411, 'LBL_Brand_Request_Approval', 1, 'Brand Request Approval'),
+(16412, 'LBL_On_Enabling_This_Feature,_Admin_Need_To_Approve_the_brand_requests_(User_Cannot_link_the_requested_brand_with_any_product_until_it_gets_approved_by_Admin)', 1, 'On Enabling This Feature, Admin Need To Approve The Brand Requests (user Cannot Link The Requested Brand With Any Product Until It Gets Approved By Admin)'),
+(16413, 'LBL_Add_favorites_to_wishlist', 1, 'Add Favorites To Wishlist'),
+(16414, 'LBL_On_enabling_this_feature,_buyer_will_have_to_select_or_create_a_wishlist_to_group_his_favorites', 1, 'On Enabling This Feature, Buyer Will Have To Select Or Create A Wishlist To Group His Favorites'),
+(16415, 'LBL_Allow_Seller_to_add_products', 1, 'Allow Seller To Add Products'),
+(16416, 'LBL_On_enabling_this_feature,_Products_option_will_enabled_for_seller_dashboard', 1, 'On Enabling This Feature, Products Option Will Enabled For Seller Dashboard'),
+(16417, 'LBL_Activate_Administrator_Approval_on_Products', 1, 'Activate Administrator Approval On Products'),
+(16418, 'LBL_On_enabling_this_feature,_Products_required_admin_approval_to_display', 1, 'On Enabling This Feature, Products Required Admin Approval To Display'),
+(16419, 'LBL_Allow_Sellers_to_request_products_which_is_availble_to_all_sellers', 1, 'Allow Sellers To Request Products Which Is Availble To All Sellers'),
+(16420, 'LBL_On_enabling_this_feature,_Seller_can_request_to_add_products_available_for_all_sellers', 1, 'On Enabling This Feature, Seller Can Request To Add Products Available For All Sellers'),
+(16421, 'LBL_Reminder_Interval_For_Products_In_Cart_[Days]', 1, 'Reminder Interval For Products In Cart [days]'),
+(16422, 'LBL_This_is_the_interval_in_days_to_send_auto_notification_alert_to_buyer_for_products_in_cart.', 1, 'This Is The Interval In Days To Send Auto Notification Alert To Buyer For Products In Cart.'),
+(16423, 'LBL_Set_Notification_Count_to_be_Sent', 1, 'Set Notification Count To Be Sent'),
+(16424, 'LBL_Set_how_many_notifications_will_be_sent_to_buyer.', 1, 'Set How Many Notifications Will Be Sent To Buyer.'),
+(16425, 'LBL_Reminder_Interval_For_Products_In_Wishlist_[Days]', 1, 'Reminder Interval For Products In Wishlist [days]'),
+(16426, 'LBL_This_is_the_interval_in_days_to_send_auto_notification_alert_to_buyer_for_products_in_Wishlist.', 1, 'This Is The Interval In Days To Send Auto Notification Alert To Buyer For Products In Wishlist.'),
+(16427, 'LBL_Default_Delivered_Order_Status', 1, 'Default Delivered Order Status'),
+(16428, 'LBL_Set_the_default_child_order_status_when_an_order_is_marked_delivered.', 1, 'Set The Default Child Order Status When An Order Is Marked Delivered.'),
+(16429, 'LBL_Enable_Digital_Download', 1, 'Enable Digital Download'),
+(16430, 'LBL_Set_the_order_status_the_customer\'s_order_must_reach_before_they_are_allowed_to_access_their_downloadable_Products.', 1, 'Set The Order Status The Customer\'s Order Must Reach Before They Are Allowed To Access Their Downloadable Products.'),
+(16431, 'LBL_Order_Statuses_to_calculate_badge_count_(For_Admin)', 1, 'Order Statuses To Calculate Badge Count (for Admin)'),
+(16432, 'LBL_Order_Statuses_to_calculate_badge_count_for_seller_orders_in_admin_left_navigation_panel', 1, 'Order Statuses To Calculate Badge Count For Seller Orders In Admin Left Navigation Panel'),
+(16433, 'LBL_Products_On_Order_Stage(For_Seller_Inventory_Report)', 1, 'Products On Order Stage(for Seller Inventory Report)'),
+(16434, 'LBL_Products_are_in_On_Order_Used_on_Seller_Dashboard_Products_Inventory_Stock_Status_Report', 1, 'Products Are In On Order Used On Seller Dashboard Products Inventory Stock Status Report');
 
 -- --------------------------------------------------------
 
@@ -10965,6 +11044,19 @@ CREATE TABLE `tbl_order_cancel_reasons` (
   `ocreason_identifier` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tbl_order_cancel_reasons`
+--
+
+INSERT INTO `tbl_order_cancel_reasons` (`ocreason_id`, `ocreason_identifier`) VALUES
+(1, 'I placed a duplicate order'),
+(2, 'I ordered the wrong product(s)'),
+(3, 'The supplier did not ship the order on time as agreed'),
+(4, 'The supplier said the product(s) i want is out of stock'),
+(5, 'The supplier refuses to ship the product(s)'),
+(6, 'I am not able to contact the supplier'),
+(7, 'Other reason(s) caused by the supplier');
+
 -- --------------------------------------------------------
 
 --
@@ -11206,6 +11298,17 @@ CREATE TABLE `tbl_order_return_reasons` (
   `orreason_identifier` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tbl_order_return_reasons`
+--
+
+INSERT INTO `tbl_order_return_reasons` (`orreason_id`, `orreason_identifier`) VALUES
+(1, 'Wrong Product'),
+(2, 'Not happy with the product'),
+(3, 'Defective Product'),
+(4, 'Damaged'),
+(5, 'Missing Product/Accessories');
+
 -- --------------------------------------------------------
 
 --
@@ -11218,6 +11321,17 @@ CREATE TABLE `tbl_order_return_reasons_lang` (
   `orreason_title` varchar(255) NOT NULL,
   `orreason_description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_order_return_reasons_lang`
+--
+
+INSERT INTO `tbl_order_return_reasons_lang` (`orreasonlang_orreason_id`, `orreasonlang_lang_id`, `orreason_title`, `orreason_description`) VALUES
+(1, 1, 'Wrong Product', ''),
+(2, 1, 'Not happy with the product', ''),
+(3, 1, 'Defective Product', ''),
+(4, 1, 'Damaged', ''),
+(5, 1, 'Missing Product/Accessories', '');
 
 -- --------------------------------------------------------
 
@@ -22363,6 +22477,13 @@ CREATE TABLE `tbl_testimonials` (
   `testimonial_user_name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tbl_testimonials`
+--
+
+INSERT INTO `tbl_testimonials` (`testimonial_id`, `testimonial_identifier`, `testimonial_active`, `testimonial_deleted`, `testimonial_added_on`, `testimonial_user_name`) VALUES
+(1, 'test1', 1, 0, '2019-01-14 18:48:07', 'Armand U.');
+
 -- --------------------------------------------------------
 
 --
@@ -22375,6 +22496,13 @@ CREATE TABLE `tbl_testimonials_lang` (
   `testimonial_title` varchar(255) NOT NULL,
   `testimonial_text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_testimonials_lang`
+--
+
+INSERT INTO `tbl_testimonials_lang` (`testimoniallang_testimonial_id`, `testimoniallang_lang_id`, `testimonial_title`, `testimonial_text`) VALUES
+(1, 1, 'Alex Hodge, Bulimba QLD', 'I ordered a Dometic fridge for my van. The price was great and included free delivery. I was later contacted to say the model I wanted was not available at the moment, but for the same price I could get a more expensive one. When it arrived I found that it needed a permanent 12volt supply to run the electronic control. My van does not have a home battery so YoKart said I could return it at no cost to me and they would source the original model which I have just received. The service I received was exceptional as nothing was too much trouble. I would recommend YoKart to anyone.');
 
 -- --------------------------------------------------------
 
@@ -23345,7 +23473,9 @@ CREATE TABLE `tbl_user_cart` (
   `usercart_details` mediumtext NOT NULL,
   `usercart_added_date` datetime NOT NULL,
   `usercart_sent_reminder` int(11) NOT NULL,
-  `usercart_reminder_date` datetime NOT NULL
+  `usercart_reminder_date` datetime NOT NULL,
+  `usercart_last_used_date` datetime NOT NULL,
+  `usercart_last_session_id` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -23370,7 +23500,7 @@ CREATE TABLE `tbl_user_credentials` (
 INSERT INTO `tbl_user_credentials` (`credential_user_id`, `credential_username`, `credential_email`, `credential_password`, `credential_active`, `credential_verified`) VALUES
 (1, 'John', 'Electronicmart@dummyid.com', 'cc05983b121940b6aeaab3a6f7066b52', 1, 0),
 (2, 'Stuti', 'stuti.vohra@fatbit.com', '2e8203a746dfcd41049bbd011599fbb4', 1, 0),
-(3, 'kanwar', 'kanwar@dummyid.com', '1c8d36af7a0cdad8860c1c4ecfefc2a8', 0, 0),
+(3, 'kanwar', 'kanwar@dummyid.com', '1c8d36af7a0cdad8860c1c4ecfefc2a8', 1, 0),
 (4, 'michael', 'login@dummyid.com', '1c8d36af7a0cdad8860c1c4ecfefc2a8', 1, 1),
 (5, 'Rohit', 'Rohit@dummyid.com', '6d67448fef220d8b912d7eab12cc5f7a', 1, 1),
 (6, 'Cindy', 'Cindy@dummyid.com', 'f3c23ea49aacb9d18439cde8584fa197', 1, 1),
@@ -23830,18 +23960,6 @@ CREATE TABLE `tbl_user_transactions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_user_truncate_history`
---
-
-CREATE TABLE `tbl_user_truncate_history` (
-  `utruncate_id` int(11) NOT NULL,
-  `utruncate_user_id` int(11) NOT NULL,
-  `utruncate_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_user_wish_lists`
 --
 
@@ -24080,6 +24198,12 @@ ALTER TABLE `tbl_collections_lang`
   ADD PRIMARY KEY (`collectionlang_collection_id`,`collectionlang_lang_id`);
 
 --
+-- Indexes for table `tbl_collection_to_brands`
+--
+ALTER TABLE `tbl_collection_to_brands`
+  ADD PRIMARY KEY (`ctpb_collection_id`,`ctpb_brand_id`);
+
+--
 -- Indexes for table `tbl_collection_to_product_categories`
 --
 ALTER TABLE `tbl_collection_to_product_categories`
@@ -24175,6 +24299,12 @@ ALTER TABLE `tbl_coupons_history`
 ALTER TABLE `tbl_coupons_hold`
   ADD PRIMARY KEY (`couponhold_id`),
   ADD UNIQUE KEY `couponhold_coupon_id` (`couponhold_coupon_id`,`couponhold_user_id`);
+
+--
+-- Indexes for table `tbl_coupons_hold_pending_order`
+--
+ALTER TABLE `tbl_coupons_hold_pending_order`
+  ADD PRIMARY KEY (`ochold_order_id`,`ochold_coupon_id`);
 
 --
 -- Indexes for table `tbl_coupons_lang`
@@ -24786,7 +24916,8 @@ ALTER TABLE `tbl_product_shipping_rates`
 --
 ALTER TABLE `tbl_product_special_prices`
   ADD PRIMARY KEY (`splprice_id`),
-  ADD KEY `price_selprod_id` (`splprice_selprod_id`);
+  ADD UNIQUE KEY `splprice_selprod_id` (`splprice_selprod_id`,`splprice_start_date`,`splprice_end_date`),
+  ADD UNIQUE KEY `splprice_selprod_id_2` (`splprice_selprod_id`,`splprice_start_date`,`splprice_end_date`);
 
 --
 -- Indexes for table `tbl_product_specifications`
@@ -25526,12 +25657,6 @@ ALTER TABLE `tbl_user_transactions`
   ADD PRIMARY KEY (`utxn_id`);
 
 --
--- Indexes for table `tbl_user_truncate_history`
---
-ALTER TABLE `tbl_user_truncate_history`
-  ADD PRIMARY KEY (`utruncate_id`);
-
---
 -- Indexes for table `tbl_user_wish_lists`
 --
 ALTER TABLE `tbl_user_wish_lists`
@@ -25671,7 +25796,7 @@ ALTER TABLE `tbl_collections`
 -- AUTO_INCREMENT for table `tbl_commission_settings`
 --
 ALTER TABLE `tbl_commission_settings`
-  MODIFY `commsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `commsetting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_commission_setting_history`
@@ -25737,7 +25862,7 @@ ALTER TABLE `tbl_currency`
 -- AUTO_INCREMENT for table `tbl_email_archives`
 --
 ALTER TABLE `tbl_email_archives`
-  MODIFY `emailarchive_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=304;
+  MODIFY `emailarchive_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_empty_cart_items`
@@ -25761,7 +25886,7 @@ ALTER TABLE `tbl_extra_attribute_groups`
 -- AUTO_INCREMENT for table `tbl_extra_pages`
 --
 ALTER TABLE `tbl_extra_pages`
-  MODIFY `epage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `epage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tbl_faqs`
@@ -25797,7 +25922,7 @@ ALTER TABLE `tbl_languages`
 -- AUTO_INCREMENT for table `tbl_language_labels`
 --
 ALTER TABLE `tbl_language_labels`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16381;
+  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16435;
 
 --
 -- AUTO_INCREMENT for table `tbl_layout_templates`
@@ -25863,7 +25988,7 @@ ALTER TABLE `tbl_orders_status_history`
 -- AUTO_INCREMENT for table `tbl_order_cancel_reasons`
 --
 ALTER TABLE `tbl_order_cancel_reasons`
-  MODIFY `ocreason_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ocreason_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_order_cancel_requests`
@@ -25899,7 +26024,7 @@ ALTER TABLE `tbl_order_product_digital_download_links`
 -- AUTO_INCREMENT for table `tbl_order_return_reasons`
 --
 ALTER TABLE `tbl_order_return_reasons`
-  MODIFY `orreason_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `orreason_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_order_return_requests`
@@ -25947,7 +26072,7 @@ ALTER TABLE `tbl_polling_feedback`
 -- AUTO_INCREMENT for table `tbl_products`
 --
 ALTER TABLE `tbl_products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `tbl_products_browsing_history`
@@ -26001,7 +26126,7 @@ ALTER TABLE `tbl_product_specifications`
 -- AUTO_INCREMENT for table `tbl_product_stock_hold`
 --
 ALTER TABLE `tbl_product_stock_hold`
-  MODIFY `pshold_id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6010;
+  MODIFY `pshold_id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5854;
 
 --
 -- AUTO_INCREMENT for table `tbl_product_volume_discount`
@@ -26151,7 +26276,7 @@ ALTER TABLE `tbl_shops_to_theme`
 -- AUTO_INCREMENT for table `tbl_shop_collections`
 --
 ALTER TABLE `tbl_shop_collections`
-  MODIFY `scollection_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `scollection_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_shop_reports`
@@ -26211,7 +26336,7 @@ ALTER TABLE `tbl_tax_categories`
 -- AUTO_INCREMENT for table `tbl_testimonials`
 --
 ALTER TABLE `tbl_testimonials`
-  MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_theme`
@@ -26338,12 +26463,6 @@ ALTER TABLE `tbl_user_temp_token_requests`
 --
 ALTER TABLE `tbl_user_transactions`
   MODIFY `utxn_id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tbl_user_truncate_history`
---
-ALTER TABLE `tbl_user_truncate_history`
-  MODIFY `utruncate_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_wish_lists`

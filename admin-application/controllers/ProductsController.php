@@ -13,8 +13,14 @@ class ProductsController extends AdminBaseController {
 	}
 
 	public function index() {
-		$this->objPrivilege->canViewProducts();
+		$data = FatApp::getPostedData();
 		$srchFrm = $this->getSearchForm();
+		if($data){
+			$data['product_id'] = $data['id'];
+			unset($data['id']);
+			$srchFrm->fill( $data );
+		}
+		$this->objPrivilege->canViewProducts();
 		$this->set("frmSearch", $srchFrm);
 		$this->set("includeEditor",true);	
 
@@ -90,6 +96,11 @@ class ProductsController extends AdminBaseController {
 		if ( !empty($date_to) ) {
 			 $srch->addCondition('tp.product_added_on', '<=', $date_to. ' 23:59:59');
 		}
+		
+		$product_id = FatApp::getPostedData('product_id', FatUtility::VAR_INT, '') ;
+		if ( !empty($product_id) ) {
+			 $srch->addCondition('product_id', '=', $product_id);
+		}
 
 		$srch->addMultipleFields( array('product_id', 'product_attrgrp_id',
 		'product_identifier', 'product_approved', 'product_active', 'product_seller_id', 'product_added_on',
@@ -108,6 +119,7 @@ class ProductsController extends AdminBaseController {
 		$this->set('page', $page);
 		$this->set('pageSize', $pagesize);
 		$this->set('postedData', $post);
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true));
 		$this->set('canEdit', $this->objPrivilege->canEditProducts( AdminAuthentication::getLoggedAdminId(), true ));
 		$this->_template->render(false,false);
 	}
@@ -1021,6 +1033,7 @@ class ProductsController extends AdminBaseController {
 		$frm->addDateField(Labels::getLabel('LBL_Date_From',$this->adminLangId), 'date_from','',array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender' ));
 		$frm->addDateField(Labels::getLabel('LBL_Date_To',$this->adminLangId), 'date_to' , '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
 		$frm->addHiddenField('','page');
+		$frm->addHiddenField('','product_id');
 		$fld_submit = $frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Search',$this->adminLangId));
 		$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->adminLangId),array('onclick'=>'clearSearch();'));
 		$fld_submit->attachField($fld_cancel);

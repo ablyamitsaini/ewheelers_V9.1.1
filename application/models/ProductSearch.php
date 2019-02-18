@@ -128,11 +128,18 @@ class ProductSearch extends SearchBase {
 			$srch->joinTable( Collections::DB_TBL_COLLECTION_TO_SELPROD,'INNER JOIN',
 			Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']);	
 		}
+		
+		$shopCondition = '';
+		
+		if(array_key_exists('shop_id',$criteria) && $criteria['shop_id'] > 0){ 
+		 	$shopId = FatUtility::int($criteria['shop_id']);
+			$shopCondition = ' and shop_id = '.FatApp::getDb()->quoteVariable($shopId); 
+		}	
 				
 		$srch->joinTable( Product::DB_TBL, 'INNER JOIN','product_id = selprod_product_id');
 		$srch->joinTable( User::DB_TBL, 'INNER JOIN', 'selprod_user_id = user_id AND user_is_supplier = '.applicationConstants::YES);
 		$srch->joinTable( User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES );
-		$srch->joinTable( Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES);
+		$srch->joinTable( Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES . $shopCondition);
 		$srch->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop_country_id = country_id and country_active = '.applicationConstants::YES);
 		$srch->joinTable( States::DB_TBL, 'INNER JOIN', 'shop_state_id = state_id and state_active = '.applicationConstants::YES);
 		$srch->joinTable( Brand::DB_TBL, 'INNER JOIN', 'product_brand_id = brand_id and brand_active = '.applicationConstants::YES.' and brand_deleted = '.applicationConstants::NO);
@@ -160,35 +167,13 @@ class ProductSearch extends SearchBase {
 		}	
 		$tmpQry = $srch->getQuery();		
 		
-		$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
-
-		/*$srch = new SearchBase( SellerProduct::DB_TBL, 'sprods');
-		$srch->addMultipleFields( array('selprod_id','selprod_user_id','selprod_product_id','selprod_code','selprod_stock','selprod_condition','selprod_price','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count',
-			'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found',
-			'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-			'IFNULL(splprice_price, selprod_price) AS theprice','selprod_deleted') );
-		
-		if( $this->langId ){
-			$srch->joinTable( SellerProduct::DB_LANG_TBL ,'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId,'sprods_l');
-			$srch->addFld( array('selprod_title','selprod_warranty','selprod_return_policy') );
+		if(!empty($criteria['keyword'])){
+			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', '((pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)) or (selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').'))', 'pricetbl');
+		}else{
+			$this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl');
 		}
-		$srch->joinTable( SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN',
-            'splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN splprice_start_date AND splprice_end_date');
-
-		$srch->addCondition( 'selprod_active', '=', applicationConstants::ACTIVE );
-		$srch->addCondition( 'selprod_available_from', '<=', $now );
-		$srch->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
-		//$srch->addCondition( 'selprod_user_id', '=', 7 );
-		$srch->doNotLimitRecords();
-		$srch->doNotCalculateRecords();
-
-		$tmpQry = $srch->getQuery();
-
-		$qry = 'SELECT m.* FROM (' . $tmpQry . ') m LEFT OUTER JOIN (' . $tmpQry . ') s
-		ON m.selprod_code = s.selprod_code AND ((s.theprice < m.theprice AND m.in_stock = s.in_stock) OR m.in_stock < s.in_stock)
-		WHERE s.selprod_product_id IS NULL';
-
-		$this->joinTable('(' . $qry . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');*/
+		/* $this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.selprod_product_id = msellprod.selprod_product_id AND (splprice_price = theprice OR selprod_price = theprice)', 'pricetbl'); */ 
+		
 	}
 
 	public function joinSellerProducts( $bySeller = 0, $splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true  ) {

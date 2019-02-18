@@ -366,6 +366,6 @@ $(document).on('click','.File-Js',function(){
 
 (function() {
 	displayImageInFacebox = function(str){
-		$.facebox('<img width="800px;" src="'+str+'">');
+		$.facebox('<img class="mx-auto d-block" width="800px;" src="'+str+'">');
 	}
 })();

@@ -19,6 +19,22 @@ class SelProdReviewSearch extends SearchBase {
 		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'usc.credential_user_id = us.user_id', 'usc' );		
 	}
 	
+	public function joinShops( $langId = 0, $isActive = true){
+		$langId = FatUtility::int( $langId );
+		if( $this->langId ){
+			$langId = $this->langId;
+		}
+		$this->joinTable( Shop::DB_TBL, 'LEFT OUTER JOIN', 'us.user_id = shop.shop_user_id','shop');
+		
+		if( $isActive ){
+			$this->addCondition( 'shop.shop_active', '=', applicationConstants::ACTIVE );
+		}
+
+		if( $langId ){
+			$this->joinTable( Shop::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop.shop_id = s_l.shoplang_shop_id AND shoplang_lang_id = '. $langId , 's_l' );
+		}
+	}
+	
 	public function joinUser(){
 		$this->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'u.user_id = spr.spreview_postedby_user_id', 'u' );
 		$this->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.credential_user_id = u.user_id', 'uc' );

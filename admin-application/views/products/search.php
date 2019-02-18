@@ -42,7 +42,11 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 			break;
 			case 'user_name':
-				$td->appendElement('plaintext', array(), (!empty($row[$key]) ? $row[$key] : 'Admin' ), true );
+				if($canViewUsers){
+					!empty($row[$key]) ? $td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'",'.$row['product_seller_id'].')'), $row[$key]) : $td->appendElement('plaintext', array(), (!empty($row[$key]) ? $row[$key] : 'Admin' ), true );
+				} else {
+					$td->appendElement('plaintext', array(), (!empty($row[$key]) ? $row[$key] : 'Admin' ), true );
+				}
 			break;
 			case 'attrgrp_name':
 				$td->appendElement('plaintext', array(), CommonHelper::displayNotApplicable($adminLangId, $row[$key]), true);

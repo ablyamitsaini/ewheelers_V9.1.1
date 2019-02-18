@@ -81,7 +81,7 @@ class Notification extends MyAppModel {
 			Notification::SUPPLIER_APPROVAL=>array(Labels::getLabel('user_supplier_approval_notification',$langId),'users/seller-approval-requests'),
 			Notification::BRAND_REQUEST_NOTIFICATION=>array(Labels::getLabel('seller_brand_request_notification',$langId),$brandRequestUrl),
 			Notification::NEW_ORDER_STATUS_NOTIFICATION=>array(Labels::getLabel('user_order_status_notification',$langId),'orders'),
-			Notification::ORDER_CANCELLATION_NOTIFICATION=>array(Labels::getLabel('user_order_cancellation_notification',$langId),'orders'),
+			Notification::ORDER_CANCELLATION_NOTIFICATION=>array(Labels::getLabel('user_order_cancellation_notification',$langId),'order-cancellation-requests'),
 			Notification::ORDER_RETURNED_NOTIFICATION=>array(Labels::getLabel('user_order_return_notification',$langId),'order-return-requests'),
 			Notification::ORDER_RETURNED_REQUEST_NOTIFICATION=>array(Labels::getLabel('user_order_return_request_notification',$langId),'order-return-requests'),
 			Notification::CATALOG_REQUEST_MESSAGE_NOTIFICATION=>array(Labels::getLabel('user_catalog_request_message_notification',$langId),'custom-products'),

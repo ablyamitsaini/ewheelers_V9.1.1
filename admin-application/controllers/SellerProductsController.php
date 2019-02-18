@@ -12,9 +12,15 @@ class SellerProductsController extends AdminBaseController {
 	}
 	
 	public function index( $product_id = 0) {
+		$data = FatApp::getPostedData();
+		$srchFrm = $this->getSearchForm();
+		if($data){
+			$data['user_id'] = $data['id'];
+			unset($data['id']);
+			$srchFrm->fill( $data );
+		}
 		$this->objPrivilege->canViewSellerProducts();
 		$this->includeDateTimeFiles();
-		$srchFrm = $this->getSearchForm();
 		$this->set('includeEditor',true);
 		$this->set("frmSearch", $srchFrm);
 		$this->set("product_id", $product_id);
@@ -48,7 +54,6 @@ class SellerProductsController extends AdminBaseController {
 		$srch->joinTable( Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->adminLangId, 'p_l' );
 		$srch->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'selprod_user_id = u.user_id', 'u' );
 		$srch->joinTable( User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'u.user_id = uc.credential_user_id', 'uc' );
-		$srch->addOrder('product_name');
 		$srch->addCondition('selprod_deleted' ,'=' , 0);
 		
 		$pageSize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
@@ -129,6 +134,7 @@ class SellerProductsController extends AdminBaseController {
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email'));
 		
 		$srch->addOrder('selprod_active', 'DESC');
+		$srch->addOrder('selprod_added_on');
 		$db = FatApp::getDb();
 		$rs = $srch->getResultSet();
 		$arrListing = $db->fetchAll($rs);
@@ -137,10 +143,12 @@ class SellerProductsController extends AdminBaseController {
 				$arr['options'] = SellerProduct::getSellerProductOptions( $arr['selprod_id'], true, $this->adminLangId );
 			}
 		}
-		// CommonHelper::printArray($arrListing); die;
+		
 		$this->set("arrListing", $arrListing);
 		$this->set('product_id', $product_id);
 		$this->set('activeInactiveArr', applicationConstants::getActiveInactiveArr($this->adminLangId) );
+		$this->set('canViewProducts', $this->objPrivilege->canViewProducts($this->admin_id,true) );
+		$this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->admin_id,true) );
 		
 		if( !$product_id ){
 			$this->set( 'page', $page );
@@ -926,6 +934,16 @@ class SellerProductsController extends AdminBaseController {
 			FatUtility::dieJsonError(current($frm->getValidationErrors()));
 		}
 		
+		/* Check if same date already exists [ */
+			$tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
+			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
+				$specialPriceRow = $tblRecord->getFlds();
+				if($specialPriceRow['splprice_id'] != $post['splprice_id']){
+					FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->adminLangId));
+				}
+			}
+		/* ] */
+		
 		$data_to_save = array(
 			'splprice_id'		=>	$splprice_id,
 			'splprice_selprod_id'	=>	$selprod_id,
@@ -938,7 +956,7 @@ class SellerProductsController extends AdminBaseController {
 		);
 		$sellerProdObj = new SellerProduct();
 		if( !$sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save) ){
-			FatUtility::dieJsonError( Labels::getLabel($sellerProdObj, $this->adminLangId) );
+			FatUtility::dieJsonError( Labels::getLabel($sellerProdObj->getError(), $this->adminLangId) );
 		}
 		
 		$this->set( 'msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId) );

@@ -30,18 +30,26 @@ foreach ($arrListing as $sn => $row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'name':
-				$variantStr = $row['product_name'];
-				$variantStr .= ( $row['selprod_title'] != '') ? '<br/><small>' . $row['selprod_title'].'</small><br/>' : '';
+				$variantStr = ( $row['selprod_title'] != '') ? '<br/>' . $row['selprod_title'].'<br/>' : '';
 				if( is_array($row['options']) && count($row['options']) ){
 					foreach($row['options'] as $op){
 						$variantStr .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
 					}
 				}
 				$td->appendElement('plaintext', array(), $variantStr , true);
+				if($canViewProducts){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Products').'", '.$row['selprod_product_id'].')'), $row['product_name'], true);
+				} else {
+					$td->appendElement('plaintext', array(), $row['product_name'], true);
+				}
 			break;
 			case 'user':
-				$userDetail = '<strong>'.Labels::getLabel('LBL_N:', $adminLangId).' </strong>'.$row['user_name'].'<br/>';
-				$userDetail .= '<strong>'.Labels::getLabel('LBL_Email:', $adminLangId).' </strong>'.$row['credential_email'].'<br/>';
+				if($canViewUsers){
+					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['selprod_user_id'].')'), '<strong>'.Labels::getLabel('LBL_N:', $adminLangId).' </strong>'.$row['user_name'], true);
+				} else {
+					$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_N:', $adminLangId).' </strong>'.$row['user_name'], true);
+				}
+				$userDetail = '<br/><strong>'.Labels::getLabel('LBL_Email:', $adminLangId).' </strong>'.$row['credential_email'].'<br/>';
 				$td->appendElement( 'plaintext', array(), $userDetail, true );
 			break;
 			case 'selprod_price':

@@ -38,7 +38,7 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'brand_logo':
 				$td->appendElement('plaintext', array('style' => 'text-align:center'), 
-				'<img class="max-img" src="'.CommonHelper::generateUrl('image','brand',array($row['brand_id'], $adminLangId, '?'.time() ),CONF_WEBROOT_FRONT_URL).'">',true);
+				'<img class="max-img" src="'.CommonHelper::generateUrl('image','brand',array($row['brand_id'], $adminLangId, 'MINITHUMB', '?'.time() ),CONF_WEBROOT_FRONT_URL).'">',true);
 			break;
 			case 'brand_identifier':
 				if($row['brand_name']!=''){
@@ -48,7 +48,7 @@ foreach ($arr_listing as $sn=>$row){
 				}else{
 					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
-				break;
+			break;
 			case 'brand_active':
 				$active = "";
 				if($row['brand_active']) {

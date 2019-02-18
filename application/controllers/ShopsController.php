@@ -86,7 +86,7 @@ class ShopsController extends MyAppController {
 
 		$totalProdCountToDisplay = 4;
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
-		$prodSrchObj->setDefinedCriteria(1);	
+		$prodSrchObj->setDefinedCriteria(0);	
 		$prodSrchObj->joinProductToCategory();		
 		$prodSrchObj->setPageSize($totalProdCountToDisplay);
 		foreach($allShops as $val){
@@ -96,7 +96,7 @@ class ShopsController extends MyAppController {
 			'IFNULL(product_name, product_identifier) as product_name', 
 			'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 			/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-			$prodSrch->addGroupBy('selprod_id');
+			$prodSrch->addGroupBy('product_id');
 			/* ] */
 			$prodRs = $prodSrch->getResultSet();					
 			$allShops[$val['shop_id']]['products'] = $db->fetchAll( $prodRs);
@@ -133,11 +133,11 @@ class ShopsController extends MyAppController {
 		return $frm;
 	}
 	
-	protected function getSearchForm(){
-	
+	protected function getSearchForm(){	
 		$frm = new Form('frmSearch');
 		$frm->addTextBox('','keyword');
 		$frm->addHiddenField('','shop_id');
+		$frm->addHiddenField('','join_price');
 		$frm->addSubmitButton('','btnProductSrchSubmit','');
 		return $frm;
 	}
@@ -166,19 +166,21 @@ class ShopsController extends MyAppController {
 		if(array_key_exists('sort',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
 		}
-		$headerFormParamsAssocArr['join_price'] = 1;
+		//$headerFormParamsAssocArr['join_price'] = 1;
 		$headerFormParamsAssocArr['shop_id'] = $shop_id;		
 		$frm->fill($headerFormParamsAssocArr);
+		
 		$searchFrm->fill($headerFormParamsAssocArr);
 		
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
-		$prodSrchObj->setDefinedCriteria(1);
+		$prodSrchObj->setDefinedCriteria(0);
 		$prodSrchObj->joinProductToCategory();
 		$prodSrchObj->joinSellerSubscription();
 		$prodSrchObj->addSubscriptionValidCondition();
 		$prodSrchObj->doNotCalculateRecords();
 		$prodSrchObj->setPageSize(FatApp::getConfig('CONF_PAGE_SIZE',FatUtility::VAR_INT, 10));
 		$prodSrchObj->addShopIdCondition($shop_id);
+		$prodSrchObj->addOrder('product_id');
 		$rs = $prodSrchObj->getResultSet();
 		$record = FatApp::getDb()->fetch($rs);
 		if( empty($record) ){

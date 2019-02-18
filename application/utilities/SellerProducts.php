@@ -906,10 +906,11 @@ trait SellerProducts{
 		/* Check if same date already exists [ */
 			$tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
 			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
-				FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->siteLangId));
+				$specialPriceRow = $tblRecord->getFlds();
+				if($specialPriceRow['splprice_id'] != $post['splprice_id']){
+					FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->siteLangId));
+				}
 			}
-			$specialPriceRow = $tblRecord->getFlds();
-			
 		/* ] */
 		
 		$data_to_save = array(
@@ -1392,7 +1393,8 @@ trait SellerProducts{
 		/* $frm->addTextBox(Labels::getLabel('LBL_Download_name',$langId),'afile_name')->requirements()->setRequired();; */
 		
 		$fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Upload_File',$langId), 'downloadable_file', array('id' => 'downloadable_file', 'multiple' => 'multiple') );	
-		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';	
+		$fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+		$fldImg->htmlAfterField='<label class="filelabel">' . Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div>';		
 		$frm->addSubmitButton('','btn_submit',Labels::getLabel("LBL_Save_Changes",$langId));		
 		$frm->addHiddenField('','selprod_id'); 		
 		return $frm;

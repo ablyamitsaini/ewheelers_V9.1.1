@@ -811,6 +811,9 @@ class MobileAppApiController extends MyAppController {
 		$collection_product_id = FatApp::getPostedData('collection_product_id', FatUtility::VAR_INT, 0);						
 		$criteria = array('collection_product_id'=>$collection_product_id);
 		
+		$keyword = FatApp::getPostedData('keyword', null, '');
+		$criteria['keyword'] = $keyword;
+		
 		$shop_id = FatApp::getPostedData('shop_id', null, '');
 		if($shop_id > 0){
 			$srch->setDefinedCriteria(false,0,$criteria);
@@ -852,8 +855,8 @@ class MobileAppApiController extends MyAppController {
 				'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
 				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
-				'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-				'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
+				'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
+				 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
 				'selprod_sold_count','selprod_return_policy', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating','ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite','selprod_min_order_qty'
 		 ));
 
@@ -881,10 +884,16 @@ class MobileAppApiController extends MyAppController {
 		}
 		/*]*/
 
-		$keyword = FatApp::getPostedData('keyword', null, '');
 		if(!empty($keyword)) {
 			$srch->addKeywordSearch($keyword);
-			//$srch->addOrder( 'keyword_relevancy', 'DESC' );
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  1,   0  ) as keywordmatched');
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  IFNULL(splprice_price, selprod_price),   theprice ) as theprice');
+			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
+END,   special_price_found ) as special_price_found');
+			
+		}else{
+			$srch->addFld('theprice');
+			$srch->addFld('special_price_found');
 		}
 
 		$brand = FatApp::getPostedData('brand', null, '');
@@ -954,10 +963,17 @@ class MobileAppApiController extends MyAppController {
 		}
 		$srch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
 		/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-		$srch->addGroupBy('selprod_id');
+		if( $collection_product_id ) {
+			$srch->addGroupBy('selprod_id');
+		}else{
+			$srch->addGroupBy('product_id');
+			if(!empty($keyword)) {
+				$srch->addGroupBy('keywordmatched');
+				$srch->addOrder('keywordmatched','desc');
+			}			
+		}
 		/* ] */
-		//echo $srch->getQuery();
-
+		
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
@@ -966,7 +982,7 @@ class MobileAppApiController extends MyAppController {
 			foreach($productsList as &$product){
 				$moreSellerSrch = clone $prodSrchObj;
 				$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
-				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice'));
+				$moreSellerSrch->addMultipleFields(array('count(selprod_id) as totalSellersCount','MIN(theprice) as theprice','special_price_found'));
 				$moreSellerSrch->addGroupBy('selprod_code');
 				$moreSellerRs = $moreSellerSrch->getResultSet();
 				$moreSellerRow = $db->fetch($moreSellerRs);
@@ -1234,12 +1250,22 @@ class MobileAppApiController extends MyAppController {
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
+		//$moreSellerSrch->setDefinedCriteria();
+		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
 		$moreSellerSrch->addOrder('theprice');
+		$moreSellerSrch->addGroupBy('shop_id');
 		$moreSellerRs = $moreSellerSrch->getResultSet();
 		$moreSellersArr = FatApp::getDb()->fetchAll($moreSellerRs);
+		if(!empty($moreSellersArr)){
+			foreach($moreSellersArr as $key=>$prod){
+				$moreSellersArr[$key]['discounted_text'] = CommonHelper::showProductDiscountedText($prod, $this->siteLangId);
+				$moreSellersArr[$key]['currency_selprod_price'] = CommonHelper::displayMoneyFormat($prod['selprod_price'],true,false,false);
+				$moreSellersArr[$key]['currency_theprice'] = CommonHelper::displayMoneyFormat($prod['theprice'],true,false,false);
+			}
+		}
+		
 		$product['moreSellersArr'] = $moreSellersArr;
 		/* ] */
 
@@ -2592,7 +2618,7 @@ class MobileAppApiController extends MyAppController {
 		$productSrchObj->joinProductRating( );
         $productSrchObj->doNotCalculateRecords();
 		$productSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$productSrchObj->addGroupBy('selprod_id');
+		$productSrchObj->addGroupBy('product_id');
 		
 		
 		/* $selProdReviewObj = new SelProdReviewSearch();
@@ -3360,12 +3386,9 @@ class MobileAppApiController extends MyAppController {
 		$prodShopSrch->joinSellerSubscription( $this->siteLangId, true );
 		$prodShopSrch->addSubscriptionValidCondition();
 		$prodShopSrch->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$prodShopSrch->addGroupBy('selprod_id');
+		$prodShopSrch->addGroupBy('shop_id');
 		
-		$prodShopSrch->addMultipleFields( array('shop_id'));
-		$rs = $prodShopSrch->getResultSet();
-		$productRows = FatApp::getDb()->fetchAll($rs);
-		$shopMainRootArr = array_unique(array_column($productRows,'shop_id'));
+		$prodShopSrch->addMultipleFields( array('shop_id'));		
 		/* ] */
 		
 		$srch = new ShopSearch( $this->siteLangId );
@@ -3373,8 +3396,14 @@ class MobileAppApiController extends MyAppController {
 		$srch->joinShopCountry();
 		$srch->joinShopState();
 		$srch->joinSellerSubscription();
-		$srch->addCondition('shop_id', 'in', $shopMainRootArr);
+		$srch->joinTable('(' . $prodShopSrch->getQuery() . ')','INNER JOIN','stemp.shop_id = s.shop_id','stemp');
 		
+		$collection_id =  FatApp::getPostedData('collection_id',FatUtility::VAR_INT,0);	
+		
+		if($collection_id){
+			$srch->joinTable(Collections::DB_TBL_COLLECTION_TO_SHOPS,'INNER JOIN','cts.ctps_shop_id = s.shop_id','cts');
+			$srch->addCondition('ctps_collection_id','=',$collection_id);
+		}
 		
 		/* Sub query to find out that logged user have marked shops as favorite or not[ */
 		$favSrchObj = new UserFavoriteShopSearch();
@@ -3382,10 +3411,10 @@ class MobileAppApiController extends MyAppController {
 		$favSrchObj->doNotLimitRecords();
 		$favSrchObj->addMultipleFields(array('ufs_shop_id','ufs_id'));
 		$favSrchObj->addCondition( 'ufs_user_id', '=', $loggedUserId );
-		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = shop_id', 'ufs' );		
+		$srch->joinTable( '('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = s.shop_id', 'ufs' );		
 		/* ] */
 		
-		$srch->addMultipleFields(array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
+		$srch->addMultipleFields(array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
 		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
 		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		
@@ -3405,6 +3434,7 @@ class MobileAppApiController extends MyAppController {
 		$srch->setPageSize($pagesize);
 		
 		$srch->addOrder('shop_created_on');
+		
 		$shopRs = $srch->getResultSet();
 		$allShops = $db->fetchAll($shopRs);
 		
@@ -3419,7 +3449,7 @@ class MobileAppApiController extends MyAppController {
 		$productCustomSrchObj->joinFavouriteProducts( $loggedUserId );
 		$productCustomSrchObj->joinProductRating( );
 		$productCustomSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$productCustomSrchObj->addGroupBy('selprod_id');
+		$productCustomSrchObj->addGroupBy('product_id');
 		
 		
 		/* $selProdReviewObj = new SelProdReviewSearch();
@@ -3444,7 +3474,7 @@ class MobileAppApiController extends MyAppController {
 		foreach($allShops as $val){
 			$prodSrch = clone $productCustomSrchObj;
 			$prodSrch->addShopIdCondition( $val['shop_id'] );
-			$prodSrch->addGroupBy('selprod_id');
+			$prodSrch->addGroupBy('product_id');
 			//$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
 			//'IFNULL(product_name, product_identifier) as product_name', 
 			//'IF(selprod_stock > 0, 1, 0) AS in_stock') );
@@ -3622,7 +3652,7 @@ class MobileAppApiController extends MyAppController {
 		$prodSrchObj->doNotCalculateRecords();
 		$prodSrchObj->doNotLimitRecords();
 		$prodSrchObj->addCondition('selprod_deleted' ,'=' , applicationConstants::NO);
-		$prodSrchObj->addGroupBy('selprod_id');
+		$prodSrchObj->addGroupBy('product_id');
 	
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;

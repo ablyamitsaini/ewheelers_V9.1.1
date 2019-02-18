@@ -82,6 +82,7 @@ class SellerController extends LoggedUserController {
 		$orderSrch->addMultipleFields(array('todayOrderCount' ,'todaySoldCount','totalSoldCount','totalSoldSales' ));
 		
 		$rs = $orderSrch->getResultSet();
+		
 		$ordersStats = FatApp::getDb()->fetch($rs);
 		/* ]*/		
 		
@@ -365,7 +366,7 @@ class SellerController extends LoggedUserController {
 		} else {
 			$processingStatuses = $orderObj->getVendorAllowedUpdateOrderStatuses( false, $codOrder );
 		}
-				
+
 		/*[ if shipping not handled by seller then seller can not update status to ship and delived */
 		if(!CommonHelper::canAvailShippingChargesBySeller($orderDetail['op_selprod_user_id'],$orderDetail['opshipping_by_seller_user_id'])){ 
 			$processingStatuses = array_diff($processingStatuses,(array)FatApp::getConfig("CONF_DEFAULT_SHIPPING_ORDER_STATUS"));
@@ -3109,7 +3110,8 @@ class SellerController extends LoggedUserController {
 		$fld->htmlAfterField = '</div>'; */
 		$frm->addTextArea(Labels::getLabel('LBL_Content',$this->siteLangId), 'scatrequest_content');
 		$fileFld = $frm->addFileUpload( Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file' ,array('accept'=>'image/*,.zip' , 'enctype' => "multipart/form-data" ) );
-		$fileFld->htmlAfterField = '<span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
+		$fileFld->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
+		$fileFld->htmlAfterField = '<label class="filelabel">'.Labels::getLabel('LBL_Browse_File',$this->siteLangId).'</label></div><span class="text--small">' .Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed',$this->siteLangId) .'</span>' ;
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId ));
 		return $frm;
 	}

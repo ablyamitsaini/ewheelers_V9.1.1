@@ -409,6 +409,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 </section>
 <div class="gap"></div>
 <script type="text/javascript">
+var mainSelprodId = <?php echo $product['selprod_id'];?>;
 $("document").ready(function(){
 	recentlyViewedProducts(<?php echo $product['selprod_id'];?>);
 	zheight = $( window ).height() - 180;

@@ -16,9 +16,15 @@ class ShopsController extends AdminBaseController {
 		$this->set("canEdit",$this->canEdit);		
 	}
 	
-	public function index(){ 
-		$this->objPrivilege->canViewShops();
+	public function index(){
+		$data = FatApp::getPostedData();
 		$frmSearch = $this->getSearchForm();
+		if($data){
+			$data['shop_id'] = $data['id'];
+			unset($data['id']);
+			$frmSearch->fill( $data );
+		}
+		$this->objPrivilege->canViewShops();
 		
 		$this->set("includeEditor",true);	
 		$this->set("frmSearch",$frmSearch);	
@@ -54,16 +60,25 @@ class ShopsController extends AdminBaseController {
 		$ratingSrch->doNotCalculateRecords();
 		$ratingSrch->doNotLimitRecords();
 		$ratingSrch->addGroupby('spreview_seller_user_id');
-		
 		$shopRatingQuery = $ratingSrch->getQuery();
+		
+		$prodSrch = new ProductSearch();
+		$prodSrch->joinSellerProducts();
+		$prodSrch->joinSellers();
+		$prodSrch->addMultipleFields(array('selprod_user_id','count(*) as numOfProducts'));
+		$prodSrch->doNotCalculateRecords();
+		$prodSrch->doNotLimitRecords();
+		$prodSrch->addGroupby('selprod_user_id');
+		$productQuery = $prodSrch->getQuery();
 		
 		$srch = Shop::getSearchObject(false,$this->adminLangId);
 		$srch->joinTable('tbl_users','INNER JOIN','u.user_id = s.shop_user_id','u');
 		$srch->joinTable('tbl_user_credentials','INNER JOIN','u.user_id = c.credential_user_id','c');
 		$srch->joinTable('(' . $result_shop_reports . ')', 'LEFT OUTER JOIN', 'sreport.sreport_shop_id = s.shop_id', 'sreport');
 		$srch->joinTable('(' . $shopRatingQuery . ')', 'LEFT OUTER JOIN', 'srating.spreview_seller_user_id = s.shop_user_id', 'srating');
+		$srch->joinTable('(' . $productQuery . ')', 'LEFT OUTER JOIN', 'sp.selprod_user_id = s.shop_user_id', 'sp');
 		
-		$srch->addMultipleFields(array('s.*','IFNULL(s_l.shop_name, s.shop_identifier) as shop_name','u.user_name','c.credential_username','ifnull(sreport.numOfReports ,0) as numOfReports','ifnull(srating.numOfReviews ,0) as numOfReviews'));
+		$srch->addMultipleFields(array('s.*','IFNULL(s_l.shop_name, s.shop_identifier) as shop_name','u.user_name','c.credential_username','ifnull(sreport.numOfReports ,0) as numOfReports','ifnull(srating.numOfReviews ,0) as numOfReviews','ifnull(sp.numOfProducts ,0) as numOfProducts'));
 		
 		$keyword = FatApp::getPostedData( 'keyword', null, '' );
 		if( !empty($keyword) ) {
@@ -71,6 +86,7 @@ class ShopsController extends AdminBaseController {
 			$cond->attachCondition('s_l.shop_name','like','%'.$keyword.'%','OR');
 			$cond->attachCondition('u.user_name','like','%'.$keyword.'%','OR');
 			$cond->attachCondition('c.credential_username','like','%'.$keyword.'%','OR');
+			$cond->attachCondition('c.credential_email','like','%'.$keyword.'%','OR');
 		}
 		
 		$shop_featured = FatApp::getPostedData( 'shop_featured', FatUtility::VAR_INT, -1 );
@@ -98,17 +114,22 @@ class ShopsController extends AdminBaseController {
 			 $srch->addCondition('shop_created_on', '<=', $date_to. ' 23:59:59');
 		}
 		
+		$shop_id = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0) ;
+		if ( !empty($shop_id) ) {
+			 $srch->addCondition('shop_id', '=', $shop_id);
+		}
+		
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pageSize);
 		
 		$srch->addOrder( 'shop_active', 'DESC' );
-		$srch->addOrder('shop_name');
-		
+		$srch->addOrder( 'shop_created_on', 'DESC' );
 		$rs = $srch->getResultSet();
 	
 		$records = FatApp::getDb()->fetchAll($rs);		
 		
 		$this->set('canViewShopReports', $this->objPrivilege->canViewShopReports(0,true));
+		$this->set('canViewSellerProducts', $this->objPrivilege->canViewSellerProducts(0,true));
 
 		$this->set("arr_listing",$records);
 		$this->set('pageCount',$srch->pages());
@@ -451,6 +472,7 @@ class ShopsController extends AdminBaseController {
 		$frm = new Form('frmShopSearch');		
 		$frm->addTextBox(Labels::getLabel('LBL_Keyword',$this->adminLangId), 'keyword','');
 		$frm->addHiddenField('','page',1);
+		$frm->addHiddenField('','shop_id');
 		$frm->addSelectBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'shop_featured', array('-1'=>Labels::getLabel('LBL_Does_Not_Matter',$this->adminLangId)) + applicationConstants::getYesNoArr($this->adminLangId), -1, array(), '' );
 		$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'shop_active', array('-1'=>'Does not Matter')+applicationConstants::getActiveInactiveArr($this->adminLangId), -1, array(), '' );
 		$frm->addSelectBox(Labels::getLabel('LBL_Shop_Status_By_Seller',$this->adminLangId), 'shop_supplier_display_status', array('-1'=>Labels::getLabel('LBL_Does_Not_Matter',$this->adminLangId))+applicationConstants::getOnOffArr($this->adminLangId), -1, array(), '' );

@@ -1678,7 +1678,7 @@ class AccountController extends LoggedUserController {
 				$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'IFNULL(shop_name, shop_identifier) as shop_name',
 				'IFNULL(product_name, product_identifier) as product_name',
 				'IF(selprod_stock > 0, 1, 0) AS in_stock') );
-				$prodSrch->addGroupBy('selprod_id');
+				$prodSrch->addGroupBy('product_id');
 				$prodRs = $prodSrch->getResultSet();
 				$shop['totalProducts'] = $prodSrch->recordCount();
 				$shop['products'] = $db->fetchAll( $prodRs );

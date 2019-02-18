@@ -33,9 +33,13 @@ class BrandsController extends AdminBaseController {
 		$this->_template->render();
 	}
 	
-	private function getSearchForm(){
+	private function getSearchForm($request = false){
 		$frm = new Form('frmSearch',array('id'=>'frmSearch'));		
 		$f1 = $frm->addTextBox(Labels::getLabel('LBL_Keyword',$this->adminLangId), 'keyword','',array('class'=>'search-input'));
+		if($request){
+			$frm->addTextBox(Labels::getLabel('LBL_Seller_Name_Or_Email',$this->adminLangId), 'user_name','',array('id'=>'keyword','autocomplete'=>'off'));
+			$frm->addHiddenField('','user_id');
+		}
 		$fld_submit=$frm->addSubmitButton('','btn_submit',Labels::getLabel('LBL_Search',$this->adminLangId));
 		$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->adminLangId),array('onclick'=>'clearSearch();'));
 		$frm->addHiddenField('','brand_id');
@@ -209,7 +213,6 @@ class BrandsController extends AdminBaseController {
 		$email = new EmailHandler();		
 		if($post['brand_status']!=Brand::BRAND_REQUEST_PENDING){
 			if(!$email->SendBrandRequestStatusChangeNotification($this->adminLangId,$brandData)){
-				$db->rollbackTransaction();
 				Message::addErrorMessage(Labels::getLabel('LBL_Email_Could_Not_Be_Sent',$this->adminLangId));
 				FatUtility::dieWithError( Message::getHtml() );
 			}
@@ -647,7 +650,7 @@ class BrandsController extends AdminBaseController {
 	
 	public function brandRequests(){
 		$this->objPrivilege->canViewBrandRequests();
-		$search = $this->getSearchForm();			
+		$search = $this->getSearchForm(true);			
 		$data = FatApp::getPostedData();
 		if($data){
 			$data['brand_id'] = $data['id'];
@@ -662,14 +665,15 @@ class BrandsController extends AdminBaseController {
 		$this->objPrivilege->canViewBrands();
 		
 		$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);				
-		$searchForm = $this->getSearchForm();
+		$searchForm = $this->getSearchForm(true);
 		$data = FatApp::getPostedData();
 		$page = (empty($data['page']) || $data['page'] <= 0)?1:$data['page'];
 		$post = $searchForm->getFormDataFromArray($data);
 		
 		$prodBrandObj = new Brand();
 		$srch = $prodBrandObj->getSearchObject();
-		$srch->addFld('b.*');
+		$srch->joinTable( User::DB_TBL, 'LEFT OUTER JOIN', 'u.user_id = brand_seller_id', 'u' );
+		$srch->addMultipleFields(array('b.*','user_name'));
 		$srch->addCondition('brand_status','=',applicationConstants::NO);
 		$srch->addCondition('brand_seller_id','>',0);
 		$srch->addOrder('b.brand_id','desc');
@@ -680,7 +684,10 @@ class BrandsController extends AdminBaseController {
 		if(!empty($post['brand_id'])){
 			$srch->addCondition('b.brand_id','=',$post['brand_id']);
 		}
-		
+		$user_id = FatApp::getPostedData('user_id', FatUtility::VAR_INT, 0);
+		if( $user_id > 0 ){
+			$srch->addCondition('brand_seller_id', '=', $user_id );
+		}
 		$page = (empty($page) || $page <= 0)?1:$page;
 		$page = FatUtility::int($page);
 		$srch->setPageNumber($page);

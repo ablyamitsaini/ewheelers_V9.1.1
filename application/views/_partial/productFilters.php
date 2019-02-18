@@ -31,6 +31,7 @@ array_walk($catCodeArr,function(&$n) {
 	$fld->addFieldTagAttribute("class","input-field nofocus");
 	echo $searchFrm->getFieldHTML('keyword');
 	echo $searchFrm->getFieldHTML('shop_id');
+	echo $searchFrm->getFieldHTML('join_price');
 	echo '</form>';
 	echo $searchFrm->getExternalJS();
    ?>

@@ -15,7 +15,14 @@ class OrderReturnRequestsController extends AdminBaseController {
 	
 	public function index() {
 		$this->objPrivilege->canViewOrderReturnRequests();
-		$this->set('frmSearch', $this->getOrderReturnRequestSearchForm( $this->adminLangId ));		
+		$frmSearch = $this->getOrderReturnRequestSearchForm( $this->adminLangId );
+		$data = FatApp::getPostedData();
+		if($data){
+			$data['orrequest_id'] = FatUtility::int($data['id']);
+			unset($data['id']);
+			$frmSearch->fill($data);
+		}
+		$this->set('frmSearch', $frmSearch );		
 		$this->_template->render();
 	}
 	
@@ -83,7 +90,11 @@ class OrderReturnRequestsController extends AdminBaseController {
 			$orrequest_type = FatUtility::int($post['orrequest_type']);
 			$srch->addCondition( 'orrequest_type', '=', $orrequest_type );
 		}
-		
+
+		if( isset($post['orrequest_id']) && $post['orrequest_id'] > 0 ){
+			$srch->addCondition( 'orrequest_id', '=', $post['orrequest_id']);
+		}
+
 		$dateFrom = FatApp::getPostedData('date_from', null, '');
 		if( !empty($dateFrom) ) {
 			$srch->addDateFromCondition($dateFrom);
@@ -480,6 +491,7 @@ class OrderReturnRequestsController extends AdminBaseController {
 		$frm->addDateField(Labels::getLabel('LBL_Date_To',$this->adminLangId), 'date_to', '', array('readonly' => 'readonly') );
 		
 		$frm->addHiddenField('','page');
+		$frm->addHiddenField('','orrequest_id');
 		$fld_submit=$frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Submit',$this->adminLangId));
 		$fld_cancel = $frm->addButton("","btn_clear",Labels::getLabel('LBL_Clear_Search',$this->adminLangId));
 		$fld_submit->attachField($fld_cancel);			
