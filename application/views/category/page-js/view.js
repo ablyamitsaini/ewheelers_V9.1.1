@@ -5,9 +5,8 @@ $(document).ready(function(){
 	
 	/* for toggling of grid/list view[ */
 	$('.switch--link-js').on('click',function(e) {
-		$('.switch--link-js').removeClass("is--active");
-		$('.switch--link-js').addClass("btn--primary");
-		$(this).addClass("is--active");
+		$('.switch--link-js').parent().removeClass("is--active");
+		$(this).parent().addClass("is--active");
 		if ($(this).hasClass('list')) {
 			$('.section--items').parent().removeClass('listing-products--grid').addClass('listing-products--list');
 		}

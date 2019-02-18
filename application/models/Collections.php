@@ -23,21 +23,21 @@ class Collections extends MyAppModel{
 	const COLLECTION_TYPE_SHOP = 3;
 	const COLLECTION_TYPE_BRAND = 4;
 	
-	const COLLECTION_LAYOUT1_TYPE = 1;
-	const COLLECTION_LAYOUT2_TYPE = 2;
-	const COLLECTION_LAYOUT3_TYPE = 3;
-	const COLLECTION_LAYOUT4_TYPE = 4;
-	const COLLECTION_LAYOUT5_TYPE = 5;
-	const COLLECTION_LAYOUT6_TYPE = 6;
-	const COLLECTION_LAYOUT7_TYPE = 7;
+	const TYPE_PRODUCT_LAYOUT1 = 1;
+	const TYPE_PRODUCT_LAYOUT2 = 2;
+	const TYPE_PRODUCT_LAYOUT3 = 3;
+	const TYPE_CATEGORY_LAYOUT1 = 4;
+	const TYPE_CATEGORY_LAYOUT2 = 5;
+	const TYPE_SHOP_LAYOUT1 = 6;	
+	const TYPE_BRAND_LAYOUT1 = 7;
 	
-	const COLLECTION_LAYOUT1_LIMIT = 4;
-	const COLLECTION_LAYOUT2_LIMIT = 3;
-	const COLLECTION_LAYOUT3_LIMIT = 6;
-	const COLLECTION_LAYOUT4_LIMIT = 2;
-	const COLLECTION_LAYOUT5_LIMIT = 4;
-	const COLLECTION_LAYOUT6_LIMIT = 4;
-	const COLLECTION_LAYOUT7_LIMIT = 4;
+	const LIMIT_PRODUCT_LAYOUT1 = 12;
+	const LIMIT_PRODUCT_LAYOUT2 = 4;
+	const LIMIT_PRODUCT_LAYOUT3 = 12;
+	const LIMIT_CATEGORY_LAYOUT1 = 8;
+	const LIMIT_CATEGORY_LAYOUT2 = 3;
+	const LIMIT_SHOP_LAYOUT1= 2;
+	const LIMIT_BRAND_LAYOUT1 = 5;
 	
 	const COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH = 1;
 	const COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW = 2;
@@ -85,15 +85,17 @@ class Collections extends MyAppModel{
 			trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.',$this->commonLangId), E_USER_ERROR);
 			return false;
 		}
+
 		return array(
-			self::COLLECTION_LAYOUT1_TYPE => Labels::getLabel('LBL_Collection_Layout1', $langId),
-			self::COLLECTION_LAYOUT2_TYPE => Labels::getLabel('LBL_Collection_Layout2', $langId),
-			self::COLLECTION_LAYOUT3_TYPE => Labels::getLabel('LBL_Collection_Layout3', $langId),
-			self::COLLECTION_LAYOUT4_TYPE => Labels::getLabel('LBL_Collection_Layout4', $langId),
-			self::COLLECTION_LAYOUT5_TYPE => Labels::getLabel('LBL_Collection_Layout5', $langId),
-			self::COLLECTION_LAYOUT6_TYPE => Labels::getLabel('LBL_Collection_Layout6', $langId),
-			self::COLLECTION_LAYOUT7_TYPE => Labels::getLabel('LBL_Collection_Layout7', $langId),
+			self::TYPE_PRODUCT_LAYOUT1 => Labels::getLabel('LBL_Product_Layout1', $langId),
+			self::TYPE_PRODUCT_LAYOUT2 => Labels::getLabel('LBL_Product_Layout2', $langId),
+			self::TYPE_PRODUCT_LAYOUT3 => Labels::getLabel('LBL_Product_Layout3', $langId),
+			self::TYPE_CATEGORY_LAYOUT1 => Labels::getLabel('LBL_Category_Layout1', $langId),
+			self::TYPE_CATEGORY_LAYOUT2 => Labels::getLabel('LBL_Category_Layout2', $langId),
+			self::TYPE_SHOP_LAYOUT1 => Labels::getLabel('LBL_Shop_Layout1', $langId),
+			self::TYPE_BRAND_LAYOUT1 => Labels::getLabel('LBL_Brand_Layout1', $langId),
 		);
+
 	}
 	
 	public static function getCriteria(){

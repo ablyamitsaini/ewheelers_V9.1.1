@@ -1,48 +1,41 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div id="body" class="body checkout-page">
-  <div class="container">
-    <div class="row ">
-      <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
-        <section class="section">
-          <?php if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) { ?>
-          <div id="login-register" class="step is-current">
-            <div class="section-head step__head">1. <?php echo Labels::getLabel('LBL_Login', $siteLangId); ?> </div>
-            <div class="check-login-wrapper step__body" style="display:none;"></div>
-          </div>
-          <?php } else { ?>
-          <div class="selected-panel " id="alreadyLoginDiv">
-            <div class="selected-panel-type">1. <?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></div>
-            <div class="selected-panel-data"><?php echo UserAuthentication::getLoggedUserAttribute('user_email'); ?></div>
-			<?php if(UserAuthentication::isGuestUserLogged()){?>
-			<div class="selected-panel-action"><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout');?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Change_User', $siteLangId); ?></a></div>	
-            <!--<div class="selected-panel-action"><a onClick="showLoginDiv();" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_Change_Login', $siteLangId); ?></a></div>-->
-			<?php }?>
-          </div>
-          <?php } ?>
-        </section>
-        <section class="section" id="address">
-          <div class="section-head ">2. <?php echo Labels::getLabel('LBL_Billing/Shipping_Address',$siteLangId); ?></div>
-        </section>
-        <section class="section" id="shipping-summary" <?php if( !$cartHasPhysicalProduct ){ ?>style="display:none" <?php }?>>
-          <div class="section-head ">3. <?php echo Labels::getLabel('LBL_Shipping_Summary',$siteLangId); ?></div>
-        </section>
-        <section class="section" id="cart-review">
-          <div class="section-head ">
-            <?php if( $cartHasPhysicalProduct ){ ?>
-            4.
-            <?php } else { echo '3.'; } ?>
-            <?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></div>
-        </section>
-        <section class="section" id="payment" >
-          <div class="section-head">
-            <?php if( $cartHasPhysicalProduct ){ ?>
-            5.
-            <?php } else { echo '4.'; } ?>
-            <?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </div>
-        </section>
+<div id="body" class="body body--checkout" role="main">
+
+<section class="">
+	<div class="container">
+		<div class="row ">
+			<div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 checkout--steps">
+				<div class="checkout--steps__inner">
+					<?php if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) { ?>
+					<div id="login-register" class="step is-current">
+						<div class="check-login-wrapper step__body" style="display:none;"></div>
+					</div>
+					<?php }else {?>
+						<section class="section-checkout is-completed">
+							<div class="selected-panel">
+								<div class="selected-panel-type"><?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></div>
+								<div class="selected-panel-data"><?php echo UserAuthentication::getLoggedUserAttribute('user_email'); ?></div>
+								<div class="selected-panel-action">
+								<a href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout');?>" class="btn btn--primary btn--sm ripplelink"><?php echo Labels::getLabel('LBL_Change_User', $siteLangId); ?></a></a></div>
+							</div>
+						</section>
+					<?php }?>
+				<section class="section-checkout" id="address">
+				  <h2><?php echo Labels::getLabel('LBL_Billing/Shipping_Address',$siteLangId); ?></h2>
+				</section>
+				<section class="section-checkout" id="shipping-summary" <?php if( !$cartHasPhysicalProduct ){ ?>style="display:none" <?php }?>>
+				  <h2><?php echo Labels::getLabel('LBL_Shipping_Summary',$siteLangId); ?></h2>
+				</section>
+				<section class="section-checkout" id="cart-review">
+				  <h2><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h2>
+				</section>
+			<section class="section-checkout" id="payment" >
+			  <h2><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </h2>
+			</section>
+		  </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+	  <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
         <div class="order-summary">
           <div class="coupon">
             <div class="summary-listing"></div>

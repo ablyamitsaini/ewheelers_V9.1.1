@@ -21,82 +21,61 @@ if($totReviews){
 	$rate_1_width = round(FatUtility::convertToType($rated_1/$totReviews*100,FatUtility::VAR_FLOAT),2);
 }
 ?>
-<div class="listings">
-	<div class="listings__head">
-		<div class="row">
-		<?php
+<div class="col-md-4 column">
+	<div class="shop-reviews-wrapper">
+		<div class="shop-reviews">
+			<svg class="svg">
+				<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star"></use>
+			</svg>
 
-			?>
-			<div class="col-md-8">
-				<div class="ratings--overall">
-					<div class="row">
-						<div class="col-md-5 col-sm-5">
-							<div class="progress progress--radial">
-								<div class="progress__circle">
-									<div class="progress__mask left">
-										<div class="progress__fill" style="/* transform: rotate(106deg); */"></div>
-										<span class="progress__count"><?php echo round($avgRating,1); ?></span>
-									</div>
-								</div>
-							</div>
-							<p class="align--center"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></p>
-						</div>
-						<div class="col-md-7 col-sm-7">
-							<ul class="listing--progress">
-								<li>
-									<span class="grid--left">5 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_5_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_5_stars',$siteLangId); ?>" style="width: <?php echo $rate_5_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">4 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_4_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_4_stars',$siteLangId); ?>" style="width: <?php echo $rate_4_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">3 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_3_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_3_stars',$siteLangId); ?>" style="width: <?php echo $rate_3_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">2 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_2_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_2_stars',$siteLangId); ?>" style="width: <?php echo $rate_2_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">1 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_1_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_1_stars',$siteLangId); ?>" style="width: <?php echo $rate_1_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4 border--left">
-				<div class="have-you">
-					<p><?php echo Labels::getLabel('Lbl_Have_You_Used_This_Product?',$siteLangId); ?></p>
-					<a onClick = "rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--secondary btn--sm ripplelink"><?php echo Labels::getLabel('Lbl_Rate_And_Review_Product',$siteLangId); ?></a>
-				</div>
-			</div>
+			<div class="shop-reviews-points"><?php echo round($avgRating,1); ?></div>
 		</div>
+		<div class="total-reviews"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></div>
+	</div>
+</div>
+<div class="col-md-4 column">
+	<div class="listing--progress-wrapper">
+		<ul class="listing--progress">
+			<li>
+				<span class="progress_count">5 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+				<div class="progress__bar">
+					<div title="<?php echo $rate_5_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_5_stars',$siteLangId); ?>" style="width: <?php echo $rate_5_width; ?>%" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">4 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+				<div class="progress__bar">
+					<div title="<?php echo $rate_4_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_4_stars',$siteLangId); ?>" style="width: <?php echo $rate_4_width; ?>%" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">3 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+				<div class="progress__bar">
+					<div title="<?php echo $rate_3_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_3_stars',$siteLangId); ?>" style="width: <?php echo $rate_3_width; ?>%" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">2 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+				<div class="progress__bar">
+					<div title="<?php echo $rate_2_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_2_stars',$siteLangId); ?>" style="width: <?php echo $rate_2_width; ?>%" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">1 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+				<div class="progress__bar">
+					<div title="<?php echo $rate_1_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_1_stars',$siteLangId); ?>" style="width: <?php echo $rate_1_width; ?>%" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="col-md-4">
+	<div class="box box--white box--radius box--space have-you">
+		<p><strong><?php echo Labels::getLabel('Lbl_Have_You_Used_This_Product?',$siteLangId); ?></strong></p>
+		<div class="gap"></div>
+		<a onClick = "rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--secondary ripplelink"><?php echo Labels::getLabel('Lbl_Rate_And_Review_Product',$siteLangId); ?></a>
 	</div>
 </div>
 <script>
-	$('#itemRatings div.progress__fill').css({'clip':'rect(0px, <?php echo $pixelToFillRight; ?>px, 160px, 0px)'});
+	/* $('#itemRatings div.progress__fill').css({'clip':'rect(0px, <?php echo $pixelToFillRight; ?>px, 160px, 0px)'}); */
 </script>

@@ -1,6 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 <?php if( $rows ){ ?>
-	<div class="f-heading"> <?php echo Labels::getLabel('LBL_Connect_with_us', $siteLangId); ?></div>
 	<div class="social">
 		<ul>
 			<?php foreach( $rows as $row ){

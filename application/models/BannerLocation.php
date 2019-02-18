@@ -8,8 +8,8 @@ class BannerLocation extends MyAppModel {
 	const DB_DIMENSIONS_TBL = 'tbl_banner_location_dimensions';
 	const DB_DIMENSIONS_TBL_PREFIX = 'bldimensions_';
 	
-	const HOME_PAGE_AFTER_FIRST_LAYOUT = 1;	
-	const HOME_PAGE_AFTER_THIRD_LAYOUT = 2;	
+	const HOME_PAGE_TOP_BANNER = 1;	
+	const HOME_PAGE_BOTTOM_BANNER = 2;	
 	const PRODUCT_DETAIL_PAGE_BANNER = 3;
 	
 	public function __construct($id = 0) {

@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="section-head"><?php if( $cartHasPhysicalProduct ){ ?>5.<?php } else { echo '4.'; } ?> <?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></div>
+<h2><?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></h2>
 <?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
 	  if($rewardPoints > 0){ ?>
 	<div class="list__selection list__selection--even">
@@ -129,6 +129,7 @@
 	if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) continue;
 	$gatewayCount++;
 } ?>
+<div class="gap"></div>
 <div class="make-payment-wrapper <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>">
   <?php if($cartSummary['orderPaymentGatewayCharges']){ ?>
   <div class="row">

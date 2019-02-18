@@ -39,7 +39,7 @@ class HomeController extends MyAppController {
 		if($collectionCache){
 			$collections  = unserialize($collectionCache);			
 			
-		}else{			
+		}else{
 			$srch = new CollectionSearch( $this->siteLangId );
 			$srch->doNotCalculateRecords();
 			$srch->doNotLimitRecords();
@@ -115,25 +115,63 @@ class HomeController extends MyAppController {
 							$tempObj->joinCollectionCategories($this->siteLangId);
 							$tempObj->addMultipleFields( array( 'ctpc_prodcat_id') );
 							$tempObj->addCondition( 'ctpc_prodcat_id', '!=', 'NULL'  );
-							$tempObj->setPageSize( $collection['collection_primary_records'] );
+							/* $tempObj->setPageSize( $collection['collection_primary_records'] ); */
+							
+							/* Excude categories having no product [ */
+								/* $productSrchTempObj = clone $productSrchObj;
+								$productSrchTempObj->addGroupBy( 'prodcat_id' );
+								$productSrchTempObj->addMultipleFields( array('count(selprod_id) as productCounts', 'prodcat_id as qryProducts_prodcat_id') );
+								$productSrchTempObj->addCondition('selprod_deleted','=',applicationConstants::NO);
+								$tempObj->joinTable( '('.$productSrchTempObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = prodcat_id', 'qryProducts' );
+								$tempObj->addCondition( 'qryProducts.productCounts', '>', 0 ); */
+							/* ] */
+							
 							$rs = $tempObj->getResultSet();
 							
 							if( !$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id') ){
 								continue;
 							} 
-							
 							/* fetch Categories data[ */
-							 $productCatSrchTempObj = clone $productCatSrchObj;
-							$productCatSrchTempObj->addCondition( 'prodcat_id', 'IN', array_keys( $categoryIds ) );
-							$rs = $productCatSrchTempObj->getResultSet(); 
+								$productCatSrchTempObj = clone $productCatSrchObj;
+								$productCatSrchTempObj->addCondition( 'prodcat_id', 'IN', array_keys( $categoryIds ) );
+								$rs = $productCatSrchTempObj->getResultSet(); 
 							/* ] */
 							
 							$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-							$collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'] = $db->fetchAll($rs);
-							
+							if($collection['collection_layout_type']==Collections::TYPE_CATEGORY_LAYOUT2){
+								
+								while ($catData = $db->fetch($rs) ){
+									/* fetch Sub-Categories[ */
+									$subCategorySrch = clone $productCatSrchObj;
+									$subCategorySrch->addCondition('prodcat_parent', '=', $catData['prodcat_id']);
+									/* $subCategorySrch->setPageSize(5); */
+									$Catrs = $subCategorySrch->getResultSet(); 	
+									
+									$collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]=$catData;
+									
+									$collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
+									/* ] */
+								}
+								
+							}else{
+								while ($catData = $db->fetch($rs) ){
+									/* fetch Product data[ */
+									$productShopSrchTempObj = clone $productSrchObj;
+									$productShopSrchTempObj->addCondition( 'prodcat_id', '=', $catData['prodcat_id']  ) ;
+									$productShopSrchTempObj->addOrder('in_stock','DESC');
+									$productShopSrchTempObj->addGroupBy('selprod_product_id');
+									$productShopSrchTempObj->setPageSize(7);
+									$Prs = $productShopSrchTempObj->getResultSet(); 	
+									
+									$collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData']=$catData;
+									
+									$collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
+									/* ] */
+								}
+							}
 							unset( $tempObj );
 						break;
-						case Collections::COLLECTION_TYPE_SHOP: 
+						case Collections::COLLECTION_TYPE_SHOP:
 							$tempObj = clone $collectionObj;
 							$tempObj->addCondition( 'collection_id', '=', $collection_id );
 							$tempObj->joinCollectionShops();
@@ -144,7 +182,7 @@ class HomeController extends MyAppController {
 							/* echo $tempObj->getQuery(); die; */
 							if( !$shopIds = $db->fetchAll($rs, 'ctps_shop_id') ){
 								continue;
-							}	
+							}
 							$shopObj = clone $shopSearchObj;
 							$shopObj->joinSellerSubscription();
 							$shopObj->addCondition( 'shop_id', 'IN', array_keys( $shopIds ) );
@@ -155,15 +193,15 @@ class HomeController extends MyAppController {
 							$rs = $shopObj->getResultSet();
 							$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 							while ($shopsData = $db->fetch($rs) ){
-								if(!$collection['collection_child_records']){
+								/* if(!$collection['collection_child_records']){
 									continue;
-								}
+								} */
 								/* fetch Shop data[ */
 								$productShopSrchTempObj = clone $productSrchObj;
 								$productShopSrchTempObj->addCondition( 'selprod_user_id', '=', $shopsData['shop_user_id']  ) ;
 								$productShopSrchTempObj->addOrder('in_stock','DESC');
 								$productShopSrchTempObj->addGroupBy('selprod_product_id');
-								$productShopSrchTempObj->setPageSize($collection['collection_child_records']);
+								$productShopSrchTempObj->setPageSize(3);
 								$Prs = $productShopSrchTempObj->getResultSet(); 	
 								
 								$collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
@@ -173,10 +211,12 @@ class HomeController extends MyAppController {
 								} else {
 									$rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
 								}
+								/* CommonHelper::printArray($collection); die; */
 								$collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating; 
 								$collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $db->fetchAll($Prs);
 								/* ] */
 							} 
+							/* CommonHelper::printArray($collection); die; */
 							$rs = $tempObj->getResultSet();
 							unset( $tempObj );
 						break;
@@ -269,7 +309,7 @@ class HomeController extends MyAppController {
 		/* ] */
 		
 		$bannerSrch = Banner::getBannerLocationSrchObj(true);
-		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_AFTER_THIRD_LAYOUT);
+		$bannerSrch->addCondition('blocation_id','<=',BannerLocation::HOME_PAGE_BOTTOM_BANNER);
 		$rs = $bannerSrch->getResultSet();
 		$bannerLocation = $db->fetchAll( $rs ,'blocation_key');
 		

@@ -223,8 +223,8 @@ class MyAppController extends FatController {
 	protected function getLoginForm() {
 		$siteLangId = CommonHelper::getLangId();
 		$frm = new Form('frmLogin');			
-		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email',$siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
-		$pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password',$siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD',$siteLangId)));
+		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email',$siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_Username_Or_Email',$siteLangId)));
+		$pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password',$siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_Password',$siteLangId)));
 		$pwd->requirements()->setRequired();
 		$frm->addCheckbox(Labels::getLabel('LBL_Remember_Me',$siteLangId),'remember_me',1,array(),'',0);
 		$frm->addHtml('','forgot','');
@@ -239,24 +239,24 @@ class MyAppController extends FatController {
 
 		$frm->addHiddenField('', 'user_id', 0, array('id'=>'user_id'));
 
-		$frm->addRequiredField(Labels::getLabel('LBL_NAME',$siteLangId), 'user_name');
+		$frm->addRequiredField(Labels::getLabel('LBL_NAME',$siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_NAME',$siteLangId)));
 
-		$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$siteLangId), 'user_username');
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME',$siteLangId), 'user_username', '', array('placeholder'=>Labels::getLabel('LBL_USERNAME',$siteLangId)));
 		$fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setUsername();
 		/* $fld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]{3,30}$");
 		$fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_Username', $siteLangId)); */
 		
-		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email');
+		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL',$siteLangId)));
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
 
-		$fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD',$siteLangId), 'user_password');
+		$fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD',$siteLangId), 'user_password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD',$siteLangId)));
 		$fld->requirements()->setRequired();
 		$fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
 		$fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));
 
-		$fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId), 'password1');
+		$fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId), 'password1', '', array('placeholder'=>Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId)));
 		$fld1->requirements()->setRequired();
 		$fld1->requirements()->setCompareWith('user_password', 'eq',Labels::getLabel('LBL_PASSWORD',$siteLangId));
 

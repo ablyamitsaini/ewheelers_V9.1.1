@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-</div>
+
 <?php if(CommonHelper::demoUrl()){ ?>
 <div class="no-print fixed-demo-btn" id="demo-btn"><a href="javascript:void(0);" class="request-demo" id="btn-demo">Request a Demo</a></div>
 <div class="feedback-btn">
@@ -11,7 +11,7 @@
 		<a class="cap" href="https://www.yo-kart.com/yokart-marketing-website-feedback.html<?php /* echo CommonHelper::generateUrl('Custom','feedback'); */?>">Give Feedback</a> 
 	</div>
 <?php } ?>
-<footer id="footer" class="no-print clearfix">
+<footer id="footer" class="footer no-print" role="site-footer">
     <section class="bg-light">
 
         <div class="back-to-top">
@@ -21,67 +21,66 @@
     </section>
     <?php if( $controllerName == 'home' && $action == 'index' ) $this->includeTemplate( '_partial/footerTrustBanners.php'); ?>
     <div class="container">
-        <div class="up-footer padd40">
+        <div class="up-footer section">
             <div class="row">
                 <?php $this->includeTemplate( '_partial/footerNavigation.php'); ?>
-                <div class="col-lg-2 col-md-2 col-sm-12">
-                    <div class="">
-                        <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
-                        <?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
-			if( $site_conatct ){ ?>
-                        <div class="f-heading">
-                            <?php echo Labels::getLabel('LBL_Call_Us',$siteLangId); ?> <span><?php echo $site_conatct;?></span></div>
-                        <?php } ?>
-                        <div class="gap"></div>
-                        <?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,'');
-			if( $email_id ){ ?>
-                        <div class="f-heading">
-                            <?php echo Labels::getLabel('LBL_Email_Us',$siteLangId); ?><span><a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a></span></div>
-                        <?php } ?>
-                        <div class="gap"></div>
-                        <div class="f-heading">
-                            <?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?></div>
-                        <div>
-                            <a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--secondary  btn--sm  ripplelink">
-                                <?php echo Labels::getLabel('LBL_Open_a_store', $siteLangId); ?> </a>
-                        </div>
-                        <?php /* <div class="gap"></div>
-            <div class="f-heading"><?php echo Labels::getLabel('LBL_DOWNLOAD_THE_APP',$siteLangId); ?> [Pending]</div>
-                    <div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="bg-light">
-                    <div class="subscription">
-						<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){?>
-                        <div class="f-heading">
-                            <?php echo Labels::getLabel('LBL_GET_MORE_FROM_Yo-Kart', $siteLangId);?>
-                        </div>
-                        <?php } $this->includeTemplate( '_partial/footerNewsLetterForm.php'); ?>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="f-heading">
-                                    <?php echo Labels::getLabel('LBL_PAYMENT_OPTIONS', $siteLangId);?>
-                                </div>
-                                <div class="payment"><img src="<?php echo CONF_WEBROOT_URL; ?>images/payment.jpg" alt="<?php echo Labels::getLabel('LBL_PAYMENT_OPTIONS', $siteLangId); ?>"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="bottom-footer">
-        <div class="container">
-            <div class="accordion-footer">
-                <?php $this->includeTemplate( '_partial/footerTopBrands.php'); ?>
-                <?php $this->includeTemplate( '_partial/footerTopCategories.php'); ?>
-            </div>
-        </div>
-    </div>
-    <div class="copyright">
-        <?php echo sprintf(Labels::getLabel('LBL_copyright_text', $siteLangId),date("Y"))?>
-    </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 column">
+					<div class="">
+						<div class="f-heading">
+							<?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?>
+						</div>
+						<div class="store-button">
+							<a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--primary ripplelink"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/store-icn.png" alt=""></i>
+							<?php echo Labels::getLabel('LBL_Open_a_store', $siteLangId); ?> </a>
+						</div>
+						<?php /* <div class="gap"></div>
+						<div class="f-heading"><?php echo Labels::getLabel('LBL_DOWNLOAD_THE_APP',$siteLangId); ?> [Pending]</div>
+						<div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 column">
+					<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){ ?><div class="newsletter">
+						<h4><?php echo Labels::getLabel('LBL_Sign_Up_To_Our_Newsletter', $siteLangId);?></h4>
+						<p><?php echo Labels::getLabel('LBL_Be_the_first_to_here_about_the_latest_trends,_new_arrivals_&_exclusive_offers', $siteLangId);?></p>
+					</div>
+					<?php $this->includeTemplate( '_partial/footerNewsLetterForm.php'); } ?>
+					
+					<ul class="contact-info">
+						<?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
+						if( $site_conatct ){ ?>
+							<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-mobile.png"></i><?php echo $site_conatct;?></li>
+						<?php } ?>
+						<?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,'');
+						if( $email_id ){ ?>
+							<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-email.png"></i> <a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a> </li>
+						<?php } ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="middle-footer">
+			<div class="accordion-footer">
+				<?php $this->includeTemplate( '_partial/footerTopBrands.php'); ?>
+				<?php $this->includeTemplate( '_partial/footerTopCategories.php'); ?>
+			</div>
+		</div>
+		<div class="bottom-footer">
+			<div class="row align-items-center">
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+					<?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+					<div class="copyright">
+						<?php echo sprintf(Labels::getLabel('LBL_copyright_text', $siteLangId),date("Y"))?>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+					<div class="payment">
+						<img src="<?php echo CONF_WEBROOT_URL; ?>images/payment.png" alt="<?php echo Labels::getLabel('LBL_PAYMENT_OPTIONS', $siteLangId); ?>">
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
     
 </footer>
@@ -184,6 +183,7 @@ window.onafterprint = function () {
 </script>
 <!--End of Tawk.to Script-->
 <?php } ?>
+</div>
 </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if( !empty( $footer_navigation ) ){ ?>
 		<?php foreach( $footer_navigation as $nav ){ ?>
-			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 column">
 			  <div class="f-links">
 					<h3><?php echo $nav['parent']; ?></h3>
 					<ul>

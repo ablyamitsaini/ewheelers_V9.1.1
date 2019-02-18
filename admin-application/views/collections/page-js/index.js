@@ -302,7 +302,6 @@ $(document).ready(function(){
 		});
 	};
 	callCollectionTypePopulate = function(val){
-		$("#collection_child_records_div").hide();
 		if( val == 1 ){
 			$("#collection_criteria_div").show();
 		}else {

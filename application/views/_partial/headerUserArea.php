@@ -1,9 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 
 <?php if( !$isUserLogged ){ ?>
-      <div class="login-account">
-	  <a href="javascript:void(0)" class="sign-in"><span class="icn-txt"><?php echo Labels::getLabel('LBL_Sign_In', $siteLangId); ?></span> <span class="icn"> </span></a> </div>
-
+	<li> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
+		<use xlink:href="images/retina/sprite.svg#login" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login"></use>
+	</svg></i> <span>
+	<strong><?php echo Labels::getLabel('LBL_Login_/_Sign_Up', $siteLangId); ?></strong></span></a></li>
 	 <?php
 	// $this->includeTemplate('guest-user/loginFormTemplate.php');
 	 } else {
@@ -20,16 +21,12 @@
 		$dashboardUrl = CommonHelper::generateUrl('Account');
 		}
 	 ?>
-	 <div class="login-account dropdown"> <a href="#" class="dropdown__trigger dropdown__trigger-js"><span class="icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span> <span class="icn"> </span></a>
-          <div class="dropdown__target dropdown__target-account dropdown__target-js">
-            <div class="box">
-              <div class="dropdown__target-head align--center"> <span class="iconavtar"><i class="icon fa fa-user"></i></span>
-				<a class="link" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a>
-                <p><?php echo $userEmail;?></p>
-              </div>
+	 <li class="dropdown dropdown--arrow"> <a href="#" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span></a>		  
+		  <div class="dropdown__target dropdown__target-account dropdown__target-js">
+            <div class="dropdown__target-space">
               <div class="dropdown__target-body">
                 <!-- for desktop my account links -->
-                <ul class="list--vertical hide--mobile hide--tab">
+                <ul class="list-vertical list-vertical--tick hide--mobile hide--tab">
 					<?php
 						$userActiveTab = false;
 						if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;?>
@@ -62,7 +59,7 @@
 					<?php }else if(User::canViewAdvertiserTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] == 'Ad' )){?>
 						<?php $this->includeTemplate('_partial/advertiser/advertiserDashboardMobileNavigation.php'); ?>
 					<?php }else { ?>
-						<ul class="list--vertical hide--desktop">
+						<ul class="list-vertical list-vertical--tick hide--desktop">
 							<?php if( $isUserLogged ){
 							$userActiveTab = false;
 							if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;?>
@@ -105,5 +102,5 @@
               </div>
             </div>
           </div>
-        </div>
+        </li>
 	<?php } ?>

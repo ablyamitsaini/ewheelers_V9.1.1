@@ -16,9 +16,6 @@ array_walk($catCodeArr,function(&$n) {
 }) ;
  }
 ?>
-<?php /* CommonHelper::printArray($conditionsArr); */ ?>
-<div id="fixed__panel" class="filter section__filter fixed__panel">
-<div class="">
 <?php if(FatApp::getController()=='ShopsController'){ ?>
 <div class="product-search">
 	<!--<form>
@@ -38,13 +35,11 @@ array_walk($catCodeArr,function(&$n) {
 </div>
 <?php } ?>
    <!--Filters[ -->
-  <div class="widgets filter-search">
 	<div class="widgets-head">
-	  <div class="heading4"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>  <a  class="btn--link action ripplelink" id="resetAll"><?php echo Labels::getLabel('LBL_RESET_ALL',$siteLangId);?></a></div>
+	  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>  <a  class="link" id="resetAll"><?php echo Labels::getLabel('LBL_RESET_ALL',$siteLangId);?></a></div>
 	</div>
 	<div class="selected-filters" id="filters"> </div>
-  </div>
-  <div class="divider"></div>
+	<div class="divider--filters"></div>
   <!-- ] -->
 
   <!--Categories Filters[ resetAll-->
@@ -52,7 +47,7 @@ array_walk($catCodeArr,function(&$n) {
 
   <?php
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
-  <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
+  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !isset( $shopCatFilters ) ){ ?>
   <div id="accordian" class="cat-accordion toggle-target scrollbar">
 	<ul class="">
@@ -133,14 +128,14 @@ array_walk($catCodeArr,function(&$n) {
 
 	  <?php
 		}?>
-   <div class="divider"></div>
+   <div class="divider--filters"></div>
  <?php }
   ?>
   <!-- ] -->
 
   <!--Price Filters[ -->
   <?php if( isset($priceArr) && $priceArr ){ ?>
-    <div class="widgets-heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
+    <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
 	  <div class="filter-content toggle-target">
 		<div class="prices " id="perform_price">
 			<input type="text" value="<?php echo floor($filterDefaultMinValue); ?>-<?php echo ceil($filterDefaultMaxValue); ?>" name="price_range" id="price_range" />
@@ -163,7 +158,7 @@ array_walk($catCodeArr,function(&$n) {
 		</div>
 		<!--<input value="GO" class="btn " name="toVal" type="submit">-->
 	  </div>
-	<div class="divider"></div>
+	<div class="divider--filters"></div>
 	<?php } ?>
 	<!-- ] -->
 
@@ -172,16 +167,16 @@ array_walk($catCodeArr,function(&$n) {
     <?php if(isset($brandsArr) && $brandsArr){
 	 $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array();
 	?>
-	<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
-	<div class="brands-list toggle-target scrollbar">
-	<ul>
+	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
+	<div class="scrollbar">
+	<ul class="list-vertical">
 		<?php foreach($brandsArr as $brand){ ?>
 		<li><label class="checkbox brand" id="brand_<?php echo $brand['brand_id']; ?>"><input name="brands" value="<?php echo $brand['brand_id']; ?>" type="checkbox" <?php if(in_array($brand['brand_id'],$brandsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $brand['brand_name']; ?> </label></li>
 		<?php } ?>
 	</ul>
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_More', $siteLangId); ?> </a> -->
 	</div>
-	<div class="divider"></div>
+	<div class="divider--filters"></div>
 	<?php }?>
 	<!-- ] -->
 
@@ -205,9 +200,9 @@ array_walk($catCodeArr,function(&$n) {
 					echo "</ul></div><div class='divider'></div>";
 				}
 				$optionName = ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier'];?>
-				<div class="widgets-heading"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
-				<div class="brands-list toggle-target scrollbar">
-				<ul><?php
+				<div class="widgets__heading"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
+				<div class="scrollbar">
+				<ul class="list-vertical"><?php
 			}
 			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];
 				//$liData.= "<li>".$optionRow['optionvalue_name']."</li>";
@@ -216,7 +211,7 @@ array_walk($catCodeArr,function(&$n) {
 
 		<?php }
 			echo "</ul></div>
-			<div class='divider'></div>";
+			<div class='divider--filters'></div>";
 		}?>
 	<!-- ]->
 
@@ -225,35 +220,28 @@ array_walk($catCodeArr,function(&$n) {
 	<?php if( isset($conditionsArr) && $conditionsArr ){
 	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
 	?>
-	<div class="widgets">
-		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
-		<div class="selected-filters toggle-target">
-			<ul class="listing--vertical listing--vertical-chcek">
-			<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
-			<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox" <?php if(in_array($condition['selprod_condition'],$conditionsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
-			<?php } ?>
-			</ul>
-		</div>
+	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
+	<div class="scrollbar">
+		<ul class="list-vertical">
+		<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
+		<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox" <?php if(in_array($condition['selprod_condition'],$conditionsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
+		<?php } ?>
+		</ul>
 	</div>
-	<div class="divider"></div>
+	<div class="divider--filters"></div>
 	<?php } ?>
 	<!-- ] -->
 
 	<!--Availability Filters[ -->
 	<?php $availability = isset($availability)?$availability:0;?>
-	<div class="widgets ">
-		<div class="widgets-heading"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
-		<div class="selected-filters toggle-target">
-			<ul class="listing--vertical listing--vertical-chcek">
-			<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
-			</ul>
-		</div>
+	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
+	<div class="selected-filters toggle-target">
+		<ul class="listing--vertical listing--vertical-chcek">
+		<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
+		</ul>
 	</div>
-	<div class="divider "></div>
+	<div class="divider--filters"></div>
 	<!-- ] -->
-
-</div>
-</div>
 
 
 <!--Shipping Filters[ -->

@@ -24,9 +24,12 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 <script language="javascript" type="text/javascript" src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/innovaeditor.js"></script>
 <script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>
 <?php  }  ?>
-
 </head>
-<body class="<?php echo ($controllerName=='Blog') ? 'is--blog' : ''; ?>">
+<?php $bodyClass='';
+if($controllerName=='Blog') $bodyClass = 'is--blog';
+if($controllerName=='Checkout') $bodyClass = 'is-checkout';
+?>
+<body class="<?php echo $bodyClass; ?>">
 	<!--div class="pageloader">
 	  <div class="round-wrapper">
 		<div class="round"></div>
