@@ -2149,8 +2149,8 @@ class AccountController extends LoggedUserController {
 		$frm->addTextBox(Labels::getLabel('LBL_Email',$this->siteLangId),'credential_email','');
 		$frm->addRequiredField(Labels::getLabel('LBL_Customer_Name',$this->siteLangId), 'user_name');
 		$frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth',$this->siteLangId), 'user_dob','',array('readonly'=>'readonly'));
-		$frm->addTextBox(Labels::getLabel('LBL_Phone',$this->siteLangId), 'user_phone');
-
+		$phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone',$this->siteLangId), 'user_phone');
+		
 		if( User::isAffiliate() ){
 			$frm->addTextBox( Labels::getLabel('LBL_Company', $this->siteLangId), 'uextra_company_name' );
 			$frm->addTextBox( Labels::getLabel('LBL_Website', $this->siteLangId), 'uextra_website' );

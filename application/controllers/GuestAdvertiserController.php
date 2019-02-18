@@ -328,7 +328,7 @@ class GuestAdvertiserController extends MyAppController {
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
 		
 		$frm->addRequiredField(Labels::getLabel('LBL_NAME',$this->siteLangId), 'user_name');
-		$frm->addRequiredField(Labels::getLabel('LBL_PHONE',$this->siteLangId), 'user_phone');
+		$phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_PHONE',$this->siteLangId), 'user_phone');
 		
 		$fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD',$this->siteLangId), 'user_password');
 		$fld->requirements()->setRequired();

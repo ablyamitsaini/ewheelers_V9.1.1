@@ -1760,7 +1760,7 @@ class UsersController extends AdminBaseController {
 		$frm->addTextBox(Labels::getLabel('LBL_Username',$this->adminLangId),'credential_username','');
 		$frm->addRequiredField(Labels::getLabel('LBL_Customer_Name',$this->adminLangId), 'user_name');
 		$frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth',$this->adminLangId), 'user_dob','', array('readonly' => 'readonly'));
-		$frm->addTextBox(Labels::getLabel('LBL_Phone',$this->adminLangId), 'user_phone');			
+		$frm->addRequiredField(Labels::getLabel('LBL_Phone',$this->adminLangId), 'user_phone');			
 		$frm->addTextBox(Labels::getLabel('LBL_Email',$this->adminLangId),'credential_email','');
 		
 		$countryObj = new Countries();

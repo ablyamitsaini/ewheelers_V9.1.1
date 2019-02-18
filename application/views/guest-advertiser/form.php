@@ -25,7 +25,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
 	   <div class="col-md-6">
 		   <div class="field-set">
-			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PHONE',$siteLangId);?></label></div>
+			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PHONE',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
 				   <div class="field_cover"><?php echo $frm->getFieldHTML('user_phone');?></div>
 			   </div>
