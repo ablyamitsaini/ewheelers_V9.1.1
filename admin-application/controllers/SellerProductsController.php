@@ -348,7 +348,7 @@ class SellerProductsController extends AdminBaseController {
 		$formLangId = FatUtility::int($formLangId);
 		
 		$frm = new Form('frmSellerProductLang');
-		$frm->addTextbox(Labels::getLabel( 'LBL_Title', $formLangId),'selprod_title');
+		$frm->addRequiredField(Labels::getLabel( 'LBL_Title', $formLangId),'selprod_title');
 		/* $frm->addTextArea( Labels::getLabel( 'LBL_Features', $formLangId), 'selprod_features');
 		$frm->addTextArea( Labels::getLabel( 'LBL_Warranty', $formLangId), 'selprod_warranty');
 		$frm->addTextArea( Labels::getLabel( 'LBL_Return_Policy', $formLangId), 'selprod_return_policy'); */

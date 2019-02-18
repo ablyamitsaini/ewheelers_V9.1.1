@@ -1031,7 +1031,8 @@ class EmailHandler extends FatModel {
 			return false;
 		}
 		
-		$url = CommonHelper::generateFullUrl('account', 'messages',array(),CONF_WEBROOT_FRONT_URL);
+		$url = CommonHelper::generateFullUrl('account', 'viewMessages',array($message['thread_id'],$messageId),CONF_WEBROOT_FRONT_URL);
+		
 		$url='<a href="'.$url.'">'.Labels::getLabel('LBL_click_here',$langId).'</a>';
 		
 		$arrReplacements = array(			
