@@ -5,7 +5,7 @@
 	//$keywordFld->htmlAfterField = '<i class="fa fa-search"></i>';
 ?>
 <div id="body" class="body bg--gray">
-	<section class="dashboard">
+	<section class="top-space">
 		<div class="container">
 			<?php if(!isset($noProductFound)) { ?>
 				<div class="breadcrumb">

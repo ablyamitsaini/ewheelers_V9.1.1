@@ -2,7 +2,7 @@ html {
   direction: rtl;
 }
 
-th {
+th, .grids--offset .grid-layout p {
   text-align: right;
 }
 
@@ -43,6 +43,7 @@ th {
 }
 
 @media (min-width: 1200px) {
+
   .col-lg-1,
   .col-lg-2,
   .col-lg-3,
@@ -113,7 +114,6 @@ form.custom-form input[type="submit"],
 
 /* float: none;*/
 .align--right,
-
 .align--right {
   text-align: left !important;
 }
@@ -129,7 +129,6 @@ form.custom-form input[type="submit"],
 
 .logo {
   float: right;
-
 }
 
 .form--search-popup .select__value {
@@ -487,14 +486,16 @@ input[type="text"].p-cards.master {
 input[type="text"].p-cards.meastro {
   background-position: -135px -141px;
 }
-.cat-accordion{ padding: 0;}
+
+.cat-accordion {
+  padding: 0;
+}
+
 .cat-accordion .acc-trigger {
   left: auto;
   right: 4px;
   transform: rotate(45deg);
 }
-
-
 
 .media--details>li .grid--first {
   padding-right: 0;
@@ -744,8 +745,13 @@ input[type="text"].p-cards.meastro {
 }
 
 .media>li .avtar {
-    margin-right: 0px;
-    margin-left: 10px;
+  margin-right: 0px;
+  margin-left: 10px;
 }
 
-.delivery-term-data-inner ul li:before{ left: auto; right: 0;}
+.delivery-term-data-inner ul li:before {
+  left: auto;
+  right: 0;
+}
+
+.pagination li.prev{transform: rotate(-180deg);}

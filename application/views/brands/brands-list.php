@@ -2,16 +2,16 @@
 	<?php if(!empty($brandsArr)){
 	foreach($brandsArr[Collections::COLLECTION_LAYOUT7_TYPE]  as $allBrands){
 	?>
-	<div class="panel panel--centered">
+	<div class="">
 	<?php if(!empty($allBrands['brands'])){
 			$firstCharacter = '';
 			foreach($allBrands['brands'] as $brands){
 			$str = substr(strtolower($brands['brand_name']), 0, 1);
-			
+
 			if(is_numeric($str)){
 				$str = '0-9';
-			}			
-			
+			}
+
 			if($str != $firstCharacter){
 				if($firstCharacter!=''){ echo "</ul></div>"; }
 				$firstCharacter = $str;
@@ -28,4 +28,3 @@
   <?php } ?>
   <?php } ?>
 </div>
- 
