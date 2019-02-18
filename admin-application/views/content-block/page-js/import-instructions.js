@@ -18,21 +18,20 @@ $(document).ready(function(){
 			data = fcom.frmData(form);
 		}
 		$(dv).html( fcom.getLoader() );
-		fcom.ajax(fcom.makeUrl('ContentBlock','search'),data,function(res){
+		fcom.ajax(fcom.makeUrl('ContentBlock','search',[1]),data,function(res){
 			$(dv).html(res);
 		});
 	};
 
-	addBlockFormNew = function(id){
+	addBlockFormNew = function(id,langId){
 
-		$.facebox(function() { addBlockForm(id);
-		});
+		$.facebox(function() { addBlockForm(id,langId); });
 
 	};
-	addBlockForm = function(id) {
+	addBlockForm = function(id, langId) {
 		fcom.displayProcessing();
 		var frm = document.frmBlockSearch;
-			fcom.ajax(fcom.makeUrl('ContentBlock', 'form', [id]), '', function(t) {
+			fcom.ajax(fcom.makeUrl('ContentBlock', 'langForm', [id, langId]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 		});
 	};
@@ -85,8 +84,11 @@ $(document).ready(function(){
 	};
 
 	setupBlockLang=function(frm){
-		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);
+		// if (!$(frm).validate()) return;
+
+		var data = $("form[name=frmBlockLang]").serializeArray();
+		// var data = fcom.frmData(frm);
+
 		fcom.updateWithAjax(fcom.makeUrl('ContentBlock', 'langSetup'), data, function(t) {
 			reloadList();
 			if (t.langId>0) {

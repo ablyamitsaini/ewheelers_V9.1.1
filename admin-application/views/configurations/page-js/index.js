@@ -1,6 +1,7 @@
 $(document).ready(function(){
-	getForm(1);
-	
+	// getForm(1);
+	generalInstructions(1);
+
 	$(document).on("click", "#testMail-js", function () {
 		fcom.ajax(fcom.makeUrl('Configurations', 'testEmail'), '', function(t) {
 			var ans = $.parseJSON(t);
@@ -11,7 +12,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+
 });
 
 (function() {
@@ -25,9 +26,9 @@ $(document).ready(function(){
 			$(dv).html(t);
 		});
 	};
-	
+
 	getLangForm = function(frmType,langId){
-		fcom.resetEditorInstance();	
+		fcom.resetEditorInstance();
 		$(dv).html(fcom.getLoader());
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('Configurations', 'langForm', [frmType,langId]), '', function(t) {
@@ -37,30 +38,30 @@ $(document).ready(function(){
 				$('input[name=btn_submit]').hide();
 			}
 			var frm = $(dv+' form')[0];
-			var validator = $(frm).validation({errordisplay: 3});			
+			var validator = $(frm).validation({errordisplay: 3});
 			$(frm).submit(function(e) {
 				e.preventDefault();
-				if (validator.validate() == false) {	
+				if (validator.validate() == false) {
 					return ;
 				}
 				var data = fcom.frmData(frm);
-				fcom.updateWithAjax(fcom.makeUrl('Configurations', 'setupLang'), data, function(t) {			
-					runningAjaxReq = false;	
-					fcom.resetEditorInstance();					
+				fcom.updateWithAjax(fcom.makeUrl('Configurations', 'setupLang'), data, function(t) {
+					runningAjaxReq = false;
+					fcom.resetEditorInstance();
 					if (t.langId > 0 && t.shopId > 0) {
 						shopLangForm(t.shopId , t.langId);
 						return;
-					}	
+					}
 				});
 			});
-			
+
 		});
 		$.systemMessage.close();
 	}
-	
+
 	setup = function(frm) {
-		if (!$(frm).validate()){ return; }		
-		var data = fcom.frmData(frm);		
+		if (!$(frm).validate()){ return; }
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'setup'), data, function(t) {
 			if (t.langId > 0 && t.frmType > 0) {
 				getLangForm(t.frmType, t.langId);
@@ -73,10 +74,10 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	}
-	
+
 	setupLang = function(frm) {
-		if (!$(frm).validate()){ return; }	
-		var data = fcom.frmData(frm);		
+		if (!$(frm).validate()){ return; }
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'setupLang'), data, function(t) {
 			if (t.langId > 0 && t.frmType > 0) {
 				getLangForm(t.frmType, t.langId);
@@ -89,102 +90,109 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	}
-	
+
 	removeSiteAdminLogo = function( lang_id ){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeSiteAdminLogo',[lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeDesktopLogo = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeDesktopLogo', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeEmailLogo = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeEmailLogo', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeFavicon = function(lang_id){
 		if( !confirm(langLbl.confirmDeleteImage) ){ return; }
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeFavicon', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeSocialFeedImage = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeSocialFeedImage', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removePaymentPageLogo = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removePaymentPageLogo', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeWatermarkImage = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeWatermarkImage', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeAppleTouchIcon = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeAppleTouchIcon', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeMobileLogo = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeMobileLogo', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeInvoiceLogo = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeInvoiceLogo', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeCollectionBgImage = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeCollectionBgImage', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	removeBrandCollectionBgImage = function(lang_id){
 		if(!confirm(langLbl.confirmDeleteImage)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('Configurations', 'removeBrandCollectionBgImage', [lang_id]), '', function(t) {
 			getLangForm( document.frmConfiguration.form_type.value, lang_id );
 		});
 	};
-	
+
 	changedMessageAutoCloseSetting = function(val){
 		if( val == YES ){
-			
+
 		}
 		if( val == NO ){
 			$("input[name='CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES']").val(0);
 		}
-	}
+	};
 
-	
-})();	
+	generalInstructions= function(frmType){
+		fcom.resetEditorInstance();
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Configurations', 'generalInstructions', [frmType]), '', function(t) {
+			$(dv).html(t);
+		});
+	};
+
+})();
 
 
 form = function(form_type){
@@ -207,7 +215,7 @@ form = function(form_type){
 }
 
 submitForm = function(form,v){
-	 $(form).ajaxSubmit({ 
+	 $(form).ajaxSubmit({
 		delegation: true,
 		beforeSubmit:function(){
 						v.validate();
@@ -217,15 +225,15 @@ submitForm = function(form,v){
 					},
 		success:function(json){
 			json = $.parseJSON(json);
-			
+
 			if(json.status == "1"){
 				jsonSuccessMessage(json.msg)
-				
+
 			}else{
 				jsonErrorMessage(json.msg);
 			}
-		}		
-	}); 	
+		}
+	});
 	return false;
 }
 
@@ -236,19 +244,19 @@ $(document).on('click','.logoFiles-Js',function(){
 	var lang_id = document.frmConfiguration.lang_id.value;
 	var form_type = document.frmConfiguration.form_type.value;
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'">'); 
-	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">'); 
-	frm = frm.concat('</form>'); 
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'">');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
+	frm = frm.concat('</form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if (typeof timer != 'undefined') {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 				url: fcom.makeUrl('Configurations', 'uploadMedia'),
 				type: 'post',
@@ -278,7 +286,7 @@ $(document).on('click','.logoFiles-Js',function(){
 					}
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 				}
-				});			
+				});
 		}
 	}, 500);
 });

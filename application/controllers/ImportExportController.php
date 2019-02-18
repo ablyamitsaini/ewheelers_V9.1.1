@@ -146,6 +146,9 @@ class ImportExportController extends LoggedUserController {
 
 	public function loadForm($formType){
 		switch(strtoupper($formType)){
+			case 'GENERAL_INSTRUCTIONS':
+				$this->generalInstructions();
+			break;
 			case 'IMPORT':
 				$this->import();
 			break;
@@ -224,6 +227,55 @@ class ImportExportController extends LoggedUserController {
 		$this->_template->render( false, false );
 	}
 
+	public function importInstructions($actionType){
+		$langId = $this->siteLangId ;
+		$obj = new Extrapage();
+		$pageData = '';
+		$displayMediaTab = false;
+		switch($actionType){
+			case Importexport::TYPE_CATEGORIES:
+				$displayMediaTab = true;
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_PRODUCTS_CATEGORIES_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_BRANDS:
+				$displayMediaTab = true;
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_BRANDS_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_PRODUCTS:
+				$displayMediaTab = true;
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_SELLER_PRODUCTS:
+			break;
+			case Importexport::TYPE_OPTIONS:
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_OPTION_VALUES:
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_TAG:
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_TAGS_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_COUNTRY:
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_COUNTRIES_MANAGEMENT_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_STATE:
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_STATE_MANAGEMENT_INSTRUCTIONS, $langId );
+			break;
+			case Importexport::TYPE_POLICY_POINTS:
+			break;
+			default:
+				FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$langId));
+			break;
+		}
+		$title = Labels::getLabel('LBL_Import_Instructions',$langId);
+		$this->set('pageData' , $pageData);
+		$this->set('title' , $title);
+		$this->set('actionType' , $actionType);
+		$this->set( 'displayMediaTab', $displayMediaTab );
+		$this->_template->render( false, false );
+	}
+
 	public function importMediaForm($actionType){
 		$options = Importexport::getImportExportTypeArr('import',$this->siteLangId,true);
 		if(!isset($options[$actionType])){
@@ -254,6 +306,15 @@ class ImportExportController extends LoggedUserController {
 		$this->set('action','export');
 		$this->set('frm',$frm);
 		$this->_template->render(false,false,'import-export/export.php');
+	}
+
+	public function generalInstructions(){
+		$langId = $this->siteLangId ;
+		$obj = new Extrapage();
+		$pageData = $obj->getContentByPageType( Extrapage::GENERAL_SETTINGS_INSTRUCTIONS, $langId );
+		$this->set('pageData' , $pageData);
+		$this->set('action','generalInstructions');
+		$this->_template->render(false,false,'import-export/general-instructions.php');
 	}
 
 	public function downloadLogFile($fileName)
@@ -387,7 +448,7 @@ class ImportExportController extends LoggedUserController {
 			unset($options[Importexport::TYPE_PRODUCTS]);
 		}
 		$fld = $frm->addRadioButtons('','export_option',
-				$options,'',array('class'=>'list-inline'),array('onClick'=>'importForm(this.value)'));
+				$options,'',array('class'=>'list-inline'),array('onClick'=>'getInstructions(this.value)'));
 		$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Select_Above_option_to_import_data.",$langId)."</small><br/><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed',$langId)."</small>";
 		return $frm;
 	}

@@ -142,7 +142,8 @@
 				$objPrivilege->canViewOrderReturnReasons(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewTestimonial(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewDiscountCoupons(AdminAuthentication::getLoggedAdminId(), true) ||
-				$objPrivilege->canViewSellerDiscountCoupons(AdminAuthentication::getLoggedAdminId(), true)
+				$objPrivilege->canViewSellerDiscountCoupons(AdminAuthentication::getLoggedAdminId(), true) ||
+				$objPrivilege->canViewImportInstructions(AdminAuthentication::getLoggedAdminId(), true)
 			){ ?>
 			<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Cms',$adminLangId);?></a>
 				<ul>
@@ -152,6 +153,10 @@
 
 					<?php if($objPrivilege->canViewContentBlocks(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('ContentBlock'); ?>"><?php echo Labels::getLabel('LBL_Content_Blocks',$adminLangId);?></a></li>
+					<?php }?>
+
+                    <?php if($objPrivilege->canViewImportInstructions(AdminAuthentication::getLoggedAdminId(), true)){?>
+					<li><a href="<?php echo CommonHelper::generateUrl('ContentBlock','importInstructions'); ?>"><?php echo Labels::getLabel('LBL_Import_Instructions',$adminLangId);?></a></li>
 					<?php }?>
 
 					<?php if($objPrivilege->canViewNavigationManagement(AdminAuthentication::getLoggedAdminId(), true)){?>
@@ -169,9 +174,11 @@
 					<?php if($objPrivilege->canViewCollections(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('Collections'); ?>"><?php echo Labels::getLabel('LBL_Collection_Management',$adminLangId);?> </a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewPolicyPoints(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('PolicyPoints'); ?>"><?php echo Labels::getLabel('LBL_Policy_Points_Management',$adminLangId);?></a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewEmptyCartItems(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('emptyCartItems'); ?>"><?php echo Labels::getLabel('LBL_Empty_Cart_Items_Management',$adminLangId);?></a></li>
 					<?php }?>
@@ -183,30 +190,39 @@
 					<?php if($objPrivilege->canViewShopReportReasons(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('ShopReportReasons'); ?>"><?php echo Labels::getLabel('LBL_Shop_Report_Reasons_Management',$adminLangId);?></a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewOrderCancelReasons(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('OrderCancelReasons'); ?>"><?php echo Labels::getLabel('LBL_Order_Cancel_Reasons_Management',$adminLangId);?> </a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewOrderReturnReasons(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('OrderReturnReasons'); ?>"><?php echo Labels::getLabel('LBL_Order_Return_Reasons_Management',$adminLangId);?> </a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewTestimonial(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('Testimonials'); ?>"><?php echo Labels::getLabel('LBL_Testimonials_Management',$adminLangId);?> </a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewDiscountCoupons(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('DiscountCoupons'); ?>"><?php echo Labels::getLabel('LBL_Discount_Coupons',$adminLangId);?></a></li>
 					<?php }?>
+
 					<!-- <?php if($objPrivilege->canViewDiscountCoupons(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('SellerDiscountCoupons'); ?>"><?php echo Labels::getLabel('LBL_Seller_Discount_Coupons',$adminLangId);?></a></li>
 					<?php }?> -->
+
 					<?php if($objPrivilege->canViewLanguageLabels(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Labels'); ?>"><?php echo Labels::getLabel('LBL_Language_Labels',$adminLangId);?></a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewSlides(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('slides'); ?>"><?php echo Labels::getLabel('LBL_Home_Page_Slides_Management',$adminLangId);?></a></li>
 					<?php }?>
+
 					<?php if($objPrivilege->canViewBanners(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('Banners'); ?>"><?php echo Labels::getLabel('LBL_Banners',$adminLangId);?></a></li>
 					<?php }?>
+
 				</ul>
 			</li>
 			<?php }?>

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	loadForm('export');
+	loadForm('general_instructions');
 });
 
 (function() {
@@ -14,7 +14,13 @@ $(document).ready(function(){
 			$(dv).html(t);
 		});
 	};
-
+	generalInstructions= function(frmType){
+		fcom.resetEditorInstance();
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Configurations', 'generalInstructions', [frmType]), '', function(t) {
+			$(dv).html(t);
+		});
+	};
 	updateSettings = function(frm){
 		var data = fcom.frmData(frm);
 		$(settingDv).html(fcom.getLoader());
@@ -49,6 +55,12 @@ $(document).ready(function(){
 
 	importForm = function(actionType){
 		fcom.ajax(fcom.makeUrl('ImportExport', 'importForm',[actionType]), '', function(t) {
+			$(importDv).html(t);
+		});
+	};
+
+	getInstructions = function(actionType){
+		fcom.ajax(fcom.makeUrl('ImportExport', 'importInstructions',[actionType]), '', function(t) {
 			$(importDv).html(t);
 		});
 	};

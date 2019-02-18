@@ -99,6 +99,7 @@ class AdminPrivilege  {
 	Const SECTION_DATABASE_BACKUP = 96;
 	Const SECTION_USER_REQUESTS = 97;
 	Const SECTION_PRODUCT_TEMP_IMAGES = 98;
+	Const SECTION_IMPORT_INSTRUCTIONS = 99;
 
 	const PRIVILEGE_NONE = 0;
 	const PRIVILEGE_READ = 1;
@@ -230,6 +231,7 @@ class AdminPrivilege  {
 			static::SECTION_ORDER_STATUS => Labels::getLabel('MSG_Order_Status_Management',CommonHelper::getLangId()),
 			static::SECTION_USER_REQUESTS => Labels::getLabel('MSG_User_Requests',CommonHelper::getLangId()),
 			static::SECTION_PRODUCT_TEMP_IMAGES => Labels::getLabel('MSG_Products_Temp_Images',CommonHelper::getLangId()),
+			static::SECTION_IMPORT_INSTRUCTIONS => Labels::getLabel('MSG_Import_Instructions',CommonHelper::getLangId()),
 
 			/* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
 			static::SECTION_Languages => Labels::getLabel('MSG_Order_Status',CommonHelper::getLangId()), */
@@ -1006,6 +1008,12 @@ class AdminPrivilege  {
 	}
 	public function canEditProductTempImages( $adminId = 0, $returnResult = false ){
 		return $this->checkPermission( $adminId, static::SECTION_PRODUCT_TEMP_IMAGES, static::PRIVILEGE_WRITE, $returnResult);
+	}
+	public function canViewImportInstructions( $adminId = 0, $returnResult = false ){
+		return $this->checkPermission( $adminId, static::SECTION_IMPORT_INSTRUCTIONS, static::PRIVILEGE_READ, $returnResult);
+	}
+	public function canEditImportInstructions( $adminId = 0, $returnResult = false ){
+		return $this->checkPermission( $adminId, static::SECTION_IMPORT_INSTRUCTIONS, static::PRIVILEGE_WRITE, $returnResult);
 	}
 	public function canEditSubscriptionOrders( $adminId = 0, $returnResult = false ){
 		return $this->checkPermission( $adminId, static::SECTION_SUBSCRIPTION_ORDERS, static::PRIVILEGE_WRITE, $returnResult);
