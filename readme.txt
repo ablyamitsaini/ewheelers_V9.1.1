@@ -7,4 +7,8 @@ Enhancements :
         . Having additional alert emails
         . Sending mail notification to super admin only
         . Sending email notifications to sub admin according to their permissions.
+<<<<<<< HEAD
     . Displaying instructions as per each import module including general instructions.
+=======
+    . New Payment method Braintree implemented.
+>>>>>>> payment_method_brain_tree
