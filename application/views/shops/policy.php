@@ -67,35 +67,35 @@
 				<?php if( $shop['shop_payment_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4><?php echo Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId); ?></h4>
-				  <p><?php echo $shop['shop_payment_policy']; ?> </p>
+				  <p><?php echo nl2br($shop['shop_payment_policy']); ?></p>
 				</div>
 				<?php } ?>
 				
 				<?php if( $shop['shop_delivery_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4><?php echo Labels::getLabel('LBL_DELIVERY_POLICY', $siteLangId); ?></h4>
-				  <p> <?php echo $shop['shop_delivery_policy']; ?> </p>
+				  <p> <?php echo nl2br($shop['shop_delivery_policy']); ?> </p>
 				</div>
 				<?php } ?>
 				
 				<?php if( $shop['shop_refund_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_REFUND_POLICY', $siteLangId); ?></h4>
-				  <p> <?php echo $shop['shop_refund_policy']; ?> </p>
+				  <p> <?php echo nl2br($shop['shop_refund_policy']); ?> </p>
 				</div>
 				<?php } ?>
 				
 				<?php if( $shop['shop_additional_info'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId); ?></h4>
-				  <p> <?php echo $shop['shop_additional_info']; ?> </p>
+				  <p> <?php echo nl2br($shop['shop_additional_info']); ?> </p>
 				</div>
 				<?php } ?>
 				
 				<?php if( $shop['shop_seller_info'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_SELLER_INFO', $siteLangId); ?></h4>
-				  <p> <?php echo $shop['shop_seller_info']; ?> 
+				  <p> <?php echo nl2br($shop['shop_seller_info']); ?> </p>
 				</div>
 				<?php } ?>
 			  </div>

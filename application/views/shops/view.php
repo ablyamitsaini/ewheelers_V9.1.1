@@ -80,9 +80,9 @@
 				}
 				?>
 				<div class="<?php echo $class;?>">
-				<?php if($shop['shop_description']){?>
-					<div class="category__description container--cms"><?php echo CommonHelper::renderHtml($shop['shop_description']);?></div>
-				<?php } ?>
+					<?php if($shop['shop_description']){ ?>
+						<div class="category__description container--cms"><?php echo nl2br($shop['shop_description']); ?></div>
+					<?php } ?>
 					<?php $this->includeTemplate('_partial/productsSearchForm.php',array('frmProductSearch'=>$frmProductSearch,'blockTitle'=>$blockTitle,'siteLangId'=>$siteLangId),false);  ?>
 				</div>
 			</div>

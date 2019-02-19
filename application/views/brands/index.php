@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
 
 <div id="body" class="body bg--gray">
-  <section class="dashboard">
+  <section class="top-space">
     <div class="container">
       <div class="breadcrumb">
 		<?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
@@ -14,18 +14,18 @@
             <div class="panel panel--centered">
 				<?php if(!empty($allBrands)){ $firstCharacter = '';
 						foreach($allBrands as $brands){
-						
+
 						/* if($layoutDirection == 'rtl'){
 							$str = substr(strtolower($brands['brand_name']), -1);
 						}else{
 							$str = substr(strtolower($brands['brand_name']), 0, 1);
 						} */
 						$str = substr(strtolower($brands['brand_name']), 0, 1);
-						
+
 						if(is_numeric($str)){
 							$str = '0-9';
-						}			
-						
+						}
+
 						if($str != $firstCharacter){
 							if($firstCharacter!=''){ echo "</ul></div>"; }
 							$firstCharacter = $str;

@@ -430,15 +430,13 @@ class ProductCategory extends MyAppModel{
 				//echo $name."<br>";
 				$flag=0;
 				if($keywords){
-					if(stripos($name_prefix,$keywords)===0 || stripos($prodcat_identifier,$keywords)===0){
-
-					}else{
-						$return += self::getProdCatTreeStructureSearch($prodcat_id, $langId, $keywords, $level+1,$name, $isActive, $isDeleted, $isForCsv );
-						continue;
-					}
+					if(stripos($name,$keywords)!== false){ 
+						$return[$prodcat_id] = $name;						
+					}								
+				}else{
+					$return[$prodcat_id] = $name;					
 				}
-				$return[$prodcat_id] = $name;
-				$return += self::getProdCatTreeStructureSearch($prodcat_id, $langId, $keywords, $level+1,$name, $isActive, $isDeleted, $isForCsv );
+				$return += self::getProdCatTreeStructureSearch($prodcat_id, $langId, $keywords, $level+1,$name, $isActive, $isDeleted, $isForCsv );	
 				//print_r($return); die;
         }		
         return $return;
