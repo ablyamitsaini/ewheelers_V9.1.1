@@ -229,6 +229,10 @@ class Importexport extends ImportexportCommon{
 						$sheetData = $this->exportOptionValues($langId, $userId);
 						$sheetName = Labels::getLabel('LBL_Option_Values',$langId);
 					break;
+					default:
+						$sheetData = $this->exportOptions($langId, $userId);
+						$sheetName = Labels::getLabel('LBL_Options',$langId);
+					break;
 				}
 			break;
 			case Importexport::TYPE_OPTION_VALUES:
