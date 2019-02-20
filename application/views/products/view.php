@@ -432,16 +432,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 			?>
 		</div>
 	  </section>
-	  <section class="section bg--second-color">
-		<div class="container">
-			<div class="section-head section--white--head section--head--center">
-				<div class="section__heading">
-					<h2><?php echo Labels::getLabel('LBL_Recently_Viewed', $siteLangId); ?></h2>
-				</div>
-			</div>
-			<div id="recentlyViewedProductsDiv"></div>
-	 	</div>
-	  </section>
+	  <div id="recentlyViewedProductsDiv"></div>
 </div>
 <script type="text/javascript">
 var mainSelprodId = <?php echo $product['selprod_id'];?>;

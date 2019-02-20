@@ -9,7 +9,7 @@
     <?php foreach($recommendedProducts as $rProduct){
 		$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 		?>
-		<div class="<?php echo (count($recommendedProducts) < 2) ? '' : 'col-lg-2 col-md-2 col-sm-3 col-xs-6'; ?>">
+		<div class="">
 			<!--product tile-->
 			<div class="products">
 				<div class="products__body">

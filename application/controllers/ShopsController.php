@@ -85,22 +85,37 @@ class ShopsController extends MyAppController {
 		$allShops = $db->fetchAll( $shopRs , 'shop_id' );
 
 		$totalProdCountToDisplay = 4;
-		$prodSrchObj = new ProductSearch( $this->siteLangId );
-		$prodSrchObj->setDefinedCriteria(0);	
-		$prodSrchObj->joinProductToCategory();		
-		$prodSrchObj->setPageSize($totalProdCountToDisplay);
+		$productSrchObj = new ProductSearch( $this->siteLangId );
+		$productSrchObj->joinProductToCategory($this->siteLangId );
+		$productSrchObj->doNotCalculateRecords();
+		/* $productSrchObj->setPageSize( 10 ); */
+		$productSrchObj->setDefinedCriteria();
+		$productSrchObj->joinSellerSubscription($this->siteLangId , true);
+		$productSrchObj->addSubscriptionValidCondition();
+		$productSrchObj->joinProductRating( );
+		
+		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+			$productSrchObj->joinFavouriteProducts( $loggedUserId );
+			$productSrchObj->addFld('ufp_id');
+		}else{
+			
+			$productSrchObj->joinUserWishListProducts( $loggedUserId );
+			$productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+		}
+		
+		$productSrchObj->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
+		$productSrchObj->addMultipleFields( array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 
+		'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
+		'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		foreach($allShops as $val){
-			$prodSrch = clone $prodSrchObj;
-			$prodSrch->addShopIdCondition( $val['shop_id'] );					
-			$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
-			'IFNULL(product_name, product_identifier) as product_name', 
-			'IF(selprod_stock > 0, 1, 0) AS in_stock') );
-			/* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-			$prodSrch->addGroupBy('product_id');
-			/* ] */
-			$prodRs = $prodSrch->getResultSet();					
-			$allShops[$val['shop_id']]['products'] = $db->fetchAll( $prodRs);
-			$allShops[$val['shop_id']]['totalProducts'] = $prodSrch->recordCount();
+			$productShopSrchTempObj = clone $productSrchObj;
+			$productShopSrchTempObj->addCondition( 'selprod_user_id', '=', $val['shop_user_id']  ) ;
+			$productShopSrchTempObj->addOrder('in_stock','DESC');
+			$productShopSrchTempObj->addGroupBy('selprod_product_id');
+			$productShopSrchTempObj->setPageSize(3);
+			$Prs = $productShopSrchTempObj->getResultSet(); 				
+			$allShops[$val['shop_id']]['products'] = $db->fetchAll( $Prs);
+			$allShops[$val['shop_id']]['totalProducts'] = $productShopSrchTempObj->recordCount();
 			$allShops[$val['shop_id']]['shopRating'] = SelProdRating::getSellerRating($val['shop_user_id']);
 			$allShops[$val['shop_id']]['shopTotalReviews'] = SelProdReview::getSellerTotalReviews($val['shop_user_id']);
 		}
