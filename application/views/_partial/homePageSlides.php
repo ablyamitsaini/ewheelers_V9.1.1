@@ -6,13 +6,13 @@
 			$tablet_url = '';
 			$mobile_url = '';
 			$haveUrl = ( $slide['slide_url'] != '' ) ? true : false;
-			
+
 			$slideArr = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_HOME_PAGE_BANNER, $slide['slide_id'], 0, $siteLangId );
 			if( !$slideArr ){
 				continue;
 			}else{
 				foreach($slideArr as $slideScreen){
-					
+
 					switch($slideScreen['afile_screen']){
 						case applicationConstants::SCREEN_MOBILE:
 							$mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_MOBILE, $siteLangId)),CONF_IMG_CACHE_TIME, '.jpg').",";
@@ -27,7 +27,7 @@
 					}
 				}
 			}
-		
+
 			$out = '<div class="hero-item">';
 			if($haveUrl){
 				if($slide['promotion_id']>0){
@@ -37,13 +37,13 @@
 				}
 			}
 			if( $haveUrl ){ $out .= '<a target="'.$slide['slide_target'].'" href="'.$slideUrl.'">'; }
-			$out .= '<div class="hero-media"><img data-src-base="" data-src-base2x="" data-src="' . $mobile_url . $tablet_url  . $desktop_url . '" title="'.$slide['slide_title'].'" src="' . FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP,$siteLangId)),CONF_IMG_CACHE_TIME, '.jpg') . '" alt="'.$slide['slide_title'].'" /></div>';
+			$out .= '<div class="hero-media"><img data-ratio="10:3 (1200x360)" data-src-base="" data-src-base2x="" data-src="' . $mobile_url . $tablet_url  . $desktop_url . '" title="'.$slide['slide_title'].'" src="' . FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP,$siteLangId)),CONF_IMG_CACHE_TIME, '.jpg') . '" alt="'.$slide['slide_title'].'" /></div>';
 			if( $haveUrl ){ $out .= '</a>'; }
 			$out .= '</div>';
 			echo $out;
 			if(isset($slide['promotion_id']) && $slide['promotion_id']>0){
 				Promotion::updateImpressionData($slide['promotion_id']);
-			}			
+			}
 		} ?>
 	</div>
 </section>

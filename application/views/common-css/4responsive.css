@@ -146,10 +146,7 @@
 		padding: 15px 0;
 	}
 
-	#header {
-		position: fixed;
-		top: 0;
-		width: 100%;
+	#header { height: auto;
 	}
 
 	.after-header {
