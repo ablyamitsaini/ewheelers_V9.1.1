@@ -27,26 +27,18 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
         </div>
       </div>
     </div>
-	<section class="top-space">
-      <div class="container container--fixed">
-        <div class="">
-          <div class="panel panel--centered clearfix">
-            <div class="">
-              <div id="itemRatings" class="section section--info clearfix">
-                <div class="section__head">
-                  <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. $shop['shop_name'];?></h4>
+	<section class="section section--gray">
+		<div class="container">
+			<div id="itemRatings" class="section section--info clearfix">
+				<div class="section__head">
+				  <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. $shop['shop_name'];?></h4>
 				   <?php echo $frmReviewSearch->getFormHtml(); ?>
-                </div>
-                <div class="section__body">
-					<div class="box box--white">
-						<?php $this->includeTemplate('_partial/shop-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'shop_id'=>$shop['shop_id']),false); ?>
-					</div>
-				 </div>
-              </div>
-            </div>
-          </div>
+				</div>
+				<div class="section__body">
+					<?php $this->includeTemplate('_partial/shop-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'shop_id'=>$shop['shop_id']),false); ?>
+				</div>
+			</div>
         </div>
-      </div>
     </section>
 	<div class="gap"></div>
 </div>
