@@ -13,3 +13,4 @@ Enhancements :
 Fixes:
 	. Fixed category search issue while adding catalog.
 	. Category search for autocomplete listing.
+    . Fixed Arabic email content is not showing properly when sent through SMTP.

@@ -166,6 +166,7 @@ class EmailHandler extends FatModel {
 		$password = isset($smtp_arr["password"])?$smtp_arr["password"]:FatApp::getConfig("CONF_SMTP_PASSWORD");
 		$secure = isset($smtp_arr["secure"])?$smtp_arr["secure"]:FatApp::getConfig("CONF_SMTP_SECURE");
 		$mail = new PHPMailer(true);
+		$mail->CharSet = 'UTF-8';
 		$mail->IsSMTP();
 		$mail->SMTPAuth = true;
 		$mail->IsHTML(true);
@@ -1043,7 +1044,7 @@ class EmailHandler extends FatModel {
 		if($message == false || empty($message)){
 			return false;
 		}
-		
+
 		$url = CommonHelper::generateFullUrl('account', 'viewMessages',array($message['thread_id'],$messageId),CONF_WEBROOT_FRONT_URL);
 
 		$url='<a href="'.$url.'">'.Labels::getLabel('LBL_click_here',$langId).'</a>';
