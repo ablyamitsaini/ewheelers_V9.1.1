@@ -1,12 +1,12 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
-
-
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
-    <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="content-header justify-content-between row mb-3">
+		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+	</div>
     <div class="container">
       <div class="row">
-        <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+        <?php /* $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php');  */?>
         <div class="col-xs-10 panel__right--full" >
           <div class="cols--group">
             <div class="panel__head">
@@ -155,9 +155,8 @@
         </div>
       </div>
     </div>
-  </section>
-	<div class="gap"></div>
-</div>
+    </div>
+</main>
 <script>
  /******** for tooltip ****************/
 
