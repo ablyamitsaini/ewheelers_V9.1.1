@@ -6,11 +6,10 @@
 			<h2><?php echo Labels::getLabel('LBL_Similar_Products',$siteLangId); ?></h2>
 		</div>
 	</div>
-	<div id="similar-product" class="row js-collection-corner collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+	<div id="similar-product" class="js-collection-corner collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
     <?php foreach($relatedProductsRs as $rProduct){ 
 		$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 	?>
-	<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 	<!--product tile-->
 	<div class="products">
 		<div class="products__body">
@@ -38,7 +37,6 @@
 		</div>
 	</div>
 	<!--/product tile-->
-	</div>
 	<?php } ?>
   </div>
 </div>

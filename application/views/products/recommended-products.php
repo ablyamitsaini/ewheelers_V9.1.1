@@ -5,11 +5,10 @@
 			<h2><?php echo Labels::getLabel('LBL_Recommended_Products',$siteLangId); ?></h2>
 		</div>
 	</div>
-	<div class="row js-collection-corner collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+	<div class="js-collection-corner collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
     <?php foreach($recommendedProducts as $rProduct){
 		$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 		?>
-		<div class="">
 			<!--product tile-->
 			<div class="products">
 				<div class="products__body">
@@ -36,7 +35,6 @@
 				</div>
 			</div>
 			<!--/product tile-->
-		</div>
     <?php } ?>
 	</div>
 </div>

@@ -1,4 +1,4 @@
-<?php  if((User::canViewSupplierTab() && User::canViewBuyerTab()) || (User::canViewSupplierTab() && User::canViewAdvertiserTab()) || (User::canViewBuyerTab() && User::canViewAdvertiserTab())){ ?>
+<?php  /* if((User::canViewSupplierTab() && User::canViewBuyerTab()) || (User::canViewSupplierTab() && User::canViewAdvertiserTab()) || (User::canViewBuyerTab() && User::canViewAdvertiserTab())){ ?>
 	<div class="dashboard-switch hide--desktop no-print">
 		<div class="mobile-switch">
 			<?php if( User::canViewSupplierTab() ){ ?>
@@ -12,7 +12,7 @@
 			<?php }?>
 		</div>
 	</div>
-<?php } ?>
+<?php } */ ?>
 <?php 
 /* echo $str = '<script type="text/javascript">
 		var langLbl = ' . json_encode(

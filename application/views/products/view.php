@@ -392,14 +392,15 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<?php }?>
 				</div>
 			</div>
-			<div class="gap"></div>
-			<?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
-			<div class="gap"></div>
-			<div class="h6"><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></div>
-			<?php echo $frmReviewSearch->getFormHtml(); ?>
-			  <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
-			<?php }?>
-
+			<div id="itemRatings">
+				<div class="gap"></div>
+				<?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
+				<div class="gap"></div>
+				<div class="h6"><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></div>
+				<?php echo $frmReviewSearch->getFormHtml(); ?>
+				  <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
+				<?php }?>
+			</div>
 			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 			<div class="gap"></div>
 			<div class="banner-ppc"> <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
