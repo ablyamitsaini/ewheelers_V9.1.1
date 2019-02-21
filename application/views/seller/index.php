@@ -1,3 +1,6 @@
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+
+
 <div id="body" class="body bg--gray">
   <section class="dashboard">
     <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>

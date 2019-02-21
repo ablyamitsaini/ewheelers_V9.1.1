@@ -21,7 +21,14 @@
 		$dashboardUrl = CommonHelper::generateUrl('Account');
 		}
 	 ?>
-	 <li class="dropdown dropdown--arrow"> <a href="#" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span></a>		  
+	 <li class="dropdown dropdown--arrow">
+		 <?php if(isset($controllerName) && ($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser')){ ?>
+			<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
+				<img class="my-account__avatar" src="<?php echo $profilePicUrl;?>" alt="">
+			</a>
+		<?php }else{?>
+			<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span></a>
+		<?php }?>		
 		  <div class="dropdown__target dropdown__target-account dropdown__target-js">
             <div class="dropdown__target-space">
               <div class="dropdown__target-body">

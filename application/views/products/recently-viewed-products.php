@@ -7,11 +7,10 @@
 				<h2><?php echo Labels::getLabel('LBL_Recently_Viewed', $siteLangId); ?></h2>
 			</div>
 		</div>
-		<div class="row slides--six-js collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+		<div class="slides--six-js collection-corner" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 			<?php foreach($recentViewedProducts as $rProduct){ 
 				$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 			?>
-			<div class="<?php /* col-lg-2 col-md-2 col-sm-3 col-xs-6 */ ?>">
 			<!--product tile-->
 			<div class="products">
 				<div class="products__body">
@@ -39,7 +38,6 @@
 				</div>
 			</div>
 			<!--/product tile-->
-			</div>
 			<?php } ?>
 		</div>
 	</div>
