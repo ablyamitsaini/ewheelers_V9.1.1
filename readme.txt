@@ -14,3 +14,4 @@ Fixes:
 	. Fixed category search issue while adding catalog.
 	. Category search for autocomplete listing.
     . Buyer can cancel COD orders and Pending payment orders.
+        . Admin approval is necessary to cancel the pending payments orders.

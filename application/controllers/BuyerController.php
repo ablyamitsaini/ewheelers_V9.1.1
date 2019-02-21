@@ -564,20 +564,12 @@ class BuyerController extends LoggedUserController {
 			'ocrequest_date'		=>	date('Y-m-d H:i:s'),
 			'ocrequest_status'		=>	OrderCancelRequest::CANCELLATION_REQUEST_STATUS_PENDING
 		);
-		if( $opDetail["op_status_id"] == FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS") ){
-			$dataToSave['ocrequest_status'] = OrderCancelRequest::CANCELLATION_REQUEST_STATUS_APPROVED;
-			$dataToSave['ocrequest_admin_comment'] = 'Cancelled by user itself';
-		}
-
 
 		$oCRequestObj = new OrderCancelRequest();
 		$oCRequestObj->assignValues($dataToSave);
 
 
-		if ( $oCRequestObj->save() ) {
-			$db = FatApp::getDb();
-			$db->updateFromArray( Orders::DB_TBL_ORDER_PRODUCTS, array('op_status_id' => FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS") ), array('smt' => 'op_id = ? AND op_status_id = ?', 'vals' => array($opDetail['op_id'],FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"))) );
-		}else{
+		if ( !$oCRequestObj->save() ) {
 			Message::addErrorMessage( $oCRequestObj->getError() );
 			FatUtility::dieWithError( Message::getHtml() );
 		}
