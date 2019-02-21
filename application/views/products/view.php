@@ -74,7 +74,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
-			</div>
+			 
 			<?php if($shop['shop_free_ship_upto'] > 0){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
@@ -141,7 +141,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				</div>
 			</div>
 			<?php }?>
-			
+
 			<?php /* Volume Discounts[ */
 			 if( isset($volumeDiscountRows) && !empty($volumeDiscountRows) ){
 			?>
@@ -165,13 +165,13 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				});
 			</script>
 			<?php } /* ] */ ?>
-			
+
 			<?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
               <?php if($codEnabled){?>
               <div class="cod-txt"><?php echo Labels::getLabel('LBL_Cash_on_delivery_is_available',$siteLangId);?> <i class="fa fa-question-circle-o tooltip tooltip--right"><span class="hovertxt"><?php echo Labels::getLabel('MSG_Cash_on_delivery_available._Choose_from_payment_options',$siteLangId);?> </span></i> </div>
               <?php }?>
-			  
-			  
+
+
 			<!-- Upsell Products [ -->
               <?php if (count($upsellProducts)>0) { ?>
 				<div class="gap"></div>
@@ -224,13 +224,13 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
 				<div class="gap"></div>
 			  <?php }?>
-			  
-			  
-			  
-            
+
+
+
+
             <div class="">
-              
-			  
+
+
               <!-- Add To Cart [ -->
               <?php if( $product['in_stock'] ){
 					echo $frmBuyProduct->getFormTag();
@@ -273,7 +273,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
               <!-- ] -->
 
             </div>
-			
+
 			<div class="gap"></div>
 			<div class="shops-detail-wrapper">
 				<div class="row">
@@ -301,9 +301,10 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				</div>
 			</div>
 			<div class="gap"></div>
-			
-			
-			
+
+
+
+          </div>
           </div>
         </div>
       </div>
@@ -312,7 +313,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 	 <section class="section bg--second-color">
 		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
 		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
-	 </section>	 
+	 </section>
 	 <?php }?>
      <section class="section section--gray">
 		<div class="container">
@@ -332,7 +333,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<div class="col-md-9"></div>
 				</div>
 				<div class="gap"></div>
-				
+
 				<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]);
 				if( count($productSpecifications)>0 || $youtube_embed_code || $product['product_description']!='' || !empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || !empty($product['selprodComments']) ){ ?>
 					<div class="box box--white box--radius box--space">

@@ -80,12 +80,14 @@
         <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
       </tr>
-      <?php if(!empty($cartSummary['cartRewardPoints'])){?>
-      <tr>
-        <td class="text-left"><?php echo Labels::getLabel('LBL_Reward_point_discount', $siteLangId); ?></td>
-        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::rewardPointDiscount($cartSummary['orderNetAmount'],$cartSummary['cartRewardPoints'])); ?></td>
-      </tr>
-      <?php } ?>
+     <?php if(!empty($cartSummary['cartRewardPoints'])){
+	$appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']);
+	?>
+    <tr>
+      <td class="text-left"><?php echo Labels::getLabel('LBL_Reward_point_discount', $siteLangId); ?></td>
+      <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($appliedRewardPointsDiscount); ?></td>
+    </tr>
+    <?php } ?>
       <?php if(!empty($cartSummary['cartDiscounts'])){?>
       <tr>
         <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>

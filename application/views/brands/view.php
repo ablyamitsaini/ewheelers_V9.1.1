@@ -4,6 +4,7 @@
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
 	//$keywordFld->htmlAfterField = '<i class="fa fa-search"></i>';
 ?>
+
 <div id="body" class="body" role="main">
 	<section class="section section--fill">
 		<div class="container">

@@ -1,11 +1,11 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');
 	$keywordFld = $headerSrchFrm->getField('keyword');
 	$submitFld = $headerSrchFrm->getField('btnSiteSrchSubmit');
 	$submitFld->setFieldTagAttribute('class','search--btn submit--js');
-	$keywordFld->setFieldTagAttribute('class','search--keyword search--keyword--js');
+	$keywordFld->setFieldTagAttribute('class','search--keyword search--keyword--js no--focus');
 	$keywordFld->setFieldTagAttribute('placeholder',Labels::getLabel('LBL_What_are_you_looking_for...',$siteLangId));
 	/* $keywordFld->setFieldTagAttribute('autofocus','autofocus'); */
-	$keywordFld->setFieldTagAttribute('id','header_search_keyword');	
+	$keywordFld->setFieldTagAttribute('id','header_search_keyword');
 	$keywordFld->setFieldTagAttribute('onkeyup','animation(this)');
 	/* CommonHelper::printArray($categoriesArr); die; */
 	/* $selectFld = $headerSrchFrm->getField('category');

@@ -1,5 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
-
 <div id="body" class="body">
 	<section class="section">
 		<div class="container">

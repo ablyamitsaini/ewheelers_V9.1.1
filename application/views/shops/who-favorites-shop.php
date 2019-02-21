@@ -1,7 +1,7 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $shop_city = $shopData['shop_city'];
 $shop_state = ( strlen($shopData['shop_city']) > 0 ) ? ', '. $shopData['shop_state_name'] : $shopData['shop_state_name'];
-$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shopData['shop_country_name'] : $shopData['shop_country_name']; 
+$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shopData['shop_country_name'] : $shopData['shop_country_name'];
 $shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 <div class="section section--pagebar">
@@ -16,14 +16,13 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 				</div>
 		   </div>
 		   <div class="col-md-4 col-sm-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shopData['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>
-           
+
            </div>
 	   </div>
-   </div>   
+   </div>
 </div>
-<div class="container container--fixed">
-       <div class="row">           
-               <div class="panel panel--centered clearfix">
+
+
                   <div class="container container--fluid">
                    <div class="section section--info clearfix">
                          <div class="section__head">
@@ -31,14 +30,11 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
                          </div>
                          <div class="section__body">
 							<?php echo $searchForm->getFormHtml();?>
-                             <div class="box box--white" id="shopFavListing">                                                           
+                             <div class="box box--white" id="shopFavListing">
 
                              </div>
 							 <div id="loadMoreBtnDiv"></div>
                          </div>
                    </div>
                   </div>
-               </div>
-              
-        </div>
-    </div>
+               
