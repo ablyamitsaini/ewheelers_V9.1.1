@@ -58,7 +58,7 @@
 					$class= 'col-lg-12';
 				}
 				?>
-				
+
 				<div class="<?php echo $class;?>">
 					<div class="listing-products -listing-products listing-products--grid ">
 						<div class="section section--items listview">

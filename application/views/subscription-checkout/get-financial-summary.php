@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php if($spackage_type != SellerPackages::FREE_TYPE ) { 
+<?php if($spackage_type != SellerPackages::FREE_TYPE ) {
 	if( !empty($cartSummary['scartDiscounts']['coupon_code']) ){ ?>
 	<div class="applied-coupon">
 	<span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['scartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?> </span>
-	<a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a>
+	<a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a>
 	</div>
-	
+
 <?php } else { ?>
 	<div class="coupon">
 		<a class="coupon-input btn btn--secondary btn--block ripplelink" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId);?></a>

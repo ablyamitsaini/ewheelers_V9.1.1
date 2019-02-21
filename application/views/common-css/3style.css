@@ -18,11 +18,9 @@ body {
   font-family: 'Poppins', sans-serif;
   font-family: 'Open Sans', sans-serif;
   color: inherit;
- 	position: relative; 
-	overflow-x: hidden;
+  position: relative;
+  overflow-x: hidden;
 }
-
-
 
 h1,
 h2,
@@ -5250,14 +5248,7 @@ span.subheading {
   height: 30px;
 }
 
-.listing-products .products {
-  border-bottom: solid 1px var(--border-color);
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-.listing-products--grid .products_ft_list {
-  display: none;
+.listing-products {
 }
 
 .listing-products--list {}
@@ -12363,6 +12354,11 @@ main.main {
 }
 
 .coupon-input {}
+
+.summary-listing>ul {
+  overflow-y: auto;
+  max-height: 408px;
+}
 
 .summary-listing>ul>li {
   padding: 15px 0;

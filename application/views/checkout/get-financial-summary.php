@@ -26,12 +26,13 @@
 </ul>
 <div class="box box--white box--radius box--space cartdetail__footer">
 	<?php if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
-	<div class="applied-coupon"> <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?></span> <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink "><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
+	<div class="applied-coupon">
+    <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?></span> <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink "><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
 	<?php } else { ?>
-	<div class="coupon"> <a class="coupon-input btn btn--secondary btn--block ripplelink" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId);?></a> </div>
+	<div class="coupon"> <a class="btn btn--primary btn--sm" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId);?></a> </div>
 	<div class="gap"></div>
 	<?php } ?>
-	
+
 	<table>
 		<tbody>
 			<tr>
@@ -62,7 +63,7 @@
 				<td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
 			</tr>
 		  <?php }?>
-		  
+
 		  <?php if(!empty($cartSummary['cartRewardPoints'])){
 			 $appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']);
 			?>
