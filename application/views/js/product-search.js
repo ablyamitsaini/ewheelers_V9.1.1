@@ -118,10 +118,10 @@ $(document).ready(function(){
 		$('.switch--link-js').parent().removeClass("is--active");
 		$(this).parent().addClass("is--active");
 		if ($(this).hasClass('list')) {
-			$('.section--items').parent().removeClass('listing-products--grid').addClass('listing-products--list');
+			$('#productsList').removeClass('listing-products--grid').addClass('listing-products--list');
 		}
 		else if($(this).hasClass('grid')) {
-			$('.section--items').parent().removeClass('listing-products--list').addClass('listing-products--grid');
+			$('#productsList').removeClass('listing-products--list').addClass('listing-products--grid');
 		}
 	});
 	/* ] */

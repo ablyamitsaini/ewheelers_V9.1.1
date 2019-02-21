@@ -50,6 +50,11 @@ if( isset($includeEditor) && $includeEditor == true ){
 }
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 
+if($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser'){
+	$this->includeTemplate('_partial/topHeaderDashboard.php',array('siteLangId'=>$siteLangId),false);
+	$exculdeMainHeaderDiv = true;
+}
+
 if( !isset($exculdeMainHeaderDiv) ){
 	$this->includeTemplate('_partial/topHeader.php',array('siteLangId'=>$siteLangId),false);
 }

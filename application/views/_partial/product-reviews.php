@@ -34,6 +34,7 @@ if($totReviews){
 </div>
 <div class="gap"></div>
 <div class="box box--white box--radius box--space">
+	<div class="listing__all"></div>
 	<div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
 </div>
 <script>

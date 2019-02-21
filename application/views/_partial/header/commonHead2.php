@@ -28,6 +28,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 <?php $bodyClass='';
 if($controllerName=='Blog') $bodyClass = 'is--blog';
 if($controllerName=='Checkout') $bodyClass = 'is-checkout';
+if(($controllerName=='Seller') || ($controllerName=='Buyer') || ($controllerName=='Affiliate') || ($controllerName=='Advertiser')) $bodyClass = 'is-dashboard';
 ?>
 <body class="<?php echo $bodyClass; ?>">
 	<!--div class="pageloader">
