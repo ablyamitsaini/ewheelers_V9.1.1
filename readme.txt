@@ -13,3 +13,4 @@ Enhancements :
 Fixes:
 	. Fixed category search issue while adding catalog.
 	. Category search for autocomplete listing.
+    . Products search result order by search keyword.

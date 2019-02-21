@@ -10,7 +10,7 @@ class ProductsController extends MyAppController {
 
 		$this->includeProductPageJsCss();
 		$frm = $this->getProductSearchForm();
-		
+
 		$headerFormParamsArr = FatApp::getParameters();
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
 		$headerFormParamsAssocArr['join_price'] = 1;
@@ -96,7 +96,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
 			$priceSrch->addKeywordSearch($headerFormParamsAssocArr['keyword']);
 		}
-		
+
 		if( !empty($category_id) ) {
 			$priceSrch->addCategoryCondition($category_id);
 		}
@@ -108,49 +108,49 @@ class ProductsController extends MyAppController {
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
 		/* ] */
-		
-		$priceInFilter = false;	
+
+		$priceInFilter = false;
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
-		
+
 		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
 			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
 			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
 			$priceArr['minPrice'] = $filterDefaultMinValue;
 			$priceArr['maxPrice'] = $filterDefaultMaxValue;
-		}	
-		
-		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){			
+		}
+
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
 		}
-		
+
 		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
 			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
 			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
-		
+
 		$brandsCheckedArr = array();
 		if(array_key_exists('brand',$headerFormParamsAssocArr)){
 			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
 		}
-		
+
 		$optionValueCheckedArr = array();
 		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
 			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
-		
+
 		$conditionsCheckedArr = array();
 		if(array_key_exists('condition',$headerFormParamsAssocArr)){
 			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
 		}
-		
+
 		$availability = 0;
 		if(array_key_exists('availability',$headerFormParamsAssocArr)){
 			$availability = current($headerFormParamsAssocArr['availability']);
-		}	
-	
+		}
+
 		$productFiltersArr = array(
 			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'			  =>	$categoriesArr,
@@ -164,8 +164,8 @@ class ProductsController extends MyAppController {
 			'currencySymbolLeft'	  =>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	  =>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			  =>	$this->siteLangId,
-			'priceInFilter'			  =>	$priceInFilter,		 
-			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'priceInFilter'			  =>	$priceInFilter,
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,
 			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 		);
 		/* commonHelper::printArray($productFiltersArr); die; */
@@ -178,19 +178,19 @@ class ProductsController extends MyAppController {
 		if(empty($record)){
 			$this->set('noProductFound', 'noProductFound');
 		}
-		
+
 		$this->set('priceArr', $priceArr);
 		$this->set('priceInFilter', $priceInFilter);
 		$this->set('frmProductSearch', $frm);
 		$this->set('productFiltersArr', $productFiltersArr );
 		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Products','index') );
-		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addJs('js/slick.min.js');
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
 		$this->_template->render();
 	}
 
-	public function search(){ 
-		$db = FatApp::getDb(); 
+	public function search(){
+		$db = FatApp::getDb();
 
 		$frm = $this->getProductSearchForm();
 
@@ -235,7 +235,7 @@ class ProductsController extends MyAppController {
 		}
 
 		if( isset($headerFormParamsAssocArr['keyword']) && !empty($headerFormParamsAssocArr['keyword']) ) {
-		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);		
+		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);
 		}
 
 		$rs = $prodSrchObj->getResultSet();
@@ -255,9 +255,9 @@ class ProductsController extends MyAppController {
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
 
 		/* ] */
-		$productCategory = new productCategory;		
+		$productCategory = new productCategory;
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-		
+
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
 		$brandSrch->addGroupBy('brand_id');
@@ -283,7 +283,7 @@ class ProductsController extends MyAppController {
 		/* ] */
 
 
-		/* Price Filters[ */		
+		/* Price Filters[ */
 		$priceSrch = new ProductSearch( $this->siteLangId );
 		$priceSrch->setDefinedCriteria(1);
 		$priceSrch->joinProductToCategory();
@@ -308,51 +308,51 @@ class ProductsController extends MyAppController {
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
 		/* }  */
-		
-		$priceInFilter = false;	
+
+		$priceInFilter = false;
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
-		
+
 		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
 			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
 			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
 			$priceArr['minPrice'] = $filterDefaultMinValue;
 			$priceArr['maxPrice'] = $filterDefaultMaxValue;
 		}
-		
-		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){			
+
+		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
 		}
-		
+
 		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
 			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
 			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
 		/* CommonHelper::printArray($headerFormParamsAssocArr); die; */
 		/* ] */
-		
+
 		$brandsCheckedArr = array();
 		if(array_key_exists('brand',$headerFormParamsAssocArr)){
 			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
 		}
-		
+
 		$optionValueCheckedArr = array();
 		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
 			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
-		
+
 		$conditionsCheckedArr = array();
 		if(array_key_exists('condition',$headerFormParamsAssocArr)){
 			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
 		}
-		
+
 		$availability = 0;
 		if(array_key_exists('availability',$headerFormParamsAssocArr)){
 			$availability = current($headerFormParamsAssocArr['availability']);
-		}			
-		
+		}
+
 		$productFiltersArr = array(
 			'headerFormParamsAssocArr'=>	$headerFormParamsAssocArr,
 			'categoriesArr'			  =>	$categoriesArr,
@@ -366,8 +366,8 @@ class ProductsController extends MyAppController {
 			'currencySymbolLeft'	  =>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	  =>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			  =>	$this->siteLangId,
-			'priceInFilter'			  =>	$priceInFilter,		 
-			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'priceInFilter'			  =>	$priceInFilter,
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,
 			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'count_for_view_more'     =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
@@ -379,9 +379,9 @@ class ProductsController extends MyAppController {
 		if( empty($record) ){
 			$this->set('noProductFound', 'noProductFound');
 		}
-		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addJs('js/slick.min.js');
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
-		
+
 		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Products','search') );
 		$this->set('productFiltersArr', $productFiltersArr );
 		$this->_template->render();
@@ -403,7 +403,7 @@ class ProductsController extends MyAppController {
 		}
 		if(array_key_exists('shop',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
-		}	
+		}
 		if(array_key_exists('collection',$headerFormParamsAssocArr)){
 			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
 		}
@@ -456,15 +456,15 @@ class ProductsController extends MyAppController {
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
-		
-		
+
+
 		//Get All Categories which have products
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
-	
+
 		/* ] */
 		$productCategory = new productCategory;
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-		
+
 		/* ] */
 
 		/* Brand Filters Data[ */
@@ -519,44 +519,44 @@ class ProductsController extends MyAppController {
 		$priceRs = $db->query($qry);
 		$priceArr = $db->fetch($priceRs);
 
-		$priceInFilter = false;	
+		$priceInFilter = false;
 		$filterDefaultMinValue = $priceArr['minPrice'];
 		$filterDefaultMaxValue = $priceArr['maxPrice'];
-		
+
 		if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )){
 			$filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false);
 			$filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false);
 			$priceArr['minPrice'] = $filterDefaultMinValue;
 			$priceArr['maxPrice'] = $filterDefaultMaxValue;
 		}
-		
+
 		if(array_key_exists('price-min-range',$headerFormParamsAssocArr) && array_key_exists('price-max-range',$headerFormParamsAssocArr)){
 			$priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
 			$priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
 			$priceInFilter = true;
 		}
-		
+
 		if(array_key_exists('currency_id',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId){
 			$priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-min-range'],$this->siteCurrencyId,false);
 			$priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'],$headerFormParamsAssocArr['price-max-range'],$this->siteCurrencyId,false);
 		}
 		/* ] */
-		
+
 		$brandsCheckedArr = array();
 		if(array_key_exists('brand',$headerFormParamsAssocArr)){
 			$brandsCheckedArr = $headerFormParamsAssocArr['brand'];
 		}
-		
+
 		$optionValueCheckedArr = array();
 		if(array_key_exists('optionvalue',$headerFormParamsAssocArr)){
 			$optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
 		}
-		
+
 		$conditionsCheckedArr = array();
 		if(array_key_exists('condition',$headerFormParamsAssocArr)){
 			$conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
 		}
-		
+
 		$availability = 0;
 		if(array_key_exists('availability',$headerFormParamsAssocArr)){
 			$availability = current($headerFormParamsAssocArr['availability']);
@@ -574,8 +574,8 @@ class ProductsController extends MyAppController {
 			'currencySymbolLeft'	=>	CommonHelper::getCurrencySymbolLeft(),
 			'currencySymbolRight' 	=>	CommonHelper::getCurrencySymbolRight(),
 			'siteLangId'			=>	$this->siteLangId,
-			'priceInFilter'			  =>	$priceInFilter,		 
-			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,		
+			'priceInFilter'			  =>	$priceInFilter,
+			'filterDefaultMinValue'	  =>	$filterDefaultMinValue,
 			'filterDefaultMaxValue'	  =>	$filterDefaultMaxValue,
 			'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
 		);
@@ -586,15 +586,15 @@ class ProductsController extends MyAppController {
 		if(empty($record)){
 			$this->set('noProductFound', 'noProductFound');
 		}
-		
+
 		$this->set('canonicalUrl', CommonHelper::generateFullUrl('Products','featured') );
 		$this->set('productFiltersArr', $productFiltersArr );
-		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addJs('js/slick.min.js');
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
 		$this->_template->render();
 	}
 
-	public function productsList(){ 
+	public function productsList(){
 		$json = array();
 		$json['reload'] = 0;
 		$db = FatApp::getDb();
@@ -626,24 +626,24 @@ class ProductsController extends MyAppController {
 
 		$srch = new ProductSearch( $this->siteLangId );
 		$join_price = (isset($post['join_price']) && $post['join_price'] != '') ? FatUtility::int($post['join_price']) : 0 ;
-		
+
 		$criteria = array();
-		$criteria = $post; 
-		
+		$criteria = $post;
+
 		$keyword = FatApp::getPostedData('keyword', null, '');
 		$criteria['keyword'] = $keyword;
-		
+
 		$optionvalue = FatApp::getPostedData('optionvalue', null, '');
 		if($optionvalue){
-			$criteria['optionvalue'] = $optionvalue;			
+			$criteria['optionvalue'] = $optionvalue;
 		}
-				
+
 		$srch->setDefinedCriteria( $join_price,0,$criteria,true );
 		$srch->joinProductToCategory();
 		$srch->joinSellerSubscription();
 		$srch->addSubscriptionValidCondition();
-		
-		
+
+
 		/* to check current product is in wish list or not[ */
 		$loggedUserId = 0;
 		if( UserAuthentication::isUserLogged() ){
@@ -656,7 +656,7 @@ class ProductsController extends MyAppController {
 			$srch->joinUserWishListProducts( $loggedUserId );
 			$srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
 		}
-		
+
 		$selProdReviewObj = new SelProdReviewSearch();
 		$selProdReviewObj->joinSelProdRating();
 		$selProdReviewObj->addCondition('sprating_rating_type','=',SelProdRating::TYPE_PRODUCT);
@@ -683,25 +683,25 @@ class ProductsController extends MyAppController {
 		}
 
 		$category_id = FatApp::getPostedData('category', null, '');
-		if( $category_id ) {			
+		if( $category_id ) {
 			$srch->addCategoryCondition($category_id);
 		}
-		
+
 		$shop_id = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
-		if( $shop_id ) {			
+		if( $shop_id ) {
 			$srch->addShopIdCondition($shop_id);
 		}
-		
+
 		$top_products = FatApp::getPostedData('top_products',FatUtility::VAR_INT, 0);
-		if( $top_products ) {						
+		if( $top_products ) {
 			$srch->addHaving('prod_rating','>=',3);
-		}		
+		}
 
 		$collection_id = FatApp::getPostedData('collection_id', FatUtility::VAR_INT, 0);
-		if( $collection_id ) {			
+		if( $collection_id ) {
 			$srch->addCollectionIdCondition($collection_id);
 		}
-		
+
 		if(!empty($keyword)) {
 			$srch->addKeywordSearch($keyword);
 			$srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  1,   0  ) as keywordmatched');
@@ -713,7 +713,7 @@ END,   special_price_found ) as special_price_found');
 			$srch->addFld('special_price_found');
 		}
 
-		$brand = FatApp::getPostedData('brand', null, '');				
+		$brand = FatApp::getPostedData('brand', null, '');
 		if( $brand ) {
 			$srch->addBrandCondition($brand);
 		}
@@ -722,7 +722,7 @@ END,   special_price_found ) as special_price_found');
 		if( $optionvalue ) {
 			$srch->addOptionCondition($optionvalue);
 		}
-				
+
 		$condition = FatApp::getPostedData('condition', null, '');
 		if( !empty($condition) ) {
 			$srch->addConditionCondition($condition);
@@ -753,11 +753,11 @@ END,   special_price_found ) as special_price_found');
 		$srch->addOrder('in_stock','DESC');
 		$sortBy = FatApp::getPostedData('sortBy', null, 'popularity');
 		$sortOrder = FatApp::getPostedData('sortOrder', null, 'asc');
-		
+
 		if(!in_array($sortOrder,array('asc','desc'))){
 			$sortOrder = 'asc';
 		}
-		
+
 		if(!empty($sortBy)) {
 			$sortByArr = explode("_",$sortBy);
 			$sortBy = isset($sortByArr[0]) ? $sortByArr[0] : $sortBy;
@@ -783,29 +783,29 @@ END,   special_price_found ) as special_price_found');
 		if(!empty($keyword)) {
 			$srch->addGroupBy('keywordmatched');
 			$srch->addOrder('keywordmatched','desc');
-		}	
+		}
 		/* ] */
-		
+
 		$rs = $srch->getResultSet();
 		$db = FatApp::getDb();
 		$productsList = $db->fetchAll($rs);
-		
+
 		$priceArr = array(
 			"minPrice"=>$price_min_range,
 			"maxPrice"=>$price_max_range,
 		);
-		
+
 		$selectedCurrencyPriceArr = array(
 			"minPrice"=>floor(CommonHelper::displayMoneyFormat($priceArr['minPrice'],false,false,false)),
 			"maxPrice"=>ceil(CommonHelper::displayMoneyFormat($priceArr['maxPrice'],false,false,false)),
 		);
-		
+
 		$this->set('products', $productsList );
 		$this->set('siteLangId', $this->siteLangId);
 		$this->set('page', $page);
 		$this->set('pageCount', $srch->pages());
 		$this->set('postedData', $post);
-		$this->set('colMdVal', $colMdVal);		
+		$this->set('colMdVal', $colMdVal);
 		$this->set('recordCount', $srch->recordCount());
 
 		$startRecord = ( $page - 1 ) * $pageSize + 1 ;
@@ -815,8 +815,8 @@ END,   special_price_found ) as special_price_found');
 		$json['totalRecords'] = $totalRecords;
 		$json['startRecord'] = $startRecord ;
 		$json['endRecord'] = $endRecord;
-		$json['priceArr'] = $priceArr;					
-		$json['selectedCurrencyPriceArr'] = $selectedCurrencyPriceArr;					
+		$json['priceArr'] = $priceArr;
+		$json['selectedCurrencyPriceArr'] = $selectedCurrencyPriceArr;
 		$pSrchFrm = Common::getSiteSearchForm();
 		$pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit' , $this->siteLangId)));
 		$pSrchFrm->setFormTagAttribute ( 'onSubmit', 'submitSiteSearch(this); return(false);' );
@@ -886,7 +886,7 @@ END,   special_price_found ) as special_price_found');
 
 		$productRs = $prodSrch->getResultSet();
 		$product = FatApp::getDb()->fetch($productRs);
-		
+
 		/* ] */
 
 		if( !$product ){
@@ -1015,7 +1015,7 @@ END,   special_price_found ) as special_price_found');
 
 		/* more sellers[ */
 		$moreSellerSrch = clone $prodSrchObj;
-		
+
 		$moreSellerSrch->addMoreSellerCriteria( $product['selprod_code'], $product['selprod_user_id'] );
 		$moreSellerSrch->addMultipleFields( array( 'selprod_id', 'selprod_user_id', 'selprod_price', 'special_price_found', 'theprice', 'shop_id', 'shop_name' ,'IF(selprod_stock > 0, 1, 0) AS in_stock') );
 		$moreSellerSrch->addHaving('in_stock','>',0);
@@ -1374,12 +1374,12 @@ END,   special_price_found ) as special_price_found');
 		}
 
 		/* End of Prmotional Banner  ]*/
-		
+
 		// CommonHelper::printArray($productImagesArr); die;
 		$this->set( 'upsellProducts', $upsellProducts );
 		$this->set( 'relatedProductsRs', $relatedProductsRs );
 		$this->set( 'banners', $banners );
-		
+
 		$this->set( 'product', $product );
 		$this->set( 'shop_rating', $shop_rating);
 		$this->set('shop', $shop);
@@ -1394,7 +1394,7 @@ END,   special_price_found ) as special_price_found');
 		$pollQuest = Polling::getProductPoll($product['product_id'] , $this->siteLangId);
 		$this->set('pollQuest', $pollQuest);
 		/* ] */
-		
+
 		/* Get Product Volume Discount (if any)[ */
 		$srch = new SellerProductVolumeDiscountSearch();
 		$srch->doNotCalculateRecords();
@@ -1405,7 +1405,7 @@ END,   special_price_found ) as special_price_found');
 		$volumeDiscountRows = FatApp::getDb()->fetchAll($rs);
 		$this->set( 'volumeDiscountRows', $volumeDiscountRows );
 		/* ] */
-		
+
 		$this->_template->addCss('css/slick.css');
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/modaal.css');
@@ -1442,12 +1442,12 @@ END,   special_price_found ) as special_price_found');
 			if( isset($cookiesProductsArr) && is_array($cookiesProductsArr) && count($cookiesProductsArr) ){
 				$cookiesProductsArr = array_map('intval', $cookiesProductsArr);
 				$cookiesProductsArr = array_reverse($cookiesProductsArr);
-				
+
 				if($productId && in_array($productId,$cookiesProductsArr)){
 					$pos = array_search($productId, $cookiesProductsArr);
 					unset($cookiesProductsArr[$pos]);
 				}
-				
+
 				$prodSrch = new ProductSearch( $this->siteLangId );
 				$prodSrch->setDefinedCriteria();
 				$prodSrch->joinSellerSubscription();
@@ -1506,7 +1506,7 @@ END,   special_price_found ) as special_price_found');
 					'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 					'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
 					'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price'));
-			
+
 			$productRs = $prodSrch->getResultSet();
 			$Products = FatApp::getDb()->fetchAll($productRs,'selprod_id');
 
@@ -1559,21 +1559,31 @@ END,   special_price_found ) as special_price_found');
 		$srch->addCondition( 'tag_name', 'LIKE', '%'.urldecode($post["keyword"]).'%' );
 		$rs = $srch->getResultSet();
 		$tags = FatApp::getDb()->fetchAll($rs);
-
+		// print_r($tags);
+		$new_arr = array();
+		$count = 0;
 		foreach ($tags as $key => $tag) {
-			$json[] = array(
-				//'label'  => FatUtility::convertToType($tag['tag_id'],FatUtility::VAR_STRING),
-				'value' 	=> strip_tags(html_entity_decode($tag['tag_name'], ENT_QUOTES, 'UTF-8')),
+			$tagName = strip_tags(html_entity_decode($tag['tag_name'], ENT_QUOTES, 'UTF-8'));
+			$position = strpos(strtolower($tagName),strtolower(urldecode($post["keyword"])));
+
+			$json[$position][] = array(
+				'value' 	=> $tagName,
 			);
 		}
-
 		/* $sort_order = array();
 		foreach ($json as $key => $value) {
 			$sort_order[$key] = $value['value'];
 		}
 		array_multisort($sort_order, SORT_ASC, $json); */
 		//echo json_encode( array( 'suggestions' => array('suggestion' => $json ) ) );
-		echo json_encode(array('suggestions'=>$json)); exit;
+		ksort($json);
+		$newJson = array();
+		foreach ($json as $suggestion) {
+			foreach ($suggestion as $result) {
+				$newJson[] = $result;
+			}
+		}
+		echo json_encode(array('suggestions'=>$newJson)); exit;
 	}
 
 	public function getBreadcrumbNodes($action) {
@@ -1794,7 +1804,7 @@ END,   special_price_found ) as special_price_found');
 			$_SESSION['referer_page_url'] = rtrim($urlString,'/').'/';
 		}
 	}
-	
+
 	public function sellers($selprod_id){
 		$selprod_id = FatUtility::int($selprod_id);
 		$prodSrchObj = new ProductSearch( $this->siteLangId );
@@ -1887,7 +1897,7 @@ END,   special_price_found ) as special_price_found');
 		$this->_template->render();
 
 	}
-	
+
 	function productQuickDetail($selprod_id = 0){
 		$productImagesArr = array();
 		$selprod_id = FatUtility::int($selprod_id);
@@ -1908,7 +1918,7 @@ END,   special_price_found ) as special_price_found');
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
 		}
-		
+
 		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
 			$prodSrch->joinFavouriteProducts( $loggedUserId );
 			$prodSrch->addFld('ufp_id');
@@ -1938,7 +1948,7 @@ END,   special_price_found ) as special_price_found');
 		/* echo $selprod_id; die; */
 		$productRs = $prodSrch->getResultSet();
 		$product = FatApp::getDb()->fetch($productRs);
-		
+
 
 		/* ] */
 
@@ -1946,7 +1956,7 @@ END,   special_price_found ) as special_price_found');
 			FatUtility::exitWithErrorCode(404);
 		}
 
-		
+
 		$subscription = false;
 		$allowed_images =-1;
 		if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE'))
@@ -1954,7 +1964,7 @@ END,   special_price_found ) as special_price_found');
 			$allowed_images = OrderSubscription::getUserCurrentActivePlanDetails($this->siteLangId,$product['selprod_user_id'],array('ossubs_images_allowed'));
 			$subscription = true;
 		}
-		
+
 		/* Current Product option Values[ */
 		$options = SellerProduct::getSellerProductOptions($selprod_id, false);
 		/* CommonHelper::printArray($options);die(); */
@@ -2036,7 +2046,7 @@ END,   special_price_found ) as special_price_found');
 
 		$product['selprod_return_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'] , PolicyPoint::PPOINT_TYPE_RETURN , $this->siteLangId);
 		$product['selprod_warranty_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'] , PolicyPoint::PPOINT_TYPE_WARRANTY , $this->siteLangId);
-		
+
 		/* Form buy product[ */
 		$frm = $this->getCartForm($this->siteLangId);
 		$frm->fill(array('selprod_id' => $selprod_id));
@@ -2116,7 +2126,7 @@ END,   special_price_found ) as special_price_found');
 
 		$this->_template->render(false,false);
 	}
-	
+
 	function links_autocomplete(){
 		$prodCatObj = new ProductCategory();
 		$post = FatApp::getPostedData();
@@ -2128,6 +2138,6 @@ END,   special_price_found ) as special_price_found');
 				'name'  => strip_tags(html_entity_decode($product , ENT_QUOTES, 'UTF-8'))
 			);
 		}
-		die(json_encode($json));		
-	}		
+		die(json_encode($json));
+	}
 }
