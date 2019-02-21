@@ -249,6 +249,7 @@ class Navigation {
 				$navigation[$previous_nav_id]['pages'][$key]['children'] = $childrenCats;
 			}
 		}
+
 		return $navigation;
 	}
 	

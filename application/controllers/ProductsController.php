@@ -200,7 +200,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) ) {
 			$frm = $this->getProductSearchForm(true);
 		}
-		$headerFormParamsAssocArr['join_price'] = 1;
+		$headerFormParamsAssocArr['join_price'] = 1;		
 		$frm->fill( $headerFormParamsAssocArr );
 		$this->includeProductPageJsCss();
 

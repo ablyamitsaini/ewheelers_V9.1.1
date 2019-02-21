@@ -571,12 +571,7 @@ echo $str;
 		
 	}
 			
-	function test(){
-			
-		$info = DiscountCoupons::getValidCoupons(4,1,'asd10');
-var_dump($info);
-		exit;
-			
+	function test(){					
 		$orders = new Orders('O1538197607');	
 		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
 		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];

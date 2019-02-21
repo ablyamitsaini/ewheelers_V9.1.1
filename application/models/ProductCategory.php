@@ -64,7 +64,7 @@ class ProductCategory extends MyAppModel{
 			$catCode = FatApp::getDb()->fetchAll($rs);
 			foreach($catCode as $row){
 				$record = new ProductCategory($row['prodcat_id']);
-				$data = array('prodcat_code'=>$row['prodcat_code']);
+				$data = array('prodcat_code'=>$row['prodcat_code'],'prodcat_ordercode'=>$row['prodcat_ordercode']);
 				$record->assignValues($data);
 				if (!$record->save()) {
 					Message::addErrorMessage($record->getError());
@@ -74,6 +74,7 @@ class ProductCategory extends MyAppModel{
 		}
 		return true;	
 	}
+		
 
 	function getMaxOrder( $parent = 0 ){
 		$srch = new SearchBase(static::DB_TBL);
@@ -326,7 +327,7 @@ class ProductCategory extends MyAppModel{
 		));
 
 		$srch->addOrder('GETCATORDERCODE(prodcat_id)');
-
+		
 		if(count($prefCategoryid)>0){
 			foreach($prefCategoryid as $prefCategoryids){
 				$srch->addHaving('prodcat_code', 'LIKE', '%' .$prefCategoryids. '%','OR' );				
@@ -463,7 +464,6 @@ class ProductCategory extends MyAppModel{
 		} else {
 			$srch->addFld( 'm.prodcat_id, m.prodcat_identifier as prodcat_name' );
 		}
-		//$srch->addFld('prodcat_code');
 		$srch->addFld('GETCATORDERCODE(prodcat_id) as catOrder');
 		if( $isDeleted ){
 			$srch->addCondition( 'm.prodcat_deleted', '=', 0 );

@@ -458,7 +458,8 @@ class AttachedFile extends MyAppModel {
 	public static function getTempImages($limit = false){
 		$srch = new SearchBase(AttachedFile::DB_TBL_TEMP, 'aft');
 		$srch->addCondition('aft.afile_downloaded', '=', applicationConstants::NO);
-		$srch->addOrder('aft.afile_id', 'asc');		
+		//$srch->addOrder('aft.afile_id', 'asc');
+		$srch->addOrder('rand()');		
 		if($limit > 0){ $srch->setPageSize($limit); }
 		$rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);		
