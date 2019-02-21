@@ -4493,17 +4493,7 @@ img {
   text-transform: none;
 }
 
-.store-button {
-  display: inline-block;
-}
 
-.store-button a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875em;
-  padding: 10px 16px;
-}
 
 .newsletter h4 {
   color: #000;
@@ -9820,18 +9810,6 @@ form.custom-form input[type="submit"] {
   margin: 30px 0 0;
 }
 
-.tabs--small {
-  margin: 0 0 20px 0;
-  position: relative;
-}
-
-.tabs--small li {
-  height: 2.5rem;
-  line-height: 2.5rem;
-  font-size: 1em;
-  background: #fff;
-}
-
 .navs--main ul li a:only-child:after {
   display: none;
 }
@@ -9960,7 +9938,7 @@ form.custom-form input[type="submit"] {
 }
 
 .collection-corner .products {
-  border-color: #fff;
+  border-color: #fff; margin: 0 1rem;
 }
 
 /*quick view page*/

@@ -25,9 +25,10 @@ if($totReviews){
 	<?php $this->includeTemplate('_partial/product-overall-ratings.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id),false); ?>
 </div>
 <div class="gap"></div>
-<div class="tabs tabs--small tabs--scroll clearfix">
-	<ul class="tabs-js group">
-		<li><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></li>
+<h4><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></h4>
+<div class="gap"></div>
+<div class="tabs tabs--flat-js">
+	<ul>
 		<li class="is-active"><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
 		<li><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
 	</ul>
