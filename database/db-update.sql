@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_product_categories` ADD `prodcat_ordercode` VARCHAR(255) NOT NULL AFTER `prodcat_code`;

@@ -58,7 +58,7 @@ class ProductCategory extends MyAppModel{
 			$srch = ProductCategory::getSearchObject();
 			$srch->doNotCalculateRecords();
 			$srch->doNotLimitRecords();
-			$srch->addMultipleFields(array('prodcat_id','GETCATCODE(`prodcat_id`) as prodcat_code'));
+			$srch->addMultipleFields(array('prodcat_id','GETCATCODE(`prodcat_id`) as prodcat_code','GETCATORDERCODE(`prodcat_id`) as prodcat_ordercode'));
 			$srch->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($categoryId, 6, '0', STR_PAD_LEFT) . '%', 'AND', true);
 			$rs = $srch->getResultSet();
 			$catCode = FatApp::getDb()->fetchAll($rs);
@@ -73,6 +73,30 @@ class ProductCategory extends MyAppModel{
 			}
 		}
 		return true;	
+	}
+	
+	public static function updateCatOrderCode($prodCatId = 0){
+		$prodCatId = FatUtility::int($prodCatId);
+		
+		$srch = ProductCategory::getSearchObject(false,0,false);
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		$srch->addMultipleFields(array('prodcat_id','GETCATORDERCODE(`prodcat_id`) as prodcat_ordercode'));
+		if($prodCatId){
+			$srch->addCondition('prodcat_id','=',$prodCatId);
+		}
+		
+		$rs = $srch->getResultSet();
+		$orderCode = FatApp::getDb()->fetchAll($rs);
+		foreach($orderCode as $row){
+			$record = new ProductCategory($row['prodcat_id']);
+			$data = array('prodcat_ordercode'=>$row['prodcat_ordercode']);
+			$record->assignValues($data);
+			if (!$record->save()) {
+				Message::addErrorMessage($record->getError());
+				return false;
+			}	
+		}
 	}
 		
 
@@ -326,7 +350,8 @@ class ProductCategory extends MyAppModel{
 		'prodcat_code'
 		));
 
-		$srch->addOrder('GETCATORDERCODE(prodcat_id)');
+		//$srch->addOrder('GETCATORDERCODE(prodcat_id)');
+		$srch->addOrder('prodcat_ordercode');
 		
 		if(count($prefCategoryid)>0){
 			foreach($prefCategoryid as $prefCategoryids){
@@ -464,7 +489,8 @@ class ProductCategory extends MyAppModel{
 		} else {
 			$srch->addFld( 'm.prodcat_id, m.prodcat_identifier as prodcat_name' );
 		}
-		$srch->addFld('GETCATORDERCODE(prodcat_id) as catOrder');
+		//$srch->addFld('GETCATORDERCODE(prodcat_id) as catOrder');
+		$srch->addFld('prodcat_ordercode as catOrder');
 		if( $isDeleted ){
 			$srch->addCondition( 'm.prodcat_deleted', '=', 0 );
 		}

@@ -162,7 +162,7 @@ class Navigation {
 		$prodSrchObj->joinSellerSubscription( $siteLangId, true );
 		$prodSrchObj->addSubscriptionValidCondition();		
 		$prodSrchObj->addGroupBy( 'prodcat_id' );
-		$prodSrchObj->addMultipleFields( array('GETCATCODE(prodcat_id) AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
+		$prodSrchObj->addMultipleFields( array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
 		
 		$navigationCatCache =  FatCache::get('navigationCatCache',CONF_HOME_PAGE_CACHE_TIME,'.txt');
 		

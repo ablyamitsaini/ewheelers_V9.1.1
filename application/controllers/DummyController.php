@@ -20,6 +20,10 @@ class DummyController extends MyAppController {
 		echo "Done";	
 	}
 	
+	function updateCatOrderCode(){
+		ProductCategory::updateCatOrderCode();
+	}	
+	
 	function updateOrderProdSetting(){
 		$srch = new SearchBase(OrderProduct::DB_TBL);
 		$srch->doNotCalculateRecords();
