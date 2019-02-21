@@ -9,8 +9,12 @@
 					</i>
 					<span class="h-badge"><span class="heartbit"></span>5</span></a>
 			</div>
-			<?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?>
-			<?php $this->includeTemplate('_partial/headerUserArea.php',array('controllerName'=>$controllerName)); ?>
+			<div class="short-links">
+				<ul>
+				<?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?>
+				<?php $this->includeTemplate('_partial/headerUserArea.php',array('controllerName'=>$controllerName)); ?>
+				</ul>
+			</div>
 		</div>
 	</header>
 

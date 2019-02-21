@@ -120,4 +120,41 @@ $action = strtolower($action);
 			</ul>
 		</nav>
 	</div>
+<script>
+var Dashboard = function () {
+
+	var menuChangeActive = function menuChangeActive(el) {
+		var hasSubmenu = $(el).hasClass("has-submenu");
+		$(global.menuClass + " .is-active").removeClass("is-active");
+		$(el).addClass("is-active");
+
+
+	};
+
+	var sidebarChangeWidth = function sidebarChangeWidth() {
+		var $menuItemsTitle = $("li .menu-item__title");
+
+		$("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+		$(".hamburger-toggle").toggleClass("is-opened");
+
+
+
+	};
+
+	return {
+		init: function init() {
+			$(".js-hamburger").on("click", sidebarChangeWidth);
+
+			$(".js-menu li").on("click", function (e) {
+				menuChangeActive(e.currentTarget);
+			});
+
+
+		}
+	};
+
+}();
+
+Dashboard.init();
+</script>
 </div>
