@@ -1802,7 +1802,7 @@ class Importexport extends ImportexportCommon{
 			$rowCount++;
 		}
 		// Close File
-		CommonHelper::writeLogFile( $errFile, array(), true, $fileName );
+		CommonHelper::writeLogFile( $errFile, array(), true );
 
 		// Message::addMessage(Labels::getLabel('LBL_data_imported/updated_Successfully',$langId));
 		// FatUtility::dieJsonSuccess(Message::getHtml());
