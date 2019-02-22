@@ -1559,21 +1559,31 @@ END,   special_price_found ) as special_price_found');
 		$srch->addCondition( 'tag_name', 'LIKE', '%'.urldecode($post["keyword"]).'%' );
 		$rs = $srch->getResultSet();
 		$tags = FatApp::getDb()->fetchAll($rs);
-
+		// print_r($tags);
+		$new_arr = array();
+		$count = 0;
 		foreach ($tags as $key => $tag) {
-			$json[] = array(
-				//'label'  => FatUtility::convertToType($tag['tag_id'],FatUtility::VAR_STRING),
-				'value' 	=> strip_tags(html_entity_decode($tag['tag_name'], ENT_QUOTES, 'UTF-8')),
+			$tagName = strip_tags(html_entity_decode($tag['tag_name'], ENT_QUOTES, 'UTF-8'));
+			$position = strpos(strtolower($tagName),strtolower(urldecode($post["keyword"])));
+
+			$json[$position][] = array(
+				'value' 	=> $tagName,
 			);
 		}
-
 		/* $sort_order = array();
 		foreach ($json as $key => $value) {
 			$sort_order[$key] = $value['value'];
 		}
 		array_multisort($sort_order, SORT_ASC, $json); */
 		//echo json_encode( array( 'suggestions' => array('suggestion' => $json ) ) );
-		echo json_encode(array('suggestions'=>$json)); exit;
+		ksort($json);
+		$newJson = array();
+		foreach ($json as $suggestion) {
+			foreach ($suggestion as $result) {
+				$newJson[] = $result;
+			}
+		}
+		echo json_encode(array('suggestions'=>$newJson)); exit;
 	}
 
 	public function getBreadcrumbNodes($action) {
