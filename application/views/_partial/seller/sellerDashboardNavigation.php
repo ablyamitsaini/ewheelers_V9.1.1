@@ -42,7 +42,7 @@ $action = strtolower($action);
 				<li class="menu__item">
 					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></span></div>
 				</li>
-				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'shop') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','shop'); ?>">
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'Sales') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','Sales'); ?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></span></a></div></li>
 				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'ordercancellationrequests') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','orderCancellationRequests'); ?>">
