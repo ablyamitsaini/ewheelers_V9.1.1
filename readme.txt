@@ -20,3 +20,4 @@ Fixes:
     . Arabic email[SMTP] content was not showing properly.
     . Export options data from seller dashboard.
     . Auto suggest search listing results display according to order by searched keyword position.
+    . Retain user on current page after social login.
