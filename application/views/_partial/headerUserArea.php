@@ -22,7 +22,7 @@
 		}
 	 ?>
 	 <li class="dropdown dropdown--arrow">
-		 <?php if(isset($controllerName) && ($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser')){ ?>
+		 <?php if(isset($controllerName) && ($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser') || $controllerName == 'Account'){ ?>
 			<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
 				<img class="my-account__avatar" src="<?php echo $profilePicUrl;?>" alt="">
 			</a>

@@ -10,7 +10,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 		<div class="container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/affiliateDashboardNavigation.php'); ?>
+				<?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
 				<div class="col-xs-10 panel__right--full ">
 					<div class="cols--group">
 					  <div class="panel__head">
