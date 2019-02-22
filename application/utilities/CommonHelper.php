@@ -684,7 +684,7 @@ class CommonHelper extends FatUtility{
 	}
 
 
-	public static function writeLogFile( $file, $fileContent = array(), $fileClose = false, $fileName = '' )
+	public static function writeLogFile( $file, $fileContent = array(), $fileClose = false )
 	{
 		if(!$file ){
 			return;

@@ -1798,7 +1798,7 @@ class Importexport extends ImportexportCommon{
 			$rowCount++;
 		}
 		// Close File
-		CommonHelper::writeLogFile( $errFile, array(), true, $fileName );
+		CommonHelper::writeLogFile( $errFile, array(), true );
 
 
 

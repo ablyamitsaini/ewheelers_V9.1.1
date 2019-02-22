@@ -80,6 +80,7 @@
 							$(document).trigger('close.facebox');
 							$(document).trigger('close.mbsmessage');
 							fcom.displaySuccessMessage(ans.msg);
+							setTimeout(function(){ location.reload(); }, 1000);
 						} else {
 							$('#fileupload_div').html('');
 							$(document).trigger('close.mbsmessage');
