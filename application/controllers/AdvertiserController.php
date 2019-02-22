@@ -56,7 +56,7 @@ class AdvertiserController extends LoggedUserController {
 		$this->set('typeArr',$typeArr);
 		$this->set('promotionList',$promotionList);
 		$this->set('promotionCount', $srch->recordCount());
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function setupPromotion(){
@@ -610,7 +610,7 @@ class AdvertiserController extends LoggedUserController {
 		
 		$this->set("frmSearchPromotions", $frmSearchPromotions);				
 		$this->set("records", $records);				
-		$this->_template->render();	
+		$this->_template->render(true,false);	
 	}
 	
 	public function promotionForm($promotionId = 0){
@@ -921,7 +921,7 @@ class AdvertiserController extends LoggedUserController {
 		
 		$this->set('searchForm',$searchForm);
 		$this->set('promotionDetails',$promotionDetails);
-		$this->_template->render();
+		$this->_template->render(true,false);
 		
 	}
 		

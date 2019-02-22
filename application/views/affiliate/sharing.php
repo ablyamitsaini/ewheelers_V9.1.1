@@ -5,66 +5,68 @@ $sharingFrm->addFormTagAttribute('onsubmit','setUpMailAffiliateSharing(this);ret
 $sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
 $sharingFrm->developerTags['fld_default_col'] = 12;
 ?>
-<div id="body" class="body bg--gray">
-    <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-		<div class="container">
-			<div class="row">
-				<?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
-				<div class="col-xs-10 panel__right--full ">
-					<div class="cols--group">
-					  <div class="panel__head">
-						<h2><?php echo Labels::getLabel('LBL_Sharing_Information',$siteLangId);?></h2>
-					  </div>
-					  <div class="panel__body">
-						<div class="box box--white box--space">
-						  <div class="box__body">
-							<p><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text',$siteLangId)?></p>
-							<p><strong><?php echo Labels::getLabel('LBL_You_may_copy_invitation_link_below',$siteLangId)?></strong></p>
-							<div class="alert--gray"><?php echo $affiliateTrackingUrl; ?></div>
-							<div class="gap"></div>
-							<ul class="grid--onethird grid--onethird-large">
-							  <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){?>
-							  <li> <a id="facebook_btn" href="javascript:void(0);" class="box--share box--share-fb"> <i class="fa fa-facebook"></i>
-								<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
-								<h2><?php echo Labels::getLabel('L_Facebook',$siteLangId)?></h2>
-								<p><?php echo sprintf(Labels::getLabel('L_Post_your_wall_facebook',$siteLangId),'<strong>'.Labels::getLabel('L_Facebook',$siteLangId).'</strong>')?></p>
-								</a>
-								<span class="ajax_message thanks-msg" id="fb_ajax"></span>
-							  </li>
-							  <?php } ?>
-							  <?php if (!empty(FatApp::getConfig("CONF_TWITTER_API_KEY",FatUtility::VAR_STRING,'')) && !empty(FatApp::getConfig("CONF_TWITTER_API_SECRET",FatUtility::VAR_STRING,''))){ ?>
-							  <li> <a class="box--share box--share-tw" id="twitter_btn" href="javascript:void(0);"> <i class="fa fa-twitter"></i>
-								<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
-								<h2><?php echo Labels::getLabel('L_Twitter',$siteLangId)?></h2>
-								<p><?php echo sprintf(Labels::getLabel('L_Send_a_tweet_followers',$siteLangId),'<strong>'.Labels::getLabel('L_Tweet',$siteLangId).'</strong>')?></p>
-								</a> <span class="ajax_message thanks-msg" id="twitter_ajax"></span>
-								</li>
-							  <?php } ?>
-							  <li> <a class="showbutton box--share box--share-mail" href="javascript:void(0);"> <i class="fa fa-envelope"></i>
-								<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
-								<h2><?php echo Labels::getLabel('L_Email',$siteLangId)?></h2>
-								<p><?php echo Labels::getLabel('L_Email',$siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself',$siteLangId)?></p>
-								</a>
-								<span class="ajax_message thanks-msg"></span>
-								</li>
-							</ul>
-							<span class="gap"></span>
-							<div style="display:none;" class="borderwrap showwrap">
-								<h4><?php echo Labels::getLabel('L_Invite_friends_through_email',$siteLangId)?></h4>
-								<?php echo $sharingFrm->getFormHtml(); ?>
-								<span class="ajax_message" id="custom_ajax"></span>
+<?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+  <div class="content-wrapper content-space">
+	<div class="content-header justify-content-between row mb-3">
+		<div class="content-header-left col-auto ">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Sharing' , $siteLangId); ?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="cards">
+					<div class="cards-header p-3"><h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sharing_Information',$siteLangId);?></h5></div>
+					<div class="grids--container">
+						<div class="row">						
+							<div class="col-md-12">
+								<p class="note"><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text',$siteLangId)?><br/><strong><?php echo Labels::getLabel('LBL_You_may_copy_invitation_link_below',$siteLangId)?></strong></p>
+								<div class="alert--gray"><?php echo $affiliateTrackingUrl; ?></div>
 							</div>
-						  </div>
 						</div>
-					  </div>
+					</div>
+					<div class="cards-content p-3">
+						<ul class="grid--onethird grid--onethird-large">
+						  <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){?>
+						  <li> <a id="facebook_btn" href="javascript:void(0);" class="box--share box--share-fb"> <i class="fa fa-facebook"></i>
+							<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+							<h2><?php echo Labels::getLabel('L_Facebook',$siteLangId)?></h2>
+							<p><?php echo sprintf(Labels::getLabel('L_Post_your_wall_facebook',$siteLangId),'<strong>'.Labels::getLabel('L_Facebook',$siteLangId).'</strong>')?></p>
+							</a>
+							<span class="ajax_message thanks-msg" id="fb_ajax"></span>
+						  </li>
+						  <?php } ?>
+						  <?php if (!empty(FatApp::getConfig("CONF_TWITTER_API_KEY",FatUtility::VAR_STRING,'')) && !empty(FatApp::getConfig("CONF_TWITTER_API_SECRET",FatUtility::VAR_STRING,''))){ ?>
+						  <li> <a class="box--share box--share-tw" id="twitter_btn" href="javascript:void(0);"> <i class="fa fa-twitter"></i>
+							<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+							<h2><?php echo Labels::getLabel('L_Twitter',$siteLangId)?></h2>
+							<p><?php echo sprintf(Labels::getLabel('L_Send_a_tweet_followers',$siteLangId),'<strong>'.Labels::getLabel('L_Tweet',$siteLangId).'</strong>')?></p>
+							</a> <span class="ajax_message thanks-msg" id="twitter_ajax"></span>
+							</li>
+						  <?php } ?>
+						  <li> <a class="showbutton box--share box--share-mail" href="javascript:void(0);"> <i class="fa fa-envelope"></i>
+							<h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+							<h2><?php echo Labels::getLabel('L_Email',$siteLangId)?></h2>
+							<p><?php echo Labels::getLabel('L_Email',$siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself',$siteLangId)?></p>
+							</a>
+							<span class="ajax_message thanks-msg"></span>
+							</li>
+						</ul>
+						<span class="gap"></span>
+						<div style="display:none;" class="borderwrap showwrap">
+							<h4><?php echo Labels::getLabel('L_Invite_friends_through_email',$siteLangId)?></h4>
+							<?php echo $sharingFrm->getFormHtml(); ?>
+							<span class="ajax_message" id="custom_ajax"></span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+  </div>
+</main>
 
 <script type="text/javascript">
 (function(d, s, id) {
