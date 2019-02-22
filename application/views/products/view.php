@@ -12,8 +12,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
     </div> -->
       <div class="row">
         <div class="col-lg-6">
-          <div id="img-static"  class="img-sticky80">
-            <div class="product-detail-gallery">
+          <div id="img-static" class="product-detail-gallery">
+
               <?php $data['product'] = $product;
 				$data['productImagesArr'] = $productImagesArr;
 				$data['imageGallery'] = true;
@@ -47,7 +47,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					</div>
 				<?php } ?>
 				<div class="gap"></div>
-            </div>
+
           </div>
         </div>
         <div class="col-lg-6">
@@ -74,7 +74,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
-			 
+
 			<?php if($shop['shop_free_ship_upto'] > 0){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
@@ -276,7 +276,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 
 			<div class="gap"></div>
 			<div class="shops-detail-wrapper">
-				<div class="row">
+				<div class="row align-items-center">
 					<div class="col-md-8 col-sm-12 col-xs-12">
 						<div class="shop-owner-detail">
 							<div class="owner_logo"><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id']));?>" title="<?php echo $shop['shop_name'];?>" ><img src="<?php echo CommonHelper::generateUrl('image','shopLogo', array($shop['shop_id'], "SMALL",$siteLangId),CONF_WEBROOT_URL); ?>" alt="<?php echo $shop['shop_name'];?>"></a></div>
@@ -294,7 +294,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 					  <?php if(count($product['moreSellersArr'])>0){ ?>
-					  <div class="more--seller align--right"><a class="link--arrow"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_View_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
+					  <div class="more--seller"><a class="link"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_View_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
 					  <?php } ?>
 					  <div class="ftshops_item_head_right"> <!--<a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a><a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a>-->  </div>
 					</div>

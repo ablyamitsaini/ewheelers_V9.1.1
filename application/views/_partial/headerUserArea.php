@@ -28,8 +28,8 @@
 			</a>
 		<?php }else{?>
 			<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel( 'LBL_Hi,', $siteLangId ).' '.$userName; ?></span></a>
-		<?php }?>		
-		  <div class="dropdown__target dropdown__target-account dropdown__target-js">
+		<?php }?>
+		  <div class="dropdown__target dropdown__target__right dropdown__target-js">
             <div class="dropdown__target-space">
               <div class="dropdown__target-body">
                 <!-- for desktop my account links -->
