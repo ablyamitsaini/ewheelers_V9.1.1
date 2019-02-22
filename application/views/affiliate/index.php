@@ -1,5 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
   <div class="content-wrapper content-space">

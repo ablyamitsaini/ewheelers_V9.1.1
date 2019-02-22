@@ -18,7 +18,7 @@ class AffiliateController extends LoggedUserController{
 		$loggedUserId = UserAuthentication::getLoggedUserId();
 		$this->set('userBalance', User::getUserBalance( $loggedUserId ));
 		$this->set( 'userRevenue', User::getAffiliateUserRevenue( $loggedUserId ) );
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function paymentInfoForm(){
@@ -246,7 +246,7 @@ class AffiliateController extends LoggedUserController{
 		$this->set( 'sharingFrm', $sharingFrm );
 		$this->set('fbLoginUrl',$fbLoginUrl);
 		$this->set('fbAccessToken',$fbAccessToken);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function setUpMailAffiliateSharing(){
