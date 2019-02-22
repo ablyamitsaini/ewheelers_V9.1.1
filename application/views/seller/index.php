@@ -2,12 +2,12 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
-		<div class="content-header-left col-md-auto">
+	<div class="row justify-content-between mb-3">
+		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard',$siteLangId);?></h2>
 		</div>
-		<div class="content-header-right col-md-auto">
+		<div class="col-md-auto">
 			<div class="btn-group">
 				<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){ ?>
 				<a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>" class="btn btn--border btn--sm"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a>
