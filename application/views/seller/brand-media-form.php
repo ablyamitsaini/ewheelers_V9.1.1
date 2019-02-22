@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $brandReqMediaFrm->setFormTagAttribute('class', 'web_form form_horizontal');
 $brandReqMediaFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $brandReqMediaFrm->developerTags['fld_default_col'] = 12;

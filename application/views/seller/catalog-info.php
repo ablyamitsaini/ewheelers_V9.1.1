@@ -1,10 +1,8 @@
 <div class="white--bg padding20">
   <div class="row">
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 clearfix">
-	  <div id="img-static"  class="">
-		<div class="product-gallery">
+	  <div id="img-static" class="product-gallery">
 			<img src="<?php echo CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, 0, $siteLangId ) ) ?>">
-		</div>
 	  </div>
 	</div>
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">

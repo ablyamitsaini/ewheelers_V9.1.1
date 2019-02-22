@@ -40,6 +40,35 @@ $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-6');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
+
+
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="row justify-content-between mb-3">
+		<div class="col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Order_Return_Requests', $siteLangId); ?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header p-3">
+				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Order_Return_Requests', $siteLangId); ?></h5>
+			</div>
+			<div class="cards-content p-3">
+        <div class="form__cover nopadding--bottom">
+          <?php echo $frmOrderReturnRequestsSrch->getFormHtml(); ?>
+        </div>
+        <span class="gap"></span>
+        <div id="returnOrderRequestsListing"></div>
+			</div>
+		</div>
+	</div>
+  </div>
+</main>
+
+
 <div id="body" class="body bg--gray">
     <section class="dashboard">
 		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
@@ -49,19 +78,15 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
 						<div class="panel__head">
-							<h2><?php echo Labels::getLabel('LBL_Order_Return_Requests', $siteLangId); ?></h2>
+							<h2></h2>
 						</div>
 						<div class="panel__body">
 							<div class="box box--white box--space">
 								<div class="box__head box__head--large">
-								   <h4><?php echo Labels::getLabel('LBL_Search_Order_Return_Requests', $siteLangId); ?></h4>
+								   <h4></h4>
 								</div>
 								<div class="box__body">
-									<div class="form__cover nopadding--bottom">
-										<?php echo $frmOrderReturnRequestsSrch->getFormHtml(); ?>
-									</div>
-									<span class="gap"></span>
-									<div id="returnOrderRequestsListing"></div>
+
 								</div>
 							</div>
 						</div>

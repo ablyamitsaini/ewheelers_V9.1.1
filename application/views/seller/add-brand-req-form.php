@@ -11,7 +11,7 @@ $identifierFld->setFieldTagAttribute('id',Brand::DB_TBL_PREFIX.'id');
   <h4><?php echo Labels::getLabel('LBL_Request_New_Brand',$langId); ?></h4>
 </div>
 <div class="box__body">
-  <div class="tabs tabs--small tabs--scroll clearfix">
+  <div class="tabs tabs--small tabs--scroll">
     <ul>
       <li class="is-active" ><a href="javascript:void(0)" onclick="addBrandReqForm(<?php echo $brandReqId; ?>);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId);?></a></li>
       <?php

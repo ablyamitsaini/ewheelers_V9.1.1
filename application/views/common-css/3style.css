@@ -2758,7 +2758,10 @@ table.cart-tbl-addons .item__pic {
   line-height: 1;
 }
 
-.dropdown__target .list-vertical{ max-height: 350px; overflow-y: auto;}
+.dropdown__target .list-vertical {
+  max-height: 350px;
+  overflow-y: auto;
+}
 
 /*list*/
 .list-vertical {
@@ -10142,7 +10145,7 @@ html.quick-view--open {
   justify-content: center;
   font-weight: 500;
   font-family: 'Poppins', sans-serif;
-  margin:0;
+  margin: 0;
   width: 100%;
   font-size: 1.2em;
   flex: 0 0 48%;
@@ -10298,7 +10301,7 @@ html.quick-view--open {
 .product-detail-gallery {
   position: sticky;
   top: 130px;
-  padding-top:3.125rem;
+  padding-top: 3.125rem;
 }
 
 .slider-for {}
@@ -10983,8 +10986,9 @@ html.quick-view--open {
   color: #fff;
 }
 
-
-.header-icons-group .short-links > ul > li:after{ content: normal;}
+.header-icons-group .short-links>ul>li:after {
+  content: normal;
+}
 
 .c-header-icon {
   display: flex;
@@ -11430,7 +11434,7 @@ html.quick-view--open {
 }
 
 .dashboard-menu .icn svg,
-.draw{
+.draw {
   animation: draw 4000ms ease-in-out;
   stroke: #666666;
 }
@@ -11498,7 +11502,8 @@ main.main {
 }
 
 .dashboard-types ul li {
-  margin: 0 5px;
+  margin-inline-start: 5px;
+  margin-inline-end: 5px;
 }
 
 .dashboard-types ul li:first-child {
@@ -11554,6 +11559,7 @@ main.main {
 
 .widget-stats {
   flex: 0 0 20%;
+  max-width: 20%;
   padding-inline-end: 10px;
   padding-inline-start: 10px;
 }
@@ -11575,7 +11581,9 @@ main.main {
   /*font-size: 1.625rem;*/
   font-size: calc(112.5% + 0.2vw);
   text-align: right;
-  display: flex; justify-content: flex-end; align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .stats-number .total {
