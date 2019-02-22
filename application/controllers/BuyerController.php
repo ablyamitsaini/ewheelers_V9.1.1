@@ -93,7 +93,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
 		$this->set('totalMessageCount', $totalMessageCount);
 		$this->set('userBalance', User::getUserBalance($userId));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function viewOrder($orderId,$opId = 0){
@@ -178,7 +178,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('digitalDownloadLinks', $digitalDownloadLinks);
 		$this->set( 'languages', Language::getAllNames() );
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));		
-		$this->_template->render();		
+		$this->_template->render(true,false);		
 	}
 	
 	public function downloadDigitalFile($aFileId,$recordId = 0) {
@@ -243,7 +243,7 @@ class BuyerController extends LoggedUserController {
 	}
 	
 	/* public function myAddresses(){
-		$this->_template->render();
+		$this->_template->render(true,false);
 	} */
 	
 	/* public function searchAddresses(){
@@ -281,7 +281,7 @@ class BuyerController extends LoggedUserController {
 	public function orders(){
 		$frmOrderSrch = $this->getOrderSearchForm( $this->siteLangId );
 		$this->set('frmOrderSrch', $frmOrderSrch);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderSearchListing(){
@@ -365,7 +365,7 @@ class BuyerController extends LoggedUserController {
 	}
 	
 	public function MyDownloads(){
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function downloadSearch(){
@@ -494,7 +494,7 @@ class BuyerController extends LoggedUserController {
 		$frm = $this->getOrderCancelRequestForm( $this->siteLangId );
 		$frm->fill( array('op_id' => $opDetail['op_id'] ) );
 		$this->set('frmOrderCancel', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function setupOrderCancelRequest(){
@@ -595,7 +595,7 @@ class BuyerController extends LoggedUserController {
 	public function orderCancellationRequests(){
 		$frm = $this->getOrderCancellationRequestsSearchForm( $this->siteLangId );
 		$this->set('frmOrderCancellationRequestsSrch', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderCancellationRequestSearch(){
@@ -653,7 +653,7 @@ class BuyerController extends LoggedUserController {
 	public function orderReturnRequests(){
 		$frm = $this->getOrderReturnRequestsSearchForm( $this->siteLangId );
 		$this->set('frmOrderReturnRequestsSrch', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderReturnRequestSearch(){
@@ -779,7 +779,7 @@ class BuyerController extends LoggedUserController {
 		$this->set( 'requestRequestStatusArr', OrderReturnRequest::getRequestStatusArr( $this->siteLangId ) );
 		$this->set('logged_user_name', UserAuthentication::getLoggedUserAttribute( 'user_name') );
 		$this->set('logged_user_id', UserAuthentication::getLoggedUserId() );
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function downloadAttachedFileForReturn($recordId, $recordSubid =0) {
@@ -1044,7 +1044,7 @@ class BuyerController extends LoggedUserController {
 		$this->set('opDetail', $opDetail);
 		$this->_template->addCss(array('css/star-rating.css'));
 		$this->_template->addJs(array('js/jquery.barrating.min.js'));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function setupOrderFeedback(){
@@ -1299,7 +1299,7 @@ class BuyerController extends LoggedUserController {
 		
 		$frm->fill( array('op_id' => $opDetail['op_id'] ) );
 		$this->set('frmOrderReturnRequest', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function setupOrderReturnRequest(){
@@ -1488,7 +1488,7 @@ class BuyerController extends LoggedUserController {
 		
 		$this->set('totalRewardPoints',UserRewardBreakup::rewardPointBalance($userId) );
 		$this->set('convertReward',$convertReward);		
-		$this->_template->render();	
+		$this->_template->render(true,false);	
 	}
 	
 	public function rewardPointsSearch(){
@@ -1782,7 +1782,7 @@ class BuyerController extends LoggedUserController {
 		
 		$this->set('referralTrackingUrl', CommonHelper::referralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code')));
 		$this->set('sharingfrm',$this->getFriendsSharingForm($this->siteLangId));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sendMailShareEarn(){

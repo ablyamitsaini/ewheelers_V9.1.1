@@ -41,36 +41,28 @@ $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-6');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
-
-<div id="body" class="body bg--gray">
-    <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-		<div class="container">
-			<div class="row">
-				<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
-				<div class="col-xs-10 panel__right--full" >
-					<div class="cols--group">
-						<div class="panel__head">
-							<h2><?php echo Labels::getLabel('LBL_My_Sales', $siteLangId); ?></h2>
-						</div>
-						<div class="panel__body">
-							<div class="box box--white box--space">
-								<div class="box__head box__head--large">
-									<h5><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
-								</div>
-								<div class="box__body">
-									<div class="form__cover nopadding--bottom">
-										<?php echo $frmOrderSrch->getFormHtml(); ?>
-									</div>
-									<span class="gap"></span>
-									<div id="ordersListing"></div>
-								</div>
-							</div>
-						</div>
-					</div>
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="content-header justify-content-between row mb-3">
+		<div class="content-header-left col-auto ">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Sales', $siteLangId); ?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header">
+				<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
+			</div>
+			<div class="cards-content p-3">
+				<div class="form__cover nopadding--bottom">
+					<?php echo $frmOrderSrch->getFormHtml(); ?>
 				</div>
+				<span class="gap"></span>
+				<div id="ordersListing"></div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+  </div>
+</main>

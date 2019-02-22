@@ -22,7 +22,7 @@ trait SellerProducts{
 		
 		$this->set('frmSearch', $this->getSellerProductSearchForm());
 		$this->set('product_id', $product_id);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sellerProducts( $product_id = 0 ){
@@ -156,7 +156,7 @@ trait SellerProducts{
 		$this->set('language', Language::getAllNames());
 		
 		$this->set('activeTab', 'GENERAL');
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sellerProductGeneralForm( $product_id, $selprod_id = 0 ){

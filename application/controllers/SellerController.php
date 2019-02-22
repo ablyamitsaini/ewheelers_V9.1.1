@@ -128,13 +128,13 @@ class SellerController extends LoggedUserController {
 				
 		$this->_template->addJs(array('js/chartist.min.js'));
 		$this->_template->addCss(array('css/chartist.css'));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sales(){
 		$frmOrderSrch = $this->getOrderSearchForm( $this->siteLangId );
 		$this->set('frmOrderSrch', $frmOrderSrch);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderProductSearchListing(){
@@ -409,7 +409,7 @@ class SellerController extends LoggedUserController {
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 		$this->set('frm', $frm);
 		$this->set('displayForm',(in_array($orderDetail['op_status_id'],$processingStatuses)));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function viewSubscriptionOrder($ossubs_id){
@@ -451,7 +451,7 @@ class SellerController extends LoggedUserController {
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 		//$this->set('frm', $frm);
 		//	$this->set('displayForm',(in_array($orderDetail['op_status_id'],$processingStatuses)));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 		
 	public function changeOrderStatus(){
@@ -611,7 +611,7 @@ class SellerController extends LoggedUserController {
 		$this->set('orderDetail', $orderDetail);
 		$this->set('orderStatuses', $orderStatuses);
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));		
-		$this->_template->render();		
+		$this->_template->render(true,false);	
 	}
 	
 	public function cancelReason(){
@@ -684,7 +684,7 @@ class SellerController extends LoggedUserController {
 		$this->set('canRequestProduct',User::canRequestProduct());	
 		$this->set('canAddCustomProduct',User::canAddCustomProduct());	
 		$this->set('canAddCustomProductAvailableToAllSellers',User::canAddCustomProductAvailableToAllSellers());	
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function requestedCatalog(){
@@ -696,7 +696,7 @@ class SellerController extends LoggedUserController {
 			Message::addErrorMessage( Labels::getLabel( 'MSG_Invalid_Access' , $this->siteLangId ));
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','catalog'));
 		}
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function searchRequestedCatalog(){
@@ -1181,7 +1181,7 @@ class SellerController extends LoggedUserController {
 	public function taxCategories(){
 		$frmSearch = $this->getTaxCatSearchForm($this->siteLangId);
 		$this->set("frmSearch",$frmSearch);	
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function searchTaxCategories(){
@@ -1308,7 +1308,7 @@ class SellerController extends LoggedUserController {
 		$this->set('shop_id',$shop_id);
 		$this->set('language',Language::getAllNames());
 		$this->set('siteLangId',$this->siteLangId);
-		$this->_template->render();		
+		$this->_template->render(true,false);	
 	}
 	
 	public function shopForm(){
@@ -1988,7 +1988,7 @@ class SellerController extends LoggedUserController {
 	}
 	
 	/* public function CategoryBanners(){
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}  */
 	
 	public function addCategoryBanner($prodCatId){
@@ -2210,7 +2210,7 @@ class SellerController extends LoggedUserController {
 	public function orderCancellationRequests(){
 		$frm = $this->getOrderCancellationRequestsSearchForm( $this->siteLangId );
 		$this->set('frmOrderCancellationRequestsSrch', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderCancellationRequestSearch(){
@@ -2267,7 +2267,7 @@ class SellerController extends LoggedUserController {
 	public function orderReturnRequests(){
 		$frm = $this->getOrderReturnRequestsSearchForm( $this->siteLangId );
 		$this->set('frmOrderReturnRequestsSrch', $frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function orderReturnRequestSearch(){
@@ -2430,7 +2430,7 @@ class SellerController extends LoggedUserController {
 		$this->set( 'requestRequestStatusArr', OrderReturnRequest::getRequestStatusArr( $this->siteLangId ) );
 		$this->set('logged_user_name', UserAuthentication::getLoggedUserAttribute( 'user_name') );
 		$this->set('logged_user_id', UserAuthentication::getLoggedUserId() );
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function approveOrderReturnRequest( $orrequest_id ){
@@ -2548,7 +2548,7 @@ class SellerController extends LoggedUserController {
 	public function socialPlatforms(){
 		$userId = UserAuthentication::getLoggedUserId();
 		$this->set('siteLangId',$this->siteLangId);
-		$this->_template->render();		
+		$this->_template->render(true,false);		
 	}
 	
 	public function socialPlatformSearch(){
@@ -2775,7 +2775,7 @@ class SellerController extends LoggedUserController {
 		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){	
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function InventoryUpdateForm(){
@@ -3209,7 +3209,7 @@ class SellerController extends LoggedUserController {
 		$this->set('includeFreeSubscription',$includeFreeSubscription);
 		$this->set('currentActivePlanId',$currentActivePlanId);
 		$this->set('packagesArr',$packagesArr);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	/*  Subscription Orders */
@@ -3229,7 +3229,7 @@ class SellerController extends LoggedUserController {
 		$this->set('currentActivePlan', $currentActivePlan);
 		$this->set('frmOrderSrch', $frmOrderSrch);
 		$this->set('autoRenew', $autoRenew);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 		
 	public function addCatalogPopup(){

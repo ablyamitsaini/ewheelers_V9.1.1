@@ -1,3 +1,4 @@
+<?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
@@ -7,8 +8,7 @@
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard',$siteLangId);?></h2>
 		</div>
 		<div class="content-header-right col-auto">
-			<div class="btn-group">
-			<ul class="links--inline">			  
+			<div class="btn-group">		  
 				<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){ ?>
 				<a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>" class="btn btn--border btn--sm"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a>
 				<?php  } ?>
