@@ -18,3 +18,4 @@ Fixes:
     . Fixed product category search result mismatch issue while adding catalog.
     . Products link option removed from header breadcrumb of product detail page.
     . Arabic email[SMTP] content was not showing properly.
+    . Export options data from seller dashboard.
