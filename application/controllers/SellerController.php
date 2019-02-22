@@ -113,7 +113,6 @@ class SellerController extends LoggedUserController {
 			$this->set('remainingAllowedProducts',$remainingAllowedProducts);
 		}
 		/*]*/
-		
 		$this->set('notAllowedStatues', $notAllowedStatues);
 		$this->set('orders', $orders);
 		$this->set('ordersCount', $srch->recordCount());
