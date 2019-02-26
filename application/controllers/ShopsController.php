@@ -9,6 +9,8 @@ class ShopsController extends MyAppController {
 	public function index(){
 		$searchForm = $this->getShopSearchForm($this->siteLangId);
 		$this->set('searchForm',$searchForm);
+		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
 		$this->_template->render();
 	}
 	

@@ -19,8 +19,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 					});
 
 					$prevShopId = 0;
+				$productsInShop = array_count_values(array_column($products, 'shop_id'));
 				if( count($products) ){
+					$productCount = 0;
 					foreach( $products as $product ){
+						$productCount++;
 						if( $product['shop_id'] != $prevShopId){ ?>
 						<div class="short-detail">
 							<div class="shipping-seller">
@@ -44,7 +47,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 							</div>
 							<table class="cart-summary table cart--full js-scrollable scroll-hint">
 							<tbody>
-						<?php } $prevShopId = $product['shop_id']; $newShippingMethods = $shippingMethods;
+						<?php }  $newShippingMethods = $shippingMethods;
 						$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)';
 						$shopUrl = !$isAppUser?CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) ):'javascript:void(0)';
 						$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
@@ -187,11 +190,12 @@ $shippingapi_idFld->developerTags['col'] = 6;
 								<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="images/retina/sprite.svg#bin"></use></svg></i></a>
 							</td>
 						</tr>
-						<?php /* if( $product['shop_id'] != $prevShopId){ ?>
+						<?php if( $productCount == $productsInShop[$product['shop_id']]){ 
+						$productCount = 0; ?>
 						</tbody>
 						</table>
 						</div>
-						<?php } */ ?>
+						<?php } $prevShopId = $product['shop_id']; ?>
 						<?php }
 					} else {
 						echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);
@@ -203,9 +207,9 @@ $shippingapi_idFld->developerTags['col'] = 6;
 		
 		
 		
-		</tbody>
+		<!--</tbody>
 		</table>
-		</div>
+		</div>-->
 		
 		
 

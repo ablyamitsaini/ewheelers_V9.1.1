@@ -319,77 +319,166 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-12">
-				<div class="row justify-content-between">
-					<div class="col-md-3 order-lg-2 mb-3 text-lg-right">
-						<div class="btn-group">
-							<a href="javascript:void(0)" class="btn btn--sm btn--active"><i class="icn"><svg class="svg">
-										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view"></use>
-									</svg></i><?php echo Labels::getLabel('LBL_Tabs_View',$siteLangId); ?></a>
-							<a href="javascript:void(0)" class="btn btn--sm"><i class="icn"><svg class="svg">
-										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview"></use>
-									</svg></i><?php echo Labels::getLabel('LBL_List_View',$siteLangId); ?></a>
+					<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
+					<div class="row justify-content-between">
+						<div class="col-md-3 order-lg-2 mb-3 text-lg-right">
+							<div class="btn-group">
+								<a href="javascript:void(0)" class="btn btn--sm tab view--link-js btn--active"><i class="icn"><svg class="svg">
+											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view"></use>
+										</svg></i><?php echo Labels::getLabel('LBL_Tabs_View',$siteLangId); ?></a>
+								<a href="javascript:void(0)" class="btn btn--sm list view--link-js "><i class="icn"><svg class="svg">
+											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview"></use>
+										</svg></i><?php echo Labels::getLabel('LBL_List_View',$siteLangId); ?></a>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<div id="" class="tabs tabs--flat-js tab-js">
+								<ul>
+									<?php if( count($productSpecifications)>0 ){?>
+									<li class="is-active"><a href="#tb-1"><?php echo Labels::getLabel('LBL_Specification',$siteLangId); ?></a></li>
+									<?php }?>
+									<?php if( $youtube_embed_code || $product['product_description']!=''){ ?>
+									<li class=""><a href="#tb-2"><?php echo Labels::getLabel('LBL_Description',$siteLangId); ?> </a></li>
+									<?php }?>
+									<?php if(!empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies'])) { ?>
+									<li class=""><a href="#tb-3"><?php echo Labels::getLabel('LBL_Policies',$siteLangId); ?> </a></li>
+									<?php }?>
+									<?php if(!empty($product['selprodComments'])) { ?>
+									<li class=""><a href="#tb-4"><?php echo Labels::getLabel('LBL_Extra_comments',$siteLangId); ?> </a></li>
+									<?php }?>
+								</ul>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-9"></div>
-				</div>
-				<div class="gap"></div>
-
-				<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]);
-				if( count($productSpecifications)>0 || $youtube_embed_code || $product['product_description']!='' || !empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || !empty($product['selprodComments']) ){ ?>
-					<div class="box box--white box--radius box--space">
-						<div class="cms">
-							<?php if( count($productSpecifications)>0 ){?>
-							<h6><?php echo Labels::getLabel('LBL_Specification',$siteLangId); ?></h6>
-							<table>
-								<tbody>
-									<?php foreach($productSpecifications as $key => $specification){ ?>
-									<tr>
-										<th><?php echo $specification['prodspec_name']." :" ;?></th>
-										<td><?php echo html_entity_decode($specification['prodspec_value'],ENT_QUOTES,'utf-8') ; ?></td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
-							<br>
-							<?php }?>
-							<?php if( $youtube_embed_code || $product['product_description']!=''){ ?>
-							<h6><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h6>
-							<?php if($youtube_embed_code!=""):?>
-							  <div class="videowrap">
-								<iframe width="60%" height="300" src="//www.youtube.com/embed/<?php echo $youtube_embed_code?>" frameborder="0" allowfullscreen></iframe>
-							  </div>
-							  <span class="gap"></span>
-							  <?php  endif;?>
-							<p><?php echo CommonHelper::renderHtml($product['product_description']);?></p>
-							<br>
-							<?php }?>
-
-							<?php if(!empty($product['selprod_warranty_policies'])) { ?>
-							<h6><?php echo Labels::getLabel('LBL_Warranty', $siteLangId); ?></h6>
-							<ul class="listing--bullet">
-							  <?php foreach($product['selprod_warranty_policies'] as $warranty) { ?>
-							  <li><?php echo $warranty; ?></li>
-							  <?php } ?>
-							</ul>
-							<br>
-							<?php } ?>
-							<?php if(!empty($product['selprod_return_policies'])) { ?>
-							<h6><?php echo Labels::getLabel('LBL_Return_Policy', $siteLangId); ?></h6>
-							<ul class="listing--bullet">
-							  <?php foreach($product['selprod_return_policies'] as $policy) { ?>
-							  <li><?php echo $policy; ?></li>
-							  <?php } ?>
-							</ul>
-							<br>
-							<?php }?>
-							<?php if(!empty($product['selprodComments'])) { ?>
-							<h6><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?></h6>
-							<p><?php echo CommonHelper::displayNotApplicable($siteLangId, nl2br($product['selprodComments'])); ?></p>
-							<?php } ?>
-							<br>
+					<div class="tab-js">
+						<?php if( count($productSpecifications)>0 ){?>
+						<div id="tb-1" class="tabs-content tabs-content-js" style="display: block;">
+							<div class="box box--white box--radius box--space">
+								<div class="cms">
+									<h6><?php echo Labels::getLabel('LBL_Specification',$siteLangId); ?></h6>
+									<table>
+										<tbody>
+											<?php foreach($productSpecifications as $key => $specification){ ?>
+											<tr>
+												<th><?php echo $specification['prodspec_name']." :" ;?></th>
+												<td><?php echo html_entity_decode($specification['prodspec_value'],ENT_QUOTES,'utf-8') ; ?></td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</div>
+						<?php }?>
+						<?php if( $youtube_embed_code || $product['product_description']!=''){ ?>
+						<div id="tb-2" class="tabs-content tabs-content-js" style="display: none;">
+							<div class="box box--white box--radius box--space">
+								<div class="cms">
+									<h6><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h6>
+									<?php if($youtube_embed_code!=""):?>
+									  <div class="videowrap">
+										<iframe width="60%" height="300" src="//www.youtube.com/embed/<?php echo $youtube_embed_code?>" frameborder="0" allowfullscreen></iframe>
+									  </div>
+									  <span class="gap"></span>
+									  <?php  endif;?>
+									  <p><?php echo CommonHelper::renderHtml($product['product_description']);?></p>
+								</div>
+							</div>
+						</div>
+						<?php }?>
+						<?php if(!empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies'])) { ?>
+						<div id="tb-3" class="tabs-content tabs-content-js" style="display: none;">
+							<div class="box box--white box--radius box--space">
+								<div class="cms">
+								<?php if(!empty($product['selprod_warranty_policies'])) { ?>
+									<h6><?php echo Labels::getLabel('LBL_Warranty', $siteLangId); ?></h6>
+									<ul class="listing--bullet">
+									  <?php foreach($product['selprod_warranty_policies'] as $warranty) { ?>
+									  <li><?php echo $warranty; ?></li>
+									  <?php } ?>
+									</ul>
+								<?php }?>
+								<?php if(!empty($product['selprod_return_policies'])) { ?>
+									<h6><?php echo Labels::getLabel('LBL_Return_Policy', $siteLangId); ?></h6>
+									<ul class="listing--bullet">
+									  <?php foreach($product['selprod_return_policies'] as $policy) { ?>
+									  <li><?php echo $policy; ?></li>
+									  <?php } ?>
+									</ul>
+								<?php }?>
+								</div>
+							</div>
+						</div>
+						<?php }?>
+						<?php if(!empty($product['selprodComments'])) { ?>
+						<div id="tb-4" class="tabs-content tabs-content-js" style="display: none;">
+							<div class="box box--white box--radius box--space">
+								<div class="cms">
+									<h6><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?></h6>
+									<p><?php echo CommonHelper::displayNotApplicable($siteLangId, nl2br($product['selprodComments'])); ?></p>
+								</div>
+							</div>
+						</div>
+						<?php }?>
+					</div>					
+					<div class="gap"></div>
+					<div class="list-js">
+					<?php if( count($productSpecifications)>0 || $youtube_embed_code || $product['product_description']!='' || !empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || !empty($product['selprodComments']) ){ ?>
+						<div class="box box--white box--radius box--space">
+							<div class="cms">
+								<?php if( count($productSpecifications)>0 ){?>
+								<h6><?php echo Labels::getLabel('LBL_Specification',$siteLangId); ?></h6>
+								<table>
+									<tbody>
+										<?php foreach($productSpecifications as $key => $specification){ ?>
+										<tr>
+											<th><?php echo $specification['prodspec_name']." :" ;?></th>
+											<td><?php echo html_entity_decode($specification['prodspec_value'],ENT_QUOTES,'utf-8') ; ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+								<br>
+								<?php }?>
+								<?php if( $youtube_embed_code || $product['product_description']!=''){ ?>
+								<h6><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h6>
+								<?php if($youtube_embed_code!=""):?>
+								  <div class="videowrap">
+									<iframe width="60%" height="300" src="//www.youtube.com/embed/<?php echo $youtube_embed_code?>" frameborder="0" allowfullscreen></iframe>
+								  </div>
+								  <span class="gap"></span>
+								  <?php  endif;?>
+								<p><?php echo CommonHelper::renderHtml($product['product_description']);?></p>
+								<br>
+								<?php }?>
+
+								<?php if(!empty($product['selprod_warranty_policies'])) { ?>
+								<h6><?php echo Labels::getLabel('LBL_Warranty', $siteLangId); ?></h6>
+								<ul class="listing--bullet">
+								  <?php foreach($product['selprod_warranty_policies'] as $warranty) { ?>
+								  <li><?php echo $warranty; ?></li>
+								  <?php } ?>
+								</ul>
+								<br>
+								<?php } ?>
+								<?php if(!empty($product['selprod_return_policies'])) { ?>
+								<h6><?php echo Labels::getLabel('LBL_Return_Policy', $siteLangId); ?></h6>
+								<ul class="listing--bullet">
+								  <?php foreach($product['selprod_return_policies'] as $policy) { ?>
+								  <li><?php echo $policy; ?></li>
+								  <?php } ?>
+								</ul>
+								<br>
+								<?php }?>
+								<?php if(!empty($product['selprodComments'])) { ?>
+								<h6><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?></h6>
+								<p><?php echo CommonHelper::displayNotApplicable($siteLangId, nl2br($product['selprodComments'])); ?></p>
+								<?php } ?>
+								<br>
+							</div>
+						</div>
+						<?php }?>
 					</div>
-					<?php }?>
 				</div>
 			</div>
 			<div id="itemRatings">
@@ -466,6 +555,22 @@ $(function () {
 		$("#btnAddToCart").addClass("quickView");
 		$('#slider-for').slick( getSlickGallerySettings(false,'<?php echo CommonHelper::getLayoutDirection();?>') );
 		$('#slider-nav').slick( getSlickGallerySettings(true,'<?php echo CommonHelper::getLayoutDirection();?>') );
+		
+		/* for toggling of tab/list view[ */
+		$('.list-js').hide();
+		$('.view--link-js').on('click',function(e) {
+			$('.view--link-js').removeClass("btn--active");
+			$(this).addClass("btn--active");
+			if ($(this).hasClass('list')) {
+				$('.tab-js').hide();
+				$('.list-js').show();
+			}
+			else if($(this).hasClass('tab')) {
+				$('.list-js').hide();
+				$('.tab-js').show();
+			}
+		});
+		/* ] */
 	});
 </script>
 <!--Here is the facebook OG for this product  -->

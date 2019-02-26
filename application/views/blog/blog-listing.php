@@ -19,14 +19,29 @@ if(!empty($postList)){ ?>
 									<p><?php $desLen = mb_strlen($blogPost['post_short_description']); if($desLen > 250){echo mb_substr($blogPost['post_short_description'],0,250).'...'; } else { echo $blogPost['post_short_description']; } ?></p>
 									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="links"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
-									<ul class="blogs-listing list__socials">
-										<!--<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>-->
-										<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
-										<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
-										<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
-										<li class="social--mail"><a class='st_email_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
-										<li class="social--wa"><a class='st_whatsapp_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
-									</ul>
+										<span><i class="icn share"><svg class="svg">
+													<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
+												</svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
+										<a class="social-link st-custom-button" data-network="facebook">
+											<i class="icn"><svg class="svg">
+													<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
+												</svg></i>
+										</a>
+										<a class="social-link st-custom-button" data-network="twitter">
+											<i class="icn"><svg class="svg">
+													<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
+												</svg></i>
+										</a>
+										<a class="social-link st-custom-button" data-network="pinterest">
+											<i class="icn"><svg class="svg">
+													<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
+												</svg></i>
+										</a>
+										<a class="social-link st-custom-button" data-network="email">
+											<i class="icn"><svg class="svg">
+													<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
+												</svg></i>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -58,14 +73,29 @@ if(!empty($postList)){ ?>
 						<p><?php $desLen = mb_strlen($blogPost['post_short_description']); if($desLen > 250){echo mb_substr($blogPost['post_short_description'],0,250).'...'; } else { echo $blogPost['post_short_description']; } ?></p>
 						<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="links"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 						<div class="share-this">
-						<ul class="blogs-listing list__socials">
-							<!--<li><a href="javascript:void(0)" class='sharethis_custom'></a></li>-->
-							<li class="social--fb"><a class='st_facebook_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Facebook'></a></li>
-							<li class="social--tw"><a class='st_twitter_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Tweet'></a></li>
-							<li class="social--pt"><a class='st_pinterest_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Pinterest'></a></li>
-							<li class="social--mail"><a class='st_email_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Email'></a></li>
-							<li class="social--wa"><a class='st_whatsapp_custom' st_url="<?php echo CommonHelper::generateFullUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" st_title="<?php echo $blogPost['post_title']; ?>" displayText='Whatsapp'></a></li>
-						</ul>
+							<span><i class="icn share"><svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
+									</svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
+							<a class="social-link st-custom-button" data-network="facebook">
+								<i class="icn"><svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
+									</svg></i>
+							</a>
+							<a class="social-link st-custom-button" data-network="twitter">
+								<i class="icn"><svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
+									</svg></i>
+							</a>
+							<a class="social-link st-custom-button" data-network="pinterest">
+								<i class="icn"><svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
+									</svg></i>
+							</a>
+							<a class="social-link st-custom-button" data-network="email">
+								<i class="icn"><svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
+									</svg></i>
+							</a>
 						</div>
 					</div>
 				</div>
