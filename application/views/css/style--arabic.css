@@ -460,6 +460,7 @@ input[type="text"].p-cards.meastro {
 }
 
 .sidebar{ left: auto;right: 0;}
+.logo-dashboard{ left: auto; right: 10px;}
 
 @media only screen and (max-width: 1600px) {
   .post-data.is-fixed .sticky-element {
