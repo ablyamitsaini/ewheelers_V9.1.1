@@ -156,15 +156,25 @@
 </div>
 <script>
 	$(document).ready(function(){
-		/* $("#btnAddToCart").addClass("quickView"); */
-		$('.js-product-gallery').slick({
-			dots: true,
-			arrows: true,
-			autoplay: false,
-			pauseOnHover: false,
-			slidesToShow: 1,
-		});
-		
+		var layoutDirection = '<?php echo CommonHelper::getLayoutDirection();?>';
+		if(layoutDirection == 'rtl'){
+			$('.js-product-gallery').slick({
+				dots: true,
+				arrows: true,
+				autoplay: false,
+				pauseOnHover: false,
+				slidesToShow: 1,
+				rtl:true,
+			});
+		}else{
+			$('.js-product-gallery').slick({
+				dots: true,
+				arrows: true,
+				autoplay: false,
+				pauseOnHover: false,
+				slidesToShow: 1,
+			});
+		}
 		/*Quick view*/
 		/* $('.modaal-inline-content').click(function () {
 			$('html').toggleClass("quick-view--open");

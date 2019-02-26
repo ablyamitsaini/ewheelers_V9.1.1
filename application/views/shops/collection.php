@@ -36,29 +36,23 @@
 						<div class="share-this">
 							<span><i class="icn share"><svg class="svg">
 										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
-									</svg></i>Share</span>
-							<a class="social-link" href="#" target="_blank">
+									</svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
+							<a class="social-link st-custom-button" data-network="facebook">
 								<i class="icn"><svg class="svg">
 										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
 									</svg></i>
 							</a>
-							<a class="social-link" href="#" target="_blank">
+							<a class="social-link st-custom-button" data-network="twitter">
 								<i class="icn"><svg class="svg">
 										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
 									</svg></i>
-							</a> <a class="social-link" href="#" target="_blank">
+							</a>
+							<a class="social-link st-custom-button" data-network="pinterest">
 								<i class="icn"><svg class="svg">
-										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#gp" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#gp"></use>
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
 									</svg></i>
 							</a>
-
-							<a class="social-link" href="#" target="_blank">
-								<i class="icn"><svg class="svg">
-										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#in" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#in"></use>
-									</svg></i>
-							</a>
-
-							<a class="social-link" href="#" target="_blank">
+							<a class="social-link st-custom-button" data-network="email">
 								<i class="icn"><svg class="svg">
 										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
 									</svg></i>
