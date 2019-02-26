@@ -12,7 +12,7 @@
 						<div class="check-login-wrapper step__body" style="display:none;"></div>
 					</div>
 					<?php }else {?>
-						<section class="section-checkout is-completed">
+						<section class="section-checkout is-completed" id="login-register">
 							<div class="selected-panel">
 								<div class="selected-panel-type"><?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></div>
 								<div class="selected-panel-data"><?php echo UserAuthentication::getLoggedUserAttribute('user_email'); ?></div>
@@ -30,9 +30,9 @@
 				<section class="section-checkout" id="cart-review">
 				  <h2><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h2>
 				</section>
-			<section class="section-checkout" id="payment" >
-			  <h2><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </h2>
-			</section>
+				<section class="section-checkout" id="payment" >
+				  <h2><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </h2>
+				</section>
 		  </div>
       </div>
 	  <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
