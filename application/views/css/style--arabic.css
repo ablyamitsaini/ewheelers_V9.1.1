@@ -83,22 +83,6 @@ th, .grids--offset .grid-layout p {
   float: left;
   text-align: left;
 }
-
-.item-yk .item-yk_ft_list li:before {
-  right: 0;
-  left: auto;
-}
-
-.item-yk .collections-ui,
-.item-yk .collections-ui.static--collection {
-  left: 0;
-  right: auto;
-}
-
-.item-yk .collections-ui {
-  left: 40px;
-}
-
 .checkbox,
 .radio {
   padding-right: 30px;
@@ -139,20 +123,6 @@ th, .grids--offset .grid-layout p {
   left: 0;
   right: auto;
 }
-
-.form--search-popup .form__cover select {
-  background-position: left center;
-}
-
-.short-links>ul>li:last-child {
-  margin-left: 0;
-}
- 
-
-.list--vertical a {
-  text-align: right;
-}
-
 .ftshops .ftshops_logo {
   float: right;
   margin-right: 0;
@@ -478,8 +448,18 @@ input[type="text"].p-cards.meastro {
   left: auto;
   right: -15px;
 }
-.dropsection{ right: auto;left: 0; transform: translateX(-100%);}
-.table--justify tr td:last-child{ text-align: left;}
+
+.dropsection {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.table--justify tr td:last-child {
+  text-align: left;
+}
+
+.sidebar{ left: auto;right: 0;}
 
 @media only screen and (max-width: 1600px) {
   .post-data.is-fixed .sticky-element {
@@ -543,10 +523,6 @@ input[type="text"].p-cards.meastro {
     -webkit-transform-origin: right;
     transform-origin: right;
   }
-
-  .nav__secondary li a {
-    text-align: inherit;
-  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -560,10 +536,6 @@ input[type="text"].p-cards.meastro {
     left: 0;
   }
 
-  .cart-footer .cartdetail__footer {
-    float: none;
-  }
-
   .tabs--scroll:after {
     right: auto;
     left: 0px;
@@ -575,25 +547,5 @@ input[type="text"].p-cards.meastro {
   .toggle--nav-vertical:before {
     right: auto;
     left: 15px;
-  }
-
-  .panel__head .links--inline {
-    float: none;
-  }
-
-  .cols--group .col__left,
-  .cols--group .col__right {
-    clear: none;
-    float: none;
-    width: auto;
-  }
-
-  .box--tabled .box__cell:first-child {
-    border-left: none;
-    padding-left: 0;
-  }
-
-  .social-networks {
-    left: 0;
   }
 }
