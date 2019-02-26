@@ -22,35 +22,47 @@ class Extrapage extends MyAppModel {
 	const SELLER_PAGE_FORM_TEXT = 24;
 	const FOOTER_TRUST_BANNERS = 26;
 	const CHECKOUT_PAGE_HEADER_BLOCK = 27;
-	
+
+	const ADMIN_PRODUCTS_CATEGORIES_INSTRUCTIONS = 28;
+	const GENERAL_SETTINGS_INSTRUCTIONS = 29;
+	const ADMIN_BRANDS_INSTRUCTIONS = 30;
+	const ADMIN_OPTIONS_INSTRUCTIONS = 31;
+	const ADMIN_TAGS_INSTRUCTIONS = 32;
+	const ADMIN_COUNTRIES_MANAGEMENT_INSTRUCTIONS = 33;
+	const ADMIN_STATE_MANAGEMENT_INSTRUCTIONS = 34;
+	const ADMIN_CATALOG_MANAGEMENT_INSTRUCTIONS = 35;
+
+	CONST CONTENT_PAGES = 0;
+	CONST CONTENT_IMPORT_INSTRUCTION = 1;
+
 	CONST REWRITE_URL_PREFIX = 'custom/view/';
-	
+
 	public function __construct($epageId = 0) {
-		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $epageId );				
+		parent::__construct ( static::DB_TBL, static::DB_TBL_PREFIX . 'id', $epageId );
 	}
-		
+
 	public static function getSearchObject($langId = 0, $isActive = true) {
-		$srch = new SearchBase(static::DB_TBL, 'ep');				
-		
+		$srch = new SearchBase(static::DB_TBL, 'ep');
+
 		if($langId > 0){
 			$srch->joinTable(static::DB_TBL_LANG,'LEFT OUTER JOIN',
-			'ep_l.'.static::DB_TBL_LANG_PREFIX.'epage_id = ep.'.static::tblFld('id').' and 
+			'ep_l.'.static::DB_TBL_LANG_PREFIX.'epage_id = ep.'.static::tblFld('id').' and
 			ep_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId,'ep_l');
 		}
-		
+
 		if( $isActive ){
 			$srch->addCondition( 'epage_active', '=', applicationConstants::ACTIVE );
 		}
-		
-		return $srch;		
+
+		return $srch;
 	}
-	
+
 	public static function getContentBlockArr($langId){
 		$langId = FatUtility::int($langId);
 		if($langId < 1){
 			$langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
 		}
-		
+
 		return array(
 			static::CONTACT_US_CONTENT_BLOCK => Labels::getLabel('LBL_Contact_Us_Content_Block',$langId),
 			static::LOGIN_PAGE_RIGHT_BLOCK => Labels::getLabel('LBL_Login_Page_Right_Block',$langId),
@@ -66,41 +78,41 @@ class Extrapage extends MyAppModel {
 			static::AFFILIATE_BANNER_SLOGAN => Labels::getLabel('LBL_Affiliate_Banner_Slogan',$langId),
 		);
 	}
-	
+
 	public function updatePageContent($data = array()){
 		if (! ($this->mainTableRecordId > 0)) {
-			$this->error = Labels::getLabel('MSG_Invalid_Request',$this->commonLangId);	
+			$this->error = Labels::getLabel('MSG_Invalid_Request',$this->commonLangId);
 			return false;
 		}
-		
+
 		$epage_id = FatUtility::int($data['epage_id']);
 		unset($data['btn_submit']);
 		unset($data['epage_id']);
-		
+
 		$assignValues = $data;
 		/* $assignValues = array(
-			'epage_identifier'=>$data['epage_identifier'],														
+			'epage_identifier'=>$data['epage_identifier'],
 		); */
-		
+
 		if (!FatApp::getDb()->updateFromArray(static::DB_TBL, $assignValues,
 			array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$epage_id)))){
 			$this->error = FatApp::getDb()->getError();
 			return false;
-		}		
-		
+		}
+
 		/* $assignValues = array(
-			'epage_active'=>$data['epage_active'],														
+			'epage_active'=>$data['epage_active'],
 		);
 		FatApp::getDb()->updateFromArray(static::DB_TBL, $assignValues,
 			array('smt' => static::DB_TBL_PREFIX . 'id = ? and epage_default = ?', 'vals' => array((int)$epage_id,0))); */
-		
+
 		return true;
-	}	
-	
+	}
+
 	public function getContentByPageType($pageType = '',$langId = 0){
 		if($pageType == ''){ return;}
 		$langId = FatUtility::int($langId);
-		
+
 		$srch = self::getSearchObject($langId);
 		$srch->addCondition('ep.epage_type','=',$pageType);
 		$srch->doNotCalculateRecords();
@@ -108,13 +120,13 @@ class Extrapage extends MyAppModel {
 		$rs = $srch->getResultSet();
 		return $pageData = FatApp::getDb()->fetch($rs);
 	}
-	
+
 	public static function getContentBlockArrWithBg($langId){
 		$langId = FatUtility::int($langId);
 		if($langId < 1){
 			$langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
 		}
-		
+
 		return array(
 			static::SELLER_BANNER_SLOGAN => Labels::getLabel('LBL_Seller_Banner_Slogan',$langId),
 			static::ADVERTISER_BANNER_SLOGAN => Labels::getLabel('LBL_Advertiser_Banner_Slogan',$langId),
@@ -123,16 +135,16 @@ class Extrapage extends MyAppModel {
 	}
 
 	public function rewriteUrl($keyword){
-		if ($this->mainTableRecordId < 1) {						
+		if ($this->mainTableRecordId < 1) {
 			return false;
 		}
-		
-		$originalUrl = static::REWRITE_URL_PREFIX.$this->mainTableRecordId;		
-		
-		$seoUrl =  CommonHelper::seoUrl($keyword);	
-		
+
+		$originalUrl = static::REWRITE_URL_PREFIX.$this->mainTableRecordId;
+
+		$seoUrl =  CommonHelper::seoUrl($keyword);
+
 		$customUrl = UrlRewrite::getValidSeoUrl($seoUrl,$originalUrl,$this->mainTableRecordId);
-		
-		return UrlRewrite::update($originalUrl,$customUrl);	
-	}		
+
+		return UrlRewrite::update($originalUrl,$customUrl);
+	}
 }

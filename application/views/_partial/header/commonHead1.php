@@ -28,9 +28,9 @@ if( $controllerName != 'GuestUser' && $controllerName != 'Error' ){
 
 <!--<link rel="shortcut icon" href="">-->
 <link rel="shortcut icon" href="<?php echo CommonHelper::generateUrl('Image','favicon', array($siteLangId)); ?>">
-<link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image','appleTouchIcon', array($siteLangId)); ?>">
-<link rel="apple-touch-icon" sizes="72x72" href="<?php echo CONF_WEBROOT_URL; ?>images/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="<?php echo CONF_WEBROOT_URL; ?>images/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image','appleTouchIcon', array($siteLangId)).'?'.time(); ?>">
+<link rel="apple-touch-icon" sizes="72x72" href="<?php echo CommonHelper::generateUrl('Image','appleTouchIcon', array($siteLangId,'MINI')).'?'.time(); ?>">
+<link rel="apple-touch-icon" sizes="114x114" href="<?php echo CommonHelper::generateUrl('Image','appleTouchIcon', array($siteLangId,'SMALL')).'?'.time(); ?>">
 <?php
 	if($canonicalUrl == ''){
 		$canonicalUrl = CommonHelper::generateFullUrl($controllerName,FatApp::getAction(),!empty(FatApp::getParameters())?FatApp::getParameters():array());

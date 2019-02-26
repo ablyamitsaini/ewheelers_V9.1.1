@@ -16,10 +16,10 @@ class AdminUsers extends MyAppModel{
 		}
 		return $srch;
 	}
-	
+
 	public static function getUserPermissions($admperm_admin_id = 0){
 		$srch = new SearchBase('tbl_admin_permissions');
-		$srch->addCondition('admperm_admin_id', '=', $admperm_admin_id);		
+		$srch->addCondition('admperm_admin_id', '=', $admperm_admin_id);
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetchAll($rs,'admperm_section_id');
 		if(!empty($row)){
@@ -27,7 +27,7 @@ class AdminUsers extends MyAppModel{
 		}
 		return false;
 	}
-	
+
 	public function updatePermissions($assignValues = array(),$updateAll=false){
 		if($updateAll) {
 			$permissionModules = AdminPrivilege::getPermissionModulesArr();

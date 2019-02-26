@@ -1,21 +1,34 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body bg--gray">
     <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+
+        <?php if( !$print ){ ?>
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+        <?php } ?>
 		<div class="container">
 			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+
+                <?php if( !$print ){ ?>
+                    <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+                <?php } ?>
+
 				<div class="col-xs-10 panel__right--full" >
 					<div class="cols--group">
-						<div class="panel__head no-print">
-							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ;
-							/* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']); */ ?></h2>
-						</div>
+
+                        <?php if( !$print ){ ?>
+    						<div class="panel__head no-print">
+    							<h2><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ;
+    							/* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']); */ ?></h2>
+    						</div>
+                        <?php } ?>
+
 						<div class="panel__body">
 							<div class="box box--white box--space">
 								<div class="box__head">
 									<h4><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h4>
-									<div class="group--btns no-print"><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequests'); ?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+                                    <?php if( !$print ){ ?>
+		                               <div class="group--btns no-print"><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequests'); ?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+                                    <?php } ?>
 								</div>
 								<div class="box__body">
 									<div class="grids--offset">
@@ -45,15 +58,17 @@
 														echo ( $request['op_shop_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Shop_Name', $siteLangId).':</strong> <a href="'.$vendorShopUrl.'">'.$request['op_shop_name'].'</a><br/>' : ''; ?>
 														</p>
 														<span class="gap"></span>
-														<a href="javascript:window.print();" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                                                        <?php if( !$print ){ ?>
+														    <a href="<?php echo Fatutility::generateUrl('buyer','viewOrderReturnRequest',$urlParts) . '/print'; ?>" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                                                        <?php } ?>
 													</div>
 												</div>
 											</div>
-									<?php if( $canEscalateRequest ){ ?>
+									<?php if( $canEscalateRequest && !$print ){ ?>
 									<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
 									<?php } ?>
 
-									<?php if( $canWithdrawRequest ){ ?>
+									<?php if( $canWithdrawRequest && !$print ){ ?>
 									<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Buyer','WithdrawOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Withdraw_Request', $siteLangId); ?></a>
 									<?php } ?>
 										</div>
@@ -146,39 +161,41 @@
 										</tbody>
 									</table>
 									<?php }	?>
-									<div class="no-print">
-									<?php echo $returnRequestMsgsSrchForm->getFormHtml(); ?>
-									<div class="gap"></div>
-									<h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
-									<div id="loadMoreBtnDiv"></div>
-									<ul class="media media--details" id="messagesList">
-									</ul>
+                                    <?php if( !$print ){ ?>
+    									<div class="no-print">
+        									<?php echo $returnRequestMsgsSrchForm->getFormHtml(); ?>
+        									<div class="gap"></div>
+        									<h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
+        									<div id="loadMoreBtnDiv"></div>
+        									<ul class="media media--details" id="messagesList">
+        									</ul>
 
-									<?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
+        									<?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
 
-									$frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
-									$frmMsg->setFormTagAttribute('class', 'form');
-									$frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-									$frmMsg->developerTags['fld_default_col'] = 12;
-									?>
-									<ul class="media media--details">
-										<li>
-											<div class="grid grid--first">
-												<div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
-											</div>
-											<div class="grid grid--second">
-												<span class="media__title"><?php echo $logged_user_name; ?></span>
-                        	<div class="grid grid--third">
-      												<div class="form__cover">
-      												<?php echo $frmMsg->getFormHtml(); ?>
-      												</div>
-      											</div>
-											</div>
+        									$frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
+        									$frmMsg->setFormTagAttribute('class', 'form');
+        									$frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+        									$frmMsg->developerTags['fld_default_col'] = 12;
+        									?>
+        									<ul class="media media--details">
+        										<li>
+        											<div class="grid grid--first">
+        												<div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
+        											</div>
+        											<div class="grid grid--second">
+        												<span class="media__title"><?php echo $logged_user_name; ?></span>
+                                	<div class="grid grid--third">
+              												<div class="form__cover">
+              												<?php echo $frmMsg->getFormHtml(); ?>
+              												</div>
+              											</div>
+        											</div>
 
-										</li>
-									</ul>
-									<?php } ?>
-									</div>
+        										</li>
+        									</ul>
+        									<?php } ?>
+    									</div>
+                                    <?php } ?>
 								</div>
 							</div>
 						</div>
@@ -189,3 +206,11 @@
 	</section>
 	<div class="gap"></div>
 </div>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>

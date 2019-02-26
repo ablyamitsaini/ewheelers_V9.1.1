@@ -5,7 +5,7 @@
         <h4><?php echo $collection['collection_name']; ?></h4>
       </div>
     </div>
-	<section class="dashboard">
+	<section class="top-space">
 		<div class="container">
 			<div class="box box--white box--space">
 

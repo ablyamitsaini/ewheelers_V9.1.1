@@ -78,15 +78,27 @@
 		});		
 	};
 	
+	searchCategory = function(frm){
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);
+		fcom.ajax(fcom.makeUrl('Seller', 'searchCategory'), (data), function(t) {
+			$('#categories-js').hide();
+			$('#categorySearchListing').html(t);		
+		});
+	};
 	
+	categorySearchByCode = function(prodCatCode){
+		frm = document.frmCustomCatalogProductCategoryForm;
+		var data = fcom.frmData(frm);		
+		fcom.ajax(fcom.makeUrl('Seller', 'searchCategory',[prodCatCode]), (data), function(t) {
+			$('#categories-js').hide();
+			$('#categorySearchListing').html(t);		
+		});		
+	};
 	
-	
-	
-	
-	
-	
-	
-	
+	clearCategorySearch = function(){
+		window.location.reload();
+	};	
 	
 	
 	/* customProductForm = function( productId ){
