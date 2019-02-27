@@ -177,6 +177,7 @@ class EmailHandler extends FatModel {
 		$mail->SMTPSecure = $secure;
 		$mail->SMTPDebug = false;
 		$mail->SetFrom(FatApp::getConfig('CONF_FROM_EMAIL'));
+		$mail->FromName = FatApp::getConfig("CONF_FROM_NAME_".$langId);
 		$mail->addAddress($toAdress);
 		$mail->Subject = '=?UTF-8?B?'.base64_encode($Subject).'?=';
 		$mail->MsgHTML($body );
