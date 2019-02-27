@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchMessages(this); return false;');
-$frmSrch->setFormTagAttribute('class', 'form'); 
+$frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmSrch->developerTags['fld_default_col'] = 12;
 
@@ -22,7 +22,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Messages',$siteLangId);?></h2>
@@ -31,17 +31,18 @@ $cancelBtnFld->developerTags['col'] = 2;
 	<div class="content-body">
 		<div class="cards">
 			<div class="cards-header p-3">
-				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_My_Messages',$siteLangId);?></h5>
+				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
 			</div>
 			<div class="cards-content p-3">
-				<div id="withdrawalReqForm"></div>
-				<div class="form__cover nopadding--bottom">
-					<?php echo $frmSrch->getFormHtml(); ?>
-				</div>                                    
-				<span class="gap"></span> 
-				<div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
+<div id="withdrawalReqForm"></div>
+<div class="form__cover nopadding--bottom">
+<?php echo $frmSrch->getFormHtml(); ?>
+</div>
+<span class="gap"></span>
+<div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
 			</div>
 		</div>
 	</div>
   </div>
+
 </main>

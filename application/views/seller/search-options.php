@@ -1,15 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div class="box__head">
-  <h5><?php echo Labels::getLabel('LBL_Manage_Seller_Options',$siteLangId); ?></h5>
-  <div class="group--btns"> <a href="#modal-popup" class="modaal-inline-content btn btn--primary btn--sm" onclick="optionForm(0)"><?php echo Labels::getLabel('LBL_Add_Option',$siteLangId);?></a> </div>
-</div>
-<div class="box__body">
+
   <div class="form__cover">
     <div class="search search--sort">
       <div class="search__field">
         <?php
-
 					$frmSearch->setFormTagAttribute ( 'onsubmit', 'searchListing(this); return(false);');
 
 					$frmSearch->setFormTagAttribute ( 'id', 'frmSearchSellerAttr' );
@@ -108,4 +103,3 @@
 		$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount);
 		$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
 		?>
-</div>
