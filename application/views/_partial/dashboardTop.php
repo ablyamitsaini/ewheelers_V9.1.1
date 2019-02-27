@@ -1,5 +1,5 @@
 <?php  if((User::canViewSupplierTab() && User::canViewBuyerTab()) || (User::canViewSupplierTab() && User::canViewAdvertiserTab()) || (User::canViewBuyerTab() && User::canViewAdvertiserTab())){ ?>
-<div class="dashboard-types">
+<div class="dashboard-types no-print">
 	<ul>
 	<?php if( User::canViewSupplierTab() ){ ?>
 		<li <?php if($activeTab == 'S'){ echo 'class="is-active"';}?>><a href="<?php echo CommonHelper::generateUrl('Seller'); ?>"><?php echo Labels::getLabel('Lbl_Seller',$siteLangId);?></a></li>

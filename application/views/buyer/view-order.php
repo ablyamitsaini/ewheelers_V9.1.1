@@ -12,9 +12,11 @@
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
-				<div class="btn-group">
-					<a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
-					<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
+				<div class="action">
+					<div class="btn-group">
+						<a href="javascript:window.print();" class="btn btn--primary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+						<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
+					</div>
 				</div>
 			</div>
 			<div class="cards-content p-3">

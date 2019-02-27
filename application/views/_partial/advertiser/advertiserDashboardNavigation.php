@@ -2,7 +2,7 @@
 $controller = strtolower($controller);
 $action = strtolower($action);
 ?>
-<div class="sidebar">
+<div class="sidebar no-print">
 	<div class="logo-wrapper">
 		<?php
 		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
