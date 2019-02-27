@@ -13,8 +13,8 @@ class AdminBaseController extends FatController {
 	protected $str_invalid_Action;
 	protected $str_setup_successful;
 	protected $adminLangId;
-
-	function __construct($action) {
+	
+	function __construct($action) { 
 		parent::__construct($action);
 
 		$controllerName = get_class($this);

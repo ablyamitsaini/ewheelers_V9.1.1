@@ -297,17 +297,16 @@ class HomeController extends MyAppController {
 					WHEN promotion_duration='.Promotion::MONTHLY.' THEN promotion_budget > COALESCE(monthly_cost,0)
 					WHEN promotion_duration='.Promotion::DURATION_NOT_AVAILABALE.' THEN promotion_budget = -1
 				  END ) )');
-			$srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id' ,'userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration'));
+			$srch->addMultipleFields(array('banner_id', 'banner_blocation_id', 'banner_type', 'banner_record_id', 'banner_url', 'banner_target', 'banner_title', 'promotion_id' ,'userBalance', 'daily_cost', 'weekly_cost', 'monthly_cost', 'total_cost', 'promotion_budget' ,'promotion_duration'));
 
 			if($val['blocation_banner_count'] > 0){
 				$srch->setPageSize($val['blocation_banner_count']);
 			}
-			$srch->addOrder('','rand()');
+			$srch->addOrder('', 'rand()');
 			$rs = $srch->getResultSet();
 			$bannerListing = $db->fetchAll( $rs,'banner_id');
 			$banners[$val['blocation_key']]['banners'] = $bannerListing;
 		}
-
 
 		$promotionObj = new PromotionSearch($this->siteLangId );
 		$sponsoredShops = array();

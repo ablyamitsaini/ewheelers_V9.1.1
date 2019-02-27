@@ -137,8 +137,10 @@ class Importexport extends ImportexportCommon{
 
 	public function getCell($arr = array(),$index, $defaultValue = ''){
 		if(isset($arr[$index]) && trim($arr[$index])!=''){
-			return trim($arr[$index]);
-		}
+			$str = str_replace( "\xc2\xa0", '', trim($arr[$index]) );
+			return str_replace( "\xa0", '', $str );
+			//return trim($arr[$index]);
+		}				
 		return $defaultValue;
 	}
 

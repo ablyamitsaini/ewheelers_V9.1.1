@@ -30,8 +30,10 @@ class ProductsController extends MyAppController {
 		    $prodSrchObj->addCategoryCondition($category_id);
 		}
 
-		$rs = $prodSrchObj->getResultSet();
-		$record = FatApp::getDb()->fetch($rs);
+		$recordSrch = clone $prodSrchObj;
+		$recordSrch->addMultipleFields(array('product_id'));
+		$rs = $recordSrch->getResultSet(); 			
+		$totalRecords = FatApp::getDb()->totalRecords($rs); 
 
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
@@ -175,7 +177,7 @@ class ProductsController extends MyAppController {
 		$this->set('pollQuest', $pollQuest); */
 
 		/* ] */
-		if(empty($record)){
+		if(!$totalRecords){
 			$this->set('noProductFound', 'noProductFound');
 		}
 
@@ -200,7 +202,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) ) {
 			$frm = $this->getProductSearchForm(true);
 		}
-		$headerFormParamsAssocArr['join_price'] = 1;
+		$headerFormParamsAssocArr['join_price'] = 1;		
 		$frm->fill( $headerFormParamsAssocArr );
 		$this->includeProductPageJsCss();
 
@@ -238,8 +240,10 @@ class ProductsController extends MyAppController {
 		    $prodSrchObj->addKeywordSearch($headerFormParamsAssocArr['keyword']);
 		}
 
-		$rs = $prodSrchObj->getResultSet();
-		$record = FatApp::getDb()->fetch($rs);
+		$recordSrch = clone $prodSrchObj;
+		$recordSrch->addMultipleFields(array('product_id'));
+		$rs = $recordSrch->getResultSet(); 			
+		$totalRecords = FatApp::getDb()->totalRecords($rs);
 
 		if(array_key_exists('keyword',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['keyword']!= '' && count($record) ) {
 			$searchItemObj = new SearchItem();
@@ -376,7 +380,7 @@ class ProductsController extends MyAppController {
 		$this->set('priceInFilter', $priceInFilter);
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchedCategoryData', $searchedCategoryData);
-		if( empty($record) ){
+		if(!$totalRecords){
 			$this->set('noProductFound', 'noProductFound');
 		}
 		$this->_template->addJs('js/slick.min.js');
@@ -669,7 +673,7 @@ class ProductsController extends MyAppController {
 		$srch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating' );
 
 		$srch->setPageNumber($page);
-		$srch->addMultipleFields(array('GETCATCODE(`prodcat_id`)',
+		$srch->addMultipleFields(array('prodcat_code',
 				'product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
 				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
@@ -1602,7 +1606,7 @@ END,   special_price_found ) as special_price_found');
 						$srch->joinProductToCategory();
 						$srch->doNotCalculateRecords();
 						$srch->doNotLimitRecords();
-						$srch->addMultipleFields(array('IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(product_name, product_identifier)as product_name','GETCATCODE(prodcat_id) AS prodcat_code'));
+						$srch->addMultipleFields(array('IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(product_name, product_identifier)as product_name','prodcat_code'));
 						$srch->addCondition('selprod_id', '=', $selprod_id );
 						$rs = $srch->getResultSet();
 						$row = FatApp::getDb()->fetch($rs);

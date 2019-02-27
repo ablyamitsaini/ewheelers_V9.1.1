@@ -1,3 +1,4 @@
+ALTER TABLE `tbl_product_categories` ADD `prodcat_ordercode` VARCHAR(255) NOT NULL AFTER `prodcat_code`;
 ALTER TABLE `tbl_extra_pages` ADD `epage_content_for` tinyint(1) NOT NULL AFTER `epage_type`;
 INSERT INTO `tbl_extra_pages`(`epage_identifier`, `epage_type`, `epage_content_for`, `epage_active`, `epage_default`) VALUES ('Admin Product Categories', 28, 1, 1, 0);
 INSERT INTO `tbl_extra_pages`(`epage_identifier`, `epage_type`, `epage_content_for`, `epage_active`, `epage_default`) VALUES ('General Settings', 29, 1, 1, 0);

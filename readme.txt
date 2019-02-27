@@ -1,3 +1,15 @@
+Fixes :
+	. Optimized page load time.
+	. Category search for autocomplete listing.
+	. Buyer can cancel COD orders and Pending payment orders.
+        . Admin approval is necessary to cancel the pending payments orders.
+    . Fixed product category search result mismatch issue while adding catalog.
+    . Products link option removed from header breadcrumb of product detail page.
+    . Arabic email[SMTP] content was not showing properly.
+    . Export options data from seller dashboard.
+    . Auto suggest search listing results display according to order by searched keyword position.
+    . Retain user on current page after social login.
+
 Enhancements :
     . Import error handling via csv.
     . Order Print layout and functionality.
@@ -10,14 +22,5 @@ Enhancements :
     . Displaying instructions as per each import module including general instructions.
     . New Payment method Braintree implemented.
 
-Fixes:
-	. Fixed category search issue while adding catalog.
-	. Category search for autocomplete listing.
-    . Buyer can cancel COD orders and Pending payment orders.
-        . Admin approval is necessary to cancel the pending payments orders.
-    . Fixed product category search result mismatch issue while adding catalog.
-    . Products link option removed from header breadcrumb of product detail page.
-    . Arabic email[SMTP] content was not showing properly.
-    . Export options data from seller dashboard.
-    . Auto suggest search listing results display according to order by searched keyword position.
-    . Retain user on current page after social login.
+Note:
+	Exceute {domainUrl}/dummy/update-cat-order-code.
