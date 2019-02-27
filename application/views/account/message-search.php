@@ -15,7 +15,9 @@
 				<span class="msg__title"><?php echo htmlentities($row['message_from_name']);?></span>
 				<p class="msg__detail"><?php  echo CommonHelper::truncateCharacters($row['message_text'],85,'','',true);?></p>
 			</div>
-
+			<ul class="actions">
+			   <li><a href="<?php echo CommonHelper::generateUrl('Account','viewMessages',array($row['thread_id'],$row['message_id']));?>"><i class="fa fa-eye"></i></a></li>			   
+		   </ul>
 		</li>
    <?php }?>
 </ul> </div>

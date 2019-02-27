@@ -80,7 +80,8 @@
 					   </div>
 					   <div class="grid grid--second">
 						   <span class="media__title"><?php echo $loggedUserName;?></span>
-	 <div class="grid grid--third">
+					   </div>
+						<div class="grid grid--third">
 						   <div class="form__cover">
 								<?php
 								$frm->setFormTagAttribute('onSubmit','sendMessage(this); return false;');
@@ -90,8 +91,6 @@
 								echo $frm->getFormHtml(); ?>
 						   </div>
 					   </div>
-					   </div>
-
 				   </li>
 			   </ul>
 			</div>
