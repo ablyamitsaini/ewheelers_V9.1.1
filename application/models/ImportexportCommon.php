@@ -26,6 +26,10 @@ class ImportexportCommon extends FatModel{
 			return false;
 		}
 
+		if(!file_exists(self::IMPORT_ERROR_LOG_PATH)){
+           mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
+       	}
+                
 		$langId =  FatUtility::int($langId);
 		if(!$langId){
 			$langId = CommonHelper::getLangId();
@@ -830,7 +834,7 @@ class ImportexportCommon extends FatModel{
 		if(!$userId){
 			return $res;
 		}
-		
+
 		$srch = new SearchBase(Importexport::DB_TBL_SETTINGS, 's');
 		$srch->addCondition('impexp_setting_user_id','=',$userId);
 		$srch->doNotCalculateRecords();
