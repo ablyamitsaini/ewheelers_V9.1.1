@@ -10,29 +10,30 @@ $get_twitter_url = CommonHelper::generateFullUrl('Buyer','twitterCallback',array
 
 $request_token = $twitteroauth->getRequestToken($get_twitter_url);
 ?>
-
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
-    <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="container">
-      <div class="row">
-        <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-xs-10 panel__right--full">
-          <div class="cols--group">
-            <div class="panel__head">
-              <h2><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></h2>
-            </div>
-            <div class="panel__body">
-              <div class="box box--white box--space">
-                <div class="box__head">
-                  <h4><?php echo Labels::getLabel('LBL_Share_and_Earn',$siteLangId);?></h4>
-                </div>
-                <div class="box__body">
-                  <p><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message',$siteLangId)?></p>
-                  <p><strong><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below',$siteLangId)?></strong></p>
-                  <div class="alert--gray"><?php echo $referralTrackingUrl?></div>
-                  <div class="gap"></div>
-                  <ul class="grid--onethird grid--onethird-large">
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="row justify-content-between mb-3">
+		<div class="col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header p-3">
+				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Share_and_Earn',$siteLangId);?></h5>
+			</div>
+			<div class="grids--container">
+				<div class="row">						
+					<div class="col-md-12">
+						<p class="note"><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message',$siteLangId)?><br/><strong><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below',$siteLangId)?></strong></p>
+						<div class="alert--gray"><?php echo $referralTrackingUrl; ?></div>
+					</div>
+				</div>
+			</div>
+			<div class="cards-content p-3">
+                <ul class="grid--onethird grid--onethird-large">
                     <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){?>
                     <li> <a id="facebook_btn" href="javascript:void(0);" class="box--share box--share-fb"> <i class="fa fa-facebook"></i>
                       <h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
@@ -52,24 +53,19 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
                       <h2><?php echo Labels::getLabel('L_Email',$siteLangId)?></h2>
                       <p><?php echo Labels::getLabel('L_Email',$siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself',$siteLangId)?></p>
                       </a> <span class="ajax_message thanks-msg"></span> </li>
-                  </ul>
-                  <span class="gap"></span>
-                  <div style="display:none;" class="borderwrap showwrap">
+                </ul>
+                <span class="gap"></span>
+                <div style="display:none;" class="borderwrap showwrap">
                     <h4><?php echo Labels::getLabel('L_Invite_friends_through_email',$siteLangId)?></h4>
                     <?php echo $sharingfrm->getFormHtml(); ?>
                     <div class="gap"> </div>
                     <h3><span class="ajax_message" id="custom_ajax"></span> </h3>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="gap"></div>
-</div>
+			</div>
+		</div>
+	</div>
+  </div>
+</main>
 <script type="text/javascript">
 (function(d, s, id) {
 	var js, fjs = d.getElementsByTagName(s)[0];

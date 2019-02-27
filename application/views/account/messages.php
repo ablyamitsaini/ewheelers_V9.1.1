@@ -19,7 +19,7 @@ $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
-<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
 	<div class="content-header row justify-content-between mb-3">
@@ -34,8 +34,6 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
 			</div>
 			<div class="cards-content p-3">
-
-
 <div id="withdrawalReqForm"></div>
 <div class="form__cover nopadding--bottom">
 <?php echo $frmSrch->getFormHtml(); ?>
@@ -46,4 +44,5 @@ $cancelBtnFld->developerTags['col'] = 2;
 		</div>
 	</div>
   </div>
+
 </main>

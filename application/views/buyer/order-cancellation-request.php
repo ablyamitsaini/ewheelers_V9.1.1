@@ -4,31 +4,24 @@ $frmOrderCancel->setFormTagAttribute('onsubmit', 'setupOrderCancelRequest(this);
 $frmOrderCancel->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderCancel->developerTags['fld_default_col'] = 12;
 ?>
-<div id="body" class="body bg--gray">
-    <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-		<div class="container">
-			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-				<div class="col-xs-10 panel__right--full" >
-					<div class="cols--group">
-						<div class="panel__head">
-							<h2><?php echo Labels::getLabel('LBL_Order_Cancellation_Request', $siteLangId); ?></h2>
-						</div>
-						<div class="panel__body">
-							<div class="box box--white box--space">
-								<div class="box__head">
-									<h5></h5>
-								</div>
-								<div class="box__body">
-									<?php echo $frmOrderCancel->getFormHtml(); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="content-header justify-content-between row mb-3">
+		<div class="content-header-left col-auto ">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Order_Cancellation_Request', $siteLangId); ?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header">
+				<h5 class="cards-title p-3"></h5>
+			</div>
+			<div class="cards-content p-3">
+				<?php echo $frmOrderCancel->getFormHtml(); ?>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+  </div>
+</main>
