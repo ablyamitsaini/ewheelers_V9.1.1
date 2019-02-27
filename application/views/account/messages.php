@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchMessages(this); return false;');
-$frmSrch->setFormTagAttribute('class', 'form'); 
+$frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmSrch->developerTags['fld_default_col'] = 12;
 
@@ -18,37 +18,32 @@ $cancelBtnFld = $frmSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
 $cancelBtnFld->developerTags['col'] = 2;
-?>  
-<div id="body" class="body bg--gray">
-    <section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>  
-		<div class="container">
-			<div class="row">
-				<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>						   
-				<div class="col-xs-10 panel__right--full ">
-					<div class="cols--group">
-						<div class="panel__head">
-						   <h2><?php echo Labels::getLabel('LBL_My_Messages',$siteLangId);?></h2>						   
-						</div>					   
-						<div class="panel__body">                            
-							<div class="box box--white box--space">
-								<div class="box__head box__head--large">
-                                   <h4><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h4>                                  
-                                </div>
-                                <div class="box__body">
-									<div id="withdrawalReqForm"></div>
-									<div class="form__cover nopadding--bottom">
-                                        <?php echo $frmSrch->getFormHtml(); ?>
-									</div>                                    
-									<span class="gap"></span> 
-									<div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>									                                 
-                                </div>                                 
-							</div>                             
-						</div>  
-					</div>
-				</div>
+?>
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="content-header row justify-content-between mb-3">
+		<div class="col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Messages',$siteLangId);?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header p-3">
+				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
+			</div>
+			<div class="cards-content p-3">
+
+
+<div id="withdrawalReqForm"></div>
+<div class="form__cover nopadding--bottom">
+<?php echo $frmSrch->getFormHtml(); ?>
+</div>
+<span class="gap"></span>
+<div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+  </div>
+</main>
