@@ -1,6 +1,8 @@
 <?php
 class DummyController extends AdminBaseController {
 
+	
+
 	public function index() {
 		
 		$srch = Product::getSearchObject($this->adminLangId);
