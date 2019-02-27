@@ -1,23 +1,24 @@
-<?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
-    <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="container">
-      <div class="row">
-        <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-xs-10 panel__right--full" >
-          <div class="cols--group">
-            <div class="panel__head no-print">
-              <h2><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
-            </div>
-            <div class="panel__body">
-              <div class="box box--white box--space">
-                <div class="box__head" >
-                  <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                  <div class="group--btns no-print"> <a href="javascript:window.print();" class="btn btn--primary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a> <a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a> </div>
-                </div>
-                <div class="box__body">
-                  <div class="grids--offset">
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="row justify-content-between mb-3">
+		<div class="col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header p-3">
+				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
+				<div class="btn-group">
+					<a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+					<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
+				</div>
+			</div>
+			<div class="cards-content p-3">
+				<div class="grids--offset">
                     <div class="grid-layout">
                       <?php if($primaryOrder){?>
                       <div class="row">
@@ -341,59 +342,54 @@
                   </div>
                   <?php } ?>
 
-					<?php if( !empty( $digitalDownloadLinks ) ){ ?>
-					<span class="gap"></span>
-					  <div class="section--repeated">
-						<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
-						<table class="table align--left">
-						  <tbody>
-							<tr class="">
-							  <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></th>
-							</tr>
-							<?php $sr_no = 1;
-							foreach( $digitalDownloadLinks as $key=>$row ){
+				<?php if( !empty( $digitalDownloadLinks ) ){ ?>
+				<span class="gap"></span>
+				  <div class="section--repeated">
+					<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
+					<table class="table align--left">
+					  <tbody>
+						<tr class="">
+						  <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></th>
+						</tr>
+						<?php $sr_no = 1;
+						foreach( $digitalDownloadLinks as $key=>$row ){
 
-								$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
-								if($row['expiry_date']!=''){
-									$expiry = FatDate::Format($row['expiry_date']);
-								}
+							$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
+							if($row['expiry_date']!=''){
+								$expiry = FatDate::Format($row['expiry_date']);
+							}
 
-								$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
-								if($row['downloadable_count'] != -1){
-									$downloadableCount = $row['downloadable_count'];
-								}
+							$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
+							if($row['downloadable_count'] != -1){
+								$downloadableCount = $row['downloadable_count'];
+							}
 
-								$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
-								$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
-								$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
-								$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
-							?>
-							<tr>
-							  <td><?php echo $sr_no;?></td>
-							  <td><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
-							  <td><?php echo $downloadableCount;?></td>
-							  <td><?php echo $row['opddl_downloaded_times'];?></td>
-							  <td><?php echo $expiry;?></td>
-							</tr>
-							<?php $sr_no++; } ?>
-						  </tbody>
-						</table>
-					  </div>
-					  <?php } ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="gap"></div>
-</div>
+							$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
+							$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
+							$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
+							$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
+						?>
+						<tr>
+						  <td><?php echo $sr_no;?></td>
+						  <td><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
+						  <td><?php echo $downloadableCount;?></td>
+						  <td><?php echo $row['opddl_downloaded_times'];?></td>
+						  <td><?php echo $expiry;?></td>
+						</tr>
+						<?php $sr_no++; } ?>
+					  </tbody>
+					</table>
+				  </div>
+				  <?php } ?>
+			</div>
+		</div>
+	</div>
+  </div>
+</main>
 <script>
 	function increaseDownloadedCount( linkId, opId ){
 		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {
