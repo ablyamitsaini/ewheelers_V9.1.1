@@ -1088,8 +1088,6 @@ a.btn:hover,
   opacity: 0;
 }
 
-.form input[type="submit"] ~ .form input[type="button"]{margin-inline-end:5px;}
-
 .no--focus:focus {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
@@ -1400,7 +1398,7 @@ select {
 .form input[type="submit"],
 .form input[type="button"],
 .form input[type="reset"] {
-  margin: 0;
+  margin-inline-end: 5px;
 }
 
 .form--normal {
@@ -6647,53 +6645,51 @@ body.is--dashboard {
 }
 
 /*order data*/
-
 .item__pic {
-	width: 80px;
-	border: solid 1px var(--border-color);
-	border-radius: 4px;
-	padding: 8px;
-	margin: 0;
+  width: 80px;
+  border: solid 1px var(--border-color);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0;
 }
 
 .item__description {
-	font-size: 0.9em;
+  font-size: 0.9em;
 }
 
 .item__description .item__title {
-	font-weight: 700;
-	color: var(--first-color);
-	margin: 0 0 4px 0;
-	/*	font-size: 1.2em;*/
+  font-weight: 700;
+  color: var(--first-color);
+  margin: 0 0 4px 0;
+  /*	font-size: 1.2em;*/
 }
 
 .item__description .item__title a {
-	opacity: 1;
-	color: inherit;
+  opacity: 1;
+  color: inherit;
 }
 
 .item__description .item__title a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .item__description .item__title__sub {
-	display: block;
-	opacity: 0.8;
+  display: block;
+  opacity: 0.8;
 }
 
 .item__description p {
-	margin: 3px 0;
+  margin: 3px 0;
 }
 
 .item__description .item__date {
-	display: block;
-	opacity: 0.6;
+  display: block;
+  opacity: 0.6;
 }
 
 .item__price {
-	font-weight: 600;
+  font-weight: 600;
 }
-
 
 .actions {
   display: inline-block;
@@ -7310,14 +7306,13 @@ input.qty {
 
 .items {
   width: 100%;
-      background: #f5f5f5;
-      border-radius: 3px;
-      margin: 0 0 20px;
-      position: relative;
-      padding: 10px;
-      height: 100%;
+  background: #f5f5f5;
+  border-radius: 3px;
+  margin: 0 0 20px;
+  position: relative;
+  padding: 10px;
+  height: 100%;
 }
-
 
 .items__group {
   margin: 0px;
@@ -7328,27 +7323,27 @@ input.qty {
 
 .items__row {
   display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      margin-bottom: 5px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
 }
 
 .items .item {
   max-width: 50%;
--webkit-box-flex: 0;
--ms-flex: 0 0 50%;
-flex: 0 0 50%;
-padding: 5px;
-background: #fff;
--webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.22);
-box-shadow: 0 0 1px rgba(0, 0, 0, 0.22);
-position: relative;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 50%;
+  flex: 0 0 50%;
+  padding: 5px;
+  background: #fff;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.22);
+  position: relative;
 }
 
 .item__head {
-      text-align: center;
+  text-align: center;
 }
 
 .items .item__pic {
@@ -7359,14 +7354,14 @@ position: relative;
 
 .items .item__pic img {
   max-width: 75%;
-      margin: 0 auto;
+  margin: 0 auto;
 }
 
 .items .item__title {
   font-size: 1.1em;
-      font-weight: 500;
-      clear: left;
-      margin: 25px 0 5px;
+  font-weight: 500;
+  clear: left;
+  margin: 25px 0 5px;
 }
 
 .items .form--creatlist {
@@ -10502,69 +10497,6 @@ html.quick-view--open {
   margin-inline-end: 5px;
 }
 
-/*Shop page*/
-.bg-shop {
-  display: -ms-flexbox;
-  display: -webkit-box;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.shop-col {
-  -ms-flex: 0 0 50%;
-  -webkit-box-flex: 0;
-  flex: 0 0 50%;
-  max-width: 50%;
-}
-
-.shop-logo-wrapper {
-  background-position: center;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-.shop-logo {
-  border-radius: 50%;
-  width: 220px;
-  height: 220px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  background: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-}
-
-.shop-logo img {}
-
-.btn .icn svg,
-.btn .icn img {
-  width: 15px;
-  height: 15px;
-  margin-inline-end: 8px;
-  fill: #fff;
-}
-
-.shop-info {
-  padding: 20px 30px;
-  padding-inline-end: 0;
-  max-width: 584px;
-}
-
-.shop-name span {
-  font-size: 0.875rem;
-  color: var(--txt-color-light);
-}
-
-.blk-txt {
-  display: block;
-}
-
 /*Share*/
 .share-this {
   position: relative;
@@ -10691,6 +10623,7 @@ html.quick-view--open {
   transition: 0.25s;
   padding: 0;
   flex: 1;
+  cursor: pointer;
 }
 
 .share-this .social-link i {
@@ -11528,15 +11461,15 @@ main.main {
   margin-bottom: 10px;
 }
 
-
 .messages-list li:last-child {
   border-bottom: none;
 }
+
 .messages-list li .actions {
-	flex: 1;
-	text-align: right;
-	justify-content: flex-end;
-	display: flex;
+  flex: 1;
+  text-align: right;
+  justify-content: flex-end;
+  display: flex;
 }
 
 .msg_db {
@@ -12869,91 +12802,4 @@ main.main {
   padding: 1rem;
   background: #f5f5f5;
   border-radius: 3px;
-}
-
-
-/*grid list view*/
-
-.list-grid-toggle {
-	width: 30px;
-	height: 30px;
-	padding: 2px;
-	border-radius: 50%;
-	color: #fff;
-	cursor: pointer;
-	font-size: 12px;
-	font-weight: 200;
-	letter-spacing: 3px;
-	text-align: center;
-	text-transform: uppercase;
-	transition: all 0.15s ease;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-.list-grid-toggle:hover {}
-
-.list-grid-toggle .label {
-	display: none;
-}
-
-.icon {
-	width: 30px;
-
-}
-
-.icon-bar {
-	position: relative;
-	width: 30px;
-	height: 6px;
-	margin: 0 auto 3px auto;
-	background: #44596B;
-	transition: all 0.15s ease;
-}
-
-.icon-bar:last-child {
-	margin-bottom: 0;
-}
-
-.icon-bar:before,
-.icon-bar:after {
-	position: absolute;
-	display: block;
-	width: 8px;
-	height: 6px;
-	background: #44596B;
-	content: "";
-	opacity: 0;
-	transition: all 0.15s ease;
-}
-
-.icon-bar:before {
-	left: -15px;
-}
-
-.icon-bar:after {
-	right: -15px;
-}
-
-.icon-grid .icon-bar {
-	width: 8px;
-}
-
-.icon-grid .icon-bar:before,
-.icon-grid .icon-bar:after {
-	opacity: 1;
-}
-
-.icon-grid .icon-bar:before {
-	left: 4px;
-	-webkit-transform: translateX(-15px);
-	transform: translateX(-15px);
-}
-
-.icon-grid .icon-bar:after {
-	right: 4px;
-	-webkit-transform: translateX(15px);
-	transform: translateX(15px);
 }

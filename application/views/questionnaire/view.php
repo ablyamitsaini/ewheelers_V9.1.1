@@ -17,9 +17,9 @@ $formFields = $frm->getAllFields();
           </div>
         </div>
       </div>
-      <div class="row">
+       
         <div class="panel panel--centered clearfix">
-          <div class="container container--fluid">
+         
             <div class="section clearfix">
               <div class="section__body">
                 <div class="box box--white box--listing"> <?php echo $frm->getFormTag(); ?>
@@ -101,9 +101,9 @@ $formFields = $frm->getAllFields();
                   <?php echo $frm->getExternalJs(); ?> </div>
               </div>
             </div>
-          </div>
+          
         </div>
-      </div>
+      
     </div>
   </section>
 	<div class="gap"></div>

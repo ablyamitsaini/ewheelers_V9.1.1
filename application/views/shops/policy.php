@@ -4,7 +4,7 @@
 	$keywordFld = $searchFrm->getField('keyword');
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
 	$keywordFld->htmlAfterField = '<input value="" type="submit" class="input-submit">';
-	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id)); 
+	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id));
 	$haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId );
  ?>
 
@@ -106,13 +106,13 @@
 			</div>
 		</div>
 	</section>
-  <?php 
+  <?php
 	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'searchFrm'=>$searchFrm,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
-	
+
 	if(!isset($template_id) || ($template_id<0)){
 		$template_id=10001;
 	}
-	
+
 	$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 
 	?>
@@ -122,39 +122,39 @@
 		  <div class="white--bg padding20">
 			<div class="row">
 			  <div class="col-lg-12 col-md-12 col-sm-12  col-xs-12">
-				
+
 				<?php if( $shop['shop_payment_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4><?php echo Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId); ?></h4>
 				  <p><?php echo $shop['shop_payment_policy']; ?> </p>
 				</div>
 				<?php } ?>
-				
+
 				<?php if( $shop['shop_delivery_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4><?php echo Labels::getLabel('LBL_DELIVERY_POLICY', $siteLangId); ?></h4>
 				  <p> <?php echo $shop['shop_delivery_policy']; ?> </p>
 				</div>
 				<?php } ?>
-				
+
 				<?php if( $shop['shop_refund_policy'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_REFUND_POLICY', $siteLangId); ?></h4>
 				  <p> <?php echo $shop['shop_refund_policy']; ?> </p>
 				</div>
 				<?php } ?>
-				
+
 				<?php if( $shop['shop_additional_info'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId); ?></h4>
 				  <p> <?php echo $shop['shop_additional_info']; ?> </p>
 				</div>
 				<?php } ?>
-				
+
 				<?php if( $shop['shop_seller_info'] != '' ){ ?>
 				<div class="container--cms">
 				  <h4> <?php echo Labels::getLabel('LBL_SELLER_INFO', $siteLangId); ?></h4>
-				  <p> <?php echo $shop['shop_seller_info']; ?> 
+				  <p> <?php echo $shop['shop_seller_info']; ?>
 				</div>
 				<?php } ?>
 			  </div>
@@ -175,6 +175,9 @@
 			autoplay:true,
 			rtl:true,
 			pauseOnHover:false,
+			speed: 500,
+ fade: true,
+ cssEase: 'linear',
 		});
 	}
 	else
@@ -184,6 +187,9 @@
 		arrows:true,
 		autoplay:true,
 		pauseOnHover:false,
+		speed: 500,
+ fade: true,
+ cssEase: 'linear',
 		});
 	}
 })(jQuery);

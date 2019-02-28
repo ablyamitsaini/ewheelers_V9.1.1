@@ -5,7 +5,7 @@
 			<div class="section-head">
 			 <div class="section__heading"><?php echo Labels::getLabel('Lbl_Featured_Shops' , $siteLangId); ?></div>
 			</div>
-			<div  id="listing" class="box "> </div>
+			<div id="listing"> </div>
 			<div id="loadMoreBtnDiv"></div>
 		</div>
 	</section>

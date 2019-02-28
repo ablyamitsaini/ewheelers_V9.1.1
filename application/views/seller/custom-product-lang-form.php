@@ -1,15 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>  
 	<div class="box__body">	
-		<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+		<div class="tabs tabs--small   tabs--scroll clearfix">
 			<?php require_once('sellerCustomProductTop.php');?>
 		</div>
 			<div class="tabs__content form">
 			
 			<div class="form__content">
 				<div class="col-md-12">
-					<div class="container container--fluid">
-						<div class="tabs--inline tabs--scroll clearfix">
+					 
+						<div class="tabs tabs-sm tabs--scroll clearfix">
 							<ul>
 								<li><a href="javascript:void(0);" onclick="customProductForm(<?php echo $product_id ?>);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId);?></a></li>
 						
@@ -19,7 +19,7 @@
 
 							</ul>	
 						</div>
-						</div>
+						 
 						<div class="form__subcontent">
 							<?php 
 							$customProductLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);

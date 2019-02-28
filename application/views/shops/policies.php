@@ -1,7 +1,7 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage');  
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');
 	$shop_city = $shop['shop_city'];
 	$shop_state = ( strlen($shop['shop_city']) > 0 ) ? ', '. $shop['shop_state_name'] : $shop['shop_state_name'];
-	$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name']; 
+	$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name'];
 	$shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 
@@ -21,9 +21,9 @@
   </div>
 </div>
 <div class="container container--fixed">
-  <div class="row">
+ 
     <div class="panel panel--centered clearfix">
-      <div class="container container--fluid">
+       
         <div class="section section--info clearfix">
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBL_Policies', $siteLangId); ?></h4>
@@ -93,7 +93,7 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      
+     
   </div>
 </div>

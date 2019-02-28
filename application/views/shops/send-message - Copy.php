@@ -60,8 +60,7 @@
 
 				<div class="section section--sorting">
 					<div class="row">
-						<div class="container container--fluid">
-						</div>
+					 
 						<div class="col-md-6 col-sm-4">
 							<div class="search search--sort hide--mobile">
 							</div>

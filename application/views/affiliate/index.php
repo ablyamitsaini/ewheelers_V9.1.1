@@ -59,7 +59,7 @@
 						</div>
 					</div>
 					<div class="cards-content p-3">
-						<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
+						<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
 							<ul>
 								<li class="is-active"><a href="javascript:void(0);" onClick="personalInfo(this)"><?php echo Labels::getLabel( 'LBL_Personal', $siteLangId ); ?></a></li>
 								<li><a href="javascript:void(0);" onClick="addressInfo(this)"><?php echo Labels::getLabel( 'LBL_Address_Information', $siteLangId ); ?></a></li>

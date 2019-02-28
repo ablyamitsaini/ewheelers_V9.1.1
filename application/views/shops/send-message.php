@@ -1,49 +1,49 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
-<?php 
+<?php
 	$frm->setFormTagAttribute('class','form form--horizontal');
 	$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-	$frm->developerTags['fld_default_col'] = 12;	
+	$frm->developerTags['fld_default_col'] = 12;
 	$frm->setFormTagAttribute('onSubmit', 'setUpSendMessage(this); return false;');
 	$fromFld = $frm->getField('send_message_from');
 	$toFld = $frm->getField('send_message_to');
-	
+
 	$fromFldHtml = new HtmlElement( 'div', array( 'class'=>'field-set' ));
 	$fromFldCaptionWrapper = $fromFldHtml->appendElement('div', array('class' => 'caption-wraper'));
 	$fromFldCaptionWrapper->appendElement( 'label', array('class'=>'field_label'), Labels::getLabel('LBL_From', $siteLangId) );
-	
+
 	$fromFldFieldWrapper = $fromFldHtml->appendElement('div', array('class' => 'field-wraper'));
 	$fromFldData = $loggedUserData['credential_username'].' (<em>'.$loggedUserData['user_name'].'</em>)';
 	$fromFldData .= '<br/><span class="text--small">'.Labels::getLabel('LBL_Contact_info_not_shared', $siteLangId).'</span>';
 	$fromFldFieldWrapper->appendElement( 'div', array('class' => 'field_cover'), $fromFldData, true );
-	
+
 	$fromFld->value = $fromFldHtml->getHtml();
-	
-	
+
+
 	$toFldHtml = new HtmlElement( 'div', array( 'class'=>'field-set' ));
 	$toFldCaptionWrapper = $toFldHtml->appendElement('div', array('class' => 'caption-wraper'));
 	$toFldCaptionWrapper->appendElement( 'label', array('class'=>'field_label'), Labels::getLabel('LBL_To', $siteLangId) );
-	
+
 	$toFldFieldWrapper = $toFldHtml->appendElement('div', array('class' => 'field-wraper'));
 	$toFldFieldWrapper->appendElement( 'div', array('class' => 'field_cover'), $shop['shop_owner_name'].' (<em>'.$shop['shop_name'].'</em>)', true );
-	
+
 	$toFld->value = $toFldHtml->getHtml();
-	
+
 	if(isset($product))
 	{
 		$productFld = $frm->getField('about_product');
 		$productFldHTML = new HtmlElement( 'div', array( 'class'=>'field-set' ));
 		$productFldCaptionWrapper = $productFldHTML->appendElement('div', array('class' => 'caption-wraper'));
 		$productFldCaptionWrapper->appendElement( 'label', array('class'=>'field_label'), Labels::getLabel('LBL_About_Product', $siteLangId) );
-		
+
 		$productFldFieldWrapper = $productFldHTML->appendElement('div', array('class' => 'field-wraper'));
 		$productFldFieldWrapper->appendElement( 'div', array('class' => 'field_cover'), $product['selprod_title'] , true );
-		
+
 		$productFld->value = $productFldHTML->getHtml();
 	}
-	
+
 	$shop_city = $shop['shop_city'];
 	$shop_state = ( strlen($shop['shop_city']) > 0 ) ? ', '. $shop['shop_state_name'] : $shop['shop_state_name'];
-	$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name']; 
+	$shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name'];
 	$shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 

@@ -20,7 +20,7 @@
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Account_Information',$siteLangId);?></h5>
 			</div>
 			<div class="cards-content p-3">
-				<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
+				<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
 					<ul>
 						<li class="is-active"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account',$siteLangId);?></a></li>
 						<?php if( User::isAffiliate() ){ ?>

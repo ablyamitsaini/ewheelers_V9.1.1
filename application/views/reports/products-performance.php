@@ -15,7 +15,7 @@
 				<div class="action">		<a href="javascript:void(0)" id="performanceReportExport" onclick="exportProdPerformanceReport('DESC')" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Export',$siteLangId);?></a></div>
 				</div>
 				<div class="cards-content p-3">
-          <div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
+          <div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
             <ul>
               <li class="is-active"><a href="javascript:void(0);" onClick="topPerformingProducts()"><?php echo Labels::getLabel('LBL_Top_Performing_Products',$siteLangId);?></a></li>
               <li><a href="javascript:void(0);" onClick="badPerformingProducts()"><?php echo Labels::getLabel('LBL_Most_Refunded_Products_Report',$siteLangId);?></a></li>

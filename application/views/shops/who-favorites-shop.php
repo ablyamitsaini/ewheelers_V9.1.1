@@ -23,7 +23,7 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 </div>
 
 
-                  <div class="container container--fluid">
+                 
                    <div class="section section--info clearfix">
                          <div class="section__head">
                              <h4><?php echo str_replace('{n}', $userFavoriteCount, Labels::getLabel('LBL_Who_Favorited_This?_{n}_Peoples(s)', $siteLangId)); ?></h4>
@@ -36,5 +36,4 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 							 <div id="loadMoreBtnDiv"></div>
                          </div>
                    </div>
-                  </div>
-               
+                   

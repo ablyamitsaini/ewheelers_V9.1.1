@@ -8,8 +8,8 @@ $frm->setFormTagAttribute('onsubmit', 'setReturnAddressLang(this); return(false)
 ?>
 <div class="row">	
 	<div class="col-md-8">
-		<div class="container container--fluid">
-			<div class="tabs--inline clearfix">
+		 
+			<div class="tabs tabs-sm clearfix">
 				<ul class="setactive-js">
 					<li ><a href="javascript:void(0)" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 					<?php foreach($languages as $langId => $langName){?>
@@ -17,7 +17,7 @@ $frm->setFormTagAttribute('onsubmit', 'setReturnAddressLang(this); return(false)
 				<?php } ?>								
 				</ul>
 			</div>
-		</div>
+		 
 		<?php echo $frm->getFormHtml();?>
 	</div>
 </div>

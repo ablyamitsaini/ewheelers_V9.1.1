@@ -14,7 +14,7 @@
 				<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_My_Downloads', $siteLangId); ?></h5>
 			</div>
 			<div class="cards-content p-3">
-				<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+				<div class="tabs tabs--small   tabs--scroll clearfix">
 					<ul>
 						<li class="is-active"><a href="javascript:void(0);" onclick="searchBuyerDownloads()"><?php echo Labels::getLabel('LBL_Downloadable_Files', $siteLangId); ?></a></li>
 						<li><a href="javascript:void(0);" onclick="searchBuyerDownloadLinks()"><?php echo Labels::getLabel('LBL_Downloadable_Links', $siteLangId); ?></a></li>

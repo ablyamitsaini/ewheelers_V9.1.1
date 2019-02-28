@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="">
-					<div class="tabs--inline tabs--scroll clearfix">
+					<div class="tabs tabs-sm tabs--scroll clearfix">
 						<ul>
 							<li class="is-active"><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>
 							<?php if(isset($scollection_id) && $scollection_id >0){

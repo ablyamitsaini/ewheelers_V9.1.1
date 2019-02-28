@@ -9,7 +9,7 @@
 	</section>
 	<section class="section">
 		<div class="container">
-	 			<div  id="listing" class="box"> </div>
+	 			<div id="listing"> </div>
 			<div id="loadMoreBtnDiv"></div>
 		</div>
 	</section>

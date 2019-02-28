@@ -25,7 +25,7 @@
 		<div class="shop-col column--md">
 			<div class="shop-info">
 				<div class="row">
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<div class="shop-name">
 							<h5><?php echo $shop['shop_name']; ?> <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_By', $siteLangId); ?> <strong> <?php echo $shop['user_name'];?> </strong></span></h5>
 
@@ -60,7 +60,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="shop-btn-group">
 							<?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer()) ) $showAddToFavorite = false; ?>
 							<?php if($showAddToFavorite) { ?>
@@ -106,7 +106,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<?php
 		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'canonicalUrl'=>$canonicalUrl,'shopId'=>$shopId,'productFiltersArr'=>$productFiltersArr);
 		$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
@@ -115,7 +115,7 @@
 		<div class="container">
 			<div class="section-head section--white--head section--head--center">
 				<div class="section__heading">
-					<h2> <?php echo Labels::getLabel('LBL_SHOP_PRODUCTS', $siteLangId)?> 
+					<h2> <?php echo Labels::getLabel('LBL_SHOP_PRODUCTS', $siteLangId)?>
 						<span><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
 					</h2>
 				</div>
@@ -192,6 +192,9 @@ $(document).ready(function(){
 			autoplay:true,
 			rtl:true,
 			pauseOnHover:false,
+			speed: 500,
+	 fade: true,
+	 cssEase: 'linear',
 		});
 	}
 	else
@@ -201,6 +204,9 @@ $(document).ready(function(){
 		arrows:true,
 		autoplay:true,
 		pauseOnHover:false,
+			speed: 500,
+	 fade: true,
+	 cssEase: 'linear',
 		});
 	}
 })(jQuery);

@@ -3,7 +3,7 @@
 	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
 <div class="col-md-12">
 	<div class="">
-		<div class="tabs--inline tabs--scroll clearfix">
+		<div class="tabs tabs-sm tabs--scroll clearfix">
 			<ul>
 				<li ><a onclick="getShopCollectionGeneralForm();" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>
 				<?php

@@ -19,7 +19,7 @@ $htmlAfterField.='<div id="image-listing-js"></div>';
 $fld1->htmlAfterField = $htmlAfterField;
 
 ?>
-<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
+<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
 	<ul>
 		<li><a href="javascript:void(0);" onClick="promotionForm(<?php echo $promotionId;?>)"><?php echo Labels::getLabel('LBL_General',$siteLangId);?></a></li>	
 		<?php $inactive = ($promotionId==0)?'fat-inactive':'';

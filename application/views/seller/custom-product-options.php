@@ -2,7 +2,7 @@
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
 
 <div class="box__body">
-  <div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+  <div class="tabs tabs--small   tabs--scroll clearfix">
     <?php require_once('sellerCustomProductTop.php');?>
   </div>
   <div class="tabs__content">

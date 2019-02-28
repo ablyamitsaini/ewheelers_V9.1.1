@@ -23,19 +23,17 @@
        </div>   
    </div>
    <div class="container container--fixed">
-       <div class="row">           
-            <div class="panel panel--centered clearfix">
-                <div class="container container--fluid">
+               
+            <div class="panel panel--centered clearfix">               
 					<div class="section section--info clearfix">                         
                         <div class="section__body">
-							<div class="box box--white" id="listing">
-                                 
+							<div class="box box--white" id="listing">                                 
                             </div>
 							<div id="loadMoreBtnDiv"></div>
                         </div>
 					</div>
-				</div>
+				 
 			</div>              
-        </div>
+        
     </div>
 <?php echo $searchForm->getFormHtml();?>

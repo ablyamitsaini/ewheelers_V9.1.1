@@ -3,7 +3,7 @@ $mediaFrm->setFormTagAttribute("class","form form--horizontal");
 ?>
 <div class="popup__body">
 	<h2><?php echo Labels::getLabel('LBL_Manage_Batch_Products_Media', $siteLangId); ?></h2>
-	<ul class="tabs tabs--small tabs--offset tabs--offset-js clearfix setactive-js">
+	<ul class="tabs tabs--small    -js clearfix setactive-js">
 		<li ><a href="javascript:void(0)" onclick="batchForm()"><?php echo Labels::getLabel( 'LBL_General', $siteLangId ); ?></a></li>
 		<?php 
 		$inactive = ($prodgroup_id == 0) ? 'fat-inactive' : '';

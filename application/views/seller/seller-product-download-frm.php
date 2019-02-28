@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 <div class="box__body">
-	<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+	<div class="tabs tabs--small   tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
 	<div class="tabs__content form">

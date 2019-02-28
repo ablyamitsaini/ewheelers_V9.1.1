@@ -12,7 +12,7 @@ $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); r
 <?php if($displayLinkNavigation == true){ require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); }?>  
 <div class="box__body">	
 		<?php if($displayLinkNavigation == true){?>
-		<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+		<div class="tabs tabs--small   tabs--scroll clearfix">
 			<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
 		</div>
 		<?php }?>
@@ -20,8 +20,8 @@ $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); r
 			<div class="form__content">
 				<div class="col-md-12">
 					<?php if($displayLinkNavigation == true){?>
-					<div class="container container--fluid">
-						<div class="tabs--inline tabs--scroll clearfix">
+					 
+						<div class="tabs tabs-sm tabs--scroll clearfix">
 							<ul>
 								<li><a onClick="customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>)" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
 								<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a  <?php echo ($preqId) ? "onclick='customCatalogSellerProductForm( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Inventory/Info', $siteLangId );?></a></li>
@@ -35,7 +35,7 @@ $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); r
 								<li class="is-active"><a href="javascript:void(0);" <?php echo ($preqId) ? "onclick='customCatalogProductImages( ".$preqId." );'" : ""; ?>><?php echo Labels::getLabel('Lbl_Product_Images',$siteLangId);?></a></li>
 							</ul>	
 						</div>
-					</div>
+					 
 					<?php }?>
 					<div class="form__subcontent">
 					  <?php 

@@ -3,8 +3,8 @@
 	<h4><?php echo Labels::getLabel('LBL_Social_Platform_Setup',$siteLangId); ?></h4>
 </div>
 <div class="box__body">
-	<div class="container container--fluid">
-		<div class="tabs--inline tabs--scroll clearfix">
+	<div class="container">
+		<div class="tabs tabs-sm tabs--scroll clearfix">
 			<ul>
 				<li class="is-active"><a href="javascript:void(0)" onClick="socialPlatformForm(<?php echo $splatform_id;?>);"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 				<?php $inactive = ($splatform_id==0)?'fat-inactive':'';		

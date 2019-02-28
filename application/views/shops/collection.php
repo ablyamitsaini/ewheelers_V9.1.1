@@ -105,7 +105,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<?php
 	$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action);
 	if(!isset($template_id) || ($template_id<0)){
@@ -117,7 +117,7 @@
 		<div class="container">
 			<div class="section-head section--white--head section--head--center">
 				<div class="section__heading">
-					<h2> <?php echo Labels::getLabel('LBL_COLLECTION_PRODUCTS', $siteLangId)?> 
+					<h2> <?php echo Labels::getLabel('LBL_COLLECTION_PRODUCTS', $siteLangId)?>
 						<span><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
 					</h2>
 				</div>
@@ -184,6 +184,9 @@
 			autoplay:true,
 			rtl:true,
 			pauseOnHover:false,
+			speed: 500,
+ fade: true,
+ cssEase: 'linear',
 		});
 	}
 	else
@@ -193,6 +196,9 @@
 		arrows:true,
 		autoplay:true,
 		pauseOnHover:false,
+		speed: 500,
+ fade: true,
+ cssEase: 'linear',
 		});
 	}
 })(jQuery);

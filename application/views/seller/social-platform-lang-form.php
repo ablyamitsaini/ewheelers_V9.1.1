@@ -4,7 +4,7 @@
 </div>
 <div class="box__body">
 	<div class="">
-		<div class="tabs--inline tabs--scroll clearfix">
+		<div class="tabs tabs-sm tabs--scroll clearfix">
 			<ul>
 				<li><a href="javascript:void(0)" onClick="addForm(<?php echo $splatform_id;?>);"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 				<?php

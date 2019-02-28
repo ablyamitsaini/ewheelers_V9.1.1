@@ -56,7 +56,7 @@ $bannerTargetUrlFld->setWrapperAttribute( 'class' , 'banner_url_fld'); */
 
 
 ?>
-<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js">
+<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
 	<ul>
 		<li class="is-active"><a href="javascript:void(0);" onClick="promotionForm(<?php echo $promotionId;?>)"><?php echo Labels::getLabel('LBL_General',$siteLangId);?></a></li>	
 		<?php $inactive = ($promotionId==0)?'fat-inactive':'';		

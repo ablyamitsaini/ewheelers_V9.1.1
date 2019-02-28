@@ -10,9 +10,9 @@
   </div>
 </div>
 <div class="container container--fixed">
-  <div class="row">
+ 
     <div class="panel clearfix">
-      <div class="container container--fluid">
+      
         <div class="section clearfix">
           <div class="section__body">
             <div class="box box--white box--rounded">
@@ -67,7 +67,7 @@
             </div>
           </div>
         </div>
-      </div>
+       
     </div>
-  </div>
+ 
 </div>
