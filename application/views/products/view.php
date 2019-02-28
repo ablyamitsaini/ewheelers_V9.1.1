@@ -107,7 +107,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<?php $selectedOptionsArr = $product['selectedOptionValues'];
 
 					foreach($optionRows as $option){ ?>
-					<div class="<?php echo ($option['option_is_color']) ? 'col-lg-12 col-md-5' : 'col-md-6 column'; ?>">
+					<div class="<?php echo ($option['option_is_color']) ? 'col-lg-12 col-md-5 column' : 'col-md-6 column'; ?>">
 						<div class="h6"><?php echo $option['option_name']; ?> :</div>
 						<div class="article-options <?php echo ($option['option_is_color']) ? 'options--color' : 'options--size'; ?>">
 							<?php if($option['values']){ ?>

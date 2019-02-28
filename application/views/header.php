@@ -50,8 +50,8 @@ if( isset($includeEditor) && $includeEditor == true ){
 }
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 
-if($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser' || $controllerName == 'Account'){
-	$this->includeTemplate('_partial/topHeaderDashboard.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName),false);
+if($isUserDashboard){
+	$this->includeTemplate('_partial/topHeaderDashboard.php',array('siteLangId'=>$siteLangId,'isUserDashboard'=>$isUserDashboard),false);
 	$exculdeMainHeaderDiv = true;
 }
 

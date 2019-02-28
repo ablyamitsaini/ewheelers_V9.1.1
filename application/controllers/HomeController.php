@@ -7,7 +7,7 @@ class HomeController extends MyAppController {
 		$loggedUserId = 0;
 		if( UserAuthentication::isUserLogged() ){
 			$loggedUserId = UserAuthentication::getLoggedUserId();
-		}	
+		}
 		$productSrchObj = new ProductSearch( $this->siteLangId );
 		$productSrchObj->joinProductToCategory($this->siteLangId );
 		$productSrchObj->doNotCalculateRecords();
@@ -55,8 +55,6 @@ class HomeController extends MyAppController {
 			/* $productCatSrchObj->setPageSize(4); */
 			$productCatSrchObj->addMultipleFields( array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description') );
 			$collections = array();
-			
-			/* [ */
 			
 			if( !empty( $collectionsDbArr ) ){
 				$collectionObj = new CollectionSearch( );
@@ -117,7 +115,7 @@ class HomeController extends MyAppController {
 							$tempObj->addCondition( 'ctpc_prodcat_id', '!=', 'NULL'  );
 							/* $tempObj->setPageSize( $collection['collection_primary_records'] ); */
 							
-							/* Excude categories having no product [ */
+							/* Exclude categories having no product [ */
 								/* $productSrchTempObj = clone $productSrchObj;
 								$productSrchTempObj->addGroupBy( 'prodcat_id' );
 								$productSrchTempObj->addMultipleFields( array('count(selprod_id) as productCounts', 'prodcat_id as qryProducts_prodcat_id') );
@@ -130,7 +128,7 @@ class HomeController extends MyAppController {
 							
 							if( !$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id') ){
 								continue;
-							} 
+							}
 							/* fetch Categories data[ */
 								$productCatSrchTempObj = clone $productCatSrchObj;
 								$productCatSrchTempObj->addCondition( 'prodcat_id', 'IN', array_keys( $categoryIds ) );
@@ -241,7 +239,6 @@ class HomeController extends MyAppController {
 							$brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
 							$rs = $brandSearchTempObj->getResultSet();
 							/* ] */
-
 							$collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 							$collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
 							unset($brandSearchTempObj);

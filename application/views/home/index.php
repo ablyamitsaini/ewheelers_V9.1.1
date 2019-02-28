@@ -58,6 +58,12 @@
 		$this->includeTemplate( '_partial/collection/product-layout-3.php', array( 'collections' => $collections[Collections::TYPE_PRODUCT_LAYOUT3], 'siteLangId' => $siteLangId ),false );
 	}
 	/* ] */
+	
+	/* Brand Layout1[ */
+	if( isset( $collections[Collections::TYPE_BRAND_LAYOUT1] ) ){
+		$this->includeTemplate( '_partial/collection/brand-layout-1.php', array( 'collections' => $collections[Collections::TYPE_BRAND_LAYOUT1], 'siteLangId' => $siteLangId ),false );
+	}
+	/* ] */
 
 ?>
 </div>
