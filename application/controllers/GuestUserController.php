@@ -1,7 +1,7 @@
 <?php
 class GuestUserController extends MyAppController {
 	
-	public function loginForm() {
+	public function loginForm($isRegisterForm = 0) {
 		/* if(UserAuthentication::doCookieLogin()){
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
 		} */
@@ -28,7 +28,8 @@ class GuestUserController extends MyAppController {
 			'termsAndConditionsLinkHref'	=>	$termsAndConditionsLinkHref,
 			'siteLangId'	=>	$this->siteLangId
 		);
-		
+		$isRegisterForm = FatUtility::int($isRegisterForm);
+		$this->set('isRegisterForm', $isRegisterForm);
 		$this->set('loginData', $loginData);
 		$this->set('registerdata', $registerdata);
 		$this->_template->render();
@@ -562,7 +563,7 @@ class GuestUserController extends MyAppController {
 			if ( FatUtility::isAjaxCall() ) {
 				FatUtility::dieWithError( Message::getHtml());
 			}
-			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser','registrationForm'));
+			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser','loginForm',array(applicationConstants::YES)));
 		}
 		
 		if( !CommonHelper::validateUsername($post['user_username']) ){

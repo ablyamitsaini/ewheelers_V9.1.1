@@ -127,7 +127,7 @@ class MyAppController extends FatController {
 		$currencySymbolRight = CommonHelper::getCurrencySymbolRight();
 		
 		$isUserDashboard = false;
-		if($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser' || $controllerName == 'Account' || $controllerName == 'Reports'){
+		if($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser' || $controllerName == 'Account' || $controllerName == 'Reports' || $controllerName == 'ImportExport' || $controllerName == 'SavedProductsSearch'){
 			$isUserDashboard = true;
 		}
 		
