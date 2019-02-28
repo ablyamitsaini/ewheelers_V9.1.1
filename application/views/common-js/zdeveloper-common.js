@@ -1,3 +1,11 @@
+/*page loader [ */
+$(document).ready(function () {
+	setTimeout(function () {
+		$('body').addClass('loaded');
+
+	}, 2000);
+});
+/* ] */
 function initialize() {
     geocoder = new google.maps.Geocoder();	
 }
@@ -752,14 +760,14 @@ function setSiteDefaultCurrency(currencyId){
 	});
 }
 
-function quickDetail(selprod_id)
-{
-	$.facebox(function() {
-		fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
-			fcom.updateFaceboxContent(t,'faceboxWidth');
-		});
+function quickDetail(selprod_id){
+	fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
+		$('#quick-view-section').html(t);
+		$('html').toggleClass("quick-view--open");
+		$('#quick-view-section').toggleClass("quick-view--open");
 	});
 }
+
 /* read more functionality [ */
 $(document).delegate('.readMore' ,'click' , function(){
 	var $this = $(this) ;

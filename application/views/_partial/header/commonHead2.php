@@ -46,7 +46,7 @@ if(($controllerName=='Seller') || ($controllerName=='Buyer') || ($controllerName
 		elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 	?>
 
-	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" hidden='hidden'>
+	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" style="display:none">
 		<div class="close"></div>
 		<div class="content">
 			<?php

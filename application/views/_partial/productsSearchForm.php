@@ -20,8 +20,8 @@
 				</svg>
 			</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
 		</li>
-		<?php }?>		
-		<li class="is--active d-none d-xl-block">
+		<?php }?>
+		<?php /* <li class="is--active d-none d-xl-block">
 			<a href="javascript:void(0)" class="switch--grind switch--link-js grid hide--mobile"><i class="icn">
 				<svg class="svg">
 					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#gridview" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#gridview"></use>
@@ -34,7 +34,7 @@
 					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#listview"></use>
 				</svg>
 			</i><span class="txt"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></span></a>
-		</li>
+		</li> */ ?>
 		<li>
 			<div class="sort-by">
 				<ul>
@@ -52,6 +52,15 @@
 				</ul>
 			</div>
 		</li>
+		<li>
+			<div class="list-grid-toggle switch--link-js">
+				<div class="icon">
+					<div class="icon-bar"></div>
+					<div class="icon-bar"></div>
+					<div class="icon-bar"></div>
+				</div>
+			</div>
+		</li>		
 	</ul>
 	<?php
 		echo $frmProductSearch->getFieldHtml('sortOrder');

@@ -1,9 +1,9 @@
 <div class="wrapper">
-<!--<div id="loader-wrapper">
+<div id="loader-wrapper">
 	<div class="pong-loader"></div>
 	<div class="loader-section section-left"></div>
 	<div class="loader-section section-right"></div>
-</div>-->
+</div>
 <!--header start here-->
 <header id="header" class="header no-print" role="site-header">
   <div class="top-bar">

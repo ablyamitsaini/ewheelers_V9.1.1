@@ -20,6 +20,7 @@ FatApp::setViewDataProvider('_partial/advertiser/advertiserDashboardMobileNaviga
 FatApp::setViewDataProvider('_partial/seller/sellerDashboardNavigation.php', array('Navigation', 'sellerDashboardNavigation'));
 FatApp::setViewDataProvider('_partial/seller/sellerDashboardMobileNavigation.php', array('Navigation', 'sellerDashboardNavigation'));
 FatApp::setViewDataProvider('_partial/affiliate/affiliateDashboardNavigation.php', array('Navigation', 'affiliateDashboardNavigation'));
+FatApp::setViewDataProvider('_partial/topHeaderDashboard.php', array('Navigation', 'topHeaderDashboard'));
 
 FatApp::setViewDataProvider('_partial/headerWishListAndCartSummary.php', array('Common', 'headerWishListAndCartSummary'));
 FatApp::setViewDataProvider('_partial/headerUserArea.php', array('Common', 'headerUserArea'));
