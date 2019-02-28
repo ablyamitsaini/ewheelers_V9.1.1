@@ -7,7 +7,7 @@ if($fbLoginUrl !=''){
 }
 
 if(!empty($friendList)){ ?>
-	<div class="group--btns">
+	<div class="btn-group">
 		<a href="javascript:void(0);" onclick="shareAndEarn(<?php echo $selprod_id;?>);" class="btn btn--primary btn--sm"><?php echo Labels::getLabel("LBL_Share_and_Earn", $siteLangId)?></a>
 	</div>
 <?php	$arr_flds = array(

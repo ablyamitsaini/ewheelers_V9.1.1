@@ -64,7 +64,7 @@ foreach ($arrListing as $sn => $listing){
 if( count($arrListing) == 0 ){
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 } else {
-	/* echo '<div class="box__head"><div class="group--btns"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
+	/* echo '<div class="box__head"><div class="btn-group"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
 	echo $tbl->getHtml();
 }
 $postedData['page'] = $page;

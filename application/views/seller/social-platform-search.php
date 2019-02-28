@@ -1,6 +1,6 @@
 <div class="box__head">
 	<h4><?php echo Labels::getLabel('LBL_Social_Platforms',$siteLangId); ?></h4>
-	<div class="group--btns">
+	<div class="btn-group">
 		<a href="javascript:void(0)" class="btn btn--primary btn--sm" onclick="addForm(0)"><?php echo Labels::getLabel('LBL_Add_Social_Platform',$siteLangId);?></a>
 	</div>
 </div>

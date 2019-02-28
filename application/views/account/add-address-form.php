@@ -13,22 +13,13 @@ $stateFld = $addressFrm->getField('ua_state_id');
 $stateFld->setFieldTagAttribute('id','ua_state_id');
 $cancelFld = $addressFrm->getField('btn_cancel');
 $cancelFld->setFieldTagAttribute('onclick','searchAddresses()');
-
-
 $phoneFld = $addressFrm->getField('ua_phone');
 $phoneFld->setWrapperAttribute('class','col-sm-12');
 $phoneFld->developerTags['col'] = 12;
-
 $submitFld = $addressFrm->getField('btn_submit');
 
 ?>
-<div class="cols--group">	
-	 <div class="box box--white box--space">
-	   <div class="box__head">
-		   <h4><?php echo Labels::getLabel('LBL_Address_Book',$siteLangId);?></h4>
-	   </div>		   
-		<div class="box__body" >
-			<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+					<div class="tabs tabs--small tabs--scroll clearfix">
 				<ul>
 					<li ><a href="javascript:void(0);" onClick="searchAddresses()"><?php echo Labels::getLabel('LBL_My_Addresses',$siteLangId);?></a></li>
 					<?php if( $ua_id > 0 ) {  ?>
@@ -38,15 +29,13 @@ $submitFld = $addressFrm->getField('btn_submit');
 					<?php } ?>
 				</ul>
 			</div>
-			 
 			<div class="container--addresses">
 				<?php echo $addressFrm->getFormHtml();?>
-			</div>				 
-		</div>			 
-	</div>
-</div>
+			</div>
+
+
 <script language="javascript">
 $(document).ready(function(){
 	getCountryStates($( "#ua_country_id" ).val(),<?php echo $stateId ;?>,'#ua_state_id');
-});	
+});
 </script>

@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
+	<div class="content-header content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 						<h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Update_Products_Inventory',$siteLangId);?></h2>
 		</div>

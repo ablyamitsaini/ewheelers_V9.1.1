@@ -106,7 +106,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                   </p>
 				<?php }?>
                 <div class="box__body">
-                  <div class="form__cover nopadding--bottom"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
+                  <div class="bg-gray-light p-3 pb-0"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
                   <span class="gap"></span>
                   <div id="ordersListing"></div>
                 </div>

@@ -59,7 +59,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
 			</div>
 			<div class="cards-content p-3">
-				<div class="form__cover nopadding--bottom">
+				<div class="bg-gray-light p-3 pb-0">
 					<?php echo $frmOrderSrch->getFormHtml(); ?>
 				</div>
 				<span class="gap"></span>

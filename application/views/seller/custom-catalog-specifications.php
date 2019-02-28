@@ -31,7 +31,7 @@
 					if($specCount>0){
 					foreach($productSpecifications['prod_spec_name'][CommonHelper::getLangId()] as $specKey=>$specval){
 						$totalSpec = $specKey; ?>
-						<div class="form__cover  nopadding--bottom specification" id="specification<?php echo $specKey; ?>">
+						<div class="bg-gray-light p-3 pb-0 specification" id="specification<?php echo $specKey; ?>">
 							<?php foreach($languages as $langId=>$langName){ ?>
 							<div class="row">
 								<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
@@ -80,7 +80,7 @@
 							<?php  }  ?>
 						</div>
 						<?php $count++; }  } else{ ?>
-						<div class="form__cover nopadding--bottom specification" id="specification0">
+						<div class="bg-gray-light p-3 pb-0 specification" id="specification0">
 						<?php foreach($languages as $langId=>$langName){ ?>
 							<div class="row">
 								<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">

@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 <div class="box__head box__head--large">
    <h4><?php echo $productCatalogName; ?></h4>
-	<div class="group--btns">
+	<div class="btn-group">
 		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Volume_Discount', $siteLangId)?></a>
 	</div>
 </div>

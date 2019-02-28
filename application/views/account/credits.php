@@ -1,7 +1,7 @@
-<?php 
+<?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchCredits(this); return false;');
-$frmSrch->setFormTagAttribute('class', 'form'); 
+$frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmSrch->developerTags['fld_default_col'] = 12;
 
@@ -41,7 +41,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Account',$siteLangId);?></h2>
@@ -54,28 +54,28 @@ $cancelBtnFld->developerTags['col'] = 6;
 			</div>
 			<div class="cards-content p-3">
 				<!-- wallet balance[ -->
-				<?php 
+				<?php
 				$balanceTotalBlocksDisplayed = 1;
-				
+
 				$showTotalBalanceAvailableDiv = false;
 				if( $userTotalWalletBalance != $userWalletBalance ) {
 					$showTotalBalanceAvailableDiv = true;
 					$balanceTotalBlocksDisplayed ++;
 				}
-				
+
 				$showPromotionWalletChargedDiv = false;
 				if( $promotionWalletToBeCharged ){
-					$showPromotionWalletChargedDiv = true; 
+					$showPromotionWalletChargedDiv = true;
 					$balanceTotalBlocksDisplayed ++;
 				}
-				
-				
+
+
 				$showWithdrawalRequestAmountDiv = false;
-				if( $withdrawlRequestAmount ){ 
+				if( $withdrawlRequestAmount ){
 					$showWithdrawalRequestAmountDiv = true;
-					$balanceTotalBlocksDisplayed ++;						
+					$balanceTotalBlocksDisplayed ++;
 				}
-				
+
 				$totalWidth = 12;
 				$tobeShownWidth = intval( $totalWidth/$balanceTotalBlocksDisplayed );
 				$totalBalanceAvailableDiv = $tobeShownWidth;
@@ -84,7 +84,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 				$currentBalanceDiv = $tobeShownWidth;
 				?>
 				<div class="row">
-					<?php 
+					<?php
 					if( $showTotalBalanceAvailableDiv ){ ?>
 						<div class="col-lg-<?php echo $totalBalanceAvailableDiv; ?> col-md-<?php echo $totalBalanceAvailableDiv; ?> col-sm-12 col-xs-12">
 							<div class="balancebox" id="rechargeWalletDiv">
@@ -97,7 +97,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 						</div>
 					<?php } ?>
 
-					<?php 
+					<?php
 					if( $showPromotionWalletChargedDiv ){ ?>
 						<div class="col-lg-<?php echo $promotionWalletChargedDiv; ?> col-md-<?php echo $promotionWalletChargedDiv; ?> col-sm-12 col-xs-12 ">
 							<div class="balancebox">
@@ -110,7 +110,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 						</div>
 					<?php } ?>
 
-					<?php 
+					<?php
 					if( $showWithdrawalRequestAmountDiv ) { ?>
 						<div class="col-lg-<?php echo $withdrawalRequestAmountDiv; ?> col-md-<?php echo $withdrawalRequestAmountDiv; ?> col-sm-12 col-xs-12 ">
 							<div class="balancebox">
@@ -122,7 +122,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 							</div>
 						</div>
 					<?php } ?>
-					
+
 						<div class="col-lg-<?php echo $currentBalanceDiv; ?> col-md-<?php echo $currentBalanceDiv; ?> col-sm-12 col-xs-12 ">
 							<div class="balancebox">
 							<p><?php echo Labels::getLabel('LBL_Current_Balance',$siteLangId);?>: </p>
@@ -133,13 +133,12 @@ $cancelBtnFld->developerTags['col'] = 6;
 							<a href="javascript:void(0)" onClick="withdrawalReqForm()" class="btn btn--secondary block-on-mobile"><?php echo Labels::getLabel('LBL_Request_Withdrawal', $siteLangId); ?></a>
 							</div>
 						</div>
-					
+
 					</div>
 					<div class="gap"></div>
-					
-					
+
 					<?php //echo $balanceTotalBlocksDisplayed; ?>
-                  <div class="grids--container nopadding--bottom">
+                  <div class="bg-gray-light p-3 pb-0">
                     <?php
 						$loadWalletMoneyDiv = $canAddMoneyToWallet ? 5 : 0;
 						$srchFormDivWidth = $canAddMoneyToWallet ? '7' : 12;
@@ -148,14 +147,14 @@ $cancelBtnFld->developerTags['col'] = 6;
                       <?php if( $canAddMoneyToWallet ){ ?>
                       <div  class="col-lg-<?php echo $loadWalletMoneyDiv; ?> col-md-<?php echo $loadWalletMoneyDiv; ?> col-sm-<?php echo $loadWalletMoneyDiv; ?> col-xs-12 float--right">
                         <div id="rechargeWalletDiv" class="cellright nopadding--bottom">
-                          <?php 
+                          <?php
 							$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
-							$frmRechargeWallet->setFormTagAttribute('class', 'form'); 
+							$frmRechargeWallet->setFormTagAttribute('class', 'form');
 							$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-md-';
 							$frmRechargeWallet->developerTags['fld_default_col'] = 12;
 							$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
 
-							$amountFld = $frmRechargeWallet->getField('amount');												
+							$amountFld = $frmRechargeWallet->getField('amount');
 							$amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
 							$buttonFld = $frmRechargeWallet->getField('btn_submit');
 							$buttonFld->setFieldTagAttribute('class','btn--block block-on-mobile');
@@ -163,15 +162,15 @@ $cancelBtnFld->developerTags['col'] = 6;
                         </div>
                       </div>
                       <?php } ?>
-					  
+
                       <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> col-sm-<?php echo $srchFormDivWidth; ?> col-xs-12 ">
-                        <div class="form__cover nopadding--bottom"> <?php echo $frmSrch->getFormHtml(); ?> </div>
+                          <?php echo $frmSrch->getFormHtml(); ?>
                       </div>
                     </div>
                   </div>
                   <span class="gap"></span> <span class="gap"></span>
                   <div id="creditListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
-				  
+
 			</div>
 		</div>
 	</div>

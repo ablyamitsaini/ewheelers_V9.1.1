@@ -39,7 +39,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Order_Return_Requests',$siteLangId);?></h2>
@@ -51,7 +51,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Order_Return_Requests',$siteLangId);?></h5>
 			</div>
 			<div class="cards-content p-3">
-				<div class="form__cover nopadding--bottom">
+				<div class="bg-gray-light p-3 pb-0">
 					<?php echo $frmOrderReturnRequestsSrch->getFormHtml(); ?>
 				</div>
 				<span class="gap"></span>

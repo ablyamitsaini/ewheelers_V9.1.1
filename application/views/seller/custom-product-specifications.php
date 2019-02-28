@@ -9,7 +9,7 @@
       <div class="cols--group">
         <div class="box__head panel__head">
           <h5><?php echo Labels::getLabel('LBL_Product_Specifications',$siteLangId); ?></h5>
-          <div class="group--btns">
+          <div class="btn-group">
 			<?php if(is_array($prodSpec) && !empty($prodSpec)) { ?>
 			  <a onclick="addProdSpec(<?php echo $product_id;?>)" href="javascript:void(0)"  class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Add_Specification', $siteLangId);?></a>
 			<?php }?>

@@ -1,7 +1,7 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
+	<div class="content-header content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?></h2>
@@ -16,7 +16,7 @@
                          <div class="box box--white box--space">
                            <div class="box__head no-print" >
                                <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                               <div class="group--btns"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
+                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
                            </div>
                             <div class="box__body">
                                  <div class="grids--offset">

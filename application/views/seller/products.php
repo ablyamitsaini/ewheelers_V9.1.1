@@ -25,7 +25,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
       <?php $this->includeTemplate('_partial/productPagesTabs.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action),false); ?>
@@ -54,7 +54,7 @@ $cancelBtnFld->developerTags['col'] = 2;
 			</div>
 			<div class="cards-content p-3">
 
-              <div class="group--btns">
+              <div class="btn-group">
               <!--<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php /* echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId); */?></a>-->
               <?php /* if( User::canAddCustomProduct() ){ ?>
                 <a href="<?php echo commonHelper::generateUrl('seller','catalog');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Products_list', $siteLangId);?></a>
@@ -62,7 +62,7 @@ $cancelBtnFld->developerTags['col'] = 2;
             </div>
 
 
-            <div class="form__cover nopadding--bottom">
+            <div class="bg-gray-light p-3 pb-0">
                                   <?php echo $frmSearch->getFormHtml(); ?>
             </div>
             <span class="gap"></span>

@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ; ?></h2>
@@ -164,7 +164,7 @@
 						<div class="grid grid--second">
 							<span class="media__title"><?php echo $logged_user_name; ?></span>
 							<div class="grid grid--third">
-								<div class="form__cover">
+								<div class="bg-gray-light p-3 pb-0">
 								<?php echo $frmMsg->getFormHtml(); ?>
 								</div>
 							</div>

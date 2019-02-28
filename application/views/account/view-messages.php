@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
+	<div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h2>
@@ -12,7 +12,7 @@
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
-				<div class="group--btns"><a href="<?php echo CommonHelper::generateUrl('Account','messages');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_messages',$siteLangId);?></a></div>
+				<div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Account','messages');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_messages',$siteLangId);?></a></div>
 			</div>
 			<div class="cards-content p-3">
 				<table class="table table--orders">
@@ -82,7 +82,7 @@
 						   <span class="media__title"><?php echo $loggedUserName;?></span>
 					   </div>
 						<div class="grid grid--third">
-						   <div class="form__cover">
+						   <div class="bg-gray-light p-3 pb-0">
 								<?php
 								$frm->setFormTagAttribute('onSubmit','sendMessage(this); return false;');
 								$frm->setFormTagAttribute('class', 'form');

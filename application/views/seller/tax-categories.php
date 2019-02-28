@@ -4,7 +4,7 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
+	<div class="content-header content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Tax_Categories',$siteLangId); ?></h2>
@@ -16,7 +16,7 @@
 				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Manage_Tax_Rates',$siteLangId); ?></h5>
 			</div>
 			<div class="cards-content p-3">
-        <div class="form__cover">
+        <div class="bg-gray-light p-3 pb-0">
            <div class="search search--sort">
              <div class="search__field">
                <?php

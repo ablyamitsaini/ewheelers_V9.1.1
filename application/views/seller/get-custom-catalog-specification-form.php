@@ -1,4 +1,4 @@
-<div class="form__cover nopadding--bottom specification" id="specification<?php echo $divCount; ?>">
+<div class="bg-gray-light p-3 pb-0 specification" id="specification<?php echo $divCount; ?>">
 	<?php foreach($languages as $langId=>$langName){ ?>
 	<div class="row">
 		<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">

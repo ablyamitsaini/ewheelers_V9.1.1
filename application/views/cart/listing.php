@@ -101,7 +101,7 @@
 				<div class="cartdetail__footer">
 				<!--div class="row">
 						<div class="col-md-offset-7 col-md-5">
-							<div class="form__cover">
+							<div class="bg-gray-light p-3 pb-0">
 							   <h6><?php /* echo Labels::getLabel('LBL_Apply_Promo_Coupons',$siteLangId);?></h6>
 								<?php
 									$PromoCouponsFrm->setFormTagAttribute('class','form form--secondary form--singlefield');

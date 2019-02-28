@@ -24,7 +24,7 @@
 					</div>
 					<div class="cards-content p-3">
 						<div id="promotionForm">
-							<div class="form__cover nopadding--bottom formshowhide-js">
+							<div class="bg-gray-light p-3 pb-0 formshowhide-js">
 								<?php 
 									$frmSearchPromotions->setFormTagAttribute ( 'id', 'frmSearchPromotions' );
 									$frmSearchPromotions->setFormTagAttribute ( 'class', 'form' );

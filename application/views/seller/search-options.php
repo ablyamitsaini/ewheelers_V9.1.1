@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 
-  <div class="form__cover">
+  <div class="bg-gray-light p-3 pb-0">
     <div class="search search--sort">
       <div class="search__field">
         <?php

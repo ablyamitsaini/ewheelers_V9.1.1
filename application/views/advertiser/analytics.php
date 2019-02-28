@@ -19,7 +19,7 @@
 						</div>
 					</div>
 					<div class="cards-content p-3">
-						<div class="form__cover nopadding--bottom">
+						<div class="bg-gray-light p-3 pb-0">
 						<?php 
 							$searchForm->setFormTagAttribute('class', 'form');
 							$searchForm->setFormTagAttribute('onsubmit', 'searchAnalytics(this); return false;');

@@ -10,7 +10,7 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 			<div class="cols--group">
 				<div class="panel__head box__head">
 					<h2><?php echo Labels::getLabel('LBL_Custom_Catalog_Product_Setup',$siteLangId); ?></h2>
-					<div class="group--btns">
+					<div class="btn-group">
 						<a href="<?php echo CommonHelper::generateUrl('seller'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Account_Area',$siteLangId); ?></a>
 					</div>
 				</div>
