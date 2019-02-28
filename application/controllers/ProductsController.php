@@ -1553,41 +1553,16 @@ END,   special_price_found ) as special_price_found');
 
 	public function searchProducttagsAutocomplete(){
 		$post = FatApp::getPostedData();
-		$json = array();
 		$srch = Tag::getSearchObject( $this->siteLangId );
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
-		$srch->addMultipleFields( array('tag_id', 'IFNULL(tag_name, tag_identifier) as tag_name') );
-		$srch->addOrder('tag_name');
-		$srch->addGroupby('tag_name');
-		$srch->addCondition( 'tag_name', 'LIKE', '%'.urldecode($post["keyword"]).'%' );
+		$srch->addMultipleFields( array('IFNULL(tag_name, tag_identifier) as value') );
+		$srch->addOrder("LOCATE('".urldecode($post["keyword"])."',value)");
+		$srch->addGroupby('value');
+		$srch->addHaving( 'value', 'LIKE', '%'.urldecode($post["keyword"]).'%' );
 		$rs = $srch->getResultSet();
 		$tags = FatApp::getDb()->fetchAll($rs);
-		// print_r($tags);
-		$new_arr = array();
-		$count = 0;
-		foreach ($tags as $key => $tag) {
-			$tagName = strip_tags(html_entity_decode($tag['tag_name'], ENT_QUOTES, 'UTF-8'));
-			$position = strpos(strtolower($tagName),strtolower(urldecode($post["keyword"])));
-
-			$json[$position][] = array(
-				'value' 	=> $tagName,
-			);
-		}
-		/* $sort_order = array();
-		foreach ($json as $key => $value) {
-			$sort_order[$key] = $value['value'];
-		}
-		array_multisort($sort_order, SORT_ASC, $json); */
-		//echo json_encode( array( 'suggestions' => array('suggestion' => $json ) ) );
-		ksort($json);
-		$newJson = array();
-		foreach ($json as $suggestion) {
-			foreach ($suggestion as $result) {
-				$newJson[] = $result;
-			}
-		}
-		echo json_encode(array('suggestions'=>$newJson)); exit;
+		die( json_encode(array('suggestions'=>$tags)) );
 	}
 
 	public function getBreadcrumbNodes($action) {
