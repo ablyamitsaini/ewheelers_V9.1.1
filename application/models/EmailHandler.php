@@ -2168,7 +2168,7 @@ class EmailHandler extends FatModel {
 		return false;
 	}
 
-	static function SendPromotionApprovalRequestAdmin( $langId, $userId ,$d){
+	function SendPromotionApprovalRequestAdmin( $langId, $userId ,$d){
 		$tpl = 'promotion_approval_required_to_admin';
 		$promotionDetails = Promotion::getAttributesByLangId($langId,$d['promotion_id']);
 		$userObj = new User($userId);

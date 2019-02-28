@@ -44,10 +44,12 @@ foreach ($arr_listing as $sn=>$row){
 				$userDetail .= '<strong>'.Labels::getLabel('LBL_UN:', $adminLangId).' </strong>'.$row['credential_username'].'<br/>';
 				$td->appendElement( 'plaintext', array(), $userDetail, true );
 
-				if($canViewShops){
-					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Shops').'", '.$row['shop_id'].')'), '<strong>'.Labels::getLabel('LBL_Shop:', $adminLangId).' </strong>'.$row['shop_name'], true);
-				} else {
-					$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_Shop:', $adminLangId).' </strong>'.$row['shop_name'], true);
+				if( !empty($row['shop_name']) ){
+					if($canViewShops){
+						$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Shops').'", '.$row['shop_id'].')'), '<strong>'.Labels::getLabel('LBL_Shop:', $adminLangId).' </strong>'.$row['shop_name'], true);
+					} else {
+						$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_Shop:', $adminLangId).' </strong>'.$row['shop_name'], true);
+					}
 				}
 			break;
 			case 'promotion_type':

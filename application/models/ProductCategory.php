@@ -74,10 +74,10 @@ class ProductCategory extends MyAppModel{
 		}
 		return true;
 	}
-	
+
 	public static function updateCatOrderCode($prodCatId = 0){
 		$prodCatId = FatUtility::int($prodCatId);
-		
+
 		$srch = ProductCategory::getSearchObject(false,0,false);
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
@@ -85,7 +85,7 @@ class ProductCategory extends MyAppModel{
 		if($prodCatId){
 			$srch->addCondition('prodcat_id','=',$prodCatId);
 		}
-		
+
 		$rs = $srch->getResultSet();
 		$orderCode = FatApp::getDb()->fetchAll($rs);
 		foreach($orderCode as $row){
@@ -95,10 +95,10 @@ class ProductCategory extends MyAppModel{
 			if (!$record->save()) {
 				Message::addErrorMessage($record->getError());
 				return false;
-			}	
+			}
 		}
 	}
-		
+
 
 	function getMaxOrder( $parent = 0 ){
 		$srch = new SearchBase(static::DB_TBL);
@@ -352,7 +352,7 @@ class ProductCategory extends MyAppModel{
 
 		//$srch->addOrder('GETCATORDERCODE(prodcat_id)');
 		$srch->addOrder('prodcat_ordercode');
-		
+
 		if(count($prefCategoryid)>0){
 			foreach($prefCategoryid as $prefCategoryids){
 				$srch->addHaving('prodcat_code', 'LIKE', '%' .$prefCategoryids. '%','OR' );
