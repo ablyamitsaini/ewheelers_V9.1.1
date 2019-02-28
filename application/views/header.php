@@ -37,6 +37,7 @@ echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 $commonHead2Data = array(
 	'siteLangId'		=>	$siteLangId,
 	'controllerName'	=>	$controllerName,
+	'isUserDashboard'	=>	$isUserDashboard,
 );
 if( isset($layoutTemplate) && $layoutTemplate != '' ){
 	$commonHead2Data['layoutTemplate']	= $layoutTemplate;

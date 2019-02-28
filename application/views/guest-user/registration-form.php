@@ -11,9 +11,8 @@
           </div>
           </div>
           <?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData ,false); } ?>
-
-    </div>
-  </div>
-</div>
+      </div>
+	 </div>
+	</div>
   </section>
 </div>
