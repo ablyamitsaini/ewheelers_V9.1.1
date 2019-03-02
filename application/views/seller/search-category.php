@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php echo Labels::getLabel('LBL_All_categories_with',$siteLangId);?>:<?php echo $keyword;?>
-<div>
+<div class="row">
 <?php if(!empty($rootCategories)){
 	$result = array();
 	$str = "<div class='slider-item col-lg-6 col-md-6 col-sm-6 col-xs-12 categories-devider'><div class='box-border box-categories scrollbar'>";
