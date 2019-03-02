@@ -17,13 +17,15 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 				</div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+		<div class="content-body">
+			<div id="listing"></div>
+		</div>
+	</div>
+</main>
 <script>
 $(document).ready(function(){
 	<?php if($prodId){?>
-	customProductForm(<?php echo $prodId;?>,<?php echo $prodCatId;?>);
+	customProductForm(<?php echo $prodId;?>,<?php echo $prodCatId;?>);	
 	<?php }else{?>
 	customProductForm();
 	<?php }?>

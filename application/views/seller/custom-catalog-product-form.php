@@ -18,17 +18,15 @@
 				<?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
 				<div class="cards-content p-3">
 					<div id="listing"></div>
-
 				</div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+</main>
 <script>
 $(document).ready(function(){
 	<?php if($preqId){?>
-	customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>);
+	customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>);	
 	<?php }else{?>
 	customCatalogProductForm();
 	<?php }?>
