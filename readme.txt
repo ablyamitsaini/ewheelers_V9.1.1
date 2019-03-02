@@ -11,6 +11,7 @@ Fixes :
     . Retain user on current page after social login.
 	. Admin can view advertiser promotional banner or slides requests even advertiser is seller and his shop is inactive.
 	. Seller promotional shop/product request will not be visible in admin if shop is inactive.
+    . Xzoom image is displaying on wrong side for arabic language, issue resolved. 
 
 Enhancements :
     . Import error handling via csv.
