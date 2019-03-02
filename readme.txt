@@ -12,7 +12,8 @@ Fixes :
 	. Admin can view advertiser promotional banner or slides requests even advertiser is seller and his shop is inactive.
 	. Seller promotional shop/product request will not be visible in admin if shop is inactive.
     . Xzoom image is displaying on wrong side for arabic language, issue resolved.
-    . Showing some html elements content on seller products inventory(frontend), issue resolved. 
+    . Showing some html elements content on seller products inventory(frontend), issue resolved.
+    . Error Notice showing while searching products on frontend, issue resolved.
 
 Enhancements :
     . Import error handling via csv.

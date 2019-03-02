@@ -245,7 +245,7 @@ class ProductsController extends MyAppController {
 		$rs = $recordSrch->getResultSet();
 		$totalRecords = FatApp::getDb()->totalRecords($rs);
 
-		if(array_key_exists('keyword',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['keyword']!= '' && count($record) ) {
+		if(array_key_exists('keyword',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['keyword']!= '' && count($totalRecords) ) {
 			$searchItemObj = new SearchItem();
 			$searchData = array('keyword'=>$headerFormParamsAssocArr['keyword']);
 			$searchItemObj->addSearchResult($searchData);
