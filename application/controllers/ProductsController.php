@@ -32,8 +32,8 @@ class ProductsController extends MyAppController {
 
 		$recordSrch = clone $prodSrchObj;
 		$recordSrch->addMultipleFields(array('product_id'));
-		$rs = $recordSrch->getResultSet(); 			
-		$totalRecords = FatApp::getDb()->totalRecords($rs); 
+		$rs = $recordSrch->getResultSet();
+		$totalRecords = FatApp::getDb()->totalRecords($rs);
 
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
@@ -202,7 +202,7 @@ class ProductsController extends MyAppController {
 		if( isset($headerFormParamsAssocArr['keyword']) ) {
 			$frm = $this->getProductSearchForm(true);
 		}
-		$headerFormParamsAssocArr['join_price'] = 1;		
+		$headerFormParamsAssocArr['join_price'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
 		$this->includeProductPageJsCss();
 
@@ -242,7 +242,7 @@ class ProductsController extends MyAppController {
 
 		$recordSrch = clone $prodSrchObj;
 		$recordSrch->addMultipleFields(array('product_id'));
-		$rs = $recordSrch->getResultSet(); 			
+		$rs = $recordSrch->getResultSet();
 		$totalRecords = FatApp::getDb()->totalRecords($rs);
 
 		if(array_key_exists('keyword',$headerFormParamsAssocArr) && $headerFormParamsAssocArr['keyword']!= '' && count($record) ) {
@@ -1680,6 +1680,7 @@ END,   special_price_found ) as special_price_found');
 		/* Track Click */
 			$prodObj = new PromotionSearch($this->siteLangId,true);
 			$prodObj->joinProducts();
+			$prodObj->joinActiveUser();
 			$prodObj->joinShops();
 			$prodObj->addPromotionTypeCondition(Promotion::TYPE_PRODUCT);
 			$prodObj->addShopActiveExpiredCondition();
