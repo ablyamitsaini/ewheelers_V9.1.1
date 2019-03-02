@@ -553,12 +553,18 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 </div>
 <script type="text/javascript">
 var mainSelprodId = <?php echo $product['selprod_id'];?>;
+var layout = '<?php echo CommonHelper::getLayoutDirection();?>';
+
 $("document").ready(function(){
 	recentlyViewedProducts(<?php echo $product['selprod_id'];?>);
 	zheight = $( window ).height() - 180;
 	zwidth = $( window ).width()/2 - 50;
-	$('.xzoom, .xzoom-gallery').xzoom({adaptive:false, zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 15});
-
+	if(layout == 'rtl'){
+		$('.xzoom, .xzoom-gallery').xzoom({zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333',  position:'left'});
+	}else{
+		$('.xzoom, .xzoom-gallery').xzoom({zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 	2});
+	}
+	
 	window.setInterval(function(){
 		var scrollPos = $(window).scrollTop();
 		if(scrollPos > 0){

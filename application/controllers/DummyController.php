@@ -572,8 +572,11 @@ echo $str;
 	}
 			
 	function test(){
+		$this->_template->addCss('css/xzoom.css');
+		$this->_template->addJs('js/xzoom.js');
+		$this->_template->render();
 			
-		$info = DiscountCoupons::getValidCoupons(4,1,'asd10');
+		/* $info = DiscountCoupons::getValidCoupons(4,1,'asd10');
 var_dump($info);
 		exit;
 			
@@ -583,7 +586,7 @@ var_dump($info);
 		if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 			die('dsds');
 		}	
-		CommonHelper::printArray($childOrderInfo); exit;
+		CommonHelper::printArray($childOrderInfo); exit; */
 	}
 	
 	private function getShopInfo($shop_id){
