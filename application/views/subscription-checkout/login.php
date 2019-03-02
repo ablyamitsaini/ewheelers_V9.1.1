@@ -18,7 +18,7 @@
 
 <?php 
 /* <p class="text--dark"><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME',$siteLangId));?>? 
-<a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a>
+<a href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a>
 </p> */
 ?>
 

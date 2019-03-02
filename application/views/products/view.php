@@ -69,11 +69,37 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 						</div>
 						<?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
 					</div>
+          <div class="share-this">
+        		<span><i class="icn share"><svg class="svg">
+        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
+        				</svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
+        		<a class="social-link st-custom-button" data-network="facebook">
+        			<i class="icn"><svg class="svg">
+        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
+        				</svg></i>
+        		</a>
+        		<a class="social-link st-custom-button" data-network="twitter">
+        			<i class="icn"><svg class="svg">
+        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
+        				</svg></i>
+        		</a>
+        		<a class="social-link st-custom-button" data-network="pinterest">
+        			<i class="icn"><svg class="svg">
+        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
+        				</svg></i>
+        		</a>
+        		<a class="social-link st-custom-button" data-network="email">
+        			<i class="icn"><svg class="svg">
+        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
+        				</svg></i>
+        		</a>
+        	</div>
 					<?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
 				</div>
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
+        <div class="gap"> </div>
 
 			<?php if($shop['shop_free_ship_upto'] > 0){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
@@ -107,7 +133,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<?php $selectedOptionsArr = $product['selectedOptionValues'];
 
 					foreach($optionRows as $option){ ?>
-					<div class="<?php echo ($option['option_is_color']) ? 'col-auto column' : 'col-auto column'; ?>">
+					<div class="<?php echo ($option['option_is_color']) ? 'col-lg-12 col-md-5 column' : 'col-md-6 column'; ?>">
 						<div class="h6"><?php echo $option['option_name']; ?> :</div>
 						<div class="article-options <?php echo ($option['option_is_color']) ? 'options--color' : 'options--size'; ?>">
 							<?php if($option['values']){ ?>
@@ -420,7 +446,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 							</div>
 						</div>
 						<?php }?>
-					</div>					
+					</div>
 					<div class="gap"></div>
 					<div class="list-js">
 					<?php if( count($productSpecifications)>0 || $youtube_embed_code || $product['product_description']!='' || !empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || !empty($product['selprodComments']) ){ ?>
@@ -555,7 +581,7 @@ $(function () {
 		$("#btnAddToCart").addClass("quickView");
 		$('#slider-for').slick( getSlickGallerySettings(false,'<?php echo CommonHelper::getLayoutDirection();?>') );
 		$('#slider-nav').slick( getSlickGallerySettings(true,'<?php echo CommonHelper::getLayoutDirection();?>') );
-		
+
 		/* for toggling of tab/list view[ */
 		$('.list-js').hide();
 		$('.view--link-js').on('click',function(e) {

@@ -22,6 +22,24 @@ $(function () {
 		}
 	});
 });
+/*Ripple*/
+$('[ripple]').on('click', function (e) {
+	var rippleDiv = $('<div class="ripple" />'),
+		rippleOffset = $(this).offset(),
+		rippleY = e.pageY - rippleOffset.top,
+		rippleX = e.pageX - rippleOffset.left,
+		ripple = $('.ripple');
+
+	rippleDiv.css({
+		top: rippleY - (ripple.height() / 2),
+		left: rippleX - (ripple.width() / 2),
+		background: $(this).attr("ripple-color")
+	}).appendTo($(this));
+
+	window.setTimeout(function () {
+		rippleDiv.remove();
+	}, 1500);
+});
 
 /*Tabs*/
 $(document).ready(function () {
@@ -359,7 +377,7 @@ $(document).ready(function(){
           $('#accordian').children('ul').children('li:gt(0)').hide();
         }
    }
-   
+
    function setSelectedCatValue(id){
 		var currentId = 'category--js-'+id;
 		var e = document.getElementById(currentId);

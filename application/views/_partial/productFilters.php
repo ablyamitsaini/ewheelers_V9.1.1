@@ -54,20 +54,20 @@ array_walk($catCodeArr,function(&$n) {
 		<?php foreach( $categoriesArr as $cat ){
 			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id'])); ?>
 			<li>
-				<?php if( count($cat['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
+				<?php if( count($cat['children']) > 0 ){ echo '<span class="acc-trigger" ripple="ripple" ripple-color="#000"></span>'; } ?>
 				<a class="filter_categories" data-id = "<?php echo $cat['prodcat_id']; ?>" href="<?php echo $catUrl; ?>"><?php echo $cat['prodcat_name']; ?></a>
 				<?php if( count($cat['children']) > 0 ){
 					echo '<ul>';
 					foreach( $cat['children'] as $children ){ ?>
 						<li>
-							<?php if( isset($children['children']) && count($children['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
+							<?php if( isset($children['children']) && count($children['children']) > 0 ){ echo '<span class="acc-trigger" ripple="ripple" ripple-color="#000"></span>'; } ?>
 							<a class="filter_categories" data-id = "<?php echo $children['prodcat_id']; ?>"  href="<?php echo CommonHelper::generateUrl('category','view',array($children['prodcat_id'])); ?>"><?php echo $children['prodcat_name']; ?></a>
 
 							<?php if( isset($children['children']) && count($children['children']) > 0 ){
 								echo '<ul>';
 								foreach( $children['children'] as $subChildren ){ ?>
 								<li>
-									<?php if( isset($subChildren['children']) && count($subChildren['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
+									<?php if( isset($subChildren['children']) && count($subChildren['children']) > 0 ){ echo '<span class="acc-trigger" ripple="ripple" ripple-color="#000"></span>'; } ?>
 									<a class="filter_categories" data-id = "<?php echo $subChildren['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($subChildren['prodcat_id'])); ?>"><?php echo $subChildren['prodcat_name']; ?></a>
 
 									<?php if( isset($subChildren['children']) && count($subChildren['children']) > 0 ){
@@ -75,7 +75,7 @@ array_walk($catCodeArr,function(&$n) {
 										foreach( $subChildren['children'] as $subSubChildren ){ ?>
 
 										<li>
-											<?php if(  isset($subSubChildren['children']) && count($subSubChildren['children']) > 0 ){ echo '<span class="acc-trigger"></span>'; } ?>
+											<?php if(  isset($subSubChildren['children']) && count($subSubChildren['children']) > 0 ){ echo '<span class="acc-trigger" ripple="ripple" ripple-color="#000"></span>'; } ?>
 											<a class="filter_categories" data-id = "<?php echo $subSubChildren['prodcat_id']; ?>" href="<?php echo CommonHelper::generateUrl('category','view',array($subSubChildren['prodcat_id'])); ?>"><?php echo $subSubChildren['prodcat_name']; ?></a>
 										</li>
 										<?php
@@ -153,7 +153,7 @@ array_walk($catCodeArr,function(&$n) {
 			<div class="price-input">
 			  <div class="price-text-box">
 				<input value="<?php echo ceil($priceArr['maxPrice']); ?>" class="input-filter form-control " name="priceFilterMaxValue" type="text">
-				<span class="rsText"><?php echo CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft(); ?></span> </div>				
+				<span class="rsText"><?php echo CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft(); ?></span> </div>
 			</div>
 		</div>
 		<!--<input value="GO" class="btn " name="toVal" type="submit">-->

@@ -21,8 +21,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-form <?php echo ($isRegisterForm == applicationConstants::YES) ? 'sign-up' : ''; ?>">
-		<div id="sign-in" class="form-item sign-in ">
+	<div class="container-form">
+		<div id="sign-in" class="form-item sign-in">
 			<div class="form-side-inner">
 				<div class="form-title">
 					<h2><?php echo Labels::getLabel('LBL_Sign_In_to_your_account',$siteLangId);?></h2>
@@ -30,7 +30,7 @@
 				<?php $this->includeTemplate('guest-user/loginPageTemplate.php', $loginData,false ); ?>			
 			</div>	
 		</div>
-		<div id="sign-up" class="form-item sign-up <?php echo ($isRegisterForm == applicationConstants::YES) ? 'is-opened' : ''; ?>">
+		<div id="sign-up" class="form-item sign-up">
 			<div class="form-side-inner">
 				<div class="form-title">
 					<h2><?php echo Labels::getLabel('LBL_Create_Your_Account_For_Sign_Up',$siteLangId);?></h2>

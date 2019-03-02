@@ -28,7 +28,7 @@
 
 		<?php if( $showSignUpLink ){ ?>
 		<div class="row">
-			<div class="col-md-12 col-xs-12"> <a class="last-button" href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm',array(applicationConstants::YES)); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a> </div>
+			<div class="col-md-12 col-xs-12"> <a class="last-button" href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a> </div>
 		</div>
 		<?php } ?>
 

@@ -163,9 +163,9 @@
 				?>
 				<div class="<?php echo $class;?>">
 					<div class="listing-products -listing-products listing-products--grid ">
-						<div class="section section--items listview">
+
 							<div id="productsList" role="main-listing" class="row"></div>
-						</div>
+					 
 					</div>
 				</div>
 			</div>

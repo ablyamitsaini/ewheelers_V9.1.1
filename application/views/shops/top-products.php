@@ -157,9 +157,9 @@
 				</div>
 				<div class="col-lg-9 col-md-9 column">
 					<div class="listing-products -listing-products listing-products--grid ">
-						<div class="section section--items listview">
+					 
 							<div id="productsList" role="main-listing" class="row"></div>
-						</div>
+
 					</div>
 					<?php /* if(!empty($pollQuest)){ ?>
 						<span class="gap"></span>

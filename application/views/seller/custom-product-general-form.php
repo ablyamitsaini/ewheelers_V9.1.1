@@ -1,89 +1,89 @@
-<div class="cards">
-	<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
-	<div class="cards-content p-3">
-		<div class="tabs tabs--small tabs--scroll clearfix">
-			<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
-		</div>
-	</div>
-	<div class="tabs__content form">
-		<div class="form__content">
-			<div class="col-md-12">
-				<div class="container container--fluid">
-					<div class="tabs--inline tabs--scroll clearfix">
-						<ul>
-							<li class="is-active"><a  <?php echo ($product_id) ? "onclick='customProductForm( ".$product_id." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
+	<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>  
+	<div class="box__body">		
+			<div class="tabs tabs--small   tabs--scroll clearfix">
+				<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
+			</div>
+			<div class="tabs__content form">
+		
+				<div class="form__content">
+					<div class="col-md-12">
+						 
+							<div class="tabs tabs-sm tabs--scroll clearfix">
+								<ul>
+									<li class="is-active"><a  <?php echo ($product_id) ? "onclick='customProductForm( ".$product_id." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
+							
+									<?php foreach($languages as $langId=>$langName){?>
+									<li class="<?php echo (!$product_id) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($product_id) ? "onclick='customProductLangForm( ".$product_id.",".$langId." );'" : ""; ?>><?php echo $langName;?></a></li>
+									<?php } ?>
+								</ul>	
+							</div>
+						 
+						<div class="form__subcontent">
+						<?php 
+						$customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
+						$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+						$customProductFrm->developerTags['fld_default_col'] = 12;
+						$customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
+						
+						$shippingCountryFld = $customProductFrm->getField('shipping_country');	
+						$shippingCountryFld->setWrapperAttribute( 'class' , 'not-digital-js');
+						
+						$shipFreeFld = $customProductFrm->getField('ps_free');	
+						$shipFreeFld->setWrapperAttribute( 'class' , 'not-digital-js');
+						
+						if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1 ))
+						{
+							$lengthFld = $customProductFrm->getField('product_length');	
+							$lengthFld->setWrapperAttribute( 'class' , 'product_length_fld');	
+							//$lengthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
+								
+							$widthFld = $customProductFrm->getField('product_width');	
+							$widthFld->setWrapperAttribute( 'class' , 'product_width_fld');
+							//$widthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId) ;
+								
+							$heightFld = $customProductFrm->getField('product_height');	
+							$heightFld->setWrapperAttribute( 'class' , 'product_height_fld');
+							//$heightFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
 
-							<?php foreach($languages as $langId=>$langName){?>
-							<li class="<?php echo (!$product_id) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($product_id) ? "onclick='customProductLangForm( ".$product_id.",".$langId." );'" : ""; ?>><?php echo $langName;?></a></li>
-							<?php } ?>
-						</ul>
+							$dimensionUnitFld = $customProductFrm->getField('product_dimension_unit');	
+							$dimensionUnitFld->setWrapperAttribute( 'class' , 'product_dimension_unit_fld');
+
+							$weightFld = $customProductFrm->getField('product_weight');	
+							$weightFld->setWrapperAttribute( 'class' , 'product_weight_fld');
+
+							$weightUnitFld = $customProductFrm->getField('product_weight_unit');	
+							$weightUnitFld->setWrapperAttribute( 'class' , 'product_weight_unit_fld');
+						}
+						
+						$productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
+						$productCodEnabledFld->setWrapperAttribute( 'class' , 'product_cod_enabled_fld');
+						
+						/* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
+						$productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */
+						
+						/* $lengthFld = $customProductFrm->getField('product_length')->fieldWrapper = array('<div class="s">','</div>');
+						$widthFld = $customProductFrm->getField('product_width')->fieldWrapper = array('<div class="f">','</div>');
+						$heightFld = $customProductFrm->getField('product_height')->fieldWrapper = array('<div class="a">','</div>');
+						
+						$customProductFrm->getField('product_weight')->fieldWrapper = array('<div class="c">','</div>');
+						$customProductFrm->getField('product_weight_unit')->fieldWrapper = array('<div class="g">','</div>'); */
+						
+						//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
+						echo $customProductFrm->getFormHtml();
+						?>  
 					</div>
 				</div>
-				<div class="form__subcontent">
-				<?php
-				$customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
-				$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-				$customProductFrm->developerTags['fld_default_col'] = 12;
-				$customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
-
-				$shippingCountryFld = $customProductFrm->getField('shipping_country');
-				$shippingCountryFld->setWrapperAttribute( 'class' , 'not-digital-js');
-
-				$shipFreeFld = $customProductFrm->getField('ps_free');
-				$shipFreeFld->setWrapperAttribute( 'class' , 'not-digital-js');
-
-				if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1 ))
-				{
-					$lengthFld = $customProductFrm->getField('product_length');
-					$lengthFld->setWrapperAttribute( 'class' , 'product_length_fld');
-					//$lengthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
-						
-					$widthFld = $customProductFrm->getField('product_width');
-					$widthFld->setWrapperAttribute( 'class' , 'product_width_fld');
-					//$widthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId) ;
-
-					$heightFld = $customProductFrm->getField('product_height');
-					$heightFld->setWrapperAttribute( 'class' , 'product_height_fld');
-					//$heightFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
-
-					$dimensionUnitFld = $customProductFrm->getField('product_dimension_unit');
-					$dimensionUnitFld->setWrapperAttribute( 'class' , 'product_dimension_unit_fld');
-
-					$weightFld = $customProductFrm->getField('product_weight');
-					$weightFld->setWrapperAttribute( 'class' , 'product_weight_fld');
-
-					$weightUnitFld = $customProductFrm->getField('product_weight_unit');
-					$weightUnitFld->setWrapperAttribute( 'class' , 'product_weight_unit_fld');
-				}
-
-				$productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
-				$productCodEnabledFld->setWrapperAttribute( 'class' , 'product_cod_enabled_fld');
-
-				/* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
-				$productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */
-
-				/* $lengthFld = $customProductFrm->getField('product_length')->fieldWrapper = array('<div class="s">','</div>');
-				$widthFld = $customProductFrm->getField('product_width')->fieldWrapper = array('<div class="f">','</div>');
-				$heightFld = $customProductFrm->getField('product_height')->fieldWrapper = array('<div class="a">','</div>');
-
-				$customProductFrm->getField('product_weight')->fieldWrapper = array('<div class="c">','</div>');
-				$customProductFrm->getField('product_weight_unit')->fieldWrapper = array('<div class="g">','</div>'); */
-
-				//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
-				echo $customProductFrm->getFormHtml();
-				?>
 			</div>
 		</div>
-	</div>
-	</div>
 </div>
+
 <script  type="text/javascript">
 	var productOptions =[];
 	var productId=<?php echo $product_id;?>;
 	var productCatId=<?php echo $prodcat_id;?>;
 	var prodTypeDigital = <?php echo Product::PRODUCT_TYPE_DIGITAL;?>;
 	var dv =$("#listing");
-
+	
 	var PRODUCT_TYPE_PHYSICAL = <?php echo Product::PRODUCT_TYPE_PHYSICAL; ?>;
 	var PRODUCT_TYPE_DIGITAL = <?php echo Product::PRODUCT_TYPE_DIGITAL; ?>;
 	$(document).ready(function(){
@@ -102,7 +102,7 @@
 				$('#tab_shipping').show();
 				addShippingTab(productId);
 			}
-
+			
 			if( $(this).val() == PRODUCT_TYPE_DIGITAL ){
 				$(".product_length_fld").hide();
 				$(".product_width_fld").hide();
@@ -116,7 +116,7 @@
 				$('#tab_shipping').hide();
 			}
 		});
-
+		
 		$("select[name='product_type']").trigger('change');
 
 		/* $("select[name='product_shipped_by_me']").change(function(){
@@ -131,7 +131,7 @@
 			}
 		});
 		$("select[name='product_shipped_by_me']").trigger('change'); */
-
+		
 		/* Shipping Information */
 		$('input[name=\'shipping_country\']').autocomplete({
 			'source': function(request, response) {
@@ -142,7 +142,7 @@
 					type: 'post',
 					success: function(json) {
 						response($.map(json, function(item) {
-							return {
+							return { 
 								label: item['name'] ,
 								value: item['id']
 								};
@@ -162,9 +162,9 @@
 
 		/* $('select[name=\'product_type\']').change(function(){
 			addShippingTab(productId,prodTypeDigital);
-		});
+		});		
 		addShippingTab(productId,prodTypeDigital); */
-
+		
 		$('input[name=\'brand_name\']').autocomplete({
 			'source': function(request, response) {
 				/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
@@ -189,11 +189,11 @@
 				$('input[name=\'product_brand_id\']').val(item['value']);
 			}
 		});
-
+		
 		$('input[name=\'brand_name\']').keyup(function(){
 			$('input[name=\'product_brand_id\']').val('');
 		});
-
+		
 	});
 </script>
 	</div>
