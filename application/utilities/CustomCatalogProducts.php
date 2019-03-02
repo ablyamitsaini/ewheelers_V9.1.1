@@ -860,7 +860,9 @@ trait CustomCatalogProducts{
 		$this->set('childCategories',$childCategories);
 		$this->set('prodRootCatCode',$prodRootCatCode);
 		$this->set('keyword',$keyword);
-		$this->_template->render(false, false);
+        // $html = $this->_template->render( false, false, 'seller/search-category.php', true);
+		$this->_template->render( false, false, 'seller/search-category.php', false,true);
+        // FatUtility::dieJsonSuccess($html);
 	}
 
 	public function loadCustomProductTags(){

@@ -2,7 +2,7 @@
 class ProductCategoriesController extends AdminBaseController {
 	private $canView;
 	private $canEdit;
-	
+
 	public function __construct($action){
 		$ajaxCallArray = array('deleteRecord','form','langForm','search','setup','langSetup','updateOrder');
 		if(!FatUtility::isAjaxCall() && in_array($action,$ajaxCallArray)){
@@ -30,7 +30,7 @@ class ProductCategoriesController extends AdminBaseController {
 
 		$prodCateObj = new ProductCategory();
 		$category_structure=$prodCateObj->getCategoryStructure($parent);
-		$this->set("includeEditor",true);	
+		$this->set("includeEditor",true);
 
 		$this->set("search",$search);
 		$this->set("prodcat_parent",$parent);
@@ -47,7 +47,7 @@ class ProductCategoriesController extends AdminBaseController {
 		$page = (empty($page) || $page <= 0) ? 1: FatUtility::int($page);
 		//$pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
 		$pagesize = 500;
-		
+
 		$post = $searchForm->getFormDataFromArray($data);
 		$parent = FatApp::getPostedData('prodcat_parent', FatUtility::VAR_INT, 0);
 
@@ -56,24 +56,24 @@ class ProductCategoriesController extends AdminBaseController {
 		$srch->addCondition('m.prodcat_deleted', '=', 0);
 		$srch->addOrder('m.prodcat_display_order','asc');
 		$srch->addFld('m.*');
-		
+
 		if( !empty($post['prodcat_identifier']) ){
 			$srch->addCondition( 'm.prodcat_identifier','like','%'.$post['prodcat_identifier'].'%' );
 		}
-		
+
 		$srch->setPageNumber($page);
 		$srch->setPageSize($pagesize);
 		/* $srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords(); */
-				
+
 		/* $srch->joinTable(ProductCategory::DB_TBL . '_lang', 'LEFT OUTER JOIN',
 		'prodcatlang_prodcat_id = m.prodcat_id AND prodcatlang_lang_id = ' . $this->adminLangId); */
 
-		$srch->addMultipleFields(array("prodcat_name"));		
+		$srch->addMultipleFields(array("prodcat_name"));
 		$rs = $srch->getResultSet();
 		$pageCount = $srch->pages();
 		$records = FatApp::getDb()->fetchAll($rs);
-		
+
 		$parentCatData = ProductCategory::getAttributesById($parent);
 		$this->set("arr_listing",$records);
 		$this->set('pageCount',$pageCount);
@@ -109,18 +109,18 @@ class ProductCategoriesController extends AdminBaseController {
 				$data['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
 			}
 			/* ] */
-		
-			
+
+
 		} else {
 			$data=array('prodcat_parent'=>$prodcat_parent);
 			if($prodcat_parent){
 				$parentRewrite = UrlRewrite::getDataByOriginalUrl($this->rewriteUrl.$prodcat_parent );
 				$parentUrl = $parentRewrite['urlrewrite_custom'];
 			}
-			
+
 		}
-		
-		
+
+
 		$prodCatFrm->fill($data);
 		$this->set('languages', Language::getAllNames());
 		$this->set('prodcat_id', $prodcat_id);
@@ -146,11 +146,11 @@ class ProductCategoriesController extends AdminBaseController {
 		if( $langData ){
 			$prodCatLangFrm->fill( $langData );
 		}
-		
+
 		/* $catImages = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_IMAGE, $prodcat_id, 0, $lang_id );
 		$catIcons = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_ICON, $prodcat_id, 0, $lang_id );
 		$catBanners = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER, $prodcat_id, 0, $lang_id );
-		
+
 		$this->set('catImages',$catImages);
 		$this->set('catIcons',$catIcons);
 		$this->set('catBanners',$catBanners); */
@@ -162,38 +162,38 @@ class ProductCategoriesController extends AdminBaseController {
 		$this->set('formLayout',Language::getLayoutDirection($lang_id));
 		$this->_template->render(false, false);
 	}
-	
+
 	public function mediaForm( $prodcat_id = 0 ){
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$prodCatIconFrm = $this->getCategoryIconForm( $prodcat_id );
 		$prodCatImageFrm = $this->getCategoryImageForm( $prodcat_id );
 		$prodCatBannerFrm = $this->getCategoryBannerForm( $prodcat_id );
 		$bannerTypeArr = applicationConstants::bannerTypeArr();
-		
+
 		$this->set('prodcat_id',$prodcat_id);
 		$this->set('prodCatIconFrm',$prodCatIconFrm);
 		$this->set('prodCatImageFrm',$prodCatImageFrm);
 		$this->set('prodCatBannerFrm',$prodCatBannerFrm);
 		$this->set('bannerTypeArr',$bannerTypeArr);
-		$this->set('languages',Language::getAllNames()); 
+		$this->set('languages',Language::getAllNames());
 		$this->_template->render(false,false);
 	}
-	
+
 	public function images( $prodcat_id, $imageType='', $lang_id=0 ){
 		$this->objPrivilege->canViewShops();
 		$shop_id = FatUtility::int($prodcat_id);
 		$lang_id = FatUtility::int($lang_id);
-		
+
 		if( !$prodcat_id ){
 			FatUtility::dieWithError($this->str_invalid_request);
 		}
 		$catDetails = ProductCategory::getAttributesById($prodcat_id);
-		
-		if(!false == $catDetails && ( $catDetails['prodcat_deleted'] == 1)){			
+
+		if(!false == $catDetails && ( $catDetails['prodcat_deleted'] == 1)){
 			Message::addErrorMessage($this->str_invalid_request_id);
 			FatUtility::dieWithError( Message::getHtml() );
 		}
-		
+
 		$catIcons = $catBanners = array();
 		if($imageType=='icon') {
 			$catIcons = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_CATEGORY_ICON, $prodcat_id,0,$lang_id,false );
@@ -209,29 +209,29 @@ class ProductCategoriesController extends AdminBaseController {
 		$this->set( 'languages', Language::getAllNames() );
 		$this->_template->render(false,false);
 	}
-	
+
 	public function setUpCatImages(){
 		$post = FatApp::getPostedData();
 		$file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0 );
 		$prodcat_id = FatApp::getPostedData('prodcat_id', FatUtility::VAR_INT, 0 );
 		$lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0 );
-		if( !$file_type || !$prodcat_id ) {			
+		if( !$file_type || !$prodcat_id ) {
 			Message::addErrorMessage($this->str_invalid_request);
-			FatUtility::dieJsonError( Message::getHtml() );	
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
-			
+
 		$allowedFileTypeArr = array(AttachedFile::FILETYPE_CATEGORY_IMAGE, AttachedFile::FILETYPE_CATEGORY_ICON, AttachedFile::FILETYPE_CATEGORY_BANNER);
 
 		if( !in_array( $file_type, $allowedFileTypeArr )){
 			Message::addErrorMessage( $this->str_invalid_request );
-			FatUtility::dieJsonError( Message::getHtml() );	
-		}	
-		
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+
 		if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
 			Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_File',$this->adminLangId));
 			FatUtility::dieJsonError(Message::getHtml());
 		}
-		
+
 		$fileHandlerObj = new AttachedFile();
 		if(!$res = $fileHandlerObj->saveImage( $_FILES['file']['tmp_name'], $file_type, $prodcat_id, 0,
 		$_FILES['file']['name'], -1, $unique_record = true, $lang_id ,$_FILES['file']['type'])
@@ -240,18 +240,18 @@ class ProductCategoriesController extends AdminBaseController {
 			FatUtility::dieJsonError( Message::getHtml() );
 			// FatUtility::dieJsonError($fileHandlerObj->getError());
 		}
-		
+
 		$this->set( 'file', $_FILES['file']['name']);
 		$this->set( 'prodcat_id', $prodcat_id);
 		$this->set( 'msg', $_FILES['file']['name'].' '.Labels::getLabel('LBL_Uploaded_Successfully',$this->adminLangId));
 		$this->_template->render( false, false, 'json-success.php');
 	}
-	
+
 	public function removeImage($afileId, $prodCatId, $imageType='', $langId){
 		$afileId = FatUtility::int( $afileId );
 		$prodCatId = FatUtility::int( $prodCatId );
 		$langId = FatUtility::int( $langId );
-		
+
 		if( !$afileId ){
 			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
@@ -270,21 +270,21 @@ class ProductCategoriesController extends AdminBaseController {
 		$this->set('msg', Labels::getLabel('MSG_Image_deleted_successfully',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
 	}
-	
+
 	public function removeBanner( $prodcat_id = 0, $langId = 0 ){
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$langId = FatUtility::int($langId);
 		if( !$prodcat_id  ){
 			Message::addErrorMessage($this->str_invalid_request);
-			FatUtility::dieJsonError( Message::getHtml() );	
+			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		
+
 		$fileHandlerObj = new AttachedFile();
 		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_CATEGORY_BANNER, $prodcat_id, 0, 0, $langId)){
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		
+
 		$this->set('msg',Labels::getLabel('LBL_Deleted_Successfully',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
 	}
@@ -292,7 +292,7 @@ class ProductCategoriesController extends AdminBaseController {
 	/* public function contentBlock($prodcat_id = 0){
 		$this->objPrivilege->canEditProductCategories();
 		$prodcat_id = FatUtility::int($prodcat_id);
-		
+
 		if($prodcat_id == 0){
 			FatUtility::dieWithError($this->str_invalid_request);
 		}
@@ -306,39 +306,39 @@ class ProductCategoriesController extends AdminBaseController {
 
 		$this->set('languages', Language::getAllNames());
 		$this->set('prodcat_id', $prodcat_id);
-		$this->set('blockCatFrm', $blockCatFrm);		
+		$this->set('blockCatFrm', $blockCatFrm);
 		$this->_template->render(false, false);
 	} */
-	
+
 	private function getForm($prodcat_id = 0) {
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$prodCatObj = new ProductCategory();
 		$arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId, $prodcat_id);
 		$categories = $prodCatObj->makeAssociativeArray( $arrCategories );
-		
+
 		$frm = new Form( 'frmProdCategory',array( 'id' => 'frmProdCategory') );
 		$frm->addHiddenField('', 'prodcat_id',0);
 		$frm->addRequiredField(Labels::getLabel('LBL_Category_Identifier',$this->adminLangId), 'prodcat_identifier');
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_Category_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
 		$fld->requirements()->setRequired();
 		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'prodcat_parent', array( 0 => Labels::getLabel('LBL_Root_Category',$this->adminLangId) ) + $categories, '',array('class'=>'small') , '');
-		
+
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
-		
+
 		$frm->addSelectBox(Labels::getLabel('LBL_Category_Status',$this->adminLangId), 'prodcat_active', $activeInactiveArr, '',array('class'=>'small'),'');
 		/* $frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'prodcat_featured', 1, array(),false,0); */
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 
 		return $frm;
 	}
-	
+
 	private function getLangForm($prodcat_id = 0, $lang_id = 0){
 		$prodcat_id = FatUtility::int($prodcat_id);
-		
+
 		$srch = ProductCategory::getSearchObject(true);
-		$srch->addCondition('m.prodcat_id','=',$prodcat_id);		
-		$srch->addCondition('m.prodcat_parent','=',0);		
-		
+		$srch->addCondition('m.prodcat_id','=',$prodcat_id);
+		$srch->addCondition('m.prodcat_parent','=',0);
+
 		$rs = $srch->getResultSet();
 		$row = FatApp::getDb()->fetch($rs);
 		$frm = new Form('frmProdCatLang',array('id'=>'frmProdCatLang'));
@@ -352,49 +352,49 @@ class ProductCategoriesController extends AdminBaseController {
 			$fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Content_Block',$this->adminLangId),'prodcat_content_block');
 			$fld->htmlAfterField = '<br/>'.Labels::getLabel('LBL_Prefix_with_{SITEROOT}_if_u_want_to_generate_system_site_url.',$this->adminLangId).'<br/>E.g: {SITEROOT}/products, {SITEROOT}/contact_us etc.';
 		} */
-		
+
 		/* $frm->addButton( 'Category Image', 'cat_image', 'Upload File', array('class'=>'catFile-Js', 'id' => 'cat_image', 'data-file_type' => AttachedFile::FILETYPE_CATEGORY_IMAGE, 'data-prodcat_id'=>$prodcat_id ));
-		
+
 		$frm->addButton('Icon','cat_icon','Upload file',array('class'=>'catFile-Js','id'=>'cat_icon','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_ICON,'data-prodcat_id'=>$prodcat_id));
-		
+
 		$frm->addButton('Banner','cat_banner','Upload file',array('class'=>'catFile-Js','id'=>'cat_banner','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_BANNER,'data-prodcat_id'=>$prodcat_id)); */
-		
+
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Update', $this->adminLangId));
 		return $frm;
 	}
-	
+
 	private function getContentBlockForm($prodcat_id){
 		$frm = new Form('frmProdContentBlock');
 		$frm->addHiddenField('', 'prodcat_id',$prodcat_id);
-			
+
 		$srch = ContentPage::getListingObj($this->adminLangId,array('cpage_id'));
 		$rs = $srch->getResultSet();
 		$data = FatApp::getDb()->fetchAllAssoc($rs);
-		
+
 		$cmsPages = $data;
 		$frm->addSelectBox(Labels::getLabel('LBL_Content_Block',$this->adminLangId), 'active',$cmsPages,'', array(),'');
-		
+
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Update',$this->adminLangId));
 		return $frm;
 	}
-	
+
 	/* private function getMediaForm( $prodcat_id = 0 ){
 		$frm = new Form('frmCatMedia');
 		$frm->addHiddenField('','prodcat_id',$prodcat_id);
-		
+
 		$fld = $frm->addButton( 'Category Image', 'cat_image', 'Upload File', array('class'=>'catFile-Js', 'id' => 'cat_image', 'data-file_type' => AttachedFile::FILETYPE_CATEGORY_IMAGE, 'data-prodcat_id'=>$prodcat_id ));
-		
+
 		$fld1 =  $frm->addButton('Icon','cat_icon','Upload file',array('class'=>'catFile-Js','id'=>'cat_icon','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_ICON,'data-prodcat_id'=>$prodcat_id));
-		
-		$fld2 =  $frm->addButton('Banner','cat_banner','Upload file',array('class'=>'catFile-Js','id'=>'cat_banner','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_BANNER,'data-prodcat_id'=>$prodcat_id));		
+
+		$fld2 =  $frm->addButton('Banner','cat_banner','Upload file',array('class'=>'catFile-Js','id'=>'cat_banner','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_BANNER,'data-prodcat_id'=>$prodcat_id));
 		return $frm;
 	} */
-	
+
 	/* private function getMediaForm( $prodcat_id = 0 ){
 		$frm = new Form('frmCatMedia');
 		$frm->addHTML( '', 'cat_image_heading', '' );
 		$languagesAssocArr = Language::getAllNames();
-		
+
 		foreach( $languagesAssocArr as $lang_id => $lang_name ){
 			if( $this->canEdit ){
 				$frm->addButton('Image'.' ('.$lang_name.')', 'cat_image_'.$lang_id,'Upload',
@@ -404,7 +404,7 @@ class ProductCategoriesController extends AdminBaseController {
 			}
 			$frm->addHtml('','cat_image_display_div_'.$lang_id, '');
 		}
-		
+
 		$frm->addHTML( '', 'cat_icon_heading', '' );
 		foreach( $languagesAssocArr as $lang_id => $lang_name ){
 			if( $this->canEdit ){
@@ -414,7 +414,7 @@ class ProductCategoriesController extends AdminBaseController {
 			}
 			$frm->addHtml('','cat_icon_display_div_'.$lang_id, '');
 		}
-		
+
 		$frm->addHTML( '', 'cat_banner_heading', '' );
 		foreach( $languagesAssocArr as $lang_id => $lang_name ){
 			if( $this->canEdit ){
@@ -426,46 +426,46 @@ class ProductCategoriesController extends AdminBaseController {
 		}
 		return $frm;
 	} */
-	
+
 	private function getCategoryImageForm($prodcat_id = 0,$lang_id = 0){
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$lang_id = FatUtility::int($lang_id);
 		$frm = new Form('frmCategoryImage');
 		$frm->addHTML('',Labels::getLabel('LBL_Image',$this->adminLangId),'<h3>'.Labels::getLabel('LBL_Image',$this->adminLangId).'</h3>');
-		$frm->addHiddenField('','prodcat_id',$prodcat_id);		
+		$frm->addHiddenField('','prodcat_id',$prodcat_id);
 		$bannerTypeArr = applicationConstants::bannerTypeArr();
 		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '' );
 		$fld = $frm->addButton(Labels::getLabel('LBL_Image',$this->adminLangId),'cat_image',Labels::getLabel('LBL_Upload',$this->adminLangId),
 					array('class'=>'catFile-Js','id'=>'shop_logo','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_IMAGE,'data-frm'=>'frmCategoryImage'));
 		return $frm;
 	}
-	
+
 	private function getCategoryIconForm($prodcat_id = 0,$lang_id = 0){
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$lang_id = FatUtility::int($lang_id);
 		$frm = new Form('frmCategoryIcon');
 		$frm->addHTML('',Labels::getLabel('LBL_Icon',$this->adminLangId),'<h3>'.Labels::getLabel('LBL_Icon',$this->adminLangId).'</h3>');
-		$frm->addHiddenField('','prodcat_id',$prodcat_id);		
+		$frm->addHiddenField('','prodcat_id',$prodcat_id);
 		$bannerTypeArr = applicationConstants::bannerTypeArr();
 		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '' );
 		$fld = $frm->addButton(Labels::getLabel('LBL_Icon',$this->adminLangId),'cat_icon',Labels::getLabel('LBL_Upload',$this->adminLangId),
 		array('class'=>'catFile-Js','id'=>'shop_logo','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_ICON,'data-frm'=>'frmCategoryIcon'));
 		return $frm;
 	}
-	
+
 	private function getCategoryBannerForm($prodcat_id = 0,$lang_id = 0){
 		$prodcat_id = FatUtility::int($prodcat_id);
 		$lang_id = FatUtility::int($lang_id);
 		$frm = new Form('frmCategoryBanner');
 		$frm->addHTML('',Labels::getLabel('LBL_Banner',$this->adminLangId),'<h3>'.Labels::getLabel('LBL_Banner',$this->adminLangId).'</h3>');
-		$frm->addHiddenField('','prodcat_id',$prodcat_id);		
+		$frm->addHiddenField('','prodcat_id',$prodcat_id);
 		$bannerTypeArr = applicationConstants::bannerTypeArr();
 		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '' );
 		$fld = $frm->addButton(Labels::getLabel('LBL_Banner',$this->adminLangId),'cat_banner',Labels::getLabel('LBL_Upload',$this->adminLangId),
 					array('class'=>'catFile-Js','id'=>'shop_logo','data-file_type'=>AttachedFile::FILETYPE_CATEGORY_BANNER,'data-frm'=>'frmCategoryBanner'));
 		return $frm;
 	}
-		
+
 	private function getSearchForm(){
 		$frm = new Form('frmSearch',array('id'=>'frmSearch'));
 		$frm->addHiddenField('', 'prodcat_parent',0,array('id'=>'prodcat_parent'));
@@ -498,33 +498,33 @@ class ProductCategoriesController extends AdminBaseController {
 			$isnew = true;
 		}
 		$productCategory->assignValues($post);
-		
+
 		//FatApp::getDb()->startTransaction();
 		if (!$productCategory->save()) {
-			
+
 			if($categoryId = ProductCategory::getDeletedProductCategoryByIdentifier($post['prodcat_identifier']))
 			{
 				$record = new ProductCategory($categoryId);
 				$data = $post;
 				$data['prodcat_deleted'] = applicationConstants::NO;
 				$record->assignValues($data);
-				
+
 				if (!$record->save()) {
 					Message::addErrorMessage($record->getError());
 					FatUtility::dieJsonError( Message::getHtml() );
-	
+
 					//$this->set('msg', $record->getError());
 					//$this->_template->render(false, false, 'json-error.php');
 
 				}
-			
-				
+
+
 			}else{
 
 				Message::addErrorMessage($productCategory->getError());
 				FatUtility::dieJsonError( Message::getHtml() );
 				//$this->set('msg', $record->getError());
-				
+
 			//	$this->_template->render(false, false, 'json-error.php');
 			}
 			$newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
@@ -532,16 +532,16 @@ class ProductCategoriesController extends AdminBaseController {
 			$this->set('catId', $categoryId);
 			$this->set('langId', $newTabLangId);
 		}else{
-			
+
 			$productCategory->updateCatCode();
-			
+
 			if( $post['urlrewrite_custom'] == '' ){
 				FatApp::getDb()->deleteRecords(UrlRewrite::DB_TBL, array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($catOriginalUrl)));
 			}else{
 				$productCategory->rewriteUrl($post['urlrewrite_custom'],true,$prodcat_parent);
 			}
 			/* ] */
-			
+
 			$newTabLangId=0;
 			if($prodcat_id>0){
 				$catId=$prodcat_id;
@@ -589,14 +589,14 @@ class ProductCategoriesController extends AdminBaseController {
 		$data = array(
 			'prodcatlang_lang_id'=>$lang_id,
 			'prodcatlang_prodcat_id'=>$prodcat_id,
-			'prodcat_name'=>$post['prodcat_name'],
+			'prodcat_name'=> $post['prodcat_name'],
 			'prodcat_description'=>$post['prodcat_description'],
 		);
 
 		if(isset($post['prodcat_content_block'])){
 			$data['prodcat_content_block'] = $post['prodcat_content_block'];
 		}
-		
+
 		$prodCatObj=new ProductCategory($prodcat_id);
 		if(!$prodCatObj->updateLangData($lang_id,$data)){
 
@@ -622,18 +622,18 @@ class ProductCategoriesController extends AdminBaseController {
 	}
 
 	private function isMediaUploaded($prodcat_id){
-		
+
 		$banner = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER , $prodcat_id, 0 );
 		$icon = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_ICON , $prodcat_id, 0 );
-		
+
 		if($banner && $icon)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function changeStatus(){
 		if( !FatUtility::isAjaxCall() ){
 			FatUtility::dieJsonError($this->str_invalid_request);
@@ -644,7 +644,7 @@ class ProductCategoriesController extends AdminBaseController {
 		}
 
 		$prodcatId = FatApp::getPostedData('prodcatId', FatUtility::VAR_INT, 0);
-		
+
 		if($prodcatId < 1){
 			Message::addErrorMessage($this->str_invalid_request_id);
 			FatUtility::dieJsonError(Message::getHtml());
@@ -656,18 +656,18 @@ class ProductCategoriesController extends AdminBaseController {
 			Message::addErrorMessage($this->str_invalid_request_id);
 			FatUtility::dieJsonError(Message::getHtml());
 		}
-		
+
 		$status = ( $catData['prodcat_active'] == applicationConstants::ACTIVE ) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
-		
+
 		if( !$prodCatObj->changeStatus( $status ) ){
 			Message::addErrorMessage($prodCatObj->getError());
-			FatUtility::dieWithError( Message::getHtml() );	
+			FatUtility::dieWithError( Message::getHtml() );
 		}
 			$this->set('msg',$this->str_update_record);
 			$this->_template->render(false,false,'json-success.php');
 
 		//FatUtility::dieJsonSuccess($this->str_update_record);
-		
+
 		/* if( !$row = $prodCatObj->canRecordUpdateStatus($prodcatId) ){
 			FatUtility::dieJsonError($this->str_invalid_request_id);
 		} else {
@@ -678,7 +678,7 @@ class ProductCategoriesController extends AdminBaseController {
 				FatUtility::dieJsonError( $prodCatObj->getError() );
 			}
 		} */
-		
+
 	}
 
 	public function deleteRecord(){
@@ -696,7 +696,7 @@ class ProductCategoriesController extends AdminBaseController {
 			Message::addErrorMessage($this->str_invalid_request_id);
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		
+
 		/* Sub-Categories have products[ */
 		$categoriesHaveProducts = $prodCateObj->categoriesHaveProducts($this->adminLangId);
 
@@ -705,17 +705,17 @@ class ProductCategoriesController extends AdminBaseController {
 		$srch->addCondition('m.prodcat_deleted', '=', 0);
 		$srch->addMultipleFields(array("m.prodcat_id"));
 		if($categoriesHaveProducts){
-			
+
 			$srch->addCondition('m.prodcat_id','in',$categoriesHaveProducts);
 		}
 		$rs = $srch->getResultSet();
 		if($srch->recordCount() > 0)
-		{			
+		{
 		//Message::addErrorMessage(Labels::getLabel('LBL_Products_are_associated_with_its_sub-categories_so_we_are_not_able_to_delete_this_category',$this->adminLangId));
 		FatUtility::dieJsonError( Labels::getLabel('LBL_Products_are_associated_with_its_sub-categories_so_we_are_not_able_to_delete_this_category',$this->adminLangId) );
 		}
 		/* ] */
-		
+
 		$prodCateObj->assignValues(array(ProductCategory::tblFld('deleted') => 1));
 		if(!$prodCateObj->save()){
 			//Message::addErrorMessage($prodCateObj->getError());
@@ -832,7 +832,7 @@ class ProductCategoriesController extends AdminBaseController {
 				'name'  => strip_tags(html_entity_decode($product , ENT_QUOTES, 'UTF-8'))
 			);
 		}
-		die(json_encode($json));		
-	}	
-	
+		die(json_encode($json));
+	}
+
 }
