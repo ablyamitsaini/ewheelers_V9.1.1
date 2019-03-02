@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<div class="box__head box__head--large">
-   <h4><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h4>
-   <div class="btn-group">
+<div class="cards-header p-3">
+	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product_Setup',$siteLangId); ?></h5>
+	<div class="action">
 		<a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Special_Price', $siteLangId)?></a>
 	</div>
 </div>
-<div class="box__body">
+<div class="cards-content p-3">
 	<div class="tabs tabs--small   tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>

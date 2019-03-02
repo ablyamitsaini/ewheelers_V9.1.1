@@ -19,7 +19,7 @@ $frmTag->setFormTagAttribute('onsubmit', 'setupTag(this); return(false);');
       <?php } ?>
     </ul>
   </div>
-  <div class="tabs tabs--small tabs tabs--scroll clearfix">
+  <div class="tabs__content form">
     <?php
 		echo $frmTag->getFormHtml();
 		?>

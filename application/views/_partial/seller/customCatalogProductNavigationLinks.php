@@ -1,6 +1,7 @@
-<div class="box__head">
-	   <h4><?php echo Labels::getLabel('LBL_Add_Custom_Product',$siteLangId); ?></h4>
-		<div class="btn-group panel__head_action">
+<div class="cards-header p-3">
+	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Add_Custom_Product',$siteLangId); ?></h5>
+	<div class="action">
+		<div class="btn-group">
 			<?php if(isset($preqId) && $preqId >0){ ?>
 				<a href="<?php echo CommonHelper::generateUrl('seller','customCatalogProducts');?>" class="btn btn--primary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back', $siteLangId)?></strong> </a>	
 				<?php if(!User::isCatalogRequestSubmittedForApproval($preqId)){?>
@@ -9,4 +10,5 @@
 				<a href="<?php echo CommonHelper::generateUrl('seller','customCatalogProductForm');?>" class="btn btn--primary btn--sm "><strong><?php echo Labels::getLabel( 'LBL_Back', $siteLangId)?></strong> </a>
 			<?php }?>
 		</div>
+	</div>
 </div>

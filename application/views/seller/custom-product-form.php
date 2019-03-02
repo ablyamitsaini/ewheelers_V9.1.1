@@ -9,7 +9,7 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 		<div class="content-header row justify-content-between mb-3">
 			<div class="col-md-auto">
 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Custom_Catalog_Product_Setup',$siteLangId); ?></h2>
+				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Custom_Product_Setup',$siteLangId); ?></h2>
 			</div>
 			<div class="col-md-auto">
 				<div class="actions">

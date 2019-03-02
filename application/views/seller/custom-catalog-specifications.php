@@ -1,149 +1,146 @@
-<?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
-<div class="box__body">
-	<div class="tabs tabs--small   tabs--scroll clearfix">
-		<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
-	</div>
-	<div class="tabs__content form">
-		<div class="form__content">
-			<div class="col-md-12">
-				<div class="">
-					<div class="tabs tabs-sm tabs--scroll clearfix">
-						<ul>
-							<li ><a onClick="customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>)" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
-							<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a  <?php echo ($preqId) ? "onclick='customCatalogSellerProductForm( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Inventory/Info', $siteLangId );?></a></li>
-							<li class="is-active"><a  <?php echo ($preqId) ? "onclick='customCatalogSpecifications( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId );?></a></li>
-							<?php foreach($languages as $langId=>$langName){?>
-							<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($preqId) ? "onclick='customCatalogProductLangForm( ".$preqId.",".$langId." );'" : ""; ?>><?php echo $langName;?></a></li>
-							<?php } ?>
-							<?php if(!empty($productOptions)){?>
-							<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a  <?php echo ($preqId) ? "onclick='customEanUpcForm( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_EAN/UPC_setup', $siteLangId );?></a></li>
-							<?php } ?>
-							<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($preqId) ? "onclick='customCatalogProductImages( ".$preqId." );'" : ""; ?>><?php echo Labels::getLabel('Lbl_Product_Images',$siteLangId);?></a></li>
-						</ul>
-					</div>
+<div class="tabs tabs--small   tabs--scroll clearfix">
+	<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
+</div>
+<div class="tabs__content form">
+	<div class="form__content">
+		<div class="col-md-12">
+			<div class="">
+				<div class="tabs tabs-sm tabs--scroll clearfix">
+					<ul>
+						<li ><a onClick="customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>)" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
+						<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a  <?php echo ($preqId) ? "onclick='customCatalogSellerProductForm( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Inventory/Info', $siteLangId );?></a></li>
+						<li class="is-active"><a  <?php echo ($preqId) ? "onclick='customCatalogSpecifications( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId );?></a></li>
+						<?php foreach($languages as $langId=>$langName){?>
+						<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($preqId) ? "onclick='customCatalogProductLangForm( ".$preqId.",".$langId." );'" : ""; ?>><?php echo $langName;?></a></li>
+						<?php } ?>
+						<?php if(!empty($productOptions)){?>
+						<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a  <?php echo ($preqId) ? "onclick='customEanUpcForm( ".$preqId." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_EAN/UPC_setup', $siteLangId );?></a></li>
+						<?php } ?>
+						<li class="<?php echo (!$preqId) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($preqId) ? "onclick='customCatalogProductImages( ".$preqId." );'" : ""; ?>><?php echo Labels::getLabel('Lbl_Product_Images',$siteLangId);?></a></li>
+					</ul>
 				</div>
-				<div class="form__subcontent">
-					<?php  $specCount= count($productSpecifications['prod_spec_name'][CommonHelper::getLangId()]); ?>
-					<form name="frmProductSpec" method="post" id="frm_fat_id_frmProductSpec" class="form form--horizontal" onsubmit="setupCustomCatalogSpecification(this,<?php echo $preqId; ?>); return(false);">
-					<?php
-					$totalSpec =0;
-					$count =0;
-					if($specCount>0){
-					foreach($productSpecifications['prod_spec_name'][CommonHelper::getLangId()] as $specKey=>$specval){
-						$totalSpec = $specKey; ?>
-						<div class="bg-gray-light p-3 pb-0 specification" id="specification<?php echo $specKey; ?>">
-							<?php foreach($languages as $langId=>$langName){ ?>
-							<div class="row">
-								<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
-									<div class="row">
-										<div class="col-md-12">
-										   <div class="field-set">
-											 <div class="caption-wraper">
-											   <div class="h3"><strong><?php  echo $langName;?></strong></div>
-											 </div>
-										   </div>
-										</div>
-									 </div>
-								</div>
-								<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
-								   <div class="field-set">
-									 <div class="caption-wraper">
-									   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?></label>
-									 </div>
-									 <div class="field-wraper">
-									   <div class="field_cover">
-										<input class="psec-name-js <?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?>" value="<?php echo $productSpecifications['prod_spec_name'][$langId][$specKey];?>" type="text" name="prod_spec_name[<?php echo $langId ?>][<?php echo $specKey;?>]">
+			</div>
+			<div class="form__subcontent">
+				<?php  $specCount= count($productSpecifications['prod_spec_name'][CommonHelper::getLangId()]); ?>
+				<form name="frmProductSpec" method="post" id="frm_fat_id_frmProductSpec" class="form form--horizontal" onsubmit="setupCustomCatalogSpecification(this,<?php echo $preqId; ?>); return(false);">
+				<?php
+				$totalSpec =0;
+				$count =0;
+				if($specCount>0){
+				foreach($productSpecifications['prod_spec_name'][CommonHelper::getLangId()] as $specKey=>$specval){
+					$totalSpec = $specKey; ?>
+					<div class="bg-gray-light p-3 pb-0 specification" id="specification<?php echo $specKey; ?>">
+						<?php foreach($languages as $langId=>$langName){ ?>
+						<div class="row">
+							<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
+								<div class="row">
+									<div class="col-md-12">
+									   <div class="field-set">
+										 <div class="caption-wraper">
+										   <div class="h3"><strong><?php  echo $langName;?></strong></div>
+										 </div>
 									   </div>
-									 </div>
 									</div>
-								</div>
-								<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
-								   <div class="field-set">
-									 <div class="caption-wraper">
-									   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?></label>
-									 </div>
-									 <div class="field-wraper">
-									   <div class="field_cover">
-										<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?>" type="text" value="<?php echo $productSpecifications['prod_spec_value'][$langId][$specKey];?>" name="prod_spec_value[<?php echo $langId ?>][<?php echo $specKey;?>]">
-									   </div>
-									 </div>
+								 </div>
+							</div>
+							<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+							   <div class="field-set">
+								 <div class="caption-wraper">
+								   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?></label>
+								 </div>
+								 <div class="field-wraper">
+								   <div class="field_cover">
+									<input class="psec-name-js <?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?>" value="<?php echo $productSpecifications['prod_spec_name'][$langId][$specKey];?>" type="text" name="prod_spec_name[<?php echo $langId ?>][<?php echo $specKey;?>]">
 								   </div>
+								 </div>
 								</div>
-								<?php if( $langId == key( array_slice( $languages, -1, 1, TRUE ) )){ ?>
-								<div class="col-lg-1 col-md-1 col-sm-4 col-xm-12 align--right">
-									<?php if($count != 0) { ?>
-									<button type="button" onclick="removeSpecDiv(<?php echo $specKey ?>);" class="btn btn--primary ripplelink" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId)?>"  ><i class="fa fa-minus"></i></button>
-									<?php } ?>
-								</div>
+							</div>
+							<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+							   <div class="field-set">
+								 <div class="caption-wraper">
+								   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?></label>
+								 </div>
+								 <div class="field-wraper">
+								   <div class="field_cover">
+									<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?>" type="text" value="<?php echo $productSpecifications['prod_spec_value'][$langId][$specKey];?>" name="prod_spec_value[<?php echo $langId ?>][<?php echo $specKey;?>]">
+								   </div>
+								 </div>
+							   </div>
+							</div>
+							<?php if( $langId == key( array_slice( $languages, -1, 1, TRUE ) )){ ?>
+							<div class="col-lg-1 col-md-1 col-sm-4 col-xm-12 align--right">
+								<?php if($count != 0) { ?>
+								<button type="button" onclick="removeSpecDiv(<?php echo $specKey ?>);" class="btn btn--primary ripplelink" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId)?>"  ><i class="fa fa-minus"></i></button>
 								<?php } ?>
 							</div>
-							<?php  }  ?>
+							<?php } ?>
 						</div>
-						<?php $count++; }  } else{ ?>
-						<div class="bg-gray-light p-3 pb-0 specification" id="specification0">
-						<?php foreach($languages as $langId=>$langName){ ?>
-							<div class="row">
-								<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
-									<div class="row">
-										<div class="col-md-12">
-										   <div class="field-set">
-											 <div class="caption-wraper">
-												<div class="h3"><strong><?php  echo $langName;?></strong></div>
-											 </div>
-										   </div>
-										</div>
-									 </div>
-								</div>
-								<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
-								   <div class="field-set">
-									 <div class="caption-wraper">
-									   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?></label>
-									 </div>
-									 <div class="field-wraper">
-									   <div class="field_cover">
-										<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?> psec-name-js" title="<?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?>" type="text" name="prod_spec_name[<?php echo $langId ?>][0]" value="">
+						<?php  }  ?>
+					</div>
+					<?php $count++; }  } else{ ?>
+					<div class="bg-gray-light p-3 pb-0 specification" id="specification0">
+					<?php foreach($languages as $langId=>$langName){ ?>
+						<div class="row">
+							<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
+								<div class="row">
+									<div class="col-md-12">
+									   <div class="field-set">
+										 <div class="caption-wraper">
+											<div class="h3"><strong><?php  echo $langName;?></strong></div>
+										 </div>
 									   </div>
-									 </div>
-									 </div>
-								</div>
-								<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
-									<div class="field-set">
-										<div class="caption-wraper">
-										   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?></label>
-										</div>
-										<div class="field-wraper">
-										   <div class="field_cover">
-											<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?>" type="text" name="prod_spec_value[<?php echo $langId ?>][0]" value="">
-										   </div>
-										</div>
+									</div>
+								 </div>
+							</div>
+							<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+							   <div class="field-set">
+								 <div class="caption-wraper">
+								   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?></label>
+								 </div>
+								 <div class="field-wraper">
+								   <div class="field_cover">
+									<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?> psec-name-js" title="<?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?>" type="text" name="prod_spec_name[<?php echo $langId ?>][0]" value="">
+								   </div>
+								 </div>
+								 </div>
+							</div>
+							<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+								<div class="field-set">
+									<div class="caption-wraper">
+									   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?></label>
+									</div>
+									<div class="field-wraper">
+									   <div class="field_cover">
+										<input class="<?php echo 'layout--'.Language::getLayoutDirection($langId); ?>" title="<?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?>" type="text" name="prod_spec_value[<?php echo $langId ?>][0]" value="">
+									   </div>
 									</div>
 								</div>
 							</div>
-							<?php  } ?>
 						</div>
-						<?php } ?>
-						<div id="addSpecFields"></div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-4 col-xm-12 align--right">
-								<button type="button" class="btn btn--secondary ripplelink plusButton" title="<?php echo Labels::getLabel('LBL_Shipping',$siteLangId)?>" onclick="getCustomCatalogSpecificationForm();" ><i class="fa fa-plus"></i></button>
-							</div>
+						<?php  } ?>
+					</div>
+					<?php } ?>
+					<div id="addSpecFields"></div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-4 col-xm-12 align--right">
+							<button type="button" class="btn btn--secondary ripplelink plusButton" title="<?php echo Labels::getLabel('LBL_Shipping',$siteLangId)?>" onclick="getCustomCatalogSpecificationForm();" ><i class="fa fa-plus"></i></button>
 						</div>
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
-						   <div class="field-set">
-							 <div class="caption-wraper">
-							   <label class="field_label"></label>
-							 </div>
-							 <div class="field-wraper">
-							   <div class="field_cover">
-								<input title="" type="hidden" name="product_id" value="<?php echo $preqId; ?>">
-								<input title="" type="hidden" name="prodspec_id" value="0">
-								<input title="" type="submit" name="btn_submit" value="<?php echo Labels::getLabel('LBL_Save_Changes',$siteLangId)?>">
-							   </div>
-							 </div>
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
+					   <div class="field-set">
+						 <div class="caption-wraper">
+						   <label class="field_label"></label>
+						 </div>
+						 <div class="field-wraper">
+						   <div class="field_cover">
+							<input title="" type="hidden" name="product_id" value="<?php echo $preqId; ?>">
+							<input title="" type="hidden" name="prodspec_id" value="0">
+							<input title="" type="submit" name="btn_submit" value="<?php echo Labels::getLabel('LBL_Save_Changes',$siteLangId)?>">
 						   </div>
-						</div>
-					</form>
-				</div>
+						 </div>
+					   </div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
