@@ -243,7 +243,7 @@ class ProductCategory extends MyAppModel{
 		}
 
 		if($records){
-			$name=$records['prodcat_identifier'].$seprator.$name_suffix;
+			$name=strip_tags($records['prodcat_identifier']).$seprator.$name_suffix;
 			if($records['prodcat_parent']>0){
 				$name=self::getParentTreeStructure($records['prodcat_parent'],$level+1,$name,$langId);
 			}
