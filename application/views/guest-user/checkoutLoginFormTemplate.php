@@ -74,7 +74,7 @@
 		<div class="gap"></div>
 		<div class="term">
 			<?php if( $showSignUpLink ){ ?><p class="text--dark"> <a href="" class="text text--uppercase"></a></p><?php } ?>
-			<h6><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>? <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>" class="link"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a></h6>
+			<h6><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>? <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>" class="link"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a></h6>
 			<!-- <p>If this is your first time shopping with us, please enter an email address to use as your Newegg ID and create a password for your account. Your Newegg account allows you to conveniently place orders, create wishlists, check the status of your recent orders and much more.</p> -->
 		</div>
 	</div>
