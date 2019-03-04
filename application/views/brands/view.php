@@ -11,7 +11,7 @@
 			<div class="section-head section--white--head section--head--center">
 				<div class="section__heading">
 					<h2> <?php echo $brandData['brand_name']; ?> 
-					<span><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
+					<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
 					</h2>
 				</div>
 			</div>
