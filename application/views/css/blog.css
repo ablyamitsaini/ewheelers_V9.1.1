@@ -52,7 +52,6 @@
 }
 
 .header-blog {
-  background: var(--first-color);
   position: fixed;
   left: 0;
   right: 0;
@@ -60,6 +59,8 @@
   z-index: 10;
   top: 0;
   height: 85px;
+  background-color: #fff;
+  border-bottom: solid 1px var(--border-color);
 }
 
 .header-blog-inner {
@@ -90,7 +91,7 @@
 
 .nav-blog ul>li>a {
   text-transform: uppercase;
-  color: #fff;
+  color: var(--header-txt-color);
   font-weight: 600;
   display: block;
 }
@@ -173,7 +174,7 @@
 }
 
 .nav__secondary {
-  background: var(--first-color);
+  background: var(--header-txt-color);
   padding: 10px;
   position: absolute;
   left: 0;
@@ -407,8 +408,7 @@
   -webkit-transition: transform .3s ease;
   -o-transition: transform .3s ease;
   transition: transform .3s ease;
-  -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, .1);
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, .1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
 }
 
 .form-opened .search-form {
@@ -530,10 +530,8 @@
   box-shadow: none;
 }
 
-.share-this {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 10px;
+.share-this { margin:1rem 0;
+
 }
 
 .bg-pattern {
@@ -1022,7 +1020,7 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid var(--header-txt-color);
   transition: all 0.4s cubic-bezier(0.11, 0.92, 0.52, 0.98) 0.5s;
 }
 
@@ -1030,7 +1028,7 @@
   content: "";
   position: absolute;
   height: 2px;
-  background-color: white;
+  background-color: var(--header-txt-color);
   display: block;
   top: 100%;
 }
@@ -1093,7 +1091,7 @@
   position: relative;
   margin: 5px 0;
   display: block;
-  border: solid 2px var(--border-color);
+  border: solid 1px var(--border-color);
 }
 
 .nav--toggled>ul>li .link--toggle {
@@ -1150,11 +1148,11 @@
 
 .nav--toggled .is-selected>a {
   font-weight: 500;
-  color: var(--first-color);
+  color: var(--header-txt-color);
 }
 
 .nav--toggled>ul>li .link--toggle:before {
-  color: var(--first-color);
+  color: var(--header-txt-color);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1258,7 +1256,7 @@
 }
 
 .post-data {
-  box-shadow: 0px 0 15px 5px rgba(0, 0, 0, 0.06);
+  /*box-shadow: 0px 0 15px 5px rgba(0, 0, 0, 0.06);*/
 }
 
 .post-data .sticky-element li {

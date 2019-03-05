@@ -8,7 +8,7 @@
 	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id));
 	$haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId );
 ?>
-<div id="body" class="body" role="main" <?php if($showBgImage){ /* echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; */ } ?> >
+<div id="body" class="body template-<?php echo $template_id;?>" role="main" <?php if($showBgImage){ /* echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; */ } ?> >
 	<section class="bg-shop">
 		<div class="shop-col column--md">
 			<div class="shop-logo-wrapper">
@@ -165,7 +165,7 @@
 					<div class="listing-products -listing-products listing-products--grid ">
 
 							<div id="productsList" role="main-listing" class="row"></div>
-					 
+
 					</div>
 				</div>
 			</div>
