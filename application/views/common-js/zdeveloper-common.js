@@ -2,8 +2,7 @@
 $(document).ready(function () {
 	setTimeout(function () {
 		$('body').addClass('loaded');
-
-	}, 2000);
+	}, 1000);
 });
 /* ] */
 function initialize() {

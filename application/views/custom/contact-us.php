@@ -13,7 +13,7 @@
 ?>
 
 <div id="body" class="body  bg--gray">
-  <section class="top-space">
+  <section class="section section--gray">
     <div class="container">
       <div class="breadcrumb">
         <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>

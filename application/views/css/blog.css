@@ -530,11 +530,11 @@
   box-shadow: none;
 }
 
-.share-this {
+/* .share-this {
   display: inline-block;
   vertical-align: middle;
   margin: 0 10px;
-}
+} */
 
 .bg-pattern {
   padding: 80px 0;

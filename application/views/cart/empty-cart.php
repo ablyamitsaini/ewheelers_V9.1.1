@@ -1,6 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-
-
 <div class="block--empty align--center">
   <div class="empty-cart"> <svg viewBox="656 573 264 182" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<rect id="bg-line" stroke="none" fill-opacity="0.2" fill="#FFE100" fill-rule="evenodd" x="656" y="624" width="206" height="38" rx="19"></rect>
@@ -55,9 +53,8 @@
   </div>
   <h2><?php echo Labels::getLabel('LBL_Your_Shopping_Bag_is_Empty',$siteLangId); ?></h2>
   <a href="<?php echo CommonHelper::generateUrl('Home'); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Go_To_Homepage',$siteLangId); ?></a> <span class="gap"></span>
-</div>
-<?php if( $EmptyCartItems ) { ?>
-	<ul class="top-brands-list">
+  <?php if( $EmptyCartItems ) { ?>
+	<ul class="links--inline">
 		<?php
 		$counter = 1;
 		foreach( $EmptyCartItems as $item ){
@@ -70,3 +67,9 @@
 		} ?>
 	</ul>
 <?php }	?>
+</div>
+<script>
+$(document).ready(function(){
+	$(".hide_on_no_product").hide(); 
+});
+</script>

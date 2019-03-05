@@ -9,28 +9,33 @@
 	$keywordFld->setFieldTagAttribute('id','header_search_keyword');
 	$keywordFld->setFieldTagAttribute('onkeyup','animation(this)');
 ?>
- 
+
 
 <div class=" align--center">
 	<div class="no-product">
-		<div class="rel-icon"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/empty_cart.svg" alt="<?php echo Labels::getLabel('LBL_No_Product_found', $siteLangId);?>"></div>
-		<div class="no-product-txt"> <span>
-			<?php echo Labels::getLabel('LBL_WE_COULD_NOT_FIND_ANY_MATCHES!', $siteLangId); ?> </span> 
-			<?php echo Labels::getLabel('LBL_Please_check_if_you_misspelt_something_or_try_searching_again_with_fewer_keywords.', $siteLangId); ?>
-		</div>
-		<div class="query-form">
-			<?php echo $pSrchFrm->getFormTag(); ?>	
-			<?php echo $pSrchFrm->getFieldHTML('keyword'); ?>			
-			<?php echo $pSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
-			</form>
-			<?php echo $pSrchFrm->getExternalJS(); ?>
+		<div class="block--empty align--center">
+			<img class="block__img" src="<?php echo CONF_WEBROOT_URL; ?>images/retina/empty_cart.svg" alt="<?php echo Labels::getLabel('LBL_No_Product_found', $siteLangId);?>">
+			<h2><?php echo Labels::getLabel('LBL_WE_COULD_NOT_FIND_ANY_MATCHES!', $siteLangId); ?></h2>
+			<h6><?php echo Labels::getLabel('LBL_Please_check_if_you_misspelt_something_or_try_searching_again_with_fewer_keywords.', $siteLangId); ?>
+			</h6><br>
+			<div class="query-form">
+				<?php echo $pSrchFrm->getFormTag(); ?>	
+				<?php echo $pSrchFrm->getFieldHTML('keyword'); ?>			
+				<?php echo $pSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
+				</form>
+				<?php echo $pSrchFrm->getExternalJS(); ?>
+			</div>
 			<?php if (count($top_searched_keywords)>0): /* CommonHelper::printArray($top_searched_keywords); die; */ ?>
-				<p class="txt-popular"><strong><?php echo Labels::getLabel('L_Popular_Searches', $siteLangId)?></strong> &nbsp;
-				<?php $inc = 0; foreach ($top_searched_keywords as $record) { $inc++; if($inc >1) {echo "|";}?>
-					<a href="<?php echo CommonHelper::generateUrl('products', 'search',array( 'keyword',$record['searchitem_keyword']));?>"><?php echo $record['searchitem_keyword']?> </a>
-				<?php } ?>
-				</p>
-		   <?php endif; ?>
+			<h6><br>
+				<strong><?php echo Labels::getLabel('LBL_OR', $siteLangId)?></strong><br>
+				<br> <?php echo Labels::getLabel('L_Popular_Searches', $siteLangId)?></strong> <br>
+				<br></h6>
+			<ul class="links--inline">
+			  <?php $inc = 0; foreach ($top_searched_keywords as $record) { $inc++; if($inc >1) {echo "|";}?>
+				<li><a href="<?php echo CommonHelper::generateUrl('products', 'search',array( 'keyword',$record['searchitem_keyword']));?>"><?php echo $record['searchitem_keyword']?> </a> </li>
+			  <?php } ?>
+			</ul>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

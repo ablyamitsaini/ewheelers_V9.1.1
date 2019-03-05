@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body bg-gray-dark" role="main">
-	<section class="section section--fill">
+	<section class="section section--fill hide_on_no_product">
 		<div class="container">
 			<div class="section-head section--white--head section--head--center">
 				<div class="section__heading">

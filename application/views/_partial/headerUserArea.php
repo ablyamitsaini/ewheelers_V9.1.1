@@ -56,7 +56,7 @@
 						<li><a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>"><?php echo Labels::getLabel("LBL_My_Messages",$siteLangId); ?></a></li>
 						<?php } ?>
 						<li><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><?php echo Labels::getLabel("LBL_My_Credits",$siteLangId); ?></a></li>
-						<li><a href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
+						<li class="logout"><a href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
 				</ul>
 				<?php if( $isUserLogged ){ ?>
 					<?php if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] == 'S' )){ ?>
@@ -101,7 +101,7 @@
 									<li><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><?php echo Labels::getLabel("LBL_Change_Password",$siteLangId); ?></a></li>
 								</ul>
 							</li>
-							<li><a href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
+							<li class="logout"><a href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
 							<?php } ?>
 						</ul>
 					<?php }?>

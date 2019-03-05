@@ -69,31 +69,31 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 						</div>
 						<?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
 					</div>
-          <div class="share-this">
-        		<span><i class="icn share"><svg class="svg">
-        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
-        				</svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
-        		<a class="social-link st-custom-button" data-network="facebook">
-        			<i class="icn"><svg class="svg">
-        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
-        				</svg></i>
-        		</a>
-        		<a class="social-link st-custom-button" data-network="twitter">
-        			<i class="icn"><svg class="svg">
-        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
-        				</svg></i>
-        		</a>
-        		<a class="social-link st-custom-button" data-network="pinterest">
-        			<i class="icn"><svg class="svg">
-        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
-        				</svg></i>
-        		</a>
-        		<a class="social-link st-custom-button" data-network="email">
-        			<i class="icn"><svg class="svg">
-        					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
-        				</svg></i>
-        		</a>
-        	</div>
+                    <div class="share-this">
+                            <span><i class="icn share"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
+                                    </svg></i><?php echo Labels::getLabel('LBL_Share',$siteLangId); ?></span>
+                            <a class="social-link st-custom-button" data-network="facebook">
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
+                                    </svg></i>
+                            </a>
+                            <a class="social-link st-custom-button" data-network="twitter">
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
+                                    </svg></i>
+                            </a>
+                            <a class="social-link st-custom-button" data-network="pinterest">
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
+                                    </svg></i>
+                            </a>
+                            <a class="social-link st-custom-button" data-network="email">
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
+                                    </svg></i>
+                            </a>
+                    </div>
 					<?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
 				</div>
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
