@@ -1,12 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div id="body" class="body bg--gray">
-	<section class="section ">
+<div id="body" class="body">
+	<section class="section">
 		<div class="container">
 <div class="row justify-content-center">
 					<div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
-						<div class="box box--white box--space">
-					   <h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
-					   <p><?php echo Labels::getLabel('LBL_Forgot_Password_Msg',$siteLangId);?></p>
+						<div class="text-center">
+							<div class="section-head">
+								<div class="section__heading m-3"><h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
+						   <p><?php echo Labels::getLabel('LBL_Forgot_Password_Msg',$siteLangId);?></p></div></div>
+
 						<?php
 						$frm->setFormTagAttribute('class', 'form form--normal');
 						$fld = $frm->getField('btn_submit');
@@ -32,8 +34,6 @@
 					  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Click_Here',$siteLangId);?></a></p>
 					</div></div>
 					<?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData,false ); } ?>
-
-
 						</div>
 
 		</div>

@@ -114,7 +114,6 @@
         <div class="gap"></div>
     </div>
 </section>
-
-<script>
+<script type="text/javascript">
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>

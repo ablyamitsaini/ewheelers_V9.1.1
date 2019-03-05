@@ -7,7 +7,8 @@
 	$keywordFld->overrideFldType("hidden");
 	$bgUrl = CommonHelper::generateFullUrl('Image','shopBackgroundImage',array($shop['shop_id'],$siteLangId,0,0,$template_id));
 ?>
-<div id="body" class="body" role="main" <?php if($showBgImage){ /* echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; */ } ?> >
+
+<div id="body" class="body template-<?php echo $template_id;?>" role="main" <?php if($showBgImage){ /* echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; */ } ?> >
 	<?php
 		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'canonicalUrl'=>$canonicalUrl,'shopId'=>$shopId,'productFiltersArr'=>$productFiltersArr,'shopTotalReviews'=>$shopTotalReviews,'shopRating'=>$shopRating);
 		$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
@@ -66,7 +67,7 @@
 					<div class="listing-products -listing-products listing-products--grid ">
 
 							<div id="productsList" role="main-listing" class="row"></div>
-					 
+
 					</div>
 				</div>
 			</div>
