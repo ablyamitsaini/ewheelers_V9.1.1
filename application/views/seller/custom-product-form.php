@@ -18,7 +18,12 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 			</div>
 		</div>
 		<div class="content-body">
-			<div id="listing"></div>
+			<div class="cards">
+				<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
+				<div class="cards-content p-3">
+					<div id="listing"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </main>

@@ -1,9 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->overrideFldType("hidden");
+	echo $frmProductSearch->getFormTag();
 ?>
 <div class="page-sort hide_on_no_product" id="top-filters">
-<?php echo $frmProductSearch->getFormTag(); ?>
 	<ul>
 		<li class="d-xl-none">
 			<a href="javascript:void(0)" class="link__filter"><i class="icn">
@@ -54,7 +54,7 @@
 		</li>
 		<li>
 			<div class="list-grid-toggle switch--link-js">
-				<div class="icon">
+				<div class="icon icon-grid">
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>

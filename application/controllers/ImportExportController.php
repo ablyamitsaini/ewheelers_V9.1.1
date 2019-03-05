@@ -10,7 +10,7 @@ class ImportExportController extends LoggedUserController {
 	}
 	
 	public function index(){
-		$this->_template->render();
+		$this->_template->render(true, false);
 	}
 
 	public function exportData($actionType){

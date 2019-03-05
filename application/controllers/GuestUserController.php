@@ -528,7 +528,7 @@ class GuestUserController extends MyAppController {
 		if (UserAuthentication::isUserLogged()) {
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));
 		}
-		$frm = $this->getRegistrationForm();
+		$registerFrm = $this->getRegistrationForm();
 		
 		$cPageSrch = ContentPage::getSearchObject($this->siteLangId);
 		$cPageSrch->addCondition('cpage_id','=',FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE' , FatUtility::VAR_INT , 0));
@@ -539,7 +539,7 @@ class GuestUserController extends MyAppController {
 			$termsAndConditionsLinkHref = 'javascript:void(0)';
 		}
 		$data = array(
-			'frm'	=>	$frm,
+			'registerFrm'	=>	$registerFrm,
 			'termsAndConditionsLinkHref'	=>	$termsAndConditionsLinkHref,
 			'siteLangId'	=>	$this->siteLangId
 		);
