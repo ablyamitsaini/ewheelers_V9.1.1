@@ -20,11 +20,12 @@
 				</div>
 			</div>
 			<div class="cards-content p-3">
-				<div class="grids--offset">
-                    <div class="grid-layout">
+
+
                       <?php if($primaryOrder){?>
                       <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 mb-4">
+                           <div class="info--order">
                           <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $childOrderDetail['user_name'];?></p>
                           <?php
 								$paymentMethodName = $childOrderDetail['pmethod_name']?:$childOrderDetail['pmethod_identifier'];
@@ -50,14 +51,15 @@
                           <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></p>
                           <?php }?>
                           <p><strong><?php echo Labels::getLabel('LBL_Order_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail));?></p>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        </div>  </div>
+                        <div class="col-lg-6 col-md-6 mb-4">
                           <div class="info--order">
                             <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $childOrderDetail['op_invoice_number'];?></p>
                             <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($childOrderDetail['order_date_added']);?></p>
                           </div>
                         </div>
                       </div>
+
                       <?php }else{?>
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -70,8 +72,8 @@
                         </div>
                       </div>
                       <?php }?>
-                    </div>
-                  </div>
+
+
                   <table class="table">
                     <tbody>
                       <tr class="">
@@ -118,18 +120,18 @@
                           </div></td>
                         <td><div class="item__description">
                             <?php if($childOrder['op_selprod_title']!=''){ ?>
-                            <div class="item-yk-head-title"><a title="<?php echo $childOrder['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $childOrder['op_selprod_title'].'<br/>'; ?></a></div>
-                            <div class="item-yk-head-sub-title"><?php echo $childOrder['op_product_name']; ?></div>
+                            <div class="item__title"><a title="<?php echo $childOrder['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $childOrder['op_selprod_title'].'<br/>'; ?></a></div>
+                            <div class="item__category"><?php echo $childOrder['op_product_name']; ?></div>
                             <?php } else { ?>
-                            <div class="item-yk-head-title"><a title="<?php echo $childOrder['op_product_name'];?>" href="<?php echo CommonHelper::generateUrl('Products','view',array($childOrder['op_selprod_id']));?>"><?php echo $childOrder['op_product_name']; ?> </a></div>
+                            <div class="item__category"><a title="<?php echo $childOrder['op_product_name'];?>" href="<?php echo CommonHelper::generateUrl('Products','view',array($childOrder['op_selprod_id']));?>"><?php echo $childOrder['op_product_name']; ?> </a></div>
                             <?php } ?>
-                            <div class="item-yk-head-brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$childOrder['op_brand_name']);?></div>
+                            <div class="item__brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$childOrder['op_brand_name']);?></div>
                             <?php if( $childOrder['op_selprod_options'] != '' ){ ?>
-                            <div class="item-yk-head-specification"><?php echo $childOrder['op_selprod_options'];?></div>
+                            <div class="item__specification"><?php echo $childOrder['op_selprod_options'];?></div>
                             <?php } ?>
-                            <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId).': '.$childOrder['op_shop_name']; ?></div>
+                            <div class="item__sold_by"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId).': '.$childOrder['op_shop_name']; ?></div>
 							<?php if($childOrder['op_shipping_duration_name'] != ''){?>
-                            <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></div>
+                            <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></div>
 							<?php }?>
                           </div></td>
                         <!--<td style="width:20%;" ><?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></td>-->
@@ -173,10 +175,17 @@
                       <?php }?>
                     </tbody>
                   </table>
-                  <div class="grids--colum">
+                  <div class="divider">
+                  </div>
+                  <div class="gap">
+
+                    </div>
+                  <div class="gap">
+
+                  </div>
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="grid">
+                      <div class="col-lg-6 col-md-6 mb-4">
+
                           <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
                           <?php $billingAddress = $orderDetail['billingAddress']['oua_name'].'<br>';
 								if($orderDetail['billingAddress']['oua_address1']!=''){
@@ -203,12 +212,12 @@
 									$billingAddress.= '<br>'.$orderDetail['billingAddress']['oua_phone'];
 								}
 							?>
-                          <p><?php echo $billingAddress;?></p>
-                        </div>
+                        <div class="info--order">  <p><?php echo $billingAddress;?></p> </div>
+
                       </div>
                       <?php if(!empty($orderDetail['shippingAddress'])){?>
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="grid">
+                      <div class="col-lg-6 col-md-6 mb-4">
+
                           <h5><?php echo Labels::getLabel('LBL_Shipping_Details',$siteLangId);?></h5>
                           <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
 								if($orderDetail['shippingAddress']['oua_address1']!=''){
@@ -235,14 +244,16 @@
 									$shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
 								}
 							?>
-                          <p><?php echo $shippingAddress;?></p>
-                        </div>
+                        <div class="info--order">  <p><?php echo $shippingAddress;?></p> </div>
+
                       </div>
                       <?php } ?>
                     </div>
-                  </div>
+
                   <?php if(!empty($orderDetail['comments'])){ ?>
-                  <div class="section--repeated">
+                    <div class="gap">
+
+                      </div>  <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>
                     <table class="table align--left">
                       <tbody>

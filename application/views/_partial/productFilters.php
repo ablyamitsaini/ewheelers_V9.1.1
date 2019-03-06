@@ -36,7 +36,12 @@ array_walk($catCodeArr,function(&$n) {
 <?php } ?>
    <!--Filters[ -->
 	<div class="widgets-head">
-	  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>  <a  class="link" id="resetAll"><?php echo Labels::getLabel('LBL_RESET_ALL',$siteLangId);?></a></div>
+	  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>
+       <a  class="reset-all" id="resetAll"><i class="icn reset-all">
+			<svg class="svg">
+				<use xlink:href="/images/retina/sprite.svg#reset" href="/images/retina/sprite.svg#reset"></use>
+			</svg>
+		</i></a></div>
 	</div>
 	<div class="selected-filters" id="filters"> </div>
 	<div class="divider--filters"></div>

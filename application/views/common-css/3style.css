@@ -1364,11 +1364,11 @@ textarea:focus,
 select:focus,
 input[type="number"]:focus,
 input[type="file"]:focus {
-  border-color: var(--first-color);
+  border-color: #8C96A9;
   outline: 0;
   outline: thin dotted \9;
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.20);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.20);
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 input[type="file"] {
@@ -2149,14 +2149,7 @@ body.fixed .top-bar {
   -ms-flex-pack: center;
   justify-content: center;
 }
-
-.logo a {
-  width: 150px;
-  height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+   .logo img{ max-height: 100%;}
 
 /*new search*/
 .main-search {
@@ -2781,8 +2774,9 @@ table.cart-tbl-addons .item__pic {
   color: var(--txt-color);
 }
 
-.list-vertical li.logout {
-  border-top: solid 1px var(--border-color);
+.list-vertical li.logout a {
+  color: #000;
+  font-weight: 600;
 }
 
 .list-vertical li:last-child {
@@ -5214,6 +5208,7 @@ span.subheading {
   display: inline-block;
   font-size: 12px;
   vertical-align: top;
+  height: 40px;
 }
 
 .rsText {
@@ -8633,7 +8628,7 @@ input.qty {
 
 .listing--onefifth li a:hover {
   text-decoration: underline;
-  color: #24b26b;
+
 }
 
 .list__selection--even {
@@ -8681,7 +8676,7 @@ input.qty {
 }
 
 .cell__head {
-  color: #24b26b;
+
   font-size: 1.2em;
   margin: 0 0 6px;
 }
@@ -8730,17 +8725,24 @@ input.qty {
 }
 
 .cg-nav-wrapper ul li a {
-  display: block;
+  display: flex;
+
+  align-items: center;
   padding: 10px;
   color: var(--txt-color-light);
 }
 
 .cg-nav-wrapper .cg-icon {
   height: 35px;
-  max-width: 35px;
+  width: 35px;
   display: inline-block;
-  vertical-align: top;
   margin-inline-end: 15px;
+  border-radius: 50%;
+  border: solid 1px var(--border-color);
+  overflow: hidden;
+  flex: 0 0 35px;
+  padding: 5px;
+
 }
 
 .cg-nav-wrapper .caption {
@@ -8758,8 +8760,9 @@ input.qty {
 
 .cg-main .item {
   background: #fff;
-  padding: 15px;
+  padding:1rem 0;
   border-bottom: solid 1px var(--border-color);
+  text-align: inherit;;
 }
 
 .cg-main ul li {
@@ -13108,7 +13111,7 @@ main.main {
 }
 
 .bg-contact:after {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(36, 40, 56, .75);
   height: 100%;
   width: 100%;
   content: "";
@@ -13223,3 +13226,116 @@ main.main {
   justify-content: center;
   text-align: center;
 }
+
+/*Old browsers*/
+.outdated {
+  display: none;
+}
+
+@media all and (-ms-high-contrast:none) {
+
+  /* IE10 */
+  *::-ms-backdrop,
+  .outdated {
+    display: block;
+    color: red;
+  }
+
+  /* IE11 */
+}
+
+.outdated-inner {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #00caff;
+  z-index: 100000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: #fff;
+  text-align: center;
+}
+
+.outdated-inner * {
+  color: #fff;
+}
+
+.outdated-messages {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.list-browser {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+.list-browser .icn {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 1rem auto;
+  display: block;
+  background: url(../images/browsers-bg.png) no-repeat;
+  background-size: auto 200px;
+}
+
+.list-browser .icn.chrome {}
+
+.list-browser a:hover .icn.chrome {
+  background-position: 0 -100px;
+}
+
+.list-browser .icn.firefox {
+  background-position: -100px 0;
+}
+
+.list-browser a:hover .icn.firefox {
+  background-position: -100px -100px;
+}
+
+.list-browser .icn.internetexplorer {
+  background-position: -200px 0;
+}
+
+.list-browser a:hover .icn.internetexplorer {
+  background-position: -200px -100px;
+}
+
+.list-browser .icn.safari {
+  background-position: -300px 0;
+}
+
+.list-browser a:hover .icn.safari {
+  background-position: -300px -99px;
+}
+/**/
+
+.info--order p{ font-size:0.875em; margin: 5px 0;}
+.reset-all{ cursor: pointer;}
+.reset-all .icn svg{ width:18px; height:18px; fill:#44596B;}
