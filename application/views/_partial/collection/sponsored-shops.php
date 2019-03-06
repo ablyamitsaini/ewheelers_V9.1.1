@@ -1,9 +1,6 @@
 <?php  
 if( isset( $sponsoredShops ) && count($sponsoredShops) ){
 
-
-
-
 			/* category listing design [ */
 			if( isset($sponsoredShops['shops']) && count( $sponsoredShops['shops'] ) ) {
 
@@ -12,7 +9,7 @@ if( isset( $sponsoredShops ) && count($sponsoredShops) ){
 					$track = true;
 					?>
 				<div class="section-head">
-					 <div class="section_heading"><?php echo FatApp::getConfig('CONF_PPC_SHOPS_HOME_PAGE_CAPTION_'.$siteLangId,FatUtility::VAR_STRING,Labels::getLabel('LBL_SPONSORED_SHOPS',$siteLangId));?></div>
+					 <div class="section__heading"><h2><?php echo FatApp::getConfig('CONF_PPC_SHOPS_HOME_PAGE_CAPTION_'.$siteLangId,FatUtility::VAR_STRING,Labels::getLabel('LBL_SPONSORED_SHOPS',$siteLangId));?></h2></div>
 
 				</div>
 
