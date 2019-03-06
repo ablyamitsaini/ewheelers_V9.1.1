@@ -11,13 +11,12 @@
 			<div class="cards">
 				<div class="cards-header p-3">
 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
-				<div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="link"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
+				<div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
 				</div>
 				<div class="cards-content p-3">
-                                   <div class="grids--offset">
-                                       <div class="grid-layout">
                                            <div class="row">
-                                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                               <div class="col-lg-6 col-md-6 mb-4">
+                                                 <div class="info--order">
                                                   <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
                                                   <?php
                         $paymentMethodName = ($orderDetail['pmethod_name'] !='')?$orderDetail['pmethod_name']:$orderDetail['pmethod_identifier'];
@@ -51,18 +50,18 @@
                         <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></p>
                          <?php }  */?>
                                                    <p><strong><?php echo Labels::getLabel('LBL_Order_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER));?></p>
+
+                                                 </div>
                                                </div>
-                                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                               <div class="col-lg-6 col-md-6 mb-4">
                                                    <div class="info--order">
                                                        <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $orderDetail['op_invoice_number'];?></p>
                                                        <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>
                                                        <span class="gap"></span>
-                                                       <a href="javascript:window.print();" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                                                       <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
                                                    </div>
                                                </div>
                                            </div>
-                                       </div>
-                                   </div>
 
                                    <table class="table">
                                          <tbody><tr class="">
@@ -102,21 +101,20 @@
 
                       <td>
                         <div class="item__description">
-
                           <?php if($orderDetail['op_selprod_title'] != ''){ ?>
-                          <div class="item-yk-head-title"><a title="<?php echo $orderDetail['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $orderDetail['op_selprod_title']; ?></a></div>
-                          <div class="item-yk-head-sub-title"><?php echo $orderDetail['op_product_name']; ?></div>
+                          <div class="item__title"><a title="<?php echo $orderDetail['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $orderDetail['op_selprod_title']; ?></a></div>
+                          <div class="item__category"><?php echo $orderDetail['op_product_name']; ?></div>
                           <?php } else { ?>
-                          <div class="item-yk-head-title"><a title="<?php echo $orderDetail['op_product_name'];?>" href="<?php echo $prodOrBatchUrl; ?>"><?php echo $orderDetail['op_product_name']; ?>
+                          <div class="item__brand"><a title="<?php echo $orderDetail['op_product_name'];?>" href="<?php echo $prodOrBatchUrl; ?>"><?php echo $orderDetail['op_product_name']; ?>
                           </a></div>
                           <?php } ?>
                           </div>
-                          <div class="item-yk-head-brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$orderDetail['op_brand_name']);?></div>
+                          <div class="item__brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$orderDetail['op_brand_name']);?></div>
                           <?php if( $orderDetail['op_selprod_options'] != '' ){ ?>
-                          <div class="item-yk-head-specification"><?php echo $orderDetail['op_selprod_options'];?></div>
+                          <div class="item__specification"><?php echo $orderDetail['op_selprod_options'];?></div>
                           <?php }?>
                           <?php if($orderDetail['op_shipping_duration_name'] != '' ){?>
-                          <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $orderDetail['op_shipping_durations'].'-'. $orderDetail['op_shipping_duration_name'];?></div>
+                          <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $orderDetail['op_shipping_durations'].'-'. $orderDetail['op_shipping_duration_name'];?></div>
                           <?php }?>
 
                        </td>
@@ -139,11 +137,14 @@
                       <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER));?></td>
                                           </tr>
                                    </tbody></table>
-                                   <div class="grids--colum">
+
+<div class="divider"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+
                                        <div class="row">
-                                           <div class="col-lg-6 col-md-6 col-sm-6">
-                                               <div class="grid">
-                                                  <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
+                                           <div class="col-lg-6 col-md-6 mb-4">
+                                               <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
                         <?php $billingAddress = $orderDetail['billingAddress']['oua_name'].'<br>';
                           if($orderDetail['billingAddress']['oua_address1']!=''){
                             $billingAddress.=$orderDetail['billingAddress']['oua_address1'].'<br>';
@@ -169,12 +170,11 @@
                             $billingAddress.= '<br>'.$orderDetail['billingAddress']['oua_phone'];
                           }
                         ?>
-                                                  <p><?php echo $billingAddress;?></p>
-                                               </div>
+                          <div class="info--order"><p><?php echo $billingAddress;?></p> </div>
                                            </div>
                      <?php if(!empty($orderDetail['shippingAddress'])){?>
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                      <div class="grid">
+                      <div class="col-lg-6 col-md-6 mb-4">
+
                         <h5><?php echo Labels::getLabel('LBL_Shipping_Details',$siteLangId);?></h5>
                         <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
                           if($orderDetail['shippingAddress']['oua_address1']!=''){
@@ -201,12 +201,12 @@
                             $shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
                           }
                         ?>
-                        <p><?php echo $shippingAddress;?></p>
-                      </div>
+                      <div class="info--order">  <p><?php echo $shippingAddress;?></p> </div>
+
                       </div>
                       <?php } ?>
                                        </div>
-                                   </div>
+
                                    <?php if($displayForm){?>
                                    <div class="section--repeated no-print">
                   <h5><?php echo Labels::getLabel('LBL_Comments_on_order',$siteLangId);?></h5>
@@ -230,7 +230,7 @@
                                    <span class="gap"></span>
                  <?php if(!empty($orderDetail['comments'])){?>
                                    <div class="section--repeated no-print">
-                                       <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>                                         <table class="table align--left">
+                                       <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>   <table class="table align--left">
                                           <tbody><tr class="">
                                               <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
                                               <th><?php echo Labels::getLabel('LBL_Customer_Notified',$siteLangId);?></th>

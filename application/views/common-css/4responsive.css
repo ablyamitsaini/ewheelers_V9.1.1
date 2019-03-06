@@ -463,22 +463,6 @@
     padding: 10px;
   }
 
-  /*login*/
-  .login-wrapper,
-  .login-wrapper .form-side,
-  .login-wrapper .add-side {
-    display: block;
-    width: auto;
-  }
-
-  .login-wrapper .add-side {
-    padding: 12px 20px 237px;
-  }
-
-  .login-wrapper .form-side {
-    padding: 20px;
-  }
-
   /**/
   .widgets-heading {
     position: relative;
@@ -1224,6 +1208,15 @@
     flex-wrap: nowrap;
     overflow: hidden;
     overflow-x: auto;
+  }
+
+  .login-wrapper .form-side, .login-wrapper .add-side {
+    flex: auto;
+    max-width: none;
+  }
+
+  .login-wrapper .add-side {
+    background: none;
   }
 }
 

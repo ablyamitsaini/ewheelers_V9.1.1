@@ -130,7 +130,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 							<?php if( CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) ){ ?>
 							<small><?php echo Labels::getLabel('LBL_Approx.',$siteLangId);?> <?php echo CommonHelper::displayMoneyFormat($userWalletBalance, true,true);?></small>
 							<?php } ?>
-							<a href="javascript:void(0)" onClick="withdrawalReqForm()" class="btn btn--secondary block-on-mobile"><?php echo Labels::getLabel('LBL_Request_Withdrawal', $siteLangId); ?></a>
+							<a href="javascript:void(0)" onClick="withdrawalReqForm()" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Request_Withdrawal', $siteLangId); ?></a>
 							</div>
 						</div>
 
