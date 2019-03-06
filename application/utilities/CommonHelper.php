@@ -1415,6 +1415,7 @@ class CommonHelper extends FatUtility{
 		 $dropDown .='</select>';
 		return  $dropDown;
 	}
+    
 	public static function getLgColsForPackages(){
 		return array('1'=>4,
 			'2'=>6,

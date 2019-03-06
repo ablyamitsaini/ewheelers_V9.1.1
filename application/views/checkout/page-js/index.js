@@ -235,7 +235,7 @@ $("document").ready(function()
 		$(addressDiv).html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'addresses'), '', function(ans) {
 			$(addressDiv).html(ans);
-			$('.section').removeClass('is-current');
+			$('.section-checkout').removeClass('is-current');
 			$(addressDiv).addClass('is-current');
 			$(addressDiv).find(".address-"+ua_id +" label .radio").click();
 		});
@@ -294,7 +294,7 @@ $("document").ready(function()
 		$(shippingSummaryDiv).append(fcom.getLoader() );
 		/* $(shippingSummaryDiv+' .short-detail').append(fcom.getLoader() ); */
 		loadShippingAddress();
-		$('.section').removeClass('is-current');
+		$('.section-checkout').removeClass('is-current');
 		$(shippingSummaryDiv).addClass('is-current');
 		$(shippingSummaryDiv + ".selected-panel-data").html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'shippingSummary'), '' , function(ans) {
@@ -319,7 +319,7 @@ $("document").ready(function()
 	
 	loadCartReviewDiv = function(){
 		$(cartReviewDiv).html( fcom.getLoader() );
-		$('.section').removeClass('is-current');
+		$('.section-checkout').removeClass('is-current');
 		$(cartReviewDiv).addClass('is-current');
 		fcom.ajax(fcom.makeUrl('Checkout', 'reviewCart'), '', function(ans) {
 			$(cartReviewDiv).html(ans);
@@ -335,7 +335,7 @@ $("document").ready(function()
 	loadPaymentSummary = function(){
 		loadCartReview();
 		$(paymentDiv).html( fcom.getLoader() );
-		$('.section').removeClass('is-current');
+		$('.section-checkout').removeClass('is-current');
 		$(paymentDiv).addClass('is-current');
 		fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
 			$(paymentDiv).addClass('is-current');
