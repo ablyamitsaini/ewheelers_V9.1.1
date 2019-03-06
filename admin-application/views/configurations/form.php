@@ -47,8 +47,8 @@ switch ($frmType){
 }
 
 ?>
-<ul class="tabs_nav innerul">
-	<?php if( $frmType == Configurations::FORM_GENERAL){ ?>
+<ul class="tabs_nav innerul abc">
+	<?php if( $frmType == Configurations::FORM_IMPORT_EXPORT){ ?>
 		<li><a href="javascript:void(0);" onclick="generalInstructions(<?php echo $frmType;?>);"><?php echo Labels::getLabel('LBL_Instructions',$adminLangId); ?></a></li>
 	<?php } ?>
 	<?php if( $frmType != Configurations::FORM_MEDIA && $frmType != Configurations::FORM_SHARING ){ ?>
