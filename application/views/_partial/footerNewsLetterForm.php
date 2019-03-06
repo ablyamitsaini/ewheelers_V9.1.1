@@ -7,24 +7,24 @@
 			$emailFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_Your_Email_Address', $siteLangId) );
 			$emailFld->setFieldTagAttribute('class',"no--focus");
 		?>
-		
-		
+
+
 		 <?php echo $frm->getFormTag();?>
-              
-               	<?php 
-					
+
+               	<?php
+
 					echo $frm->getFieldHtml('email');
 					/* echo $frm->getFieldHtml('btnSubmit'); */
 				?>
               </form>
 			  <?php echo $frm->getExternalJS(); ?>
-	
+
 		<?php } else if( FatApp::getConfig('CONF_NEWSLETTER_SYSTEM') == applicationConstants::NEWS_LETTER_SYSTEM_AWEBER ) { ?>
-		<?php FatApp::getConfig('CONF_AWEBER_SIGNUP_CODE'); ?>
+		<?php echo FatApp::getConfig('CONF_AWEBER_SIGNUP_CODE'); ?>
 		<?php } }else { ?>
 		<div class="gap"></div>
 		<?php } ?>
-		
+
 		<script type = "text/javascript" >
 			(function() {
 				setUpNewsLetter = function(frm) {
