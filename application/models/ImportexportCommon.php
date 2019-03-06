@@ -29,7 +29,7 @@ class ImportexportCommon extends FatModel{
 		if(!file_exists(self::IMPORT_ERROR_LOG_PATH)){
            mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
        	}
-                
+
 		$langId =  FatUtility::int($langId);
 		if(!$langId){
 			$langId = CommonHelper::getLangId();
@@ -47,6 +47,22 @@ class ImportexportCommon extends FatModel{
 
 		CommonHelper::writeLogFile( $file, $arr );
 		return $file;
+	}
+
+	public static function deleteErrorLogFiles($hoursBefore = '4'){
+		if(empty($hoursBefore)){
+			return false;
+		}
+		$importErrorLogFilesDir = ImportexportCommon::IMPORT_ERROR_LOG_PATH;
+		$errorLogFiles = array_diff(scandir($importErrorLogFilesDir), array('..', '.'));
+		foreach ($errorLogFiles as $fileName) {
+			$file = $importErrorLogFilesDir.$fileName;
+			$modifiedOn = filemtime($file);
+			if( $modifiedOn <= strtotime('-'.$hoursBefore.' hour') ){
+				unlink($file);
+			}
+		}
+		return true;
 	}
 
 	public function isUploadedFileValidMimes($files){
