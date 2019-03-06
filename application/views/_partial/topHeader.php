@@ -1,3 +1,31 @@
+<div class="outdated">
+	<div class="outdated-inner">
+		<div class="outdated-messages">
+			<h2>The browser you are using is not supported. Some critical security features are not available for your browser version.</h2>
+			<p>We want you to have the best possible experience with FATbit.
+				For this you'll need to use a supported browser and upgrade to the latest version. </p>
+			<ul class="list-browser">
+				<li><a href="https://www.google.com/chrome" target="_blank"><i class="icn chrome"></i>
+						<p><strong>Chrome</strong><br>
+							<span>Get the latest version</span></p>
+					</a></li>
+
+				<li><a href="https://getfirefox.com" target="_blank"><i class="icn firefox"></i>
+						<p><strong>Firefox</strong><br>
+							<span>Get the latest version</span></p>
+					</a></li>
+				<li><a href="http://support.apple.com/downloads/#safari" target="_blank"><i class="icn safari"></i>
+						<p><strong>Safari</strong><br>
+							<span>Get the latest version</span></p>
+					</a></li>
+				<li><a href="http://getie.com" target="_blank"><i class="icn internetexplorer"></i>
+						<p><strong>Internet Explorer</strong><br>
+							<span>Get the latest version</span></p>
+					</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
 <div class="wrapper">
 <div id="loader-wrapper">
 	<div class="pong-loader"></div>
