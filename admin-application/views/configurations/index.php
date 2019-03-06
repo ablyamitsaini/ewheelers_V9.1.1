@@ -26,7 +26,7 @@
 
 								<li><a class="<?php echo ( $activeTab == $formType ) ? 'active' : ''?>" rel = <?php echo $tabsId;?> href="javascript:void(0)" onClick="getLangForm(<?php echo $formType;?>, <?php echo $adminLangId; ?>, '<?php echo $tabsId; ?>')"><?php echo $tabName;?></a></li>
 
-								<?php }  else if( $formType == Configurations::FORM_GENERAL ){ ?>
+								<?php }  else if( $formType == Configurations::FORM_IMPORT_EXPORT ){ ?>
 
 								<li><a class="<?php echo ( $activeTab == $formType ) ? 'active' : ''?>" rel = <?php echo $tabsId;?> href="javascript:void(0)" onClick="generalInstructions(<?php echo $formType;?>)"><?php echo $tabName;?></a></li>
 
