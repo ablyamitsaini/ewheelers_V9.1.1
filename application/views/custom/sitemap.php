@@ -1,7 +1,7 @@
 <div id="body" class="body bg--gray">
     <section class="dashboard">
         <div class="container">
-            <div class="breadcrumb">
+            <div class="breadcrumbs">
                 <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
             </div>
             <div class="row">

@@ -7,7 +7,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 <div id="body" class="body" role="main">
 <section>
   <div class="container">
-    <!-- <div class="breadcrumb">
+    <!-- <div class="breadcrumbs">
       <?php /* $this->includeTemplate('_partial/custom/header-breadcrumb.php'); */ ?>
     </div> -->
       <div class="row">

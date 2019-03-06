@@ -17,7 +17,6 @@ if(!empty($postList)){ ?>
 									<div class="posted-by"><span class="auther"><?php echo Labels::getLabel('Lbl_By',$siteLangId)." "; ?> <?php echo CommonHelper::displayName($blogPost['post_author_name']); ?></span> <span class="time"><?php echo FatDate::format($blogPost['post_published_on']); ?></span></div>
 									<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 									<p><?php $desLen = mb_strlen($blogPost['post_short_description']); if($desLen > 250){echo mb_substr($blogPost['post_short_description'],0,250).'...'; } else { echo $blogPost['post_short_description']; } ?></p>
-									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="links"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
 									<div class="share-this">
                                         <span><i class="icn share"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -71,7 +70,7 @@ if(!empty($postList)){ ?>
 						<div class="posted-by"><span class="auther"><?php echo Labels::getLabel('Lbl_By',$siteLangId)." "; ?> <?php echo CommonHelper::displayName($blogPost['post_author_name']); ?></span> <span class="time"><?php echo FatDate::format($blogPost['post_published_on']); ?></span></div>
 						<h2><a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
 						<p><?php $desLen = mb_strlen($blogPost['post_short_description']); if($desLen > 250){echo mb_substr($blogPost['post_short_description'],0,250).'...'; } else { echo $blogPost['post_short_description']; } ?></p>
-						<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="links"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
+						
 						<div class="share-this">
                             <span><i class="icn share"><svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -126,7 +125,7 @@ if(!empty($postList)){ ?>
 									else{	echo $blogPost['post_title'];
 									}?></a></h2>
 									<p><?php $desLen = mb_strlen($blogPost['post_short_description']); if($desLen > 250){echo mb_substr($blogPost['post_short_description'],0,250).'...'; } else { echo $blogPost['post_short_description']; } ?></p>
-									<a href="<?php echo CommonHelper::generateUrl('Blog','postDetail',array($blogPost['post_id'])); ?>" class="links"><?php echo Labels::getLabel('Lbl_Read_More',$siteLangId); ?></a>
+									
 									<div class="share-this">
                                         <span><i class="icn share"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>

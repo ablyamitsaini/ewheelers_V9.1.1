@@ -495,7 +495,9 @@ class ConfigurationsController extends AdminBaseController {
 				$fld1->htmlAfterField = "<br><small>".Labels::getLabel("LBL_cookies_policies_section_will_be_shown_on_frontend",$this->adminLangId)."</small>";	
 				$fld3 = $frm->addTextBox(Labels::getLabel("LBL_Admin_Default_Items_Per_Page",$this->adminLangId),"CONF_ADMIN_PAGESIZE");
 				$fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_items_are_shown_per_page_(user_listing,_categories,_etc)",$this->adminLangId).".</small>";
-				
+				$iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe',$this->adminLangId),'CONF_MAP_IFRAME_CODE');
+				$iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page",$this->adminLangId).'</small>';
+                
 			break;
 			
 			case Configurations::FORM_LOCAL:				

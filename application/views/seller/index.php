@@ -10,10 +10,10 @@
 		<div class="col-md-auto">
 			<div class="btn-group">
 				<?php if(!Shop::isShopActive(UserAuthentication::getLoggedUserId(),0,true)){ ?>
-				<a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>" class="btn btn--border btn--sm"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a>
+				<a  href="<?php echo  CommonHelper::generateUrl('Seller','shop');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Create_Shop',$siteLangId); ?></a>
 				<?php  } ?>
-				<a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>" class="btn btn--border btn--sm"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a>
-				<a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" class="btn btn--border btn--sm"><?php echo Labels::getLabel('LBL_My_Products',$siteLangId);?></a>
+				<a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>" class="btn btn--sm"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a>
+				<a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_My_Products',$siteLangId);?></a>
 			</div>
 		</div>
 	</div>

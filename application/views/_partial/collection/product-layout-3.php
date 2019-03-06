@@ -11,7 +11,7 @@ if( isset( $collections ) && count($collections) ){
 	<div class="container">
 		<div class="section-head section--white--head">
 			<div class="section__heading">
-				<h2><?php echo ($row['collection_name'] != '') ? ' <div class="section_heading">' . $row['collection_name'] .'</div>' : ''; ?></h2>
+				<h2><?php echo ($row['collection_name'] != '') ? $row['collection_name'] : ''; ?></h2>
 			</div>
 			<?php if( count($row['products']) > Collections::LIMIT_PRODUCT_LAYOUT3 ){ ?>
 				<div class="section__action"><a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>

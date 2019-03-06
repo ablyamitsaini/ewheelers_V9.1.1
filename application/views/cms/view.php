@@ -13,31 +13,31 @@
 	if($blockData){ ?>
 		<div class="container--cms">
 		<?php if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_1])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_1]['cpblocklang_text']){?>
-		  <section class="space">
+		  <section class="section">
 			<div class="container">
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_1]['cpblocklang_text']);?>
 			</div>
 		  </section>
 		<?php } if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2]['cpblocklang_text']){?>
-		  <section class="space bg--gray">
+		  <section class="section bg--gray">
 			<div class="container">
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2]['cpblocklang_text']);?>
 			</div>
 		  </section>
 		<?php } if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_3])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_3]['cpblocklang_text']){?>
-		  <section class="space bg--second">
+		  <section class="section bg--second">
 			<div class="container">
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_3]['cpblocklang_text']);?>
 			</div>
 		  </section>
 		<?php }if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_4])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_4]['cpblocklang_text']){?>
-		  <section class="space">
+		  <section class="section">
 			<div class="container">
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_4]['cpblocklang_text']);?>
 			</div>
 		  </section>
 		<?php }if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_5])  &&  $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_5]['cpblocklang_text']){?>
-		  <section class="space">
+		  <section class="section">
 		   <div class="divider"></div>
 			<div class="container">
 				
@@ -56,7 +56,7 @@
 	<section class="top-space bg--white">
 	  <div class="container">
 		<?php if(!$isAppUser){?>
-		<div class="breadcrumb">
+		<div class="breadcrumbs">
 		   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
 		<?php }?>
