@@ -2,7 +2,7 @@
 <div id="body" class="body">
 	<section class="top-space bg--white">
 	  <div class="container">
-		<div class="breadcrumb">
+		<div class="breadcrumbs">
 		  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
 		<div class="row">
@@ -44,7 +44,7 @@
 				   </div>
 					<div class="grid__right">
 					   <h2><?php echo Labels::getLabel('Lbl_Frequently_Asked_Questions',$siteLangId); ?></h2>
-					   <ul class="breadcrumb clearfix">
+					   <ul class="breadcrumbs clearfix">
 						   <li><a href="<?php echo CONF_WEBROOT_URL; ?>"><?php echo Labels::getLabel('Lbl_Home',$siteLangId); ?></a></li>
 						   <li><?php echo Labels::getLabel('Lbl_Frequently_Asked_Questions',$siteLangId); ?></li>
 					   </ul>

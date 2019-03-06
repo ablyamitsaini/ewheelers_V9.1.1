@@ -2,7 +2,7 @@
 <div id="body" class="body">
 	<section class="top-space bg--white">
 	  <div class="container">
-		<div class="breadcrumb">
+		<div class="breadcrumbs">
 		  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
 		<div class="row">

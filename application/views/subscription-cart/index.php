@@ -2,7 +2,7 @@
 <div id="body" class="body bg--gray">
     <section class="top-space">
       <div class="container">
-        <div class="breadcrumb">
+        <div class="breadcrumbs">
           <ul>
             <li><a href="<?php echo CommonHelper::generateUrl();?>"><?php echo Labels::getLabel('LBL_Home', $siteLangId); ?> </a></li>
          

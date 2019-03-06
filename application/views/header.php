@@ -51,7 +51,7 @@ if( isset($includeEditor) && $includeEditor == true ){
 }
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 
-if($isUserDashboard){
+if(isset($isUserDashboard) && $isUserDashboard){
 	$this->includeTemplate('_partial/topHeaderDashboard.php',array('siteLangId'=>$siteLangId,'isUserDashboard'=>$isUserDashboard),false);
 	$exculdeMainHeaderDiv = true;
 }

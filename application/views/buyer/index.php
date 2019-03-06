@@ -9,8 +9,8 @@
 		</div>
 		<div class="content-header-right col-auto">
 			<div class="btn-group">
-				<a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>" class="btn btn--border btn--sm"><?php echo $totalFavouriteItems;?> <?php echo Labels::getLabel('LBL_Favorite_Items',$siteLangId);?> </a>
-				<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--border btn--sm"><?php echo $totalPurchasedItems['totalPurchasedItems'];?> <?php echo Labels::getLabel('LBL_Purchased_Items',$siteLangId);?> </a>
+				<a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>" class="btn btn--sm"><?php echo $totalFavouriteItems;?> <?php echo Labels::getLabel('LBL_Favorite_Items',$siteLangId);?> </a>
+				<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary btn--sm"><?php echo $totalPurchasedItems['totalPurchasedItems'];?> <?php echo Labels::getLabel('LBL_Purchased_Items',$siteLangId);?> </a>
 			</div>
 		</div>
 	</div>
