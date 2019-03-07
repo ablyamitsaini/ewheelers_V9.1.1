@@ -369,11 +369,11 @@ ol li {
 }
 
 .text--normal-primary {
-  color: #24b26b !important;
+  color: var(--first-color);
 }
 
 .text--normal-secondary {
-  color: #f15c5c !important;
+  color: var(--second-color);
 }
 
 .list__socials li {
@@ -7377,6 +7377,11 @@ input.qty {
   margin-bottom: 0;
   background: #fff;
   margin: 0 auto;
+  width: auto;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .items .item__pic img {
@@ -11143,6 +11148,11 @@ html.quick-view--open {
   position: absolute;
   left: 10px;
   opacity: 1;
+}
+
+.logo-dashboard img {
+  max-width: 150px;
+  max-height: 84px;
 }
 
 .sidebar-is-reduced .logo-dashboard {

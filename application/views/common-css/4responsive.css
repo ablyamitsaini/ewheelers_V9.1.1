@@ -105,6 +105,8 @@
     display: block;
   }
 
+  .logo img{ max-height: 100%; max-width: 100%;}
+
   .fixed .logo {
     margin-left: 45px;
   }
@@ -703,8 +705,7 @@
   }
 
   .product-description {
-    padding: 0;
-    border: none;
+    padding: 1rem;
   }
 
   .column--md {
@@ -1075,11 +1076,8 @@
     padding: 15px 0;
   }
 
-  .buy-group {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+  .buy-group .btn {
+    min-width: inherit;
   }
 
   .shop-info {
@@ -1218,6 +1216,8 @@
   .login-wrapper .add-side {
     background: none;
   }
+
+  .contact-info{ flex-direction: column; align-items:flex-start;  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -1227,4 +1227,6 @@
     -ms-flex-direction: column;
     flex-direction: column;
   }
+
+  .buy-group .btn .icn{ display: none;}
 }
