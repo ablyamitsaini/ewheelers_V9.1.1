@@ -11,7 +11,7 @@
     </div> 
 	<?php 
 	if($blockData){ ?>
-		<div class="container--cms">
+		<div class="cms">
 		<?php if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_1])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_1]['cpblocklang_text']){?>
 		  <section class="section">
 			<div class="container">
@@ -19,7 +19,7 @@
 			</div>
 		  </section>
 		<?php } if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2])  && $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2]['cpblocklang_text']){?>
-		  <section class="section bg--gray">
+		  <section class="section section--gray">
 			<div class="container">
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_2]['cpblocklang_text']);?>
 			</div>

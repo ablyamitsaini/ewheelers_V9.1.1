@@ -32,7 +32,7 @@
         <label class="checkbox brand" id="brand_95"><input onChange="walletSelection(this)" type="checkbox" <?php echo ($cartSummary["cartWalletSelected"]) ? 'checked="checked"' : ''; ?> name="pay_from_wallet" id="pay_from_wallet" /><i class="input-helper"></i><?php if( $cartSummary["cartWalletSelected"] && $userWalletBalance >= $cartSummary['orderNetAmount'] ){
                 echo '<strong>'.Labels::getLabel('LBL_Sufficient_balance_in_your_wallet', $siteLangId).'</strong>'; //';
             } else {
-                echo Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>:  (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)
+                echo '<strong>'.Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>:  (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)</strong>
             <?php } ?> </label>
 
         <?php if( $cartSummary["cartWalletSelected"] ){ ?>
