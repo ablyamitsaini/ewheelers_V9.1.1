@@ -1,7 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 <div id="body" class="body body--checkout" role="main">
-
 <section class="">
 	<div class="container">
 		<div class="row ">
@@ -44,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="gap"></div>
+  </section>
 </div>
 <script type="text/javascript">
 	<?php if( isset($defaultAddress) ) { ?>
