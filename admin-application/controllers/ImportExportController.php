@@ -4,7 +4,7 @@ class ImportExportController extends AdminBaseController {
 		parent::__construct($action);
 		$this->langId = $this->adminLangId;
 	}
-
+	
 	public function exportData($actionType){
 		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 		$exportDataRange = FatApp::getPostedData('export_data_range', FatUtility::VAR_INT, 0);

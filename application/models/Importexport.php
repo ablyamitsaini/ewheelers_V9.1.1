@@ -577,9 +577,9 @@ class Importexport extends ImportexportCommon{
 
 			$rowIndex++;
 
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getCategoryColoumArr($langId);
@@ -596,31 +596,51 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// if($useCategoryId){
+			// 	$categoryId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if(!$categoryId){
+			// 		$errMsg = Labels::getLabel( "MSG_Category_Id_is_required.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = trim($this->getCell($line,$colCount++,''));
+			// 		if($identifier == '') {
+			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 			$err = array($rowIndex,$colCount,$errMsg);
+			// 			CommonHelper::writeLogFile( $errFile, $err );
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = trim($this->getCell($line,$colCount++,''));
+			// 	if($identifier == '') {
+			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// }
+
+			$useIdentifier = true;
 			if($useCategoryId){
 				$categoryId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if(!$categoryId){
-					$errMsg = Labels::getLabel( "MSG_Category_Id_is_required.", $langId );
+				if( 0 >= $categoryId ){
+					$errMsg = Labels::getLabel( "MSG_Valid_category_id_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
-				if($this->isDefaultSheetData($langId)){
-					$identifier = trim($this->getCell($line,$colCount++,''));
-					if($identifier == '') {
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile, $err );
-						continue;
-					}
-				}
-			}else{
-				$identifier = trim($this->getCell($line,$colCount++,''));
-				if($identifier == '') {
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
+			}
+
+			$identifier = trim( $this->getCell($line,$colCount++,'') );
+			if( !$useIdentifier || empty( $identifier ) ){
+			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
 			}
 
 			if($this->isDefaultSheetData($langId)){
@@ -648,6 +668,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$seoUrl = $this->getCell($line,$colCount++,'');
+				if(empty($seoUrl)){
+					$errMsg = Labels::getLabel( "MSG_Category_SEO_Friendly_URL_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$featured = $this->getCell($line,$colCount++,0);
 				$active = $this->getCell($line,$colCount++,0);
 				$displayOrder = $this->getCell($line,$colCount++,0);
@@ -742,7 +768,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -874,7 +900,7 @@ class Importexport extends ImportexportCommon{
 		$success['status'] = 1;
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -950,9 +976,9 @@ class Importexport extends ImportexportCommon{
 
 			$rowIndex++;
 
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getBrandColoumArr($langId);
@@ -969,25 +995,44 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// if($this->settings['CONF_USE_BRAND_ID']){
+			// 	$brandId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = trim($this->getCell($line,$colCount++,''));
+			// 		if($identifier == ''){
+			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 			$err = array($rowIndex,$colCount,$errMsg);
+			// 			CommonHelper::writeLogFile( $errFile,  $err);
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = trim($this->getCell($line,$colCount++,''));
+			// 	if($identifier == ''){
+			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// }
+
+			$useIdentifier = true;
 			if($this->settings['CONF_USE_BRAND_ID']){
 				$brandId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if($this->isDefaultSheetData($langId)){
-					$identifier = trim($this->getCell($line,$colCount++,''));
-					if($identifier == ''){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile,  $err);
-						continue;
-					}
-				}
-			}else{
-				$identifier = trim($this->getCell($line,$colCount++,''));
-				if($identifier == ''){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				if( 0 >= $brandId ){
+					$errMsg = Labels::getLabel( "MSG_Valid_brand_id_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
+			}
+			$identifier = trim( $this->getCell($line,$colCount++,'') );
+			if( !$useIdentifier || empty( $identifier ) ){
+				$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
@@ -995,6 +1040,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$seoUrl = $this->getCell($line,$colCount++,'');
+				if( empty( $seoUrl ) ){
+					$errMsg = Labels::getLabel( "MSG_SEO_Friendly_URL_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$featured = $this->getCell($line,$colCount++,0);
 				$active = $this->getCell($line,$colCount++,0);
 			}
@@ -1067,13 +1118,14 @@ class Importexport extends ImportexportCommon{
 			}
 			$rowCount++;
 		}
+
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
 
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -1432,9 +1484,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getProductsCatalogColoumArr($langId,$sellerId);
@@ -1452,35 +1504,64 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// $useProductId = false;
+			// if($this->settings['CONF_USE_PRODUCT_ID']){
+			// 	$useProductId = true;
+			// 	$productId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = trim($this->getCell($line,$colCount++,''));
+			// 		if($identifier == '') {
+			// 			$err = array(
+			// 					$rowIndex,
+			// 					$colCount,
+			// 					Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId )
+			// 				);
+			// 			CommonHelper::writeLogFile( $errFile, $err );
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = trim($this->getCell($line,$colCount++,''));
+			// 	if($identifier == '') {
+			// 		CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId ) ) );
+			// 		continue;
+			// 	}
+			// }
+
+			$useIdentifier = true;
 			$useProductId = false;
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if($this->isDefaultSheetData($langId)){
-					$identifier = trim($this->getCell($line,$colCount++,''));
-					if($identifier == '') {
-						$err = array(
-								$rowIndex,
-								$colCount,
-								Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId )
-							);
-						CommonHelper::writeLogFile( $errFile, $err );
-						continue;
-					}
-				}
-			}else{
-				$identifier = trim($this->getCell($line,$colCount++,''));
-				if($identifier == '') {
-					CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId ) ) );
+				if( 0 >= $productId ){
+					$errMsg = Labels::getLabel( "MSG_Valid_product_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
 			}
+			$identifier = trim($this->getCell($line,$colCount++,''));
+			if( !$useIdentifier || empty( $identifier ) ){
+				$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+
+
 			$userId = 0;
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = $this->getCell($line,$colCount++,0);
 				}else{
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 					if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 						$res = $this->getAllUserArr(false,$colValue);
@@ -1508,17 +1589,23 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_CATEGORY_ID']){
-					$categoryIds = $this->getCell($line,$colCount++,'');
+					$categoryIds = trim($this->getCell($line,$colCount++,0));
 				}else{
 					$catArr = array();
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Category_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					$catIdentifiers = explode(',',$colValue);
 					if(!empty($catIdentifiers)){
 						foreach($catIdentifiers as $val){
 							if(!array_key_exists($val,$categoryIdentifierArr)){
 								$res = $this->getAllCategoryIdentifiers(false,$val);
 								if(!$res){
-									CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Identifier_must_be_approved_category.", $langId ) ) );
+									CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Category_is_required.", $langId ) ) );
 									continue;
 								}
 								$categoryIdentifierArr = array_merge($categoryIdentifierArr,$res);
@@ -1531,21 +1618,39 @@ class Importexport extends ImportexportCommon{
 					$categoryIds = implode(',',$catArr);
 				}
 
+				if( empty( $categoryIds ) ){
+				    $errMsg = Labels::getLabel( "MSG_Category_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
+
 				if($this->settings['CONF_USE_BRAND_ID']){
-					$brandId = $this->getCell($line,$colCount++,'');
+					$brandId = trim( $this->getCell($line,$colCount++,0) );
 				}else{
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Brand_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					if(!array_key_exists($colValue,$brandIdentifierArr)){
 						$res = $this->getAllBrandsArr(false,$colValue);
 						if(!$res){
-							CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Identifier_must_be_approved_brand.", $langId ) ) );
+							CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Brand_is_required.", $langId ) ) );
 							continue;
 						}
 						$brandIdentifierArr = array_merge($brandIdentifierArr,$res);
 					}
 					$brandId = isset($brandIdentifierArr[$colValue])?$brandIdentifierArr[$colValue]:0;
 				}
-
+				if( 0 >= $brandId ){
+				    $errMsg = Labels::getLabel( "MSG_Invalid_brand.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if($this->settings['CONF_USE_PRODUCT_TYPE_ID']){
 					$prodTypeId = $this->getCell($line,$colCount++,'');
 				}else{
@@ -1558,12 +1663,30 @@ class Importexport extends ImportexportCommon{
 				}
 
 				$model = $this->getCell($line,$colCount++,'');
+				if( empty( $model ) ){
+				    $errMsg = Labels::getLabel( "MSG_Model_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$minSellingPrice = $this->getCell($line,$colCount++,'');
+				if( empty( $minSellingPrice ) ){
+				    $errMsg = Labels::getLabel( "MSG_Minimum_selling_price_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 
 				if($this->settings['CONF_USE_TAX_CATEOGRY_ID']){
 					$taxCatId = $this->getCell($line,$colCount++,0);
 				}else{
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Tax_category_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					if(!array_key_exists($colValue,$taxCategoryArr)){
 						$res = $this->getTaxCategoriesArr(false,$colValue);
 						if(!$res){
@@ -1574,10 +1697,36 @@ class Importexport extends ImportexportCommon{
 					}
 					$taxCatId = isset($taxCategoryArr[$colValue])?$taxCategoryArr[$colValue]:0;
 				}
+
+				if( 0 >= $taxCatId ){
+				    $errMsg = Labels::getLabel( "MSG_Tax_category_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
+
 				/* echo $taxCatId; die; */
 				$length = $this->getCell($line,$colCount++,'');
+				if( empty($length) ){
+				    $errMsg = Labels::getLabel( "MSG_Length_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$width = $this->getCell($line,$colCount++,'');
+				if( empty($width) ){
+				    $errMsg = Labels::getLabel( "MSG_Width_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$height = $this->getCell($line,$colCount++,'');
+				if( empty($height) ){
+				    $errMsg = Labels::getLabel( "MSG_Height_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 
 				if($this->settings['CONF_USE_DIMENSION_UNIT_ID']){
 					$dimensionUnit = $this->getCell($line,$colCount++,'');
@@ -1589,8 +1738,20 @@ class Importexport extends ImportexportCommon{
 					}
 					$dimensionUnit = $lengthUnitsArr[$colValue];
 				}
+				if( empty($dimensionUnit) ){
+				    $errMsg = Labels::getLabel( "MSG_Dimension_unit_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 
 				$weight = $this->getCell($line,$colCount++,'');
+				if( empty($weight) ){
+				    $errMsg = Labels::getLabel( "MSG_Weight_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if($this->settings['CONF_USE_WEIGHT_UNIT_ID']){
 					$weightUnitId = $this->getCell($line,$colCount++,0);
 				}else{
@@ -1600,6 +1761,12 @@ class Importexport extends ImportexportCommon{
 						continue;
 					}
 					$weightUnitId = $weightUnitsArr[$colValue];
+				}
+				if( 0 >= $weightUnitId ){
+				    $errMsg = Labels::getLabel( "MSG_Weight_unit_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
 				}
 				$productUpc = $this->getCell($line,$colCount++,'');
 				if($this->settings['CONF_USE_COUNTRY_ID']){
@@ -1808,7 +1975,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -1873,9 +2040,9 @@ class Importexport extends ImportexportCommon{
 		$prodArr = array();
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -1897,11 +2064,17 @@ class Importexport extends ImportexportCommon{
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$prodIndetifierArr)){
 					$res = $this->getAllProductsIdentifiers(false,$colValue);
 					if(!$res){
-						CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId ) ) );
+						CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Valid_Identifier_is_required.", $langId ) ) );
 						continue;
 					}
 					$prodIndetifierArr = array_merge($prodIndetifierArr,$res);
@@ -1913,8 +2086,8 @@ class Importexport extends ImportexportCommon{
 				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
 			}
 
-			if(!$productId){
-				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId ) ) );
+			if( 0 >= $productId ){
+				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Invalid_product_id.", $langId ) ) );
 				continue;
 			}
 
@@ -1959,7 +2132,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2025,9 +2198,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -2047,11 +2220,17 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$prodIndetifierArr)){
 					$res = $this->getAllProductsIdentifiers(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_identifier.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -2112,7 +2291,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2193,9 +2372,9 @@ class Importexport extends ImportexportCommon{
 		$prodspec_id = 0;
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -2217,11 +2396,17 @@ class Importexport extends ImportexportCommon{
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$prodIndetifierArr)){
 					$res = $this->getAllProductsIdentifiers(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_identifier.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -2303,7 +2488,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2399,9 +2584,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -2423,11 +2608,17 @@ class Importexport extends ImportexportCommon{
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$prodIndetifierArr)){
 					$res = $this->getAllProductsIdentifiers(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_identifier.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -2461,7 +2652,13 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_USER_ID']){
 				$userId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 				if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 					$res = $this->getAllUserArr(false,$colValue);
@@ -2581,7 +2778,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2671,9 +2868,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -2727,13 +2924,19 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_OPTION_ID']){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$optionId = 0;
 				if($colValue){
 					if(!array_key_exists($colValue,$optionIdentifierArr)){
 						$res = $this->getAllOptions(false,$colValue);
 						if(!$res){
-							$errMsg = Labels::getLabel( "MSG_Option_Identifier_cannot_be_blank", $langId );
+							$errMsg = Labels::getLabel( "MSG_Invalid_Option_Identifier", $langId );
 							$err = array($rowIndex,$colCount,$errMsg);
 							CommonHelper::writeLogFile( $errFile,  $err);
 							continue;
@@ -2844,7 +3047,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3029,9 +3232,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			$numcols = count($line);
 			$colCount = 0;
@@ -3060,11 +3263,17 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$prodIndetifierArr)){
 					$res = $this->getAllProductsIdentifiers(false,$colValue);
 					if(!$res){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+						$errMsg = Labels::getLabel( "MSG_Invalid_Identifier.", $langId );
 						$err = array($rowIndex,$colCount,$errMsg);
 						CommonHelper::writeLogFile( $errFile,  $err);
 						continue;
@@ -3085,7 +3294,13 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = FatUtility::int($this->getCell($line,$colCount++,0));
 				}else{
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 					if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 						$res = $this->getAllUserArr(false,$colValue);
@@ -3279,7 +3494,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3349,9 +3564,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getSelProdOptionsColoumArr($langId);
@@ -3382,13 +3597,19 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_OPTION_ID']){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$optionId = 0;
 				if($colValue){
 					if(!array_key_exists($colValue,$optionIdentifierArr)){
 						$res = $this->getAllOptions(false,$colValue);
 						if(!$res){
-							$errMsg = Labels::getLabel( "MSG_Option_Identifier_cannot_be_blank", $langId );
+							$errMsg = Labels::getLabel( "MSG_Invalid_option_identifier", $langId );
 							$err = array($rowIndex,$colCount,$errMsg);
 							CommonHelper::writeLogFile( $errFile,  $err);
 							continue;
@@ -3507,7 +3728,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3574,9 +3795,9 @@ class Importexport extends ImportexportCommon{
 		$metaSrch = MetaTag::getSearchObject();
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getSelProdSeoColoumArr($langId);
@@ -3605,7 +3826,13 @@ class Importexport extends ImportexportCommon{
 			}
 
 			if($this->isDefaultSheetData($langId)){
-				$metaIdentifier = $this->getCell($line,$colCount++,'');
+				$metaIdentifier = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $metaIdentifier ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}
 
 			$metaTitle = $this->getCell($line,$colCount++,'');
@@ -3667,7 +3894,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3807,7 +4034,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3920,7 +4147,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4062,7 +4289,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4172,7 +4399,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4313,7 +4540,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4404,9 +4631,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getOptionsColoumArr($langId);
@@ -4423,35 +4650,60 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// if($useOptionId){
+			// 	$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = $this->getCell($line,$colCount++,'');
+			// 		if(!$identifier){
+			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 			$err = array($rowIndex,$colCount,$errMsg);
+			// 			CommonHelper::writeLogFile( $errFile,  $err);
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = $this->getCell($line,$colCount++,'');
+			// 	if(!$identifier){
+			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// }
+
+			$useIdentifier = true;
 			if($useOptionId){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if($this->isDefaultSheetData($langId)){
-					$identifier = $this->getCell($line,$colCount++,'');
-					if(!$identifier){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile,  $err);
-						continue;
-					}
-				}
-			}else{
-				$identifier = $this->getCell($line,$colCount++,'');
-				if(!$identifier){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
+			}
+			$identifier = trim( $this->getCell($line,$colCount++,'') );
+			if( !$useIdentifier || empty( $identifier ) ){
+			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
 			}
 
 			$optionName = $this->getCell($line,$colCount++,'');
+			if( empty( $optionName ) ){
+			    $errMsg = Labels::getLabel( "MSG_Option_name_is_required.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
+			}
 
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = FatUtility::int($this->getCell($line,$colCount++,0));
 				}else{
 					$userId = 0;
-					$colValue = $this->getCell($line,$colCount++,'');
+					$colValue = trim( $this->getCell($line,$colCount++,'') );
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_user.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 					if(!empty($colValue)){
 						if(!array_key_exists($colValue,$userArr)){
@@ -4533,7 +4785,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4603,9 +4855,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getOptionsValueColoumArr($langId);
@@ -4622,25 +4874,38 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// if($useOptionValueId){
+			// 	$optionValueId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = $this->getCell($line,$colCount++,'');
+			// 		if(trim($identifier) == ''){
+			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 			$err = array($rowIndex,$colCount,$errMsg);
+			// 			CommonHelper::writeLogFile( $errFile,  $err);
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = $this->getCell($line,$colCount++,'');
+			// 	if(trim($identifier) == ''){
+			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// }
+
+			$useIdentifier = true;
 			if($useOptionValueId){
 				$optionValueId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if($this->isDefaultSheetData($langId)){
-					$identifier = $this->getCell($line,$colCount++,'');
-					if(trim($identifier) == ''){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile,  $err);
-						continue;
-					}
-				}
-			}else{
-				$identifier = $this->getCell($line,$colCount++,'');
-				if(trim($identifier) == ''){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
+			}
+			$identifier = trim( $this->getCell($line,$colCount++,'') );
+			if( !$useIdentifier || empty( $identifier ) ){
+			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
 			}
 
 			$optionId = 0;
@@ -4657,7 +4922,13 @@ class Importexport extends ImportexportCommon{
 					$optionIdArr = array_merge($optionIdArr,$res);
 				}
 			}else{
-				$colValue = $this->getCell($line,$colCount++,'');
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$optionIdentifierArr)){
 					$res = $this->getAllOptions(false,$colValue);
 					if(!$res){
@@ -4735,7 +5006,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4795,9 +5066,9 @@ class Importexport extends ImportexportCommon{
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
+			// if(empty($line[0])){
+			// 	continue;
+			// }
 
 			if($rowCount == 0){
 				$coloumArr = $this->getTagColoumArr($langId);
@@ -4814,32 +5085,56 @@ class Importexport extends ImportexportCommon{
 			$numcols = count($line);
 			$colCount = 0;
 
+			// if($useTagId){
+			// 	$tagId = FatUtility::int($this->getCell($line,$colCount++,0));
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		$identifier = $this->getCell($line,$colCount++,'');
+			// 		if(trim($identifier) == ''){
+			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 			$err = array($rowIndex,$colCount,$errMsg);
+			// 			CommonHelper::writeLogFile( $errFile,  $err);
+			// 			continue;
+			// 		}
+			// 	}
+			// }else{
+			// 	$identifier = $this->getCell($line,$colCount++,'');
+			// 	if(trim($identifier) == ''){
+			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			// 		$err = array($rowIndex,$colCount,$errMsg);
+			// 		CommonHelper::writeLogFile( $errFile,  $err);
+			// 		continue;
+			// 	}
+			// }
+			$useIdentifier = true;
 			if($useTagId){
 				$tagId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if($this->isDefaultSheetData($langId)){
-					$identifier = $this->getCell($line,$colCount++,'');
-					if(trim($identifier) == ''){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile,  $err);
-						continue;
-					}
+				if( 0 >= $tagId ){
+				    $errMsg = Labels::getLabel( "MSG_Valid_tag_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
 				}
-			}else{
-				$identifier = $this->getCell($line,$colCount++,'');
-				if(trim($identifier) == ''){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
+				$useIdentifier = $this->isDefaultSheetData($langId);
 			}
 
+			$identifier = trim( $this->getCell($line,$colCount++,'') );
+			if( !$useIdentifier || empty( $identifier ) ){
+			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
+			}
 
 			if($this->settings['CONF_USE_USER_ID']){
 				$userId = $this->getCell($line,$colCount++,0);
 			}else{
-				$colValue = $this->getCell($line,$colCount++,'');
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
 				if(!empty($colValue) && !array_key_exists($colValue,$usernameArr)){
 					$res = $this->getAllUserArr(false,$colValue);
@@ -4852,6 +5147,13 @@ class Importexport extends ImportexportCommon{
 					$usernameArr = array_merge($usernameArr,$res);
 				}
 				$userId = isset($usernameArr[$colValue])?$usernameArr[$colValue]:0;
+			}
+
+			if( empty( $userId ) ){
+			    $errMsg = Labels::getLabel( "MSG_Invalid_user_id.", $langId );
+			    $err = array($rowIndex,$colCount,$errMsg);
+			    CommonHelper::writeLogFile( $errFile,  $err);
+			    continue;
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
@@ -4917,7 +5219,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5129,7 +5431,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5334,7 +5636,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5536,7 +5838,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}

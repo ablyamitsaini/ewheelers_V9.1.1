@@ -325,11 +325,6 @@ class ImportExportController extends LoggedUserController {
 		$this->_template->render(false,false,'import-export/general-instructions.php');
 	}
 
-	public function downloadLogFile($fileName)
-	{
-		AttachedFile::downloadAttachment('import-error-log/'.$fileName,$fileName);
-	}
-
 	public function updateSettings(){
 		$frm = $this->getSettingForm($this->siteLangId);
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );

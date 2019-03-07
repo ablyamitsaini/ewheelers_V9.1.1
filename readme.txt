@@ -29,6 +29,7 @@ Enhancements :
     . New Payment method Braintree implemented.
 	. From name on email notifications updated with site from name.
 	. Import Error log file will be automatically downloaded if it contains errors listing.
+	. Required fields will also be captured in error log file while importing.
 
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.
