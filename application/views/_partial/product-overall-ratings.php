@@ -21,8 +21,8 @@ if($totReviews){
 	$rate_1_width = round(FatUtility::convertToType($rated_1/$totReviews*100,FatUtility::VAR_FLOAT),2);
 }
 ?>
-<div class="col-md-4 column">
-	<div class="shop-reviews-wrapper">
+<div class="col-md-3">
+	<div class="shop-reviews-wrapper text-center ">
 		<div class="shop-reviews">
 			<svg class="svg">
 				<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star"></use>
@@ -33,8 +33,8 @@ if($totReviews){
 		<div class="total-reviews"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></div>
 	</div>
 </div>
-<div class="col-md-4 column">
-	<div class="listing--progress-wrapper">
+<div class="col-md-6 ">
+	<div class="listing--progress-wrapper ">
 		<ul class="listing--progress">
 			<li>
 				<span class="progress_count">5 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
@@ -69,7 +69,7 @@ if($totReviews){
 		</ul>
 	</div>
 </div>
-<div class="col-md-4">
+<div class="col-md-3 ">
 	<div class="box box--white box--radius box--space have-you">
 		<p><strong><?php echo Labels::getLabel('Lbl_Have_You_Used_This_Product?',$siteLangId); ?></strong></p>
 		<div class="gap"></div>

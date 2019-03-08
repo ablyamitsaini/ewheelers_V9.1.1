@@ -105,7 +105,10 @@
     display: block;
   }
 
-  .logo img{ max-height: 100%; max-width: 100%;}
+  .logo img {
+    max-height: 100%;
+    max-width: 100%;
+  }
 
   .fixed .logo {
     margin-left: 45px;
@@ -753,6 +756,14 @@
   .top-bar {
     height: auto;
   }
+
+  .contact-box .contact-pic {
+    max-height: 300px;
+  }
+
+  .contact-box .contact-pic img {
+    max-width: none;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -926,7 +937,7 @@
   }
 
   .short-links>ul>li>a span {
-    font-size: 0;
+     
   }
 
   .shop-bar {
@@ -1217,7 +1228,18 @@
     background: none;
   }
 
-  .contact-info{ flex-direction: column; align-items:flex-start;  }
+  .contact-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .listing--grids ul {
+    flex-direction: column;
+  }
+
+  .listing--grids ul li { margin: 5px 0;
+
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -1228,5 +1250,7 @@
     flex-direction: column;
   }
 
-  .buy-group .btn .icn{ display: none;}
+  .buy-group .btn .icn {
+    display: none;
+  }
 }

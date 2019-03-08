@@ -13,7 +13,6 @@ $buyQuantity->addFieldTagAttribute('class','qty');
       <div class="row">
         <div class="col-lg-6">
           <div id="img-static" class="product-detail-gallery">
-
               <?php $data['product'] = $product;
 				$data['productImagesArr'] = $productImagesArr;
 				$data['imageGallery'] = true;
@@ -511,11 +510,13 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				<div class="gap"></div>
 				<?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
 				<div class="gap"></div>
-				<div class="h6"><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></div>
+				<h4><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></h4>
+        <div class="gap"></div>
 				<?php echo $frmReviewSearch->getFormHtml(); ?>
 				  <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
 				<?php }?>
 			</div>
+      	<div class="gap"></div>
 			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 			<div class="gap"></div>
 			<div class="banner-ppc"> <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
@@ -564,7 +565,7 @@ $("document").ready(function(){
 	}else{
 		$('.xzoom, .xzoom-gallery').xzoom({zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333', Xoffset: 	2});
 	}
-	
+
 	window.setInterval(function(){
 		var scrollPos = $(window).scrollTop();
 		if(scrollPos > 0){

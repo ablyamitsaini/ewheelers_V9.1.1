@@ -3,7 +3,7 @@
 <?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
 	  if($rewardPoints > 0){ ?>
  <div class="make-payment-wrapper step__body">
-	
+
 	<h6><?php echo Labels::getLabel('LBL_Reward_Point_in_your_account', $siteLangId); ?>
     <strong><?php echo $rewardPoints; ?></strong>
     (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId())));?>) <?php echo Labels::getLabel('LBL_You_can_use_upto_', $siteLangId); ?> <strong><?php echo min(min($rewardPoints,CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])),FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0)); ?></strong></h6>
@@ -24,7 +24,7 @@
 		<p><?php echo Labels::getLabel('LBL_Reward_Points',$siteLangId);?> <strong><?php echo $cartSummary['cartRewardPoints'];?></strong> <?php echo Labels::getLabel('LBL_Successfully_Used',$siteLangId);?></p>
 		</div>
 	<?php }?>
-	
+
 <?php } /* CommonHelper::printArray($cartSummary); die; */ ?>
 
     <?php if( $userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0){ ?>
@@ -66,7 +66,7 @@
                 <li>
                     <?php
                     $btnSubmitFld = $WalletPaymentForm->getField('btn_submit');
-                    $btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
+                    $btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary-border');
 
                     $WalletPaymentForm->developerTags['colClassPrefix'] = 'col-md-';
                     $WalletPaymentForm->developerTags['fld_default_col'] = 12;
