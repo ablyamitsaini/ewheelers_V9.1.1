@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-	$contactFrm->setFormTagAttribute('class', 'form form--contact');
+	$contactFrm->setFormTagAttribute('class', 'form form--contact ml-2 mr-2');
 	$contactFrm->setFormTagAttribute('action', CommonHelper::generateUrl('Custom', 'contactSubmit'));
 	$contactFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 	$contactFrm->developerTags['fld_default_col'] = 12;
@@ -18,8 +18,8 @@
             </div>
             <div class="contact-box">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="info-cell contact-pic "> <img src="<?php echo CONF_WEBROOT_URL; ?>images/pexels-photo.jpeg" alt=""></div>
+                    <div class="col-md-4 order-3 order-md-1">
+                        <div class="info-cell contact-pic"> <img src="<?php echo CONF_WEBROOT_URL; ?>images/pexels-photo.jpeg" alt=""></div>
                         <div class="contact-address info-cell">
                             <div class="info-cell-inner"><i class="icn">
                                     <svg class="svg draw">
@@ -31,10 +31,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 order-1 order-md-2">
                         <div class="section-head section--head--center mt-4 mb-4">
-                            <div class="section__heading">
-                                <h2><?php echo Labels::getLabel('LBL_Contact_Us',$siteLangId);?></h2>
+                            <div class="section__heading text-center">
+                                <h3><?php echo Labels::getLabel('LBL_Contact_Us',$siteLangId);?></h3>
                                 <p><?php echo Labels::getLabel('LBL_Feel_free_to_contact_us_with_your_questions',$siteLangId);?></p>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                             <?php echo $contactFrm->getExternalJS();?>
                         </form>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 order-2 order-md-3">
                         <div class="contact-phones info-cell">
                             <div class="info-cell-inner">
                                 <i class="icn">

@@ -4,14 +4,14 @@
 	?>
 <div class="make-payment-wrapper step__body">
 <h6><?php echo Labels::getLabel('LBL_Reward_Point_in_your_account', $siteLangId); ?>
-<strong><?php echo UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?></strong>  <?php 
+<strong><?php echo UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?></strong>  <?php
     $redeemRewardFrm->setFormTagAttribute('class','form form--secondary form--singlefield');
     $redeemRewardFrm->setFormTagAttribute('onsubmit','useRewardPoints(this); return false;');
     $redeemRewardFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
     $redeemRewardFrm->developerTags['fld_default_col'] = 12;
-    echo $redeemRewardFrm->getFormTag(); 
-    echo $redeemRewardFrm->getFieldHtml('redeem_rewards'); 
-    echo $redeemRewardFrm->getFieldHtml('btn_submit'); 
+    echo $redeemRewardFrm->getFormTag();
+    echo $redeemRewardFrm->getFieldHtml('redeem_rewards');
+    echo $redeemRewardFrm->getFieldHtml('btn_submit');
     echo $redeemRewardFrm->getExternalJs();
  ?>
   </form>
@@ -40,13 +40,13 @@
   <?php } if($subscriptionType == SellerPackages::PAID_TYPE){ ?>
   <p class="note"><?php echo Labels::getLabel('LBL_Note_Please_Maintain_Wallet_Balance_for_further_auto_renewal_payments',$siteLangId);?></p>
   <div class="gap"></div>
-	<?php 
+	<?php
   }
 	if( $cartSummary['orderNetAmount'] ==0 ){ ?>
 		<div class="listing--grids">
 		<ul>
 		<li>
-		<?php 
+		<?php
 		$btnSubmitFld = $ConfirmPaymentForm->getField('btn_submit');
 		$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary');
 
@@ -66,7 +66,7 @@
 		</ul>
 		</div>
 	<?php } ?>
-	
+
 	<?php
 	if( $cartSummary["cartWalletSelected"] ){ ?>
 	<div class="listing--grids">
@@ -97,10 +97,10 @@
 				<?php } */ ?>
 		<?php if($userWalletBalance >= $cartSummary['orderNetAmount'] && $cartSummary['orderNetAmount']!=0){ ?>
 		<li>
-		  <?php 
+		  <?php
 					$btnSubmitFld = $WalletPaymentForm->getField('btn_submit');
-					$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary');
-					
+					$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary-border');
+
 					$WalletPaymentForm->developerTags['colClassPrefix'] = 'col-md-';
 					$WalletPaymentForm->developerTags['fld_default_col'] = 12;
 					echo $WalletPaymentForm->getFormHtml(); ?>
@@ -118,10 +118,10 @@
 			elseif($cartSummary['orderNetAmount']==0){
 				?>
 		<li>
-		  <?php 
+		  <?php
 			$btnSubmitFld = $ConfirmPaymentForm->getField('btn_submit');
 			$btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary');
-			
+
 			$ConfirmPaymentForm->developerTags['colClassPrefix'] = 'col-md-';
 			$ConfirmPaymentForm->developerTags['fld_default_col'] = 12;
 			echo $ConfirmPaymentForm->getFormHtml(); ?>
@@ -158,7 +158,7 @@
       <?php if($paymentMethods){ ?>
       <div class="payment_methods_list scrollbar">
         <ul id="payment_methods_tab">
-          <?php $count=0; foreach($paymentMethods as $key => $val ){ 
+          <?php $count=0; foreach($paymentMethods as $key => $val ){
 					if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_SUBSCRIPTION])) continue;
 					$count++;
 				?>
@@ -202,15 +202,15 @@ if($(window).width()>1050){
 var containerId = '#tabs-container';
 var tabsId = '#payment_methods_tab';
 $(document).ready(function(){
-	
+
 	$(containerId).load( $(tabsId + ' li:first a').attr('href'), function(){
 		$(containerId).fadeIn('fast');
-		
+
 	});
-     if($(tabsId + ' LI A.is-active').length > 0){ 
+     if($(tabsId + ' LI A.is-active').length > 0){
          loadTab( $(tabsId + ' LI A.is-active') );
      }
-     $(tabsId + ' A').click(function(){ 
+     $(tabsId + ' A').click(function(){
           if( $(this).hasClass('is-active')){ return false; }
           $(tabsId + ' LI ').removeClass('is-active');
           $(this).parent().addClass('is-active');
@@ -225,11 +225,11 @@ function loadTab( tabObj ){
 	if(!tabObj || !tabObj.length){ return; }
 	$(containerId).html( fcom.getLoader() );
 	//$(containerId).fadeOut('fast');a
-	
+
 	$(containerId).load( tabObj.attr('href'), function(){
 		$(containerId).fadeIn('fast');
 	});
-}	
+}
 </script>
-<?php 
+<?php
 }} ?>

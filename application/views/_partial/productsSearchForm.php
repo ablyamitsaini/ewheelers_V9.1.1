@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->overrideFldType("hidden");
 	echo $frmProductSearch->getFormTag();
@@ -12,14 +12,8 @@
 				</svg>
 			</i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
 		</li>
-		<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>					
-		<li>
-			<a href="javascript:void(0)" onclick="saveProductSearch()"><i class="icn">
-				<svg class="svg">
-					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
-				</svg>
-			</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
-		</li>
+		<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>
+
 		<?php }?>
 		<?php /* <li class="is--active d-none d-xl-block">
 			<a href="javascript:void(0)" class="switch--grind switch--link-js grid hide--mobile"><i class="icn">
@@ -53,6 +47,11 @@
 			</div>
 		</li>
 		<li>
+			<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--default btn--sm"><i class="icn">
+
+			</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
+		</li>
+		<li>
 			<div class="list-grid-toggle switch--link-js">
 				<div class="icon icon-grid">
 					<div class="icon-bar"></div>
@@ -60,7 +59,7 @@
 					<div class="icon-bar"></div>
 				</div>
 			</div>
-		</li>		
+		</li>
 	</ul>
 	<?php
 		echo $frmProductSearch->getFieldHtml('sortOrder');
@@ -84,4 +83,3 @@
 	}
 }); */
 </script>
-
