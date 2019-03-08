@@ -671,35 +671,35 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){
 
     this.eventdefault = function() {
       current.eventopen = function(element) {
-		if ($(window).width() < 1025) {
+		if ($(window).width() < 767) {
 			return;
 		}
         element.xon('mouseenter', current.openzoom);
       }
 
       current.eventleave = function(element) {
-		if ($(window).width() < 1025) {
+		if ($(window).width() < 767) {
 			return;
 		}
         element.xon('mouseleave', current.closezoom);
       }
 
       current.eventmove = function(element) {
-		if ($(window).width() < 1025) {
+		if ($(window).width() < 767) {
 			return;
 		}
         element.xon('mousemove', current.movezoom);
       }
 
       current.eventscroll = function(element) {
-		if ($(window).width() < 1025) {
+		if ($(window).width() < 767) {
 			return;
 		}
         element.xon('mousewheel DOMMouseScroll', current.xscroll);
       }
 
       current.eventclick = function(element) {
-		if ($(window).width() < 1025) {
+		if ($(window).width() < 767) {
 			return;
 		}
         element.xon('click', function(event) {
