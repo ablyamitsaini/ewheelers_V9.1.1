@@ -380,9 +380,9 @@ class ImportexportCommon extends FatModel{
 		}
 
 		if($this->settings['CONF_USE_USER_ID']){
-			$arr[] = Labels::getLabel('LBL_user_id', $langId);
+			$arr[] = Labels::getLabel('LBL_User_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_user_username', $langId);
+			$arr[] = Labels::getLabel('LBL_Username', $langId);
 		}
 
 		if($this->settings['CONF_USE_COUNTRY_ID']){
@@ -464,7 +464,7 @@ class ImportexportCommon extends FatModel{
 			$arr[] = Labels::getLabel('LBL_Stock', $langId);
 			$arr[] = Labels::getLabel('LBL_SKU', $langId);
 			$arr[] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);
-			$arr[] = Labels::getLabel('LBL_Sustack_stock', $langId);
+			$arr[] = Labels::getLabel('LBL_Subtract_stock', $langId);
 			$arr[] = Labels::getLabel('LBL_Track_Inventory', $langId);
 			$arr[] = Labels::getLabel('LBL_Threshold_stock_level', $langId);
 
@@ -571,14 +571,14 @@ class ImportexportCommon extends FatModel{
 	public function getSelProdBuyTogetherColoumArr($langId){
 		$arr = array();
 		$arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-		$arr[] = Labels::getLabel('LBL_Buy_together_selprod_id', $langId);
+		$arr[] = Labels::getLabel('LBL_Buy_together_seller_product_id', $langId);
 		return $arr;
 	}
 
 	public function getSelProdRelatedProductColoumArr($langId){
 		$arr = array();
 		$arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-		$arr[] = Labels::getLabel('LBL_Related_selprod_id', $langId);
+		$arr[] = Labels::getLabel('LBL_Related_seller_product_id', $langId);
 		return $arr;
 	}
 
@@ -622,8 +622,8 @@ class ImportexportCommon extends FatModel{
 					$arr[] = Labels::getLabel('LBL_Option_Type', $langId);
 				} */
 
-				$arr[] = Labels::getLabel('LBL_Is_Separate_Image', $langId);
-				$arr[] = Labels::getLabel('LBL_Is_Color_Type', $langId);
+				$arr[] = Labels::getLabel('LBL_Has_Separate_Image', $langId);
+				$arr[] = Labels::getLabel('LBL_Option_is_Color', $langId);
 				$arr[] = Labels::getLabel('LBL_Display_in_filters', $langId);
 				if(!$userId){
 					$arr[] = Labels::getLabel('LBL_Deleted', $langId);

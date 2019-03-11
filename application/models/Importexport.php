@@ -663,6 +663,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
+			if(empty($name)){
+				$errMsg = Labels::getLabel( "MSG_Category_name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$description = $this->getCell($line,$colCount++,'');
 			/* $contentBlock = $this->getCell($line,$colCount++,''); */
 
@@ -675,9 +681,33 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$featured = $this->getCell($line,$colCount++,0);
+				if(empty($featured)){
+					$errMsg = Labels::getLabel( "MSG_Featured_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$active = $this->getCell($line,$colCount++,0);
+				if(empty($active)){
+					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$displayOrder = $this->getCell($line,$colCount++,0);
+				if(empty($displayOrder)){
+					$errMsg = Labels::getLabel( "MSG_Display_order_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$deleted = $this->getCell($line,$colCount++,0);
+				if(empty($seoUrl)){
+					$errMsg = Labels::getLabel( "MSG_Deleted_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}
 
 			if(!$numcols || $numcols != $colCount){
@@ -815,20 +845,60 @@ class Importexport extends ImportexportCommon{
 
 			if($useCategoryId){
 				$categoryId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $categoryId ){
+					$err = Labels::getLabel('MSG_Category_id_is_required.');
+					CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+					continue;
+				}
 			}else{
 				$identifier = $this->getCell($line,$colCount++,'');
+				if( empty($identifier) ){
+					$err = Labels::getLabel('MSG_Identifier_is_required_and_unique.');
+					CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+					continue;
+				}
 			}
 
 			if($this->settings['CONF_USE_LANG_ID']){
 				$landId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $landId ){
+					$err = Labels::getLabel('MSG_Lang_id_is_required.');
+					CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+					continue;
+				}
 			}else{
 				$langCode = $this->getCell($line,$colCount++,'');
+				if( empty($identifier) ){
+					$err = Labels::getLabel('MSG_Lang_code_is_required_and_unique.');
+					CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+					continue;
+				}
 			}
 
 			$imageType = $this->getCell($line,$colCount++,'');
+			if( empty($imageType) ){
+				$err = Labels::getLabel('MSG_Image_type_is_required.');
+				CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+				continue;
+			}
 			$filePath = $this->getCell($line,$colCount++,'');
+			if( empty($filePath) ){
+				$err = Labels::getLabel('MSG_File_path_is_required.');
+				CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+				continue;
+			}
 			$fileName = $this->getCell($line,$colCount++,'');
+			if( empty($fileName) ){
+				$err = Labels::getLabel('MSG_File_name_is_required.');
+				CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+				continue;
+			}
 			$displayOrder = $this->getCell($line,$colCount++,0);
+			if( empty($displayOrder) ){
+				$err = Labels::getLabel('MSG_Display_order_is_required.');
+				CommonHelper::writeLogFile( $errFile, array( $rowIndex, $colCount, $err ) );
+				continue;
+			}
 
 			if(!$numcols || $numcols != $colCount){
 				Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
@@ -1036,6 +1106,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
+			if( empty( $name ) ){
+				$errMsg = Labels::getLabel( "MSG_Brand_name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$description = $this->getCell($line,$colCount++,'');
 
 			if($this->isDefaultSheetData($langId)){
@@ -1047,7 +1123,19 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$featured = $this->getCell($line,$colCount++,0);
+				if( !isset( $featured ) ){
+					$errMsg = Labels::getLabel( "MSG_Featured_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$active = $this->getCell($line,$colCount++,0);
+				if( !isset( $active ) ){
+					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}
 
 			if(!$numcols || $numcols != $colCount){
@@ -1534,7 +1622,7 @@ class Importexport extends ImportexportCommon{
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
 				if( 0 >= $productId ){
-					$errMsg = Labels::getLabel( "MSG_Valid_product_id_is_required.", $langId );
+					$errMsg = Labels::getLabel( "MSG_Product_id_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
@@ -1554,6 +1642,12 @@ class Importexport extends ImportexportCommon{
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = $this->getCell($line,$colCount++,0);
+					if( 0 >= $userId ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
 					if( empty( $colValue ) ){
@@ -1583,6 +1677,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
+			if( empty( $name ) ){
+				$errMsg = Labels::getLabel( "MSG_Name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			/* $shortDescription = $this->getCell($line,$colCount++,'');	 */
 			$description = $this->getCell($line,$colCount++,'');
 			$youtubeVideo = $this->getCell($line,$colCount++,'');
@@ -1594,7 +1694,7 @@ class Importexport extends ImportexportCommon{
 					$catArr = array();
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
 					if( empty( $colValue ) ){
-					    $errMsg = Labels::getLabel( "MSG_Category_is_required.", $langId );
+					    $errMsg = Labels::getLabel( "MSG_Category_identifier_is_required.", $langId );
 					    $err = array($rowIndex,$colCount,$errMsg);
 					    CommonHelper::writeLogFile( $errFile,  $err);
 					    continue;
@@ -1630,7 +1730,7 @@ class Importexport extends ImportexportCommon{
 				}else{
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
 					if( empty( $colValue ) ){
-					    $errMsg = Labels::getLabel( "MSG_Brand_is_required.", $langId );
+					    $errMsg = Labels::getLabel( "MSG_Brand_identifier_is_required.", $langId );
 					    $err = array($rowIndex,$colCount,$errMsg);
 					    CommonHelper::writeLogFile( $errFile,  $err);
 					    continue;
@@ -1653,8 +1753,20 @@ class Importexport extends ImportexportCommon{
 				}
 				if($this->settings['CONF_USE_PRODUCT_TYPE_ID']){
 					$prodTypeId = $this->getCell($line,$colCount++,'');
+					if( 0 >= $prodTypeId ){
+					    $errMsg = Labels::getLabel( "MSG_Product_type_identifier_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
 					$colValue = $this->getCell($line,$colCount++,'');
+					if( empty( $colValue ) ){
+					    $errMsg = Labels::getLabel( "MSG_Product_type_identifier_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					if(!array_key_exists($colValue,$prodTypeIdentifierArr)){
 						CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Product_Type_is_a_required.", $langId ) ) );
 						continue;
@@ -1679,6 +1791,13 @@ class Importexport extends ImportexportCommon{
 
 				if($this->settings['CONF_USE_TAX_CATEOGRY_ID']){
 					$taxCatId = $this->getCell($line,$colCount++,0);
+					if( 0 >= $taxCatId ){
+					    $errMsg = Labels::getLabel( "MSG_Tax_category_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
+
 				}else{
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
 					if( empty( $colValue ) ){
@@ -1697,14 +1816,6 @@ class Importexport extends ImportexportCommon{
 					}
 					$taxCatId = isset($taxCategoryArr[$colValue])?$taxCategoryArr[$colValue]:0;
 				}
-
-				if( 0 >= $taxCatId ){
-				    $errMsg = Labels::getLabel( "MSG_Tax_category_is_required.", $langId );
-				    $err = array($rowIndex,$colCount,$errMsg);
-				    CommonHelper::writeLogFile( $errFile,  $err);
-				    continue;
-				}
-
 				/* echo $taxCatId; die; */
 				$length = $this->getCell($line,$colCount++,'');
 				if( empty($length) ){
@@ -1739,7 +1850,7 @@ class Importexport extends ImportexportCommon{
 					$dimensionUnit = $lengthUnitsArr[$colValue];
 				}
 				if( empty($dimensionUnit) ){
-				    $errMsg = Labels::getLabel( "MSG_Dimension_unit_is_required.", $langId );
+				    $errMsg = Labels::getLabel( "MSG_Dimension_unit_identifier_is_required.", $langId );
 				    $err = array($rowIndex,$colCount,$errMsg);
 				    CommonHelper::writeLogFile( $errFile,  $err);
 				    continue;
@@ -1763,7 +1874,7 @@ class Importexport extends ImportexportCommon{
 					$weightUnitId = $weightUnitsArr[$colValue];
 				}
 				if( 0 >= $weightUnitId ){
-				    $errMsg = Labels::getLabel( "MSG_Weight_unit_is_required.", $langId );
+				    $errMsg = Labels::getLabel( "MSG_Weight_unit_identifier_is_required.", $langId );
 				    $err = array($rowIndex,$colCount,$errMsg);
 				    CommonHelper::writeLogFile( $errFile,  $err);
 				    continue;
@@ -1786,22 +1897,63 @@ class Importexport extends ImportexportCommon{
 
 				if(!$sellerId){
 					$addedOn = 	$this->getCell($line,$colCount++,'');
+					if( empty($addedOn) ){
+					    $errMsg = Labels::getLabel( "MSG_Added_on_date_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
 					$addedOn = date('Y-m-d H:i:s');
 				}
 
 				$freeShipping = 	$this->getCell($line,$colCount++,'');
+				if( empty($freeShipping) ){
+					$errMsg = Labels::getLabel( "MSG_Free_shipping_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$CODavailable = 	$this->getCell($line,$colCount++,'');
-
+				if( empty($CODavailable) ){
+					$errMsg = Labels::getLabel( "MSG_COD_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($sellerId){
 					$featured = 0;
 				}else{
 					$featured = $this->getCell($line,$colCount++,'');
+					if( empty($featured) ){
+						$errMsg = Labels::getLabel( "MSG_Featured_value_is_required.", $langId );
+						$err = array($rowIndex,$colCount,$errMsg);
+						CommonHelper::writeLogFile( $errFile,  $err);
+						continue;
+					}
 				}
 
 				$approved = 	$this->getCell($line,$colCount++,'');
+				if( empty($approved) ){
+					$errMsg = Labels::getLabel( "MSG_Approved_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$active = 	$this->getCell($line,$colCount++,'');
+				if( empty($active) ){
+					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$deleted = 	$this->getCell($line,$colCount++,'');
+				if( empty($deleted) ){
+					$errMsg = Labels::getLabel( "MSG_Deleted_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 
 				if(!$numcols || $numcols != $colCount){
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
@@ -2093,8 +2245,22 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_OPTION_ID']){
 				$optionId = $this->getCell($line,$colCount++,0);
+
+				if( 0 >= $optionId ){
+					$errMsg = Labels::getLabel( "MSG_Option_ID_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim( $this->getCell($line,$colCount++,'') );
+				if( empty($optionId) ){
+					$errMsg = Labels::getLabel( "MSG_Option_identifier_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if(!array_key_exists($colValue,$optionIdentifierArr)){
 					$res = $this->getAllOptions(false,$colValue);
 					if(!$res){
@@ -2106,13 +2272,6 @@ class Importexport extends ImportexportCommon{
 					$optionIdentifierArr = array_merge($optionIdentifierArr,$res);
 				}
 				$optionId = isset($optionIdentifierArr[$colValue])?$optionIdentifierArr[$colValue]:0;
-			}
-
-			if(!$optionId){
-				$errMsg = Labels::getLabel( "MSG_Please_check_option_ID_or_Identifier", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
-				continue;
 			}
 
 			if($rowCount > 0){
@@ -2219,6 +2378,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 > $productId ){
+				    $errMsg = Labels::getLabel( "MSG_Product_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -2253,8 +2418,20 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_TAG_ID']){
 				$tagId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $tagId ){
+				    $errMsg = Labels::getLabel( "MSG_Tag_Id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim($this->getCell($line,$colCount++,''));
+				if( empty( $colValue ) ){
+				    $errMsg = Labels::getLabel( "MSG_Tag_Identifier_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$tagIndetifierArr)){
 					$res = $this->getAllTags(false,$colValue);
 					if(!$res){
@@ -2395,6 +2572,12 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $productId ){
+				    $errMsg = Labels::getLabel( "MSG_Product_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -2435,13 +2618,25 @@ class Importexport extends ImportexportCommon{
 				$languageId = isset($languageCodes[$colValue])?$languageCodes[$colValue]:0;
 				$errorMsgForLangId = Labels::getLabel( "MSG_Please_check_language_code.", $langId );
 			}
-			if(!$languageId){
+			if( 0 >= $languageId ){
 				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,$errorMsgForLangId) );
 				continue;
 			}
 
 			$specName = $this->getCell($line,$colCount++);
+			if(empty($specName)){
+				$errMsg = Labels::getLabel( "MSG_Specification_name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$specValue = $this->getCell($line,$colCount++);
+			if(empty($specValue)){
+				$errMsg = Labels::getLabel( "MSG_Specification_value_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 
 			if($rowCount > 0){
 				if(!in_array($productId,$prodArr)){
@@ -2607,6 +2802,12 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$useProductId = true;
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $productId ){
+				    $errMsg = Labels::getLabel( "MSG_Product_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -2651,6 +2852,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_USER_ID']){
 				$userId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $userId ){
+				    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -2683,8 +2890,20 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_COUNTRY_ID']){
 				$countryId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $countryId ){
+					$errMsg = Labels::getLabel( "MSG_Shipping_country_code_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = $this->getCell($line,$colCount++);
+				if( empty($colValue) ){
+				    $errMsg = Labels::getLabel( "MSG_Shipping_country_code_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$countryCodeArr)){
 					$res = $this->getCountriesArr(false,$colValue);
 					if(!$res){
@@ -2700,9 +2919,20 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_SHIPPING_COMPANY_ID']){
 				$scompanyId = FatUtility::int($this->getCell($line,$colCount++,0));
-				$errorMsgForCompId = Labels::getLabel( "MSG_Company_Id_cannot_be_blank", $langId );
+				if( 0 >= $scompanyId ){
+				    $errMsg = Labels::getLabel( "MSG_Shipping_company_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = $this->getCell($line,$colCount++);
+				if( empty($colValue) ){
+				    $errMsg = Labels::getLabel( "MSG_Shipping_company_Identifier_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$scompanyIdentifierArr)){
 					$res = $this->getAllShippingCompany(false,$colValue);
 					if(!$res){
@@ -2714,18 +2944,24 @@ class Importexport extends ImportexportCommon{
 					$scompanyIdentifierArr = array_merge($scompanyIdentifierArr,$res);
 				}
 				$scompanyId = $scompanyIdentifierArr[$colValue];
-				$errorMsgForCompId = Labels::getLabel( "MSG_Please_check_Shipping_company_Identifier_value", $langId );
-			}
-
-			if(!$scompanyId){
-				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,$errorMsgForCompId) );
-				continue;
 			}
 
 			if($this->settings['CONF_USE_SHIPPING_DURATION_ID']){
 				$durationId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $durationId ){
+				    $errMsg = Labels::getLabel( "MSG_Shipping_duration_id_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
-				$colValue = $this->getCell($line,$colCount++);
+				$colValue = trim($this->getCell($line,$colCount++,''));
+				if( empty($colValue) ){
+				    $errMsg = Labels::getLabel( "MSG_Shipping_duration_identifier_is_required.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 				if(!array_key_exists($colValue,$durationIdentifierArr)){
 					$res = $this->getAllShippingDurations(false,$colValue);
 					if(!$res){
@@ -2746,6 +2982,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$cost = $this->getCell($line,$colCount++,0);
+			if( !isset($cost) ){
+				$errMsg = Labels::getLabel( "MSG_Shipping_cost_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$additionalCost = $this->getCell($line,$colCount++,0);
 
 			if($rowCount > 0){
@@ -3252,6 +3494,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$selprodId = FatUtility::int($this->getCell($line,$colCount++,0));
+			if( 0 >= $selprodId ){
+				$errMsg = Labels::getLabel( "MSG_Seller_Product_Id_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$sellerTempId = $selprodId;
 			if($sellerId){
 				$userTempIdData = $this->getTempSelProdIdByTempId($sellerTempId,$sellerId);
@@ -3262,6 +3510,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$productId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $productId ){
+					$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -3283,16 +3537,15 @@ class Importexport extends ImportexportCommon{
 				$productId = $prodIndetifierArr[$colValue];
 			}
 
-			if(!$productId || !$selprodId) {
-				$errMsg = Labels::getLabel( "MSG_Product_Id_or_Seller_product_Id_is_required.", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
-				continue;
-			}
-
 			if(!$sellerId){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = FatUtility::int($this->getCell($line,$colCount++,0));
+					if( 0 >= $userId ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
 					if( empty( $colValue ) ){
@@ -3325,10 +3578,28 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$price  = $this->getCell($line,$colCount++,0);
+				if( 0 >= $price ){
+					$errMsg = Labels::getLabel( "MSG_Selling_price_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				/* $cost  = $this->getCell($line,$colCount++,0); */
 				$stock  = $this->getCell($line,$colCount++,0);
+				if( 0 >= $stock ){
+					$errMsg = Labels::getLabel( "MSG_Stock_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$sku  = $this->getCell($line,$colCount++,0);
 				$minOrderQty  = $this->getCell($line,$colCount++,0);
+				if( 0 >= $minOrderQty ){
+					$errMsg = Labels::getLabel( "MSG_Order_minimum_quantity_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->settings['CONF_USE_O_OR_1']){
 					$subtractStock = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
 					$trackInventory = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
@@ -3336,31 +3607,91 @@ class Importexport extends ImportexportCommon{
 					$subtractStock = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 					$trackInventory = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 				}
-				$thresholdStockLevel  = $this->getCell($line,$colCount++,0);
 
+				if( empty($subtractStock) ){
+					$errMsg = Labels::getLabel( "MSG_Substract_stock_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( empty($trackInventory) ){
+					$errMsg = Labels::getLabel( "MSG_Track_inventory_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+
+				$thresholdStockLevel  = $this->getCell($line,$colCount++,0);
+				if( !isset($thresholdStockLevel) ){
+					$errMsg = Labels::getLabel( "MSG_Threshold_stock_level_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->settings['CONF_USE_PROD_CONDITION_ID']){
 					$conditionId = $this->getCell($line,$colCount++,0);
 				}else{
 					$colName = $this->getCell($line,$colCount++,'');
 					$conditionId = isset($prodConditionArr[$colName])?$prodConditionArr[$colName]:0;
 				}
+				if( 0 >= $conditionId ){
+					$errMsg = Labels::getLabel( "MSG_Condition_identifier_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$selprod_max_download_times = $this->getCell($line,$colCount++,0);
+				if( 0 >= $selprod_max_download_times ){
+					$errMsg = Labels::getLabel( "MSG_Digital_product_max_download_time_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$selprod_download_validity_in_days = $this->getCell($line,$colCount++,0);
+				if( 0 >= $selprod_download_validity_in_days ){
+					$errMsg = Labels::getLabel( "MSG_Download_validity_in_days_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}
 
 			$title = $this->getCell($line,$colCount++,'');
+			if( empty($title) ){
+				$errMsg = Labels::getLabel( "MSG_title_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$comments = $this->getCell($line,$colCount++,'');
 
 			if($this->isDefaultSheetData($langId)){
 				$urlKeyword = $this->getCell($line,$colCount++,'');
+				if( empty($urlKeyword) ){
+					$errMsg = Labels::getLabel( "MSG_URL_Keyword_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if(!$sellerId){
 					$addedOn = $this->getDateTime($this->getCell($line,$colCount++,date('Y-m-d')));
+					if( empty($addedOn) ){
+						$errMsg = Labels::getLabel( "MSG_Added_on_date_is_required.", $langId );
+						$err = array($rowIndex,$colCount,$errMsg);
+						CommonHelper::writeLogFile( $errFile,  $err);
+						continue;
+					}
 				}else{
 					$addedOn = date('Y-m-d H:i:s');
 				}
 
 				$availableFrom = $this->getDateTime($this->getCell($line,$colCount++,date('Y-m-d')));
-
+				if( empty($availableFrom) ){
+					$errMsg = Labels::getLabel( "MSG_Avaliable_from_date_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->settings['CONF_USE_O_OR_1']){
 					$active = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
 					$codEnable = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
@@ -3373,6 +3704,24 @@ class Importexport extends ImportexportCommon{
 					if(!$sellerId){
 						$deleted = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 					}
+				}
+				if( empty($active) ){
+					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( empty($codEnable) ){
+					$errMsg = Labels::getLabel( "MSG_COD_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( empty($deleted) ){
+					$errMsg = Labels::getLabel( "MSG_Deleted_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
 				}
 			}
 
@@ -3584,18 +3933,24 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selprodId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selprodId = $this->getCheckAndSetSelProdIdByTempId($selprodId,$userId);
-			}
-			if(!$selprodId){
+			if( 0 >= $selprodId ){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
+			if($userId){
+				$selprodId = $this->getCheckAndSetSelProdIdByTempId($selprodId,$userId);
+			}
 
 			if($this->settings['CONF_USE_OPTION_ID']){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $optionId ){
+					$errMsg = Labels::getLabel( "MSG_Option_Id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -3653,8 +4008,20 @@ class Importexport extends ImportexportCommon{
 			if($optionId){
 				if($this->settings['CONF_OPTION_VALUE_ID']){
 					$optionValueId = FatUtility::int($this->getCell($line,$colCount++,0));
+					if( 0 >= $optionValueId ){
+					    $errMsg = Labels::getLabel( "MSG_Option_value_I	d_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
-					$colValue = $this->getCell($line,$colCount++);
+					$colValue = trim($this->getCell($line,$colCount++,''));
+					if( empty($colValue) ){
+					    $errMsg = Labels::getLabel( "MSG_Option_value_indentifier_is_required.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 					$optionValueId = 0;
 					$optionValueIndetifierArr[$optionId] = isset($optionValueIndetifierArr[$optionId])?$optionValueIndetifierArr[$optionId]:array();
 					if($colValue){
@@ -3815,15 +4182,16 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
-			}
-			if(!$selProdId){
+			if( 0 >= $selProdId ){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
+			if($userId){
+				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
+			}
+
 
 			if($this->isDefaultSheetData($langId)){
 				$metaIdentifier = trim( $this->getCell($line,$colCount++,'') );
@@ -3981,20 +4349,37 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
-			}
-			if(!$selProdId){
+			if( 0 >= $selProdId){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
+			if($userId){
+				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
+			}
 
 			$startDate = $this->getDateTime($this->getCell($line,$colCount++,''),false);
+			if( !$startDate ){
+				$errMsg = Labels::getLabel( "MSG_Start_date_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			$endDate = $this->getDateTime($this->getCell($line,$colCount++,''),false);
-			$price = $this->getCell($line,$colCount++,'');
-
+			if( !$endDate ){
+				$errMsg = Labels::getLabel( "MSG_End_date_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+			$price = $this->getCell($line,$colCount++,0);
+			if( 0 >= $price){
+				$errMsg = Labels::getLabel( "MSG_Price_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			/* if($this->settings['CONF_USE_PERSENT_OR_FLAT_CONDITION_ID']){
 				$displayDisType = $this->getDateTime($this->getCell($line,$colCount++,0));
 			}else{
@@ -4105,7 +4490,7 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if(!$selProdId){
+			if( 0 >= $selProdId ){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
@@ -4113,7 +4498,19 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$minQty = FatUtility::int($this->getCell($line,$colCount++,0));
-			$discountPercent = FatUtility::float($this->getCell($line,$colCount++,''));
+			if( 0 >= $minQty ){
+				$errMsg = Labels::getLabel( "MSG_Minimum_quantity_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+			$discountPercent = FatUtility::float($this->getCell($line,$colCount++,0));
+			if( 0 >= $discountPercent ){
+				$errMsg = Labels::getLabel( "MSG_Discount_percent_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 
 			if($rowCount > 0){
 				if($userId){
@@ -4218,15 +4615,17 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
-			}
-			if(!$selProdId){
+			if( 0 >= $selProdId ) {
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
+
+			if($userId){
+				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
+			}
+
 
 			if(!array_key_exists($selProdId,$selProdUserArr)){
 				$res = SellerProduct::getAttributesById($selProdId,array('selprod_id','selprod_user_id'));
@@ -4240,6 +4639,13 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$upselProdId = FatUtility::int($this->getCell($line,$colCount++,0));
+			if( 0 >= $upselProdId ) {
+				$errMsg = Labels::getLabel( "MSG__Buy_together_seller_product_Id_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+
 			if($userId){
 				$upselProdId = $this->getCheckAndSetSelProdIdByTempId($upselProdId,$userId);
 			}
@@ -4359,20 +4765,20 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
-			}
-
-			if(!$selProdId){
+			if( 0 >= $selProdId ){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
 
+			if($userId){
+				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
+			}
+
 			$relatedSelProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if(!$relatedSelProdId){
-				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
+			if( 0 >= $relatedSelProdId ){
+				$errMsg = Labels::getLabel( "MSG_Related_seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
@@ -4476,18 +4882,26 @@ class Importexport extends ImportexportCommon{
 			$colCount = 0;
 
 			$selProdId = FatUtility::int($this->getCell($line,$colCount++,0));
-			if($userId){
-				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
-			}
-			if(!$selProdId){
+			if( 0 >= $selProdId ){
 				$errMsg = Labels::getLabel( "MSG_Seller_product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
 
+			if($userId){
+				$selProdId = $this->getCheckAndSetSelProdIdByTempId($selProdId,$userId);
+			}
+
+
 			if($this->settings['CONF_USE_POLICY_POINT_ID']){
 				$policyPointId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $policyPointId ){
+					$errMsg = Labels::getLabel( "MSG_Policy_point_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if(!array_key_exists($policyPointId,$policyPonitIdArr)){
 					$res = $this->getAllPrivacyPoints(true,$policyPointId);
 					if(!$res){
@@ -4499,7 +4913,13 @@ class Importexport extends ImportexportCommon{
 					$policyPonitIdArr = array_merge($policyPonitIdArr,$res);
 				}
 			}else{
-				$colValue = $this->getCell($line,$colCount++,'');
+				$colValue = trim($this->getCell($line,$colCount++,''));
+				if( empty($colValue) ){
+					$errMsg = Labels::getLabel( "MSG_Policy_point_identifier_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if(!array_key_exists($colValue,$policyPonitIdentifierArr)){
 					$res = $this->getAllPrivacyPoints(false,$colValue);
 					if(!$res){
@@ -4695,6 +5115,12 @@ class Importexport extends ImportexportCommon{
 			if($this->isDefaultSheetData($langId)){
 				if($this->settings['CONF_USE_USER_ID']){
 					$userId = FatUtility::int($this->getCell($line,$colCount++,0));
+					if( empty( $userId ) ){
+					    $errMsg = Labels::getLabel( "MSG_Invalid_user.", $langId );
+					    $err = array($rowIndex,$colCount,$errMsg);
+					    CommonHelper::writeLogFile( $errFile,  $err);
+					    continue;
+					}
 				}else{
 					$userId = 0;
 					$colValue = trim( $this->getCell($line,$colCount++,'') );
@@ -4731,6 +5157,31 @@ class Importexport extends ImportexportCommon{
 					$displayInFilter = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 					$deleted = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 				}
+				if( !isset( $isSeparateImage ) ){
+					$errMsg = Labels::getLabel( "MSG_Separate_image_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( !isset( $isColor ) ){
+					$errMsg = Labels::getLabel( "MSG_Color_Type_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( !isset( $displayInFilter ) ){
+					$errMsg = Labels::getLabel( "MSG_Display_in_filter_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+				if( !isset( $deleted ) ){
+					$errMsg = Labels::getLabel( "MSG_Deleted_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
+
 			}
 
 			if($rowCount > 0){
@@ -4902,7 +5353,7 @@ class Importexport extends ImportexportCommon{
 			}
 			$identifier = trim( $this->getCell($line,$colCount++,'') );
 			if( !$useIdentifier || empty( $identifier ) ){
-			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+			    $errMsg = Labels::getLabel( "MSG_Option_value_identifier_is_required.", $langId );
 			    $err = array($rowIndex,$colCount,$errMsg);
 			    CommonHelper::writeLogFile( $errFile,  $err);
 			    continue;
@@ -4911,6 +5362,12 @@ class Importexport extends ImportexportCommon{
 			$optionId = 0;
 			if($this->settings['CONF_USE_OPTION_ID']){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $optionId){
+					$errMsg = Labels::getLabel( "MSG_Option_Id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if(!array_key_exists($optionId,$optionIdArr)){
 					$res = $this->getAllOptions(true,$optionId);
 					if(!$res){
@@ -4950,10 +5407,21 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$optionValue = $this->getCell($line,$colCount++,'');
-
+			if( empty( $optionValue ) ){
+				$errMsg = Labels::getLabel( "MSG_Option_value_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			if($this->isDefaultSheetData($langId)){
 				$colorCode = $this->getCell($line,$colCount++,'');
 				$displayOrder = $this->getCell($line,$colCount++,'');
+				if( empty( $displayOrder ) ){
+					$errMsg = Labels::getLabel( "MSG_Display_order_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 			}
 
 			if($rowCount > 0){
@@ -5127,6 +5595,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_USER_ID']){
 				$userId = $this->getCell($line,$colCount++,0);
+				if( 0 >= $userId ){
+				    $errMsg = Labels::getLabel( "MSG_Invalid_User.", $langId );
+				    $err = array($rowIndex,$colCount,$errMsg);
+				    CommonHelper::writeLogFile( $errFile,  $err);
+				    continue;
+				}
 			}else{
 				$colValue = trim( $this->getCell($line,$colCount++,'') );
 				if( empty( $colValue ) ){
@@ -5157,7 +5631,12 @@ class Importexport extends ImportexportCommon{
 			}
 
 			$name = $this->getCell($line,$colCount++,'');
-
+			if( empty($name) ){
+				$errMsg = Labels::getLabel( "MSG_Tag_name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			if($rowCount > 0){
 				$data = array();
 
@@ -5324,6 +5803,12 @@ class Importexport extends ImportexportCommon{
 
 			if($useCountryId){
 				$countryId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $countryId ){
+					$errMsg = Labels::getLabel( "MSG_Country_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->isDefaultSheetData($langId)){
 					$countryCode = $this->getCell($line,$colCount++,'');
 					if(trim($countryCode) == ''){
@@ -5541,6 +6026,12 @@ class Importexport extends ImportexportCommon{
 
 			if($useStateId){
 				$stateId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $stateId ){
+					$errMsg = Labels::getLabel( "MSG_State_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->isDefaultSheetData($langId)){
 					$identifier = $this->getCell($line,$colCount++,'');
 					if(trim($identifier) == ''){
@@ -5562,21 +6053,51 @@ class Importexport extends ImportexportCommon{
 
 			if($this->settings['CONF_USE_COUNTRY_ID']){
 				$countryId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $countryId ){
+					$errMsg = Labels::getLabel( "MSG_Country_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$countryId = isset($countryCodes[$countryId])?$countryId:0;
 			}else{
 				$countryCode = $this->getCell($line,$colCount++,'');
+				if( empty($countryCode) ){
+					$errMsg = Labels::getLabel( "MSG_Country_code_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				$countryId = isset($countryIds[$countryCode])?$countryIds[$countryCode]:0;
 			}
 
 			if(!$countryId){continue;}
 
 			$stateName = $this->getCell($line,$colCount++,'');
+			if( empty($stateName) ){
+				$errMsg = Labels::getLabel( "MSG_State_name_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 			if($this->isDefaultSheetData($langId)){
 				$stateCode = $this->getCell($line,$colCount++,'');
+				if( empty($stateCode) ){
+					$errMsg = Labels::getLabel( "MSG_State_code_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->settings['CONF_USE_O_OR_1']){
 					$active = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
 				}else{
 					$active = ($this->getCell($line,$colCount++,0) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+				}
+				if( !isset($active) ){
+					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
 				}
 			}
 
@@ -5736,6 +6257,12 @@ class Importexport extends ImportexportCommon{
 
 			if($usePolicyPointId){
 				$policyPointId = FatUtility::int($this->getCell($line,$colCount++,0));
+				if( 0 >= $policyPointId ){
+					$errMsg = Labels::getLabel( "MSG_Policy_point_id_is_required.", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+					continue;
+				}
 				if($this->isDefaultSheetData($langId)){
 					$identifier = $this->getCell($line,$colCount++,'');
 					if(trim($identifier) == ''){
