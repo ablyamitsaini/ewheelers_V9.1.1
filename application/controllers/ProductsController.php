@@ -254,13 +254,13 @@ class ProductsController extends MyAppController {
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
-		//$catSrch->addCondition('prodcat_parent','=',0);
+		/* //$catSrch->addCondition('prodcat_parent','=',0);
 		//Get All Categories which have products
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
-
-		/* ] */
 		$productCategory = new productCategory;
-		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
+		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, false, $catSrch, true);
+		/* ] */
 
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
@@ -461,13 +461,12 @@ class ProductsController extends MyAppController {
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
 
-
 		//Get All Categories which have products
-		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
-
-		/* ] */
+		/*$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
 		$productCategory = new productCategory;
-		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
+		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, false, $catSrch, true);
+		/* ] */
 
 		/* ] */
 

@@ -14,15 +14,15 @@ class ProductCategorySearch extends SearchBase {
 		//$this->addMultipleFields( array('GETCATCODE(prodcat_id) AS prodcat_code') );
 		
 		if( $isActive ){
-			$this->addCondition( 'prodcat_active', '=', applicationConstants::ACTIVE );
+			$this->addCondition( 'c.prodcat_active', '=', applicationConstants::ACTIVE );
 		}
 		
 		if( $isDeleted ){
-			$this->addCondition( 'prodcat_deleted', '=', applicationConstants::NO );
+			$this->addCondition( 'c.prodcat_deleted', '=', applicationConstants::NO );
 		}
 		
 		if( $isOrderByCatCode ){
-			$this->addOrder('prodcat_ordercode');
+			$this->addOrder('c.prodcat_ordercode');
 		}
 		
 		if( $doNotLimitRecords ){

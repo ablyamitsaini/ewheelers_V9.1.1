@@ -379,9 +379,16 @@ class CommonHelper extends FatUtility{
 		}
 
 		$op_refund_shipping = 0;
-		if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
-			//$shipCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
+		if(0 < $requestRow["op_free_ship_upto"] && ((!array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$requestRow['charges']) && 0 < $requestRow['op_actual_shipping_charges']) || (array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$requestRow['charges']) && $requestRow["op_actual_shipping_charges"] != $requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']))){
+			$unitShipCharges = round(($requestRow['op_actual_shipping_charges'] / $requestRow['op_qty']),2);				
+			$op_refund_amount = $op_refund_amount - $requestRow['op_actual_shipping_charges'];
+			$shipCharges = $requestRow['op_actual_shipping_charges'];
+		}else{
 			$unitShipCharges = round(($shipCharges / $requestRow['op_qty']),2);
+		}
+		
+		if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
+			//$shipCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;			
 			$op_refund_shipping = round(($unitShipCharges * $requestRow["orrequest_qty"]),2);
 			$op_refund_amount = $op_refund_amount + $op_refund_shipping;
 		}
