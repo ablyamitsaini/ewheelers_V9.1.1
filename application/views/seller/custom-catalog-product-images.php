@@ -9,12 +9,6 @@ $langFld->addFieldTagAttribute('class','language-js');
 $img_fld = $imagesFrm->getField('prod_image');
 $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); return false;');
 ?>
-
-<?php if($displayLinkNavigation == true){?>
-<div class="tabs tabs--small   tabs--scroll clearfix">
-	<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
-</div>
-<?php }?>
 <div class="tabs__content form">		
 	<div class="form__content">
 		<div class="col-md-12">

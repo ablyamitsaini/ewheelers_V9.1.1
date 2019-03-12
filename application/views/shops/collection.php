@@ -158,7 +158,7 @@
 				<div class="col-lg-9 col-md-9 column">
 					<div class="listing-products -listing-products listing-products--grid ">
 						 
-							<div id="productsList" role="main-listing" class="row"></div>
+							<div id="productsList" role="main-listing" class="row product-listing"></div>
 
 					</div>
 					<?php /* if(!empty($pollQuest)){ ?>

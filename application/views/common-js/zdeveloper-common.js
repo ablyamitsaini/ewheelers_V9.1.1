@@ -489,7 +489,7 @@ function defaultSetUpLogin(frm, v) {
 			}
 		},
 		resetFaceboxHeight:function(){		
-			$('html').css('overflow','hidden');
+			/* $('html').css('overflow','hidden'); */
 			facebocxHeight  = screenHeight;		
 			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);	
 			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-150 + 'px');			

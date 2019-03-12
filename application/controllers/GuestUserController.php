@@ -1092,17 +1092,17 @@ class GuestUserController extends MyAppController {
 		
 		$userId = FatUtility::int($userId);
 		
-		/* if($userId < 1 || strlen(trim($token)) < 20){
+		if($userId < 1 || strlen(trim($token)) < 20){
 			Message::addErrorMessage(Labels::getLabel('MSG_INVALID_RESET_PASSWORD_REQUEST'),$this->siteLangId);
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		}
 		
 		$userAuthObj = new UserAuthentication();
 		
-		/* if(!$userAuthObj->checkResetLink($userId, trim($token), 'form')){
+		if(!$userAuthObj->checkResetLink($userId, trim($token), 'form')){
 			Message::addErrorMessage($userAuthObj->getError());
 			FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-		} */
+		}
 		
 		$frm = $this->getResetPwdForm($userId, trim($token));
 		$obj = new Extrapage();
