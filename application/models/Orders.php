@@ -1333,7 +1333,7 @@ class Orders extends MyAppModel{
 				}
 				/*]*/
 				/*Deduct Shipping Amount[*/
-				if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
+				if(0 < $childOrderInfo["op_free_ship_upto"] && !array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 					foreach($rows as $row){
@@ -1400,7 +1400,7 @@ class Orders extends MyAppModel{
 				/* ] */
 
 				/*Deduct Shipping Amount[*/
-				if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
+				if(0 < $childOrderInfo["op_free_ship_upto"] && !array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 					$actualShipCharges = 0 ;
 					$sellerProdTotalPrice = 0;
 					$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
