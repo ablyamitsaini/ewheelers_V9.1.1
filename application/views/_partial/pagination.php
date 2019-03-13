@@ -6,10 +6,10 @@ $pagination = '';
 if($pageCount <= 1){ return $pagination;}
 
 /*Number of links to display*/
-$linksToDisp = isset($linksToDisp)?$linksToDisp:2; 
+$linksToDisp = isset($linksToDisp)?$linksToDisp:2;
 
 /* Current page number */
-$pageNumber = $page; 
+$pageNumber = $page;
 
 /*arguments mixed(array/string(comma separated)) // function arguments*/
 $arguments =(isset($arguments))?$arguments:null;
@@ -18,8 +18,8 @@ $arguments =(isset($arguments))?$arguments:null;
 $padArgToLeft = (isset($padArgToLeft))?$padArgToLeft:true;
 
 /*On clicking page link which js function need to call*/
-$callBackJsFunc=isset($callBackJsFunc)?$callBackJsFunc:'goToSearchPage'; 
-	
+$callBackJsFunc=isset($callBackJsFunc)?$callBackJsFunc:'goToSearchPage';
+
 
 if ( null != $arguments ) {
 	if (is_array($arguments)) {
@@ -51,11 +51,11 @@ $pagination .= 	FatUtility::getPageString(
 $ul = new HtmlElement(
 		'ul',
 		array(
-			'class' => 'pagination center',
+			'class' => 'pagination pagination--center',
 		),
 		$pagination,
 		true
 	);
-echo '<div class="gap"></div>';	
+echo '<div class="gap"></div>';
 echo $ul->getHtml();
 ?>

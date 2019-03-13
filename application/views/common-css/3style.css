@@ -245,6 +245,7 @@ ol li {
   height: 15px;
   clear: both;
   display: table;
+  width:100%;
 }
 
 .padding20 {
@@ -1622,6 +1623,7 @@ input:checked+.slider:before {
 
 .pagination.pagination--center {
   justify-content: center;
+  width: 100%;
 }
 
 .pagination.pagination--right {
@@ -1675,7 +1677,7 @@ input:checked+.slider:before {
   position: absolute;
   left: calc(50% - 3px);
   top: calc(50% - 6px);
-  content: "";
+  /*content: "";*/
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
@@ -2763,9 +2765,9 @@ table.cart-tbl-addons .item__pic {
   padding: 6px 0px;
   display: block;
   position: relative;
-  -webkit-transform: translate3d(0, -20px, 0);
+/*  -webkit-transform: translate3d(0, -20px, 0);
   transform: translate3d(0, -20px, 0);
-  opacity: 0;
+  opacity: 0;*/
 }
 
 .dropdown.is-active .dropdown__target .list-vertical li {
@@ -5018,7 +5020,7 @@ span.subheading {
 }
 
 .scrollbar {
-  /*max-height: 250px;*/
+  max-height: 250px;
   position: relative;
 }
 
