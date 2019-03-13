@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	searchTaxCategories(document.frmSearchTaxCat);
 });
-(function() {	
+(function() {
 	var runningAjaxReq = false;
 	var dv = '#listing';
 	

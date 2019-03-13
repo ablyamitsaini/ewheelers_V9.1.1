@@ -1,17 +1,27 @@
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php if( !$print ){ ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<?php } ?>
 <main id="main-area" class="main" role="main">
 	<div class="content-wrapper content-space">
-		<div class="content-header  row justify-content-between mb-3">
+		<?php if( !$print ){ ?>
+        <div class="content-header  row justify-content-between mb-3">
 			<div class="col-md-auto">
 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Sale_Order',$siteLangId);?></h2>
 			</div>
 		</div>
+        <?php } ?>
 		<div class="content-body">
 			<div class="cards">
 				<div class="cards-header p-3">
 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
-				<div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
+                    <?php if( !$print ){ ?>
+                        <div class="btn-group">
+                            <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                            <a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
+                        </div>
+                    <?php } ?>   
 				</div>
 				<div class="cards-content p-3">
                                            <div class="row">
@@ -58,7 +68,6 @@
                                                        <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $orderDetail['op_invoice_number'];?></p>
                                                        <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>
                                                        <span class="gap"></span>
-                                                       <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
                                                    </div>
                                                </div>
                                            </div>
@@ -66,7 +75,9 @@
                                    <table class="table table--orders">
                                          <tbody><tr class="">
                                              <th><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
-                                             <th></th>
+                                             <?php if( !$print ){ ?>
+                                                <th class="no-print"></th>
+                                                <?php } ?>
                                              <th><?php echo Labels::getLabel('LBL_Qty',$siteLangId);?></th>
                                              <th><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></th>
                       <?php if($shippedBySeller){?>
@@ -79,9 +90,9 @@
                         <th><?php echo Labels::getLabel('LBL_Tax_Charges',$siteLangId);?></th>
                       <?php }?>
                         <th><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></th>
-                                         </tr>
-                                         <tr>
-                                             <td>
+                         </tr>
+                         <tr>
+                        <?php if(!$print){ ?><td>
                        <div class="pic--cell-left">
                       <?php
                       $prodOrBatchUrl = 'javascript:void(0)';
@@ -97,7 +108,7 @@
                                              <figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $orderDetail['op_product_name'];?>" alt="<?php echo $orderDetail['op_product_name']; ?>"></a></figure><!--</td>
                                              <td>-->
                        </div>
-                                             </td>
+                                             </td><?php } ?>
 
                       <td>
                         <div class="item__description">
@@ -208,7 +219,7 @@
                       <?php } ?>
                                        </div>
 
-                                   <?php if($displayForm){?>
+                                  <?php if($displayForm && !$print){ ?>
                                    <div class="section--repeated no-print">
                   <h5><?php echo Labels::getLabel('LBL_Comments_on_order',$siteLangId);?></h5>
                                       <?php
@@ -229,7 +240,7 @@
                                    </div>
                  <?php }?>
                                    <span class="gap"></span>
-                 <?php if(!empty($orderDetail['comments'])){?>
+                 <?php if(!empty($orderDetail['comments']) && !$print){?>
                                    <div class="section--repeated no-print">
                                        <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>   <table class="table  table--orders">
                                           <tbody><tr class="">
@@ -347,3 +358,11 @@
 		</div>
 	</div>
 </main>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>

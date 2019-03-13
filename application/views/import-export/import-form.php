@@ -7,6 +7,8 @@ $frm->setFormTagAttribute( 'onSubmit', 'importFile("importData",'.$actionType.')
  
 	<div class="tabs tabs-sm tabs--scroll clearfix">
 		<ul>
+			<li><a href="javascript:void(0);" onclick="getInstructions('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Instructions',$siteLangId); ?></a></li>
+
 			<li class="is-active"><a class="is-active" href="javascript:void(0);" onclick="importForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
 			<?php if($displayMediaTab){?>
 			<li><a href="javascript:void(0);" onclick="importMediaForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>

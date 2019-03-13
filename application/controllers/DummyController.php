@@ -6,6 +6,82 @@ class DummyController extends MyAppController {
 		//CommonHelper::recursiveDelete( $dirName );
 	}
 	
+	public function createProcedures($printQuery = false) {
+		$db = FatApp::getDb();
+		$con = $db->getConnectionObject();
+		$queries = array(
+			"DROP FUNCTION IF EXISTS `GETBLOGCATCODE`",
+			"CREATE FUNCTION `GETBLOGCATCODE`(`id` INT) RETURNS varchar(255) CHARSET utf8
+			BEGIN
+				DECLARE code VARCHAR(255);
+				DECLARE catid INT(11);
+
+				SET catid = id;
+				SET code = '';
+				WHILE catid > 0 DO
+					SET code = CONCAT(RIGHT(CONCAT('000000', catid), 6), '_', code);
+					SELECT bpcategory_parent INTO catid FROM tbl_blog_post_categories WHERE bpcategory_id = catid;
+				END WHILE;
+				RETURN code;
+			END",
+				"DROP FUNCTION IF EXISTS `GETCATCODE`",
+				"CREATE FUNCTION `GETCATCODE`(`id` INT) RETURNS varchar(255) CHARSET utf8
+			BEGIN
+				DECLARE code VARCHAR(255);
+				DECLARE catid INT(11);
+
+				SET catid = id;
+				SET code = '';
+				WHILE catid > 0 DO
+					SET code = CONCAT(RIGHT(CONCAT('000000', catid), 6), '_', code);
+					SELECT prodcat_parent INTO catid FROM tbl_product_categories WHERE prodcat_id = catid;
+				END WHILE;
+				RETURN code;
+			END",
+				"DROP FUNCTION IF EXISTS `GETCATORDERCODE`",
+				"CREATE FUNCTION `GETCATORDERCODE`(`id` INTEGER) RETURNS varchar(255) CHARSET utf8
+			BEGIN
+				DECLARE code VARCHAR(255);
+				DECLARE catid INT(11);
+				DECLARE myorder INT(11);
+				SET catid = id;
+				SET code = '';
+				set myorder = 0;
+				WHILE catid > 0 DO
+					SELECT prodcat_parent, prodcat_display_order  INTO catid, myorder FROM tbl_product_categories WHERE prodcat_id = catid;
+					SET code = CONCAT(RIGHT(CONCAT('000000', myorder), 6), code);
+				END WHILE;
+				RETURN code;
+			END",
+				"DROP FUNCTION IF EXISTS `GETBLOGCATORDERCODE`",
+				"CREATE FUNCTION `GETBLOGCATORDERCODE`(`id` INT) RETURNS varchar(500) CHARSET utf8
+			BEGIN
+				DECLARE code VARCHAR(255);
+				DECLARE catid INT(11);
+				DECLARE myorder INT(11);
+				SET catid = id;
+				SET code = '';
+				set myorder = 0;
+				WHILE catid > 0 DO
+					SELECT bpcategory_parent, bpcategory_display_order  INTO catid, myorder FROM tbl_blog_post_categories WHERE bpcategory_id = catid;
+					SET code = CONCAT(RIGHT(CONCAT('000000', myorder), 6), code);
+				END WHILE;
+				RETURN code;
+			END"
+		);
+
+		foreach ($queries as $qry) {
+			if($printQuery){
+				echo $qry.'<br><br>';				
+			}else{
+				if (!$con->query($qry)) {
+					die($con->error);
+				}
+			}
+		}
+		//echo 'Created All the Procedures.';
+	}
+	
 	function updateCategoryTable(){
 		$srch = ProductCategory::getSearchObject();
 		$srch->doNotCalculateRecords();
@@ -19,6 +95,10 @@ class DummyController extends MyAppController {
 		}	
 		echo "Done";	
 	}
+	
+	function updateCatOrderCode(){
+		ProductCategory::updateCatOrderCode();
+	}	
 	
 	function updateOrderProdSetting(){
 		$srch = new SearchBase(OrderProduct::DB_TBL);
@@ -570,23 +650,15 @@ echo $str;
 		exit;
 		
 	}
-			
+	
 	function test(){
-		$this->_template->addCss('css/xzoom.css');
-		$this->_template->addJs('js/xzoom.js');
-		$this->_template->render();
-			
-		/* $info = DiscountCoupons::getValidCoupons(4,1,'asd10');
-var_dump($info);
-		exit;
-			
 		$orders = new Orders('O1538197607');	
 		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
 		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
 		if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
 			die('dsds');
 		}	
-		CommonHelper::printArray($childOrderInfo); exit; */
+		CommonHelper::printArray($childOrderInfo); exit;
 	}
 	
 	private function getShopInfo($shop_id){

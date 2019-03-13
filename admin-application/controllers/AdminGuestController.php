@@ -22,7 +22,10 @@ class AdminGuestController extends FatController {
 		$urlController = implode('-', $arr);
 		$controllerName = ucfirst(FatUtility::dashed2Camel($urlController));
 		
-		$jsVariables = array('processing' =>Labels::getLabel('LBL_Processing...',$this->adminLangId));
+		$jsVariables = array(
+			'processing' =>Labels::getLabel('LBL_Processing...',$this->adminLangId),
+			'isMandatory' =>Labels::getLabel('LBL_is_mandatory',$this->adminLangId)
+		);
 		
 		$this->set('isAdminLogged', AdminAuthentication::isAdminLogged());
 		$this->set('controllerName', $controllerName);

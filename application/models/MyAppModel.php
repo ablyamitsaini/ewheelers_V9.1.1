@@ -49,20 +49,20 @@ class MyAppModel extends FatModel {
 			return FatApp::getDb()->fetchAll( $srch->getResultSet(), static::tblFld('id') );
 		}
 	}
-		
+
 	public function updateLangData($lang_id, $data) {
 		if (!($this->mainTableRecordId > 0)) {
 			$this->error = Labels::getLabel('MSG_Invalid_Request',$this->commonLangId);
 			return false;
 		}
-			
+
 		$lang_id = FatUtility::int($lang_id);
 		$record = new TableRecord(static::DB_TBL . '_lang');
 		$record->assignValues($data);
 		$prefix = substr(static::DB_TBL_PREFIX, 0, -1);
 		$record->setFldValue($prefix . 'lang_' . static::DB_TBL_PREFIX . 'id', $this->mainTableRecordId);
 		$record->setFldValue($prefix . 'lang_lang_id', $lang_id);
-	
+
 		if (!$record->addNew(array(), $data)) {
 			$this->error = $record->getError();
 			return false;
@@ -70,20 +70,20 @@ class MyAppModel extends FatModel {
 
 		return true;
 	}
-	
-	/* public function getLangData($lang_id) { 		
+
+	/* public function getLangData($lang_id) {
 		$srch = new SearchBase(static::DB_TBL . '_lang','ln');
 		$prefix = substr(static::DB_TBL_PREFIX, 0, -1);
 		$srch->addCondition('ln.'.$prefix . 'lang_' . static::DB_TBL_PREFIX . 'id', '=', $this->mainTableRecordId);
-		$srch->addCondition('ln.'.$prefix . 'lang_lang_id', '=', FatUtility::int($lang_id));				
+		$srch->addCondition('ln.'.$prefix . 'lang_lang_id', '=', FatUtility::int($lang_id));
 		$rs=$srch->getResultSet();
 		if($rs){
 			return FatApp::getDb()->fetch( $rs, $prefix . 'lang_lang_id');
-		}		
+		}
 		return false;
 	} */
 
-	public function assignValues($arr, $handleDates=false, $mysql_date_format='', $mysql_datetime_format='', $execute_mysql_functions=false) {		
+	public function assignValues($arr, $handleDates=false, $mysql_date_format='', $mysql_datetime_format='', $execute_mysql_functions=false) {
 		$this->objMainTableRecord->assignValues($arr, $handleDates, $mysql_date_format, $mysql_datetime_format, $execute_mysql_functions);
 	}
 
@@ -92,16 +92,16 @@ class MyAppModel extends FatModel {
 			$this->error = FatApp::getDb()->getError();
 			return false;
 		}
-		
+
 		if($deleteLangData == false){
 			return true;
 		}
-		
+
 		$prefix = substr(static::DB_TBL_PREFIX, 0, -1);
 		if (!FatApp::getDb()->deleteRecords($this->mainTableName.'_lang', array('smt'=>$prefix . 'lang_' . static::DB_TBL_PREFIX . 'id' . ' = ?', 'vals'=>array($this->mainTableRecordId)))) {
 			$this->error = FatApp::getDb()->getError();
 			return false;
-		}		
+		}
 		return true;
 	}
 
@@ -118,7 +118,7 @@ class MyAppModel extends FatModel {
 
 		return $result;
 	}
-	
+
 	public static function getAttributesByIdentifier( $recordId, $attr = null ) {
 		$recordId = FatUtility::convertToType($recordId, FatUtility::VAR_STRING);
 		$db = FatApp::getDb();
@@ -177,7 +177,7 @@ class MyAppModel extends FatModel {
 
 		return $row;
 	}
-	
+
 	public static function getAttributesByLangId($langId,$recordId, $attr = null) {
 		$recordId = FatUtility::convertToType($recordId, FatUtility::VAR_INT);
 		$langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
@@ -187,7 +187,7 @@ class MyAppModel extends FatModel {
 		$prefix = substr(static::DB_TBL_PREFIX, 0, -1);
 		$srch->addCondition('ln.'.$prefix . 'lang_' . static::DB_TBL_PREFIX . 'id', '=', $recordId);
 		$srch->addCondition('ln.'.$prefix . 'lang_lang_id', '=', FatUtility::int($langId));
-		
+
 		if ( null != $attr ) {
 			if (is_array($attr)) {
 				$srch->addMultipleFields($attr);
@@ -198,7 +198,7 @@ class MyAppModel extends FatModel {
 		}
 		$rs = $srch->getResultSet();
 		$row = $db->fetch($rs);
-		
+
 		if (!is_array($row)) {
 			return false;
 		}
@@ -209,10 +209,10 @@ class MyAppModel extends FatModel {
 
 		return $row;
 	}
-	
+
 	public static function getLangDataArr($recordId,$attr = null){
 		$recordId = FatUtility::convertToType($recordId, FatUtility::VAR_INT);
-		$db = FatApp::getDb();		
+		$db = FatApp::getDb();
 		$srch = new SearchBase(static::DB_TBL . '_lang','ln');
 		$prefix = substr(static::DB_TBL_PREFIX, 0, -1);
 		$srch->addCondition('ln.'.$prefix . 'lang_' . static::DB_TBL_PREFIX . 'id', '=', $recordId);
@@ -225,7 +225,7 @@ class MyAppModel extends FatModel {
 			}
 		}
 		$rs = $srch->getResultSet();
-		$row = $db->fetchALL($rs,$prefix . 'lang_lang_id');		
+		$row = $db->fetchALL($rs,$prefix . 'lang_lang_id');
 		if (!is_array($row)) {
 			return false;
 		}
@@ -253,11 +253,11 @@ class MyAppModel extends FatModel {
 		$this->objMainTableRecord->setFldValue($key, $val, $execute_mysql_function);
 	}
 
-	public function save() {		
+	public function save() {
 		if ( 0 < $this->mainTableRecordId) {
 			$result = $this->objMainTableRecord->update(array('smt'=>$this->mainTableIdField . ' = ?', 'vals'=>array($this->mainTableRecordId)));
 		}
-		else {			
+		else {
 			$result = $this->objMainTableRecord->addNew();
 			if ( $result ) {
 				$this->mainTableRecordId = $this->objMainTableRecord->getId();
@@ -274,34 +274,34 @@ class MyAppModel extends FatModel {
 	public function getMainTableRecordId() {
 		return $this->mainTableRecordId;
 	}
-	
+
 	public function setMainTableRecordId($id) {
 		$id =FatUtility::int($id);
 		$this->mainTableRecordId = $id;
 	}
-	
+
 	public function changeStatus($v = 1) {
 		if (!($this->mainTableRecordId > 0)) {
 			$this->error = 'ERR_INVALID_REQUEST_ID';
 			return false;
 		}
-		
+
 		$db = FatApp::getDb();
 		if (! $db->updateFromArray ( static::DB_TBL, array (
-				static::DB_TBL_PREFIX . 'active' => $v 
+				static::DB_TBL_PREFIX . 'active' => $v
 		), array (
 				'smt' => static::DB_TBL_PREFIX . 'id = ?',
 				'vals' => array (
-						$this->mainTableRecordId 
-				) 
+						$this->mainTableRecordId
+				)
 		) )) {
 			$this->error = $db->getError();
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public function updateOrder($order){
 		if(is_array($order) && sizeof($order) > 0){
 			foreach($order as $i => $id){
@@ -324,8 +324,8 @@ class MyAppModel extends FatModel {
 		}
 		return false;
 	}
-	
-	public function addNew( $insert_options = array(), $flds_update_on_duplicate = array()) {		
+
+	public function addNew( $insert_options = array(), $flds_update_on_duplicate = array()) {
 		if(!$this->objMainTableRecord->addNew($insert_options, $flds_update_on_duplicate)){
 			$this->error = $this->objMainTableRecord->getError();
 			return false;

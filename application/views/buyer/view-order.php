@@ -1,23 +1,29 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php if( !$print ){ ?>
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<?php } ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
+	<?php if( !$print ){ ?>
+    <div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
 		</div>
 	</div>
+    <?php } ?>
 	<div class="content-body">
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
-				<div class="action">
+				<?php if( !$print ){ ?>
+                <div class="action">
 					<div class="btn-group">
 						<a href="javascript:window.print();" class="btn btn--primary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
 						<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
 					</div>
 				</div>
+                <?php } ?>
 			</div>
 			<div class="cards-content p-3">
 
@@ -78,7 +84,9 @@
                     <tbody>
                       <tr class="">
                         <th><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
+                        <?php if( !$print ){ ?>
                         <th class="no-print"></th>
+                        <?php } ?>
                         <th><?php echo Labels::getLabel('LBL_Qty',$siteLangId);?></th>
                         <th><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></th>
                         <th><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId);?></th>
@@ -103,6 +111,7 @@
 						$rewardPointDiscount = CommonHelper::orderProductAmount($childOrder,'REWARDPOINT');
 					?>
                       <tr>
+                      <?php if( !$print ){ ?>
                         <td class="no-print">
                           <div class="pic--cell-left">
                             <?php
@@ -118,6 +127,7 @@
 								}  ?>
                             <figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $childOrder['op_product_name'];?>" alt="<?php echo $childOrder['op_product_name']; ?>"></a></figure>
                           </div></td>
+                      <?php } ?>
                         <td><div class="item__description">
                             <?php if($childOrder['op_selprod_title']!=''){ ?>
                             <div class="item__title"><a title="<?php echo $childOrder['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $childOrder['op_selprod_title'].'<br/>'; ?></a></div>
@@ -403,6 +413,14 @@
 	</div>
   </div>
 </main>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>
 <script>
 	function increaseDownloadedCount( linkId, opId ){
 		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {

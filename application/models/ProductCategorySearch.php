@@ -22,7 +22,7 @@ class ProductCategorySearch extends SearchBase {
 		}
 		
 		if( $isOrderByCatCode ){
-			$this->addOrder('GETCATORDERCODE(prodcat_id)');
+			$this->addOrder('prodcat_ordercode');
 		}
 		
 		if( $doNotLimitRecords ){
