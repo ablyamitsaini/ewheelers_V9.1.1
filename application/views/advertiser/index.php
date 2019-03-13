@@ -3,7 +3,7 @@
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
 	<div class="content-header justify-content-between row mb-3">
-		<div class="content-header-left col-auto ">
+		<div class="content-header-left col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Advertiser' , $siteLangId); ?></h2>
 		</div>
@@ -20,29 +20,29 @@
 							<?php }?>
 						</div>
 					</div>
-					<div class="grids--container">
-						<div class="row">						
-							<div class="col-md-6">
-								<h3><?php echo Labels::getLabel('LBL_Current_Balance',$siteLangId);?>: <strong><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></strong> </h3>
-								<p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions',$siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?></p>
-							</div>	
-							<div class="col-md-6">													
-								<?php 
-								$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
-								$frmRechargeWallet->setFormTagAttribute('class', 'form'); 
-								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
-								$frmRechargeWallet->developerTags['fld_default_col'] = 6;
-								$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
 
-								$btnFld = $frmRechargeWallet->getField('btn_submit');
-								$btnFld->setFieldTagAttribute('class','btn--block');
-								$amountFld = $frmRechargeWallet->getField('amount');
-								$amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
-								echo $frmRechargeWallet->getFormHtml(); ?>							
-							</div>
-						</div>
-					</div>
-					<div class="cards-content p-3">
+					<div class="cards-content p-3">           
+  						<div class="row">
+  							<div class="col-md-6">
+  								<h3><?php echo Labels::getLabel('LBL_Current_Balance',$siteLangId);?>: <strong><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></strong> </h3>
+  								<p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions',$siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?></p>
+  							</div>
+  							<div class="col-md-6">
+  								<?php
+  								$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
+  								$frmRechargeWallet->setFormTagAttribute('class', 'form');
+  								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
+  								$frmRechargeWallet->developerTags['fld_default_col'] = 6;
+  								$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
+
+  								$btnFld = $frmRechargeWallet->getField('btn_submit');
+  								$btnFld->setFieldTagAttribute('class','btn--block');
+  								$amountFld = $frmRechargeWallet->getField('amount');
+  								$amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
+  								echo $frmRechargeWallet->getFormHtml(); ?>
+  							</div>
+  						</div>
+
 						<?php if(count($promotionList)>0){ ?>
 						<table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
 							<tbody>
@@ -56,7 +56,7 @@
 								<th><?php echo Labels::getLabel('LBL_Approved',$siteLangId);?></th>
 								<th><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></th>
 								</tr>
-								<?php 
+								<?php
 									$arrYesNo = applicationConstants::getYesNoArr($siteLangId);
 									foreach($promotionList as $promotionId=>$row){
 									$duraionStr = Labels::getLabel('LBL_Start_Date', $siteLangId).' : '.FatDate::format($row[	'promotion_start_date']).'<br>';
@@ -73,7 +73,7 @@
 								</td>
 								<td>
 								<?php echo CommonHelper::displayMoneyFormat($row['promotion_budget']) ;?>
-								</td> 
+								</td>
 								<td>
 								<?php echo FatUtility::int($row['clicks']);?>
 								</td> <td>
@@ -99,4 +99,4 @@
 		</div>
 	</div>
  </div>
-</main>	
+</main>

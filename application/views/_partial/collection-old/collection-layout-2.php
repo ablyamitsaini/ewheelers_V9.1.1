@@ -13,7 +13,7 @@ if( isset( $collections ) && count($collections) ){
   <div class="fetured-item">
     <div class="item-yk <?php if($product['selprod_stock']<=0){ ?> item--sold  <?php } ?>">
       <div class="featured-product">
-        <div class="item-yk_body">
+        <div class="item__body">
 		  <?php if($product['selprod_stock']<=0){ ?>
           <span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></span>
           <?php  } ?>
@@ -23,7 +23,7 @@ if( isset( $collections ) && count($collections) ){
       </div>
       <div class="featured-desc">
         <?php include(CONF_THEME_PATH.'_partial/product-listing-head-section.php');?>
-        <div class="item-yk_footer">
+        <div class="item__footer">
           <?php include(CONF_THEME_PATH.'_partial/collection-product-price.php');?>
           <a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_SHOP_NOW',$siteLangId);?></a> </div>
       </div>

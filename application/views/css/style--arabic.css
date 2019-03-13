@@ -83,6 +83,7 @@ th, .grids--offset .grid-layout p {
   float: left;
   text-align: left;
 }
+
 .checkbox,
 .radio {
   padding-right: 30px;
@@ -123,6 +124,7 @@ th, .grids--offset .grid-layout p {
   left: 0;
   right: auto;
 }
+
 .ftshops .ftshops_logo {
   float: right;
   margin-right: 0;
@@ -459,13 +461,29 @@ input[type="text"].p-cards.meastro {
   text-align: left;
 }
 
-.sidebar{ left: auto;right: 0;}
-.logo-dashboard{ left: auto; right: 10px;}
+.sidebar {
+  left: auto;
+  right: 0;
+}
+
+.logo-dashboard {
+  left: auto;
+  right: 10px;
+}
 
 @media only screen and (max-width: 1600px) {
   .post-data.is-fixed .sticky-element {
     margin: 0;
   }
+}
+
+
+@media only screen and (max-width: 1281px){
+
+.sidebar { -webkit-transform: translateX(70px);
+    transform: translateX(70px);}
+
+main.main, .sidebar-is-expanded main.main{ padding-right: 0;}
 }
 
 @media only screen and (max-width: 1024px) {

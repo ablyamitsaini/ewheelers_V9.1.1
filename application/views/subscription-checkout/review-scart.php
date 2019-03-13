@@ -7,8 +7,8 @@
       <?php if( count($subscriptions) ){
           foreach( $subscriptions as $subscription){?>
         <tr>
-          <td class="text-left"><div class="item-yk-head">
-             <div class="item-yk-head-title"><a href="javascript:void(0)"><a href="javascript:void(0)"><?php echo $subscription['spackage_name'] ?>--<?php echo SellerPackagePlans::getPlanPriceWithPeriod($subscription,$subscription[SellerPackagePlans::DB_TBL_PREFIX.'price']);?><?php if($subscription[SellerPackagePlans::DB_TBL_PREFIX.'trial_interval']>0){?><span><?php /* echo SellerPackagePlans::getPlanTrialPeriod($subscription); */?></span><?php } ?></a></div>
+          <td class="text-left"><div class="item__head">
+             <div class="item__title"><a href="javascript:void(0)"><a href="javascript:void(0)"><?php echo $subscription['spackage_name'] ?>--<?php echo SellerPackagePlans::getPlanPriceWithPeriod($subscription,$subscription[SellerPackagePlans::DB_TBL_PREFIX.'price']);?><?php if($subscription[SellerPackagePlans::DB_TBL_PREFIX.'trial_interval']>0){?><span><?php /* echo SellerPackagePlans::getPlanTrialPeriod($subscription); */?></span><?php } ?></a></div>
             </div></td>
           <td class="text-right" ><div class="product_price"><?php echo CommonHelper::displayMoneyFormat($subscription[SellerPackagePlans::DB_TBL_PREFIX.'price']); ?> </div>
            <a href="javascript:void(0)" onclick="subscription.remove('<?php echo md5($subscription['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>" class="btn btn--sm btn--gray ripplelink"><?php echo Labels::getLabel('LBL_Remove',$siteLangId); ?></a></td>

@@ -3,7 +3,7 @@
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
 	<div class="content-header justify-content-between row mb-3">
-		<div class="content-header-left col-auto ">
+		<div class="content-header-left col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard',$siteLangId);?></h2>
 		</div>
@@ -126,9 +126,9 @@
 								}  ?>
 								<figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $row['op_product_name'];?>" alt="<?php echo $row['op_product_name']; ?>"></a></figure></td>
 									<td>
-									<div class="item-yk item__description">
-										<div class="item-yk-head-date"><?php echo FatDate::format($row['order_date_added']);?></div>
-										<div class="item-yk-head-title">
+									<div class="item__description">
+										<div class="item__date"><?php echo FatDate::format($row['order_date_added']);?></div>
+										<div class="item__title">
 										<?php $prodName ='';
 										if($row['op_selprod_title']!=''){
 											$prodName.= $row['op_selprod_title'].'<br/>';
@@ -136,14 +136,14 @@
 										$prodName.= $row['op_product_name'];
 										?>
 										<a title="<?php echo $row['op_product_name'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $prodName;?></a></div>
-										<div class="item-yk-head-brand"><span><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId,$row['op_brand_name']);?></div>
+										<div class="item__brand"><span><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId,$row['op_brand_name']);?></div>
 										<?php if( $row['op_selprod_options'] != '' ){ ?>
-										<div class="item-yk-head-specification"><?php echo $row['op_selprod_options'];?></div>
+										<div class="item__specification"><?php echo $row['op_selprod_options'];?></div>
 										<?php }?>
 										<?php if( $row['totOrders'] > 1 ){
 										echo Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'])).'">'.$row['order_id'].'</a>';
 										}?>
-										<div class="item-yk-head-specification"><span><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>:</span> <?php echo $row['orderstatus_name'];?></div>
+										<div class="item__specification"><span><?php echo Labels::getLabel('Lbl_Payment_Status',$siteLangId)?>:</span> <?php echo $row['orderstatus_name'];?></div>
 										</div>
 									</td>
 									<td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */;?></span></td>

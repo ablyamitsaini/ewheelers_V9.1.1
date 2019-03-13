@@ -1216,7 +1216,7 @@ class AdvertiserController extends LoggedUserController {
 			
 		$fldSubmit = $frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$langId) );
 		$fldClear = $frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearPromotionSearch();') );
-		$fldSubmit->attachField($fldClear);
+		/* $fldSubmit->attachField($fldClear); */
 		$frm->addHiddenField('','page');
 		return $frm;
 	}

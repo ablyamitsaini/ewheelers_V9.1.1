@@ -8,9 +8,9 @@ $arr_flds = array(
 
 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
 	$arr_flds['action']	= Labels::getLabel('LBL_Action', $siteLangId);
-}	
+}
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => 'hide--mobile'));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

@@ -1,7 +1,7 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
 	<div class="content-wrapper content-space">
-		<div class="content-header content-header row justify-content-between mb-3">
+		<div class="content-header  row justify-content-between mb-3">
 			<div class="col-md-auto">
 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Sale_Order',$siteLangId);?></h2>
@@ -63,7 +63,7 @@
                                                </div>
                                            </div>
 
-                                   <table class="table">
+                                   <table class="table table--orders">
                                          <tbody><tr class="">
                                              <th><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
                                              <th></th>
@@ -108,13 +108,14 @@
                           <div class="item__brand"><a title="<?php echo $orderDetail['op_product_name'];?>" href="<?php echo $prodOrBatchUrl; ?>"><?php echo $orderDetail['op_product_name']; ?>
                           </a></div>
                           <?php } ?>
-                          </div>
-                          <div class="item__brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$orderDetail['op_brand_name']);?></div>
+													<div class="item__brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$orderDetail['op_brand_name']);?></div>
                           <?php if( $orderDetail['op_selprod_options'] != '' ){ ?>
                           <div class="item__specification"><?php echo $orderDetail['op_selprod_options'];?></div>
                           <?php }?>
                           <?php if($orderDetail['op_shipping_duration_name'] != '' ){?>
                           <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $orderDetail['op_shipping_durations'].'-'. $orderDetail['op_shipping_duration_name'];?></div>
+                          </div>
+
                           <?php }?>
 
                        </td>
@@ -230,7 +231,7 @@
                                    <span class="gap"></span>
                  <?php if(!empty($orderDetail['comments'])){?>
                                    <div class="section--repeated no-print">
-                                       <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>   <table class="table align--left">
+                                       <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>   <table class="table  table--orders">
                                           <tbody><tr class="">
                                               <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
                                               <th><?php echo Labels::getLabel('LBL_Customer_Notified',$siteLangId);?></th>
@@ -253,7 +254,7 @@
                 <?php if( !empty( $digitalDownloads ) ){ ?>
                   <div class="section--repeated">
                   <h5><?php echo Labels::getLabel('LBL_Downloads',$siteLangId);?></h5>
-                  <table class="table align--left">
+                  <table class="table  table--orders">
                     <tbody>
                     <tr class="">
                       <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
@@ -303,7 +304,7 @@
                 <?php if( !empty( $digitalDownloadLinks ) ){ ?>
                   <div class="section--repeated">
                   <h5><?php echo Labels::getLabel('LBL_Downloads',$siteLangId);?></h5>
-                  <table class="table align--left">
+                  <table class="table  table--orders">
                     <tbody>
                     <tr class="">
                       <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>

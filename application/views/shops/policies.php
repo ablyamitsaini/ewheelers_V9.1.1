@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-8 col-sm-8">
         <div class="cell">
-          <div class="avtar__info">
+          <div class="shop-info">
             <h2><?php echo $shop['shop_name']; ?></h2>
             <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
           </div>
@@ -21,9 +21,9 @@
   </div>
 </div>
 <div class="container container--fixed">
- 
+
     <div class="panel panel--centered clearfix">
-       
+
         <div class="section section--info clearfix">
           <div class="section__head">
             <h4><?php echo Labels::getLabel('LBL_Policies', $siteLangId); ?></h4>
@@ -93,7 +93,7 @@
             </div>
           </div>
         </div>
-      
-     
+
+
   </div>
 </div>

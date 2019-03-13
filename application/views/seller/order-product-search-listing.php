@@ -8,7 +8,7 @@ $arr_flds = array(
 	'action'	=>	Labels::getLabel('LBL_Action', $siteLangId),
 );
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -32,11 +32,11 @@ foreach ($orders as $sn => $order){
 			case 'product':
 				$txt = '';
 				if( $order['op_selprod_title'] != '' ){
-					$txt .= '<div class="item-yk-head-title">'.$order['op_selprod_title'].'</div>';
+					$txt .= '<div class="item__title">'.$order['op_selprod_title'].'</div>';
 				}
-				$txt .= '<div class="item-yk-head-sub-title">'.$order['op_product_name'].'</div>';
+				$txt .= '<div class="item__sub_title">'.$order['op_product_name'].'</div>';
 
-				$txt .= '<div class="item-yk-head-specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$order['op_brand_name'];
+				$txt .= '<div class="item__specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$order['op_brand_name'];
 				if( $order['op_selprod_options'] != '' ){
 					$txt .= ' | ' . $order['op_selprod_options'];
 				}

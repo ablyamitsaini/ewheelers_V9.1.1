@@ -9,8 +9,8 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 	   <div class="row">
 		   <div class="col-md-8 col-sm-8">
 			   <div class="cell">
-					   <div class="avtar__info">
-						    <h2><?php echo $shopData['shop_name']; ?></h2>
+					   <div class="shop-info">
+						    <h3><?php echo $shopData['shop_name']; ?></h3>
 						   <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shopData['shop_created_on']); ?></p>
 					   </div>
 				</div>
@@ -21,9 +21,6 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 	   </div>
    </div>
 </div>
-
-
-                 
                    <div class="section section--info clearfix">
                          <div class="section__head">
                              <h4><?php echo str_replace('{n}', $userFavoriteCount, Labels::getLabel('LBL_Who_Favorited_This?_{n}_Peoples(s)', $siteLangId)); ?></h4>
@@ -36,4 +33,3 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 							 <div id="loadMoreBtnDiv"></div>
                          </div>
                    </div>
-                   

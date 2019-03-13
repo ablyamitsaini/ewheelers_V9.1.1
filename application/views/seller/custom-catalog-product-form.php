@@ -26,7 +26,7 @@
 <script>
 $(document).ready(function(){
 	<?php if($preqId){?>
-	customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>);	
+	customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>);
 	<?php }else{?>
 	customCatalogProductForm();
 	<?php }?>

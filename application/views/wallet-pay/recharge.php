@@ -32,11 +32,12 @@
                           </div>
                           <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
                             <div class="payment-here">
-                              <div class="you-pay"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <strong><?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
+                              <div class="you-pay">
+																<?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <strong><?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
                                 <?php if( CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) ){?>
-                                <li>
+
                                   <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $orderInfo['order_net_amount']);  ?></p>
-                                </li>
+
                                 <?php } ?>
                                 </strong> </div>
                               <div class="gap"></div>
@@ -45,7 +46,7 @@
                             </div>
                           </div>
                           <?php }else{
-                              
+
                               echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
                           } ?>
                         </div>
@@ -94,6 +95,6 @@ function loadTab( tabObj ){
 	/* $(containerId).load( tabObj.attr('href'), function(){
 		//$(containerId).fadeIn('fast');
 	}); */
-}	
+}
 </script>
 <?php } ?>

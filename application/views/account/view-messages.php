@@ -67,33 +67,38 @@
 						</tr>
 					</tbody>
 				</table>
-
+        <div class="divider">
+        </div>
+                <div class="gap">
+                </div>
 				<?php echo $frmSrch->getFormHtml();?>
 				<div id="loadMoreBtnDiv"></div>
-				<ul class="media media--details" id="messageListing">
-
-				</ul>
-				<ul class="media media--details" >
+			<div id="messageListing" class="messages-list" >
+        <ul>
+        </ul>
+      </div>
+				<div class="messages-list" >
+          	<ul>
 				   <li>
-					   <div class="grid grid--first">
+					   <div class="msg_db">
 						   <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image','user',array($loggedUserId,'thumb',true));?>" alt="<?php echo $loggedUserName; ?>"></div>
 					   </div>
-					   <div class="grid grid--second">
-						   <span class="media__title"><?php echo $loggedUserName;?></span>
+					   <div class="msg__desc">
+						   <span class="msg__title"><?php echo $loggedUserName;?></span>
+
+   								<?php
+   								$frm->setFormTagAttribute('onSubmit','sendMessage(this); return false;');
+   								$frm->setFormTagAttribute('class', 'form');
+   								$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+   								$frm->developerTags['fld_default_col'] = 12;
+   								echo $frm->getFormHtml(); ?>
+
+
 					   </div>
-						<div class="grid grid--third">
-						   <div class="bg-gray-light p-3 pb-0">
-								<?php
-								$frm->setFormTagAttribute('onSubmit','sendMessage(this); return false;');
-								$frm->setFormTagAttribute('class', 'form');
-								$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-								$frm->developerTags['fld_default_col'] = 12;
-								echo $frm->getFormHtml(); ?>
-						   </div>
-					   </div>
+
 				   </li>
 			   </ul>
-			</div>
+			</div>	</div>
 		</div>
 	</div>
   </div>

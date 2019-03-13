@@ -72,23 +72,23 @@
 							<td>
 								<div class="item__description">
 									<?php if($request['op_selprod_title'] != ''){ ?>
-										<div class="item-yk-head-title" title="<?php echo $request['op_selprod_title']; ?>"><?php echo $request['op_selprod_title']; ?></div>
-										<div class="item-yk-head-sub-title"><?php echo $request['op_product_name']; ?></div>
+										<div class="item__title" title="<?php echo $request['op_selprod_title']; ?>"><?php echo $request['op_selprod_title']; ?></div>
+										<div class="item__sub_title"><?php echo $request['op_product_name']; ?></div>
 										<?php } else { ?>
-										<div class="item-yk-head-title" title="<?php echo $request['op_product_name']; ?>"><?php echo $request['op_product_name']; ?></div>
+										<div class="item__title" title="<?php echo $request['op_product_name']; ?>"><?php echo $request['op_product_name']; ?></div>
 										<?php } ?>
-									<div class="item-yk-head-brand"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo $request['op_brand_name']; ?></div>
+									<div class="item__brand"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo $request['op_brand_name']; ?></div>
 									<?php
 									if( $request['op_selprod_options'] != '' ){ ?>
-										<div class="item-yk-head-specification"><?php echo $request['op_selprod_options']; ?></div>
+										<div class="item__specification"><?php echo $request['op_selprod_options']; ?></div>
 									<?php }	?>
 
 									<?php if( $request['op_selprod_sku'] != '' ){ ?>
-										<div class="item-yk-head-sku"><?php echo Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $request['op_selprod_sku']; ?> </div>
+										<div class="item__sku"><?php echo Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $request['op_selprod_sku']; ?> </div>
 									<?php } ?>
 
 									<?php if( $request['op_product_model'] != '' ){ ?>
-										<div class="item-yk-head-model"><?php echo Labels::getLabel('LBL_Model', $siteLangId).':  ' . $request['op_product_model']; ?></div>
+										<div class="item__model"><?php echo Labels::getLabel('LBL_Model', $siteLangId).':  ' . $request['op_product_model']; ?></div>
 									<?php }	?>
 								</div>
 							</td>

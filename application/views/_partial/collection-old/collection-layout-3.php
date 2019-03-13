@@ -12,14 +12,14 @@ $counter = 1; ?>
   <div class="more_slider_item">
     <div class="item-yk <?php if($product['selprod_stock']<=0){ ?> item--sold  <?php } ?>">
        <?php include(CONF_THEME_PATH.'_partial/product-listing-head-section.php');?>
-      <div class="item-yk_body">
+      <div class="item__body">
 		<?php if($product['selprod_stock']<=0){ ?>
 		<span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></span>
 		<?php  } ?>
         <div class="product-img"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $product['selprod_title'];?>"> </a></div>
         <?php include(CONF_THEME_PATH.'_partial/collection-ui.php');?>
       </div>
-      <div class="item-yk_footer">
+      <div class="item__footer">
         <?php include(CONF_THEME_PATH.'_partial/collection-product-price.php');?>
       </div>
     </div>

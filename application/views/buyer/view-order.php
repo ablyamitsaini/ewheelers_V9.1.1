@@ -74,7 +74,7 @@
                       <?php }?>
 
 
-                  <table class="table">
+                  <table class="table  table--orders">
                     <tbody>
                       <tr class="">
                         <th><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
@@ -255,7 +255,7 @@
 
                       </div>  <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
@@ -279,7 +279,7 @@
 				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Payment_History',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
@@ -305,7 +305,7 @@
 				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Downloads',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
@@ -359,7 +359,7 @@
 				<span class="gap"></span>
 				  <div class="section--repeated">
 					<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
-					<table class="table align--left">
+					<table class="table  table--orders">
 					  <tbody>
 						<tr class="">
 						  <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>

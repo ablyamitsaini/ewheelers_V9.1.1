@@ -37,19 +37,19 @@ foreach ($requests as $sn => $row){
 			case 'products':
 				$txt = '';
 				if( $row['op_selprod_title'] != '' ){
-					$txt .= '<div class="item-yk-head-title">'.$row['op_selprod_title'].'</div>';
+					$txt .= '<div class="item__title">'.$row['op_selprod_title'].'</div>';
 				}
-				$txt .= '<div class="item-yk-head-sub-title">'.$row['op_product_name'].'</div>';
-				$txt .= '<div class="item-yk-head-specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$row['op_brand_name'];
+				$txt .= '<div class="item__sub_title">'.$row['op_product_name'].'</div>';
+				$txt .= '<div class="item__specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$row['op_brand_name'];
 				if( $row['op_selprod_options'] != '' ){
 					$txt .= ' | ' . $row['op_selprod_options'];
 				}
 				$txt .='</div>';
 				if( $row['op_selprod_sku'] != '' ){
-					$txt .= '<div class="item-yk-head-sku">'.Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $row['op_selprod_sku'].'</div>';
+					$txt .= '<div class="item__sku">'.Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $row['op_selprod_sku'].'</div>';
 				}
 				if( $row['op_product_model'] != '' ){
-					$txt .= '<div class="item-yk-head-model">'.Labels::getLabel('LBL_Model', $siteLangId).':  ' . $row['op_product_model'].'</div>';
+					$txt .= '<div class="item__model">'.Labels::getLabel('LBL_Model', $siteLangId).':  ' . $row['op_product_model'].'</div>';
 				}
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;

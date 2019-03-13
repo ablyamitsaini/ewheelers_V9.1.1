@@ -8,9 +8,9 @@
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
 	  <div class="product-detail">
 		<div class="item-yk detail_head">
-			<div class="item-yk-head">
-				<div class="item-yk-head-category"><?php echo $product['prodcat_name']; ?></div>
-				<div class="item-yk-head-title">
+			<div class="item__head">
+				<div class="item__category"><?php echo $product['prodcat_name']; ?></div>
+				<div class="item__title">
 					<?php echo $product['product_name']; ?>
 				</div>
 				<div class="heading5"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo ($product['brand_name']) ? $product['brand_name'] : Labels::getLabel('LBL_NA', $siteLangId); ?></div>

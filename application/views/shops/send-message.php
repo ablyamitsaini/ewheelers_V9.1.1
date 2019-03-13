@@ -53,8 +53,8 @@
       <div class="row">
         <div class="col-md-8 col-sm-8">
           <div class="cell">
-            <div class="avtar__info">
-              <h2><?php echo $shop['shop_name']; ?></h2>
+            <div class="shop-info">
+              <h3><?php echo $shop['shop_name']; ?></h3>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
             </div>
           </div>
@@ -68,8 +68,8 @@
 			<div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $siteLangId); ?></div>
 			<?php } ?>
 		  </div>
-		  <div class="section__body">
-		    <div class="box box--white  box--space"> <?php echo $frm->getFormHtml(); ?> </div>
+		  <div class="">
+		    <div class="box box--white box--radius box--border box--space"> <?php echo $frm->getFormHtml(); ?> </div>
 		  </div>
 		</div>
     </div>
