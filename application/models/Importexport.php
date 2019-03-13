@@ -633,10 +633,14 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-
-			$identifier = trim( $this->getCell($line,$colCount++,'') );
-			if( !$useIdentifier || empty( $identifier ) ){
+			if( $useIdentifier && empty( $identifier ) ){
 			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
 			    $err = array($rowIndex,$colCount,$errMsg);
 			    CommonHelper::writeLogFile( $errFile,  $err);
@@ -1096,9 +1100,14 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-			$identifier = trim( $this->getCell($line,$colCount++,'') );
-			if( !$useIdentifier || empty( $identifier ) ){
+			if( $useIdentifier && empty( $identifier ) ){
 				$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
@@ -1616,7 +1625,6 @@ class Importexport extends ImportexportCommon{
 			// 	}
 			// }
 
-			$useIdentifier = true;
 			$useProductId = false;
 			if($this->settings['CONF_USE_PRODUCT_ID']){
 				$useProductId = true;
@@ -1628,9 +1636,15 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-			$identifier = trim($this->getCell($line,$colCount++,''));
-			if( !$useIdentifier || empty( $identifier ) ){
+
+			if( $useIdentifier && empty( $identifier ) ){
 				$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
@@ -5095,9 +5109,14 @@ class Importexport extends ImportexportCommon{
 			if($useOptionId){
 				$optionId = FatUtility::int($this->getCell($line,$colCount++,0));
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-			$identifier = trim( $this->getCell($line,$colCount++,'') );
-			if( !$useIdentifier || empty( $identifier ) ){
+			if( $useIdentifier && empty( $identifier ) ){
 			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
 			    $err = array($rowIndex,$colCount,$errMsg);
 			    CommonHelper::writeLogFile( $errFile,  $err);
@@ -5350,9 +5369,14 @@ class Importexport extends ImportexportCommon{
 			if($useOptionValueId){
 				$optionValueId = FatUtility::int($this->getCell($line,$colCount++,0));
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-			$identifier = trim( $this->getCell($line,$colCount++,'') );
-			if( !$useIdentifier || empty( $identifier ) ){
+			if( $useIdentifier && empty( $identifier ) ){
 			    $errMsg = Labels::getLabel( "MSG_Option_value_identifier_is_required.", $langId );
 			    $err = array($rowIndex,$colCount,$errMsg);
 			    CommonHelper::writeLogFile( $errFile,  $err);
@@ -5583,10 +5607,14 @@ class Importexport extends ImportexportCommon{
 				    continue;
 				}
 				$useIdentifier = $this->isDefaultSheetData($langId);
+				if( $useIdentifier ){
+					$identifier = trim($this->getCell($line,$colCount++,''));
+				}
+			}else{
+				$useIdentifier = true;
+				$identifier = trim($this->getCell($line,$colCount++,''));
 			}
-
-			$identifier = trim( $this->getCell($line,$colCount++,'') );
-			if( !$useIdentifier || empty( $identifier ) ){
+			if( $useIdentifier && empty( $identifier ) ){
 			    $errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
 			    $err = array($rowIndex,$colCount,$errMsg);
 			    CommonHelper::writeLogFile( $errFile,  $err);
