@@ -1,18 +1,27 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<?php if( !$print ){ ?>
+    <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<?php } ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-	<div class="content-header row justify-content-between mb-3">
+	<?php if( !$print ){ ?>
+    <div class="content-header row justify-content-between mb-3">
 		<div class="col-md-auto">
-			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ; ?></h2>
 		</div>
 	</div>
+    <?php } ?>
 	<div class="content-body">
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
-				<div class="action"><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequests'); ?>" class="link"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+                <?php if( !$print ){ ?>
+                    <div class="btn-group">
+                        <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                        <a href="<?php echo CommonHelper::generateUrl('Buyer','orderReturnRequests');?>" class="btn btn--secondary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back',$siteLangId);?></a>
+                    </div>
+                <?php } ?>
 			</div>
 			<div class="cards-content p-3">
 				<div class="grids--offset">
@@ -42,15 +51,14 @@
 									echo ( $request['op_shop_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Shop_Name', $siteLangId).':</strong> <a href="'.$vendorShopUrl.'">'.$request['op_shop_name'].'</a><br/>' : ''; ?>
 									</p>
 									<span class="gap"></span>
-									<a href="javascript:window.print();" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
-								</div>
+                                </div>
 							</div>
 						</div>
-					<?php if( $canEscalateRequest ){ ?>
+					<?php if( $canEscalateRequest && !$print ){ ?>
 					<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
 					<?php } ?>
 
-					<?php if( $canWithdrawRequest ){ ?>
+					<?php if( $canWithdrawRequest && !$print ){ ?>
 					<a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Buyer','WithdrawOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Withdraw_Request', $siteLangId); ?></a>
 					<?php } ?>
 					</div>
@@ -141,40 +149,50 @@
 					</tbody>
 				</table>
 				<?php }	?>
+                <?php if( !$print ){ ?>
 				<div class="no-print">
-				<?php echo $returnRequestMsgsSrchForm->getFormHtml(); ?>
-				<div class="gap"></div>
-				<h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
-				<div id="loadMoreBtnDiv"></div>
-				<ul class="media media--details" id="messagesList">
-				</ul>
+                    <?php echo $returnRequestMsgsSrchForm->getFormHtml(); ?>
+                    <div class="gap"></div>
+                    <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
+                    <div id="loadMoreBtnDiv"></div>
+                    <ul class="media media--details" id="messagesList">
+                    </ul>
 
-				<?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
+                    <?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
 
-				$frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
-				$frmMsg->setFormTagAttribute('class', 'form');
-				$frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-				$frmMsg->developerTags['fld_default_col'] = 12;
-				?>
-				<ul class="media media--details">
-					<li>
-						<div class="grid grid--first">
-							<div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
-						</div>
-						<div class="grid grid--second">
-							<span class="media__title"><?php echo $logged_user_name; ?></span>
-							<div class="grid grid--third">
-								<div class="bg-gray-light p-3 pb-0">
-								<?php echo $frmMsg->getFormHtml(); ?>
-								</div>
-							</div>
-						</div>
-					</li>
-				</ul>
-				<?php } ?>
+                    $frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
+                    $frmMsg->setFormTagAttribute('class', 'form');
+                    $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                    $frmMsg->developerTags['fld_default_col'] = 12;
+                    ?>
+                    <ul class="media media--details">
+                        <li>
+                            <div class="grid grid--first">
+                                <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
+                            </div>
+                            <div class="grid grid--second">
+                                <span class="media__title"><?php echo $logged_user_name; ?></span>
+                                <div class="grid grid--third">
+                                    <div class="bg-gray-light p-3 pb-0">
+                                    <?php echo $frmMsg->getFormHtml(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <?php } ?>
 				</div>
+                <?php } ?>
 			</div>
 		</div>
 	</div>
   </div>
 </main>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>

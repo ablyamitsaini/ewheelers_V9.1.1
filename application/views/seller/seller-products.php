@@ -34,14 +34,14 @@ foreach ($arrListing as $sn => $row){
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
-				$variantStr = '<div class="item__title">'.$row['product_name'].'</div>';
-				$variantStr .= ( $row['selprod_title'] != '') ? '<div class="item__sub_title">' . $row['selprod_title'].'</div>' : '';
+				$variantStr = '<div class="item__title">'.wordwrap($row['product_name'],150,"<br>\n").'</div>';
+				$variantStr .= ( $row['selprod_title'] != '') ? '<div class="item__sub_title">' . wordwrap($row['selprod_title'],150,"<br>\n").'</div>' : '';
 				if( is_array($row['options']) && count($row['options']) ){
 					foreach($row['options'] as $op){
-						$variantStr .= '<div class="item__specification">'.$op['option_name'].': '.$op['optionvalue_name'].'</div>';
+						$variantStr .= '<div class="item__specification">'.wordwrap($op['option_name'].': '.$op['optionvalue_name'],150,"<br>\n").': '.$op['optionvalue_name'].'</div>';
 					}
 				}
-				$td->appendElement('plaintext', array(), wordwrap($variantStr,150,"<br>\n"), true);
+				$td->appendElement('plaintext', array(), $variantStr, true);
 			break;
 			case 'selprod_price':
 				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat( $row[$key], true, true),true );

@@ -7,7 +7,7 @@
 	$str.= "<ul>";
 	if(!empty($rootCategories)){
 		foreach($rootCategories as $category){
-			$class = '';	
+			$class = '';
 			if($prodRootCatCode == $category['prodrootcat_code']){
 				$class = 'active';
 			}
@@ -16,7 +16,7 @@
 			}else{
 				$function = 'categorySearchByCode(\''.$category['prodrootcat_code'].'\')';
 			}
-			$str.= '<li class="'.$class.'" onClick="'.$function.'"><a class="selectCategory" href="javascript:void(0)">'.$category['prodcat_name'].'('.$category['totalRecord'].')</a> </li>';
+			$str.= '<li class="'.$class.'" onClick="'.$function.'"><a class="selectCategory" href="javascript:void(0)">'.strip_tags($category['prodcat_name']).'('.$category['totalRecord'].')</a> </li>';
 		}
 	}
 	$str.= "</ul>";
@@ -24,9 +24,9 @@
 
 	$str.= "<div class='slider-item col-lg-6 col-md-6 col-sm-6 col-xs-12 categories-devider'><div class='box-border box-categories scrollbar'>";
 	$str.= "<ul>";
-	if(!empty($childCategories[$prodRootCatCode])){		
-		foreach($childCategories[$prodRootCatCode] as $catId=>$category){								
-			$str.= "<li onClick='customCatalogProductForm(0,".$catId.")'><a class='selectCategory' href='javascript:void(0)'>".$category['prodcat_name']."</a></li>
+	if(!empty($childCategories[$prodRootCatCode])){
+		foreach($childCategories[$prodRootCatCode] as $catId=>$category){
+			$str.= "<li onClick='customCatalogProductForm(0,".$catId.")'><a class='selectCategory' href='javascript:void(0)'>".strip_tags($category['prodcat_name'])."</a></li>
 			<li>".html_entity_decode($category['structure'],ENT_QUOTES,'utf-8')."</li>
 			";
 		}

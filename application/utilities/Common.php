@@ -173,8 +173,8 @@ class Common {
 		$siteLangId = CommonHelper::getLangId();
 		
 		$brandSrch = Brand::getSearchObject( $siteLangId );
-		$brandSrch->joinTable( Product::DB_TBL, 'LEFT OUTER JOIN', 'brand_id = p.product_brand_id', 'p' );
-		$brandSrch->joinTable( SellerProduct::DB_TBL, 'LEFT OUTER JOIN', 'sp.selprod_product_id = p.product_id', 'sp' );
+		$brandSrch->joinTable( Product::DB_TBL, 'INNER JOIN', 'brand_id = p.product_brand_id', 'p' );
+		$brandSrch->joinTable( SellerProduct::DB_TBL, 'INNER JOIN', 'sp.selprod_product_id = p.product_id', 'sp' );
 		$brandSrch->doNotCalculateRecords();
 		$brandSrch->addMultipleFields( array( 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'SUM(IFNULL(selprod_sold_count, 0)) as totSoldQty') );
 		$brandSrch->addCondition('brand_status', '=', Brand::BRAND_REQUEST_APPROVED );

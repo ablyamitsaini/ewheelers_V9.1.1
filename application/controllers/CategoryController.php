@@ -42,7 +42,7 @@ class CategoryController extends MyAppController {
 
 
 		/* to show searched category data[ */
-		$catSrch->addMultipleFields( array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','GETCATCODE(prodcat_id) AS prodcat_code') );
+		$catSrch->addMultipleFields( array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code') );
 		$catSrchRs = $catSrch->getResultSet();
 		$categoryData = $db->fetch( $catSrchRs );
 

@@ -16,7 +16,6 @@ $commonHeadData = array(
 	'includeEditor'	    =>   $includeEditor,
 	'layoutDirection'	    =>  CommonHelper::getLayoutDirection()
 );
-
 $this->includeTemplate( '_partial/header/common-head.php', $commonHeadData, false);
 echo $this->writeMetaTags();
 echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
