@@ -26,8 +26,8 @@ class MyAppController extends FatController {
 		if (!defined('CONF_MESSAGE_ERROR_HEADING')){
 			define('CONF_MESSAGE_ERROR_HEADING', Labels::getLabel('LBL_Following_error_occurred',$this->siteLangId));
 		}
-		
-		$controllerName = get_class($this);		
+
+		$controllerName = get_class($this);
 		$arr = explode('-', FatUtility::camel2dashed($controllerName));
 		array_pop($arr);
 		$urlController = implode('-', $arr);
@@ -105,27 +105,27 @@ class MyAppController extends FatController {
 			'siteCurrencyId' =>$this->siteCurrencyId,
 			'controllerName' =>$controllerName,
 			'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information',$this->siteLangId),
-			'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s',$this->siteLangId),			
+			'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s',$this->siteLangId),
 		);
 
 		$languages = Language::getAllNames(false);
 		foreach($languages as $val){
 			$jsVariables['language'.$val['language_id']] = $val['language_layout_direction'];
 		}
-		
+
 		if(CommonHelper::getLayoutDirection() == 'rtl'){
 			$this->_template->addCss('css/style--arabic.css');
 		}
-		
+
 		$themeId = FatApp::getConfig('CONF_FRONT_THEME',FatUtility::VAR_INT,1);
-		
+
 		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
 			$themeId = $_SESSION['preview_theme'];
 		}
 		$themeDetail = ThemeColor::getAttributesById($themeId);
 		$currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
 		$currencySymbolRight = CommonHelper::getCurrencySymbolRight();
-		
+
 		$this->set('currencySymbolLeft',$currencySymbolLeft);
 		$this->set('currencySymbolRight',$currencySymbolRight);
 		$this->set('themeDetail',$themeDetail);
@@ -213,16 +213,16 @@ class MyAppController extends FatController {
 	protected function getGuestUserForm($langId = 0){
 		$siteLangId = FatUtility::int($langId);
 		$frm = new Form('frmGuestLogin');
-		$frm->addTextBox(Labels::getLabel('LBL_Name',$siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_Name',$siteLangId)));		
+		$frm->addTextBox(Labels::getLabel('LBL_Name',$siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_Name',$siteLangId)));
 		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Email',$siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
 		$frm->addHtml('','space','');
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Guest_Sign_in',$siteLangId));
 		return $frm;
 	}
-	
+
 	protected function getLoginForm() {
 		$siteLangId = CommonHelper::getLangId();
-		$frm = new Form('frmLogin');			
+		$frm = new Form('frmLogin');
 		$fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email',$siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL_ADDRESS',$siteLangId)));
 		$pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password',$siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD',$siteLangId)));
 		$pwd->requirements()->setRequired();
@@ -247,7 +247,7 @@ class MyAppController extends FatController {
 		$fld->requirements()->setUsername();
 		/* $fld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]{3,30}$");
 		$fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_Valid_Username', $siteLangId)); */
-		
+
 		$fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL',$siteLangId), 'user_email');
 		$fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
 
@@ -271,7 +271,7 @@ class MyAppController extends FatController {
 				$frm->addCheckBox(Labels::getLabel('LBL_Newsletter_Signup',$siteLangId),'user_newsletter_signup',1);
 			}
 		}
-		
+
 		$isCheckOutPage = false;
 		if(isset($_SESSION['referer_page_url']))
 		{
@@ -345,7 +345,7 @@ class MyAppController extends FatController {
 		$frm->addHiddenField('', 'collection_id',0);
 		$frm->addHiddenField('', 'join_price',0);
 		$frm->addHiddenField('', 'featured',0);
-		$frm->addHiddenField('', 'top_products',0);				
+		$frm->addHiddenField('', 'top_products',0);
 		$frm->addHiddenField( '', 'currency_id', $this->siteCurrencyId );
 		$frm->addSubmitButton('','btnProductSrchSubmit','');
 		return $frm;
@@ -419,7 +419,7 @@ class MyAppController extends FatController {
 
 	protected function userEmailVerifications($userObj, $data, $configureEmail = false){
 
-		if(!$configureEmail){			
+		if(!$configureEmail){
 			$verificationCode = $userObj->prepareUserVerificationCode($data['user_new_email']);
 		}else{
 			$verificationCode = $userObj->prepareUserVerificationCode($data['user_email']);
@@ -429,25 +429,25 @@ class MyAppController extends FatController {
 
 
 
-		$email = new EmailHandler();				
+		$email = new EmailHandler();
 		$dataArr = array(
 			'user_name' => $data['user_name'],
-			'link' => $link,			
-			'user_new_email' => $data['user_email'],				
+			'link' => $link,
+			'user_new_email' => $data['user_email'],
 		);
-		
+
 		if(!$configureEmail){
 			$dataArr = array(
 				'user_name' => $data['user_name'],
-				'link' => $link,			
-				'user_new_email' => $data['user_new_email'],			
+				'link' => $link,
+				'user_new_email' => $data['user_new_email'],
 				'user_email' => $data['user_email'],
 				);
 			if(!$email->sendChangeEmailRequestNotification($this->siteLangId , array('user_name' => $dataArr['user_name'],'user_email' => $dataArr['user_email'],'user_new_email' => $dataArr['user_new_email']))){
 				return false;
 			}
 		}
-		
+
 		if(!$email->sendEmailVerificationLink($this->siteLangId , $dataArr)){
 			return false;
 		}

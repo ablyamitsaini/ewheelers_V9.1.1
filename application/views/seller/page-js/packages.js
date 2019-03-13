@@ -5,24 +5,23 @@ $("document").ready(function(){
 			$.mbsmessage(langLbl.selectPlan,true,'alert--danger');
 			return false;
 		}
-	
+
 		if(currentActivePlanId!=undefined && currentActivePlanId ==  $(this).parent().find('input[name=packages]:checked').val() ){
-			str = htmlDecode(htmlDecode(langLbl.alreadyHaveThisPlan));
-			$.mbsmessage(str,true,'alert--danger');
+			$.mbsmessage(langLbl.alreadyHaveThisPlan,true,'alert--danger');
 			return false;
 		}
-		
+
 		/* $packageId = $(this).attr('data-id'); */
-		
+
 		$spplan_id = $(this).parent().find('input[name=packages]:checked').val();
-		 
+
 		subscription.add( $spplan_id, true);
 		return false;
 	});
 	/* $(".buyFreeSubscription").on('click', function(event){
 		event.preventDefault();
 		$packageId = $(this).attr('data-id');
-		
+
 		subscription.add( $packageId, true , true);
 		return false;
 	}); */
