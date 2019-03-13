@@ -1397,7 +1397,7 @@ class AccountController extends LoggedUserController {
 		$this->set('products', $products);
 		$this->set('showProductShortDescription', false);
 		$this->set('showProductReturnPolicy', false);
-		$this->set('colMdVal', 4);
+		$this->set('colMdVal', 2);
 		$this->set('page', $page);
 		$this->set('recordCount', $srch->recordCount());
 		$this->set('pageCount', $srch->pages());
@@ -1666,7 +1666,7 @@ class AccountController extends LoggedUserController {
 		$rs = $srch->getResultSet();
 		$shops = $db->fetchAll( $rs );
 
-		$totalProductsToShow = 3;
+		$totalProductsToShow = 4;
 		if( $shops ){
 			$prodSrchObj = new ProductSearch( $this->siteLangId );
 			$prodSrchObj->setDefinedCriteria( 0 );

@@ -1,4 +1,26 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+    $frmSearch->setFormTagAttribute( 'id', 'frmSearchTaxCat' );
+    $frmSearch->setFormTagAttribute( 'onsubmit', 'searchTaxCategories(this); return(false);' );
+    
+    $frmSearch->setFormTagAttribute('class', 'form');
+    $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
+    $frmSearch->developerTags['fld_default_col'] = 12;
+
+    $keyFld = $frmSearch->getField('keyword');
+    $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
+    $keyFld->setWrapperAttribute('class','col-sm-6');
+    $keyFld->developerTags['col'] = 8;
+
+    $submitBtnFld = $frmSearch->getField('btn_submit');
+    $submitBtnFld->setFieldTagAttribute('class','btn--block');
+    $submitBtnFld->setWrapperAttribute('class','col-sm-3');
+    $submitBtnFld->developerTags['col'] = 2;
+
+    $cancelBtnFld = $frmSearch->getField('btn_clear');
+    $cancelBtnFld->setFieldTagAttribute('class','btn--block');
+    $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
+    $cancelBtnFld->developerTags['col'] = 2;
+?>
 
 
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
@@ -16,24 +38,12 @@
 				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Manage_Tax_Rates',$siteLangId); ?></h5>
 			</div>
 			<div class="cards-content p-3">
-        <div class="bg-gray-light p-3 pb-0">
-           <div class="search search--sort">
-             <div class="search__field">
-               <?php
-               $frmSearch->setFormTagAttribute ( 'id', 'frmSearchTaxCat' );
-               $frmSearch->setFormTagAttribute( 'onsubmit', 'searchTaxCategories(this); return(false);' );
-               $frmSearch->getField('keyword')->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search' , $siteLangId));
-               echo $frmSearch->getFormTag();
-               echo $frmSearch->getFieldHtml('keyword');
-
-               echo $frmSearch->getFieldHtml('btn_submit');?>
-               <i class="fa fa-search"></i>
-               </form>
-             </div>
-           </div>
-         </div>
-         <span class="gap"></span>
-           <div id="listing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
+                <div class="bg-gray-light p-3 pb-0">
+                  <?php echo $frmSearch->getFormHtml(); ?>
+                </div>
+                <span class="gap"></span>
+                 <?php echo $frmSearch->getExternalJS();?>
+                <div id="listing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
 			</div>
 		</div>
 	</div>

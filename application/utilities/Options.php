@@ -1,20 +1,19 @@
 <?php
 trait Options{
 	
-
-	
 	public function options() {
+        $frmSearch = $this->getSearchForm();
+		$this->set("frmSearch", $frmSearch);	
 		$this->_template->addJs('js/jscolor.js');		
 		$this->_template->addJs('js/jquery.tablednd.js');
-		$this->_template->render();
+		$this->_template->render(true, false);
 	}
 	
 	private function getSearchForm(){
 		$frm = new Form('frmOptionSearch',array('id'=>'frmOptionSearch'));		
-		$f1 = $frm->addTextBox(Labels::getLabel('LBL_Keyword',$this->siteLangId ), 'keyword','');
-		$frm->addSubmitButton('','btn_submit','');
-		
-	
+		$frm->addTextBox('','keyword');
+		$frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$this->siteLangId) );
+		$frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $this->siteLangId), array('onclick'=>'clearOptionSearch();') );
 		return $frm;
 	}
 	
@@ -22,7 +21,6 @@ trait Options{
 		
 		$pagesize=FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);		
 		$frmSearch = $this->getSearchForm();
-						
 		
 		$data = FatApp::getPostedData();
 		$page = (empty($data['page']) || $data['page'] <= 0)?1:$data['page'];
@@ -41,8 +39,8 @@ trait Options{
 		$srch->addMultipleFields( array( "o.*", "IFNULL( ol.option_name, o.option_identifier ) as option_name") );
 	
 		$rs = $srch->getResultSet();
-		$records = FatApp::getDb()->fetchAll($rs);			
-		
+		$records = FatApp::getDb()->fetchAll($rs);
+        
 		$this->set("ignoreOptionValues",Option::ignoreOptionValues());
 		$this->set("arr_listing",$records);
 		$this->set('pageCount',$srch->pages());

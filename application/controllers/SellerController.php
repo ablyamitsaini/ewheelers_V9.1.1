@@ -2947,9 +2947,9 @@ class SellerController extends LoggedUserController {
 	
 	private function getTaxCatSearchForm($langId){
 		$frm = new Form('frmSearchTaxCat');
-		$frm->addTextBox(Labels::getLabel('Lbl_Keyword',$langId), 'keyword');
-		$frm->addSubmitButton('', 'btn_submit','');
-		$frm->addButton('','btn_cancel', Labels::getLabel('LBL_Cancel', $this->siteLangId) );
+		$frm->addTextBox('','keyword');
+		$frm->addSubmitButton( '', 'btn_submit', Labels::getLabel('LBL_Search',$this->siteLangId) );
+		$frm->addButton( "", "btn_clear", Labels::getLabel("LBL_Clear", $this->siteLangId), array('onclick'=>'clearSearch();') );
 		return $frm;
 	}
 	
