@@ -78,7 +78,7 @@ trait CustomCatalogProducts{
 		
 		$this->set('frmSearchCatalogProducts', $frmSearchCustomCatalogProducts);
 		$this->_template->render(false, false);
-	}	
+	}
 	
 	public function customCatalogProductForm($preqId = 0,$preqCatId = 0){
 		$this->canAddCustomCatalogProduct(true);

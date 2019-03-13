@@ -54,5 +54,10 @@ $(document).ready(function(){
 			}
 		});
 	};
+    
+    clearSearch = function(){
+		document.frmSearchTaxCat.reset();
+		searchTaxCategories(document.frmSearchTaxCat);
+	};
 	
 })();	

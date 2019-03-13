@@ -56,8 +56,7 @@ foreach ($arrListing as $sn => $row){
 					$active = 'checked';
 				}
 
-
-				$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" value="'.$row['selprod_id'].'" id="switch'.$row['selprod_id'].'" onclick="toggleSellerProductStatus(event,this)"/><label for="switch'.$row['selprod_id'].'">Toggle</label></div>';
+				$str = '<label class="toggle-switch" for="switch'.$row['selprod_id'].'"><input '.$active.' type="checkbox" value="'.$row['selprod_id'].'" id="switch'.$row['selprod_id'].'" onclick="toggleSellerProductStatus(event,this)"/><div class="slider round"></div></label>';
 
 				$td->appendElement('plaintext', array(), $str,true);
 			break;

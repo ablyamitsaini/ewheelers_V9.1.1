@@ -1,6 +1,3 @@
-<div class="tabs tabs--small   tabs--scroll clearfix">
-	<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
-</div>
 <div class="tabs__content form">
 	<div class="form__content">
 		<div class="col-md-12">

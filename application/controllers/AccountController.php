@@ -1397,7 +1397,7 @@ class AccountController extends LoggedUserController {
 		$this->set('products', $products);
 		$this->set('showProductShortDescription', false);
 		$this->set('showProductReturnPolicy', false);
-		$this->set('colMdVal', 4);
+		$this->set('colMdVal', 2);
 		$this->set('page', $page);
 		$this->set('recordCount', $srch->recordCount());
 		$this->set('pageCount', $srch->pages());
@@ -1660,7 +1660,9 @@ class AccountController extends LoggedUserController {
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$srch->addCondition( 'ufs_user_id', '=', $loggedUserId );
-		$srch->addMultipleFields(array( 'shop_id', 'IFNULL(shop_name, shop_identifier) as shop_name', 'u.user_name as shop_owner_name', ));
+		$srch->addMultipleFields(array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
+		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
+		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		$rs = $srch->getResultSet();
 		$shops = $db->fetchAll( $rs );
 
@@ -1671,15 +1673,19 @@ class AccountController extends LoggedUserController {
 			$prodSrchObj->joinProductToCategory();
 			$prodSrchObj->setPageNumber(1);
 			$prodSrchObj->setPageSize($totalProductsToShow);
+            $prodSrchObj->joinSellerSubscription($this->siteLangId , true);
+            $prodSrchObj->addSubscriptionValidCondition();
+            $prodSrchObj->joinProductRating( );
 			$prodSrchObj->addCondition('selprod_deleted','=',applicationConstants::NO);
 			foreach( $shops as &$shop ){
 				$prodSrch = clone $prodSrchObj;
 				$prodSrch->addShopIdCondition( $shop['shop_id'] );
-				$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'IFNULL(shop_name, shop_identifier) as shop_name',
-				'IFNULL(product_name, product_identifier) as product_name',
-				'IF(selprod_stock > 0, 1, 0) AS in_stock') );
+				$prodSrch->addMultipleFields(  array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 
+                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
+                'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')  );
 				$prodSrch->addGroupBy('product_id');
 				$prodRs = $prodSrch->getResultSet();
+                $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
 				$shop['totalProducts'] = $prodSrch->recordCount();
 				$shop['products'] = $db->fetchAll( $prodRs );
 			}

@@ -7,7 +7,7 @@
 		</div>
 	</div>
 	
-	<div id="productsList" class="row">
+	<div id="productsList" role="main-listing" class="row product-listing">
 	</div>
 </div>
 

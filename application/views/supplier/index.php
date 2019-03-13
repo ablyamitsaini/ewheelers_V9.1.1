@@ -1,5 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-
 <div class="after-header"></div>
 <div id="body" class="body">
 	<?php $haveBgImage =AttachedFile::getAttachment( AttachedFile::FILETYPE_SELLER_PAGE_SLOGAN_BG_IMAGE, $slogan['epage_id'], 0, $siteLangId );
@@ -7,7 +6,7 @@
 	<div  class="banner" style="<?php echo $bgImageUrl; ?>">
 	  <div class="container">
 		<div class="row">
-		<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+		  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
 			<div class="seller-slogan">
 			  <div class="seller-slogan-txt">
 				<?php echo FatUtility::decodeHtmlEntities( nl2br($slogan['epage_content']) );?> 

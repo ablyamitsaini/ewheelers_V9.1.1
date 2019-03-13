@@ -72,7 +72,7 @@
 						</div>
 						<?php }	?>
 						<div class="listing-products -listing-products listing-products--grid ">
-							<div id="productsList" role="main-listing" class="row"></div>
+							<div id="productsList" role="main-listing" class="row product-listing"></div>
 						</div>
 					</div>
 				</div>

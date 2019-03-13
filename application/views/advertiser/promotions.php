@@ -46,7 +46,7 @@
 									$dateToFld->setFieldTagAttribute('class','field--calender');
 									$dateToFld->setWrapperAttribute('class','col-sm-6');
 									$dateToFld->developerTags['col'] = 4;
-
+                                    
                                     $submitBtnFld = $frmSearchPromotions->getField('btn_submit');
                                     $submitBtnFld->setFieldTagAttribute('class','btn--block');
                                     $submitBtnFld->setWrapperAttribute('class','col-sm-6');
@@ -56,7 +56,6 @@
                                     $cancelBtnFld->setFieldTagAttribute('class','btn--block');
                                     $cancelBtnFld->setWrapperAttribute('class','col-sm-6');
                                     $cancelBtnFld->developerTags['col'] = 2;
-
 									echo $frmSearchPromotions->getFormHtml();
 								?>
 							</div>

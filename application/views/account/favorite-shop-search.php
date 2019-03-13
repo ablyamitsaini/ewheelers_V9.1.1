@@ -1,40 +1,47 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 <?php 
-if($shops){
+if($shops){ $i=0;
 foreach( $shops as $shop ){
 	$shopUrl = CommonHelper::generateUrl( 'Shops', 'View', array($shop['shop_id']) );
+    /* CommonHelper::printArray($shop); die; */
 ?>
-<div class="rowrepeated">
-	<div class="row">
-		<div class="col-md-5 col-sm-5">
-			<h5><a href="<?php echo $shopUrl; ?>"><?php echo $shop['shop_name'];?></a></h5>
-			<span class="text--small"><?php echo Labels::getLabel('LBL_Shop_created_by',$siteLangId); ?></span>
-			<p><strong><?php echo $shop['shop_owner_name']; ?></strong></p>
-
-			<a href="javascript:void(0);" onclick="toggleShopFavorite2(<?php echo $shop['shop_id']; ?>)" class="link--normal"><?php echo Labels::getLabel('LBL_Unfavorite_to_Shop', $siteLangId); ?> <i class="fa fa-heart"></i></a>
-		</div>
-		<div class="col-md-7 col-sm-7">
-			<div class="scroller--items align--right">
-				<ul class="listing--items">
-					<?php if($shop['products']){
-						foreach($shop['products'] as $product){
-						$productUrl = CommonHelper::generateUrl('Products','View',array( $product['selprod_id'] ));
-					?>
-					<li><a href="<?php echo $productUrl; ?>" class="item__pic"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId ),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>" title="<?php echo $product['product_name'];?>" alt="<?php echo $product['product_name']; ?>"></a></li>
-					<?php } } ?>
-					
-					<?php if( $shop['totalProducts'] <= $totalProductsToShow ){ ?>
-					<li><a href="javascript:void(0);" class="item__link"><span><?php echo Labels::getLabel('LBL_No_More_Products', $siteLangId); ?></span></a></li>
-					<?php } else { ?>
-					<li><a href="<?php echo $shopUrl; ?>" class="item__link"><span><?php echo str_replace('{n}', $shop['totalProducts'], Labels::getLabel('LBL_View_{n}_item(s)', $siteLangId)); ?></span></a></li>
-					<?php } ?>
-				</ul>
-			</div>
-		</div>
-	</div>
+<div class="ftshops ftshops row <?php echo ($i%2!=0) ? 'ftshops-rtl' : ''; ?>">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 column">
+        <div class="ftshops_item">
+          <div class="shop-detail-side">
+            <div class="shop-detail-inner">
+                <div class="ftshops_item_head_left">
+                    <div class="ftshops_logo"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','shopLogo', array($shop['shop_id'], $siteLangId, "THUMB", 0, false),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
+                    <div class="ftshops_detail">
+                        <div class="ftshops_name"><a href="<?php echo CommonHelper::generateUrl('shops','view', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a></div>
+                        <div class="ftshops_location"><?php echo $shop['state_name'];?><?php echo ($shop['country_name'] && $shop['state_name'])?', ':'';?><?php echo $shop['country_name'];?></div>
+                    </div>
+                </div>
+                <div class="ftshops_item_head_right">
+                    <?php if( round($shop['shopRating'])>0){?>
+                    <div class="products__rating"> <i class="icn"><svg class="svg">
+                                <use xlink:href="images/retina/sprite.svg#star-yellow" href="images/retina/sprite.svg#star-yellow"></use>
+                            </svg></i> <span class="rate"><?php echo  round($shop['shopRating'],1);?><span></span></span>
+                    </div>
+                    <?php }?>
+                    <a href="<?php echo CommonHelper::generateUrl('shops','view', array($shop['shop_id']));?>" class="btn btn--primary btn--sm ripplelink" tabindex="0"><?php echo Labels::getLabel('LBL_View_Shop',$siteLangId);?></a>
+                </div>
+            </div>
+          </div>
+          <div class="product-wrapper">
+            <div class="row">
+            <?php foreach($shop['products'] as $product){?>
+                <div class="col-lg-3 col-md-3 column">
+                    <?php include(CONF_THEME_PATH.'_partial/collection/product-layout-1-list.php'); ?>
+                </div>
+                <?php } ?>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
-<?php } 
+<?php $i++; } 
 } else {
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 } ?>

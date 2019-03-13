@@ -51,21 +51,21 @@ $cancelBtnFld->developerTags['col'] = 2;
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Products',$siteLangId); ?></h5>
-        <div class="action">
-          <?php if( User::canAddCustomProductAvailableToAllSellers() ){?>
-            <a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProductForm');?>" class="link"><?php echo Labels::getLabel( 'LBL_Request_New_Product', $siteLangId);?></a>
-          <?php }?>
-        </div>
+                <div class="action">
+                  <?php if( User::canAddCustomProductAvailableToAllSellers() ){?>
+                    <a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProductForm');?>" class="link"><?php echo Labels::getLabel( 'LBL_Request_New_Product', $siteLangId);?></a>
+                  <?php }?>
+                </div>
 			</div>
 			<div class="cards-content p-3">
-        <div class="bg-gray-light p-3 pb-0">
-          <?php echo $frmSearchCustomCatalogProducts->getFormHtml(); ?>
-        </div>
-        <span class="gap"></span>
-        <?php echo $frmSearchCustomCatalogProducts->getExternalJS();?>
-        <div id="listing">
-          <?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
-        </div>
+                <div class="bg-gray-light p-3 pb-0">
+                  <?php echo $frmSearchCustomCatalogProducts->getFormHtml(); ?>
+                </div>
+                <span class="gap"></span>
+                <?php echo $frmSearchCustomCatalogProducts->getExternalJS();?>
+                <div id="listing">
+                  <?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
+                </div>
 			</div>
 		</div>
 	</div>

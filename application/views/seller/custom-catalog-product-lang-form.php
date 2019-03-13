@@ -1,10 +1,6 @@
-<div class="tabs tabs--small   tabs--scroll clearfix">
-	<?php require_once(CONF_THEME_PATH.'seller/seller-custom-catalog-product-top.php');?>
-</div>
 <div class="tabs__content form">		
 	<div class="form__content">
 		<div class="col-md-12">
-		 
 				<div class="tabs tabs-sm tabs--scroll clearfix">
 					<ul>
 						<li><a onClick="customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>)" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
