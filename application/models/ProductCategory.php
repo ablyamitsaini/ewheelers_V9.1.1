@@ -189,8 +189,12 @@ class ProductCategory extends MyAppModel{
 				$srch->setPageSize(1);
 				$srch->addMultipleFields( array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode') );
 				$rs = $srch->getResultSet();
-				$data = FatApp::getDb()->fetch($rs);				
+				$data = FatApp::getDb()->fetch($rs);
 				$categoriesArr[$catId] = $data;
+				
+				if(empty($data)){
+					unset($categoriesArr[$catId]);
+				}		
 			}
 		}	
 	}

@@ -260,6 +260,7 @@ class ProductsController extends MyAppController {
 		$productCategory = new productCategory;
 		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr); */
 		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, false, $catSrch, true);
+		
 		/* ] */
 
 		/* Brand Filters Data[ */
