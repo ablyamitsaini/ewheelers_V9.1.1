@@ -5,7 +5,8 @@ class CategoryController extends MyAppController {
 	}
 
 	public function index(){
-		$categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,'',true,false,true );
+		/* $categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,'',true,false,true ); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, true, false, true);
 		$this->set('categoriesArr', $categoriesArr );
 		$this->_template->render();
 	}
