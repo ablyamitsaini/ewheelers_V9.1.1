@@ -529,6 +529,7 @@ class ShopsController extends MyAppController {
 		$frmData = array('shop_id' => $shop_id,'top_products' => $shop_id);
 		$frm->fill($frmData);
 		$searchFrm->fill($frmData);
+        $this->set('shopId', $shop_id);
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchFrm', $searchFrm);
 		$this->includeProductPageJsCss();
@@ -585,6 +586,7 @@ class ShopsController extends MyAppController {
 		$frmData = array('collection_id'=>$scollectionId);
 		$frm->fill($frmData);
 		$searchFrm->fill($frmData);
+        $this->set('shopId', $shop_id);
 		$this->set('frmProductSearch', $frm);
 		$this->set('searchFrm', $searchFrm);
 		$this->includeProductPageJsCss();

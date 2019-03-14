@@ -10,6 +10,13 @@
 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Sale_Order',$siteLangId);?></h2>
 			</div>
+            <div class="col-md-auto">
+                <div class="btn-group">
+                    <ul class="actions">
+                        <li><a href="<?php echo CommonHelper::generateUrl('seller', 'cancelOrder', array($orderDetail['op_id']) );?>" class="" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
+                    </ul>
+                </div>
+            </div>
 		</div>
         <?php } ?>
 		<div class="content-body">

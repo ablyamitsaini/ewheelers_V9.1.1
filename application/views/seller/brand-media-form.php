@@ -5,7 +5,7 @@ $brandReqMediaFrm->developerTags['fld_default_col'] = 12;
 $fld2 = $brandReqMediaFrm->getField('logo');
 $fld2->addFieldTagAttribute('class','btn btn--primary btn--sm');
 
-$preferredDimensionsStr = ' <small class="text--small">'. sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$siteLangId),'192*82').'</small>';
+$preferredDimensionsStr = ' <small class="text--small">'. sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$siteLangId),'500*500').'</small>';
 
 $htmlAfterField = $preferredDimensionsStr;
 if( !empty($brandImages) ){

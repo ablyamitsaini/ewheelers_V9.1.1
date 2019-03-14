@@ -9,7 +9,7 @@ $screenFld = $slideMediaFrm->getField('slide_screen');
 $screenFld->addFieldTagAttribute('class', 'prefDimensions-js');
 $langFld = $slideMediaFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'language-js');
-$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'. sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'1920 x 550').'</div>';
+$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'. sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'1200 x 360').'</div>';
 $htmlAfterField .= '<div id="image-listing"></div>';
 $fld1->htmlAfterField = $htmlAfterField;
 ?>
@@ -54,11 +54,11 @@ $fld1->htmlAfterField = $htmlAfterField;
 
 		if($(this).val() == screenDesktop)
 		{
-			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1920 x 550'));
+			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1200 x 360'));
 		}
 		else if($(this).val() == screenIpad)
 		{
-			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 500'));
+			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 576'));
 		}
 		else{
 			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));

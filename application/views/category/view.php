@@ -63,7 +63,7 @@
 					<div class="<?php echo $class;?>">
 						<?php
 						if( !empty($categoryData['catBanner']) && (!isset($noProductFound)) ){ ?>
-						<a href="<?php echo CommonHelper::generateUrl('Category','view', array($categoryData['prodcat_id'])); ?>" title="<?php echo $categoryData['prodcat_name']; ?>" class="advertise__block advertise__block--main"><img src="<?php echo CommonHelper::generateUrl('Category','Banner', array($categoryData['prodcat_id'], $siteLangId, 'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_category_Banner', $siteLangId); ?>"></a>
+						<a href="<?php echo CommonHelper::generateUrl('Category','view', array($categoryData['prodcat_id'])); ?>" title="<?php echo $categoryData['prodcat_name']; ?>" class="advertise__block advertise__block--main"><img data-ratio="16:9 (1000x563)" src="<?php echo CommonHelper::generateUrl('Category','Banner', array($categoryData['prodcat_id'], $siteLangId, 'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_category_Banner', $siteLangId); ?>"></a>
 						<?php }
 
 						if( !empty($categoryData['prodcat_description'] && (!isset($noProductFound))) ){ ?>

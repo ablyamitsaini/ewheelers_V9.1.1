@@ -207,8 +207,8 @@ class ImageController extends FatController{
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true,$cacheKey );
 			break;
 			case 'MEDIUM':
-				$w = 542;
-				$h = 480;
+				$w = 500;
+				$h = 500;
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true ,$cacheKey);
 			break;
 			case 'CLAYOUT3':
@@ -458,13 +458,13 @@ class ImageController extends FatController{
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
 			break;
 			case 'COLLECTION_PAGE':
-				$w = 48;
-				$h = 48;
+				$w = 50;
+				$h = 50;
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
 			break;
 			default:
-				$h = 118;
-				$w = 276;
+				$h = 500;
+				$w = 500;
 				AttachedFile::displayImage( $image_name, $w, $h, $default_image );
 			break;
 		}

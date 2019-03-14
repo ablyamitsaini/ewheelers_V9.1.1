@@ -10,7 +10,7 @@
 		<div class="ft-pro-wrapper">
 		<?php $i=1; foreach( $category['products'] as $key => $product ){ ?>
 			<div class="ft-pro ft-pro-<?php echo $i; ?>">
-				<?php include('product-layout-1-list.php'); ?>
+				<?php $prodImgSize = 'MEDIUM'; include('product-layout-1-list.php'); ?>
 			</div>
 		<?php $i++; } ?>
 		</div>

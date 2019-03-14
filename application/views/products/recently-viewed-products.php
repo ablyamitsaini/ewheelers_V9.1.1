@@ -16,7 +16,7 @@
 				<div class="products__body">
 				<?php $this->includeTemplate('_partial/collection-ui.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId),false);?>
 					<div class="products__img">
-						<a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo !isset($rProduct['promotion_id'])?CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id'])):CommonHelper::generateUrl('Products','track',array($rProduct['promotion_record_id']));?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($rProduct['product_id'], "CLAYOUT3", $rProduct['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $rProduct['prodcat_name'];?>"> </a>
+						<a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo !isset($rProduct['promotion_id'])?CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id'])):CommonHelper::generateUrl('Products','track',array($rProduct['promotion_record_id']));?>"><img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($rProduct['product_id'], "CLAYOUT3", $rProduct['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $rProduct['prodcat_name'];?>"> </a>
 					</div>
 					<div class="products__quickview"> <a name="<?php echo $controllerName;?>" onClick='quickDetail(<?php echo $rProduct['selprod_id']; ?>)' class="modaal-inline-content"></a> </div>
 				</div>
