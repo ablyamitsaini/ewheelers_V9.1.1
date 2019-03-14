@@ -99,7 +99,6 @@ class ProductCategory extends MyAppModel{
 		}
 	}
 
-
 	function getMaxOrder( $parent = 0 ){
 		$srch = new SearchBase(static::DB_TBL);
 		$srch->addFld("MAX(" . static::DB_TBL_PREFIX . "display_order) as max_order");
@@ -115,44 +114,104 @@ class ProductCategory extends MyAppModel{
 		return 1;
 	}
 
-	/* public function save() {
-
-		// Check if adding i.e. $this->mainTableRecordId == 0
-		// get max displayOrder under the same parent.
-		// set displayOrder of this to max + 1
-
-		if ( 0 < $this->mainTableRecordId) {
-			$result = $this->objMainTableRecord->update(array('smt'=>$this->mainTableIdField . ' = ?', 'vals'=>array($this->mainTableRecordId)));
+	public static function getTreeArr( $langId, $parentId = 0, $orderFeatured = false, $prodCatSrchObj = false, $excludeCatHavingNoProducts = false ){
+		
+		$parentId = FatUtility::int($parentId);
+		$langId = FatUtility::int($langId);
+		if( !$langId ){
+			trigger_error("Language not specified", E_USER_ERROR);
 		}
-		else {
-			$result = $this->objMainTableRecord->addNew();
-			if ( $result ) {
-				$this->mainTableRecordId = $this->objMainTableRecord->getId();
+		
+		if( is_object($prodCatSrchObj) ){ 			
+			$prodCatSrch = clone $prodCatSrchObj;			
+		}else{			
+			$prodCatSrch = new ProductCategorySearch( $langId,true,true,false );			
+		}
+		
+		$prodCatSrch->doNotCalculateRecords();
+		$prodCatSrch->doNotLimitRecords();
+		$prodCatSrch->addMultipleFields( array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode') );
+				
+		if(0 < $parentId){ 			
+			$prodCatSrch->addCondition('prodcat_code','like','%'.str_pad($parentId, 6, '0', STR_PAD_LEFT ).'%');
+		}
+		
+		if( $excludeCatHavingNoProducts ){
+			$prodSrchObj = new ProductSearch( $langId );
+			$prodSrchObj->setDefinedCriteria();
+			$prodSrchObj->joinProductToCategory();
+			$prodSrchObj->doNotCalculateRecords();
+			$prodSrchObj->doNotLimitRecords();
+			$prodSrchObj->joinSellerSubscription( $langId, true );
+			$prodSrchObj->addSubscriptionValidCondition();
+						
+			$prodSrchObj->addGroupBy( 'c.prodcat_id' );
+			$prodSrchObj->addMultipleFields( array('count(selprod_id) as productCounts', 'c.prodcat_id as qryProducts_prodcat_id') );
+			$prodSrchObj->addCondition('selprod_deleted','=',applicationConstants::NO);
+			$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts' );
+			$prodCatSrch->addCondition( 'qryProducts.productCounts', '>', 0 );
+		}	
+
+		if( $orderFeatured ){
+			$prodCatSrch->addOrder('prodcat_featured');
+		}else{
+			$prodCatSrch->addOrder('prodrootcat_code');
+			$prodCatSrch->addOrder('prodcat_ordercode');
+			$prodCatSrch->addOrder('prodcat_name');
+			$prodCatSrch->addOrder('prodcat_identifier');			
+		}
+		
+		$rs = $prodCatSrch->getResultSet();
+		$categoriesArr = FatApp::getDb()->fetchAll($rs,'prodcat_id');
+				
+		static::addMissingParentDetails($categoriesArr,$langId);			
+		$categoriesArr = static::parseTree($categoriesArr,$parentId);			
+		
+		return $categoriesArr;		
+	}
+	
+	public static function addMissingParentDetails(&$categoriesArr,$langId){
+		foreach($categoriesArr as $categoryId => $category) {
+			if(!$category['prodcat_parent'] || array_key_exists($category['prodcat_parent'],$categoriesArr)){
+				continue;
 			}
-			//todo:set display order based on parent
-		}
-
-		if (!$result) {
-			$this->error = $this->objMainTableRecord->getError();
-		}
-
-		return $result;
-	} */
-
-	/* public function getProdCategories( $langId = 0 ) {
-		$langId = FatUtility::int( $langId );
-		$srch = static::getSearchObject();
-		$srch->addCondition('m.prodcat_deleted', '=', 0);
-		$srch->addOrder('m.prodcat_display_order','asc');
-		$srch->addFld(array('m.prodcat_id','m.prodcat_identifier'));
-
-		if( $langId > 0){
-			$srch->joinTable( static::DB_LANG_TBL,'LEFT OUTER JOIN',
-			'pc_l.'.static::DB_LANG_TBL_PREFIX.'prodcat_id = m.'.static::tblFld('id').' and
-			pc_l.'.static::DB_LANG_TBL_PREFIX.'lang_id = '.$langId,'pc_l');
-		}
-		return $record = FatApp::getDb()->fetchAllAssoc($srch->getResultSet());
-	} */
+			
+			$catCode = explode('_',rtrim($category['prodcat_code'],'_'));
+			foreach($catCode as $code){
+				$catId = ltrim($code,0);				
+				
+				if(!$catId || array_key_exists($catId,$categoriesArr)){
+					continue;
+				}
+				
+				$srch = new ProductCategorySearch( $langId,true,true,false );	
+				$srch->addCondition('prodcat_id','=',$catId);
+				$srch->setPageSize(1);
+				$srch->addMultipleFields( array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode') );
+				$rs = $srch->getResultSet();
+				$data = FatApp::getDb()->fetch($rs);
+				$categoriesArr[$catId] = $data;
+				
+				if(empty($data)){
+					unset($categoriesArr[$catId]);
+				}		
+			}
+		}	
+	}
+	
+	
+	public static function parseTree($tree, $root = 0) {
+		$return = array();					
+		foreach($tree as $categoryId => $category) {
+			$parent = $category['prodcat_parent'];			
+			if($parent == $root) {				
+				unset($tree[$categoryId]);				
+				$return[$categoryId] = $category;
+				$return[$categoryId]['children'] = static::parseTree($tree, $categoryId);
+			}
+		}			
+		return empty($return) ? array() : $return;    
+	}
 
 	public function getCategoryStructure( $prodcat_id, $category_tree_array = '',$langId = 0 ){
 		if ( !is_array($category_tree_array) ) $category_tree_array = array();
@@ -829,7 +888,6 @@ class ProductCategory extends MyAppModel{
 		/* die(CommonHelper::printArray($productRows)); */
 		$categoriesMainRootArr = array();
 		if($productRows){
-
 			$categoriesMainRootArr = array_unique(array_column($productRows,'prodcat_id'));
 			array_flip($categoriesMainRootArr);
 		}

@@ -269,14 +269,20 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id','shop');
-		
+				
+		$activeShopCondition = '';
 		if( $isActive ){
+			$activeShopCondition = ' and shop.shop_active = '.applicationConstants::ACTIVE;
 			$this->addCondition( 'shop.shop_active', '=', applicationConstants::ACTIVE );
 		}
+		
+		$shopDisplayStatus = '';
 		if( $isDisplayStatus ){
+			$shopDisplayStatus = ' and shop.shop_supplier_display_status = '.applicationConstants::ON;
 			$this->addCondition( 'shop.shop_supplier_display_status', '=', applicationConstants::ON );
 		}
+		
+		$this->joinTable( Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id '.$activeShopCondition.' '.$shopDisplayStatus,'shop');
 
 		if( $langId ){
 			$this->joinTable( Shop::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop.shop_id = s_l.shoplang_shop_id AND shoplang_lang_id = '. $langId , 's_l' );
@@ -288,14 +294,18 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop.shop_country_id = shop_country.country_id', 'shop_country' );
-
-		if( $langId ){
-			$this->joinTable( Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_country.country_id = shop_country_l.countrylang_country_id AND shop_country_l.countrylang_lang_id = '.$langId, 'shop_country_l' );
-		}
+		
+		$countryActiveCondition = '';
 		if( $isActive ){
+			$countryActiveCondition = 'and shop_country.country_active = '.applicationConstants::ACTIVE;
 			$this->addCondition( 'shop_country.country_active', '=', applicationConstants::ACTIVE );
 		}
+		
+		$this->joinTable( Countries::DB_TBL, 'INNER JOIN', 'shop.shop_country_id = shop_country.country_id '.$countryActiveCondition, 'shop_country' );
+		
+		if( $langId ){
+			$this->joinTable( Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_country.country_id = shop_country_l.countrylang_country_id AND shop_country_l.countrylang_lang_id = '.$langId, 'shop_country_l' );
+		}		
 	}
 
 	public function joinShopState( $langId = 0, $isActive = true ){
@@ -303,14 +313,19 @@ class ProductSearch extends SearchBase {
 		if ($this->langId && 1 > $langId) {
             $langId = $this->langId;
         }
-		$this->joinTable( States::DB_TBL, 'INNER JOIN', 'shop.shop_state_id = shop_state.state_id', 'shop_state' );
+		
+		$stateActiveCondition = '';
+		if( $isActive ){
+			$stateActiveCondition = 'and shop_state.state_active = '.applicationConstants::ACTIVE;
+			$this->addCondition( 'shop_state.state_active', '=', applicationConstants::ACTIVE );
+		}
+		
+		$this->joinTable( States::DB_TBL, 'INNER JOIN', 'shop.shop_state_id = shop_state.state_id '.$stateActiveCondition, 'shop_state' );
 
 		if( $langId ){
 			$this->joinTable( States::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_state.state_id = shop_state_l.statelang_state_id AND shop_state_l.statelang_lang_id = '.$langId, 'shop_state_l' );
 		}
-		if( $isActive ){
-			$this->addCondition( 'shop_state.state_active', '=', applicationConstants::ACTIVE );
-		}
+		
 	}
 
 	public function joinBrands( $langId = 0, $isActive = true, $isDeleted = true, $useInnerJoin = true ){
@@ -319,13 +334,20 @@ class ProductSearch extends SearchBase {
             $langId = $this->langId;
         }
 		$join = ($useInnerJoin) ? 'INNER JOIN' : 'LEFT OUTER JOIN';
-		$this->joinTable( Brand::DB_TBL, $join, 'p.product_brand_id = brand.brand_id', 'brand' );
+		
+		$brandActiveCondition = '';
 		if( $isActive ){
+			$brandActiveCondition = 'and brand.brand_active = '.applicationConstants::ACTIVE;
 			$this->addCondition( 'brand.brand_active', '=', applicationConstants::ACTIVE );
 		}
+		
+		$brandDeletedCondition = '';
 		if( $isDeleted ){
-			$this->addCondition( 'brand.brand_deleted', '=', '0' );
+			$brandDeletedCondition = 'and brand.brand_deleted = '.applicationConstants::NO;
+			$this->addCondition( 'brand.brand_deleted', '=', applicationConstants::NO );
 		}
+		
+		$this->joinTable( Brand::DB_TBL, $join, 'p.product_brand_id = brand.brand_id '.$brandActiveCondition.' '.$brandDeletedCondition, 'brand' );		
 
 		if( $langId ){
 			$this->joinTable( Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'brand.brand_id = tb_l.brandlang_brand_id AND brandlang_lang_id = '.$langId, 'tb_l' );
@@ -339,21 +361,24 @@ class ProductSearch extends SearchBase {
         }
 		$join = ($useInnerJoin) ? 'INNER JOIN' : 'LEFT OUTER JOIN';
 		$this->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, $join, 'ptc.ptc_product_id = p.product_id', 'ptc' );
-		$this->joinTable( ProductCategory::DB_TBL, $join, 'c.prodcat_id = ptc.ptc_prodcat_id', 'c' );
-		
+				
+		$categoryActiveCondition = '';
 		if($isActive){
+			$categoryActiveCondition = 'and c.prodcat_active = '.applicationConstants::ACTIVE;
 			$this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE );
 		}
+		
+		$categoryDeletedCondition = '';
 		if($isDeleted){
+			$categoryDeletedCondition = 'and c.prodcat_deleted = '.applicationConstants::NO;
 			$this->addCondition('c.prodcat_deleted', '=', applicationConstants::NO );
 		}
+		
+		$this->joinTable( ProductCategory::DB_TBL, $join, 'c.prodcat_id = ptc.ptc_prodcat_id '.$categoryActiveCondition.' '.$categoryDeletedCondition, 'c' );
 
 		if( $langId ){
 			$this->joinTable( ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'c_l.prodcatlang_prodcat_id = c.prodcat_id AND prodcatlang_lang_id = '.$langId, 'c_l' );
-		} else {
-			//$this->addOrder('c.');
 		}
-
 	}
 	
 	public function joinFavouriteProducts($user_id ){
@@ -380,20 +405,20 @@ class ProductSearch extends SearchBase {
 				return;
 			}
 			/* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
-			$this->addCondition('prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
+			$this->addCondition('c.prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true);
 		}else{
-			$category = explode(",", $category);
+			/* $category = explode(",", $category);
 			$category = FatUtility::int($category);
-			$this->addCondition('prodcat_id', 'IN', $category );
-			/* $categories =explode(",", $category) ;
+			$this->addCondition('prodcat_id', 'IN', $category ); */
+			$categories = explode(",", $category) ;
 			$condition= '(';
 			foreach($categories as $catId){
-				$condition .= " GETCATCODE(`prodcat_id`) LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT ) ."%' OR";
+				$condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT ) ."%' OR";
 				
 			}
 			$condition = substr($condition,0,-2);
 			$condition .= ')';
-			$this->addDirectCondition($condition); */
+			$this->addDirectCondition($condition); 
 			
 		}
 	}

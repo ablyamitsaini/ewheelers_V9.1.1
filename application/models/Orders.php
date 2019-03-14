@@ -1773,7 +1773,16 @@ class Orders extends MyAppModel{
 		$srch->addCondition(OrderProduct::DB_TBL_CHARGES_PREFIX.'order_type','=',Orders::ORDER_PRODUCT);
 		$rs = $srch->getResultSet();
 
-		return $row = FatApp::getDb()->fetchAll($rs,OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
+		$row = FatApp::getDb()->fetchAll($rs,OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
+		
+		if(!array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$row)){
+			$row[OrderProduct::CHARGE_TYPE_SHIPPING] = array(
+				'opcharge_type'=>OrderProduct::CHARGE_TYPE_SHIPPING,
+				'opcharge_amount'=>0,
+				);
+		}
+		
+		return $row;
 	}
 
 	public function getOrderProductChargesByOrderId($orderId){
