@@ -14,6 +14,7 @@ Fixes :
     . Xzoom image is displaying on wrong side for arabic language, issue resolved.
     . Showing some html elements content on seller products inventory(frontend), issue resolved.
     . Error Notice showing while searching products on frontend, issue resolved.
+	. Aweber newsletter signup.
 
 Enhancements :
     . Import error handling via csv.
@@ -27,6 +28,7 @@ Enhancements :
     . Displaying instructions as per each import module including general instructions.
     . New Payment method Braintree implemented.
 	. From name on email notifications updated with site from name.
+	. Import Error log file will be automatically downloaded if it contains errors listing.
 
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.

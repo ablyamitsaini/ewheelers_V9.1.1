@@ -3,9 +3,17 @@
 	$tbid = isset($tabId)?$tabId:'tabs_'.$frmType;
 ?>
 <ul class="tabs_nav innerul">
-	<li><a class='active' href="javascript:void(0);" onclick="generalInstructions(<?php echo $frmType;?>);"><?php echo Labels::getLabel('LBL_Instructions',$adminLangId); ?></a></li>
+	<?php if( $frmType == Configurations::FORM_IMPORT_EXPORT){ ?>
+		<li><a class='active' href="javascript:void(0);" onclick="generalInstructions(<?php echo $frmType;?>);"><?php echo Labels::getLabel('LBL_Instructions',$adminLangId); ?></a></li>
+	<?php } ?>
 	<?php if( $frmType != Configurations::FORM_MEDIA && $frmType != Configurations::FORM_SHARING ){ ?>
-	<li><a href="javascript:void(0)" onClick="getForm(<?php echo $frmType;?>,'<?php echo $tbid;?>')">Basic</a></li>
+	<?php
+	$active = '';
+	if(  $frmType != Configurations::FORM_IMPORT_EXPORT ){
+		$active = 'active';
+	}
+	?>
+	<li><a class='<?php echo $active; ?>' href="javascript:void(0)" onClick="getForm(<?php echo $frmType;?>,'<?php echo $tbid;?>')">Basic</a></li>
 	<?php } ?>
 	<?php
 	if( $dispLangTab ){
