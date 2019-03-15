@@ -1369,6 +1369,20 @@ class Orders extends MyAppModel{
 						if($txnId = $transObj->addTransaction($txnDataArr)){
 							$emailNotificationObj->sendTxnNotification($txnId,$langId);
 						}
+						
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Credited_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['op_selprod_user_id'],
+							'utxn_comments'	=> $comments,
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
+						}
 					}
 				}
 				/* ]*/
@@ -1430,6 +1444,20 @@ class Orders extends MyAppModel{
 						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}',$langId));
 						$txnDataArr = array(
 							'utxn_user_id'	=> $childOrderInfo['order_user_id'],
+							'utxn_comments'	=> $comments,
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
+						}
+						
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Credited_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['op_selprod_user_id'],
 							'utxn_comments'	=> $comments,
 							'utxn_status'	=> Transactions::STATUS_COMPLETED,
 							'utxn_debit'	=> $actualShipCharges,
