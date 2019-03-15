@@ -483,7 +483,7 @@ class ImportexportCommon extends FatModel{
 		if($this->isDefaultSheetData($langId)){
 			$arr[] = Labels::getLabel('LBL_Url_keyword', $langId);
 			if(!$userId){
-				$arr[] = Labels::getLabel('LBL_Added_on', $langId);
+				// $arr[] = Labels::getLabel('LBL_Added_on', $langId);
 			}
 			$arr[] = Labels::getLabel('LBL_Available_from', $langId);
 			$arr[] = Labels::getLabel('LBL_Active', $langId);
