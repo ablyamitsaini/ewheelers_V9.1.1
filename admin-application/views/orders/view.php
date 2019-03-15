@@ -34,7 +34,11 @@
                                     <tr>
                                       <td><strong><?php echo Labels::getLabel('LBL_Order/Invoice_ID',$adminLangId); ?>:</strong> <?php echo $order["order_id"]; ?></td>
                                       <td><strong><?php echo Labels::getLabel('LBL_Order_Date',$adminLangId); ?>: </strong> <?php echo FatDate::format($order['order_date_added'],true,true,FatApp::getConfig('CONF_TIMEZONE', FatUtility::VAR_STRING, date_default_timezone_get())); ?></td>
-                                      <td><strong><?php echo Labels::getLabel('LBL_Payment_Status',$adminLangId); ?>:</strong> <?php echo Orders::getOrderPaymentStatusArr($adminLangId)[$order['order_is_paid']]?></td>
+                                      <td><strong><?php echo Labels::getLabel('LBL_Payment_Status',$adminLangId); ?>:</strong> <?php echo Orders::getOrderPaymentStatusArr($adminLangId)[$order['order_is_paid']];
+									  if( '' != $order['pmethod_name'] && 'CashOnDelivery' == $order['pmethod_code']){
+											echo ' ('.$order['pmethod_name'].' )';
+										}
+									  ?></td>
                                     </tr>
                                     <tr>
                                       <td><strong><?php echo Labels::getLabel('LBL_Customer',$adminLangId); ?>: </strong> <?php echo $order["buyer_user_name"]?></td>
@@ -312,7 +316,7 @@
 					<?php }?>						
 						
                         
-					<?php if (!$order["order_is_paid"] && $canEdit) {?>
+					<?php if (!$order["order_is_paid"] && $canEdit && 'CashOnDelivery' != $order['pmethod_code']) {?>
 						<section class="section">
 							<div class="sectionhead">
 								<h4><?php echo Labels::getLabel('LBL_Order_Payments',$adminLangId); ?></h4>																

@@ -147,8 +147,10 @@ class ProductCategory extends MyAppModel{
 						
 			$prodSrchObj->addGroupBy( 'c.prodcat_id' );
 			$prodSrchObj->addMultipleFields( array('count(selprod_id) as productCounts', 'c.prodcat_id as qryProducts_prodcat_id') );
+			//$prodSrchObj->addMultipleFields( array('count(selprod_id) as productCounts', 'c.prodcat_code as qryProducts_prodcat_code') );
 			$prodSrchObj->addCondition('selprod_deleted','=',applicationConstants::NO);
 			$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts' );
+			//$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_code like CONCAT(c.prodcat_code, "%")', 'qryProducts' );
 			$prodCatSrch->addCondition( 'qryProducts.productCounts', '>', 0 );
 		}	
 
