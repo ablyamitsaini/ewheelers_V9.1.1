@@ -1048,136 +1048,58 @@ class Importexport extends ImportexportCommon{
 
 			$rowIndex++;
 
-			// if(empty($line[0])){
-			// 	continue;
-			// }
-
 			if($rowCount == 0){
 				$coloumArr = $this->getBrandColoumArr($langId);
-				if($line !== $coloumArr){
+				$validateColumnHeadings = array_diff($line,$coloumArr);
+
+				if( count($validateColumnHeadings) ){
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
+
+				$columnsIndexes = array();
+				$lineArr = array_flip($line);
 				$rowCount++;
+
 				$errfileName = $this->logFileName('Brands');
 				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
-			$numcols = count($line);
-			$colCount = 0;
+			$dataToSaveArr = array();
+			$error = false;
+			foreach ($coloumArr as $columnKey => $value) {
+				$colomnValue = $line[$lineArr[$value]];
+				$colIndex = $lineArr[$value];
 
-			// if($this->settings['CONF_USE_BRAND_ID']){
-			// 	$brandId = FatUtility::int($this->getCell($line,$colCount++,0));
-			// 	if($this->isDefaultSheetData($langId)){
-			// 		$identifier = trim($this->getCell($line,$colCount++,''));
-			// 		if($identifier == ''){
-			// 			$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-			// 			$err = array($rowIndex,$colCount,$errMsg);
-			// 			CommonHelper::writeLogFile( $errFile,  $err);
-			// 			continue;
-			// 		}
-			// 	}
-			// }else{
-			// 	$identifier = trim($this->getCell($line,$colCount++,''));
-			// 	if($identifier == ''){
-			// 		$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-			// 		$err = array($rowIndex,$colCount,$errMsg);
-			// 		CommonHelper::writeLogFile( $errFile,  $err);
-			// 		continue;
-			// 	}
-			// }
+				if( in_array( $columnKey,array('brand_id', 'brand_featured', 'brand_active') ) && 1 > FatUtility::int($colomnValue) ){
+					$error = true;
+					$errMsg = str_replace( '{colomn_name}',$line[0][$lineArr[$value]],Labels::getLabel( "MSG_{colomn_name}_is_mandatory.", $langId ) );
+				}
 
-			$useIdentifier = true;
-			if($this->settings['CONF_USE_BRAND_ID']){
-				$brandId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if( 0 >= $brandId ){
-					$errMsg = Labels::getLabel( "MSG_Valid_brand_id_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
+				if( in_array( $columnKey,array('brand_identifier','brand_name','urlrewrite_custom') ) && empty($colomnValue) ){
+					$error = true;
+					$errMsg = str_replace( '{colomn_name}',$line[0][$lineArr[$value]],Labels::getLabel( "MSG_Valid_{colomn_name}_is_required.", $langId ) );
+				}
+
+				if($error){
+					$err = array($rowIndex,$colIndex,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				$useIdentifier = $this->isDefaultSheetData($langId);
-			}
-
-			if( $useIdentifier ){
-				$identifier = trim($this->getCell($line,$colCount++,''));
-				if(empty( $identifier ) ){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-			}
-
-			$name = $this->getCell($line,$colCount++,'');
-			if( empty( $name ) ){
-				$errMsg = Labels::getLabel( "MSG_Brand_name_is_required.", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
-				continue;
-			}
-			$description = $this->getCell($line,$colCount++,'');
-
-			if($this->isDefaultSheetData($langId)){
-				$seoUrl = $this->getCell($line,$colCount++,'');
-				if( empty( $seoUrl ) ){
-					$errMsg = Labels::getLabel( "MSG_SEO_Friendly_URL_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				$featured = $this->getCell($line,$colCount++,0);
-				if( $featured == '' || $featured < 0 ){
-					$errMsg = Labels::getLabel( "MSG_Featured_column_value_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				$active = $this->getCell($line,$colCount++,0);
-				if( $active == '' || $active < 0 ){
-					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-			}
-
-			if(!$numcols || $numcols != $colCount){
-				Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
-				FatUtility::dieJsonError( Message::getHtml() );
-			}
-
-			if($rowCount > 0){
-				$dataToSaveArr = array(
-					'brand_status'=>applicationConstants::ACTIVE,
-					'brand_identifier'=>$identifier,
-				);
-
-				if($this->isDefaultSheetData($langId)){
-					if($this->settings['CONF_USE_O_OR_1']){
-						$dataToSaveArr['brand_featured'] = (FatUtility::int($featured) == 1)?applicationConstants::YES:applicationConstants::NO;
-						$dataToSaveArr['brand_active'] = (FatUtility::int($active) == 1)?applicationConstants::YES:applicationConstants::NO;
-					}else{
-						$dataToSaveArr['brand_featured'] = (strtoupper($featured) == 'YES')?applicationConstants::YES:applicationConstants::NO;
-						$dataToSaveArr['brand_active'] = (strtoupper($active) == 'YES')?applicationConstants::YES:applicationConstants::NO;
-					}
-				}
-
-				if($this->settings['CONF_USE_BRAND_ID']){
-					$dataToSaveArr['brand_id'] = $brandId;
-					if($this->isDefaultSheetData($langId)){
-						$dataToSaveArr['brand_identifier'] = $identifier;
-					}
-					$brandData = Brand::getAttributesById($brandId,array('brand_id'));
 				}else{
-					$brandId = 0;
+					$dataToSaveArr['brand_status'] = applicationConstants::ACTIVE,
+					$dataToSaveArr[$columnKey] = $line[$lineArr[$value]];
+				}
+			}
+
+			if( !$error && $dataToSaveArr ){
+				if($this->settings['CONF_USE_BRAND_ID']){
+					$brandId = $dataToSaveArr['brand_id'];
+				}else{
 					$dataToSaveArr['brand_identifier'] = $identifier;
 					$brandData = Brand::getAttributesByIdentifier($identifier,array('brand_id'));
-				}
-
-				if(!empty($brandData) && $brandData['brand_id']){
 					$brandId = $brandData['brand_id'];
+				}
+				if(!empty($brandId) && 0 < $brandId){
 					$where = array('smt' => 'brand_id = ?', 'vals' => array( $brandId ) );
 					$this->db->updateFromArray( Brand::DB_TBL, $dataToSaveArr,$where);
 				}else{
@@ -1186,14 +1108,13 @@ class Importexport extends ImportexportCommon{
 						$brandId = $this->db->getInsertId();
 					}
 				}
-
 				if($brandId){
 					/* Lang Data [*/
 					$langData = array(
 						'brandlang_brand_id'=> $brandId,
 						'brandlang_lang_id'=> $langId,
-						'brand_name'=> $name,
-						'brand_short_description'=> $description,
+						'brand_name' => $dataToSaveArr['brand_name'],
+						'brand_short_description' => $dataToSaveArr['brand_short_description'],
 					);
 					$this->db->insertFromArray( Brand::DB_LANG_TBL, $langData , false, array(),$langData );
 					/* ]*/
@@ -1201,7 +1122,7 @@ class Importexport extends ImportexportCommon{
 					/* Url rewriting [*/
 					if($this->isDefaultSheetData($langId)){
 						if(trim($seoUrl) == ''){
-							$seoUrl = $identifier;
+							$seoUrl = $dataToSaveArr['brand_identifier'];
 						}
 						$brand = new Brand($brandId);
 						$brand->rewriteUrl($seoUrl);
@@ -1209,7 +1130,69 @@ class Importexport extends ImportexportCommon{
 					/* ]*/
 				}
 			}
-			$rowCount++;
+
+			// if($rowCount > 0){
+			// 	$dataToSaveArr = array(
+			// 		'brand_status'=>applicationConstants::ACTIVE,
+			// 		'brand_identifier'=>$identifier,
+			// 	);
+			//
+			// 	if($this->isDefaultSheetData($langId)){
+			// 		if($this->settings['CONF_USE_O_OR_1']){
+			// 			$dataToSaveArr['brand_featured'] = (FatUtility::int($featured) == 1)?applicationConstants::YES:applicationConstants::NO;
+			// 			$dataToSaveArr['brand_active'] = (FatUtility::int($active) == 1)?applicationConstants::YES:applicationConstants::NO;
+			// 		}else{
+			// 			$dataToSaveArr['brand_featured'] = (strtoupper($featured) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+			// 			$dataToSaveArr['brand_active'] = (strtoupper($active) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+			// 		}
+			// 	}
+			//
+			// 	if($this->settings['CONF_USE_BRAND_ID']){
+			// 		$dataToSaveArr['brand_id'] = $brandId;
+			// 		if($this->isDefaultSheetData($langId)){
+			// 			$dataToSaveArr['brand_identifier'] = $identifier;
+			// 		}
+			// 		$brandData = Brand::getAttributesById($brandId,array('brand_id'));
+			// 	}else{
+			// 		$brandId = 0;
+			// 		$dataToSaveArr['brand_identifier'] = $identifier;
+			// 		$brandData = Brand::getAttributesByIdentifier($identifier,array('brand_id'));
+			// 	}
+			//
+			// 	if(!empty($brandData) && $brandData['brand_id']){
+			// 		$brandId = $brandData['brand_id'];
+			// 		$where = array('smt' => 'brand_id = ?', 'vals' => array( $brandId ) );
+			// 		$this->db->updateFromArray( Brand::DB_TBL, $dataToSaveArr,$where);
+			// 	}else{
+			// 		if($this->isDefaultSheetData($langId)){
+			// 			$this->db->insertFromArray( Brand::DB_TBL, $dataToSaveArr);
+			// 			$brandId = $this->db->getInsertId();
+			// 		}
+			// 	}
+			//
+			// 	if($brandId){
+			// 		/* Lang Data [*/
+			// 		$langData = array(
+			// 			'brandlang_brand_id'=> $brandId,
+			// 			'brandlang_lang_id'=> $langId,
+			// 			'brand_name'=> $name,
+			// 			'brand_short_description'=> $description,
+			// 		);
+			// 		$this->db->insertFromArray( Brand::DB_LANG_TBL, $langData , false, array(),$langData );
+			// 		/* ]*/
+			//
+			// 		/* Url rewriting [*/
+			// 		if($this->isDefaultSheetData($langId)){
+			// 			if(trim($seoUrl) == ''){
+			// 				$seoUrl = $identifier;
+			// 			}
+			// 			$brand = new Brand($brandId);
+			// 			$brand->rewriteUrl($seoUrl);
+			// 		}
+			// 		/* ]*/
+			// 	}
+			// }
+			// $rowCount++;
 		}
 
 		// Close File
@@ -1220,8 +1203,166 @@ class Importexport extends ImportexportCommon{
 		if(CommonHelper::checkLogFile( $errfileName )){
 			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
+		CommonHelper::printArray($dataToSaveArr1,true);
 		FatUtility::dieJsonSuccess($success);
 	}
+
+	// public function importBrands($csvFilePointer,$post,$langId){
+	//
+	// 	$rowIndex = $rowCount = 0;
+	// 	while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
+	//
+	// 		$rowIndex++;
+	//
+	// 		if($rowCount == 0){
+	// 			$coloumArr = $this->getBrandColoumArr($langId);
+	// 			if($line !== $coloumArr){
+	// 				Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
+	// 				FatUtility::dieJsonError( Message::getHtml() );
+	// 			}
+	// 			$rowCount++;
+	// 			$errfileName = $this->logFileName('Brands');
+	// 			$errFile = $this->openErrorLogFile( $errfileName, $langId );
+	// 			continue;
+	// 		}
+	//
+	// 		$numcols = count($line);
+	// 		$colCount = 0;
+	//
+	// 		$useIdentifier = true;
+	// 		if($this->settings['CONF_USE_BRAND_ID']){
+	// 			$brandId = FatUtility::int($this->getCell($line,$colCount++,0));
+	// 			if( 0 >= $brandId ){
+	// 				$errMsg = Labels::getLabel( "MSG_Valid_brand_id_is_required.", $langId );
+	// 				$err = array($rowIndex,$colCount,$errMsg);
+	// 				CommonHelper::writeLogFile( $errFile,  $err);
+	// 				continue;
+	// 			}
+	// 			$useIdentifier = $this->isDefaultSheetData($langId);
+	// 		}
+	//
+	// 		if( $useIdentifier ){
+	// 			$identifier = trim($this->getCell($line,$colCount++,''));
+	// 			if(empty( $identifier ) ){
+	// 				$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
+	// 				$err = array($rowIndex,$colCount,$errMsg);
+	// 				CommonHelper::writeLogFile( $errFile,  $err);
+	// 				continue;
+	// 			}
+	// 		}
+	//
+	// 		$name = $this->getCell($line,$colCount++,'');
+	// 		if( empty( $name ) ){
+	// 			$errMsg = Labels::getLabel( "MSG_Brand_name_is_required.", $langId );
+	// 			$err = array($rowIndex,$colCount,$errMsg);
+	// 			CommonHelper::writeLogFile( $errFile,  $err);
+	// 			continue;
+	// 		}
+	// 		$description = $this->getCell($line,$colCount++,'');
+	//
+	// 		if($this->isDefaultSheetData($langId)){
+	// 			$seoUrl = $this->getCell($line,$colCount++,'');
+	// 			if( empty( $seoUrl ) ){
+	// 				$errMsg = Labels::getLabel( "MSG_SEO_Friendly_URL_is_required.", $langId );
+	// 				$err = array($rowIndex,$colCount,$errMsg);
+	// 				CommonHelper::writeLogFile( $errFile,  $err);
+	// 				continue;
+	// 			}
+	// 			$featured = $this->getCell($line,$colCount++,0);
+	// 			if( $featured == '' || $featured < 0 ){
+	// 				$errMsg = Labels::getLabel( "MSG_Featured_column_value_is_required.", $langId );
+	// 				$err = array($rowIndex,$colCount,$errMsg);
+	// 				CommonHelper::writeLogFile( $errFile,  $err);
+	// 				continue;
+	// 			}
+	// 			$active = $this->getCell($line,$colCount++,0);
+	// 			if( $active == '' || $active < 0 ){
+	// 				$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
+	// 				$err = array($rowIndex,$colCount,$errMsg);
+	// 				CommonHelper::writeLogFile( $errFile,  $err);
+	// 				continue;
+	// 			}
+	// 		}
+	//
+	// 		if(!$numcols || $numcols != $colCount){
+	// 			Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
+	// 			FatUtility::dieJsonError( Message::getHtml() );
+	// 		}
+	//
+	// 		if($rowCount > 0){
+	// 			$dataToSaveArr = array(
+	// 				'brand_status'=>applicationConstants::ACTIVE,
+	// 				'brand_identifier'=>$identifier,
+	// 			);
+	//
+	// 			if($this->isDefaultSheetData($langId)){
+	// 				if($this->settings['CONF_USE_O_OR_1']){
+	// 					$dataToSaveArr['brand_featured'] = (FatUtility::int($featured) == 1)?applicationConstants::YES:applicationConstants::NO;
+	// 					$dataToSaveArr['brand_active'] = (FatUtility::int($active) == 1)?applicationConstants::YES:applicationConstants::NO;
+	// 				}else{
+	// 					$dataToSaveArr['brand_featured'] = (strtoupper($featured) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+	// 					$dataToSaveArr['brand_active'] = (strtoupper($active) == 'YES')?applicationConstants::YES:applicationConstants::NO;
+	// 				}
+	// 			}
+	//
+	// 			if($this->settings['CONF_USE_BRAND_ID']){
+	// 				$dataToSaveArr['brand_id'] = $brandId;
+	// 				if($this->isDefaultSheetData($langId)){
+	// 					$dataToSaveArr['brand_identifier'] = $identifier;
+	// 				}
+	// 				$brandData = Brand::getAttributesById($brandId,array('brand_id'));
+	// 			}else{
+	// 				$brandId = 0;
+	// 				$dataToSaveArr['brand_identifier'] = $identifier;
+	// 				$brandData = Brand::getAttributesByIdentifier($identifier,array('brand_id'));
+	// 			}
+	//
+	// 			if(!empty($brandData) && $brandData['brand_id']){
+	// 				$brandId = $brandData['brand_id'];
+	// 				$where = array('smt' => 'brand_id = ?', 'vals' => array( $brandId ) );
+	// 				$this->db->updateFromArray( Brand::DB_TBL, $dataToSaveArr,$where);
+	// 			}else{
+	// 				if($this->isDefaultSheetData($langId)){
+	// 					$this->db->insertFromArray( Brand::DB_TBL, $dataToSaveArr);
+	// 					$brandId = $this->db->getInsertId();
+	// 				}
+	// 			}
+	//
+	// 			if($brandId){
+	// 				/* Lang Data [*/
+	// 				$langData = array(
+	// 					'brandlang_brand_id'=> $brandId,
+	// 					'brandlang_lang_id'=> $langId,
+	// 					'brand_name'=> $name,
+	// 					'brand_short_description'=> $description,
+	// 				);
+	// 				$this->db->insertFromArray( Brand::DB_LANG_TBL, $langData , false, array(),$langData );
+	// 				/* ]*/
+	//
+	// 				/* Url rewriting [*/
+	// 				if($this->isDefaultSheetData($langId)){
+	// 					if(trim($seoUrl) == ''){
+	// 						$seoUrl = $identifier;
+	// 					}
+	// 					$brand = new Brand($brandId);
+	// 					$brand->rewriteUrl($seoUrl);
+	// 				}
+	// 				/* ]*/
+	// 			}
+	// 		}
+	// 		$rowCount++;
+	// 	}
+	//
+	// 	// Close File
+	// 	CommonHelper::writeLogFile( $errFile, array(), true );
+	//
+	//
+	// 	$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
+	// 	if(CommonHelper::checkLogFile( $errfileName )){
+	// 		$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+	// 	}
+	// 	FatUtility::dieJsonSuccess($success);
+	// }
 
 	public function exportBrandMedia($langId){
 		$srch = Brand::getSearchObject();
@@ -3615,13 +3756,13 @@ class Importexport extends ImportexportCommon{
 					$trackInventory = (strtoupper($this->getCell($line,$colCount++,'')) == 'YES')?applicationConstants::YES:applicationConstants::NO;
 				}
 
-				if( $subtractStock < 0 || $subtractStock == '' ){
+				if( $subtractStock < 0 ){
 					$errMsg = Labels::getLabel( "MSG_Substract_stock_value_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
-				if( $trackInventory < 0 || $trackInventory == '' ){
+				if( $trackInventory < 0 ){
 					$errMsg = Labels::getLabel( "MSG_Track_inventory_value_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
@@ -3629,7 +3770,7 @@ class Importexport extends ImportexportCommon{
 				}
 
 				$thresholdStockLevel  = $this->getCell($line,$colCount++,0);
-				if( $thresholdStockLevel == '' ){
+				if( $thresholdStockLevel == '' || $thresholdStockLevel < 0 ){
 					$errMsg = Labels::getLabel( "MSG_Threshold_stock_level_value_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
@@ -3648,14 +3789,14 @@ class Importexport extends ImportexportCommon{
 					continue;
 				}
 				$selprod_max_download_times = $this->getCell($line,$colCount++,0);
-				if( 0 >= $selprod_max_download_times || $selprod_max_download_times == '' ){
+				if( 0 >= $selprod_max_download_times ){
 					$errMsg = Labels::getLabel( "MSG_Digital_product_max_download_time_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
 				$selprod_download_validity_in_days = $this->getCell($line,$colCount++,0);
-				if( 0 >= $selprod_download_validity_in_days || $selprod_download_validity_in_days == '' ){
+				if( 0 >= $selprod_download_validity_in_days ){
 					$errMsg = Labels::getLabel( "MSG_Download_validity_in_days_is_required.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);

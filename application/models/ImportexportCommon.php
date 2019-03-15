@@ -182,22 +182,22 @@ class ImportexportCommon extends FatModel{
 		$arr = array();
 
 		if($this->settings['CONF_USE_BRAND_ID']){
-			$arr[] = Labels::getLabel('LBL_Brand_Id', $langId);
+			$arr['brand_id'] = Labels::getLabel('LBL_Brand_Id', $langId);
 			if($this->isDefaultSheetData($langId)){
-				$arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+				$arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
 			}
 		}else{
-			$arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+			$arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
 		}
-		$arr[] = Labels::getLabel('LBL_Name', $langId);
+		$arr['brand_name'] = Labels::getLabel('LBL_Name', $langId);
 
 		if(!$userId){
-			$arr[] = Labels::getLabel('LBL_Description', $langId);
+			$arr['brand_short_description'] = Labels::getLabel('LBL_Description', $langId);
 
 			if($this->isDefaultSheetData($langId)){
-				$arr[] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-				$arr[] = Labels::getLabel('LBL_Featured', $langId);
-				$arr[] = Labels::getLabel('LBL_Active', $langId);
+				$arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
+				$arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);
+				$arr['brand_active'] = Labels::getLabel('LBL_Active', $langId);
 			}
 		}
 		return $arr;
