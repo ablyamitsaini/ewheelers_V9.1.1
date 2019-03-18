@@ -652,12 +652,78 @@ echo $str;
 	}
 			
 	function test(){					
-		$orders = new Orders('O1538197607');	
-		$childOrderInfo = $orders->getOrderProductsByOpId(122,1);
-		echo $childOrderInfo["op_free_ship_upto"].'-'.$childOrderInfo["op_actual_shipping_charges"].'-'.$childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'];
+		$orders = new Orders('O1552890658');	
+		$langId = 1;
+		$childOrderInfo = $orders->getOrderProductsByOpId(413,1);
+		$emailNotificationObj = new EmailHandler();
+		
+		$formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
+		$comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved',$langId),$formattedRequestValue);
+		
 		if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']){
-			die('dsds');
+			$actualShipCharges = 0 ;
+			$sellerProdTotalPrice = 0;
+			$rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
+			
+			foreach($rows as $row){
+				if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']){
+					continue;
+				}
+				if( $row['op_refund_qty'] == $row['op_qty'] ){
+					continue;
+				}
+				$qty = $row['op_qty'] - $row['op_refund_qty'];
+				$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
+			}
+
+			$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+			if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+				$unitShipCharges = round($childOrderInfo['op_actual_shipping_charges']/$childOrderInfo["op_qty"],2);
+				$returnShipChargesToCust = 0;
+				if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
+					$returnShipChargesToCust = $unitShipCharges * $childOrderInfo["op_refund_qty"];
+				}
+
+				$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'] - $returnShipChargesToCust;
+			}
+			
+			if(0 < $actualShipCharges){
+				$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}',$langId));
+				$txnDataArr = array(
+					'utxn_user_id'	=> $childOrderInfo['order_user_id'],
+					'utxn_comments'	=> $comments,
+					'utxn_status'	=> Transactions::STATUS_COMPLETED,
+					'utxn_debit'	=> $actualShipCharges,
+					'utxn_op_id'	=> $childOrderInfo['op_id'],
+					'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+				);
+				var_dump($txnDataArr);
+				echo "<br>";
+				$transObj = new Transactions();
+				if($txnId = $transObj->addTransaction($txnDataArr)){
+					$emailNotificationObj->sendTxnNotification($txnId,$langId);
+				}
+				
+				$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Credited_Shipping_Charges_{invoice}',$langId));
+				$txnDataArr = array(
+					'utxn_user_id'	=> $childOrderInfo['op_selprod_user_id'],
+					'utxn_comments'	=> $comments,
+					'utxn_status'	=> Transactions::STATUS_COMPLETED,
+					'utxn_debit'	=> $actualShipCharges,
+					'utxn_op_id'	=> $childOrderInfo['op_id'],
+					'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+				);
+				var_dump($txnDataArr);
+				echo "<br>";
+				$transObj = new Transactions();
+				if($txnId = $transObj->addTransaction($txnDataArr)){
+					$emailNotificationObj->sendTxnNotification($txnId,$langId);
+				} 
+			}	
 		}	
+		
+		
+		
 		CommonHelper::printArray($childOrderInfo); exit;
 	}
 	

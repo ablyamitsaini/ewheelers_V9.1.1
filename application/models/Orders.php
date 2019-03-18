@@ -1347,8 +1347,8 @@ class Orders extends MyAppModel{
 						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
 					$actualShipCharges = 0;
-					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+					//$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerProdTotalPrice ){
 						if(!FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
 							$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						}
@@ -1383,6 +1383,7 @@ class Orders extends MyAppModel{
 						if($txnId = $transObj->addTransaction($txnDataArr)){
 							$emailNotificationObj->sendTxnNotification($txnId,$langId);
 						}
+						
 					}
 				}
 				/* ]*/
@@ -1429,8 +1430,8 @@ class Orders extends MyAppModel{
 						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
 
-					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+					//$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerProdTotalPrice ){
 						$unitShipCharges = round($childOrderInfo['op_actual_shipping_charges']/$childOrderInfo["op_qty"],2);
 						$returnShipChargesToCust = 0;
 						if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){

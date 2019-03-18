@@ -15,6 +15,7 @@ Fixes :
     . Showing some html elements content on seller products inventory(frontend), issue resolved.
     . Error Notice showing while searching products on frontend, issue resolved.
 	. Aweber newsletter signup.
+	. Refund and shipping calculation based on free shipping.
 
 Enhancements :
     . Import error handling via csv.
