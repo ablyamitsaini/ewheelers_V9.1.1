@@ -187,7 +187,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                        <?php if($usproduct['selprod_stock']<=0){ ?>
 						  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
 						  <?php  } ?></td>
-                      <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['selprod_price']); ?></div></td>
+                      <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
                       <td class="<?php echo $cancelClass;?>"><div class="qty"> <span class="decrease decrease-js">-</span>
                           <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
                           <span class="increase increase-js">+</span> </div></td>
