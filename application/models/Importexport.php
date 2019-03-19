@@ -742,7 +742,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -874,7 +874,7 @@ class Importexport extends ImportexportCommon{
 		$success['status'] = 1;
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -1073,7 +1073,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -1808,7 +1808,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -1959,7 +1959,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2112,7 +2112,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2303,7 +2303,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2581,7 +2581,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2844,7 +2844,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3281,7 +3281,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3509,7 +3509,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3669,7 +3669,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3809,7 +3809,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -3922,7 +3922,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4064,7 +4064,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4174,7 +4174,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4315,7 +4315,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4535,7 +4535,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4737,7 +4737,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -4919,7 +4919,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5131,7 +5131,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5336,7 +5336,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -5538,7 +5538,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){
-			$success['redirectUrl'] = FatUtility::generateFullUrl( 'importExport','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
+			$success['redirectUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($errfileName),CONF_WEBROOT_FRONTEND );
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
