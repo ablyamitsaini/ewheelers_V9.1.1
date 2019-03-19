@@ -16,6 +16,8 @@ Fixes :
     . Error Notice showing while searching products on frontend, issue resolved.
 	. Aweber newsletter signup.
 	. Refund and shipping calculation based on free shipping.
+	. Replaced google plus login with google login.
+
 
 Enhancements :
     . Import error handling via csv.

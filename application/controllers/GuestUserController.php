@@ -181,6 +181,8 @@ class GuestUserController extends MyAppController {
 		if (isset($oauthProvider)){
 			if ($oauthProvider == 'googleplus') {
 				FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginGoogleplus'));
+			}else if ($oauthProvider == 'google') {
+				FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginGoogle'));
 			}else if ($oauthProvider == 'facebook') {
 				FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginFacebook'));
 			}else{
@@ -358,25 +360,23 @@ class GuestUserController extends MyAppController {
 
 	}
 
-	public function loginGoogleplus(){
-		require_once CONF_INSTALLATION_PATH . 'library/googleplus/Google_Client.php'; // include the required calss files for google login
-		require_once CONF_INSTALLATION_PATH . 'library/googleplus/contrib/Google_PlusService.php';
-		require_once CONF_INSTALLATION_PATH . 'library/googleplus/contrib/Google_Oauth2Service.php';
-		$client = new Google_Client();
+	public function loginGoogle(){
+		require_once CONF_INSTALLATION_PATH . 'library/GoogleAPI/vendor/autoload.php'; // include the required calss files for google login
 
+		$client = new Google_Client();
 		$client->setApplicationName(FatApp::getConfig('CONF_WEBSITE_NAME_'.$this->siteLangId)); // Set your applicatio name
-		$client->setScopes(array('https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/plus.me')); // set scope during user login
+		$client->setScopes(['email']); // set scope during user login
 		$client->setClientId(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_ID")); // paste the client id which you get from google API Console
 		$client->setClientSecret(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_SECRET")); // set the client secret
 
-		$currentPageUri = CommonHelper::generateFullUrl('GuestUser','loginGoogleplus',array(),'',false);
+		$currentPageUri = CommonHelper::generateFullUrl('GuestUser','loginGoogle',array(),'',false);
 		$client->setRedirectUri($currentPageUri);
 		$client->setDeveloperKey(FatApp::getConfig("CONF_GOOGLEPLUS_DEVELOPER_KEY")); // Developer key
-		$plus       = new Google_PlusService($client);
-		$oauth2     = new Google_Oauth2Service($client); // Call the OAuth2 class for get email address
+
+		$oauth2 =new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
 
 		if(isset($_GET['code'])) {
-		    $client->authenticate(); // Authenticate
+		    $client->authenticate($_GET['code']); // Authenticate
 		    $_SESSION['access_token'] = $client->getAccessToken(); // get the access token here
 			FatApp::redirectUser($currentPageUri);
 		}
@@ -391,19 +391,18 @@ class GuestUserController extends MyAppController {
 		}
 
 		$user = $oauth2->userinfo->get();
-
 		$_SESSION['access_token'] = $client->getAccessToken();
 
-		$userGoogleplusEmail = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
-		$userGoogleplusId = $user['id'];
-		$userGoogleplusName = $user['name'];
+		$userGoogleEmail = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
+		$userGoogleId = $user['id'];
+		$userGoogleName = $user['name'];
 
 
-		if (isset($userGoogleplusEmail) && (!empty($userGoogleplusEmail))){
+		if (isset($userGoogleEmail) && (!empty($userGoogleEmail))){
 			$db = FatApp::getDb();
 			$userObj = new User();
 			$srch = $userObj->getUserSearchObj(array('user_id','credential_email','credential_active'));
-			$srch->addCondition('credential_email','=',$userGoogleplusEmail);
+			$srch->addCondition('credential_email','=',$userGoogleEmail);
 			$rs = $srch->getResultSet();
 			$row = $db->fetch($rs);
 
@@ -414,7 +413,7 @@ class GuestUserController extends MyAppController {
 				}
 				$userObj->setMainTableRecordId($row['user_id']);
 
-				$arr = array('user_googleplus_id' => $userGoogleplusId);
+				$arr = array('user_googleplus_id' => $userGoogleId);
 
 				if(!$userObj->setUserInfo($arr)){
 					Message::addErrorMessage(Labels::getLabel($userObj->getError(),$this->siteLangId));
@@ -427,11 +426,11 @@ class GuestUserController extends MyAppController {
 				$db->startTransaction();
 
 				$userData = array(
-					'user_name' => $userGoogleplusName,
+					'user_name' => $userGoogleName,
 					'user_is_buyer' => 1,
 					'user_is_supplier' => $user_is_supplier,
 					'user_is_advertiser' => $user_is_advertiser,
-					'user_googleplus_id' => $userGoogleplusId,
+					'user_googleplus_id' => $userGoogleId,
 					'user_preferred_dashboard' => User::USER_BUYER_DASHBOARD,
 				);
 				$post['user_registered_initially_for'] = User::USER_TYPE_BUYER;
@@ -441,16 +440,16 @@ class GuestUserController extends MyAppController {
 					CommonHelper::redirectUserReferer();
 				}
 
-				$username = str_replace(" ","",$userGoogleplusName).$userGoogleplusId;
+				$username = str_replace(" ","",$userGoogleName).$userGoogleId;
 
-				if (!$userObj->setLoginCredentials($username,$userGoogleplusEmail, uniqid(), 1, 1)) {
+				if (!$userObj->setLoginCredentials($username,$userGoogleEmail, uniqid(), 1, 1)) {
 					Message::addErrorMessage(Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET",$this->siteLangId) . $userObj->getError());
 					$db->rollbackTransaction();
 					CommonHelper::redirectUserReferer();
 				}
 
 				$userData['user_username'] = $username;
-				$userData['user_email'] = $userGoogleplusEmail;
+				$userData['user_email'] = $userGoogleEmail;
 				if(FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION',FatUtility::VAR_INT,1)){
 					if(!$this->notifyAdminRegistration($userObj, $userData)){
 						Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT",$this->siteLangId));
@@ -461,9 +460,9 @@ class GuestUserController extends MyAppController {
 					}
 				}
 
-				if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1) && $userGoogleplusEmail){
-					$data['user_email'] = $userGoogleplusEmail;
-					$data['user_name'] = $userGoogleplusName;
+				if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION',FatUtility::VAR_INT,1) && $userGoogleEmail){
+					$data['user_email'] = $userGoogleEmail;
+					$data['user_name'] = $userGoogleName;
 
 					//ToDO::Change login link to contact us link
 					$data['link'] = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
@@ -482,7 +481,7 @@ class GuestUserController extends MyAppController {
 
 			$userInfo = $userObj->getUserInfo(array('user_googleplus_id','user_preferred_dashboard','credential_username','credential_password'));
 
-			if(!$userInfo || ($userInfo && $userInfo['user_googleplus_id']!= $userGoogleplusId)){
+			if(!$userInfo || ($userInfo && $userInfo['user_googleplus_id']!= $userGoogleId)){
 				Message::addErrorMessage(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET",$this->siteLangId));
 				CommonHelper::redirectUserReferer();
 			}
@@ -514,7 +513,7 @@ class GuestUserController extends MyAppController {
 
 		CommonHelper::redirectUserReferer();
 	}
-
+	
 	public function registrationForm() {
 		if (UserAuthentication::isUserLogged()) {
 			FatApp::redirectUser(CommonHelper::generateUrl('account'));

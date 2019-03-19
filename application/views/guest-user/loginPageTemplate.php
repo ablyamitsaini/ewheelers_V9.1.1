@@ -31,7 +31,9 @@
 	  <?php if ($facebookLogin) { ?>
 	  <a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn  btn--social fb-color"><i class="fa fa-facebook"></i> <?php echo Labels::getLabel('LBL_Facebook',$siteLangId);?></a>
 <?php } if ($googleLogin ) { ?>
-	  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="btn btn--social gp-color"><i class="fa fa-google-plus"></i> <?php echo Labels::getLabel('LBL_Google_Plus',$siteLangId);?></a>
+	  
+	  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('google')); ?>" class="btn btn--social gp-color"><i class="fa fa-google"></i> <?php echo Labels::getLabel('LBL_Google',$siteLangId);?></a>
+
 <?php }?>
 </div>
 <?php
