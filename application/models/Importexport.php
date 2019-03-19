@@ -2990,7 +2990,7 @@ class Importexport extends ImportexportCommon{
 			if($this->isDefaultSheetData($langId)){
 				$sheetArr[] = $row['selprod_url_keyword'];
 				if(!$userId){
-					$sheetArr[] = $this->displayDateTime($row['selprod_added_on']);
+					// $sheetArr[] = $this->displayDateTime($row['selprod_added_on']);
 				}
 				$sheetArr[] = $this->displayDateTime($row['selprod_available_from']);
 
@@ -3028,6 +3028,7 @@ class Importexport extends ImportexportCommon{
 		$prodConditionArr = array_flip($prodConditionArr);
 
 		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
+			$line = array_filter($line);
 			$rowIndex++;
 			if(empty($line[0])){
 				continue;
@@ -3038,8 +3039,8 @@ class Importexport extends ImportexportCommon{
 
 			if($rowCount == 0){
 				$coloumArr = $this->getSelProdGeneralColoumArr($langId , $sellerId);
-				if($line !== $coloumArr || $numcols != count($coloumArr)){
-					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
+				if($line !== $coloumArr){
+					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ). $numcols .' != '. count($coloumArr). json_encode(array_diff($line, $coloumArr)) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
@@ -3138,11 +3139,12 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$urlKeyword = $this->getCell($line,$colCount++,'');
-				if(!$sellerId){
-					$addedOn = $this->getDateTime($this->getCell($line,$colCount++,date('Y-m-d')));
-				}else{
-					$addedOn = date('Y-m-d H:i:s');
-				}
+				// if(!$sellerId){
+				// 	$addedOn = $this->getDateTime($this->getCell($line,$colCount++,date('Y-m-d')));
+				// }else{
+				// 	$addedOn = date('Y-m-d H:i:s');
+				// }
+				$addedOn = date('Y-m-d H:i:s');
 
 				$availableFrom = $this->getDateTime($this->getCell($line,$colCount++,date('Y-m-d')));
 
