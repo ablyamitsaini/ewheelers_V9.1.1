@@ -4,7 +4,7 @@
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Buyer', 'setupOrderCancelRequest'), data, function(t) {
 			document.frmOrderCancel.reset();			
-			setTimeout(function() { fcom.makeUrl('Buyer', 'orderCancellationRequests') }, 1000);					
+			setTimeout(function() { window.location.href = fcom.makeUrl('Buyer', 'orderCancellationRequests'); }, 1000);					
 		});
 	};
 	
