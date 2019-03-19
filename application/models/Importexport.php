@@ -905,24 +905,25 @@ class Importexport extends ImportexportCommon{
 		$headingsArr = $this->getBrandColoumArr($langId, $userId);
 		array_push( $sheetData, $headingsArr );
 		/* ] */
-		$data = $this->db->fetchAll($rs);
+		// $data = $this->db->fetchAll($rs);
 
-		foreach ($data as $index => $row) {
+		$rowIndex = 1;
+		while( $row = $this->db->fetch($rs) ){
 			foreach ($headingsArr as $columnKey => $heading) {
 
 				$colValue = isset($row[$columnKey]) ? $row[$columnKey] : '';
 
 				if( in_array( $columnKey, array( 'brand_featured', 'brand_active' ) ) && !$this->settings['CONF_USE_O_OR_1'] ){
-					if(!$this->settings['CONF_USE_O_OR_1']){
-						$colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
-					}
+					$colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
 				}
 
 				if(  'urlrewrite_custom' == $columnKey ){
 					$colValue = isset($urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']]) ? $urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']] : '';
 				}
-				$sheetData[ ($index + 1) ][] = $colValue;
+
+				$sheetData[$rowIndex][] = $colValue;
 			}
+			$rowIndex++;
 		}
 		return $sheetData;
 	}
