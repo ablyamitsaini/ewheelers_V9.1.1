@@ -15,7 +15,7 @@
 			if(ans.status == true){
 				$.mbsmessage(ans.msg, true, 'alert--success');
 				document.frmOrderReturnRequest.reset();
-				setTimeout(function() { fcom.makeUrl('Buyer' ,'Orders') }, 1000);				
+				setTimeout(function() { window.location.href = fcom.makeUrl('Buyer' ,'Orders') }, 500);				
 			}else{
 				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
