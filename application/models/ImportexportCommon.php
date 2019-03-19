@@ -832,7 +832,7 @@ class ImportexportCommon extends FatModel{
 			'CONF_USE_BRAND_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_BRAND_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_CATEGORY_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_CATEGORY_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_PRODUCT_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_PRODUCT_ID',FatUtility::VAR_INT,0):false,
-			'CONF_USE_USER_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_USER_ID',FatUtility::VAR_INT,0):false,
+			'CONF_USE_USER_ID'=>false,
 			'CONF_USE_OPTION_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_OPTION_ID',FatUtility::VAR_INT,0):false,
 			'CONF_OPTION_VALUE_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_OPTION_VALUE_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_TAG_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_TAG_ID',FatUtility::VAR_INT,0):false,
@@ -871,6 +871,7 @@ class ImportexportCommon extends FatModel{
 		if(!$row){
 			return $res;
 		}
+		$row['CONF_USE_USER_ID'] = false;
 		return $row;
 	}
 

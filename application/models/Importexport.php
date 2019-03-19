@@ -1225,6 +1225,7 @@ class Importexport extends ImportexportCommon{
 	public function exportProductsCatalog($langId,$offset = null,$noOfRows = null,$minId = null,$maxId = null, $userId = null){
 		$userId = FatUtility::int($userId);
 		$useProductId = false;
+		
 		if($this->settings['CONF_USE_PRODUCT_ID']){
 			$useProductId = true;
 		}

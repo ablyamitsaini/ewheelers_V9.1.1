@@ -360,9 +360,6 @@ class ImportExportController extends LoggedUserController {
 	private function getSettingForm($langId){
 		$frm = new Form('frmImportExportSetting',array('id'=>'frmImportExportSetting'));
 
-		$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_user_id_instead_of_username",$langId),'CONF_USE_USER_ID',1,array(),false,0);
-		$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_user_id_instead_of_username_in_worksheets",$langId).'</small>';
-
 		$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_brand_id_instead_of_brand_identifier",$langId),'CONF_USE_BRAND_ID',1,array(),false,0);
 		$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_brand_id_instead_of_brand_identifier_in_worksheets",$langId).'</small>';
 

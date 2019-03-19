@@ -18,7 +18,7 @@ Fixes :
 	. Refund and shipping calculation based on free shipping.
 	. Replaced google plus login with google login.
 	. Invalid access error on placing the cancellation request.
-
+	
 Enhancements :
     . Import error handling via csv.
     . Order Print layout and functionality.
@@ -32,6 +32,6 @@ Enhancements :
     . New Payment method Braintree implemented.
 	. From name on email notifications updated with site from name.
 	. Import Error log file will be automatically downloaded if it contains errors listing.
-
+	. Removed setting to use userId or username from import/export. Only username will be in use.
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.
