@@ -13,14 +13,6 @@ class ImportExportController extends LoggedUserController {
 		$this->_template->render();
 	}
 
-	public function deleteErrorLogFiles($hoursBefore = '4')
-	{
-		if ( !ImportexportCommon::deleteErrorLogFiles($hoursBefore) ){
-			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_hours',$this->siteLangId));
-			FatUtility::dieJsonError( Message::getHtml() );
-		}
-	}
-
 	public function exportData($actionType){
 		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 		$exportDataRange = FatApp::getPostedData('export_data_range', FatUtility::VAR_INT, 0);
@@ -323,11 +315,6 @@ class ImportExportController extends LoggedUserController {
 		$this->set('pageData' , $pageData);
 		$this->set('action','generalInstructions');
 		$this->_template->render(false,false,'import-export/general-instructions.php');
-	}
-
-	public function downloadLogFile($fileName)
-	{
-		AttachedFile::downloadAttachment('import-error-log/'.$fileName,$fileName);
 	}
 
 	public function updateSettings(){
