@@ -682,4 +682,12 @@ class CustomController extends MyAppController {
 	{
 		AttachedFile::downloadAttachment('import-error-log/'.$fileName,$fileName);
 	}
+
+	public function deleteErrorLogFiles($hoursBefore = '4')
+	{
+		if ( !ImportexportCommon::deleteErrorLogFiles($hoursBefore) ){
+			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_hours',$this->siteLangId));
+			FatUtility::dieJsonError( Message::getHtml() );
+		}
+	}
 }
