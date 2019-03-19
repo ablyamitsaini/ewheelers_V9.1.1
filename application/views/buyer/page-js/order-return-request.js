@@ -1,7 +1,3 @@
-function pageRedirect() {
-	window.location.replace(fcom.makeUrl('Buyer', 'Orders'));
-}
-
 (function() {
 	setupOrderReturnRequest = function (frm){
 		if (!$(frm).validate()) return;	
@@ -19,8 +15,7 @@ function pageRedirect() {
 			if(ans.status == true){
 				$.mbsmessage(ans.msg, true, 'alert--success');
 				document.frmOrderReturnRequest.reset();
-				setTimeout("pageRedirect()", 1000);
-				/* window.location.href = fcom.makeUrl('Buyer' ,'Orders'); */
+				setTimeout(function() { fcom.makeUrl('Buyer' ,'Orders') }, 1000);				
 			}else{
 				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
