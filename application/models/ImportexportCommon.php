@@ -97,11 +97,15 @@ class ImportexportCommon extends FatModel{
 	}
 
 	public function displayDateTime($dt,$time = true){
-		if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
-		if($time == false){
-			return date("m/d/Y",strtotime($dt));
+		try {
+			if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
+			if($time == false){
+				return date("m/d/Y",strtotime($dt));
+			}
+			return date('m/d/Y H:i:s',strtotime($dt));
+		}catch (Exception $e) {
+			return false;
 		}
-		return date('m/d/Y H:i:s',strtotime($dt));
 	}
 
 	public function getDateTime($dt,$time = true){
@@ -112,13 +116,19 @@ class ImportexportCommon extends FatModel{
 		}
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
-		//$dt = str_replace('/', '-', $dt);
-		$date = new DateTime($dt);
-		$timeStamp=$date->getTimestamp();
-		if($time==false){
-			return date("Y-m-d",$timeStamp);
+
+		try
+		{
+			//$dt = str_replace('/', '-', $dt);
+			$date = new DateTime($dt);
+			$timeStamp=$date->getTimestamp();
+			if($time==false){
+				return date("Y-m-d",$timeStamp);
+			}
+			return date("Y-m-d H:i:s",$timeStamp);
+		}catch (Exception $e) {
+			return false;
 		}
-		return date("Y-m-d H:i:s",$timeStamp);
 	}
 
 	public function getCategoryColoumArr($langId, $userId = 0){
