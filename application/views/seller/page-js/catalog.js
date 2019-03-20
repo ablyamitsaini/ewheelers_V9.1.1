@@ -46,18 +46,22 @@ $(document).delegate('.language-js','change',function(){
 		$(frm.page).val(page);
 		searchCatalogProducts(frm);
 	}
-	
+    
 	setShippedBySeller = function(product_id){
 		var data = 'shippedBy=seller&product_id='+product_id;
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpshippedBy'), data, function(t) {									
-			searchCatalogProducts(document.frmSearchCatalogProduct);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpshippedBy'), data, function(t) { 
+            var frm = document.frmCatalogProductSearchPaging;					
+			$(document.frmSearchCatalogProduct.page).val($(frm.page).val());
+            searchCatalogProducts(document.frmSearchCatalogProduct);
 		});
 	};
 	
 	
 	setShippedByAdmin = function(product_id){
 		var data = 'shippedBy=admin&product_id='+product_id;
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpshippedBy'), data, function(t) {									
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpshippedBy'), data, function(t) {
+            var frm = document.frmCatalogProductSearchPaging;					
+			$(document.frmSearchCatalogProduct.page).val($(frm.page).val());				
 			searchCatalogProducts(document.frmSearchCatalogProduct);
 		});
 	};

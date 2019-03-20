@@ -116,12 +116,10 @@ class ShopCollection extends MyAppModel {
 	
 	public static function getCollectionDetail($shop_id,$lang_id){
 		$srch = self::getSearchObject();
-		$srch->joinTable( static::DB_TBL_LANG, 'LEFT JOIN', static::DB_TBL_LANG_PREFIX.'scollection_id = '.static::DB_TBL_PREFIX.'id');
+		$srch->joinTable( static::DB_TBL_LANG, 'LEFT OUTER JOIN', static::DB_TBL_LANG_PREFIX.'scollection_id = '.static::DB_TBL_PREFIX.'id');
 		$srch->addCondition(static::DB_TBL_PREFIX . "shop_id", "=", $shop_id);
-		$srch->addCondition(static::DB_TBL_LANG_PREFIX . "lang_id", "=", $lang_id);
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
-		//echo $srch->getQuery();
 		$rs = $srch->getResultSet();
 		return  FatApp::getDb()->fetch($rs);
 	}

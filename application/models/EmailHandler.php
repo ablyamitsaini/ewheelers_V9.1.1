@@ -300,7 +300,8 @@ class EmailHandler extends FatModel {
 		$vars = array(
 					'{name}' => $d['user_name'],
 					'{email}' => $d['user_email'],
-					'{username}' => $d['user_username']
+					'{username}' => $d['user_username'],
+                    '{user_type}' => User::getUserTypesArr($langId)[$d['user_type']]
 				);
 
 		return $this->sendMailToAdminAndAdditionalEmails( $tpl, $vars, static::NO_ADDITIONAL_ALERT, static::NOT_ONLY_SUPER_ADMIN, $langId  );

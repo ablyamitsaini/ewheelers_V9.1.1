@@ -234,7 +234,7 @@ class ReportsController extends LoggedUserController {
 		$srch->addOrder('selprod_active', 'DESC');
 		$srch->addOrder('product_name');
 		$srch->addMultipleFields(array(
-			'selprod_id', 'selprod_user_id', 'selprod_cost', 'selprod_price', 'selprod_stock', 'selprod_product_id',
+			'selprod_id', 'selprod_user_id', 'selprod_cost', 'selprod_price', 'selprod_stock', 'selprod_product_id', 'selprod_sku', 
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'b_l.brand_name'));
 			
 		if( $keyword = FatApp::getPostedData('keyword')){

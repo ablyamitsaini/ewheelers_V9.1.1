@@ -1059,6 +1059,7 @@ class SellerController extends LoggedUserController {
 		$frmSearchCatalogProduct = $this->getCatalogProductSearchForm();
 		$post = $frmSearchCatalogProduct->getFormDataFromArray( FatApp::getPostedData() );
 		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
+        /* echo $page; die; */
 		$pagesize = FatApp::getConfig('CONF_PAGE_SIZE',FatUtility::VAR_INT, 10);
 
 		//$srch = Product::getSearchObject($this->siteLangId);
@@ -3712,10 +3713,15 @@ class SellerController extends LoggedUserController {
 
 
 		$prodSrch->addMultipleFields( array(
-			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name') );
+			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name','product_min_selling_price') );
 		$productRs = $prodSrch->getResultSet();
 		$product = FatApp::getDb()->fetch($productRs);
 		/* ] */
+        
+        $taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
+        if(!empty($taxData)){
+            $product = array_merge($product,$taxData);
+        }
 
 		if( !$product ){
 			FatUtility::exitWithErrorCode(404);

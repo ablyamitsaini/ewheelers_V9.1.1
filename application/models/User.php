@@ -1472,11 +1472,14 @@ class User extends MyAppModel {
 		return true;
 	}
 	
-	public function notifyAdminRegistration($data,$langId){		
+	public function notifyAdminRegistration($data,$langId){
+
+        $user_type = $data['user_registered_initially_for'];
 		$data = array(
             'user_name' => $data['user_name'],            
             'user_username' => $data['user_username'],            
 			'user_email' => $data['user_email'],
+			'user_type' => $user_type,
         );
 		$email = new EmailHandler();
 		

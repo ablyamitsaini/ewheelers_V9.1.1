@@ -675,7 +675,7 @@ class ProductsController extends MyAppController {
 
 		$srch->setPageNumber($page);
 		$srch->addMultipleFields(array('prodcat_code',
-				'product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
+				'product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on',
 				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 				'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
@@ -1186,7 +1186,7 @@ END,   special_price_found ) as special_price_found');
 		$srch->addSubscriptionValidCondition();
 		$srch->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
 		$srch->addMultipleFields(array(
-				'product_id','prodcat_id','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description',
+				'product_id','prodcat_id','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 				'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
 				'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
@@ -1470,7 +1470,7 @@ END,   special_price_found ) as special_price_found');
 				$prodSrch->joinProductRating();
 				$prodSrch->addCondition('selprod_id', 'IN', $cookiesProductsArr );
 				$prodSrch->addMultipleFields(array(
-						'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ',
+						'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'product_image_updated_on',
 						'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
 						'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price'));
 
@@ -1508,7 +1508,7 @@ END,   special_price_found ) as special_price_found');
 			$prodSrch->joinProductRating();
 			$prodSrch->addCondition('selprod_id', 'IN', $ids );
 			$prodSrch->addMultipleFields(array(
-					'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+					'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 					'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
 					'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price'));
 
