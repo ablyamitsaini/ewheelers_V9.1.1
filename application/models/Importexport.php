@@ -634,11 +634,13 @@ class Importexport extends ImportexportCommon{
 					}
 				}
 
-				if($parent){
+				if($parent){						
 					$categoryData = ProductCategory::getAttributesById($parent,'prodcat_id');
 					if(empty($categoryData) || $categoryData == false){
 						$parent = 0;
 					}
+					
+					$parent = ($parent == $categoryId)?0:$parent;
 				}
 			}
 
@@ -735,10 +737,10 @@ class Importexport extends ImportexportCommon{
 			}
 			$rowCount++;
 		}
+		$ProductCategory = new ProductCategory();
+		$ProductCategory->updateCatCode();
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
-
-
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if(CommonHelper::checkLogFile( $errfileName )){

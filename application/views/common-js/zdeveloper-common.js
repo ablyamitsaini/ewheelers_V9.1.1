@@ -539,8 +539,14 @@ function defaultSetUpLogin(frm, v) {
 		loading: function(){
 			$('.system_message').show();
 		},
-		fillSysMessage:function(data, cls){
-			if(cls) $('.system_message').addClass(cls);
+		fillSysMessage:function(data, cls){			
+			if(cls){
+				$('.system_message').removeClass('alert--process');
+				$('.system_message').removeClass('alert--danger');
+				$('.system_message').removeClass('alert--success');
+				$('.system_message').removeClass('alert--info');
+				$('.system_message').addClass(cls);
+			}	
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 
