@@ -13442,3 +13442,12 @@ main.main {
   height: 18px;
   fill: #44596B;
 }
+
+.actions li a.icn-highlighted{
+    border-color: var(--first-color);
+    color: var(--first-color);
+}
+
+.actions li a.icn-highlighted:hover{
+    color:#fff;
+}

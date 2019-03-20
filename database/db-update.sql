@@ -30,7 +30,7 @@ UPDATE `tbl_banner_locations` SET `blocation_key` = 'Home_Page_Bottom_Banner', `
 
 /* NEW Theme [ */
 
-TRUNCATE tbl_banner_location_dimensions
+TRUNCATE tbl_banner_location_dimensions;
 INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldimension_device_type`, `blocation_banner_width`, `blocation_banner_height`) VALUES
 (1, 1, '1200', '360'),
 (1, 2, '1200', '360'),

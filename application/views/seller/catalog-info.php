@@ -10,7 +10,6 @@
 		<div class="product-description-inner">
             <div class="products__title"><?php echo $product['product_name']; ?></div>
             <div class="gap"></div>
-            <div class="box box--white box--radius box--space">
                 <div class="cms">
                     <table>
                         <tbody>
@@ -37,7 +36,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 			<?php if( count($productSpecifications)>0 ){ ?>
                 <div class="gap"></div>
                 <div class="box box--gray box--radius box--space">

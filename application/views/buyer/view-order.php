@@ -26,11 +26,11 @@
 			<div class="btn-group">
                 <ul class="actions">
                     <?php if( $canCancelOrder ){ ?>
-                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($childOrderDetail['op_id']) );?>" class="" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($childOrderDetail['op_id']) );?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
                     <?php } if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
-                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($childOrderDetail['op_id']) ); ?>" class="" title="<?php echo Labels::getLabel('LBL_Feedback',$siteLangId);?>"><i class="fa fa-star"></i></a></li>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($childOrderDetail['op_id']) ); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Feedback',$siteLangId);?>"><i class="fa fa-star"></i></a></li>
                     <?php } if( $canReturnRefund ){ ?>
-                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id']) );?>" class="" title="<?php echo Labels::getLabel('LBL_Refund',$siteLangId);?>"><i class="fa fa-dollar"></i></a></li>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id']) );?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Refund',$siteLangId);?>"><i class="fa fa-dollar"></i></a></li>
                     <?php } ?>
                 </ul>
 			</div>

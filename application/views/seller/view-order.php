@@ -13,7 +13,7 @@
             <div class="col-md-auto">
                 <div class="btn-group">
                     <ul class="actions">
-                        <li><a href="<?php echo CommonHelper::generateUrl('seller', 'cancelOrder', array($orderDetail['op_id']) );?>" class="" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
+                        <li><a href="<?php echo CommonHelper::generateUrl('seller', 'cancelOrder', array($orderDetail['op_id']) );?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
                     </ul>
                 </div>
             </div>
