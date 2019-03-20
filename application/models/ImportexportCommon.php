@@ -248,7 +248,7 @@ class ImportexportCommon extends FatModel{
 			if($this->settings['CONF_USE_USER_ID']){
 				$arr['product_seller_id'] = Labels::getLabel('LBL_User_ID', $langId);
 			}else{
-				$arr['user_name'] = Labels::getLabel('LBL_Username', $langId);
+				$arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
 			}
 		}
 
@@ -304,15 +304,20 @@ class ImportexportCommon extends FatModel{
 			}
 			$arr['product_upc'] = Labels::getLabel('LBL_EAN/UPC_code', $langId);
 			if($this->settings['CONF_USE_COUNTRY_ID']){
-				$arr['product_ship_country_id'] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
+				$arr['ps_from_country_id'] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
+				// $arr['product_ship_country_id'] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
 			}else{
-				$arr['product_ship_country_code'] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
+				$arr['country_code'] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
+				// $arr['product_ship_country_code'] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
 			}
 
-			if(!$userId){
-				$arr['product_added_on'] = Labels::getLabel('LBL_Added_On', $langId);
-			}
-			$arr['product_ship_free'] = Labels::getLabel('LBL_Free_Shipping', $langId);
+			// Not necessary
+			// if(!$userId){
+			// 	$arr['product_added_on'] = Labels::getLabel('LBL_Added_On', $langId);
+			// }
+
+			$arr['ps_free'] = Labels::getLabel('LBL_Free_Shipping', $langId);
+			// $arr['product_ship_free'] = Labels::getLabel('LBL_Free_Shipping', $langId);
 			$arr['product_cod_enabled'] = Labels::getLabel('LBL_COD_available', $langId);
 			if(!$userId){
 				$arr['product_featured'] = Labels::getLabel('LBL_Featured', $langId);
@@ -329,15 +334,15 @@ class ImportexportCommon extends FatModel{
 
 		$arr = array();
 		if($this->settings['CONF_USE_PRODUCT_ID']){
-			$arr[] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+			$arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
+			$arr['product_identifier'] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
 		}
 
 		if($this->settings['CONF_USE_OPTION_ID']){
-			$arr[] = Labels::getLabel('LBL_Option_ID', $langId);
+			$arr['option_id'] = Labels::getLabel('LBL_Option_ID', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Option_Identifier', $langId);
+			$arr['option_identifier'] = Labels::getLabel('LBL_Option_Identifier', $langId);
 		}
 
 		return $arr;
@@ -346,15 +351,15 @@ class ImportexportCommon extends FatModel{
 	public function getProductTagColoumArr($langId){
 		$arr = array();
 		if($this->settings['CONF_USE_PRODUCT_ID']){
-			$arr[] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+			$arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
+			$arr['product_identifier'] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
 		}
 
 		if($this->settings['CONF_USE_TAG_ID']){
-			$arr[] = Labels::getLabel('LBL_TAG_ID', $langId);
+			$arr['tag_id'] = Labels::getLabel('LBL_TAG_ID', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_TAG_Identifier', $langId);
+			$arr['tag_identifier'] = Labels::getLabel('LBL_TAG_Identifier', $langId);
 		}
 
 		return $arr;
