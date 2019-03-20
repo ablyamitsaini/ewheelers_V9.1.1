@@ -3040,8 +3040,8 @@ class Importexport extends ImportexportCommon{
 
 			if($rowCount == 0){
 				$coloumArr = $this->getSelProdGeneralColoumArr($langId , $sellerId);
-				if($line !== $coloumArr){
-					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ). $numcols .' != '. count($coloumArr). json_encode(array_diff($line, $coloumArr)) );
+				if($line !== $coloumArr && $numcols != count($coloumArr)){
+					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
 				$rowCount++;
