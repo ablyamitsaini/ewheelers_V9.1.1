@@ -687,7 +687,7 @@ $(document).ready(function(){
 		$(this).parent('div').find('input').val(val);
 	});
 
-	$(document).on("click",'.setactive-js li',function(){
+	$(document).on("click",'.setactive-js li',function(){ 
 		$(this).closest('.setactive-js').find('li').removeClass('is-active');
 		$(this).addClass('is-active');
 	});

@@ -17,8 +17,7 @@ Fixes :
 	. Aweber newsletter signup.
 	. Refund and shipping calculation based on free shipping.
 	. Replaced google plus login with google login.
-	. Invalid access error on placing the cancellation request.
-	
+	. Invalid access error on placing the cancellation request.	
 Enhancements :
     . Import error handling via csv.
     . Order Print layout and functionality.
