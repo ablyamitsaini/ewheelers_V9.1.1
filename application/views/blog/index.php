@@ -71,4 +71,3 @@ if(count($postList)>2 && (!isset($keyword)) && (!isset($bpCategoryId))){ require
 	});
 
 </script>
-<?php $this->includeTemplate( '_partial/shareThisScript.php' );?>

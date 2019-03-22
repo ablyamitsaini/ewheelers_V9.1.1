@@ -186,3 +186,4 @@ if(!empty($postList)){ ?>
 	</div>
 	<?php
 } ?>
+<?php $this->includeTemplate( '_partial/shareThisScript.php' );?>

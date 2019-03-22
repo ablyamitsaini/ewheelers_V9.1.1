@@ -135,10 +135,10 @@
             </div>
         </div>
     </section>
-    <?php if(FatApp::getConfig('CONF_MAP_IFRAME_CODE',FatUtility::VAR_STRING,'') != '') { ?>
     <section class="g-map">
+    <?php if(FatApp::getConfig('CONF_MAP_IFRAME_CODE',FatUtility::VAR_STRING,'') != '') { ?>
         <?php echo FatApp::getConfig('CONF_MAP_IFRAME_CODE',FatUtility::VAR_STRING);?>
-    </section>
     <?php }?>
+    </section>
 </div>
 <script src='https://www.google.com/recaptcha/api.js'></script>

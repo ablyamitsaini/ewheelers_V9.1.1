@@ -20,6 +20,7 @@ class ImportexportCommon extends FatModel{
 		$fileName = Labels::getLabel('LBL_'.$fileName,$langId);
 		return $fileName.'_'.time().'_'.mt_rand().'.csv';
 	}
+    
 	public function openErrorLogFile( $fileName ,$langId = 0 )
 	{
 		if( empty($fileName)){
