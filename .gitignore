@@ -1,5 +1,5 @@
 /user-uploads/*
-
+/public/settings.php
 /public/server_info.php
 /public/unlink-files.php
 /conf/yokart-v8-1-test.staging.4demo.biz.php

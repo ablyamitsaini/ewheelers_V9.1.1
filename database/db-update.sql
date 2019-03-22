@@ -41,6 +41,7 @@ INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldim
 (3, 1, '1200', '360'),
 (3, 2, '1200', '360'),
 (3, 3, '1200', '360');
+UPDATE `tbl_theme_colors` SET `tcolor_header_text_color`= '323232';
 
 /* ] */
 
