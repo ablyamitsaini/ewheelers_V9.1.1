@@ -3405,9 +3405,11 @@ class Importexport extends ImportexportCommon{
 			}
 
 			if(!$optionId){
-				$errMsg = Labels::getLabel( "MSG_Option_Id_is_required", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
+				if($this->settings['CONF_USE_OPTION_ID']){
+					$errMsg = Labels::getLabel( "MSG_Option_Id_is_required", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err); 
+				}
 				continue;
 			}
 
@@ -3460,9 +3462,11 @@ class Importexport extends ImportexportCommon{
 			}
 
 			if(!$optionValueId){
-				$errMsg = Labels::getLabel( "MSG_Option_value_Id_is_required", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
+				if($this->settings['CONF_OPTION_VALUE_ID']){
+					$errMsg = Labels::getLabel( "MSG_Option_value_Id_is_required", $langId );
+					$err = array($rowIndex,$colCount,$errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+				}
 				continue;
 			}
 
@@ -3484,17 +3488,18 @@ class Importexport extends ImportexportCommon{
 			$rowCount++;
 		}
 
-		if($selProdOptionsArr){
+		if($selProdOptionsArr){ 
 			$options = array();
 			foreach($selProdOptionsArr as $k=>$v){
-				$productRow = Product::getAttributesById( $k, array('product_id') );
+				
+				$productRow = SellerProduct::getAttributesById( $k, array('selprod_product_id') );				
 				if( !$productRow ){
 					$errMsg = Labels::getLabel( "MSG_Product_not_found.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
 					CommonHelper::writeLogFile( $errFile,  $err);
 					continue;
 				}
-				$options['selprod_code'] = $productRow['product_id'].'_'.implode('_',$v);
+				$options['selprod_code'] = $productRow['selprod_product_id'].'_'.implode('_',$v);
 				$sellerProdObj = new SellerProduct($k);
 				$sellerProdObj->assignValues( $options );
 				if ( !$sellerProdObj->save() ) {
@@ -4677,9 +4682,9 @@ class Importexport extends ImportexportCommon{
 			}
 
 			if(!$optionId){
-				$errMsg = Labels::getLabel( "MSG_Option_Id_is_required.", $langId );
+				/* $errMsg = Labels::getLabel( "MSG_Option_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
+				CommonHelper::writeLogFile( $errFile,  $err); */
 				continue;
 			}
 
