@@ -31,20 +31,16 @@
                     <?php } ?>   
 				</div>
 				<div class="cards-content p-3">
-                                           <div class="row">
-                                               <div class="col-lg-6 col-md-6 mb-4">
-                                                 <div class="info--order">
-                                                  <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
-                                                  <?php
-                        $paymentMethodName = ($orderDetail['pmethod_name'] !='')?$orderDetail['pmethod_name']:$orderDetail['pmethod_identifier'];
-                        if( $orderDetail['order_pmethod_id'] > 0 && $orderDetail['order_is_wallet_selected'] > 0 ){
-                          $paymentMethodName .= ' + ';
-                        }
-                        if( $orderDetail['order_is_wallet_selected'] > 0 ){
-                          $paymentMethodName .= Labels::getLabel("LBL_Wallet",$siteLangId);
-                        }
-                        ?>
-                        <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $paymentMethodName;?></p>
+                   <div class="row">
+                       <div class="col-lg-6 col-md-6 mb-4">
+                         <div class="info--order">
+                          <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
+                          <?php 
+                          $selected_method = '';
+                          if($orderDetail['order_pmethod_id'] > 0) $selected_method.= CommonHelper::displayNotApplicable($siteLangId, $orderDetail["pmethod_name"]);
+                          if($orderDetail['order_is_wallet_selected'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$siteLangId) : Labels::getLabel("LBL_Wallet",$siteLangId);
+                          if($orderDetail['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$siteLangId) : Labels::getLabel("LBL_Rewards",$siteLangId); ?>
+                        <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $selected_method;?></p>
                         <p><strong><?php echo Labels::getLabel('LBL_Status',$siteLangId);?>: </strong><?php echo $orderStatuses[$orderDetail['op_status_id']];?></p>
                                                   <p><strong><?php echo Labels::getLabel('LBL_Cart_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'CART_TOTAL'));?></p>
 

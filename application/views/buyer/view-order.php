@@ -59,15 +59,11 @@
                            <div class="info--order">
                           <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $childOrderDetail['user_name'];?></p>
                           <?php
-								$paymentMethodName = $childOrderDetail['pmethod_name']?:$childOrderDetail['pmethod_identifier'];
-								if( $childOrderDetail['order_pmethod_id'] > 0 && $childOrderDetail['order_is_wallet_selected'] > 0 ){
-									$paymentMethodName .= ' + ';
-								}
-								if( $childOrderDetail['order_is_wallet_selected'] > 0 ){
-									$paymentMethodName .= Labels::getLabel("LBL_Wallet",$siteLangId);
-								}
-							?>
-                          <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $paymentMethodName;?></p>
+							$selected_method = '';
+                            if($childOrderDetail['order_pmethod_id'] > 0) $selected_method.= CommonHelper::displayNotApplicable($siteLangId, $childOrderDetail["pmethod_name"]);
+                            if($childOrderDetail['order_is_wallet_selected'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$siteLangId) : Labels::getLabel("LBL_Wallet",$siteLangId);
+                            if($childOrderDetail['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$siteLangId) : Labels::getLabel("LBL_Rewards",$siteLangId); ?>
+                          <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $selected_method;?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Status',$siteLangId);?>: </strong><?php echo $orderStatuses[$childOrderDetail['op_status_id']];?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Cart_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail,'CART_TOTAL'));?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Delivery',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail,'SHIPPING'));?></p>

@@ -1,8 +1,8 @@
-<?php /* echo ($order['order_pmethod_id']) ? CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"]) : 'Wallet';  */
+<?php
 $selected_method = '';
 if($order['order_pmethod_id']) $selected_method.= CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"]);
-if($order['order_is_wallet_selected'] == applicationConstants::YES) $selected_method.= ($selected_method!='') ? ' / Wallet' : 'Wallet';
-if($order['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' / Rewards' : 'rewards';
+if($order['order_is_wallet_selected'] == applicationConstants::YES) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$adminLangId) : Labels::getLabel("LBL_Wallet",$adminLangId);
+if($order['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$adminLangId) : Labels::getLabel("LBL_Rewards",$adminLangId);
 ?>
 <div class="page">
             <div class="container container-fluid">
