@@ -27,3 +27,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_ID
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_application_Client_Id_used_to_Login'
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_Secret'
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_Google_Plus_id_client_secret_key_used_for_authentication'
+ALTER TABLE `tbl_admin` ADD `admin_email_notification` TINYINT(1) NOT NULL AFTER `admin_active`;
