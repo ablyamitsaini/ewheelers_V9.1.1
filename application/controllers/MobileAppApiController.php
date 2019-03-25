@@ -548,7 +548,7 @@ class MobileAppApiController extends MyAppController {
 		$prodObj->joinProducts();
 		$prodObj->joinShops();
 		$prodObj->addPromotionTypeCondition(Promotion::TYPE_PRODUCT);
-		//$prodObj->joinActiveUser();
+		$prodObj->joinActiveUser();
 		$prodObj->setDefinedCriteria();
 		$prodObj->addShopActiveExpiredCondition();
 		$prodObj->joinUserWallet();
