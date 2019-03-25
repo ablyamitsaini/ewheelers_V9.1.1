@@ -248,10 +248,10 @@ class ReportsController extends LoggedUserController {
 			$srch->doNotLimitRecords();
 			$rs = $srch->getResultSet();
 			$sheetData = array();
-			$arr = array(Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title(If_Any)', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Stock_Quantity', $this->siteLangId));
+			$arr = array(Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title(If_Any)', $this->siteLangId), Labels::getLabel('LBL_Product_SKU', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Stock_Quantity', $this->siteLangId));
 			array_push( $sheetData, $arr );
 			while( $row = FatApp::getDb()->fetch($rs) ){
-				$arr = array( $row['product_name'], $row['selprod_title'], $row['brand_name'], $row['selprod_stock'] );
+				$arr = array( $row['product_name'], $row['selprod_title'], $row['selprod_sku'], $row['brand_name'], $row['selprod_stock'] );
 				array_push($sheetData,$arr);
 			}
 			CommonHelper::convertToCsv( $sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
