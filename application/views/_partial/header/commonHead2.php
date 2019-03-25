@@ -57,6 +57,7 @@ if(isset($isUserDashboard) && $isUserDashboard) $bodyClass = 'is-dashboard sideb
 			} ?>
 		</div>
 	</div>
+    <div id="quick-view-section" class="quick-view"></div>
 	<?php if( $haveMsg ){ ?>
 	<script type="text/javascript">
 		$("document").ready(function(){

@@ -49,6 +49,7 @@ $cancelBtnFld->developerTags['col'] = 6;
 	</div>
 	<div class="content-body">
 		<div class="cards">
+            <div id="withdrawalReqForm"></div>
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Transactions',$siteLangId);?></h5>
 			</div>

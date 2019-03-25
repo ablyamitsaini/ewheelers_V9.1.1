@@ -428,7 +428,7 @@ class MobileAppApiController extends MyAppController {
 			$slides = $this->db->fetchAll( $rs,'slide_id');
 			$home_slides = array();
 			foreach($slides as $key=>$val){
-				$home_slides[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Image','slide',array($val['slide_id'],0,$this->siteLangId))));
+				$home_slides[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Image','slide',array($val['slide_id'],applicationConstants::SCREEN_MOBILE,$this->siteLangId))));
 			}
 		}
 		/* ] */

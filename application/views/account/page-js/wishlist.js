@@ -65,36 +65,6 @@ $("document").ready(function(){
 			}
 		});
 	};
-	
-	/* viewFavouriteItems = function(frm, append ){
-        var dv2 = "#favListItems";
-		if(typeof append == undefined || append == null){
-			append = 0;
-		}if(typeof frm == undefined || frm == null){
-			frm = document.frmProductSearchPaging;
-		}
-		
-			data = fcom.frmData(frm);
-		
-
-		if( append == 1 ){
-			$(dv2).prepend(fcom.getLoader());
-		} else {
-			$(dv2).html(fcom.getLoader());
-		}
-		
-		fcom.updateWithAjax(fcom.makeUrl('Account','searchFavouriteListItems'),data, function(ans){
-			$.mbsmessage.close();
-			if( append == 1 ){ 
-				$(dv2).find('.loader-yk').remove();
-				$(dv2).append(ans.html);
-			} else {
-				$(dv2).html(ans.html);
-			}
-			$("#back-js").show();
-			$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
-		}); 
-	}; */
     
     searchFavouriteListItems = function( frm, append ){
 		var dv2 = "#favListItems";
