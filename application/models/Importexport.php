@@ -2959,7 +2959,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$sheetArr[] = $row['selprod_user_id'];
 				}else{
-					$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+					$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 				}
 			}
 

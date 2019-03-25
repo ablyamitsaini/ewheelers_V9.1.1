@@ -108,18 +108,12 @@ class ImportexportCommon extends FatModel{
 		}
 	}
 
-	public function getDateTime($dt,$time = true){
-		if($time && strpos($dt, ":")){
-			$dt = substr($dt,0,19);
-		}else{
-			$dt = substr($dt,0,10);
-		}
+	public function getDateTime($dt,$time = true){		
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
 
 		try
 		{
-			//$dt = str_replace('/', '-', $dt);
 			$date = new DateTime($dt);
 			$timeStamp=$date->getTimestamp();
 			if($time==false){
@@ -127,7 +121,7 @@ class ImportexportCommon extends FatModel{
 			}
 			return date("Y-m-d H:i:s",$timeStamp);
 		}catch (Exception $e) {
-			return false;
+			return '0000-00-00';						
 		}
 	}
 

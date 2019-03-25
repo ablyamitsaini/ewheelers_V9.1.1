@@ -873,6 +873,7 @@ trait SellerProducts{
 			$specialPriceRow = $tblRecord->getFlds();
 			
 		}
+		
 		$specialPriceRow['splprice_selprod_id'] = $selprod_id;
 		$frmSellerProductSpecialPrice->fill( $specialPriceRow );
 		
