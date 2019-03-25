@@ -4780,12 +4780,7 @@ class Importexport extends ImportexportCommon{
 
 	public function importStates($csvFilePointer,$post,$langId){
 
-		$rowIndex = $rowCount = 0;
-
-		$useStateId  = false;
-		if($this->settings['CONF_USE_STATE_ID']){
-			$useStateId = true;
-		}
+		$rowIndex = 0;
 
 		if($this->settings['CONF_USE_COUNTRY_ID']){
 			$countryCodes = $this->getCountriesArr(true);
@@ -4793,130 +4788,85 @@ class Importexport extends ImportexportCommon{
 			$countryIds = $this->getCountriesArr(false);
 		}
 
-		while( ($line = $this->getFileContent($csvFilePointer) ) !== FALSE ){
+		while( ($row = $this->getFileContent($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			if(empty($line[0])){
-				continue;
-			}
 
-			if($rowCount == 0){
+			if($rowIndex == 1){
 				$coloumArr = $this->getStatesColoumArr($langId);
-				if($line !== $coloumArr){
+
+				if( !$this->isValidColumns($row, $coloumArr) ){
 					Message::addErrorMessage( Labels::getLabel( "MSG_Invalid_Coloum_CSV_File", $langId ) );
 					FatUtility::dieJsonError( Message::getHtml() );
 				}
-				$rowCount++;
+
+				$headingIndexArr = array_flip($row);
+
 				$errfileName = $this->logFileName('States');
 				$errFile = $this->openErrorLogFile( $errfileName, $langId );
 				continue;
 			}
 
-			$numcols = count($line);
-			$colCount = 0;
+			$statesArr = $statesLangArr = array();
+			$error = false;
 
-			if($useStateId){
-				$stateId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if( 0 >= $stateId ){
-					$errMsg = Labels::getLabel( "MSG_State_id_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
+			foreach ($coloumArr as $columnKey => $heading) {
+				$colIndex = $headingIndexArr[$heading];
+				$colValue = trim( $row[$colIndex] );
+				$errMsg = '';
+
+				if( in_array( $columnKey, array( 'state_id', 'state_country_id' ) ) && 0 >= FatUtility::int($colValue) ){
+					$error = true;
+					$errMsg = str_replace( '{column-name}',$heading, Labels::getLabel( "MSG_{column-name}_should_be_greater_than_0.", $langId ) );
+				}else if( in_array( $columnKey, array( 'state_identifier', 'country_code', 'state_name', 'state_code' ) ) && empty($colValue) ){
+					$error = true;
+					$errMsg = str_replace( '{column-name}',$heading, Labels::getLabel( "MSG_{column-name}_is_mandatory.", $langId ) );
 				}
-				if($this->isDefaultSheetData($langId)){
-					$identifier = $this->getCell($line,$colCount++,'');
-					if(trim($identifier) == ''){
-						$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-						$err = array($rowIndex,$colCount,$errMsg);
-						CommonHelper::writeLogFile( $errFile,  $err);
-						continue;
+
+
+				if( $errMsg ){
+					$err = array($rowIndex, ( $colIndex + 1), $errMsg);
+					CommonHelper::writeLogFile( $errFile,  $err);
+				}else{
+
+					if( in_array( $columnKey, array( 'state_country_id', 'country_code' ) ) ){
+						if( 'state_country_id' == $columnKey ){
+							$currencyId = FatUtility::int($colValue);
+							$colValue = array_key_exists($countryId, $countryCodes) ? $countryId : 0;
+						}elseif ( 'country_code' == $columnKey ) {
+							$columnKey = 'state_country_id';
+							$colValue = array_key_exists($colValue, $countryIds) ? $countryIds[$colValue] : 0;
+						}
+						if( !$colValue ){
+							$error = true;
+							$errMsg = str_replace( '{column-name}', $heading, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
+							CommonHelper::writeLogFile( $errFile, array( $rowIndex, ( $colIndex + 1), $errMsg ) );
+						}
+					}
+
+					if( 'state_active' == $columnKey ){
+						if($this->settings['CONF_USE_O_OR_1']){
+							$colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
+						}else{
+							$colValue = strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+						}
+					}
+
+					if( 'state_name' == $columnKey ){
+						$countryLangArr[$columnKey] = $colValue;
+					}else{
+						$countryArr[$columnKey] = $colValue;
 					}
 				}
-			}else{
-				$identifier = $this->getCell($line,$colCount++,'');
-				if(trim($identifier) == ''){
-					$errMsg = Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
 			}
 
-			if($this->settings['CONF_USE_COUNTRY_ID']){
-				$countryId = FatUtility::int($this->getCell($line,$colCount++,0));
-				if( 0 >= $countryId ){
-					$errMsg = Labels::getLabel( "MSG_Country_id_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				$countryId = isset($countryCodes[$countryId])?$countryId:0;
-			}else{
-				$countryCode = $this->getCell($line,$colCount++,'');
-				if( empty($countryCode) ){
-					$errMsg = Labels::getLabel( "MSG_Country_code_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				$countryId = isset($countryIds[$countryCode])?$countryIds[$countryCode]:0;
-			}
-
-			if(!$countryId){continue;}
-
-			$stateName = $this->getCell($line,$colCount++,'');
-			if( empty($stateName) ){
-				$errMsg = Labels::getLabel( "MSG_State_name_is_required.", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
-				continue;
-			}
-			if($this->isDefaultSheetData($langId)){
-				$stateCode = $this->getCell($line,$colCount++,'');
-				if( empty($stateCode) ){
-					$errMsg = Labels::getLabel( "MSG_State_code_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-				if($this->settings['CONF_USE_O_OR_1']){
-					$active = (FatUtility::int($this->getCell($line,$colCount++,0)) == 1)?applicationConstants::YES:applicationConstants::NO;
+			if( !$error && count($countryArr) ){
+				if( $this->settings['CONF_USE_STATE_ID'] ){
+					$stateData = States::getAttributesById( $countryArr['state_id'], array('state_id') );
 				}else{
-					$active = ($this->getCell($line,$colCount++,0) == 'YES')?applicationConstants::YES:applicationConstants::NO;
-				}
-				if( !isset($active) ){
-					$errMsg = Labels::getLabel( "MSG_Active_column_value_is_required.", $langId );
-					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err);
-					continue;
-				}
-			}
-
-			if($rowCount > 0){
-				$data = array();
-
-				if($useStateId){
-					$data['state_id']	= $stateId;
-					if($this->isDefaultSheetData($langId)){
-						$data['state_identifier']	= $identifier;
-					}
-				}else{
-					$data['state_identifier']= $identifier;
+					$stateData = States::getAttributesByIdentifierAndCountry( $countryArr['state_identifier'], $countryArr['state_country_id'], array('state_id') );
 				}
 
-				$data['state_country_id']= $countryId;
-
-				if($this->isDefaultSheetData($langId)){
-					$data['state_active']= $active;
-					$data['state_code']= $stateCode;
-				}
-
-				if($useStateId){
-					$stateData = States::getAttributesById($stateId,array('state_id'));
-				}else{
-					$stateData = States::getAttributesByIdentifierAndCountry($identifier,$countryId,array('state_id'));
-				}
-
-				if(!empty($stateData) && $stateData['state_id']){
+				if( !empty($stateData) && $stateData['state_id'] ){
 					$stateId = $stateData['state_id'];
 					$where = array('smt' => 'state_id = ?', 'vals' => array( $stateId ) );
 					$this->db->updateFromArray( States::DB_TBL, $data,$where);
@@ -4926,19 +4876,19 @@ class Importexport extends ImportexportCommon{
 						$stateId = $this->db->getInsertId();
 					}
 				}
-
 				if($stateId){
 					/* Lang Data [*/
 					$langData = array(
 						'statelang_state_id'=> $stateId,
 						'statelang_lang_id'=> $langId,
-						'state_name'=> $stateName,
 					);
+
+					$langData = array_merge( $langData, $countryLangArr );
+
 					$this->db->insertFromArray( States::DB_TBL_LANG, $langData , false, array(),$langData );
 					/* ]*/
 				}
 			}
-			$rowCount++;
 		}
 		// Close File
 		CommonHelper::writeLogFile( $errFile, array(), true );
