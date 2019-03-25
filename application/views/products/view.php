@@ -348,10 +348,10 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					<div class="row justify-content-between">
 						<div class="col-md-3 order-lg-2 mb-3 text-lg-right">
 							<div class="btn-group">
-								<a href="javascript:void(0)" class="btn btn--sm tab view--link-js btn--active"><i class="icn"><svg class="svg">
+								<a href="javascript:void(0)" class="btn btn--sm tab btn--tab view--link-js btn--active"><i class="icn"><svg class="svg">
 											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view"></use>
 										</svg></i><?php echo Labels::getLabel('LBL_Tabs_View',$siteLangId); ?></a>
-								<a href="javascript:void(0)" class="btn btn--sm list view--link-js "><i class="icn"><svg class="svg">
+								<a href="javascript:void(0)" class="btn btn--sm list btn--tab view--link-js "><i class="icn"><svg class="svg">
 											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview"></use>
 										</svg></i><?php echo Labels::getLabel('LBL_List_View',$siteLangId); ?></a>
 							</div>

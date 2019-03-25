@@ -162,7 +162,7 @@
 				<div class="cards">
 					<div class="cards-header  p-3">
 						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Profile',$siteLangId);?></h5>
-						<div class="action"><a href="<?php echo CommonHelper::generateUrl('Account','Profile');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a></div>
+						<div class="action"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a></div>
 					</div>
 					<div class="cards-content p-3">
 						<div class="profile-wrapper">
