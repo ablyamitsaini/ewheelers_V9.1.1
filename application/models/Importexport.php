@@ -3132,7 +3132,8 @@ class Importexport extends ImportexportCommon{
 				}else{
 					$colName = $this->getCell($line,$colCount++,'');
 					$conditionId = isset($prodConditionArr[$colName])?$prodConditionArr[$colName]:0;
-				}
+				}				
+				
 				$selprod_max_download_times = $this->getCell($line,$colCount++,0);
 				$selprod_download_validity_in_days = $this->getCell($line,$colCount++,0);
 			}

@@ -357,6 +357,9 @@ class HomeController extends AdminBaseController {
         CommonHelper::recursiveDelete(CONF_UPLOADS_PATH."caching");
         FatCache::clearAll();
 		Message::addMessage(Labels::getLabel('LBL_Cache_has_been_cleared',$this->adminLangId));
+		if(Labels::isAPCUcacheAvailable()){ 
+			apcu_clear_cache();
+		}
         //FatApp::redirectUser(CommonHelper::generateUrl("home"));
     }
 	public function setLanguage($langId = 0){
