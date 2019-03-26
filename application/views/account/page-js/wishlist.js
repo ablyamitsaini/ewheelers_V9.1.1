@@ -6,7 +6,6 @@ $("document").ready(function(){
 	var dv = '#listingDiv';
 	searchWishList = function(){
 		$("#loadMoreBtnDiv").html('');
-		$("#back-js").hide();
 		$("#tab-wishlist").parents().children().removeClass("is-active");
 		$("#tab-wishlist").addClass("is-active");
 		$(dv).html( fcom.getLoader() );
@@ -50,35 +49,50 @@ $("document").ready(function(){
 			}
 		});
 	};
-	
-	viewFavouriteItems = function(frm, append ){
+    
+    viewFavouriteItems = function( frm , append){
+		if(typeof append == undefined || append == null){
+			append = 0;
+		}
+		$(dv).html( fcom.getLoader() );
+		fcom.ajax(fcom.makeUrl('Account','viewFavouriteItems'), '', function(ans){
+			if( append == 1 ){
+				$(dv).find('.loader-yk').remove();
+				$(dv).append(ans);
+			} else {
+				$(dv).find('.loader-yk').remove();
+				$(dv).html(ans);
+			}
+		});
+	};
+    
+    searchFavouriteListItems = function( frm, append ){
+		var dv2 = "#favListItems";
 		if(typeof append == undefined || append == null){
 			append = 0;
 		}if(typeof frm == undefined || frm == null){
 			frm = document.frmProductSearchPaging;
 		}
 		
-			data = fcom.frmData(frm);
+        data = fcom.frmData(frm);
 		
-
 		if( append == 1 ){
-			$(dv).prepend(fcom.getLoader());
+			$(dv2).prepend(fcom.getLoader());
 		} else {
-			$(dv).html(fcom.getLoader());
+			$(dv2).html(fcom.getLoader());
 		}
 		
 		fcom.updateWithAjax(fcom.makeUrl('Account','searchFavouriteListItems'),data, function(ans){
 			$.mbsmessage.close();
 			if( append == 1 ){ 
-				$(dv).find('.loader-yk').remove();
-				$(dv).append(ans.html);
+				$(dv2).find('.loader-yk').remove();
+				$(dv2).append(ans.html);
 			} else {
-				$(dv).html(ans.html);
+				$(dv2).html(ans.html);
 			}
-			$("#back-js").show();
 			$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
-		}); 
-	};
+		});
+	}
 	
 	searchWishListItems = function( uwlist_id, append, page ){
 		var dv2 = "#wishListItems";
@@ -124,7 +138,7 @@ $("document").ready(function(){
 		 var frm = document.frmProductSearchPaging;		
 		$(frm.page).val(page);
 		
-		viewFavouriteItems( frm, 0,page );
+		searchFavouriteListItems( frm, 0,page );
 	}
 	
 	searchFavoriteShop = function(){

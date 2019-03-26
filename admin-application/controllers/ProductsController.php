@@ -480,7 +480,8 @@ class ProductsController extends AdminBaseController {
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-
+        FatApp::getDb()->updateFromArray('tbl_products',array('product_image_updated_on' => date('Y-m-d H:i:s')),array('smt' => 'product_id = ?','vals' => array($product_id)));
+        
 		//Message::addMessage(Labels::getLabel('LBL_Image_Uploaded_Successfully',$this->adminLangId));
 		$this->set("msg",Labels::getLabel('LBL_Image_Uploaded_Successfully',$this->adminLangId));
 		$this->_template->render(false,false,'json-success.php');
@@ -501,7 +502,8 @@ class ProductsController extends AdminBaseController {
 			Message::addErrorMessage( $productObj->getError() );
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-
+        FatApp::getDb()->updateFromArray('tbl_products',array('product_image_updated_on' => date('Y-m-d H:i:s')),array('smt' => 'product_id = ?','vals' => array($product_id)));
+        
 		//Message::addMessage(Labels::getLabel('LBL_Image_Removed_Successfully',$this->adminLangId));
 		$this->set("msg",Labels::getLabel('LBL_Image_Removed_Successfully',$this->adminLangId));
 		$this->_template->render(false,false,'json-success.php');

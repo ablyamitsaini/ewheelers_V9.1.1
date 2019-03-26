@@ -9946,7 +9946,7 @@ form.custom-form input[type="submit"] {
 /*quick view page*/
 .quick-view {
   height: 100%;
-  z-index: 10;
+  z-index: 15;
   left: 0;
   right: 0;
   top: 0;
@@ -13474,4 +13474,13 @@ main.main {
   width: 18px;
   height: 18px;
   fill: #44596B;
+}
+
+.actions li a.icn-highlighted{
+    border-color: var(--first-color);
+    color: var(--first-color);
+}
+
+.actions li a.icn-highlighted:hover{
+    color:#fff;
 }

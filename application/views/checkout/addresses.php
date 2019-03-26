@@ -43,13 +43,15 @@
 <?php } ?>
 	
 	<div class="same-as">
-		<div class="same-delivery">
+		<?php if($addresses) { ?>
+        <div class="same-delivery">
 			<h3><?php echo Labels::getLabel('LBL_Shipping_Address', $siteLangId); ?></h3>
 			<label class="checkbox">
 				<input type="checkbox" <?php echo ($isShippingSameAsBilling) ? "checked='checked'" : ''; ?> name="isShippingSameAsBilling" value="1"><i class="input-helper"></i>
 				<?php echo Labels::getLabel('LBL_Same_as_Billing_Address', $siteLangId); ?>
 			</label>
 		</div>
+        <?php } ?>
 		<p class="txt-where"><?php if( $cartHasPhysicalProduct ){ ?>
 		<?php echo Labels::getLabel('LBL_Please_add_addresss_where_you_want_to_ship_your_product', $siteLangId);?>
 		<?php }?>
@@ -68,7 +70,7 @@
 	  <?php foreach( $addresses as $address ){
 				$selected_shipping_address_id = (!$selected_shipping_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_shipping_address_id; ?>
 				<div class="col-lg-6 col-md-6 col-xs-12">
-					<label class="address">
+					<label class="address <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'is--selected' : ''; ?>">
 						<div class="address-inner">
 							<span class="radio">
 								<input <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="shipping_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>

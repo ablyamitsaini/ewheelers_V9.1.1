@@ -4,5 +4,4 @@
 <?php }else{?>
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <?php }?>
-<script type="text/javascript">stLight.options({publisher: "c1ac1329-15e5-4379-aa5c-30b5671f7265", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js"></script>
