@@ -5,27 +5,29 @@
 		<div class="breadcrumbs">
 		  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 		</div>
+		<section class="section">
 		<div class="row">
 			<?php if($recordCount > 0) { ?>
-			  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			  <div class="col-lg-6 col-md-6">
 				<div id="listing"></div>
 			  </div>
-			  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-				<div class="heading3"><?php echo Labels::getLabel( 'LBL_Browse_By_Category', $siteLangId)?></div>
-				<div id="categoryPanel" class="row"></div>
+			  <div class="col-lg-6 col-md-6 ">
+				<h3><?php echo Labels::getLabel( 'LBL_Browse_By_Category', $siteLangId)?></h3>
+				<div id="categoryPanel"></div>
 			  </div>
 			<?php } else { ?>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="gap"> </div>
+
 				<div id="listing"></div>
 				<div class="gap"> </div>
 			</div>
 			<?php }?>
 		</div>
+		</section>
 		<div class="divider"></div>
 		<div class="align--center">
-		  <div class="heading3"><?php echo Labels::getLabel( 'LBL_Still_need_help', $siteLangId)?> ?</div>
-		  <a href="<?php echo CommonHelper::generateUrl('custom' , 'contact-us'); ?>" class="btn btn--secondary btn--lg ripplelink" ><?php echo Labels::getLabel( 'LBL_Contact_Customer_Care', $siteLangId)?> </a>
+		  <h3><?php echo Labels::getLabel( 'LBL_Still_need_help', $siteLangId)?> ?</h3>
+		  <a href="<?php echo CommonHelper::generateUrl('custom' , 'contact-us'); ?>" class="btn btn--secondary" ><?php echo Labels::getLabel( 'LBL_Contact_Customer_Care', $siteLangId)?> </a>
 		</div>
 		<div class="gap"></div>
 	  </div>
@@ -34,7 +36,7 @@
 	<!-- <div class="container container--fixed">
 	   <div class="row">
 		   <div class="container container--fluid">
-			  
+
 			   <div class="panel panel--grids panel--grids-even">
 				   <div class="grid__left fixed__panel">
 					  <div id="fixed__panel">
@@ -58,7 +60,7 @@
 							   <?php } ?>
 						   </ul>
 						   <?php } ?>
-						   
+
 					   </div>
 					   <?php } ?>
 						<div class="container--faqs">
@@ -71,7 +73,7 @@
 								<div class="search search--sort">
 									<div class="search__field">
 									<?php echo $frm->getFieldHtml('question') , $frm->getFieldHtml('btn_submit'); ?>
-										 
+
 										<i class="fa fa-search"></i>
 									</div>
 								</div>
@@ -82,7 +84,7 @@
 						</div>
 					</div>
 			   </div>
-				
+
 			</div>
 		</div>
 	</div> -->

@@ -1,5 +1,5 @@
 <div class="section section--pagebar">
-       <div class="container container--fixed">
+       <div class="container">
            <div class="row">
                <div class="col-md-8 col-sm-7">
                    <div class="cell">
@@ -15,25 +15,25 @@
                    </div>
                </div>
                <div class="col-md-4 col-sm-5 align--right" style="padding-top:20px;">
-                  <ul class="links--inline">                        
+                  <ul class="links--inline">
                         <li class="is--active"><strong id="favShopCount">XX</strong> <?php echo Labels::getLabel('LBL_Favorite_Shops',$siteLangId);?></li>
-                   </ul>                   
+                   </ul>
                </div>
            </div>
-       </div>   
+       </div>
    </div>
    <div class="container container--fixed">
-               
-            <div class="panel panel--centered clearfix">               
-					<div class="section section--info clearfix">                         
+
+            <div class="panel panel--centered clearfix">
+					<div class="section section--info clearfix">
                         <div class="section__body">
-							<div class="box box--white" id="listing">                                 
+							<div class="box box--white" id="listing">
                             </div>
 							<div id="loadMoreBtnDiv"></div>
                         </div>
 					</div>
-				 
-			</div>              
-        
+
+			</div>
+
     </div>
 <?php echo $searchForm->getFormHtml();?>
