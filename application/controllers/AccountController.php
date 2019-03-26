@@ -1684,6 +1684,15 @@ class AccountController extends LoggedUserController {
                 'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
                 'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')  );
 				$prodSrch->addGroupBy('product_id');
+                
+                if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+                    $prodSrch->joinFavouriteProducts( $loggedUserId );
+                    $prodSrch->addFld('ufp_id');
+                }else{
+                    $prodSrch->joinUserWishListProducts( $loggedUserId );
+                    $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+                }
+                
 				$prodRs = $prodSrch->getResultSet();
                 $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
 				$shop['totalProducts'] = $prodSrch->recordCount();
