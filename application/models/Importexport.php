@@ -1307,7 +1307,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$sheetArr[] = $row['product_seller_id'];
 				}else{
-					$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+					$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 				}
 			}
 
@@ -1911,14 +1911,17 @@ class Importexport extends ImportexportCommon{
 				}
 				$productId = $prodIndetifierArr[$colValue];
 			}
+			
+			if(!$productId){
+				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Check_your_Id_or_Identifier.", $langId ) ) );
+				continue;
+			}
 
 			if($userId){
 				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
-			}
-
-			if(!$productId){
-				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,Labels::getLabel( "MSG_Identifier_is_required_and_unique.", $langId ) ) );
-				continue;
+				if(!$productId){
+					continue;
+				}
 			}
 
 			if($this->settings['CONF_USE_OPTION_ID']){
@@ -2064,17 +2067,20 @@ class Importexport extends ImportexportCommon{
 				$productId = $prodIndetifierArr[$colValue];
 			}
 
-			if($userId){
-				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
-			}
-
 			if(!$productId){
 				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
-
+			
+			if($userId){
+				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
+				if(!$productId){
+					continue;
+				}
+			}
+			
 			if($this->settings['CONF_USE_TAG_ID']){
 				$tagId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
@@ -2234,17 +2240,21 @@ class Importexport extends ImportexportCommon{
 				$productId = $prodIndetifierArr[$colValue];
 			}
 
-			if($userId){
-				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
-			}
-
 			if(!$productId){
 				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
+			
+			if($userId){
+				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
+				if(!$productId){
+					continue;
+				}	
+			}
 
+			
 			if($this->settings['CONF_USE_LANG_ID']){
 				$languageId = FatUtility::int($this->getCell($line,$colCount++,0));
 				$errorMsgForLangId = Labels::getLabel( "MSG_Language_Id_cannot_be_blank", $langId );
@@ -2253,13 +2263,27 @@ class Importexport extends ImportexportCommon{
 				$languageId = isset($languageCodes[$colValue])?$languageCodes[$colValue]:0;
 				$errorMsgForLangId = Labels::getLabel( "MSG_Please_check_language_code.", $langId );
 			}
+			
 			if(!$languageId){
 				CommonHelper::writeLogFile( $errFile, array($rowIndex,$colCount,$errorMsgForLangId) );
 				continue;
 			}
 
 			$specName = $this->getCell($line,$colCount++);
+			if('' == trim($specName)){
+				$errMsg = Labels::getLabel( "MSG_Colomn_value_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+			
 			$specValue = $this->getCell($line,$colCount++);
+			if('' == trim($specValue)){
+				$errMsg = Labels::getLabel( "MSG_Colomn_value_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
 
 			if($rowCount > 0){
 				if(!in_array($productId,$prodArr)){
@@ -2359,7 +2383,7 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_USER_ID']){
 				$sheetArr[] = $row['user_id'];
 			}else{
-				$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+				$sheetArr[] = ( !empty($row['credential_username'])  ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 			}
 
 			if($this->settings['CONF_USE_COUNTRY_ID']){
@@ -2440,6 +2464,13 @@ class Importexport extends ImportexportCommon{
 				$productId = $prodIndetifierArr[$colValue];
 			}
 
+			if(!$productId){
+				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
+				$err = array($rowIndex,$colCount,$errMsg);
+				CommonHelper::writeLogFile( $errFile,  $err);
+				continue;
+			}
+			
 			/* Product Ship By Seller [ */
 			$srch = new ProductSearch($langId);
 			$srch->joinProductShippedBySeller(UserAuthentication::getLoggedUserId());
@@ -2452,13 +2483,9 @@ class Importexport extends ImportexportCommon{
 
 			if(empty($shipBySeller) && $sellerId > 0) {
 				$productId = $this->getCheckAndSetProductIdByTempId($productId,$sellerId);
-			}
-
-			if(!$productId){
-				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
-				$err = array($rowIndex,$colCount,$errMsg);
-				CommonHelper::writeLogFile( $errFile,  $err);
-				continue;
+				if(!$productId){
+					continue;
+				}	
 			}
 
 			if($this->settings['CONF_USE_USER_ID']){
@@ -2710,16 +2737,20 @@ class Importexport extends ImportexportCommon{
 				$productId = $prodIndetifierArr[$colValue];
 			}
 
-			if($userId){
-				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
-			}
 			if(!$productId){
 				$errMsg = Labels::getLabel( "MSG_Product_Id_is_required.", $langId );
 				$err = array($rowIndex,$colCount,$errMsg);
 				CommonHelper::writeLogFile( $errFile,  $err);
 				continue;
 			}
-
+			
+			if($userId){
+				$productId = $this->getCheckAndSetProductIdByTempId($productId,$userId);
+				if(!$productId){
+					continue;
+				}	
+			}
+			
 			if($this->settings['CONF_USE_LANG_ID']){
 				$fileLangId = FatUtility::int($this->getCell($line,$colCount++,0));
 			}else{
@@ -4369,7 +4400,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['option_seller_id'];
 					}else{
-						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+						$sheetArr[] = ( !empty($row['credential_username'])  ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 
 					/* if($this->settings['CONF_USE_OPTION_TYPE_ID']){
@@ -4782,7 +4813,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['tag_user_id'];
 					}else{
-						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+						$sheetArr[] = ( !empty($row['credential_username'])  ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 				}
 			}

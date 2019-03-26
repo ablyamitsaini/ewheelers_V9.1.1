@@ -60,5 +60,10 @@
 	</div-->    
 		
 	<?php } ?>
+<?php if(CommonHelper::demoUrl()){ 
+	if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){ 
+		echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,''); 
+	} 
+}?>	
 </body>
 </html>
