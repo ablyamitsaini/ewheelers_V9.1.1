@@ -35,11 +35,7 @@
   }
 
   .widget-wrapper {
-    overflow: hidden;
-    overflow-x: auto;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
+
     margin: 0 auto;
   }
 
@@ -75,11 +71,11 @@
   }
 
   #header {
-    height: auto;
+    height:97px;
   }
 
   .after-header {
-    height: 76px;
+    height: 97px;
   }
 
   .top_bar .slogan {
@@ -1022,7 +1018,7 @@
   }
 
   .hero-slider .hero-item {
-    padding: 0 10px;
+    padding:0;
   }
 
   .trending-corner .item-yk {
