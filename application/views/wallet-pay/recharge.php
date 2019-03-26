@@ -11,7 +11,7 @@
             <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 checkout--steps">
                 <div class="checkout--steps__inner">
                     <section class="section is-current">
-                      <h2><?php echo Labels::getLabel("LBL_Add_Money_to_wallet", $siteLangId); ?></h2>
+                      <h3><?php echo Labels::getLabel("LBL_Add_Money_to_wallet", $siteLangId); ?></h3>
                       <div class="make-payment-wrapper">
                         <?php if( $orderInfo['order_net_amount'] ){ ?>
                         <div class="row">

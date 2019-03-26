@@ -11,7 +11,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 ?>
 
 <section id="shipping-summary" class="section-checkout">
-	<h2><?php echo Labels::getLabel('LBL_Shipping_Summary', $siteLangId); ?></h2>
+	<h3><?php echo Labels::getLabel('LBL_Shipping_Summary', $siteLangId); ?></h3>
 	<div class="review-wrapper step__body">
 
 				<?php usort($products, function($a, $b) {

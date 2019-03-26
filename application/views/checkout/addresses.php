@@ -1,10 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<h2><?php
+<h3><?php
 	$heading = Labels::getLabel('LBL_Billing_Address', $siteLangId);
 	if( $cartHasPhysicalProduct ){
 		$heading = Labels::getLabel('LBL_Billing/Delivery_Address', $siteLangId);
 	}  echo $heading; ?>
-</h2>
+</h3>
 
 <div id="addressWrapper" class="address-wrapper step__body">
 <?php if($addresses) { ?>

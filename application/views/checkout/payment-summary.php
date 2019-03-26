@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<h2><?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></h2>
+<h3><?php echo Labels::getLabel('LBL_Payment_Summary',$siteLangId); ?></h3>
 <?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
 	  if($rewardPoints > 0){ ?>
  <div class="make-payment-wrapper step__body">

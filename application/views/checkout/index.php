@@ -21,16 +21,16 @@
 						</section>
 					<?php }?>
 				<section class="section-checkout" id="address">
-				  <h2><?php echo Labels::getLabel('LBL_Billing/Shipping_Address',$siteLangId); ?></h2>
+				  <h3><?php echo Labels::getLabel('LBL_Billing/Shipping_Address',$siteLangId); ?></h3>
 				</section>
 				<section class="section-checkout" id="shipping-summary" <?php if( !$cartHasPhysicalProduct ){ ?>style="display:none" <?php }?>>
-				  <h2><?php echo Labels::getLabel('LBL_Shipping_Summary',$siteLangId); ?></h2>
+				  <h3><?php echo Labels::getLabel('LBL_Shipping_Summary',$siteLangId); ?></h3>
 				</section>
 				<section class="section-checkout" id="cart-review">
-				  <h2><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h2>
+				  <h3><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h3>
 				</section>
 				<section class="section-checkout" id="payment" >
-				  <h2><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </h2>
+				  <h3><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?> </h3>
 				</section>
 		  </div>
       </div>

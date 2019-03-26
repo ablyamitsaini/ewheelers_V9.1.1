@@ -3,7 +3,7 @@
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
 <section>
-	<h2><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></h2>
+	<h3><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></h3>
 	<div class="check-login-wrapper step__body">
 		<div id="" class="tabz--checkout-login tabs--flat-js">
 			<ul>

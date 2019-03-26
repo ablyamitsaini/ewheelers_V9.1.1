@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<h2><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h2>
+<h3><?php echo Labels::getLabel('LBL_Review_Order',$siteLangId); ?></h3>
 <div class="review-wrapper">
   <div class="short-detail">
     <table class="table cart--full js-scrollable scroll-hint">
