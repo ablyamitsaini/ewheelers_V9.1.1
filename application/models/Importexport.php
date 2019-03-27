@@ -1307,7 +1307,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_USER_ID']){
 					$sheetArr[] = $row['product_seller_id'];
 				}else{
-					$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+					$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 				}
 			}
 
@@ -2359,7 +2359,7 @@ class Importexport extends ImportexportCommon{
 			if($this->settings['CONF_USE_USER_ID']){
 				$sheetArr[] = $row['user_id'];
 			}else{
-				$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+				$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 			}
 
 			if($this->settings['CONF_USE_COUNTRY_ID']){
@@ -4370,7 +4370,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['option_seller_id'];
 					}else{
-						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+						$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 
 					/* if($this->settings['CONF_USE_OPTION_TYPE_ID']){
@@ -4783,7 +4783,7 @@ class Importexport extends ImportexportCommon{
 					if($this->settings['CONF_USE_USER_ID']){
 						$sheetArr[] = $row['tag_user_id'];
 					}else{
-						$sheetArr[] = ( !empty($row['credential_username']) && 0 < $userId ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
+						$sheetArr[] = ( !empty($row['credential_username']) ? $row['credential_username'] : Labels::getLabel('LBL_Admin',$langId) );
 					}
 				}
 			}
