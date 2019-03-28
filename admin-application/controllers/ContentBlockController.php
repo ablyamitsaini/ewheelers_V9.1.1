@@ -36,7 +36,7 @@ class ContentBlockController extends AdminBaseController {
 
 		$srch->addOrder('epage_active','DESC');
 		$rs = $srch->getResultSet();
-		// echo $srch->getQuery();
+		
 		$records = FatApp::getDb()->fetchAll($rs);
 
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
