@@ -186,7 +186,7 @@ class OrdersController extends AdminBaseController {
 		$srch = new OrderSearch( $this->adminLangId );
 		$srch->joinOrderPaymentMethod();
 		$srch->addMultipleFields(array('pmethod_code'));
-		$srch->addCondition('order_id', '=', $order_id);
+		$srch->addCondition('order_id', '=', $orderId);
 		$srch->addCondition( 'order_type', '=',Orders::ORDER_PRODUCT);
 		$rs = $srch->getResultSet();
 		$order = FatApp::getDb()->fetch($rs);		
