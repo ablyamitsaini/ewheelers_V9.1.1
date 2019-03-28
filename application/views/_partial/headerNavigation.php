@@ -7,6 +7,7 @@
 		<div class="navigation-wrapper">
 			<ul class="navigations">
 				<?php
+                $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
 				$noOfCharAllowedInNav = 90;
 				$rightNavCharCount = 5;
 				if( !$isUserLogged ){
@@ -35,8 +36,9 @@
 							foreach( $mainNavigation as $link ){
 
 								$navUrl = CommonHelper::getnavigationUrl( $link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'] );
+                                $OrgnavUrl = CommonHelper::getnavigationUrl( $link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'], $getOrgUrl );
 								?>
-								<li class="<?php if( count($link['children']) ){ ?>navchild<?php } ?>"><a target="<?php echo $link['nlink_target']; ?>" href="<?php echo $navUrl; ?>"><?php echo $link['nlink_caption']; ?></a>
+								<li class="<?php if( count($link['children']) ){ ?>navchild<?php } ?>"><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $navUrl; ?>"><?php echo $link['nlink_caption']; ?></a>
 
 								<?php if( isset($link['children']) && count($link['children']) > 0 ){ ?>
 									<span class="link__mobilenav"></span>
@@ -47,20 +49,21 @@
 													<ul class="sublinks">
 														<?php $subyChild=0;
 														foreach($link['children'] as $children) {
-															$subCatUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id']));
+															$subCatUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id']));$subCatOrgUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id']),'', null, false, $getOrgUrl);
 														?>
-														<li><a href="<?php echo $subCatUrl;?>"><?php echo $children['prodcat_name'];?></a>
+														<li><a data-org-url="<?php echo $subCatOrgUrl; ?>" href="<?php echo $subCatUrl;?>"><?php echo $children['prodcat_name'];?></a>
 														<?php if(isset($children['children']) && count($children['children'])>0){ ?>
 															<ul>
 																<?php $subChild=0;
 																foreach($children['children'] as $childCat){
 																	$catUrl = CommonHelper::generateUrl('category','view',array($childCat['prodcat_id']));
+                                                                    $catOrgUrl = CommonHelper::generateUrl('category','view',array($children['prodcat_id']),'', null, false, $getOrgUrl);
 																?>
-																<li><a href="<?php echo $catUrl; ?>"><?php echo $childCat['prodcat_name'];?></a></li>
+																<li><a data-org-url="<?php echo $catOrgUrl; ?>" href="<?php echo $catUrl; ?>"><?php echo $childCat['prodcat_name'];?></a></li>
 																<?php if ( $subChild++ == 4 ){ break; }
 																}
 																if(count($children['children'])>5) { ?>
-																<li class="seemore"><a href="<?php echo $subCatUrl;?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a></li>
+																<li class="seemore"><a data-org-url="<?php echo $subCatOrgUrl; ?>" href="<?php echo $subCatUrl;?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a></li>
 																<?php } ?>
 															</ul>
 														<?php } ?>
@@ -69,7 +72,7 @@
 														} ?>
 													</ul>
 													<?php if( count($link['children']) > 8 ) { ?>
-													<a class="btn btn--sm btn--secondary ripplelink " href="<?php echo $navUrl; ?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a>
+													<a class="btn btn--sm btn--secondary ripplelink " data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $navUrl; ?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a>
 													<?php } ?>
 												</div>
 											</div>
@@ -108,25 +111,29 @@
 											<?php
 											//var_dump($subMoreNavigation); die;
 											foreach(  $subMoreNavigation  as $index => $link ){
-												$url = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id']); ?>
-												<li><a target="<?php echo $link['nlink_target']; ?>" href="<?php echo $url;?>"><?php echo $link['nlink_caption']; ?></a></li>
+												$url = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id']); 
+                                                $OrgUrl = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id'], $getOrgUrl);
+                                                ?>
+												<li><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgUrl; ?>" href="<?php echo $url;?>"><?php echo $link['nlink_caption']; ?></a></li>
 												<?php
 												if( count($link['children']) > 0 ){
 													foreach( $link['children'] as $subCat ) {
-														$catUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id'])); ?>
-														<li><a href="<?php echo $catUrl; ?>"><?php echo $subCat['prodcat_name'];?></a>
+														$catUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id'])); 
+                                                        $catOrgUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id']), '', null, false, $getOrgUrl); ?>
+														<li><a data-org-url="<?php echo $catOrgUrl; ?>" href="<?php echo $catUrl; ?>"><?php echo $subCat['prodcat_name'];?></a>
 														<?php if(isset($subCat['children'])){
 															?>
 															<ul>
 															<?php
 															$subChild = 0;
 															foreach( $subCat['children'] as $childCat ){
-																$childCatUrl = CommonHelper::generateUrl('category','view',array( $childCat['prodcat_id']) ); ?>
-																<li><a href="<?php echo $childCatUrl; ?>"><?php echo $childCat['prodcat_name'];?></a></li>
+																$childCatUrl = CommonHelper::generateUrl('category','view',array( $childCat['prodcat_id']) );
+                                                                $childCatOrgUrl = CommonHelper::generateUrl('category','view',array( $childCat['prodcat_id']), '', null, false, $getOrgUrl); ?>
+																<li><a data-org-url="<?php echo $childCatOrgUrl; ?>" href="<?php echo $childCatUrl; ?>"><?php echo $childCat['prodcat_name'];?></a></li>
 																<?php if ( $subChild++ == 4 ) { break; }
 															}
 															if( count( $subCat['children'] ) > 5 ) { ?>
-															<li class="seemore"><a href="<?php echo $catUrl;?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a></li>
+															<li class="seemore"><a data-org-url="<?php echo $catOrgUrl; ?>" href="<?php echo $catUrl;?>"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a></li>
 															<?php } ?>
 														</ul>
 														<?php }?>
@@ -136,7 +143,7 @@
 												}
 											} ?>
 											</ul>
-											<a href="<?php echo CommonHelper::generateUrl('category');?>" class="btn view-all"><?php Labels::getLabel('LBL_View_All_Categories',$siteLangId);?></a>
+											<a data-org-url="<?php echo CommonHelper::generateUrl('category','',array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('category');?>" class="btn view-all"><?php Labels::getLabel('LBL_View_All_Categories',$siteLangId);?></a>
 										</div>
 									</div>
 								</div>

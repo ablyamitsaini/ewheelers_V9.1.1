@@ -8,17 +8,23 @@
 	 <?php
 	// $this->includeTemplate('guest-user/loginFormTemplate.php');
 	 } else {
+        $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
 		$userActiveTab = false;
 		if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;
 		$dashboardUrl = CommonHelper::generateUrl('Seller');
+		$dashboardOrgUrl = CommonHelper::generateUrl('Seller', '', array(), '', null, false, $getOrgUrl);
 		}else if( User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) { $userActiveTab = true;
 		$dashboardUrl = CommonHelper::generateUrl('Buyer');
+		$dashboardOrgUrl = CommonHelper::generateUrl('Buyer', '', array(), '', null, false, $getOrgUrl);
 		}else if( User::canViewAdvertiserTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ) ) { $userActiveTab = true;
 		$dashboardUrl = CommonHelper::generateUrl('Advertiser');
+        $dashboardOrgUrl = CommonHelper::generateUrl('Advertiser', '', array(), '', null, false, $getOrgUrl);
 		} else if( User::canViewAffiliateTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE' )){ $userActiveTab = true;
 		$dashboardUrl = CommonHelper::generateUrl('Affiliate');
+        $dashboardOrgUrl = CommonHelper::generateUrl('Affiliate', '', array(), '', null, false, $getOrgUrl);
 		} if(!$userActiveTab){
 		$dashboardUrl = CommonHelper::generateUrl('Account');
+        $dashboardOrgUrl = CommonHelper::generateUrl('Account', '', array(), '', null, false, $getOrgUrl);
 		}
 	 ?>
 	 <li class="dropdown dropdown--arrow">
@@ -35,28 +41,28 @@
                 <!-- for desktop my account links -->
                 <ul class="list-vertical list-vertical--tick">
 					<?php
-						$userActiveTab = false;
-						if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;?>
-						<li><a href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
-						<li><a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a></li>
-						<?php } else if( User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) { $userActiveTab = true;?>
-						<li><a href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
-						<li><a href="<?php echo CommonHelper::generateUrl('Buyer','Orders'); ?>"><?php echo Labels::getLabel("LBL_My_Orders",$siteLangId); ?></a></li>
-						<?php }else if( User::canViewAdvertiserTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ) ) { $userActiveTab = true;?>
-						<li><a href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
-						<li><a href="<?php echo CommonHelper::generateUrl('advertiser','promotions'); ?>"><?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?></a></li>
-						<?php } else if( User::canViewAffiliateTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE' )){ $userActiveTab = true;?>
-						<li><a href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
-						<?php } if(!$userActiveTab){?>
-						<li><a href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
-						<?php }else{?>
-						<li><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>"><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></a></li>
-						<?php }?>
-						<?php if( (User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) || (User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )) ){ ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>"><?php echo Labels::getLabel("LBL_My_Messages",$siteLangId); ?></a></li>
-						<?php } ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><?php echo Labels::getLabel("LBL_My_Credits",$siteLangId); ?></a></li>
-						<li class="logout"><a href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
+                    $userActiveTab = false;
+                    if( User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )){ $userActiveTab = true;?>
+                    <li><a data-org-url="<?php echo $dashboardOrgUrl; ?>" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Seller','sales',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></a></li>
+                    <?php } else if( User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) { $userActiveTab = true;?>
+                    <li><a data-org-url="<?php echo $dashboardOrgUrl; ?>" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Buyer','Orders',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','Orders'); ?>"><?php echo Labels::getLabel("LBL_My_Orders",$siteLangId); ?></a></li>
+                    <?php }else if( User::canViewAdvertiserTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ) ) { $userActiveTab = true;?>
+                    <li><a data-org-url="<?php echo $dashboardOrgUrl; ?>" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Advertiser','promotions',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('advertiser','promotions'); ?>"><?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?></a></li>
+                    <?php } else if( User::canViewAffiliateTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE' )){ $userActiveTab = true;?>
+                    <li><a data-org-url="<?php echo $dashboardOrgUrl; ?>" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
+                    <?php } if(!$userActiveTab){?>
+                    <li><a data-org-url="<?php echo $dashboardOrgUrl; ?>" href="<?php echo $dashboardUrl; ?>"><?php echo Labels::getLabel("LBL_Dashboard",$siteLangId); ?></a></li>
+                    <?php }else{?>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Account','ProfileInfo',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>"><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></a></li>
+                    <?php }?>
+                    <?php if( (User::canViewBuyerTab()  && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' )) || (User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' )) ){ ?>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Account','Messages',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>"><?php echo Labels::getLabel("LBL_My_Messages",$siteLangId); ?></a></li>
+                    <?php } ?>
+                    <li><a data-org-url="<?php echo CommonHelper::generateUrl('Account','credits',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><?php echo Labels::getLabel("LBL_My_Credits",$siteLangId); ?></a></li>
+                    <li class="logout"><a data-org-url="<?php echo CommonHelper::generateUrl('GuestUser','logout',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
 				</ul>
               </div>
             </div>

@@ -175,7 +175,7 @@
 								<?php if($data['user_profile_info']!=''){ ?>
 									<div class="profile__desc"><?php echo $data['user_profile_info'];?>
 									<div class="gap"></div>
-									<a href="<?php echo CommonHelper::generateUrl('Account','Profile');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('Lbl_Edit',$siteLangId);?></a></div>
+									<a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('Lbl_Edit',$siteLangId);?></a></div>
 								<?php }?>
 							</div>
 						</div>

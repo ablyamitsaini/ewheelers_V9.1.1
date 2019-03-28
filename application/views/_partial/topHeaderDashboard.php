@@ -2,7 +2,8 @@
 	<header id="header-dashboard" class="header-dashboard no-print" role="header-dashboard">
 		<div class="header-icons-group">
 			<div class="c-header-icon messages">
-				<a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>">
+                <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+				<a data-org-url="<?php echo CommonHelper::generateUrl('Account','Messages',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>">
 					<i class="icn"><svg class="svg">
 							<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message"></use>
 						</svg>
