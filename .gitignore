@@ -9,8 +9,5 @@
 /public/cache/*
 /public/settings.php
 /public/sitemap.xml
-/public/phpinfo.php
-/public/info.php
-/public/server_info.php
-/public/unlink-files.php
-/public/delete-files-from-server.php
+/public/restore.php
+/restore
