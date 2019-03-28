@@ -85,7 +85,7 @@ $(document).delegate('.language-js','change',function(){
 		window.location.reload();
 	};
 	
-	setupCustomProduct = function(frm){
+	setupCustomProduct = function(frm){ 
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupCustomCatalogProduct'), (data), function(t) {
