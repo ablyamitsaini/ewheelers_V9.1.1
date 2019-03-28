@@ -190,7 +190,7 @@ class OrdersController extends AdminBaseController {
 		$srch->addCondition( 'order_type', '=',Orders::ORDER_PRODUCT);
 		$rs = $srch->getResultSet();
 		$order = FatApp::getDb()->fetch($rs);		
-		if(array_key_exists('pmethod_code',$order) && 'CashOnDelivery' == $order['pmethod_code']){
+		if(!empty($order) && array_key_exists('pmethod_code',$order) && 'CashOnDelivery' == $order['pmethod_code']){
 			Message::addErrorMessage(Labels::getLabel('LBL_COD_orders_are_not_eligible_for_payment_status_update',$this->adminLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
 		}		
