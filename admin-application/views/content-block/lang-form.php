@@ -171,26 +171,26 @@
                         <h4>SEO Friendly URL</h4>
                         <p> User defined URL for the category for SEO purposes. Spaces cannot be used in the URL.</p>
                         <h4>Featured</h4>
-                        <p> User defined field to mark a particular category as featured or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’.</p>
+                        <p> User defined field to mark a particular category as featured or not. Possible inputs for this field are 'Yes' &amp; 'No'.</p>
                         <h4>Active</h4>
-                        <p> User defined field to mark a particular category as active in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’Yes’.</p>
+                        <p> User defined field to mark a particular category as active in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'Yes'.</p>
                         <h4>Display Order</h4>
                         <p> User defined field to set priority on display order of root categories or sub-categories within a root category.</p>
-                        <p>If more than one category has display order set to the same value then the system will display category that was added first. If you are unsure about this field add display order as ‘1’ to all the categories.</p>
-                        <p>Deleted - User defined field to mark a particular category as deleted in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’No’ to display categories in the system.</p>
+                        <p>If more than one category has display order set to the same value then the system will display category that was added first. If you are unsure about this field add display order as '1' to all the categories.</p>
+                        <p>Deleted - User defined field to mark a particular category as deleted in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'No' to display categories in the system.</p>
                         <h3>Categories Media</h3>
                         <h4>Category Identifier</h4>
                         <p> User defined unique identifier for the category. This field needs to be the same as Category Identifier defined in Categories Content sheet.</p>
                         <h4>Lang Code</h4>
-                        <p> User defined field to link the category image for a particular language. ‘Universal’ is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Category has different images for each language.</p>
+                        <p> User defined field to link the category image for a particular language. 'Universal' is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Category has different images for each language.</p>
                         <h4>Image Type</h4>
-                        <p> User defined field with input options of ‘Category Icon’ &amp; ‘Category Banner’. Category icon option is to be used when uploading icon image for the category. Category banner option is to be used when uploading banner image for the category page.</p>
+                        <p> User defined field with input options of 'Category Icon' &amp; 'Category Banner'. Category icon option is to be used when uploading icon image for the category. Category banner option is to be used when uploading banner image for the category page.</p>
                         <h4>File Path</h4>
-                        <p> File path needs to be a publically accessible URL for example URL’s from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions for Category Icon are 60*60 pixels. Preferred image dimensions for Category banner are 1050*340 pixels.</p>
+                        <p> File path needs to be a publically accessible URL for example URL's from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions for Category Icon are 60*60 pixels. Preferred image dimensions for Category banner are 1050*340 pixels.</p>
                         <h4>File Name</h4>
                         <p> Name of the image file</p>
                         <h4>Display order</h4>
-                        <p> When a category has multiple images then this field defines the order of display. If you are unsure about this field add display order as ‘1’ to all the categories.</p>
+                        <p> When a category has multiple images then this field defines the order of display. If you are unsure about this field add display order as '1' to all the categories.</p>
                     </div>
 				<?php
 		        break;
@@ -205,7 +205,7 @@
                         <h3>Images/Media Files</h3>
                         <p> Any type of images/media can only be imported into the system if the file is located at a public URL. For example the file should be hosted either on a server which is accessible publically or on online tools such as Dropbox/Google Drive etc. Please note that images saved on devices and desktops cannot be imported through the CSV. Once the media CSV is imported in to the system, a cron job is executed by the system to import and save the images on the server. This cron job is an automated script that the system runs after a set interval on its own and no intervention is required from the users end. The media/images imported into the system will not display immediately. </p>
                         <h3>Deleting Items</h3>
-                        <p> Within Yo!Kart when an item is deleted, the system does not actually delete the item from the database rather it just hides the item from display. With the import functionality a user can restore a previously deleted item by changing the value of the deleted column from ‘Yes’ to ‘No’. </p>
+                        <p> Within Yo!Kart when an item is deleted, the system does not actually delete the item from the database rather it just hides the item from display. With the import functionality a user can restore a previously deleted item by changing the value of the deleted column from 'Yes' to 'No'. </p>
                         <h3>Import Log File</h3>
                         <p> Yo!Kart will generate a CSV log file for every import action where it will log the column and row for the errors encountered during the import. If the import was successful then no log file will be generated. System will only allow importing the CSV if no errors are encountered. </p>
                         <h3>CSV</h3>
@@ -226,19 +226,19 @@
                         <p>User defined description for the Brand.</p>
                         <h4>SEO Friendly URL</h4>
                         <p>User defined URL for the Brand for SEO purposes. Spaces cannot be used in the URL.</p>
-                        <p>Featured - User defined field to mark a particular Brand as featured or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’.</p>
-                        <p>Active - User defined field to mark a particular category as active in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’Yes’.</p>
+                        <p>Featured - User defined field to mark a particular Brand as featured or not. Possible inputs for this field are 'Yes' &amp; 'No'.</p>
+                        <p>Active - User defined field to mark a particular category as active in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'Yes'.</p>
                         <h3>Brands Media</h3>
                         <h4>Brand Identifier</h4>
                         <p>User defined unique identifier for the Brand. This field needs to be the same as Brand Identifier defined in Brands Content sheet.</p>
                         <h4>Lang Code</h4>
-                        <p>User defined field to link the brand image for a particular language. ‘Universal’ is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Brand has different images for each language.</p>
+                        <p>User defined field to link the brand image for a particular language. 'Universal' is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Brand has different images for each language.</p>
                         <h4>File Path</h4>
-                        <p>File path needs to be a publically accessible URL for example URL’s from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions are 192*82 pixels.</p>
+                        <p>File path needs to be a publically accessible URL for example URL's from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions are 192*82 pixels.</p>
                         <h4>File Name</h4>
                         <p>Name of the image file</p>
                         <h4>Display order</h4>
-                        <p>When a brand has multiple images then this field defines the order of display. If you are unsure about this field add display order as ‘1’ to all the brands.</p>
+                        <p>When a brand has multiple images then this field defines the order of display. If you are unsure about this field add display order as '1' to all the brands.</p>
                     </div>
 				<?php
 		        break;
@@ -254,10 +254,10 @@
                         <h4>Username</h4>
                         <p>For admin this field needs to be left blank. In case an option is added by a seller then seller username will be displayed in this field.</p>
                         <h4>Is separate image</h4>
-                        <p>User defined input field to denote if the option would have a separate image. Useful for color options of the product. Possible inputs for this field are ‘Yes’ &amp; ‘No’. </p>
-                        <p>Is color type - User defined input field to denote if option is a color. Possible inputs for this field are ‘Yes’ &amp; ‘No’.</p>
-                        <p>Display in filters - User defined input field to denote if option is to be displayed in the filters on the product listing page. Possible inputs for this field are ‘Yes’ &amp; ‘No’.</p>
-                        <p>Deleted - User defined field to mark a particular option as deleted in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’No’ to display categories in the system.</p>
+                        <p>User defined input field to denote if the option would have a separate image. Useful for color options of the product. Possible inputs for this field are 'Yes' &amp; 'No'. </p>
+                        <p>Is color type - User defined input field to denote if option is a color. Possible inputs for this field are 'Yes' &amp; 'No'.</p>
+                        <p>Display in filters - User defined input field to denote if option is to be displayed in the filters on the product listing page. Possible inputs for this field are 'Yes' &amp; 'No'.</p>
+                        <p>Deleted - User defined field to mark a particular option as deleted in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'No' to display categories in the system.</p>
                         <h3>Options Value</h3>
                         <h4>Option value identifier</h4>
                         <p>User defined unique identifier for the Option value. This works as a unique key for the system to identify a particular Option value.</p>
@@ -267,7 +267,7 @@
                         <p>User defined value for the Option.</p>
                         <h4>Color code</h4>
                         <p>User defined Hexadecimal value for the color of the option. Only to be used if the option is a color. Leave this field blank if the option is not a color. Hexadecimal for a color can be searched on Google.</p>
-                        <p>Display order - When an option has multiple option values then this field defines the order of display of the option value. If you are unsure about this field add display order as ‘1’.</p>
+                        <p>Display order - When an option has multiple option values then this field defines the order of display of the option value. If you are unsure about this field add display order as '1'.</p>
                     </div>
 				    <?php
 		        break;
@@ -297,10 +297,10 @@
                         <h4>Currency Code</h4>
                         <p>User defined field for unique currency code for the country.</p>
                         <h4>Language Code</h4>
-                        <p>‘Universal’ is to be used as an option to link the media in all languages. </p>
+                        <p>'Universal' is to be used as an option to link the media in all languages. </p>
                         <p>Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Category has different images for each language.</p>
                         <h4>Active</h4>
-                        <p>User defined field to mark a particular country as active in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’Yes’.</p>
+                        <p>User defined field to mark a particular country as active in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'Yes'.</p>
                     </div>
 				<?php
 		        break;
@@ -318,7 +318,7 @@
                     <h4>State Code</h4>
                     <p>User defined field for unique state code.</p>
                     <h4>Active</h4>
-                    <p>User defined field to mark a particular state as active in the system or not. Possible inputs for this field are ‘Yes’ &amp; ‘No’. Default value should be set as ’Yes’.</p>
+                    <p>User defined field to mark a particular state as active in the system or not. Possible inputs for this field are 'Yes' &amp; 'No'. Default value should be set as 'Yes'.</p>
                 </div>
 				<?php
 		        break;
@@ -362,7 +362,7 @@
                                     </li>
                                     <li>
                                         <h5>Product Type Identifier</h5>
-                                        <p>User defined input field to denote the type of the Product. Possible inputs for this field are ‘Physical’ &amp; ‘Digital’.</p>
+                                        <p>User defined input field to denote the type of the Product. Possible inputs for this field are 'Physical' &amp; 'Digital'.</p>
                                     </li>
                                     <li>
                                         <h5>Model</h5>
@@ -389,7 +389,7 @@
                                         <p>User defined field for product package Height.</p>
                                     </li>				<li>
                                         <h5>Dimension Unit Identifier</h5>
-                                        <p>User defined input field to denote the unit of the dimensions of the package. Possible inputs for this field are ‘Inch’, ‘Centimeter’ , ‘Feet’. </p>
+                                        <p>User defined input field to denote the unit of the dimensions of the package. Possible inputs for this field are 'Inch', 'Centimeter' , 'Feet'. </p>
                                     </li>
                                     <li>
                                         <h5>Weight</h5>
@@ -397,7 +397,7 @@
                                     </li>
                                     <li>
                                         <h5>Weight Unit Identifier</h5>
-                                        <p>User defined input field to denote the unit of the weight of the package. . Possible inputs for this field are ‘Gram’, ‘Kilogram’ , ‘Pound’. </p>
+                                        <p>User defined input field to denote the unit of the weight of the package. . Possible inputs for this field are 'Gram', 'Kilogram' , 'Pound'. </p>
                                     </li>
                                     <li>
                                         <h5>Ean/upc Code</h5>
@@ -413,27 +413,27 @@
                                     </li>
                                     <li>
                                         <h5>Free Shipping</h5>
-                                        <p>User defined field to mark a particular Product is available for free shipping. Possible inputs for this field are ‘Yes’ , ‘No’.</p>
+                                        <p>User defined field to mark a particular Product is available for free shipping. Possible inputs for this field are 'Yes' , 'No'.</p>
                                     </li>
                                     <li>
                                         <h5>COD Available</h5>
-                                        <p>User defined field to mark a particular Product is available for Cash on Delivery or not. Possible inputs for this field are ‘Yes’ , ‘No’.</p>
+                                        <p>User defined field to mark a particular Product is available for Cash on Delivery or not. Possible inputs for this field are 'Yes' , 'No'.</p>
                                     </li>
                                     <li>
                                         <h5>Featured</h5>
-                                        <p>User defined field to mark a particular Product as featured or not. Possible inputs for this field are ‘Yes’ , ‘No’.</p>
+                                        <p>User defined field to mark a particular Product as featured or not. Possible inputs for this field are 'Yes' , 'No'.</p>
                                     </li>
                                     <li>
                                         <h5>Approved</h5>
-                                        <p>User defined field to mark a particular Product as Approved or not. Possible inputs for this field are ‘Yes’ , ‘No’. Default value should be set as ’Yes’ to display products in the system.</p>
+                                        <p>User defined field to mark a particular Product as Approved or not. Possible inputs for this field are 'Yes' , 'No'. Default value should be set as 'Yes' to display products in the system.</p>
                                     </li>
                                     <li>
                                         <h5>Active</h5>
-                                        <p>User defined field to mark a particular Product as active in the system or not. Possible inputs for this field are ‘Yes’ , ‘No’. Default value should be set as ’Yes’.</p>
+                                        <p>User defined field to mark a particular Product as active in the system or not. Possible inputs for this field are 'Yes' , 'No'. Default value should be set as 'Yes'.</p>
                                     </li>
                                     <li>
                                         <h5>Deleted</h5>
-                                        <p>User defined field to mark a particular product as deleted in the system or not. Possible inputs for this field are ‘Yes’ , ‘No’. Default value should be set as ’No’ to display products in the system.</p>
+                                        <p>User defined field to mark a particular product as deleted in the system or not. Possible inputs for this field are 'Yes' , 'No'. Default value should be set as 'No' to display products in the system.</p>
                                     </li>
                                 </ul>
                             </li>
@@ -536,7 +536,7 @@
                                     </li>
                                     <li>
                                         <h5>Lang Code</h5>
-                                        <p>User defined field to link the product image for a particular language. ‘Universal’ is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Product has different images for each language.</p>
+                                        <p>User defined field to link the product image for a particular language. 'Universal' is to be used as an option to link the media in all languages. Language codes can be looked up by clicking the language option in the top header. Language codes need to be used if the Product has different images for each language.</p>
                                     </li>
                                     <li>
                                         <h5>Option Identifier</h5>
@@ -548,7 +548,7 @@
                                     </li>
                                     <li>
                                         <h5>File Path</h5>
-                                        <p>File path needs to be a publically accessible URL for example URL’s from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions for the product images are greater than 500*500 pixels.</p>
+                                        <p>File path needs to be a publically accessible URL for example URL's from Google Drive, Dropbox etc. Images stored locally on your personal device/machine cannot be uploaded. Preferred image dimensions for the product images are greater than 500*500 pixels.</p>
                                     </li>
                                     <li>
                                         <h5>File Name</h5>
@@ -556,7 +556,7 @@
                                     </li>
                                     <li>
                                         <h5>Display order</h5>
-                                        <p>When a product has multiple images then this field defines the order of display. If you are unsure about this field add display order as ‘1’.</p>
+                                        <p>When a product has multiple images then this field defines the order of display. If you are unsure about this field add display order as '1'.</p>
                                     </li>
                                 </ul>
                             </li>

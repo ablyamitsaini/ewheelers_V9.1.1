@@ -4,7 +4,6 @@
 		<div class="row">
 			<div class="col-lg-12 col-md-12 space">
 				<div class="page__title">
-
 					<div class="row">
 						<div class="col--first col-lg-6">
 							<span class="page__icon"><i class="ion-android-star"></i></span>
