@@ -65,7 +65,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
                 <div class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></div>
                 <?php } ?>
               </div>
-			  <?php if($shop['shop_free_ship_upto'] > 0){
+			  <?php if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
 				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>
@@ -416,7 +416,7 @@ $("document").ready(function(){
 	recentlyViewedProducts(<?php echo $product['selprod_id'];?>);
 	zheight = $( window ).height() - 180;
 	zwidth = $( window ).width()/2 - 50;
-	
+
     if(layout == 'rtl'){
         $('.xzoom, .xzoom-gallery').xzoom({zoomWidth: zwidth, zoomHeight: zheight, title: true, tint: '#333',  position:'left'});
     }else{
