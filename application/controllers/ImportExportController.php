@@ -66,6 +66,7 @@ class ImportExportController extends LoggedUserController {
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
 
+		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 		$obj = new Importexport();
 		if( !$obj->isUploadedFileValidMimes($_FILES['import_file'])){
 			Message::addErrorMessage( Labels::getLabel( "LBL_Not_a_Valid_CSV_File", $this->siteLangId ) );
@@ -73,7 +74,6 @@ class ImportExportController extends LoggedUserController {
 		}
 
 		$sheetType = FatApp::getPostedData('sheet_type', FatUtility::VAR_INT, 0);
-		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 		$userId = UserAuthentication::getLoggedUserId();
 
 		$obj->import($actionType,$langId,$sheetType,$userId);

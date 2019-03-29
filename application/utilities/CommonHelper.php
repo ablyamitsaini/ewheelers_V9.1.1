@@ -683,37 +683,61 @@ class CommonHelper extends FatUtility{
 		fpassthru($temp_memory);
 	}
 
-
-	public static function writeLogFile( $file, $fileContent = array(), $fileClose = false )
-	{
-		if(!$file ){
-			return;
+	public static function addToCSV( $handle, $fileContent = array() ){
+		if( !$handle ){
+			return false;
 		}
 
 		if( is_array($fileContent) && 0 < count($fileContent) ){
-			$fileContent = fgets($file) . implode(',', $fileContent). "\n" ;
-			fputs($file, $fileContent);
-		}
-
-		if($fileClose){
-			fclose($file);
+			fputcsv($handle, $fileContent);
 		}
 	}
-	public static function checkLogFile( $fileName )
+
+	/* File creation in temporary memory. */
+	public static function writeExportDataToCSV( $handle, $fileContent = array(), $download = false, $output_file_name = '' ){
+		self::addToCSV( $handle, $fileContent );
+
+		if( $download ){
+			/** rewrind the "file" with the csv lines **/
+			fseek($handle, 0);
+			/** modify header to be downloadable csv file **/
+			header('Content-Description: File Transfer');
+			header('Content-Encoding: UTF-8');
+			header('Content-type: application/csv; charset=UTF-8; encoding=UTF-8');
+			header('Content-Disposition: attachement; filename="' . $output_file_name . '";');
+			/** Send file to browser for download */
+
+			header("Cache-Control: cache, must-revalidate");
+			header("Pragma: public");
+
+			fpassthru($handle);
+		}
+	}
+
+	/* To retain file on server. */
+	public static function writeToCSVFile( $handle, $fileContent = array(), $fileClose = false )
 	{
-		if( empty($fileName) ){
-			return;
+		self::addToCSV( $handle, $fileContent );
+
+		if( $fileClose ){
+			fclose( $handle );
 		}
-		$file = fopen(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName,"r");
-		$havingData = false;
-		while (($data[] = fgetcsv($file, 1000, ",")) !== FALSE) {
-			if(count($data) > 1){
-				$havingData = true;
-				break;
-			}
-		}
+	}
+
+	public static function checkCSVFile( $fileName )
+	{
+		if( empty($fileName) ){ return false; }
+
+		$file = fopen( ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName, "r" );
+
+		/**** Skip first heading row ****/
+		fgetcsv($file);
+		/**** Skip first heading row ****/
+
+		$havingData = fgetcsv($file);
+
 		if( !$havingData ){
-			unlink(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName);
+			unlink( ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName );
 		}
 		return $havingData;
 	}

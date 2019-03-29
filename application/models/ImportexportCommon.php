@@ -1,6 +1,7 @@
 <?php
 class ImportexportCommon extends FatModel{
 	protected $db;
+	protected $CSVfileName;
 
 	const IMPORT_ERROR_LOG_PATH = CONF_UPLOADS_PATH.'import-error-log/';
 
@@ -11,42 +12,50 @@ class ImportexportCommon extends FatModel{
 		$this->settings = $this->getSettingsArr();
 	}
 
-	public function logFileName( $name = '', $langId = 0 ){
+	public function CSVFileName( $fileName = '', $langId = 0 ){
 		$langId =  FatUtility::int($langId);
-		if(!$langId){
+		if( 0 >= $langId){
 			$langId = CommonHelper::getLangId();
 		}
-		$fileName = empty($name) ? 'Error_Log' : str_replace(' ', '_', $name);
-		$fileName = Labels::getLabel('LBL_'.$fileName,$langId);
-		return $fileName.'_'.time().'_'.mt_rand().'.csv';
+
+		$langData = Language::getAttributesById( $langId, array('language_code') );
+
+		$fileName = empty($fileName) ? 'CSV_FILE' : $fileName;
+
+		return $fileName.'_'.$langData['language_code'].'_'.date("d-M-Y-His").mt_rand().'.csv';
 	}
-	public function openErrorLogFile( $fileName ,$langId = 0 )
-	{
+
+	public function openCSVfileToWrite( $fileName, $langId = 0, $errorLog = false, $headingsArr = array() ){
 		if( empty($fileName)){
 			return false;
 		}
+		$this->CSVfileName = $this->CSVFileName($fileName);
 
-		if(!file_exists(self::IMPORT_ERROR_LOG_PATH)){
-           mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
-       	}
+		if( true === $errorLog ){
+			if( !file_exists( self::IMPORT_ERROR_LOG_PATH ) ){
+	           	mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
+			}
+			$file = self::IMPORT_ERROR_LOG_PATH.$this->CSVfileName;
+			$headingsArr = array(
+				Labels::getLabel('LBL_Row',$langId),
+				Labels::getLabel('LBL_Column',$langId),
+				Labels::getLabel('LBL_Description',$langId)
+			);
+			$handle = fopen ($file, "w");
+	   	}
+
+		if( false === $errorLog ){
+			$handle = fopen('php://memory', 'w');
+	   	}
 
 		$langId =  FatUtility::int($langId);
-		if(!$langId){
+		if( 0 >= $langId ){
 			$langId = CommonHelper::getLangId();
 		}
 
-		$fileName = self::IMPORT_ERROR_LOG_PATH.$fileName;
+		CommonHelper::writeToCSVFile( $handle, $headingsArr );
+		return $handle;
 
-		$file = fopen ($fileName, "w");
-
-		$arr = array(
-			Labels::getLabel('LBL_Row',$langId),
-			Labels::getLabel('LBL_Column',$langId),
-			Labels::getLabel('LBL_Description',$langId)
-		);
-
-		CommonHelper::writeLogFile( $file, $arr );
-		return $file;
 	}
 
 	public static function deleteErrorLogFiles($hoursBefore = '4'){
@@ -169,21 +178,21 @@ class ImportexportCommon extends FatModel{
 	public function getCategoryMediaColoumArr($langId){
 		$arr = array();
 		if($this->settings['CONF_USE_CATEGORY_ID']){
-			$arr[] = Labels::getLabel('LBL_Category_Id', $langId);
+			$arr['prodcat_id'] = Labels::getLabel('LBL_Category_Id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Category_Identifier', $langId);
+			$arr['prodcat_identifier'] = Labels::getLabel('LBL_Category_Identifier', $langId);
 		}
 
 		if($this->settings['CONF_USE_LANG_ID']){
-			$arr[] = Labels::getLabel('LBL_lang_id', $langId);
+			$arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_lang_code', $langId);
+			$arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
 		}
 
-		$arr[] = Labels::getLabel('LBL_Image_Type', $langId);
-		$arr[] = Labels::getLabel('LBL_File_Path', $langId);
-		$arr[] = Labels::getLabel('LBL_File_Name', $langId);
-		$arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+		$arr['afile_type'] = Labels::getLabel('LBL_Image_Type', $langId);
+		$arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+		$arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+		$arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
 		return $arr;
 	}
 
@@ -215,20 +224,20 @@ class ImportexportCommon extends FatModel{
 	public function getBrandMediaColoumArr($langId){
 		$arr = array();
 		if($this->settings['CONF_USE_BRAND_ID']){
-			$arr[] = Labels::getLabel('LBL_Brand_Id', $langId);
+			$arr['brand_id'] = Labels::getLabel('LBL_Brand_Id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+			$arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
 		}
 
 		if($this->settings['CONF_USE_LANG_ID']){
-			$arr[] = Labels::getLabel('LBL_lang_id', $langId);
+			$arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_lang_code', $langId);
+			$arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
 		}
 
-		$arr[] = Labels::getLabel('LBL_File_Path', $langId);
-		$arr[] = Labels::getLabel('LBL_File_Name', $langId);
-		$arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+		$arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+		$arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+		$arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
 		return $arr;
 	}
 
@@ -425,32 +434,32 @@ class ImportexportCommon extends FatModel{
 	public function getProductMediaColoumArr($langId){
 		$arr = array();
 		if($this->settings['CONF_USE_PRODUCT_ID']){
-			$arr[] = Labels::getLabel('LBL_Product_Id', $langId);
+			$arr['product_id'] = Labels::getLabel('LBL_Product_Id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Product_Identifier', $langId);
+			$arr['product_identifier'] = Labels::getLabel('LBL_Product_Identifier', $langId);
 		}
 
 		if($this->settings['CONF_USE_LANG_ID']){
-			$arr[] = Labels::getLabel('LBL_lang_id', $langId);
+			$arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_lang_code', $langId);
+			$arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
 		}
 
 		if($this->settings['CONF_USE_OPTION_ID']){
-			$arr[] = Labels::getLabel('LBL_Option_id', $langId);
+			$arr['option_id'] = Labels::getLabel('LBL_Option_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Option_identifer', $langId);
+			$arr['option_identifier'] = Labels::getLabel('LBL_Option_identifer', $langId);
 		}
 
 		if($this->settings['CONF_OPTION_VALUE_ID']){
-			$arr[] = Labels::getLabel('LBL_Option_value_id', $langId);
+			$arr['optionvalue_id'] = Labels::getLabel('LBL_Option_value_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_Option_value_identifer', $langId);
+			$arr['optionvalue_identifier'] = Labels::getLabel('LBL_Option_value_identifer', $langId);
 		}
 
-		$arr[] = Labels::getLabel('LBL_File_Path', $langId);
-		$arr[] = Labels::getLabel('LBL_File_Name', $langId);
-		$arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+		$arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+		$arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+		$arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
 		return $arr;
 	}
 
@@ -514,15 +523,15 @@ class ImportexportCommon extends FatModel{
 
 	public function getSelProdMediaColoumArr($langId){
 		$arr = array();
-		$arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+		$arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
 		if($this->settings['CONF_USE_LANG_ID']){
-			$arr[] = Labels::getLabel('LBL_lang_id', $langId);
+			$arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
 		}else{
-			$arr[] = Labels::getLabel('LBL_lang_code', $langId);
+			$arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
 		}
-		$arr[] = Labels::getLabel('LBL_File_Path', $langId);
-		$arr[] = Labels::getLabel('LBL_File_Name', $langId);
-		$arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+		$arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+		$arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+		$arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
 		return $arr;
 	}
 

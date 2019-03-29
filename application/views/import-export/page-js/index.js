@@ -102,8 +102,8 @@ $(document).ready(function() {
                             } else {
                                 importMediaForm(actionType);
                             }
-                            if (typeof ans.redirectUrl !== 'undefined') {
-                                location.href = ans.redirectUrl;
+                            if (typeof ans.CSVfileUrl !== 'undefined') {
+                                location.href = ans.CSVfileUrl;
                             }
                         } else {
                             $('#fileupload_div').html('');
