@@ -108,18 +108,12 @@ class ImportexportCommon extends FatModel{
 		}
 	}
 
-	public function getDateTime($dt,$time = true){
-		if($time && strpos($dt, ":")){
-			$dt = substr($dt,0,19);
-		}else{
-			$dt = substr($dt,0,10);
-		}
+	public function getDateTime($dt,$time = true){		
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
 
 		try
 		{
-			//$dt = str_replace('/', '-', $dt);
 			$date = new DateTime($dt);
 			$timeStamp=$date->getTimestamp();
 			if($time==false){
@@ -127,7 +121,7 @@ class ImportexportCommon extends FatModel{
 			}
 			return date("Y-m-d H:i:s",$timeStamp);
 		}catch (Exception $e) {
-			return false;
+			return '0000-00-00';						
 		}
 	}
 
@@ -832,7 +826,7 @@ class ImportexportCommon extends FatModel{
 			'CONF_USE_BRAND_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_BRAND_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_CATEGORY_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_CATEGORY_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_PRODUCT_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_PRODUCT_ID',FatUtility::VAR_INT,0):false,
-			'CONF_USE_USER_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_USER_ID',FatUtility::VAR_INT,0):false,
+			'CONF_USE_USER_ID'=>false,
 			'CONF_USE_OPTION_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_OPTION_ID',FatUtility::VAR_INT,0):false,
 			'CONF_OPTION_VALUE_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_OPTION_VALUE_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_TAG_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_TAG_ID',FatUtility::VAR_INT,0):false,
@@ -871,6 +865,7 @@ class ImportexportCommon extends FatModel{
 		if(!$row){
 			return $res;
 		}
+		$row['CONF_USE_USER_ID'] = false;
 		return $row;
 	}
 

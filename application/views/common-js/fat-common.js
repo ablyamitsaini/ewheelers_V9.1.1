@@ -114,7 +114,17 @@ var fcom = {
 			});
 		},
 		
+		addTrailingSlash:function(){
+			var existingUrl = window.location.href;
+			var lastChar = existingUrl.substr(-1); 
+			if (lastChar != '/') { 
+			   window.history.pushState("","",existingUrl+'/') ;
+			}
+		},
+		
 		updateWithAjax: function(url, data, fn, options, processMsg) {
+			this.addTrailingSlash();
+	
 			if(typeof processMsg == undefined || processMsg == null){
 				processMsg = true;
 			}

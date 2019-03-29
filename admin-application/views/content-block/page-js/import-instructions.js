@@ -102,7 +102,7 @@ $(document).ready(function(){
 	resetToDefaultContent =  function(){
 		var agree  = confirm(langLbl.confirmReplaceCurrentToDefault);
 		if( !agree ){ return false; }
-		//oUtil.obj.insertHTML("Testing Content");
+		//oUtil.obj.insertHTML("Testing Content");		
 		oUtil.obj.putHTML( $("#editor_default_content").html() );
 	};
 

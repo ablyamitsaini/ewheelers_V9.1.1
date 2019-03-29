@@ -603,6 +603,7 @@ class MobileAppApiController extends MyAppController {
 		$categoriesDataArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
 
 		//$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
+		
 		$categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
 		if(empty($categoriesDataArr)){
 			$categoriesDataArr =  array();
@@ -614,6 +615,7 @@ class MobileAppApiController extends MyAppController {
 	private function resetKeyValues($arr){
 		$result = array();
 		foreach($arr as $key=>$val){
+			if(!array_key_exists('prodcat_id',$val)){continue;}	
 			$result[$key] = $val;
 			$childernArr = array();
 			if(!empty($val['children'])){
@@ -622,7 +624,7 @@ class MobileAppApiController extends MyAppController {
 			}
 			$result[$key]['children'] = $childernArr;
 		}
-		return $result;
+		return array_values($result);
 	}
 
 	function category($id){

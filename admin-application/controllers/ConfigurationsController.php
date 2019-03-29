@@ -1196,9 +1196,6 @@ class ConfigurationsController extends AdminBaseController {
 				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_catalog_product_id_instead_of_catalog_product_identifier",$this->adminLangId),'CONF_USE_PRODUCT_ID',1,array(),false,0);
 				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_catalog_product_id_instead_of_catalog_product_identifier_in_worksheets",$this->adminLangId).'</small>';
 
-				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_user_id_instead_of_username",$this->adminLangId),'CONF_USE_USER_ID',1,array(),false,0);
-				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_user_id_instead_of_username_in_worksheets",$this->adminLangId).'</small>';
-
 				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_option_id_instead_of_option_identifier",$this->adminLangId),'CONF_USE_OPTION_ID',1,array(),false,0);
 				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_option_id_instead_of_option_identifier_in_worksheets",$this->adminLangId).'</small>';
 

@@ -21,9 +21,12 @@ INSERT INTO `tbl_extra_pages_lang` (`epagelang_epage_id`, `epagelang_lang_id`, `
 
 INSERT INTO `tbl_payment_methods`(`pmethod_identifier`, `pmethod_code`, `pmethod_active`, `pmethod_display_order`) VALUES ('Brain Tree','Braintree',1,17);
 
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Developer_Key'
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_google_plus_developer_key'
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_ID'
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_application_Client_Id_used_to_Login'
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_Secret'
-DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_Google_Plus_id_client_secret_key_used_for_authentication'
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Developer_Key';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_google_plus_developer_key';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_ID';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_application_Client_Id_used_to_Login';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_Secret';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_Google_Plus_id_client_secret_key_used_for_authentication';
+ALTER TABLE `tbl_admin` ADD `admin_email_notification` TINYINT(1) NOT NULL AFTER `admin_active`;
+ALTER TABLE tbl_seller_product_options DROP PRIMARY KEY;
+ALTER TABLE `tbl_seller_product_options` ADD PRIMARY KEY( `selprodoption_selprod_id`, `selprodoption_option_id`);

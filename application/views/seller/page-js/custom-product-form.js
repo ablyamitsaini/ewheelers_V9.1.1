@@ -109,19 +109,15 @@
 		});
 	}; */
 
-	setupCustomProduct = function(frm){
+	setupCustomProduct = function(frm){	
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
+		
 		addingNew = ($(frm.product_id).val() == 0);
 		$(frm.product_options).val(productOptions);
 		var data = fcom.frmData(frm);
 
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupCustomProduct'), (data), function(t) {
-			runningAjaxReq = false;
+			
 			$.mbsmessage.close();
 
 			if (addingNew) {
