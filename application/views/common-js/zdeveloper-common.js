@@ -480,9 +480,8 @@ function defaultSetUpLogin(frm, v) {
 			$('html').css('overflow','hidden');
 			facebocxHeight  = screenHeight;
 			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);
-			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-150 + 'px');
-
-			if(fbContentHeight >= screenHeight){
+			setTimeout(function(){ $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight)/4) + 'px'); }, 700);
+      if(fbContentHeight >= screenHeight){
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
 			}else{
@@ -539,14 +538,14 @@ function defaultSetUpLogin(frm, v) {
 		loading: function(){
 			$('.system_message').show();
 		},
-		fillSysMessage:function(data, cls){			
+		fillSysMessage:function(data, cls){
 			if(cls){
 				$('.system_message').removeClass('alert--process');
 				$('.system_message').removeClass('alert--danger');
 				$('.system_message').removeClass('alert--success');
 				$('.system_message').removeClass('alert--info');
 				$('.system_message').addClass(cls);
-			}	
+			}
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 
@@ -693,7 +692,7 @@ $(document).ready(function(){
 		$(this).parent('div').find('input').val(val);
 	});
 
-	$(document).on("click",'.setactive-js li',function(){ 
+	$(document).on("click",'.setactive-js li',function(){
 		$(this).closest('.setactive-js').find('li').removeClass('is-active');
 		$(this).addClass('is-active');
 	});

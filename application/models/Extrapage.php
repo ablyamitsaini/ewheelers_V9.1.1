@@ -116,7 +116,7 @@ class Extrapage extends MyAppModel {
 		$srch = self::getSearchObject($langId);
 		$srch->addCondition('ep.epage_type','=',$pageType);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();
+		$srch->doNotLimitRecords();		
 		$rs = $srch->getResultSet();
 		return $pageData = FatApp::getDb()->fetch($rs);
 	}
