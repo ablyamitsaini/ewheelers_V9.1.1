@@ -389,6 +389,8 @@ class ImportExportController extends AdminBaseController {
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
 				$this->objPrivilege->canViewSellerProducts();
+				$displayMediaTab = true;
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS, $langId );
 			break;
 			case Importexport::TYPE_OPTIONS:
 				$this->objPrivilege->canViewOptions();

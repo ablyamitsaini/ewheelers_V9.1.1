@@ -232,37 +232,13 @@ class ImportExportController extends LoggedUserController {
 		$obj = new Extrapage();
 		$pageData = '';
 		$displayMediaTab = false;
-		switch($actionType){
-			case Importexport::TYPE_CATEGORIES:
-				$displayMediaTab = true;
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_PRODUCTS_CATEGORIES_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_BRANDS:
-				$displayMediaTab = true;
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_BRANDS_INSTRUCTIONS, $langId );
-			break;
+		switch($actionType){			
 			case Importexport::TYPE_PRODUCTS:
 				$displayMediaTab = true;
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId );
+				$pageData = $obj->getContentByPageType( Extrapage::SELLER_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId );
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
-			break;
-			case Importexport::TYPE_OPTIONS:
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_OPTION_VALUES:
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_TAG:
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_TAGS_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_COUNTRY:
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_COUNTRIES_MANAGEMENT_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_STATE:
-				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_STATE_MANAGEMENT_INSTRUCTIONS, $langId );
-			break;
-			case Importexport::TYPE_POLICY_POINTS:
+				$pageData = $obj->getContentByPageType( Extrapage::SELLER_PRODUCT_INVENTORY_INSTRUCTIONS, $langId );
 			break;
 			default:
 				FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access',$langId));
@@ -311,7 +287,7 @@ class ImportExportController extends LoggedUserController {
 	public function generalInstructions(){
 		$langId = $this->siteLangId ;
 		$obj = new Extrapage();
-		$pageData = $obj->getContentByPageType( Extrapage::GENERAL_SETTINGS_INSTRUCTIONS, $langId );
+		$pageData = $obj->getContentByPageType( Extrapage::SELLER_GENERAL_SETTINGS_INSTRUCTIONS, $langId );
 		$this->set('pageData' , $pageData);
 		$this->set('action','generalInstructions');
 		$this->_template->render(false,false,'import-export/general-instructions.php');
