@@ -18,7 +18,7 @@
             		<div class="tabs_panel_wrap">
             			<div class="tabs_panel">
             				<?php
-                                if( !empty($pageData) ){
+                                if( !empty($pageData['epage_content']) ){
                                     ?>
                                     <h2><?php echo $pageData['epage_label'];?></h2>
                                     <hr>
