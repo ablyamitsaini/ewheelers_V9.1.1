@@ -12,7 +12,7 @@ $frm->developerTags['fld_default_col'] = 12;
 		  <li><a href="#"><?php echo Labels::getLabel('LBL_Confirmation',$siteLangId);?></a></li>
 		</ul>
 	</div>
-	<?php echo $frm->getFormTag(); ?>                        
+	<?php echo $frm->getFormTag(); ?>
 
     <div class="row">
 	   <div class="col-md-6">
@@ -25,7 +25,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
 	   <div class="col-md-6">
 		   <div class="field-set">
-			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PHONE',$siteLangId);?></label></div>
+			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PHONE',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
 				   <div class="field_cover"><?php echo $frm->getFieldHTML('user_phone');?></div>
 			   </div>
@@ -53,7 +53,7 @@ $frm->developerTags['fld_default_col'] = 12;
    <div class="row">
 	   <div class="col-md-6">
 		   <div class="field-set">
-			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PASSWORD',$siteLangId);?></label></div>
+			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_PASSWORD',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
 				   <div class="field_cover"><?php echo $frm->getFieldHTML('user_password');?></div>
 				   <span class="text--small"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),
@@ -63,7 +63,7 @@ $frm->developerTags['fld_default_col'] = 12;
 	   </div>
 	   <div class="col-md-6">
 		   <div class="field-set">
-			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId);?></label></div>
+			   <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_CONFIRM_PASSWORD',$siteLangId);?> <span class="mandatory">*</span></label></div>
 			   <div class="field-wraper">
 				   <div class="field_cover"><?php echo $frm->getFieldHTML('password1');?></div>
 			   </div>
@@ -83,5 +83,5 @@ $frm->developerTags['fld_default_col'] = 12;
 		   </div>
 	   </div>
    </div>
-   <?php  echo $frm->getExternalJS();?>	
+   <?php  echo $frm->getExternalJS();?>
 </form>
