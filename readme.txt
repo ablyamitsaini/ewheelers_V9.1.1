@@ -20,7 +20,8 @@ Fixes :
 	. Invalid access error on placing the cancellation request.
 	. Labels cache value and removed tags from value.
 	. Validation on date fields for product special price.
-	. Displayed latest added collection on top when listing based on all type of collection(Admin). 
+	. Displayed latest added collection on top when listing based on all type of collection(Admin).
+	. Admin dashboard stats in case of cache. 
 Enhancements :
     . Import error handling via csv.
     . Order Print layout and functionality.
