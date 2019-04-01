@@ -172,9 +172,15 @@
             <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
           </tr>
           <?php } ?>
+          <?php if( $cartSummary['cartVolumeDiscount'] ){ ?>
+          <tr>
+            <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
+            <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
+          </tr>
+          <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
           <tr>
             <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-            <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
+            <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
           </tr>
           <tr>
             <td colspan="2" class="text-right"><a class="btn btn--primary ripplelink block-on-mobile" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Continue_Shopping', $siteLangId); ?></a> <a class="btn btn--secondary ripplelink block-on-mobile" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></td>
