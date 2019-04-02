@@ -257,11 +257,6 @@ class ImportExportController extends AdminBaseController {
 				$title = Labels::getLabel('LBL_Import_Catalog_Media',$langId);
 				$frm = $this->getImportExportForm($langId,'IMPORT_MEDIA',$actionType);
 			break;
-			case Importexport::TYPE_SELLER_PRODUCTS:
-				$this->objPrivilege->canViewSellerProducts();
-				$title = Labels::getLabel('LBL_Import_Digital_Files',$langId);
-				$frm = $this->getImportExportForm($langId,'IMPORT_MEDIA',$actionType);
-			break;
 			default:
 				FatUtility::dieWithError($this->str_invalid_request);
 			break;
@@ -325,6 +320,7 @@ class ImportExportController extends AdminBaseController {
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
 				$this->objPrivilege->canViewSellerProducts();
+				$displayMediaTab = false;
 				$title = Labels::getLabel('LBL_Import_Seller_Products',$langId);
 			break;
 			case Importexport::TYPE_OPTIONS:
@@ -393,7 +389,6 @@ class ImportExportController extends AdminBaseController {
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
 				$this->objPrivilege->canViewSellerProducts();
-				$displayMediaTab = true;
 				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS, $langId );
 			break;
 			case Importexport::TYPE_OPTIONS:
