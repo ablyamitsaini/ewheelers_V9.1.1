@@ -12,11 +12,11 @@
 							<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
 						</div>
 					</div>
-				</div> 		
+				</div>
 				<section class="section">
 					<div class="sectionhead">
 						<h4><?php echo Labels::getLabel('LBL_Policy_Points_Listing',$adminLangId); ?></h4>
-						<?php 
+						<?php
 							$ul = new HtmlElement( "ul",array("class"=>"actions actions--centered") );
 							$li = $ul->appendElement("li",array('class'=>'droplink'));
 							$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
@@ -24,10 +24,21 @@
 							$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
 							// $innerLi=$innerUl->appendElement('li');
 
-						if($canEdit){ 
-						   $innerLiAddCat=$innerUl->appendElement('li');            
+							if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0) && $canView){
+									$innerLiExport=$innerUl->appendElement('li');
+									$innerLiExport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Export',$adminLangId),"onclick"=>"addExportForm(".Importexport::TYPE_POLICY_POINTS.")"),Labels::getLabel('LBL_Export',$adminLangId), true);
+							}
+							 if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0) && $canEdit){
+
+									$innerLiImport=$innerUl->appendElement('li');
+									$innerLiImport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Import',$adminLangId),"onclick"=>"addImportForm(". Importexport::TYPE_POLICY_POINTS.")"),Labels::getLabel('LBL_Import',$adminLangId), true);
+
+								}
+
+						if($canEdit){
+						   $innerLiAddCat=$innerUl->appendElement('li');
 						  $innerLiAddCat->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_Policy_Point',$adminLangId),"onclick"=>"addPolicyPointForm(0)"),Labels::getLabel('LBL_Add_Policy_Point',$adminLangId), true);
-						/*<a href="javascript:void(0)" class="themebtn btn-default btn-sm" onClick="policyPointForm(0)";><?php echo Labels::getLabel('LBL_Add_Policy_Point',$adminLangId); ?></a>*/			
+						/*<a href="javascript:void(0)" class="themebtn btn-default btn-sm" onClick="policyPointForm(0)";><?php echo Labels::getLabel('LBL_Add_Policy_Point',$adminLangId); ?></a>*/
 						}
 						echo $ul->getHtml();
 						 ?>
@@ -35,10 +46,10 @@
 					<div class="sectionbody">
 						<div class="tablewrap" >
 							<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...',$adminLangId); ?></div>
-						</div> 
+						</div>
 					</div>
 				</section>
-			</div>		
+			</div>
 		</div>
 	</div>
 </div>

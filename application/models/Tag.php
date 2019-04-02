@@ -20,6 +20,46 @@ class Tag extends MyAppModel{
 		return $srch;
 	}
 
+	public static function requiredTagsFields(){
+		return array(
+			ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+				'tag_id',
+			),
+			ImportexportCommon::VALIDATE_NOT_NULL => array(
+				'tag_identifier',
+				'tag_name',
+				'credential_username',
+				'tag_user_id',
+			),
+			ImportexportCommon::VALIDATE_INT => array(
+				'tag_user_id',
+			),
+		);
+	}
+
+	public static function validateTagsFields( $columnIndex, $columnTitle, $columnValue, $langId ){
+		$requiredFields = static::requiredTagsFields();
+		return ImportexportCommon::validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId );
+	}
+
+	public static function requiredProdTagsFields(){
+		return array(
+			ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+				'product_id',
+				'tag_id',
+			),
+			ImportexportCommon::VALIDATE_NOT_NULL => array(
+				'product_identifier',
+				'tag_identifier',
+			),
+		);
+	}
+
+	public static function validateProdTagsFields( $columnIndex, $columnTitle, $columnValue, $langId ){
+		$requiredFields = static::requiredProdTagsFields();
+		return ImportexportCommon::validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId );
+	}
+
 	public function addUpdateData($data = array(),$onDuplicateUpdateData=array()){
 		$record = new TableRecord(static::DB_TBL);
 		$record->assignValues($data);
@@ -54,7 +94,7 @@ class Tag extends MyAppModel{
 	get array of all product ids having that tag
 	delete records from product_to_tag having that tag
 	updateProductTagString for each product.
-	Product category association. 
+	Product category association.
 	When tag is added or removed from product. call updateProductTagString($productId)
 	**/
 	public static function updateProductTagString( $productId = 0 ) {
@@ -65,30 +105,30 @@ class Tag extends MyAppModel{
 		//$db = FatApp::getDb();
 		//$productSrchObj = Product::getSearchObject();
 		$languages = Language::getAllNames();
-		
+
 		//product_tags_string
 		$productTagsStringArr = array();
 		$product_tags_string = array();
-		
+
 		$prodObj = new Product( $productId );
-		
+
 		if( $languages ){
 			foreach( $languages as $lang_id => $lang_name ){
 				$productTags = Product::getProductTags( $productId, $lang_id );
-				$productName = Product::getAttributesBylangId($lang_id,$productId,'product_name'); 
+				$productName = Product::getAttributesBylangId($lang_id,$productId,'product_name');
 				if(!$productName){
 					$productData =	Product::getProductDataById( FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1),$productId,array('ifNull(product_name,product_identifier) as product_name','product_identifier'));
 					 $productName = $productData['product_name'];
 				}
-				
 
-				
+
+
 				if( $productTags ){
 					foreach( $productTags as $tag ){
 						$productTagsStringArr[$lang_id][] = ( $tag['tag_name'] == '' ) ? $tag['tag_identifier'] : $tag['tag_name'];
 					}
 					$product_tags_string[$lang_id] = implode("| ", $productTagsStringArr[$lang_id]);
-					
+
 					if( !empty($productTagsStringArr[$lang_id]) ){
 						$data_to_update = array( 'product_tags_string'	=>	$product_tags_string[$lang_id]	);
 						if($productName){
@@ -101,13 +141,13 @@ class Tag extends MyAppModel{
 					} */
 				}else{
 					$productName = !empty($productName) ? $productName : $productData['product_identifier'];
-					
+
 					$data_to_update = array( 'product_tags_string' => '', 'product_name' => $productName);
 					if( !$prodObj->updateLangData( $lang_id, $data_to_update ) ){}
 				}
 			}
 		}
-		
+
 		/* if ( $productId ) {
 			$rs = $db->query('SELECT product_id FROM tbl_products');
 			while ($row = $db->fetch($rs)) {
@@ -124,14 +164,14 @@ class Tag extends MyAppModel{
 		if( !$tagId ){
 			return;
 		}
-		
+
 		$rows = Product::getProductIdsByTagId( $tagId );
 		if( !empty( $rows ) ){
 			foreach( $rows as $row ){
 				static::updateProductTagString( $row['ptt_product_id'] );
 			}
 		}
-		
+
 		// get all product ids having this tag. for each updateProductTagString($productId);
 	}
 
@@ -144,6 +184,6 @@ class Tag extends MyAppModel{
 		return $res;
 	}
 
-	
+
 
 }

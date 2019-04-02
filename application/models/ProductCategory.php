@@ -42,6 +42,42 @@ class ProductCategory extends MyAppModel{
 		return $srch;
 	}
 
+	public static function requiredFields(){
+		return array(
+			ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+				'prodcat_id'
+			),
+			ImportexportCommon::VALIDATE_NOT_NULL => array(
+				'prodcat_identifier',
+				'prodcat_name',
+			)
+		);
+	}
+
+	public static function validateFields( $columnIndex, $columnTitle, $columnValue, $langId ){
+		$requiredFields = static::requiredFields();
+		return ImportexportCommon::validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId );
+	}
+
+	public static function requiredMediaFields(){
+		return array(
+			ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+				'prodcat_id'
+			),
+			ImportexportCommon::VALIDATE_NOT_NULL => array(
+				'prodcat_identifier',
+				'afile_physical_path',
+				'afile_name',
+				'afile_type',
+			)
+		);
+	}
+
+	public static function validateMediaFields( $columnIndex, $columnTitle, $columnValue, $langId ){
+		$requiredFields = static::requiredMediaFields();
+		return ImportexportCommon::validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId );
+	}
+
 	public function updateCatCode(){
 		$categoryId = $this->mainTableRecordId;
 		if(1 > $categoryId){

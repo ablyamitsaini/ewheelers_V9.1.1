@@ -5,6 +5,11 @@ class ImportexportCommon extends FatModel{
 
 	const IMPORT_ERROR_LOG_PATH = CONF_UPLOADS_PATH.'import-error-log/';
 
+	const VALIDATE_POSITIVE_INT = 'positiveInt';
+	const VALIDATE_INT = 'int';
+	const VALIDATE_FLOAT = 'float';
+	const VALIDATE_NOT_NULL = 'notNull';
+
 	function __construct($id = 0 ) {
 		//$this->defaultLangId = FatApp::getConfig('CONF_DEFAULT_SITE_LANG',FatUtility::VAR_INT,CommonHelper::getLangId());
 		$this->defaultLangId = CommonHelper::getLangId();
@@ -81,6 +86,31 @@ class ImportexportCommon extends FatModel{
 			return false;
 		}
 		return true;
+	}
+
+	public static function validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId ){
+		$errMsg = false;
+
+		foreach ( $requiredFields as $type => $fieldsArr ) {
+			if( !in_array( $columnIndex, $fieldsArr ) ){ continue; }
+
+			switch( $type ){
+				case static::VALIDATE_POSITIVE_INT :
+					$errMsg = ( 0 >= FatUtility::int( $columnValue ) ) ? Labels::getLabel( "MSG_{column-name}_should_be_greater_than_0.", $langId ) : false;
+				break;
+				case static::VALIDATE_NOT_NULL :
+					$errMsg = ( '' == $columnValue ) ? Labels::getLabel( "MSG_{column-name}_is_mandatory.", $langId ) : false ;
+				break;
+				case static::VALIDATE_INT :
+					$errMsg = ( 0 > FatUtility::int( $columnValue ) ) ? Labels::getLabel( "MSG_{column-name}_should_be_greater_than_equal_to_0.", $langId ) : false ;
+				break;
+				case static::VALIDATE_FLOAT :
+					$errMsg = ( 0 > FatUtility::float( $columnValue ) ) ? Labels::getLabel( "MSG_{column-name}_should_be_greater_than_0.", $langId ) : false ;
+				break;
+			}
+			return ( false !== $errMsg ) ? str_replace( '{column-name}', $columnTitle, $errMsg ) : $errMsg;
+		}
+		return $errMsg;
 	}
 
 	public function isUploadedFileValidMimes($files){
