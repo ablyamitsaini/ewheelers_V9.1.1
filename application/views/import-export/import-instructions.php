@@ -15,8 +15,7 @@
     <?php
         if( !empty($pageData['epage_content']) ){
 			?>
-				<h2><?php echo $pageData['epage_label'];?></h2>
-				<hr>
+				<h2><?php echo $pageData['epage_label'];?></h2>				
 			<?php
             	echo FatUtility::decodeHtmlEntities( $pageData['epage_content'] );
         }else{

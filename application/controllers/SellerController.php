@@ -2784,6 +2784,11 @@ class SellerController extends LoggedUserController {
 		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
+
+		$extraPage = new Extrapage();
+		$pageData = $extraPage->getContentByPageType( Extrapage::PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId );
+
+		$this->set('pageData',$pageData);
 		$this->_template->render();
 	}
 
