@@ -598,8 +598,8 @@ input[type="text"].p-cards.meastro {
 }
 
 .pagination li .fa.fa-angle-right {
-  -webkit-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  /* -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg); */
 }
 
 @media only screen and (max-width: 1600px) {
@@ -754,4 +754,4 @@ input[type="text"].p-cards.meastro {
   right: 0;
 }
 
-.pagination li.prev{transform: rotate(-180deg);}
+/* .pagination li.prev{transform: rotate(-180deg);} */
