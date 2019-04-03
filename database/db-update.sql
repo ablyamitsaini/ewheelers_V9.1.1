@@ -59,3 +59,172 @@ UPDATE `tbl_extra_pages` SET `epage_default_content` = '<h3>Make Money <span cla
 UPDATE `tbl_extra_pages` SET `epage_default_content` = '<h3>Make Money <span class="">by becoming a Yo!kart Affiliate!</span></h3> <p>Our affiliate program is easy & free to join! It enables you to earn revenue by referring potential customers to our website. Whether you are a large content network, social media butterfly or a seasoned blogger, you can earn our standard 5.00% commission on referred purchases. For more information, please visit our FAQ page and don’t forget to read our Terms & Conditions.</p>' WHERE `tbl_extra_pages`.`epage_type` = 22;
 UPDATE `tbl_extra_pages` SET `epage_default_content` = '<div class="heading1">Simple Pricing Structure</div> <div class="pricing-structure">   	<ul> 		<li>10%   			<p>Commission Fee</p></li> 		<li class="sign">+</li> 		<li>$1   			<p>Shipping Fee</p></li> 		<li class="sign">+</li> 		<li>$4    			<p>Marketplace Fee</p></li> 		<li class="sign">+</li> 		<li>15%    			<p>Service Tax</p></li> 		<li class="sign">+</li> 		<li>Amt.    			<p>Amount You Earned</p></li> 		<li class="sign">=</li> 		<li>Price    			<p>Price You Decide</p></li>   	</ul></div> <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum voluptatem.</p><a href="#" class="btn btn--primary btn--custom">Learn More About Pricing</a>' WHERE `tbl_extra_pages`.`epage_type` = 25;
 UPDATE `tbl_extra_pages` SET `epage_default_content` = '<ul> 	<li> <i class="individualTupple"><img src="/images/retina/user.svg" alt="" /></i> 		<h3>Certified User Identity</h3>   		<p> Lorem Ipsum is simply  printing and typesetting </p></li> 	<li> <i class="individualTupple"><img src="/images/retina/locked.svg" alt="" /></i> 		<h3>Secure payment and guaranteed</h3>   		<p> Lorem Ipsum is the printing and typesetting industry</p></li>  	<li> <i class="individualTupple"><img src="/images/retina/handshake2.svg" alt="" /></i> 		<h3> Delivery of goods without risk</h3>   		<p> Lorem Ipsum is simply dummy text of the  industry</p></li> 	<li> <i class="individualTupple"><img src="/images/retina/shipped.svg" alt="" /></i>  		<h3>Sell totally free</h3>  		<p> Lorem Ipsum is simply  of the printing and industry</p></li>   </ul>' WHERE `tbl_extra_pages`.`epage_type` = 26;
+
+INSERT INTO `tbl_email_templates` (`etpl_code`, `etpl_lang_id`, `etpl_name`, `etpl_subject`, `etpl_body`, `etpl_replacements`, `etpl_status`) VALUES ('new_seller_approved_admin', '1', 'New Seller Approval - Admin', 'New Seller Approval on {website_name}', '<div style="margin:0; padding:0;background: #ecf0f1;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#ecf0f1" style="font-family:Arial; color:#333; line-height:26px;">
+		<tbody>
+			<tr>
+				<td style="background:#ff3a59;padding:30px 0 10px;">
+					<!--
+					header start here
+					-->
+
+					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td><a href="{website_url}">{Company_Logo}</a></td>
+								<td style="text-align:right;">{social_media_icons}</td>
+							</tr>
+						</tbody>
+					</table>
+					<!--
+					header end here
+					-->
+					   </td>
+			</tr>
+			<tr>
+				<td style="background:#ff3a59;">
+					<!--
+					page title start here
+					-->
+
+					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="background:#fff;padding:20px 0 10px; text-align:center;">
+									<h4 style="font-weight:normal; text-transform:uppercase; color:#999;margin:0; padding:10px 0; font-size:18px;">Seller Approved</h4>
+									<h2 style="margin:0; font-size:34px; padding:0;">Seller Approval</h2></td>
+							</tr>
+						</tbody>
+					</table>
+					<!--
+					page title end here
+					-->
+					   </td>
+			</tr>
+			<tr>
+				<td>
+					<!--
+					page body start here
+					-->
+
+					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="background:#fff;padding:0 30px; text-align:center; color:#999;vertical-align:top;">
+									<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td style="padding:20px 0 30px;"><strong style="font-size:18px;color:#333;">Dear Admin </strong><br />
+													<span style="color: rgb(153, 153, 153); font-family: Arial; text-align: center; background-color: rgb(255, 255, 255);">New seller has been registered on</span> <a href="{website_url}">{website_name}</a>. Please find the details below:</td>
+											</tr>
+											<tr>
+												<td style="padding:20px 0 30px;">
+													<table style="border:1px solid #ddd; border-collapse:collapse;" cellspacing="0" cellpadding="0" border="0">
+														<tbody>
+															<tr>
+																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Reference Number</td>
+																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{reference_number}</td>
+															</tr>
+															<tr>
+																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Username<span class="Apple-tab-span" style="white-space:pre"></span></td>
+																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{username}</td>
+															</tr>
+															<tr>
+																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Email</td>
+																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{email}</td>
+															</tr>
+															<tr>
+																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Name</td>
+																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{name}</td>
+															</tr>
+														</tbody>
+													</table></td>
+											</tr>
+											<!--
+											section footer
+											-->
+
+											<tr>
+												<td style="padding:30px 0;border-top:1px solid #ddd; ">Get in touch in you have any questions regarding our Services.<br />
+													Feel free to contact us 24/7. We are here to help.<br />
+													<br />
+													All the best,<br />
+													The {website_name} Team<br />
+													</td>
+											</tr>
+											<!--
+											section footer
+											-->
+
+										</tbody>
+									</table></td>
+							</tr>
+						</tbody>
+					</table>
+					<!--
+					page body end here
+					-->
+					   </td>
+			</tr>
+			<tr>
+				<td>
+					<!--
+					page footer start here
+					-->
+
+					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td style="height:30px;"></td>
+							</tr>
+							<tr>
+								<td style="background:rgba(0,0,0,0.04);padding:0 30px; text-align:center; color:#999;vertical-align:top;">
+									<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td style="padding:30px 0; font-size:20px; color:#000;">Need more help?<br />
+													 <a href="{contact_us_url}" style="color:#ff3a59;">Weâ&euro;˜re here, ready to talk</a></td>
+											</tr>
+										</tbody>
+									</table></td>
+							</tr>
+							<tr>
+								<td style="padding:0; color:#999;vertical-align:top; line-height:20px;">
+									<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+										<tbody>
+											<tr>
+												<td style="padding:20px 0 30px; text-align:center; font-size:13px; color:#999;">{website_name} Inc.
+													<!--
+													if these emails get annoying, please feel free to  <a href="#" style="text-decoration:underline; color:#666;">unsubscribe</a>.
+													-->
+													</td>
+											</tr>
+										</tbody>
+									</table></td>
+							</tr>
+							<tr>
+								<td style="padding:0; height:50px;"></td>
+							</tr>
+						</tbody>
+					</table>
+					<!--
+					page footer end here
+					-->
+					   </td>
+			</tr>
+		</tbody>
+	</table></div>', '{website_name} Name of the website<br />
+{username}
+
+Username of the person registered<br />
+{email} Email Address of the person registered<br />
+{name} Name of the person sent request<br />
+{reference_number}
+
+Reference Number of the request<br />
+{social_media_icons} <br>
+{contact_us_url} <br>
+', '1');
+ALTER TABLE `tbl_languages` CHANGE `language_code` `language_code` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `tbl_user_cart` CHANGE `usercart_details` `usercart_details` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
