@@ -1,10 +1,8 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSearch->setFormTagAttribute ( 'class', 'web_form last_td_nowrap' );
 $frmSearch->setFormTagAttribute ( 'onsubmit', 'searchProducts(this); return(false);' );
 $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
 $frmSearch->developerTags['fld_default_col'] = 4;
-$fld_active = $frmSearch->getField('active');
-$fld_active->addFieldTagAttribute('class', 'small');
 ?>
 
 <div class='page'>
@@ -26,7 +24,7 @@ $fld_active->addFieldTagAttribute('class', 'small');
 						<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
 					</div>
 					<div class="sectionbody space togglewrap" style="display:none;">
-						<?php echo $frmSearch->getFormHtml(); ?>    
+						<?php echo $frmSearch->getFormHtml(); ?>
 					</div>
 				</section>
 				<!--<div class="col-sm-12">-->
@@ -42,7 +40,7 @@ $fld_active->addFieldTagAttribute('class', 'small');
 							$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
 
 							$productType=Importexport::TYPE_PRODUCTS;
-							if($canView && FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){ 
+							if($canView && FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){
 
 								$innerLiExport=$innerUl->appendElement('li');
 
@@ -53,10 +51,10 @@ $fld_active->addFieldTagAttribute('class', 'small');
 
 								$innerLiImport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Import',$adminLangId),"onclick"=>"addImportForm(".Importexport::TYPE_PRODUCTS.")"),Labels::getLabel('LBL_Import',$adminLangId), true);
 							}
-							if($canEdit){ 
+							if($canEdit){
 								$innerLiNewProduct=$innerUl->appendElement('li');
 								$innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_New_Product',$adminLangId),"onclick"=>"productForm(0,0)"),Labels::getLabel('LBL_Add_New_Product',$adminLangId), true);
-							} 
+							}
 							echo $ul->getHtml();
 							//echo Importexport::TYPE_PRODUCTS
 							?>
@@ -65,7 +63,7 @@ $fld_active->addFieldTagAttribute('class', 'small');
 						<div class="sectionbody">
 							<div class="tablewrap" >
 								<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...',$adminLangId); ?></div>
-							</div> 
+							</div>
 						</div>
 					</section>
 				</div>
