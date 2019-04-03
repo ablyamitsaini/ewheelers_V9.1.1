@@ -101,7 +101,6 @@ class AdminUsersController extends AdminBaseController {
 		if($rs){
 			$records = FatApp::getDb()->fetchAll($rs);
 		}
-
 		$this->set('activeInactiveArr',applicationConstants::getActiveInactiveArr($this->adminLangId));
 		$this->set("arr_listing",$records);
 
