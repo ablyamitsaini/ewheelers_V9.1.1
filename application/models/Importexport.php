@@ -1275,28 +1275,30 @@ class Importexport extends ImportexportCommon{
 				$colValue = $this->getCell( $row, $colIndex,'' );
 				$invalid = $errMsg = false;
 
-				if( $this->settings['CONF_USE_USER_ID'] ){
-					$colInd = $this->headingIndexArr[$coloumArr['product_seller_id']];
-					$userId = $this->getCell( $row, $colInd, '' );
-				}else if( !$this->settings['CONF_USE_USER_ID'] || 'credential_username' == $columnKey ){
-					$colInd = $this->headingIndexArr[$coloumArr['credential_username']];
-					$colValue = $this->getCell( $row, $colInd, '' );
+				if($this->isDefaultSheetData($langId)){
+					if( $this->settings['CONF_USE_USER_ID'] ){
+						$colInd = $this->headingIndexArr[$coloumArr['product_seller_id']];
+						$userId = $this->getCell( $row, $colInd, '' );
+					}else if( !$this->settings['CONF_USE_USER_ID'] || 'credential_username' == $columnKey ){
+						$colInd = $this->headingIndexArr[$coloumArr['credential_username']];
+						$colValue = $this->getCell( $row, $colInd, '' );
 
-					if( !empty($colValue) && !array_key_exists( $colValue, $usernameArr ) ){
-						$res = $this->getAllUserArr( false, $colValue );
-						if( !$res ){
-							$colIndex = $colInd;
-							$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
-						}else{
-							$usernameArr = array_merge( $usernameArr, $res );
+						if( !empty($colValue) && !array_key_exists( $colValue, $usernameArr ) ){
+							$res = $this->getAllUserArr( false, $colValue );
+							if( !$res ){
+								$colIndex = $colInd;
+								$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
+							}else{
+								$usernameArr = array_merge( $usernameArr, $res );
+							}
 						}
+						$userId = $colValue = array_key_exists( $colValue, $usernameArr ) ? FatUtility::int( $usernameArr[$colValue] ) : 0;
 					}
-					$userId = $colValue = array_key_exists( $colValue, $usernameArr ) ? FatUtility::int( $usernameArr[$colValue] ) : 0;
-				}
 
-				if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
-					$colIndex = $colInd;
-					$errMsg = Labels::getLabel( "MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId );
+					if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
+						$colIndex = $colInd;
+						$errMsg = Labels::getLabel( "MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId );
+					}
 				}
 
 				if( false === $errMsg ){
@@ -1493,7 +1495,7 @@ class Importexport extends ImportexportCommon{
 					}
 				}
 
-				if($productId){
+				if( !empty($productId) ){
 
 					if($this->isDefaultSheetData($langId)){
 						$productSellerShiping = array(
@@ -2105,7 +2107,6 @@ class Importexport extends ImportexportCommon{
 						if( !array_key_exists( $colValue, $usernameArr ) ){
 							$res = $this->getAllUserArr( false, $colValue );
 							if( !$res ){
-								$colIndex = $colInd;
 								$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
 							}else{
 								$usernameArr = array_merge( $usernameArr, $res );
@@ -2115,7 +2116,6 @@ class Importexport extends ImportexportCommon{
 					}
 
 					if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
-						$colIndex = $colInd;
 						$errMsg = Labels::getLabel( "MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId );
 					}
 
@@ -2695,13 +2695,13 @@ class Importexport extends ImportexportCommon{
 				}
 			}
 
-			if( false === $errorInRow && count( $prodSpecArr ) ){
+			if( false === $errorInRow && count( $selProdGenArr ) ){
 
 				$userId = ( !$sellerId ) ? $userId : $sellerId;
 
 				$prodData = Product::getAttributesById( $productId, array('product_min_selling_price') );
 
-				if($selProdGenArr['selprod_price'] < $prodData['product_min_selling_price']){
+				if( array_key_exists( 'selprod_price', $selProdGenArr) && $selProdGenArr['selprod_price'] < $prodData['product_min_selling_price']){
 					$selProdGenArr['selprod_price'] = $prodData['product_min_selling_price'];
 				}
 				$selProdGenArr['selprod_added_on'] = date('Y-m-d H:i:s');
