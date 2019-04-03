@@ -62,7 +62,7 @@ class EmailHandler extends FatModel {
 			$subAdmins = FatApp::getDb()->fetchAll($rs);
 			$emailTempPermissionArr = $this->getEmailTemplatePermissionsArr();
 			if( count($subAdmins) && array_key_exists($tpl,$emailTempPermissionArr) ){
-				
+
 				$tplPermission = $emailTempPermissionArr[$tpl];
 				$privilege = new AdminPrivilege();
 				foreach ($subAdmins as $record) {
