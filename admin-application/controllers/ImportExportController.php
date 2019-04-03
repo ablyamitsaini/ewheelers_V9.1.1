@@ -319,8 +319,8 @@ class ImportExportController extends AdminBaseController {
 				$title = Labels::getLabel('LBL_Import_Catalogs',$langId);
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
-				$displayMediaTab = false;
 				$this->objPrivilege->canViewSellerProducts();
+				$displayMediaTab = false;
 				$title = Labels::getLabel('LBL_Import_Seller_Products',$langId);
 			break;
 			case Importexport::TYPE_OPTIONS:
@@ -389,7 +389,6 @@ class ImportExportController extends AdminBaseController {
 			break;
 			case Importexport::TYPE_SELLER_PRODUCTS:
 				$this->objPrivilege->canViewSellerProducts();
-				$displayMediaTab = true;
 				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS, $langId );
 			break;
 			case Importexport::TYPE_OPTIONS:
@@ -487,7 +486,6 @@ class ImportExportController extends AdminBaseController {
 		$this->set( 'title', $title );
 		$this->_template->render( false, false );
 	}
-
 
 	public function getImportExportForm($langId,$type = 'EXPORT',$actionType){
 		$frm = new Form('frmImportExport',array('id'=>'frmImportExport'));
