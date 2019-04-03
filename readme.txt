@@ -23,6 +23,9 @@ Fixes :
 	. Displayed latest added collection on top when listing based on all type of collection(Admin).
 	. Admin dashboard stats in case of cache.
 	. Displayed volume discount on cart popup and view cart.
+	. On product categories page controller name visible in breadcrumb.
+	. Small fonts of dropdown on Add/Edit category form popup.
+
 Enhancements :
     . Import error handling via csv.
     . Order Print layout and functionality.
