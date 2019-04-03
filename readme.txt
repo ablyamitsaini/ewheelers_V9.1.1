@@ -24,7 +24,8 @@ Fixes :
 	. Admin dashboard stats in case of cache.
 	. Displayed volume discount on cart popup and view cart.
 	. On product categories page controller name visible in breadcrumb.
-	. Small fonts of dropdown on Add/Edit category form popup.
+	. Small fonts of dropdown on Add/Edit category and brand form popup.
+	. Small fonts of Active dropdown in Search filter section on product catalog page.
 
 Enhancements :
     . Import error handling via csv.
