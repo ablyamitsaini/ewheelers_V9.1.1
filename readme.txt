@@ -41,5 +41,6 @@ Enhancements :
 	. From name on email notifications updated with site from name.
 	. Import Error log file will be automatically downloaded if it contains errors listing.
 	. Removed setting to use userId or username from import/export. Only username will be in use.
+	. Updated import/export instructions and provided restore default content feature via DB.
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.

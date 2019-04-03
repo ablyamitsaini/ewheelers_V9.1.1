@@ -35,6 +35,7 @@ class Extrapage extends MyAppModel {
 	const SELLER_GENERAL_SETTINGS_INSTRUCTIONS = 37;
 	const ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS = 38;
 	const SELLER_PRODUCT_INVENTORY_INSTRUCTIONS = 39;
+	const PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS = 40;
 
 	CONST CONTENT_PAGES = 0;
 	CONST CONTENT_IMPORT_INSTRUCTION = 1;
@@ -120,7 +121,7 @@ class Extrapage extends MyAppModel {
 		$srch = self::getSearchObject($langId);
 		$srch->addCondition('ep.epage_type','=',$pageType);
 		$srch->doNotCalculateRecords();
-		$srch->doNotLimitRecords();		
+		$srch->doNotLimitRecords();
 		$rs = $srch->getResultSet();
 		return $pageData = FatApp::getDb()->fetch($rs);
 	}
