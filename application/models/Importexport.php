@@ -634,12 +634,12 @@ class Importexport extends ImportexportCommon{
 					}
 				}
 
-				if($parent){						
+				if($parent){
 					$categoryData = ProductCategory::getAttributesById($parent,'prodcat_id');
 					if(empty($categoryData) || $categoryData == false){
 						$parent = 0;
 					}
-					
+
 					$parent = ($parent == $categoryId)?0:$parent;
 				}
 			}
@@ -1227,7 +1227,7 @@ class Importexport extends ImportexportCommon{
 	public function exportProductsCatalog($langId,$offset = null,$noOfRows = null,$minId = null,$maxId = null, $userId = null){
 		$userId = FatUtility::int($userId);
 		$useProductId = false;
-		
+
 		if($this->settings['CONF_USE_PRODUCT_ID']){
 			$useProductId = true;
 		}
@@ -2965,7 +2965,7 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$sheetArr[] = $row['selprod_price'];
-				/* $sheetArr[] = $row['selprod_cost']; */
+				$sheetArr[] = $row['selprod_cost'];
 				$sheetArr[] = $row['selprod_stock'];
 				$sheetArr[] = $row['selprod_sku'];
 				$sheetArr[] = $row['selprod_min_order_qty'];
@@ -3114,7 +3114,7 @@ class Importexport extends ImportexportCommon{
 
 			if($this->isDefaultSheetData($langId)){
 				$price  = $this->getCell($line,$colCount++,0);
-				/* $cost  = $this->getCell($line,$colCount++,0); */
+				$cost  = $this->getCell($line,$colCount++,0);
 				$stock  = $this->getCell($line,$colCount++,0);
 				$sku  = $this->getCell($line,$colCount++,0);
 				$minOrderQty  = $this->getCell($line,$colCount++,0);
@@ -3132,8 +3132,8 @@ class Importexport extends ImportexportCommon{
 				}else{
 					$colName = $this->getCell($line,$colCount++,'');
 					$conditionId = isset($prodConditionArr[$colName])?$prodConditionArr[$colName]:0;
-				}				
-				
+				}
+
 				$selprod_max_download_times = $this->getCell($line,$colCount++,0);
 				$selprod_download_validity_in_days = $this->getCell($line,$colCount++,0);
 			}
@@ -3185,7 +3185,7 @@ class Importexport extends ImportexportCommon{
 				}
 				if($this->isDefaultSheetData($langId)){
 					$data['selprod_price'] = $price;
-					/* $data['selprod_cost'] = $cost; */
+					$data['selprod_cost'] = $cost;
 					$data['selprod_stock'] = $stock;
 					$data['selprod_sku'] = $sku;
 					$data['selprod_min_order_qty'] = $minOrderQty;
@@ -3409,7 +3409,7 @@ class Importexport extends ImportexportCommon{
 				if($this->settings['CONF_USE_OPTION_ID']){
 					$errMsg = Labels::getLabel( "MSG_Option_Id_is_required", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);
-					CommonHelper::writeLogFile( $errFile,  $err); 
+					CommonHelper::writeLogFile( $errFile,  $err);
 				}
 				continue;
 			}
@@ -3489,11 +3489,11 @@ class Importexport extends ImportexportCommon{
 			$rowCount++;
 		}
 
-		if($selProdOptionsArr){ 
+		if($selProdOptionsArr){
 			$options = array();
 			foreach($selProdOptionsArr as $k=>$v){
-				
-				$productRow = SellerProduct::getAttributesById( $k, array('selprod_product_id') );				
+
+				$productRow = SellerProduct::getAttributesById( $k, array('selprod_product_id') );
 				if( !$productRow ){
 					$errMsg = Labels::getLabel( "MSG_Product_not_found.", $langId );
 					$err = array($rowIndex,$colCount,$errMsg);

@@ -108,7 +108,7 @@ class ImportexportCommon extends FatModel{
 		}
 	}
 
-	public function getDateTime($dt,$time = true){		
+	public function getDateTime($dt,$time = true){
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
 
@@ -121,7 +121,7 @@ class ImportexportCommon extends FatModel{
 			}
 			return date("Y-m-d H:i:s",$timeStamp);
 		}catch (Exception $e) {
-			return '0000-00-00';						
+			return '0000-00-00';
 		}
 	}
 
@@ -464,7 +464,7 @@ class ImportexportCommon extends FatModel{
 
 		if($this->isDefaultSheetData($langId)){
 			$arr[] = Labels::getLabel('LBL_Selling_Price', $langId);
-			/* $arr[] = Labels::getLabel('LBL_Cost', $langId);	 */
+			$arr[] = Labels::getLabel('LBL_Cost_Price', $langId);
 			$arr[] = Labels::getLabel('LBL_Stock', $langId);
 			$arr[] = Labels::getLabel('LBL_SKU', $langId);
 			$arr[] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);

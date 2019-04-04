@@ -26,7 +26,7 @@ Fixes :
 	. On product categories page controller name visible in breadcrumb.
 	. Small fonts of dropdown on Add/Edit category and brand form popup.
 	. Small fonts of Active dropdown in Search filter section on product catalog page.
-	. Remove Notification permission. 
+	. Remove Notification permission.
 
 Enhancements :
     . Import error handling via csv.
@@ -43,5 +43,8 @@ Enhancements :
 	. Import Error log file will be automatically downloaded if it contains errors listing.
 	. Removed setting to use userId or username from import/export. Only username will be in use.
 	. Updated import/export instructions and provided restore default content feature via DB.
+	. Restricted increment of product quantity as per product stock quantity on product detail, checkout and cart page.
+	. Cost price added to seller inventory and reports.
+
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.

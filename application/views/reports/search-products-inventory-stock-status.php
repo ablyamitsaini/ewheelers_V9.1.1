@@ -4,6 +4,8 @@ $arr_flds = array(
 	'name'		=>	Labels::getLabel('LBL_Product', $siteLangId),
 	'selprod_stock'	=>	Labels::getLabel( 'LBL_Stock_Available', $siteLangId ),
 	'stock_on_order'=>	Labels::getLabel( 'LBL_Stock_On_Order', $siteLangId ),
+	'selprod_cost'	=>	Labels::getLabel( 'LBL_Cost_Price', $siteLangId),
+	'inventory_value'	=>	Labels::getLabel( 'LBL_Inventory_Value_', $siteLangId ).'<br/>('.Labels::getLabel( 'LBL_Stock_Available', $siteLangId ).' * '.Labels::getLabel( 'LBL_Cost_Price', $siteLangId).')',
 	'selprod_price'	=>	Labels::getLabel( 'LBL_Unit_Price', $siteLangId),
 	'total_value'	=>	Labels::getLabel( 'LBL_Total_Value_', $siteLangId ).'<br/>('.Labels::getLabel( 'LBL_Stock_Available', $siteLangId ).' * '.Labels::getLabel( 'LBL_Unit_Price', $siteLangId).')'
 );
@@ -18,7 +20,7 @@ $sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $listing){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ( $key ){
@@ -30,31 +32,40 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['selprod_title'] != '' ){
 					$name .= '<div class="item-yk-head-sub-title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
 				}
-			
+
 				if( $listing['brand_name'] != '' ){
 					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
 				$td->setAttribute('width', '40%');
 				$td->appendElement('plaintext', array(), $name,true);
 			break;
-			
+
 			case 'selprod_stock':
 				$td->appendElement('plaintext', array(), $listing['selprod_stock'],true);
 			break;
-			
+
 			case 'stock_on_order':
 				$td->appendElement( 'plaintext', array(), $listing['stock_on_order'],true);
 			break;
-			
+
+			case 'selprod_cost':
+				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($listing['selprod_cost']),true);
+			break;
+
+			case 'inventory_value':
+				$inventory_value = $listing['selprod_stock'] * $listing['selprod_cost'];
+				$td->appendElement( 'plaintext', array(), '<span class="caption--td">'.$val.'</span>'.CommonHelper::displayMoneyFormat($inventory_value),true);
+			break;
+
 			case 'selprod_price':
 				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($listing['selprod_price']),true);
 			break;
-			
+
 			case 'total_value':
 				$total_value = $listing['selprod_stock'] * $listing['selprod_price'];
 				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($total_value),true);
 			break;
-			
+
 			default:
 				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;

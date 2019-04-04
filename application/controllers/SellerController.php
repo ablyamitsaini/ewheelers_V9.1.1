@@ -2842,8 +2842,9 @@ class SellerController extends LoggedUserController {
 			//
 			$selprod_id = FatUtility::int($dataArray[0]);
 			$selprod_sku = $dataArray[1];
-			$selprod_price = FatUtility::float($dataArray[3]);
-			$selprod_stock = FatUtility::int($dataArray[4]);
+			$selprod_cost_price = FatUtility::float($dataArray[3]);
+			$selprod_price = FatUtility::float($dataArray[4]);
+			$selprod_stock = FatUtility::int($dataArray[5]);
 
 			$productId = SellerProduct::getAttributesById($selprod_id , 'selprod_product_id' , false );
 			$prodData = Product::getAttributesById($productId,array('product_min_selling_price'));
@@ -2855,10 +2856,11 @@ class SellerController extends LoggedUserController {
 			if( $selprod_price != '' ){
 				$assignValues['selprod_price'] = $selprod_price;
 			}
-			if( $selprod_stock < 0 || $selprod_price < 0 ){
+			if( $selprod_stock < 0 || $selprod_price < 0 || $selprod_cost_price <= 0 ){
 				continue;
 			}
 
+			$assignValues['selprod_cost'] = $selprod_cost_price;
 			$assignValues['selprod_stock'] = $selprod_stock;
 			if( $selprod_id > 0 ){
 				$whereSmt = array( 'smt'=>'selprod_user_id = ? and selprod_id = ?', 'vals'=>array( $loggedUserId, $selprod_id ) );
@@ -2884,7 +2886,7 @@ class SellerController extends LoggedUserController {
 		$srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
 		$srch->addOrder('product_name');
 		$srch->addOrder('selprod_active', 'DESC');
-		$srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_price', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
+		$srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_price', 'selprod_stock', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$rs = $srch->getResultSet();
@@ -2907,7 +2909,7 @@ class SellerController extends LoggedUserController {
 			if( $val['selprod_title'] != "" ){
 				$title .= "-[" . $val['selprod_title'] . "]";
 			}
-			$arr = array($val['selprod_id'],$val['selprod_sku'], $title, $val['selprod_price'],$val['selprod_stock']);
+			$arr = array($val['selprod_id'],$val['selprod_sku'], $title, $val['selprod_cost'], $val['selprod_price'],$val['selprod_stock']);
 			array_push($sheetData,$arr);
 		}
 
@@ -3638,6 +3640,10 @@ class SellerController extends LoggedUserController {
 		}
 
 		$frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->siteLangId),'selprod_url_keyword')->requirements()->setRequired();
+
+		$costPrice = $frm->addFloatField( Labels::getLabel('LBL_Cost_Price',$this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_cost');
+		$costPrice->requirements()->setPositive();
+
 		$fld = $frm->addFloatField( Labels::getLabel('LBL_Price',$this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_price');
 		$fld->requirements()->setPositive();
 		if(isset($productData['product_min_selling_price'])){

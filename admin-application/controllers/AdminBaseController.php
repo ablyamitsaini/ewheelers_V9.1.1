@@ -13,8 +13,8 @@ class AdminBaseController extends FatController {
 	protected $str_invalid_Action;
 	protected $str_setup_successful;
 	protected $adminLangId;
-	
-	function __construct($action) { 
+
+	function __construct($action) {
 		parent::__construct($action);
 
 		$controllerName = get_class($this);
@@ -52,7 +52,7 @@ class AdminBaseController extends FatController {
 		}
 		$this->set("bodyClass",'');
 		$this->setCommonValues();
-		
+
 	}
 
 	/*
@@ -558,6 +558,9 @@ class AdminBaseController extends FatController {
 		}
 		$frm->addHiddenField( '', 'selprod_user_id' );
 		$frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->adminLangId),'selprod_url_keyword')->requirements()->setRequired();
+
+		$costPrice = $frm->addFloatField( Labels::getLabel('LBL_Cost_Price',$this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_cost');
+		$costPrice->requirements()->setPositive();
 
 		$fld = $frm->addFloatField( Labels::getLabel('LBL_Price',$this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_price');
 		$fld->requirements()->setPositive();
