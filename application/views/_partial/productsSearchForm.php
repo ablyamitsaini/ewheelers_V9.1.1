@@ -73,6 +73,7 @@
         echo $frmProductSearch->getExternalJS();
 	?>
 	</form>
+
 </div>
 
 <script>

@@ -1,41 +1,41 @@
 <?php
 class AuthorizeAimPayController extends PaymentController{
-	
+
 	private $keyName = "AuthorizeAim";
 	private $testEnvironmentUrl = 'https://test.authorize.net/gateway/transact.dll';
 	private $liveEnvironmentUrl = 'https://secure.authorize.net/gateway/transact.dll';
-	
+
 	public function charge( $orderId = '' ){
-		
+
 		if( empty($orderId) ){
 			FatUtility::exitWIthErrorCode(404);
 		}
-		
+
 		$pmObj = new PaymentSettings($this->keyName);
 		if (!$paymentSettings = $pmObj->getPaymentSettings()){
 			Message::addErrorMessage($pmObj->getError());
 			CommonHelper::redirectUserReferer();
 		}
-		
+
 		$orderPaymentObj = new OrderPayment($orderId,$this->siteLangId);
 		$paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
 		$orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
-		
+
 		if( !$orderInfo['id'] ){
 			FatUtility::exitWIthErrorCode(404);
 		} elseif ( $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ){
-			$frm = $this->getPaymentForm($orderId); 
+			$frm = $this->getPaymentForm($orderId);
 			$this->set('frm', $frm);
 			$this->set('paymentAmount', $paymentAmount);
 		} else {
 			$this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED',$this->siteLangId));
 		}
-		
+
 		$cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
 		if( $orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE ){
 			$cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
 		}
-		
+
 		$this->set( 'cancelBtnUrl', $cancelBtnUrl );
 		$this->set('orderInfo', $orderInfo);
 		$this->set('paymentAmount', $paymentAmount);
@@ -43,12 +43,12 @@ class AuthorizeAimPayController extends PaymentController{
 		$this->_template->addCss('css/payment.css');
 		$this->_template->render(true,false);
 	}
-	
+
 	public function send($orderId) {
-		
+
 		$pmObj=new PaymentSettings($this->keyName);
 		$paymentSettings=$pmObj->getPaymentSettings();
-		
+
 		$post = FatApp::getPostedData();
 		$orderPaymentObj=new OrderPayment($orderId,$this->siteLangId);
 		/* Retrieve Payment to charge corresponding to your order */
@@ -57,8 +57,8 @@ class AuthorizeAimPayController extends PaymentController{
 			/* Retrieve Primary Info corresponding to your order */
 			$orderInfo=$orderPaymentObj->getOrderPrimaryinfo();
 			$orderActualPaid = number_format(round($orderPaymentAamount,2),2,".","");
-			$actionUrl = (FatApp::getConfig('CONF_TRANSACTION_MODE',FatUtility::VAR_BOOLEAN,false) == true)?$this->liveEnvironmentUrl:$this->testEnvironmentUrl; 
-		
+			$actionUrl = (FatApp::getConfig('CONF_TRANSACTION_MODE',FatUtility::VAR_BOOLEAN,false) == true)?$this->liveEnvironmentUrl:$this->testEnvironmentUrl;
+
 			$data = array();
 			$data['x_login'] = $paymentSettings['login_id'];
 			$data['x_tran_key'] = $paymentSettings['transaction_key'];
@@ -89,7 +89,7 @@ class AuthorizeAimPayController extends PaymentController{
 			$data['x_card_code'] = $post['cc_cvv'];
 			$data['x_invoice_num'] = $orderId;
 			$data['x_solution_id'] = 'A1000015';
-			
+
 			/* Customer Shipping Address Fields[ */
 			$data['x_ship_to_first_name'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_name'], ENT_QUOTES, 'UTF-8');
 			$data['x_ship_to_company'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_name'], ENT_QUOTES, 'UTF-8');
@@ -99,11 +99,11 @@ class AuthorizeAimPayController extends PaymentController{
 			$data['x_ship_to_zip'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_postcode'], ENT_QUOTES, 'UTF-8');
 			$data['x_ship_to_country'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_country'], ENT_QUOTES, 'UTF-8');
 			/* ] */
-			
+
 			if (FatApp::getConfig('CONF_TRANSACTION_MODE',FatUtility::VAR_BOOLEAN,false) == true) {
 				$data['x_test_request'] = 'true';
 			}
-			
+
 			$curl = curl_init($actionUrl);
 			curl_setopt($curl, CURLOPT_PORT, 443);
 			curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -115,8 +115,8 @@ class AuthorizeAimPayController extends PaymentController{
 			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 			curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-			$response = curl_exec($curl);
-		
+			$response = curl_exec($curl);			
+
 			$json = array();
 			if (curl_error($curl)) {
 				/* $json['error'] = 'CURL ERROR: ' . curl_errno($curl) . '::' . curl_error($curl); */
@@ -146,7 +146,7 @@ class AuthorizeAimPayController extends PaymentController{
 					if (isset($responseInfo['40'])) {
 						$message .= 'Cardholder Authentication Verification Response: ' . $responseInfo['40'] . "\n";
 					}
-					
+
 					if (!$paymentSettings['md5_hash'] || (strtoupper($responseInfo[38]) == strtoupper(md5($paymentSettings['md5_hash'].$paymentSettings['login_id'].$responseInfo[7] . $orderActualPaid)))) {
 						/* Recording Payment in DB */
 						if (!$orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"],$responseInfo['7'],$orderPaymentAamount,Labels::getLabel("MSG_Received_Payment",$this->siteLangId),$message))
@@ -162,23 +162,23 @@ class AuthorizeAimPayController extends PaymentController{
 			} else {
 				$json['error'] = Labels::getLabel('MSG_EMPTY_GATEWAY_RESPONSE',$this->siteLangId);
 			}
-		}	
+		}
 		else{
 			$json['error'] = Labels::getLabel('MSG_Invalid_Request',$this->siteLangId);
 		}
 		curl_close($curl);
-		
+
 		echo json_encode($json);
 	}
-	
+
 	public function checkCardType(){
 		$post = FatApp::getPostedData();
 		$res=CommonHelper::validate_cc_number($post['cc']);
 		echo json_encode($res); exit;
 	}
-	
+
 	private function getPaymentForm($orderId = ''){
-		
+
 		$frm = new Form('frmPaymentForm',array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('AuthorizeAimPay','send',array($orderId)), 'class' =>"form form--normal"));
 		$frm->addRequiredField(Labels::getLabel('LBL_ENTER_CREDIT_CARD_NUMBER',$this->siteLangId), 'cc_number');
 		$frm->addRequiredField(Labels::getLabel('LBL_CARD_HOLDER_NAME',$this->siteLangId), 'cc_owner');
@@ -195,5 +195,5 @@ class AuthorizeAimPayController extends PaymentController{
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId ));
 		return $frm;
 	}
-	
+
 }

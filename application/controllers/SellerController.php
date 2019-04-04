@@ -417,7 +417,6 @@ class SellerController extends LoggedUserController {
 		$this->set('print',$print);
 		$urlParts = array_filter(FatApp::getParameters());
 		$this->set('urlParts',$urlParts);
-
 		$this->_template->render(true,false);
 	}
 
@@ -619,7 +618,7 @@ class SellerController extends LoggedUserController {
 		$this->set('frm', $frm);
 		$this->set('orderDetail', $orderDetail);
 		$this->set('orderStatuses', $orderStatuses);
-		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));		
+		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 		$this->_template->render(true,false);
 	}
 
@@ -689,11 +688,10 @@ class SellerController extends LoggedUserController {
 
 		$frmSearchCatalogProduct = $this->getCatalogProductSearchForm();
 		$this->set("frmSearchCatalogProduct", $frmSearchCatalogProduct);
-
-		$this->set("displayDefaultListing", $displayDefaultListing);		
-		$this->set('canRequestProduct',User::canRequestProduct());	
-		$this->set('canAddCustomProduct',User::canAddCustomProduct());	
-		$this->set('canAddCustomProductAvailableToAllSellers',User::canAddCustomProductAvailableToAllSellers());	
+		$this->set("displayDefaultListing", $displayDefaultListing);
+		$this->set('canRequestProduct',User::canRequestProduct());
+		$this->set('canAddCustomProduct',User::canAddCustomProduct());
+		$this->set('canAddCustomProductAvailableToAllSellers',User::canAddCustomProductAvailableToAllSellers());
 		$this->_template->render(true,false);
 	}
 
@@ -1191,9 +1189,9 @@ class SellerController extends LoggedUserController {
 
 	public function taxCategories(){
 		$frmSearch = $this->getTaxCatSearchForm($this->siteLangId);
-
-		$this->set("frmSearch",$frmSearch);	
+		$this->set("frmSearch",$frmSearch);
 		$this->_template->render(true,false);
+
 	}
 
 	public function searchTaxCategories(){
@@ -2393,8 +2391,8 @@ class SellerController extends LoggedUserController {
 		$srch->addMultipleFields( array( 'orrequest_id','orrequest_op_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type',
 		'orrequest_date', 'orrequest_status','orrequest_reference',  'op_invoice_number', 'op_selprod_title', 'op_product_name',
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_qty',
-		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
-		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping') );
+		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title','op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
+
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 
@@ -2787,7 +2785,12 @@ class SellerController extends LoggedUserController {
 		if(!$this->isShopActive(UserAuthentication::getLoggedUserId(),0,true)){
 			FatApp::redirectUser(CommonHelper::generateUrl('Seller','shop'));
 		}
+		$extraPage = new Extrapage();
+		$pageData = $extraPage->getContentByPageType( Extrapage::PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId );
+
+		$this->set('pageData',$pageData);
 		$this->_template->render(true,false);
+
 	}
 
 	public function InventoryUpdateForm(){
@@ -3717,7 +3720,7 @@ class SellerController extends LoggedUserController {
 		$productRs = $prodSrch->getResultSet();
 		$product = FatApp::getDb()->fetch($productRs);
 		/* ] */
-        
+
         $taxData = Tax::getTaxCatByProductId($product_id,UserAuthentication::getLoggedUserId(),$this->siteLangId,array('ptt_taxcat_id'));
         if(!empty($taxData)){
             $product = array_merge($product,$taxData);

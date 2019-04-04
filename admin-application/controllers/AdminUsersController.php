@@ -88,7 +88,7 @@ class AdminUsersController extends AdminBaseController {
 		$this->objPrivilege->canViewAdminUsers();
 		$this->_template->render();
 	}
-	
+
 	public function search(){
 		$this->objPrivilege->canViewAdminUsers();
 
@@ -137,6 +137,7 @@ class AdminUsersController extends AdminBaseController {
 		$this->objPrivilege->canEditAdminUsers();
 
 		$post = FatApp::getPostedData();
+
 		$adminId = FatUtility::int($post['admin_id']);
 
 		$frm = $this->getForm($adminId);
@@ -369,7 +370,9 @@ class AdminUsersController extends AdminBaseController {
 		if($adminId != 1){
 			$frm->addSelectBox(Labels::getLabel('LBL_Status',$this->adminLangId), 'admin_active',$activeInactiveArr,'',array(),'');
 		}
-		$frm->addCheckBox(Labels::getLabel('LBL_Send_Email_Notification',$this->adminLangId), 'admin_email_notification',applicationConstants::YES);
+
+		$frm->addCheckBox(Labels::getLabel('LBL_Send_Email_Notification',$this->adminLangId), 'admin_email_notification', applicationConstants::YES, array()	, false, applicationConstants::NO);
+
 		$frm->addSubmitButton('', 'btn_submit',Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 		return $frm;
 	}

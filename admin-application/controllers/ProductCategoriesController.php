@@ -321,11 +321,12 @@ class ProductCategoriesController extends AdminBaseController {
 		$frm->addRequiredField(Labels::getLabel('LBL_Category_Identifier',$this->adminLangId), 'prodcat_identifier');
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_Category_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
 		$fld->requirements()->setRequired();
-		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'prodcat_parent', array( 0 => Labels::getLabel('LBL_Root_Category',$this->adminLangId) ) + $categories, '',array('class'=>'small') , '');
+
+		$frm->addSelectBox(Labels::getLabel('LBL_Category_Parent',$this->adminLangId), 'prodcat_parent', array( 0 => Labels::getLabel('LBL_Root_Category',$this->adminLangId) ) + $categories, '',array() , '');
 
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
 
-		$frm->addSelectBox(Labels::getLabel('LBL_Category_Status',$this->adminLangId), 'prodcat_active', $activeInactiveArr, '',array('class'=>'small'),'');
+		$frm->addSelectBox(Labels::getLabel('LBL_Category_Status',$this->adminLangId), 'prodcat_active', $activeInactiveArr, '',array(),'');
 		/* $frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'prodcat_featured', 1, array(),false,0); */
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes',$this->adminLangId));
 
@@ -794,7 +795,6 @@ class ProductCategoriesController extends AdminBaseController {
 		switch($action)
 		{
 			case 'index':
-			echo $className = get_class($this);
 				$nodes[] = array('title'=>Labels::getLabel('LBL_Root_Categories',$this->adminLangId), 'href'=>CommonHelper::generateUrl('ProductCategories'));
 				if (isset($parameters[0]) && $parameters[0] > 0) {
 					$parent=FatUtility::int($parameters[0]);

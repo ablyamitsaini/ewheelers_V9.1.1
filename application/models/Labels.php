@@ -51,7 +51,7 @@ class Labels extends MyAppModel{
 		if ($cacheAvailable) {
 			$cacheKey = static::getAPCUcacheKey($lblKey,$langId);
 			if (apcu_exists($cacheKey)) {
-				return apcu_fetch($cacheKey);
+				return strip_tags(trim(apcu_fetch($cacheKey)));
 			}
 		}else {
 			global $lang_array;
@@ -131,7 +131,7 @@ class Labels extends MyAppModel{
 	}
 	
 	public static function isAPCUcacheAvailable(){		
-		return $cacheAvailable = extension_loaded('apcu') && (ini_get('apcu.enabled') || ini_get('apc.enabled')) ;
+		return $cacheAvailable = (extension_loaded('apcu') && ini_get('apcu.enabled')) ;
 	}
 	
 	public static function getAPCUcacheKey($key, $langId){

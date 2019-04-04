@@ -9,7 +9,7 @@ class ShopsController extends MyAppController {
 	public function index(){
 		$searchForm = $this->getShopSearchForm($this->siteLangId);
 		$this->set('searchForm',$searchForm);
-		$this->_template->addJs('js/slick.min.js'); 
+		$this->_template->addJs('js/slick.min.js');
 		$this->_template->addCss(array('css/slick.css','css/product-detail.css'));
 		$this->_template->render();
 	}
@@ -87,6 +87,7 @@ class ShopsController extends MyAppController {
 		$allShops = $db->fetchAll( $shopRs , 'shop_id' );
 
 		$totalProdCountToDisplay = 4;
+
 		$productSrchObj = new ProductSearch( $this->siteLangId );
 		$productSrchObj->joinProductToCategory($this->siteLangId );
 		$productSrchObj->doNotCalculateRecords();
@@ -95,16 +96,16 @@ class ShopsController extends MyAppController {
 		$productSrchObj->joinSellerSubscription($this->siteLangId , true);
 		$productSrchObj->addSubscriptionValidCondition();
 		$productSrchObj->joinProductRating( );
-		
+
 		if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
 			$productSrchObj->joinFavouriteProducts( $loggedUserId );
 			$productSrchObj->addFld('ufp_id');
 		}else{
-			
+
 			$productSrchObj->joinUserWishListProducts( $loggedUserId );
 			$productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
 		}
-		
+
 		$productSrchObj->addCondition( 'selprod_deleted', '=', applicationConstants::NO );
 		$productSrchObj->addMultipleFields( array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
 		'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
@@ -115,7 +116,7 @@ class ShopsController extends MyAppController {
 			$productShopSrchTempObj->addOrder('in_stock','DESC');
 			$productShopSrchTempObj->addGroupBy('selprod_product_id');
 			$productShopSrchTempObj->setPageSize(3);
-			$Prs = $productShopSrchTempObj->getResultSet(); 				
+			$Prs = $productShopSrchTempObj->getResultSet();
 			$allShops[$val['shop_id']]['products'] = $db->fetchAll( $Prs);
 			$allShops[$val['shop_id']]['totalProducts'] = $productShopSrchTempObj->recordCount();
 			$allShops[$val['shop_id']]['shopRating'] = SelProdRating::getSellerRating($val['shop_user_id']);

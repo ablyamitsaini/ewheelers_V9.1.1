@@ -212,8 +212,7 @@ trait CustomProducts{
 		$this->_template->render(false,false);
 	}
 
-	public function setupCustomProduct(){
-		
+	public function setupCustomProduct(){		
 		if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
 			FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
 		}

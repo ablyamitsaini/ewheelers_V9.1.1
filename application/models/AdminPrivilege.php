@@ -226,7 +226,7 @@ class AdminPrivilege  {
 
 			static::SECTION_TOOLS => Labels::getLabel('MSG_Tools',CommonHelper::getLangId()),
 			static::SECTION_MESSAGES => Labels::getLabel('MSG_Messages',CommonHelper::getLangId()),
-			static::SECTION_NOTIFICATION => Labels::getLabel('MSG_Notifications',CommonHelper::getLangId()),
+			// static::SECTION_NOTIFICATION => Labels::getLabel('MSG_Notifications',CommonHelper::getLangId()),
 			static::SECTION_DATABASE_BACKUP => Labels::getLabel('MSG_Database_Backup',CommonHelper::getLangId()),
 			static::SECTION_ORDER_STATUS => Labels::getLabel('MSG_Order_Status_Management',CommonHelper::getLangId()),
 			static::SECTION_USER_REQUESTS => Labels::getLabel('MSG_User_Requests',CommonHelper::getLangId()),
@@ -1097,11 +1097,13 @@ class AdminPrivilege  {
 	}
 
 	public function canViewNotifications( $adminId = 0, $returnResult = false ){
-		return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_READ, $returnResult);
+		// return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_READ, $returnResult);
+		return true;
 	}
 
 	public function canEditNotifications( $adminId = 0, $returnResult = false ){
-		return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_WRITE, $returnResult);
+		// return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_WRITE, $returnResult);
+		return true;
 	}
 
 	public function canViewTooltip($adminId = 0, $returnResult = false) {

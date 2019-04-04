@@ -134,4 +134,16 @@ $(document).ready(function() {
             $(".batch_fld").hide();
         }
     };
+
+    $(document).on('click', ".group__head-js", function() {
+        if ($(this).parents('.group-js').hasClass('is-active')) {
+            $(this).siblings('.group__body-js').slideUp();
+            $('.group-js').removeClass('is-active');
+        } else {
+            $('.group-js').removeClass('is-active');
+            $(this).parents('.group-js').addClass('is-active');
+            $('.group__body-js').slideUp();
+            $(this).siblings('.group__body-js').slideDown();
+        }
+    });
 })();

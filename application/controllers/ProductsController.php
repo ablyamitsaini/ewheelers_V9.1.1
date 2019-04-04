@@ -254,13 +254,14 @@ class ProductsController extends MyAppController {
 		/* Categories Data[ */
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
-		//$catSrch->addCondition('prodcat_parent','=',0);
+		/* //$catSrch->addCondition('prodcat_parent','=',0);
 		//Get All Categories which have products
 		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
+		$productCategory = new productCategory;
+		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, false, $catSrch, true);
 
 		/* ] */
-		$productCategory = new productCategory;
-		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
 
 		/* Brand Filters Data[ */
 		$brandSrch = clone $prodSrchObj;
@@ -461,15 +462,11 @@ class ProductsController extends MyAppController {
 		$catSrch = clone $prodSrchObj;
 		$catSrch->addGroupBy('prodcat_id');
 
-
 		//Get All Categories which have products
-
-		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,true );
-
-		/* ] */
+		/*$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, 0, false, false, false, $catSrch,false );
 		$productCategory = new productCategory;
-		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
-
+		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, false, $catSrch, true);
 		/* ] */
 
 		/* Brand Filters Data[ */
@@ -674,9 +671,7 @@ class ProductsController extends MyAppController {
 		$srch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating' );
 
 		$srch->setPageNumber($page);
-		$srch->addMultipleFields(array('prodcat_code',
-				'product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on',
-				'substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
+		$srch->addMultipleFields(array('prodcat_code','product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
 				'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
 				'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
 				 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
@@ -881,7 +876,6 @@ END,   special_price_found ) as special_price_found');
 		$selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id','spr.spreview_product_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
 		$selProdRviewSubQuery = $selProdReviewObj->getQuery();
 		$prodSrch->joinTable( '(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating' );
-
 		$prodSrch->addMultipleFields( array(
 			'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
 			'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',

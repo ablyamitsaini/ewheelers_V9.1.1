@@ -205,7 +205,7 @@ function submitSiteSearch(frm){
 		//url_arr.push('category');
 		url_arr.push('category-'+$(frm).find('input[name="category"]').val());
 	}
-	
+    
 	/* url_arr = []; */
 
 	if(themeActive == true ){
@@ -489,13 +489,12 @@ function defaultSetUpLogin(frm, v) {
 			}
 		},
 
-		resetFaceboxHeight:function(){		
+		resetFaceboxHeight:function(){
 			/* $('html').css('overflow','hidden'); */
-			facebocxHeight  = screenHeight;		
-			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);	
-			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-150 + 'px');			
-			
-			if(fbContentHeight >= screenHeight){ 
+			facebocxHeight  = screenHeight;
+			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(150);
+			setTimeout(function(){ $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight)/4) + 'px'); }, 700);
+            if(fbContentHeight > screenHeight-parseInt(100)){
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
 			}else{
@@ -553,7 +552,13 @@ function defaultSetUpLogin(frm, v) {
 			$('.system_message').show();
 		},
 		fillSysMessage:function(data, cls){
-			if(cls) $('.system_message').addClass(cls);
+			if(cls){
+				$('.system_message').removeClass('alert--process');
+				$('.system_message').removeClass('alert--danger');
+				$('.system_message').removeClass('alert--success');
+				$('.system_message').removeClass('alert--info');
+				$('.system_message').addClass(cls);
+			}
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 

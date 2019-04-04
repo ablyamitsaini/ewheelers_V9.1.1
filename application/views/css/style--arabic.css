@@ -415,8 +415,8 @@ input[type="text"].p-cards.meastro {
 }
 
 .pagination li .fa.fa-angle-right {
-  -webkit-transform: rotate(-180deg);
-  transform: rotate(-180deg);
+  /* -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg); */
 }
 
 .media>li .avtar {

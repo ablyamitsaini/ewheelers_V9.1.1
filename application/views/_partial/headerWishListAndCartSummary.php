@@ -69,9 +69,15 @@ if( UserAuthentication::isUserLogged() ){
         <td class=""><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
         <td class=""><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
       </tr>
+	  <?php if( 0 < $cartSummary['cartVolumeDiscount']){?>
+      <tr>
+        <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
+        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
+      </tr>
+  <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); ?>
       <tr>
         <td class="hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-        <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
+        <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
       </tr>
       <tr>
         <td class=""><a href="<?php echo CommonHelper::generateUrl('cart'); ?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_Bag', $siteLangId); ?> </a></td>

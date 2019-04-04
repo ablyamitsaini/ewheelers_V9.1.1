@@ -924,6 +924,7 @@ class AdvertiserController extends LoggedUserController {
 		$this->set('promotionDetails',$promotionDetails);
 
 		$this->_template->render(true,false);
+
 	}
 
 	public function searchAnalyticsData(){

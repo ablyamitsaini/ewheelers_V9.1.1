@@ -18,12 +18,12 @@
             		<div class="tabs_panel_wrap">
             			<div class="tabs_panel">
             				<?php
-                                if( !empty($pageData) ){
+                                if( !empty($pageData['epage_content']) ){
                                     ?>
                                     <h2><?php echo $pageData['epage_label'];?></h2>
-                                    <hr>
+                                    
                                     <?php
-                                    echo FatUtility::decodeHtmlEntities( nl2br($pageData['epage_content']) );
+                                    echo FatUtility::decodeHtmlEntities( $pageData['epage_content'] );
                                 }else{
                                     echo 'Sorry!! No Instructions.';
                                 }

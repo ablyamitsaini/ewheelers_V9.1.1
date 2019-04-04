@@ -5,7 +5,8 @@ class CategoryController extends MyAppController {
 	}
 
 	public function index(){
-		$categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,'',true,false,true );
+		/* $categoriesArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,'',true,false,true ); */
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, 0, true, false, true);
 		$this->set('categoriesArr', $categoriesArr );
 		$this->_template->render();
 	}
@@ -20,26 +21,13 @@ class CategoryController extends MyAppController {
 
 		$headerFormParamsArr = FatApp::getParameters();
 		$headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
-		
-		/* if(array_key_exists('currency',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['currency_id'] = $headerFormParamsAssocArr['currency'];
-		}
-		if(array_key_exists('sort',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['sortOrder'] = $headerFormParamsAssocArr['sort'];
-		}
-		if(array_key_exists('shop',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['shop_id'] = $headerFormParamsAssocArr['shop'];
-		}	
-		if(array_key_exists('collection',$headerFormParamsAssocArr)){
-			$headerFormParamsAssocArr['collection_id'] = $headerFormParamsAssocArr['collection'];
-		} */
+				
 		$headerFormParamsAssocArr['category'] = $category_id;
 		$headerFormParamsAssocArr['join_price'] = 1;
 		$frm->fill( $headerFormParamsAssocArr );
 		
 		$catSrch = new ProductCategorySearch( $this->siteLangId );
 		$catSrch->addCondition( 'prodcat_id', '=', $category_id );
-
 
 		/* to show searched category data[ */
 		$catSrch->addMultipleFields( array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code') );
@@ -58,28 +46,26 @@ class CategoryController extends MyAppController {
 		$prodSrchObj->setDefinedCriteria();
 		$prodSrchObj->joinProductToCategory();
 		$prodSrchObj->joinSellerSubscription();
-		$prodSrchObj->addSubscriptionValidCondition();
+		$prodSrchObj->addSubscriptionValidCondition();		
+		$prodSrchObj->addCategoryCondition($category_id);
+		
+		$objCat = clone $prodSrchObj;
+		$objCat->addMultipleFields(array('prodcat_id'));
+		$objCat->setPageSize(1);		
+		$rs = $objCat->getResultSet(); 	
+		$totalRecords = FatApp::getDb()->totalRecords($rs);
+
 		$prodSrchObj->doNotCalculateRecords();
 		$prodSrchObj->doNotLimitRecords();
-		$prodSrchObj->addCategoryCondition($category_id);
-								
-		$objCat = clone $prodSrchObj;
-		$objCat->setPageSize(1);
-		//$objCat->addMultipleFields(array('selprod_id','prodcat_id'));
-		$rs = $objCat->getResultSet();
-		$record = FatApp::getDb()->fetch($rs);
-
+		
 		$brandsArr = array();
 		$conditionsArr  = array();
 		$priceArr  = array();
 
-		/* Categories Data[ */
+		/* Categories Data[ */		 
 		$catSrch = clone $prodSrchObj;
-		$catSrch->addGroupBy('prodcat_id');
-		$categoriesDataArr = productCategory::getProdCatParentChildWiseArr( $this->siteLangId, $category_id, false, false, false, $catSrch,false );
-
-		$productCategory = new productCategory;
-		$categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesDataArr);
+		$catSrch->addGroupBy('c.prodcat_id');
+		$categoriesArr = ProductCategory::getTreeArr( $this->siteLangId, $category_id, false, $catSrch, true);
 		/* ] */
 
 		/* Brand Filters Data[ */
@@ -216,7 +202,7 @@ class CategoryController extends MyAppController {
 
 		$this->set('categoryData', $categoryData);
 		
-		if( empty($record) ){
+		if( empty($totalRecords) ){
 			$this->set('noProductFound', 'noProductFound');
 		}
 		$this->set('priceArr', $priceArr);

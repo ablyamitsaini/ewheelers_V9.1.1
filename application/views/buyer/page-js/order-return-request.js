@@ -1,10 +1,7 @@
-function pageRedirect() {
-	window.location.replace(fcom.makeUrl('Buyer', 'Orders'));
-}
-
 (function() {
 	setupOrderReturnRequest = function (frm){
-		if (!$(frm).validate()) return;	
+		fcom.addTrailingSlash();
+		if (!$(frm).validate()) return;
 		$.mbsmessage(langLbl.processing,true,'alert--process alert');
 		$.ajax({
 		url: fcom.makeUrl('Buyer', 'setupOrderReturnRequest'),
@@ -14,13 +11,12 @@ function pageRedirect() {
 		cache: false,
 		contentType: false,
 		processData: false,
-		
+
 		success: function(ans) {
 			if(ans.status == true){
 				$.mbsmessage(ans.msg, true, 'alert--success');
 				document.frmOrderReturnRequest.reset();
-				setTimeout("pageRedirect()", 1000);
-				/* window.location.href = fcom.makeUrl('Buyer' ,'Orders'); */
+				setTimeout(function() { window.location.href = fcom.makeUrl('Buyer' ,'Orders'); }, 2000);
 			}else{
 				$.mbsmessage(ans.msg, true, 'alert--danger');
 			}
@@ -30,5 +26,5 @@ function pageRedirect() {
 		}
 		});
 	};
-	
+
 })();

@@ -6,7 +6,7 @@ $this->includeTemplate('import-export/_partial/top-navigation.php',$variables,fa
         <div class="row">
 			<div class="col-md-12" id="exportFormBlock">
 				<?php
-					if( !empty($pageData) ){
+					if( !empty($pageData['epage_content']) ){
 						?>
 						<h2><?php echo $pageData['epage_label'];?></h2>
 						<?php

@@ -20,7 +20,7 @@ class ImportexportCommon extends FatModel{
 		$fileName = Labels::getLabel('LBL_'.$fileName,$langId);
 		return $fileName.'_'.time().'_'.mt_rand().'.csv';
 	}
-    
+
 	public function openErrorLogFile( $fileName ,$langId = 0 )
 	{
 		if( empty($fileName)){
@@ -98,28 +98,32 @@ class ImportexportCommon extends FatModel{
 	}
 
 	public function displayDateTime($dt,$time = true){
-		if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
-		if($time == false){
-			return date("m/d/Y",strtotime($dt));
+		try {
+			if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
+			if($time == false){
+				return date("m/d/Y",strtotime($dt));
+			}
+			return date('m/d/Y H:i:s',strtotime($dt));
+		}catch (Exception $e) {
+			return false;
 		}
-		return date('m/d/Y H:i:s',strtotime($dt));
 	}
 
 	public function getDateTime($dt,$time = true){
-		if($time && strpos($dt, ":")){
-			$dt = substr($dt,0,19);
-		}else{
-			$dt = substr($dt,0,10);
-		}
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
-		//$dt = str_replace('/', '-', $dt);
-		$date = new DateTime($dt);
-		$timeStamp=$date->getTimestamp();
-		if($time==false){
-			return date("Y-m-d",$timeStamp);
+
+		try
+		{
+			$date = new DateTime($dt);
+			$timeStamp=$date->getTimestamp();
+			if($time==false){
+				return date("Y-m-d",$timeStamp);
+			}
+			return date("Y-m-d H:i:s",$timeStamp);
+		}catch (Exception $e) {
+			return '0000-00-00';
 		}
-		return date("Y-m-d H:i:s",$timeStamp);
 	}
 
 	public function getCategoryColoumArr($langId, $userId = 0){
@@ -484,7 +488,7 @@ class ImportexportCommon extends FatModel{
 		if($this->isDefaultSheetData($langId)){
 			$arr[] = Labels::getLabel('LBL_Url_keyword', $langId);
 			if(!$userId){
-				$arr[] = Labels::getLabel('LBL_Added_on', $langId);
+				// $arr[] = Labels::getLabel('LBL_Added_on', $langId);
 			}
 			$arr[] = Labels::getLabel('LBL_Available_from', $langId);
 			$arr[] = Labels::getLabel('LBL_Active', $langId);
@@ -823,7 +827,7 @@ class ImportexportCommon extends FatModel{
 			'CONF_USE_BRAND_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_BRAND_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_CATEGORY_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_CATEGORY_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_PRODUCT_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_PRODUCT_ID',FatUtility::VAR_INT,0):false,
-			'CONF_USE_USER_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_USER_ID',FatUtility::VAR_INT,0):false,
+			'CONF_USE_USER_ID'=>false,
 			'CONF_USE_OPTION_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_OPTION_ID',FatUtility::VAR_INT,0):false,
 			'CONF_OPTION_VALUE_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_OPTION_VALUE_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_TAG_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_TAG_ID',FatUtility::VAR_INT,0):false,
@@ -862,6 +866,7 @@ class ImportexportCommon extends FatModel{
 		if(!$row){
 			return $res;
 		}
+		$row['CONF_USE_USER_ID'] = false;
 		return $row;
 	}
 

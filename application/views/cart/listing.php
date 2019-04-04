@@ -142,20 +142,22 @@
 							<td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
 						  </tr>
 						  <?php } ?>
-						  <tr>
-							<td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-							<td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
-						  </tr>
+                          <?php if( $cartSummary['cartVolumeDiscount'] ){ ?>
+                          <tr>
+                            <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
+                            <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
+                          </tr>
+                          <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
+                          <tr>
+                            <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                            <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+                          </tr>
 						  <tr>
 							<td colspan="2" class="text-right">
 							<div class="gap"></div>
 							<div class="row">
 							<div class="col-md-6"><a class="btn btn--primary btn--lg btn--block" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Continue_Shopping', $siteLangId); ?></a></div>
-							<div class="col-md-6"><a class="btn btn--secondary btn--lg btn--block" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></div>
-								
-								
-								
-								
+							<div class="col-md-6"><a class="btn btn--secondary btn--lg btn--block" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></div>	
 							</div>
 							</td>
 						  </tr>

@@ -113,8 +113,16 @@ var fcom = {
 				timeout: o.timeout
 			});
 		},
+		addTrailingSlash:function(){
+			var existingUrl = window.location.href;
+			var lastChar = existingUrl.substr(-1); 
+			if (lastChar != '/') { 
+			   window.history.pushState("","",existingUrl+'/') ;
+			}
+		},
 		
 		updateWithAjax: function(url, data, fn, options) {
+			this.addTrailingSlash();
 			$.systemMessage(langLbl.processing,'alert--process');
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {

@@ -17,7 +17,7 @@ trait CustomCatalogProducts{
 
 		$frmSearchCustomCatalogProducts = $this->getCustomCatalogProductsSearchForm();
 
-		$this->set("frmSearchCustomCatalogProducts", $frmSearchCustomCatalogProducts);	
+		$this->set("frmSearchCustomCatalogProducts", $frmSearchCustomCatalogProducts);
 		$this->_template->render(true,false);
 	}
 

@@ -50,16 +50,16 @@ class Navigation {
 		$template->set('action',$action);
 		$template->set('todayUnreadMessageCount',$todayUnreadMessageCount);
 	}
-	
+
 	public static function topHeaderDashboard($template){
 		$userId = UserAuthentication::getLoggedUserId();
 		/* Unread Message Count [*/
 		$threadObj = new Thread();
 		$todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD,date('Y-m-d'));
-		/*]*/		
-		$template->set('todayUnreadMessageCount',$todayUnreadMessageCount);		
+		/*]*/
+		$template->set('todayUnreadMessageCount',$todayUnreadMessageCount);
 	}
-    
+
 	public static function advertiserDashboardNavigation($template){
 		$siteLangId = CommonHelper::getLangId();
 		$controller = str_replace('Controller','',FatApp::getController());

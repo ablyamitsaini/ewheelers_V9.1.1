@@ -31,7 +31,8 @@ class ImportexportSettings extends MyAppModel{
 			}else{
 				$settingData[$row['setting_key']] = json_decode($row['setting_value'],true);
 			}
-		}
+		}	
+		$settingData['CONF_USE_USER_ID'] = false;
 		return $settingData;
 	}
 	
@@ -43,7 +44,7 @@ class ImportexportSettings extends MyAppModel{
 			if (!substr($key, 0, strlen($code)) == $code) {
 				continue;
 			}
-			
+						
 			$assignFields = array();
 			$assignFields['setting_shop_id'] = $shopId;
 			$assignFields['setting_code'] = $code;

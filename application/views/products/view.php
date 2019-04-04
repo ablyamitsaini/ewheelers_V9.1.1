@@ -100,7 +100,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				</div>
         <div class="gap"> </div>
 
-			<?php if($shop['shop_free_ship_upto'] > 0){
+			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){
 					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
 				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>
@@ -228,7 +228,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 							   <?php if($usproduct['selprod_stock']<=0){ ?>
 								  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
 								  <?php  } ?></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['selprod_price']); ?></div></td>
+							  <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
 							  <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart"> <span class="decrease decrease-js">-</span>
 								  <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
 								  <span class="increase increase-js">+</span> </div></td>
