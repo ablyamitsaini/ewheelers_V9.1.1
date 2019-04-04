@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2019 at 12:40 PM
+-- Generation Time: Apr 04, 2019 at 04:33 PM
 -- Server version: 5.7.23-0ubuntu0.16.04.1
 -- PHP Version: 7.0.30-0ubuntu0.16.04.1
 
@@ -9571,26 +9571,10 @@ CREATE TABLE `tbl_navigation_links` (
 --
 
 INSERT INTO `tbl_navigation_links` (`nlink_id`, `nlink_nav_id`, `nlink_cpage_id`, `nlink_category_id`, `nlink_identifier`, `nlink_target`, `nlink_type`, `nlink_parent_id`, `nlink_login_protected`, `nlink_deleted`, `nlink_url`, `nlink_display_order`) VALUES
-(34, 2, 1, 0, 'About Us', '_self', 0, 0, 0, 0, '', 1),
-(35, 2, 0, 0, 'Become a Seller', '_self', 2, 0, 0, 0, '{SITEROOT}supplier', 2),
-(36, 2, 0, 0, 'Advertise with us', '_self', 2, 0, 0, 0, '{SITEROOT}guest-advertiser/account', 3),
-(37, 2, 0, 0, 'FAQS', '_self', 2, 0, 0, 0, '{SITEROOT}custom/faq', 4),
-(38, 2, 0, 0, 'Testimonials', '_self', 2, 0, 0, 0, '{SITEROOT}testimonials', 5),
 (39, 1, 0, 0, 'All Products', '_self', 2, 0, 0, 0, '{SITEROOT}products', 1),
 (40, 1, 0, 0, 'Featured Products', '_self', 2, 0, 0, 0, '{SITEROOT}products/featured', 2),
 (41, 1, 0, 0, 'Featured Shops', '_self', 2, 0, 0, 0, '{SITEROOT}shops/featured', 3),
-(42, 1, 0, 0, 'Blogs', '_self', 2, 0, 0, 0, '{SITEROOT}blog', 4),
-(43, 3, 3, 0, 'Privacy Policies', '_self', 0, 0, 0, 0, '', 1),
-(44, 3, 2, 0, 'Terms & Conditions', '_self', 0, 0, 0, 0, '', 2),
-(46, 5, 0, 109, 'Electronics', '_self', 3, 0, 0, 0, '', 0),
-(47, 5, 0, 112, 'Men', '_self', 3, 0, 0, 0, '', 1),
-(48, 5, 0, 156, 'Baby & Kids', '_self', 3, 0, 0, 0, '', 2),
-(49, 5, 1, 0, 'About Us', '_self', 0, 0, 0, 0, '', 3),
-(50, 5, 0, 0, 'Blog', '_self', 2, 0, 0, 0, '{SITEROOT}blog', 4),
-(51, 5, 0, 0, 'Contact Us', '_self', 2, 0, 0, 0, '{SITEROOT}custom/contact-us', 5),
-(52, 5, 0, 113, 'Women', '_self', 3, 0, 0, 0, '', 2),
-(53, 2, 0, 0, 'Affiliates', '_self', 2, 0, 0, 0, '{SITEROOT}guest-affiliate', 3),
-(54, 3, 0, 0, 'Contact Us', '_self', 2, 0, 0, 0, '{SITEROOT}custom/contact-us', 2);
+(42, 1, 0, 0, 'Blogs', '_self', 2, 0, 0, 0, '{SITEROOT}blog', 4);
 
 -- --------------------------------------------------------
 

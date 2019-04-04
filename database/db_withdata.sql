@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2019 at 12:39 PM
+-- Generation Time: Apr 04, 2019 at 04:33 PM
 -- Server version: 5.7.23-0ubuntu0.16.04.1
 -- PHP Version: 7.0.30-0ubuntu0.16.04.1
 
@@ -10352,7 +10352,12 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 (16566, 'LBL_Advertiser_Banner_Slogan', 1, 'Advertiser Banner Slogan'),
 (16567, 'LBL_Affiliate_Banner_Slogan', 1, 'Affiliate Banner Slogan'),
 (16568, 'LBL_Section_Title', 1, 'Section Title'),
-(16569, 'LBL_Section_Content', 1, 'Section Content');
+(16569, 'LBL_Section_Content', 1, 'Section Content'),
+(16570, 'LBL_Instructions', 1, 'Instructions'),
+(16571, 'LBL_Import_Catalogs', 1, 'Import Catalogs'),
+(16572, 'LBL_Import_Seller_Products', 1, 'Import Seller Products'),
+(16573, 'LBL_Select_Above_option_to_import_data.', 1, 'Select Above Option To Import Data.'),
+(16574, 'MSG_Invalid_data_will_not_be_processed', 1, 'Invalid Data Will Not Be Processed');
 
 -- --------------------------------------------------------
 
@@ -27287,7 +27292,7 @@ ALTER TABLE `tbl_languages`
 -- AUTO_INCREMENT for table `tbl_language_labels`
 --
 ALTER TABLE `tbl_language_labels`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16570;
+  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16575;
 --
 -- AUTO_INCREMENT for table `tbl_layout_templates`
 --
