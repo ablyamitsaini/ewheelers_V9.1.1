@@ -4,7 +4,7 @@
 	<footer id="footer">
 		<p><?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId, FatUtility::VAR_STRING, 'Copyright &copy; '.date('Y').' <a href="javascript:void(0);">FATbit.com'); echo " ".CONF_WEB_APP_VERSION;?> </p>
 	</footer>
-	<!--footer start here-->    
+	<!--footer start here-->
 </div>
 
 <?php
@@ -13,7 +13,7 @@
 	elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
 	elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 ?>
-	
+
 <div class="system_message alert alert--positioned-bottom-center alert--positioned-small <?php echo $alertClass; ?>">
 	<div class="close"></div>
 	<div class="sysmsgcontent content">
@@ -40,8 +40,8 @@
 <?php } ?>
 
 	<!--wrapper end here-->
-		
-	<?php if($isAdminLogged){?>	
+
+	<?php if($isAdminLogged){?>
 	<!--div class="color_pallete">
 		<a href="#" class="pallete_control"><i class="ion-android-settings icon"></i></a>
 		<div class="controlwrap">
@@ -57,8 +57,13 @@
 				<li class="brown"><a href="javascript:void(0)" class="color_brown"></a></li>
 			</ul>
 		</div>
-	</div-->    
-		
+	</div-->
+
 	<?php } ?>
+	<?php if(CommonHelper::demoUrl()){
+		if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){
+			echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'');
+		}
+	}?>
 </body>
 </html>
