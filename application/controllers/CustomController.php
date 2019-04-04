@@ -627,13 +627,13 @@ class CustomController extends MyAppController {
 		
 	private function contactUsForm(){
 		$frm = new Form('frmContact'); 
-		$frm->addRequiredField(Labels::getLabel('LBL_Your_Name',$this->siteLangId), 'name','');
-		$frm->addEmailField(Labels::getLabel('LBL_Your_Email',$this->siteLangId), 'email','');
+		$frm->addRequiredField(Labels::getLabel('LBL_Your_Name',$this->siteLangId), 'name', '', array('placeholder'=>Labels::getLabel('LBL_Your_Name',$this->siteLangId)));
+		$frm->addEmailField(Labels::getLabel('LBL_Your_Email',$this->siteLangId), 'email', '', array('placeholder'=>Labels::getLabel('LBL_Your_Email',$this->siteLangId)));
 		
-		$fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone',$this->siteLangId), 'phone');
+		$fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone',$this->siteLangId), 'phone', '', array('placeholder'=>Labels::getLabel('LBL_Your_Phone',$this->siteLangId)));
 		$fld_phn->requirements()->setRegularExpressionToValidate('^[\s()+-]*([0-9][\s()+-]*){5,20}$');
 		
-		$frm->addTextArea(Labels::getLabel('LBL_Your_Message',$this->siteLangId), 'message')->requirements()->setRequired();
+		$frm->addTextArea(Labels::getLabel('LBL_Your_Message',$this->siteLangId), 'message', '', array('placeholder'=>Labels::getLabel('LBL_Your_Message',$this->siteLangId)))->requirements()->setRequired();
 		$frm->addHtml('', 'htmlNote','<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY',FatUtility::VAR_STRING,'').'"></div>');
 		$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT',$this->siteLangId));		
 		return $frm;

@@ -183,6 +183,7 @@ class Product extends MyAppModel{
 				}
 				FatApp::getDb()->updateFromArray('tbl_attached_files',array('afile_display_order' => $i),array('smt' => 'afile_type = ? AND afile_record_id = ? AND afile_id = ?','vals' => array(AttachedFile::FILETYPE_PRODUCT_IMAGE, $product_id, $id)));
 			}
+            FatApp::getDb()->updateFromArray('tbl_products',array('product_image_updated_on' => date('Y-m-d H:i:s')),array('smt' => 'product_id = ?','vals' => array($product_id)));
 			return true;
 		}
 		return false;

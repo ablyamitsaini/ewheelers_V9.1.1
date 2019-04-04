@@ -28,6 +28,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
+		removePaginationFromLink();
 		searchProducts(frm,0,0,1,1);		
 	});
 	
@@ -39,6 +40,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
+		removePaginationFromLink();
 		searchProducts(frm,0,0,1,1);		
 	});
 	
@@ -50,6 +52,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
+		removePaginationFromLink();
 		searchProducts(frm,0,0,1,1);		
 	});
 	
@@ -61,6 +64,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
+		removePaginationFromLink();
 		searchProducts(frm,0,0,1,1);
 	});
 	
@@ -76,6 +80,7 @@ $(document).ready(function(){
 		}else{
 			removeFilter(id,this);
 		}
+		removePaginationFromLink();
 		searchProducts(frm,0,0,1,1);
 	});
 	
@@ -83,6 +88,7 @@ $(document).ready(function(){
 		var code = e.which; 
 		if( code == 13 ) {
 			e.preventDefault();
+			removePaginationFromLink();
 			addPricefilter();
 		}
 	});
@@ -91,6 +97,7 @@ $(document).ready(function(){
 		var code = e.which;
 		if( code == 13 ) {
 			e.preventDefault();
+			removePaginationFromLink();
 			addPricefilter();
 		}
 	});
@@ -114,17 +121,29 @@ $(document).ready(function(){
 	
 	
 	/* for toggling of grid/list view[ */
-	$('.switch--link-js').on('click',function(e) {
-		$('.switch--link-js').removeClass("is--active");
-		$('.switch--link-js').addClass("btn--primary");
-		$(this).addClass("is--active");
+	/* $('.switch--link-js').on('click',function(e) {
+		$('.switch--link-js').parent().removeClass("is--active");
+		$(this).parent().addClass("is--active");
 		if ($(this).hasClass('list')) {
-			$('.section--items').parent().removeClass('listing-products--grid').addClass('listing-products--list');
+			$('#productsList').removeClass('listing-products--grid').addClass('listing-products--list');
 		}
 		else if($(this).hasClass('grid')) {
-			$('.section--items').parent().removeClass('listing-products--list').addClass('listing-products--grid');
+			$('#productsList').removeClass('listing-products--list').addClass('listing-products--grid');
 		}
+	}); */
+	
+	
+	$('.list-grid-toggle').click(function() {
+	  var txt = $(".icon").hasClass('icon-grid') ? 'List' : 'Grid';
+	  $('.icon').toggleClass('icon-grid');
+	  if($(".icon").hasClass('icon-grid')){
+		$('#productsList').removeClass('listing-products--list').addClass('listing-products--grid');
+	  }else{
+		$('#productsList').removeClass('listing-products--grid').addClass('listing-products--list');
+	  }
+	  /* $(".label").text(txt); */
 	});
+
 	/* ] */
 	
 	/******** function for left collapseable links  ****************/     
@@ -199,12 +218,24 @@ function htmlEncode(value){
 }
 
 function addFilter(id,obj){
+	removePaginationFromLink();
 	var click = "onclick=removeFilter('"+id+"',this)";
 	$filter = $(obj).parent().text();
 	$filterVal = htmlEncode($(obj).parent().text());		
 	if(!$('#filters').find('a').hasClass(id)){
 		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
 	}
+}
+
+function addPaginationInlink(page){
+	searchArr['page'] = page;
+}
+
+function removePaginationFromLink(){
+	if(typeof searchArr['page'] == 'undefined') {return;}
+	delete searchArr['page'];
+	var frm = document.frmProductSearchPaging;	
+	$(frm.page).val(1);
 }
 
 function removeFilter(id,obj){
@@ -278,7 +309,12 @@ function getSearchQueryUrl(includeBaseUrl){
 	if(shop_id > 0){
 		url = url +'/'+'shop-'+shop_id;
 	}
-		
+	
+	/* var page = parseInt($("input[name=page]").val());
+	if(page > 1){
+		url = url +'/'+'page-'+page;
+	} */	
+	
 	/* var e = document.getElementById("sortBy");
 	var sortBy = e.options[e.selectedIndex].value;
 	if(sortBy){ 
@@ -434,7 +470,7 @@ function updatePriceFilter(minPrice,maxPrice){
 			}
 			if(typeof $("input[name=priceFilterMaxValue]").val() != "undefined"){
 				data = data+"&max_price_range="+$("input[name=priceFilterMaxValue]").val();
-			}		
+			}							
 		}
 		
 		if(($( "#filters" ).find('a').length)>0){
@@ -514,8 +550,12 @@ function updatePriceFilter(minPrice,maxPrice){
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
+		/* urlData = getSearchQueryUrl(true)+'/page-'+page+'/';		
+		window.location.href = urlData; */
+		
+		addPaginationInlink(page);
 		var frm = document.frmProductSearchPaging;	
-		$(frm.page).val(page);
+		$(frm.page).val(page);		
 		$("form[name='frmProductSearchPaging']").remove();
 		searchProducts(frm,0,0,1,1);
 		$('html, body').animate({ scrollTop: 0 }, 'slow');

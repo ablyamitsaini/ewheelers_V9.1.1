@@ -1,38 +1,69 @@
-<?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
-    <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="container">
-      <div class="row">
-        <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-xs-10 panel__right--full" >
-          <div class="cols--group">
-            <div class="panel__head no-print">
-              <h2><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
-            </div>
-            <div class="panel__body">
-              <div class="box box--white box--space">
-                <div class="box__head" >
-                  <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                  <div class="group--btns no-print"> <a href="javascript:window.print();" class="btn btn--primary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a> <a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a> </div>
-                </div>
-                <div class="box__body">
-                  <div class="grids--offset">
-                    <div class="grid-layout">
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+    
+    $canCancelOrder = true;
+    $canReturnRefund = true;
+    if( $childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
+		$canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
+		$canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true) ) );
+	} else {
+		$canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) );
+		$canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses() ) );
+	}
+?>
+
+<?php if( !$print ){ ?>
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<?php } ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<?php if( !$print ){ ?>
+    <div class="content-header row justify-content-between mb-3">
+		<div class="col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
+		</div>
+        <div class="col-md-auto">
+			<div class="btn-group">
+                <ul class="actions">
+                    <?php if( $canCancelOrder ){ ?>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($childOrderDetail['op_id']) );?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Cancel_Order',$siteLangId);?>"><i class="fa fa-close"></i></a></li>
+                    <?php } if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($childOrderDetail['op_id']) ); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Feedback',$siteLangId);?>"><i class="fa fa-star"></i></a></li>
+                    <?php } if( $canReturnRefund ){ ?>
+                        <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id']) );?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Refund',$siteLangId);?>"><i class="fa fa-dollar"></i></a></li>
+                    <?php } ?>
+                </ul>
+			</div>
+		</div>
+	</div>
+    <?php } ?>
+	<div class="content-body">
+		<div class="cards">
+			<div class="cards-header p-3">
+				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
+				<?php if( !$print ){ ?>
+                <div class="action">
+					<div class="btn-group">
+						<a href="javascript:window.print();" class="btn btn--primary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+						<a href="<?php echo CommonHelper::generateUrl('Buyer','orders');?>" class="btn btn--secondary  btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a>
+					</div>
+				</div>
+                <?php } ?>
+			</div>
+			<div class="cards-content p-3">
+
+
                       <?php if($primaryOrder){?>
                       <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 mb-4">
+                           <div class="info--order">
                           <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $childOrderDetail['user_name'];?></p>
                           <?php
-								$paymentMethodName = $childOrderDetail['pmethod_name']?:$childOrderDetail['pmethod_identifier'];
-								if( $childOrderDetail['order_pmethod_id'] > 0 && $childOrderDetail['order_is_wallet_selected'] > 0 ){
-									$paymentMethodName .= ' + ';
-								}
-								if( $childOrderDetail['order_is_wallet_selected'] > 0 ){
-									$paymentMethodName .= Labels::getLabel("LBL_Wallet",$siteLangId);
-								}
-							?>
-                          <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $paymentMethodName;?></p>
+							$selected_method = '';
+                            if($childOrderDetail['order_pmethod_id'] > 0) $selected_method.= CommonHelper::displayNotApplicable($siteLangId, $childOrderDetail["pmethod_name"]);
+                            if($childOrderDetail['order_is_wallet_selected'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$siteLangId) : Labels::getLabel("LBL_Wallet",$siteLangId);
+                            if($childOrderDetail['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$siteLangId) : Labels::getLabel("LBL_Rewards",$siteLangId); ?>
+                          <p><strong><?php echo Labels::getLabel('LBL_Payment_Method',$siteLangId);?>: </strong><?php echo $selected_method;?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Status',$siteLangId);?>: </strong><?php echo $orderStatuses[$childOrderDetail['op_status_id']];?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Cart_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail,'CART_TOTAL'));?></p>
                           <p><strong><?php echo Labels::getLabel('LBL_Delivery',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail,'SHIPPING'));?></p>
@@ -47,14 +78,15 @@
                           <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></p>
                           <?php }?>
                           <p><strong><?php echo Labels::getLabel('LBL_Order_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail));?></p>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        </div>  </div>
+                        <div class="col-lg-6 col-md-6 mb-4">
                           <div class="info--order">
                             <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $childOrderDetail['op_invoice_number'];?></p>
                             <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($childOrderDetail['order_date_added']);?></p>
                           </div>
                         </div>
                       </div>
+
                       <?php }else{?>
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -67,13 +99,15 @@
                         </div>
                       </div>
                       <?php }?>
-                    </div>
-                  </div>
-                  <table class="table">
+
+
+                  <table class="table  table--orders">
                     <tbody>
                       <tr class="">
                         <th><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
+                        <?php if( !$print ){ ?>
                         <th class="no-print"></th>
+                        <?php } ?>
                         <th><?php echo Labels::getLabel('LBL_Qty',$siteLangId);?></th>
                         <th><?php echo Labels::getLabel('LBL_Price',$siteLangId);?></th>
                         <th><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId);?></th>
@@ -98,6 +132,7 @@
 						$rewardPointDiscount = CommonHelper::orderProductAmount($childOrder,'REWARDPOINT');
 					?>
                       <tr>
+                      <?php if( !$print ){ ?>
                         <td class="no-print">
                           <div class="pic--cell-left">
                             <?php
@@ -113,20 +148,21 @@
 								}  ?>
                             <figure class="item__pic"><a href="<?php echo $prodOrBatchUrl;?>"><img src="<?php echo $prodOrBatchImgUrl; ?>" title="<?php echo $childOrder['op_product_name'];?>" alt="<?php echo $childOrder['op_product_name']; ?>"></a></figure>
                           </div></td>
+                      <?php } ?>
                         <td><div class="item__description">
                             <?php if($childOrder['op_selprod_title']!=''){ ?>
-                            <div class="item-yk-head-title"><a title="<?php echo $childOrder['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $childOrder['op_selprod_title'].'<br/>'; ?></a></div>
-                            <div class="item-yk-head-sub-title"><?php echo $childOrder['op_product_name']; ?></div>
+                            <div class="item__title"><a title="<?php echo $childOrder['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>"><?php echo $childOrder['op_selprod_title'].'<br/>'; ?></a></div>
+                            <div class="item__category"><?php echo $childOrder['op_product_name']; ?></div>
                             <?php } else { ?>
-                            <div class="item-yk-head-title"><a title="<?php echo $childOrder['op_product_name'];?>" href="<?php echo CommonHelper::generateUrl('Products','view',array($childOrder['op_selprod_id']));?>"><?php echo $childOrder['op_product_name']; ?> </a></div>
+                            <div class="item__category"><a title="<?php echo $childOrder['op_product_name'];?>" href="<?php echo CommonHelper::generateUrl('Products','view',array($childOrder['op_selprod_id']));?>"><?php echo $childOrder['op_product_name']; ?> </a></div>
                             <?php } ?>
-                            <div class="item-yk-head-brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$childOrder['op_brand_name']);?></div>
+                            <div class="item__brand"><?php echo Labels::getLabel('Lbl_Brand',$siteLangId)?>: <?php echo CommonHelper::displayNotApplicable($siteLangId,$childOrder['op_brand_name']);?></div>
                             <?php if( $childOrder['op_selprod_options'] != '' ){ ?>
-                            <div class="item-yk-head-specification"><?php echo $childOrder['op_selprod_options'];?></div>
+                            <div class="item__specification"><?php echo $childOrder['op_selprod_options'];?></div>
                             <?php } ?>
-                            <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId).': '.$childOrder['op_shop_name']; ?></div>
+                            <div class="item__sold_by"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId).': '.$childOrder['op_shop_name']; ?></div>
 							<?php if($childOrder['op_shipping_duration_name'] != ''){?>
-                            <div class="item-yk-head-specification"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></div>
+                            <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method',$siteLangId);?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></div>
 							<?php }?>
                           </div></td>
                         <!--<td style="width:20%;" ><?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name'];?></td>-->
@@ -170,10 +206,17 @@
                       <?php }?>
                     </tbody>
                   </table>
-                  <div class="grids--colum">
+                  <div class="divider">
+                  </div>
+                  <div class="gap">
+
+                    </div>
+                  <div class="gap">
+
+                  </div>
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="grid">
+                      <div class="col-lg-6 col-md-6 mb-4">
+
                           <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
                           <?php $billingAddress = $orderDetail['billingAddress']['oua_name'].'<br>';
 								if($orderDetail['billingAddress']['oua_address1']!=''){
@@ -200,12 +243,12 @@
 									$billingAddress.= '<br>'.$orderDetail['billingAddress']['oua_phone'];
 								}
 							?>
-                          <p><?php echo $billingAddress;?></p>
-                        </div>
+                        <div class="info--order">  <p><?php echo $billingAddress;?></p> </div>
+
                       </div>
                       <?php if(!empty($orderDetail['shippingAddress'])){?>
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="grid">
+                      <div class="col-lg-6 col-md-6 mb-4">
+
                           <h5><?php echo Labels::getLabel('LBL_Shipping_Details',$siteLangId);?></h5>
                           <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
 								if($orderDetail['shippingAddress']['oua_address1']!=''){
@@ -232,16 +275,18 @@
 									$shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
 								}
 							?>
-                          <p><?php echo $shippingAddress;?></p>
-                        </div>
+                        <div class="info--order">  <p><?php echo $shippingAddress;?></p> </div>
+
                       </div>
                       <?php } ?>
                     </div>
-                  </div>
+
                   <?php if(!empty($orderDetail['comments'])){ ?>
-                  <div class="section--repeated">
+                    <div class="gap">
+
+                      </div>  <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Posted_Comments',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
@@ -265,7 +310,7 @@
 				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Payment_History',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Date_Added',$siteLangId);?></th>
@@ -291,7 +336,7 @@
 				  <span class="gap"></span>
                   <div class="section--repeated">
                     <h5><?php echo Labels::getLabel('LBL_Downloads',$siteLangId);?></h5>
-                    <table class="table align--left">
+                    <table class="table  table--orders">
                       <tbody>
                         <tr class="">
                           <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
@@ -341,59 +386,62 @@
                   </div>
                   <?php } ?>
 
-					<?php if( !empty( $digitalDownloadLinks ) ){ ?>
-					<span class="gap"></span>
-					  <div class="section--repeated">
-						<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
-						<table class="table align--left">
-						  <tbody>
-							<tr class="">
-							  <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></th>
-							  <th><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></th>
-							</tr>
-							<?php $sr_no = 1;
-							foreach( $digitalDownloadLinks as $key=>$row ){
+				<?php if( !empty( $digitalDownloadLinks ) ){ ?>
+				<span class="gap"></span>
+				  <div class="section--repeated">
+					<h5><?php echo Labels::getLabel('LBL_Download_Links',$siteLangId);?></h5>
+					<table class="table  table--orders">
+					  <tbody>
+						<tr class="">
+						  <th><?php echo Labels::getLabel('LBL_Sr_No',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Link',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Download_times',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Downloaded_count',$siteLangId);?></th>
+						  <th><?php echo Labels::getLabel('LBL_Expired_on',$siteLangId);?></th>
+						</tr>
+						<?php $sr_no = 1;
+						foreach( $digitalDownloadLinks as $key=>$row ){
 
-								$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
-								if($row['expiry_date']!=''){
-									$expiry = FatDate::Format($row['expiry_date']);
-								}
+							$expiry = Labels::getLabel('LBL_N/A',$siteLangId) ;
+							if($row['expiry_date']!=''){
+								$expiry = FatDate::Format($row['expiry_date']);
+							}
 
-								$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
-								if($row['downloadable_count'] != -1){
-									$downloadableCount = $row['downloadable_count'];
-								}
+							$downloadableCount = Labels::getLabel('LBL_N/A',$siteLangId) ;
+							if($row['downloadable_count'] != -1){
+								$downloadableCount = $row['downloadable_count'];
+							}
 
-								$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
-								$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
-								$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
-								$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
-							?>
-							<tr>
-							  <td><?php echo $sr_no;?></td>
-							  <td><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
-							  <td><?php echo $downloadableCount;?></td>
-							  <td><?php echo $row['opddl_downloaded_times'];?></td>
-							  <td><?php echo $expiry;?></td>
-							</tr>
-							<?php $sr_no++; } ?>
-						  </tbody>
-						</table>
-					  </div>
-					  <?php } ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="gap"></div>
-</div>
+							$link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
+							$linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
+							$linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].'); ';
+							$linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
+						?>
+						<tr>
+						  <td><?php echo $sr_no;?></td>
+						  <td><a target="_blank" onClick="<?php echo $linkOnClick; ?> " href="<?php echo $linkUrl; ?>" data-link="<?php echo $linkUrl; ?>" title="<?php echo $linkTitle; ?>"><?php echo $link;?></a></td>
+						  <td><?php echo $downloadableCount;?></td>
+						  <td><?php echo $row['opddl_downloaded_times'];?></td>
+						  <td><?php echo $expiry;?></td>
+						</tr>
+						<?php $sr_no++; } ?>
+					  </tbody>
+					</table>
+				  </div>
+				  <?php } ?>
+			</div>
+		</div>
+	</div>
+  </div>
+</main>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>
 <script>
 	function increaseDownloadedCount( linkId, opId ){
 		fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {

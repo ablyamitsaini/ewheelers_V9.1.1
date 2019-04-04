@@ -1,9 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php if(isset($listCategories) && is_array($listCategories) ){ 
+<?php if(isset($listCategories) && is_array($listCategories) ){
 $catTab = 1; ?>
-
-
-
 <?php foreach($listCategories as $faqCat){ ?>
 				<div class="browsed-box">
 				  <div class="category-q"><?php echo $faqCat['faqcat_name']; ?></div>
@@ -20,5 +17,5 @@ $catTab = 1; ?>
 				  <path fill="none" d="M10.283,7.712c0,0.161-0.125,0.286-0.285,0.286H3.713c-0.161,0-0.286-0.125-0.286-0.286V7.141
 	c0-0.161,0.125-0.286,0.286-0.286h6.285c0.16,0,0.285,0.125,0.285,0.286V7.712z"/>
 				  </svg> </i> <?php echo $faqCat['faq_count']; ?> <?php echo Labels::getLabel( 'LBL_Questions', $siteLangId)?></a> <br class="clear">
-				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn btn--white btn--block ripplelink selectedCat"><?php echo Labels::getLabel( 'LBL_View_All_Questions', $siteLangId)?></a> </div>
+				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn  btn--primary ripplelink selectedCat"><?php echo Labels::getLabel( 'LBL_View_All_Questions', $siteLangId)?></a> </div>
 <?php } } ?>

@@ -17,6 +17,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 
 (function() {
 	var runningAjaxReq = false;
+	var runningAjaxMsg = 'some requests already running or this stucked into runningAjaxReq variable value, so try to relaod the page and update the same to WebMaster. ';
 	//var dv = '#sellerProductsForm';
 	var dv = '#listing';
 	
@@ -117,21 +118,15 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 	
 	setUpSellerProductSpecialPrice = function(frm){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpSellerProductSpecialPrice'), data, function(t) {
-			runningAjaxReq = false;
 			$.mbsmessage.close();
 			sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
 			$(document).trigger('close.facebox');
 		});
 		return false;
 	};
-		
+	
 	deleteSellerProductSpecialPrice = function( splprice_id ){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){
@@ -165,14 +160,8 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 	
 	setUpSellerProductVolumeDiscount = function( frm ){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpSellerProductVolumeDiscount'), data, function(t) {
-			runningAjaxReq = false;
 			sellerProductVolumeDiscounts( $(frm.voldiscount_selprod_id).val() );
 			$(document).trigger('close.facebox');
 		});

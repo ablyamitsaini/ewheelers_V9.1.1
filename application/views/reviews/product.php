@@ -25,24 +25,17 @@
       </div>
     </div>
   </div>
-  <section class="top-space">
-    <div class="container container--fixed">
-      <div class="">
-        <div class="panel panel--centered clearfix">
-          <div class="">
-            <div id="itemRatings" class="section   clearfix">
-              <div class="section__head">
-                <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']);?></h4>
-                <?php echo $frmReviewSearch->getFormHtml(); ?> </div>
-              <div class="section__body">
-                <div class="box box--white">
-                  <?php $this->includeTemplate('_partial/product-reviews-list.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product['product_id']),false); ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <section class="section section--gray">
+    <div class="container">
+		<div id="itemRatings" class="section   clearfix">
+			<div class="section__head">
+			 <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']);?></h4>
+			 <?php echo $frmReviewSearch->getFormHtml(); ?>
+			</div>
+			<div class="section__body">
+			  <?php $this->includeTemplate('_partial/product-reviews-list.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product['product_id']),false); ?>
+			</div>
+		</div>
     </div>
   </section>
   <div class="gap"></div>

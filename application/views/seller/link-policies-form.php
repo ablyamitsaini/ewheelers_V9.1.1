@@ -1,9 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="box__head">
-   <h4><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h4>
+<div class="cards-header p-3">
+	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product_Setup',$siteLangId); ?></h5>
 </div>
-<div class="box__body">
-	<div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+<div class="cards-content p-3">
+	<div class="tabs tabs--small   tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
 	<div class="tabs__content form">
@@ -11,7 +11,7 @@
 		<div class="form__content">
 			<div class="col-md-12">
 				<div class="">
-					<div class="tabs--inline tabs--scroll clearfix">
+					<div class="tabs tabs-sm tabs--scroll clearfix">
 						<ul>
 							<li><a href="javascript:void(0)" onClick="sellerProductForm(<?php echo $product_id,',',$selprod_id ?>)" ><?php echo Labels::getLabel('LBL_Basic',$siteLangId); ?></a></li>
 							<?php $inactive = ($selprod_id==0)?'fat-inactive':'';

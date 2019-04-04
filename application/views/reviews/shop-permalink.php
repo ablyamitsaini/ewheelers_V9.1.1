@@ -26,16 +26,13 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
         </div>
       </div>
     </div>
-	<section class="top-space">
-      <div class="container container--fixed">
-        <div class="">
-          <div class="panel panel--centered clearfix">
-            <div class="">
-              <div id="itemRatings" class="section section--info clearfix">
-                <div class="section__head">
-                  <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. $shop['shop_name'] , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
-                </div>
-                <div class="section__body">
+	<section class="section section--gray">
+		<div class="container">
+			<div id="itemRatings" class="section section--info clearfix">
+				<div class="section__head">
+				  <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. $shop['shop_name'] , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
+				</div>
+				<div class="section__body">
 					<div class="box box--white">
 						<div class="row listings__repeated">
 							<div class="col-md-3">
@@ -88,11 +85,8 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 						</div>
 					</div>
 				 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+			</div>
+		</div>
     </section>
 	<div class="gap"></div>
 </div>

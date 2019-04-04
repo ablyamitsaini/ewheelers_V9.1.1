@@ -5,12 +5,12 @@ $(document).ready(function(){
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
-	
+
 	reloadList = function() {
 		var frm = document.frmBlockSearch;
 		searchBlocks(frm);
 	}
-	
+
 	searchBlocks = function(form){
 		var dv = '#blockListing';
 		var data = '';
@@ -27,18 +27,18 @@ $(document).ready(function(){
 
 		$.facebox(function() { addBlockForm(id);
 		});
-		
+
 	};
 	addBlockForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmBlockSearch;			
+		var frm = document.frmBlockSearch;
 			fcom.ajax(fcom.makeUrl('ContentBlock', 'form', [id]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 		});
 	};
-	
+
 	setupBlock = function(frm) {
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('ContentBlock', 'setup'), data, function(t) {
 			reloadList();
@@ -49,7 +49,7 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	};
-	
+
 	addBlockLangForm = function(epageId, langId){
 		fcom.displayProcessing();
 		fcom.resetEditorInstance();
@@ -59,36 +59,36 @@ $(document).ready(function(){
 				fcom.updateFaceboxContent(t);
 				fcom.resetFaceboxHeight();
 
-				fcom.setEditorLayout(langId);	
+				fcom.setEditorLayout(langId);
 				var frm = $('#facebox form')[0];
 				var validator = $(frm).validation({errordisplay: 3});
-				
+
 				$(frm).submit(function(e) {
 					e.preventDefault();
-					if (validator.validate() == false) {	
+					if (validator.validate() == false) {
 						return ;
 					}
 					var data = fcom.frmData(frm);
 					fcom.updateWithAjax(fcom.makeUrl('ContentBlock', 'langSetup'), data, function(t) {
 						fcom.resetEditorInstance();
-						reloadList();				
+						reloadList();
 						if (t.langId>0) {
 							addBlockLangForm(t.epageId, t.langId);
 							return ;
 						}
 						$(document).trigger('close.facebox');
 					});
-					
+
 				});
 			});
 		//});
 	};
-	
+
 	setupBlockLang=function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('ContentBlock', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId>0) {
 				addBlockLangForm(t.epageId, t.langId);
 				return ;
@@ -96,14 +96,14 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	};
-	
+
 	resetToDefaultContent =  function(){
 		var agree  = confirm(langLbl.confirmReplaceCurrentToDefault);
 		if( !agree ){ return false; }
 		//oUtil.obj.insertHTML("Testing Content");
 		oUtil.obj.putHTML( $("#editor_default_content").html() );
 	};
-	
+
 	toggleStatus = function(e,obj,canEdit){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -135,30 +135,30 @@ $(document).ready(function(){
 			}
 		});
 	};
-	
+
 	removeBgImage = function( epage_id, langId, file_type ){
 		if( !confirm(langLbl.confirmDeleteImage) ){ return; }
 		fcom.updateWithAjax( fcom.makeUrl('ContentBlock', 'removeBgImage',[epage_id, langId, file_type]), '', function(t) {
 			addBlockLangForm(epage_id, langId);
 		});
 	};
-	
+
 })();
 
 $(document).on('click','.bgImageFile-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
 	var formName = $(node).attr('data-frm');
-	
-	var lang_id = document.frmBlockLang.lang_id.value; 
+
+	var lang_id = document.frmBlockLang.lang_id.value;
 	var epage_id = document.frmBlockLang.epage_id.value;
-	
+
 	var file_type = $(node).attr('data-file_type');
-	
+
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="file_type" value="' + file_type + '">'); 
-	frm = frm.concat('<input type="hidden" name="epage_id" value="' + epage_id + '">'); 
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="file_type" value="' + file_type + '">');
+	frm = frm.concat('<input type="hidden" name="epage_id" value="' + epage_id + '">');
 	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
 	frm = frm.concat('</form>');
 	$('body').prepend(frm);
@@ -169,7 +169,7 @@ $(document).on('click','.bgImageFile-Js',function(){
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 					url: fcom.makeUrl('ContentBlock', 'setUpBgImage'),
 					type: 'post',
@@ -196,7 +196,7 @@ $(document).on('click','.bgImageFile-Js',function(){
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+				});
 		}
 	}, 500);
-});	
+});

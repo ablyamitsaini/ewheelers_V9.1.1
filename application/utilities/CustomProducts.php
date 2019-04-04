@@ -19,7 +19,7 @@ trait CustomProducts{
 		$frmSearchCustomProduct = $this->getCustomProductSearchForm();
 		$this->set("frmSearchCustomProduct", $frmSearchCustomProduct);		
 		$this->_template->addJs('js/jscolor.js');
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function searchCustomProduct(){
@@ -100,7 +100,7 @@ trait CustomProducts{
 		$this->_template->addJs('js/jquery.tablednd.js');
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/slick.css');
-		$this->_template->render(); 
+		$this->_template->render(true,false); 
 	}
 	
 	/* public function customProductFormOld( $product_id=0){
@@ -138,7 +138,7 @@ trait CustomProducts{
 		$this->_template->addJs('js/jscolor.js');
 		$this->_template->addJs('js/multi-list.js');
 		$this->_template->addCss('css/multi-list.css');
-		$this->_template->render();
+		$this->_template->render(true,false);
 	} */
 	
 	public function customProductGeneralForm($product_id= 0, $prodcat_id = 0){
@@ -810,6 +810,7 @@ trait CustomProducts{
 		){
 			FatUtility::dieJsonError($fileHandlerObj->getError() );
 		}
+        FatApp::getDb()->updateFromArray('tbl_products',array('product_image_updated_on' => date('Y-m-d H:i:s')),array('smt' => 'product_id = ?','vals' => array($product_id)));
 		
 		FatUtility::dieJsonSuccess(Labels::getLabel("MSG_Image_Uploaded_Successfully",$this->siteLangId));
 	}
@@ -836,7 +837,8 @@ trait CustomProducts{
         if( !$productObj->deleteProductImage( $product_id, $image_id ) ){			
 			FatUtility::dieJsonError( $productObj->getError() );
 		}
-		
+		FatApp::getDb()->updateFromArray('tbl_products',array('product_image_updated_on' => date('Y-m-d H:i:s')),array('smt' => 'product_id = ?','vals' => array($product_id)));
+        
 		FatUtility::dieJsonSuccess(Labels::getLabel('LBL_Image_removed_successfully.',$this->siteLangId));
 	}
 	

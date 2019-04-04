@@ -39,7 +39,7 @@ foreach ($arr_listing as $sn=>$row){
 				}
 				$statucAct = (!$row['sppolicy_ppoint_id']) ? 'addPolicyPoint('.$selprod_id.",".$row['ppoint_id'].')' : 'removePolicyPoint('.$selprod_id.",".$row['ppoint_id'].')' ;
 
-				$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['ppoint_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['ppoint_id'].'">Toggle</label></div>';
+				$str = '<label class="toggle-switch" for="switch'.$row['ppoint_id'].'"><input '.$active.' type="checkbox" id="switch'.$row['ppoint_id'].'" onclick="'.$statucAct.'"/><div class="slider round"></div></label';
 				$td->appendElement('plaintext', array(), $str,true);
 
 			break;

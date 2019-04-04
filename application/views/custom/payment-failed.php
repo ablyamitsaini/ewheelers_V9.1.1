@@ -1,7 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="container container--fixed">
-   <div class="container container--fluid">
-	   <div class="panel panel--centered">
+<div class="container">
+    	   <div class="panel panel--centered">
 		   <div class="box box--white">
 			   <div class="message message--success align--center">
 				   <i class="fa fa-times"></i>
@@ -11,5 +10,5 @@
 			   </div>
 		   </div>
 	   </div>
-	</div>
+	 
 </div>

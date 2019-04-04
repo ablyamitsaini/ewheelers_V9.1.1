@@ -5,7 +5,7 @@ $langFrm->setFormTagAttribute('onsubmit', 'setupPromotionLang(this); return(fals
 $langFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $langFrm->developerTags['fld_default_col'] = 12; 
 ?>
-<div class="tabs tabs--small tabs--offset tabs--scroll clearfix setactive-js rtl">
+<div class="tabs tabs--small   tabs--scroll clearfix setactive-js rtl">
 	<ul>
 		<li><a href="javascript:void(0);" onClick="promotionForm(<?php echo $promotionId;?>)"><?php echo Labels::getLabel('LBL_General',$siteLangId);?></a></li>	
 		<?php 	

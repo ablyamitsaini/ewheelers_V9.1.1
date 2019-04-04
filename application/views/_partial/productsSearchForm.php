@@ -1,84 +1,86 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+	$keywordFld = $frmProductSearch->getField('keyword');
+	$keywordFld->overrideFldType("hidden");
+	echo $frmProductSearch->getFormTag();
+?>
+<div class="page-sort hide_on_no_product" id="top-filters">
+	<ul>
+		<li class="d-xl-none">
+			<a href="javascript:void(0)" class="link__filter"><i class="icn">
+				<svg class="svg">
+					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
+				</svg>
+			</i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
+		</li>
+		<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>
 
-<div class="right-panel white--bg">
-	<?php
-		$keywordFld = $frmProductSearch->getField('keyword');
-		$keywordFld->overrideFldType("hidden");
-		echo $frmProductSearch->getFormTag();
-	?>
-	<div id="top-filters" class="hide_on_no_product">
-		<div class="right_panel_head">
-			<div class="row">
-			  <div class="col-md-5 col-xs-12 col-sm-12 hide">
-				<div class="heading2">
-					<?php echo $blockTitle; ?>
-					<?php if( !empty($brandData) ){  ?>
-					<a href="<?php echo CommonHelper::generateUrl('brands', 'view', array($brandData['brand_id']) ); ?>"><?php echo $brandData['brand_name'] ?> </a>
-					<?php } ?>
-					<span class="subheading"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
-				</div>
-			  </div>
-
-			  <div class="col-md-7 col-xs-12 col-sm-12">
-				<div class="right_panel_head_right">
-					<a href="javascript:void(0)" class="btn btn--primary btn--sm link__filter hide--desktop"><i class="icn"><img src="/images/retina/filter.svg"></i><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></a>
-					<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>
-						<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></a>
+		<?php }?>
+		<?php /* <li class="is--active d-none d-xl-block">
+			<a href="javascript:void(0)" class="switch--grind switch--link-js grid hide--mobile"><i class="icn">
+				<svg class="svg">
+					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#gridview" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#gridview"></use>
+				</svg>
+			</i><span class="txt"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></span></a>
+		</li>
+		<li class="d-none d-xl-block">
+			<a href="javascript:void(0)" class="switch--list switch--link-js list hide--mobile"><i class="icn">
+				<svg class="svg">
+					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#listview"></use>
+				</svg>
+			</i><span class="txt"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></span></a>
+		</li> */ ?>
+		<li>
+			<div class="sort-by">
+				<ul>
+					<?php if(!isset($doNotdisplaySortBy)){?>
+				  <li class="sort"><?php echo Labels::getLabel('LBL_Sort_By', $siteLangId); ?> </li>
 					<?php }?>
-					<a href="javascript:void(0)" class="btn btn--primary btn--sm switch--grind switch--link-js grid hide--mobile"><?php echo Labels::getLabel('LBL_Grid_View', $siteLangId); ?></a>
-					<a href="javascript:void(0)" class="btn btn--secondary btn--sm switch--list switch--link-js list hide--mobile"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></a>
-					<div class="gap"></div>
-					<div class="sort-by">
-						<ul>
-							<?php if(!isset($doNotdisplaySortBy)){?>
-						  <li class="sort"><?php echo Labels::getLabel('LBL_Sort_By', $siteLangId); ?> </li>
-							<?php }?>
-						  <li>
-							<?php echo $frmProductSearch->getFieldHTML('keyword'); ?>
-							<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
-							<?php echo $frmProductSearch->getFieldHtml('category'); ?>
-						  </li>
-						  <li class="hide--mobile">
-							<?php echo $frmProductSearch->getFieldHtml('pageSize'); ?>
-						  </li>
-						</ul>
-					</div>
-				</div>
-			  </div>
+				  <li>
+					<?php echo $frmProductSearch->getFieldHTML('keyword'); ?>
+					<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
+					<?php echo $frmProductSearch->getFieldHtml('category'); ?>
+				  </li>
+				  <li class="hide--mobile">
+					<?php echo $frmProductSearch->getFieldHtml('pageSize'); ?>
+				  </li>
+				</ul>
 			</div>
-		</div>
-		<?php
-			echo $frmProductSearch->getFieldHtml('sortOrder');
-			echo $frmProductSearch->getFieldHtml('shop_id');
-			echo $frmProductSearch->getFieldHtml('collection_id');
-			echo $frmProductSearch->getFieldHtml('join_price');
-			echo $frmProductSearch->getFieldHtml('featured');
-			echo $frmProductSearch->getFieldHtml('currency_id');
-			echo $frmProductSearch->getFieldHtml('top_products');
-			echo $frmProductSearch->getExternalJS();
-		?>
-		</form>
-		<div class="divider"></div>
-		<div class="gap"></div>
-	</div>
-	<div class="listing-products -listing-products listing-products--grid ">
-		<div class="section section--items listview">
-			<div id="productsList" class="row"></div>
-		</div>
-	</div>
-	<div class="gap"></div>
+		</li>
+		<li>
+			<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--default btn--sm"><i class="icn">
+
+			</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
+		</li>
+		<li>
+			<div class="list-grid-toggle switch--link-js">
+				<div class="icon icon-grid">
+					<div class="icon-bar"></div>
+					<div class="icon-bar"></div>
+					<div class="icon-bar"></div>
+				</div>
+			</div>
+		</li>
+	</ul>
+	<?php
+		echo $frmProductSearch->getFieldHtml('sortOrder');
+        echo $frmProductSearch->getFieldHtml('page');
+        echo $frmProductSearch->getFieldHtml('shop_id');
+        echo $frmProductSearch->getFieldHtml('collection_id');
+        echo $frmProductSearch->getFieldHtml('join_price');
+        echo $frmProductSearch->getFieldHtml('featured');
+        echo $frmProductSearch->getFieldHtml('currency_id');
+        echo $frmProductSearch->getFieldHtml('top_products');
+        echo $frmProductSearch->getExternalJS();
+	?>
+	</form>
 </div>
-<?php /*?>
-<div id="loadMoreBtnDiv"></div>
-<?php */?>
+
 <script>
 /* $(document).ready(function(){
-	
 	if($('input[name="keyword"]').val() == ''){
 		$(".sortby option[value='keyword_relevancy_desc']").each(function() {
 			$(".sortby option[value='keyword_relevancy_desc']").remove();
 		});
 	}
-	
 }); */
 </script>

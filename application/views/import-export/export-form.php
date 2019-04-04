@@ -22,8 +22,8 @@ if(in_array($actionType,$actionTypeArr)){
 	$rangeTypeFld->setfieldTagAttribute( 'onchange' , "showHideExtraFld(this.value,".Importexport::BY_ID_RANGE.",".Importexport::BY_BATCHES.");");
 }
 ?>
-<div class="container container--fluid">
-	<div class="tabs--inline tabs--scroll clearfix">
+ 
+	<div class="tabs tabs-sm tabs--scroll clearfix">
 		<ul>
 			<li class="is-active"><a class="is-active" href="javascript:void(0);" onclick="exportForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
 			<?php if($displayMediaTab){?>
@@ -31,7 +31,7 @@ if(in_array($actionType,$actionTypeArr)){
 			<?php }?>
 		</ul>
 	</div>
-</div>
+ 
 <div class="form__subcontent">
 	<?php echo $frm->getFormHtml(); ?>
 </div>

@@ -2,13 +2,17 @@
 <?php
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr_no.',$adminLangId),
-		'epage_identifier'=>Labels::getLabel('LBL_Title',$adminLangId),	
-		'epage_active'=>Labels::getLabel('LBL_Status',$adminLangId),	
+		'epage_identifier'=>Labels::getLabel('LBL_Title',$adminLangId),
+		'epage_active'=>Labels::getLabel('LBL_Status',$adminLangId),
 		'action' => Labels::getLabel('LBL_Action',$adminLangId),
 	);
+if(!empty($importInstructions)){
+	unset($arr_flds['epage_active']);
+}
+
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 $th = $tbl->appendElement('thead')->appendElement('tr');
-foreach ($arr_flds as $val) {
+foreach ($arr_flds as $ind => $val) {
 	$e = $th->appendElement('th', array(), $val);
 }
 
@@ -38,12 +42,12 @@ foreach ($arr_listing as $sn=>$row){
 				}
 				$statusAct = ( $canEdit === true ) ? 'toggleStatus(event,this,' .applicationConstants::YES. ')' : 'toggleStatus(event,this,' .applicationConstants::NO. ')';
 				$statusClass = ( $canEdit === false ) ? 'disabled' : '';
-				$str='<label class="statustab -txt-uppercase">    
+				$str='<label class="statustab -txt-uppercase">
                      <input '.$active.' type="checkbox" id="switch'.$row['epage_id'].'" value="'.$row['epage_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
                     <i class="switch-handles '.$statusClass.'"></i></label>';
 				$td->appendElement('plaintext', array(), $str,true);
 
-			break;	
+			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
 
@@ -54,8 +58,8 @@ foreach ($arr_listing as $sn=>$row){
               		$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
               		$innerLiEdit=$innerUl->appendElement('li');
 
-					$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addBlockFormNew(".$row['epage_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true); 
-					
+					$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addBlockFormNew(".$row['epage_id'].",".$adminLangId.")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
+
 				}
 			break;
 			default:

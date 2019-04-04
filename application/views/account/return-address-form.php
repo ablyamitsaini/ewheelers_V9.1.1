@@ -15,8 +15,8 @@ $stateFld->setFieldTagAttribute('id','ura_state_id');
 ?>
 <div class="row">	
 	<div class="col-md-8">
-		<div class="container container--fluid">
-			<div class="tabs--inline clearfix">
+		 
+			<div class="tabs tabs-sm clearfix">
 				<ul class="setactive-js">
 					<li class="is-active"><a href="javascript:void(0)" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 					<?php foreach($languages as $langId => $langName){?>
@@ -24,7 +24,7 @@ $stateFld->setFieldTagAttribute('id','ura_state_id');
 				<?php } ?>
 				</ul>
 			</div>
-		</div>
+		 
 		<?php echo $frm->getFormHtml();?>
 	</div>
 </div>

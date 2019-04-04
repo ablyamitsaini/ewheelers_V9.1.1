@@ -1,4 +1,5 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<div class="row">
 <?php if($wishLists) {
 		foreach( $wishLists as $wishlist ){
 			//if(count($wishlist['products'])>0){
@@ -72,3 +73,4 @@
 	</div>
 </div>
 <?php }?>
+</div>

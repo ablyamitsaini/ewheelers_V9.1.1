@@ -2,121 +2,159 @@
 $controller = strtolower($controller);
 $action = strtolower($action);
 ?>
-<div class="col-md-2 hide--mobile hide--tab no-print">
-	<div class="box box--white box--space">
-	   <h6><?php echo Labels::getLabel('LBL_Seller_Dashboard',$siteLangId); ?></h6>
-
-		<?php if(User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab()){?>
-		<div class="gap"></div>
-		<div class="dashboard-togles dropdown"><span><?php echo Labels::getLabel('LBL_Seller',$siteLangId); ?> </span><a href="javascript:void(0)" class="ripplelink fa fa-ellipsis-v dropdown__trigger-js"><span class="ink animate" ></span></a>
-			<div class="dropdown__target dropdown__target-js dashboard-options">
-			  <ul>
-			   <?php if(User::canViewBuyerTab()) { ?>
-				<li><a href="<?php echo CommonHelper::generateUrl('buyer');?>" class="ripplelink"><?php echo Labels::getLabel('LBL_Buyer',$siteLangId); ?></a></li>
-			   <?php } if(User::canViewAdvertiserTab()) {  ?>
-				<li><a href="<?php echo CommonHelper::generateUrl('advertiser');?>" class="ripplelink"><?php echo Labels::getLabel('LBL_Advertiser',$siteLangId); ?></a></li>
-			   <?php } if(User::canViewAffiliateTab()) {  ?>
-				<li><a href="<?php echo CommonHelper::generateUrl('affiliate');?>" class="ripplelink"><?php echo Labels::getLabel('LBL_Affiliate',$siteLangId); ?></a></li>
-			   <?php } ?>
-			  </ul>
-			</div>
-		</div>
-		<?php }?>
-		<div class="box box--list">
-		   <h6><?php echo Labels::getLabel('LBL_Quick_filters',$siteLangId);?></h6>
-		   <ul class="links--vertical">
-			   <li class="<?php echo ($controller == 'seller' && $action == 'index')?'is-active':''?>">
-			   <a href="<?php echo CommonHelper::generateUrl('Seller'); ?>"><i class="fa fa-home"></i>
-				<?php echo Labels::getLabel('LBL_Dashboard',$siteLangId);?></a></li>
-		   </ul>
-		</div>
-		<div class="box box--list">
-		   <h6><?php echo Labels::getLabel('LBL_Shop',$siteLangId);?></h6>
-		   <ul class="links--vertical">
-			   <li class="<?php echo ($controller == 'seller' && $action == 'shop') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','shop'); ?>"><i class="fa fa-shopping-basket"></i><?php echo Labels::getLabel('LBL_Manage_Shop',$siteLangId);?></a></li>
+<div class="sidebar no-print">
+	<div class="logo-wrapper">
+		<?php
+		if( CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'] ) ){
+			$logoUrl = CommonHelper::generateUrl('home','index');
+		}else{
+			$logoUrl = CommonHelper::generateUrl();
+		}
+		?>
+		<div class="logo-dashboard"><a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
+		<div class="js-hamburger hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+	</div>
+	<div class="sidebar__content custom-scrollbar">
+		<nav class="dashboard-menu">
+			<ul>
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Shop',$siteLangId);?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'shop') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','shop'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Manage_Shop',$siteLangId);?></span></a></div></li>
 
 			   <?php if( $isShopActive && $shop_id > 0 ){ ?>
-			   <li><a target="_blank" href="<?php echo CommonHelper::generateUrl('Shops','view', array($shop_id)); ?>"><i class="fa fa-shopping-cart"></i><?php echo Labels::getLabel('LBL_View_Shop',$siteLangId);?></a></li>
-				<!--<li class="<?php //echo ($controller == 'seller' && $action == 'categorybanners') ? 'is-active' : ''; ?>"><a href="<?php // echo CommonHelper::generateUrl('Seller','CategoryBanners'); ?>"><i class="fa fa-th-large"></i><?php // echo Labels::getLabel('LBL_Category_Banners',$siteLangId);?></a></li>-->
-			   <?php } ?>
-				<li class="<?php echo ($controller == 'seller' && ($action == 'customProductForm' || $action == 'customproduct'|| $action == 'catalog')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Products',$siteLangId); ?></a></li>
-
-				<!--<li class="<?php /* echo ($controller == 'seller' && ($action == 'products')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','products' );?>" ><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_My_Inventory',$siteLangId); */ ?></a></li>-->
-
-				<?php /* if( User::canAddCustomProductAvailableToAllSellers() ){?>
-				<li class="<?php echo ($controller == 'seller' && $action == 'customcatalogproducts') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','customCatalogProducts'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Requested_Products', $siteLangId); ?></a></li>
-				<?php }else if((User::canAddCustomProduct() === false) && (User::canRequestProduct() === true)){ ?>
-				<li class="<?php echo ($controller == 'seller' && $action == 'requestedcatalog') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','requestedCatalog'); ?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId); ?></a></li>
-				<?php } */ ?>
-
-
-				<li class="<?php echo ($controller == 'seller' && ($action == 'inventoryupdate')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','InventoryUpdate' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Inventory_Update',$siteLangId); ?></a></li>
+			   <li class="menu__item"><div class="menu__item__inner"><a target="_blank" href="<?php echo CommonHelper::generateUrl('Shops','view', array($shop_id)); ?>"><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-view-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-view-shop"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_View_Shop',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'customProductForm' || $action == 'customproduct'|| $action == 'catalog')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" ><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-products" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-products"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Products',$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'inventoryupdate')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('seller','InventoryUpdate' );?>" ><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-inventory-update" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-inventory-update"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Inventory_Update',$siteLangId); ?></span></a></div></li>
 				<?php  if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT',FatUtility::VAR_INT,0)){?>
-				<li class="<?php echo ($controller == 'importexport' && ($action == 'index')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('ImportExport','index' );?>" ><i class="fa fa-cloud-upload"></i><?php echo Labels::getLabel('LBL_Import_Export',$siteLangId); ?></a></li>
+				<li class="menu__item <?php echo ($controller == 'importexport' && ($action == 'index')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('ImportExport','index' );?>" ><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-import-export" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-import-export"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Import_Export',$siteLangId); ?></span></a></div></li>
 				<?php }?>
-		   </ul>
-		</div>
+				<li class="divider"></li>
+			   <?php }?>
 
-		<div class="box box--list">
-		   <h6><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></h6>
-		   <ul class="links--vertical">
-			   <li class="<?php echo ($controller == 'seller' && $action == 'sales') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>"><i class="fa fa-bar-chart"></i><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></a></li>
-			   <li class="<?php echo ($controller == 'seller' && $action == 'ordercancellationrequests') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','orderCancellationRequests'); ?>"><i class="fa  fa-file-text"></i><?php echo Labels::getLabel("LBL_Order_Cancellation_Requests",$siteLangId); ?></a></li>
-			  <li class="<?php echo ($controller == 'seller' && ($action == 'orderreturnrequests' || $action == 'vieworderreturnrequest') ) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','orderReturnRequests'); ?>"><i class="fa fa-reply"></i><?php echo Labels::getLabel("LBL_Order_Return_Requests",$siteLangId); ?></a></li>
-		   </ul>
-		</div>
-		<div class="box box--list">
-			<h6><?php echo Labels::getLabel('LBL_Settings',$siteLangId);?></h6>
-			<ul class="links--vertical">
-				<li class="<?php echo ($controller == 'seller' && $action == 'taxcategories') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','taxCategories'); ?>"><i class="fa fa fa-usd"></i><?php echo Labels::getLabel('LBL_Tax_Category',$siteLangId);?></a></li>
-				<?php /*?><li class="<?php echo ($controller == 'seller' && $action == 'socialplatforms') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','socialPlatforms'); ?>"><i class="fa fa-share-alt"></i><?php echo Labels::getLabel('LBL_Social_Platforms',$siteLangId);?></a></li><?php */?>
-				<li class="<?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','options'); ?>"><i class="fa fa-plus-square-o"></i><?php echo Labels::getLabel('LBL_Options',$siteLangId);?></a></li>
-			</ul>
-		</div>
-		<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>
-		<div class="box box--list">
-		    <h6><?php echo Labels::getLabel("LBL_Subscriptions",$siteLangId); ?></h6>
-		    <ul class="links--vertical">
-				<li class="<?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions'); ?>"><i class="fa fa-file-text-o"></i><?php echo Labels::getLabel("LBL_My_Subscriptions",$siteLangId); ?></a></li>
-				<li class="<?php echo ($controller == 'seller' && $action == 'packages') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('seller','Packages' );?>"><i class="fa fa-th-large"></i><?php echo Labels::getLabel('LBL_Subscription_Packages',$siteLangId);?></a></li>
-			</ul>
-		</div>
-		<?php } ?>
 
-		<?php /* if(User::canViewAdvertiserTab()) { ?>
-			<div class="box box--list">
-				<h6><?php echo Labels::getLabel("LBL_Promotions",$siteLangId); ?></h6>
-				<ul class="links--vertical">
-					<li class="<?php echo ($controller == 'account' && ($action == 'promote' || $action == 'viewpromotions')) ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('account','promote'); ?>"><i class="fa fa-tags"></i><?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?></a></li>
-				</ul>
-			</div>
-		<?php } */ ?>
-		<!--div class="box box--list">
-			<h6><?php echo Labels::getLabel("LBL_Bulk_Import_Export",$siteLangId); ?></h6>
-			<ul class="links--vertical">
-				 <li class="<?php echo ($controller == 'ImportExport' && $action == 'index') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('ImportExport','index'); ?>"><i class="fa fa-user"></i><?php echo Labels::getLabel("LBL_Settings",$siteLangId); ?></a></li>
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'Sales') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','Sales'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Sales',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'ordercancellationrequests') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','orderCancellationRequests'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-cancellation-request" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-cancellation-request"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Order_Cancellation_Requests",$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'orderreturnrequests' || $action == 'vieworderreturnrequest') ) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','orderReturnRequests'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-return-request" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-return-request"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Order_Return_Requests",$siteLangId); ?></span></a></div></li>
+				<li class="divider"></li>
+
+
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Settings',$siteLangId);?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'taxcategories') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','taxCategories'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-tax-category" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-tax-category"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Tax_Category',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','options'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-options" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-options"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Options',$siteLangId);?></span></a></div></li>
+				<li class="divider"></li>
+
+				<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Settings',$siteLangId);?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Subscriptions",$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('seller','Packages' );?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Subscription_Packages',$siteLangId);?></span></a></div></li>
+				<li class="divider"></li>
+				<?php } ?>
+
+
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Profile",$siteLangId); ?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-account" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-account"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'messages') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-messages" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-messages"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Messages",$siteLangId); ?> <?php if($todayUnreadMessageCount > 0) { ?><span class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span> <?php } ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></span></a></div></li>
+				<li class="divider"></li>
+
+
+				<li class="menu__item">
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Reports",$siteLangId); ?></span></div>
+				</li>
+				<li class="menu__item <?php echo ($controller == 'reports' && $action == 'salesreport') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Reports','SalesReport'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'reports' && $action == 'productsperformance') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Reports','ProductsPerformance'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-performance" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-performance"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Products_Performance', $siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'reports' && $action == 'productsinventory') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Reports','productsInventory'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-inventory" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-inventory"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Products_Inventory', $siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'reports' && $action == 'productsinventorystockstatus') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Reports','productsInventoryStockStatus'); ?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-inventory-stock" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-product-inventory-stock"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Products_Inventory_Stock_Status', $siteLangId); ?></span></a></div></li>
+				<li class="divider"></li>
+
 			</ul>
-		</div-->
-		<div class="box box--list">
-		   <h6><?php echo Labels::getLabel("LBL_Profile",$siteLangId); ?></h6>
-		    <ul class="links--vertical">
-				<li class="<?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>"><i class="fa fa-user"></i><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></a></li>
-				<li class="<?php echo ($controller == 'account' && $action == 'messages') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>"><i class="fa fa-envelope"></i><?php echo Labels::getLabel("LBL_Messages",$siteLangId); ?> <?php if($todayUnreadMessageCount > 0) { ?><span class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span> <?php } ?></a></li>
-				<li class="<?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>"><i class="fa fa-credit-card-alt"></i><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></a></li>
-			   <!--<li class="<?php /* echo ($controller == 'account' && $action == 'wishlist') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','wishlist');?>"><i class="fa fa-heart"></i><?php echo Labels::getLabel('LBL_Wishlist/Favorites',$siteLangId); */?></a></li>-->
-				<!--<li class="<?php /* echo ($controller == 'SavedProductsSearch' && $action == 'listing') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('SavedProductsSearch','listing');?>"><i class="fa fa-search-plus"></i><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId); */ ?></a></li>-->
-			   <li class="<?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>"><i class="fa  fa-unlock-alt"></i><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></a></li>
-			   <li class="<?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>"><i class="fa fa-envelope"></i><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></a></li>
-		    </ul>
-		</div>
-		<div class="box box--list">
-			<h6><?php echo Labels::getLabel("LBL_Reports",$siteLangId); ?></h6>
-			<ul class="links--vertical">
-				<li class="<?php echo ($controller == 'reports' && $action == 'salesreport') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Reports','SalesReport'); ?>"><i class="fa fa-line-chart"></i><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId); ?></a></li>
-				<li class="<?php echo ($controller == 'reports' && $action == 'productsperformance') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Reports','ProductsPerformance'); ?>"><i class="fa fa-signal"></i><?php echo Labels::getLabel('LBL_Products_Performance', $siteLangId); ?></a></li>
-				<li class="<?php echo ($controller == 'reports' && $action == 'productsinventory') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Reports','productsInventory'); ?>"><i class="fa fa-sitemap"></i><?php echo Labels::getLabel('LBL_Products_Inventory', $siteLangId); ?></a></li>
-				<li class="<?php echo ($controller == 'reports' && $action == 'productsinventorystockstatus') ? 'is-active' : ''; ?>"><a href="<?php echo CommonHelper::generateUrl('Reports','productsInventoryStockStatus'); ?>"><i class="fa fa-bar-chart"></i><?php echo Labels::getLabel('LBL_Products_Inventory_Stock_Status', $siteLangId); ?></a></li>
-			</ul>
-		</div>
+		</nav>
 	</div>
+<script>
+var Dashboard = function () {
+
+	var menuChangeActive = function menuChangeActive(el) {
+		var hasSubmenu = $(el).hasClass("has-submenu");
+		$(global.menuClass + " .is-active").removeClass("is-active");
+		$(el).addClass("is-active");
+
+
+	};
+
+	var sidebarChangeWidth = function sidebarChangeWidth() {
+		var $menuItemsTitle = $("li .menu-item__title");
+
+		$("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+		$(".hamburger-toggle").toggleClass("is-opened");
+
+
+
+	};
+
+	return {
+		init: function init() {
+			$(".js-hamburger").on("click", sidebarChangeWidth);
+
+			$(".js-menu li").on("click", function (e) {
+				menuChangeActive(e.currentTarget);
+			});
+
+
+		}
+	};
+
+}();
+
+Dashboard.init();
+</script>
 </div>

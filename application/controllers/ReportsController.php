@@ -25,7 +25,7 @@ class ReportsController extends LoggedUserController {
 		}
 		$srchFrm = $this->getProdPerformanceSrchForm();
 		$this->set( 'srchFrm', $srchFrm );
-		$this->_template->render( );
+		$this->_template->render(true, false);
 	}
 	
 	public function searchProductsPerformance( $topPerformed = 0, $export = "" ){
@@ -208,7 +208,7 @@ class ReportsController extends LoggedUserController {
 		}
 		$frmSrch = $this->getProductInventorySearchForm( $this->siteLangId );
 		$this->set( 'frmSrch', $frmSrch );
-		$this->_template->render();
+		$this->_template->render(true, false);
 	}
 	
 	public function searchProductsInventory( $export = "" ){
@@ -234,7 +234,7 @@ class ReportsController extends LoggedUserController {
 		$srch->addOrder('selprod_active', 'DESC');
 		$srch->addOrder('product_name');
 		$srch->addMultipleFields(array(
-			'selprod_id', 'selprod_user_id', 'selprod_cost', 'selprod_price', 'selprod_stock', 'selprod_product_id',
+			'selprod_id', 'selprod_user_id', 'selprod_cost', 'selprod_price', 'selprod_stock', 'selprod_product_id', 'selprod_sku', 
 			'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'b_l.brand_name'));
 			
 		if( $keyword = FatApp::getPostedData('keyword')){
@@ -248,10 +248,10 @@ class ReportsController extends LoggedUserController {
 			$srch->doNotLimitRecords();
 			$rs = $srch->getResultSet();
 			$sheetData = array();
-			$arr = array(Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title(If_Any)', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Stock_Quantity', $this->siteLangId));
+			$arr = array(Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title(If_Any)', $this->siteLangId), Labels::getLabel('LBL_Product_SKU', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Stock_Quantity', $this->siteLangId));
 			array_push( $sheetData, $arr );
 			while( $row = FatApp::getDb()->fetch($rs) ){
-				$arr = array( $row['product_name'], $row['selprod_title'], $row['brand_name'], $row['selprod_stock'] );
+				$arr = array( $row['product_name'], $row['selprod_title'], $row['selprod_sku'], $row['brand_name'], $row['selprod_stock'] );
 				array_push($sheetData,$arr);
 			}
 			CommonHelper::convertToCsv( $sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
@@ -280,7 +280,7 @@ class ReportsController extends LoggedUserController {
 		}
 		$frmSrch = $this->getProductInventoryStockStatusSearchForm( $this->siteLangId );
 		$this->set( 'frmSrch', $frmSrch );
-		$this->_template->render();
+		$this->_template->render(true, false);
 	}
 	
 	public function searchProductsInventoryStockStatus( $export = "" ){
@@ -395,7 +395,7 @@ class ReportsController extends LoggedUserController {
 		$frmSrch = $this->getSalesReportSearchForm($orderDate);
 		$this->set( 'frmSrch', $frmSrch );
 		$this->set('orderDate',$orderDate);
-		$this->_template->render();
+		$this->_template->render(true, false);
 	}
 	
 	public function searchSalesReport( $export = "" ){

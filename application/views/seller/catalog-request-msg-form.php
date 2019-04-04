@@ -21,7 +21,7 @@
 				<div class="grid grid--second">
 					<span class="media__title"><?php echo $logged_user_name; ?></span>
 					<div class="grid grid--third">
-						<div class="form__cover">
+						<div class="bg-gray-light p-3 pb-0">
 						<?php echo $frm->getFormHtml(); ?>
 						</div>
 					</div>

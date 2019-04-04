@@ -1,31 +1,45 @@
+<?php
+$selected_method = '';
+if($order['order_pmethod_id']) $selected_method.= CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"]);
+if($order['order_is_wallet_selected'] == applicationConstants::YES) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$adminLangId) : Labels::getLabel("LBL_Wallet",$adminLangId);
+if($order['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$adminLangId) : Labels::getLabel("LBL_Rewards",$adminLangId);
+?>
 <div class="page">
 	<div class="container container-fluid">
 		<div class="row">
 		   <div class="col-lg-12 col-md-12 space">
-				<div class="page__title no-print">
-					<div class="row">
-						<div class="col--first col-lg-6">
-							<span class="page__icon"><i class="ion-android-star"></i></span>
-							<h5><?php echo Labels::getLabel('LBL_Orders_Details',$adminLangId); ?></h5>
-								<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
+
+			   <?php if( !$print ){ ?>
+					<div class="page__title no-print">
+						<div class="row">
+							<div class="col--first col-lg-6">
+								<span class="page__icon"><i class="ion-android-star"></i></span>
+								<h5><?php echo Labels::getLabel('LBL_Orders_Details',$adminLangId); ?></h5>
+									<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
+							</div>
 						</div>
 					</div>
-				</div>
+				<?php } ?>
 
 				<section class="section">
 					<div class="sectionhead">
-						<?php 
-							$ul = new HtmlElement("ul",array("class"=>"actions actions--centered"));
-							$li = $ul->appendElement("li",array('class'=>'droplink'));						
-							$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green no-print','title'=>Labels::getLabel('LBL_Back_to_Orders',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
-							$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
-							$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
-							$innerLi=$innerUl->appendElement('li');
-							$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders'),'class'=>'button small green redirect--js no-print','title'=>Labels::getLabel('LBL_Back_to_Orders',$adminLangId)),Labels::getLabel('LBL_Back_to_Orders',$adminLangId), true);	
-							$innerLi->appendElement('a', array('href'=>'javascript:window.print()','class'=>'button small green redirect--js no-print','title'=>Labels::getLabel('LBL_Print',$adminLangId)),Labels::getLabel('LBL_Print',$adminLangId), true);	
-							echo $ul->getHtml();		
-						?>	
-						<h4><?php echo Labels::getLabel('LBL_Seller_Order_Details',$adminLangId); ?></h4>							
+						<?php
+							if( !$print ){
+								$ul = new HtmlElement("ul",array("class"=>"actions actions--centered"));
+								$li = $ul->appendElement("li",array('class'=>'droplink'));
+
+								$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green no-print','title'=>Labels::getLabel('LBL_Back_to_Orders',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
+								$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
+								$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
+								$innerLi=$innerUl->appendElement('li');
+
+								$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders'),'class'=>'button small green redirect--js no-print','title'=>Labels::getLabel('LBL_Back_to_Orders',$adminLangId)),Labels::getLabel('LBL_Back_to_Orders',$adminLangId), true);
+								$innerLi->appendElement('a', array('href'=> Fatutility::generateUrl('sellerOrders','view',$urlParts) . '/print','class'=>'button small green redirect--js no-print','title'=>Labels::getLabel('LBL_Print',$adminLangId)),Labels::getLabel('LBL_Print',$adminLangId), true);
+
+								echo $ul->getHtml();
+							}
+						?>
+						<h4><?php echo Labels::getLabel('LBL_Seller_Order_Details',$adminLangId); ?></h4>
 					</div>
 					<div class="sectionbody">
 						<table class="table table--details">
@@ -37,7 +51,7 @@
 							<tr>
 							  <td><strong><?php if ($order["op_refund_qty"]>0){ echo Labels::getLabel('LBL_Refund_for_Qty.',$adminLangId); ?> [<?php echo $order["op_refund_qty"]?>] : </strong><?php echo CommonHelper::displayMoneyFormat($order["op_refund_amount"], true, true); }  ?></td>
 							  <td><strong><?php echo Labels::getLabel('LBL_Customer/Guest',$adminLangId); ?>: </strong><?php echo $order["buyer_user_name"].' ('.$order['buyer_username'].')'; ?></td>
-							  <td><strong><?php echo Labels::getLabel('LBL_Payment_Method',$adminLangId); ?>:</strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"])?> </td>
+							  <td><strong><?php echo Labels::getLabel('LBL_Payment_Method',$adminLangId); ?>:</strong> <?php echo $selected_method;?> </td>
 							</tr>
 							<tr>
 							  <td><strong><?php echo Labels::getLabel('LBL_Commission_Charged',$adminLangId); ?>[<?php echo $order["op_commission_percentage"]?>%]: </strong><?php echo CommonHelper::displayMoneyFormat( $order['op_commission_charged'] - $order['op_refund_commission'], true, true); ?> </td>
@@ -52,7 +66,7 @@
 						</table>
 					</div>
 				</section>
-				  
+
 				<div class="row row--cols-group">
 					<div class="col-lg-6 col-md-6 col-sm-6">
 						<section class="section">
@@ -80,28 +94,28 @@
 								 <div class="col-lg-6 col-md-6 col-sm-12">
 									<h5><?php echo Labels::getLabel('LBL_Billing_Details',$adminLangId); ?> </h5>
 									<p><strong><?php echo $order['billingAddress']['oua_name']; ?></strong><br>
-									<?php 
+									<?php
 									$billingAddress = '';
 									if($order['billingAddress']['oua_address1']!=''){
 										$billingAddress.=$order['billingAddress']['oua_address1'].'<br>';
 									}
-									
+
 									if($order['billingAddress']['oua_address2']!=''){
 										$billingAddress.=$order['billingAddress']['oua_address2'].'<br>';
 									}
-									
+
 									if($order['billingAddress']['oua_city']!=''){
 										$billingAddress.=$order['billingAddress']['oua_city'].',';
 									}
-									
+
 									if($order['billingAddress']['oua_zip']!=''){
 										$billingAddress .= ' '.$order['billingAddress']['oua_state'];
 									}
-									
+
 									if($order['billingAddress']['oua_zip']!=''){
 										$billingAddress.= '-'.$order['billingAddress']['oua_zip'];
 									}
-									
+
 									if($order['billingAddress']['oua_phone']!=''){
 										$billingAddress.= '<br>Phone: '.$order['billingAddress']['oua_phone'];
 									}
@@ -109,7 +123,7 @@
 									?><br>
 								   </p>
 								</div>
-								
+
 								<div class="col-lg-6 col-md-6 col-sm-12">
 									<?php if(!empty($order['shippingAddress'])){ ?>
 									<h5><?php echo Labels::getLabel('LBL_Shipping_Details',$adminLangId); ?></h5>
@@ -119,27 +133,27 @@
 									if($order['shippingAddress']['oua_address1']!=''){
 										$shippingAddress.=$order['shippingAddress']['oua_address1'].'<br>';
 									}
-									
+
 									if($order['shippingAddress']['oua_address2']!=''){
 										$shippingAddress.=$order['shippingAddress']['oua_address2'].'<br>';
 									}
-									
+
 									if($order['shippingAddress']['oua_city']!=''){
 										$shippingAddress.=$order['shippingAddress']['oua_city'].',';
 									}
-									
+
 									if($order['shippingAddress']['oua_zip']!=''){
 										$shippingAddress .= ' '.$order['shippingAddress']['oua_state'];
 									}
-									
+
 									if($order['shippingAddress']['oua_zip']!=''){
 										$shippingAddress.= '-'.$order['shippingAddress']['oua_zip'];
 									}
-									
+
 									if($order['shippingAddress']['oua_phone']!=''){
 										$shippingAddress.= '<br>Phone: '.$order['shippingAddress']['oua_phone'];
 									}
-									
+
 									echo $shippingAddress;
 									} ?>
 								</div>
@@ -147,9 +161,9 @@
 						</section>
 					</div>
 				</div>
-				
-				
-				
+
+
+
 				<section class="section">
 					<div class="sectionhead">
 						<h4><?php echo Labels::getLabel('LBL_Order_Details',$adminLangId); ?></h4>
@@ -173,7 +187,7 @@
 							</tr>
 							<tr>
 								<td>#</td>
-								<td><?php 
+								<td><?php
 								$txt = '';
 								if( $order['op_selprod_title'] != '' ){
 									$txt .= $order['op_selprod_title'].'<br/>';
@@ -207,7 +221,7 @@
 						</table>
 					</div>
 				</section>
-				<?php if(!empty($digitalDownloads)){?>
+				<?php if( !empty($digitalDownloads) && !$print ){?>
 					<section class="section no-print">
 						<div class="sectionhead">
 							<h4><?php echo Labels::getLabel('LBL_Downloads',$adminLangId); ?></h4>
@@ -220,7 +234,7 @@
 									  <th><?php echo Labels::getLabel('LBL_Language',$adminLangId);?></th>
 									  <th><?php echo Labels::getLabel('LBL_Downloaded_count',$adminLangId);?></th>
 									  <th><?php echo Labels::getLabel('LBL_Expired_on',$adminLangId);?></th>
-									  <th><?php echo Labels::getLabel('LBL_Action',$adminLangId);?></th>									
+									  <th><?php echo Labels::getLabel('LBL_Action',$adminLangId);?></th>
 								</tr>
 								 <?php $sr_no = 1;
 									foreach( $digitalDownloads as $key=>$row ){
@@ -234,7 +248,7 @@
 											$fileName = $row['afile_name'];
 										}
 										$downloads = '<a href="'.CommonHelper::generateUrl('SellerOrders','digitalDownloads',array($row['afile_id'],$row['afile_record_id'])).'">'.Labels::getLabel('LBL_Downloads',$adminLangId).'</a>';
-										
+
 										$expiry = Labels::getLabel('LBL_N/A',$adminLangId) ;
 										if($row['expiry_date']!=''){
 											$expiry = FatDate::Format($row['expiry_date']);
@@ -246,15 +260,15 @@
 									  <td><?php echo $lang_name;?></td>
 									  <td><?php echo $row['afile_downloaded_times'];?></td>
 									  <td><?php echo $expiry;?></td>
-									  <td><?php echo $downloads;?></td>                          
+									  <td><?php echo $downloads;?></td>
 									</tr>
 								<?php } ?>
 						</table>
 						</div>
 					</section>
-				<?php }?>
-				
-				<?php if(!empty($digitalDownloadLinks)){?>
+				<?php } ?>
+
+				<?php if(!empty($digitalDownloadLinks) && !$print){?>
 					<section class="section no-print">
 						<div class="sectionhead">
 							<h4><?php echo Labels::getLabel('LBL_Downloads',$adminLangId); ?></h4>
@@ -266,19 +280,19 @@
 									<th><?php echo Labels::getLabel('LBL_Link',$adminLangId);?></th>
 									<th><?php echo Labels::getLabel('LBL_Download_times',$adminLangId);?></th>
 									<th><?php echo Labels::getLabel('LBL_Downloaded_count',$adminLangId);?></th>
-									<th><?php echo Labels::getLabel('LBL_Expired_on',$adminLangId);?></th>								
+									<th><?php echo Labels::getLabel('LBL_Expired_on',$adminLangId);?></th>
 								</tr>
 								 <?php $sr_no = 1;
 									foreach( $digitalDownloadLinks as $key=>$row ){
-										
+
 										/* $fileName = '<a href="'.CommonHelper::generateUrl('Seller','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'],AttachedFile::FILETYPE_ORDER_PRODUCT_DIGITAL_DOWNLOAD)).'">'.$row['afile_name'].'</a>'; */
 										/* $downloads = '<li><a href="'.CommonHelper::generateUrl('Seller','downloadDigitalFile',array($row['afile_id'],$row['afile_record_id'],AttachedFile::FILETYPE_ORDER_PRODUCT_DIGITAL_DOWNLOAD)).'"><i class="fa fa-download"></i></a></li>'; */
-										
+
 										$expiry = Labels::getLabel('LBL_N/A',$adminLangId) ;
 										if($row['expiry_date']!=''){
 											$expiry = FatDate::Format($row['expiry_date']);
 										}
-										
+
 										$downloadableCount = Labels::getLabel('LBL_N/A',$adminLangId) ;
 										if($row['downloadable_count'] != -1){
 											$downloadableCount = $row['downloadable_count'];
@@ -289,15 +303,15 @@
 									  <td><a target="_blank" href="<?php echo $row['opddl_downloadable_link'];?>" title="<?php echo Labels::getLabel('LBL_Click_to_download',$adminLangId);?>"><?php echo $row['opddl_downloadable_link'];?></a></td>
 									  <td><?php echo $downloadableCount;?></td>
 									  <td><?php echo $row['opddl_downloaded_times'];?></td>
-									  <td><?php echo $expiry;?></td>                     
+									  <td><?php echo $expiry;?></td>
 									</tr>
 								<?php } ?>
 						</table>
 						</div>
 					</section>
 				<?php }?>
-				
-				<?php if(!empty($order['comments'])){?>
+
+				<?php if(!empty($order['comments']) && !$print){?>
 				<section class="section no-print">
 					<div class="sectionhead">
 						<h4><?php echo Labels::getLabel('LBL_Order_Comments',$adminLangId); ?></h4>
@@ -310,7 +324,7 @@
 								<th><?php echo Labels::getLabel('LBL_Status',$adminLangId); ?></th>
 								<th><?php echo Labels::getLabel('LBL_Comments',$adminLangId); ?></th>
 							</tr>
-							<?php 											
+							<?php
 								foreach($order['comments'] as $row){?>
 								<tr>
 									<td><?php echo FatDate::format($row['oshistory_date_added']);?></td>
@@ -325,44 +339,52 @@
 					</div>
 				</section>
 				<?php } ?>
-				
+
 				<?php if( $displayShippingUserForm ){ ?>
 				<section class="section">
 					<div class="sectionhead">
 						<h4><?php echo Labels::getLabel('LBL_Assign_to_shipping_company_user',$adminLangId); ?></h4>
 					</div>
 					<div class="sectionbody space">
-						<?php 
+						<?php
 						$shippingUserFrm->setFormTagAttribute('onsubmit', 'updateShippingCompany(this); return(false);');
 						$shippingUserFrm->setFormTagAttribute('class','web_form form_horizontal');
 						$shippingUserFrm->developerTags['colClassPrefix'] = 'col-md-';
-						$shippingUserFrm->developerTags['fld_default_col'] = 12; 
-						echo $shippingUserFrm->getFormHtml();?>  
+						$shippingUserFrm->developerTags['fld_default_col'] = 12;
+						echo $shippingUserFrm->getFormHtml();?>
 					</div>
-				</section>	
+				</section>
 				<?php } ?>
-		
-				<?php if($displayForm){?>
+
+				<?php if($displayForm && !$print){?>
 				<section class="section no-print">
 					<div class="sectionhead">
 						<h4><?php echo Labels::getLabel('LBL_Comments_on_order',$adminLangId); ?></h4>
 					</div>
 					<div class="sectionbody space">
-						<?php 
+						<?php
 							$frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
 							$frm->setFormTagAttribute('class','web_form');
-							
+
 							$frm->developerTags['colClassPrefix'] = 'col-md-';
-							$frm->developerTags['fld_default_col'] = 12; 
-							
+							$frm->developerTags['fld_default_col'] = 12;
+
 							$fldTracking = $frm->getField('tracking_number');
 							$fldTracking->setWrapperAttribute('class','div_tracking_number');
 							echo $frm->getFormHtml();
-						?>                                
+						?>
 					</div>
 				</section>
 				<?php }?>
-			</div>         
+			</div>
 		</div>
 	</div>
-</div>  
+</div>
+<?php if($print){ ?>
+    <script>
+        window.print();
+        window.onafterprint = function(){
+            location.href = history.back();
+        }
+    </script>
+<?php } ?>

@@ -34,14 +34,14 @@ foreach ($arrListing as $sn => $row){
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
-				$variantStr = '<div class="item-yk-head-title">'.$row['product_name'].'</div>';
-				$variantStr .= ( $row['selprod_title'] != '') ? '<div class="item-yk-head-sub-title">' . $row['selprod_title'].'</div>' : '';
+				$variantStr = '<div class="item__title">'.wordwrap($row['product_name'],150,"<br>\n").'</div>';
+				$variantStr .= ( $row['selprod_title'] != '') ? '<div class="item__sub_title">' . wordwrap($row['selprod_title'],150,"<br>\n").'</div>' : '';
 				if( is_array($row['options']) && count($row['options']) ){
 					foreach($row['options'] as $op){
-						$variantStr .= '<div class="item-yk-head-specification">'.$op['option_name'].': '.$op['optionvalue_name'].'</div>';
+						$variantStr .= '<div class="item__specification">'.wordwrap($op['option_name'].': '.$op['optionvalue_name'],150,"<br>\n").': '.$op['optionvalue_name'].'</div>';
 					}
 				}
-				$td->appendElement('plaintext', array(), wordwrap($variantStr,150,"<br>\n"), true);
+				$td->appendElement('plaintext', array(), $variantStr, true);
 			break;
 			case 'selprod_price':
 				$td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat( $row[$key], true, true),true );
@@ -56,8 +56,7 @@ foreach ($arrListing as $sn => $row){
 					$active = 'checked';
 				}
 
-
-				$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" value="'.$row['selprod_id'].'" id="switch'.$row['selprod_id'].'" onclick="toggleSellerProductStatus(event,this)"/><label for="switch'.$row['selprod_id'].'">Toggle</label></div>';
+				$str = '<label class="toggle-switch" for="switch'.$row['selprod_id'].'"><input '.$active.' type="checkbox" value="'.$row['selprod_id'].'" id="switch'.$row['selprod_id'].'" onclick="toggleSellerProductStatus(event,this)"/><div class="slider round"></div></label>';
 
 				$td->appendElement('plaintext', array(), $str,true);
 			break;

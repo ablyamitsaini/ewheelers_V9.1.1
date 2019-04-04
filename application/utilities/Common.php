@@ -85,18 +85,6 @@ class Common {
 		$headerSrchFrm->fill($paramsAssocArr);
 		/* ] */
 		
-		$template->set('headerSrchFrm',$headerSrchFrm);
-		$template->set('siteLangId', $siteLangId );
-		//$productRootCategoriesArr = $prodCatObj->getCategoriesForSelectBox($siteLangId, 0, true); */
-		//ProductCategory::getRootProdCatAssocArr($siteLangId, 0);
-		/* ob_end_clean();
-		CommonHelper::printArray($data);
-		die(); */
-		//$template->set( 'productRootCategoriesArr', $productRootCategoriesArr );
-	}
-	
-	static function getSiteSearchForm(){
-		$siteLangId = CommonHelper::getLangId();
 		/* SubQuery, Category have products[ */
 		$prodSrchObj = new ProductSearch( $siteLangId );
 		$prodSrchObj->setDefinedCriteria();
@@ -127,8 +115,6 @@ class Common {
 		
 		/* ] */
 		
-		/* $rootCategoriesArr = ProductCategory::getRootProdCatArr( CommonHelper::getLangId() ); */
-		
 		$catSrch = ProductCategory::getSearchObject( false, $siteLangId );
 		$catSrch->addMultipleFields( array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as category_name') );
 		$catSrch->addOrder('category_name');
@@ -145,13 +131,27 @@ class Common {
 		while($row = FatApp::getDb()->fetch($catRs)){
 			$categoriesArr[$row['prodcat_id']] = strip_tags($row['category_name']);
 		}
-		//$categoriesArr = FatApp::getDb()->fetchAllAssoc($catRs);
 		
+		$template->set('categoriesArr',$categoriesArr);
+		$template->set('headerSrchFrm',$headerSrchFrm);
+		$template->set('siteLangId', $siteLangId );
+		//$productRootCategoriesArr = $prodCatObj->getCategoriesForSelectBox($siteLangId, 0, true); */
+		//ProductCategory::getRootProdCatAssocArr($siteLangId, 0);
+		/* ob_end_clean();
+		CommonHelper::printArray($data);
+		die(); */
+		//$template->set( 'productRootCategoriesArr', $productRootCategoriesArr );
+	}
+	
+	static function getSiteSearchForm(){
+		$siteLangId = CommonHelper::getLangId();
 		$frm = new Form('frmSiteSearch');
+		$frm->setFormTagAttribute('class','main-search-form');
 		$frm->setFormTagAttribute('autocomplete','off');
-		$frm->addSelectBox('', 'category', $categoriesArr, '', array(), Labels::getLabel('LBL_All', CommonHelper::getLangId()) );
+		/* $frm->addSelectBox('', 'category', $categoriesArr, '', array(), Labels::getLabel('LBL_All', CommonHelper::getLangId()) ); */
 		$frm->addTextBox('', 'keyword');
-		$frm->addSubmitButton('','btnSiteSrchSubmit','');
+		$frm->addHiddenField('', 'category');
+		$frm->addSubmitButton('','btnSiteSrchSubmit',Labels::getLabel('LBL_Search', CommonHelper::getLangId()));
 		return $frm;
 	}
 	
@@ -173,8 +173,8 @@ class Common {
 		$siteLangId = CommonHelper::getLangId();
 		
 		$brandSrch = Brand::getSearchObject( $siteLangId );
-		$brandSrch->joinTable( Product::DB_TBL, 'LEFT OUTER JOIN', 'brand_id = p.product_brand_id', 'p' );
-		$brandSrch->joinTable( SellerProduct::DB_TBL, 'LEFT OUTER JOIN', 'sp.selprod_product_id = p.product_id', 'sp' );
+		$brandSrch->joinTable( Product::DB_TBL, 'INNER JOIN', 'brand_id = p.product_brand_id', 'p' );
+		$brandSrch->joinTable( SellerProduct::DB_TBL, 'INNER JOIN', 'sp.selprod_product_id = p.product_id', 'sp' );
 		$brandSrch->doNotCalculateRecords();
 		$brandSrch->addMultipleFields( array( 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'SUM(IFNULL(selprod_sold_count, 0)) as totSoldQty') );
 		$brandSrch->addCondition('brand_status', '=', Brand::BRAND_REQUEST_APPROVED );

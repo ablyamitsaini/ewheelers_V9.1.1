@@ -5,13 +5,18 @@ if( UserAuthentication::isUserLogged() ){
 }
 ?>
 <?php if( $user_is_buyer > 0 || (!UserAuthentication::isUserLogged()) ){ ?>
-<a href="javascript:void(0)"><span class="icn-txt"><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></span> <span class="icn"> <span class="cartQuantity"><?php echo $totalCartItems; ?></span></span></a>
+<a href="javascript:void(0)">
+<span class="icn"> </span>
+<span class="icn-txt"><strong><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></strong>
+	<span class="cartQuantity"><?php echo $totalCartItems.' '.Labels::getLabel("LBL_Items", $siteLangId); ?></span>
+</span>
+</a>
 <div class="dropsection cart-detail">
-<a href="javascript:void(0)" id="close-cart-js" class="close close30 close-black"></a>
+<a href="javascript:void(0)" id="close-cart-js" class="close-layer"></a>
   <?php if($totalCartItems>0) { ?>
   <div class="cartdetail__body">
     <div class="short-detail">
-      <table class="cart-summary item-yk">
+      <table class="cart-summary">
         <tbody>
           <?php
 					if( count($products) ){
@@ -21,11 +26,11 @@ if( UserAuthentication::isUserLogged() ){
 							$imageUrl =  FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "EXTRA-SMALL", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 							?>
           <tr class="<?php echo (!$product['in_stock']) ? 'disabled' : ''; echo ($product['is_digital_product'])?'digital_product_tab-js':'physical_product_tab-js'; ?>">
-            <td class="text-center"><div class="product-img"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></div></td>
-            <td class="text-left"><div class="item-yk-head">
-                <div class="item-yk-head-category"><a href="<?php echo $shopUrl; ?>"><?php echo $product['shop_name']; ?> </a></div>
-                <div class="item-yk-head-title"><a title="<?php echo $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
-                <div class="item-yk-head-specification">
+            <td><div class="item__pic"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></div></td>
+            <td><div class="item__description">
+                <div class="item__category"><a href="<?php echo $shopUrl; ?>"><?php echo $product['shop_name']; ?> </a></div>
+                <div class="item__title"><a title="<?php echo $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
+                <div class="item__specification">
                   <?php
 								if(isset($product['options']) && count($product['options'])){
 									foreach($product['options'] as $option){ ?>
@@ -42,7 +47,9 @@ if( UserAuthentication::isUserLogged() ){
                 <?php } ?>
               </div>
               </td>
-<td class="text-right"><a href="javascript:void(0)" class="cart-remove" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_', $siteLangId); ?></a></td>
+<td class=""><a href="javascript:void(0)" class="icons-wrapper" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_', $siteLangId); ?><i class="icn"><svg class="svg">
+					<use xlink:href="/images/retina/sprite.svg#bin" href="/images/retina/sprite.svg#bin"></use>
+					</svg></i></a></td>
           </tr>
           <?php } } else {
 							echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);
@@ -53,22 +60,22 @@ if( UserAuthentication::isUserLogged() ){
     </div>
   </div>
   <div class="cartdetail__footer">
-    <table>
+    <table class="table--justify">
       <tr>
-        <td class="text-left"><?php echo Labels::getLabel('LBL_Sub_Total', $siteLangId); ?></td>
-        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
+        <td class=""><?php echo Labels::getLabel('LBL_Sub_Total', $siteLangId); ?></td>
+        <td class=""><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
       </tr>
       <tr>
-        <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
-        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
+        <td class=""><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
+        <td class=""><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
       </tr>
       <tr>
-        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
+        <td class="hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+        <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
       </tr>
       <tr>
-        <td class="text-left"><a href="<?php echo CommonHelper::generateUrl('cart'); ?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_Bag', $siteLangId); ?> </a></td>
-        <td class="text-right"><a class="btn btn--secondary ripplelink" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></td>
+        <td class=""><a href="<?php echo CommonHelper::generateUrl('cart'); ?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_Bag', $siteLangId); ?> </a></td>
+        <td class=""><a class="btn btn--secondary ripplelink" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></td>
       </tr>
     </table>
   </div>

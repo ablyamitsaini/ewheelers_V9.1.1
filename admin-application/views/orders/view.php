@@ -1,3 +1,9 @@
+<?php
+$selected_method = '';
+if($order['order_pmethod_id']) $selected_method.= CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"]);
+if($order['order_is_wallet_selected'] == applicationConstants::YES) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Wallet",$adminLangId) : Labels::getLabel("LBL_Wallet",$adminLangId);
+if($order['order_reward_point_used'] > 0) $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards",$adminLangId) : Labels::getLabel("LBL_Rewards",$adminLangId);
+?>
 <div class="page">
             <div class="container container-fluid">
                 <div class="row">
@@ -38,12 +44,12 @@
                                     </tr>
                                     <tr>
                                       <td><strong><?php echo Labels::getLabel('LBL_Customer',$adminLangId); ?>: </strong> <?php echo $order["buyer_user_name"]?></td>
-                                      <td><strong><?php echo Labels::getLabel('LBL_Payment_Method',$adminLangId); ?>: </strong><?php echo ($order['order_pmethod_id']) ? CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"]) : 'Wallet'; ?></td>
+                                      <td><strong><?php echo Labels::getLabel('LBL_Payment_Method',$adminLangId); ?>:</strong> <?php echo $selected_method; ?></td>
                                       <td><strong><?php echo Labels::getLabel('LBL_Site_Commission',$adminLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($order['order_site_commission'], true, true); ?> </td>
                                     </tr>
                                     <tr>
                                       <td><strong><?php echo Labels::getLabel('LBL_Order_Amount',$adminLangId); ?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order["order_net_amount"], true, true); ?> </td>
-                                      <td><strong><?php echo Labels::getLabel('LBL_Discount',$adminLangId); ?>:</strong>- <?php echo CommonHelper::displayMoneyFormat($order["order_discount_total"], true, true); ?> </td>
+                                      <td><strong><?php echo Labels::getLabel('LBL_Discount',$adminLangId); ?>: </strong>- <?php echo CommonHelper::displayMoneyFormat($order["order_discount_total"], true, true); ?> </td>
                                       <td><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$adminLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($order["order_reward_point_value"], true, true); ?> </td>
                                     </tr>
                                     <tr>

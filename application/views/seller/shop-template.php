@@ -4,8 +4,8 @@
 	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); 
 	
 	?>
-<div class="container container--fluid">
-		<div class="tabs--inline tabs--scroll clearfix">
+ 
+		<div class="tabs tabs-sm tabs--scroll clearfix">
 			<ul>
 				<li class="is-active" ><a href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Template', $siteLangId);?></a></li>
 				
@@ -14,7 +14,7 @@
 				</li>
 			</ul>
 		</div>
-	</div>
+	 
 <div class="tabs__content">
 
   <div class="row" id="shopFormBlock">

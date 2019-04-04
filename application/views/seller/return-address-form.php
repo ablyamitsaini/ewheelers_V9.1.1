@@ -20,7 +20,7 @@ $stateFld->setFieldTagAttribute('id','ura_state_id');
         <div class="row">
 			<div class="col-md-8">
 			 
-					<div class="tabs--inline tabs--scroll clearfix">
+					<div class="tabs tabs-sm tabs--scroll clearfix">
 						<ul class="setactive-js">
 							<li class="is-active"><a href="javascript:void(0)" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 							<?php foreach($languages as $langId => $langName){?>

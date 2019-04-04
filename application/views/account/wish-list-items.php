@@ -1,12 +1,11 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="section section--items dashboard--items">
-	<div class="section__head">
-		<h5><?php echo $wishListRow['uwlist_title']; ?><input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" /></h5>
-		<a class="btn btn--primary btn--sm btn--positioned" onClick="searchWishList();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
-	</div>
-
-	<div id="wishListItems" class="row">
-	</div>
+<div class="cards-header pb-3">
+    <h5 class="cards-title"><?php echo $wishListRow['uwlist_title']; ?><input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" /></h5>
+    <div class="action">
+        <a class="btn btn--primary btn--sm" onClick="searchWishList();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
+    </div>
+</div>
+<div id="wishListItems" class="row">
 </div>
 
 <div id="loadMoreBtnDiv"></div>

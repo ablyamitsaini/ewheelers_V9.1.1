@@ -22,7 +22,7 @@ trait SellerProducts{
 		
 		$this->set('frmSearch', $this->getSellerProductSearchForm());
 		$this->set('product_id', $product_id);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sellerProducts( $product_id = 0 ){
@@ -156,7 +156,7 @@ trait SellerProducts{
 		$this->set('language', Language::getAllNames());
 		
 		$this->set('activeTab', 'GENERAL');
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 	
 	public function sellerProductGeneralForm( $product_id, $selprod_id = 0 ){
@@ -905,7 +905,7 @@ trait SellerProducts{
 		
 		/* Check if same date already exists [ */
 			$tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
-			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
+			if( $tblRecord->loadFromDb( array('smt' => 'splprice_selprod_id = ? AND (splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?) ', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date'])) ) ){
 				$specialPriceRow = $tblRecord->getFlds();
 				if($specialPriceRow['splprice_id'] != $post['splprice_id']){
 					FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added',$this->siteLangId));
@@ -1042,6 +1042,16 @@ trait SellerProducts{
 		Message::addErrorMessage(Labels::getLabel('MSG_Quantity_cannot_be_more_than_the_Stock_of_the_Product',$this->siteLangId));
 		FatUtility::dieWithError( Message::getHtml() );
 		}
+        
+        /* Check if volume discount for same quantity already exists [ */
+			$tblRecord = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
+			if( $tblRecord->loadFromDb( array('smt' => 'voldiscount_selprod_id = ? AND voldiscount_min_qty = ?', 'vals' => array($selprod_id, $post['voldiscount_min_qty'])) ) ){
+				$volDiscountRow = $tblRecord->getFlds();
+				if($volDiscountRow['voldiscount_id'] != $post['voldiscount_id']){
+					FatUtility::dieJsonError(Labels::getLabel('MSG_Volume_discount_for_this_quantity_already_added',$this->siteLangId));
+				}
+			}
+		/* ] */
 
 		$data_to_save = array(
 		'voldiscount_id'	=>	$voldiscount_id,

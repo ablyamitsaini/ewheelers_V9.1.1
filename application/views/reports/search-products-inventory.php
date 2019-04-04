@@ -23,14 +23,15 @@ foreach ($arrListing as $sn => $listing){
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
-				$name = '<div class="item-yk-head-title">'.$listing['product_name'].'</div>';
+				$name = '<div class="item__title">'.$listing['product_name'].'</div>';
 				if( $listing['selprod_title'] != '' ){
-					$name .= '<div class="item-yk-head-sub-title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
+					$name .= '<div class="item__sub_title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
 				}
-			
+                $name .= '<div class="item__brand">'.Labels::getLabel('LBL_Product_SKU', $siteLangId).": </strong>".$listing['selprod_sku'].'</div>';
 				if( $listing['brand_name'] != '' ){
-					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
+					$name .= '<div class="item__brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
+                
 				$td->appendElement('plaintext', array(), $name,true);
 			break;
 			

@@ -9,7 +9,7 @@ $idFld = $brandMediaFrm->getField('brand_id');
 $idFld->addFieldTagAttribute('id','id-js');
 $langFld = $brandMediaFrm->getField('brand_lang_id');	
 $langFld->addFieldTagAttribute('class','language-js');
-$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'192*82').'</small>';
+$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'500*500').'</small>';
 
 $htmlAfterField = $preferredDimensionsStr; 
 $htmlAfterField .= '<div id="image-listing"></div>';

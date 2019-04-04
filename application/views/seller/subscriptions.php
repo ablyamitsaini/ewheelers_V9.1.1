@@ -41,24 +41,20 @@ $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-lg-2 col-sm-2 col-md-2 ');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
-
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
-    <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-    <div class="container">
-      <div class="row">
-        <?php //$this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
-        <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
-        <div class="col-xs-10 panel__right--full" >
-          <div class="cols--group">
-            <div class="panel__head">
-              <h2><?php echo Labels::getLabel('LBL_My_Subscriptions', $siteLangId); ?></h2>
-            </div>
-            <div class="panel__body">
-              <div class="box box--white box--space">
-                <div class="box__head">
-									<h4><?php echo Labels::getLabel('LBL_Search_Subscriptions', $siteLangId); ?></h4>
-									<?php if($currentActivePlan) {
+<?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ 	<div class="content-wrapper content-space">
+ 		<div class="content-header row justify-content-between mb-3">
+ 			<div class="col-md-auto">
+ 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+ 				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Subscriptions',$siteLangId);?></h2>
+ 			</div>
+ 		</div>
+ 		<div class="content-body">
+ 			<div class="cards">
+ 				<div class="cards-header p-3">
+ 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Subscriptions',$siteLangId);?></h5>
+ 				<?php if($currentActivePlan) {
 									if(strtotime(date("Y-m-d"))>=strtotime('-3 day',strtotime($currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'till_date'])) ){
 										if($currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'type']==SellerPackages::PAID_TYPE && FatDate::diff(date("Y-m-d"),$currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'till_date'])>0 ){
 											$message = sprintf(Labels::getLabel('MSG_Your_Subscription_is_going_to_expire_in_%s_day(s),Please_maintain_your_wallet_to_continue_your_subscription,_Amount_required_%s',$siteLangId),FatDate::diff(date("Y-m-d"),$currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'till_date']),CommonHelper::displayMoneyFormat($currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'price']));
@@ -105,17 +101,12 @@ $cancelBtnFld->developerTags['col'] = 2;
                     <?php  echo $message;?>
                   </p>
 				<?php }?>
-                <div class="box__body">
-                  <div class="form__cover nopadding--bottom"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
-                  <span class="gap"></span>
-                  <div id="ordersListing"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="gap"></div>
-</div>
+ 				<div class="cards-content p-3">
+					<div class="bg-gray-light p-3 pb-0"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
+					<span class="gap"></span>
+					<div id="ordersListing"></div>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+</main>

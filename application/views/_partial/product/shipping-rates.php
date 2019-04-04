@@ -1,15 +1,14 @@
-<?php 
+<?php
 if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicationConstants::YES){
 	echo '<div class="gap"></div><div class="">'.Labels::getLabel('LBL_This_product_is_available_for_free_shipping',$siteLangId).'</div>';
 }else if(count($shippingRates)>0){?>
 <div class="delivery-term">
-	<div class="dropdown"> <?php echo Labels::getLabel('LBL_Shipping_Policies',$siteLangId);?> 
-		<a href="#shipRates" rel="facebox" ><i class="fa fa-question-circle"></i></a>
+	<div class=""> <p class="note"><?php echo Labels::getLabel('LBL_Shipping_Policies',$siteLangId);?>
+		<a href="#shipRates" rel="facebox" ><i class="fa fa-question-circle"></i></a></p>
 		<div id= "shipRates" style="display:none">
-			
 			  <div class="delivery-term-data-inner">
-			<?php 
-		
+			<?php
+
 			$arr_flds = array(
 				'country_name'=> Labels::getLabel('LBL_Ship_to',$siteLangId),
 				'pship_charges'=> Labels::getLabel('LBL_Cost',$siteLangId),
@@ -22,10 +21,10 @@ if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicatio
 			}
 
 			foreach ($shippingRates as $sn=>$row){
-				
+
 
 				$tr = $tbl->appendElement('tr');
-				
+
 				foreach ($arr_flds as $key=>$val){
 					$td = $tr->appendElement('td');
 					switch ($key){
@@ -44,11 +43,11 @@ if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicatio
 						break;
 					}
 				}
-			} 
+			}
 			echo $tbl->getHtml();
 			?>
 			</div>
-		
+
 		</div>
 	</div>
 </div>

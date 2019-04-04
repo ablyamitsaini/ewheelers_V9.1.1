@@ -24,9 +24,13 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 <script language="javascript" type="text/javascript" src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/innovaeditor.js"></script>
 <script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>
 <?php  }  ?>
-
 </head>
-<body class="<?php echo ($controllerName=='Blog') ? 'is--blog' : ''; ?>">
+<?php $bodyClass='';
+if($controllerName=='Blog') $bodyClass = 'is--blog';
+if($controllerName=='Checkout') $bodyClass = 'is-checkout';
+if(isset($isUserDashboard) && $isUserDashboard) $bodyClass = 'is-dashboard sidebar-is-reduced';
+?>
+<body class="<?php echo $bodyClass; ?>">
 	<!--div class="pageloader">
 	  <div class="round-wrapper">
 		<div class="round"></div>
@@ -42,7 +46,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 		elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
 	?>
 
-	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" hidden='hidden'>
+	<div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" style="display:none">
 		<div class="close"></div>
 		<div class="content">
 			<?php
@@ -53,6 +57,7 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 			} ?>
 		</div>
 	</div>
+    <div id="quick-view-section" class="quick-view"></div>
 	<?php if( $haveMsg ){ ?>
 	<script type="text/javascript">
 		$("document").ready(function(){

@@ -63,7 +63,7 @@ foreach ($arrListing as $sn => $row){
 if( count($arrListing) == 0 ){
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 } else {
-	echo '<div class="box__head"><div class="group--btns">';
+	echo '<div class="box__head"><div class="btn-group">';
 	if(!empty($orderDate)){
 		echo '<a href="'.CommonHelper::generateUrl('Reports','SalesReport').'" class="btn btn--primary btn--sm">'.Labels::getLabel('LBL_Back',$siteLangId).'</a>';
 	}

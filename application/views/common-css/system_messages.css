@@ -196,7 +196,7 @@
 
 /* alerts */
 
-.alert {
+.alert { border-radius: 0;
   font-size: 1em;
   color: #fff;
   width: 100%;

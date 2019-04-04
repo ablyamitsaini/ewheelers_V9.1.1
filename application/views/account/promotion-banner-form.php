@@ -8,8 +8,8 @@
 <div class="tabs__content form">	
 	<div class="form__content">
 		<div class="col-md-12">
-			<div class="container container--fluid">
-				<div class="tabs--inline tabs--scroll clearfix">
+			 
+				<div class="tabs tabs-sm tabs--scroll clearfix">
 					<ul>
 						<li class="is-active"><a href="javascript:void(0)" onClick="promotionGeneralForm(<?php echo $promotion_id ?>)"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 						<?php $inactive = ($promotion_id==0)?'fat-inactive':'';		
@@ -20,7 +20,7 @@
 						<li class="<?php echo $inactive; ?>"><a href="javascript:void(0)" <?php if($promotion_id>0){ ?> onClick="promotionMediaForm(<?php echo $promotion_id;?>)" <?php }?>><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>
 					</ul>
 				</div>
-			</div>
+		 
 			<div class="form__subcontent">
 				<?php echo $frmPromote->getFormHtml(); ?>
 			</div>	

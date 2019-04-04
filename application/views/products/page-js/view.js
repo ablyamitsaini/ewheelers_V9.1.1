@@ -91,7 +91,7 @@ $("document").ready(function(){
 		$(".item__main").find('img').attr('src',mainSrc);
 	});
 
-	$('.slides--four-js').slick( getSlickSliderSettings(4) );
+	$('.js-collection-corner').slick( getSlickSliderSettings(6) );
 	$('.slides--six-js').slick( getSlickSliderSettings(6) );
 
 	$('.items-scroller').enscroll({

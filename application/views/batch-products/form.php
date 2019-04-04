@@ -6,7 +6,7 @@ $frm->developerTags['fld_default_col'] = 12;
  ?>
 <div class="popup__body">
 	<h2>Manage Batch Products</h2>
-	<ul class="tabs tabs--small tabs--offset tabs--offset-js clearfix setactive-js">
+	<ul class="tabs tabs--small    -js clearfix setactive-js">
 		<li class="is-active"><a href="javascript:void(0)" onclick="batchForm()"><?php echo Labels::getLabel( 'LBL_General', $siteLangId ); ?></a></li>
 		<?php 
 		$inactive = ($prodgroup_id == 0) ? 'fat-inactive' : '';

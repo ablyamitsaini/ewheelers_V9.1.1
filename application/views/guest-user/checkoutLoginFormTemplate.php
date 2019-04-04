@@ -2,75 +2,84 @@
 	$showSignUpLink = isset($showSignUpLink) ? $showSignUpLink : true;
 	$onSubmitFunctionName = isset($onSubmitFunctionName) ? $onSubmitFunctionName : 'defaultSetUpLogin';
 ?>
-<div class="row">
-	<div class="col-lg-6 form-side add-side">
-	<div class="heading"><?php echo Labels::getLabel('LBL_Existing_User', $siteLangId); ?></div>
-		<?php
-		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
-		$loginFrm->setFormTagAttribute('class', 'form');
-		$loginFrm->setFormTagAttribute('name', 'formLoginPage');
-		$loginFrm->setFormTagAttribute('id', 'formLoginPage');
-		$loginFrm->setValidatorJsObjectName('loginFormObj');
-
-		$loginFrm->setFormTagAttribute('onsubmit','return '. $onSubmitFunctionName . '(this, loginFormObj);');
-		$loginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
-		$loginFrm->developerTags['fld_default_col'] = 12;
-		$loginFrm->removeField($loginFrm->getField('remember_me'));
-		$fldforgot = $loginFrm->getField('forgot');
-		$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
-		class="forgot">'.Labels::getLabel('LBL_Forgot_Password?',$siteLangId).'</a>';
-		$fldSubmit = $loginFrm->getField('btn_submit');
-		$fldSubmit->addFieldTagAttribute("class","btn--block");
-		echo $loginFrm->getFormHtml();
-		?>
-	</div>
-	  <div class=" col-lg-6 form-side add-side">
-		<div class="heading"><?php echo Labels::getLabel('LBL_Guest_User', $siteLangId); ?></div>
-		<?php
-		$guestLoginFrm->setFormTagAttribute('class', 'form');
-		$guestLoginFrm->setFormTagAttribute('name', 'frmGuestLogin');
-		$guestLoginFrm->setFormTagAttribute('id', 'frmGuestLogin');
-		$guestLoginFrm->setValidatorJsObjectName('guestLoginFormObj');
-
-		$guestLoginFrm->setFormTagAttribute('onsubmit','return guestUserLogin(this, guestLoginFormObj);');
-		$guestLoginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
-		$guestLoginFrm->developerTags['fld_default_col'] = 12;
-
-		$fldSpace = $guestLoginFrm->getField('space');
-		$fldSpace->value ='<a href="#" class="forgot">&nbsp;</a>';
-
-		$fldSubmit = $guestLoginFrm->getField('btn_submit');
-		$fldSubmit->addFieldTagAttribute("class","btn--block");
-		echo $guestLoginFrm->getFormHtml(); ?>
-	</div>
-</div>
-<div class="row justify-content-center">
-	<?php
-	$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
-	$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
-		<div class="col-lg-6 add-side">
-		  <div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
-		  <div class="connect">
-		  <?php if ($facebookLogin) { ?>
-		  <a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="link  fb"><i class="svg"><svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-		width="13.5px" height="26px" viewBox="0 0 13.5 26" enable-background="new 0 0 13.5 26" xml:space="preserve">
-			  <path  d="M13.5,0.188C13.078,0.125,11.625,0,9.938,0C6.406,0,3.984,2.156,3.984,6.109v3.406H0v4.625h3.984V26h4.781
-		V14.141h3.969l0.609-4.625H8.766V6.563c0-1.328,0.359-2.25,2.281-2.25H13.5V0.188z"/>
-			  </svg> </i> <?php echo Labels::getLabel('LBL_Login_With_Facebook',$siteLangId);?></a>
-		  <?php } if ($googleLogin ) { ?>
-<a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="link gp"> <i class="svg"> <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-		width="36px" height="22.906px" viewBox="0 0 36 22.906" enable-background="new 0 0 36 22.906" xml:space="preserve">
-			  <path   d="M22.453,11.719c0-0.75-0.078-1.328-0.188-1.906H11.453l0,0v3.938h6.5c-0.266,1.672-1.969,4.938-6.5,4.938
-		c-3.906,0-7.094-3.234-7.094-7.234s3.188-7.234,7.094-7.234c2.234,0,3.719,0.953,4.563,1.766L19.125,3c-2-1.875-4.578-3-7.672-3
-		C5.125,0,0,5.125,0,11.453s5.125,11.453,11.453,11.453C18.063,22.906,22.453,18.266,22.453,11.719z M36,9.813h-3.266V6.547h-3.281
-		v3.266h-3.266v3.281h3.266v3.266h3.281v-3.266H36V9.813z"/>
-			  </svg> </i> <?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a>
-			  <?php } ?>
-			<?php if( $showSignUpLink ){ ?><p class="text--dark"><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>? <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'registrationForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a></p><?php } ?>
-		  </div>
+<section>
+	<h3><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></h3>
+	<div class="check-login-wrapper step__body">
+		<div id="" class="tabz--checkout-login tabs--flat-js">
+			<ul>
+				<li class="is-active"><a href="#user-1"> <i class="icn"><svg class="svg">
+								<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tick" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tick"></use>
+							</svg></i><?php echo Labels::getLabel('LBL_Existing_User', $siteLangId); ?> </a></li>
+				<li><a href="#user-2"> <i class="icn"><svg class="svg">
+								<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tick" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tick"></use>
+							</svg></i><?php echo Labels::getLabel('LBL_Guest_User', $siteLangId); ?> </a></li>
+			</ul>
 		</div>
-	  <?php } ?>
-</div>
+		<div id="user-1" class="tabs-content tabs-content-js">
+			<?php
+			//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
+			$loginFrm->setFormTagAttribute('class', 'form form-checkout-login');
+			$loginFrm->setFormTagAttribute('name', 'formLoginPage');
+			$loginFrm->setFormTagAttribute('id', 'formLoginPage');
+			$loginFrm->setValidatorJsObjectName('loginFormObj');
+
+			$loginFrm->setFormTagAttribute('onsubmit','return '. $onSubmitFunctionName . '(this, loginFormObj);');
+			$loginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
+			$loginFrm->developerTags['fld_default_col'] = 12;
+			$loginFrm->removeField($loginFrm->getField('remember_me'));
+			$fldforgot = $loginFrm->getField('forgot');
+			$fldforgot->value='<a href="'.CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm').'"
+			class="forgot">'.Labels::getLabel('LBL_Forgot_Password?',$siteLangId).'</a>';
+			$fldSubmit = $loginFrm->getField('btn_submit');
+			$fldSubmit->addFieldTagAttribute("class","btn--block");
+			echo $loginFrm->getFormHtml();
+			?>
+		</div>
+		<div id="user-2" class="tabs-content tabs-content-js">
+			<?php
+			$guestLoginFrm->setFormTagAttribute('class', 'form form-checkout-login');
+			$guestLoginFrm->setFormTagAttribute('name', 'frmGuestLogin');
+			$guestLoginFrm->setFormTagAttribute('id', 'frmGuestLogin');
+			$guestLoginFrm->setValidatorJsObjectName('guestLoginFormObj');
+
+			$guestLoginFrm->setFormTagAttribute('onsubmit','return guestUserLogin(this, guestLoginFormObj);');
+			$guestLoginFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-12 col-xs-';
+			$guestLoginFrm->developerTags['fld_default_col'] = 12;
+
+			$fldSpace = $guestLoginFrm->getField('space');
+			$fldSpace->value ='<a href="#" class="forgot">&nbsp;</a>';
+
+			$fldSubmit = $guestLoginFrm->getField('btn_submit');
+			$fldSubmit->addFieldTagAttribute("class","btn--block");
+			echo $guestLoginFrm->getFormHtml(); ?>
+		</div>
+		<?php
+		$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
+		$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
+		<div class="row justify-content-center">
+			<div class="col-lg-12 ">
+				<div class=""><span class="or"><?php echo Labels::getLabel('LBL_Or', $siteLangId); ?></span></div>
+				<div class="buttons-list buttons-list-checkout">
+					<ul>
+					<?php if ($facebookLogin) { ?>
+						<li><a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn btn--social btn--fb"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/facebook.svg"></i><?php echo Labels::getLabel('LBL_Login_With_Facebook',$siteLangId);?></a></li>
+					<?php } if ($googleLogin ) { ?>
+						<li><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="btn btn--social btn--gp"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/google-plus.svg"></i><?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a></li>
+					<?php }?>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<?php }?>
+		<div class="gap"></div>
+		<div class="term">
+			<?php if( $showSignUpLink ){ ?><p class="text--dark"> <a href="" class="text text--uppercase"></a></p><?php } ?>
+			<h6><?php echo sprintf(Labels::getLabel('LBL_New_to',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?>? <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>" class="link"><?php echo Labels::getLabel('LBL_Sign_Up',$siteLangId);?></a></h6>
+			<!-- <p>If this is your first time shopping with us, please enter an email address to use as your Newegg ID and create a password for your account. Your Newegg account allows you to conveniently place orders, create wishlists, check the status of your recent orders and much more.</p> -->
+		</div>
+	</div>
+</section>
+
 <script>
 /*Facebook Login API JS SDK*/
 
@@ -122,4 +131,20 @@
 	}(document, 'script', 'facebook-jssdk'));
 
 	/*Facebook Login API JS SDK*/
+	
+	/*Tabs*/
+	$(document).ready(function () {
+		$(".tabs-content-js").hide();
+		$(".tabs--flat-js li:first").addClass("is-active").show();
+		$(".tabs-content-js:first").show();
+		$(".tabs--flat-js li").click(function () {
+			$(".tabs--flat-js li").removeClass("is-active");
+			$(this).addClass("is-active");
+			$(".tabs-content-js").hide();
+			var activeTab = $(this).find("a").attr("href");
+			$(activeTab).fadeIn();
+			return false;
+			setSlider();
+		});
+	});
 </script>

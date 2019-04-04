@@ -20,24 +20,24 @@ if($totReviews){
 	$rate_2_width = round(FatUtility::convertToType($rated_2/$totReviews*100,FatUtility::VAR_FLOAT),2);
 	$rate_1_width = round(FatUtility::convertToType($rated_1/$totReviews*100,FatUtility::VAR_FLOAT),2);
 }
-?>  
-<div class="box">
+?>
+<div class="row">
 	<?php $this->includeTemplate('_partial/product-overall-ratings.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id),false); ?>
 </div>
-  
-  <div class="gap"></div>
-  <div class="tabs tabs--small tabs--scroll clearfix">
-	<ul class="tabs-js group">
-		<li><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></li>
+<div class="gap"></div>
+<h4><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></h4>
+<div class="gap"></div>
+<div class="tabs tabs--flat-js">
+	<ul>
 		<li class="is-active"><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
 		<li><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
 	</ul>
-  </div>
-  <div class="tabs-content listings__body">
+</div>
+<div class="gap"></div>
+<div class="box box--white box--radius box--space">
 	<div class="listing__all"></div>
-	<div id="loadMoreReviewsBtnDiv" class="align--center"></div>
-	<!--<a class="loadmore text--uppercase" href="javascript:alert('Pending');">Load More</a>--> 
-  </div>
+	<div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
+</div>
 <script>
 	var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId); ?>';
 	var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS',$siteLangId); ?>';

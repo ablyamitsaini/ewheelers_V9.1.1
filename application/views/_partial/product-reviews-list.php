@@ -27,87 +27,79 @@ if($totReviews){
 			<div class="col-md-8">
 				<div class="ratings--overall">
 					<div class="row">
-						<div class="col-md-5 col-sm-5">
-							<div class="progress progress--radial">
-								<div class="progress__circle">
-									<div class="progress__mask left">
-										<div class="progress__fill" style="/* transform: rotate(106deg); */"></div>
-										<span class="progress__count"><?php echo round($avgRating,1); ?></span>
-									</div>
+						<div class="col-md-4 column">
+							<div class="shop-reviews-wrapper">
+								<div class="shop-reviews">
+									<svg class="svg">
+										<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#rating-star"></use>
+									</svg>
+
+									<div class="shop-reviews-points"><?php echo round($avgRating,1); ?></div>
 								</div>
+								<div class="total-reviews"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></div>
 							</div>
-							<p class="align--center"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></p>
 						</div>
-						<div class="col-md-7 col-sm-7">
-							<ul class="listing--progress">
-								<li>
-									<span class="grid--left">5 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_5_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_5_stars',$siteLangId); ?>" style="width: <?php echo $rate_5_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">4 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_4_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_4_stars',$siteLangId); ?>" style="width: <?php echo $rate_4_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">3 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_3_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_3_stars',$siteLangId); ?>" style="width: <?php echo $rate_3_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">2 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_2_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_2_stars',$siteLangId); ?>" style="width: <?php echo $rate_2_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-								<li>
-									<span class="grid--left">1 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
-									<div class="grid--right">
-									<div class="progress progress--horizontal">
-									<div title="<?php echo $rate_1_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_1_stars',$siteLangId); ?>" style="width: <?php echo $rate_1_width; ?>%" role="progressbar" class="progress__bar"></div>
-									</div>
-									</div>
-								</li>
-							</ul>
+						<div class="col-md-4 column">
+							<div class="listing--progress-wrapper">
+								<ul class="listing--progress">
+									<li>
+										<span class="progress_count">5 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+										<div class="progress__bar">
+											<div title="<?php echo $rate_5_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_5_stars',$siteLangId); ?>" style="width: <?php echo $rate_5_width; ?>%" role="progressbar" class="progress__fill"></div>
+										</div>
+									</li>
+									<li>
+										<span class="progress_count">4 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+										<div class="progress__bar">
+											<div title="<?php echo $rate_4_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_4_stars',$siteLangId); ?>" style="width: <?php echo $rate_4_width; ?>%" role="progressbar" class="progress__fill"></div>
+										</div>
+									</li>
+									<li>
+										<span class="progress_count">3 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+										<div class="progress__bar">
+											<div title="<?php echo $rate_3_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_3_stars',$siteLangId); ?>" style="width: <?php echo $rate_3_width; ?>%" role="progressbar" class="progress__fill"></div>
+										</div>
+									</li>
+									<li>
+										<span class="progress_count">2 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+										<div class="progress__bar">
+											<div title="<?php echo $rate_2_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_2_stars',$siteLangId); ?>" style="width: <?php echo $rate_2_width; ?>%" role="progressbar" class="progress__fill"></div>
+										</div>
+									</li>
+									<li>
+										<span class="progress_count">1 <?php echo Labels::getLabel('Lbl_Star',$siteLangId); ?></span>
+										<div class="progress__bar">
+											<div title="<?php echo $rate_1_width,'% ',Labels::getLabel('LBL_Number_of_reviews_have_1_stars',$siteLangId); ?>" style="width: <?php echo $rate_1_width; ?>%" role="progressbar" class="progress__fill"></div>
+										</div>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4 border--left">
-				<h4><?php echo Labels::getLabel('Lbl_Share_your_thoughts',$siteLangId); ?></h4>
-				<h6><?php echo Labels::getLabel('Lbl_With_other_customers',$siteLangId); ?></h6>
-				<a class="btn btn--primary btn--h-large" href="<?php echo CommonHelper::generateUrl('Reviews','write',array($product_id)); ?>"><?php echo Labels::getLabel('Lbl_Write_a_Review',$siteLangId); ?></a>
+				<div class="box box--white box--radius box--space have-you">
+					<h4><?php echo Labels::getLabel('Lbl_Share_your_thoughts',$siteLangId); ?></h4>
+					<h6><?php echo Labels::getLabel('Lbl_With_other_customers',$siteLangId); ?></h6>
+					<a class="btn btn--primary btn--h-large" href="<?php echo CommonHelper::generateUrl('Reviews','write',array($product_id)); ?>"><?php echo Labels::getLabel('Lbl_Write_a_Review',$siteLangId); ?></a>
+				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="listings__body">
-		<div class="row listings__sort">
+		<div class="row">
 			<div class="col-md-6 col-sm-6"><span id='reviews-pagination-strip--js' hidden><?php echo Labels::getLabel('Lbl_Displaying_Reviews',$siteLangId); ?>  <span id='reviewStartIndex'></span>-<span id='reviewEndIndex'></span> <?php echo Labels::getLabel('Lbl_of',$siteLangId); ?> <span id='reviewsTotal'></span></span></div>
-			<div class="col-md-6 col-sm-6">
-				<ul class="links--inline">
-					<li><?php echo Labels::getLabel('Lbl_Sort_By',$siteLangId); ?>:</li>
-					<li><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
-					<li class="is-active"><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
-				</ul>
-			</div>
 		</div>
-
-		<div class="listing__all">
-
+		<div class="tabs tabs--flat-js">
+			<ul>
+				<li><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
+				<li><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
+			</ul>
 		</div>
+		<div class="gap"></div>
+		<div class="row listing__all box box--white box--radius box--space"></div>
 		<div id="loadMoreReviewsBtnDiv"  class="align--center">
 		</div>
 		<!--<a class="loadmore text--uppercase" href="javascript:alert('Pending');">Load More</a>-->

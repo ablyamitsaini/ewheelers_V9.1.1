@@ -37,6 +37,7 @@ echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 $commonHead2Data = array(
 	'siteLangId'		=>	$siteLangId,
 	'controllerName'	=>	$controllerName,
+	'isUserDashboard'	=>	$isUserDashboard,
 );
 if( isset($layoutTemplate) && $layoutTemplate != '' ){
 	$commonHead2Data['layoutTemplate']	= $layoutTemplate;
@@ -50,6 +51,11 @@ if( isset($includeEditor) && $includeEditor == true ){
 }
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 
+if(isset($isUserDashboard) && $isUserDashboard){
+	$this->includeTemplate('_partial/topHeaderDashboard.php',array('siteLangId'=>$siteLangId,'isUserDashboard'=>$isUserDashboard),false);
+	$exculdeMainHeaderDiv = true;
+}
+
 if( !isset($exculdeMainHeaderDiv) ){
 	$this->includeTemplate('_partial/topHeader.php',array('siteLangId'=>$siteLangId),false);
 }
@@ -60,7 +66,7 @@ if (!$isAppUser){
 		case 'checkout':
 		case 'walletpay':
 		case 'subscriptioncheckout':
-			$this->includeTemplate('_partial/header/checkout-header.php',array('siteLangId'=>$siteLangId,'headerData'=>$headerData),false);
+			$this->includeTemplate('_partial/header/checkout-header.php',array('siteLangId'=>$siteLangId,'headerData'=>$headerData,'controllerName'=>$controllerName),false);
 		break;
 	}
 }

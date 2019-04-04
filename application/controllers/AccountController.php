@@ -35,7 +35,7 @@ class AccountController extends LoggedUserController {
 		}
 		/* $user = new User(UserAuthentication::getLoggedUserId());
 		$this->set('data', $user->getProfileData());
-		$this->_template->render(); */
+		$this->_template->render(true,false); */
 	}
 
 	public function viewSupplierRequest($requestId){
@@ -71,7 +71,7 @@ class AccountController extends LoggedUserController {
 
 
 		$this->set('supplierRequest',$supplierRequest);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function supplierApprovalForm($p=''){
@@ -115,7 +115,7 @@ class AccountController extends LoggedUserController {
 		$approvalFrm->fill($data);
 
 		$this->set('approvalFrm', $approvalFrm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function setupSupplierApproval(){
@@ -244,7 +244,7 @@ class AccountController extends LoggedUserController {
 
 	public function changePassword(){
 		$this->set('siteLangId',$this->siteLangId);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function changePasswordForm(){
@@ -380,7 +380,7 @@ class AccountController extends LoggedUserController {
 		$this->set( 'promotionWalletToBeCharged',Promotion::getPromotionWalleToBeCharged(UserAuthentication::getLoggedUserId()) );
 		$this->set( 'withdrawlRequestAmount',User::getUserWithdrawnRequestAmount(UserAuthentication::getLoggedUserId()) );
 		$this->set( 'userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()) );
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function setUpWalletRecharge(){
@@ -777,7 +777,7 @@ class AccountController extends LoggedUserController {
 
 		$this->set( 'showSellerActivateButton', $showSellerActivateButton );
 		$this->set('userPreferredDashboard',$data['user_preferred_dashboard']);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function personalInfo(){
@@ -1047,7 +1047,7 @@ class AccountController extends LoggedUserController {
 	}
 
 	public function changeEmail(){
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function changeEmailForm(){
@@ -1247,7 +1247,7 @@ class AccountController extends LoggedUserController {
 		$this->_template->addCss('css/slick.css');
 		$this->_template->addJs('js/slick.js');
 		$this->_template->addCss('css/product-detail.css');
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function wishListSearch(){
@@ -1372,7 +1372,7 @@ class AccountController extends LoggedUserController {
 		/* ] */
 
 		$srch->addMultipleFields( array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
-		'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name',
+		'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','product_image_updated_on',
 		'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand.brand_id', 'product_model',
 		'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
 		'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating' ) );
@@ -1397,7 +1397,7 @@ class AccountController extends LoggedUserController {
 		$this->set('products', $products);
 		$this->set('showProductShortDescription', false);
 		$this->set('showProductReturnPolicy', false);
-		$this->set('colMdVal', 4);
+		$this->set('colMdVal', 2);
 		$this->set('page', $page);
 		$this->set('recordCount', $srch->recordCount());
 		$this->set('pageCount', $srch->pages());
@@ -1476,7 +1476,7 @@ class AccountController extends LoggedUserController {
 		/* ] */
 
 		$srch->addMultipleFields( array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
-		'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name',
+		'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','product_image_updated_on',
 		'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand.brand_id', 'product_model',
 		'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
 		'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist', 'ifnull(prod_rating,0) prod_rating','selprod_sold_count' ) );
@@ -1503,7 +1503,7 @@ class AccountController extends LoggedUserController {
 		$this->set('products', $products);
 		$this->set('showProductShortDescription', false);
 		$this->set('showProductReturnPolicy', false);
-		$this->set('colMdVal', 4);
+		$this->set('colMdVal', 2);
 		$this->set('page', $page);
 		$this->set('pagingFunc', 'goToFavouriteListingSearchPage');
 		$this->set('recordCount', $srch->recordCount());
@@ -1660,7 +1660,9 @@ class AccountController extends LoggedUserController {
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$srch->addCondition( 'ufs_user_id', '=', $loggedUserId );
-		$srch->addMultipleFields(array( 'shop_id', 'IFNULL(shop_name, shop_identifier) as shop_name', 'u.user_name as shop_owner_name', ));
+		$srch->addMultipleFields(array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
+		'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
+		'IFNULL(ufs.ufs_id, 0) as is_favorite' ));
 		$rs = $srch->getResultSet();
 		$shops = $db->fetchAll( $rs );
 
@@ -1671,15 +1673,28 @@ class AccountController extends LoggedUserController {
 			$prodSrchObj->joinProductToCategory();
 			$prodSrchObj->setPageNumber(1);
 			$prodSrchObj->setPageSize($totalProductsToShow);
+            $prodSrchObj->joinSellerSubscription($this->siteLangId , true);
+            $prodSrchObj->addSubscriptionValidCondition();
+            $prodSrchObj->joinProductRating( );
 			$prodSrchObj->addCondition('selprod_deleted','=',applicationConstants::NO);
 			foreach( $shops as &$shop ){
 				$prodSrch = clone $prodSrchObj;
 				$prodSrch->addShopIdCondition( $shop['shop_id'] );
-				$prodSrch->addMultipleFields( array( 'selprod_id', 'product_id', 'IFNULL(shop_name, shop_identifier) as shop_name',
-				'IFNULL(product_name, product_identifier) as product_name',
-				'IF(selprod_stock > 0, 1, 0) AS in_stock') );
+				$prodSrch->addMultipleFields(  array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
+                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
+                'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')  );
 				$prodSrch->addGroupBy('product_id');
+                
+                if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+                    $prodSrch->joinFavouriteProducts( $loggedUserId );
+                    $prodSrch->addFld('ufp_id');
+                }else{
+                    $prodSrch->joinUserWishListProducts( $loggedUserId );
+                    $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+                }
+                
 				$prodRs = $prodSrch->getResultSet();
+                $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
 				$shop['totalProducts'] = $prodSrch->recordCount();
 				$shop['products'] = $db->fetchAll( $prodRs );
 			}
@@ -1747,7 +1762,7 @@ class AccountController extends LoggedUserController {
 	public function messages(){
 		$frm = $this->getMessageSearchForm($this->siteLangId);
 		$this->set('frmSrch',$frm);
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function messageSearch(){
@@ -1862,7 +1877,7 @@ class AccountController extends LoggedUserController {
 		$this->set('threadTypeArr',Thread::getThreadTypeArr($this->siteLangId));
 		$this->set('loggedUserId', $userId);
 		$this->set('loggedUserName', ucfirst(UserAuthentication::getLoggedUserAttribute('user_name')));
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function threadMessageSearch(){
@@ -2631,7 +2646,7 @@ class AccountController extends LoggedUserController {
 	}
 
 	public function myAddresses(){
-		$this->_template->render();
+		$this->_template->render(true,false);
 	}
 
 	public function searchAddresses(){

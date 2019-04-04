@@ -42,7 +42,7 @@ class CategoryController extends MyAppController {
 
 
 		/* to show searched category data[ */
-		$catSrch->addMultipleFields( array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','GETCATCODE(prodcat_id) AS prodcat_code') );
+		$catSrch->addMultipleFields( array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code') );
 		$catSrchRs = $catSrch->getResultSet();
 		$categoryData = $db->fetch( $catSrchRs );
 
@@ -317,9 +317,14 @@ class CategoryController extends MyAppController {
 				$h = 100;
 				AttachedFile::displayImage( $image_name, $w, $h );
 			break;
+			case 'MEDIUM':
+				$w = 380;
+				$h = 213;
+				AttachedFile::displayImage( $image_name, $w, $h );
+			break;
 			case 'WIDE':
-				$w = 1320;
-				$h = 320;
+				$w = 1000;
+				$h = 563;
 				AttachedFile::displayImage( $image_name, $w, $h );
 			break;
 			default:

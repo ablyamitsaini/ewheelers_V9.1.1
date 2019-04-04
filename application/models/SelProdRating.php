@@ -37,7 +37,7 @@ class SelProdRating extends MyAppModel {
 		$srch->joinSeller();
 		$srch->joinSellerProducts();
 		$srch->joinSelProdRating();
-		$srch->addMultipleFields(array('avg(sprating_rating) as avg_rating'));
+		$srch->addMultipleFields(array("ROUND(AVG(sprating_rating),2) as avg_rating"));
 		$srch->addCondition('sprating_rating_type','in',array(SelProdRating::TYPE_SELLER_SHIPPING_QUALITY , SelProdRating::TYPE_SELLER_STOCK_AVAILABILITY , SelProdRating::TYPE_SELLER_PACKAGING_QUALITY));
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();

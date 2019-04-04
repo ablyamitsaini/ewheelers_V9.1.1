@@ -1,5 +1,5 @@
 var loginDiv = '#login';
-var sCartReviewDiv = '#review';
+var sCartReviewDiv = '#cart-review';
 var paymentDiv = '#payment';
 var financialSummary = '.summary-listing';
 

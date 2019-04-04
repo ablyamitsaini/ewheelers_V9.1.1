@@ -1,9 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
 	<div class="top-space">
-	<div class="container container--fixed">
-       <!-- <div class="row"> -->
-           <div class="container container--fluid">
+	<div class="container">
+       <!-- <div class="row"> -->           
                <div class="panel panel--centered">
                    <div class="box box--white">
                        <div class="message message--success align--center">
@@ -16,7 +15,7 @@
                        </div>
                    </div>
                </div>
-            </div>
+
         <!-- </div> -->
     </div></div>
 	<div class="gap"></div>

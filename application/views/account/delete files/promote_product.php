@@ -13,7 +13,7 @@
 						<div class="panel__body">
 							<div class="box box--white box--space">
 								<div class="box__body">
-								   <div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
+								   <div class="tabs tabs--small   tabs--scroll clearfix">
 									   <?php if (!User::isAdvertiser()) { ?>
 										<ul class="arrowTabs">
 											<li><a href="<?php echo CommonHelper::generateUrl('account', 'promote_product')?>"><?php echo Labels::getLabel('LBL_Promote_Product',$siteLangId) ?></a></li>

@@ -20,14 +20,12 @@ if($actionType == Importexport::TYPE_PRODUCTS || $actionType == Importexport::TY
 	$rangeTypeFld->setfieldTagAttribute( 'onchange' , "showHideExtraFld(this.value,".Importexport::BY_ID_RANGE.",".Importexport::BY_BATCHES.");");
 }
 ?>
-<div class="container container--fluid">
-	<div class="tabs--inline tabs--scroll clearfix">
+ 	<div class="tabs tabs-sm tabs--scroll clearfix">
 		<ul>
 			<li ><a class="is-active" href="javascript:void(0);" onclick="exportForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
 			<li class="is-active"><a href="javascript:void(0);" onclick="exportMediaForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Media',$siteLangId); ?></a></li>
 		</ul>
-	</div>
-</div>
+	</div> 
 <div class="form__subcontent">
 	<?php echo $frm->getFormHtml(); ?>
 </div>

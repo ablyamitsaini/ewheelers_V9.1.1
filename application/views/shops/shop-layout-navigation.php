@@ -1,4 +1,4 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage'); 
+<?php defined('SYSTEM_INIT') or die('Invalid Usage');
 	$class="";
 switch($template_id){
 	case Shop::TEMPLATE_ONE:

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	if($userFavorite){
 	foreach( $userFavorite as $shop ){
 		$shopUrl = CommonHelper::generateUrl( 'Shops', 'View', array($shop['shop_id']) );
@@ -18,9 +18,9 @@
 							$shopUrl = CommonHelper::generateUrl('Shops','View',array( $product['shop_id'] )); ?>
 								<li><a class="item__pic" href="<?php echo $shopUrl; ?>"><img alt="" src="<?php echo CommonHelper::generateUrl('Image','shopLogo',array($product['shop_id'], $siteLangId,'THUMB'));?>"></a></li>
 							<?php } } ?>
-							
+
 						<?php if( $shops[$shop['ufs_user_id']]['totalProducts'] <= $totalShopToShow ){ ?>
-						<li><a class="item__link" href="<?php echo CommonHelper::generateUrl('Custom','FavoriteShops',array($shop['ufs_user_id']));?>"><span><?php echo Labels::getLabel('LBL_No_More_Shops', $siteLangId); ?></span></a></li>	
+						<li><a class="item__link" href="<?php echo CommonHelper::generateUrl('Custom','FavoriteShops',array($shop['ufs_user_id']));?>"><span><?php echo Labels::getLabel('LBL_No_More_Shops', $siteLangId); ?></span></a></li>
 						<?php }else{ ?>
 							<li><a href="<?php echo CommonHelper::generateUrl('Custom','FavoriteShops',array($shop['ufs_user_id']));?>" class="item__link"><span><?php echo str_replace('{n}', $shop['userFavShopcount'], Labels::getLabel('LBL_View_{n}_Favorite(s)', $siteLangId)); ?></span></a></li>
 						<?php }?>
@@ -29,13 +29,12 @@
 		</div>
 	</div>
 </div>
-<?php } } else { 
+<?php } } else {
 	echo Labels::getLabel('LBL_No_record_found!', $siteLangId);
-	 } 
+	 }
 
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array (
 		'name' => 'frmSearchWhoFavouriteShopPaging'
 ) );
- ?>	 
-	 
+ ?>

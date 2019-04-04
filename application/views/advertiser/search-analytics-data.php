@@ -5,10 +5,10 @@ $arr_flds = array(
 		'clicks'=>Labels::getLabel('LBL_Clicks', $siteLangId),
 		'impressions'=>Labels::getLabel('LBL_Impressions', $siteLangId),
 		/* 'orders'=>Labels::getLabel('LBL_Orders', $siteLangId),	 */
-		
+
 	);
-$tbl = new HtmlElement('table', 
-array('width'=>'100%', 'class'=>'table table-responsive','id'=>'promotions'));
+$tbl = new HtmlElement('table',
+array('width'=>'100%', 'class'=>'table table--orders table-responsive','id'=>'promotions'));
 
 $th = $tbl->appendElement('thead')->appendElement('tr');
 foreach ($arr_flds as $val) {
@@ -19,18 +19,18 @@ $sr_no = $page==1?0:$pageSize*($page-1);
 foreach ($arr_listing as $sn=>$row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
-			
+
 			case 'plog_date':
 				$td->appendElement('plaintext', array(),FatDate::format($row[$key]));
-			break;					
-			
+			break;
+
 			default:
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;
@@ -39,7 +39,7 @@ foreach ($arr_listing as $sn=>$row){
 }
 if (count($arr_listing) == 0){
 	$tbl->appendElement('tr')->appendElement('td', array(
-	'colspan'=>count($arr_flds)), 
+	'colspan'=>count($arr_flds)),
 	'No records found'
 	);
 }

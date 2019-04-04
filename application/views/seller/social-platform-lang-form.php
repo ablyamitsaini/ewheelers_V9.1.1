@@ -1,10 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="box__head">
-	<h4><?php echo Labels::getLabel('LBL_Social_Platform_Setup',$siteLangId); ?></h4>
+<div class="cards-header p-3">
+	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Social_Platform_Setup',$siteLangId);?></h5>
 </div>
-<div class="box__body">
+<div class="cards-content p-3">
 	<div class="">
-		<div class="tabs--inline tabs--scroll clearfix">
+		<div class="tabs tabs-sm tabs--scroll clearfix">
 			<ul>
 				<li><a href="javascript:void(0)" onClick="addForm(<?php echo $splatform_id;?>);"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
 				<?php

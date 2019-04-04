@@ -1,46 +1,51 @@
-<div id="body" class="body bg--gray">
-	<section class="dashboard">
-		<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-		<div class="container">
-			<div class="row">
-				<?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
-				<div class="col-xs-10 panel__right--full" >
-					<div class="cols--group">
-						<div class="panel__head"><h2><?php echo Labels::getLabel('Lbl_Advertiser' , $siteLangId); ?></h2></div>
-						<div class="panel__body">
-							<div class="box box--white box--space">
-								<div class="box__head">
-								<h4><?php echo Labels::getLabel('LBL_Latest_Promotions',$siteLangId);?></h4>
-								<?php if( $promotionCount > 5 ){?>
-								<a href="<?php echo CommonHelper::generateUrl('advertiser','promotions');?>" class="link--arrow"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-								<?php }?>
-								</div>
-								<div class="box__body">
-								<div class="grids--container">
-								<div class="row">						
-								<div class="col-md-6">
-								<h3><?php echo Labels::getLabel('LBL_Current_Balance',$siteLangId);?>: <strong><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></strong> </h3>
-								<p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions',$siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?></p>
-								</div>	
-								<div class="col-md-6">													
-								<?php 
-								$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
-								$frmRechargeWallet->setFormTagAttribute('class', 'form'); 
-								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
-								$frmRechargeWallet->developerTags['fld_default_col'] = 6;
-								$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
+<?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
+ <div class="content-wrapper content-space">
+	<div class="content-header justify-content-between row mb-3">
+		<div class="content-header-left col-md-auto">
+			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+			<h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Advertiser' , $siteLangId); ?></h2>
+		</div>
+	</div>
+	<div class="content-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="cards">
+					<div class="cards-header p-3">
+						<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Promotions',$siteLangId);?></h5>
+						<div class="action">
+							<?php if( $promotionCount > 5 ){?>
+							<a href="<?php echo CommonHelper::generateUrl('advertiser','promotions');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+							<?php }?>
+						</div>
+					</div>
 
-								$btnFld = $frmRechargeWallet->getField('btn_submit');
-								$btnFld->setFieldTagAttribute('class','btn--block');
-								$amountFld = $frmRechargeWallet->getField('amount');
-								$amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
-								echo $frmRechargeWallet->getFormHtml(); ?>							
-								</div>
-								</div>
-								</div>
-								<?php 	 if(count($promotionList)>0){ ?>
-								<div id="ppcListing">
-								<table class="table table--orders">
+					<div class="cards-content p-3">           
+  						<div class="row">
+  							<div class="col-md-6">
+  								<h3><?php echo Labels::getLabel('LBL_Current_Balance',$siteLangId);?>: <strong><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></strong> </h3>
+  								<p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions',$siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?></p>
+  							</div>
+  							<div class="col-md-6">
+  								<?php
+  								$frmRechargeWallet->setFormTagAttribute('onSubmit','setUpWalletRecharge(this); return false;');
+  								$frmRechargeWallet->setFormTagAttribute('class', 'form');
+  								$frmRechargeWallet->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6 col-sm-';
+  								$frmRechargeWallet->developerTags['fld_default_col'] = 6;
+  								$frmRechargeWallet->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_WITH_NONE);
+
+  								$btnFld = $frmRechargeWallet->getField('btn_submit');
+  								$btnFld->setFieldTagAttribute('class','btn--block');
+  								$amountFld = $frmRechargeWallet->getField('amount');
+  								$amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
+  								echo $frmRechargeWallet->getFormHtml(); ?>
+  							</div>
+  						</div>
+
+						<?php if(count($promotionList)>0){ ?>
+						<table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+							<tbody>
 								<tr class="">
 								<th colspan="2"><?php echo Labels::getLabel('LBL_Promotions',$siteLangId);?></th>
 								<th ><?php echo Labels::getLabel('LBL_Type',$siteLangId);?></th>
@@ -51,7 +56,7 @@
 								<th><?php echo Labels::getLabel('LBL_Approved',$siteLangId);?></th>
 								<th><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></th>
 								</tr>
-								<?php 
+								<?php
 									$arrYesNo = applicationConstants::getYesNoArr($siteLangId);
 									foreach($promotionList as $promotionId=>$row){
 									$duraionStr = Labels::getLabel('LBL_Start_Date', $siteLangId).' : '.FatDate::format($row[	'promotion_start_date']).'<br>';
@@ -68,7 +73,7 @@
 								</td>
 								<td>
 								<?php echo CommonHelper::displayMoneyFormat($row['promotion_budget']) ;?>
-								</td> 
+								</td>
 								<td>
 								<?php echo FatUtility::int($row['clicks']);?>
 								</td> <td>
@@ -80,16 +85,18 @@
 								</td>
 								</tr>
 								<?php } ?>
-								</table>
-								</div>
-								<?php }?>
-								</div>
+							</tbody>
+							<div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
+								<span class="scroll-hint-icon">
+								  <div class="scroll-hint-text"><?php echo Labels::getLabel('LBL_Scrollable',$siteLangId);?></div>
+								</span>
 							</div>
-						</div>
+						</table>
+						<?php } ?>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
-	<div class="gap"></div>
-</div>
+	</div>
+ </div>
+</main>

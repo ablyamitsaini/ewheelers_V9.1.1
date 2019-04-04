@@ -6,7 +6,7 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 ?>
 <div class="popup__body">
 	<h2><?php echo Labels::getLabel('LBL_Manage_Category_Banner',$siteLangId).' ('.$catData['prodcat_name'].')'; ?></h2>
-	<ul class="tabs tabs--small tabs--offset tabs--offset-js clearfix setactive-js">
+	<ul class="tabs tabs--small    -js clearfix setactive-js">
 		<?php
 		foreach( $languages as $langId => $langName ){?>
 		<li class="<?php echo ($formLangId == $langId) ? 'is-active' : '' ?>"><a href="javascript:void(0)" onClick="categoryBannerLangForm(<?php echo $prodCatId ?>, <?php echo $langId;?>)">

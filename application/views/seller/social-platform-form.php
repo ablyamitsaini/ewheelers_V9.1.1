@@ -1,19 +1,17 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<div class="box__head">
-	<h4><?php echo Labels::getLabel('LBL_Social_Platform_Setup',$siteLangId); ?></h4>
+<div class="cards-header p-3">
+	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Social_Platform_Setup',$siteLangId);?></h5>
 </div>
-<div class="box__body">
-	<div class="container container--fluid">
-		<div class="tabs--inline tabs--scroll clearfix">
-			<ul>
-				<li class="is-active"><a href="javascript:void(0)" onClick="socialPlatformForm(<?php echo $splatform_id;?>);"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
-				<?php $inactive = ($splatform_id==0)?'fat-inactive':'';		
-				foreach($language as $langId => $langName){?>	
-				<li class="<?php echo $inactive ; ?>"><a href="javascript:void(0)" <?php if($splatform_id>0){?> onClick="addLangForm(<?php echo $splatform_id;?> , <?php echo $langId;?>);" <?php }?>>
-				<?php echo $langName;?></a></li>
-				<?php }?>
-			</ul>
-		</div>
+<div class="cards-content p-3">
+	<div class="tabs tabs-sm tabs--scroll clearfix">
+		<ul>
+			<li class="is-active"><a href="javascript:void(0)" onClick="socialPlatformForm(<?php echo $splatform_id;?>);"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
+			<?php $inactive = ($splatform_id==0)?'fat-inactive':'';		
+			foreach($language as $langId => $langName){?>	
+			<li class="<?php echo $inactive ; ?>"><a href="javascript:void(0)" <?php if($splatform_id>0){?> onClick="addLangForm(<?php echo $splatform_id;?> , <?php echo $langId;?>);" <?php }?>>
+			<?php echo $langName;?></a></li>
+			<?php }?>
+		</ul>
 	</div>
 	<div class="form__subcontent">
 		<?php

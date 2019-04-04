@@ -26,13 +26,13 @@ foreach ($arrListing as $sn => $listing){
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'name':
-				$name = '<div class="item-yk-head-title">'.$listing['product_name'].'</div>';
+				$name = '<div class="item__title">'.$listing['product_name'].'</div>';
 				if( $listing['selprod_title'] != '' ){
-					$name .= '<div class="item-yk-head-sub-title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
+					$name .= '<div class="item__sub_title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'].'</div>';
 				}
 			
 				if( $listing['brand_name'] != '' ){
-					$name .= '<div class="item-yk-head-brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
+					$name .= '<div class="item__brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
 				$td->setAttribute('width', '40%');
 				$td->appendElement('plaintext', array(), $name,true);
@@ -64,7 +64,7 @@ foreach ($arrListing as $sn => $listing){
 if( count($arrListing) == 0 ){
 	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 } else {
-	/* echo '<div class="box__head"><div class="group--btns"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
+	/* echo '<div class="box__head"><div class="btn-group"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
 	echo $tbl->getHtml();
 }
 $postedData['page'] = $page;

@@ -1,13 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
-<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?> 
-<div class="box__body">
-  <div class="tabs tabs--small tabs--offset tabs--scroll clearfix">
-    <?php require_once('sellerCustomProductTop.php');?>
-  </div>
-  <div class="tabs__content">
-    <div class="form__content row ">
-      <div class="col-md-12">
-        <?php 
+<div class="tabs tabs--small tabs--scroll clearfix">
+	<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
+</div>
+<div class="tabs__content">
+	<div class="form__content row">
+	  <div class="col-md-12">
+		<?php 
 			$frmLinks->setFormTagAttribute('class', 'form form--horizontal');
 			$frmLinks->setFormTagAttribute('onsubmit', 'setupProductLinks(this); return(false);');
 			$frmLinks->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
@@ -25,9 +23,8 @@
 			
 			echo $frmLinks->getFormHtml();
 			?>
-      </div>
-    </div>
-  </div>
+	  </div>
+	</div>
 </div>
 <script type="text/javascript">
 	$("document").ready(function(){

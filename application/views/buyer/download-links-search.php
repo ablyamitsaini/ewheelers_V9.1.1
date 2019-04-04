@@ -19,7 +19,7 @@ $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-6');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
-<div class="form__cover nopadding--bottom">
+<div class="bg-gray-light p-3 pb-0">
 	<?php echo $frmSrch->getFormHtml(); ?>
 </div>
 <span class="gap"></span>
