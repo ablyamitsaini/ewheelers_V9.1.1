@@ -7,15 +7,9 @@
     </div>
 	<section class="top-space">
 		<div class="container">
-			<div class="box box--white box--space">
-
-					<div id="listing">
-					</div>
-					<span class="gap"></span>
-					<div id="loadMoreBtnDiv"></div>
-
-
-			</div>
+			<div id="listing"></div>
+            <span class="gap"></span>
+            <div id="loadMoreBtnDiv"></div>
 		</div>
 	</section>
 	<div class="gap"></div>
