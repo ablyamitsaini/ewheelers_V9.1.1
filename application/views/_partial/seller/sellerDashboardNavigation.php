@@ -67,13 +67,13 @@ $action = strtolower($action);
 
 				<?php if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')){ ?>
 				<li class="menu__item">
-					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Settings',$siteLangId);?></span></div>
+					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Subscription',$siteLangId);?></span></div>
 				</li>
 				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions'); ?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-my-subscriptions" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-my-subscriptions"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Subscriptions",$siteLangId); ?></span></a></div></li>
 				<li class="menu__item <?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('seller','Packages' );?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use></svg>
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-subscription-packages" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-subscription-packages"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Subscription_Packages',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
 				<?php } ?>

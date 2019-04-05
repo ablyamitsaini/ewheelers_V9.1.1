@@ -64,7 +64,7 @@
 					<?php if ($facebookLogin) { ?>
 						<li><a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn btn--social btn--fb"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/facebook.svg"></i><?php echo Labels::getLabel('LBL_Login_With_Facebook',$siteLangId);?></a></li>
 					<?php } if ($googleLogin ) { ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('googleplus')); ?>" class="btn btn--social btn--gp"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/google-plus.svg"></i><?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a></li>
+						<li><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('google')); ?>" class="btn btn--social btn--gp"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/google-plus.svg"></i><?php echo Labels::getLabel('LBL_Login_With_Google',$siteLangId);?></a></li>
 					<?php }?>
 					</ul>
 				</div>

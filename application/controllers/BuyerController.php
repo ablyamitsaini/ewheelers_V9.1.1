@@ -98,7 +98,6 @@ class BuyerController extends LoggedUserController {
 
 	public function viewOrder($orderId,$opId = 0, $print = false ){
 
-
 		if(!$orderId){
 			Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access',$this->siteLangId));
 			CommonHelper::redirectUserReferer();
@@ -179,7 +178,6 @@ class BuyerController extends LoggedUserController {
 		$this->set('digitalDownloads', $digitalDownloads);
 		$this->set('digitalDownloadLinks', $digitalDownloadLinks);
 		$this->set( 'languages', Language::getAllNames() );
-
 		$this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 
 
@@ -187,11 +185,9 @@ class BuyerController extends LoggedUserController {
 		$this->set('urlParts',$urlParts);
 		if($print){
 		 	$print = true;
-		}
+		} 
 		$this->set('print',$print);
-
 		$this->_template->render(true,false);
-
 	}
 
 	public function downloadDigitalFile($aFileId,$recordId = 0) {
@@ -510,9 +506,7 @@ class BuyerController extends LoggedUserController {
 		$this->_template->render(true,false);
 	}
 
-
 	public function setupOrderCancelRequest(){
-
 		$frm = $this->getOrderCancelRequestForm( $this->siteLangId );
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
 		if ( false === $post ) {
@@ -734,7 +728,6 @@ class BuyerController extends LoggedUserController {
 		$this->_template->render(false, false);
 	}
 
-
 	public function viewOrderReturnRequest( $orrequest_id, $print = false ){
 
 		$orrequest_id = FatUtility::int($orrequest_id);
@@ -754,7 +747,8 @@ class BuyerController extends LoggedUserController {
 		$srch->addMultipleFields( array( 'orrequest_id','orrequest_op_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type',
 		'orrequest_date', 'orrequest_status', 'orrequest_reference', 'op_invoice_number', 'op_selprod_title', 'op_product_name',
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_qty',
-		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title', 'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
+		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
+		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 		if( !$request ){
@@ -1513,7 +1507,6 @@ class BuyerController extends LoggedUserController {
 		$this->set('totalRewardPoints',$records['totalRewardPoints']); */
 
 		$this->set('totalRewardPoints',UserRewardBreakup::rewardPointBalance($userId) );
-
 		$this->set('convertReward',$convertReward);		
 		$this->_template->render(true,false);
 	}

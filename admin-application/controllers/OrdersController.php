@@ -108,7 +108,7 @@ class OrdersController extends AdminBaseController {
 		$srch->doNotLimitRecords();
 		$srch->joinOrderBuyerUser();
 		$srch->addMultipleFields(array('order_id','order_user_id', 'order_date_added', 'order_is_paid','order_tax_charged', 'order_site_commission',
-		'order_reward_point_value','order_volume_discount_total','buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email','buyer.user_phone as buyer_phone', 'order_net_amount', 'order_shippingapi_name', 'order_pmethod_id', 'ifnull(pmethod_name,pmethod_identifier)as pmethod_name','order_discount_total','pmethod_code'));
+		'order_reward_point_value','order_volume_discount_total','buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email','buyer.user_phone as buyer_phone', 'order_net_amount', 'order_shippingapi_name', 'order_pmethod_id', 'ifnull(pmethod_name,pmethod_identifier)as pmethod_name','order_discount_total','pmethod_code','order_is_wallet_selected','order_reward_point_used'));
 		$srch->addCondition('order_id', '=', $order_id);
 		$srch->addCondition( 'order_type', '=',Orders::ORDER_PRODUCT);
 		$rs = $srch->getResultSet();
