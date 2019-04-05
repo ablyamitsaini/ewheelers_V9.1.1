@@ -1,5 +1,6 @@
 .*
 !/.gitignore
+/user-uploads/*
 /admin-application/views/innovas
 /application/views/innovas
 /conf

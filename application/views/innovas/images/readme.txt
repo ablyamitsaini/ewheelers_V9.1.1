@@ -1,1 +1,0 @@
-This folder is used by asset manager as example.

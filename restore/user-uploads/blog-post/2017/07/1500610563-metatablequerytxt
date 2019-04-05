@@ -1,2 +1,0 @@
-INSERT INTO `tbl_meta_tags` (`meta_id`, `meta_controller`, `meta_action`, `meta_record_id`, `meta_subrecord_id`, `meta_identifier`, `meta_default`, `meta_advanced`) VALUES ('', '', 'index', '0', '0', 'default', '1', '0'), ('', 'Brands', 'index', '0', '0', 'All Brands', '0', '0');
-INSERT INTO `tbl_meta_tags` (`meta_id`, `meta_controller`, `meta_action`, `meta_record_id`, `meta_subrecord_id`, `meta_identifier`, `meta_default`, `meta_advanced`) VALUES ('', 'Shops', 'index', '0', '0', 'All Shops', '0', '0'), ('', 'Products', 'index', '0', '0', 'All Products', '0', '0');
