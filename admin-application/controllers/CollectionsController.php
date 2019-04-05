@@ -851,7 +851,6 @@ class CollectionsController extends AdminBaseController {
 								Collections::TYPE_PRODUCT_LAYOUT3 => Labels::getLabel('LBL_Product_Layout3', $this->adminLangId),
 								),
 						Collections::COLLECTION_TYPE_CATEGORY => array(
-<<<<<<< HEAD
 								Collections::TYPE_CATEGORY_LAYOUT1 => Labels::getLabel('LBL_Category_Layout1', $this->adminLangId),
 								Collections::TYPE_CATEGORY_LAYOUT2 => Labels::getLabel('LBL_Category_Layout2', $this->adminLangId),
 								),
@@ -861,19 +860,6 @@ class CollectionsController extends AdminBaseController {
 								),
 						Collections::COLLECTION_TYPE_BRAND => array(
 								Collections::TYPE_BRAND_LAYOUT1 => Labels::getLabel('LBL_Brand_Layout1', $this->adminLangId),
-								
-=======
-								Collections::COLLECTION_LAYOUT5_TYPE => Labels::getLabel('LBL_Collection_Layout5', $this->adminLangId),
-
-								),
-						Collections::COLLECTION_TYPE_SHOP => array(
-								Collections::COLLECTION_LAYOUT4_TYPE => Labels::getLabel('LBL_Collection_Layout4', $this->adminLangId),
-
-								),
-						Collections::COLLECTION_TYPE_BRAND => array(
-								Collections::COLLECTION_LAYOUT7_TYPE => Labels::getLabel('LBL_Collection_Layout7', $this->adminLangId),
-
->>>>>>> f6760945fb2bc03ced26f39435d8331a919df663
 								)
 						);
 
