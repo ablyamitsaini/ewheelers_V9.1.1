@@ -1,8 +1,8 @@
 window.recordCount = 0;
 $(document).ready(function(){
-   /* $(document).delegate('.acc_ctrl','click',function(e){ 
+   /* $(document).delegate('.acc_ctrl','click',function(e){
 
-	 
+
     e.preventDefault();
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
@@ -16,9 +16,9 @@ $(document).ready(function(){
       .slideDown(300);
     }
   }); */
-	
-	
-/* for sticky left panel 
+
+
+/* for sticky left panel
   if($(window).width()>1050){
     function sticky_relocate() {
         var window_top = $(window).scrollTop();
@@ -42,11 +42,11 @@ $(document).ready(function(){
         $(window).scroll(sticky_relocate);
         sticky_relocate();
     });
-}   */         
+}   */
 
 	searchFaqs(document.frmSearchFaqs);
 	faqRightPanel();
-	
+
 });
 
 (function() {
@@ -57,7 +57,7 @@ $(document).ready(function(){
 	reloadListing = function(){
 		searchFaqs(document.frmSearchFaqs);
 	};
-	
+
 	$(document).delegate('a.selectedCat','click',function(){
 		var catId=$(this).attr('id');
 		var faqId=0;
@@ -66,56 +66,56 @@ $(document).ready(function(){
 	$(document).delegate('a.selectedFaq','click',function(){
 		var faqId=$(this).attr('data-id');
 		var faqcatId=$(this).attr('data-cat-id');
-		
+
 		window.location.href = fcom.makeUrl('Custom','faqDetail', [faqcatId,faqId]);
 	});
-	
+
 	searchFaqs = function(catId){
 
 		if(catId<0)
 			catId =0;
-		
+
 		$(dv).html(fcom.getLoader());
-	
+
 		fcom.updateWithAjax(fcom.makeUrl('Custom','SearchFaqs', [catId]), '', function(ans){
-			$.mbsmessage.close();			
-		
+			$.mbsmessage.close();
+
 				$(dv).find('.loader-yk').remove();
 				$(dv).html(ans.html);
-			
+
 			window.recordCount = ans.recordCount;
-			
-		}); 
-		
-		
+
+		});
+
+
 	};
-	
+
 	faqRightPanel = function(){
-		
+
 		fcom.updateWithAjax(fcom.makeUrl('Custom','faqCategoriesPanel'), '', function(ans){
-			$.mbsmessage.close();			
-			
+			$.mbsmessage.close();
+
 				$(dv).find('.loader-yk').remove();
 				$(dvCategoryPanel).html(ans.categoriesPanelHtml);
-			
+
 			window.recordCount = ans.recordCount;
-			
-		}); 
+
+		},'',false); 
 	}
 	goToLoadMore = function(page){
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
 		currPage = page;
-		
-		var frm = document.frmSearchFaqsPaging;		
+
+		var frm = document.frmSearchFaqsPaging;
 		$(frm.page).val(page);
 		searchFaqs(frm,1);
 	};
-	
+
 })();
 
- /******** for faq accordians  ****************/ 
+ /******** for faq accordians  ****************/
 
 $(document).delegate('.accordians__trigger-js','click',function(){
   if($(this).hasClass('is-active')){
