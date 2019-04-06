@@ -182,7 +182,7 @@ class ContentBlockController extends AdminBaseController {
 		if($epage_id==0 || $lang_id==0){
 		Message::addErrorMessage($this->str_invalid_request_id);
 		FatUtility::dieWithError( Message::getHtml() );
-
+		}
 		$frm = $this->getLangForm( $epage_id , $lang_id );
 		$post = $frm->getFormDataFromArray(FatApp::getPostedData());
 		if (false === $post) {

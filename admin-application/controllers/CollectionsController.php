@@ -168,11 +168,6 @@ class CollectionsController extends AdminBaseController {
 		$post['collection_layout_type'] = $data['collection_layout_type'];
 		unset($post['btn_submit']);
 
-		$collectionData = Collections::getAttributesById($collectionId );
-		if($collectionData['collection_type'] == Collections::COLLECTION_TYPE_SHOP){
-			$post['collection_child_records'] = 3;
-		}
-
 		$record = new Collections($collectionId);
 		if ( !$record->addUpdateData($post) ) {
 			Message::addErrorMessage( $record->getError() );
@@ -304,7 +299,7 @@ class CollectionsController extends AdminBaseController {
 		$fld->html_after_field = '<br/><small>This is applicable only on category collections.</small>';
 
 		$frm->addTextBox( Labels::getLabel('LBL_Primary_Record',$this->adminLangId), 'collection_primary_records' )->requirements()->setRequired();
-		
+
 		/* if($collectionData['collection_type'] != Collections::COLLECTION_TYPE_SHOP){
 			$frm->addTextBox( Labels::getLabel('LBL_Child_Records',$this->adminLangId), 'collection_child_records' );
 		} */
@@ -856,7 +851,7 @@ class CollectionsController extends AdminBaseController {
 								),
 						Collections::COLLECTION_TYPE_SHOP => array(
 								Collections::TYPE_SHOP_LAYOUT1 => Labels::getLabel('LBL_Shop_Layout1', $this->adminLangId),
-								
+
 								),
 						Collections::COLLECTION_TYPE_BRAND => array(
 								Collections::TYPE_BRAND_LAYOUT1 => Labels::getLabel('LBL_Brand_Layout1', $this->adminLangId),
