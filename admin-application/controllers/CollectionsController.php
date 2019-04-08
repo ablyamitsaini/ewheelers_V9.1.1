@@ -313,7 +313,7 @@ class CollectionsController extends AdminBaseController
         $fld=$frm->addRadioButtons(Labels::getLabel('LBL_Criteria', $this->adminLangId), 'collection_criteria', Collections::getCriteria(), 1);
         $fld->html_after_field = '<br/><small>This is applicable only on category collections.</small>';
 
-        $frm->addTextBox(Labels::getLabel('LBL_Primary_Record', $this->adminLangId), 'collection_primary_records')->requirements()->setRequired();
+        // $frm->addTextBox(Labels::getLabel('LBL_Primary_Record', $this->adminLangId), 'collection_primary_records')->requirements()->setRequired();
 
         /* if($collectionData['collection_type'] != Collections::COLLECTION_TYPE_SHOP){
         $frm->addTextBox( Labels::getLabel('LBL_Child_Records',$this->adminLangId), 'collection_child_records' );

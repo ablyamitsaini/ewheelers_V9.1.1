@@ -18,11 +18,8 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 			</div>
 		</div>
 		<div class="content-body">
-			<div class="cards">
-				<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
-				<div class="cards-content p-3">
-					<div id="listing"></div>
-				</div>
+			<div class="cards" id="listing">
+				
 			</div>
 		</div>
 	</div>
@@ -30,7 +27,7 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
 <script>
 $(document).ready(function(){
 	<?php if($prodId){?>
-	customProductForm(<?php echo $prodId;?>,<?php echo $prodCatId;?>);	
+	customProductForm(<?php echo $prodId;?>,<?php echo $prodCatId;?>);
 	<?php }else{?>
 	customProductForm();
 	<?php }?>

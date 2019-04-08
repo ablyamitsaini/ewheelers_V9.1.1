@@ -1,11 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
+<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
+<div class="cards-content p-3">
 <div class="tabs tabs--small tabs--scroll clearfix">
 	<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
 </div>
 <div class="tabs__content">
 	<div class="form__content row">
 	  <div class="col-md-12">
-		<?php 
+		<?php
 			$frmLinks->setFormTagAttribute('class', 'form form--horizontal');
 			$frmLinks->setFormTagAttribute('onsubmit', 'setupProductLinks(this); return(false);');
 			$frmLinks->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
@@ -17,18 +19,19 @@
 			//$fld2->fieldWrapper  = array('<div class="col-md-4">', '</div>');
 			//$fld1->attachField($fld2);
 			//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
-			
+
 			$fld_div = $frmLinks->getField('choose_links');
 			/* $fld_div->fieldWrapper = array('<div class="box--scroller">','</div>'); */
-			
+
 			echo $frmLinks->getFormHtml();
 			?>
 	  </div>
 	</div>
 </div>
+</div>
 <script type="text/javascript">
 	$("document").ready(function(){
-		
+
 		$('input[name=\'brand_name\']').autocomplete({
 			'source': function(request, response) {
 				/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
@@ -53,14 +56,14 @@
 				$('input[name=\'product_brand_id\']').val(item['value']);
 			}
 		});
-		
+
 		$('input[name=\'brand_name\']').keyup(function(){
 			$('input[name=\'product_brand_id\']').val('');
 		});
-		
+
 		$('input[name=\'tag_name\']').autocomplete({
 				'source': function(request, response) {
-				
+
 					$.ajax({
 						url: fcom.makeUrl('seller', 'tagsAutoComplete'),
 						data: {keyword: request,fIsAjax:1},
@@ -68,8 +71,8 @@
 						type: 'post',
 						success: function(json) {
 							response($.map(json, function(item) {
-							
-								return { 
+
+								return {
 									label: item['name'] + ' (' + item['tag_identifier'] + ')',
 									value: item['id']
 									};
@@ -77,21 +80,21 @@
 						},
 					});
 				},
-				'select': function(item) {					
+				'select': function(item) {
 					$('input[name=\'tag_name\']').val('');
 					$('#product-tag' + item['value']).remove();
-					$('#product-tag').append("<li id='product-tag" + item["value"] + "'><i class='remove_tag remove_param fa fa-trash'></i> " +item["label"] + "<input type='hidden' name='product_tag[]' value='" + item["value"] + "' /></li>");					
+					$('#product-tag').append("<li id='product-tag" + item["value"] + "'><i class='remove_tag remove_param fa fa-trash'></i> " +item["label"] + "<input type='hidden' name='product_tag[]' value='" + item["value"] + "' /></li>");
 				}
 			});
-			
+
 			$('#product-tag').delegate('.remove_tag', 'click', function() {
-		
+
 			$(this).parent().remove();
 		});
-		<?php foreach($product_tags as $key => $val){?>		
+		<?php foreach($product_tags as $key => $val){?>
 			$('#product-tag').append("<li id='product-tag<?php echo $val["tag_id"];?>'><i class='remove_tag remove_param fa fa-trash'></i> <?php echo $val["tag_name"]." (".$val["tag_identifier"].")";?><input type='hidden' name='product_tag[]' value='<?php echo $val["tag_id"];?>' /></li>");
 		<?php } ?>
-		
+
 		$('input[name=\'choose_links\']').autocomplete({
 		'source': function(request, response) {
 				/* fcom.ajax(fcom.makeUrl('brands', 'autoComplete'), {keyword:encodeURIComponent(request)}, function(json) {
@@ -116,10 +119,10 @@
 					},
 				});
 			},
-			'select': function(item) {			
-				updateProductLink(<?= $product_id;?>, item['value'] );		
+			'select': function(item) {
+				updateProductLink(<?= $product_id;?>, item['value'] );
 			}
 		});
-	
+
 	});
-</script> 
+</script>

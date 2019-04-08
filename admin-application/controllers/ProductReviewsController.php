@@ -14,7 +14,7 @@ class ProductReviewsController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index($sellerId = 0) 
+    public function index($sellerId = 0)
     {
         $sellerId = FatUtility::int($sellerId);
         $this->objPrivilege->canViewProductReviews();
@@ -56,7 +56,7 @@ class ProductReviewsController extends AdminBaseController
         $srch->joinProducts();
         $srch->joinSellerProducts($this->adminLangId);
         $srch->joinSelProdRatingByType(SelProdRating::TYPE_PRODUCT);
-        $srch->addMultipleFields(array('IFNULL(product_name,product_identifier) as product_name', 'usc.credential_username as seller_username','uc.credential_username as reviewed_by', 'uc.credential_user_id', 'spreview_id','spreview_posted_on','spreview_status','sprating_rating', 'shop_id', 'shop_user_id', 'IFNULL(shop_name, shop_identifier) as shop_name'));
+        $srch->addMultipleFields(array('IFNULL(product_name,product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_id', 'usc.credential_username as seller_username','uc.credential_username as reviewed_by', 'uc.credential_user_id', 'spreview_id','spreview_posted_on','spreview_status','sprating_rating', 'shop_id', 'shop_user_id', 'IFNULL(shop_name, shop_identifier) as shop_name'));
         $srch->addOrder('spreview_posted_on', 'DESC');
 
         if(!empty($post['product'])) {
