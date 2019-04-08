@@ -21,7 +21,7 @@ $urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 		<h4><?php echo Labels::getLabel('LBL_Content_Pages_Setup',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">
-		<div class="row">	
+		<div class="row">
 
 
 			<div class="col-sm-12">
@@ -29,10 +29,10 @@ $urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 				<div class="tabs_nav_container responsive flat">
 					<ul class="tabs_nav">
 						<li><a class="active" href="javascript:void(0)" onclick="addForm(<?php echo $cpage_id ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-						<?php 
-						$inactive = ($cpage_id == 0)?'fat-inactive':'';	
+						<?php
+						$inactive = ($cpage_id == 0)?'fat-inactive':'';
 						foreach($languages as $langId=>$langName){?>
-						<li class="<?php echo $inactive;?>"><a href="javascript:void(0);" 
+						<li class="<?php echo $inactive;?>"><a href="javascript:void(0);"
 							<?php if($cpage_id>0){?> onclick="addLangForm(<?php echo $cpage_id ?>, <?php echo $langId;?>, <?php echo $cpage_layout;?>);" <?php }?>>
 							<?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
 							<?php } ?>
