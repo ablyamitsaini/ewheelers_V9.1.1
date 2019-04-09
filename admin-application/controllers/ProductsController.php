@@ -14,7 +14,7 @@ class ProductsController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index() 
+    public function index()
     {
         $data = FatApp::getPostedData();
         $srchFrm = $this->getSearchForm();
@@ -50,6 +50,11 @@ class ProductsController extends AdminBaseController
             $cnd = $srch->addCondition('product_name', 'like', '%' . $keyword . '%');
             $cnd->attachCondition('product_model', 'like', '%' . $keyword . '%', 'OR');
             $cnd->attachCondition('product_identifier', 'like', '%' . $keyword . '%', 'OR');
+        }
+
+        $product_seller_id = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, -1);
+        if ( -1 < $product_seller_id ) {
+            $srch->addCondition('product_seller_id', '=', $product_seller_id);
         }
 
         $active = FatApp::getPostedData('active', FatUtility::VAR_INT, -1);
@@ -109,7 +114,7 @@ class ProductsController extends AdminBaseController
         $srch->addMultipleFields(
             array('product_id', 'product_attrgrp_id',
             'product_identifier', 'product_approved', 'product_active', 'product_seller_id', 'product_added_on',
-            'product_name','attrgrp_name','user_name') 
+            'product_name','attrgrp_name','user_name')
         );
 
         $srch->addOrder('product_added_on', 'DESC');
@@ -497,7 +502,7 @@ class ProductsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         FatApp::getDb()->updateFromArray('tbl_products', array('product_image_updated_on' => date('Y-m-d H:i:s')), array('smt' => 'product_id = ?','vals' => array($product_id)));
-        
+
         //Message::addMessage(Labels::getLabel('LBL_Image_Uploaded_Successfully',$this->adminLangId));
         $this->set("msg", Labels::getLabel('LBL_Image_Uploaded_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -520,7 +525,7 @@ class ProductsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         FatApp::getDb()->updateFromArray('tbl_products', array('product_image_updated_on' => date('Y-m-d H:i:s')), array('smt' => 'product_id = ?','vals' => array($product_id)));
-        
+
         //Message::addMessage(Labels::getLabel('LBL_Image_Removed_Successfully',$this->adminLangId));
         $this->set("msg", Labels::getLabel('LBL_Image_Removed_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -1058,6 +1063,8 @@ class ProductsController extends AdminBaseController
             $frm->addSelectBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'is_custom_or_catalog', array( -1 =>Labels::getLabel('LBL_All', $this->adminLangId)) + applicationConstants::getCatalogTypeArr($this->adminLangId), -1, array(), '');
         }
 
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'product_seller', '');
+
         /* $frm->addSelectBox(Labels::getLabel('LBL_Attribute_Group',$this->adminLangId), 'product_attrgrp_id', array( -1 =>Labels::getLabel('LBL_Does_not_Matter',$this->adminLangId) ) + array( 0 => 'Not in any Group') + AttributeGroup::getAllNames(), '', array(), ''); */
         $prodCatObj = new ProductCategory();
         $arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId);
@@ -1076,6 +1083,7 @@ class ProductsController extends AdminBaseController
         $frm->addDateField(Labels::getLabel('LBL_Date_To', $this->adminLangId), 'date_to', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'product_id');
+        $frm->addHiddenField('', 'product_seller_id');
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
         $fld_submit->attachField($fld_cancel);
@@ -1196,7 +1204,7 @@ class ProductsController extends AdminBaseController
             foreach($specResult as $key=>$value){
                 foreach($languages as $langId=>$langName){
                     if($value['prodspeclang_lang_id']!=$langId) {
-                        continue; 
+                        continue;
                     }
                     $data['prod_spec_name['.$langId.']'] = $value['prodspec_name'];
                     $data['prod_spec_value['.$langId.']'] = $value['prodspec_value'];
@@ -1247,10 +1255,10 @@ class ProductsController extends AdminBaseController
             if($prodspec_id<1) {
                 $prodSpecObj->assignValues($data_to_be_save);
 
-                if (!$prodSpecObj->save() ) {
+                if ( !$prodSpecObj->save() ) {
                     Message::addErrorMessage(Labels::getLabel($prodSpecObj->getError(), $this->adminLangId));
                     FatUtility::dieWithError(Message::getHtml());
-                };
+                }
                 $prodSpecObj = new ProdSpecification($prodSpecObj->getMainTableRecordId());
             }
 
@@ -1495,5 +1503,20 @@ class ProductsController extends AdminBaseController
         $this->set('lang_id', FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1));
         $this->_template->render(false, false, 'json-success.php');
     }
+
+    public function autoCompleteSellerJson()
+    {
+        $pagesize = 20;
+        $post = FatApp::getPostedData();
+        $sellersObj = Product::getSellers( array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ) );
+        $sellersObj->addOrder('seller');
+        if( '' != $post['keyword'] ){
+            $sellersObj->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
+            $sellersObj->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
+        }
+        $sellersObj->setPageSize($pagesize);
+        $rs = $sellersObj->getResultSet();
+        $sellers = FatApp::getDb()->fetchAll($rs);
+        die(json_encode($sellers));
+    }
 }
-?>
