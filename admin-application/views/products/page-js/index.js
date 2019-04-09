@@ -10,7 +10,11 @@ $(document).ready(function(){
 				type: 'post',
 				success: function(json) {
 					response($.map(json, function(item) {
-						return { label: item['seller']+' ('+item['credential_email']+')' ,	value: item['product_seller_id']	};
+						var email = '';
+						if( null !== item['credential_email'] ){
+							email = ' ('+item['credential_email']+')';
+						}
+						return { label: item['seller'] + email,	value: item['product_seller_id']	};
 					}));
 				},
 			});
