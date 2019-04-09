@@ -12,7 +12,7 @@ public function __construct($action)
     $this->rewriteUrl = Extrapage::REWRITE_URL_PREFIX;
 }
 
-public function index($epage_id = 0) 
+public function index($epage_id = 0)
 {
     $epage_id = FatUtility::int($epage_id);
 
@@ -22,7 +22,7 @@ public function index($epage_id = 0)
     $this->_template->render();
 }
 
-public function importInstructions() 
+public function importInstructions()
 {
     $this->objPrivilege->canViewImportInstructions();
     $this->set('includeEditor', true);
@@ -190,7 +190,7 @@ public function langSetup()
     if($epage_id==0 || $lang_id==0) {
         Message::addErrorMessage($this->str_invalid_request_id);
         FatUtility::dieWithError(Message::getHtml());
-
+		}
         $frm = $this->getLangForm($epage_id, $lang_id);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {

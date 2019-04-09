@@ -12,7 +12,7 @@ class ConfigurationsController extends AdminBaseController
         $this->set("includeEditor", true);
     }
 
-    public function index() 
+    public function index()
     {
         $this->objPrivilege->canViewGeneralSettings();
         $tabs = Configurations::getTabsArr();
@@ -1476,25 +1476,25 @@ class ConfigurationsController extends AdminBaseController
                 $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'mobileLogo', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
             }
 
-            $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
-
-            $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
-
-
-            if(AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, 0, 0, $langId) ) {
-                $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'CategoryCollectionBgImage', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
-            }
-
-            $ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
-
-            $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Brand_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
-
-
-            if(AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, 0, 0, $langId) ) {
-                $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'BrandCollectionBgImage', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeBrandCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
-            }
-
-            $ul->htmlAfterField .= ' </div></div><input type="button" name="brand_collection" class="logoFiles-Js btn-xs" id="brand_collection" data-file_type='.AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
+            // $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+            //
+            // $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
+            //
+            //
+            // if(AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, 0, 0, $langId) ) {
+            //     $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'CategoryCollectionBgImage', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
+            // }
+            //
+            // $ul->htmlAfterField .= ' </div></div><input type="button" name="category_collection" class="logoFiles-Js btn-xs" id="category_collection" data-file_type='.AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
+            //
+            // $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Brand_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
+            //
+            //
+            // if(AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, 0, 0, $langId) ) {
+            //     $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'BrandCollectionBgImage', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeBrandCollectionBgImage('.$langId.')" ><i class="ion-close-round"></i></a>';
+            // }
+            //
+            // $ul->htmlAfterField .= ' </div></div><input type="button" name="brand_collection" class="logoFiles-Js btn-xs" id="brand_collection" data-file_type='.AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE.' value="Upload file"><small>Dimensions 1000*1000</small></li>';
 
             $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Invoice_Logo', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
 

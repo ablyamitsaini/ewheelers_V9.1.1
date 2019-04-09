@@ -23,7 +23,7 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 					<!--
 					header start here
 					-->
-					   
+
 					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
@@ -42,7 +42,7 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 					<!--
 					page title start here
 					-->
-					   
+
 					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
@@ -62,7 +62,7 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 					<!--
 					page body start here
 					-->
-					   
+
 					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
@@ -80,27 +80,27 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 															<tr>
 																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Username</td>
 																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{username}</td>
-															</tr>                                                        
+															</tr>
 															<tr>
 																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Email<span class="Apple-tab-span" style="white-space:pre"></span></td>
 																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{email}</td>
-															</tr>                                                        
+															</tr>
 															<tr>
 																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Name</td>
 																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{name}</td>
-															</tr>  
-                                                            
+															</tr>
+
 															<tr>
 																<td style="padding:10px;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;" width="153">Type</td>
 																<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" width="620">{user_type}</td>
-															</tr>                                                        
+															</tr>
 														</tbody>
 													</table></td>
 											</tr>
 											<!--
 											section footer
 											-->
-											   
+
 											<tr>
 												<td style="padding:30px 0;border-top:1px solid #ddd; ">Get in touch in you have any questions regarding our Services.<br />
 													Feel free to contact us 24/7. We are here to help.<br />
@@ -112,7 +112,7 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 											<!--
 											section footer
 											-->
-											   
+
 										</tbody>
 									</table></td>
 							</tr>
@@ -128,7 +128,7 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 					<!--
 					page footer start here
 					-->
-					   
+
 					<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
@@ -171,5 +171,23 @@ UPDATE `tbl_email_templates` SET `etpl_body` = '<div style="margin:0; padding:0;
 			</tr>
 		</tbody>
 	</table></div>' WHERE `tbl_email_templates`.`etpl_code` = 'new_registration_admin' AND `tbl_email_templates`.`etpl_lang_id` = 1;
-    
+
     ALTER TABLE `tbl_products` ADD `product_image_updated_on` TIMESTAMP NOT NULL AFTER `product_added_on`;
+
+
+
+
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_View_All';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_SHOP_NOW';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Facebook';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Google_Plus';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_New_to';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Already_to';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBl_Reviews';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Share_this_product';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Or_Login_With';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Office';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Not_Registered_Yet';
+
+DELETE e, el FROM tbl_extra_pages e INNER JOIN tbl_extra_pages_lang el ON epage_id = epagelang_epage_id WHERE epage_type in (1,13,14);
