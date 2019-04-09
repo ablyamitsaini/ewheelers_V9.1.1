@@ -59,7 +59,7 @@ class AttachedFile extends MyAppModel
     const FILETYPE_PRODUCT_IMAGE_PATH = 'product/';
     const FILETYPE_BLOG_POST_IMAGE_PATH = 'blog-post/';
 
-    public function __construct($fileId = 0) 
+    public function __construct($fileId = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $fileId);
         $this->objMainTableRecord->setSensitiveFields(array ());
@@ -77,7 +77,7 @@ class AttachedFile extends MyAppModel
         return $arr;
     }
 
-    public static function checkSize($file , $compareSize) 
+    public static function checkSize($file , $compareSize)
     {
         $compareSize = FatUtility::convertToType($compareSize, FatUtility::VAR_FLOAT);
         if(filesize($file) > $compareSize ) {
@@ -87,7 +87,7 @@ class AttachedFile extends MyAppModel
         return true;
     }
 
-    public static function getMultipleAttachments($fileType, $recordId, $recordSubid = 0,  $langId = 0, $displayUniversalImage = true,  $screen = 0, $size=0, $haveSubIdZero = false ) 
+    public static function getMultipleAttachments($fileType, $recordId, $recordSubid = 0,  $langId = 0, $displayUniversalImage = true,  $screen = 0, $size=0, $haveSubIdZero = false )
     {
         $fileType = FatUtility::int($fileType);
         $recordId = FatUtility::int($recordId);
@@ -137,7 +137,7 @@ class AttachedFile extends MyAppModel
         return FatApp::getDb()->fetchAll($rs, 'afile_id');
     }
 
-    public static function getAttachment( $fileType, $recordId, $recordSubid = 0, $langId = 0, $displayUniversalImage = true, $screen = 0 ) 
+    public static function getAttachment( $fileType, $recordId, $recordSubid = 0, $langId = 0, $displayUniversalImage = true, $screen = 0 )
     {
         $data = static::getMultipleAttachments($fileType, $recordId, $recordSubid, $langId, $displayUniversalImage, $screen);
         if (count($data > 0) ) {
@@ -147,7 +147,7 @@ class AttachedFile extends MyAppModel
         return null;
     }
 
-    public function saveAttachment($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $langId = 0, $screen = 0) 
+    public function saveAttachment($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $langId = 0, $screen = 0)
     {
         $defaultLangIdForErrors = ( $langId == 0 ) ? $this->commonLangId : $langId;
         if(!empty($name) && !empty($fl)) {
@@ -245,14 +245,14 @@ class AttachedFile extends MyAppModel
                 static::DB_TBL, array (
                 'smt' => 'afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?  AND afile_id != ? AND afile_screen = ?',
                 'vals' => array ($fileType, $recordId, $recordSubid, $langId, $this->mainTableRecordId, $screen)
-                ) 
+                )
             );
         }
 
         return $date_wise_path . $saveName;
     }
 
-    public function saveImage($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $lang_id = 0 , $mimeType='',  $screen = 0) 
+    public function saveImage($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $lang_id = 0 , $mimeType='',  $screen = 0)
     {
 
         if (getimagesize($fl) === false && $mimeType !='image/svg+xml') {
@@ -476,14 +476,14 @@ class AttachedFile extends MyAppModel
         $srch = new SearchBase(AttachedFile::DB_TBL_TEMP, 'aft');
         $srch->addCondition('aft.afile_downloaded', '=', applicationConstants::NO);
         //$srch->addOrder('aft.afile_id', 'asc');
-        $srch->addOrder('rand()');        
-        if($limit > 0) { $srch->setPageSize($limit); 
+        $srch->addOrder('rand()');
+        if($limit > 0) { $srch->setPageSize($limit);
         }
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
-        if($row == false) { return array(); 
+        if($row == false) { return array();
         }
-        else { return $row; 
+        else { return $row;
         }
     }
 
@@ -572,7 +572,7 @@ class AttachedFile extends MyAppModel
                 static::DB_TBL, array (
                 'smt' => 'afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?  AND afile_screen = ?',
                 'vals' => array ($fileType, $recordId, $recordSubid, $langId, $screen)
-                ) 
+                )
             );
         }
 
@@ -604,7 +604,7 @@ class AttachedFile extends MyAppModel
         return $file;
     }
 
-    public function deleteFile( $fileType, $recordId, $fileId = 0, $record_subid = 0, $langId = -1, $screen = 0 ) 
+    public function deleteFile( $fileType, $recordId, $fileId = 0, $record_subid = 0, $langId = -1, $screen = 0 )
     {
         $fileType = FatUtility::int($fileType);
         $recordId = FatUtility::int($recordId);

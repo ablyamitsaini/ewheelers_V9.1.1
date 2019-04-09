@@ -2,7 +2,7 @@
 class ImageController extends FatController
 {
 
-    public function __construct() 
+    public function __construct()
     {
         CommonHelper::initCommonVariables();
     }
@@ -29,7 +29,7 @@ class ImageController extends FatController
                 $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $recordId);
             }
         }
-        
+
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch( strtoupper($sizeType) ){
@@ -60,28 +60,28 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     function customProduct($recordId, $sizeType, $afile_id = 0, $lang_id = 0 )
     {
         $default_image = 'product_default_image.jpg';
         $recordId = FatUtility::int($recordId);
         $afile_id = FatUtility::int($afile_id);
         $lang_id = FatUtility::int($lang_id);
-    
+
         if($row ) {
-            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CUSTOM_PRODUCT_IMAGE, $row['afile_record_id'], $row['afile_record_subid'], $lang_id);            
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CUSTOM_PRODUCT_IMAGE, $row['afile_record_id'], $row['afile_record_subid'], $lang_id);
         } elseif($afile_id > 0 ) {
             $res = AttachedFile::getAttributesById($afile_id);
             if(!false == $res && $res['afile_type'] == AttachedFile::FILETYPE_CUSTOM_PRODUCT_IMAGE ) {
                 $file_row = $res;
             }
-        } 
-            
-        if($file_row == false ) {            
+        }
+
+        if($file_row == false ) {
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CUSTOM_PRODUCT_IMAGE, $recordId, 0, $lang_id);
         }
         $image_name = isset($file_row['afile_physical_path']) ? AttachedFile::FILETYPE_PRODUCT_IMAGE_PATH . $file_row['afile_physical_path'] : '';
-        
+
         switch( strtoupper($sizeType) ){
         case 'THUMB':
             $w = 100;
@@ -90,7 +90,7 @@ class ImageController extends FatController
             break;
         case 'SMALL':
             // image size required in product listing
-            $w = 150; 
+            $w = 150;
             $h = 150;
             AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
@@ -104,7 +104,7 @@ class ImageController extends FatController
             $w = 400;
             AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
-        }    
+        }
     }
 
     /*
@@ -116,7 +116,7 @@ class ImageController extends FatController
     */
     function product( $recordId, $sizeType, $selprod_id = 0, $afile_id = 0, $lang_id = 0 )
     {
-      
+
         $default_image = 'product_default_image.jpg';
         $recordId = FatUtility::int($recordId);
         $afile_id = FatUtility::int($afile_id);
@@ -157,14 +157,14 @@ class ImageController extends FatController
 
         if($selprod_id && $row ) {
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_PRODUCT_IMAGE, $row['afile_record_id'], $row['afile_record_subid'], $lang_id);
-        
+
         } elseif($afile_id > 0 ) {
             $res = AttachedFile::getAttributesById($afile_id);
             if(!false == $res && $res['afile_type'] == AttachedFile::FILETYPE_PRODUCT_IMAGE ) {
                 $file_row = $res;
             }
         }
-        
+
         if($file_row == false ) {
             //echo 'sds'; die("here");
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_PRODUCT_IMAGE, $recordId, -1, $lang_id);
@@ -174,19 +174,19 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? AttachedFile::FILETYPE_PRODUCT_IMAGE_PATH . $file_row['afile_physical_path'] : '';
         /* CommonHelper::printArray($image_name); die();  */
         $cacheKey = false;
-        /* if(CONF_USE_FAT_CACHE){ 
+        /* if(CONF_USE_FAT_CACHE){
         $requestUrl = $_SERVER['REQUEST_URI'];
         if(FatCache::get($requestUrl, CONF_IMG_CACHE_TIME, '.jpg')){
         $cacheKey = $requestUrl;
-        }	
+        }
         } */
         $cacheKey = $_SERVER['REQUEST_URI'];
         $str = FatCache::get($cacheKey, CONF_IMG_CACHE_TIME, '.jpg');
-        if (false == $str && !CONF_USE_FAT_CACHE) { 
+        if (false == $str && !CONF_USE_FAT_CACHE) {
             $cacheKey = false;
-        } 
-        
-        /* 
+        }
+
+        /*
         ob_start(); */
 
         switch( strtoupper($sizeType) ){
@@ -263,7 +263,7 @@ class ImageController extends FatController
         }
 
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
-    
+
         AttachedFile::displayOriginalImage($image_name,  $default_image);
 
     }
@@ -706,7 +706,7 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     function invoiceLogo( $lang_id = 0, $sizeType = '' )
     {
         $lang_id = FatUtility::int($lang_id);
@@ -728,7 +728,7 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     public function CategoryCollectionBgImage( $langId = 0, $sizeType = '' )
     {
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_COLLECTION_BG_IMAGE, $recordId, 0, $langId);
@@ -745,7 +745,7 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     public function BrandCollectionBgImage( $langId = 0, $sizeType = '' )
     {
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_COLLECTION_BG_IMAGE, $recordId, 0, $langId);
@@ -762,7 +762,7 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     function coupon($coupon_id, $lang_id = 0, $sizeType = '')
     {
         $coupon_id = FatUtility::int($coupon_id);
@@ -826,7 +826,7 @@ class ImageController extends FatController
 
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_HOME_PAGE_BANNER, $slide_id, 0, $lang_id, $displayUniversalImage, $screen);
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
-        
+
         $cacheKey = $_SERVER['REQUEST_URI'];
         $str = FatCache::get($cacheKey, null, '.jpg');
         if (false == $str && !CONF_USE_FAT_CACHE) {
@@ -940,7 +940,7 @@ class ImageController extends FatController
     {
         $this->displayCollectionBgImage($recordId, $langId, $sizeType);
     }
-    
+
     public function displayCollectionBgImage( $collectionId, $langId = 0, $sizeType = '', $displayUniversalImage = true )
     {
         $collectionId = FatUtility::int($collectionId);
@@ -1101,7 +1101,7 @@ class ImageController extends FatController
             break;
         }
     }
-    
+
     public function cblockBackgroundImage( $cblockId, $langId = 0, $sizeType = '', $fileType)
     {
         $cblockId = FatUtility::int($cblockId);
