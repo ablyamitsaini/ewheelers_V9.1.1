@@ -1,4 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');  ?>
+<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
+<div class="cards-content p-3">
 <div class="tabs tabs--small tabs--scroll clearfix">
 	<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
 </div>
@@ -15,6 +17,7 @@
 		?>
 	  </div>
 	</div>
+</div>
 </div>
 <script>
 	$('input[name=\'option_name\']').autocomplete({

@@ -1,3 +1,5 @@
+<?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
+<div class="cards-content p-3">
 <div class="tabs__content form">
 	<div class="form__content">
 		<div class="col-md-12">
@@ -141,6 +143,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 <script>
 var buttonClick = <?php echo $totalSpec; ?>;

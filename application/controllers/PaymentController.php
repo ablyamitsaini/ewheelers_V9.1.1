@@ -1,4 +1,5 @@
 <?php
-class PaymentController extends MyAppController {
-	
-}	
+class PaymentController extends MyAppController
+{
+    
+}    

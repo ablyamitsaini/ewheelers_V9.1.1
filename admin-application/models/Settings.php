@@ -1,11 +1,12 @@
 <?php 
 class Settings
 {
-	public function __construct() {
-		$this->db = FatApp::getDb();
-	}
-	
-	public function restoreDatabase($backupFile, $concate_path = true)
+    public function __construct() 
+    {
+        $this->db = FatApp::getDb();
+    }
+    
+    public function restoreDatabase($backupFile, $concate_path = true)
     {
         $db_server = CONF_DB_SERVER;
         $db_user = CONF_DB_USER;
@@ -14,8 +15,8 @@ class Settings
         $conf_db_path = CONF_DB_BACKUP_DIRECTORY_FULL_PATH;
         if ($concate_path == true) {
             $backupFile = $conf_db_path . $backupFile;
-		}
-		/* die($backupFile); */
+        }
+        /* die($backupFile); */
         $sql = "SHOW TABLES FROM $db_databasename";
         if ($rs = $this->db->query($sql)) {
             while ($row = $this->db->fetch($rs)) {
@@ -30,7 +31,7 @@ class Settings
     public function getDatabaseDirectoryFiles()
     {
         $dir = dir(CONF_DB_BACKUP_DIRECTORY_FULL_PATH);
-		$files_arr = array();
+        $files_arr = array();
         $count = 0;
         while (($file = $dir->read()) !== false) {
             if (!($file == "." || $file == ".." || $file == ".htaccess")) {
@@ -42,7 +43,7 @@ class Settings
 
     public function backupDatabase($name, $attachtime = true, $download = false, $backup_path = "")
     {
-		set_time_limit(0);
+        set_time_limit(0);
         $db_server = CONF_DB_SERVER;
         $db_user = CONF_DB_USER;
         $db_password = CONF_DB_PASS;
@@ -58,30 +59,30 @@ class Settings
         $data_str = "mysqldump --opt --host=" . $db_server . " --user=" . $db_user . " --password=" . $db_password . " " . $db_databasename . " > " . $backupFile;
         $create_backup = system($data_str);
         if ($download) {
-			$this->download_file($fileToDownload);
-		} 
+            $this->download_file($fileToDownload);
+        } 
         return true;
     }
 
     public function download_file($file)
     {
-		ini_set('memory_limit', '100M'); 
-		set_time_limit(0);
+        ini_set('memory_limit', '100M'); 
+        set_time_limit(0);
         $download_dir = CONF_DB_BACKUP_DIRECTORY_FULL_PATH;
         $path = $download_dir . $file;
         if (!file_exists($path)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_The_file_is_not_available_for_download.',CommonHelper::getLangId()));
-			return false;
+            Message::addErrorMessage(Labels::getLabel('LBL_The_file_is_not_available_for_download.', CommonHelper::getLangId()));
+            return false;
         }
-		$filename = $download_dir . "/" . $file;
-		header('Content-Description: File Transfer');
-		header("Content-Type: application/force-download");
-		header("Content-Disposition: attachment; filename=\"" . basename($filename) . "\";");
-		header('Content-Length: ' . filesize($filename));
-		readfile($filename);
-		return true;
+        $filename = $download_dir . "/" . $file;
+        header('Content-Description: File Transfer');
+        header("Content-Type: application/force-download");
+        header("Content-Disposition: attachment; filename=\"" . basename($filename) . "\";");
+        header('Content-Length: ' . filesize($filename));
+        readfile($filename);
+        return true;
     }
-	
+    
     public function recurse_zip($src, &$zip, $path_length)
     {
         $dir = opendir($src);
@@ -109,10 +110,10 @@ class Settings
         $f = explode('.', $filename);
         $filename = $f[0];
         $filename = (($filename == '') ? $destination . date("d-m-y H-i-s") . '.zip' : $destination . $filename . '.zip');
-		$zip = new ZipArchive;
+        $zip = new ZipArchive;
         $res = $zip->open($filename, ZipArchive::CREATE);
-        if ($res !== TRUE) {
-            echo Labels::getLabel('LBL_Unable_to_create_zip_file',CommonHelper::getLangId());
+        if ($res !== true) {
+            echo Labels::getLabel('LBL_Unable_to_create_zip_file', CommonHelper::getLangId());
             exit;
         }
         if (is_file($src)) {
@@ -121,7 +122,7 @@ class Settings
             if (!is_dir($src)) {
                 $zip->close();
                 @unlink($filename);
-                echo Labels::getLabel('LBL_File_not_found',CommonHelper::getLangId());
+                echo Labels::getLabel('LBL_File_not_found', CommonHelper::getLangId());
                 exit;
             }
             $this->recurse_zip($src, $zip, $path_length);
@@ -144,15 +145,14 @@ class Settings
             }
         }
         closedir($handle);
-		if(isset($file_date))
-		{
-			asort($file_date, SORT_NUMERIC);
-			reset($file_date);
-			$oldest = key($file_date);
-			if (count($file_date) > 3) {
-				return @unlink($directory . '/' . $oldest);
-			}
-		}
+        if(isset($file_date)) {
+            asort($file_date, SORT_NUMERIC);
+            reset($file_date);
+            $oldest = key($file_date);
+            if (count($file_date) > 3) {
+                return @unlink($directory . '/' . $oldest);
+            }
+        }
     }
 }
 ?>

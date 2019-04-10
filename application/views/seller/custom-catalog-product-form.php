@@ -14,12 +14,7 @@
 			</div>
 		</div>
 		<div class="content-body">
-			<div class="cards">
-				<?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
-				<div class="cards-content p-3">
-					<div id="listing"></div>
-				</div>
-			</div>
+			<div class="cards" id="listing"></div>
 		</div>
 	</div>
 </main>

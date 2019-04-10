@@ -1,6 +1,7 @@
 <?php
 
-class PaymentSettings {
+class PaymentSettings
+{
 
     const DB_PAYMENT_METHODS_TBL = 'tbl_payment_methods';
     const DB_PAYMENT_METHODS_TBL_PREFIX = 'pmethod_';
@@ -14,18 +15,21 @@ class PaymentSettings {
 
     const CashOnDelivery = 4;
 
-    public function __construct($methodIdentifier) {
+    public function __construct($methodIdentifier) 
+    {
         $this->db = FatApp::getDb();
         $this->paymentMethodKey = $methodIdentifier;
         $this->error = '';
         $this->commonLangId = CommonHelper::getLangId();
     }
 
-    function getError() {
+    function getError() 
+    {
         return $this->error;
     }
 
-    public function saveSettings($arr) {
+    public function saveSettings($arr) 
+    {
         if (empty($arr)) {
             $this->error = Labels::getLabel('ERR_Error:_Please_provide_data_to_save_settings.', $this->commonLangId);
             return false;
@@ -69,31 +73,33 @@ class PaymentSettings {
         return true;
     }
 
-    public function getPaymentSettings() {
+    public function getPaymentSettings() 
+    {
         if (!isset($this->paymentMethodKey)) {
             $this->error = Labels::getLabel('ERR_Error:_Please_create_an_object_with_Payment_Method_Key.', $this->commonLangId);
             return false;
         }
 
         $paymentMethod = $this->getPaymentMethodByCode($this->paymentMethodKey);
-		
+        
         if (!$paymentMethod) {
             $this->error = Labels::getLabel('ERR_Error:_Payment_method_with_this_payment_key_does_not_exist.', $this->commonLangId);
             return false;
         }
 
         $paymentMethodSettings = $this->getPaymentMethodFieldsById($paymentMethod["pmethod_id"]);
-		
+        
         $paymentSettings = array();
 
         foreach ($paymentMethodSettings as $pkey => $pval) {
             $paymentSettings[$pval["paysetting_key"]] = $pval["paysetting_value"];
         }
-		$paymentSettings['pmethod_name'] = $paymentMethod['pmethod_identifier'] ;
+        $paymentSettings['pmethod_name'] = $paymentMethod['pmethod_identifier'] ;
         return array_merge($paymentSettings, $paymentMethod);
     }
 
-    private function getPaymentMethodByCode($code) {
+    private function getPaymentMethodByCode($code) 
+    {
         if (empty($code)) {
             return false;
         }
@@ -104,11 +110,12 @@ class PaymentSettings {
         return $payment_method;
     }
 
-    private function getPaymentMethodFieldsById($pmethod_id) {
+    private function getPaymentMethodFieldsById($pmethod_id) 
+    {
         $srch = new SearchBase(static::DB_PAYMENT_METHOD_SETTINGS_TBL, 'tpms');
         $srch->addCondition('tpms.' . static::DB_PAYMENT_METHOD_SETTINGS_TBL_PREFIX . 'pmethod_id', '=', (int) $pmethod_id);
-		/* $srch->addMultipleFields(array()); */
-		/* die($srch->getQuery()); */
+        /* $srch->addMultipleFields(array()); */
+        /* die($srch->getQuery()); */
         $rs = $srch->getResultSet();
         $paymentMethodSettings = $this->db->fetchAll($rs);
         return $paymentMethodSettings;
