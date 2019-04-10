@@ -105,4 +105,3 @@ class States extends MyAppModel{
 	}
 
 }
->>>>>>> import_code_compact
