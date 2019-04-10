@@ -2,7 +2,7 @@
 trait SellerProducts
 {
 
-    protected function getSellerProductSearchForm() 
+    protected function getSellerProductSearchForm()
     {
         $frm = new Form('frmSearch');
         $frm->addTextBox('', 'keyword', '', array('id'=>'keyword'));
@@ -1070,7 +1070,7 @@ trait SellerProducts
             Message::addErrorMessage(Labels::getLabel('MSG_Quantity_cannot_be_more_than_the_Stock_of_the_Product', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        
+
         /* Check if volume discount for same quantity already exists [ */
         $tblRecord = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
         if($tblRecord->loadFromDb(array('smt' => 'voldiscount_selprod_id = ? AND voldiscount_min_qty = ?', 'vals' => array($selprod_id, $post['voldiscount_min_qty']))) ) {
@@ -1183,7 +1183,7 @@ trait SellerProducts
         $metaId= 0;
 
         if(!empty($prodMetaData)) {
-            $metaId = $prodMetaData['meta_id']; 
+            $metaId = $prodMetaData['meta_id'];
         }
         $productSeoForm = $this->getProductSeoForm($metaId, $metaType, $selprod_id);
         $productSeoForm->fill($prodMetaData);
@@ -1558,7 +1558,7 @@ trait SellerProducts
         FatUtility::dieJsonSuccess(Message::getHtml());
     }
 
-    public function downloadDigitalFile($aFileId,$recordId = 0,$fileType = AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD) 
+    public function downloadDigitalFile($aFileId,$recordId = 0,$fileType = AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD)
     {
         $aFileId = FatUtility::int($aFileId);
         $recordId = FatUtility::int($recordId);
@@ -1846,7 +1846,7 @@ trait SellerProducts
         $product_id = FatUtility::int($product_id);
         $userId = UserAuthentication::getLoggedUserId();
 
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id, array('selprod_user_id', 'selprod_id', 'selprod_product_id', 'selprod_url_keyword', 'selprod_price', 'selprod_stock'), false);
+        $sellerProductRow = SellerProduct::getAttributesById($selprod_id, array('selprod_user_id', 'selprod_id', 'selprod_product_id', 'selprod_url_keyword', 'selprod_cost', 'selprod_price', 'selprod_stock'), false);
 
         if($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId() ) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
@@ -1879,6 +1879,10 @@ trait SellerProducts
             }
         }
         $frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->siteLangId), 'selprod_url_keyword')->requirements()->setRequired();
+
+        $costPrice = $frm->addFloatField( Labels::getLabel('LBL_Cost_Price',$this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']','selprod_cost');
+		$costPrice->requirements()->setPositive();
+
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_price');
         if(isset($productData['product_min_selling_price'])) {
             $fld->requirements()->setRange($productData['product_min_selling_price'], 9999999999);

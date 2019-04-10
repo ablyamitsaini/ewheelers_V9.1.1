@@ -2830,7 +2830,9 @@ class SellerController extends LoggedUserController {
 		/* ] */
 
 		$firstLine = fgetcsv( $fileHandle );
-		$defaultColArr = $this->getInventorySheetColoum($this->siteLangId);
+
+		$impObj = new ImportexportCommon();
+		$defaultColArr = $impObj->getProductInventoryColumnArr($this->siteLangId);
 		if($firstLine != $defaultColArr){
 			/* Message::addErrorMessage(Labels::getLabel('LBL_Sheet_seems_to_be_empty', $this->siteLangId )); */
 			FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Coloum_CSV_File', $this->siteLangId ));
@@ -2886,7 +2888,7 @@ class SellerController extends LoggedUserController {
 		$srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
 		$srch->addOrder('product_name');
 		$srch->addOrder('selprod_active', 'DESC');
-		$srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_price', 'selprod_stock', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
+		$srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_cost','selprod_price', 'selprod_stock', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$rs = $srch->getResultSet();
@@ -2901,7 +2903,8 @@ class SellerController extends LoggedUserController {
 
 		$sheetData = array();
 		/* $arr = array('selprod_id','selprod_sku','selprod_title', 'selprod_price','selprod_stock'); */
-		$arr = $this->getInventorySheetColoum($this->siteLangId);
+		$impObj = new ImportexportCommon();
+		$arr = $impObj->getProductInventoryColumnArr($this->siteLangId);
 		array_push($sheetData,$arr);
 
 		foreach($inventoryData as $key=>$val){
@@ -2914,17 +2917,6 @@ class SellerController extends LoggedUserController {
 		}
 
 		CommonHelper::convertToCsv($sheetData, str_replace(' ','_',Labels::getLabel('LBL_Inventory_Report',$this->siteLangId)).'_'.date("Y-m-d").'.csv', ','); exit;
-	}
-
-	private function getInventorySheetColoum($langId){
-		$arr = array(
-			Labels::getLabel("LBL_Seller_Product_Id", $langId),
-			Labels::getLabel("LBL_SKU", $langId),
-			Labels::getLabel("LBL_Product", $langId),
-			Labels::getLabel("LBL_Price", $langId),
-			Labels::getLabel("LBL_Stock/Quantity", $langId)
-		);
-		return $arr;
 	}
 
 	/* private function isMediaUploaded($shopId){
