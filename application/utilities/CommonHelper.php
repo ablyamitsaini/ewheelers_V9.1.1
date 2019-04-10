@@ -93,39 +93,39 @@ class CommonHelper extends FatUtility
         return self::$_currency_value;
     }
 
-    public static function userIp() 
+    public static function userIp()
     {
         return self::$_ip;
     }
 
-    public static function userAgent() 
+    public static function userAgent()
     {
         return self::$_user_agent;
     }
 
-    public static function getClientIp() 
+    public static function getClientIp()
     {
         $ipaddress = '';
         if (getenv('HTTP_CLIENT_IP')) {
-            $ipaddress = getenv('HTTP_CLIENT_IP'); 
+            $ipaddress = getenv('HTTP_CLIENT_IP');
         }
         else if (getenv('HTTP_X_FORWARDED_FOR')) {
-            $ipaddress = getenv('HTTP_X_FORWARDED_FOR'); 
+            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
         }
         else if (getenv('HTTP_X_FORWARDED')) {
-            $ipaddress = getenv('HTTP_X_FORWARDED'); 
+            $ipaddress = getenv('HTTP_X_FORWARDED');
         }
         else if (getenv('HTTP_FORWARDED_FOR')) {
-            $ipaddress = getenv('HTTP_FORWARDED_FOR'); 
+            $ipaddress = getenv('HTTP_FORWARDED_FOR');
         }
         else if (getenv('HTTP_FORWARDED')) {
-            $ipaddress = getenv('HTTP_FORWARDED'); 
+            $ipaddress = getenv('HTTP_FORWARDED');
         }
         else if (getenv('REMOTE_ADDR')) {
-            $ipaddress = getenv('REMOTE_ADDR'); 
+            $ipaddress = getenv('REMOTE_ADDR');
         }
         else {
-            $ipaddress = 'UNKNOWN'; 
+            $ipaddress = 'UNKNOWN';
         }
         return $ipaddress;
     }
@@ -178,7 +178,7 @@ class CommonHelper extends FatUtility
     }
 
 
-    static function generateUrl($controller = '', $action = '', $queryData = array(), $use_root_url = '', $url_rewriting = null, $encodeUrl = false, $getOriginalUrl = false) 
+    static function generateUrl($controller = '', $action = '', $queryData = array(), $use_root_url = '', $url_rewriting = null, $encodeUrl = false, $getOriginalUrl = false)
     {
 
         if(self::isThemePreview()) {
@@ -221,7 +221,7 @@ class CommonHelper extends FatUtility
         return $protocol . $_SERVER['SERVER_NAME'] . $url;
     }
 
-    static function generateNoAuthUrl($model = '', $action = '', $queryData = array(), $use_root_url = '') 
+    static function generateNoAuthUrl($model = '', $action = '', $queryData = array(), $use_root_url = '')
     {
         $url = CommonHelper::generateUrl($model, $action, $queryData, $use_root_url, false);
         $url = str_replace('index.php?', 'index_noauth.php?', $url);
@@ -506,7 +506,7 @@ class CommonHelper extends FatUtility
     return $tax;
     } */
 
-    public static function renderHtml($content='',$stripJs = false) 
+    public static function renderHtml($content='',$stripJs = false)
     {
         $str = html_entity_decode($content);
         $str = ($stripJs == true)?static::strip_javascript($str):$str;
@@ -560,7 +560,7 @@ class CommonHelper extends FatUtility
         return   $currencySymbolLeft.$currencySymbolRight;
     }
 
-    public static function numberStringFormat($number) 
+    public static function numberStringFormat($number)
     {
         $prefixes = 'KMGTPEZY';
         if ($number >= 1000) {
@@ -596,6 +596,7 @@ class CommonHelper extends FatUtility
 
     public static function displayMoneyFormat( $val, $numberFormat = true, $showInConfiguredDefaultCurrency = false, $displaySymbol = true,$stringFormat = false)
     {
+        $val = FatUtility::convertToType($val, FatUtility::VAR_FLOAT);
         $currencyValue = self::getCurrencyValue();
         $currencySymbolLeft = self::getCurrencySymbolLeft();
         $currencySymbolRight = self::getCurrencySymbolRight();
@@ -687,7 +688,7 @@ class CommonHelper extends FatUtility
         return $val != "" ? $val : $str;
     }
 
-    public static function editorSvg($path) 
+    public static function editorSvg($path)
     {
 
         $headers = FatApp::getApacheRequestHeaders();
@@ -728,18 +729,18 @@ class CommonHelper extends FatUtility
     public static function convertToCsv($input_array, $output_file_name, $delimiter)
     {
         /**
-* 
- * open raw memory as file, no need for temp files 
+*
+ * open raw memory as file, no need for temp files
 */
         $temp_memory = fopen('php://memory', 'w');
         /**
-* 
- * loop through array  
+*
+ * loop through array
 */
         foreach ($input_array as $key => $line) {
             /**
-* 
- * default php csv handler 
+*
+ * default php csv handler
 **/
             //fprintf( $temp_memory, chr(0xEF).chr(0xBB).chr(0xBF) );
             //$line = array_map("utf8_decode", $line);
@@ -749,13 +750,13 @@ class CommonHelper extends FatUtility
             fputcsv($temp_memory, $line, $delimiter);
         }
         /**
-* 
- * rewrind the "file" with the csv lines 
+*
+ * rewrind the "file" with the csv lines
 **/
         fseek($temp_memory, 0);
         /**
-* 
- * modify header to be downloadable csv file 
+*
+ * modify header to be downloadable csv file
 **/
         header('Content-Description: File Transfer');
         /* header('Content-Transfer-Encoding: binary');
@@ -764,8 +765,8 @@ class CommonHelper extends FatUtility
         header('Content-type: application/csv; charset=UTF-8; encoding=UTF-8');
         header('Content-Disposition: attachement; filename="' . $output_file_name . '";');
         /**
-* 
- * Send file to browser for download 
+*
+ * Send file to browser for download
 */
 
         //echo "\xEF\xBB\xBF";
@@ -819,7 +820,7 @@ class CommonHelper extends FatUtility
         return $percent_friendly = number_format($percent * 100, 2) . '%';
     }
 
-    public static function verifyCaptcha($fld_name='g-recaptcha-response') 
+    public static function verifyCaptcha($fld_name='g-recaptcha-response')
     {
         include_once CONF_INSTALLATION_PATH . 'library/ReCaptcha/src/autoload.php';
         if (!empty(FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')) && !empty(FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, ''))) {
@@ -843,7 +844,7 @@ class CommonHelper extends FatUtility
         return true; */
     }
 
-    public static function strip_javascript($content='') 
+    public static function strip_javascript($content='')
     {
         $javascript = '/<script[^>]*?>.*?<\/script>/si';
         $noscript = '';
@@ -859,10 +860,10 @@ class CommonHelper extends FatUtility
     {
         $db = FatApp::getDb();
         if(method_exists($db, 'quoteVariable')) {
-            return $db->quoteVariable($string); 
+            return $db->quoteVariable($string);
         }
         else {
-            return "'" . mysql_real_escape_string($string) . "'"; 
+            return "'" . mysql_real_escape_string($string) . "'";
         }
     }
 
@@ -904,7 +905,7 @@ class CommonHelper extends FatUtility
         return (isset($matches[1])) ? $matches[1] : false;
     }
 
-    public static function getCurrUrl() 
+    public static function getCurrUrl()
     {
         return self::getUrlScheme() . $_SERVER["REQUEST_URI"];
     }
@@ -917,7 +918,7 @@ class CommonHelper extends FatUtility
         return false;
     }
 
-    public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0, $getOriginalUrl = false  ) 
+    public static function getnavigationUrl( $type, $nav_url = '', $nav_cpage_id = 0, $nav_category_id = 0, $getOriginalUrl = false  )
     {
 
         if($type == NavigationLinks::NAVLINK_TYPE_CMS ) {
@@ -937,7 +938,7 @@ class CommonHelper extends FatUtility
         return $url;
     }
 
-    public static function getUrlScheme() 
+    public static function getUrlScheme()
     {
         $pageURL = 'http';
         if (isset($_SERVER['HTTPS']) && $_SERVER["HTTPS"] == "on") {
@@ -952,7 +953,7 @@ class CommonHelper extends FatUtility
         return $pageURL;
     }
 
-    public static function redirectUserReferer($returnUrl = false) 
+    public static function redirectUserReferer($returnUrl = false)
     {
         if (!defined('REFERER')) {
             if (self::getCurrUrl() == $_SERVER['HTTP_REFERER'] || empty($_SERVER['HTTP_REFERER'])) {
@@ -1133,7 +1134,7 @@ class CommonHelper extends FatUtility
         return $arr_url_params;
     }
 
-    static function crop($data,$src,$langId) 
+    static function crop($data,$src,$langId)
     {
         if(empty($data)) { return;
         }
@@ -1255,11 +1256,11 @@ class CommonHelper extends FatUtility
 
     static function subStringByWords( $str, $maxlength )
     {
-        if (strlen($str)<$maxlength) { return $str; 
+        if (strlen($str)<$maxlength) { return $str;
         }
         $str = substr($str, 0, $maxlength);
         $rpos = strrpos($str, ' ');
-        if ($rpos>0) { $str = substr($str, 0, $rpos); 
+        if ($rpos>0) { $str = substr($str, 0, $rpos);
         }
         return $str;
     }
@@ -1315,12 +1316,12 @@ class CommonHelper extends FatUtility
         return $val;
     }
 
-    static function is_multidim_array($arr) 
+    static function is_multidim_array($arr)
     {
-        if (!is_array($arr)) {    return false; 
+        if (!is_array($arr)) {    return false;
         }
         foreach ($arr as $elm) {
-            if (!is_array($elm)) {    return false; 
+            if (!is_array($elm)) {    return false;
             }
         }
         return true;
@@ -1333,20 +1334,20 @@ class CommonHelper extends FatUtility
         return $new_value;
     }
 
-    static function processURLString( $urlString ) 
+    static function processURLString( $urlString )
     {
         $strtestpos = strpos(" ".$urlString, ".");
-        if(!$strtestpos) { return $urlString; 
+        if(!$strtestpos) { return $urlString;
         }
         $urlString = trim($urlString);
         if($urlString) {
             $my_bool = false;
-            if(substr($urlString, 0, 5) == 'https') { $my_bool = true; 
+            if(substr($urlString, 0, 5) == 'https') { $my_bool = true;
             }
             $urlString = preg_replace('/https?:\/\//', '', $urlString);
             $urlString = trim($urlString);
             $pre_str = 'http://';
-            if($my_bool) { $pre_str = 'https://'; 
+            if($my_bool) { $pre_str = 'https://';
             }
             $urlString = $pre_str.$urlString;
         }
@@ -1406,7 +1407,7 @@ class CommonHelper extends FatUtility
 
     public static function truncateCharacters($string, $limit, $break=" ", $pad="..." ,$nl2br = false)
     {
-        if(strlen($string) <= $limit) { return ($nl2br)? nl2br($string) : $string ; 
+        if(strlen($string) <= $limit) { return ($nl2br)? nl2br($string) : $string ;
         }
 
 
@@ -1434,15 +1435,15 @@ class CommonHelper extends FatUtility
     {
         if(!empty($string)) {
             if($capitalize == true) {
-                return strtoupper($string[0]); 
+                return strtoupper($string[0]);
             }
             else {
-                return $string[0]; 
+                return $string[0];
             }
         }
     }
 
-    public static function seoUrl($string) 
+    public static function seoUrl($string)
     {
 
         //Lower case everything
@@ -1466,7 +1467,7 @@ class CommonHelper extends FatUtility
         return trim($string, '-');
     }
 
-    public static function recursiveDelete($str) 
+    public static function recursiveDelete($str)
     {
 
         if (is_file($str)) {
@@ -1481,17 +1482,17 @@ class CommonHelper extends FatUtility
         }
     }
 
-    public static function displayText($value = '') 
+    public static function displayText($value = '')
     {
         return empty(trim($value)) ? '-' : $value ;
     }
 
-    public static function getPlaceholderForAmtField($langId) 
+    public static function getPlaceholderForAmtField($langId)
     {
         return Labels::getLabel('Lbl_Amount_in', $langId).' '.static::concatCurrencySymbolWithAmtLbl();
     }
 
-    public static function concatCurrencySymbolWithAmtLbl() 
+    public static function concatCurrencySymbolWithAmtLbl()
     {
 
         $currencyId = FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1);
@@ -1529,7 +1530,7 @@ class CommonHelper extends FatUtility
         foreach($ar as $key=>$val){
             $val=trim($val);
             if (!empty($val)) {
-                $reArray[]=$val; 
+                $reArray[]=$val;
             }
         }
         return $reArray;
@@ -1636,7 +1637,7 @@ class CommonHelper extends FatUtility
         '10'=>4
         );
     }
-    public static function validate_cc_number($cardNumber) 
+    public static function validate_cc_number($cardNumber)
     {
         $cardNumber = preg_replace('/\D/', '', ($cardNumber));
         $len = strlen($cardNumber);
@@ -1696,12 +1697,12 @@ class CommonHelper extends FatUtility
         setcookie($cookieName, $cookieValue, $cookieExpiryTime, $cookiePath, $cokieSubDomainName, $isCookieSecure, $isCookieHttpOnly);
     }
 
-    public static function writeFile($name, $data, &$response) 
+    public static function writeFile($name, $data, &$response)
     {
         $fName = CONF_UPLOADS_PATH . preg_replace('/[^a-zA-Z0-9\/\-\_\.]/', '', $name);
         $dest = dirname($fName);
 
-        if (!file_exists($dest)) { mkdir($dest, 0777, true); 
+        if (!file_exists($dest)) { mkdir($dest, 0777, true);
         }
 
         $file = fopen($fName, 'w');
@@ -1725,9 +1726,9 @@ class CommonHelper extends FatUtility
         return  CommonHelper::generateFullUrl("Custom", "paymentFailed");
     }
 
-    public static function minify_html($input) 
+    public static function minify_html($input)
     {
-        if(trim($input) === "") { return $input; 
+        if(trim($input) === "") { return $input;
         }
         // Remove extra white-space(s) between HTML attribute(s)
         $input = preg_replace_callback(
@@ -1792,9 +1793,9 @@ class CommonHelper extends FatUtility
         );
     }
 
-    public static function minify_css($input) 
+    public static function minify_css($input)
     {
-        if(trim($input) === "") { return $input; 
+        if(trim($input) === "") { return $input;
         }
         return preg_replace(
             array(
@@ -1837,9 +1838,9 @@ class CommonHelper extends FatUtility
         );
     }
     // JavaScript Minifier
-    public static function minify_js($input) 
+    public static function minify_js($input)
     {
-        if(trim($input) === "") { return $input; 
+        if(trim($input) === "") { return $input;
         }
         return preg_replace(
             array(
@@ -1893,7 +1894,7 @@ class CommonHelper extends FatUtility
         file_put_contents($file, $log, FILE_APPEND);
     }
 
-    public static function fullCopy($source, $target, $empty_first=true) 
+    public static function fullCopy($source, $target, $empty_first=true)
     {
         if ($empty_first) {
             self::recursiveDelete($target);
