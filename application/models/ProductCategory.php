@@ -10,13 +10,13 @@ class ProductCategory extends MyAppModel
     private $categoryTreeArr = array();
 
 
-    public function __construct( $id = 0 ) 
+    public function __construct( $id = 0 )
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
         $this->db = FatApp::getDb();
     }
 
-    public static function getSearchObject( $includeChildCount = false , $langId = 0, $prodcat_active = true ) 
+    public static function getSearchObject( $includeChildCount = false , $langId = 0, $prodcat_active = true )
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 'm');
@@ -119,7 +119,7 @@ class ProductCategory extends MyAppModel
         $rs = $srch->getResultSet();
         $record = FatApp::getDb()->fetch($rs);
         if(!empty($record)) {
-            return $record['max_order']+1; 
+            return $record['max_order']+1;
         }
         return 1;
     }
@@ -214,7 +214,7 @@ class ProductCategory extends MyAppModel
     }
 
 
-    public static function parseTree($tree, $root = 0) 
+    public static function parseTree($tree, $root = 0)
     {
         $return = array();
         foreach($tree as $categoryId => $category) {
@@ -230,7 +230,7 @@ class ProductCategory extends MyAppModel
 
     public function getCategoryStructure( $prodcat_id, $category_tree_array = '',$langId = 0 )
     {
-        if (!is_array($category_tree_array) ) { $category_tree_array = array(); 
+        if (!is_array($category_tree_array) ) { $category_tree_array = array();
         }
         $langId =  FatUtility::int($langId);
 
@@ -375,7 +375,7 @@ class ProductCategory extends MyAppModel
         return $return;
     }
 
-    public function getNestedArray($langId) 
+    public function getNestedArray($langId)
     {
         $arr = $this->getCategoriesForSelectBox($langId);
         $out = array();
@@ -392,7 +392,7 @@ class ProductCategory extends MyAppModel
         return $out;
     }
 
-    public function makeAssociativeArray($arr, $prefix = ' » ') 
+    public function makeAssociativeArray($arr, $prefix = ' » ')
     {
         $out = array();
         $tempArr = array();
@@ -422,7 +422,7 @@ class ProductCategory extends MyAppModel
         return $out;
     }
 
-    public function getCategoriesForSelectBox( $langId, $ignoreCategoryId = 0,$prefCategoryid=array()) 
+    public function getCategoriesForSelectBox( $langId, $ignoreCategoryId = 0,$prefCategoryid=array())
     {
         /* $srch = new SearchBase(static::DB_TBL); */
         $srch = static::getSearchObject();
@@ -690,7 +690,7 @@ class ProductCategory extends MyAppModel
         } else {
             $categoriesArr = FatApp::getDb()->fetchAll($rs);
         }
-        if(!$includeChildCat ) { return $categoriesArr; 
+        if(!$includeChildCat ) { return $categoriesArr;
         }
         if($categoriesArr ) {
             foreach( $categoriesArr as &$cat ){
@@ -777,7 +777,7 @@ class ProductCategory extends MyAppModel
     return $categoryArr[$id];
     } */
 
-    public static function getProductCategoryName($id,$langId) 
+    public static function getProductCategoryName($id,$langId)
     {
         $srch = static::getSearchObject(false, $langId);
         $srch->addCondition('m.prodcat_active', '=', applicationConstants::ACTIVE);
@@ -787,10 +787,10 @@ class ProductCategory extends MyAppModel
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         if($row) {
-            return $row['prodcat_name']; 
+            return $row['prodcat_name'];
         }
         else {
-            return false; 
+            return false;
         }
     }
 
@@ -826,7 +826,7 @@ class ProductCategory extends MyAppModel
             }
             //$globalCatTree[$catId]['prodcat_id']['children'] = '';
             if(count($remainingCatCods)>0) {
-                self::getCategoryTreeForSearch($siteLangId, $remainingCatCods, $globalCatTree[$catId]['children'], $attr); 
+                self::getCategoryTreeForSearch($siteLangId, $remainingCatCods, $globalCatTree[$catId]['children'], $attr);
             }
 
         }
