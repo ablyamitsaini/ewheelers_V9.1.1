@@ -9,8 +9,8 @@
     <div class="products__category"><?php echo $product['selprod_title']?> </div>
     <div class="gap"></div>
     <div class="product_qty">
-      <div class="qty"> <span class="decrease decrease-js">-</span>
-		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="text" />
+      <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
+		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="text" />
         <span class="increase increase-js">+</span> </div>
 		<ul class="actions">
 			<li><a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','')" title="<?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?>" class="icons-wrapper"><i class="icn"><svg class="svg">

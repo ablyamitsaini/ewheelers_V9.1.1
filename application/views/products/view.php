@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
-$buyQuantity->addFieldTagAttribute('class','qty');
+$buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 ?>
 
 <div id="body" class="body" role="main">
@@ -199,49 +199,48 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 
 			<!-- Upsell Products [ -->
               <?php if (count($upsellProducts)>0) { ?>
-				<div class="gap"></div>
-				<div class="box box--gray box--radius box--space">
-					<div class="h6 js-acc-triger acc-triger"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
-					<div class="acc-data">
-						<table class="table cart--full cart-tbl cart-tbl-addons">
-							<thead>
-								<tr class="hide--mobile">
-								<th></th>
-								<th><?php echo Labels::getLabel('LBL_Name', $siteLangId); ?></th>
-								<th><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></th>
-								<th><?php echo Labels::getLabel('LBL_Qty', $siteLangId); ?></th>
-								<th></th>
-							  </tr>
-							</thead>
-							<tbody>
-								<?php  foreach ($upsellProducts as $usproduct) {
-								$cancelClass ='';
-								$uncheckBoxClass='';
-								if($usproduct['selprod_stock']<=0){
-									$cancelClass ='cancelled--js';
-									$uncheckBoxClass ='remove-add-on';
-								}
-							?>
-							<tr>
-							  <td class="<?php echo $cancelClass;?>"><div class="product-img"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></div></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="item__description"><div class="item__title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div></div>
-							   <?php if($usproduct['selprod_stock']<=0){ ?>
-								  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
-								  <?php  } ?></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart"> <span class="decrease decrease-js">-</span>
-								  <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
-								  <span class="increase increase-js">+</span> </div></td>
-							  <td class="<?php echo $cancelClass;?>"><label class="checkbox">
-								  <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
-								  <i class="input-helper"></i> </label>
-								</td>
-							</tr>
-							<?php } ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
+              <div id="product">
+                <div class="cart-box">
+                  <div class="heading3"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
+                  <div class="gap"></div>
+                  <table class="table cart--full cart-tbl cart-tbl-addons item-yk" width="100%">
+                    <thead>
+                      <tr class="hide--mobile">
+                        <th></th>
+                        <th><?php echo Labels::getLabel('LBL_Name', $siteLangId); ?></th>
+                        <th><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></th>
+                        <th><?php echo Labels::getLabel('LBL_Qty', $siteLangId); ?></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <?php  foreach ($upsellProducts as $usproduct) {
+						$cancelClass ='';
+						$uncheckBoxClass='';
+						if($usproduct['selprod_stock']<=0){
+							$cancelClass ='cancelled--js';
+							$uncheckBoxClass ='remove-add-on';
+						}
+					?>
+                    <tr>
+                      <td class="<?php echo $cancelClass;?>"><div class="product-img"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></div></td>
+                      <td class="<?php echo $cancelClass;?>"><div class="item-yk-head-title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div>
+                       <?php if($usproduct['selprod_stock']<=0){ ?>
+						  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
+						  <?php  } ?></td>
+                      <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
+                      <td class="<?php echo $cancelClass;?>"><div class="qty" data-stock="<?php echo $usproduct['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
+                          <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
+                          <span class="increase increase-js">+</span> </div></td>
+                      <td class="<?php echo $cancelClass;?>"><label class="checkbox">
+                          <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
+                          <i class="input-helper"></i> </label>
+						</td>
+                    </tr>
+                    <?php } ?>
+                  </table>
+                </div>
+              </div>
+              <div class="gap"></div>
               <?php } ?>
               <!-- ] -->
 			  <?php if($product['product_upc']!='') { ?>
@@ -264,8 +263,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
 					?>
               <div class="form__group">
-                <label class="h6"><?php echo $qtyFieldName;?></label>
-                <div class="qty"> <span class="decrease decrease-js">-</span>
+                <label><?php echo $qtyFieldName;?></label>
+                <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
                   <?php
 				  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
                   <span class="increase increase-js">+</span></div>
@@ -321,14 +320,14 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					  <?php if(count($product['moreSellersArr'])>0){ ?>
 					  <div class="more--seller"><a class="link"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_View_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
 					  <?php } ?>
-					  <div class="ftshops_item_head_right"> <!--<a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a><a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a>-->  </div>
+					  <div class="ftshops_item_head_right">
+                          <!--<a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a>
+                          <a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a>-->
+                      </div>
 					</div>
 				</div>
 			</div>
 			<div class="gap"></div>
-
-
-
           </div>
           </div>
         </div>

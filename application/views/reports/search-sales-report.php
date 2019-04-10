@@ -2,21 +2,22 @@
 $arrFlds1 = array(
 	'listserial'=>Labels::getLabel('LBL_Sr_no.',$siteLangId),
 	'order_date'=>Labels::getLabel('LBL_Date',$siteLangId),
-	'totOrders'=>Labels::getLabel('LBL_No._of_Orders',$siteLangId),		
+	'totOrders'=>Labels::getLabel('LBL_No._of_Orders',$siteLangId),
 );
 $arrFlds2  = array(
 	'listserial'=>Labels::getLabel('LBL_Sr_no.',$siteLangId),
 	'op_invoice_number'=>Labels::getLabel('LBL_Invoice_Number',$siteLangId),
-);	
-$arr = array(			
-	'totQtys'=>Labels::getLabel('LBL_No._of_Qty',$siteLangId),				
-	'totRefundedQtys'=>Labels::getLabel('LBL_Refunded_Qty',$siteLangId),				
-	'orderNetAmount'=>Labels::getLabel('LBL_Order_Net_Amount',$siteLangId),				
-	'taxTotal'=>Labels::getLabel('LBL_Tax_Charged',$siteLangId),				
-	'shippingTotal'=>Labels::getLabel('LBL_Shipping_Charges',$siteLangId),				
-	'totalRefundedAmount'=>Labels::getLabel('LBL_Refunded_Amount',$siteLangId),				
+);
+$arr = array(
+	'totQtys'=>Labels::getLabel('LBL_No._of_Qty',$siteLangId),
+	'totRefundedQtys'=>Labels::getLabel('LBL_Refunded_Qty',$siteLangId),
+	'inventoryValue'=>Labels::getLabel('LBL_Inventory_Value',$siteLangId),
+	'orderNetAmount'=>Labels::getLabel('LBL_Order_Net_Amount',$siteLangId),
+	'taxTotal'=>Labels::getLabel('LBL_Tax_Charged',$siteLangId),
+	'shippingTotal'=>Labels::getLabel('LBL_Shipping_Charges',$siteLangId),
+	'totalRefundedAmount'=>Labels::getLabel('LBL_Refunded_Amount',$siteLangId),
 	'totalSalesEarnings'=>Labels::getLabel('LBL_Sales_Earnings',$siteLangId)
-);	
+);
 if(empty($orderDate)){
 	$arr_flds = array_merge($arrFlds1,$arr);
 }else{
@@ -33,27 +34,28 @@ $sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
-			
+
 			case 'order_date':
 				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('Reports',
 						'salesReport',array($row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
 			break;
-			
+
 			case 'totalSalesEarnings':
 			case 'totalRefundedAmount':
+			case 'inventoryValue':
 			case 'orderNetAmount':
 			case 'taxTotal':
 			case 'shippingTotal':
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key],true,true));
-			break;								
-			
+			break;
+
 			default:
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			break;

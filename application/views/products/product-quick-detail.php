@@ -112,13 +112,14 @@
 		  <?php if( $product['in_stock'] ){
 				echo $frmBuyProduct->getFormTag();
 				$qtyField =  $frmBuyProduct->getField('quantity');
+                $qtyField->addFieldTagAttribute('class','productQty-js');
 				/* $fld = $frmBuyProduct->getField('btnAddToCart');
 				$fld->addFieldTagAttribute('class','quickView'); */
 				$qtyFieldName =  $qtyField->getCaption(); ?>
 		  <div class="form__group">
 			<label><?php echo $qtyFieldName;?></label>
 			<?php if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){ ?>
-			<div class="qty"> <span class="decrease decrease-js">-</span>
+			<div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
 			  <?php
 			  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
 			  <span class="increase increase-js">+</span></div>

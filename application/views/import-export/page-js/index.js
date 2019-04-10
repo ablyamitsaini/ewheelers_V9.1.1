@@ -102,8 +102,8 @@ $(document).ready(function() {
                             } else {
                                 importMediaForm(actionType);
                             }
-                            if (typeof ans.redirectUrl !== 'undefined') {
-                                location.href = ans.redirectUrl;
+                            if (typeof ans.CSVfileUrl !== 'undefined') {
+                                location.href = ans.CSVfileUrl;
                             }
                         } else {
                             $('#fileupload_div').html('');
@@ -134,16 +134,16 @@ $(document).ready(function() {
             $(".batch_fld").hide();
         }
     };
-
-    $(document).on('click', ".group__head-js", function() {
-        if ($(this).parents('.group-js').hasClass('is-active')) {
-            $(this).siblings('.group__body-js').slideUp();
-            $('.group-js').removeClass('is-active');
-        } else {
-            $('.group-js').removeClass('is-active');
-            $(this).parents('.group-js').addClass('is-active');
-            $('.group__body-js').slideUp();
-            $(this).siblings('.group__body-js').slideDown();
-        }
-    });
 })();
+
+$(document).on('click', ".group__head-js", function() {
+    if ($(this).parents('.group-js').hasClass('is-active')) {
+        $(this).siblings('.group__body-js').slideUp();
+        $('.group-js').removeClass('is-active');
+    } else {
+        $('.group-js').removeClass('is-active');
+        $(this).parents('.group-js').addClass('is-active');
+        $('.group__body-js').slideUp();
+        $(this).siblings('.group__body-js').slideDown();
+    }
+});
