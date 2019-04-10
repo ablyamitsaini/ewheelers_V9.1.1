@@ -13,7 +13,7 @@ class HomeController extends AdminBaseController
         include_once CONF_INSTALLATION_PATH . 'library/phpfastcache.php';
     }
 
-    public function index() 
+    public function index()
     {
         $accountId = false;
         $this->set('configuredAnalytics', false);
@@ -63,7 +63,7 @@ class HomeController extends AdminBaseController
                 if(!empty($statsInfo['stats'])) {
                     $chatStats = "[['".Labels::getLabel('LBL_Year', $this->adminLangId)."', '".Labels::getLabel('LBL_Today', $this->adminLangId)."','".Labels::getLabel('LBL_Weekly', $this->adminLangId)."','".Labels::getLabel('LBL_Last_Month', $this->adminLangId)."','".Labels::getLabel('LBL_Last_3_Month', $this->adminLangId)."'],";
                     foreach($statsInfo['stats'] as $key => $val){
-                        if($key == '') { continue; 
+                        if($key == '') { continue;
                         }
 
                         $chatStats.="['".FatDate::format($key)."',";
@@ -104,13 +104,13 @@ class HomeController extends AdminBaseController
 
 
             $salesEarningsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'earnings', array(), 6);
-            $salesEarningsChartData = '';
+            $salesEarningsChartData = [];
             foreach($salesEarningsData as $key => $val ){
                 $salesEarningsChartData[$val["duration"]] = $val["value"];
             }
 
             $signupsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'signups', array('user_is_buyer' => 1, 'user_is_supplier' => 1), 6);
-            $signupsChartData = '';
+            $signupsChartData = [];
             foreach($signupsData as $key => $val ){
                 $signupsChartData[$val["duration"]] = $val["value"];
             }
@@ -121,7 +121,7 @@ class HomeController extends AdminBaseController
                 $affiliateSignupsChartData[$val["duration"]] = $val["value"];
             }
             $productsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'products', array(), 6);
-            $productsChartData = array();
+            $productsChartData = [];
             foreach($productsData as $key => $val ){
                 $productsChartData[$val["duration"]] = $val["value"];
             }
@@ -223,7 +223,7 @@ class HomeController extends AdminBaseController
             $srch->addOrder('shop_created_on', 'DESC');
             $srch->addMultipleFields(
                 array('IFNULL(shop_name, shop_identifier) as shop_name',
-                'credential_username as shop_owner_username', 'shop_created_on', 'shop_active') 
+                'credential_username as shop_owner_username', 'shop_created_on', 'shop_active')
             );
 
             $rs = $srch->getResultSet();
@@ -238,7 +238,7 @@ class HomeController extends AdminBaseController
             $cnd->attachCondition('u.user_is_buyer', '=', 1);
             $srch->addMultipleFields(
                 array('user_name', 'credential_username', 'credential_email', 'user_phone',
-                'user_regdate', 'user_is_buyer', 'user_is_supplier') 
+                'user_regdate', 'user_is_buyer', 'user_is_supplier')
             );
             $srch->setPageNumber(1);
             $srch->setPageSize(10);

@@ -1,11 +1,9 @@
 <?php
-function fatAutoLoader($className) { 
+function fatAutoLoader($className) {
 	if (strpos($className, '\\') !== false) {
 		$arr = explode('\\', $className);
 		$className = end($arr);
 	}
-	
-	
 
 	if (file_exists ( CONF_CORE_LIB_PATH . $className . '.class.php' )) {
 		require_once CONF_CORE_LIB_PATH . $className . '.class.php';
@@ -33,7 +31,7 @@ function fatAutoLoader($className) {
 			}else if (file_exists ( $root_application_path . 'utilities/' . $className . '.php' )) {
 				require_once $root_application_path . 'utilities/' . $className . '.php';
 			}
-		} 
+		}
 	}
 }
 
