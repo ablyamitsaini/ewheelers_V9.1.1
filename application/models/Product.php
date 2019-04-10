@@ -1252,4 +1252,16 @@ class Product extends MyAppModel{
 			$srch->setPageSize($pageSize);
 		}
 	}
+
+
+    public static function getSellers( $attr )
+    {
+        $srch  = static::getSearchObject();
+        if( !empty($attr) ){
+            $srch->addMultipleFields( $attr );
+        }
+        $srch->joinTable(User::DB_TBL_CRED, 'LEFT JOIN', 'credential_user_id = product_seller_id');
+        $srch->addGroupBy('product_seller_id');
+        return $srch;
+    }
 }
