@@ -36,7 +36,7 @@ class ContentBlockController extends AdminBaseController {
 
 		$srch->addOrder('epage_active','DESC');
 		$rs = $srch->getResultSet();
-		// echo $srch->getQuery();
+
 		$records = FatApp::getDb()->fetchAll($rs);
 
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
@@ -181,11 +181,16 @@ class ContentBlockController extends AdminBaseController {
 		$lang_id = FatUtility::int($post['lang_id']);
 		if($epage_id==0 || $lang_id==0){
 			Message::addErrorMessage($this->str_invalid_request_id);
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJSONError( Message::getHtml() );
 		}
 
 		$frm = $this->getLangForm( $epage_id , $lang_id );
 		$post = $frm->getFormDataFromArray(FatApp::getPostedData());
+		if (false === $post) {
+			Message::addErrorMessage(current($frm->getValidationErrors()));
+			FatUtility::dieJSONError( Message::getHtml() );
+		}
+
 		unset($post['epage_id']);
 		unset($post['lang_id']);
 		$data=array(
@@ -198,7 +203,7 @@ class ContentBlockController extends AdminBaseController {
 		$epageObj = new Extrapage($epage_id);
 		if(!$epageObj->updateLangData($lang_id,$data)){
 			Message::addErrorMessage($epageObj->getError());
-			FatUtility::dieWithError( Message::getHtml() );
+			FatUtility::dieJSONError( Message::getHtml() );
 		}
 
 		$newTabLangId = 0;

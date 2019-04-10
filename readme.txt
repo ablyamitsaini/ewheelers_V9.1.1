@@ -15,6 +15,18 @@ Fixes :
     . Showing some html elements content on seller products inventory(frontend), issue resolved.
     . Error Notice showing while searching products on frontend, issue resolved.
 	. Aweber newsletter signup.
+	. Refund and shipping calculation based on free shipping.
+	. Replaced google plus login with google login.
+	. Invalid access error on placing the cancellation request.
+	. Labels cache value and removed tags from value.
+	. Validation on date fields for product special price.
+	. Displayed latest added collection on top when listing based on all type of collection(Admin).
+	. Admin dashboard stats in case of cache.
+	. Displayed volume discount on cart popup and view cart.
+	. On product categories page controller name visible in breadcrumb.
+	. Small fonts of dropdown on Add/Edit category and brand form popup.
+	. Small fonts of Active dropdown in Search filter section on product catalog page.
+	. Remove Notification permission.
 
 Enhancements :
     . Import error handling via csv.
@@ -29,7 +41,14 @@ Enhancements :
     . New Payment method Braintree implemented.
 	. From name on email notifications updated with site from name.
 	. Import Error log file will be automatically downloaded if it contains errors listing.
+<<<<<<< HEAD
 	. Required fields will also be captured in error log file while importing.
+=======
+	. Removed setting to use userId or username from import/export. Only username will be in use.
+	. Updated import/export instructions and provided restore default content feature via DB.
+	. Restricted increment of product quantity as per product stock quantity on product detail, checkout and cart page.
+	. Cost price added to seller inventory and reports.
+>>>>>>> task_61864_add_cost_price_in_seller_inventory
 
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.

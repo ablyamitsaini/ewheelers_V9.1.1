@@ -160,7 +160,7 @@ class OrderReturnRequestsController extends AdminBaseController {
 		'orrequest_date', 'orrequest_status','orrequest_reference', 'buyer.user_name as buyer_name', 'buyer_cred.credential_username as buyer_username',
 		'buyer_cred.credential_email as buyer_email', 'buyer.user_phone as buyer_phone', 'seller.user_name as seller_name', 
 		'seller.user_phone as seller_phone', 'seller_cred.credential_username as seller_username', 'seller_cred.credential_email as seller_email',
-		'op_product_name','op_selprod_title', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_qty', 'op_unit_price',  'IFNULL(orreason_title, orreason_identifier) as orreason_title','order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_shipping','op_commission_include_tax') );
+		'op_product_name','op_selprod_title', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_qty', 'op_unit_price',  'IFNULL(orreason_title, orreason_identifier) as orreason_title','order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_shipping','op_commission_include_tax','op_free_ship_upto','op_actual_shipping_charges') );
 		$srch->addCondition( 'orrequest_id', '=', $orrequest_id );
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();

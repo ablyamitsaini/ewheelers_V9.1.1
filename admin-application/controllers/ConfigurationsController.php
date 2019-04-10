@@ -955,14 +955,14 @@ class ConfigurationsController extends AdminBaseController {
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_Twitter_App_Secret",$this->adminLangId),'CONF_TWITTER_API_SECRET');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_Twitter_secret_key_used_for_authentication_and_other_Twitter_related_plugins_support.",$this->adminLangId)."</small>";
 
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Plus_Developer_Key",$this->adminLangId),'CONF_GOOGLEPLUS_DEVELOPER_KEY');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_google_plus_developer_key.",$this->adminLangId)."</small>";
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Developer_Key",$this->adminLangId),'CONF_GOOGLEPLUS_DEVELOPER_KEY');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_google_developer_key.",$this->adminLangId)."</small>";
 
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Plus_Client_ID",$this->adminLangId),'CONF_GOOGLEPLUS_CLIENT_ID');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_application_Client_Id_used_to_Login.",$this->adminLangId)."</small>";
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Client_ID",$this->adminLangId),'CONF_GOOGLEPLUS_CLIENT_ID');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_google_Client_Id_used_to_Login.",$this->adminLangId)."</small>";
 
-				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Plus_Client_Secret",$this->adminLangId),'CONF_GOOGLEPLUS_CLIENT_SECRET');
-				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_Google_Plus_id_client_secret_key_used_for_authentication.",$this->adminLangId)."</small>";
+				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Client_Secret",$this->adminLangId),'CONF_GOOGLEPLUS_CLIENT_SECRET');
+				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_Google_client_secret_key_used_for_authentication.",$this->adminLangId)."</small>";
 
 				$fld = $frm->addTextBox(Labels::getLabel("LBL_Google_Push_Notification_API_KEY",$this->adminLangId),'CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY');
 				$fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_api_key_used_in_push_notifications.",$this->adminLangId)."</small>";
@@ -1195,9 +1195,6 @@ class ConfigurationsController extends AdminBaseController {
 
 				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_catalog_product_id_instead_of_catalog_product_identifier",$this->adminLangId),'CONF_USE_PRODUCT_ID',1,array(),false,0);
 				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_catalog_product_id_instead_of_catalog_product_identifier_in_worksheets",$this->adminLangId).'</small>';
-
-				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_user_id_instead_of_username",$this->adminLangId),'CONF_USE_USER_ID',1,array(),false,0);
-				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_user_id_instead_of_username_in_worksheets",$this->adminLangId).'</small>';
 
 				$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_option_id_instead_of_option_identifier",$this->adminLangId),'CONF_USE_OPTION_ID',1,array(),false,0);
 				$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_option_id_instead_of_option_identifier_in_worksheets",$this->adminLangId).'</small>';

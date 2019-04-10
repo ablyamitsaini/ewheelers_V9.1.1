@@ -155,7 +155,7 @@ class OrderReturnRequest extends MyAppModel{
 		$srch->doNotCalculateRecords();
 		$srch->doNotLimitRecords();
 		$srch->addCondition( 'orrequest_id', '=', $orrequest_id );
-		$srch->addMultipleFields( array('orrequest_id', 'orrequest_op_id', 'orrequest_qty','orrequest_type', 'op_commission_percentage', 'op_affiliate_commission_percentage', 'op_qty','order_language_id', 'op_shop_owner_name', 'op_unit_price','op_other_charges','op_commission_include_shipping','op_tax_collected_by_seller','op_commission_include_tax') );
+		$srch->addMultipleFields( array('orrequest_id', 'orrequest_op_id', 'orrequest_qty','orrequest_type', 'op_commission_percentage', 'op_affiliate_commission_percentage', 'op_qty','order_language_id', 'op_shop_owner_name', 'op_unit_price','op_other_charges','op_commission_include_shipping','op_tax_collected_by_seller','op_commission_include_tax','op_free_ship_upto','op_actual_shipping_charges') );
 		$rs = $srch->getResultSet();
 		$requestRow = $db->fetch( $rs );
 		

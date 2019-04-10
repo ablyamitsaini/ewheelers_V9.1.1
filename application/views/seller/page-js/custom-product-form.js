@@ -111,17 +111,13 @@
 
 	setupCustomProduct = function(frm){
 		if (!$(frm).validate()) return;
-		if( runningAjaxReq == true ){
-			console.log(runningAjaxMsg);
-			return;
-		}
-		runningAjaxReq = true;
+
 		addingNew = ($(frm.product_id).val() == 0);
 		$(frm.product_options).val(productOptions);
 		var data = fcom.frmData(frm);
 
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupCustomProduct'), (data), function(t) {
-			runningAjaxReq = false;
+
 			$.mbsmessage.close();
 
 			if (addingNew) {
@@ -152,20 +148,20 @@
 		});
 	};
 
-	optionForm = function(optionId){
+	optionForm = function(optionId){		
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller', 'optionForm', [optionId]), '', function(t) {
 				try{
 					res = jQuery.parseJSON(t);
-					fcom.updateFaceboxContent(res.msg,'faceboxWidth');
+					$.facebox(res.msg,'faceboxWidth');
 				}catch (e){
-					fcom.updateFaceboxContent(t,'faceboxWidth');
+					$.facebox(t,'faceboxWidth');
 					addOptionForm(optionId);
 					optionValueListing(optionId);
 				}
-				fcom.resetFaceboxHeight();
 			});
 		});
+		fcom.resetFaceboxHeight();
 	};
 
 	addOptionForm = function(optionId){
@@ -182,8 +178,8 @@
 		var data = 'option_id='+optionId;
 		fcom.ajax(fcom.makeUrl('OptionValues','search'),data,function(res){
 			dv.html(res);
-			fcom.resetFaceboxHeight();
 		});
+		fcom.resetFaceboxHeight();
 	};
 
 	optionValueForm = function (optionId,id){
@@ -200,8 +196,8 @@
 		fcom.updateWithAjax(fcom.makeUrl('OptionValues', 'setup'), data, function(t) {
 			$.mbsmessage.close();
 			if (t.optionId > 0 ) {
-				optionValueListing(t.optionId);
 				optionValueForm(t.optionId,0);
+				optionValueListing(t.optionId);
 				return ;
 			}
 			$(document).trigger('close.facebox');
@@ -213,8 +209,8 @@
 		data='id='+id+'&option_id='+optionId;
 		fcom.updateWithAjax(fcom.makeUrl('OptionValues','deleteRecord'),data,function(res){
 			$.mbsmessage.close();
-			optionValueListing(optionId);
 			optionValueForm(optionId,0);
+			optionValueListing(optionId);
 		});
 	}
 

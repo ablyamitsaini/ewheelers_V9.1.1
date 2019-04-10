@@ -1347,8 +1347,8 @@ class Orders extends MyAppModel{
 						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
 					$actualShipCharges = 0;
-					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+					//$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerProdTotalPrice ){
 						if(!FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
 							$actualShipCharges = $childOrderInfo['op_actual_shipping_charges'];
 						}
@@ -1369,6 +1369,21 @@ class Orders extends MyAppModel{
 						if($txnId = $transObj->addTransaction($txnDataArr)){
 							$emailNotificationObj->sendTxnNotification($txnId,$langId);
 						}
+						
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Credited_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['op_selprod_user_id'],
+							'utxn_comments'	=> $comments,
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
+						}
+						
 					}
 				}
 				/* ]*/
@@ -1415,8 +1430,8 @@ class Orders extends MyAppModel{
 						$sellerProdTotalPrice+= $row['op_unit_price'] * $qty;
 					}
 
-					$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
-					if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ){
+					//$sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
+					if($childOrderInfo["op_free_ship_upto"] > $sellerProdTotalPrice ){
 						$unitShipCharges = round($childOrderInfo['op_actual_shipping_charges']/$childOrderInfo["op_qty"],2);
 						$returnShipChargesToCust = 0;
 						if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER',FatUtility::VAR_INT,0)){
@@ -1430,6 +1445,20 @@ class Orders extends MyAppModel{
 						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}',$langId));
 						$txnDataArr = array(
 							'utxn_user_id'	=> $childOrderInfo['order_user_id'],
+							'utxn_comments'	=> $comments,
+							'utxn_status'	=> Transactions::STATUS_COMPLETED,
+							'utxn_debit'	=> $actualShipCharges,
+							'utxn_op_id'	=> $childOrderInfo['op_id'],
+							'utxn_type'		=> Transactions::TYPE_ORDER_SHIPPING,
+						);
+						$transObj = new Transactions();
+						if($txnId = $transObj->addTransaction($txnDataArr)){
+							$emailNotificationObj->sendTxnNotification($txnId,$langId);
+						}
+						
+						$comments = str_replace('{invoice}',$formattedRequestValue,Labels::getLabel('LBL_Credited_Shipping_Charges_{invoice}',$langId));
+						$txnDataArr = array(
+							'utxn_user_id'	=> $childOrderInfo['op_selprod_user_id'],
 							'utxn_comments'	=> $comments,
 							'utxn_status'	=> Transactions::STATUS_COMPLETED,
 							'utxn_debit'	=> $actualShipCharges,
@@ -1773,7 +1802,16 @@ class Orders extends MyAppModel{
 		$srch->addCondition(OrderProduct::DB_TBL_CHARGES_PREFIX.'order_type','=',Orders::ORDER_PRODUCT);
 		$rs = $srch->getResultSet();
 
-		return $row = FatApp::getDb()->fetchAll($rs,OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
+		$row = FatApp::getDb()->fetchAll($rs,OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
+		
+		if(!array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING,$row)){
+			$row[OrderProduct::CHARGE_TYPE_SHIPPING] = array(
+				'opcharge_type'=>OrderProduct::CHARGE_TYPE_SHIPPING,
+				'opcharge_amount'=>0,
+				);
+		}
+		
+		return $row;
 	}
 
 	public function getOrderProductChargesByOrderId($orderId){

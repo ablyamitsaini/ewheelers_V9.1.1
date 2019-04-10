@@ -46,7 +46,7 @@ foreach ($ordersList as $sn=>$row){
 			case 'order_is_paid':
 				$cls = 'label-info';
 				switch ($row[$key]){
-					case Orders::ORDER_IS_PENDING :
+					case Orders::ORDER_IS_PENDING :						
 						$cls = 'label-info';
 					break;
 					case Orders::ORDER_IS_PAID :
@@ -57,7 +57,12 @@ foreach ($ordersList as $sn=>$row){
 					break;
 				}
 				
-				$td->appendElement('span', array('class'=>'label '.$cls), Orders::getOrderPaymentStatusArr($adminLangId)[$row[$key]] );
+				$value = Orders::getOrderPaymentStatusArr($adminLangId)[$row[$key]];
+				if( '' != $row['pmethod_name'] && 'CashOnDelivery' == $row['pmethod_code']){
+					$value.= ' ('.$row['pmethod_name'].' )';
+				}
+				
+				$td->appendElement('span', array('class'=>'label '.$cls),$value  );
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));

@@ -548,7 +548,7 @@ class MobileAppApiController extends MyAppController {
 		$prodObj->joinProducts();
 		$prodObj->joinShops();
 		$prodObj->addPromotionTypeCondition(Promotion::TYPE_PRODUCT);
-		//$prodObj->joinActiveUser();
+		$prodObj->joinActiveUser();
 		$prodObj->setDefinedCriteria();
 		$prodObj->addShopActiveExpiredCondition();
 		$prodObj->joinUserWallet();
@@ -603,6 +603,7 @@ class MobileAppApiController extends MyAppController {
 		$categoriesDataArr = $productCategory ->getCategoryTreeArr($this->siteLangId,$categoriesArr,array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
 
 		//$categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr( $this->siteLangId,0, true, false, false, false,true );
+		
 		$categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
 		if(empty($categoriesDataArr)){
 			$categoriesDataArr =  array();
@@ -614,6 +615,7 @@ class MobileAppApiController extends MyAppController {
 	private function resetKeyValues($arr){
 		$result = array();
 		foreach($arr as $key=>$val){
+			if(!array_key_exists('prodcat_id',$val)){continue;}	
 			$result[$key] = $val;
 			$childernArr = array();
 			if(!empty($val['children'])){
@@ -622,7 +624,7 @@ class MobileAppApiController extends MyAppController {
 			}
 			$result[$key]['children'] = $childernArr;
 		}
-		return $result;
+		return array_values($result);
 	}
 
 	function category($id){
@@ -4805,7 +4807,7 @@ END,   special_price_found ) as special_price_found');
 		'orrequest_date', 'orrequest_status', 'orrequest_reference', 'op_invoice_number', 'op_selprod_title', 'op_product_name',
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_qty',
 		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
-		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_tax_collected_by_seller','op_commission_include_shipping') );
+		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_tax_collected_by_seller','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 		if( !$request ){
@@ -5756,7 +5758,7 @@ END,   special_price_found ) as special_price_found');
 		'orrequest_date', 'orrequest_status','orrequest_reference',  'op_invoice_number', 'op_selprod_title', 'op_product_name',
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_qty',
 		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
-		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping') );
+		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 

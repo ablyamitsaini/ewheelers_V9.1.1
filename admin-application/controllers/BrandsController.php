@@ -462,7 +462,11 @@ class BrandsController extends AdminBaseController {
 		$fld = $frm->addTextBox( Labels::getLabel('LBL_Brand_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom' );
 		$fld->requirements()->setRequired();
 		$activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
+<<<<<<< HEAD
 		$frm->addSelectBox(Labels::getLabel('LBL_Brand_Status',$this->adminLangId), 'brand_active', $activeInactiveArr, '',array('class'=>'small'),'');
+=======
+		$frm->addSelectBox(Labels::getLabel('LBL_Brand_Status',$this->adminLangId), 'brand_active', $activeInactiveArr, '',array(),'');				
+>>>>>>> task_61864_add_cost_price_in_seller_inventory
 		/* $frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'brand_featured', 1,array(),false,0); */
 		$fld = $frm->addHiddenField('','brand_logo','',array('id'=>'brand_logo'));
 		$frm->addSubmitButton('', 'btn_submit',$action);

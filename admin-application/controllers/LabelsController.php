@@ -134,15 +134,21 @@ class LabelsController extends AdminBaseController {
 		
 		$languages = Language::getAllNames();
 		foreach($languages as $langId=>$langName){
+			$keyValue = strip_tags(trim($post['label_caption'.$langId]));
 			$data = array(				
 				'label_lang_id'=>$langId,
 				'label_key'=>$labelKey,
-				'label_caption'=>$post['label_caption'.$langId],
+				'label_caption'=>$keyValue,
 			);
 			$obj = new Labels();
 			if(!$obj->addUpdateData($data)){
 				Message::addErrorMessage($obj->getError());
 				FatUtility::dieWithError( Message::getHtml() );	
+			}
+			
+			if(Labels::isAPCUcacheAvailable()){
+				$cacheKey = Labels::getAPCUcacheKey($labelKey,$langId);
+				apcu_store($cacheKey, $keyValue);
 			}
 		}
 		$this->set('msg', $this->str_setup_successful);

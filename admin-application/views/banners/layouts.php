@@ -7,13 +7,13 @@
 		<h4><?php echo Labels::getLabel('LBL_Banner_Layouts_Instructions',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">
-<div class="row">	
+<div class="row">
 	<div class="col-sm-12">
-		<div class="row"> 		
-			<section class="section">
-				<div class="sectionbody">
+		<section class="section">
+			<div class="sectionbody">
+				<div class="row">
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-						<div class="shop-template"> 
+						<div class="shop-template">
 							<a rel="facebox" onClick="displayImageInFacebox('<?php echo CommonHelper::generateFullUrl(); ?><?php echo CONF_WEBROOT_FRONT_URL; ?>images/banner_layouts/layout-1.jpg');" href="javascript:void(0)">
 								<figure class="thumb--square"><img width="400px;" style="height:100%" src="<?php echo CONF_WEBROOT_URL; ?>images/banner_layouts/layout-1.jpg" /></figure>
 								<p><?php echo Labels::getLabel('LBL_Layout_1',$adminLangId);?></p>
@@ -37,8 +37,8 @@
 						</div>
 					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	</div>
 </div>
 </div>

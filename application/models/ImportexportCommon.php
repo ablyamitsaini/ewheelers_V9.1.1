@@ -145,28 +145,32 @@ class ImportexportCommon extends FatModel{
 	}
 
 	public function displayDateTime($dt,$time = true){
-		if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
-		if($time == false){
-			return date("m/d/Y",strtotime($dt));
+		try {
+			if(trim($dt)=='' || $dt=='0000-00-00' || $dt=='0000-00-00 00:00:00'){return;}
+			if($time == false){
+				return date("m/d/Y",strtotime($dt));
+			}
+			return date('m/d/Y H:i:s',strtotime($dt));
+		}catch (Exception $e) {
+			return false;
 		}
-		return date('m/d/Y H:i:s',strtotime($dt));
 	}
 
 	public function getDateTime($dt,$time = true){
-		if($time && strpos($dt, ":")){
-			$dt = substr($dt,0,19);
-		}else{
-			$dt = substr($dt,0,10);
-		}
 		$emptyDateArr=array('0000-00-00','0000-00-00 00:00:00','0000/00/00','0000/00/00 00:00:00','00/00/0000','00/00/0000 00:00:00','00/00/00','00/00/00 00:00:00');
 		if(trim($dt)=='' || in_array($dt,$emptyDateArr)){return '0000-00-00';}
-		//$dt = str_replace('/', '-', $dt);
-		$date = new DateTime($dt);
-		$timeStamp=$date->getTimestamp();
-		if($time==false){
-			return date("Y-m-d",$timeStamp);
+
+		try
+		{
+			$date = new DateTime($dt);
+			$timeStamp=$date->getTimestamp();
+			if($time==false){
+				return date("Y-m-d",$timeStamp);
+			}
+			return date("Y-m-d H:i:s",$timeStamp);
+		}catch (Exception $e) {
+			return '0000-00-00';
 		}
-		return date("Y-m-d H:i:s",$timeStamp);
 	}
 
 	public function getCategoryColoumArr($langId, $userId = 0){
@@ -512,6 +516,7 @@ class ImportexportCommon extends FatModel{
 		}
 
 		if($this->isDefaultSheetData($langId)){
+<<<<<<< HEAD
 			$arr['selprod_price'] = Labels::getLabel('LBL_Selling_Price', $langId);
 			/* $arr[] = Labels::getLabel('LBL_Cost', $langId);	 */
 			$arr['selprod_stock'] = Labels::getLabel('LBL_Stock', $langId);
@@ -520,6 +525,16 @@ class ImportexportCommon extends FatModel{
 			$arr['selprod_subtract_stock'] = Labels::getLabel('LBL_Subtract_stock', $langId);
 			$arr['selprod_track_inventory'] = Labels::getLabel('LBL_Track_Inventory', $langId);
 			$arr['selprod_threshold_stock_level'] = Labels::getLabel('LBL_Threshold_stock_level', $langId);
+=======
+			$arr[] = Labels::getLabel('LBL_Selling_Price', $langId);
+			$arr[] = Labels::getLabel('LBL_Cost_Price', $langId);
+			$arr[] = Labels::getLabel('LBL_Stock', $langId);
+			$arr[] = Labels::getLabel('LBL_SKU', $langId);
+			$arr[] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);
+			$arr[] = Labels::getLabel('LBL_Sustack_stock', $langId);
+			$arr[] = Labels::getLabel('LBL_Track_Inventory', $langId);
+			$arr[] = Labels::getLabel('LBL_Threshold_stock_level', $langId);
+>>>>>>> task_61864_add_cost_price_in_seller_inventory
 
 			if($this->settings['CONF_USE_PROD_CONDITION_ID']){
 				$arr['selprod_condition'] = Labels::getLabel('LBL_Condition_id', $langId);
@@ -534,6 +549,7 @@ class ImportexportCommon extends FatModel{
 		$arr['selprod_comments'] = Labels::getLabel('LBL_Comments', $langId);
 
 		if($this->isDefaultSheetData($langId)){
+<<<<<<< HEAD
 			$arr['selprod_url_keyword'] = Labels::getLabel('LBL_Url_keyword', $langId);
 
 			// if(!$userId){
@@ -543,6 +559,15 @@ class ImportexportCommon extends FatModel{
 			$arr['selprod_available_from'] = Labels::getLabel('LBL_Available_from', $langId);
 			$arr['selprod_active'] = Labels::getLabel('LBL_Active', $langId);
 			$arr['selprod_cod_enabled'] = Labels::getLabel('LBL_COD_Available', $langId);
+=======
+			$arr[] = Labels::getLabel('LBL_Url_keyword', $langId);
+			if(!$userId){
+				// $arr[] = Labels::getLabel('LBL_Added_on', $langId);
+			}
+			$arr[] = Labels::getLabel('LBL_Available_from', $langId);
+			$arr[] = Labels::getLabel('LBL_Active', $langId);
+			$arr[] = Labels::getLabel('LBL_COD_Available', $langId);
+>>>>>>> task_61864_add_cost_price_in_seller_inventory
 			if(!$userId){
 				$arr['selprod_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
 				$arr['selprod_sold_count'] = Labels::getLabel('LBL_Sold_Count', $langId);
@@ -876,7 +901,7 @@ class ImportexportCommon extends FatModel{
 			'CONF_USE_BRAND_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_BRAND_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_CATEGORY_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_CATEGORY_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_PRODUCT_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_PRODUCT_ID',FatUtility::VAR_INT,0):false,
-			'CONF_USE_USER_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_USER_ID',FatUtility::VAR_INT,0):false,
+			'CONF_USE_USER_ID'=>false,
 			'CONF_USE_OPTION_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_OPTION_ID',FatUtility::VAR_INT,0):false,
 			'CONF_OPTION_VALUE_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_OPTION_VALUE_ID',FatUtility::VAR_INT,0):false,
 			'CONF_USE_TAG_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_TAG_ID',FatUtility::VAR_INT,0):false,
@@ -915,6 +940,7 @@ class ImportexportCommon extends FatModel{
 		if(!$row){
 			return $res;
 		}
+		$row['CONF_USE_USER_ID'] = false;
 		return $row;
 	}
 

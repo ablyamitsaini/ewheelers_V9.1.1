@@ -24,7 +24,7 @@
 </ul>
 <div class="tabs_panel_wrap">
 	<?php
-		if( !empty($pageData) ){
+		if( !empty($pageData['epage_content']) ){
 			?>
 			<h2><?php echo $pageData['epage_label'];?></h2>
 			<?php

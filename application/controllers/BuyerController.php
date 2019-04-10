@@ -469,7 +469,7 @@ class BuyerController extends LoggedUserController {
 		$rs = $srch->getResultSet();
 		$opDetail = FatApp::getDb()->fetch( $rs );
 		if( !$opDetail || CommonHelper::is_multidim_array($opDetail) ){
-			Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
+			Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));				
 			CommonHelper::redirectUserReferer();
 		}
 
@@ -507,7 +507,7 @@ class BuyerController extends LoggedUserController {
 		$this->_template->render();
 	}
 
-	public function setupOrderCancelRequest(){
+	public function setupOrderCancelRequest(){					
 		$frm = $this->getOrderCancelRequestForm( $this->siteLangId );
 		$post = $frm->getFormDataFromArray( FatApp::getPostedData() );
 		if ( false === $post ) {
@@ -532,12 +532,12 @@ class BuyerController extends LoggedUserController {
 		if($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL){
 			if ( !in_array($opDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) ){
 				Message::addErrorMessage( Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId) );
-				CommonHelper::redirectUserReferer();
+				FatUtility::dieWithError( Message::getHtml() );
 			}
 		}else{
 			if ( !in_array($opDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) ){
 				Message::addErrorMessage( Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId) );
-				CommonHelper::redirectUserReferer();
+				FatUtility::dieWithError( Message::getHtml() );
 			}
 		}
 
@@ -583,7 +583,7 @@ class BuyerController extends LoggedUserController {
 		if( !$emailObj->SendOrderCancellationNotification( $ocrequest_id, $this->siteLangId ) ){
 			Message::addErrorMessage( $emailObj->getError() );
 			FatUtility::dieWithError( Message::getHtml() );
-		}
+		} 
 
 		/* send notification to admin */
 		$notificationData = array(
@@ -601,7 +601,7 @@ class BuyerController extends LoggedUserController {
 
 		Message::addMessage( Labels::getLabel('MSG_Your_cancellation_request_submitted', $this->siteLangId) );
 		FatUtility::dieJsonSuccess(Message::getHtml());
-		$this->_template->render( false, false, 'json-success.php' );
+		//$this->_template->render( false, false, 'json-success.php' );
 	}
 
 	public function orderCancellationRequests(){
@@ -749,7 +749,7 @@ class BuyerController extends LoggedUserController {
 		'orrequest_date', 'orrequest_status', 'orrequest_reference', 'op_invoice_number', 'op_selprod_title', 'op_product_name',
 		'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_qty',
 		'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
-		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping') );
+		'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') );
 		$rs = $srch->getResultSet();
 		$request = FatApp::getDb()->fetch( $rs );
 		if( !$request ){

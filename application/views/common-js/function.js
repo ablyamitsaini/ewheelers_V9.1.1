@@ -384,7 +384,7 @@ moveToTargetDiv('.tabs--scroll ul li.is-active','.tabs--scroll ul',langLbl.layou
 
 $(document).on('click','.tabs--scroll ul li',function(){
 	if($(this).hasClass('fat-inactive')){ return; }
-    $('.tabs--scroll ul li').removeClass('is-active');
+    $(this).closest('.tabs--scroll ul li').removeClass('is-active');
     $(this).addClass('is-active');
     moveToTargetDiv('.tabs--scroll ul li.is-active','.tabs--scroll ul',langLbl.layoutDirection);
 });

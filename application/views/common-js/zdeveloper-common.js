@@ -479,10 +479,9 @@ function defaultSetUpLogin(frm, v) {
 		resetFaceboxHeight:function(){
 			$('html').css('overflow','hidden');
 			facebocxHeight  = screenHeight;
-			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(100);
-			$('#facebox .content').css('max-height', parseInt(facebocxHeight)-150 + 'px');
-
-			if(fbContentHeight >= screenHeight){
+			var fbContentHeight = 	parseInt($('#facebox .content').height())+parseInt(150);
+			setTimeout(function(){ $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight)/4) + 'px'); }, 700);
+      if(fbContentHeight > screenHeight-parseInt(100)){
 				$('#facebox .content').css('overflow-y', 'scroll');
 				$('#facebox .content').css('display', 'block');
 			}else{
@@ -540,7 +539,13 @@ function defaultSetUpLogin(frm, v) {
 			$('.system_message').show();
 		},
 		fillSysMessage:function(data, cls){
-			if(cls) $('.system_message').addClass(cls);
+			if(cls){
+				$('.system_message').removeClass('alert--process');
+				$('.system_message').removeClass('alert--danger');
+				$('.system_message').removeClass('alert--success');
+				$('.system_message').removeClass('alert--info');
+				$('.system_message').addClass(cls);
+			}
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 
@@ -674,18 +679,43 @@ $(document).ready(function(){
 			});
 	});
 
-	$(document).on("click",'.increase-js',function(){
-		var val = $(this).parent('div').find('input').val();
-		val = parseInt(val)+1;
-		$(this).parent('div').find('input').val(val);
-	});
 
-	$(document).on("click",'.decrease-js',function(){
-		var val = $(this).parent('div').find('input').val();
-		val = parseInt(val)-1;
-		if( val <= 1 ){val = 1;}
-		$(this).parent('div').find('input').val(val);
-	});
+    $(document).on("click", '.increase-js', function() {
+       $(this).siblings('.not-allowed').removeClass('not-allowed');
+       var val = $(this).parent('div').find('input').val();
+       val = parseInt(val) + 1;
+       if (val > $(this).parent().data('stock')) {
+           val = $(this).parent().data('stock');
+           $(this).addClass('not-allowed');
+       }
+       $(this).parent('div').find('input').val(val);
+   });
+
+    $(document).on("change", '.productQty-js', function() {
+       if ($(this).val() > $(this).parent().data('stock')) {
+           val = $(this).parent().data('stock');
+           $(this).siblings('.increase-js').addClass('not-allowed');
+           $(this).siblings('.decrease-js').removeClass('not-allowed');
+       } else if ($(this).val() <= 0) {
+           val = 1;
+           $(this).siblings('.decrease-js').addClass('not-allowed');
+           $(this).siblings('.increase-js').removeClass('not-allowed');
+       } else {
+           val = $(this).val();
+       }
+       $(this).val(val);
+    });
+
+   $(document).on("click", '.decrease-js', function() {
+        $(this).siblings('.not-allowed').removeClass('not-allowed');
+        var val = $(this).parent('div').find('input').val();
+        val = parseInt(val) - 1;
+        if (val <= 1) {
+            val = 1;
+            $(this).addClass('not-allowed');
+        }
+        $(this).parent('div').find('input').val(val);
+    });
 
 	$(document).on("click",'.setactive-js li',function(){
 		$(this).closest('.setactive-js').find('li').removeClass('is-active');

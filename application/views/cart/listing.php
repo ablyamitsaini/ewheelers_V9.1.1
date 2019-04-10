@@ -43,9 +43,9 @@
           </td>
         <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Quantity',$siteLangId); ?></span>
 
-<div class="qty-wrapper">  <div class="qty">
+<div class="qty-wrapper">  <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>">
 			<span class="decrease decrease-js">-</span>
-            <input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="number" min="0"/>
+            <input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0"/>
 			<span class="increase increase-js">+</span>
             </div>
 			<a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a>
@@ -172,9 +172,15 @@
             <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
           </tr>
           <?php } ?>
+          <?php if( $cartSummary['cartVolumeDiscount'] ){ ?>
+          <tr>
+            <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
+            <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
+          </tr>
+          <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
           <tr>
             <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-            <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']+$cartSummary['cartTaxTotal']); ?></td>
+            <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
           </tr>
           <tr>
             <td colspan="2" class="text-right"><a class="btn btn--primary ripplelink block-on-mobile" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Continue_Shopping', $siteLangId); ?></a> <a class="btn btn--secondary ripplelink block-on-mobile" href="<?php echo CommonHelper::generateUrl('Checkout'); ?>"><?php echo Labels::getLabel('LBL_Proceed_To_Pay', $siteLangId); ?></a></td>

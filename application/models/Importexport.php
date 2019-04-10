@@ -672,6 +672,8 @@ class Importexport extends ImportexportCommon{
 					}else{
 						$prodCatDataArr[$columnKey] = $colValue;
 					}
+
+					$parent = ($parent == $categoryId)?0:$parent;
 				}
 			}
 
@@ -749,12 +751,15 @@ class Importexport extends ImportexportCommon{
 				}
 			}
 		}
+		$ProductCategory = new ProductCategory();
+		$ProductCategory->updateCatCode();
 		// Close File
 		CommonHelper::writeToCSVFile( $this->CSVfileObj, array(), true );
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if( CommonHelper::checkCSVFile( $this->CSVfileName ) ){
 			$success['CSVfileUrl'] = FatUtility::generateFullUrl( 'custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND );
+
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -848,6 +853,7 @@ class Importexport extends ImportexportCommon{
 
 		$success['status'] = 1;
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
+
 		if( CommonHelper::checkCSVFile( $this->CSVfileName ) ){
 			$success['CSVfileUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($this->CSVfileName),CONF_WEBROOT_FRONTEND );
 		}
@@ -994,6 +1000,7 @@ class Importexport extends ImportexportCommon{
 		CommonHelper::writeToCSVFile( $this->CSVfileObj, array(), true );
 
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
+
 		if( CommonHelper::checkCSVFile( $this->CSVfileName ) ){
 			$success['CSVfileUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($this->CSVfileName),CONF_WEBROOT_FRONTEND );
 		}
@@ -1124,6 +1131,7 @@ class Importexport extends ImportexportCommon{
 	public function exportProductsCatalog($langId,$offset = null,$noOfRows = null,$minId = null,$maxId = null, $userId = null){
 		$userId = FatUtility::int($userId);
 		$useProductId = false;
+
 		if($this->settings['CONF_USE_PRODUCT_ID']){
 			$useProductId = true;
 		}
@@ -1189,7 +1197,6 @@ class Importexport extends ImportexportCommon{
 			}
 			$sheetData = array();
 			foreach ($headingsArr as $columnKey => $heading) {
-
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
 
 				if( in_array( $columnKey, array( 'brand_featured', 'brand_active' ) ) && !$this->settings['CONF_USE_O_OR_1'] ){
@@ -1551,6 +1558,7 @@ class Importexport extends ImportexportCommon{
 		$success['msg'] = Labels::getLabel( 'LBL_data_imported/updated_Successfully.', $langId );
 		if( CommonHelper::checkCSVFile( $this->CSVfileName ) ){
 			$success['CSVfileUrl'] = FatUtility::generateFullUrl( 'custom','downloadLogFile',array($this->CSVfileName),CONF_WEBROOT_FRONTEND );
+
 		}
 		FatUtility::dieJsonSuccess($success);
 	}
@@ -2569,12 +2577,10 @@ class Importexport extends ImportexportCommon{
 		while( $row = $this->db->fetch($rs) ){
 			$sheetData = array();
 			foreach ($headingsArr as $columnKey => $heading) {
-
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
 				if( 'credential_username' == $columnKey ){
 					$colValue = ( !empty($colValue) ? $colValue : Labels::getLabel('LBL_Admin',$langId) );
 				}
-
 				if( 'selprod_condition_identifier' == $columnKey ){
 					$colValue = array_key_exists($row['selprod_condition'], $conditionArr) ? $conditionArr[$row['selprod_condition']] : '';
 				}
@@ -2582,7 +2588,6 @@ class Importexport extends ImportexportCommon{
 				if( in_array( $columnKey, array( 'selprod_added_on', 'selprod_available_from' ) ) ){
 					$colValue = $this->displayDateTime($colValue);
 				}
-
 				if( in_array( $columnKey, array( 'selprod_subtract_stock', 'selprod_track_inventory', 'selprod_active', 'selprod_cod_enabled', 'selprod_deleted' ) ) && !$this->settings['CONF_USE_O_OR_1'] ){
 					$colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
 				}
@@ -3772,7 +3777,6 @@ class Importexport extends ImportexportCommon{
 			$sheetData = array();
 			foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
-
 				if( 'credential_username' == $columnKey ){
 					$colValue = ( !empty( $colValue ) ? $colValue : Labels::getLabel('LBL_Admin',$langId) );
 				}
@@ -3962,7 +3966,6 @@ class Importexport extends ImportexportCommon{
 					if( 'optionvalue_display_order' == $columnKey ){
 						$colValue = FatUtility::int( $colValue );
 					}
-
 					if( in_array( $columnKey, array( 'optionvalue_id', 'optionvalue_identifier' ) ) ){
 						if( 'optionvalue_id' == $columnKey ){
 							$optionValueData = OptionValue::getAttributesById( $colValue, array( 'optionvalue_id' ) );
@@ -4071,7 +4074,6 @@ class Importexport extends ImportexportCommon{
 		while( $row = $this->db->fetch($rs) ){
 			$sheetData = array();
 			foreach ($headingsArr as $columnKey => $heading) {
-
 				$colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
 
 				if( 'credential_username' == $columnKey ){
