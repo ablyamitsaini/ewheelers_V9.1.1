@@ -18,7 +18,7 @@ class AccountController extends LoggedUserController
         $this->set('bodyClass', 'is--dashboard');
     }
 
-    public function index() 
+    public function index()
     {
         /* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
         if(UserAuthentication::isGuestUserLogged()) {
@@ -869,7 +869,7 @@ class AccountController extends LoggedUserController
         $this->set('siteLangId', $this->siteLangId);
         $this->_template->render(false, false);
     }
-    
+
     public function ProfileImageForm()
     {
         $userId = UserAuthentication::getLoggedUserId();
@@ -1417,7 +1417,7 @@ class AccountController extends LoggedUserController
             'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','product_image_updated_on',
             'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand.brand_id', 'product_model',
             'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
-            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating' ) 
+            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating' )
         );
         $srch->addOrder('uwlp_added_on');
         $rs = $srch->getResultSet();
@@ -1449,7 +1449,7 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
@@ -1524,7 +1524,7 @@ class AccountController extends LoggedUserController
             'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','product_image_updated_on',
             'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand.brand_id', 'product_model',
             'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
-            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist', 'ifnull(prod_rating,0) prod_rating','selprod_sold_count' ) 
+            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist', 'ifnull(prod_rating,0) prod_rating','selprod_sold_count' )
         );
 
         $srch->addOrder('ufp_id', 'desc');
@@ -1559,7 +1559,7 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
 
         $this->set('totalRecords', $totalRecords);
@@ -1715,8 +1715,8 @@ class AccountController extends LoggedUserController
         $srch->doNotLimitRecords();
         $srch->addCondition('ufs_user_id', '=', $loggedUserId);
         $srch->addMultipleFields(
-            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description', 
-            'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city', 
+            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
         $rs = $srch->getResultSet();
@@ -1739,10 +1739,10 @@ class AccountController extends LoggedUserController
                 $prodSrch->addMultipleFields(
                     array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
                     'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-                    'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')  
+                    'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
                 );
                 $prodSrch->addGroupBy('product_id');
-                
+
                 if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
                     $prodSrch->joinFavouriteProducts($loggedUserId);
                     $prodSrch->addFld('ufp_id');
@@ -1750,7 +1750,7 @@ class AccountController extends LoggedUserController
                     $prodSrch->joinUserWishListProducts($loggedUserId);
                     $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
                 }
-                
+
                 $prodRs = $prodSrch->getResultSet();
                 $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
                 $shop['totalProducts'] = $prodSrch->recordCount();
@@ -1985,7 +1985,7 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)* $pagesize + 1 ;
         $endRecord = $pagesize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
 
         $this->set('totalRecords', $totalRecords);
@@ -2234,7 +2234,7 @@ class AccountController extends LoggedUserController
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->siteLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
         $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
-        
+
         if(User::isAffiliate() ) {
             $frm->addTextBox(Labels::getLabel('LBL_Company', $this->siteLangId), 'uextra_company_name');
             $frm->addTextBox(Labels::getLabel('LBL_Website', $this->siteLangId), 'uextra_website');
@@ -2420,7 +2420,7 @@ class AccountController extends LoggedUserController
         return $frm;
     }
 
-    public function updatePhoto() 
+    public function updatePhoto()
     {
         if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
             $attachment = new AttachedFile();
@@ -2517,7 +2517,7 @@ class AccountController extends LoggedUserController
         $srch->addMultipleFields(
             array( 'orrmsg_id', 'orrmsg_from_user_id', 'orrmsg_msg',
             'orrmsg_date', 'msg_user.user_name as msg_user_name', 'orrequest_status',
-            'orrmsg_from_admin_id', 'admin_name', 'shop_identifier', 'op_selprod_user_id' ) 
+            'orrmsg_from_admin_id', 'admin_name', 'shop_identifier', 'op_selprod_user_id' )
         );
 
         $rs = $srch->getResultSet();
@@ -2532,7 +2532,7 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
