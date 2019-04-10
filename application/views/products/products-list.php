@@ -4,7 +4,7 @@ if($products){
 	$productUrl = CommonHelper::generateUrl('Products','View',array($product['selprod_id']));
 	?>
 
-<div class="col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:3;?> col-xs-6 col-sm-6 col-6 column">
+<div class="col-xl-2 col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:3;?> col-6 column">
   <!--product tile-->
 	<div class="products">
 		<div class="products__body">

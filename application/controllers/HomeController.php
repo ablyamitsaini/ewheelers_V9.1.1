@@ -2,7 +2,7 @@
 class HomeController extends MyAppController
 {
 
-    public function index() 
+    public function index()
     {
         $db = FatApp::getDb();
         $loggedUserId = 0;
@@ -11,8 +11,8 @@ class HomeController extends MyAppController
         }
         $productSrchObj = new ProductSearch($this->siteLangId);
         $productSrchObj->joinProductToCategory($this->siteLangId);
-        $productSrchObj->doNotCalculateRecords();
-        /* $productSrchObj->setPageSize( 10 ); */
+        /* $productSrchObj->doNotCalculateRecords();
+        $productSrchObj->setPageSize( 10 ); */
         $productSrchObj->setDefinedCriteria();
         $productSrchObj->joinSellerSubscription($this->siteLangId, true);
         $productSrchObj->addSubscriptionValidCondition();
@@ -30,7 +30,7 @@ class HomeController extends MyAppController
 
         $productSrchObj->addMultipleFields(
             array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on', 'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock') 
+            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
         );
 
         /* echo $productSrchObj->getQuery(); die; */
@@ -48,7 +48,7 @@ class HomeController extends MyAppController
             $srch->addMultipleFields(
                 array('collection_id', 'IFNULL(collection_name, collection_identifier) as collection_name',
                 'IFNULL( collection_description, "" ) as collection_description', 'IFNULL(collection_link_caption, "") as collection_link_caption',
-                'collection_link_url', 'collection_layout_type', 'collection_type', 'collection_criteria','collection_child_records','collection_primary_records' ) 
+                'collection_link_url', 'collection_layout_type', 'collection_type', 'collection_criteria','collection_child_records','collection_primary_records' )
             );
             $rs = $srch->getResultSet();
             $collectionsDbArr = $db->fetchAll($rs, 'collection_id');
@@ -70,7 +70,7 @@ class HomeController extends MyAppController
 
                 foreach( $collectionsDbArr as $collection_id => $collection ){
                     if(!$collection['collection_primary_records']) {
-                        continue; 
+                        continue;
                     }
                     switch( $collection['collection_type'] ){
                     case Collections::COLLECTION_TYPE_PRODUCT:
@@ -106,7 +106,9 @@ class HomeController extends MyAppController
                         $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 
                         $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $db->fetchAll($rs, 'selprod_id');
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totProducts'] = $productSrchTempObj->recordCount();
                         /* ] */
+
                         unset($tempObj);
                         unset($productSrchTempObj);
                         break;
@@ -274,7 +276,7 @@ class HomeController extends MyAppController
         $srchSlide->joinAttachedFile();
         $srchSlide->addMultipleFields(
             array('slide_id','slide_record_id','slide_type','IFNULL(promotion_name, promotion_identifier) as promotion_name,IFNULL(slide_title, slide_identifier) as slide_title',
-            'slide_target', 'slide_url','promotion_id' ,'daily_cost','weekly_cost','monthly_cost','total_cost', ) 
+            'slide_target', 'slide_url','promotion_id' ,'daily_cost','weekly_cost','monthly_cost','total_cost', )
         );
 
         $totalSlidesPageSize = FatApp::getConfig('CONF_TOTAL_SLIDES_HOME_PAGE', FatUtility::VAR_INT, 4);
