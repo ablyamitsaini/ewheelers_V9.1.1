@@ -21,14 +21,13 @@ INSERT INTO `tbl_extra_pages_lang` (`epagelang_epage_id`, `epagelang_lang_id`, `
 
 INSERT INTO `tbl_payment_methods`(`pmethod_identifier`, `pmethod_code`, `pmethod_active`, `pmethod_display_order`) VALUES ('Brain Tree','Braintree',1,17);
 
-<<<<<<< HEAD
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_user_username';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Is_Color_Type';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Is_Separate_Image';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Related_selprod_id';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Buy_together_selprod_id';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Sustack_stock';
-=======
+
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Developer_Key';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_This_is_the_google_plus_developer_key';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Google_Plus_Client_ID';
@@ -69,4 +68,3 @@ UPDATE `tbl_extra_pages` SET `epage_default_content` = '<div class="heading1">Si
 UPDATE `tbl_extra_pages` SET `epage_default_content` = '<ul> 	<li> <i class="individualTupple"><img src="/images/retina/user.svg" alt="" /></i> 		<h3>Certified User Identity</h3>   		<p> Lorem Ipsum is simply  printing and typesetting </p></li> 	<li> <i class="individualTupple"><img src="/images/retina/locked.svg" alt="" /></i> 		<h3>Secure payment and guaranteed</h3>   		<p> Lorem Ipsum is the printing and typesetting industry</p></li>  	<li> <i class="individualTupple"><img src="/images/retina/handshake2.svg" alt="" /></i> 		<h3> Delivery of goods without risk</h3>   		<p> Lorem Ipsum is simply dummy text of the  industry</p></li> 	<li> <i class="individualTupple"><img src="/images/retina/shipped.svg" alt="" /></i>  		<h3>Sell totally free</h3>  		<p> Lorem Ipsum is simply  of the printing and industry</p></li>   </ul>' WHERE `tbl_extra_pages`.`epage_type` = 26;
 
 ALTER TABLE `tbl_order_products` ADD `op_unit_cost` DECIMAL(10,2) NOT NULL AFTER `op_unit_price`;
->>>>>>> task_61864_add_cost_price_in_seller_inventory

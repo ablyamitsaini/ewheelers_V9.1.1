@@ -517,7 +517,7 @@ class ImportexportCommon extends FatModel{
 
 		if($this->isDefaultSheetData($langId)){
 			$arr['selprod_price'] = Labels::getLabel('LBL_Selling_Price', $langId);
-			/* $arr[] = Labels::getLabel('LBL_Cost', $langId);	 */
+			$arr['selprod_cost'] = Labels::getLabel('LBL_Cost_Price', $langId);
 			$arr['selprod_stock'] = Labels::getLabel('LBL_Stock', $langId);
 			$arr['selprod_sku'] = Labels::getLabel('LBL_SKU', $langId);
 			$arr['selprod_min_order_qty'] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);
