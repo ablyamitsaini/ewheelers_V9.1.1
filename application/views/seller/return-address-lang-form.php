@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('id', 'returnAddressLangFrm');
 $frm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;
+$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
+$frm->developerTags['fld_default_col'] = 6;
 $frm->setFormTagAttribute('onsubmit', 'setReturnAddressLang(this); return(false);');
 ?>
 <?php 	$variables= array('language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
@@ -12,7 +12,7 @@ $frm->setFormTagAttribute('onsubmit', 'setReturnAddressLang(this); return(false)
 <div class="tabs__content">
 	<div class="form__content">
         <div class="row">
-			<div class="col-md-8">
+			<div class="col-lg-12 col-md-12">
 				<div class="">
 					<div class="tabs tabs-sm tabs--scroll clearfix">
 						<ul class="setactive-js">

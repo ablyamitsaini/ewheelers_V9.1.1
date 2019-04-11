@@ -19,13 +19,15 @@
 	</div>
 
 	<div class="form__subcontent">
-		<?php
-		$sellerCollectionproductLinkFrm->setFormTagAttribute('onsubmit','setUpSellerCollectionProductLinks(this); return(false);');
-		$sellerCollectionproductLinkFrm->setFormTagAttribute('class','form form--horizontal');
-		$sellerCollectionproductLinkFrm->developerTags['colClassPrefix'] = 'col-lg-8 ';
-		$sellerCollectionproductLinkFrm->developerTags['fld_default_col'] = 8;
+		<div class="col-lg-6 col-md-6">
+			<?php
+			$sellerCollectionproductLinkFrm->setFormTagAttribute('onsubmit','setUpSellerCollectionProductLinks(this); return(false);');
+			$sellerCollectionproductLinkFrm->setFormTagAttribute('class','form form--horizontal');
+			$sellerCollectionproductLinkFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md- ';
+			$sellerCollectionproductLinkFrm->developerTags['fld_default_col'] = 12;
 
-	echo $sellerCollectionproductLinkFrm->getFormHtml(); ?>
+		echo $sellerCollectionproductLinkFrm->getFormHtml(); ?>
+	</div>
 	</div>
 </div>
 

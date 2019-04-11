@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('id', 'returnAddressFrm');
 $frm->setFormTagAttribute('class','form form--horizontal');
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;
+$frm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
+$frm->developerTags['fld_default_col'] = 4;
 $frm->setFormTagAttribute('onsubmit', 'setReturnAddress(this); return(false);');
 
 $countryFld = $frm->getField('ura_country_id');
@@ -18,8 +18,8 @@ $stateFld->setFieldTagAttribute('id','ura_state_id');
 <div class="tabs__content">
 	<div class="form__content">
         <div class="row">
-			<div class="col-md-8">
-			 
+			<div class="col-lg-12 col-md-12">
+
 					<div class="tabs tabs-sm tabs--scroll clearfix">
 						<ul class="setactive-js">
 							<li class="is-active"><a href="javascript:void(0)" onClick="returnAddressForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>

@@ -2,8 +2,8 @@
 /* $shopLangFrm->setFormTagAttribute('onsubmit', 'setupShopLang(this); return(false);'); */
 $shopLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
 
-$shopLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$shopLangFrm->developerTags['fld_default_col'] = 12;
+$shopLangFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
+$shopLangFrm->developerTags['fld_default_col'] = 4;
 
 $paymentPolicyfld = $shopLangFrm->getField('shop_payment_policy');
 $paymentPolicyfld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Shop_payment_terms_comments',$formLangId).'</small>';
@@ -25,10 +25,10 @@ $paymentPolicyfld->htmlAfterField = '<small class="text--small">'.Labels::getLab
 <?php 	$variables= array('formLangId'=>$formLangId, 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 
 $this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
-<div class="tabs__content">                                               
+<div class="tabs__content">
 	<div class="form__content ">
 		<div class="row">
-			<div class="col-md-8" id="shopFormBlock">
+			<div class="col-lg-12 col-md-12" id="shopFormBlock">
 				<?php echo $shopLangFrm->getFormTag();
 				echo $shopLangFrm->getFormHtml(false);
 				echo '</form>'; ?>
