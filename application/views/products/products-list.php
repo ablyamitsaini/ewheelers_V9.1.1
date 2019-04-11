@@ -4,7 +4,7 @@ if($products){
 	$productUrl = CommonHelper::generateUrl('Products','View',array($product['selprod_id']));
 	?>
 
-<div class="col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:3;?> col-xs-6 col-sm-6 col-6 column">
+<div class="col-xl-2 col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:3;?> col-6 column">
   <!--product tile-->
 	<div class="products">
 		<div class="products__body">
@@ -13,7 +13,7 @@ if($products){
             <?php $uploadedTime = ($product['product_image_updated_on'] > 0) ? '?'.strtotime($product['product_image_updated_on']) : '' ;?>
 				<a title="<?php echo $product['selprod_title'];?>" href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products','View',array($product['selprod_id'])):CommonHelper::generateUrl('Products','track',array($product['promotion_record_id']))?>"><img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').$uploadedTime; ?>" alt="<?php echo $product['prodcat_name'];?>"> </a>
 			</div>
-			<div class="products__quickview"> <a name="<?php echo $controllerName;?>" onClick='quickDetail(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content"></a> </div>
+			<div class="products__quickview"> <a onClick='quickDetail(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content"></a> </div>
 		</div>
 		<div class="products__footer">
 			<?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>

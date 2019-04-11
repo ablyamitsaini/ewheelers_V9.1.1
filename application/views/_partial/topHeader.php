@@ -28,7 +28,7 @@
 </div>
 <div class="wrapper">
 <div id="loader-wrapper">
-	<div class="pong-loader"></div>
+	<div class="yokart-loader"><img src="../images/retina/yokart-loader.svg"></div>
 	<div class="loader-section section-left"></div>
 	<div class="loader-section section-right"></div>
 </div>

@@ -1,11 +1,11 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="tabs tabs--small   tabs--scroll clearfix">
+<div class="tabs tabs--small tabs--scroll clearfix">
 	<ul class="arrowTabs">
 		<li class="<?php echo !empty($action) && $action=='shopForm'?'is-active' : '';?>"><a href="javascript:void(0)" onClick="shopForm()"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
-		<?php 
-		$inactive=($shop_id==0)?'fat-inactive':'';					
-		foreach($language as $langId => $langName){?>	
-		<li class="<?php echo !empty($formLangId) && $formLangId==$langId?'is-active' : ''; echo $inactive?>"><a href="javascript:void(0)" 
+		<?php
+		$inactive=($shop_id==0)?'fat-inactive':'';
+		foreach($language as $langId => $langName){?>
+		<li class="<?php echo !empty($formLangId) && $formLangId==$langId?'is-active' : ''; echo $inactive?>"><a href="javascript:void(0)"
 		<?php if($shop_id>0){?> onClick="shopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>)"<?php }?>>
 		<?php echo $langName;?></a></li>
 		<?php }?>

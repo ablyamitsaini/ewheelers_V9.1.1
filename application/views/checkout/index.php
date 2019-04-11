@@ -7,9 +7,9 @@
 			<div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 checkout--steps">
 				<div class="checkout--steps__inner">
 					<?php if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) { ?>
-					<div id="login-register" class="step is-current">
+					<section id="login-register" class="section-checkout is-current">
 						<div class="check-login-wrapper step__body" style="display:none;"></div>
-					</div>
+					</section>
 					<?php }else {?>
 						<section class="section-checkout is-completed" id="login-register">
 							<div class="selected-panel">

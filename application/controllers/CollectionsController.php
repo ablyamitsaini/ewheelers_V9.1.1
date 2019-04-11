@@ -74,7 +74,7 @@ class CollectionsController extends MyAppController
 
 
         $productSrchObj->doNotCalculateRecords();
-        $productSrchObj->setPageSize(10);
+        // $productSrchObj->setPageSize(10);
 
         /* $productSrchObj->joinFavouriteProducts($loggedUserId ); */
         if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {

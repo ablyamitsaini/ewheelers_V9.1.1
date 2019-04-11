@@ -13,7 +13,7 @@ if( isset( $collections ) && count($collections) ){
 			<div class="section__heading">
 				<h2><?php echo ($row['collection_name'] != '') ?  $row['collection_name'] : ''; ?></h2>
 			</div>
-			<?php if( count($row['products']) > Collections::LIMIT_PRODUCT_LAYOUT2 ){ ?>
+			<?php if( $row['totProducts'] > $row['collection_primary_records'] ){ ?>
 				<div class="section__action"><a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>
 			<?php }  ?>
 		</div>
@@ -22,7 +22,7 @@ if( isset( $collections ) && count($collections) ){
 				<?php foreach( $row['products'] as $product ){ ?>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 					<?php $layoutClass = 'products--layout'; include('product-layout-1-list.php'); ?>
-				</div> 
+				</div>
 				<?php } ?>
 			</div>
 		</div>
