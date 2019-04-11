@@ -14,7 +14,7 @@ class ProductsController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index() 
+    public function index()
     {
         $data = FatApp::getPostedData();
         $srchFrm = $this->getSearchForm();
@@ -109,7 +109,7 @@ class ProductsController extends AdminBaseController
         $srch->addMultipleFields(
             array('product_id', 'product_attrgrp_id',
             'product_identifier', 'product_approved', 'product_active', 'product_seller_id', 'product_added_on',
-            'product_name','attrgrp_name','user_name') 
+            'product_name','attrgrp_name','user_name')
         );
 
         $srch->addOrder('product_added_on', 'DESC');
@@ -497,7 +497,7 @@ class ProductsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         FatApp::getDb()->updateFromArray('tbl_products', array('product_image_updated_on' => date('Y-m-d H:i:s')), array('smt' => 'product_id = ?','vals' => array($product_id)));
-        
+
         //Message::addMessage(Labels::getLabel('LBL_Image_Uploaded_Successfully',$this->adminLangId));
         $this->set("msg", Labels::getLabel('LBL_Image_Uploaded_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -520,7 +520,7 @@ class ProductsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         FatApp::getDb()->updateFromArray('tbl_products', array('product_image_updated_on' => date('Y-m-d H:i:s')), array('smt' => 'product_id = ?','vals' => array($product_id)));
-        
+
         //Message::addMessage(Labels::getLabel('LBL_Image_Removed_Successfully',$this->adminLangId));
         $this->set("msg", Labels::getLabel('LBL_Image_Removed_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -667,6 +667,22 @@ class ProductsController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
+
+        /* Get Linked Products [ */
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable( SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'LEFT OUTER JOIN', 'selprod_id = selprodoption_selprod_id', 'tspo');
+        $srch->addCondition('selprod_product_id', '=', $product_id);
+        $srch->addCondition('tspo.selprodoption_option_id', '=', $option_id);
+        $srch->addCondition('selprod_deleted','=',applicationConstants::NO);
+        $srch->addFld(array('selprod_id'));
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+        if(!empty($row)) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Option_is_linked_with_seller_inventory', $this->adminLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        /* ] */
+
         $prodObj = new Product();
         if(!$prodObj->removeProductOption($product_id, $option_id) ) {
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), $this->adminLangId));
@@ -1196,7 +1212,7 @@ class ProductsController extends AdminBaseController
             foreach($specResult as $key=>$value){
                 foreach($languages as $langId=>$langName){
                     if($value['prodspeclang_lang_id']!=$langId) {
-                        continue; 
+                        continue;
                     }
                     $data['prod_spec_name['.$langId.']'] = $value['prodspec_name'];
                     $data['prod_spec_value['.$langId.']'] = $value['prodspec_value'];

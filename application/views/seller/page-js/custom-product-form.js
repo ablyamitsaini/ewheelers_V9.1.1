@@ -451,8 +451,12 @@
 			}
 			if(!agree){ return false; }
 			fcom.ajax(fcom.makeUrl('Seller', 'removeProductOption'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
-				$.mbsmessage.close();
-				reloadProductOptions(product_id);
+				$res = $.parseJSON(t);
+				if($res.status == 0){
+				    $.mbsmessage($res.msg, true, 'alert--danger');
+				}else{
+					reloadProductOptions(product_id);	
+				}
 			});
 		});
 
@@ -461,7 +465,6 @@
 
 		$("#product_options_list").html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('seller', 'ProductOptions', [productId]),'', function(t) {
-			$.mbsmessage.close();
 			$("#product_options_list").html(t);
 		});
 	}

@@ -8,7 +8,7 @@
 							<div class="section-head">
 								<?php echo ($row['collection_name'] != '') ? ' <div class="section__heading">' . $row['collection_name'] .'</div>' : ''; ?>
 
-								<?php if( count($row['categories']) > Collections::LIMIT_CATEGORY_LAYOUT2 ){ ?>
+								<?php if( $row['totCategories'] > Collections::LIMIT_CATEGORY_LAYOUT2 ){ ?>
 									<div class="section__action"> <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>
 								<?php }  ?>
 							</div>
