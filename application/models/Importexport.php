@@ -672,8 +672,6 @@ class Importexport extends ImportexportCommon{
 					}else{
 						$prodCatDataArr[$columnKey] = $colValue;
 					}
-
-					$parent = ($parent == $categoryId)?0:$parent;
 				}
 			}
 
@@ -1190,7 +1188,6 @@ class Importexport extends ImportexportCommon{
 		/* ] */
 
 		while( $row = $this->db->fetch($rs) ){
-
 			$taxData = $this->getTaxCategoryByProductId($row['product_id']);
 			if(!empty($taxData)){
 				$row = array_merge( $row, $taxData );
@@ -1221,6 +1218,9 @@ class Importexport extends ImportexportCommon{
 					$colValue = ( !empty($row['product_type']) && array_key_exists($row['product_type'], $ProdTypeIdentifierById) ? $ProdTypeIdentifierById[$row['product_type']] : 0);
 				}
 
+				if(  'tax_category_id' == $columnKey ){
+					$colValue = ( array_key_exists( 'ptt_taxcat_id', $row) ? $row['ptt_taxcat_id'] : 0 );
+				}
 				if(  'tax_category_identifier' == $columnKey ){
 					$colValue = ( !empty($row['ptt_taxcat_id']) && array_key_exists($row['ptt_taxcat_id'], $taxCategoryIdentifierById) ? $taxCategoryIdentifierById[ $row['ptt_taxcat_id'] ] : 0 );
 				}
@@ -1274,7 +1274,7 @@ class Importexport extends ImportexportCommon{
 
 		while( ($row = $this->getFileRow($csvFilePointer) ) !== FALSE ){
 			$rowIndex++;
-			$prodDataArr = $prodlangDataArr = $categoryIds = array();
+			$prodDataArr = $prodlangDataArr = $categoryIds = $prodShippingArr = array();
 			$errorInRow = $taxCatId = false;
 
 			foreach ($coloumArr as $columnKey => $columnTitle) {
@@ -1282,16 +1282,28 @@ class Importexport extends ImportexportCommon{
 				$colValue = $this->getCell( $row, $colIndex,'' );
 				$invalid = $errMsg = false;
 
-				if($this->isDefaultSheetData($langId)){
+				if($this->isDefaultSheetData($langId) && in_array($columnKey, array('product_seller_id', 'credential_username', 'product_id', 'product_identifier')) ){
 					if( $this->settings['CONF_USE_USER_ID'] ){
-						$colInd = $this->headingIndexArr[$coloumArr['product_seller_id']];
+						$colTitle = $columnTitle;
+						if( 'product_seller_id' != $columnKey ){
+							$colTitle = $coloumArr['product_seller_id'];
+						}
+						$colInd = $this->headingIndexArr[$colTitle];
 						$userId = $this->getCell( $row, $colInd, '' );
-					}else if( !$this->settings['CONF_USE_USER_ID'] || 'credential_username' == $columnKey ){
-						$colInd = $this->headingIndexArr[$coloumArr['credential_username']];
-						$colValue = $this->getCell( $row, $colInd, '' );
+					}else{
+						$colTitle = $columnTitle;
+						if( 'credential_username' != $columnKey ){
+							$colTitle = $coloumArr['credential_username'];
+						}
+						$columnKey = 'product_seller_id';
 
-						if( !empty($colValue) && !array_key_exists( $colValue, $usernameArr ) ){
-							$res = $this->getAllUserArr( false, $colValue );
+						$colInd = $this->headingIndexArr[$colTitle];
+						$userName = $this->getCell( $row, $colInd, '' );
+
+						$userName = ( $userName == Labels::getLabel('LBL_Admin',$langId) ? '' : $userName );
+
+						if( !empty($userName) && !array_key_exists( $userName, $usernameArr ) ){
+							$res = $this->getAllUserArr( false, $userName );
 							if( !$res ){
 								$colIndex = $colInd;
 								$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
@@ -1299,7 +1311,7 @@ class Importexport extends ImportexportCommon{
 								$usernameArr = array_merge( $usernameArr, $res );
 							}
 						}
-						$userId = $colValue = array_key_exists( $colValue, $usernameArr ) ? FatUtility::int( $usernameArr[$colValue] ) : 0;
+						$userId = array_key_exists( $userName, $usernameArr ) ? FatUtility::int( $usernameArr[$userName] ) : 0;
 					}
 
 					if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
@@ -1342,15 +1354,16 @@ class Importexport extends ImportexportCommon{
 						}
 					}else if( $sellerId && 'product_added_on' == $columnKey ){
 						$colValue = date('Y-m-d H:i:s');
+					}else if( 'category_Id' == $columnKey ){
+						$categoryIds = $colValue;
 					}else if( 'category_indentifier' == $columnKey ){
-
 						$catIdentifiers = explode(',',$colValue);
 						if(!empty($catIdentifiers)){
 							foreach($catIdentifiers as $val){
 								if(!array_key_exists($val,$categoryIdentifierArr)){
 									$res = $this->getAllCategoryIdentifiers(false,$val);
 									if(!$res){
-										$invalid = true;
+										continue;
 									}else{
 										$categoryIdentifierArr = array_merge($categoryIdentifierArr,$res);
 									}
@@ -1384,6 +1397,7 @@ class Importexport extends ImportexportCommon{
 						}
 						$colValue = implode(',',$catArr);
 					}else if( 'brand_identifier' == $columnKey ){
+						$columnKey = 'product_brand_id';
 						if(!array_key_exists($colValue,$brandIdentifierArr)){
 							$res = $this->getAllBrandsArr(false,$colValue);
 							if(!$res){
@@ -1394,13 +1408,15 @@ class Importexport extends ImportexportCommon{
 						}
 						$colValue = isset($brandIdentifierArr[$colValue]) ? $brandIdentifierArr[$colValue] : 0;
 					}else if( 'product_type_identifier' == $columnKey ){
+						$columnKey = 'product_type';
 						if(!array_key_exists($colValue,$prodTypeIdentifierArr)){
 							$invalid = true;
 						}else{
 							$colValue = $prodTypeIdentifierArr[$colValue];
 						}
+					}else if( 'tax_category_id' == $columnKey ){
+						$taxCatId = $colValue;
 					}else if( 'tax_category_identifier' == $columnKey ){
-						$columnKey = 'tax_category_id';
 						if( !array_key_exists( $colValue, $taxCategoryArr ) ){
 							$res = $this->getTaxCategoriesArr( false, $colValue );
 							if(!$res){
@@ -1409,7 +1425,7 @@ class Importexport extends ImportexportCommon{
 								$taxCategoryArr = array_merge($taxCategoryArr,$res);
 							}
 						}
-						$taxCatId = $colValue = isset($taxCategoryArr[$colValue]) ? $taxCategoryArr[$colValue] : 0;
+						$taxCatId = isset($taxCategoryArr[$colValue]) ? $taxCategoryArr[$colValue] : 0;
 					}else if( 'product_dimension_unit_identifier' == $columnKey ){
 						$columnKey = 'product_dimension_unit';
 						if( !array_key_exists( $colValue, $lengthUnitsArr ) ){
@@ -1444,7 +1460,12 @@ class Importexport extends ImportexportCommon{
 					}else{
 						if( in_array( $columnKey, array( 'product_name', 'product_description', 'product_youtube_video' ) ) ){
 							$prodlangDataArr[$columnKey] = $colValue;
+						}else if( in_array( $columnKey, array( 'ps_from_country_id', 'ps_free' ) ) ){
+							$prodShippingArr[$columnKey] = $colValue;
 						}else{
+							if( in_array( $columnKey, array( 'tax_category_id', 'tax_category_identifier' ) ) ){ continue; }
+							if( in_array( $columnKey, array( 'category_Id', 'category_indentifier' ) ) ){ continue; }
+
 							$prodDataArr[$columnKey] = $colValue;
 						}
 					}
@@ -1488,6 +1509,7 @@ class Importexport extends ImportexportCommon{
 							}
 						}
 						$this->db->insertFromArray( Product::DB_TBL, $prodDataArr);
+						// echo $this->db->getError();
 						$productId = $this->db->getInsertId();
 
 						if($sellerId){
@@ -1508,9 +1530,9 @@ class Importexport extends ImportexportCommon{
 						$productSellerShiping = array(
 							'ps_product_id'=>$productId,
 							'ps_user_id'=>$userId,
-							'ps_from_country_id'=>$prodDataArr['ps_from_country_id'],
-							'ps_free'=>$prodDataArr['ps_free'],
 						);
+						$productSellerShiping = array_merge( $productSellerShiping, $prodShippingArr );
+
 						FatApp::getDb()->insertFromArray( PRODUCT::DB_TBL_PRODUCT_SHIPPING, $productSellerShiping, false, array(), $productSellerShiping );
 					}
 
@@ -1542,7 +1564,7 @@ class Importexport extends ImportexportCommon{
 						/*]*/
 
 						/* Tax Category [*/
-						$this->db->deleteRecords( Tax::DB_TBL_PRODUCT_TO_TAX, array('smt'=> 'ptt_product_id = ? and ptt_seller_user_id = ?','vals' => array($productId,$userId) ) );
+						$this->db->deleteRecords( Tax::DB_TBL_PRODUCT_TO_TAX, array('smt'=> 'ptt_product_id = ? and ptt_seller_user_id = ?','vals' => array( $productId, $userId ) ) );
 						if($taxCatId){
 							$this->db->insertFromArray( Tax::DB_TBL_PRODUCT_TO_TAX, array('ptt_product_id'=>$productId,'ptt_taxcat_id'=>$taxCatId,'ptt_seller_user_id'=>$userId) );
 						}
@@ -2108,28 +2130,6 @@ class Importexport extends ImportexportCommon{
 
 				$errMsg = Product::validateShippingFields( $columnKey, $columnTitle, $colValue, $langId );
 
-				if( in_array( $columnKey, array( 'user_id', 'credential_username' ) ) ){
-					if( $this->settings['CONF_USE_USER_ID'] ){
-						$userId = $colValue;
-					}else if( !$this->settings['CONF_USE_USER_ID'] || 'credential_username' == $columnKey ){
-						if( !array_key_exists( $colValue, $usernameArr ) ){
-							$res = $this->getAllUserArr( false, $colValue );
-							if( !$res ){
-								$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_Invalid_{column-name}.", $langId ) );
-							}else{
-								$usernameArr = array_merge( $usernameArr, $res );
-							}
-						}
-						$userId = $colValue = array_key_exists( $colValue, $usernameArr ) ? FatUtility::int( $usernameArr[$colValue] ) : 0;
-					}
-
-					if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
-						$errMsg = Labels::getLabel( "MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId );
-					}
-
-					$columnKey = 'pship_user_id';
-				}
-
 				if($errMsg){
 					$err = array($rowIndex, ( $colIndex + 1), $errMsg);
 					CommonHelper::writeToCSVFile( $this->CSVfileObj,  $err);
@@ -2144,10 +2144,6 @@ class Importexport extends ImportexportCommon{
 
 								$colValue =   array_key_exists( $colValue, $prodIndetifierArr ) ? $prodIndetifierArr[$colValue] : 0;
 							}
-						}
-
-						if( 0 < $userId ){
-							$colValue = $this->getCheckAndSetProductIdByTempId( $colValue, $userId );
 						}
 
 						$productId = $colValue;
@@ -2170,6 +2166,32 @@ class Importexport extends ImportexportCommon{
 							$invalid = true;
 						}
 						$columnKey = 'pship_prod_id';
+					}
+
+					if( in_array($columnKey, array('user_id', 'credential_username') ) ){
+						if( $this->settings['CONF_USE_USER_ID'] ){
+							$userId = $colValue;
+						}else{
+							$colValue = ( $colValue == Labels::getLabel('LBL_Admin',$langId) ? '' : $colValue );
+
+							if( !empty($colValue) && !array_key_exists( $colValue, $usernameArr ) ){
+								$res = $this->getAllUserArr( false, $colValue );
+								if( !$res ){
+									$invalid = true;
+								}else{
+									$usernameArr = array_merge( $usernameArr, $res );
+								}
+							}
+							$userId = $colValue = array_key_exists( $colValue, $usernameArr ) ? FatUtility::int( $usernameArr[$colValue] ) : 0;
+						}
+
+						if( 0 < $sellerId && ( $sellerId != $userId || 1 > $userId ) ){
+							$errMsg = Labels::getLabel( "MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId );
+						}
+
+						if( in_array($columnKey, array('user_id', 'credential_username') ) ){
+							$columnKey = 'pship_user_id';
+						}
 					}
 
 					if( 'country_code' == $columnKey ){
@@ -2221,7 +2243,9 @@ class Importexport extends ImportexportCommon{
 					}
 
 					if( true === $invalid ){
-						$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_{column-name}_is_invalid", $langId ) );
+						if( '' == $errMsg ){
+							$errMsg = str_replace( '{column-name}', $columnTitle, Labels::getLabel( "MSG_{column-name}_is_invalid", $langId ) );
+						}
 						CommonHelper::writeToCSVFile( $this->CSVfileObj, array( $rowIndex, ( $colIndex + 1), $errMsg ) );
 					}else{
 						$prodShipArr[$columnKey] = $colValue;
@@ -3826,7 +3850,7 @@ class Importexport extends ImportexportCommon{
 
 						if( !empty( $colValue ) ){
 							if( !array_key_exists( $colValue, $userArr ) ){
-								$res = $this->getAllOptions(false,$colValue);
+								$res = $this->getAllUserArr(false,$colValue);
 								if( !$res ){
 									$invalid = true;
 								}else{
@@ -4444,7 +4468,7 @@ class Importexport extends ImportexportCommon{
 
 					if( in_array( $columnKey, array( 'state_country_id', 'country_code' ) ) ){
 						if( 'state_country_id' == $columnKey ){
-							$currencyId = FatUtility::int($colValue);
+							$countryId = FatUtility::int($colValue);
 							$colValue = array_key_exists($countryId, $countryCodes) ? $countryId : 0;
 						}elseif ( 'country_code' == $columnKey ) {
 							$columnKey = 'state_country_id';
