@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('class', 'form form--horizontal');
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;
+$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
+$frm->developerTags['fld_default_col'] = 6;
 $frm->setFormTagAttribute( 'onSubmit', 'exportData(this,'.$actionType.'); return false;' );
 $actionTypeArr = array(Importexport::TYPE_PRODUCTS,Importexport::TYPE_SELLER_PRODUCTS,Importexport::TYPE_USERS);
 
@@ -22,7 +22,7 @@ if(in_array($actionType,$actionTypeArr)){
 	$rangeTypeFld->setfieldTagAttribute( 'onchange' , "showHideExtraFld(this.value,".Importexport::BY_ID_RANGE.",".Importexport::BY_BATCHES.");");
 }
 ?>
- 
+
 	<div class="tabs tabs-sm tabs--scroll clearfix">
 		<ul>
 			<li class="is-active"><a class="is-active" href="javascript:void(0);" onclick="exportForm('<?php echo $actionType;?>');"><?php echo Labels::getLabel('LBL_Content',$siteLangId); ?></a></li>
@@ -31,7 +31,7 @@ if(in_array($actionType,$actionTypeArr)){
 			<?php }?>
 		</ul>
 	</div>
- 
+
 <div class="form__subcontent">
 	<?php echo $frm->getFormHtml(); ?>
 </div>
