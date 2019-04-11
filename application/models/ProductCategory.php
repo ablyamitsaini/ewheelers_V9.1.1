@@ -561,6 +561,7 @@ class ProductCategory extends MyAppModel{
 				}
 				$return += self::getProdCatTreeStructureSearch($prodcat_id, $langId, $keywords, $level+1,$name, $isActive, $isDeleted, $isForCsv );
 				//print_r($return); die;
+
         }
         return $return;
 	}
