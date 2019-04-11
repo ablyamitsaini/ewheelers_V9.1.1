@@ -2733,7 +2733,7 @@ class AccountController extends LoggedUserController
     private function getRechargeWalletForm( $langId )
     {
         $frm = new Form('frmRechargeWallet');
-        $fld = $frm->addFloatField(Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $langId), 'amount');
+        $fld = $frm->addFloatField('', 'amount');
         //$fld->requirements()->setRequired();
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Add_Money_to_account', $langId));
         return $frm;

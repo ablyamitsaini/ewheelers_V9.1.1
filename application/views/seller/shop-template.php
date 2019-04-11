@@ -1,20 +1,20 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php 	$variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 
-	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); 
-	
+	$this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false);
+
 	?>
- 
-		<div class="tabs tabs-sm tabs--scroll clearfix">
-			<ul>
-				<li class="is-active" ><a href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Template', $siteLangId);?></a></li>
-				
-				<li > 
-					<a onclick="themeColor()" href="javascript:void(0);"> <?php echo Labels::getLabel('TXT_Theme_Color', $siteLangId);?> </a>
-				</li>
-			</ul>
-		</div>
-	 
+
+	<div class="tabs tabs-sm tabs--scroll clearfix">
+		<ul>
+			<li class="is-active" ><a href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Template', $siteLangId);?></a></li>
+
+			<li >
+				<a onclick="themeColor()" href="javascript:void(0);"> <?php echo Labels::getLabel('TXT_Theme_Color', $siteLangId);?> </a>
+			</li>
+		</ul>
+	</div>
+
 <div class="tabs__content">
 
   <div class="row" id="shopFormBlock">

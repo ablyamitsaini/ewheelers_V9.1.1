@@ -20,13 +20,15 @@
 				</div>
 
 				<div class="form__subcontent">
+					<div class="col-lg-6 col-md-6">
 					<?php
 					$shopColLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
 					$shopColLangFrm->setFormTagAttribute('onsubmit', 'setupShopCollectionlangForm(this); return(false);');
-					$shopColLangFrm->developerTags['colClassPrefix'] = 'col-lg-8 col-sm-';
-					$shopColLangFrm->developerTags['fld_default_col'] = 8;
+					$shopColLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-';
+					$shopColLangFrm->developerTags['fld_default_col'] = 12;
 					echo $shopColLangFrm->getFormHtml();
 					?>
+				</div>
 				</div>
 			</div>
 		</div>
