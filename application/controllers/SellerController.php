@@ -28,7 +28,7 @@ class SellerController extends LoggedUserController
         $this->set('bodyClass', 'is--dashboard');
     }
 
-    public function index() 
+    public function index()
     {
         $userId = UserAuthentication::getLoggedUserId();
         $user = new User($userId);
@@ -56,7 +56,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize(5);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id') 
+            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id')
         );
 
         $rs = $srch->getResultSet();
@@ -171,7 +171,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize($pagesize);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name') 
+            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -233,10 +233,10 @@ class SellerController extends LoggedUserController
         $frm = new Form('frmOrderSrch');
         $frm->addTextBox('', 'keyword', '', array('placeholder' => Labels::getLabel('LBL_Keyword', $langId) ));
         $frm->addSelectBox('', 'status', Orders::getOrderProductStatusArr($langId, unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS"))), '', array(), Labels::getLabel('LBL_Status', $langId));
-        $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId) ,'readonly'=>'readonly' ));
-        $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId)  ,'readonly'=>'readonly'));
         $frm->addTextBox('', 'price_from', '', array('placeholder' => Labels::getLabel('LBL_Order_From', $langId).' ['.$currencySymbol.']' ));
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Order_to', $langId).' ['.$currencySymbol.']' ));
+        $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId) ,'readonly'=>'readonly' ));
+        $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId)  ,'readonly'=>'readonly'));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
         $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         $frm->addHiddenField('', 'page');
@@ -278,7 +278,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize($pagesize);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','user_autorenew_subscription','ossubs_id','ossubs_type','ossubs_plan_id','order_date_added', 'order_net_amount', 'ossubs_invoice_number','ossubs_subscription_name',  'ossubs_id', 'op_other_charges','ossubs_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','ossubs_interval','ossubs_frequency','ossubs_till_date','ossubs_status_id','ossubs_from_date','order_language_id') 
+            array('order_id', 'order_user_id','user_autorenew_subscription','ossubs_id','ossubs_type','ossubs_plan_id','order_date_added', 'order_net_amount', 'ossubs_invoice_number','ossubs_subscription_name',  'ossubs_id', 'op_other_charges','ossubs_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','ossubs_interval','ossubs_frequency','ossubs_till_date','ossubs_status_id','ossubs_from_date','order_language_id')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -943,7 +943,7 @@ class SellerController extends LoggedUserController
             'admin_name', 'admin_username', 'admin_email', 'scatrequestmsg_msg',
             'scatrequestmsg_date', 'msg_user.user_name as msg_user_name', 'msg_user_cred.credential_username as msg_username',
             'msg_user_cred.credential_email as msg_user_email',
-            'scatrequest_status' ) 
+            'scatrequest_status' )
         );
 
         $rs = $srch->getResultSet();
@@ -959,7 +959,7 @@ class SellerController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
         $json['totalRecords'] = $totalRecords;
         $json['startRecord'] = $startRecord;
@@ -2356,7 +2356,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
-            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model') 
+            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model')
         );
         $srch->addOrder('orrequest_date', 'DESC');
 
@@ -2412,7 +2412,7 @@ class SellerController extends LoggedUserController
         $this->_template->render(false, false, 'buyer/order-return-request-search.php');
     }
 
-    public function downloadAttachedFileForReturn($recordId, $recordSubid=0) 
+    public function downloadAttachedFileForReturn($recordId, $recordSubid=0)
     {
         $recordId = FatUtility::int($recordId);
 
@@ -2458,7 +2458,7 @@ class SellerController extends LoggedUserController
             array( 'orrequest_id','orrequest_op_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type',
             'orrequest_date', 'orrequest_status','orrequest_reference',  'op_invoice_number', 'op_selprod_title', 'op_product_name',
             'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_qty',
-            'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title','op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') 
+            'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title','op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'buyer.user_name as buyer_name', 'order_tax_charged','op_other_charges','op_refund_shipping','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges')
         );
 
         $rs = $srch->getResultSet();
@@ -3369,7 +3369,7 @@ class SellerController extends LoggedUserController
         $srch = Product::getSearchObject($this->siteLangId);
         $srch->addMultipleFields(
             array('product_id', 'product_seller_id', 'product_added_by_admin_id',
-            'IFNULL(product_name,product_identifier)as product_name') 
+            'IFNULL(product_name,product_identifier)as product_name')
         );
         $srch->addCondition('product_id', '=', $productId);
         $rs = $srch->getResultSet();
@@ -3840,7 +3840,7 @@ class SellerController extends LoggedUserController
 
         $prodSrch->addMultipleFields(
             array(
-            'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name','product_min_selling_price') 
+            'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name','product_min_selling_price')
         );
         $productRs = $prodSrch->getResultSet();
         $product = FatApp::getDb()->fetch($productRs);

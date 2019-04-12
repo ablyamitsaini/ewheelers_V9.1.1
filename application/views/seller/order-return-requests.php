@@ -7,37 +7,37 @@ $frmOrderReturnRequestsSrch->developerTags['fld_default_col'] = 12;
 $keywordFld = $frmOrderReturnRequestsSrch->getField('keyword');
 $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
 $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Search_in_Order_Id/Invoice_number,_Product_Name,_Brand_Name,_SKU,_Model', $siteLangId).'</small>';
-$keywordFld->setWrapperAttribute('class','col-sm-6');
+$keywordFld->setWrapperAttribute('class','col-lg-8');
 $keywordFld->developerTags['col'] = 8;
 
 $statusFld = $frmOrderReturnRequestsSrch->getField('orrequest_status');
-$statusFld->setWrapperAttribute('class','col-sm-6');
+$statusFld->setWrapperAttribute('class','col-lg-4');
 $statusFld->developerTags['col'] = 4;
 
 $typeFld = $frmOrderReturnRequestsSrch->getField('orrequest_type');
-$typeFld->setWrapperAttribute('class','col-sm-4');
+$typeFld->setWrapperAttribute('class','col-lg-4');
 $typeFld->developerTags['col'] = 4;
 
 $orrequestDateFromFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_from');
 $orrequestDateFromFld->setFieldTagAttribute('class','field--calender');
 $orrequestDateFromFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_From', $siteLangId));
-$orrequestDateFromFld->setWrapperAttribute('class','col-sm-4');
+$orrequestDateFromFld->setWrapperAttribute('class','col-lg-4');
 $orrequestDateFromFld->developerTags['col'] = 4;
 
 $orrequestDateToFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_to');
 $orrequestDateToFld->setFieldTagAttribute('class','field--calender');
 $orrequestDateToFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_to', $siteLangId));
-$orrequestDateToFld->setWrapperAttribute('class','col-sm-4');
+$orrequestDateToFld->setWrapperAttribute('class','col-lg-4');
 $orrequestDateToFld->developerTags['col'] = 4;
 
 $submitBtnFld = $frmOrderReturnRequestsSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
-$submitBtnFld->setWrapperAttribute('class','col-sm-6');
+$submitBtnFld->setWrapperAttribute('class','col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
 
 $cancelBtnFld = $frmOrderReturnRequestsSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
-$cancelBtnFld->setWrapperAttribute('class','col-sm-6');
+$cancelBtnFld->setWrapperAttribute('class','col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
 

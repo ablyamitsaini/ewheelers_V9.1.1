@@ -34,7 +34,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
     </div>
     <section class="top-space">
       <div class="container">
-        <div class="box box--white box--space">
+        <div class="">
 		<?php
 			$arr_flds = array(
 				'shop_name'	=>	Labels::getLabel('LBL_Seller', $siteLangId),
@@ -100,7 +100,7 @@ foreach ($product['moreSellersArr'] as $sn => $moresellers){
 
 			case 'Action':
 				if($moresellers['selprod_available_from']<= FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d')){
-					$txt ='<div class="buy-group align--right"> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary  ripplelink block-on-mobile btnProductBuy--js"><i class="fa  fa-shopping-cart"></i> '.Labels::getLabel('LBL_Buy_Now',$siteLangId).'</a> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--secondary  ripplelink block-on-mobile btnAddToCart--js"><i class="fa fa-cart-plus"></i> '.Labels::getLabel('LBL_Add_To_Cart',$siteLangId).'</a> </div>';
+					$txt ='<div class="btn-group align--right"> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary btn--sm ripplelink block-on-mobile btnProductBuy--js">  '.Labels::getLabel('LBL_Buy_Now',$siteLangId).'</a> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--secondary btn--sm ripplelink block-on-mobile btnAddToCart--js">  '.Labels::getLabel('LBL_Add_To_Cart',$siteLangId).'</a> </div>';
 				}else{
 					$txt = str_replace('{available-date}',FatDate::Format($moresellers['selprod_available_from']),Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId));
 				}

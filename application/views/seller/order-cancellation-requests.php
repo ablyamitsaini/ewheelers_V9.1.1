@@ -1,38 +1,38 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $frmOrderCancellationRequestsSrch->setFormTagAttribute('onSubmit','searchOrderCancellationRequests(this); return false;');
 $frmOrderCancellationRequestsSrch->setFormTagAttribute('class', 'form');
-$frmOrderCancellationRequestsSrch->developerTags['colClassPrefix'] = 'col-md-';
+$frmOrderCancellationRequestsSrch->developerTags['colClassPrefix'] = 'col-ls-12 col-md-';
 $frmOrderCancellationRequestsSrch->developerTags['fld_default_col'] = 12;
 
 $orderIdFld = $frmOrderCancellationRequestsSrch->getField('op_invoice_number');
 $orderIdFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Order_Id/Invoice_Number', $siteLangId));
-$orderIdFld->setWrapperAttribute('class','col-sm-6');
+$orderIdFld->setWrapperAttribute('class','col-ls-8');
 $orderIdFld->developerTags['col'] = 8;
 
 $statusFld = $frmOrderCancellationRequestsSrch->getField('ocrequest_status');
-$statusFld->setWrapperAttribute('class','col-sm-6');
+$statusFld->setWrapperAttribute('class','col-ls-4');
 $statusFld->developerTags['col'] = 4;
 
 $ocrequestDateFromFld = $frmOrderCancellationRequestsSrch->getField('ocrequest_date_from');
 $ocrequestDateFromFld->setFieldTagAttribute('class','field--calender');
 $ocrequestDateFromFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_From', $siteLangId));
-$ocrequestDateFromFld->setWrapperAttribute('class','col-sm-6');
+$ocrequestDateFromFld->setWrapperAttribute('class','col-ls-4');
 $ocrequestDateFromFld->developerTags['col'] = 4;
 
 $ocrequestDateToFld = $frmOrderCancellationRequestsSrch->getField('ocrequest_date_to');
 $ocrequestDateToFld->setFieldTagAttribute('class','field--calender');
 $ocrequestDateToFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_to', $siteLangId));
-$ocrequestDateToFld->setWrapperAttribute('class','col-sm-6');
+$ocrequestDateToFld->setWrapperAttribute('class','col-ls-4');
 $ocrequestDateToFld->developerTags['col'] = 4;
 
 $submitBtnFld = $frmOrderCancellationRequestsSrch->getField('btn_submit');
-$submitBtnFld->setWrapperAttribute('class','col-sm-6');
+$submitBtnFld->setWrapperAttribute('class','col-ls-2');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
 $submitBtnFld->developerTags['col'] = 2;
 
 $cancelBtnFld = $frmOrderCancellationRequestsSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
-$cancelBtnFld->setWrapperAttribute('class','col-sm-6');
+$cancelBtnFld->setWrapperAttribute('class','col-ls-2');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
 
