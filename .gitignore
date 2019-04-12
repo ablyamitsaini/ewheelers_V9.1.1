@@ -1,5 +1,7 @@
 .*
 !/.gitignore
+/library/license.txt
+/license.txt
 /user-uploads/*
 /admin-application/views/innovas
 /application/views/innovas
