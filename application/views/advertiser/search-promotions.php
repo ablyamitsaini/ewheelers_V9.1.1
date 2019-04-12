@@ -70,8 +70,8 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
 			case 'promotion_time':
-				$str = Labels::getLabel('LBL_Start_Time', $siteLangId).' : '.FatDate::timeFromNumber($row['promotion_start_time']).'<br>';
-				$str.= Labels::getLabel('LBL_End_Time', $siteLangId).' : '.FatDate::timeFromNumber($row['promotion_end_time']);
+				$str = Labels::getLabel('LBL_Start_Time', $siteLangId).' : '.date("G:i", strtotime($row['promotion_start_time'])).'<br>';
+				$str.= Labels::getLabel('LBL_End_Time', $siteLangId).' : '.date("G:i", strtotime($row['promotion_end_time']));
 
 				$td->appendElement('plaintext', array(), $str,true);
 			break;
