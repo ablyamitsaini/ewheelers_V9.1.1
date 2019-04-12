@@ -1,4 +1,4 @@
-<?php 
+<?php
 $controller = strtolower($controller);
 $action = strtolower($action);
 ?>
@@ -21,24 +21,24 @@ $action = strtolower($action);
 				<li class="menu__item">
 					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Promotions",$siteLangId); ?></span></div>
 				</li>
-				<li class="menu__item <?php echo ($controller == 'advertiser' && ($action == 'promotions' || $action == 'viewpromotions')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('advertiser','promotions'); ?>">
+				<li class="menu__item <?php echo ($controller == 'advertiser' && ($action == 'promotions' || $action == 'viewpromotions')) ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('advertiser','promotions'); ?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-promotions" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-promotions"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Promotions",$siteLangId); ?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" ><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits"></use></svg>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_My_Credits",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','credits');?>" ><i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-credits"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
 				<?php } ?>
-				
+
 				<li class="menu__item">
 					<div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Profile',$siteLangId);?></span></div>
 				</li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>">
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'profileinfo') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','ProfileInfo'); ?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-account" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-account"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Account",$siteLangId); ?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>">
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Password",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>">
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Email",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
