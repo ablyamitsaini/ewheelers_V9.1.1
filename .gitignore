@@ -7,7 +7,7 @@
 /application/views/innovas
 /conf
 /index.php
-/library/core
+/library/core/*
 /public/cache/*
 /public/settings.php
 /public/sitemap.xml
