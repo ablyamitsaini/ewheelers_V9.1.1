@@ -41,7 +41,7 @@
 	</div>
 	<div class="divider "></div>
 <?php } ?>
-	
+
 	<div class="same-as">
 		<?php if($addresses) { ?>
         <div class="same-delivery">
@@ -56,7 +56,7 @@
 		<?php echo Labels::getLabel('LBL_Please_add_addresss_where_you_want_to_ship_your_product', $siteLangId);?>
 		<?php }?>
 		</p>
-		<a onClick="showAddressFormDiv();" name="addNewAddress" class="btn btn--lg btn--primary-border ripplelink"> <?php echo Labels::getLabel('LBL_Add_New_Address', $siteLangId);?> </a>
+		<a onClick="showAddressFormDiv();" name="addNewAddress" class="btn btn--primary-border ripplelink"> <?php echo Labels::getLabel('LBL_Add_New_Address', $siteLangId);?> </a>
 	</div>
 </div>
 
@@ -91,12 +91,12 @@
 								<a class="editLink action btn btn--primary btn--sm " href="javascript:void(0)" onClick="editAddress('<?php echo $address['ua_id']; ?>')"><?php echo Labels::getLabel('LBL_Edit', $siteLangId)?></a>
 								<a title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId)?>" class="action btn btn--secondary btn--sm" onclick="removeAddress('<?php echo $address['ua_id']; ?>')" href="javascript:void(0)"> <?php echo Labels::getLabel('LBL_Delete', $siteLangId)?></a>
 							</div>
-				
+
 						</div>
 					</label>
 				</div>
 	  <?php } ?>
-	</div>	
+	</div>
 	<?php if($addresses) { ?>
 	<div class="row"><div class="col-md-12 text-right">
 		<a href="javascript:void(0)" onClick="setUpAddressSelection(this);" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a>
