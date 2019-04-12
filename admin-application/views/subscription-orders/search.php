@@ -5,7 +5,7 @@ $arr_flds = array(
 	'order_id'=>Labels::getLabel('LBL_Order_ID',$adminLangId),
 	'buyer_user_name'=>Labels::getLabel('LBL_Customer_Name',$adminLangId),
 	'order_date_added'=>Labels::getLabel('LBL_Order_Date',$adminLangId),
-	'order_net_amount'=>Labels::getLabel('LBL_Total',$adminLangId),		
+	'order_net_amount'=>Labels::getLabel('LBL_Total',$adminLangId),
 	'order_is_paid'=>Labels::getLabel('LBL_Payment_Status',$adminLangId),
 	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
@@ -18,7 +18,7 @@ $sr_no = $page==1?0:$pageSize*($page-1);
 foreach ($ordersList as $sn=>$row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -26,7 +26,7 @@ foreach ($ordersList as $sn=>$row){
 				$td->appendElement('plaintext', array(), $sr_no);
 			break;
 			case 'order_id':
-				$td->appendElement('a', array('href' => CommonHelper::generateUrl('SubscriptionOrders','view',array($row['order_id']))), $row[$key], true);
+				$td->appendElement('a', array('target' => '_blank', 'href' => CommonHelper::generateUrl('SubscriptionOrders','view',array($row['order_id']))), $row[$key], true);
 			break;
 			case 'buyer_user_name':
 				if($canViewUsers){
@@ -35,7 +35,7 @@ foreach ($ordersList as $sn=>$row){
 					$td->appendElement('plaintext', array(), $row[$key], true);
 				}
 				$td->appendElement('plaintext', array(), '<br/>'.$row['buyer_email'], true);
-			break;			
+			break;
 			case 'order_net_amount':
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row['order_net_amount'], true, true) );
 			break;
@@ -56,19 +56,19 @@ foreach ($ordersList as $sn=>$row){
 						$cls = 'label-danger';
 					break;
 				}
-				
+
 				$td->appendElement('span', array('class'=>'label '.$cls), Orders::getOrderPaymentStatusArr($adminLangId)[$row[$key]] );
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
-				
-				$li = $ul->appendElement("li",array('class'=>'droplink'));						
+
+				$li = $ul->appendElement("li",array('class'=>'droplink'));
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
-				$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
+				$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
 				$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
-				
+
 				$innerLi=$innerUl->appendElement('li');
-				$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SubscriptionOrders','view',array($row['order_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),Labels::getLabel('LBL_View_Order_Detail',$adminLangId), true);								
+				$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SubscriptionOrders','view',array($row['order_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),Labels::getLabel('LBL_View_Order_Detail',$adminLangId), true);
 			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key], true);

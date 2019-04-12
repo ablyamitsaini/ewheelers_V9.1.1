@@ -5,7 +5,7 @@ $arr_flds = array(
 	'vendor'=>Labels::getLabel('LBL_Seller',$adminLangId),
 	'buyer_name'=>Labels::getLabel('LBL_Customer',$adminLangId),
 	'order_date_added'=>Labels::getLabel('LBL_Date',$adminLangId),
-	'order_net_amount'=>Labels::getLabel('LBL_Amount',$adminLangId),		
+	'order_net_amount'=>Labels::getLabel('LBL_Amount',$adminLangId),
 	'op_status_id'=>Labels::getLabel('LBL_Status',$adminLangId),
 	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
@@ -18,12 +18,12 @@ $sr_no = $page==1?0:$pageSize*($page-1);
 foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 	$sr_no++;
 	$tr = $tbl->appendElement('tr');
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'op_invoice_number':
-				$td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerOrders','view',array($row['op_id']))), $row[$key], true);
+				$td->appendElement('a', array('target' => '_blank', 'href' => CommonHelper::generateUrl('SellerOrders','view',array($row['op_id']))), $row[$key], true);
 			break;
 			case 'vendor':
 				$td->appendElement('plaintext', array(), '<strong>'.Labels::getLabel('LBL_Seller_Name',$adminLangId).':  </strong>', true);
@@ -31,7 +31,7 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 					$td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Users').'", '.$row['op_selprod_user_id'].')'), $row['op_shop_owner_name'], true);
 				} else {
 					$td->appendElement('plaintext', array(), $row['op_shop_owner_name'], true);
-				}				
+				}
 				$txt = '<br/><strong>'.Labels::getLabel('LBL_Shop',$adminLangId).':  </strong>'.$row['op_shop_name'];
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_User_Name',$adminLangId).':  </strong>'.$row['op_shop_owner_username'];
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Email',$adminLangId).':   </strong><a href="mailto:'.$row['op_shop_owner_email'].'">'.$row['op_shop_owner_email'].'</a>';
@@ -49,7 +49,7 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Email',$adminLangId).':  </strong><a href="mailto:'.$row['buyer_email'].'">'.$row['buyer_email'].'</a>';
 				$txt .= '<br/><strong>'.Labels::getLabel('LBL_Phone',$adminLangId).':  </strong>'.$row['buyer_phone'];
 				$td->appendElement('plaintext', array(), $txt, true);
-			break;			
+			break;
 			case 'order_net_amount':
 				$amt = CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER);
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($amt, true, true) );
@@ -63,23 +63,23 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
-				
-				$li = $ul->appendElement("li",array('class'=>'droplink'));						
+
+				$li = $ul->appendElement("li",array('class'=>'droplink'));
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
-				$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
+				$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
 				$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
-				
+
 				$innerLi=$innerUl->appendElement('li');
-				$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders','view',array($row['op_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),Labels::getLabel('LBL_View_Order_Detail',$adminLangId), true);				
-				
-				if($canEdit){					
+				$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders','view',array($row['op_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_View_Order_Detail',$adminLangId)),Labels::getLabel('LBL_View_Order_Detail',$adminLangId), true);
+
+				if($canEdit){
 					$innerLi=$innerUl->appendElement('li');
 					$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders','CancelOrder',array($row['op_id'])),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_Cancel_Order',$adminLangId)),Labels::getLabel('LBL_Cancel_Order',$adminLangId), true);
-					
+
 					//$innerLi=$innerUl->appendElement('li');
 					//$innerLi->appendElement('a', array('href'=>'javascript:void(0)','onclick' => "cancelOrder('".$row['op_id']."')",'class'=>'button small green','title'=>Labels::getLabel('LBL_Cancel_Order',$adminLangId),'target'=>'_new'),Labels::getLabel('LBL_Cancel_Order',$adminLangId), true);
 
-					
+
 				}
 			break;
 			default:
