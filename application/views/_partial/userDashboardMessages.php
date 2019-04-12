@@ -1,8 +1,10 @@
-<?php if (count($messages) > 0){ ?>
 <div class="cards-header  p-3">
 	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Message',$siteLangId);?></h5>
+	<?php if (count($messages) > 0){ ?>
 	<div class="action"><a href="<?php echo CommonHelper::generateUrl('Account','messages');?>" class="link"><?php echo Labels::getLabel('LBL_View_All',$siteLangId);?></a></div>
+<?php }?>
 </div>
+<?php if (count($messages) > 0){ ?>
 <div class="cards-content p-3">
 	<div class="messages-list">
 		<ul>
@@ -24,4 +26,10 @@
 		</ul>
 	</div>
 </div>
+<?php }else{?>
+	<div class="cards-content p-3">
+		<div class="messages-list">
+			<?php echo Labels::getLabel('LBL_No_record_found',$siteLangId); ?>
+		</div>
+	</div>
 <?php }?>

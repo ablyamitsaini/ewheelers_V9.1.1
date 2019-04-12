@@ -1,24 +1,24 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
     $frmSearch->setFormTagAttribute( 'id', 'frmSearchTaxCat' );
     $frmSearch->setFormTagAttribute( 'onsubmit', 'searchTaxCategories(this); return(false);' );
-    
+
     $frmSearch->setFormTagAttribute('class', 'form');
     $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
     $frmSearch->developerTags['fld_default_col'] = 12;
 
     $keyFld = $frmSearch->getField('keyword');
     $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
-    $keyFld->setWrapperAttribute('class','col-sm-6');
+    $keyFld->setWrapperAttribute('class','col-lg-8');
     $keyFld->developerTags['col'] = 8;
 
     $submitBtnFld = $frmSearch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class','btn--block');
-    $submitBtnFld->setWrapperAttribute('class','col-sm-3');
+    $submitBtnFld->setWrapperAttribute('class','col-lg-2');
     $submitBtnFld->developerTags['col'] = 2;
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
     $cancelBtnFld->setFieldTagAttribute('class','btn--block');
-    $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
+    $cancelBtnFld->setWrapperAttribute('class','col-lg-2');
     $cancelBtnFld->developerTags['col'] = 2;
 ?>
 

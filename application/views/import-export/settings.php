@@ -2,7 +2,7 @@
 $frm->setFormTagAttribute('onsubmit', 'updateSettings(this); return(false);');
 $frm->setFormTagAttribute('class','form');
 
-$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-6';
+$frm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
 $frm->developerTags['fld_default_col'] = 6;
 
 $variables = array('siteLangId'=>$siteLangId,'action'=>$action);

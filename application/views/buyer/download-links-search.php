@@ -4,7 +4,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchBuyerDownloadLinks(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
-$frmSrch->developerTags['fld_default_col'] = 12;
+$frmSrch->developerTags['fld_default_col'] = 6;
 
 $submitBtnFld = $frmSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
@@ -60,7 +60,7 @@ foreach ($digitalDownloadLinks as $sn => $row){
 					$td->appendElement('plaintext', array(), Labels::getLabel('LBL_N/A',$siteLangId), true);
 				}else{
 					$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
-					
+
 					$li = $ul->appendElement("li");
 					$li->appendElement('a', array('href'=> $row['opddl_downloadable_link'], 'class'=>'',
 					'title'=>Labels::getLabel('LBL_Click_to_open',$siteLangId)),
