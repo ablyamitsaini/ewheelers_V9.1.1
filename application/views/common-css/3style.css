@@ -2351,7 +2351,7 @@ body.fixed .top-bar {
 }
 
 .cart span.icn {
-  background: url(../images/retina/cart.svg) no-repeat center;
+  background: url(/images/retina/cart.svg) no-repeat center;
   vertical-align: top;
   background-size: 20px 20px;
   display: inline-block;
@@ -2640,7 +2640,7 @@ table.cart-tbl-addons .item__pic {
 }
 
 .login-account .icn {
-  background: url(../images/retina/account.svg) no-repeat center;
+  background: url(/images/retina/account.svg) no-repeat center;
   vertical-align: top;
   background-size: 20px 20px;
   display: inline-block;
@@ -4308,7 +4308,7 @@ img {
 }
 
 .trending-bg {
-  background: url(../images/slide2.jpg) no-repeat center center;
+  background: url(/images/slide2.jpg) no-repeat center center;
   position: relative;
   background-size: cover;
   background-attachment: fixed;
@@ -4858,7 +4858,7 @@ img {
   display: table-cell;
   max-width: 40%;
   flex: 0 0 40%;
-  background: #fff url(../images/login-with.png) no-repeat bottom center;
+  background: #fff url(/images/login-with.png) no-repeat bottom center;
 }
 
 .login-wrapper .add-side .heading {
@@ -5508,7 +5508,7 @@ span.subheading {
   left: 0;
   top: 0;
   content: "";
-  background: url(../images/qoute.png) no-repeat 0 0;
+  background: url(/images/qoute.png) no-repeat 0 0;
   display: block;
   width: 44px;
   height: 41px;
@@ -12461,7 +12461,7 @@ main.main {
 .selected-panel-type:before {
   position: absolute;
   left: 0;
-  background: url(../images/retina/green-check.svg) no-repeat 0 0;
+  background: url(/images/retina/green-check.svg) no-repeat 0 0;
   width: 17px;
   height: 17px;
   display: block;
@@ -13461,7 +13461,7 @@ main.main {
   height: 100px;
   margin: 1rem auto;
   display: block;
-  background: url(../images/browsers-bg.png) no-repeat;
+  background: url(/images/browsers-bg.png) no-repeat;
   background-size: auto 200px;
 }
 
