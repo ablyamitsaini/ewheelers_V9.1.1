@@ -12879,6 +12879,7 @@ main.main {
   justify-content: center;
   height: 100%;
 }
+.yokart-loader img{ max-width: 80px;}
 
 .pong-loader {
   position: absolute;
