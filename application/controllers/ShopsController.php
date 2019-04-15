@@ -117,7 +117,7 @@ class ShopsController extends MyAppController
         $productSrchObj->addMultipleFields(
             array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
             'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock') 
+            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
         );
         foreach($allShops as $val){
             $productShopSrchTempObj = clone $productSrchObj;
@@ -144,7 +144,7 @@ class ShopsController extends MyAppController
         $startRecord = ($page-1)* $pagesize + 1 ;
         $endRecord = $pagesize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
         $json['totalRecords'] = $totalRecords;
         $json['startRecord'] = $startRecord;
@@ -312,19 +312,18 @@ class ShopsController extends MyAppController
         $catSrch = clone $prodSrchObj;
         $catSrch->addGroupBy('prodcat_id');
 
+        $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, 0, false, $catSrch, true);
 
         $productCatObj = new ProductCategory;
         $productCategories =  $productCatObj->getCategoriesForSelectBox($this->siteLangId);
-
+        /*
         $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, 0, false, false, false, $catSrch, true);
-
 
         usort(
             $categoriesArr, function ($a, $b) {
                 return $a['prodcat_code'] - $b['prodcat_code'];
             }
-        );
-
+        );*/
 
         /* ] */
 

@@ -4,7 +4,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frmSrch->setFormTagAttribute('onSubmit','searchBuyerDownloads(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form');
 $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
-$frmSrch->developerTags['fld_default_col'] = 12;
+$frmSrch->developerTags['fld_default_col'] = 6;
 
 $submitBtnFld = $frmSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');

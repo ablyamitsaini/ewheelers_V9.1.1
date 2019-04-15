@@ -9,7 +9,7 @@ $this->includeTemplate('import-export/_partial/top-navigation.php',$variables,fa
 <div class="tabs__content">
 	<div class="form__content">
         <div class="row">
-			<div class="col-md-8" id="importFormBlock">
+			<div class="col-md-12" id="importFormBlock">
 				<?php echo $frm->getFormHtml();  ?>
 			</div>
         </div>

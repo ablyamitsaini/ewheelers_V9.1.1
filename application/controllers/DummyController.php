@@ -8,7 +8,7 @@ class DummyController extends MyAppController
         //CommonHelper::recursiveDelete( $dirName );
     }
 
-    public function createProcedures($printQuery = false) 
+    public function createProcedures($printQuery = false)
     {
         $db = FatApp::getDb();
         $con = $db->getConnectionObject();
@@ -103,7 +103,7 @@ class DummyController extends MyAppController
     function updateCatOrderCode()
     {
         ProductCategory::updateCatOrderCode();
-    }    
+    }
 
     function updateOrderProdSetting()
     {
@@ -408,7 +408,7 @@ class DummyController extends MyAppController
         exit;
     }
 
-    function format($number) 
+    function format($number)
     {
         $prefixes = 'KMGTPEZY';
         if ($number >= 1000) {
@@ -662,7 +662,7 @@ class DummyController extends MyAppController
 									select * from tbl_product_to_tags where ptt_product_id = $productId
 								) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
 								order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
-							) as set2)", 'inner join', 'set3.rec_product_id = product_id', 'set3' 
+							) as set2)", 'inner join', 'set3.rec_product_id = product_id', 'set3'
         );
                             $srch->addGroupBy('selprod_id');
         $recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
@@ -673,6 +673,7 @@ class DummyController extends MyAppController
 
     function test()
     {
+        
         $orders = new Orders('O1552890658');
         $langId = 1;
         $childOrderInfo = $orders->getOrderProductsByOpId(413, 1);
@@ -802,7 +803,7 @@ class DummyController extends MyAppController
                 $prodSrch->addMultipleFields(
                     array( 'selprod_id', 'product_id', 'IFNULL(shop_name, shop_identifier) as shop_name',
                     'IFNULL(product_name, product_identifier) as product_name',
-                    'IF(selprod_stock > 0, 1, 0) AS in_stock') 
+                    'IF(selprod_stock > 0, 1, 0) AS in_stock')
                 );
                 $prodRs = $prodSrch->getResultSet();
                 $shop['totalProducts'] = $prodSrch->recordCount();
@@ -998,7 +999,7 @@ class DummyController extends MyAppController
             'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
             'shop_id', 'shop_name',
-            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') 
+            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price')
         );
         $productRs = $prodSrch->getResultSet();
         $products = FatApp::getDb()->fetchAll($productRs);

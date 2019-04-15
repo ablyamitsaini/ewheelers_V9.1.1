@@ -61,7 +61,6 @@ class HomeController extends MyAppController
 
             if(!empty($collectionsDbArr) ) {
                 $collectionObj = new CollectionSearch();
-                $collectionObj->doNotCalculateRecords();
                 //$collectionObj->doNotLimitRecords();
 
                 $shopSearchObj = new ShopSearch($this->siteLangId);
@@ -119,7 +118,7 @@ class HomeController extends MyAppController
                         $tempObj->joinCollectionCategories($this->siteLangId);
                         $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
                         $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
-                        /* $tempObj->setPageSize( $collection['collection_primary_records'] ); */
+                        $tempObj->setPageSize( $collection['collection_primary_records'] );
 
                         /* Exclude categories having no product [ */
                         /* $productSrchTempObj = clone $productSrchObj;
@@ -150,7 +149,6 @@ class HomeController extends MyAppController
                                 /* fetch Sub-Categories[ */
                                 $subCategorySrch = clone $productCatSrchObj;
                                 $subCategorySrch->addCondition('prodcat_parent', '=', $catData['prodcat_id']);
-                                /* $subCategorySrch->setPageSize(5); */
                                 $Catrs = $subCategorySrch->getResultSet();
 
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]=$catData;
@@ -175,7 +173,7 @@ class HomeController extends MyAppController
                                 /* ] */
                             }
                         }
-
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totCategories'] = $tempObj->recordCount();
                         unset($tempObj);
                         break;
                     case Collections::COLLECTION_TYPE_SHOP:
@@ -199,6 +197,7 @@ class HomeController extends MyAppController
 
                         $rs = $shopObj->getResultSet();
                         $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totShops'] = $shopObj->recordCount();
                         while ($shopsData = $db->fetch($rs) ){
                             /* if(!$collection['collection_child_records']){
                             continue;
@@ -235,7 +234,6 @@ class HomeController extends MyAppController
                         $tempObj->joinCollectionBrands($this->siteLangId);
                         $tempObj->addMultipleFields(array('ctpb_brand_id'));
                         $tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
-                        $tempObj->setPageSize($collection['collection_primary_records']);
                         $rs = $tempObj->getResultSet();
 
                         $brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
@@ -248,10 +246,13 @@ class HomeController extends MyAppController
                         /* fetch Brand data[ */
                         $brandSearchTempObj = clone $brandSearchObj;
                         $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
+                        $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
                         $rs = $brandSearchTempObj->getResultSet();
                         /* ] */
                         $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();
                         $collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
+
                         unset($brandSearchTempObj);
                         break;
                     }

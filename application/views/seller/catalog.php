@@ -8,7 +8,6 @@
       		<?php $this->includeTemplate('_partial/productPagesTabs.php',array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action),false); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Marketplace_Products',$siteLangId); ?>
      <div class="delivery-term">
-
          <a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
          <div id="catalogToolTip" style="display:none">
            <div class="delivery-term-data-inner">
@@ -65,28 +64,29 @@
 
            $keywordFld = $frmSearchCatalogProduct->getField('keyword');
            $keywordFld->setFieldTagAttribute('id','tour-step-3');
-           $keywordFld->developerTags['col'] = 12;
+           $keywordFld->setWrapperAttribute('class','col-lg-6');
+           $keywordFld->developerTags['col'] = 6;
 
            if( FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT') ){
              $dateFromFld = $frmSearchCatalogProduct->getField('type');
              $dateFromFld->setFieldTagAttribute('class','');
-             $dateFromFld->setWrapperAttribute('class','col-lg-4 col-md-4 col-sm-4 col-xs-12');
-             $dateFromFld->developerTags['col'] = 3;
+             $dateFromFld->setWrapperAttribute('class','col-lg-6');
+             $dateFromFld->developerTags['col'] = 6;
            }
            $typeFld = $frmSearchCatalogProduct->getField('product_type');
-           $typeFld->setWrapperAttribute('class','col-lg-4 col-md-4 col-sm-4 col-xs-12');
-           $typeFld->developerTags['col'] = 3;
+           $typeFld->setWrapperAttribute('class','col-lg-6');
+           $typeFld->developerTags['col'] = 6;
 
            $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
            $submitFld->setFieldTagAttribute('class','btn--block');
-           $submitFld->setWrapperAttribute('class','col-lg-2 col-md-2 col-sm-2 col-xs-12');
-           $submitFld->developerTags['col'] = 3;
+           $submitFld->setWrapperAttribute('class','col-lg-2');
+           $submitFld->developerTags['col'] = 2;
 
            $fldClear= $frmSearchCatalogProduct->getField('btn_clear');
            $fldClear->setFieldTagAttribute('onclick','clearSearch()');
            $fldClear->setFieldTagAttribute('class','btn--block');
-           $fldClear->setWrapperAttribute('class','col-lg-2 col-md-2 col-sm-2 col-xs-12');
-           $fldClear->developerTags['col'] = 3;
+           $fldClear->setWrapperAttribute('class','col-lg-2');
+           $fldClear->developerTags['col'] = 2;
            /* if( User::canAddCustomProductAvailableToAllSellers() ){
              $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
              $submitFld->setFieldTagAttribute('class','btn--block');
