@@ -617,9 +617,9 @@ class AdvertiserController extends LoggedUserController
         $this->_template->addJs(array('js/jquery.datetimepicker.js'), false);
         $this->_template->addCss(array('css/jquery.datetimepicker.css'), false);
 
-        $this->set("frmSearchPromotions", $frmSearchPromotions);                
-        $this->set("records", $records);                
-        $this->_template->render(true, false);    
+        $this->set("frmSearchPromotions", $frmSearchPromotions);
+        $this->set("records", $records);
+        $this->_template->render(true, false);
 
     }
 
