@@ -2,7 +2,7 @@
 <div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> <span><span>[<?php echo count($products); ?> <?php echo Labels::getLabel('LBL_Items', $siteLangId); ?>]</span></span> </div>
 <div class="gap"></div>
-<ul>
+<ul class="scrollbar">
   <?php foreach($products as $product){ ?>
   <li>
     <div class="products__title"><?php echo $product['product_name']?> </div>
@@ -24,6 +24,7 @@
   </li>
   <?php } ?>
 </ul>
+<div class="gap"></div>
 <div class="box box--white box--radius box--space cartdetail__footer">
 	<?php if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
 	<div class="applied-coupon">
@@ -80,3 +81,11 @@
 	</table>
 </div>
 <div class="gap"></div>
+<script>
+if($(window).width()>1050){
+	$('.scrollbar').enscroll({
+		verticalTrackClass: 'scroll__track',
+		verticalHandleClass: 'scroll__handle'
+	});
+}
+</script>

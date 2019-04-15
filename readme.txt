@@ -1,6 +1,6 @@
 New :
 	. New theme Integration.
-	. Upload media in bulk. 
+	. Upload media in bulk.
 
 Enhancements:
     . Basic updates for design and email template labels.
@@ -58,3 +58,9 @@ Enhancements :
 
 Note:
 	Exceute {domainUrl}/dummy/update-cat-order-code.
+
+Enhancements:
+    . Basic updates for design and email template labels.
+	. Product option can not be deleted if linked with a product and seller inventory.
+	. In back-end linking process, each link will be opened in new tab.
+	. Removed collections primary record field and managed collection from static defined values.

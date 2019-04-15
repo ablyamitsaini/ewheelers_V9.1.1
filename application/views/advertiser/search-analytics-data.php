@@ -38,12 +38,11 @@ foreach ($arr_listing as $sn=>$row){
 	}
 }
 if (count($arr_listing) == 0){
-	$tbl->appendElement('tr')->appendElement('td', array(
-	'colspan'=>count($arr_flds)),
-	'No records found'
-	);
+	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 }
-echo $tbl->getHtml();
+else{
+	echo $tbl->getHtml();
+}
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array (
 		'name' => 'frmPromotionSearchPaging'
