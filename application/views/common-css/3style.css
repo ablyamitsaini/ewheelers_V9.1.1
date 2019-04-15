@@ -9951,6 +9951,10 @@ form.custom-form input[type="submit"] {
   margin: 0 1rem;
 }
 
+.collection-corner .products .products__footer {
+  min-height: 120px;
+}
+
 /*quick view page*/
 .quick-view {
   height: 100%;
@@ -13518,4 +13522,8 @@ main.main {
 .bg--grayx {
   background-color: #f2f4f8;
 }
-.advertise__block{ margin-bottom: 2rem; display: block;}
+
+.advertise__block {
+  margin-bottom: 2rem;
+  display: block;
+}
