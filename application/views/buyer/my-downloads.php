@@ -16,8 +16,8 @@
 			<div class="cards-content p-3">
 				<div class="tabs tabs--small   tabs--scroll clearfix">
 					<ul>
-						<li class="is-active"><a href="javascript:void(0);" onclick="searchBuyerDownloads()"><?php echo Labels::getLabel('LBL_Downloadable_Files', $siteLangId); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="searchBuyerDownloadLinks()"><?php echo Labels::getLabel('LBL_Downloadable_Links', $siteLangId); ?></a></li>
+						<li class="is-active"><a href="javascript:void(0);" onclick="searchBuyerDownloads('', this)"><?php echo Labels::getLabel('LBL_Downloadable_Files', $siteLangId); ?></a></li>
+						<li><a href="javascript:void(0);" onclick="searchBuyerDownloadLinks('', this)"><?php echo Labels::getLabel('LBL_Downloadable_Links', $siteLangId); ?></a></li>
 					</ul>
 				</div>
 				<div id="listing"></div>

@@ -3,7 +3,7 @@
 	<section class="section section--fill">
 		<div class="container">
 			<div class="section-head section--white--head section--head--center">
-				 <div class="section__heading"><?php echo Labels::getLabel('Lbl_All_Shops' , $siteLangId); ?></div>
+				 <div class="section__heading"><h2><?php echo Labels::getLabel('Lbl_All_Shops' , $siteLangId); ?></h2></div>
 			</div>
 		</div>
 	</section>
