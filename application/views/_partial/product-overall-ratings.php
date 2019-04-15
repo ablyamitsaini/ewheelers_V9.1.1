@@ -33,7 +33,7 @@ if($totReviews){
 		<div class="total-reviews"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></div>
 	</div>
 </div>
-<div class="col-md-6 ">
+<div class="col-md-5 ">
 	<div class="listing--progress-wrapper ">
 		<ul class="listing--progress">
 			<li>
@@ -69,7 +69,7 @@ if($totReviews){
 		</ul>
 	</div>
 </div>
-<div class="col-md-3 ">
+<div class="col-lg-4 col-md-12 ">
 	<div class="box box--white box--radius box--space have-you">
 		<p><strong><?php echo Labels::getLabel('Lbl_Have_You_Used_This_Product?',$siteLangId); ?></strong></p>
 		<div class="gap"></div>

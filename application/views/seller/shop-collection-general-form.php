@@ -25,21 +25,23 @@
 					</div>
 				</div>
 				<div class="form__subcontent">
-					<?php
-					$colectionForm->setFormTagAttribute('class', 'form form--horizontal');
-					$colectionForm->setFormTagAttribute('onsubmit', 'setupShopCollection(this); return(false);');
-					$colectionForm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
-					$colectionForm->developerTags['fld_default_col'] = 8;
-					$urlFld = $colectionForm->getField('urlrewrite_custom');
-					$urlFld->setFieldTagAttribute('id',"urlrewrite_custom");
-					$urlFld->setFieldTagAttribute('onkeyup',"getSlugUrl(this,this.value,'".$baseUrl."','post')");
-					$urlFld->htmlAfterField = "<small class='text--small'>" . CommonHelper::generateFullUrl('Shops','Collection',array($shop_id)).'</small>';
-					$IDFld = $colectionForm->getField('scollection_id');
-					$IDFld->setFieldTagAttribute('id',"scollection_id");
-					$identiFierFld = $colectionForm->getField('scollection_identifier');
-					$identiFierFld->setFieldTagAttribute('onkeyup',"Slugify(this.value,'urlrewrite_custom','scollection_id')");
-					echo $colectionForm->getFormHtml();
-					?>
+					<div class="col-lg-6 col-md-6">
+						<?php
+						$colectionForm->setFormTagAttribute('class', 'form form--horizontal');
+						$colectionForm->setFormTagAttribute('onsubmit', 'setupShopCollection(this); return(false);');
+						$colectionForm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-';
+						$colectionForm->developerTags['fld_default_col'] = 12;
+						$urlFld = $colectionForm->getField('urlrewrite_custom');
+						$urlFld->setFieldTagAttribute('id',"urlrewrite_custom");
+						$urlFld->setFieldTagAttribute('onkeyup',"getSlugUrl(this,this.value,'".$baseUrl."','post')");
+						$urlFld->htmlAfterField = "<small class='text--small'>" . CommonHelper::generateFullUrl('Shops','Collection',array($shop_id)).'</small>';
+						$IDFld = $colectionForm->getField('scollection_id');
+						$IDFld->setFieldTagAttribute('id',"scollection_id");
+						$identiFierFld = $colectionForm->getField('scollection_identifier');
+						$identiFierFld->setFieldTagAttribute('onkeyup',"Slugify(this.value,'urlrewrite_custom','scollection_id')");
+						echo $colectionForm->getFormHtml();
+						?>
+					</div>
 				</div>
 			</div>
 		</div>

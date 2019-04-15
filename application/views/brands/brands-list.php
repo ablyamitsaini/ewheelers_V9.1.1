@@ -1,6 +1,6 @@
 <div class="cg-main">
 	<?php if(!empty($brandsArr)){
-	foreach($brandsArr[Collections::COLLECTION_LAYOUT7_TYPE]  as $allBrands){
+	foreach($brandsArr[Collections::TYPE_BRAND_LAYOUT1]  as $allBrands){
 	?>
 	<div class="">
 	<?php if(!empty($allBrands['brands'])){

@@ -44,7 +44,7 @@ if( isset($socialShareContent) && $socialShareContent != '' ){
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 ?>
 <div class="wrapper">
-	<div class="header-seller" id="header">
+	<div id="header" class="header-guest-affiliate" >
 		<div class="common_overlay"></div>
 		<div class="top-bar">
 		  <div class="container">
@@ -65,7 +65,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,fals
 		</div>
 		<div class="top-head">
 			<div class="container">
-				<div class="row">
+				<div class="row align-items-center">
 					<div class="col-3">
 						<!--<div class="seller_nav-trigger"> <a class="seller_nav_toggle" href="javascript:void(0)"><span></span></a> </div>-->
 						<div class="logo header-login-logo zoomIn"><a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>

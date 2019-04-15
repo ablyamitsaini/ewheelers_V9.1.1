@@ -221,15 +221,19 @@
         $(obj).next().html(SITE_ROOT_URL + str);
 
     };
-    redirectfunc = function(url, id, nid) {
+
+    redirectfunc = function(url, id, nid, newTab) {
+        newTab = (typeof newTab != "undefined") ? newTab : true;
         if (nid > 0) {
             $.systemMessage(langLbl.processing, 'alert--process');
             markRead(nid, url, id);
         } else {
+            var target = (newTab) ? ' target="_blank" ' : ' ';
             var form = '<input type="hidden" name="id" value="' + id + '">';
-            $('<form action="' + url + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
+            $('<form' + target + 'action="' + url + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
         }
     };
+
     markRead = function(nid, url, id) {
         if (nid.length < 1) {
             return false;

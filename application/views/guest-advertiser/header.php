@@ -43,7 +43,7 @@ if( isset($socialShareContent) && $socialShareContent != '' ){
 $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,false);
 ?>
 <div class="wrapper">
-	<div class="header-seller" id="header">
+	<div id="header" class="header-guest-advertiser" >
 		<div class="common_overlay"></div>
 		<div class="top-bar">
 		  <div class="container">
@@ -64,7 +64,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,fals
 		</div>
 		<div class="top-head">
 		  <div class="container">
-			<div class="row">
+			<div class="row align-items-center">
 			  <div class="col-3">
 				<div class="seller_nav-trigger"> <!--<a class="seller_nav_toggle" href="javascript:void(0)"><span></span></a>--> </div>
 				<div class="logo header-login-logo zoomIn">

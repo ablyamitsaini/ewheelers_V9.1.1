@@ -1,4 +1,4 @@
-<?php  
+<?php
 	if( isset( $collections ) && count($collections) ){
 
 		$counter = 1;
@@ -12,7 +12,7 @@
 						<div class="section-head"><div class="section__heading">
 							<h2><?php echo ($row['collection_name'] != '') ? $row['collection_name'] : ''; ?></h2>
                         </div>
-							<?php if( count($row['shops']) > Collections::LIMIT_SHOP_LAYOUT1 ){ ?>
+							<?php if( $row['totShops'] > Collections::LIMIT_SHOP_LAYOUT1 ){ ?>
 								<div class="section_action"> <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>
 							<?php }  ?>
 						</div>

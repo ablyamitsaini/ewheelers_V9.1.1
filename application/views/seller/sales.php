@@ -5,40 +5,40 @@ $frmOrderSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderSrch->developerTags['fld_default_col'] = 12;
 
 $keywordFld = $frmOrderSrch->getField('keyword');
-$keywordFld->setWrapperAttribute('class','col-sm-6');
-$keywordFld->developerTags['col'] = 8;
+$keywordFld->setWrapperAttribute('class','col-lg-4');
+$keywordFld->developerTags['col'] = 4;
 /* $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Buyer_account_orders_listing_search_form_keyword_help_txt', $siteLangId).'</small>'; */
 
 $statusFld = $frmOrderSrch->getField('status');
-$statusFld->setWrapperAttribute('class','col-sm-6');
+$statusFld->setWrapperAttribute('class','col-lg-4');
 $statusFld->developerTags['col'] = 4;
 
-$dateFromFld = $frmOrderSrch->getField('date_from');
-$dateFromFld->setFieldTagAttribute('class','field--calender');
-$dateFromFld->setWrapperAttribute('class','col-sm-6');
-$dateFromFld->developerTags['col'] = 2;
-
-$dateToFld = $frmOrderSrch->getField('date_to');
-$dateToFld->setFieldTagAttribute('class','field--calender');
-$dateToFld->setWrapperAttribute('class','col-sm-6');
-$dateToFld->developerTags['col'] = 2;
-
 $priceFromFld = $frmOrderSrch->getField('price_from');
-$priceFromFld->setWrapperAttribute('class','col-sm-6');
+$priceFromFld->setWrapperAttribute('class','col-lg-2');
 $priceFromFld->developerTags['col'] = 2;
 
 $priceToFld = $frmOrderSrch->getField('price_to');
-$priceToFld->setWrapperAttribute('class','col-sm-6');
+$priceToFld->setWrapperAttribute('class','col-lg-2');
 $priceToFld->developerTags['col'] = 2;
+
+$dateFromFld = $frmOrderSrch->getField('date_from');
+$dateFromFld->setFieldTagAttribute('class','field--calender');
+$dateFromFld->setWrapperAttribute('class','col-lg-4');
+$dateFromFld->developerTags['col'] = 4;
+
+$dateToFld = $frmOrderSrch->getField('date_to');
+$dateToFld->setFieldTagAttribute('class','field--calender');
+$dateToFld->setWrapperAttribute('class','col-lg-4');
+$dateToFld->developerTags['col'] = 4;
 
 $submitBtnFld = $frmOrderSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
-$submitBtnFld->setWrapperAttribute('class','col-sm-6');
+$submitBtnFld->setWrapperAttribute('class','col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
 
 $cancelBtnFld = $frmOrderSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
-$cancelBtnFld->setWrapperAttribute('class','col-sm-6');
+$cancelBtnFld->setWrapperAttribute('class','col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>

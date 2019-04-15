@@ -50,10 +50,10 @@
 
 	}?>
 <?php if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
-<div class="col-md-3 col-sm-4">
-	<div class="items">
-		<div class="items__body">
-			<div class="form form--creatlist">
+<div class="col-md-3 col-sm-4 column">
+	<div class="items p-4">
+		<div class="items__body text-center">
+			<div class="form">
 				<h5><?php echo Labels::getLabel('LBL_Create_new_list', $siteLangId);?></h5>
 				<?php
 				$frm->setFormTagAttribute('onsubmit','setupWishList2(this,event); return(false);');

@@ -8,9 +8,9 @@ FatApplication::getInstance()->setControllersForStaticFileServer(array('images',
 $innova_settings  = array('width'=>'730', 'height'=>'400','arrStyle'=>'[["body",false,"","min-height:250px;"]]',  'groups'=>' [
         ["group1", "", ["FontName", "FontSize", "Superscript", "ForeColor", "BackColor", "FontDialog", "BRK", "Bold", "Italic", "Underline", "Strikethrough", "TextDialog", "Styles", "RemoveFormat"]],
         ["group2", "", ["JustifyLeft", "JustifyCenter", "JustifyRight", "Paragraph", "BRK", "Bullets", "Numbering", "Indent", "Outdent"]],
-        ["group3", "", ["TableDialog", "Emoticons", "FlashDialog", "BRK", "LinkDialog","YoutubeDialog"]],        
+        ["group3", "", ["TableDialog", "Emoticons", "FlashDialog", "BRK", "LinkDialog","YoutubeDialog"]],
 		["group4", "", ["CharsDialog", "Line", "BRK", "ImageDialog", "MyCustomButton"]],
-        ["group5", "", ["SearchDialog", "SourceDialog", "BRK", "Undo", "Redo"]]]',        
+        ["group5", "", ["SearchDialog", "SourceDialog", "BRK", "Undo", "Redo"]]]',
         'fileBrowser'=> '"'.CONF_WEBROOT_URL.'innova/assetmanager/asset.php"');
 
 FatApp::setViewDataProvider('_partial/buyerDashboardNavigation.php', array('Navigation', 'buyerDashboardNavigation'));

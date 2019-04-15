@@ -1,6 +1,6 @@
-<?php  
+<?php
 if( isset( $collections ) && count($collections) ){
-	
+
 
 	$counter = 1;
 
@@ -11,6 +11,10 @@ if( isset( $collections ) && count($collections) ){
 			<div class="container">
 				<div class="section-head  section--head--center">
 				 <?php echo ($row['collection_name'] != '') ? ' <div class="section__heading">' . $row['collection_name'] .'</div>' : ''; ?>
+
+				<?php if( $row['totBrands'] > Collections::LIMIT_BRAND_LAYOUT1 ){ ?>
+					<div class="section__action"> <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>
+				<?php }  ?>
 				</div>
                 <div class="trending-list">
                     <ul>
@@ -20,9 +24,6 @@ if( isset( $collections ) && count($collections) ){
                         $i++;
                         /* if($i==Collections::COLLECTION_LAYOUT5_LIMIT) break;*/ }  ?>
                     </ul>
-                    <?php if( count($row['brands']) > Collections::LIMIT_BRAND_LAYOUT1 ){ ?>
-                        <a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_All',$siteLangId); ?></a>
-                    <?php }  ?>
                 </div>
 			</div>
 		</section>

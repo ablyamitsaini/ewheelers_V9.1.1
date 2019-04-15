@@ -74,7 +74,7 @@ class CollectionsController extends MyAppController
 
 
         $productSrchObj->doNotCalculateRecords();
-        $productSrchObj->setPageSize(10);
+        // $productSrchObj->setPageSize(10);
 
         /* $productSrchObj->joinFavouriteProducts($loggedUserId ); */
         if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
@@ -201,21 +201,14 @@ class CollectionsController extends MyAppController
             $shopRs = $shopObj->getResultSet();
             $collections = $db->fetchAll($shopRs, 'shop_id');
 
-            $totalProdCountToDisplay = 4;
-            $prodSrchObj = new ProductSearch($this->siteLangId);
-            $prodSrchObj->setDefinedCriteria();
-            $prodSrchObj->setPageSize($totalProdCountToDisplay);
-            $prodSrchObj->joinProductToCategory();
-            $prodSrchObj->addOrder('in_stock', 'DESC');
-            $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+            $totalProdCountToDisplay = 3;
+
             foreach($collections as $val){
-                $prodSrch = clone $prodSrchObj;
+                $prodSrch = clone $productSrchObj;
+                $prodSrch->addOrder('in_stock', 'DESC');
+                $prodSrch->addCondition('selprod_deleted', '=', applicationConstants::NO);
                 $prodSrch->addShopIdCondition($val['shop_id']);
-                $prodSrch->addMultipleFields(
-                    array( 'selprod_id', 'product_id', 'shop_id','IFNULL(shop_name, shop_identifier) as shop_name',
-                    'IFNULL(product_name, product_identifier) as product_name',
-                    'IF(selprod_stock > 0, 1, 0) AS in_stock')
-                );
+                $prodSrch->setPageSize(3);
                 $prodSrch->addGroupBy('product_id');
 
                 $prodRs = $prodSrch->getResultSet();

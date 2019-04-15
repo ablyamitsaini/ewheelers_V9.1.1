@@ -163,7 +163,7 @@
 									</td>
 								</tr>
 								<?php }
-								?> 
+								?>
 							</tbody>
 							<div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
 								<span class="scroll-hint-icon">

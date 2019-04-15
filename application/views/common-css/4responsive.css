@@ -760,6 +760,8 @@
   .contact-box .contact-pic img {
     max-width: none;
   }
+
+  .buttons-list-checkout ul{ flex-direction: column;}
 }
 
 @media only screen and (max-width: 767px) {

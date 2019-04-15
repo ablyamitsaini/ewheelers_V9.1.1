@@ -2,11 +2,11 @@
 <?php
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._No',$adminLangId),
-		'user_name'=>Labels::getLabel('LBL_Owner',$adminLangId),	
-		'shop_identifier'=>Labels::getLabel('LBL_Name',$adminLangId),	
-		'numOfProducts'=>Labels::getLabel('LBL_Products',$adminLangId),	
-		'numOfReports'=>Labels::getLabel('LBL_Reports',$adminLangId),	
-		'numOfReviews'=>Labels::getLabel('LBL_Reviews',$adminLangId),	
+		'user_name'=>Labels::getLabel('LBL_Owner',$adminLangId),
+		'shop_identifier'=>Labels::getLabel('LBL_Name',$adminLangId),
+		'numOfProducts'=>Labels::getLabel('LBL_Products',$adminLangId),
+		'numOfReports'=>Labels::getLabel('LBL_Reports',$adminLangId),
+		'numOfReviews'=>Labels::getLabel('LBL_Reviews',$adminLangId),
 		'shop_featured'	=>	Labels::getLabel('LBL_Featured',$adminLangId),
 		'shop_active'=>Labels::getLabel('LBL_Status',$adminLangId),
 		'shop_created_on'=>Labels::getLabel('LBL_Created_on',$adminLangId),
@@ -23,7 +23,7 @@ $sr_no = $page==1?0:$pageSize*($page-1);
 foreach ($arr_listing as $sn=>$row){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr', array('id' => $row['shop_id'], 'class' => '' ) );
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -57,14 +57,14 @@ foreach ($arr_listing as $sn=>$row){
 			break;
 			case 'numOfReports':
 			if($canViewShopReports){
-				$td->appendElement('a', array('href' => CommonHelper::generateUrl('ShopReports' ,'index' ,array($row['shop_id'])) ), $row[$key]);
+				$td->appendElement('a', array('target' => '_blank', 'href' => CommonHelper::generateUrl('ShopReports' ,'index' ,array($row['shop_id'])) ), $row[$key]);
 			} else {
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			}
 			break;
 			case 'numOfReviews':
 			if($canViewShopReports){
-				$td->appendElement('a', array('href' => CommonHelper::generateUrl('ProductReviews' ,'index' ,array($row['shop_user_id'])) ), $row[$key]);
+				$td->appendElement('a', array('target' => '_blank', 'href' => CommonHelper::generateUrl('ProductReviews' ,'index' ,array($row['shop_user_id'])) ), $row[$key]);
 			} else {
 				$td->appendElement('plaintext', array(), $row[$key], true);
 			}
@@ -88,7 +88,7 @@ foreach ($arr_listing as $sn=>$row){
 				$ul = $td->appendElement( "ul",array("class"=>"actions actions--centered") );
 				if( $canEdit ){
 					$li = $ul->appendElement("li",array('class'=>'droplink'));
-											
+
     			    $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
               		$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
               		$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));

@@ -59,8 +59,7 @@ class BlogController extends MyAppController
         $srch->addOrder('post_added_on', 'desc');
         $srch->setPageSize(5);
         $srch->addGroupby('post_id');
-        $rs = $srch->getResultSet();
-        echo $srch->getQuery();
+        $rs = $srch->getResultSet();        
         $records = FatApp::getDb()->fetchAll($rs);
 
         $this->set('postList', $records);

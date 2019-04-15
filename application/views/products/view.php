@@ -345,17 +345,7 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 				<div class="col-md-12">
 					<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
 					<div class="row justify-content-between">
-						<div class="col-md-3 order-lg-2 mb-3 text-lg-right">
-							<div class="btn-group">
-								<a href="javascript:void(0)" class="btn btn--sm tab btn--tab view--link-js btn--active"><i class="icn"><svg class="svg">
-											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view"></use>
-										</svg></i><?php echo Labels::getLabel('LBL_Tabs_View',$siteLangId); ?></a>
-								<a href="javascript:void(0)" class="btn btn--sm list btn--tab view--link-js "><i class="icn"><svg class="svg">
-											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview"></use>
-										</svg></i><?php echo Labels::getLabel('LBL_List_View',$siteLangId); ?></a>
-							</div>
-						</div>
-						<div class="col-md-9">
+						<div class="col-md-7">
 							<div id="" class="tabs tabs--flat-js tab-js">
 								<ul>
 									<?php if( count($productSpecifications)>0 ){?>
@@ -371,6 +361,16 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 									<li class=""><a href="#tb-4"><?php echo Labels::getLabel('LBL_Extra_comments',$siteLangId); ?> </a></li>
 									<?php }?>
 								</ul>
+							</div>
+						</div>
+            <div class="col-md-5 mb-3 text-md-right d-none d-sm-none d-md-block">
+							<div class="btn-group">
+								<a href="javascript:void(0)" class="btn btn--sm tab btn--tab view--link-js btn--active"><i class="icn"><svg class="svg">
+											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tabs-view"></use>
+										</svg></i><?php echo Labels::getLabel('LBL_Tabs_View',$siteLangId); ?></a>
+								<a href="javascript:void(0)" class="btn btn--sm list btn--tab view--link-js "><i class="icn"><svg class="svg">
+											<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#listview"></use>
+										</svg></i><?php echo Labels::getLabel('LBL_List_View',$siteLangId); ?></a>
 							</div>
 						</div>
 					</div>

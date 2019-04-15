@@ -178,9 +178,10 @@ class CollectionsController extends AdminBaseController
         $post['collection_layout_type'] = $data['collection_layout_type'];
         unset($post['btn_submit']);
 
-        $record = new Collections($collectionId);
-        if (!$record->addUpdateData($post) ) {
-            Message::addErrorMessage($record->getError());
+        $collection = new Collections($collectionId);
+        $post['collection_primary_records'] = $this->getLayoutLimit($post['collection_layout_type']);
+        if (!$collection->addUpdateData($post) ) {
+            Message::addErrorMessage($collection->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -194,7 +195,7 @@ class CollectionsController extends AdminBaseController
                 }
             }
         } else {
-            $collectionId = $record->getMainTableRecordId();
+            $collectionId = $collection->getMainTableRecordId();
             $newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
         }
 
@@ -903,5 +904,32 @@ class CollectionsController extends AdminBaseController
 
         return $collectionLayouts[$collectionType];
 
+    }
+
+    public function getLayoutLimit( $collection_layout_type )
+    {
+        switch ($collection_layout_type){
+            case Collections::TYPE_PRODUCT_LAYOUT1 :
+                return Collections::LIMIT_PRODUCT_LAYOUT1;
+            break;
+            case Collections::TYPE_PRODUCT_LAYOUT2 :
+                return Collections::LIMIT_PRODUCT_LAYOUT2;
+            break;
+            case Collections::TYPE_PRODUCT_LAYOUT3 :
+                return Collections::LIMIT_PRODUCT_LAYOUT3;
+            break;
+            case Collections::TYPE_CATEGORY_LAYOUT1 :
+                return Collections::LIMIT_CATEGORY_LAYOUT1;
+            break;
+            case Collections::TYPE_CATEGORY_LAYOUT2 :
+                return Collections::LIMIT_CATEGORY_LAYOUT2;
+            break;
+            case Collections::TYPE_SHOP_LAYOUT1 :
+                return Collections::LIMIT_SHOP_LAYOUT1;
+            break;
+            case Collections::TYPE_BRAND_LAYOUT1 :
+                return Collections::LIMIT_BRAND_LAYOUT1;
+            break;
+        }
     }
 }

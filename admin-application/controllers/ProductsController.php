@@ -672,6 +672,22 @@ class ProductsController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
+
+        /* Get Linked Products [ */
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable( SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'LEFT OUTER JOIN', 'selprod_id = selprodoption_selprod_id', 'tspo');
+        $srch->addCondition('selprod_product_id', '=', $product_id);
+        $srch->addCondition('tspo.selprodoption_option_id', '=', $option_id);
+        $srch->addCondition('selprod_deleted','=',applicationConstants::NO);
+        $srch->addFld(array('selprod_id'));
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+        if(!empty($row)) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Option_is_linked_with_seller_inventory', $this->adminLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        /* ] */
+
         $prodObj = new Product();
         if(!$prodObj->removeProductOption($product_id, $option_id) ) {
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), $this->adminLangId));
