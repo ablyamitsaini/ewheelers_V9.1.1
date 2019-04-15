@@ -1,5 +1,6 @@
 New :
 	. New theme Integration.
+	. Upload media in bulk. 
 
 Enhancements:
     . Basic updates for design and email template labels.

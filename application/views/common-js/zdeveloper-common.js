@@ -205,7 +205,7 @@ function submitSiteSearch(frm){
 		//url_arr.push('category');
 		url_arr.push('category-'+$(frm).find('input[name="category"]').val());
 	}
-    
+
 	/* url_arr = []; */
 
 	if(themeActive == true ){
@@ -538,10 +538,15 @@ function defaultSetUpLogin(frm, v) {
 			$('#facebox .content').addClass('fbminwidth');
 	});
 
-	$.systemMessage = function(data, cls){
+	$.systemMessage = function(data, cls, autoClose){
+		if(typeof autoClose == 'undefined' || autoClose == 'undefined'){
+			autoClose = false;
+		}else{
+			autoClose = true;
+		}
 		initialize();
 		$.systemMessage.loading();
-		$.systemMessage.fillSysMessage(data, cls);
+		$.systemMessage.fillSysMessage(data, cls, autoClose);
 	};
 
 	$.extend($.systemMessage, {
@@ -551,7 +556,7 @@ function defaultSetUpLogin(frm, v) {
 		loading: function(){
 			$('.system_message').show();
 		},
-		fillSysMessage:function(data, cls){
+		fillSysMessage:function(data, cls, autoClose){
 			if(cls){
 				$('.system_message').removeClass('alert--process');
 				$('.system_message').removeClass('alert--danger');
@@ -562,7 +567,7 @@ function defaultSetUpLogin(frm, v) {
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 
-			if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
+			if( !autoClose && CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
 				var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
 				setTimeout(function(){
 					$.systemMessage.close();

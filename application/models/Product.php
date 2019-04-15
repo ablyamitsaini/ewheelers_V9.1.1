@@ -116,11 +116,9 @@ class Product extends MyAppModel{
 		return array(
 			ImportexportCommon::VALIDATE_POSITIVE_INT => array(
 				'product_id',
-				'option_id',
 			),
 			ImportexportCommon::VALIDATE_NOT_NULL => array(
 				'brand_identifier',
-				'option_identifier',
 				'afile_physical_path',
 				'afile_name',
 			),

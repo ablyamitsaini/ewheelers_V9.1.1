@@ -134,6 +134,43 @@ $(document).ready(function() {
             $(".batch_fld").hide();
         }
     };
+
+    uploadZip = function() {
+      var data = new FormData();
+      $.each($('#bulk_images')[0].files, function(i, file) {
+          $.mbsmessage(langLbl.processing, false, 'alert--process');
+          data.append('bulk_images', file);
+          $.ajax({
+              url: fcom.makeUrl('ImportExport', 'uploadBulkMedia'),
+              type: "POST",
+              data: data,
+              processData: false,
+              contentType: false,
+              success: function(t) {
+                  try {
+                      var ans = $.parseJSON(t);
+                      if (ans.status == 1) {
+                          $(document).trigger('close.facebox');
+                          $(document).trigger('close.mbsmessage');
+                          $.systemMessage(ans.msg, 'alert--success', false);
+                          document.uploadBulkImages.reset();
+                          $("#uploadFileName").text('');
+                      } else {
+                          $(document).trigger('close.mbsmessage');
+                          $.systemMessage(ans.msg, 'alert--danger');
+                      }
+                  } catch (exc) {
+                      $(document).trigger('close.mbsmessage');
+                      $.systemMessage(exc.message, 'alert--danger');
+                  }
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  alert("Error Occured.");
+              }
+          });
+      });
+  };
+
 })();
 
 $(document).on('click', ".group__head-js", function() {
