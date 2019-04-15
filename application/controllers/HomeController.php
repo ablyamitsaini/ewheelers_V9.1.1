@@ -245,6 +245,7 @@ class HomeController extends MyAppController
 
                         /* fetch Brand data[ */
                         $brandSearchTempObj = clone $brandSearchObj;
+                        $brandSearchTempObj->addMultipleFields( array( 'brand_id','IFNULL(brand_name, brand_identifier) as brand_name' ) );
                         $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
                         $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
                         $rs = $brandSearchTempObj->getResultSet();
