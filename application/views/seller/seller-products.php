@@ -11,7 +11,7 @@ $arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $si
 $arr_flds['selprod_active'] = Labels::getLabel('LBL_Status', $siteLangId);
 $arr_flds['action'] = Labels::getLabel('LBL_Action', $siteLangId);
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

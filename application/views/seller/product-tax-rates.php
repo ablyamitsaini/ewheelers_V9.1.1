@@ -11,14 +11,14 @@
 		<div class="form__content">
 			<div class="col-md-12">
 				<div class="form__subcontent">
-					<?php 
+					<?php
 				$arr_flds = array(
 					'listserial'=> Labels::getLabel( 'LBL_Sr.', $siteLangId ),
 					'taxcat_name' => Labels::getLabel( 'LBL_Tax_Category', $siteLangId ),
 					'taxval_value' => Labels::getLabel( 'LBL_Value', $siteLangId ),
 					'action'	=>	Labels::getLabel('LBL_Action', $siteLangId),
 				);
-				$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+				$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 				$th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 				foreach ($arr_flds as $val) {
 					$e = $th->appendElement('th', array(), $val);
