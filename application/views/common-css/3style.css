@@ -11398,7 +11398,7 @@ align-items: center;
 
 .dashboard-menu .icn svg,
 .draw {
-  animation: draw 4000ms ease-in-out;
+  /* animation: draw 4000ms ease-in-out; */
   stroke: #fff;
 }
 
