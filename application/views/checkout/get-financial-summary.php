@@ -2,15 +2,16 @@
 <div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> <span><span>[<?php echo count($products); ?> <?php echo Labels::getLabel('LBL_Items', $siteLangId); ?>]</span></span> </div>
 <div class="gap"></div>
-<ul>
+<div class="scrollbar">
+<ul class="summary-order-list">
   <?php foreach($products as $product){ ?>
   <li>
     <div class="products__title"><?php echo $product['product_name']?> </div>
     <div class="products__category"><?php echo $product['selprod_title']?> </div>
     <div class="gap"></div>
     <div class="product_qty">
-      <div class="qty"> <span class="decrease decrease-js">-</span>
-		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox" value="<?php echo $product['quantity']; ?>" type="text" />
+      <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
+		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="text" />
         <span class="increase increase-js">+</span> </div>
 		<ul class="actions">
 			<li><a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','')" title="<?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?>" class="icons-wrapper"><i class="icn"><svg class="svg">
@@ -24,6 +25,8 @@
   </li>
   <?php } ?>
 </ul>
+</div>
+<div class="gap"></div>
 <div class="box box--white box--radius box--space cartdetail__footer">
 	<?php if(!empty($cartSummary['cartDiscounts']['coupon_code'])){ ?>
 	<div class="applied-coupon">
@@ -80,3 +83,11 @@
 	</table>
 </div>
 <div class="gap"></div>
+<script>
+if($(window).width()>1050){
+	$('.scrollbar').enscroll({
+		verticalTrackClass: 'scroll__track',
+		verticalHandleClass: 'scroll__handle'
+	});
+}
+</script>
