@@ -375,12 +375,7 @@ $to.on("change", function () {
 	<?php /* if( isset($brandsArr) && $brandsArr && count($brandsArr) > 5 ){ */
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
-	if($(window).width()>1050){
-		$('.scrollbar').enscroll({
-			verticalTrackClass: 'scroll__track',
-			verticalHandleClass: 'scroll__handle'
-		});
-	}
+	
 	<?php /* } */ ?>
 	/* ] */
 

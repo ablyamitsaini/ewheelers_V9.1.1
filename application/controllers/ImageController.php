@@ -1124,6 +1124,7 @@ class ImageController extends FatController
     public function bannerFrame($frameId)
     {
         $frameId = FatUtility::int($frameId);
+        $default_image = '';
         if(1>$frameId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_access', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -1139,7 +1140,6 @@ class ImageController extends FatController
             $image =  'defaults/banner_layouts/layout-3.jpg';
             break;
         }
-
         if($sizeType) {
             switch( strtoupper($sizeType) ){
 

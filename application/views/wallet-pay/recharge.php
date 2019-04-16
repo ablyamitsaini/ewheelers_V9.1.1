@@ -59,14 +59,7 @@
     </div>
  </section>
 </div>
-<script>
-if($(window).width()>1050){
-	$('.scrollbar').enscroll({
-		verticalTrackClass: 'scroll__track',
-		verticalHandleClass: 'scroll__handle'
-	});
-}
-</script>
+
 <?php if( $orderInfo['order_net_amount'] ){ ?>
 <script type="text/javascript">
 var containerId = '#tabs-container';

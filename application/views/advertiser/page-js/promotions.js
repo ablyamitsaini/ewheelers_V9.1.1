@@ -136,10 +136,9 @@ $(document).delegate("select[name='banner_blocation_id']",'change',function(){
 
 	viewWrieFrame = function(locationId){
 		if(locationId){
-
 			$.facebox(function() {
 				fcom.ajax(fcom.makeUrl('Banner', 'locationFrames', [locationId]), '', function(t) {
-					$.facebox(t,'');
+					$.facebox(t,'faceboxWidth');
 				});
 			});
 		}else{
