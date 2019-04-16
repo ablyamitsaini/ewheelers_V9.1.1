@@ -1,8 +1,6 @@
 <?php
 class UploadBulkImagesController extends AdminBaseController
 {
-    private $canUpload;
-
     public function __construct($action)
     {
         parent::__construct($action);
@@ -13,8 +11,8 @@ class UploadBulkImagesController extends AdminBaseController
 
     public function index()
     {
-        $uploadFrm = $this->getUploadForm();
-        $this->set("frm", $uploadFrm);
+        $srchFrm = $this->getSearchForm();
+        $this->set("frmSearch", $srchFrm);
         $this->_template->render();
     }
 
@@ -30,6 +28,13 @@ class UploadBulkImagesController extends AdminBaseController
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Submit', $this->langId));
         return $frm;
+    }
+
+    public function uploadForm()
+    {
+        $uploadFrm = $this->getUploadForm();
+        $this->set("frm", $uploadFrm);
+        $this->_template->render(false, false);
     }
 
     public function upload()
@@ -75,5 +80,88 @@ class UploadBulkImagesController extends AdminBaseController
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->langId) .' '.$msg;
 
         FatUtility::dieJsonSuccess($msg);
+    }
+
+    private function getSearchForm()
+    {
+        $frm = new Form('frmSearch', array('id'=>'frmSearch'));
+        $frm->setRequiredStarWith('caption');
+        $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword');
+
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'user', '');
+
+        $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
+        $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
+        $fld_submit->attachField($fld_cancel);
+        $frm->addHiddenField('', 'page');
+        $frm->addHiddenField('', 'afile_record_id');
+        return $frm;
+    }
+
+    public function search()
+    {
+        $db = FatApp::getDb();
+        $srchFrm = $this->getSearchForm();
+
+        $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
+
+        $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
+
+        $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
+
+        $obj = new UploadBulkImages();
+		$srch = $obj->bulkMediaFileObject();
+
+        $keyword = FatApp::getPostedData('keyword', null, '');
+
+        if(!empty($keyword) ) {
+            $cnd = $srch->addCondition('afile_physical_path', 'like', '%' . $keyword . '%');
+        }
+
+        $uploadedBy = FatApp::getPostedData('afile_record_id');
+        if ( '' != $uploadedBy ) {
+            $srch->addCondition( 'afile_record_id', '=', $uploadedBy );
+        }
+
+
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pagesize);
+        $rs = $srch->getResultSet();
+        $arr_listing = $db->fetchAll($rs);
+
+        $this->set("arr_listing", $arr_listing);
+        $this->set('pageCount', $srch->pages());
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('page', $page);
+        $this->set('pageSize', $pagesize);
+        $this->set('postedData', $post);
+        $this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->adminLangId, true) );
+        $this->set('adminLangId', $this->adminLangId);
+        $this->_template->render(false, false);
+    }
+
+    public function removeDir( $directory )
+    {
+        $directory = CONF_UPLOADS_PATH . base64_decode($directory).'/' ;
+        $obj = new UploadBulkImages();
+        $msg = $obj->deleteSingleBulkMediaDir( $directory );
+        FatUtility::dieJsonSuccess( $msg );
+    }
+
+    public function autoCompleteSellerJson()
+    {
+        $pagesize = applicationConstants::PAGE_SIZE;
+        $post = FatApp::getPostedData();
+        $sellersObj = Product::getSellers( array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ) );
+        $sellersObj->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'product_seller_id = afile_record_id AND afile_type = '.AttachedFile::FILETYPE_BULK_IMAGES);
+        $sellersObj->addOrder('seller');
+        if( '' != $post['keyword'] ){
+            $sellersObj->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
+            $sellersObj->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
+        }
+        $sellersObj->setPageSize($pagesize);
+        $rs = $sellersObj->getResultSet();
+        $sellers = FatApp::getDb()->fetchAll($rs);
+        die(json_encode($sellers));
     }
 }

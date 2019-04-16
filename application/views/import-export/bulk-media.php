@@ -13,6 +13,15 @@ $this->includeTemplate('import-export/_partial/top-navigation.php',$variables,fa
 			<div class="col-md-12" id="bulkMediaForm">
 				<?php echo $frm->getFormHtml();  ?>
 			</div>
+			<div class="col-md-12 sectionhead">
+				<hr>
+				<h4><?php echo Labels::getLabel('LBL_Uploaded_Media_Directory_List',$siteLangId); ?></h4>
+			</div>
+			<div class="col-md-12 sectionbody">
+				<div class="tablewrap" >
+					<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...',$siteLangId); ?></div>
+				</div>
+			</div>
         </div>
 	</div>
 </div>

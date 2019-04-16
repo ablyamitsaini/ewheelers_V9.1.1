@@ -128,20 +128,20 @@ class ImportExportController extends LoggedUserController {
 	public function importMedia($actionType){
 		$post = FatApp::getPostedData();
 		$userId = UserAuthentication::getLoggedUserId();
+		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 
 		if ( !is_uploaded_file($_FILES['import_file']['tmp_name']) ) {
-			Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_CSV_File',$this->adminLangId));
+			Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_CSV_File',$this->siteLangId));
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
 
 		$obj = new Importexport();
 		if( !$obj->isUploadedFileValidMimes($_FILES['import_file'])){
-			Message::addErrorMessage( Labels::getLabel( "LBL_Not_a_Valid_CSV_File", $this->adminLangId ) );
+			Message::addErrorMessage( Labels::getLabel( "LBL_Not_a_Valid_CSV_File", $this->siteLangId ) );
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-		$langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 
-		$obj->importMedia($actionType,$post,$langId,$userId);
+		$obj->importMedia( $actionType, $post, $langId, $userId );
 	}
 
 	public function loadForm($formType){
@@ -606,7 +606,7 @@ class ImportExportController extends LoggedUserController {
 
         $fileHandlerObj = new AttachedFile();
 
-        $savedFile = $fileHandlerObj->saveAttachment( $tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, 0, 0, $fileName );
+        $savedFile = $fileHandlerObj->saveAttachment( $tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, UserAuthentication::getLoggedUserId(), 0, $fileName );
 
         if( false === $savedFile ) {
             Message::addErrorMessage( $fileHandlerObj->getError() );
@@ -624,5 +624,53 @@ class ImportExportController extends LoggedUserController {
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->siteLangId) .' '.$msg;
 
         FatUtility::dieJsonSuccess($msg);
+    }
+
+	public function uploadedBulkMediaList()
+    {
+        $db = FatApp::getDb();
+		$post = FatApp::getPostedData();
+		$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
+
+        $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
+
+		$obj = new UploadBulkImages();
+		$srch = $obj->bulkMediaFileObject( UserAuthentication::getLoggedUserId() );
+
+		$srch->setPageNumber($page);
+        $srch->setPageSize($pagesize);
+
+        $rs = $srch->getResultSet();
+        $arr_listing = $db->fetchAll($rs);
+
+        $this->set("arr_listing", $arr_listing);
+        $this->set('pageCount', $srch->pages());
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('page', $page);
+        $this->set('pageSize', $pagesize);
+        $this->set('postedData', $post);
+        $this->set('siteLangId', $this->siteLangId);
+        $this->_template->render(false, false);
+    }
+
+	public function removeDir( $directory )
+    {
+		$db = FatApp::getDb();
+		$obj = new UploadBulkImages();
+		$srch = $obj->bulkMediaFileObject( UserAuthentication::getLoggedUserId() );
+		$srch->addCondition( 'afile_physical_path', '=', base64_decode($directory) );
+		$srch->setPageSize(1);
+		$rs = $srch->getResultSet();
+        $row = $db->fetch($rs);
+
+		if( 0 < count( $row ) ){
+	        $directory = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . base64_decode($directory).'/' ;
+	        $obj = new UploadBulkImages();
+	        $msg = $obj->deleteSingleBulkMediaDir( $directory );
+	        FatUtility::dieJsonSuccess( $msg );
+		}else{
+			$errMsg = Labels::getLabel("MSG_Directory_not_found.", $langId);
+			FatUtility::dieJsonError( $errMsg );
+		}
     }
 }
