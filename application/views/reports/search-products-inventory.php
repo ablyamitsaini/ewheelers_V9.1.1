@@ -5,7 +5,7 @@ $arr_flds = array(
 	'selprod_stock'	=>	Labels::getLabel('LBL_Stock_Quantity', $siteLangId)
 );
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -15,7 +15,7 @@ $sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $listing){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -31,14 +31,14 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['brand_name'] != '' ){
 					$name .= '<div class="item__brand">'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'].'</div>';
 				}
-                
+
 				$td->appendElement('plaintext', array(), $name,true);
 			break;
-			
+
 			case 'selprod_stock':
 				$td->appendElement('plaintext', array(), $listing['selprod_stock'],true);
 			break;
-			
+
 			default:
 				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;

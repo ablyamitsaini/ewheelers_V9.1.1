@@ -2,8 +2,14 @@
 class ImportexportCommon extends FatModel
 {
     protected $db;
+    protected $CSVfileName;
 
     const IMPORT_ERROR_LOG_PATH = CONF_UPLOADS_PATH.'import-error-log/';
+
+    const VALIDATE_POSITIVE_INT = 'positiveInt';
+    const VALIDATE_INT = 'int';
+    const VALIDATE_FLOAT = 'float';
+    const VALIDATE_NOT_NULL = 'notNull';
 
     function __construct($id = 0 ) 
     {
@@ -13,53 +19,61 @@ class ImportexportCommon extends FatModel
         $this->settings = $this->getSettingsArr();
     }
 
-    public function logFileName( $name = '', $langId = 0 )
+    public function CSVFileName( $fileName = '', $langId = 0 )
     {
         $langId =  FatUtility::int($langId);
-        if(!$langId) {
+        if(0 >= $langId) {
             $langId = CommonHelper::getLangId();
         }
-        $fileName = empty($name) ? 'Error_Log' : str_replace(' ', '_', $name);
-        $fileName = Labels::getLabel('LBL_'.$fileName, $langId);
-        return $fileName.'_'.time().'_'.mt_rand().'.csv';
+
+        $langData = Language::getAttributesById($langId, array('language_code'));
+
+        $fileName = empty($fileName) ? 'CSV_FILE' : $fileName;
+
+        return $fileName.'_'.$langData['language_code'].'_'.date("d-M-Y-His").mt_rand().'.csv';
     }
 
-    public function openErrorLogFile( $fileName ,$langId = 0 )
+    public function openCSVfileToWrite( $fileName, $langId = 0, $errorLog = false, $headingsArr = array() )
     {
         if(empty($fileName)) {
             return false;
         }
+        $this->CSVfileName = $this->CSVFileName($fileName);
 
-        if(!file_exists(self::IMPORT_ERROR_LOG_PATH)) {
-              mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
+        if(true === $errorLog ) {
+            if(!file_exists(self::IMPORT_ERROR_LOG_PATH) ) {
+                mkdir(self::IMPORT_ERROR_LOG_PATH, 0777);
+            }
+            $file = self::IMPORT_ERROR_LOG_PATH.$this->CSVfileName;
+            $headingsArr = array(
+            Labels::getLabel('LBL_Row', $langId),
+            Labels::getLabel('LBL_Column', $langId),
+            Labels::getLabel('LBL_Description', $langId)
+            );
+            $handle = fopen($file, "w");
+        }
+
+        if(false === $errorLog ) {
+            $handle = fopen('php://memory', 'w');
         }
 
         $langId =  FatUtility::int($langId);
-        if(!$langId) {
+        if(0 >= $langId ) {
             $langId = CommonHelper::getLangId();
         }
 
-        $fileName = self::IMPORT_ERROR_LOG_PATH.$fileName;
+        CommonHelper::writeToCSVFile($handle, $headingsArr);
+        return $handle;
 
-        $file = fopen($fileName, "w");
-
-        $arr = array(
-        Labels::getLabel('LBL_Row', $langId),
-        Labels::getLabel('LBL_Column', $langId),
-        Labels::getLabel('LBL_Description', $langId)
-        );
-
-        CommonHelper::writeLogFile($file, $arr);
-        return $file;
     }
 
     public static function deleteErrorLogFiles($hoursBefore = '4')
     {
-        if(empty($hoursBefore)) {
+        if(empty($hoursBefore) ) {
             return false;
         }
         $importErrorLogFilesDir = ImportexportCommon::IMPORT_ERROR_LOG_PATH;
-        $errorLogFiles = array_diff(scandir($importErrorLogFilesDir), array('..', '.'));
+        $errorLogFiles = array_diff(scandir($importErrorLogFilesDir), array( '..', '.' ));
         foreach ($errorLogFiles as $fileName) {
             $file = $importErrorLogFilesDir.$fileName;
             $modifiedOn = filemtime($file);
@@ -68,6 +82,43 @@ class ImportexportCommon extends FatModel
             }
         }
         return true;
+    }
+
+    public function isValidColumns($headingsArr, $coloumArr)
+    {
+        $arr = array_diff($headingsArr, $coloumArr);
+
+        if(count($arr) ) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function validateFields( $requiredFields, $columnIndex, $columnTitle, $columnValue, $langId )
+    {
+        $errMsg = false;
+
+        foreach ( $requiredFields as $type => $fieldsArr ) {
+            if(!in_array($columnIndex, $fieldsArr) ) { continue; 
+            }
+
+            switch( $type ){
+            case static::VALIDATE_POSITIVE_INT :
+                $errMsg = ( 0 >= FatUtility::int($columnValue) ) ? Labels::getLabel("MSG_{column-name}_should_be_greater_than_0.", $langId) : false;
+                break;
+            case static::VALIDATE_NOT_NULL :
+                $errMsg = ( '' == $columnValue ) ? Labels::getLabel("MSG_{column-name}_is_mandatory.", $langId) : false ;
+                break;
+            case static::VALIDATE_INT :
+                $errMsg = ( 0 > FatUtility::int($columnValue) ) ? Labels::getLabel("MSG_{column-name}_should_be_greater_than_equal_to_0.", $langId) : false ;
+                break;
+            case static::VALIDATE_FLOAT :
+                $errMsg = ( 0 > FatUtility::float($columnValue) ) ? Labels::getLabel("MSG_{column-name}_should_be_greater_than_0.", $langId) : false ;
+                break;
+            }
+            return ( false !== $errMsg ) ? str_replace('{column-name}', $columnTitle, $errMsg) : $errMsg;
+        }
+        return $errMsg;
     }
 
     public function isUploadedFileValidMimes($files)
@@ -142,33 +193,33 @@ class ImportexportCommon extends FatModel
         $arr = array();
 
         if($this->settings['CONF_USE_CATEGORY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Category_Id', $langId);
+            $arr['prodcat_id'] = Labels::getLabel('LBL_Category_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Category_Identifier', $langId);
+                $arr['prodcat_identifier'] = Labels::getLabel('LBL_Category_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Category_Identifier', $langId);
+            $arr['prodcat_identifier'] = Labels::getLabel('LBL_Category_Identifier', $langId);
         }
 
         if($this->isDefaultSheetData($langId)) {
             if($this->settings['CONF_USE_CATEGORY_ID']) {
-                $arr[] = Labels::getLabel('LBL_Parent_Id', $langId);
+                $arr['prodcat_parent'] = Labels::getLabel('LBL_Parent_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Parent_Identifier', $langId);
+                $arr['prodcat_parent_identifier'] = Labels::getLabel('LBL_Parent_Identifier', $langId);
             }
         }
 
-        $arr[] = Labels::getLabel('LBL_Name', $langId);
+        $arr['prodcat_name'] = Labels::getLabel('LBL_Name', $langId);
         if(!$userId) {
-            $arr[] = Labels::getLabel('LBL_Description', $langId);
+            $arr['prodcat_description'] = Labels::getLabel('LBL_Description', $langId);
             /* $arr[] = Labels::getLabel('LBL_Content_block', $langId); */
 
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr[] = Labels::getLabel('LBL_Featured', $langId);
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
-                $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
-                $arr[] = Labels::getLabel('LBL_Deleted', $langId);
+                $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
+                $arr['prodcat_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                $arr['prodcat_active'] = Labels::getLabel('LBL_Active', $langId);
+                $arr['prodcat_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
+                $arr['prodcat_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             }
         }
         return $arr;
@@ -178,21 +229,21 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_CATEGORY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Category_Id', $langId);
+            $arr['prodcat_id'] = Labels::getLabel('LBL_Category_Id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Category_Identifier', $langId);
+            $arr['prodcat_identifier'] = Labels::getLabel('LBL_Category_Identifier', $langId);
         }
 
         if($this->settings['CONF_USE_LANG_ID']) {
-            $arr[] = Labels::getLabel('LBL_lang_id', $langId);
+            $arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_lang_code', $langId);
+            $arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Image_Type', $langId);
-        $arr[] = Labels::getLabel('LBL_File_Path', $langId);
-        $arr[] = Labels::getLabel('LBL_File_Name', $langId);
-        $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+        $arr['afile_type'] = Labels::getLabel('LBL_Image_Type', $langId);
+        $arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+        $arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+        $arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
         return $arr;
     }
 
@@ -201,22 +252,22 @@ class ImportexportCommon extends FatModel
         $arr = array();
 
         if($this->settings['CONF_USE_BRAND_ID']) {
-            $arr[] = Labels::getLabel('LBL_Brand_Id', $langId);
+            $arr['brand_id'] = Labels::getLabel('LBL_Brand_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+                $arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+            $arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
         }
-        $arr[] = Labels::getLabel('LBL_Name', $langId);
+        $arr['brand_name'] = Labels::getLabel('LBL_Name', $langId);
 
         if(!$userId) {
-            $arr[] = Labels::getLabel('LBL_Description', $langId);
+            $arr['brand_short_description'] = Labels::getLabel('LBL_Description', $langId);
 
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr[] = Labels::getLabel('LBL_Featured', $langId);
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
+                $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
+                $arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                $arr['brand_active'] = Labels::getLabel('LBL_Active', $langId);
             }
         }
         return $arr;
@@ -226,20 +277,20 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_BRAND_ID']) {
-            $arr[] = Labels::getLabel('LBL_Brand_Id', $langId);
+            $arr['brand_id'] = Labels::getLabel('LBL_Brand_Id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+            $arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
         }
 
         if($this->settings['CONF_USE_LANG_ID']) {
-            $arr[] = Labels::getLabel('LBL_lang_id', $langId);
+            $arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_lang_code', $langId);
+            $arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_File_Path', $langId);
-        $arr[] = Labels::getLabel('LBL_File_Name', $langId);
-        $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+        $arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+        $arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+        $arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
         return $arr;
     }
 
@@ -248,90 +299,95 @@ class ImportexportCommon extends FatModel
         $arr = array();
 
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Product_identifier', $langId);
+                $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Product_identifier', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
         }
 
         if($this->isDefaultSheetData($langId)) {
             if($this->settings['CONF_USE_USER_ID']) {
-                $arr[] = Labels::getLabel('LBL_User_ID', $langId);
+                $arr['product_seller_id'] = Labels::getLabel('LBL_User_ID', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Username', $langId);
+                $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
             }
         }
 
-        $arr[] = Labels::getLabel('LBL_Name', $langId);
-        /* $arr[] = Labels::getLabel('LBL_Short_Description', $langId); */
-        $arr[] = Labels::getLabel('LBL_Description', $langId);
-        $arr[] = Labels::getLabel('LBL_Youtube_Video', $langId);
+        $arr['product_name'] = Labels::getLabel('LBL_Name', $langId);
+        /* $arr['product_short_description'] = Labels::getLabel('LBL_Short_Description', $langId); */
+        $arr['product_description'] = Labels::getLabel('LBL_Description', $langId);
+        $arr['product_youtube_video'] = Labels::getLabel('LBL_Youtube_Video', $langId);
 
         if($this->isDefaultSheetData($langId)) {
             if($this->settings['CONF_USE_CATEGORY_ID']) {
-                $arr[] = Labels::getLabel('LBL_Category_Id', $langId);
+                $arr['category_Id'] = Labels::getLabel('LBL_Category_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Category_Identifier', $langId);
+                $arr['category_indentifier'] = Labels::getLabel('LBL_Category_Identifier', $langId);
             }
 
             if($this->settings['CONF_USE_BRAND_ID']) {
-                $arr[] = Labels::getLabel('LBL_Brand_Id', $langId);
+                $arr['product_brand_id'] = Labels::getLabel('LBL_Brand_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Brand_Identifier', $langId);
+                $arr['brand_identifier'] = Labels::getLabel('LBL_Brand_Identifier', $langId);
             }
 
             if($this->settings['CONF_USE_PRODUCT_TYPE_ID']) {
-                $arr[] = Labels::getLabel('LBL_Product_Type_Id', $langId);
+                $arr['product_type'] = Labels::getLabel('LBL_Product_Type_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Product_Type_Identifier', $langId);
+                $arr['product_type_identifier'] = Labels::getLabel('LBL_Product_Type_Identifier', $langId);
             }
 
-            $arr[] = Labels::getLabel('LBL_Model', $langId);
-            $arr[] = Labels::getLabel('LBL_Min_Selling_price', $langId);
+            $arr['product_model'] = Labels::getLabel('LBL_Model', $langId);
+            $arr['product_min_selling_price'] = Labels::getLabel('LBL_Min_Selling_price', $langId);
 
             if($this->settings['CONF_USE_TAX_CATEOGRY_ID']) {
-                $arr[] = Labels::getLabel('LBL_Tax_Category_Id', $langId);
+                $arr['tax_category_id'] = Labels::getLabel('LBL_Tax_Category_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Tax_Category_Identifier', $langId);
+                $arr['tax_category_identifier'] = Labels::getLabel('LBL_Tax_Category_Identifier', $langId);
             }
 
-            $arr[] = Labels::getLabel('LBL_Length', $langId);
-            $arr[] = Labels::getLabel('LBL_Width', $langId);
-            $arr[] = Labels::getLabel('LBL_Height', $langId);
+            $arr['product_length'] = Labels::getLabel('LBL_Length', $langId);
+            $arr['product_width'] = Labels::getLabel('LBL_Width', $langId);
+            $arr['product_height'] = Labels::getLabel('LBL_Height', $langId);
 
             if($this->settings['CONF_USE_DIMENSION_UNIT_ID']) {
-                $arr[] = Labels::getLabel('LBL_Dimension_Unit_Id', $langId);
+                $arr['product_dimension_unit'] = Labels::getLabel('LBL_Dimension_Unit_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Dimension_Unit_Identifier', $langId);
+                $arr['product_dimension_unit_identifier'] = Labels::getLabel('LBL_Dimension_Unit_Identifier', $langId);
             }
 
-            $arr[] = Labels::getLabel('LBL_Weight', $langId);
+            $arr['product_weight'] = Labels::getLabel('LBL_Weight', $langId);
 
             if($this->settings['CONF_USE_WEIGHT_UNIT_ID']) {
-                $arr[] = Labels::getLabel('LBL_Weight_unit_id', $langId);
+                $arr['product_weight_unit'] = Labels::getLabel('LBL_Weight_unit_id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Weight_unit_identifier', $langId);
+                $arr['product_weight_unit_identifier'] = Labels::getLabel('LBL_Weight_unit_identifier', $langId);
             }
-            $arr[] = Labels::getLabel('LBL_EAN/UPC_code', $langId);
+            $arr['product_upc'] = Labels::getLabel('LBL_EAN/UPC_code', $langId);
             if($this->settings['CONF_USE_COUNTRY_ID']) {
-                $arr[] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
+                $arr['ps_from_country_id'] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
+                // $arr['product_ship_country_id'] = Labels::getLabel('LBL_Shipping_Country_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
+                $arr['country_code'] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
+                // $arr['product_ship_country_code'] = Labels::getLabel('LBL_Shipping_Country_Code', $langId);
             }
 
+            // Not necessary
+            // if(!$userId){
+            //     $arr['product_added_on'] = Labels::getLabel('LBL_Added_On', $langId);
+            // }
+
+            $arr['ps_free'] = Labels::getLabel('LBL_Free_Shipping', $langId);
+            // $arr['product_ship_free'] = Labels::getLabel('LBL_Free_Shipping', $langId);
+            $arr['product_cod_enabled'] = Labels::getLabel('LBL_COD_available', $langId);
             if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Added_On', $langId);
+                $arr['product_featured'] = Labels::getLabel('LBL_Featured', $langId);
             }
-            $arr[] = Labels::getLabel('LBL_Free_Shipping', $langId);
-            $arr[] = Labels::getLabel('LBL_COD_available', $langId);
-            if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Featured', $langId);
-            }
-            $arr[] = Labels::getLabel('LBL_Approved', $langId);
-            $arr[] = Labels::getLabel('LBL_Active', $langId);
-            $arr[] = Labels::getLabel('LBL_Deleted', $langId);
+            $arr['product_approved'] = Labels::getLabel('LBL_Approved', $langId);
+            $arr['product_active'] = Labels::getLabel('LBL_Active', $langId);
+            $arr['product_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
         }
 
         return $arr;
@@ -342,15 +398,15 @@ class ImportexportCommon extends FatModel
 
         $arr = array();
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
         }
 
         if($this->settings['CONF_USE_OPTION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_ID', $langId);
+            $arr['option_id'] = Labels::getLabel('LBL_Option_ID', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_Identifier', $langId);
+            $arr['option_identifier'] = Labels::getLabel('LBL_Option_Identifier', $langId);
         }
 
         return $arr;
@@ -360,15 +416,15 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_PRODUCT_IDENTIFIER', $langId);
         }
 
         if($this->settings['CONF_USE_TAG_ID']) {
-            $arr[] = Labels::getLabel('LBL_TAG_ID', $langId);
+            $arr['tag_id'] = Labels::getLabel('LBL_TAG_ID', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_TAG_Identifier', $langId);
+            $arr['tag_identifier'] = Labels::getLabel('LBL_TAG_Identifier', $langId);
         }
 
         return $arr;
@@ -378,19 +434,19 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_product_id', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_product_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_product_identifier', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_product_identifier', $langId);
         }
 
         if($this->settings['CONF_USE_LANG_ID']) {
-            $arr[] = Labels::getLabel('LBL_Lang_id', $langId);
+            $arr['prodspeclang_lang_id'] = Labels::getLabel('LBL_Lang_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Lang_code', $langId);
+            $arr['prodspeclang_lang_code'] = Labels::getLabel('LBL_Lang_code', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_specification_name', $langId);
-        $arr[] = Labels::getLabel('LBL_specification_value', $langId);
+        $arr['prodspec_name'] = Labels::getLabel('LBL_specification_name', $langId);
+        $arr['prodspec_value'] = Labels::getLabel('LBL_specification_value', $langId);
 
         return $arr;
     }
@@ -399,37 +455,37 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_product_id', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_product_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_product_identifier', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_product_identifier', $langId);
         }
 
         if($this->settings['CONF_USE_USER_ID']) {
-            $arr[] = Labels::getLabel('LBL_user_id', $langId);
+            $arr['user_id'] = Labels::getLabel('LBL_User_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_user_username', $langId);
+            $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
         }
 
         if($this->settings['CONF_USE_COUNTRY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Shipping_country_id', $langId);
+            $arr['country_id'] = Labels::getLabel('LBL_Shipping_country_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Shipping_country_code', $langId);
+            $arr['country_code'] = Labels::getLabel('LBL_Shipping_country_code', $langId);
         }
 
         if($this->settings['CONF_USE_SHIPPING_COMPANY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Shipping_company_id', $langId);
+            $arr['scompany_id'] = Labels::getLabel('LBL_Shipping_company_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Shipping_company_identifier', $langId);
+            $arr['scompany_identifier'] = Labels::getLabel('LBL_Shipping_company_identifier', $langId);
         }
 
         if($this->settings['CONF_USE_SHIPPING_DURATION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Shipping_duration_id', $langId);
+            $arr['sduration_id'] = Labels::getLabel('LBL_Shipping_duration_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Shipping_duration_identifier', $langId);
+            $arr['sduration_identifier'] = Labels::getLabel('LBL_Shipping_duration_identifier', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Cost', $langId);
-        $arr[] = Labels::getLabel('LBL_Additional_item_cost', $langId);
+        $arr['pship_charges'] = Labels::getLabel('LBL_Cost', $langId);
+        $arr['pship_additional_charges'] = Labels::getLabel('LBL_Additional_item_cost', $langId);
         return $arr;
     }
 
@@ -437,87 +493,89 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_Product_Id', $langId);
+            $arr['product_id'] = Labels::getLabel('LBL_Product_Id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Product_Identifier', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_Product_Identifier', $langId);
         }
 
         if($this->settings['CONF_USE_LANG_ID']) {
-            $arr[] = Labels::getLabel('LBL_lang_id', $langId);
+            $arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_lang_code', $langId);
+            $arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
         }
 
         if($this->settings['CONF_USE_OPTION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_id', $langId);
+            $arr['option_id'] = Labels::getLabel('LBL_Option_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_identifer', $langId);
+            $arr['option_identifier'] = Labels::getLabel('LBL_Option_identifer', $langId);
         }
 
         if($this->settings['CONF_OPTION_VALUE_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_value_id', $langId);
+            $arr['optionvalue_id'] = Labels::getLabel('LBL_Option_value_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_value_identifer', $langId);
+            $arr['optionvalue_identifier'] = Labels::getLabel('LBL_Option_value_identifer', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_File_Path', $langId);
-        $arr[] = Labels::getLabel('LBL_File_Name', $langId);
-        $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+        $arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+        $arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+        $arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
         return $arr;
     }
 
-    public function getSelProdGeneralColoumArr($langId,$userId = 0)
+    public function getSelProdGeneralColoumArr($langId, $userId = 0)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
 
         if($this->settings['CONF_USE_PRODUCT_ID']) {
-            $arr[] = Labels::getLabel('LBL_Product_Id', $langId);
+            $arr['selprod_product_id'] = Labels::getLabel('LBL_Product_Id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Product_Identifier', $langId);
+            $arr['product_identifier'] = Labels::getLabel('LBL_Product_Identifier', $langId);
         }
 
         if(!$userId) {
             if($this->settings['CONF_USE_USER_ID']) {
-                $arr[] = Labels::getLabel('LBL_User_ID', $langId);
+                $arr['selprod_user_id'] = Labels::getLabel('LBL_User_ID', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Username', $langId);
+                $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
             }
         }
 
         if($this->isDefaultSheetData($langId)) {
-            $arr[] = Labels::getLabel('LBL_Selling_Price', $langId);
-            /* $arr[] = Labels::getLabel('LBL_Cost', $langId);	 */
-            $arr[] = Labels::getLabel('LBL_Stock', $langId);
-            $arr[] = Labels::getLabel('LBL_SKU', $langId);
-            $arr[] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);
-            $arr[] = Labels::getLabel('LBL_Sustack_stock', $langId);
-            $arr[] = Labels::getLabel('LBL_Track_Inventory', $langId);
-            $arr[] = Labels::getLabel('LBL_Threshold_stock_level', $langId);
+            $arr['selprod_price'] = Labels::getLabel('LBL_Selling_Price', $langId);
+            $arr['selprod_cost'] = Labels::getLabel('LBL_Cost_Price', $langId);
+            $arr['selprod_stock'] = Labels::getLabel('LBL_Stock', $langId);
+            $arr['selprod_sku'] = Labels::getLabel('LBL_SKU', $langId);
+            $arr['selprod_min_order_qty'] = Labels::getLabel('LBL_Min_Order_Quantity', $langId);
+            $arr['selprod_subtract_stock'] = Labels::getLabel('LBL_Subtract_stock', $langId);
+            $arr['selprod_track_inventory'] = Labels::getLabel('LBL_Track_Inventory', $langId);
+            $arr['selprod_threshold_stock_level'] = Labels::getLabel('LBL_Threshold_stock_level', $langId);
 
             if($this->settings['CONF_USE_PROD_CONDITION_ID']) {
-                $arr[] = Labels::getLabel('LBL_Condition_id', $langId);
+                $arr['selprod_condition'] = Labels::getLabel('LBL_Condition_id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Condition_Identifier', $langId);
+                $arr['selprod_condition_identifier'] = Labels::getLabel('LBL_Condition_Identifier', $langId);
             }
-            $arr[] = Labels::getLabel('LBL_digital_product_max_download_time', $langId);
-            $arr[] = Labels::getLabel('LBL_download_validity_in_days', $langId);
+            $arr['selprod_max_download_times'] = Labels::getLabel('LBL_digital_product_max_download_time', $langId);
+            $arr['selprod_download_validity_in_days'] = Labels::getLabel('LBL_download_validity_in_days', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Title', $langId);
-        $arr[] = Labels::getLabel('LBL_Comments', $langId);
+        $arr['selprod_title'] = Labels::getLabel('LBL_Title', $langId);
+        $arr['selprod_comments'] = Labels::getLabel('LBL_Comments', $langId);
 
         if($this->isDefaultSheetData($langId)) {
-            $arr[] = Labels::getLabel('LBL_Url_keyword', $langId);
+            $arr['selprod_url_keyword'] = Labels::getLabel('LBL_Url_keyword', $langId);
+
+            // if(!$userId){
+            //     $arr['selprod_added_on'] = Labels::getLabel('LBL_Added_on', $langId);
+            // }
+
+            $arr['selprod_available_from'] = Labels::getLabel('LBL_Available_from', $langId);
+            $arr['selprod_active'] = Labels::getLabel('LBL_Active', $langId);
+            $arr['selprod_cod_enabled'] = Labels::getLabel('LBL_COD_Available', $langId);
             if(!$userId) {
-                // $arr[] = Labels::getLabel('LBL_Added_on', $langId);
-            }
-            $arr[] = Labels::getLabel('LBL_Available_from', $langId);
-            $arr[] = Labels::getLabel('LBL_Active', $langId);
-            $arr[] = Labels::getLabel('LBL_COD_Available', $langId);
-            if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Deleted', $langId);
-                $arr[] = Labels::getLabel('LBL_Sold_Count', $langId);
+                $arr['selprod_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
+                $arr['selprod_sold_count'] = Labels::getLabel('LBL_Sold_Count', $langId);
             }
         }
         return $arr;
@@ -526,33 +584,33 @@ class ImportexportCommon extends FatModel
     public function getSelProdMediaColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
         if($this->settings['CONF_USE_LANG_ID']) {
-            $arr[] = Labels::getLabel('LBL_lang_id', $langId);
+            $arr['afile_lang_id'] = Labels::getLabel('LBL_lang_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_lang_code', $langId);
+            $arr['afile_lang_code'] = Labels::getLabel('LBL_lang_code', $langId);
         }
-        $arr[] = Labels::getLabel('LBL_File_Path', $langId);
-        $arr[] = Labels::getLabel('LBL_File_Name', $langId);
-        $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+        $arr['afile_physical_path'] = Labels::getLabel('LBL_File_Path', $langId);
+        $arr['afile_name'] = Labels::getLabel('LBL_File_Name', $langId);
+        $arr['afile_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
         return $arr;
     }
 
     public function getSelProdOptionsColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['selprodoption_selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
 
         if($this->settings['CONF_USE_OPTION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_id', $langId);
+            $arr['option_id'] = Labels::getLabel('LBL_Option_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_identifier', $langId);
+            $arr['option_identifier'] = Labels::getLabel('LBL_Option_identifier', $langId);
         }
 
         if($this->settings['CONF_OPTION_VALUE_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_Value_ID', $langId);
+            $arr['optionvalue_id'] = Labels::getLabel('LBL_Option_Value_ID', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
+            $arr['optionvalue_identifier'] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
         }
         return $arr;
     }
@@ -560,25 +618,25 @@ class ImportexportCommon extends FatModel
     public function getSelProdSeoColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
 
         if($this->isDefaultSheetData($langId)) {
-            $arr[] = Labels::getLabel('LBL_meta_identifier', $langId);
+            $arr['meta_identifier'] = Labels::getLabel('LBL_meta_identifier', $langId);
         }
-        $arr[] = Labels::getLabel('LBL_meta_title', $langId);
-        $arr[] = Labels::getLabel('LBL_meta_keywords', $langId);
-        $arr[] = Labels::getLabel('LBL_meta_description', $langId);
-        $arr[] = Labels::getLabel('LBL_other_meta_tags', $langId);
+        $arr['meta_title'] = Labels::getLabel('LBL_meta_title', $langId);
+        $arr['meta_keywords'] = Labels::getLabel('LBL_meta_keywords', $langId);
+        $arr['meta_description'] = Labels::getLabel('LBL_meta_description', $langId);
+        $arr['meta_other_meta_tags'] = Labels::getLabel('LBL_other_meta_tags', $langId);
         return $arr;
     }
 
     public function getSelProdSpecialPriceColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-        $arr[] = Labels::getLabel('LBL_Start_date', $langId);
-        $arr[] = Labels::getLabel('LBL_End_date', $langId);
-        $arr[] = Labels::getLabel('LBL_Price', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['splprice_start_date'] = Labels::getLabel('LBL_Start_date', $langId);
+        $arr['splprice_end_date'] = Labels::getLabel('LBL_End_date', $langId);
+        $arr['splprice_price'] = Labels::getLabel('LBL_Price', $langId);
 
         /* if($this->settings['CONF_USE_PERSENT_OR_FLAT_CONDITION_ID']){
         $arr[] = Labels::getLabel('LBL_display_price_type_id', $langId);
@@ -594,36 +652,36 @@ class ImportexportCommon extends FatModel
     public function getSelProdVolumeDiscountColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-        $arr[] = Labels::getLabel('LBL_Min_quantity', $langId);
-        $arr[] = Labels::getLabel('LBL_discount_percentage', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['voldiscount_min_qty'] = Labels::getLabel('LBL_Min_quantity', $langId);
+        $arr['voldiscount_percentage'] = Labels::getLabel('LBL_discount_percentage', $langId);
         return $arr;
     }
 
     public function getSelProdBuyTogetherColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-        $arr[] = Labels::getLabel('LBL_Buy_together_selprod_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['upsell_recommend_sellerproduct_id'] = Labels::getLabel('LBL_Buy_together_seller_product_id', $langId);
         return $arr;
     }
 
     public function getSelProdRelatedProductColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
-        $arr[] = Labels::getLabel('LBL_Related_selprod_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['related_recommend_sellerproduct_id'] = Labels::getLabel('LBL_Related_seller_product_id', $langId);
         return $arr;
     }
 
     public function getSelProdPolicyColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
         if($this->settings['CONF_USE_POLICY_POINT_ID']) {
-            $arr[] = Labels::getLabel('LBL_Policy_point_id', $langId);
+            $arr['sppolicy_ppoint_id'] = Labels::getLabel('LBL_Policy_point_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Policy_point_identifier', $langId);
+            $arr['ppoint_identifier'] = Labels::getLabel('LBL_Policy_point_identifier', $langId);
         }
         return $arr;
     }
@@ -633,23 +691,22 @@ class ImportexportCommon extends FatModel
         $arr = array();
 
         if($this->settings['CONF_USE_OPTION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_id', $langId);
+            $arr['option_id'] = Labels::getLabel('LBL_Option_id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Option_identifier', $langId);
+                $arr['option_identifier'] = Labels::getLabel('LBL_Option_identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_identifier', $langId);
+            $arr['option_identifier'] = Labels::getLabel('LBL_Option_identifier', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Option_name', $langId);
+        $arr['option_name'] = Labels::getLabel('LBL_Option_name', $langId);
 
         if(!$userId) {
             if($this->isDefaultSheetData($langId)) {
-
                 if($this->settings['CONF_USE_USER_ID']) {
-                    $arr[] = Labels::getLabel('LBL_User_ID', $langId);
+                    $arr['option_seller_id'] = Labels::getLabel('LBL_User_ID', $langId);
                 }else{
-                    $arr[] = Labels::getLabel('LBL_Username', $langId);
+                    $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
                 }
 
                 /* if($this->settings['CONF_USE_OPTION_TYPE_ID']){
@@ -658,11 +715,11 @@ class ImportexportCommon extends FatModel
                 $arr[] = Labels::getLabel('LBL_Option_Type', $langId);
                 } */
 
-                $arr[] = Labels::getLabel('LBL_Is_Separate_Image', $langId);
-                $arr[] = Labels::getLabel('LBL_Is_Color_Type', $langId);
-                $arr[] = Labels::getLabel('LBL_Display_in_filters', $langId);
+                $arr['option_is_separate_images'] = Labels::getLabel('LBL_Has_Separate_Image', $langId);
+                $arr['option_is_color'] = Labels::getLabel('LBL_Option_is_Color', $langId);
+                $arr['option_display_in_filter'] = Labels::getLabel('LBL_Display_in_filters', $langId);
                 if(!$userId) {
-                    $arr[] = Labels::getLabel('LBL_Deleted', $langId);
+                    $arr['option_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
                 }
             }
         }
@@ -674,26 +731,26 @@ class ImportexportCommon extends FatModel
         $arr = array();
 
         if($this->settings['CONF_OPTION_VALUE_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_Value_ID', $langId);
+            $arr['optionvalue_id'] = Labels::getLabel('LBL_Option_Value_ID', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
+                $arr['optionvalue_identifier'] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
+            $arr['optionvalue_identifier'] = Labels::getLabel('LBL_Option_Value_Identifier', $langId);
         }
 
         if($this->settings['CONF_USE_OPTION_ID']) {
-            $arr[] = Labels::getLabel('LBL_Option_id', $langId);
+            $arr['optionvalue_option_id'] = Labels::getLabel('LBL_Option_id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Option_identifier', $langId);
+            $arr['option_identifier'] = Labels::getLabel('LBL_Option_identifier', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Option_value', $langId);
+        $arr['optionvalue_name'] = Labels::getLabel('LBL_Option_value', $langId);
 
         if($this->isDefaultSheetData($langId)) {
-            $arr[] = Labels::getLabel('LBL_Color_Code', $langId);
+            $arr['optionvalue_color_code'] = Labels::getLabel('LBL_Color_Code', $langId);
             if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Display_Order', $langId);
+                $arr['optionvalue_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
             }
         }
 
@@ -704,25 +761,25 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_TAG_ID']) {
-            $arr[] = Labels::getLabel('LBL_Tag_Id', $langId);
+            $arr['tag_id'] = Labels::getLabel('LBL_Tag_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Tag_Identifier', $langId);
+                $arr['tag_identifier'] = Labels::getLabel('LBL_Tag_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Tag_Identifier', $langId);
+            $arr['tag_identifier'] = Labels::getLabel('LBL_Tag_Identifier', $langId);
         }
 
         if(!$userId) {
             if($this->isDefaultSheetData($langId)) {
                 if($this->settings['CONF_USE_USER_ID']) {
-                    $arr[] = Labels::getLabel('LBL_User_ID', $langId);
+                    $arr['tag_user_id'] = Labels::getLabel('LBL_User_ID', $langId);
                 }else{
-                    $arr[] = Labels::getLabel('LBL_Username', $langId);
+                    $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
                 }
             }
         }
 
-        $arr[] = Labels::getLabel('LBL_Tag_Name', $langId);
+        $arr['tag_name'] = Labels::getLabel('LBL_Tag_Name', $langId);
         return $arr;
     }
 
@@ -730,31 +787,31 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_COUNTRY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Country_Id', $langId);
+            $arr['country_id'] = Labels::getLabel('LBL_Country_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Country_code', $langId);
+                $arr['country_code'] = Labels::getLabel('LBL_Country_code', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Country_code', $langId);
+            $arr['country_code'] = Labels::getLabel('LBL_Country_code', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_Country_Name', $langId);
+        $arr['country_name'] = Labels::getLabel('LBL_Country_Name', $langId);
 
         if(!$userId) {
             if($this->isDefaultSheetData($langId)) {
                 if($this->settings['CONF_USE_CURRENCY_ID']) {
-                    $arr[] = Labels::getLabel('LBL_Currency_ID', $langId);
+                    $arr['country_currency_id'] = Labels::getLabel('LBL_Currency_ID', $langId);
                 }else{
-                    $arr[] = Labels::getLabel('LBL_Currency_code', $langId);
+                    $arr['country_currency_code'] = Labels::getLabel('LBL_Currency_code', $langId);
                 }
 
                 if($this->settings['CONF_USE_LANG_ID']) {
-                    $arr[] = Labels::getLabel('LBL_Lang_ID', $langId);
+                    $arr['country_language_id'] = Labels::getLabel('LBL_Lang_ID', $langId);
                 }else{
-                    $arr[] = Labels::getLabel('LBL_Lang_code', $langId);
+                    $arr['country_language_code'] = Labels::getLabel('LBL_Lang_code', $langId);
                 }
 
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
+                $arr['country_active'] = Labels::getLabel('LBL_Active', $langId);
             }
         }
 
@@ -765,26 +822,26 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_STATE_ID']) {
-            $arr[] = Labels::getLabel('LBL_State_Id', $langId);
+            $arr['state_id'] = Labels::getLabel('LBL_State_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_State_Identifier', $langId);
+                $arr['state_identifier'] = Labels::getLabel('LBL_State_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_State_Identifier', $langId);
+            $arr['state_identifier'] = Labels::getLabel('LBL_State_Identifier', $langId);
         }
 
         if($this->settings['CONF_USE_COUNTRY_ID']) {
-            $arr[] = Labels::getLabel('LBL_Country_Id', $langId);
+            $arr['state_country_id'] = Labels::getLabel('LBL_Country_Id', $langId);
         }else{
-            $arr[] = Labels::getLabel('LBL_Country_code', $langId);
+            $arr['country_code'] = Labels::getLabel('LBL_Country_code', $langId);
         }
 
-        $arr[] = Labels::getLabel('LBL_State_Name', $langId);
+        $arr['state_name'] = Labels::getLabel('LBL_State_Name', $langId);
 
         if($this->isDefaultSheetData($langId)) {
-            $arr[] = Labels::getLabel('LBL_State_Code', $langId);
+            $arr['state_code'] = Labels::getLabel('LBL_State_Code', $langId);
             if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
+                $arr['state_active'] = Labels::getLabel('LBL_Active', $langId);
             }
         }
         return $arr;
@@ -794,26 +851,26 @@ class ImportexportCommon extends FatModel
     {
         $arr = array();
         if($this->settings['CONF_USE_POLICY_POINT_ID']) {
-            $arr[] = Labels::getLabel('LBL_Policy_Point_Id', $langId);
+            $arr['ppoint_id'] = Labels::getLabel('LBL_Policy_Point_Id', $langId);
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Policy_Point_Identifier', $langId);
+                $arr['ppoint_identifier'] = Labels::getLabel('LBL_Policy_Point_Identifier', $langId);
             }
         }else{
-            $arr[] = Labels::getLabel('LBL_Policy_Point_Identifier', $langId);
+            $arr['ppoint_identifier'] = Labels::getLabel('LBL_Policy_Point_Identifier', $langId);
         }
-        $arr[] = Labels::getLabel('LBL_Policy_Point_Title', $langId);
+        $arr['ppoint_title'] = Labels::getLabel('LBL_Policy_Point_Title', $langId);
 
         if($this->isDefaultSheetData($langId)) {
             if($this->settings['CONF_USE_POLICY_POINT_TYPE_ID']) {
-                $arr[] = Labels::getLabel('LBL_Policy_Point_Type_Id', $langId);
+                $arr['ppoint_type'] = Labels::getLabel('LBL_Policy_Point_Type_Id', $langId);
             }else{
-                $arr[] = Labels::getLabel('LBL_Policy_Point_Type_Identifier', $langId);
+                $arr['ppoint_type_identifier'] = Labels::getLabel('LBL_Policy_Point_Type_Identifier', $langId);
             }
 
             if(!$userId) {
-                $arr[] = Labels::getLabel('LBL_Display_order', $langId);
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
-                $arr[] = Labels::getLabel('LBL_Deleted', $langId);
+                $arr['ppoint_display_order'] = Labels::getLabel('LBL_Display_order', $langId);
+                $arr['ppoint_active'] = Labels::getLabel('LBL_Active', $langId);
+                $arr['ppoint_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             }
         }
         return $arr;
@@ -822,28 +879,28 @@ class ImportexportCommon extends FatModel
     public function getUsersColoumArr($langId)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_User_id', $langId);
-        $arr[] = Labels::getLabel('LBL_Name', $langId);
-        $arr[] = Labels::getLabel('LBL_Username', $langId);
-        $arr[] = Labels::getLabel('LBL_phone', $langId);
-        $arr[] = Labels::getLabel('LBL_Is_buyer', $langId);
-        $arr[] = Labels::getLabel('LBL_Is_supplier', $langId);
-        $arr[] = Labels::getLabel('LBL_Is_Advertiser', $langId);
-        $arr[] = Labels::getLabel('LBL_Is_Affiliate', $langId);
+        $arr['user_id'] = Labels::getLabel('LBL_User_id', $langId);
+        $arr['user_name'] = Labels::getLabel('LBL_Name', $langId);
+        $arr['credential_username'] = Labels::getLabel('LBL_Username', $langId);
+        $arr['user_phone'] = Labels::getLabel('LBL_phone', $langId);
+        $arr['user_is_buyer'] = Labels::getLabel('LBL_Is_buyer', $langId);
+        $arr['user_is_supplier'] = Labels::getLabel('LBL_Is_supplier', $langId);
+        $arr['user_is_advertiser'] = Labels::getLabel('LBL_Is_Advertiser', $langId);
+        $arr['user_is_affiliate'] = Labels::getLabel('LBL_Is_Affiliate', $langId);
         return $arr;
     }
 
     public function getSalesTaxColumArr($langId, $userId = 0)
     {
         $arr = array();
-        $arr[] = Labels::getLabel('LBL_Tax_Category_Id', $langId);
-        $arr[] = Labels::getLabel('LBL_Tax_Category_Identifier', $langId);
-        $arr[] = Labels::getLabel('LBL_Tax_Category_Name', $langId);
+        $arr['taxcat_id'] = Labels::getLabel('LBL_Tax_Category_Id', $langId);
+        $arr['taxcat_identifier'] = Labels::getLabel('LBL_Tax_Category_Identifier', $langId);
+        $arr['taxcat_name'] = Labels::getLabel('LBL_Tax_Category_Name', $langId);
         if(!$userId) {
             if($this->isDefaultSheetData($langId)) {
-                $arr[] = Labels::getLabel('LBL_Last_Updated', $langId);
-                $arr[] = Labels::getLabel('LBL_Active', $langId);
-                $arr[] = Labels::getLabel('LBL_Deleted', $langId);
+                $arr['taxcat_last_updated'] = Labels::getLabel('LBL_Last_Updated', $langId);
+                $arr['taxcat_active'] = Labels::getLabel('LBL_Active', $langId);
+                $arr['taxcat_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             }
         }
         return $arr;
@@ -1278,15 +1335,17 @@ class ImportexportCommon extends FatModel
         return $row;
     }
 
-    public function getCheckAndSetProductIdByTempId($sellerTempId,$userId)
+    public function getCheckAndSetProductIdByTempId( $sellerTempId, $userId )
     {
         $productId = 0;
         $userTempIdData = $this->getProductIdByTempId($sellerTempId, $userId);
-        if(!empty($userTempIdData) && $userTempIdData['pti_product_temp_id'] == $sellerTempId) {
+
+        if(!empty($userTempIdData) && $userTempIdData['pti_product_temp_id'] == $sellerTempId ) {
             $productId = $userTempIdData['pti_product_id'];
         }else{
-            $row = Product::getAttributesById($sellerTempId, array('product_id','product_seller_id'));
-            if(!empty($row) && $row['product_seller_id'] == $userId) {
+            $row = Product::getAttributesById($sellerTempId, array( 'product_id', 'product_seller_id' ));
+
+            if(!empty($row) && $row['product_seller_id'] == $userId ) {
                 $productId = $row['product_id'];
                 $tempData = array(
                 'pti_product_id' =>$productId,
@@ -1335,5 +1394,17 @@ class ImportexportCommon extends FatModel
             }
         }
         return     $selprodId;
+    }
+
+    public function getProductInventoryColumnArr($langId)
+    {
+        return array(
+        Labels::getLabel("LBL_Seller_Product_Id", $langId),
+        Labels::getLabel("LBL_SKU", $langId),
+        Labels::getLabel("LBL_Product", $langId),
+        Labels::getLabel("LBL_Cost_Price", $langId),
+        Labels::getLabel("LBL_Price", $langId),
+        Labels::getLabel("LBL_Stock/Quantity", $langId)
+        );
     }
 }

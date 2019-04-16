@@ -4073,5 +4073,4 @@ class SellerController extends LoggedUserController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;
     }
-
 }

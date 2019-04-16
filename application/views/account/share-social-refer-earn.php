@@ -1,5 +1,5 @@
-<div class="popup__body">	
-<?php 
+<div class="popup__body">
+<?php
 if($fbLoginUrl !=''){
 	$msg = Labels::getLabel("LBL_Please_authenticate_your_account", $siteLangId);
 	$msg.=' <a href="'.$fbLoginUrl.'">'.Labels::getLabel("LBL_Click_here_to_authenticate", $siteLangId).'</a>';
@@ -15,7 +15,7 @@ if(!empty($friendList)){ ?>
 		'name'=>Labels::getLabel('LBL_Name',$siteLangId),
 		'id'=>Labels::getLabel('LBL_Select',$siteLangId),
 	);
-	$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+	$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 	$th = $tbl->appendElement('thead')->appendElement('tr');
 	foreach ($arr_flds as $val) {
 		$e = $th->appendElement('th', array(), $val);
@@ -25,10 +25,10 @@ if(!empty($friendList)){ ?>
 	foreach($friendList as $list){
 		$sr_no++;
 		$tr = $tbl->appendElement('tr',array('class' =>'' ));
-		
+
 		foreach ($arr_flds as $key=>$val){
 			$td = $tr->appendElement('td');
-			
+
 			switch ($key){
 				case 'sn':
 					$td->appendElement('plaintext', array(), $sr_no, true);
@@ -40,9 +40,9 @@ if(!empty($friendList)){ ?>
 					$td->appendElement('plaintext', array(), $list['name'], true);
 				break;
 			}
-		}		
+		}
 	}
-	echo $tbl->getHtml();	
+	echo $tbl->getHtml();
 }
 ?>
 </div>

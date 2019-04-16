@@ -4,7 +4,7 @@ $arr_flds = array(
 	'image'=>'',
 	'detail'=>''
 );
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders table-responsive'));
 $th = $tbl->appendElement('thead')->appendElement('tr');
 /* foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

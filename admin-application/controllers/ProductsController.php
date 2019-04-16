@@ -52,6 +52,11 @@ class ProductsController extends AdminBaseController
             $cnd->attachCondition('product_identifier', 'like', '%' . $keyword . '%', 'OR');
         }
 
+        $product_seller_id = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, -1);
+        if ( -1 < $product_seller_id ) {
+            $srch->addCondition('product_seller_id', '=', $product_seller_id);
+        }
+
         $active = FatApp::getPostedData('active', FatUtility::VAR_INT, -1);
         if ($active > -1) {
             $srch->addCondition('product_active', '=', $active);
@@ -1074,6 +1079,8 @@ class ProductsController extends AdminBaseController
             $frm->addSelectBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'is_custom_or_catalog', array( -1 =>Labels::getLabel('LBL_All', $this->adminLangId)) + applicationConstants::getCatalogTypeArr($this->adminLangId), -1, array(), '');
         }
 
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'product_seller', '');
+
         /* $frm->addSelectBox(Labels::getLabel('LBL_Attribute_Group',$this->adminLangId), 'product_attrgrp_id', array( -1 =>Labels::getLabel('LBL_Does_not_Matter',$this->adminLangId) ) + array( 0 => 'Not in any Group') + AttributeGroup::getAllNames(), '', array(), ''); */
         $prodCatObj = new ProductCategory();
         $arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId);
@@ -1092,6 +1099,7 @@ class ProductsController extends AdminBaseController
         $frm->addDateField(Labels::getLabel('LBL_Date_To', $this->adminLangId), 'date_to', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'product_id');
+        $frm->addHiddenField('', 'product_seller_id');
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
         $fld_submit->attachField($fld_cancel);
@@ -1263,10 +1271,10 @@ class ProductsController extends AdminBaseController
             if($prodspec_id<1) {
                 $prodSpecObj->assignValues($data_to_be_save);
 
-                if (!$prodSpecObj->save() ) {
+                if ( !$prodSpecObj->save() ) {
                     Message::addErrorMessage(Labels::getLabel($prodSpecObj->getError(), $this->adminLangId));
                     FatUtility::dieWithError(Message::getHtml());
-                };
+                }
                 $prodSpecObj = new ProdSpecification($prodSpecObj->getMainTableRecordId());
             }
 
@@ -1511,5 +1519,20 @@ class ProductsController extends AdminBaseController
         $this->set('lang_id', FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1));
         $this->_template->render(false, false, 'json-success.php');
     }
+
+    public function autoCompleteSellerJson()
+    {
+        $pagesize = 20;
+        $post = FatApp::getPostedData();
+        $sellersObj = Product::getSellers( array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ) );
+        $sellersObj->addOrder('seller');
+        if( '' != $post['keyword'] ){
+            $sellersObj->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
+            $sellersObj->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
+        }
+        $sellersObj->setPageSize($pagesize);
+        $rs = $sellersObj->getResultSet();
+        $sellers = FatApp::getDb()->fetchAll($rs);
+        die(json_encode($sellers));
+    }
 }
-?>

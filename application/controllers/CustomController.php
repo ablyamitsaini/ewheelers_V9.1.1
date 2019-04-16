@@ -145,7 +145,7 @@ class CustomController extends MyAppController
         $json['recordCount'] = $srch->recordCount();
 
 
-        if(isset($srchCondition)) { $srchCondition->remove(); 
+        if(isset($srchCondition)) { $srchCondition->remove();
         }
         $this->set('siteLangId', $this->siteLangId);
         $this->set('list', $records);
@@ -200,7 +200,7 @@ class CustomController extends MyAppController
         $json['recordCount'] = $srch->recordCount();
 
 
-        if(isset($srchCondition)) { $srchCondition->remove(); 
+        if(isset($srchCondition)) { $srchCondition->remove();
         }
 
         $this->set('siteLangId', $this->siteLangId);
@@ -242,7 +242,7 @@ class CustomController extends MyAppController
         $srch->addGroupBy('faqcat_id');
         $srch->addMultipleFields(array('faqcat_name','faqcat_id'));
         $srch->addFld('COUNT(*) AS faq_count');
-        if(isset($srchCondition)) { $srchCondition->remove(); 
+        if(isset($srchCondition)) { $srchCondition->remove();
         }
         $rsCat = $srch->getResultSet();
         $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
@@ -347,7 +347,7 @@ class CustomController extends MyAppController
         $this->_template->render();
     }
 
-    public function getBreadcrumbNodes( $action ) 
+    public function getBreadcrumbNodes( $action )
     {
         $nodes = array();
         $parameters = FatApp::getParameters();
@@ -648,13 +648,13 @@ class CustomController extends MyAppController
 
     private function contactUsForm()
     {
-        $frm = new Form('frmContact'); 
+        $frm = new Form('frmContact');
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '', array('placeholder'=>Labels::getLabel('LBL_Your_Name', $this->siteLangId)));
         $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '', array('placeholder'=>Labels::getLabel('LBL_Your_Email', $this->siteLangId)));
-        
+
         $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('placeholder'=>Labels::getLabel('LBL_Your_Phone', $this->siteLangId)));
         $fld_phn->requirements()->setRegularExpressionToValidate('^[\s()+-]*([0-9][\s()+-]*){5,20}$');
-        
+
         $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '', array('placeholder'=>Labels::getLabel('LBL_Your_Message', $this->siteLangId)))->requirements()->setRequired();
 
         $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
@@ -716,5 +716,11 @@ class CustomController extends MyAppController
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_hours', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
+    }
+
+    public function deleteBulkUploadSubDirs( $hoursBefore = '48')
+    {
+        $obj = new UploadBulkImages();
+        $obj->deleteBulkUploadSubDirs( $hoursBefore );
     }
 }

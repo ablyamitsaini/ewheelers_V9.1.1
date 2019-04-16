@@ -102,8 +102,8 @@ $(document).ready(function() {
                             } else {
                                 importMediaForm(actionType);
                             }
-                            if (typeof ans.redirectUrl !== 'undefined') {
-                                location.href = ans.redirectUrl;
+                            if (typeof ans.CSVfileUrl !== 'undefined') {
+                                location.href = ans.CSVfileUrl;
                             }
                         } else {
                             $('#fileupload_div').html('');
@@ -135,15 +135,52 @@ $(document).ready(function() {
         }
     };
 
-    $(document).on('click', ".group__head-js", function() {
-        if ($(this).parents('.group-js').hasClass('is-active')) {
-            $(this).siblings('.group__body-js').slideUp();
-            $('.group-js').removeClass('is-active');
-        } else {
-            $('.group-js').removeClass('is-active');
-            $(this).parents('.group-js').addClass('is-active');
-            $('.group__body-js').slideUp();
-            $(this).siblings('.group__body-js').slideDown();
-        }
-    });
+    uploadZip = function() {
+      var data = new FormData();
+      $.each($('#bulk_images')[0].files, function(i, file) {
+          $.mbsmessage(langLbl.processing, false, 'alert--process');
+          data.append('bulk_images', file);
+          $.ajax({
+              url: fcom.makeUrl('ImportExport', 'uploadBulkMedia'),
+              type: "POST",
+              data: data,
+              processData: false,
+              contentType: false,
+              success: function(t) {
+                  try {
+                      var ans = $.parseJSON(t);
+                      if (ans.status == 1) {
+                          $(document).trigger('close.facebox');
+                          $(document).trigger('close.mbsmessage');
+                          $.systemMessage(ans.msg, 'alert--success', false);
+                          document.uploadBulkImages.reset();
+                          $("#uploadFileName").text('');
+                      } else {
+                          $(document).trigger('close.mbsmessage');
+                          $.systemMessage(ans.msg, 'alert--danger');
+                      }
+                  } catch (exc) {
+                      $(document).trigger('close.mbsmessage');
+                      $.systemMessage(exc.message, 'alert--danger');
+                  }
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  alert("Error Occured.");
+              }
+          });
+      });
+  };
+
 })();
+
+$(document).on('click', ".group__head-js", function() {
+    if ($(this).parents('.group-js').hasClass('is-active')) {
+        $(this).siblings('.group__body-js').slideUp();
+        $('.group-js').removeClass('is-active');
+    } else {
+        $('.group-js').removeClass('is-active');
+        $(this).parents('.group-js').addClass('is-active');
+        $('.group__body-js').slideUp();
+        $(this).siblings('.group__body-js').slideDown();
+    }
+});

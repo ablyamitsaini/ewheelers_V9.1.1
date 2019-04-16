@@ -35,6 +35,71 @@ class Option extends MyAppModel
         return $srch;
     }
 
+    public static function requiredOptionFields()
+    {
+        return array(
+        ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+        'option_id',
+        ),
+        ImportexportCommon::VALIDATE_NOT_NULL => array(
+        'option_identifier',
+        'option_name',
+        'option_seller_id',
+        'credential_username',
+        ),
+        ImportexportCommon::VALIDATE_INT => array(
+        'option_seller_id',
+        ),
+        );
+    }
+
+    public static function validateOptionFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    {
+        $requiredFields = static::requiredOptionFields();
+        return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
+    }
+
+    public static function requiredOptionValFields()
+    {
+        return array(
+        ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+        'optionvalue_id',
+        'optionvalue_option_id',
+        ),
+        ImportexportCommon::VALIDATE_NOT_NULL => array(
+        'optionvalue_identifier',
+        'option_identifier',
+        'optionvalue_name',
+        ),
+        );
+    }
+
+    public static function validateOptionValFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    {
+        $requiredFields = static::requiredOptionValFields();
+        return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
+    }
+
+    public static function requiredProdOptionFields()
+    {
+        return array(
+        ImportexportCommon::VALIDATE_POSITIVE_INT => array(
+        'product_id',
+        'option_id',
+        ),
+        ImportexportCommon::VALIDATE_NOT_NULL => array(
+        'product_identifier',
+        'option_identifier',
+        ),
+        );
+    }
+
+    public static function validateProdOptionFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    {
+        $requiredFields = static::requiredProdOptionFields();
+        return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
+    }
+
     public static function getOptionTypes( $langId )
     {
         $langId = FatUtility::int($langId);
@@ -121,8 +186,8 @@ class Option extends MyAppModel
     public function isLinkedWithProduct($id)
     {
         $srch = Product::getSearchObject();
-		$srch->joinTable( Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', Product::DB_TBL_PREFIX.'id = '.Product::DB_PRODUCT_TO_OPTION_PREFIX.'product_id');
-        $srch->joinTable( static::DB_TBL, 'INNER JOIN', static::DB_TBL_PREFIX.'id = '.Product::DB_PRODUCT_TO_OPTION_PREFIX.'option_id');
+        $srch->joinTable(Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', Product::DB_TBL_PREFIX.'id = '.Product::DB_PRODUCT_TO_OPTION_PREFIX.'product_id');
+        $srch->joinTable(static::DB_TBL, 'INNER JOIN', static::DB_TBL_PREFIX.'id = '.Product::DB_PRODUCT_TO_OPTION_PREFIX.'option_id');
         $srch->addCondition(static::DB_TBL_PREFIX.'id', '=', $id);
         $srch->addFld('product_id');
         $rs = $srch->getResultSet();

@@ -3,6 +3,13 @@ $(document).ready(function () {
 	setTimeout(function () {
 		$('body').addClass('loaded');
 	}, 1000);
+
+	if($(window).width()>1050){
+		$('.scrollbar').enscroll({
+			verticalTrackClass: 'scroll__track',
+			verticalHandleClass: 'scroll__handle'
+		});
+	}
 });
 /* ] */
 function initialize() {
@@ -205,7 +212,7 @@ function submitSiteSearch(frm){
 		//url_arr.push('category');
 		url_arr.push('category-'+$(frm).find('input[name="category"]').val());
 	}
-    
+
 	/* url_arr = []; */
 
 	if(themeActive == true ){
@@ -538,10 +545,15 @@ function defaultSetUpLogin(frm, v) {
 			$('#facebox .content').addClass('fbminwidth');
 	});
 
-	$.systemMessage = function(data, cls){
+	$.systemMessage = function(data, cls, autoClose){
+		if(typeof autoClose == 'undefined' || autoClose == 'undefined'){
+			autoClose = false;
+		}else{
+			autoClose = true;
+		}
 		initialize();
 		$.systemMessage.loading();
-		$.systemMessage.fillSysMessage(data, cls);
+		$.systemMessage.fillSysMessage(data, cls, autoClose);
 	};
 
 	$.extend($.systemMessage, {
@@ -551,7 +563,7 @@ function defaultSetUpLogin(frm, v) {
 		loading: function(){
 			$('.system_message').show();
 		},
-		fillSysMessage:function(data, cls){
+		fillSysMessage:function(data, cls, autoClose){
 			if(cls){
 				$('.system_message').removeClass('alert--process');
 				$('.system_message').removeClass('alert--danger');
@@ -562,7 +574,7 @@ function defaultSetUpLogin(frm, v) {
 			$('.system_message .content').html(data);
 			$('.system_message').fadeIn();
 
-			if( CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
+			if( !autoClose && CONF_AUTO_CLOSE_SYSTEM_MESSAGES == 1 ){
 				var time = CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES * 1000;
 				setTimeout(function(){
 					$.systemMessage.close();
@@ -692,18 +704,43 @@ $(document).ready(function(){
 			});
 	});
 
-	$(document).on("click",'.increase-js',function(){
-		var val = $(this).parent('div').find('input').val();
-		val = parseInt(val)+1;
-		$(this).parent('div').find('input').val(val);
-	});
 
-	$(document).on("click",'.decrease-js',function(){
-		var val = $(this).parent('div').find('input').val();
-		val = parseInt(val)-1;
-		if( val <= 1 ){val = 1;}
-		$(this).parent('div').find('input').val(val);
-	});
+    $(document).on("click", '.increase-js', function() {
+       $(this).siblings('.not-allowed').removeClass('not-allowed');
+       var val = $(this).parent('div').find('input').val();
+       val = parseInt(val) + 1;
+       if (val > $(this).parent().data('stock')) {
+           val = $(this).parent().data('stock');
+           $(this).addClass('not-allowed');
+       }
+       $(this).parent('div').find('input').val(val);
+   });
+
+    $(document).on("change", '.productQty-js', function() {
+       if ($(this).val() > $(this).parent().data('stock')) {
+           val = $(this).parent().data('stock');
+           $(this).siblings('.increase-js').addClass('not-allowed');
+           $(this).siblings('.decrease-js').removeClass('not-allowed');
+       } else if ($(this).val() <= 0) {
+           val = 1;
+           $(this).siblings('.decrease-js').addClass('not-allowed');
+           $(this).siblings('.increase-js').removeClass('not-allowed');
+       } else {
+           val = $(this).val();
+       }
+       $(this).val(val);
+    });
+
+   $(document).on("click", '.decrease-js', function() {
+        $(this).siblings('.not-allowed').removeClass('not-allowed');
+        var val = $(this).parent('div').find('input').val();
+        val = parseInt(val) - 1;
+        if (val <= 1) {
+            val = 1;
+            $(this).addClass('not-allowed');
+        }
+        $(this).parent('div').find('input').val(val);
+    });
 
 	$(document).on("click",'.setactive-js li',function(){
 		$(this).closest('.setactive-js').find('li').removeClass('is-active');

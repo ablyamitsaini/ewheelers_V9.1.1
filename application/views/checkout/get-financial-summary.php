@@ -83,11 +83,3 @@
 	</table>
 </div>
 <div class="gap"></div>
-<script>
-if($(window).width()>1050){
-	$('.scrollbar').enscroll({
-		verticalTrackClass: 'scroll__track',
-		verticalHandleClass: 'scroll__handle'
-	});
-}
-</script>

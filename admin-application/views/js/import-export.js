@@ -78,12 +78,12 @@
                     try {
                         var ans = $.parseJSON(t);
                         if (ans.status == 1) {
-                            //reloadList();
+                            reloadList();
                             $(document).trigger('close.facebox');
                             $(document).trigger('close.mbsmessage');
                             fcom.displaySuccessMessage(ans.msg);
-                            if (typeof ans.redirectUrl !== 'undefined') {
-                                location.href = ans.redirectUrl;
+                            if (typeof ans.CSVfileUrl !== 'undefined') {
+                                location.href = ans.CSVfileUrl;
                             } else {
                                 setTimeout(function() {
                                     location.reload();

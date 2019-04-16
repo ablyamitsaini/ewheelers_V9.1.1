@@ -10,7 +10,7 @@ $arr_flds = array(
 $arr_flds['product_active'] = Labels::getLabel('LBL_Status', $siteLangId);
 $arr_flds['action'] = Labels::getLabel('LBL_Action', $siteLangId);
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr');
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

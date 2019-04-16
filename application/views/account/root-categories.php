@@ -25,11 +25,3 @@
 		<div class="box-border box-categories scrollbar" id="child-category-js-3"></div>
 	</div>
 </div>
-<script>
-if($(window).width()>1050){
-	$('.scrollbar').enscroll({
-		verticalTrackClass: 'scroll__track',
-		verticalHandleClass: 'scroll__handle'
-	});
-}
-</script>

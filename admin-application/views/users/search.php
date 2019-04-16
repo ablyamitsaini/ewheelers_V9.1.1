@@ -5,9 +5,9 @@ $arr_flds = array(
 	'user'=>Labels::getLabel('LBL_User',$adminLangId),
 	'shop_name'=>Labels::getLabel('LBL_Shop',$adminLangId),
 	'type'	=> Labels::getLabel('LBL_User_Type',$adminLangId),
-	'user_regdate'=>Labels::getLabel('LBL_Reg._Date',$adminLangId),		
+	'user_regdate'=>Labels::getLabel('LBL_Reg._Date',$adminLangId),
 	'credential_active'=>Labels::getLabel('LBL_Status',$adminLangId),
-	'credential_verified'=>Labels::getLabel('LBL_verified',$adminLangId),	
+	'credential_verified'=>Labels::getLabel('LBL_verified',$adminLangId),
 	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
@@ -18,10 +18,10 @@ foreach ($arr_flds as $val) {
 
 $sr_no = $page==1 ? 0: $pageSize*($page-1);
 foreach ($arr_listing as $sn=>$row){
-	
+
 	$sr_no++;
 	$tr = $tbl->appendElement('tr', array( ) );
-	
+
 	foreach ( $arr_flds as $key => $val ){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -57,7 +57,7 @@ foreach ($arr_listing as $sn=>$row){
 				  <span class="switch-handles"></span>
 				</label>';
 				$td->appendElement('plaintext', array(), $str,true);
-			break;	
+			break;
 			case 'user_regdate':
 				$td->appendElement('plaintext',array(),FatDate::format($row[$key],true,true,
 				FatApp::getConfig('CONF_TIMEZONE', FatUtility::VAR_STRING, date_default_timezone_get())));
@@ -77,48 +77,48 @@ foreach ($arr_listing as $sn=>$row){
 				if( $row['user_is_affiliate'] ){
 					$str .= $arr[User::USER_TYPE_AFFILIATE].'<br/>';
 				}
-				
+
 				if( $str == '' && $row['user_registered_initially_for'] != 0 ){
 					$str = '<span class="label label-danger">Signing Up For: '. User::getUserTypesArr($adminLangId)[$row['user_registered_initially_for']] .'</span>';
 				}
-				
+
 				$td->appendElement('plaintext', array(), $str  ,true);
-				
+
 			break;
-			case 'credential_verified':				
+			case 'credential_verified':
 				$yesNoArr = applicationConstants::getYesNoArr($adminLangId);
 				$str = isset($row[$key])?$yesNoArr[$row[$key]]:'';
 				$td->appendElement('plaintext',array(),$str, true);
-			break;				 
+			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
-				if($canEdit){		
-					$li = $ul->appendElement("li",array('class'=>'droplink'));						
+				if($canEdit){
+					$li = $ul->appendElement("li",array('class'=>'droplink'));
     			    $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId)),'<i class="ion-android-more-horizontal icon"></i>', true);
-					$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));	
+					$innerDiv=$li->appendElement('div',array('class'=>'dropwrap'));
 					$innerUl=$innerDiv->appendElement('ul',array('class'=>'linksvertical'));
-              		
+
 					$innerLi=$innerUl->appendElement('li');
-					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addUserForm(".$row['user_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);					
-					
+					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addUserForm(".$row['user_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
+
 					$innerLi=$innerUl->appendElement('li');
 					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Rewards',$adminLangId),"onclick"=>"rewards(".$row['user_id'].")"),Labels::getLabel('LBL_Rewards',$adminLangId), true);
 
 					$innerLi=$innerUl->appendElement("li");
-					$innerLi->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 
-					'title'=>Labels::getLabel('LBL_Transactions',$adminLangId),"onclick"=>"transactions(".$row['user_id'].")"),Labels::getLabel('LBL_Transactions',$adminLangId), true);					
-					
+					$innerLi->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green',
+					'title'=>Labels::getLabel('LBL_Transactions',$adminLangId),"onclick"=>"transactions(".$row['user_id'].")"),Labels::getLabel('LBL_Transactions',$adminLangId), true);
+
 					$innerLi=$innerUl->appendElement('li');
 					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Change_Password',$adminLangId),"onclick"=>"changePasswordForm(".$row['user_id'].")"),Labels::getLabel('LBL_Change_Password',$adminLangId), true);
-					
+
 					$innerLi=$innerUl->appendElement('li');
-					$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('Users','login',array($row['user_id'])),'target'=>'_blank','class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_Log_into_store',$adminLangId)),Labels::getLabel('LBL_Log_into_store',$adminLangId), true);					
-					
+					$innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('Users','login',array($row['user_id'])),'target'=>'_blank','class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_Login_to_user_profile',$adminLangId)),Labels::getLabel('LBL_Login_to_user_profile',$adminLangId), true);					
+
 					$innerLi=$innerUl->appendElement('li');
 					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Email_User',$adminLangId),"onclick"=>"sendMailForm(".$row['user_id'].")"),Labels::getLabel('LBL_Email_User',$adminLangId), true);
 
 					$innerLi=$innerUl->appendElement('li');
-					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_User',$adminLangId),"onclick"=>"deleteUser(".$row['user_id'].")"),Labels::getLabel('LBL_Delete_User',$adminLangId), true);	
+					$innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_User',$adminLangId),"onclick"=>"deleteUser(".$row['user_id'].")"),Labels::getLabel('LBL_Delete_User',$adminLangId), true);
 				}
 			break;
 			default:

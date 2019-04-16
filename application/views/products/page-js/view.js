@@ -132,7 +132,7 @@ $("document").ready(function(){
 		$('html, body').animate({scrollTop: $("#itemRatings").offset().top - 130 }, 'slow');
 		fcom.scrollToTop( $("#itemRatings") );
 	});
-	
+
 	bannerAdds();
 	reviews(document.frmReviewSearch);
 });
@@ -207,6 +207,7 @@ function setupReviewAbuse(frm){
 
 		fcom.updateWithAjax(fcom.makeUrl('Reviews','searchForProduct'), data, function(ans){
 			$.mbsmessage.close();
+
 			if( ans.totalRecords ){
 				$('#reviews-pagination-strip--js').show();
 			}
