@@ -10,7 +10,7 @@ $arr_flds = array(
 	'total_value'	=>	Labels::getLabel( 'LBL_Total_Value_', $siteLangId ).'<br/>('.Labels::getLabel( 'LBL_Stock_Available', $siteLangId ).' * '.Labels::getLabel( 'LBL_Unit_Price', $siteLangId).')'
 );
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ( $arr_flds as $val ) {
 	$e = $th->appendElement('th', array(), $val, true);

@@ -4,7 +4,7 @@ $arr_flds = array(
 	'wishlist_user_counts'	=>	Labels::getLabel('LBL_User_Counts', $siteLangId)
 );
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -14,7 +14,7 @@ $sr_no = 0;
 foreach ($arrListing as $sn => $listing){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -23,21 +23,21 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['selprod_title'] != '' ){
 					$name .= "<br/><strong>".Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['selprod_title'];
 				}
-				
+
 				/* if( $listing['op_selprod_options'] != '' ){
 					$name .= "<br/><strong>".Labels::getLabel('LBL_Options', $siteLangId).": </strong>".$listing['op_selprod_options'];
 				} */
-				
+
 				if( $listing['brand_name'] != '' ){
 					$name .= "<br/><strong>".Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['brand_name'];
 				}
 				$td->appendElement('plaintext', array(), $name,true);
 			break;
-			
+
 			case 'wishlist_user_counts':
 				$td->appendElement('plaintext', array(), $listing['wishlist_user_counts'],true);
 			break;
-			
+
 			default:
 				$td->appendElement('plaintext', array(), $listing[$key],true);
 			break;

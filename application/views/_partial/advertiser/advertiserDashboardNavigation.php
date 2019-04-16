@@ -46,6 +46,7 @@ $action = strtolower($action);
 		</nav>
 	</div>
 <script>
+
 var Dashboard = function () {
 
 	var menuChangeActive = function menuChangeActive(el) {

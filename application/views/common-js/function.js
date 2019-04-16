@@ -47,7 +47,7 @@ $(document).ready(function () {
 	$(".tabs--flat-js li:first").addClass("is-active").show();
 	$(".tabs-content-js:first").show();
 	$(".tabs--flat-js li").click(function () {
-		$(".tabs--flat-js li").removeClass("is-active");
+		$(this).parent().find("li").removeClass("is-active");
 		$(this).addClass("is-active");
 		$(".tabs-content-js").hide();
 		var activeTab = $(this).find("a").attr("href");

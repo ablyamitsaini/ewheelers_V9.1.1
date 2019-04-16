@@ -6,7 +6,7 @@ $arr_flds = array(
 	'prodgroup_active' => Labels::getLabel('LBL_Status', $siteLangId),
 	'action' => Labels::getLabel('LBL_Action', $siteLangId)
 );
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => 'hide--mobile'));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -31,14 +31,14 @@ foreach ($arrListing as $sn => $row){
 			break;
 			case 'action':
 				$ul = new HtmlElement( 'ul', array('class'=>'actions'), ' ', true );
-				
+
 				$li = $ul->appendElement( 'li', array(), '');
 				$li->appendElement( 'a', array('href'=>'javascript:void(0)', 'title' => Labels::getLabel('LBL_Edit', $siteLangId), 'onClick' => 'batchForm(' .$row['prodgroup_id']. ')' ), '<i class="fa fa-edit"></i>', true );
-				
+
 				$li = $ul->appendElement('li', array(), '');
 				$li->appendElement( 'a', array('href' => 'javascript:void(0)', 'title' => Labels::getLabel('LBL_Products', $siteLangId), 'onClick' => 'batchProductsForm(' . $row['prodgroup_id'] . ')' ), '<i class="fa fa-external-link"></i>', true );
 				$td->appendElement('plaintext', array(), $ul->getHtml(), true);
-				
+
 			break;
 			default:
 				$td->appendElement('plaintext', array(), $row[$key],true);

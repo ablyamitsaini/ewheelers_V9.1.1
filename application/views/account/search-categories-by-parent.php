@@ -16,7 +16,7 @@
 	</div>
 	<div class="slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12">
 		<div class="box-border box-categories scrollbar ">
-			
+
 		</div>
 	</div>
 	<div class="slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12">
@@ -26,11 +26,3 @@
 		<div class="box-border box-categories scrollbar"></div>
 	</div>
 </div>
-<script>
-if($(window).width()>1050){
-	$('.scrollbar').enscroll({
-		verticalTrackClass: 'scroll__track',
-		verticalHandleClass: 'scroll__handle'
-	});
-}
-</script>
