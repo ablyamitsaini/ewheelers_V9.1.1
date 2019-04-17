@@ -2,7 +2,7 @@
 <div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> <span><span>[<?php echo count($products); ?> <?php echo Labels::getLabel('LBL_Items', $siteLangId); ?>]</span></span> </div>
 <div class="gap"></div>
-<div class="scrollbar">
+<div class="scrollbar-js scrollbar-ui">
 <ul class="summary-order-list">
   <?php foreach($products as $product){ ?>
   <li>
