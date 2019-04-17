@@ -67,6 +67,12 @@ class AttachedFile extends MyAppModel
         $this->objMainTableRecord->setSensitiveFields(array ());
     }
 
+    public static function getSearchObject() {
+		$srch = new SearchBase(static::DB_TBL, 'ta');
+		return $srch;
+	}
+
+
     public static function getFileTypeArray($langId)
     {
         return $arr = array(
