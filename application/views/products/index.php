@@ -6,11 +6,11 @@
 ?>
 
 <div id="body" class="body" role="main">
-	<section class="section section--fill">
+	<section class="section section--pagebar">
 		<div class="container">
-			<div class="section-head section--white--head section--head--center">
+			<div class="section-head justify-content-center mb-0">
 				<div class="section__heading">
-					<h2> <?php echo Labels::getLabel('LBL_All_Products', $siteLangId); ?>
+					<h2 class="mb-0"> <?php echo Labels::getLabel('LBL_All_Products', $siteLangId); ?>
 					<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
 					</h2>
 				</div>
@@ -57,7 +57,7 @@
 					$class= 'col-lg-12';
 				}
 				?>
-				
+
 				<div class="<?php echo $class;?>">
 					<div class="listing-products -listing-products listing-products--grid ">
 						<div id="productsList" role="main-listing" class="row product-listing"></div>
