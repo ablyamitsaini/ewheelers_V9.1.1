@@ -9,11 +9,31 @@
 ?>
 
 <div id="body" class="body" role="main">
-	<section class="section section--fill">
+	<?php if( (!empty($categoryData['catBanner']) ||  !empty($categoryData['prodcat_description'])) && !isset($noProductFound) ){
+	if( !empty($categoryData['catBanner']) && (!isset($noProductFound)) ){
+		$catBanner = CommonHelper::generateUrl('Category','Banner', array($categoryData['prodcat_id'], $siteLangId, 'wide'));
+	} ?>
+	<section class="section bg-brands" style="background-image: url(<?php echo $catBanner; ?>)">
 		<div class="container">
-			<div class="section-head section--white--head section--head--center">
+			<div class="row justify-content-center">
+				<div class="col-lg-9">
+					<div class="text-center">
+						<?php if( !empty($categoryData['prodcat_description'] && (!isset($noProductFound))) ){ ?>
+						<h4 class="txt-white">
+						<?php  echo FatUtility::decodeHtmlEntities($categoryData['prodcat_description']); ?>
+						</h4>
+						<?php }	?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<?php  } ?>
+	<section class="section section--pagebar">
+		<div class="container">
+			<div class="section-head justify-content-center mb-0">
 				<div class="section__heading">
-					<h2> <?php echo $categoryData['prodcat_name']; ?>
+					<h2 class="mb-0"> <?php echo $categoryData['prodcat_name']; ?>
 					<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
 					</h2>
 				</div>
@@ -61,16 +81,6 @@
 					}
 					?>
 					<div class="<?php echo $class;?>">
-						<?php
-						if( !empty($categoryData['catBanner']) && (!isset($noProductFound)) ){ ?>
-						<a href="<?php echo CommonHelper::generateUrl('Category','view', array($categoryData['prodcat_id'])); ?>" title="<?php echo $categoryData['prodcat_name']; ?>" class="advertise__block advertise__block--main"><img data-ratio="16:9 (1000x563)" src="<?php echo CommonHelper::generateUrl('Category','Banner', array($categoryData['prodcat_id'], $siteLangId, 'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_category_Banner', $siteLangId); ?>"></a>
-						<?php }
-
-						if( !empty($categoryData['prodcat_description'] && (!isset($noProductFound))) ){ ?>
-						<div class="category__description container--cms">
-						<?php  echo FatUtility::decodeHtmlEntities($categoryData['prodcat_description']); ?>
-						</div>
-						<?php }	?>
 						<div class="listing-products -listing-products listing-products--grid ">
 							<div id="productsList" role="main-listing" class="row product-listing"></div>
 						</div>
