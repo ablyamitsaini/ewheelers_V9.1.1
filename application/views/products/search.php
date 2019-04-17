@@ -8,16 +8,16 @@
 ?>
 <div id="body" class="body" role="main">
 	<?php if(!isset($noProductFound)) { ?>
-	<section class="section section--fill">
-		<div class="container">
-			<div class="section-head section--white--head section--head--center">
-				<div class="section__heading">
-					<h2> <?php echo Labels::getLabel('LBL_All_PRODUCTS', $siteLangId); ?>
-					<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
-					</h2>
+	<section class="section section--pagebar">
+			<div class="container">
+				<div class="section-head justify-content-center mb-0">
+					<div class="section__heading">
+						<h2 class="mb-0"> <?php echo Labels::getLabel('LBL_All_PRODUCTS', $siteLangId); ?>
+						<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ></span>-<span id="end_record"></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"></span></span>
+						</h2>
+					</div>
 				</div>
 			</div>
-		</div>
 	</section>
 	<section class="section">
 		<div class="container">
