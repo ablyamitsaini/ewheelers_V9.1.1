@@ -552,6 +552,7 @@ class CommonHelper extends FatUtility{
 	}
 
 	public static function displayMoneyFormat( $val, $numberFormat = true, $showInConfiguredDefaultCurrency = false, $displaySymbol = true,$stringFormat = false){
+		$val = FatUtility::convertToType($val,FatUtility::VAR_FLOAT);
 		$currencyValue = self::getCurrencyValue();
 		$currencySymbolLeft = self::getCurrencySymbolLeft();
 		$currencySymbolRight = self::getCurrencySymbolRight();

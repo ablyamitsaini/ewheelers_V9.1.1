@@ -14,7 +14,92 @@ class CategoryController extends MyAppController
         $this->_template->render();
     }
 
-    public function view( $category_id )
+    public function view( $categoryId ){
+        $categoryId = FatUtility::int($categoryId);
+
+        ProductCategory::recordCategoryWeightage($categoryId);
+
+        $db = FatApp::getDb();
+        $frm = $this->getProductSearchForm();
+
+        $get = FatApp::getParameters();
+        $get = Product::convertArrToSrchFiltersAssocArr($get);
+        //CommonHelper::printArray($get); exit;
+        $get['category'] = $categoryId;
+        $get['join_price'] = 1;
+        $frm->fill($get);
+
+        $productCategorySearch = new ProductCategorySearch($this->siteLangId);
+        $productCategorySearch->addCondition('prodcat_id', '=', $categoryId);
+
+        /* to show searched category data[ */
+        $productCategorySearch->addMultipleFields(array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code'));
+        $productCategorySearchRs = $productCategorySearch->getResultSet();
+        $category = $db->fetch($productCategorySearchRs);
+
+        if(false == $category ) {
+            FatUtility::exitWithErrorCode(404);
+        }
+
+        $category['banner'] = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $categoryId);
+        /* ] */
+
+        $userId = 0;
+		if( UserAuthentication::isUserLogged() ){
+			$userId = UserAuthentication::getLoggedUserId();
+		}
+
+        $page = 1;
+        if( array_key_exists( 'page', $get ) ){
+            $page = FatUtility::int( $get['page'] );
+            if ( $page < 2 ) {
+                $page = 1;
+            }
+        }
+
+        $pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
+        if( array_key_exists( 'pageSize', $get ) ){
+            $pageSize = FatUtility::int( $get['pageSize'] );
+            if ( 0 >= $pageSize ) {
+                $pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
+            }
+        }
+
+        $srch = Product::getListingObj( $get, $this->siteLangId, $userId );
+        $srch->setPageNumber($page);
+        if($pageSize ) {
+            $srch->setPageSize($pageSize);
+        }
+
+        $rs = $srch->getResultSet();
+        $db = FatApp::getDb();
+        $products = $db->fetchAll($rs);
+
+        $this->set('frmProductSearch', $frm);
+        $this->set('category', $category);
+
+        $this->set('products', $products);
+        $this->set('page', $page);
+        $this->set('pageSize', $pageSize);
+        $this->set('categoryId', $categoryId);
+        $this->set('pageCount', $srch->pages());
+        $this->set('postedData', $get);
+        $this->set('recordCount', $srch->recordCount());
+
+
+        $this->set('pageTitle', $category['prodcat_name']);
+        $this->set('canonicalUrl', CommonHelper::generateFullUrl('Category', 'view', array($categoryId)));
+        $this->set('productSearchPageType',SavedSearchProduct::PAGE_CATEGORY);
+        $this->set('recordId',$categoryId);
+        $this->set('bannerListigUrl',CommonHelper::generateFullUrl('Banner','categories'));
+
+        $this->includeProductPageJsCss();
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        $this->_template->render(true,true,'products/listing-page.php');
+    }
+
+    public function view_old( $category_id )
     {
         $category_id = FatUtility::int($category_id);
         ProductCategory::recordCategoryWeightage($category_id);
@@ -25,11 +110,11 @@ class CategoryController extends MyAppController
 
         $headerFormParamsArr = FatApp::getParameters();
         $headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
-                
+
         $headerFormParamsAssocArr['category'] = $category_id;
         $headerFormParamsAssocArr['join_price'] = 1;
         $frm->fill($headerFormParamsAssocArr);
-        
+
         $catSrch = new ProductCategorySearch($this->siteLangId);
         $catSrch->addCondition('prodcat_id', '=', $category_id);
 
@@ -50,23 +135,23 @@ class CategoryController extends MyAppController
         $prodSrchObj->setDefinedCriteria();
         $prodSrchObj->joinProductToCategory();
         $prodSrchObj->joinSellerSubscription();
-        $prodSrchObj->addSubscriptionValidCondition();        
+        $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->addCategoryCondition($category_id);
-        
+
         $objCat = clone $prodSrchObj;
         $objCat->addMultipleFields(array('prodcat_id'));
-        $objCat->setPageSize(1);        
-        $rs = $objCat->getResultSet();     
+        $objCat->setPageSize(1);
+        $rs = $objCat->getResultSet();
         $totalRecords = FatApp::getDb()->totalRecords($rs);
 
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
-        
+
         $brandsArr = array();
         $conditionsArr  = array();
         $priceArr  = array();
 
-        /* Categories Data[ */         
+        /* Categories Data[ */
         $catSrch = clone $prodSrchObj;
         $catSrch->addGroupBy('c.prodcat_id');
         $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $category_id, false, $catSrch, true);
@@ -102,15 +187,15 @@ class CategoryController extends MyAppController
                 }
             }
         }
-        
+
         usort(
             $options, function ($a, $b) {
-                if ($a['optionvalue_id']==$b['optionvalue_id']) { return 0; 
+                if ($a['optionvalue_id']==$b['optionvalue_id']) { return 0;
                 }
                 return ($a['optionvalue_id']<$b['optionvalue_id'])?-1:1;
             }
         );
-        
+
         /* $optionSrch->joinSellerProductOptionsWithSelProdCode();
         $optionSrch->addGroupBy('optionvalue_id'); */
         /*]*/
@@ -130,60 +215,60 @@ class CategoryController extends MyAppController
         /* ] */
 
 
-        /* Price Filters[ */                
-        $priceSrch = clone $prodSrchObj;        
+        /* Price Filters[ */
+        $priceSrch = clone $prodSrchObj;
         $priceSrch->addMultipleFields(array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice'));
         $qry = $priceSrch->getQuery();
         $qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
-        
+
         //$priceRs = $priceSrch->getResultSet();
         $priceRs = $db->query($qry);
         $priceArr = $db->fetch($priceRs);
-        
-        $priceInFilter = false;    
+
+        $priceInFilter = false;
         $filterDefaultMinValue = $priceArr['minPrice'];
         $filterDefaultMaxValue = $priceArr['maxPrice'];
-        
+
         if($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id', $headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )) {
             $filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'], false, false, false);
             $filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'], false, false, false);
             $priceArr['minPrice'] = $filterDefaultMinValue;
             $priceArr['maxPrice'] = $filterDefaultMaxValue;
-        }        
-        
+        }
+
         if(array_key_exists('price-min-range', $headerFormParamsAssocArr) && array_key_exists('price-max-range', $headerFormParamsAssocArr)) {
             $priceArr['minPrice'] = $headerFormParamsAssocArr['price-min-range'];
             $priceArr['maxPrice'] = $headerFormParamsAssocArr['price-max-range'];
             $priceInFilter = true;
         }
-        
+
         if(array_key_exists('currency_id', $headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId) {
             $priceArr['minPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'], $headerFormParamsAssocArr['price-min-range'], $this->siteCurrencyId, false);
             $priceArr['maxPrice'] = CommonHelper::convertExistingToOtherCurrency($headerFormParamsAssocArr['currency_id'], $headerFormParamsAssocArr['price-max-range'], $this->siteCurrencyId, false);
         }
-        
+
         /* ] */
 
         $brandsCheckedArr = array();
         if(array_key_exists('brand', $headerFormParamsAssocArr)) {
             $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
         }
-        
+
         $optionValueCheckedArr = array();
         if(array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
         }
-        
+
         $conditionsCheckedArr = array();
         if(array_key_exists('condition', $headerFormParamsAssocArr)) {
             $conditionsCheckedArr = $headerFormParamsAssocArr['condition'];
         }
-        
+
         $availability = 0;
         if(array_key_exists('availability', $headerFormParamsAssocArr)) {
             $availability = current($headerFormParamsAssocArr['availability']);
         }
-        
+
         $productFiltersArr = array(
         'headerFormParamsAssocArr'=>    $headerFormParamsAssocArr,
         'categoriesArr'            =>    $categoriesArr,
@@ -197,8 +282,8 @@ class CategoryController extends MyAppController
         'priceArr'                =>    $priceArr,
         'options'                =>    $options,
         'siteLangId'            =>    $this->siteLangId,
-        'priceInFilter'              =>    $priceInFilter,         
-        'filterDefaultMinValue'              =>    $filterDefaultMinValue,        
+        'priceInFilter'              =>    $priceInFilter,
+        'filterDefaultMinValue'              =>    $filterDefaultMinValue,
         'filterDefaultMaxValue'              =>    $filterDefaultMaxValue,
         'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
         );
@@ -208,7 +293,7 @@ class CategoryController extends MyAppController
         $this->set('frmProductSearch', $frm);
 
         $this->set('categoryData', $categoryData);
-        
+
         if(empty($totalRecords) ) {
             $this->set('noProductFound', 'noProductFound');
         }
@@ -220,8 +305,8 @@ class CategoryController extends MyAppController
         $this->set('category_id', $category_id);
         $this->set('canonicalUrl', CommonHelper::generateFullUrl('Category', 'view', array($category_id)));
         /* ] */
-        $this->_template->addJs('js/slick.min.js'); 
-        $this->_template->addCss(array('css/slick.css','css/product-detail.css')); 
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
         $this->_template->render();
     }
 
@@ -366,7 +451,7 @@ class CategoryController extends MyAppController
     }
     } */
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
         $nodes = array();
         $parameters = FatApp::getParameters();
