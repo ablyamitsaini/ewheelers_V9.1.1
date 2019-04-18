@@ -86,7 +86,7 @@ function getCardType(number){
     return "";
 }
 
- viewWishList = function( selprod_id, dv,event){
+ viewWishList = function( selprod_id, dv, event ){
 	event.stopPropagation();
 	/*var dv = "#listDisplayDiv_" + selprod_id; */
 
@@ -100,7 +100,6 @@ function getCardType(number){
 		loginPopUpBox();
 		return false;
 	}
-
 
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Account','viewWishList', [selprod_id]), '' ,function(ans){
@@ -161,7 +160,7 @@ setupWishList = function(frm,event){
 	});
 }
 
-addRemoveWishListProduct = function( selprod_id, wish_list_id,event ){
+addRemoveWishListProduct = function( selprod_id, wish_list_id, event ){
 	event.stopPropagation();
 	if( isUserLogged() == 0 ){
 		loginPopUpBox();
@@ -169,8 +168,17 @@ addRemoveWishListProduct = function( selprod_id, wish_list_id,event ){
 	}
 	wish_list_id = ( typeof(wish_list_id) != "undefined" ) ? parseInt(wish_list_id) : 0;
 	var dv = ".collection-ui-popup";
+	var action = 'addRemoveWishListProduct';
+	var alternateData = '';
+	if( 0 >= selprod_id ){
+		var oldWishListId = $("input[name='uwlist_id']").val();
+		if( typeof oldWishListId !== 'undefined' && wish_list_id != oldWishListId ){
+			action = 'updateRemoveWishListProduct';
+			alternateData = $('#wishlistForm').serialize();
+		}
+	}
 
-	fcom.updateWithAjax( fcom.makeUrl('Account', 'addRemoveWishListProduct', [selprod_id, wish_list_id]), '', function(ans){
+	fcom.updateWithAjax( fcom.makeUrl('Account', action, [selprod_id, wish_list_id]), alternateData, function(ans){
 		if( ans.status == 1 ){
 			if( ans.productIsInAnyList){
 				$( "[data-id="+selprod_id+"]").addClass("is-active");
@@ -182,9 +190,25 @@ addRemoveWishListProduct = function( selprod_id, wish_list_id,event ){
 			} else if( ans.action == 'R' ){
 				$(dv).find(".wishListCheckBox_" + ans.wish_list_id ).removeClass('is-active');
 			}
+
+			if( 'updateRemoveWishListProduct' == action ){
+				viewWishListItems(oldWishListId);
+			}
 		}
 	});
-}
+};
+
+removeFromCart = function( key ){
+	var data = 'key=' + key ;
+	fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
+		if( ans.status ){
+			listCartProducts();
+			$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
+		}
+		$.mbsmessage.close();
+		$.systemMessage(langLbl.MovedSuccessfully,'alert--success');
+	});
+};
 
 function submitSiteSearch(frm){
 	//var data = fcom.frmData(frm);

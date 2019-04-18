@@ -207,6 +207,7 @@ class Cart extends FatModel {
 
 			$associatedAffiliateUserId = 0;
 			/* detect current logged user has associated affiliate user[ */
+			$loggedUserId = 0;
 			if( UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()){
 				$loggedUserId = UserAuthentication::getLoggedUserId();
 				$associatedAffiliateUserId = User::getAttributesById( $loggedUserId, 'user_affiliate_referrer_user_id');
@@ -247,7 +248,8 @@ class Cart extends FatModel {
 
 				/* seller products[ */
 				if( $selprod_id > 0 ){
-					$sellerProductRow = $this->getSellerProductData( $selprod_id, $quantity, $siteLangId );
+					$sellerProductRow = $this->getSellerProductData( $selprod_id, $quantity, $siteLangId, $loggedUserId );
+
 					/* echo "<pre>"; var_dump($sellerProductRow); */
 					if( !$sellerProductRow ){
 						$this->removeCartKey( $key );
@@ -355,7 +357,7 @@ class Cart extends FatModel {
 		return $this->products;
 	}
 
-	public function getSellerProductData( $selprod_id, &$quantity, $siteLangId ){
+	public function getSellerProductData( $selprod_id, &$quantity, $siteLangId, $loggedUserId = 0 ){
 		$prodSrch = new ProductSearch( $siteLangId );
 		$prodSrch->setDefinedCriteria();
 		$prodSrch->joinProductToCategory();
@@ -377,6 +379,17 @@ class Cart extends FatModel {
 			$prodSrch->joinBrands();
 			$prodSrch->addFld( array('IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(brand_name, brand_identifier) as brand_name','IFNULL(shop_name, shop_identifier) as shop_name') );
 		}
+
+		if ( 0 < $loggedUserId ) {
+			if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO ){
+				$prodSrch->joinFavouriteProducts( $loggedUserId );
+				$prodSrch->addFld('ufp_id');
+			}else{
+				$prodSrch->joinUserWishListProducts( $loggedUserId );
+				$prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist, IFNULL(uwlp.uwlp_uwlist_id, 0) as uwlp_uwlist_id');
+			}
+		}
+
 		$rs = $prodSrch->getResultSet();
 		$sellerProductRow = FatApp::getDb()->fetch($rs);
 		if( !$sellerProductRow || $sellerProductRow['selprod_stock'] <= 0 ){

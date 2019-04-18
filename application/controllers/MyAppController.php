@@ -2,7 +2,7 @@
 class MyAppController extends FatController
 {
 
-    public function __construct($action) 
+    public function __construct($action)
     {
         parent::__construct($action);
         $this->action = $action;
@@ -105,6 +105,8 @@ class MyAppController extends FatController
         'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available', $this->siteLangId),
         'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list', $this->siteLangId),
         'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list', $this->siteLangId),
+        'MovedSuccessfully' =>Labels::getLabel('LBL_Moved_Successfully', $this->siteLangId),
+        'RemovedSuccessfully' =>Labels::getLabel('LBL_Removed_Successfully', $this->siteLangId),
         'siteCurrencyId' =>$this->siteCurrencyId,
         'controllerName' =>$controllerName,
         'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information', $this->siteLangId),
@@ -156,7 +158,7 @@ class MyAppController extends FatController
         $this->_template->render(false, false, '_partial/states-list.php');
     }
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
         $nodes = array();
         $className = get_class($this);
@@ -233,7 +235,7 @@ class MyAppController extends FatController
         return $frm;
     }
 
-    protected function getLoginForm() 
+    protected function getLoginForm()
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmLogin');
@@ -246,7 +248,7 @@ class MyAppController extends FatController
         return $frm;
     }
 
-    protected function getRegistrationForm( $showNewsLetterCheckBox = true ) 
+    protected function getRegistrationForm( $showNewsLetterCheckBox = true )
     {
         $siteLangId = $this->siteLangId;
 

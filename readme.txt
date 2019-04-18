@@ -6,6 +6,7 @@ Enhancements:
     . Basic updates for design and email template labels.
 	. CMS layout preview in Add/Edit Content Pages popup.
 	. Added filter to refine search listing based on user on products listing page in admin section.
+	. Move product to Wishlist from cart listing.
 
 Fixes :
 	. Optimized page load time.
