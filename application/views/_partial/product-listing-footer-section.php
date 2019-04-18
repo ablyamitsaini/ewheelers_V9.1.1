@@ -2,9 +2,9 @@
 	<?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
 	<?php if(round($product['prod_rating'])>0 ){ ?>
 	<div class="products__rating"> <i class="icn"><svg class="svg">
-		<use xlink:href="images/retina/sprite.svg#star-yellow" href="images/retina/sprite.svg#star-yellow"></use>
+		<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
 		</svg></i> <?php if(round($product['prod_rating'])>0 ){ ?>
-	  <span class="rate"><?php echo round($product['prod_rating'],1);?></span> 
+	  <span class="rate"><?php echo round($product['prod_rating'],1);?></span>
 	  <?php } ?>
 		  <?php if(isset($firstToReview) && $firstToReview){ ?>
 		  <?php if(round($product['prod_rating'])==0 ){  ?>
