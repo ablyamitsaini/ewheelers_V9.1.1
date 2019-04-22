@@ -1,4 +1,17 @@
 $("document").ready(function(){
+
+	$('.xzoom, .xzoom-gallery').bind('click', function(event) {
+        var xzoom = $(this).data('xzoom');
+        xzoom.closezoom();
+        var gallery = xzoom.gallery().cgallery;
+        var i, images = new Array();
+        for (i in gallery) {
+            images[i] = {src: gallery[i]};
+        }
+        $.magnificPopup.open({items: images, type:'image', gallery: {enabled: true}});
+        event.preventDefault();
+    });
+
 	/* Product Main image to be static on scroll par a particular window scroll range[ */
 
 	$(window).scroll(function(){
@@ -132,7 +145,7 @@ $("document").ready(function(){
 		$('html, body').animate({scrollTop: $("#itemRatings").offset().top - 130 }, 'slow');
 		fcom.scrollToTop( $("#itemRatings") );
 	});
-	
+
 	bannerAdds();
 	reviews(document.frmReviewSearch);
 });
