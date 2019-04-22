@@ -14,11 +14,11 @@
   <div class="short-detail">
     <table class="table cart--full js-scrollable scroll-hint">
       <tbody>
-        <?php 
+        <?php
 		if( count($products) ){
 			foreach( $products as $product ){
-				$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)'; 
-				$shopUrl = !$isAppUser?CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) ):'javascript:void(0)';				
+				$productUrl = !$isAppUser?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']) ):'javascript:void(0)';
+				$shopUrl = !$isAppUser?CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']) ):'javascript:void(0)';
 				$imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
 				?>
 <tr class="<?php echo (!$product['in_stock']) ? 'disabled' : ''; echo ($product['is_digital_product'])?'digital_product_tab-js':'physical_product_tab-js'; ?>">
@@ -41,7 +41,7 @@
 			<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { ?>
 			<div class="item-yk-head-specification note-messages">
 				<?php echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);	?>
-			</div>										
+			</div>
 			<?php } ?>
 		</div>
 	</div>
@@ -52,7 +52,7 @@
 	<?php } ?>
 </td>
 <td class="text-right">
-	<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="images/retina/sprite.svg#bin"></use></svg></i></a>
+	<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use></svg></i></a>
 </td>
 
 
@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<!-- <a class="btn btn--primary btn--h-large" onClick="loadPaymentSummary();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a> --> 
+<!-- <a class="btn btn--primary btn--h-large" onClick="loadPaymentSummary();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a> -->
 <script type="text/javascript">
 $("document").ready(function(){
 	<?php if($cartHasPhysicalProduct ){ ?>

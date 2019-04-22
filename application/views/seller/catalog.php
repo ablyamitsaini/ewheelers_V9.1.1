@@ -64,18 +64,18 @@
 
            $keywordFld = $frmSearchCatalogProduct->getField('keyword');
            $keywordFld->setFieldTagAttribute('id','tour-step-3');
-           $keywordFld->setWrapperAttribute('class','col-lg-6');
-           $keywordFld->developerTags['col'] = 6;
+           $keywordFld->setWrapperAttribute('class','col-lg-4');
+           $keywordFld->developerTags['col'] = 4;
 
            if( FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT') ){
              $dateFromFld = $frmSearchCatalogProduct->getField('type');
              $dateFromFld->setFieldTagAttribute('class','');
-             $dateFromFld->setWrapperAttribute('class','col-lg-6');
-             $dateFromFld->developerTags['col'] = 6;
+             $dateFromFld->setWrapperAttribute('class','col-lg-4');
+             $dateFromFld->developerTags['col'] = 4;
            }
            $typeFld = $frmSearchCatalogProduct->getField('product_type');
-           $typeFld->setWrapperAttribute('class','col-lg-6');
-           $typeFld->developerTags['col'] = 6;
+           $typeFld->setWrapperAttribute('class','col-lg-4');
+           $typeFld->developerTags['col'] = 4;
 
            $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
            $submitFld->setFieldTagAttribute('class','btn--block');

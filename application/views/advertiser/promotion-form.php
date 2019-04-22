@@ -2,7 +2,7 @@
 $frm->setFormTagAttribute('class', 'form form--horizontal');
 $frm->setFormTagAttribute('onsubmit', 'setupPromotion(this); return(false);');
 
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 /* if($promotionId)
 {
@@ -50,7 +50,7 @@ $urlFld = $frm->getField('banner_url');
 $urlFld->setWrapperAttribute( 'class' , 'banner_url_fld');
 $urlFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_to_promote_through_banner.',$siteLangId);
 
-/* $bannerTargetUrlFld = $frm->getField('banner_target');
+/* $bannerTargetUrlFld = $frm->getField('banner_target');Request Products Which Is Availble To All Sellers
 $bannerTargetUrlFld->setWrapperAttribute( 'class' , 'banner_url_fld'); */
 
 
@@ -73,7 +73,7 @@ $bannerTargetUrlFld->setWrapperAttribute( 'class' , 'banner_url_fld'); */
 <div class="tabs__content">
 	<div class="form__content">
         <div class="row">
-			<div class="col-md-8">
+			<div class="col-md-6">
 			<?php echo $frm->getFormHtml(); ?>
 			</div>
         </div>

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$("#accordian li span.acc-trigger").click(function(){
+	$(document).on('click', '#accordian li span.acc-trigger', function() {
 		var link = $(this);
 		var closest_ul = link.siblings("ul");
 
@@ -9,7 +9,7 @@ $(document).ready(function() {
 		} else {
 			closest_ul.slideDown();
 			link.addClass( "is--active" );
-		} 
+		}
 	});
 	/* $("#accordian a").click(function() {
 		var link = $(this);
@@ -30,14 +30,14 @@ $(document).ready(function() {
 		}
 	}); */
 
-    
-  /* for left filters  */    
+
+  /* for left filters  */
     $('.link__filter').click(function() {
         $(this).toggleClass("active");
         var el = $("body");
         if(el.hasClass('filter__show')) el.removeClass("filter__show");
         else el.addClass('filter__show');
-        return false; 
+        return false;
     });
     $('body').click(function(){
         if($('body').hasClass('filter__show')){
@@ -51,19 +51,19 @@ $(document).ready(function() {
             $('.link__filter').removeClass("active");
             $('body').removeClass('filter__show');
         }
-    }); 
-    
+    });
+
      $('.section__filter').click(function(e){
             e.stopPropagation();
         });
-		
-		
-		
-		
-		 /* for mobile toggle */       
+
+
+
+
+		 /* for mobile toggle */
 		  if($(window).width()<1025){
           $('.filter .widgets-heading').click(function(){
-				
+
 				if($(this).hasClass('active')){
                   $(this).removeClass('active');
 				  $(this).next().slideUp();
@@ -72,8 +72,8 @@ $(document).ready(function() {
 					$(this).addClass('active');
 					$(this).next().slideDown();
 				}
-			
-			  
+
+
 			 /*  if($(this).hasClass('active')){
                   $(this).removeClass('active');
                   $(this).siblings('.toggle-target').slideUp();
@@ -81,18 +81,18 @@ $(document).ready(function() {
               }
               $('.filter .widgets-heading').removeClass('active');
               $(this).addClass("active");
-              
+
                   $('.filter .toggle-target').slideUp();
                   $(this).siblings('.filter .toggle-target').slideDown();
-            
+
               return; */
-			  
+
           });
-		  
-		   } 
-           
-		  
-		
+
+		   }
+
+
+
 		/* for sticky left panel */
 /*     if($(window).width()>1050){
         function sticky_relocate() {

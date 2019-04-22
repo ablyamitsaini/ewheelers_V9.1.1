@@ -9,9 +9,13 @@
 	  <div class="col-md-12">
 		<?php
 			$customProductOptionFrm->setFormTagAttribute('class', 'form form--horizontal');
-			$customProductOptionFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-			$customProductOptionFrm->developerTags['fld_default_col'] = 12;
+			$customProductOptionFrm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
+			$customProductOptionFrm->developerTags['fld_default_col'] = 6;
 			$fld1=$customProductOptionFrm->getField('option_name');
+
+			$fld = $customProductOptionFrm->getField('product_name');
+			$fld->setWrapperAttribute('class','col-lg-12');
+			$fld->developerTags['col'] = 12;
 			/* $fld1->fieldWrapper = array('<div class="row">', '</div>'); */
 			echo $customProductOptionFrm->getFormHtml();
 		?>
