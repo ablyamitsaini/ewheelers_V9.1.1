@@ -14,7 +14,7 @@
 					<div class="ftshops_item_head_right">
 						<?php if( round($row['rating'][$shop['shopData']['shop_id']])>0){?>
 						<div class="products__rating"> <i class="icn"><svg class="svg">
-									<use xlink:href="images/retina/sprite.svg#star-yellow" href="images/retina/sprite.svg#star-yellow"></use>
+									<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
 								</svg></i> <span class="rate"><?php echo  round($row['rating'][$shop['shopData']['shop_id']],1);?><span></span></span>
 						</div>
 						<?php }?>

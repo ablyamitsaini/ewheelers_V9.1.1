@@ -17,7 +17,7 @@ foreach($allShops as $shop){ /* CommonHelper::printArray($shop); die; */ ?>
                 <div class="ftshops_item_head_right">
                     <?php if( round($shop['shopRating'])>0){?>
                     <div class="products__rating"> <i class="icn"><svg class="svg">
-                                <use xlink:href="images/retina/sprite.svg#star-yellow" href="images/retina/sprite.svg#star-yellow"></use>
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                             </svg></i> <span class="rate"><?php echo  round($shop['shopRating'],1);?><span></span></span>
                     </div>
                     <?php }?>

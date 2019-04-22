@@ -19,13 +19,15 @@
 			<h6><?php echo Labels::getLabel('LBL_Please_check_if_you_misspelt_something_or_try_searching_again_with_fewer_keywords.', $siteLangId); ?>
 			</h6><br>
 			<div class="query-form">
-				<?php echo $pSrchFrm->getFormTag(); ?>	
-				<?php echo $pSrchFrm->getFieldHTML('keyword'); ?>			
+				<?php echo $pSrchFrm->getFormTag(); ?>
+				<?php echo $pSrchFrm->getFieldHTML('keyword'); ?>
 				<?php echo $pSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
 				</form>
 				<?php echo $pSrchFrm->getExternalJS(); ?>
 			</div>
-			<?php if (count($top_searched_keywords)>0): /* CommonHelper::printArray($top_searched_keywords); die; */ ?>
+			<?php
+			$top_searched_keywords = SearchItem::getTopSearchedKeywords();
+			if (count($top_searched_keywords)>0): /* CommonHelper::printArray($top_searched_keywords); die; */ ?>
 			<h6><br>
 				<strong><?php echo Labels::getLabel('LBL_OR', $siteLangId)?></strong><br>
 				<br> <?php echo Labels::getLabel('L_Popular_Searches', $siteLangId)?></strong> <br>

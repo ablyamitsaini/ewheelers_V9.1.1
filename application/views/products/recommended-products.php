@@ -23,7 +23,7 @@
 					<?php if(round($rProduct['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
 					<div class="products__rating">
 						<i class="icn"><svg class="svg">
-							<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="images/retina/sprite.svg#star-yellow"></use>
+							<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
 						</svg></i> <span class="rate"><?php echo round($rProduct['prod_rating'],1);?></span>
 						<?php if(round($rProduct['prod_rating'])==0 ){  ?>
 						  <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
