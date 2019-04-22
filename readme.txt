@@ -1,6 +1,7 @@
 New :
 	. New theme Integration.
 	. Upload media in bulk.
+	. Phpmailer Autoload function deprecate.
 
 Enhancements:
     . Basic updates for design and email template labels.
