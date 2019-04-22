@@ -1,7 +1,6 @@
 New :
 	. New theme Integration.
 	. Upload media in bulk.
-	. Phpmailer Autoload function deprecate.
 
 Enhancements:
     . Basic updates for design and email template labels.
@@ -12,3 +11,6 @@ Enhancements:
 	. In back-end linking process, each link will be opened in new tab.
 	. Removed collections primary record field and managed collection from static defined values.
 	. Updated products listing page. Initially products will load and then filters via ajax.
+
+Fixex :
+	. Phpmailer Autoload function deprecated.
