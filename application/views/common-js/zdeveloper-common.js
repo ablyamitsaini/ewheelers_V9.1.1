@@ -2,19 +2,6 @@ $(document).ready(function () {
 	setTimeout(function () {
 		$('body').addClass('loaded');
 	}, 1000);
-
-	if($(window).width()>1050){
-		$('.scrollbar').enscroll({
-			verticalTrackClass: 'scroll__track',
-			verticalHandleClass: 'scroll__handle'
-		});
-	}
-    if($(window).width()>1050){
-		$('.scrollbar-js').enscroll({
-			verticalTrackClass: 'scroll__track',
-			verticalHandleClass: 'scroll__handle'
-		});
-	}
 });
 
 function initialize() {

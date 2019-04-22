@@ -28,3 +28,11 @@
 		$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
 	} ?>
 </div>
+<script>
+if($(window).width()>1050){
+	$('.scrollbar').enscroll({
+		verticalTrackClass: 'scroll__track',
+		verticalHandleClass: 'scroll__handle'
+	});
+}
+</script>

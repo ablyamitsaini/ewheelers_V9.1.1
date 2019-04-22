@@ -14,7 +14,7 @@ $action = strtolower($action);
 		<div class="logo-dashboard"><a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
 		<div class="js-hamburger hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
 	</div>
-	<div class="sidebar__content custom-scrollbar">
+	<div class="sidebar__content custom-scrollbar" data-simplebar>
 		<nav class="dashboard-menu">
 			<ul>
 				<?php if(User::canViewAdvertiserTab()) { ?>

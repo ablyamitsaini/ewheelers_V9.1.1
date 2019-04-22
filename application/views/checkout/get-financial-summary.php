@@ -2,7 +2,7 @@
 <div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> <span><span>[<?php echo count($products); ?> <?php echo Labels::getLabel('LBL_Items', $siteLangId); ?>]</span></span> </div>
 <div class="gap"></div>
-<div class="scrollbar-js scrollbar-ui">
+<div class="scrollbar-order-list" id="simplebar" <?php echo count($products)>2 ? 'data-simplebar' : ''; ?>>
 <ul class="summary-order-list">
   <?php foreach($products as $product){ ?>
   <li>
@@ -83,3 +83,10 @@
 	</table>
 </div>
 <div class="gap"></div>
+<?php if(count($products)>2) { ?>
+<script>
+new SimpleBar(document.getElementById('simplebar'), {
+    autoHide: false
+});
+</script>
+<?php } ?>

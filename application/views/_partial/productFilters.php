@@ -54,7 +54,7 @@ array_walk($catCodeArr,function(&$n) {
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
   <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !isset( $shopCatFilters ) ){ ?>
-  <div id="accordian" class="cat-accordion toggle-target scrollbar">
+  <div id="accordian" class="cat-accordion toggle-target scrollbar-filters" data-simplebar>
 	<ul class="">
 		<?php foreach( $categoriesArr as $cat ){
 			$catUrl = CommonHelper::generateUrl('category','view', array($cat['prodcat_id'])); ?>
@@ -104,7 +104,7 @@ array_walk($catCodeArr,function(&$n) {
 	<!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_more', $siteLangId); ?> </a> -->
    </div>
   <?php }else{ //Work in Progress  ?>
-	  <div class="brands-list toggle-target scrollbar">
+	  <div class="brands-list toggle-target scrollbar-filters" data-simplebar>
 	<ul>
 		<?php
 		$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
@@ -173,7 +173,7 @@ array_walk($catCodeArr,function(&$n) {
 	 $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array();
 	?>
 	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
-	<div class="scrollbar">
+	<div class="scrollbar-filters" data-simplebar>
 	<ul class="list-vertical">
 		<?php foreach($brandsArr as $brand){ ?>
 		<li><label class="checkbox brand" id="brand_<?php echo $brand['brand_id']; ?>"><input name="brands" value="<?php echo $brand['brand_id']; ?>" type="checkbox" <?php if(in_array($brand['brand_id'],$brandsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo $brand['brand_name']; ?> </label></li>
@@ -206,7 +206,7 @@ array_walk($catCodeArr,function(&$n) {
 				}
 				$optionName = ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier'];?>
 				<div class="widgets__heading"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
-				<div class="scrollbar">
+				<div class="scrollbar-filters" data-simplebar>
 				<ul class="list-vertical"><?php
 			}
 			$optionValueId = $optionRow['option_id'].'_'.$optionRow['optionvalue_id'];
@@ -226,7 +226,7 @@ array_walk($catCodeArr,function(&$n) {
 	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
 	?>
 	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
-	<div class="scrollbar">
+	<div class="scrollbar-filters" data-simplebar>
 		<ul class="list-vertical">
 		<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
 		<li><label class="checkbox condition" id="condition_<?php echo $condition['selprod_condition']; ?>"><input value="<?php echo $condition['selprod_condition']; ?>" name="conditions" type="checkbox" <?php if(in_array($condition['selprod_condition'],$conditionsCheckedArr)){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Product::getConditionArr($siteLangId)[$condition['selprod_condition']]; ?> </label></li>
@@ -245,7 +245,6 @@ array_walk($catCodeArr,function(&$n) {
 		<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
 		</ul>
 	</div>
-	<div class="divider--filters"></div>
 	<!-- ] -->
 
 
@@ -259,17 +258,16 @@ array_walk($catCodeArr,function(&$n) {
 	</div>
 </div>-->
 <!-- ] -->
- <script language="javascript">
-  var catCodeArr = <?php echo json_encode($catCodeArr); ?>;
-	$.each( catCodeArr, function( key, value ) {
-		if($("ul li a[data-id='" + value +"']").parent().find('span')){
-			$("ul li a[data-id='" + value +"']").parent().find('span:first').addClass('is--active');
-			$("ul li a[data-id='" + value +"']").parent().find('ul:first').css('display','block');
-		}
+<script language="javascript">
+    var catCodeArr = <?php echo json_encode($catCodeArr); ?>;
+    $.each( catCodeArr, function( key, value ) {
+        if($("ul li a[data-id='" + value +"']").parent().find('span')){
+            $("ul li a[data-id='" + value +"']").parent().find('span:first').addClass('is--active');
+            $("ul li a[data-id='" + value +"']").parent().find('ul:first').css('display','block');
+        }
 
-	});
-  </script>
-
+    });
+</script>
 <script type="text/javascript">
 $("document").ready(function(){
 	var min=0;
