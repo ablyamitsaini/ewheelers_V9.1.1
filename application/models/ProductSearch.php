@@ -439,12 +439,17 @@ class ProductSearch extends SearchBase
             /* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
             $this->addCondition('c.prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT) . '%', 'AND', true);
         }else{
+            if(!is_array($category)){
+                $category = explode(",", $category);
+            }
             /* $category = explode(",", $category);
             $category = FatUtility::int($category);
             $this->addCondition('prodcat_id', 'IN', $category ); */
-            $categories = explode(",", $category);
+
             $condition= '(';
-            foreach($categories as $catId){
+            foreach($category as $catId){
+                $catId = FatUtility::int($catId);
+                if(1 > $catId) {continue;}
                 $condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT) ."%' OR";
 
             }

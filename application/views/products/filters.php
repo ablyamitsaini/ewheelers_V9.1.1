@@ -2,9 +2,6 @@
 $currencySymbolLeft = isset($currencySymbolLeft) ? $currencySymbolLeft : CommonHelper::getCurrencySymbolLeft();
 $currencySymbolRight = isset($currencySymbolRight) ? $currencySymbolRight : CommonHelper::getCurrencySymbolRight();
 
-/* if( !empty($priceArr) ){
-	$priceArr = array_map( function( $item ){ return CommonHelper::displayMoneyFormat( $item, false, false ,false ); } , $priceArr );
-} */
 
 $catCodeArr = array();
 
@@ -16,7 +13,14 @@ array_walk($catCodeArr,function(&$n) {
 }) ;
  }
 ?>
-<?php if(FatApp::getController()=='ShopsController'){ ?>
+<?php if($shopCatFilters){
+    $searchFrm->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
+    $keywordFld = $searchFrm->getField('keyword');
+    $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
+    $keywordFld->htmlAfterField = '<input name="btnSrchSubmit" value="" type="submit" class="input-submit">';
+    /*$keywordFld = $frmProductSearch->getField('keyword');
+    $keywordFld->overrideFldType("hidden");*/
+?>
 <div class="product-search">
 	<!--<form>
 		<input placeholder="Search" class="input-field nofocus" value="" type="text">
@@ -116,8 +120,8 @@ array_walk($catCodeArr,function(&$n) {
 			foreach($productCatCode as $code){
 				$code = FatUtility::int($code);
 				if($code){
-					if(isset( $productCategories[$code]['prodcat_name'])){
-						$productCatName.= $seprator. $productCategories[$code]['prodcat_name'];
+					if(isset( $categoriesArr[$code]['prodcat_name'])){
+						$productCatName.= $seprator. $categoriesArr[$code]['prodcat_name'];
 						$seprator = '&raquo;&raquo;&nbsp;&nbsp;';
 					}
 				}

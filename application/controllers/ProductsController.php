@@ -22,17 +22,24 @@ class ProductsController extends MyAppController
         $get['join_price'] = 1;
         $frm->fill($get);
 
-        $this->setListingData($get);
+        $data = $this->getListingData($get);
 
-        $this->set('frmProductSearch', $frm);
+        $arr = array(
+            'frmProductSearch'=>$frm,
+            'pageTitle'=>Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId),
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'index'),
+            'productSearchPageType'=>SavedSearchProduct::PAGE_PRODUCT_INDEX,
+            'recordId'=>0,
+            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner','allProducts'),
+        );
 
-        $this->set('pageTitle', Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId));
-        $this->set('canonicalUrl', CommonHelper::generateFullUrl('Products', 'index'));
-        $this->set('productSearchPageType',SavedSearchProduct::PAGE_PRODUCT_INDEX);
-        $this->set('recordId',0);
-        $this->set('bannerListigUrl',CommonHelper::generateFullUrl('Banner','allProducts'));
+        $data = array_merge($data,$arr);
+        $this->set('data', $data);
 
-        $this->_template->render(true,true,'products/listing-page.php');
+        $this->includeProductPageJsCss();
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        $this->_template->render();
     }
 
     public function search(){
@@ -49,17 +56,24 @@ class ProductsController extends MyAppController
         $get['join_price'] = 1;
         $frm->fill($get);
 
-        $this->setListingData($get);
+        $data = $this->getListingData($get);
 
-        $this->set('frmProductSearch', $frm);
+        $arr = array(
+            'frmProductSearch'=>$frm,
+            'pageTitle'=>Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId),
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'search'),
+            'productSearchPageType'=>SavedSearchProduct::PAGE_PRODUCT,
+            'recordId'=>0,
+            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner','searchListing'),
+        );
 
-        $this->set('pageTitle', Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId));
-        $this->set('canonicalUrl', CommonHelper::generateFullUrl('Products', 'search'));
-        $this->set('productSearchPageType',SavedSearchProduct::PAGE_PRODUCT);
-        $this->set('recordId',0);
-        $this->set('bannerListigUrl',CommonHelper::generateFullUrl('Banner','searchListing'));
+        $data = array_merge($data,$arr);
+        $this->set('data', $data);
 
-        $this->_template->render(true,true,'products/listing-page.php');
+        $this->includeProductPageJsCss();
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        $this->_template->render(true,true,'products/index.php');
     }
 
     public function featured()
@@ -78,26 +92,33 @@ class ProductsController extends MyAppController
         $get['featured'] = 1;
         $frm->fill($get);
 
-        $this->setListingData($get);
+        $data = $this->getListingData($get);
 
-        $this->set('frmProductSearch', $frm);
+        $arr = array(
+            'frmProductSearch'=>$frm,
+            'pageTitle'=>Labels::getLabel('LBL_FEATURED_PRODUCTS', $this->siteLangId),
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'featured'),
+            'productSearchPageType'=>SavedSearchProduct::PAGE_FEATURED_PRODUCT,
+            'recordId'=>0,
+            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner','searchListing'),
+        );
 
-        $this->set('pageTitle', Labels::getLabel('LBL_FEATURED_PRODUCTS', $this->siteLangId));
-        $this->set('canonicalUrl', CommonHelper::generateFullUrl('Products', 'featured'));
-        $this->set('productSearchPageType',SavedSearchProduct::PAGE_FEATURED_PRODUCT);
-        $this->set('recordId',0);
-        $this->set('bannerListigUrl',CommonHelper::generateFullUrl('Banner','searchListing'));
+        $data = array_merge($data,$arr);
+        $this->set('data', $data);
 
-        $this->_template->render(true,true,'products/listing-page.php');
-
+        $this->includeProductPageJsCss();
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        $this->_template->render(true,true,'products/index.php');
     }
 
     public function filters(){
         $db = FatApp::getDb();
         $post = FatApp::getPostedData();
 
-        $headerFormParamsArr = FatApp::getParameters();
-        $headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
+        $get = FatApp::getParameters();
+        $headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($get);
+        $headerFormParamsAssocArr = array_merge($headerFormParamsAssocArr,$post);
 
         $prodSrchObj = new ProductSearch($this->siteLangId);
         $prodSrchObj->setDefinedCriteria();
@@ -126,14 +147,22 @@ class ProductsController extends MyAppController
         $priceArr  = array();
 
         /* Brand Filters Data[ */
+        $brandsCheckedArr = array();
+        if(array_key_exists('brand', $headerFormParamsAssocArr)) {
+            $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
+        }
+
         $brandSrch = clone $prodSrchObj;
         $brandSrch->addGroupBy('brand_id');
-        $brandSrch->addOrder('brand_name');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name', 'brand_short_description'));
+        if(!empty($brandsCheckedArr)){
+            $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',',$brandsCheckedArr).'"),1,0) as priority');
+            $brandSrch->addOrder('priority','desc');
+        }
+        $brandSrch->addOrder('brand_name');
         /* if needs to show product counts under brands[ */
         //$brandSrch->addFld('count(selprod_id) as totalProducts');
         /* ] */
-
         $brandRs = $brandSrch->getResultSet();
         $brandsArr = $db->fetchAll($brandRs);
         /* ] */
@@ -240,10 +269,32 @@ class ProductsController extends MyAppController
         'count_for_view_more'   =>  FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5)
         );
 
+        $prodcatArr = array();
+        //$productCategories = array();
+        if(array_key_exists('prodcat', $headerFormParamsAssocArr)) {
+            $prodcatArr = $headerFormParamsAssocArr['prodcat'];
+            // $productCatObj = new ProductCategory;
+            // $productCategories =  $productCatObj->getCategoriesForSelectBox($this->siteLangId);
+        }
+
+        $shopCatFilters = false;
+        if(array_key_exists('shop_id', $headerFormParamsAssocArr)) {
+            $shop_id = FatUtility::int($headerFormParamsAssocArr['shop_id']);
+            $searchFrm = Shop::getFilterSearchForm();
+            $searchFrm->fill($headerFormParamsAssocArr);
+            $this->set('searchFrm', $searchFrm);
+            if(0 < $shop_id){
+                $shopCatFilters = true;
+            }
+        }
+
         $this->set('productFiltersArr', $productFiltersArr);
         $this->set('headerFormParamsAssocArr', $headerFormParamsAssocArr);
 
         $this->set('categoriesArr',$categoriesArr);
+        $this->set('shopCatFilters',$shopCatFilters);
+        $this->set('prodcatArr',$prodcatArr);
+        // $this->set('productCategories',$productCategories);
 
         $this->set('brandsArr',$brandsArr);
         $this->set('brandsCheckedArr',$brandsCheckedArr);
@@ -1591,7 +1642,7 @@ class ProductsController extends MyAppController
         die(json_encode($json));
     }
 
-    private function setListingData($get){
+    private function getListingData($get){
         $db = FatApp::getDb();
 
         /* to show searched category data[ */
@@ -1642,27 +1693,18 @@ class ProductsController extends MyAppController
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
 
-        $pSrchFrm = Common::getSiteSearchForm();
-        $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $this->siteLangId)));
-        $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
-        $this->set('pSrchFrm', $pSrchFrm);
-        $searchObj=new SearchItem();
-        $this->set('top_searched_keywords', $searchObj->getTopSearchedKeywords());
+        $data = array(
+            'products'=>$products,
+            'category'=>$category,
+            'categoryId'=>$categoryId,
+            'postedData'=>$get,
+            'page'=>$page,
+            'pageCount'=>$srch->pages(),
+            'pageSize'=>$pageSize,
+            'recordCount'=>$srch->recordCount(),
+            'siteLangId'=>$this->siteLangId
+        );
 
-
-
-        $this->set('category', $category);
-
-        $this->set('products', $products);
-        $this->set('page', $page);
-        $this->set('pageSize', $pageSize);
-        $this->set('categoryId', $categoryId);
-        $this->set('pageCount', $srch->pages());
-        $this->set('postedData', $get);
-        $this->set('recordCount', $srch->recordCount());
-
-        $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        return $data;
     }
 }

@@ -54,7 +54,7 @@
 						<a href="<?php echo CommonHelper::generateUrl('Category','view', array($category['prodcat_id'])); ?>" title="<?php echo $category['prodcat_name']; ?>" class="advertise__block advertise__block--main"><img data-ratio="16:9 (1000x563)" src="<?php echo CommonHelper::generateUrl('Category','Banner', array($category['prodcat_id'], $siteLangId, 'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_category_Banner', $siteLangId); ?>"></a>
 						<?php }
 
-						if(array_key_exists('prodcat_description',$category) && (!isset($noProductFound))){ ?>
+						if(!empty($category) && array_key_exists('prodcat_description',$category) && (!isset($noProductFound))){ ?>
 						<div class="category__description container--cms">
 						<?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?>
 						</div>
@@ -72,7 +72,11 @@
 									);
 									$this->includeTemplate('products/products-list.php',$productsData,false);
 						        } else {
-						            $this->includeTemplate('_partial/no-product-found.php',array('pSrchFrm'=>$pSrchFrm,'top_searched_keywords'=>$top_searched_keywords,'siteLangId'=>$siteLangId,'postedData'=>$postedData) ,true);
+									$pSrchFrm = Common::getSiteSearchForm();
+							        $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $siteLangId)));
+							        $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
+
+						            $this->includeTemplate('_partial/no-product-found.php',array('pSrchFrm'=>$pSrchFrm,'siteLangId'=>$siteLangId,'postedData'=>$postedData) ,true);
 						        } ?>
 							</div>
 						</div>

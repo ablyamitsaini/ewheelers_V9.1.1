@@ -18,20 +18,22 @@ class SearchItem extends MyAppModel
         $this->db->insertFromArray('tbl_search_items', $assign_fields, true, array(), $onDuplicateKeyUpdate);
     }
 
-    function getTopSearchedKeywords()
+    public static function getTopSearchedKeywords()
     {
+        $db = FatApp::getDb();
         $srch = new SearchBase('tbl_search_items', 'ts');
         $srch->addDirectCondition("LENGTH(searchitem_keyword) > 10 and searchitem_keyword REGEXP '^[A-Za-z0-9 ]+$'");
         $srch->addMultipleFields(array('DISTINCT searchitem_keyword'));
         $srch->addOrder('searchitem_count', 'desc');
         $srch->setPageSize(4);
         $rs = $srch->getResultSet();
-        $this->total_records = $srch->recordCount();
-        $this->total_pages = $srch->pages();
-        $row = $this->db->fetchAll($rs);
-        if($row==false) { return array();
-        }
-        else { return $row;
+        // $this->total_records = $srch->recordCount();
+        // $this->total_pages = $srch->pages();
+        $row = $db->fetchAll($rs);
+        if($row==false) {
+            return array();
+        }else {
+            return $row;
         }
     }
 
@@ -65,6 +67,7 @@ class SearchItem extends MyAppModel
                     $arr_url_params['sortOrder']= $arr_url_params['sortBy'] = str_replace('-','_',$valueString);
                     break;
                 case 'shop':
+                case 'shop_id':
                     $arr_url_params['shop_id'] = $valueString;
                     break;
                 case 'collection':

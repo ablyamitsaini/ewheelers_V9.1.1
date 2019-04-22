@@ -7,7 +7,7 @@ $(document).ready(function(){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			/* i.e for selectbox */
 			$(elem).change(function(){
-				reloadListing(frm);
+				reloadProductListing(frm);
 				//searchProducts(frm,0,0,1);
 			});
 		}
@@ -31,7 +31,7 @@ $(document).ready(function(){
 			removeFilter(id,this);
 		}
 		removePaginationFromLink();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -44,7 +44,7 @@ $(document).ready(function(){
 			removeFilter(id,this);
 		}
 		removePaginationFromLink();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -57,7 +57,7 @@ $(document).ready(function(){
 			removeFilter(id,this);
 		}
 		removePaginationFromLink();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -70,7 +70,7 @@ $(document).ready(function(){
 			removeFilter(id,this);
 		}
 		removePaginationFromLink();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -81,13 +81,13 @@ $(document).ready(function(){
 	$(document).on('change', 'select[name=pageSize]', function() {
 		removePageSideFromLink();
 		removePaginationFromLink();
-		reloadListing();
+		reloadProductListing();
 	});
 
 	$(document).on('change', 'select[name=sortBy]', function() {
 		removePageSideFromLink();
 		removePaginationFromLink();
-		reloadListing();
+		reloadProductListing();
 	});
 
 	$(document).on('change', 'input[name=out_of_stock]', function() {
@@ -99,7 +99,7 @@ $(document).ready(function(){
 			removeFilter(id,this);
 		}
 		removePaginationFromLink();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -133,7 +133,7 @@ $(document).ready(function(){
 			clearFilters(id,this);
 		});
 		updatePriceFilter();
-		reloadListing(frm);
+		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
 
@@ -271,7 +271,7 @@ function removeFilter(id,obj){
 	var frm = document.frmProductSearch;
 	/* form submit upon onchange of form elements select box[ */
 	removeFromSearchQueryString(id);
-	reloadListing(frm);
+	reloadProductListing(frm);
 	//searchProducts(frm,0,0,1,1);
 }
 
@@ -371,7 +371,7 @@ function addPricefilter(reloadPage){
 	searchArr['currency'] = langLbl.siteCurrencyId;
 	var frm = document.frmProductSearch;
 	if(reloadPage){
-		reloadListing(frm);
+		reloadProductListing(frm);
 	}
 	//searchProducts(frm,0,0,1,1);
 }
@@ -385,7 +385,7 @@ function removePriceFilter(reloadPage){
 	delete searchArr['price_max_range'];
 	delete searchArr['currency'];
 	if(reloadPage){
-		reloadListing(frm);
+		reloadProductListing(frm);
 	}
 	//searchProducts(frm,0,0,1,1);
 	$('.price').remove();
@@ -427,21 +427,33 @@ function updatePriceFilter(minPrice,maxPrice){
 		});
 	};
 
-	reloadListing = function(frm){
+	reloadProductListing = function(frm){
 		getSetSelectedOptionsUrl(frm);
 		window.location.href = getSearchQueryUrl(true)+'/';
 	};
 
+	searchProducts = function(frm){
+		$("input[id=keyword]").val($(frm.keyword).val());
+		reloadProductListing(frm);
+	};
+
 	loadProductListingfilters = function(frm){
-		//var url = window.location.href;
-		var url = $currentPageUrl;
-		var url = url.replace($currentPageUrl, fcom.makeUrl('Products','filters'));
+		var url = window.location.href;
+		if($currentPageUrl == removeLastSpace(url)+'/index'){
+			url = fcom.makeUrl('Products','filters');
+		}else{
+			url = url.replace($currentPageUrl, fcom.makeUrl('Products','filters'));
+		}
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(url, data, function(ans){
 			$('.productFilters-js').html(ans.html);
-			getSetSelectedOptionsUrl();
+			getSetSelectedOptionsUrl(frm);
 		},false,false);
 	};
+
+	removeLastSpace = function(str){
+		return str.replace(/\/*$/, "");
+	}
 
 	getSetSelectedOptionsUrl = function(frm){
 		var data = fcom.frmData(frm);

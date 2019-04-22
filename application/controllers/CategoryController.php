@@ -29,11 +29,12 @@ class CategoryController extends MyAppController
         $get['join_price'] = 1;
         $frm->fill($get);
 
-        $productCategorySearch = new ProductCategorySearch($this->siteLangId);
+        $productCategorySearch = new ProductCategorySearch($this->siteLangId,true,true,false,false);
         $productCategorySearch->addCondition('prodcat_id', '=', $categoryId);
 
         /* to show searched category data[ */
         $productCategorySearch->addMultipleFields(array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code'));
+        $productCategorySearch->setPageSize(1);
         $productCategorySearchRs = $productCategorySearch->getResultSet();
         $category = $db->fetch($productCategorySearchRs);
 
@@ -75,28 +76,30 @@ class CategoryController extends MyAppController
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
 
-        $this->set('frmProductSearch', $frm);
-        $this->set('category', $category);
+        $data = array(
+            'frmProductSearch'=>$frm,
+            'category'=>$category,
+            'products'=>$products,
+            'page'=>$page,
+            'pageSize'=>$pageSize,
+            'categoryId'=>$categoryId,
+            'pageCount'=>$srch->pages(),
+            'postedData'=>$get,
+            'recordCount'=>$srch->recordCount(),
+            'pageTitle'=>$category['prodcat_name'],
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Category', 'view', array($categoryId)),
+            'productSearchPageType'=>SavedSearchProduct::PAGE_CATEGORY,
+            'recordId'=>$categoryId,
+            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner','categories'),
+            'siteLangId'=>$this->siteLangId
+        );
 
-        $this->set('products', $products);
-        $this->set('page', $page);
-        $this->set('pageSize', $pageSize);
-        $this->set('categoryId', $categoryId);
-        $this->set('pageCount', $srch->pages());
-        $this->set('postedData', $get);
-        $this->set('recordCount', $srch->recordCount());
-
-
-        $this->set('pageTitle', $category['prodcat_name']);
-        $this->set('canonicalUrl', CommonHelper::generateFullUrl('Category', 'view', array($categoryId)));
-        $this->set('productSearchPageType',SavedSearchProduct::PAGE_CATEGORY);
-        $this->set('recordId',$categoryId);
-        $this->set('bannerListigUrl',CommonHelper::generateFullUrl('Banner','categories'));
+        $this->set('data',$data);
 
         $this->includeProductPageJsCss();
         $this->_template->addJs('js/slick.min.js');
         $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
-        $this->_template->render(true,true,'products/listing-page.php');
+        $this->_template->render();
     }
 
     public function view_old( $category_id )

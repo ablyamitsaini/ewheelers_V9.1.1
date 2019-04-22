@@ -1185,6 +1185,10 @@ class Product extends MyAppModel{
 			$srch->addCategoryCondition($criteria['category']);
 		}
 
+		if( array_key_exists( 'prodcat', $criteria ) ){
+			$srch->addCategoryCondition($criteria['prodcat']);
+		}
+
 		if( array_key_exists( 'shop_id', $criteria ) ){
 			$shop_id =  FatUtility::int($criteria['shop_id']);
 			if(0 < $shop_id){
