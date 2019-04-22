@@ -3544,6 +3544,7 @@ img {
 
 .products .products__body .products__img img {
   max-width: 100%;
+  width: 90%;
   bottom: 0;
   left: 0;
   margin: auto;
@@ -11289,10 +11290,10 @@ align-items: center;
 }
 
 .sidebar__content {
- height: 100%;
- max-height: none;
- width: auto;
- /*overflow-y: auto;*/
+  height: 100%;
+  max-height: none;
+  width: auto;
+  overflow-y: auto;
 }
 
 .dashboard-menu .menu-head {
@@ -12410,6 +12411,27 @@ main.main {
   width: 100%;
 }
 
+.summary-order-list {
+  /*overflow-y: auto;
+  max-height: 408px;*/
+}
+
+.summary-order-list>li {
+  padding: 15px 0;
+  display: table;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  border-bottom: solid 1px var(--border-color);
+  margin-bottom: 15px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+}
+
+.summary-order-list>li:last-child {
+  margin-bottom: 0;
+}
+
 .gurantee {
   background: #ededed;
   padding: 20px;
@@ -12880,7 +12902,10 @@ main.main {
   justify-content: center;
   height: 100%;
 }
-.yokart-loader img{ max-width: 80px;}
+
+.yokart-loader img {
+  max-width: 80px;
+}
 
 .pong-loader {
   position: absolute;

@@ -15,7 +15,7 @@ $arr_flds = array(
 	'scatrequest_status' => Labels::getLabel('LBL_Status', $siteLangId),
 	'action' => Labels::getLabel('LBL_Action', $siteLangId)
 );
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

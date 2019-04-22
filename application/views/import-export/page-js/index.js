@@ -7,11 +7,15 @@ $(document).ready(function() {
     var settingDv = '#settingFormBlock';
     var exportDv = '#exportFormBlock';
     var importDv = '#importFormBlock';
+    var runningAjaxReq = false;
 
     loadForm = function(formType) {
         $(dv).html(fcom.getLoader());
         fcom.ajax(fcom.makeUrl('ImportExport', 'loadForm', [formType]), '', function(t) {
             $(dv).html(t);
+            if ( 'bulk_media' == formType ) {
+                searchFiles();
+            }
         });
     };
     generalInstructions = function(frmType) {
@@ -136,40 +140,77 @@ $(document).ready(function() {
     };
 
     uploadZip = function() {
-      var data = new FormData();
-      $.each($('#bulk_images')[0].files, function(i, file) {
-          $.mbsmessage(langLbl.processing, false, 'alert--process');
-          data.append('bulk_images', file);
-          $.ajax({
-              url: fcom.makeUrl('ImportExport', 'uploadBulkMedia'),
-              type: "POST",
-              data: data,
-              processData: false,
-              contentType: false,
-              success: function(t) {
-                  try {
-                      var ans = $.parseJSON(t);
-                      if (ans.status == 1) {
-                          $(document).trigger('close.facebox');
-                          $(document).trigger('close.mbsmessage');
-                          $.systemMessage(ans.msg, 'alert--success', false);
-                          document.uploadBulkImages.reset();
-                          $("#uploadFileName").text('');
-                      } else {
-                          $(document).trigger('close.mbsmessage');
-                          $.systemMessage(ans.msg, 'alert--danger');
-                      }
-                  } catch (exc) {
-                      $(document).trigger('close.mbsmessage');
-                      $.systemMessage(exc.message, 'alert--danger');
-                  }
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  alert("Error Occured.");
-              }
-          });
-      });
-  };
+        var data = new FormData();
+        $.each($('#bulk_images')[0].files, function(i, file) {
+            $.mbsmessage(langLbl.processing, false, 'alert--process');
+            data.append('bulk_images', file);
+            $.ajax({
+                url: fcom.makeUrl('ImportExport', 'uploadBulkMedia'),
+                type: "POST",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(t) {
+                    try {
+                        var ans = $.parseJSON(t);
+                        if (ans.status == 1) {
+                            $(document).trigger('close.facebox');
+                            $(document).trigger('close.mbsmessage');
+                            $.systemMessage(ans.msg, 'alert--success', false);
+                            document.uploadBulkImages.reset();
+                            $("#uploadFileName").text('');
+                            searchFiles();
+                        } else {
+                            $(document).trigger('close.mbsmessage');
+                            $.systemMessage(ans.msg, 'alert--danger');
+                        }
+                    } catch (exc) {
+                        $(document).trigger('close.mbsmessage');
+                        $.systemMessage(exc.message, 'alert--danger');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                alert("Error Occured.");
+                }
+            });
+        });
+    };
+
+    searchFiles = function(){
+		if( runningAjaxReq == true ){
+			return;
+		}
+		runningAjaxReq = true;
+		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
+		var data = '';
+
+		/*]*/
+		var dv = $('#listing');
+		$(dv).html( fcom.getLoader() );
+
+		fcom.ajax(fcom.makeUrl('ImportExport','uploadedBulkMediaList'),data,function(res){
+			runningAjaxReq = false;
+			$("#listing").html(res);
+		});
+	};
+
+    removeDir = function(dir) {
+		if ( true == confirm( langLbl.confirmDelete ) ) {
+	        $.mbsmessage(langLbl.processing, false, 'alert--process');
+	        fcom.ajax(fcom.makeUrl('ImportExport', 'removeDir', [dir] ), '', function(t) {
+				var ans = $.parseJSON(t);
+				if (ans.status == 1) {
+					$(document).trigger('close.facebox');
+					$(document).trigger('close.mbsmessage');
+                    $.systemMessage(ans.msg, 'alert--success');
+					searchFiles();
+				} else {
+					$(document).trigger('close.mbsmessage');
+					$.systemMessage(ans.msg, 'alert--danger');
+				}
+	        });
+		}
+    };
 
 })();
 

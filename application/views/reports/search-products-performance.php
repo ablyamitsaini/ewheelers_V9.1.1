@@ -1,6 +1,6 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
-	'name'	=>	Labels::getLabel('LBL_Product', $siteLangId),	
+	'name'	=>	Labels::getLabel('LBL_Product', $siteLangId),
 	'wishlist_user_counts'	=>	Labels::getLabel('LBL_WishList_User_Counts', $siteLangId)
 );
 
@@ -10,7 +10,7 @@ if($topPerformed){
 	$arr_flds['totRefundQty'] = Labels::getLabel('LBL_Refund_Quantity',$siteLangId);
 }
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -20,7 +20,7 @@ $sr_no = 0;
 foreach ($arrListing as $sn => $listing){
 	$sr_no++;
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
-	
+
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
@@ -30,25 +30,25 @@ foreach ($arrListing as $sn => $listing){
 				if( $listing['op_selprod_title'] != '' ){
 					$name .= '<div class="item__sub_title"><strong>'.Labels::getLabel('LBL_Custom_Title', $siteLangId).": </strong>".$listing['op_selprod_title'].'</div>';
 				}
-				
+
 				if( $listing['op_selprod_options'] != '' ){
 					$name .= '<div class="item__specification">'.Labels::getLabel('LBL_Options', $siteLangId).": </strong>".$listing['op_selprod_options'].'</div>';
 				}
-				
+
 				if( $listing['op_brand_name'] != '' ){
 					$name .= '<div class="item__brand"><strong>'.Labels::getLabel('LBL_Brand', $siteLangId).": </strong>".$listing['op_brand_name'].'</div>';
 				}
 				$td->appendElement('plaintext', array(), $name,true);
 			break;
-			
+
 			case 'totSoldQty':
 				$td->appendElement('plaintext', array(), $listing['totSoldQty'],true);
 			break;
-			
+
 			case 'totRefundQty':
 				$td->appendElement('plaintext', array(), $listing['totRefundQty'],true);
 			break;
-			
+
 			case 'wishlist_user_counts':
 				$td->appendElement('plaintext', array(), $listing['wishlist_user_counts'],true);
 			break;

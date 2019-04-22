@@ -67,6 +67,8 @@ class applicationConstants
     const DIGITAL_DOWNLOAD_FILE = 0;
     const DIGITAL_DOWNLOAD_LINK = 1;
 
+    const PAGE_SIZE = 20;
+
     static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);

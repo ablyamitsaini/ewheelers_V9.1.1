@@ -721,6 +721,7 @@ class CustomController extends MyAppController
     public function deleteBulkUploadSubDirs( $hoursBefore = '48')
     {
         $obj = new UploadBulkImages();
-        $obj->deleteBulkUploadSubDirs( $hoursBefore );
+        $msg = $obj->deleteBulkUploadSubDirs( $hoursBefore );
+        FatUtility::dieJsonSuccess( $msg );
     }
 }

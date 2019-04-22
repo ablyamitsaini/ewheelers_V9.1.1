@@ -189,6 +189,13 @@ DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Or_Login_With';
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Office';
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Not_Registered_Yet';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_1';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_2';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_3';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_4';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_5';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_6';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Layout_7';
 
 DELETE e, el FROM tbl_extra_pages e INNER JOIN tbl_extra_pages_lang el ON epage_id = epagelang_epage_id WHERE epage_type in (1,13,14);
 

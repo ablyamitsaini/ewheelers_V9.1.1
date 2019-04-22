@@ -73,7 +73,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 									<?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0) { ?>
 									<div class="item-yk-head-specification note-messages">
 										<?php echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);	?>
-									</div>										
+									</div>
 									<?php } ?>
 								</div>
 							</div>
@@ -90,7 +90,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
                             foreach ($product["shipping_rates"] as $skey => $sval):
                                 $country_code = empty($sval["country_code"]) ? "" : " (" . $sval["country_code"] . ")";
-								$product["shipping_free_availbilty"];	
+								$product["shipping_free_availbilty"];
 								if($product['shop_eligible_for_free_shipping'] > 0 && $product['psbs_user_id'] > 0) {
 									$shipping_charges = Labels::getLabel('LBL_Free_Shipping',$siteLangId);
 								}else{
@@ -187,10 +187,10 @@ $shippingapi_idFld->developerTags['col'] = 6;
 								<?php } ?>
 							</td>
 							<td class="text-right">
-								<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="images/retina/sprite.svg#bin"></use></svg></i></a>
+								<a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use></svg></i></a>
 							</td>
 						</tr>
-						<?php if( $productCount == $productsInShop[$product['shop_id']]){ 
+						<?php if( $productCount == $productsInShop[$product['shop_id']]){
 						$productCount = 0; ?>
 						</tbody>
 						</table>
@@ -200,18 +200,18 @@ $shippingapi_idFld->developerTags['col'] = 6;
 					} else {
 						echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);
 					} ?>
-			
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		<!--</tbody>
 		</table>
 		</div>-->
-		
-		
+
+
 
 
 
@@ -226,7 +226,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
 <div class="review-wrapper">
 
-	
+
 	<div class="cartdetail__footer">
 		<table>
 		  <tr>

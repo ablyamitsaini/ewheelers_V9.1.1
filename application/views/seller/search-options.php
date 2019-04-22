@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-    
+
 <?php
     $arr_flds = array(
             'listserial'=>Labels::getLabel('LBL_Sr._no.',$siteLangId),
@@ -7,7 +7,7 @@
             'action' => Labels::getLabel('LBL_Action',$siteLangId),
         );
     $tbl = new HtmlElement('table',
-    array('width'=>'100%', 'class'=>'table','id'=>'options'));
+    array('width'=>'100%', 'class'=>'table table--orders','id'=>'options'));
 
     $th = $tbl->appendElement('thead')->appendElement('tr');
     foreach ($arr_flds as $val) {
