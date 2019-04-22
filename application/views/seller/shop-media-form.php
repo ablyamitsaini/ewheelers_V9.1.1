@@ -18,8 +18,8 @@
 	$fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 
 	$bannerSize = applicationConstants::getShopBannerSize();
-	$shopLayout= ($shopDetails['shop_ltemplate_id'])?$shopDetails['shop_ltemplate_id']:SHOP::TEMPLATE_ONE;
-
+	// $shopLayout= ($shopDetails['shop_ltemplate_id'])?$shopDetails['shop_ltemplate_id']:SHOP::TEMPLATE_ONE;
+	$shopLayout= SHOP::TEMPLATE_ONE;
 ?>
 <?php 	$variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 
@@ -38,18 +38,18 @@
 				</div>
 				<div class="col-md-4">
 					<div class="preview">
-						<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_logo_text',$siteLangId),'296*67')?></small>
+						<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_logo_text',$siteLangId),'150*150')?></small>
 						<?php echo $shopLogoFrm->getFormHtml();?>
 						   <div id="logo-image-listing" class="row" ></div>
 					</div>
 				</div>
 
-					<div class="col-md-4">	<div class="preview">
+					<?php /* <div class="col-md-4">	<div class="preview">
 							<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_background_text',$siteLangId),'60*60')?></small>
 							<?php echo $shopBackgroundImageFrm->getFormHtml();?>
 								<div id="bg-image-listing" class="row"></div>
 
-						</div></div>
+						</div></div> */ ?>
 			</div>
 
 	</div>

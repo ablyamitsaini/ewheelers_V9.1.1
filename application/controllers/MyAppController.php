@@ -12,7 +12,7 @@ class MyAppController extends FatController
         }
 
         CommonHelper::initCommonVariables();
-        $this->initCommonVariables();        
+        $this->initCommonVariables();
         //UserAuthentication::doCookieLogin();
 
     }
@@ -485,7 +485,6 @@ class MyAppController extends FatController
 
     public function includeProductPageJsCss()
     {
-        $this->_template->addJs('js/enscroll-0.6.2.min.js');
         $this->_template->addJs('js/masonry.pkgd.js');
         $this->_template->addJs('js/product-search.js');
         $this->_template->addJs('js/ion.rangeSlider.js');

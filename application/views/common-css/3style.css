@@ -10860,6 +10860,9 @@ html.quick-view--open {
   color: var(--txt-color);
   font-size: 0.875rem;
 }
+.shop-information{
+    max-height: 200px;
+}
 
 /*
 .shop-nav {
