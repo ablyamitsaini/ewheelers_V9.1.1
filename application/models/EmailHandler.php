@@ -7,7 +7,7 @@ class EmailHandler extends FatModel
     const NOT_ONLY_SUPER_ADMIN = 0;
 
     private $commonLangId;
-    public function __construct() 
+    public function __construct()
     {
         $this->commonLangId = CommonHelper::getLangId();
     }
@@ -99,7 +99,7 @@ class EmailHandler extends FatModel
         return $superAdminResp;
     }
 
-    public static function sendMailTpl( $to, $tpl, $langId, $vars = array(), $extra_headers = '', $smtp = 0, $smtp_arr = array(), $bcc = array() ) 
+    public static function sendMailTpl( $to, $tpl, $langId, $vars = array(), $extra_headers = '', $smtp = 0, $smtp_arr = array(), $bcc = array() )
     {
 
         $langId = FatUtility::int($langId);
@@ -150,7 +150,7 @@ class EmailHandler extends FatModel
 
         $headers .= 'From: ' . FatApp::getConfig("CONF_FROM_NAME_".$langId, FatUtility::VAR_STRING, '') ."<".FatApp::getConfig("CONF_FROM_EMAIL").">";
 
-        if ($extra_headers != '') { $headers .= $extra_headers; 
+        if ($extra_headers != '') { $headers .= $extra_headers;
         }
 
         $headers .= "\r\nReply-to: ".FatApp::getConfig("CONF_REPLY_TO_EMAIL");
@@ -169,11 +169,11 @@ class EmailHandler extends FatModel
             return false;
         }
         include_once CONF_INSTALLATION_PATH . 'library/PHPMailer/PHPMailerAutoload.php';
-        $host = isset($smtp_arr["host"])?$smtp_arr["host"]:FatApp::getConfig("CONF_SMTP_HOST");
-        $port = isset($smtp_arr["port"])?$smtp_arr["port"]:FatApp::getConfig("CONF_SMTP_PORT");
-        $username = isset($smtp_arr["username"])?$smtp_arr["username"]:FatApp::getConfig("CONF_SMTP_USERNAME");
-        $password = isset($smtp_arr["password"])?$smtp_arr["password"]:FatApp::getConfig("CONF_SMTP_PASSWORD");
-        $secure = isset($smtp_arr["secure"])?$smtp_arr["secure"]:FatApp::getConfig("CONF_SMTP_SECURE");
+        $host = isset($smtp_arr["host"]) ? $smtp_arr["host"] : FatApp::getConfig("CONF_SMTP_HOST");
+        $port = isset($smtp_arr["port"]) ? $smtp_arr["port"] : FatApp::getConfig("CONF_SMTP_PORT");
+        $username = isset($smtp_arr["username"]) ? $smtp_arr["username"] : FatApp::getConfig("CONF_SMTP_USERNAME");
+        $password = isset($smtp_arr["password"]) ? $smtp_arr["password"] : FatApp::getConfig("CONF_SMTP_PASSWORD");
+        $secure = isset($smtp_arr["secure"]) ? $smtp_arr["secure"] : FatApp::getConfig("CONF_SMTP_SECURE");
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
         $mail->IsSMTP();
@@ -191,13 +191,13 @@ class EmailHandler extends FatModel
         $mail->Subject = '=?UTF-8?B?'.base64_encode($Subject).'?=';
         $mail->MsgHTML($body);
 
-        if(!$mail->send()) {
+        if( !$mail->send() ) {
             return false;
         }
         return true;
     }
 
-    private static function sendMail( $to, $subject, $body, $extra_headers = '',$tpl_name = '', $langId ) 
+    private static function sendMail( $to, $subject, $body, $extra_headers = '',$tpl_name = '', $langId )
     {
         $db = FatApp::getDb();
         $headers  = 'MIME-Version: 1.0' . "\r\n";
@@ -205,7 +205,7 @@ class EmailHandler extends FatModel
 
         $headers .= 'From: ' . FatApp::getConfig("CONF_FROM_NAME_".$langId) ."<".FatApp::getConfig("CONF_FROM_EMAIL").">";
 
-        if ($extra_headers != '') { $headers .= $extra_headers; 
+        if ($extra_headers != '') { $headers .= $extra_headers;
         }
 
         $headers .= "\r\nReply-to: ".FatApp::getConfig("CONF_REPLY_TO_EMAIL");
@@ -1009,7 +1009,7 @@ class EmailHandler extends FatModel
     function SendWithdrawRequestNotification($requestId,$langId, $adminOrUser = "A")
     {
         $langId = FatUtility::int($langId);
-        if(1 > $langId) { return 'ERR_Invalid_Lang'; 
+        if(1 > $langId) { return 'ERR_Invalid_Lang';
         }
 
         $srch = new WithdrawalRequestsSearch();
@@ -1196,7 +1196,7 @@ class EmailHandler extends FatModel
             array('op_selprod_id','op_selprod_user_id','op_is_batch','orrmsg_orrequest_id', 'op_product_name', 'op_selprod_title',
             'op_shop_owner_name', 'buyer_cred.credential_username as buyer_username', 'orrequest_qty', 'orrequest_type','orrequest_reference',
             'IFNULL(orreason_title, orreason_identifier) as orreason_title', 'orrmsg_msg', 'op_shop_owner_email',
-            'op_selprod_options', 'op_brand_name', 'op_invoice_number','orrequest_user_id' ) 
+            'op_selprod_options', 'op_brand_name', 'op_invoice_number','orrequest_user_id' )
         );
         $rs = $srch->getResultSet();
         if(!$msgDetail = FatApp::getDb()->fetch($rs)) {
@@ -1301,7 +1301,7 @@ class EmailHandler extends FatModel
             'orrequest_id', 'orrequest_qty','orrequest_reference', 'orrequest_type', 'orrequest_user_id', 'orrmsg_from_user_id',
             'IFNULL(orreason_title, orreason_identifier) as orreason_title',
             'orrmsg_msg', 'orrequest_status', 'buyer.user_name as buyer_name','buyer.user_id as buyer_id','op_selprod_user_id as seller_id',
-            'orrmsg_from_admin_id', 'admin_name', 'admin_username' ) 
+            'orrmsg_from_admin_id', 'admin_name', 'admin_username' )
         );
         $rs = $srch->getResultSet();
         if(!$msgDetail = FatApp::getDb()->fetch($rs)) {
@@ -1454,7 +1454,7 @@ class EmailHandler extends FatModel
         $srch->addMultipleFields(
             array('scatrequestmsg_from_user_id',
             'scatrequestmsg_msg', 'scatrequest_status', 'scatrequest_id', 'scatrequest_user_id',
-            'scatrequestmsg_from_admin_id', 'admin_name', 'admin_username','receiver_user.user_name','receiver_user_cred.credential_email' ) 
+            'scatrequestmsg_from_admin_id', 'admin_name', 'admin_username','receiver_user.user_name','receiver_user_cred.credential_email' )
         );
         $rs = $srch->getResultSet();
         if(!$msgDetail = FatApp::getDb()->fetch($rs)) {
@@ -1516,7 +1516,7 @@ class EmailHandler extends FatModel
         $srch->addMultipleFields(
             array( 'orrequest_id', 'orrequest_user_id', 'orrequest_status','orrequest_reference',
             'buyer.user_name as buyer_name', 'buyer_cred.credential_email as buyer_email', 'op_selprod_user_id', 'seller.user_name as seller_name',
-            'seller_cred.credential_email as seller_email' ) 
+            'seller_cred.credential_email as seller_email' )
         );
         $rs = $srch->getResultSet();
         $request = $db->fetch($rs);
@@ -1536,7 +1536,7 @@ class EmailHandler extends FatModel
         $msgSrch->setPageSize(1);
         $msgSrch->addMultipleFields(
             array('orrmsg_id', 'orrmsg_from_user_id', 'user_name',
-            'orrmsg_from_admin_id', 'admin_name', 'admin_username' ) 
+            'orrmsg_from_admin_id', 'admin_name', 'admin_username' )
         );
         $msgRs = $msgSrch->getResultSet();
         $lastMsgRow = $db->fetch($msgRs);
@@ -1630,7 +1630,7 @@ class EmailHandler extends FatModel
         $srch->doNotLimitRecords();
         $srch->addMultipleFields(
             array('ocrequest_id','ocrequest_op_id', 'ocrequest_ocreason_id', 'ocrequest_status',
-            'op_invoice_number', 'buyer.user_name as buyer_name', 'buyer_cred.credential_email as buyer_email','buyer.user_id as buyer_id') 
+            'op_invoice_number', 'buyer.user_name as buyer_name', 'buyer_cred.credential_email as buyer_email','buyer.user_id as buyer_id')
         );
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
@@ -1674,7 +1674,7 @@ class EmailHandler extends FatModel
         $srch->addCondition('sreport_id', '=', $sreport_id);
         $srch->addMultipleFields(
             array( 'sreport_id', 'sreport_reportreason_id', 'IFNULL(shop_name, shop_identifier) as shop_name',
-            'credential_username', 'sreport_message' ) 
+            'credential_username', 'sreport_message' )
         );
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
@@ -2126,10 +2126,9 @@ class EmailHandler extends FatModel
 
     public static function sendSmtpTestEmail($langId,$smtpArr,$vars = array())
     {
-
         $tpl='test_email';
         $langId = FatUtility::int($langId);
-        if(!$row =static::getMailTpl($tpl, $langId)) {
+        if( !$row = static::getMailTpl($tpl, $langId) ) {
             $langId = FatApp::getConfig('conf_default_site_lang');
             if(!$row =static::getMailTpl($tpl, $langId)) {
                 trigger_error(Labels::getLabel('ERR_Email_Template_Not_Found', CommonHelper::getLangId()), E_USER_ERROR);
@@ -2152,20 +2151,16 @@ class EmailHandler extends FatModel
         }
 
         try {
-
-
-            $email = EmailHandler::sendSmtpEmail(FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), $subject, $body, '', $tpl, $langId, '', $smtpArr);
+            $email = EmailHandler::sendSmtpEmail( FatApp::getConfig("CONF_SITE_OWNER_EMAIL"), $subject, $body, '', $tpl, $langId, '', $smtpArr );
 
             return true;
         }catch (Exception $e) {
-
             return false;
         }
     }
 
     public static function sendTestEmail($langId)
     {
-
         $tpl='test_email';
         $langId = FatUtility::int($langId);
         if(!$row =static::getMailTpl($tpl, $langId)) {
@@ -2298,7 +2293,7 @@ class EmailHandler extends FatModel
             'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
             'shop_id', 'shop_name',
-            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') 
+            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price')
         );
         $productRs = $prodSrch->getResultSet();
         $products = FatApp::getDb()->fetchAll($productRs);
@@ -2350,7 +2345,7 @@ class EmailHandler extends FatModel
             'selprod_id', 'selprod_user_id', 'selprod_condition', 'selprod_price', 'special_price_found', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name',
             'shop_id', 'shop_name',
-            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price') 
+            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price')
         );
         $productRs = $prodSrch->getResultSet();
         $products = FatApp::getDb()->fetchAll($productRs);
