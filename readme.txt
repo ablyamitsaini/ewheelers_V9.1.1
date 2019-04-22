@@ -7,6 +7,7 @@ Enhancements:
 	. CMS layout preview in Add/Edit Content Pages popup.
 	. Added filter to refine search listing based on user on products listing page in admin section.
 	. Move product from cart to Wishlist and vice versa.
+	. Product images - Full Screen View
 
 Fixes :
 	. Optimized page load time.
