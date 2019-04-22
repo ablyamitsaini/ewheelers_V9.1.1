@@ -14,7 +14,7 @@ if( UserAuthentication::isUserLogged() ){
 <div class="dropsection cart-detail">
 <a href="javascript:void(0)" id="close-cart-js" class="close-layer"></a>
   <?php if($totalCartItems>0) { ?>
-  <div class="cartdetail__body">
+  <div class="cartdetail__body" data-simplebar>
     <div class="short-detail">
       <table class="cart-summary">
         <tbody>

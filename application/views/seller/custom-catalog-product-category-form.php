@@ -27,7 +27,8 @@ $cancelBtnFld->developerTags['col'] = 2; ?>
 	</div>
 </div>
 <div id="categorySearchListing"></div>
-<p><?php echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId);?></p>
+<div class="gap"></div>
+<p class="note"><?php echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId);?></p>
 </div>
 <script>
 $('.select-categories-slider-js').slick( getSlickSliderSettings(3,1,langLbl.layoutDirection) );

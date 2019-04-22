@@ -828,7 +828,7 @@ trait CustomCatalogProducts
 
         $result = array();
         $result['prodcat_id'] = $prodCatId;
-        $str = "<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' rel=".$blockCount." id='categoryblock".$blockCount."' ><div class='box-border box-categories scrollbar'>";
+        $str = "<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' rel=".$blockCount." id='categoryblock".$blockCount."' ><div class='box-border box-categories' data-simplebar>";
         //$result['msg'] = Labels::getLabel('MSG_Loaded_successfully',$this->siteLangId);
         if(!empty($listing)) {
             $str.= "<ul>";
@@ -858,7 +858,7 @@ trait CustomCatalogProducts
 
         $emptyBlock ='';
         for($i = $blockCount+1; $i<=3;$i++ ){
-            $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories scrollbar'></div></div>";
+            $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories ' data-simplebar></div></div>";
         }
 
         $result['structure'] = $str;

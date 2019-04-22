@@ -26,3 +26,11 @@
 		<div class="box-border box-categories scrollbar"></div>
 	</div>
 </div>
+<script>
+if($(window).width()>1050){
+	$('.scrollbar').enscroll({
+		verticalTrackClass: 'scroll__track',
+		verticalHandleClass: 'scroll__handle'
+	});
+}
+</script>
