@@ -576,6 +576,7 @@ class ShopsController extends MyAppController
         $searchFrm->fill($frmData);
         $this->set('frmProductSearch', $frm);
         $this->set('searchFrm', $searchFrm);
+        $this->set('shopId', $shop_id);
         $this->_template->addJs('js/slick.js');
         $this->_template->addCss('css/slick.css');
         $this->_template->addJs('js/shop-nav.js');
