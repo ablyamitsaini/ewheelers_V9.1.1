@@ -38,7 +38,6 @@
 				  <li>
 					<?php echo $frmProductSearch->getFieldHTML('keyword'); ?>
 					<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
-					<?php echo $frmProductSearch->getFieldHtml('category'); ?>
 				  </li>
 				  <li class="hide--mobile">
 					<?php echo $frmProductSearch->getFieldHtml('pageSize'); ?>
@@ -62,6 +61,7 @@
 		</li>
 	</ul>
 	<?php
+		echo $frmProductSearch->getFieldHtml('category');
 		echo $frmProductSearch->getFieldHtml('sortOrder');
         echo $frmProductSearch->getFieldHtml('page');
         echo $frmProductSearch->getFieldHtml('shop_id');

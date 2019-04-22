@@ -20,7 +20,10 @@
 				</div>
 			</div>
 			<div class="form__subcontent">
-				<?php  $specCount= count($productSpecifications['prod_spec_name'][CommonHelper::getLangId()]); ?>
+				<?php  $specCount= 0;
+				if(!empty($productSpecifications) && array_key_exists('prod_spec_name',$productSpecifications)){
+					$specCount= 0; count((($productSpecifications))['prod_spec_name'][CommonHelper::getLangId()]);
+				} ?>
 				<form name="frmProductSpec" method="post" id="frm_fat_id_frmProductSpec" class="form form--horizontal" onsubmit="setupCustomCatalogSpecification(this,<?php echo $preqId; ?>); return(false);">
 				<?php
 				$totalSpec =0;

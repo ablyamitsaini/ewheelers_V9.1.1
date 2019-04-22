@@ -3,7 +3,7 @@ class ProductCategorySearch extends SearchBase
 {
     private $langId;
 
-    function __construct( $langId = 0, $isActive = true, $isDeleted = true, $isOrderByCatCode = true, $doNotLimitRecords = true ) 
+    function __construct( $langId = 0, $isActive = true, $isDeleted = true, $isOrderByCatCode = true, $doNotLimitRecords = true, $doNotCalculateRecords = true )
     {
         parent::__construct(ProductCategory::DB_TBL, 'c');
         $this->langId = FatUtility::int($langId);
@@ -30,8 +30,11 @@ class ProductCategorySearch extends SearchBase
         }
 
         if($doNotLimitRecords ) {
-            $this->doNotCalculateRecords();
             $this->doNotLimitRecords();
+        }
+
+        if($doNotCalculateRecords ) {
+            $this->doNotCalculateRecords();
         }
     }
 

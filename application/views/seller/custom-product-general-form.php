@@ -18,8 +18,8 @@
 			<div class="form__subcontent">
 				<?php
 				$customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
-				$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-				$customProductFrm->developerTags['fld_default_col'] = 12;
+				$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
+				$customProductFrm->developerTags['fld_default_col'] = 4;
 				$customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
 
 				$shippingCountryFld = $customProductFrm->getField('shipping_country');
@@ -54,6 +54,10 @@
 
 				$productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
 				$productCodEnabledFld->setWrapperAttribute( 'class' , 'product_cod_enabled_fld');
+
+				$shippingInfoFld = $customProductFrm->getField('shipping_info_html');				
+				$shippingInfoFld->setWrapperAttribute('class','col-lg-12');
+				$shippingInfoFld->developerTags['col'] = 12;
 
 				/* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
 				$productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */

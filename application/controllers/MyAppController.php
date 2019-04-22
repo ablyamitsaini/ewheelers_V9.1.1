@@ -2,7 +2,7 @@
 class MyAppController extends FatController
 {
 
-    public function __construct($action) 
+    public function __construct($action)
     {
         parent::__construct($action);
         $this->action = $action;
@@ -10,9 +10,11 @@ class MyAppController extends FatController
         if (FatApp::getConfig("CONF_MAINTENANCE", FatUtility::VAR_INT, 0) && (get_class($this)!="MaintenanceController") && (get_class($this)!='Home' && $action!='setLanguage') ) {
             FatApp::redirectUser(CommonHelper::generateUrl('maintenance'));
         }
+
         CommonHelper::initCommonVariables();
-        $this->initCommonVariables();
+        $this->initCommonVariables();        
         //UserAuthentication::doCookieLogin();
+
     }
 
     public function initCommonVariables()
@@ -156,7 +158,7 @@ class MyAppController extends FatController
         $this->_template->render(false, false, '_partial/states-list.php');
     }
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
         $nodes = array();
         $className = get_class($this);
@@ -233,7 +235,7 @@ class MyAppController extends FatController
         return $frm;
     }
 
-    protected function getLoginForm() 
+    protected function getLoginForm()
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmLogin');
@@ -246,7 +248,7 @@ class MyAppController extends FatController
         return $frm;
     }
 
-    protected function getRegistrationForm( $showNewsLetterCheckBox = true ) 
+    protected function getRegistrationForm( $showNewsLetterCheckBox = true )
     {
         $siteLangId = $this->siteLangId;
 

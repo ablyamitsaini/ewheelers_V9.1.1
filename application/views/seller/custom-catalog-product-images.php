@@ -34,8 +34,8 @@ $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); r
 			<?php }?>
 			<div class="form__subcontent">
 			  <?php
-				$imagesFrm->developerTags['colClassPrefix'] = 'col-md-';
-				$imagesFrm->developerTags['fld_default_col'] = 6;
+				$imagesFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
+				$imagesFrm->developerTags['fld_default_col'] = 4;
 				echo $imagesFrm->getFormHtml();
 				?>
 				<div class="col-lg-12 col-md-12">
