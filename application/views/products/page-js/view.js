@@ -94,11 +94,6 @@ $("document").ready(function(){
 	$('.js-collection-corner').slick( getSlickSliderSettings(6) );
 	$('.slides--six-js').slick( getSlickSliderSettings(6) );
 
-	$('.items-scroller').enscroll({
-		verticalTrackClass: 'scroller__track',
-		verticalHandleClass: 'scroller__handle'
-	});
-
 	/* for on scoll jump navigation fix */
 	/* var elementPosition = $('.nav--jumps').offset();
 	$(window).scroll(function(){

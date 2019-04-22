@@ -10,7 +10,7 @@
 
 <div id="body" class="body template-<?php echo $template_id;?>" role="main" <?php if($showBgImage){ /* echo 'style="background: url('.$bgUrl.') repeat 0 0;"'; */ } ?> >
 	<?php
-		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'canonicalUrl'=>$canonicalUrl,'shopId'=>$shopId,'productFiltersArr'=>$productFiltersArr,'shopTotalReviews'=>$shopTotalReviews,'shopRating'=>$shopRating);
+		$variables= array('shop'=>$shop, 'siteLangId'=>$siteLangId,'frmProductSearch'=>$frmProductSearch,'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'shopId'=>$shopId,'shopTotalReviews'=>$shopTotalReviews,'shopRating'=>$shopRating);
 		$this->includeTemplate('shops/templates/'.$template_id.'.php',$variables,false);
 	?>
 

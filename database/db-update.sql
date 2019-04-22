@@ -271,3 +271,12 @@ UPDATE `tbl_extra_pages` SET `epage_default_content` = '<div class="heading1">Si
 UPDATE `tbl_extra_pages` SET `epage_default_content` = '<ul> 	<li> <i class="individualTupple"><img src="/images/retina/user.svg" alt="" /></i> 		<h3>Certified User Identity</h3>   		<p> Lorem Ipsum is simply  printing and typesetting </p></li> 	<li> <i class="individualTupple"><img src="/images/retina/locked.svg" alt="" /></i> 		<h3>Secure payment and guaranteed</h3>   		<p> Lorem Ipsum is the printing and typesetting industry</p></li>  	<li> <i class="individualTupple"><img src="/images/retina/handshake2.svg" alt="" /></i> 		<h3> Delivery of goods without risk</h3>   		<p> Lorem Ipsum is simply dummy text of the  industry</p></li> 	<li> <i class="individualTupple"><img src="/images/retina/shipped.svg" alt="" /></i>  		<h3>Sell totally free</h3>  		<p> Lorem Ipsum is simply  of the printing and industry</p></li>   </ul>' WHERE `tbl_extra_pages`.`epage_type` = 26;
 
 ALTER TABLE `tbl_order_products` ADD `op_unit_cost` DECIMAL(10,2) NOT NULL AFTER `op_unit_price`;
+
+
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10002;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10003;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10004;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10005;
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_logo_text';
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_logo_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store.');
