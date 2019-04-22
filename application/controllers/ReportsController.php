@@ -460,7 +460,7 @@ class ReportsController extends LoggedUserController
         $srch->addCondition('op_selprod_user_id', '=', $loggedUserId);
 
         $srch->addOrder('order_date', 'desc');
-        /* echo $srch->getQuery(); die;  */
+        
         if($export == "export" ) {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();

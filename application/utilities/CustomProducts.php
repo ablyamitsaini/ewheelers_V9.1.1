@@ -1930,7 +1930,7 @@ trait CustomProducts
         $frm = new Form('frmLinks', array('id'=>'frmLinks'));
         $frm->addTextBox(Labels::getLabel('LBL_Product_Name', $this->siteLangId), 'product_name');
         /* $brndFld = $frm->addTextBox(Labels::getLabel('LBL_Brand/Manufacturer',$this->siteLangId),'brand_name');
-        $brndFld->htmlAfterField= '<div class="col-md-4"><small><a href="javascript:void(0);" onClick="addBrandReqForm(0);">'.Labels::getLabel('LBL_Brand_Not_Found?_Click_here_to_',$this->siteLangId).Labels::getLabel('LBL_Request_New_Brand',$this->siteLangId).'</a></small></div>'; */
+        $brndFld->htmlAfterField= '<div class="col-md-6"><small><a href="javascript:void(0);" onClick="addBrandReqForm(0);">'.Labels::getLabel('LBL_Brand_Not_Found?_Click_here_to_',$this->siteLangId).Labels::getLabel('LBL_Request_New_Brand',$this->siteLangId).'</a></small></div>'; */
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Category', $this->siteLangId), 'choose_links');
         $fld2 = $frm->addHtml('', 'addNewOptionLink', '</a><div id="product_links_list" class="col-xs-10" ></div>');
@@ -1938,7 +1938,7 @@ trait CustomProducts
         $frm->addHiddenField('', 'product_brand_id');
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Tag', $this->siteLangId), 'tag_name');
-        $fld1->htmlAfterField= '<div class="col-md-4"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product-tag"></ul></div>';
+        $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product-tag"></ul></div>';
 
         //$frm->addHtml('','product-tag','');
 
@@ -2012,10 +2012,11 @@ trait CustomProducts
         $frm->addHiddenField('', 'lang_id', $langId);
         $frm->addRequiredField(Labels::getLabel('LBL_Product_Name', $siteLangId), 'product_name');
         /* $frm->addTextArea( Labels::getLabel('LBL_Short_Description', $siteLangId),'product_short_description');		 */
+        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $siteLangId), 'product_youtube_video');
         $fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Description', $siteLangId), 'product_description');
         $fld->htmlBeforeField = '<div class="editor-bar">';
         $fld->htmlAfterField = '</div>';
-        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $siteLangId), 'product_youtube_video');
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $siteLangId));
         return $frm;
     }
