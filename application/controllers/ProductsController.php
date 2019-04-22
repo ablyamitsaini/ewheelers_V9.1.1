@@ -906,7 +906,9 @@ class ProductsController extends MyAppController
         $this->_template->addJs('js/responsive-img.min.js');
         $this->_template->addCss('css/cart.css');
         $this->_template->addCss('css/xzoom.css');
+        $this->_template->addCss('css/magnific-popup.css');
         $this->_template->addJs('js/xzoom.js');
+        $this->_template->addJs('js/magnific-popup.js');
         //var_dump($product); die;
         $this->_template->render();
     }

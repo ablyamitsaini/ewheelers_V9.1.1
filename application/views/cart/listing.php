@@ -30,7 +30,9 @@
         <td><span class="hide--desktop mobile-thead"></span>
           <div class="item-yk-head">
             <div class="item-yk-head-category"><?php echo Labels::getLabel('LBL_Brand', $siteLangId).': '; ?><span class="text--dark"><?php echo $product['brand_name']; ?></div>
-            <div class="item-yk-head-title"><a title="<?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
+            <div class="item-yk-head-title">
+                <a title="<?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a>
+            </div>
             <div class="item-yk-head-specification">
 				<?php
 				if( isset($product['options']) && count($product['options']) ){
@@ -41,6 +43,39 @@
 				}
 				?>
             </div>
+
+            <?php
+				$showAddToFavorite = true;
+				if( UserAuthentication::isUserLogged() && ( !User::isBuyer() ) ){
+					$showAddToFavorite = false;
+				}
+			?>
+
+            <?php if($showAddToFavorite) { ?>
+                    <br>
+                    <?php if( FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO){
+                        if( empty($product['ufp_id']) ){
+                        ?>
+                            <a href="javascript:void(0)" class="btn btn--sm btn--gray ripplelink" onClick="addToFavourite( '<?php echo md5($product['key']); ?>',<?php echo $product['selprod_id']; ?> );" title="<?php echo Labels::getLabel('LBL_Move_to_wishlist', $siteLangId); ?>">
+                                <?php echo Labels::getLabel('LBL_Move_to_favourites', $siteLangId); ?>
+                            </a>
+                 <?php  }else{
+                            ?>
+                            <?php
+                            echo Labels::getLabel('LBL_Already_marked_as_favourites.', $siteLangId);
+                        }
+                    } else {
+                        if( empty( $product['is_in_any_wishlist'] ) ){
+                        ?>
+                            <a href="javascript:void(0)" class="btn btn--sm btn--gray ripplelink" onClick="moveToWishlist( <?php echo $product['selprod_id']; ?>, event, '<?php echo md5($product['key']); ?>' );" title="<?php echo Labels::getLabel('LBL_Move_to_wishlist', $siteLangId); ?>">
+                                <?php echo Labels::getLabel('LBL_Move_to_wishlist', $siteLangId); ?>
+                            </a>
+                  <?php }else{
+                            echo Labels::getLabel('LBL_Already_added_to_your_wishlist.', $siteLangId);
+                        }
+                    }
+                } ?>
+
           </div>
           </td>
         <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Quantity',$siteLangId); ?></span><div class="qty-wrapper">  <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>">
@@ -109,10 +144,17 @@
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                       </tr>
+<<<<<<< HEAD
                       <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
                       <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+=======
+                      <?php } ?>
+                      <tr>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat( $cartSummary['netChargeAmount'] ); ?></td>
+>>>>>>> a407e3021a9d9404e6c19e0179556ad74ab2fe73
                       </tr>
 					  <tr>
 						<td colspan="2" class="text-right">
