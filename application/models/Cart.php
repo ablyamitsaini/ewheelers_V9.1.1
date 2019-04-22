@@ -798,6 +798,8 @@ class Cart extends FatModel {
 		$WalletAmountCharge = ( $this->isCartUserWalletSelected() ) ? min( $orderNetAmount, $userWalletBalance ) : 0;
 		$orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
+		$netChargeAmt = $cartTotal + $cartTaxTotal - ( ( 0 < $cartVolumeDiscount ) ? $cartVolumeDiscount: 0 );
+
 		$cartSummary = array(
 			'cartTotal'			=>	$cartTotal,
 			'shippingTotal'		=>	$shippingTotal,
@@ -812,6 +814,7 @@ class Cart extends FatModel {
 			'WalletAmountCharge'=> $WalletAmountCharge,
 			'isCodEnabled' 		=> $isCodEnabled,
 			'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
+			'netChargeAmount' => $netChargeAmt,
 		);
 
 		//CommonHelper::printArray($cartSummary); die();
@@ -1541,5 +1544,4 @@ class Cart extends FatModel {
 			return $selprod_id;
 		}
 	}
-
 }

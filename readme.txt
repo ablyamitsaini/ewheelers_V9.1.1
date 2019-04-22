@@ -8,6 +8,7 @@ Enhancements:
 	. Added filter to refine search listing based on user on products listing page in admin section.
 	. Move product from cart to Wishlist and vice versa.
 	. Product images - Full Screen View
+	. Display total cart value with items count in header.
 
 Fixes :
 	. Optimized page load time.

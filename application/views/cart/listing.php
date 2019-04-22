@@ -151,10 +151,10 @@
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                       </tr>
-                      <?php } $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - (( 0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
+                      <?php } ?>
                       <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat( $cartSummary['netChargeAmount'] ); ?></td>
                       </tr>
 					  <tr>
 						<td colspan="2" class="text-right">
