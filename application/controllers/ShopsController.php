@@ -275,7 +275,7 @@ class ShopsController extends MyAppController
         }
 
         $shopCategories = array();
-        Switch($shop['shop_ltemplate_id']){
+        /* Switch($shop['shop_ltemplate_id']){
             case Shop::TEMPLATE_ONE:
             case Shop::TEMPLATE_THREE:
             case Shop::TEMPLATE_FOUR:
@@ -289,8 +289,8 @@ class ShopsController extends MyAppController
             default:
                 $this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
             break;
-        }
-
+        } */
+        $this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
         $this->set('shop', $shop);
         $this->set('shopRating', SelProdRating::getSellerRating($shop['shop_user_id']));
         $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
@@ -330,9 +330,10 @@ class ShopsController extends MyAppController
         }
         $this->set('collectionData', $collection_data);
         $this->set('layoutTemplate', 'shop');
-        $this->set('template_id', ($shop['shop_ltemplate_id']==0)?SHOP::TEMPLATE_ONE:$shop['shop_ltemplate_id']);
+        // $this->set('template_id', ($shop['shop_ltemplate_id']==0)?SHOP::TEMPLATE_ONE:$shop['shop_ltemplate_id']);
+        $this->set('template_id', SHOP::TEMPLATE_ONE);
         $this->set('layoutRecordId', $shop['shop_id']);
-        $showBgImage = $this->showBackgroundImage($shop_id, $this->siteLangId, $shop['shop_ltemplate_id']);
+        $showBgImage = $this->showBackgroundImage($shop_id, $this->siteLangId, SHOP::TEMPLATE_ONE);
         $this->set('showBgImage', $showBgImage);
     }
 

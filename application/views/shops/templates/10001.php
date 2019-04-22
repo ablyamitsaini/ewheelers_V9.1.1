@@ -6,11 +6,11 @@
             <?php if( $haveBannerImage ){ ?>
           <div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
             <?php foreach($haveBannerImage as $banner){ ?>
-            <div class="item"><img src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
+            <div class="item"><img data-ratio="16:9 (950x535)" src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
             <?php } ?>
           </div>
           <?php } ?>
-          <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
+          <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
         </div>
     </div>
     <div class="shop-col column--md">
@@ -88,7 +88,7 @@
                 </div>
                 <?php if($shop['shop_description']){?>
                 <div class="divider divider--single"></div>
-                <div class="box box--space shop-information">
+                <div class="box box--space shop-information" id="shop-information">
                     <p><strong><?php echo Labels::getLabel('LBL_Information', $siteLangId); ?></strong></p>
                     <p><?php echo nl2br($shop['shop_description']);?></p>
                 </div>
@@ -107,5 +107,10 @@
 	</div>
 </section>
 <script>
+new SimpleBar(document.getElementById('shop-information'), {
+    autoHide: false,
+    forceVisible: true
+});
+
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>
