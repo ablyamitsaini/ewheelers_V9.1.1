@@ -638,9 +638,10 @@ trait CustomCatalogProducts
         $fld = $frm->addRequiredField(Labels::getLabel('LBL_Seller_Product_Title', $this->siteLangId), 'selprod_title');
         $fld->htmlAfterField = "<small class='text--small'>".Labels::getLabel('LBL_This_product_title_will_be_displayed_on_the_site', $this->siteLangId).'</small>';
         $frm->addTextBox(Labels::getLabel('LBL_Any_extra_comment_for_buyer', $this->siteLangId), 'selprod_comments');
+        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $this->siteLangId), 'product_youtube_video');
         //$frm->addHtmlEditor(Labels::getLabel('LBL_Description',$this->siteLangId),'product_description');
         $frm->addTextarea(Labels::getLabel('LBL_Description', $this->siteLangId), 'product_description');
-        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $this->siteLangId), 'product_youtube_video');
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $siteLangId));
         return $frm;
     }

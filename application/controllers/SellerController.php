@@ -3582,8 +3582,6 @@ class SellerController extends LoggedUserController
         $frm->addHiddenField('', 'product_brand_id');
         /* } */
 
-        $frm->addCheckBox(Labels::getLabel('LBL_Product_Featured', $this->siteLangId), 'product_featured', 1, array(), false, 0);
-
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Minimum_Selling_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'product_min_selling_price', '');
         $fld->requirements()->setPositive();
         $taxCategories =  Tax::getSaleTaxCatArr($langId);
@@ -3675,11 +3673,9 @@ class SellerController extends LoggedUserController
 
         /* $frm->addFloatField( Labels::getLabel('LBL_Minimum_Selling_Price', $langId).' ['.CommonHelper::getCurrencySymbol(true).']', 'product_min_selling_price', ''); */
 
-        $activeInactiveArr = applicationConstants::getActiveInactiveArr($langId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Product_Status', $langId), 'product_active', $activeInactiveArr, applicationConstants::ACTIVE, array(), '');
+        $frm->addTextBox(Labels::getLabel('LBL_EAN/UPC_code', $this->siteLangId), 'product_upc');
 
-        $yesNoArr = applicationConstants::getYesNoArr($langId);
-        $codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD', $langId), 'product_cod_enabled', $yesNoArr, applicationConstants::NO, array(), '');
+        $frm->addCheckBox(Labels::getLabel('LBL_Product_Featured', $this->siteLangId), 'product_featured', 1, array(), false, 0);
 
         $paymentMethod = new PaymentMethods;
         if(!$paymentMethod->cashOnDeliveryIsActive()) {
@@ -3689,6 +3685,18 @@ class SellerController extends LoggedUserController
 
         /* $frm->addSelectBox(Labels::getLabel('LBL_Shipped_by_me',$langId), 'product_shipped_by_me', $yesNoArr, applicationConstants::YES, array(), ''); */
 
+
+
+        $activeInactiveArr = applicationConstants::getActiveInactiveArr($langId);
+        $frm->addSelectBox(Labels::getLabel('LBL_Product_Status', $langId), 'product_active', $activeInactiveArr, applicationConstants::ACTIVE, array(), '');
+
+        $yesNoArr = applicationConstants::getYesNoArr($langId);
+        $codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD', $langId), 'product_cod_enabled', $yesNoArr, applicationConstants::NO, array(), '');
+
+        $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $langId), 'ps_free', 1);
+
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $langId), 'shipping_country');
+
         if($type == 'CATALOG_PRODUCT') {
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Option_Groups', $this->siteLangId), 'option_name');
             $fld1->htmlAfterField='<div class="col-md-12"><small> <a class="" href="javascript:void(0);" onClick="optionForm(0);">' .Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
@@ -3696,12 +3704,6 @@ class SellerController extends LoggedUserController
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Tag', $this->siteLangId), 'tag_name');
             $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product-tag-js"></ul></div>';
         }
-        $frm->addTextBox(Labels::getLabel('LBL_EAN/UPC_code', $this->siteLangId), 'product_upc');
-        $frm->addHtml('', 'shipping_info_html', '<div class="heading4 not-digital-js">'.Labels::getLabel('LBL_Shipping_Info/Charges', $langId).'</div><div class="divider not-digital-js"></div>');
-        $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $langId), 'shipping_country');
-
-        $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $langId), 'ps_free', 1);
-        $frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
 
         $frm->addHiddenField('', 'ps_from_country_id');
         $frm->addHiddenField('', 'product_id');
@@ -3709,7 +3711,12 @@ class SellerController extends LoggedUserController
         $frm->addHiddenField('', 'product_options');
         $frm->addHiddenField('', 'preq_prodcat_id', $prodcat_id);
 
+        $fld1 = $frm->addHtml('', 'shipping_info_html', '<div class="heading4 not-digital-js">'.Labels::getLabel('LBL_Shipping_Info/Charges', $langId).'</div><div class="divider not-digital-js"></div>');
+        $fld2 =$frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $fld1->attachField($fld2);
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
+
         return $frm;
     }
 
@@ -3724,9 +3731,9 @@ class SellerController extends LoggedUserController
             $reqData = ProductRequest::getAttributesById($product_id, array('preq_content'));
             $productData = array_merge($reqData, json_decode($reqData['preq_content'], true));
             $optionArr = isset($productData['product_option'])?$productData['product_option']:array();
-            if(!empty($optionArr)) {
+            /*if(!empty($optionArr)) {
                 $frm->addHtml('', 'optionSectionHeading', '');
-            }
+            }*/
             foreach($optionArr as $val){
                 $optionSrch = Option::getSearchObject($this->siteLangId);
                 $optionSrch->addMultipleFields(array('IFNULL(option_name,option_identifier) as option_name','option_id'));
@@ -3751,7 +3758,7 @@ class SellerController extends LoggedUserController
 
             $productOptions = Product::getProductOptions($product_id, $this->siteLangId, true);
             if($productOptions ) {
-                $frm->addHtml('', 'optionSectionHeading', '');
+                /*$frm->addHtml('', 'optionSectionHeading', '');*/
                 foreach( $productOptions as $option ){
                     $option_name = ($option['option_name'] != '') ? $option['option_name'] : $option['option_identifier'];
                     $fld = $frm->addSelectBox($option_name, 'selprodoption_optionvalue_id['.$option['option_id'].']', $option['optionValues'], '', array('class' => 'selprodoption_optionvalue_id'), Labels::getLabel('LBL_Select', $this->siteLangId));

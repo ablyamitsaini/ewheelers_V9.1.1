@@ -20,9 +20,12 @@
 			<div class="form__subcontent">
 				<?php
 				$customProductLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
-				$customProductLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-				$customProductLangFrm->developerTags['fld_default_col'] = 12;
+				$customProductLangFrm->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
+				$customProductLangFrm->developerTags['fld_default_col'] = 6;
 				//$customProductLangFrm->setFormTagAttribute('onsubmit', 'setupCustomProductLang(this); return(false);');
+				$fld = $customProductLangFrm->getField('product_description');
+				$fld->setWrapperAttribute('class','col-lg-12');
+				$fld->developerTags['col'] = 12;
 				echo $customProductLangFrm->getFormHtml();
 				?>
 			</div>

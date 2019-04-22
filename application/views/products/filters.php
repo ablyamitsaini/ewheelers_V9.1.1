@@ -57,7 +57,7 @@ array_walk($catCodeArr,function(&$n) {
   <?php
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
   <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
- <?php if( !isset( $shopCatFilters ) ){ ?>
+ <?php if( !$shopCatFilters ){ ?>
   <div id="accordian" class="cat-accordion toggle-target scrollbar">
 	<ul class="">
 		<?php foreach( $categoriesArr as $cat ){
