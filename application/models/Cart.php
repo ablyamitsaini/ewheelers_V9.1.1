@@ -630,7 +630,6 @@ class Cart extends FatModel {
 	}
 
 	public function setShippingAddressSameAsBilling(){
-        echo "<script>alert('hello');</script>";
 		$billing_address_id = $this->getCartBillingAddress();
 		if( $billing_address_id ){
 			$this->SYSTEM_ARR['shopping_cart']['isShippingSameAsBilling'] = true;
