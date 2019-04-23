@@ -280,8 +280,8 @@ $("document").ready(function(){
 	var max=0;
 	<?php if( isset($priceArr) && $priceArr ){ ?>
 	var range,
-	min = Math.floor(<?php echo $filterDefaultMinValue/* $filterDefaultMinValue */; ?>),
-    max = Math.floor(<?php echo $filterDefaultMaxValue/* $filterDefaultMaxValue */; ?>),
+	min = Math.floor(<?php echo $filterDefaultMinValue; ?>),
+    max = Math.floor(<?php echo $filterDefaultMaxValue; ?>),
     from,
     to;
 	var $from = $('input[name="priceFilterMinValue"]');
@@ -316,7 +316,7 @@ $("document").ready(function(){
 				var max = Number(minMaxArr[1]);
 				$('input[name="priceFilterMinValue"]').val(min);
 				$('input[name="priceFilterMaxValue"]').val(max);
-				return addPricefilter();
+				addPricefilter(true);
 				//return searchProducts(document.frmProductSearch);
 			}
 
@@ -325,6 +325,7 @@ $("document").ready(function(){
 			from = data.from;
 			to = data.to;
 			updateValues();
+            addPricefilter(true);
 		}
 	});
 
@@ -393,6 +394,8 @@ $to.on("change", function () {
 	});
 	$('.span--expand').click();
 	/* ] */
+
+    updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 });
 
 /*  $(window).load(function(){

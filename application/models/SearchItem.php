@@ -42,6 +42,7 @@ class SearchItem extends MyAppModel
         return $arr = explode('/', $string);
     }
 
+
     public static function convertArrToSrchFiltersAssocArr($arr)
     {
         $arr_url_params = array();
