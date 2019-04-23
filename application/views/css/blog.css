@@ -244,14 +244,14 @@
 }
 
 .posts-slider .slick-arrow.slick-prev {
-  background: #fff url(/images/retina/left-arrow.svg) no-repeat center;
-  background-size: 25px;
+  /* background: #fff url(/images/retina/left-arrow.svg) no-repeat center; */
+  /* background-size: 25px; */
   left: 5%;
 }
 
 .posts-slider .slick-arrow.slick-next {
-  background: #fff url(/images/retina/right-arrow.svg) no-repeat center;
-  background-size: 25px;
+  /* background: #fff url(/images/retina/right-arrow.svg) no-repeat center;
+  background-size: 25px; */
   right: 5%;
 }
 
@@ -531,7 +531,7 @@
 }
 
 
-.share-this { 
+.share-this {
     margin:1rem 0;
 }
 

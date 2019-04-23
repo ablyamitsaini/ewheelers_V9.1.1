@@ -31,7 +31,7 @@
 							<?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?>
 						</div>
 						<div class="store-button">
-							<a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--primary ripplelink"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/store-icn.png" alt=""></i>
+						<a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--primary ripplelink storeBtn-js"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/store-icn.png" alt=""></i>
 							<?php echo Labels::getLabel('LBL_Open_a_store', $siteLangId); ?> </a>
 						</div>
 						<?php /* <div class="gap"></div>

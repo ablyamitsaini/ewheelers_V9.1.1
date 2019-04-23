@@ -5533,6 +5533,48 @@ span.subheading {
   padding: 10px 0;
 }
 
+.acc {
+  margin: 0px 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.acc_ctrl {
+  background: #FFFFFF;
+  border: none;
+  border-bottom: solid 1px var(--border-color);
+  display: block;
+  outline: none;
+  padding: 10px 0px 10px 0px;
+  position: relative;
+  width: 100%;
+  text-transform: none;
+}
+
+.acc_ctrl h4 {
+  text-transform: none;
+  color: #3d403e;
+  padding: 0;
+  margin: 10px 0;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.acc_ctrl a {
+  color: inherit;
+}
+
+.acc_ctrl.active h4,
+.acc_ctrl:focus h4 {
+  position: relative;
+}
+
+.acc_panel {
+  padding: 15px 0;
+  display: none;
+  overflow: hidden;
+}
+
 /*faqs page*/
 .browsed-box {
   border: solid 1px var(--border-color);
@@ -10861,7 +10903,7 @@ html.quick-view--open {
   font-size: 0.875rem;
 }
 .shop-information{
-    max-height: 200px;
+    max-height: 165px;
 }
 
 /*
@@ -13430,6 +13472,41 @@ main.main {
 
 .bg--second {
   background: var(--second-color);
+}
+
+.bg-brands {
+	min-height: 250px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+	color: #fff;
+	background-repeat: no-repeat;
+	background-position: center;
+
+}
+
+.bg-brands .container {
+	z-index: 1;
+	position: relative;
+}
+
+.bg-brands:after {
+	background: rgba(36, 40, 56, .75);
+	height: 100%;
+	width: 100%;
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 0;
+}
+
+.txt-white {
+	color: #fff;
 }
 
 /*Old browsers*/

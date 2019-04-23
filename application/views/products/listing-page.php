@@ -4,13 +4,33 @@
 	$keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
 	$keywordFld = $frmProductSearch->getField('keyword');
 	$keywordFld->overrideFldType("hidden");
+	$bannerImage = '';
+	if( !empty($category['banner'])) {
+	$bannerImage = CommonHelper::generateUrl('Category','Banner', array($category['prodcat_id'], $siteLangId, 'wide'));
+	}
 ?>
-	<section class="section section--fill">
+	<?php if( !empty($category['banner']) || !empty($category['prodcat_description'])) { ?>
+	<section class="section bg-brands" style="background-image: url(<?php echo $bannerImage; ?>)">
+		<?php if(!empty($category['prodcat_description']) && array_key_exists('prodcat_description',$category)){ ?>
 		<div class="container">
-			<div class="section-head section--white--head section--head--center">
+			<div class="row justify-content-center">
+				<div class="col-lg-9">
+					<div class="text-center">
+						<h6 class="txt-white"><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></h6>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php }	?>
+	</section>
+	<?php }	?>
+	<section class="section section--pagebar">
+		<div class="container">
+			<div class="section-head justify-content-center mb-0">
 				<div class="section__heading">
-					<h2> <?php echo $pageTitle; ?>
-					<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ><?php echo $page;?> - </span><span id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span>
+					<h2 class="mb-0"><?php echo $pageTitle; ?>
+						<?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ><?php echo $page;?> - </span><span id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span> */ ?>
+						<span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?></span>
 					</h2>
 				</div>
 			</div>
@@ -49,17 +69,7 @@
 					}
 					?>
 					<div class="<?php echo $class;?>">
-						<?php
-						if( !empty($category['banner']) && (!isset($noProductFound)) ){ ?>
-						<a href="<?php echo CommonHelper::generateUrl('Category','view', array($category['prodcat_id'])); ?>" title="<?php echo $category['prodcat_name']; ?>" class="advertise__block advertise__block--main"><img data-ratio="16:9 (1000x563)" src="<?php echo CommonHelper::generateUrl('Category','Banner', array($category['prodcat_id'], $siteLangId, 'wide')); ?>" alt="<?php echo Labels::getLabel('LBL_category_Banner', $siteLangId); ?>"></a>
-						<?php }
-
-						if(!empty($category) && array_key_exists('prodcat_description',$category) && (!isset($noProductFound))){ ?>
-						<div class="category__description container--cms">
-						<?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?>
-						</div>
-						<?php }	?>
-						<div class="listing-products -listing-products listing-products--grid ">
+						<div class="listing-products -listing-products ">
 							<div id="productsList" role="main-listing" class="row product-listing">
 								<?php if($recordCount > 0 ) {
 									$productsData = array (

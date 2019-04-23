@@ -52,7 +52,7 @@
 		</li>
 		<li>
 			<div class="list-grid-toggle switch--link-js">
-				<div class="icon icon-grid">
+				<div class="icon">
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>

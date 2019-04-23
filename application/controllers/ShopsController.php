@@ -259,7 +259,7 @@ class ShopsController extends MyAppController
         /* ] */
 
         $srch->addMultipleFields(
-            array( 'shop_id','tu.user_name','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            array( 'shop_id','tu.user_name','tu.user_regdate','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
             'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
@@ -843,7 +843,7 @@ class ShopsController extends MyAppController
         $srch->addMultipleFields(
             array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
             'shop_payment_policy', 'shop_delivery_policy', 'shop_refund_policy', 'shop_additional_info', 'shop_seller_info',
-            'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city','u.user_name as shop_owner_name', 'u_cred.credential_username as shop_owner_username' )
+            'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city','u.user_name as shop_owner_name', 'u.user_regdate', 'u_cred.credential_username as shop_owner_username' )
         );
 
         $srch->addCondition('shop_id', '=', $shop_id);
@@ -1022,7 +1022,7 @@ class ShopsController extends MyAppController
         /* ] */
 
         $srch->addMultipleFields(
-            array( 'shop_id','tu.user_name','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
             'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );

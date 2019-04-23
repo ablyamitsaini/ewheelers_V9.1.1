@@ -16,10 +16,9 @@
     <div class="shop-col column--md">
         <div class="shop-info">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <div class="shop-name">
-                        <h5><?php echo $shop['shop_name']; ?> <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_By', $siteLangId); ?> <strong> <?php echo $shop['user_name'];?> </strong></span></h5>
-
+                        <h5><?php echo $shop['shop_name']; ?> <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_On', $siteLangId); ?> <strong> <?php $date = new DateTime($shop['user_regdate']); echo $date->format('M d, Y'); ?> </strong></span></h5>
                     </div>
                     <div class="products__rating"> <i class="icn"><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -51,13 +50,13 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="shop-btn-group">
                         <?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer()) ) $showAddToFavorite = false; ?>
                         <?php if($showAddToFavorite) { ?>
                             <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
-                                </svg></i><?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
+                                </svg></i><?php echo Labels::getLabel('LBL_Favorite_Shop', $siteLangId); ?> </a>
                         <?php }?>
                         <?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) $showMoreButtons = false; ?>
                         <?php if($showMoreButtons){ ?>
@@ -108,8 +107,7 @@
 </section>
 <script>
 new SimpleBar(document.getElementById('shop-information'), {
-    autoHide: false,
-    forceVisible: true
+    autoHide: false
 });
 
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
