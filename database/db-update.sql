@@ -272,3 +272,10 @@ UPDATE `tbl_extra_pages` SET `epage_default_content` = '<ul> 	<li> <i class="ind
 
 ALTER TABLE `tbl_order_products` ADD `op_unit_cost` DECIMAL(10,2) NOT NULL AFTER `op_unit_price`;
 ALTER TABLE `tbl_user_wish_lists` ADD `uwlist_default` TINYINT(1) NOT NULL AFTER `uwlist_added_on`;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10002;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10003;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10004;
+DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` = 10005;
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_logo_text';
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_logo_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store.');

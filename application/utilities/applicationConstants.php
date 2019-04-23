@@ -329,7 +329,7 @@ class applicationConstants
     static function getShopBannerSize()
     {
         return array(
-        Shop::TEMPLATE_ONE    =>   '1058*487',
+        Shop::TEMPLATE_ONE    =>   '950*535',
         Shop::TEMPLATE_TWO    =>   '1300*600',
         Shop::TEMPLATE_THREE  =>   '1350*410',
         Shop::TEMPLATE_FOUR   =>   '1350*410',
