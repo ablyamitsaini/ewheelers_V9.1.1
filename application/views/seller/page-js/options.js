@@ -161,6 +161,11 @@ $(document).ready(function(){
 		});
 	};
 
+	deleteOptions = function(){
+		if( !confirm(langLbl.confirmDelete) ){ return; }
+		$("#frmOptionListing").submit();
+	};
+
 	clearOptionSearch = function(){
 		document.frmOptionSearch.reset();
 		searchOptions(document.frmOptionSearch);

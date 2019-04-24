@@ -23,3 +23,7 @@
     color: #888;
     cursor: not-allowed !important;
 }
+
+.formActions-css {
+    display: none !important;
+}

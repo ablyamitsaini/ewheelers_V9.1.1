@@ -47,9 +47,11 @@ $action = strtolower($action);
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reward-points" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reward-points"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Reward_Points",$siteLangId); ?></span></a></div></li>
 				<?php if(FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE',FatUtility::VAR_INT,1)){?>
-				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','shareEarn'); ?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'buyer' && $action == 'shareearn') ? 'is-active' : ''; ?>">
+					<div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','shareEarn'); ?>">
+						<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use></svg>
+					</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?></span></a></div>
+				</li>
 				<?php } ?>
 				<li class="menu__item <?php echo ($controller == 'buyer' && $action == 'offers') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_My_Offers",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','offers'); ?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers"></use></svg>

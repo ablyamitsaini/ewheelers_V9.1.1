@@ -2,7 +2,44 @@ $(document).ready(function () {
 	setTimeout(function () {
 		$('body').addClass('loaded');
 	}, 1000);
+
+	$(document).on("click",".selectItem--js", function(){
+		if( $(this).prop("checked") == false ){
+			$(".selectAll-js").prop("checked", false);
+		}
+		showFormActionsBtns();
+	});
 });
+
+function showFormActionsBtns() {
+	if( typeof $(".selectItem--js:checked").val() === 'undefined' ){
+		$(".formActionBtn-js").addClass('formActions-css');
+	}else{
+		$(".formActionBtn-js").removeClass('formActions-css');
+	}
+}
+
+function selectAll( obj ){
+	$(".selectItem--js").each(function(){
+		if( obj.prop("checked") == false ){
+			$(this).prop("checked", false);
+		}else{
+			$(this).prop("checked", true);
+		}
+	});
+	showFormActionsBtns();
+}
+
+function formAction( frm ) {
+	if( typeof $(".selectItem--js:checked").val() === 'undefined' ){ $.mbsmessage(langLbl.atleastOneRecord, true, 'alert--danger'); return; }
+
+	$.mbsmessage(langLbl.processing,true,'alert--process alert');
+	data = fcom.frmData(frm);
+
+	fcom.updateWithAjax( frm.action, data, function(resp){
+		setTimeout(function() { location.reload(); }, 1000);
+	});
+}
 
 function initialize() {
     geocoder = new google.maps.Geocoder();

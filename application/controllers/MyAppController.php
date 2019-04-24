@@ -111,6 +111,7 @@ class MyAppController extends FatController
         'controllerName' =>$controllerName,
         'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information', $this->siteLangId),
         'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s', $this->siteLangId),
+        'atleastOneRecord' =>Labels::getLabel('LBL_Please_select_atleast_one_record.', $this->siteLangId),
         );
 
         $languages = Language::getAllNames(false);

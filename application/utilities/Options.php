@@ -251,19 +251,40 @@ trait Options
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    public function bulkOptionsDelete(){
+        $optionId_arr = FatApp::getPostedData('option_id');
+        if ( is_array( $optionId_arr ) && count( $optionId_arr ) ) {
+            foreach ($optionId_arr as $option_id) {
+                $this->deleteOption( $option_id );
+            }
+            FatUtility::dieJsonSuccess(
+                Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->siteLangId)
+            );
+        }
+        FatUtility::dieWithError(
+            Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
+        );
+    }
+
     public function deleteSellerOption()
     {
-
-
         $option_id = FatApp::getPostedData('id', FatUtility::VAR_INT, 0);
-        if($option_id < 1) {
+        $this->deleteOption( $option_id );
+
+        FatUtility::dieJsonSuccess(
+            Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->siteLangId)
+        );
+    }
+
+    private function deleteOption( $option_id )
+    {
+        if( $option_id < 1 || empty( $option_id ) ) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId)
             );
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if($option_id>0) {
-
+        if( $option_id > 0 ) {
             UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
         }
 
@@ -287,10 +308,6 @@ trait Options
             Message::addErrorMessage($optionObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-
-        FatUtility::dieJsonSuccess(
-            Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->siteLangId)
-        );
     }
 
     function autoCompleteOptions()
