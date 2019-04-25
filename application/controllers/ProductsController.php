@@ -147,6 +147,11 @@ class ProductsController extends MyAppController
         $priceArr  = array();
 
         /* Brand Filters Data[ */
+        $brandId = 0;
+        if(array_key_exists('brand_id', $headerFormParamsAssocArr)) {
+            $brandId = FatUtility::int($headerFormParamsAssocArr['brand_id']);
+        }
+
         $brandsCheckedArr = array();
         if(array_key_exists('brand', $headerFormParamsAssocArr)) {
             $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
@@ -155,6 +160,12 @@ class ProductsController extends MyAppController
         $brandSrch = clone $prodSrchObj;
         $brandSrch->addGroupBy('brand_id');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name', 'brand_short_description'));
+        if($brandId){
+            $brandSrch->addCondition('brand_id','=',$brandId);
+            $brandsCheckedArr =  array($brandId);
+        }
+        //var_dump($brandsCheckedArr);
+
         if(!empty($brandsCheckedArr)){
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',',$brandsCheckedArr).'"),1,0) as priority');
             $brandSrch->addOrder('priority','desc');
@@ -243,12 +254,6 @@ class ProductsController extends MyAppController
         }
 
         /* ] */
-
-        $brandsCheckedArr = array();
-        if(array_key_exists('brand', $headerFormParamsAssocArr)) {
-            $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
-        }
-
         $optionValueCheckedArr = array();
         if(array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];

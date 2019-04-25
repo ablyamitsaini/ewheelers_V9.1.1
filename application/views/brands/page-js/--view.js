@@ -1,8 +1,8 @@
-$(document).ready(function(){	
+$(document).ready(function(){
 	bannerAdds();
-	
+
 	searchProducts(document.frmProductSearch);
-	
+
 	/* for toggling of grid/list view[ */
 	$('.switch--link-js').on('click',function(e) {
 		$('.switch--link-js').parent().removeClass("is--active");
@@ -21,6 +21,6 @@ $(document).ready(function(){
 	bannerAdds = function(){
 		fcom.ajax(fcom.makeUrl('Banner','brands'), '', function(res){
 			$("#brandBanners").html(res);
-		}); 
-	};	
-})();	
+		});
+	};
+})();
