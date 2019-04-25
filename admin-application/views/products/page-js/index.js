@@ -1,23 +1,36 @@
+$(document).on("change", "select[name='is_custom_or_catalog']", function(){
+	if ( 0 == $(this).val() ) {
+		$("input[name='product_seller_id']").val('');
+		$("input[name='product_seller']").val('').attr('disabled','disabled');
+	}else{
+		$("input[name='product_seller']").removeAttr('disabled');
+	}
+});
+
 $(document).ready(function(){
 	searchProducts(document.frmSearch);
 
 	$("input[name='product_seller']").autocomplete({
 		'source': function(request, response) {
-			$.ajax({
-				url: fcom.makeUrl('Products', 'autoCompleteSellerJson'),
-				data: {keyword: request},
-				dataType: 'json',
-				type: 'post',
-				success: function(json) {
-					response($.map(json, function(item) {
-						var email = '';
-						if( null !== item['credential_email'] ){
-							email = ' ('+item['credential_email']+')';
-						}
-						return { label: item['seller'] + email,	value: item['product_seller_id']	};
-					}));
-				},
-			});
+			if( '' != request ){
+				$.ajax({
+					url: fcom.makeUrl('Products', 'autoCompleteSellerJson'),
+					data: {keyword: request},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+						response($.map(json, function(item) {
+							var email = '';
+							if( null !== item['credential_email'] ){
+								email = ' ('+item['credential_email']+')';
+							}
+							return { label: item['credential_username'] + email,	value: item['credential_user_id']	};
+						}));
+					},
+				});
+			}else{
+				$("input[name='product_seller_id']").val('');
+			}
 		},
 		'select': function(item) {
 			$("input[name='product_seller_id']").val( item['value'] );
@@ -172,6 +185,7 @@ $(document).delegate('.language-js','change',function(){
 
 	clearSearch = function(){
 		document.frmSearch.reset();
+		document.frmSearch.product_seller_id.value = '';
 		searchProducts(document.frmSearch);
 	};
 

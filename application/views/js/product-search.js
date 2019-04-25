@@ -112,7 +112,7 @@ $(document).ready(function(){
 		if( code == 13 ) {
 			e.preventDefault();
 			removePaginationFromLink();
-			addPricefilter();
+			addPricefilter(true);
 		}
 	});
 
@@ -121,7 +121,7 @@ $(document).ready(function(){
 		if( code == 13 ) {
 			e.preventDefault();
 			removePaginationFromLink();
-			addPricefilter();
+			addPricefilter(true);
 		}
 	});
 
@@ -354,7 +354,7 @@ function getSearchQueryUrl(includeBaseUrl){
 
 function addPricefilter(reloadPage){
 	if(typeof reloadPage == 'undefined'){
-		reloadPage = true;
+		reloadPage = false;
 	}
 	$('.price').remove();
 	if(!$('#filters').find('a').hasClass('price')){
@@ -385,12 +385,14 @@ function removePriceFilter(reloadPage){
 	$('.price').remove();
 }
 
-function updatePriceFilter(minPrice,maxPrice){
-	var addPriceFilter = true;
+function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
+	if(typeof addPriceFilter == 'undefined'){
+		addPriceFilter = false;
+	}
+
 	if(typeof minPrice == 'undefined' || typeof maxPrice == 'undefined'){
 		minPrice = $("#filterDefaultMinValue").val();
 		maxPrice = $("#filterDefaultMaxValue").val();
-		addPriceFilter = false;
 	}
 
 	$('input[name="priceFilterMinValue"]').val(minPrice);
