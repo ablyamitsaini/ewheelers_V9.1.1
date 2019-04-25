@@ -14,6 +14,8 @@ Enhancements:
 	. In back-end linking process, each link will be opened in new tab.
 	. Removed collections primary record field and managed collection from static defined values.
 	. Updated products listing page. Initially products will load and then filters via ajax.
+	. Restrict empty search, Search string must be atleast 3 characters long.
+	. Disabled parent category link in header navigation.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
