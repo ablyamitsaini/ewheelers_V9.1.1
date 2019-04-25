@@ -118,7 +118,7 @@ class Product extends MyAppModel{
 				'product_id',
 			),
 			ImportexportCommon::VALIDATE_NOT_NULL => array(
-				'brand_identifier',
+				'product_identifier',
 				'afile_physical_path',
 				'afile_name',
 			),
