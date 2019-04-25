@@ -16,7 +16,7 @@ if($products){
 			<div class="products__quickview"> <a onClick='quickDetail(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content"></a> </div>
 		</div>
 		<div class="products__footer">
-			<?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
+			<?php /* if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
 			<div class="products__rating">
 				<i class="icn"><svg class="svg">
 					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -25,7 +25,7 @@ if($products){
 				  <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
 				<?php } ?>
 			</div>
-			<?php }?>
+		<?php } */ ?>
 			<?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$product,'siteLangId'=>$siteLangId),false);?>
 			<div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
 			<div class="products__title"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>"><?php echo (mb_strlen($product['selprod_title']) > 30) ? mb_substr($product['selprod_title'],0,30)."..." : $product['selprod_title'];?> </a></div>

@@ -3,6 +3,10 @@ var page = 1;
 $(document).ready(function(){
 	var frm = document.frmProductSearch;
 
+	var frmSiteSearch = document.frmSiteSearch;
+	$(frmSiteSearch.keyword).val($(frm.keyword).val());
+	setSelectedCatValue($(frm.category).val());
+
 	$.each( frm.elements, function(index, elem){
 		if( elem.type != 'text' && elem.type != 'textarea' && elem.type != 'hidden' && elem.type != 'submit' ){
 			/* i.e for selectbox */

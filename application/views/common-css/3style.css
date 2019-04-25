@@ -13650,3 +13650,26 @@ main.main {
   margin-bottom: 2rem;
   display: block;
 }
+
+.user-type {
+	display: flex;
+	background: rgba(0, 0, 0, 0.1);
+	width: auto;
+	align-items: center;
+	border-inline-end:1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-type > a {
+	color: #fff;
+	padding: 0.5rem 1rem !important;
+	font-weight: 600;
+	text-transform: uppercase;
+
+}
+
+.user-type a .svg {
+	fill: #fff;
+	width: 15px;
+	height: 15px;
+	margin-inline-start: 1rem !important;
+}
