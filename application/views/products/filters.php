@@ -16,7 +16,7 @@ array_walk($catCodeArr,function(&$n) {
 <?php if($shopCatFilters){
     $searchFrm->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
     $keywordFld = $searchFrm->getField('keyword');
-    $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
+    $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Shop_Search',$siteLangId));
     $keywordFld->htmlAfterField = '<input name="btnSrchSubmit" value="" type="submit" class="input-submit">';
     /*$keywordFld = $frmProductSearch->getField('keyword');
     $keywordFld->overrideFldType("hidden");*/
@@ -280,8 +280,8 @@ $("document").ready(function(){
 	var max=0;
 	<?php if( isset($priceArr) && $priceArr ){ ?>
 	var range,
-	min = Math.floor(<?php echo $filterDefaultMinValue/* $filterDefaultMinValue */; ?>),
-    max = Math.floor(<?php echo $filterDefaultMaxValue/* $filterDefaultMaxValue */; ?>),
+	min = Math.floor(<?php echo $filterDefaultMinValue; ?>),
+    max = Math.floor(<?php echo $filterDefaultMaxValue; ?>),
     from,
     to;
 	var $from = $('input[name="priceFilterMinValue"]');
@@ -316,7 +316,7 @@ $("document").ready(function(){
 				var max = Number(minMaxArr[1]);
 				$('input[name="priceFilterMinValue"]').val(min);
 				$('input[name="priceFilterMaxValue"]').val(max);
-				return addPricefilter();
+				addPricefilter(true);
 				//return searchProducts(document.frmProductSearch);
 			}
 
@@ -325,6 +325,7 @@ $("document").ready(function(){
 			from = data.from;
 			to = data.to;
 			updateValues();
+            addPricefilter(true);
 		}
 	});
 
@@ -380,8 +381,15 @@ $to.on("change", function () {
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
 
-    new SimpleBar(document.getElementById('accordian'));
-    new SimpleBar(document.getElementById('scrollbar-filters'));
+    <?php if( !$shopCatFilters ){ ?>
+        new SimpleBar(document.getElementById('accordian'));
+    <?php } ?>
+    var x = document.getElementsByClassName("scrollbar-filters");
+    var i;
+    for (i = 0; i < x.length; i++) {
+     new SimpleBar(x[i]);
+    }
+
 	<?php /* } */ ?>
 	/* ] */
 
@@ -393,6 +401,8 @@ $to.on("change", function () {
 	});
 	$('.span--expand').click();
 	/* ] */
+
+    updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 });
 
 /*  $(window).load(function(){

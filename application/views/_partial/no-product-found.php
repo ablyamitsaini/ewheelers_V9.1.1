@@ -1,5 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 	$pSrchFrm->setFormTagAttribute( 'class','form custom-form');
+	$pSrchFrm->setFormTagAttribute( 'name','frmSiteSearchCustom');
+	$pSrchFrm->setFormTagAttribute( 'id','frm_fat_id_frmSiteSearch_custom');
 	$keywordFld = $pSrchFrm->getField('keyword');
 	$submitFld = $pSrchFrm->getField('btnSiteSrchSubmit');
 	$submitFld->setFieldTagAttribute('class','');
@@ -9,7 +11,6 @@
 	$keywordFld->setFieldTagAttribute('id','header_search_keyword');
 	$keywordFld->setFieldTagAttribute('onkeyup','animation(this)');
 ?>
-
 
 <div class=" align--center">
 	<div class="no-product">

@@ -3,7 +3,7 @@
                   <span class="products__price_old"> <?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
                   <div class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></div>
                   <?php } ?>
-				  <?php if($product['selprod_sold_count']>0){?>
+				  <?php /* if($product['selprod_sold_count']>0){?>
 	<span class="products__price_sold"><?php echo $product['selprod_sold_count'];?> <?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></span>
-	<?php }?>
+	<?php } */ ?>
                 </div>

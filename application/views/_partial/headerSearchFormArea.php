@@ -3,7 +3,7 @@
 	$submitFld = $headerSrchFrm->getField('btnSiteSrchSubmit');
 	$submitFld->setFieldTagAttribute('class','search--btn submit--js');
 	$keywordFld->setFieldTagAttribute('class','search--keyword search--keyword--js no--focus');
-	$keywordFld->setFieldTagAttribute('placeholder',Labels::getLabel('LBL_What_are_you_looking_for...',$siteLangId));
+	$keywordFld->setFieldTagAttribute('placeholder',Labels::getLabel('LBL_I_am_looking_for...',$siteLangId));
 	/* $keywordFld->setFieldTagAttribute('autofocus','autofocus'); */
 	$keywordFld->setFieldTagAttribute('id','header_search_keyword');
 	$keywordFld->setFieldTagAttribute('onkeyup','animation(this)');

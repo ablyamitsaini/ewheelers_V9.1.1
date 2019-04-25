@@ -147,6 +147,11 @@ class ProductsController extends MyAppController
         $priceArr  = array();
 
         /* Brand Filters Data[ */
+        $brandId = 0;
+        if(array_key_exists('brand_id', $headerFormParamsAssocArr)) {
+            $brandId = FatUtility::int($headerFormParamsAssocArr['brand_id']);
+        }
+
         $brandsCheckedArr = array();
         if(array_key_exists('brand', $headerFormParamsAssocArr)) {
             $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
@@ -155,6 +160,12 @@ class ProductsController extends MyAppController
         $brandSrch = clone $prodSrchObj;
         $brandSrch->addGroupBy('brand_id');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name', 'brand_short_description'));
+        if($brandId){
+            $brandSrch->addCondition('brand_id','=',$brandId);
+            $brandsCheckedArr =  array($brandId);
+        }
+        //var_dump($brandsCheckedArr);
+
         if(!empty($brandsCheckedArr)){
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',',$brandsCheckedArr).'"),1,0) as priority');
             $brandSrch->addOrder('priority','desc');
@@ -243,12 +254,6 @@ class ProductsController extends MyAppController
         }
 
         /* ] */
-
-        $brandsCheckedArr = array();
-        if(array_key_exists('brand', $headerFormParamsAssocArr)) {
-            $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
-        }
-
         $optionValueCheckedArr = array();
         if(array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
@@ -955,11 +960,11 @@ class ProductsController extends MyAppController
                     $prodSrch->joinUserWishListProducts($loggedUserId);
                     $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
                 }
-                $prodSrch->joinProductRating();
+                // $prodSrch->joinProductRating();
                 $prodSrch->addCondition('selprod_id', 'IN', $cookiesProductsArr);
                 $prodSrch->addMultipleFields(
                     array(
-                    'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'product_image_updated_on',
+                    'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on',
                     'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
                     'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price')
                 );
@@ -998,11 +1003,11 @@ class ProductsController extends MyAppController
                 $prodSrch->joinUserWishListProducts($loggedUserId);
                 $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
             }
-            $prodSrch->joinProductRating();
+            // $prodSrch->joinProductRating();
             $prodSrch->addCondition('selprod_id', 'IN', $ids);
             $prodSrch->addMultipleFields(
                 array(
-                'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'ifnull(sq_sprating.prod_rating,0) prod_rating ', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+                'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
                 'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
                 'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price')
             );
@@ -1212,7 +1217,7 @@ class ProductsController extends MyAppController
             $productSrchObj->joinUserWishListProducts($loggedUserId);
             $productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
-        $productSrchObj->joinProductRating();
+        // $productSrchObj->joinProductRating();
 
         $productSrchObj->addMultipleFields(
             array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',

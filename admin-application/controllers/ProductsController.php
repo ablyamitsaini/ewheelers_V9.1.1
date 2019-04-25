@@ -52,11 +52,6 @@ class ProductsController extends AdminBaseController
             $cnd->attachCondition('product_identifier', 'like', '%' . $keyword . '%', 'OR');
         }
 
-        $product_seller_id = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, -1);
-        if ( -1 < $product_seller_id ) {
-            $srch->addCondition('product_seller_id', '=', $product_seller_id);
-        }
-
         $active = FatApp::getPostedData('active', FatUtility::VAR_INT, -1);
         if ($active > -1) {
             $srch->addCondition('product_active', '=', $active);
@@ -67,16 +62,28 @@ class ProductsController extends AdminBaseController
             $srch->addCondition('product_approved', '=', $product_approved);
         }
 
+        $product_seller_id = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, 0);
+
         if(FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT') ) {
             $is_custom_or_catalog = FatApp::getPostedData('is_custom_or_catalog', FatUtility::VAR_INT, -1);
             if ($is_custom_or_catalog > -1) {
                 if($is_custom_or_catalog > 0 ) {
-                    $srch->addCondition('product_seller_id', '>', 0);
+                    if ( 0 < $product_seller_id ) {
+                        $srch->addCondition('product_seller_id', '=', $product_seller_id);
+                    }else{
+                        $srch->addCondition('product_seller_id', '>', 0);
+                    }
                 } else {
                     $srch->addCondition('product_seller_id', '=', 0);
                 }
             } else {
-                /* $srch->addCondition('product_seller_id', '=', 0 ); */
+                if ( 0 < $product_seller_id ) {
+                    $srch->addCondition('product_seller_id', '=', $product_seller_id);
+                }
+            }
+        }else{
+            if ( 0 < $product_seller_id ) {
+                $srch->addCondition('product_seller_id', '=', $product_seller_id);
             }
         }
 
@@ -121,7 +128,9 @@ class ProductsController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+
         $rs = $srch->getResultSet();
+
         $arr_listing = $db->fetchAll($rs);
 
         $this->set("arr_listing", $arr_listing);
@@ -1522,17 +1531,22 @@ class ProductsController extends AdminBaseController
 
     public function autoCompleteSellerJson()
     {
-        $pagesize = 20;
+        $pagesize = applicationConstants::PAGE_SIZE;
         $post = FatApp::getPostedData();
-        $sellersObj = Product::getSellers( array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ) );
-        $sellersObj->addOrder('seller');
+        $srch = User::getSearchObject( true );
+        $srch->addCondition('user_is_supplier', '=', applicationConstants::YES);
+        $srch->addCondition('credential_active', '=', applicationConstants::ACTIVE);
+
+        $srch->addMultipleFields( array('credential_user_id', 'credential_username', 'credential_email' ) );
+
         if( '' != $post['keyword'] ){
-            $sellersObj->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
-            $sellersObj->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
+            $srch->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
+            $srch->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
         }
-        $sellersObj->setPageSize($pagesize);
-        $rs = $sellersObj->getResultSet();
-        $sellers = FatApp::getDb()->fetchAll($rs);
+        $srch->setPageSize($pagesize);
+        $rs = $srch->getResultSet();
+        $sellers = FatApp::getDb()->fetchAll($rs, 'credential_user_id');
+
         die(json_encode($sellers));
     }
 }

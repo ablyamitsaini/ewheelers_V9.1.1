@@ -5,6 +5,13 @@
 ?>
 <div class="page-sort hide_on_no_product" id="top-filters">
 	<ul>
+		<li>
+			<a href="javascript:void(0)" onclick="saveProductSearch()" ><i class="icn">
+					<svg class="svg">
+						<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
+					</svg>
+				</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
+		</li>
 		<li class="d-xl-none">
 			<a href="javascript:void(0)" class="link__filter"><i class="icn">
 				<svg class="svg">
@@ -36,7 +43,6 @@
 				  <li class="sort"><?php echo Labels::getLabel('LBL_Sort_By', $siteLangId); ?> </li>
 					<?php }?>
 				  <li>
-					<?php echo $frmProductSearch->getFieldHTML('keyword'); ?>
 					<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
 				  </li>
 				  <li class="hide--mobile">
@@ -46,13 +52,8 @@
 			</div>
 		</li>
 		<li>
-			<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--default btn--sm"><i class="icn">
-
-			</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
-		</li>
-		<li>
 			<div class="list-grid-toggle switch--link-js">
-				<div class="icon icon-grid">
+				<div class="icon">
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>
 					<div class="icon-bar"></div>
@@ -61,6 +62,7 @@
 		</li>
 	</ul>
 	<?php
+		echo $frmProductSearch->getFieldHTML('keyword');
 		echo $frmProductSearch->getFieldHtml('category');
 		echo $frmProductSearch->getFieldHtml('sortOrder');
         echo $frmProductSearch->getFieldHtml('page');
@@ -69,6 +71,7 @@
         echo $frmProductSearch->getFieldHtml('join_price');
         echo $frmProductSearch->getFieldHtml('featured');
         echo $frmProductSearch->getFieldHtml('currency_id');
+        echo $frmProductSearch->getFieldHtml('brand_id');
         echo $frmProductSearch->getFieldHtml('top_products');
         echo $frmProductSearch->getExternalJS();
 	?>
