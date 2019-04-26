@@ -2398,52 +2398,7 @@ class SellerController extends LoggedUserController
         $page = (empty($page) || $page <= 0) ? 1 : FatUtility::int($page);
         $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
 
-        $srch = $this->returnReuestsListing( $user_id, $keyword, $orrequest_date_from, $orrequest_date_to );
-        $srch->setPageNumber($page);
-        $srch->setPageSize($pagesize);
-
-        //echo $srch->getQuery(); die();
-        $rs = $srch->getResultSet();
-        $requests = FatApp::getDb()->fetchAll($rs);
-
-        $this->set('sellerPage', true);
-        $this->set('buyerPage', false);
-
-        $this->set('requests', $requests);
-        $this->set('page', $page);
-        $this->set('pageCount', $srch->pages());
-        $this->set('recordCount', $srch->recordCount());
-        $this->set('postedData', $post);
-        $this->set('returnRequestTypeArr', OrderReturnRequest::getRequestTypeArr($this->siteLangId));
-        $this->set('OrderReturnRequestStatusArr', OrderReturnRequest::getRequestStatusArr($this->siteLangId));
-        $this->_template->render(false, false, 'buyer/order-return-request-search.php');
-    }
-
-    private function returnReuestsListing( $user_id, $keyword = '', $orrequest_date_from = '', $orrequest_date_to = '' )
-    {
-
-        $srch = new OrderReturnRequestSearch($this->siteLangId);
-        $srch->joinOrderProducts();
-        $srch->addCondition('op_selprod_user_id', '=', $user_id);
-
-        $srch->addMultipleFields(
-            array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
-            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_selprod_id', 'op_is_batch', 'op_id')
-        );
-        $srch->addOrder('orrequest_date', 'DESC');
-
-
-        if(!empty($keyword) ) {
-            $cnd = $srch->addCondition('op_invoice_number', '=', $keyword);
-            $cnd->attachCondition('op_order_id', '=', $keyword);
-            $cnd->attachCondition('op_selprod_title', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('op_product_name', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('op_brand_name', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('op_selprod_options', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('op_selprod_sku', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('op_product_model', 'LIKE', '%'.$keyword.'%', 'OR');
-            $cnd->attachCondition('orrequest_reference', 'LIKE', '%'.$keyword.'%', 'OR');
-        }
+        $srch = $this->returnReuestsListing( $user_id, $keyword );
 
         $orrequest_status = FatApp::getPostedData('orrequest_status', null, '-1');
         if($orrequest_status > -1 ) {
@@ -2464,6 +2419,51 @@ class SellerController extends LoggedUserController
         if(!empty($orrequest_date_to) ) {
             $srch->addCondition('orrequest_date', '<=', $orrequest_date_to. ' 23:59:59');
         }
+
+        if(!empty($keyword) ) {
+            $cnd = $srch->addCondition('op_invoice_number', '=', $keyword);
+            $cnd->attachCondition('op_order_id', '=', $keyword);
+            $cnd->attachCondition('op_selprod_title', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('op_product_name', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('op_brand_name', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('op_selprod_options', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('op_selprod_sku', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('op_product_model', 'LIKE', '%'.$keyword.'%', 'OR');
+            $cnd->attachCondition('orrequest_reference', 'LIKE', '%'.$keyword.'%', 'OR');
+        }
+
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pagesize);
+
+        //echo $srch->getQuery(); die();
+        $rs = $srch->getResultSet();
+        $requests = FatApp::getDb()->fetchAll($rs);
+
+        $this->set('sellerPage', true);
+        $this->set('buyerPage', false);
+
+        $this->set('requests', $requests);
+        $this->set('page', $page);
+        $this->set('pageCount', $srch->pages());
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('postedData', $post);
+        $this->set('returnRequestTypeArr', OrderReturnRequest::getRequestTypeArr($this->siteLangId));
+        $this->set('OrderReturnRequestStatusArr', OrderReturnRequest::getRequestStatusArr($this->siteLangId));
+        $this->_template->render(false, false, 'buyer/order-return-request-search.php');
+    }
+
+    private function returnReuestsListing( $user_id )
+    {
+
+        $srch = new OrderReturnRequestSearch($this->siteLangId);
+        $srch->joinOrderProducts();
+        $srch->addCondition('op_selprod_user_id', '=', $user_id);
+
+        $srch->addMultipleFields(
+            array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
+            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_selprod_id', 'op_is_batch', 'op_id')
+        );
+        $srch->addOrder('orrequest_date', 'DESC');
 
         return $srch;
     }
