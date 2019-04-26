@@ -173,7 +173,7 @@ class Transactions extends MyAppModel
         }
 
         if( !empty($date) ){
-            $srch->addDirectCondition('date(utxn.utxn_date) = "'. $date.'"');
+            $srch->addCondition('mysql_func_DATE(utxn.utxn_date)', '=', $date, 'AND', true);
         }
 
         $srch->addMultipleFields(array('IFNULL(SUM(utxn.utxn_credit),0) AS total_earned','IFNULL(SUM(utxn.utxn_debit),0) AS total_used'));
@@ -186,7 +186,7 @@ class Transactions extends MyAppModel
             return $row;
         }
 
-        return array('total_earned'=>0,'utxn_debit'=>0);
+        return array('total_earned'=>0,'total_used'=>0);
     }
 
     static function formatTransactionNumber($txnId)
@@ -203,7 +203,7 @@ class Transactions extends MyAppModel
         return $strComments;
     }
 
-    public static function getUserTransactions( $userId )
+    public static function getUserTransactionsObj( $userId )
     {
         $balSrch = static::getSearchObject();
         $balSrch->doNotCalculateRecords();
