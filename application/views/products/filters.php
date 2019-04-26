@@ -16,7 +16,7 @@ array_walk($catCodeArr,function(&$n) {
 <?php if($shopCatFilters){
     $searchFrm->setFormTagAttribute ( 'onSubmit', 'searchProducts(this); return(false);' );
     $keywordFld = $searchFrm->getField('keyword');
-    $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Search',$siteLangId));
+    $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('LBL_Shop_Search',$siteLangId));
     $keywordFld->htmlAfterField = '<input name="btnSrchSubmit" value="" type="submit" class="input-submit">';
     /*$keywordFld = $frmProductSearch->getField('keyword');
     $keywordFld->overrideFldType("hidden");*/
@@ -381,8 +381,15 @@ $to.on("change", function () {
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
 
-    new SimpleBar(document.getElementById('accordian'));
-    new SimpleBar(document.getElementById('scrollbar-filters'));
+    <?php if( !$shopCatFilters ){ ?>
+        new SimpleBar(document.getElementById('accordian'));
+    <?php } ?>
+    var x = document.getElementsByClassName("scrollbar-filters");
+    var i;
+    for (i = 0; i < x.length; i++) {
+     new SimpleBar(x[i]);
+    }
+
 	<?php /* } */ ?>
 	/* ] */
 
