@@ -280,3 +280,10 @@ DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` =
 
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_logo_text';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_logo_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store.');
+
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_My_Products';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Credits';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Unread_Notification_Today';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Expired_On:';
