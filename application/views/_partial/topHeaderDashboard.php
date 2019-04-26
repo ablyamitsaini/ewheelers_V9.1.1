@@ -29,8 +29,8 @@
 		</div>
 	<?php } */ ?>
 		<div class="header-icons-group">
-			<div class="c-header-icon messages">
-                <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+			<?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+			<div class="c-header-icon shop">
 				<a data-org-url="<?php echo CommonHelper::generateUrl('Account','Messages',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account','Messages'); ?>">
 					<i class="icn"><svg class="svg">
 							<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message"></use>
@@ -40,6 +40,15 @@
 					<span class="h-badge"><span class="heartbit"></span><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span></a>
 					<?php } ?>
 			</div>
+			<?php if( $isShopActive && $shop_id > 0 ){ ?>
+			<div class="c-header-icon messages">
+				<a data-org-url="<?php echo CommonHelper::generateUrl('Shops','view',array($shop_id),'',null,false,$getOrgUrl); ?>" title="<?php echo Labels::getLabel('LBL_View_Shop',$siteLangId);?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Shops','view', array($shop_id)); ?>">
+					<i class="icn"><svg class="svg">
+							<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#view-shop-header" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#view-shop-header"></use>
+						</svg>
+					</i>
+			</div>
+			<?php } ?>
 			<div class="short-links">
 				<ul>
 				<?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?>

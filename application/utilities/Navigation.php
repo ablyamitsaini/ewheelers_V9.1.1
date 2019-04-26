@@ -62,6 +62,13 @@ class Navigation
         $threadObj = new Thread();
         $todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD, date('Y-m-d'));
         /*]*/
+        $shopDetails = Shop::getAttributesByUserId($userId, array('shop_id'), false);
+        $shop_id = 0;
+        if(!false == $shopDetails ) {
+            $shop_id = $shopDetails['shop_id'];
+        }
+        $template->set('shop_id', $shop_id);
+        $template->set('isShopActive', Shop::isShopActive($userId));
         $template->set('todayUnreadMessageCount', $todayUnreadMessageCount);
     }
 
