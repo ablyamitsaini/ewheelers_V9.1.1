@@ -330,7 +330,7 @@ trait SellerProducts
 
         $languages = Language::getAllNames();
 
-        $selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
+        $selProdAvailable = Product::isSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
 
         if(!empty($selProdAvailable)) {
             if(!$selProdAvailable['selprod_deleted']) {
