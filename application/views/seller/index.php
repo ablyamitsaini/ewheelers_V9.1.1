@@ -70,7 +70,7 @@
     								<h6 class="total">
                                         <?php echo Labels::getLabel('LBL_Credits_earned_today',$siteLangId);?>
                                     </h6>
-    								<?php echo CommonHelper::displayMoneyFormat($today_total_earned);?>
+    								<?php echo CommonHelper::displayMoneyFormat($txnsSummary['total_earned']);?>
     							</div>
     						</div>
     					</div>

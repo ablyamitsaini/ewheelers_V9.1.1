@@ -122,7 +122,7 @@ class SellerController extends LoggedUserController
         /*
         * Return Request Listing
         */
-        $srchReturnReq = $this->returnReuestsListing( $userId );
+        $srchReturnReq = $this->returnReuestsListingObj();
         $srchReturnReq->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srchReturnReq->getResultSet();
         $returnRequests = FatApp::getDb()->fetchAll($rs);
@@ -130,7 +130,7 @@ class SellerController extends LoggedUserController
         /*
         * Transactions Listing
         */
-        $srch = Transactions::getUserTransactions( $userId );
+        $srch = Transactions::getUserTransactionsObj( $userId );
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
@@ -138,15 +138,13 @@ class SellerController extends LoggedUserController
         /*
         * Cancellation Request Listing
         */
-        $srch = $this->cancelRequestListing();
+        $srch = $this->cancelRequestListingObj();
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
 
         $txnObj = new Transactions();
-        $txns = $txnObj->getTransactionSummary( $userId, date('Y-m-d') );
-        $today_total_earned = $txns['total_earned'];
-        $today_total_used = $txns['total_used'];
+        $txnsSummary = $txnObj->getTransactionSummary( $userId, date('Y-m-d') );
 
         $this->set('transactions', $transactions);
         $this->set('returnRequests', $returnRequests);
@@ -154,7 +152,7 @@ class SellerController extends LoggedUserController
         $this->set('cancellationRequests', $cancellationRequests);
         $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
         $this->set('OrderCancelRequestStatusArr', OrderCancelRequest::getRequestStatusArr($this->siteLangId));
-        $this->set('today_total_earned', $today_total_earned );
+        $this->set('txnsSummary', $txnsSummary );
 
         $this->set('notAllowedStatues', $notAllowedStatues);
         $this->set('orders', $orders);
@@ -2328,7 +2326,7 @@ class SellerController extends LoggedUserController
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
 
-        $srch = $this->cancelRequestListing();
+        $srch = $this->cancelRequestListingObj();
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 
@@ -2366,7 +2364,7 @@ class SellerController extends LoggedUserController
         $this->_template->render(false, false, 'buyer/order-cancellation-request-search.php');
     }
 
-    private function cancelRequestListing()
+    private function cancelRequestListingObj()
     {
         $srch = new OrderCancelRequestSearch($this->siteLangId);
         $srch->joinOrderProducts();
@@ -2398,7 +2396,7 @@ class SellerController extends LoggedUserController
         $page = (empty($page) || $page <= 0) ? 1 : FatUtility::int($page);
         $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
 
-        $srch = $this->returnReuestsListing( $user_id, $keyword );
+        $srch = $this->returnReuestsListingObj();
 
         $orrequest_status = FatApp::getPostedData('orrequest_status', null, '-1');
         if($orrequest_status > -1 ) {
@@ -2452,12 +2450,12 @@ class SellerController extends LoggedUserController
         $this->_template->render(false, false, 'buyer/order-return-request-search.php');
     }
 
-    private function returnReuestsListing( $user_id )
+    private function returnReuestsListingObj()
     {
 
         $srch = new OrderReturnRequestSearch($this->siteLangId);
         $srch->joinOrderProducts();
-        $srch->addCondition('op_selprod_user_id', '=', $user_id);
+        $srch->addCondition('op_selprod_user_id', '=', UserAuthentication::getLoggedUserId());
 
         $srch->addMultipleFields(
             array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',

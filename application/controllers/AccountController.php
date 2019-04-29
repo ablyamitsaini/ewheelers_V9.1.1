@@ -502,7 +502,7 @@ class AccountController extends LoggedUserController
         $debit_credit_type = FatApp::getPostedData('debit_credit_type', FatUtility::VAR_INT, -1);
         $dateOrder = FatApp::getPostedData('date_order', FatUtility::VAR_STRING, "DESC");
 
-        $srch = Transactions::getUserTransactions( $userId );
+        $srch = Transactions::getUserTransactionsObj( $userId );
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $srch->addOrder('utxn.utxn_date', $dateOrder);
