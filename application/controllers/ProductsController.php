@@ -1140,8 +1140,8 @@ class ProductsController extends MyAppController
         $fld->requirements()->setIntPositive();
         // $frm->addSubmitButton(null, 'btnProductBuy', Labels::getLabel('LBL_Buy_Now', $formLangId ), array( 'id' => 'btnProductBuy' ) );
         //$frm->addSubmitButton(null, 'btnAddToCart', Labels::getLabel('LBL_Add_to_Cart', $formLangId), array( 'id' => 'btnAddToCart' ));
-        $frm->addHTML(null, 'btnProductBuy', '<button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary btn--lg block-on-mobile add-to-cart--js btnBuyNow"><i class="icn"><svg class="svg"><use xlink:href="images/retina/sprite.svg#buy-now" href="/images/retina/sprite.svg#buy-now"></use></svg></i> '.Labels::getLabel('LBL_Buy_Now', $formLangId).'</button>');
-        $frm->addHTML(null, 'btnAddToCart', '<button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary  btn--lg block-on-mobile add-to-cart--js"><i class="icn"><svg class="svg"><use xlink:href="images/retina/sprite.svg#add-cart" href="/images/retina/sprite.svg#add-cart"></use></svg></i> '.Labels::getLabel('LBL_Add_to_Cart', $formLangId).'</button>');
+        $frm->addHTML(null, 'btnProductBuy', '<button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary block-on-mobile add-to-cart--js btnBuyNow"> '.Labels::getLabel('LBL_Buy_Now', $formLangId).'</button>');
+        $frm->addHTML(null, 'btnAddToCart', '<button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary block-on-mobile add-to-cart--js btn--primary-border"> '.Labels::getLabel('LBL_Add_to_Cart', $formLangId).'</button>');
         $frm->addHiddenField('', 'selprod_id');
         return $frm;
     }
