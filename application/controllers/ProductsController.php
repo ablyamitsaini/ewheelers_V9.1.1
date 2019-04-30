@@ -309,8 +309,8 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
-        $json['html'] = $this->_template->render(false, false, 'products/filters.php', true);
-        FatUtility::dieJsonSuccess($json);
+        echo $this->_template->render(false, false, 'products/filters.php', true);
+        exit;
     }
 
     public function view($selprod_id = 0)

@@ -441,8 +441,8 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 			url = url.replace($currentPageUrl, fcom.makeUrl('Products','filters'));
 		}
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(url, data, function(ans){
-			$('.productFilters-js').html(ans.html);
+		fcom.ajax(url, data, function(ans){
+			$('.productFilters-js').html(ans);
 			getSetSelectedOptionsUrl(frm);
 		},false,false);
 	};
