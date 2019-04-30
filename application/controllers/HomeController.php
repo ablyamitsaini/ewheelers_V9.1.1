@@ -2,7 +2,7 @@
 class HomeController extends MyAppController
 {
     public function index()
-    {
+    { 
         $db = FatApp::getDb();
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
 

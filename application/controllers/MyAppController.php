@@ -112,12 +112,8 @@ class MyAppController extends FatController
         $themeDetail = ThemeColor::getAttributesById($themeId);
         $currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
         $currencySymbolRight = CommonHelper::getCurrencySymbolRight();
-        $isUserDashboard = false;
-        if ($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser' || $controllerName == 'Account' || $controllerName == 'Reports' || $controllerName == 'ImportExport' || $controllerName == 'SavedProductsSearch') {
-            $isUserDashboard = true;
-        }
-
-        $this->set('isUserDashboard', $isUserDashboard);
+    
+        $this->set('isUserDashboard', false);
         $this->set('currencySymbolLeft', $currencySymbolLeft);
         $this->set('currencySymbolRight', $currencySymbolRight);
         $this->set('themeDetail', $themeDetail);
