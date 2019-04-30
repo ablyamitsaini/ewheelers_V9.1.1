@@ -7,11 +7,11 @@
 }
 
 #header.header-supplier {
-  height: 154px;
+  height: 138px;
 }
 
 #header.header-supplier~.after-header {
-  height: 154px;
+  height: 138px;
 }
 
 .seller-login {
@@ -28,6 +28,11 @@
   vertical-align: top;
   display: inline-block;
   width: auto;
+}
+
+.form.seller-login input, .form.seller-login input[type="submit"] {
+  height: 34px;
+  line-height: 30px;
 }
 
 .forgot {}
@@ -476,11 +481,9 @@
     margin-left: 0;
   }
 
-  #header, #header~.after-header, #header.header-supplier, #header.header-supplier~.after-header  {
+  #header, #header~.after-header, #header.header-supplier, #header.header-supplier~.after-header {
     height: 97px;
   }
-
- 
 
   .seller_nav_toggle {
     display: block;

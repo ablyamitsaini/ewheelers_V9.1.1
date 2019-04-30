@@ -108,7 +108,7 @@ $("document").ready(function(){
 		event.preventDefault();
 
 		var target_offset = $(".product--specifications").offset();
-		var target_top = target_offset.top-60;
+		var target_top = target_offset.top-100;
 		$('html, body').animate({scrollTop:target_top}, 1000);
 	});
 	/* for click scroll function */

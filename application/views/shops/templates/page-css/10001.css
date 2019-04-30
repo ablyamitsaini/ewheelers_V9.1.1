@@ -16,10 +16,12 @@
 }
 
 .shop-info {
-	padding: 20px 30px;
+	padding: 3rem ;
 	padding-right: 0;
 	max-width: 584px;
 }
+
+.shop-info .products__rating{ justify-content: flex-start; }
 
 .shop-name span {
 	font-size: 0.875rem;
@@ -41,7 +43,7 @@
 	background-color: #f8f8f8;
 	background-position: center;
 	height: 100%;
-	max-height: 490px;
+	max-height:545px;
 	overflow: hidden;
 	display: flex;
 	align-items: center;
@@ -72,9 +74,7 @@
 	margin: 0 auto;
 }
 
-.shops-sliders .slick-dots {
-	z-index: 10;
-}
+
 
 .shops-sliders .slick-dots li {
 	transition: all 0.5s ease-in-out;
@@ -156,7 +156,7 @@
 
 .shop-nav ul li a {
 	color: var(--txt-color);
-	font-size: 1.20rem;
+	font-size: 1rem;
 	padding: 8px 0px;
 	margin: 0 20px;
 	display: block;

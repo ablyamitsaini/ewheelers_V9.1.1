@@ -383,6 +383,8 @@ $(document).ready(function(){
 		var e = document.getElementById(currentId);
 		if(e != undefined){
 			var catName = e.text;
+            $(e).parent().siblings().removeClass('is-active');
+            $(e).parent().addClass('is-active');
 			$('#selected__value-js').html(catName);
 			$('#selected__value-js').closest('form').find('input[name="category"]').val(id);
 		}
