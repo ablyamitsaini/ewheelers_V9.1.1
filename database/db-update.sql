@@ -281,6 +281,13 @@ DELETE FROM `tbl_layout_templates` WHERE `tbl_layout_templates`.`ltemplate_id` =
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_logo_text';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_logo_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store.');
 
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_My_Products';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Credits';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Unread_Notification_Today';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Expired_On:';
+
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_banner_text';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_banner_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store. You can upload multiple banners.');
 DELETE T1, T2 FROM tbl_navigations as T1 LEFT JOIN tbl_navigations_lang as T2 ON T1.nav_id = T2.navlang_nav_id WHERE T1.nav_id = 7;

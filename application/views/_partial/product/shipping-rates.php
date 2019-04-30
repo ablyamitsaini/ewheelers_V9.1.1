@@ -36,7 +36,7 @@ if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicatio
 							break;
 						case 'country_name':
 
-							$td->appendElement('plaintext', array(), Product::getProductShippingTitle($row,$siteLangId),true);
+							$td->appendElement('plaintext', array(), Product::getProductShippingTitle($siteLangId, $row),true);
 							break;
 						default:
 							$td->appendElement('plaintext', array(), $row[$key], true);

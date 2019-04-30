@@ -6,11 +6,11 @@ class SearchItem extends MyAppModel
         $this->db = FatApp::getDb();
     }
 
-    function addSearchResult($data=array())
+    public function addSearchResult($data = array())
     {
         $keyword = str_replace('mysql_func_', 'mysql_func ', $data['keyword']);
 
-        $assign_fields=array(
+        $assign_fields = array(
         'searchitem_keyword'=>$keyword,
         'searchitem_date'=>date('Y-m-d'),
         );
@@ -30,9 +30,9 @@ class SearchItem extends MyAppModel
         // $this->total_records = $srch->recordCount();
         // $this->total_pages = $srch->pages();
         $row = $db->fetchAll($rs);
-        if($row==false) {
+        if ($row == false) {
             return array();
-        }else {
+        } else {
             return $row;
         }
     }
@@ -47,59 +47,59 @@ class SearchItem extends MyAppModel
     {
         $arr_url_params = array();
         if (!empty($arr)) {
-            foreach($arr as $key=>$val) {
+            foreach ($arr as $key => $val) {
                 $firstDashPosition = strpos($val, '-');
                 $keyString = strtolower(substr($val, 0, $firstDashPosition));
                 $valueString = substr($val, $firstDashPosition+1);
 
-                switch($keyString){
-                case 'price_min_range':
-                case 'price_max_range':
-                    $arr_url_params[$keyString] = $valueString;
-                    break;
-                case 'price':
-                    $lastOccurenceDashPosition = strripos($valueString, '-');
-                    $arr_url_params[$keyString.'-'.substr($valueString, 0, $lastOccurenceDashPosition)] = substr($valueString, $lastOccurenceDashPosition+1);
-                    break;
-                case 'currency':
-                    $arr_url_params['currency_id'] = $valueString;
-                    break;
-                case 'sort':
-                    $arr_url_params['sortOrder']= $arr_url_params['sortBy'] = str_replace('-','_',$valueString);
-                    break;
-                case 'shop':
-                case 'shop_id':
-                    $arr_url_params['shop_id'] = $valueString;
-                    break;
-                case 'collection':
-                    $arr_url_params['collection_id'] = $valueString;
-                    break;
-                case 'keyword':
-                case 'page':
-                case 'category':
-                    $arr_url_params[$keyString] = $valueString;
-                break;
-                case 'pagesize':
-                    $arr_url_params['pageSize'] = $valueString;
-                break;
-                case 'brand':
-                case 'prodcat':
-                case 'optionvalue':
-                case 'condition':
-                case 'availability':
-                    $dashPosition =strpos($valueString, '-');
-                    $id = substr($valueString, 0, $dashPosition);
-                    $valueString = substr($valueString, $dashPosition+1);
-                    if(!array_key_exists($keyString, $arr_url_params)) {
-                        $arr_url_params[$keyString] = array() ;
-                    }
-                    if(!in_array($id, $arr_url_params[$keyString])) {
-                        array_push($arr_url_params[$keyString], $id);
-                    }
-                    break;
-                default:
-                    $arr_url_params[$keyString] = $valueString;
-                    break;
+                switch ($keyString) {
+                    case 'price_min_range':
+                    case 'price_max_range':
+                        $arr_url_params[$keyString] = $valueString;
+                        break;
+                    case 'price':
+                        $lastOccurenceDashPosition = strripos($valueString, '-');
+                        $arr_url_params[$keyString.'-'.substr($valueString, 0, $lastOccurenceDashPosition)] = substr($valueString, $lastOccurenceDashPosition+1);
+                        break;
+                    case 'currency':
+                        $arr_url_params['currency_id'] = $valueString;
+                        break;
+                    case 'sort':
+                        $arr_url_params['sortOrder'] = $arr_url_params['sortBy'] = str_replace('-', '_', $valueString);
+                        break;
+                    case 'shop':
+                    case 'shop_id':
+                        $arr_url_params['shop_id'] = $valueString;
+                        break;
+                    case 'collection':
+                        $arr_url_params['collection_id'] = $valueString;
+                        break;
+                    case 'keyword':
+                    case 'page':
+                    case 'category':
+                        $arr_url_params[$keyString] = $valueString;
+                        break;
+                    case 'pagesize':
+                        $arr_url_params['pageSize'] = $valueString;
+                        break;
+                    case 'brand':
+                    case 'prodcat':
+                    case 'optionvalue':
+                    case 'condition':
+                    case 'availability':
+                        $dashPosition =strpos($valueString, '-');
+                        $id = substr($valueString, 0, $dashPosition);
+                        $valueString = substr($valueString, $dashPosition+1);
+                        if (!array_key_exists($keyString, $arr_url_params)) {
+                            $arr_url_params[$keyString] = array() ;
+                        }
+                        if (!in_array($id, $arr_url_params[$keyString])) {
+                            array_push($arr_url_params[$keyString], $id);
+                        }
+                        break;
+                    default:
+                        $arr_url_params[$keyString] = $valueString;
+                        break;
                 }
             }
         }
@@ -107,4 +107,3 @@ class SearchItem extends MyAppModel
         return $arr_url_params;
     }
 }
-?>
