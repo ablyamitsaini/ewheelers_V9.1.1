@@ -9,15 +9,14 @@ class ProductsController extends MyAppController
     public function index()
     {
         $db = FatApp::getDb();
-        $frm = $this->getProductSearchForm();
+        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
 
-        $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
-
+        $includeKeywordRelevancy = false;
         if (array_key_exists('keyword', $get)) {
-            $frm = $this->getProductSearchForm(true);
+            $includeKeywordRelevancy = true;
         }
 
+        $frm = $this->getProductSearchForm($includeKeywordRelevancy);
         $get['join_price'] = 1;
         $frm->fill($get);
 
@@ -44,14 +43,14 @@ class ProductsController extends MyAppController
     public function search()
     {
         $db = FatApp::getDb();
-        $frm = $this->getProductSearchForm();
+        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
 
-        $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
-
+        $includeKeywordRelevancy = false;
         if (array_key_exists('keyword', $get)) {
-            $frm = $this->getProductSearchForm(true);
+            $includeKeywordRelevancy = true;
         }
+
+        $frm = $this->getProductSearchForm($includeKeywordRelevancy);
 
         $get['join_price'] = 1;
         $frm->fill($get);
@@ -79,14 +78,14 @@ class ProductsController extends MyAppController
     public function featured()
     {
         $db = FatApp::getDb();
-        $frm = $this->getProductSearchForm();
+        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
 
-        $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
-
+        $includeKeywordRelevancy = false;
         if (array_key_exists('keyword', $get)) {
-            $frm = $this->getProductSearchForm(true);
+            $includeKeywordRelevancy = true;
         }
+
+        $frm = $this->getProductSearchForm($includeKeywordRelevancy);
 
         $get['join_price'] = 1;
         $get['featured'] = 1;

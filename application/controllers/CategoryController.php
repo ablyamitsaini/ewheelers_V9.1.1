@@ -21,9 +21,8 @@ class CategoryController extends MyAppController
 
         $db = FatApp::getDb();
         $frm = $this->getProductSearchForm();
-
-        $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
+        //$get = FatApp::getParameters();
+        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
 
         $get['category'] = $categoryId;
         $get['join_price'] = 1;
