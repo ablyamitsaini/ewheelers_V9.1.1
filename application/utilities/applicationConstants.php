@@ -66,7 +66,7 @@ class applicationConstants
 
     const DIGITAL_DOWNLOAD_FILE = 0;
     const DIGITAL_DOWNLOAD_LINK = 1;
-
+    const DASHBOARD_PAGE_SIZE = 3;
     const PAGE_SIZE = 20;
 
     static function getWeightUnitsArr($langId)
