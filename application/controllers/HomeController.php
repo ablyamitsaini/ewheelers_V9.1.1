@@ -26,7 +26,7 @@ class HomeController extends MyAppController
         $productSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock'));
 
-        $collections = $this->getCollections($productSrchObj);
+        $collections = $this->getCollections($this->siteLangId, $productSrchObj);
         $sponsoredShops = $this->getSponsoredShops($this->siteLangId, $productSrchObj);
         $sponsoredProds = $this->getSponsoredProducts($this->siteLangId, $productSrchObj);
         $slides = $this->getSlides($this->siteLangId);
@@ -146,9 +146,9 @@ class HomeController extends MyAppController
         FatApp::redirectUser(CommonHelper::generateUrl());
     }
 
-    private function getCollections($productSrchObj)
+    private function getCollections($langId, $productSrchObj)
     {
-        $collectionCache =  FatCache::get('collectionCache_'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        $collectionCache =  FatCache::get('collectionCache_'.$langId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
         if ($collectionCache) {
             return  unserialize($collectionCache);
@@ -156,7 +156,7 @@ class HomeController extends MyAppController
 
         $db = FatApp::getDb();
 
-        $srch = new CollectionSearch($this->siteLangId);
+        $srch = new CollectionSearch($langId);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addOrder('collection_display_order', 'ASC');
@@ -169,7 +169,7 @@ class HomeController extends MyAppController
 
         $collections = array();
 
-        $productCatSrchObj = ProductCategory::getSearchObject(false, $this->siteLangId);
+        $productCatSrchObj = ProductCategory::getSearchObject(false, $langId);
         $productCatSrchObj->doNotCalculateRecords();
         $productCatSrchObj->addMultipleFields(array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description'));
 
@@ -204,7 +204,7 @@ class HomeController extends MyAppController
                     $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
                     $productSrchTempObj->addOrder('theprice', $orderBy);
                     $productSrchTempObj->joinSellers();
-                    $productSrchTempObj->joinSellerSubscription($this->siteLangId);
+                    $productSrchTempObj->joinSellerSubscription($langId);
                     $productSrchTempObj->addGroupBy('selprod_id');
                     $productSrchTempObj->setPageSize($collection['collection_primary_records']);
                     $rs = $productSrchTempObj->getResultSet();
@@ -220,7 +220,7 @@ class HomeController extends MyAppController
                 case Collections::COLLECTION_TYPE_CATEGORY:
                     $tempObj = clone $collectionObj;
                     $tempObj->addCondition('collection_id', '=', $collection_id);
-                    $tempObj->joinCollectionCategories($this->siteLangId);
+                    $tempObj->joinCollectionCategories($langId);
                     $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
                     $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
                     $tempObj->setPageSize($collection['collection_primary_records']);
@@ -289,8 +289,8 @@ class HomeController extends MyAppController
                         continue;
                     }
 
-                    $shopObj = new ShopSearch($this->siteLangId);
-                    $shopObj->setDefinedCriteria($this->siteLangId);
+                    $shopObj = new ShopSearch($langId);
+                    $shopObj->setDefinedCriteria($langId);
                     $shopObj->joinSellerSubscription();
                     $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
                     $shopObj->setPageSize($collection['collection_primary_records']);
@@ -325,7 +325,7 @@ class HomeController extends MyAppController
                 case Collections::COLLECTION_TYPE_BRAND:
                     $tempObj = clone $collectionObj;
                     $tempObj->addCondition('collection_id', '=', $collection_id);
-                    $tempObj->joinCollectionBrands($this->siteLangId);
+                    $tempObj->joinCollectionBrands($langId);
                     $tempObj->addMultipleFields(array('ctpb_brand_id'));
                     $tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
                     $rs = $tempObj->getResultSet();
@@ -336,7 +336,7 @@ class HomeController extends MyAppController
                     }
 
                     /* fetch Brand data[ */
-                    $brandSearchObj = Brand::getSearchObject($this->siteLangId, true, true);
+                    $brandSearchObj = Brand::getSearchObject($langId, true, true);
                     $brandSearchTempObj = clone $brandSearchObj;
                     $brandSearchTempObj->addMultipleFields(array('brand_id','IFNULL(brand_name, brand_identifier) as brand_name'));
                     $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
@@ -353,7 +353,7 @@ class HomeController extends MyAppController
             }
         }
 
-        FatCache::set('collectionCache_'.$this->siteLangId, serialize($collections), '.txt');
+        FatCache::set('collectionCache_'.$langId, serialize($collections), '.txt');
         return $collections;
     }
 
@@ -495,6 +495,7 @@ class HomeController extends MyAppController
             $productShopSrchTempObj = clone $productSrchObj;
             $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shops['shop_user_id']);
             $productShopSrchTempObj->addGroupBy('selprod_product_id');
+            $productShopSrchTempObj->doNotCalculateRecords();
             $productShopSrchTempObj->setPageSize(Shop::SHOP_PRODUCTS_COUNT_AT_HOMEPAGE);
             $Prs = $productShopSrchTempObj->getResultSet();
 
@@ -538,8 +539,9 @@ class HomeController extends MyAppController
         $productSrchSponObj->addFld(array('promotion_id','promotion_record_id'));
         $productSrchSponObj->addOrder('theprice', 'ASC');
         $productSrchSponObj->joinSellers();
-        $productSrchSponObj->joinSellerSubscription($this->siteLangId);
+        $productSrchSponObj->joinSellerSubscription($langId);
         $productSrchSponObj->addGroupBy('selprod_id');
+        $productSrchSponObj->doNotCalculateRecords();
         $productSrchSponObj->setPageSize($productPageSize);
         $productSrchSponObj->addOrder('', 'rand()');
         $rs = $productSrchSponObj->getResultSet();
