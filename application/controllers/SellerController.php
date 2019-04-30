@@ -130,7 +130,7 @@ class SellerController extends LoggedUserController
         /*
         * Transactions Listing
         */
-        $srch = Transactions::getUserTransactions( $userId );
+        $srch = Transactions::getUserTransactionsObj( $userId );
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');

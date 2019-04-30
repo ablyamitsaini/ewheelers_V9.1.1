@@ -203,7 +203,7 @@ class Transactions extends MyAppModel
         return $strComments;
     }
 
-    public static function getUserTransactions( $userId )
+    public static function getUserTransactionsObj( $userId )
     {
         $balSrch = static::getSearchObject();
         $balSrch->doNotCalculateRecords();

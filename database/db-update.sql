@@ -287,3 +287,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Credits';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Unread_Notification_Today';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Expired_On:';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Credits';

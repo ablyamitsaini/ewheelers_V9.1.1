@@ -1,7 +1,6 @@
 <?php
 class HomeController extends MyAppController
 {
-
     public function index()
     {
         $db = FatApp::getDb();

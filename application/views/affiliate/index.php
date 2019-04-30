@@ -1,5 +1,12 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
+<?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php');
+$yesNoArr = applicationConstants::getYesNoArr($siteLangId);
+
+$sharingFrm->addFormTagAttribute('class','form');
+$sharingFrm->addFormTagAttribute('onsubmit','setUpMailAffiliateSharing(this);return false;');
+$sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
+$sharingFrm->developerTags['fld_default_col'] = 12;
+?>
 <main id="main-area" class="main" role="main">
   <div class="content-wrapper content-space">
 	<div class="content-header justify-content-between row mb-3">
@@ -9,25 +16,39 @@
 		</div>
 	</div>
 	<div class="content-body">
+        <div class="row mb-3">
+			<div class="col-lg-8 col-md-12">
+                <div class="cards">
+                    <div class="cards-header p-3">
+                        <p class="note">
+                            <?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text',$siteLangId)?><br/><strong><?php echo Labels::getLabel('LBL_You_may_copy_invitation_link_below',$siteLangId)?></strong>
+                        </p>
+                        <div class="alert--gray"><?php echo $affiliateTrackingUrl; ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<div class="widget-wrapper mb-3">
 			<div class="widget widget-stats">
-				<div class="cards">
-					<div class="cards-header">
-						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Credits',$siteLangId);?></h5>
-					</div>		
-					<div class="cards-content p-3">
-						<div class="stats">
-							<i class="icn"><svg class="svg">
-									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales" href="
-									<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales"></use>
-								</svg></i>
-							<div class="stats-number">
-								<h6 class="total"><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></h6>
-								<?php echo CommonHelper::displayMoneyFormat($userBalance);?>
-							</div>
-						</div>
-					</div>
-				</div>
+                <a href="<?php echo CommonHelper::generateUrl('Account','credits'); ?>">
+    				<div class="cards">
+    					<div class="cards-header">
+    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Credits',$siteLangId);?></h5>
+    					</div>
+    					<div class="cards-content p-3">
+    						<div class="stats">
+    							<i class="icn"><svg class="svg">
+    									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales" href="
+    									<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales"></use>
+    								</svg></i>
+    							<div class="stats-number">
+    								<h6 class="total"><?php echo Labels::getLabel('LBL_Total',$siteLangId);?></h6>
+    								<?php echo CommonHelper::displayMoneyFormat($userBalance);?>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+                </a>
 			</div>
 			<div class="widget widget-stats">
 				<div class="cards">
@@ -48,8 +69,42 @@
 					</div>
 				</div>
 			</div>
+            <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){ ?>
+                <div class="widget widget-stats">
+                    <a id="facebook_btn" href="javascript:void(0);" class="box--share box--share-fb"> <i class="fa fa-facebook"></i>
+                        <h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+                        <h2><?php echo Labels::getLabel('L_Facebook',$siteLangId)?></h2>
+                        <p>
+                            <?php echo sprintf(Labels::getLabel('L_Post_your_wall_facebook',$siteLangId),'<strong>'.Labels::getLabel('L_Facebook',$siteLangId).'</strong>')?>
+                        </p>
+                        <span class="ajax_message thanks-msg" id="fb_ajax"></span>
+                    </a>
+    			</div>
+            <?php } ?>
+            <?php if (!empty(FatApp::getConfig("CONF_TWITTER_API_KEY",FatUtility::VAR_STRING,'')) && !empty(FatApp::getConfig("CONF_TWITTER_API_SECRET",FatUtility::VAR_STRING,''))){ ?>
+                <div class="widget widget-stats">
+                    <a class="box--share box--share-tw" id="twitter_btn" href="javascript:void(0);"> <i class="fa fa-twitter"></i>
+                        <h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+                        <h2><?php echo Labels::getLabel('L_Twitter',$siteLangId)?></h2>
+                        <p>
+                          <?php echo sprintf(Labels::getLabel('L_Send_a_tweet_followers',$siteLangId),'<strong>'.Labels::getLabel('L_Tweet',$siteLangId).'</strong>')?>
+                        </p>
+                        <span class="ajax_message thanks-msg" id="twitter_ajax"></span>
+                    </a>
+    			</div>
+            <?php } ?>
+            <div class="widget widget-stats">
+                <a class="showbutton box--share box--share-mail" href="javascript:void(0);"> <i class="fa fa-envelope"></i>
+                    <h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>
+                    <h2><?php echo Labels::getLabel('L_Email',$siteLangId)?></h2>
+                    <p>
+                        <?php echo Labels::getLabel('L_Email',$siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself',$siteLangId)?>
+                    </p>
+                    <span class="ajax_message thanks-msg"></span>
+                </a>
+			</div>
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-lg-6 col-md-12">
 				<div class="cards">
 					<div class="cards-header p-3">
@@ -69,7 +124,224 @@
 					</div>
 				</div>
 			</div>
+		</div> -->
+        <div class="row mb-3 borderwrap showwrap" style="display:none;">
+			<div class="col-lg-12 col-md-12">
+                <div class="cards">
+                    <div class="cards-header p-3">
+                        <h4><?php echo Labels::getLabel('L_Invite_friends_through_email',$siteLangId)?></h4>
+                        <?php echo $sharingFrm->getFormHtml(); ?>
+                        <span class="ajax_message" id="custom_ajax"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+			<div class="col-lg-6 col-md-12">
+                <div class="cards">
+                    <div class="cards-header p-3">
+                        <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Referred_by_me',$siteLangId);?></h5>
+                        <div class="action">
+                            <a href="<?php echo CommonHelper::generateUrl('affiliate','referredByMe');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                        </div>
+                    </div>
+                    <div class="cards-content p-3">
+                        <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <tbody>
+                                 <tr class="">
+                                    <th width="60%"><?php echo Labels::getLabel('LBL_User_Detail',$siteLangId);?></th>
+                                    <th width="20%"><?php echo Labels::getLabel('LBL_Active',$siteLangId);?></th>
+                                    <th width="20%"><?php echo Labels::getLabel('LBL_Verified',$siteLangId);?></th>
+                                  </tr>
+                                  <?php if( count( $user_listing ) > 0 ){
+                                            foreach( $user_listing as $row ){
+                                        ?>
+                                          <tr>
+                                            <td>
+                                                <div class="item__description">
+                                                    <div class="item__date" title="<?php echo Labels::getLabel('Lbl_Registered_on',$siteLangId)?>"><?php echo FatDate::format($row['user_regdate']);?></div>
+                                                    <div class="item__title">
+                                                        <?php if($row['user_name'] != ''){  echo $row['user_name']; } ?>
+                                                    </div>
+
+                                                    <div class="item__brand">
+                                                        <?php echo $row['credential_email'];?>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="user__status">
+                                                    <?php
+                                    				    echo $str = isset($row['credential_active']) ? $yesNoArr[$row['credential_active']] : 'N/A';
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="user__verified">
+                                                    <?php
+                                    				    echo $str = isset($row['credential_verified']) ? $yesNoArr[$row['credential_verified']] : 'N/A';
+                                                    ?>
+                                                </div>
+                                            </td>
+                                          </tr>
+                                      <?php }
+                                  }else{ ?>
+                                    <tr>
+                                        <td colspan="3">
+                                            <?php echo Labels::getLabel('Lbl_Your_latest_orders_will_show_up_here.',$siteLangId)?>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                            <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
+                                <span class="scroll-hint-icon">
+                                  <div class="scroll-hint-text"><?php echo Labels::getLabel('LBL_Scrollable',$siteLangId);?></div>
+                                </span>
+                            </div>
+                        </table>
+                    </div>
+                </div>
+			</div>
+            <div class="col-lg-6 col-md-12">
+                <div class="cards">
+                    <div class="cards-header p-3">
+                        <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History',$siteLangId);?></h5>
+                        <div class="action">
+                            <a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                        </div>
+                    </div>
+                    <div class="cards-content p-3">
+                        <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <tbody>
+                                 <tr class="">
+                                    <th width="30%"><?php echo Labels::getLabel('LBL_Txn._Detail',$siteLangId);?></th>
+                                    <th width="30%"><?php echo Labels::getLabel('LBL_Type',$siteLangId);?></th>
+                                    <th width="10%"><?php echo Labels::getLabel('LBL_Balance',$siteLangId);?></th>
+                                    <th width="30%"><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></th>
+                                  </tr>
+                                  <?php if( count( $transactions ) > 0 ){
+                                            foreach( $transactions as $row ){ ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="item__description">
+                                                        <div class="item__date"><?php echo FatDate::format($row['utxn_date']);?></div>
+                                                        <div class="item__title" title="<?php echo Labels::getLabel('Lbl_Txn._Id',$siteLangId)?>">
+                                                            <?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="txn__type">
+                                                        <div class="txn__credit">
+                                                            <?php echo Labels::getLabel('Lbl_Credit',$siteLangId)?>:
+                                                            <?php echo CommonHelper::displayMoneyFormat($row['utxn_credit']);?>
+                                                        </div>
+                                                        <div class="txn__debit">
+                                                            <?php echo Labels::getLabel('Lbl_Debit',$siteLangId)?>:
+                                                            <?php echo CommonHelper::displayMoneyFormat($row['utxn_debit']);?>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="txn__balance">
+                                                        <?php echo CommonHelper::displayMoneyFormat( $row['balance'] );?>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="txn__status">
+                                                        <?php echo $txnStatusArr[$row['utxn_status']];?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                      <?php }
+                                    }else{ ?>
+                                      <tr>
+                                          <td colspan="3">
+                                              <?php echo Labels::getLabel('Lbl_Your_recent_transaction_will_show_up_here.',$siteLangId)?>
+                                          </td>
+                                      </tr>
+                                  <?php } ?>
+                            </tbody>
+                            <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
+                                <span class="scroll-hint-icon">
+                                  <div class="scroll-hint-text"><?php echo Labels::getLabel('LBL_Scrollable',$siteLangId);?></div>
+                                </span>
+                            </div>
+                        </table>
+                    </div>
+                </div>
+			</div>
 		</div>
 	</div>
   </div>
 </main>
+
+<script type="text/javascript">
+(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=<?php echo FatApp::getConfig("CONF_FACEBOOK_APP_ID",FatUtility::VAR_STRING,''); ?>";
+		fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+
+function facebook_redirect(response_token){
+	FB.ui( {
+		method: 'feed',
+		name: "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_TITLE_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
+		link: "<?php echo $affiliateTrackingUrl?>",
+		picture: "<?php echo CommonHelper::generateFullUrl('image', 'socialFeed',array($siteLangId ,''),"/")?>",
+		caption: "<?php echo sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_CAPTION_$siteLangId",FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_$siteLangId"))?>",
+		description: "<?php echo str_replace(array("\n","\r","\r\n"),' ',sprintf(FatApp::getConfig("CONF_SOCIAL_FEED_FACEBOOK_POST_DESCRIPTION_".$siteLangId,FatUtility::VAR_STRING,''),FatApp::getConfig("CONF_WEBSITE_NAME_".$siteLangId)))?>",
+
+	},
+	function( response ) {
+		if ( response !== null && typeof response.post_id !== 'undefined' ) {
+			$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
+			/* $("#fb_ajax").html(langLbl.thanksForSharing); */
+		}
+	});
+}
+function twitter_shared(name){
+	$.mbsmessage(langLbl.thanksForSharing, true, 'alert--success');
+	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
+}
+</script>
+
+<?php
+$_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Affiliate','twitterCallback',array(),'',false);
+$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
+$get_twitter_url=$_SESSION["TWITTER_URL"];
+$request_token = $twitteroauth->getRequestToken($get_twitter_url);
+$_SESSION['oauth_token'] = $request_token['oauth_token'];
+$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+if ($twitteroauth->http_code == 200) {
+	$url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
+	?>
+	<script type="text/javascript">
+	var newwindow;
+	var intId;
+	function twitter_login(){
+		var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
+			 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
+			 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
+			 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
+			 width    = 800,
+			 height   = 600,
+			 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
+			 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+			 features = (
+				'width=' + width +
+				',height=' + height +
+				',left=' + left +
+				',top=' + top
+			  );
+		newwindow=window.open('<?php echo $url; ?>','Login_by_twitter',features);
+
+	   if (window.focus) {newwindow.focus()}
+	  return false;
+	}
+	</script>
+	<?php
+}
