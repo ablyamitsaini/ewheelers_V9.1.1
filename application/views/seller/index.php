@@ -385,7 +385,7 @@
                                                 <div class="item__description">
                                                     <div class="request__date"><?php echo FatDate::format($row['orrequest_date']);?></div>
                                                     <div class="item__title">
-                                                        <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo $url;?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
+                                                        <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
                                                     </div>
                                                     <div class="item__title">
                                                         <?php if($row['op_selprod_title'] != ''){ ?>
