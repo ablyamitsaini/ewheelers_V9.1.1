@@ -104,7 +104,7 @@
 				}); */
 				/* $("#product_links_list").html(fcom.getLoader()); */
 				$.ajax({
-					url: fcom.makeUrl('products', 'links_autocomplete'),
+					url: fcom.makeUrl('products', 'linksAutocomplete'),
 					data: {keyword: request,fIsAjax:1},
 					dataType: 'json',
 					type: 'post',

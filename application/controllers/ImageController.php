@@ -471,8 +471,8 @@ class ImageController extends FatController
             AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         case 'COLLECTION_PAGE':
-            $w = 50;
-            $h = 50;
+            $w = 150;
+            $h = 150;
             AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         default:

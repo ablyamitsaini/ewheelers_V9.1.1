@@ -3,24 +3,24 @@ class Abusive extends MyAppModel
 {
     const DB_TBL = 'tbl_abusive_words';
     const DB_TBL_PREFIX = 'abusive_';
-    
-    public function __construct($abusiveId = 0) 
+
+    public function __construct($abusiveId = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $abusiveId);
     }
-    
-    public static function getSearchObject($langId = 0) 
+
+    public static function getSearchObject($langId = 0)
     {
         $langId =  FatUtility::int($langId);
-        
-        $srch = new SearchBase(static::DB_TBL, 'aw');    
-                
-        if($langId > 0) {
+
+        $srch = new SearchBase(static::DB_TBL, 'aw');
+
+        if ($langId > 0) {
             $srch->addCondition('lbl.' . static::DB_TBL_PREFIX . 'lang_id', '=', $langId);
-        }        
-        return $srch;        
+        }
+        return $srch;
     }
-    
+
     public static function getAbusiveWords($langId = 0)
     {
         $srch = static::getSearchObject($langId);
@@ -30,8 +30,8 @@ class Abusive extends MyAppModel
         $records = FatApp::getDb()->fetchAllAssoc($srch->getResultSet());
         return array_values($records);
     }
-    
-    public static function validateContent( $textToBeCheck, &$enteredAbusiveWordsArr = array() )
+
+    public static function validateContent($textToBeCheck, &$enteredAbusiveWordsArr = array())
     {
         $srch = Abusive::getSearchObject();
         $srch->joinTable(Language::DB_TBL, 'INNER JOIN', 'abusive_lang_id = language_id AND language_active = '. applicationConstants::ACTIVE);
@@ -42,25 +42,19 @@ class Abusive extends MyAppModel
         $rs = $srch->getResultSet();
         $abusiveWordsArr = FatApp::getDb()->fetchAllAssoc($rs);
         $enteredAbusiveWordsArr = array();
-        if($abusiveWordsArr ) {
+        if ($abusiveWordsArr) {
             $abusiveWordsArr = array_map("strtolower", $abusiveWordsArr);
             $textToBeCheckArr = explode(" ", $textToBeCheck);
-            //$textToBeCheckArr2 = explode( ",", $textToBeCheck );
-            
-            //$textToBeCheckArr = array_merge( $textToBeCheckArr1, $textToBeCheckArr2 );
-            
-            foreach( $textToBeCheckArr as $postedWord ){
-                if(in_array(strtolower($postedWord), $abusiveWordsArr) ) {
+            foreach ($textToBeCheckArr as $postedWord) {
+                if (in_array(strtolower($postedWord), $abusiveWordsArr)) {
                     array_push($enteredAbusiveWordsArr, $postedWord);
                 }
             }
         }
-        
-        if(!empty($enteredAbusiveWordsArr) ) {
+
+        if (!empty($enteredAbusiveWordsArr)) {
             return false;
         }
         return true;
     }
-    
-    
-}    
+}

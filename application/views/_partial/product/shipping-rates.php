@@ -1,10 +1,10 @@
 <?php
 if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicationConstants::YES){
-	echo '<div class="gap"></div><div class="">'.Labels::getLabel('LBL_This_product_is_available_for_free_shipping',$siteLangId).'</div>';
+	echo '<div class="gap"></div><div class="condition-txt">'.Labels::getLabel('LBL_This_product_is_available_for_free_shipping',$siteLangId).'</div>';
 }else if(count($shippingRates)>0){?>
 <div class="delivery-term">
-	<div class=""> <p class="note"><?php echo Labels::getLabel('LBL_Shipping_Policies',$siteLangId);?>
-		<a href="#shipRates" rel="facebox" ><i class="fa fa-question-circle"></i></a></p>
+	<div class="condition-txt"><?php echo Labels::getLabel('LBL_Shipping_Policies',$siteLangId);?>
+		<a href="#shipRates" rel="facebox" ><i class="fa fa-question-circle"></i></a>
 		<div id= "shipRates" style="display:none">
 			  <div class="delivery-term-data-inner">
 			<?php
@@ -36,7 +36,7 @@ if(isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicatio
 							break;
 						case 'country_name':
 
-							$td->appendElement('plaintext', array(), Product::getProductShippingTitle($row,$siteLangId),true);
+							$td->appendElement('plaintext', array(), Product::getProductShippingTitle($siteLangId, $row),true);
 							break;
 						default:
 							$td->appendElement('plaintext', array(), $row[$key], true);

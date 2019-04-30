@@ -4,8 +4,7 @@ $(document).ready(function(){
 		if(langLbl.layoutDirection == 'rtl'){
 
 			$('.js-hero-slider').slick({
-				centerMode: true,
-				centerPadding: '17%',
+				centerMode: false,
 				slidesToShow: 1,
 				variableWidth: false,
 				arrows: false,
@@ -144,8 +143,8 @@ $(document).ready(function(){
 		}else{
 
 			$('.js-hero-slider').slick({
-				centerMode: true,
-				centerPadding: '17%',
+				centerMode: false,
+			
 				slidesToShow: 1,
 				variableWidth: false,
 				arrows: false,

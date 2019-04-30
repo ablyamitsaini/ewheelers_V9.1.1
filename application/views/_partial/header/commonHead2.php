@@ -25,7 +25,8 @@ if( isset($socialShareContent) && !empty($socialShareContent) ){ ?>
 <script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>
 <?php  }  ?>
 </head>
-<?php $bodyClass='';
+<?php
+$bodyClass = ($controllerName=='Home') ? 'home' : 'inner' ;
 if($controllerName=='Blog') $bodyClass = 'is--blog';
 if($controllerName=='Checkout') $bodyClass = 'is-checkout';
 if(isset($isUserDashboard) && $isUserDashboard) $bodyClass = 'is-dashboard sidebar-is-reduced';

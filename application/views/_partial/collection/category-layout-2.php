@@ -24,7 +24,7 @@
 												<li> <a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($subCat['prodcat_id'] )); ?>"><?php echo $subCat['prodcat_name']; ?></a> </li>
 												<?php $i++; if($i > 5) break; } ?>
 												<?php if($i > 5) { ?>
-												<li> <a href="" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </li>
+												<li class="last-link"> <a href="" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </li>
 												<?php }?>
 											</ul>
 										</div>

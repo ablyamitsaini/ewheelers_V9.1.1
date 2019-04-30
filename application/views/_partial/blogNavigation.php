@@ -19,7 +19,7 @@
 			<?php }?>
 		</ul>
 		<?php $subMoreNavigation = ( count($categoriesArr) > $navLinkCount ) ? array_slice($categoriesArr, $navLinkCount, true) : array(); ?>
-		
+
 		<div class="wrapper-menu <?php if(count($subMoreNavigation)==0) echo "wrapper-menu-mobile";?>">
 			<div class="line-menu half start"></div>
 			<div class="line-menu"></div>
@@ -42,20 +42,20 @@
 			</ul>
 		</div>
 	</div>
-	
+
 	<div class="searchform-holder">
 		<div class="search-toggle">
 			<span class="search-icon"></span>
 		</div>
 		<div class="search-form active">
-			<?php $srchFrm->setFormTagAttribute ( 'onSubmit', 'submitBlogSearch(this); return(false);' ); 
+			<?php $srchFrm->setFormTagAttribute ( 'onSubmit', 'submitBlogSearch(this); return(false);' );
 			$srchFrm->setFormTagAttribute('class','form-main-search');
 			$srchFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 			$srchFrm->developerTags['fld_default_col'] = 12;
 			$keywordFld = $srchFrm->getField('keyword');
 			$keywordFld->setFieldTagAttribute('class','no-focus');
 			$keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_Keyword', $siteLangId));
-			echo $srchFrm->getFormTag(); 
+			echo $srchFrm->getFormTag();
 			echo $srchFrm->getFieldHTML('keyword');
 			echo $srchFrm->getFieldHTML('btnProductSrchSubmit');
 			echo $srchFrm->getExternalJS();

@@ -13,7 +13,7 @@ class SellerProductsController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index( $product_id = 0) 
+    public function index( $product_id = 0)
     {
         $data = FatApp::getPostedData();
         $srchFrm = $this->getSearchForm();
@@ -264,7 +264,7 @@ class SellerProductsController extends AdminBaseController
         $post['selprod_code'] = $productRow['product_id'].'_'.implode('_', $options);
         $selProdCode = $post['selprod_code'];
 
-        if($sellerProductRow && !empty(Product::IsSellProdAvailableForUser($selProdCode, $this->adminLangId, $sellerProductRow['selprod_user_id'], $selprod_id)) ) {
+        if($sellerProductRow && !empty(Product::isSellProdAvailableForUser($selProdCode, $this->adminLangId, $sellerProductRow['selprod_user_id'], $selprod_id)) ) {
             Message::addErrorMessage(Labels::getLabel("MSG_Product_has_been_already_added_by_user", $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -501,7 +501,7 @@ class SellerProductsController extends AdminBaseController
         $metaId= 0;
 
         if(!empty($prodMetaData)) {
-            $metaId = $prodMetaData['meta_id']; 
+            $metaId = $prodMetaData['meta_id'];
         }
         $productSeoForm = $this->getProductSeoForm($metaId, $metaType, $selprod_id);
         $productSeoForm->fill($prodMetaData);
@@ -1287,7 +1287,7 @@ class SellerProductsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
         $nodes = array();
         $className = get_class($this);
@@ -1741,7 +1741,7 @@ class SellerProductsController extends AdminBaseController
             'admin_name', 'admin_username', 'admin_email', 'scatrequestmsg_msg',
             'scatrequestmsg_date', 'msg_user.user_name as msg_user_name', 'msg_user_cred.credential_username as msg_username',
             'msg_user_cred.credential_email as msg_user_email',
-            'scatrequest_status' ) 
+            'scatrequest_status' )
         );
 
         $rs = $srch->getResultSet();
@@ -1757,7 +1757,7 @@ class SellerProductsController extends AdminBaseController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords; 
+        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
         }
         $json['totalRecords'] = $totalRecords;
         $json['startRecord'] = $startRecord;
@@ -2082,7 +2082,7 @@ class SellerProductsController extends AdminBaseController
         return $frm;
     }
 
-    private function getThresholdLevelProductsSearchForm() 
+    private function getThresholdLevelProductsSearchForm()
     {
         $frm = new Form('frmProductSearch');
         $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword', '', array('id'=>'keyword','autocomplete'=>'off'));

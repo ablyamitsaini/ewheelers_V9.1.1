@@ -52,6 +52,20 @@ class AdvertiserController extends LoggedUserController
 
         }
 
+        /* Active Promotions [ */
+
+        $pSrch = $this->searchPromotionsObj();
+        $pSrch->setDefinedCriteria();
+        $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d") );
+        $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES );
+        $pSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs =  $pSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
+
+        /* ] */
+        $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
+        $this->set('activePromotions', $records);
+        $this->set('totActivePromotions', $pSrch->recordCount());
         $this->set('lowBalWarning', $lowBalWarning);
         $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
         $this->set('walletBalance', $walletBalance);
@@ -493,7 +507,7 @@ class AdvertiserController extends LoggedUserController
         $page = (empty($page) || $page <= 0)?1:$page;
         $page = FatUtility::int($page);
 
-        $srch = new PromotionSearch($this->siteLangId);
+        $srch = $this->searchPromotionsObj();
 
         if(!empty($post['keyword'])) {
             $cnd = $srch->addCondition('pr.promotion_identifier', 'like', '%'.$post['keyword'].'%');
@@ -515,13 +529,8 @@ class AdvertiserController extends LoggedUserController
         /* if( !empty($dateTo) ) {
         $srch->addDateToCondition($dateTo, $dateFrom);
         } */
-
-        $srch->addMultipleFields(array('promotion_id','promotion_budget','promotion_duration','promotion_type','IFNULL(promotion_name,promotion_identifier) as promotion_name','promotion_start_date','promotion_end_date','promotion_start_time','promotion_end_time','promotion_active','promotion_approved','promotion_active'));
-        $srch->addCondition('promotion_deleted', '=', applicationConstants::NO);
-        $srch->addCondition('promotion_user_id', '=', $userId);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
-        $srch->addOrder('promotion_id', 'DESC');
 
         $rs =  $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
@@ -537,6 +546,16 @@ class AdvertiserController extends LoggedUserController
         $this->set('userId', $userId);
         $this->set('typeArr', Promotion::getTypeArr($this->siteLangId));
         $this->_template->render(false, false);
+    }
+
+    public function searchPromotionsObj()
+    {
+        $srch = new PromotionSearch($this->siteLangId);
+        $srch->addMultipleFields(array('promotion_id','promotion_budget','promotion_duration','promotion_type','IFNULL(promotion_name,promotion_identifier) as promotion_name','promotion_start_date','promotion_end_date','promotion_start_time','promotion_end_time','promotion_active','promotion_approved','promotion_active'));
+        $srch->addCondition('promotion_deleted', '=', applicationConstants::NO);
+        $srch->addCondition('promotion_user_id', '=', UserAuthentication::getLoggedUserId());
+        $srch->addOrder('promotion_id', 'DESC');
+        return $srch;
     }
 
     public function getTypeData($promotionId,$promotionType = 0)

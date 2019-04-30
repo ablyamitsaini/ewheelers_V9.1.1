@@ -565,14 +565,16 @@ class ProductSearch extends SearchBase
 
     public function addBrandCondition($brand)
     {
+        $brandId = FatUtility::int($brand);
         if(is_numeric($brand) ) {
-            $brand = FatUtility::int($brand);
-            $this->addCondition('brand_id', '=', $brand);
+            $this->addCondition('brand_id', '=', $brandId);
         }else if( is_array( $brand ) ){
-            $this->addCondition('brand_id', 'IN', $brand);
+            $brand = array_filter(array_unique($brandId));
+            $this->addDirectCondition('brand_id IN ('. implode(',',$brand).')');
         } else {
             $brand = explode(",", $brand);
-            $this->addCondition('brand_id', 'IN', $brand);
+            $brand = array_filter(array_unique($brand));
+            $this->addDirectCondition('brand_id IN ('. implode(',',$brand).')');
         }
     }
 
@@ -675,7 +677,8 @@ class ProductSearch extends SearchBase
         } else {
             $condition = explode(",", $condition);
             $condition = FatUtility::int($condition);
-            $this->addCondition('selprod_condition', 'IN', $condition);
+            $condition = array_filter(array_unique($condition));
+            $this->addDirectCondition('selprod_condition IN ('. implode(',',$condition).')');
         }
     }
 
@@ -693,8 +696,8 @@ class ProductSearch extends SearchBase
         $this->joinShopCountry();
         $this->joinShopState();
         $this->joinBrands();
-        $this->    joinSellerSubscription();
-        $this->    addSubscriptionValidCondition();
+        $this->joinSellerSubscription();
+        $this->addSubscriptionValidCondition();
         $this->joinProductToCategory();
         $this->doNotCalculateRecords();
         $this->doNotLimitRecords();
