@@ -1,20 +1,11 @@
-<?php 
-class AffiliateController extends LoggedUserController
+<?php
+class AffiliateController extends AffiliateBaseController
 {
     public function __construct($action)
     {
         parent::__construct($action);
-        if(!User::isAffiliate() ) {
-            if(FatUtility::isAjaxCall() ) {
-                Message::addErrorMessage(Labels::getLabel("LBL_Unauthorised_access", $this->siteLangId));
-                FatUtility::dieWithError(Message::getHtml());
-            }
-            FatApp::redirectUser(CommonHelper::generateUrl('account'));
-        }
-        $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-        $this->set('bodyClass', 'is--dashboard');
     }
-    
+
     public function index()
     {
         //$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
@@ -23,14 +14,14 @@ class AffiliateController extends LoggedUserController
         $this->set('userRevenue', User::getAffiliateUserRevenue($loggedUserId));
         $this->_template->render(true, false);
     }
-    
+
     public function paymentInfoForm()
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $frm = $this->getPaymentInfoForm($this->siteLangId);
         /* $userExtraData = User::getUserExtraData( $loggedUserId, array(
-        'uextra_tax_id', 
-        'uextra_payment_method', 
+        'uextra_tax_id',
+        'uextra_payment_method',
         'uextra_cheque_payee_name',
         'uextra_bank_name',
         'uextra_bank_branch_number',
@@ -40,12 +31,12 @@ class AffiliateController extends LoggedUserController
         'uextra_paypal_email_id') ); */
         $userExtraData = User::getUserExtraData(
             $loggedUserId, array(
-            'uextra_tax_id', 
-            'uextra_payment_method', 
+            'uextra_tax_id',
+            'uextra_payment_method',
             'uextra_cheque_payee_name',
-            'uextra_paypal_email_id') 
+            'uextra_paypal_email_id')
         );
-        
+
         $userObj = new User($loggedUserId);
         $userBankInfo = $userObj->getUserBankInfo();
         $frmData = $userExtraData;
@@ -57,7 +48,7 @@ class AffiliateController extends LoggedUserController
         $this->set('frm', $frm);
         $this->_template->render(false, false);
     }
-    
+
     public function setUpPaymentInfo()
     {
         $frm = $this->getPaymentInfoForm($this->siteLangId);
@@ -69,10 +60,10 @@ class AffiliateController extends LoggedUserController
             }
             FatApp::redirectUser(CommonHelper::generateUrl('Affiliate'));
         }
-        
+
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $userObj = new User($loggedUserId);
-        
+
         /* saving user extras[ */
         $dataToSave = array(
         'uextra_user_id'    =>    $loggedUserId,
@@ -91,7 +82,7 @@ class AffiliateController extends LoggedUserController
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
         }
         /* ] */
-        
+
         /* saving user bank details[ */
         $bankInfoData = array(
         'ub_bank_name'        =>    $post['ub_bank_name'],
@@ -108,11 +99,11 @@ class AffiliateController extends LoggedUserController
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
         }
         /* ] */
-        
+
         $this->set('msg', Labels::getLabel('MSG_Payment_details_saved_successfully!', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
-    
+
     public function getFbToken()
     {
         $userId = UserAuthentication::getLoggedUserId();
@@ -122,68 +113,68 @@ class AffiliateController extends LoggedUserController
         }else{
             $redirectUrl = CommonHelper::generateUrl('Affiliate', 'Sharing');
         }
-        
+
         include_once CONF_INSTALLATION_PATH.'library/Fbapi.php';
-        
+
         $config = array(
         'app_id' => FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING, ''),
         'app_secret' => FatApp::getConfig('CONF_FACEBOOK_APP_SECRET', FatUtility::VAR_STRING, ''),
         );
         $fb = new Fbapi($config);
         $fbObj = $fb->getInstance();
-        
+
         $helper = $fb->getRedirectLoginHelper();
-        
+
         try {
             $accessToken = $helper->getAccessToken();
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
             Message::addErrorMessage($e->getMessage());
-            FatApp::redirectUser($redirectUrl);             
+            FatApp::redirectUser($redirectUrl);
         } catch(Facebook\Exceptions\FacebookSDKException $e) {
             Message::addErrorMessage($e->getMessage());
-            FatApp::redirectUser($redirectUrl);    
+            FatApp::redirectUser($redirectUrl);
         }
-        
+
         if (! isset($accessToken)) {
             if ($helper->getError()) {
                 Message::addErrorMessage($helper->getErrorDescription());
-                //Message::addErrorMessage($helper->getErrorReason());							
-            } else {                    
-                Message::addErrorMessage(Labels::getLabel('Msg_Bad_Request', $this->siteLangId));                
-            }            
+                //Message::addErrorMessage($helper->getErrorReason());
+            } else {
+                Message::addErrorMessage(Labels::getLabel('Msg_Bad_Request', $this->siteLangId));
+            }
         }else{
             // The OAuth 2.0 client handler helps us manage access tokens
             $oAuth2Client = $fbObj->getOAuth2Client();
-            
+
             if (! $accessToken->isLongLived()) {
                 try {
                     $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
                 } catch (Facebook\Exceptions\FacebookSDKException $e) {
                     Message::addErrorMessage($helper->getMessage());
-                    FatApp::redirectUser($redirectUrl);    
+                    FatApp::redirectUser($redirectUrl);
                 }
             }
-                
-            $fbAccessToken = $accessToken->getValue();    
+
+            $fbAccessToken = $accessToken->getValue();
             unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
             unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
             unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
-            
+
             $userObj = new User($userId);
             $userData = array('user_fb_access_token'=>$fbAccessToken);
             $userObj->assignValues($userData);
-            if (!$userObj->save()) { 
-                Message::addErrorMessage(Labels::getLabel("MSG_Token_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());                                                
+            if (!$userObj->save()) {
+                Message::addErrorMessage(Labels::getLabel("MSG_Token_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
             }
-        }        
-        FatApp::redirectUser($redirectUrl);    
+        }
+        FatApp::redirectUser($redirectUrl);
     }
-    
+
     public function twitterCallback()
     {
         include_once CONF_INSTALLATION_PATH . 'library/APIs/twitter/twitteroauth.php';
         $get = FatApp::getQueryStringData();
-        
+
         if (!empty($get['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty($_SESSION['oauth_token_secret'])) {
             // We've got everything we need
             $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY", FatUtility::VAR_STRING, ''), FatApp::getConfig("CONF_TWITTER_API_SECRET", FatUtility::VAR_STRING, ''), $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
@@ -197,7 +188,7 @@ class AffiliateController extends LoggedUserController
             $anchor_tag=CommonHelper::affiliateReferralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code'));
             $urlapi = "http://tinyurl.com/api-create.php?url=".$anchor_tag;
             /*** activate cURL for URL shortening ***/
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $urlapi);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -221,12 +212,12 @@ class AffiliateController extends LoggedUserController
                 $parameters = array('Name' => FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId),'status' => $message);
                 $post = $twitteroauth->post('statuses/update', $parameters, true);
             }
-            
+
             $this->set('errors', isset($post->errors) ? $post->errors : false);
             $this->_template->render(false, false, 'buyer/twitter-response.php');
         }
     }
-    
+
     public function sharing()
     {
         include_once CONF_INSTALLATION_PATH.'library/Fbapi.php';
@@ -238,16 +229,16 @@ class AffiliateController extends LoggedUserController
         'app_secret' => FatApp::getConfig('CONF_FACEBOOK_APP_SECRET', FatUtility::VAR_STRING, ''),
         );
         $fb = new Fbapi($config);
-        
+
         $fbAccessToken = '';
         $fbLoginUrl = '';
-        
-        $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);            
+
+        $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);
         $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
         if($userInfo['user_fb_access_token']!='') {
             $fbAccessToken = $userInfo['user_fb_access_token'];
         }
-        
+
         $sharingFrm = $this->getSharingForm($this->siteLangId);
         $affiliateTrackingUrl = CommonHelper::affiliateReferralTrackingUrl($userInfo['user_referral_code']);
         $this->set('affiliateTrackingUrl', $affiliateTrackingUrl);
@@ -256,17 +247,17 @@ class AffiliateController extends LoggedUserController
         $this->set('fbAccessToken', $fbAccessToken);
         $this->_template->render(true, false);
     }
-    
+
     public function setUpMailAffiliateSharing()
     {
         $sharingFrm = $this->getSharingForm($this->siteLangId);
         $post = $sharingFrm->getFormDataFromArray(FatApp::getPostedData());
-        
+
         if ($post == false ) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
-        
+
         $error = '';
         FatUtility::validateMultipleEmails($post["email"], $error);
         if($error != '' ) {
@@ -280,9 +271,9 @@ class AffiliateController extends LoggedUserController
             $emailNotificationObj = new EmailHandler();
             foreach( $emailsArr as $email_id ) {
                 $email_id = trim($email_id);
-                if(!CommonHelper::isValidEmail($email_id) ) { continue; 
+                if(!CommonHelper::isValidEmail($email_id) ) { continue;
                 }
-                
+
                 /* email notification handling[ */
                 $emailNotificationObj = new EmailHandler();
                 if (!$emailNotificationObj->sendAffiliateMailShare(UserAuthentication::getLoggedUserId(), $email_id, $personalMessage, $this->siteLangId) ) {
@@ -292,11 +283,11 @@ class AffiliateController extends LoggedUserController
                 /* ] */
             }
         }
-        
+
         $this->set('msg', Labels::getLabel('MSG_invitation_emails_sent_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
-    
+
     public function addressInfo()
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -313,38 +304,38 @@ class AffiliateController extends LoggedUserController
         $srch->addCondition('user_id', '=', $loggedUserId);
         $rs = $srch->getResultSet();
         $userData = FatApp::getDb()->fetch($rs);
-        
+
         $userExtraData = ( !empty($userExtraData) ) ? $userExtraData : array('uextra_company_name' => '', 'uextra_website' => '');
         $userData = array_merge($userData, $userExtraData);
-        
+
         $this->set('userData', $userData);
         $this->_template->render(false, false);
     }
-    
+
     private function getPaymentInfoForm( $siteLangId )
     {
         $siteLangId = FatUtility::int($siteLangId);
         $frm = new Form('frmPaymentInfoForm');
         $frm->addTextBox(Labels::getLabel('LBL_Tax_Id', $siteLangId), 'uextra_tax_id');
-                
+
         $frm->addRadioButtons(Labels::getLabel('LBL_Payment_Method', $siteLangId), 'uextra_payment_method', User::getAffiliatePaymentMethodArr($siteLangId), User::AFFILIATE_PAYMENT_METHOD_CHEQUE, array('class' => 'links--inline'));
-        
+
         $frm->addTextBox(Labels::getLabel('LBL_Cheque_Payee_Name', $siteLangId), 'uextra_cheque_payee_name');
-        
+
         $frm->addTextBox(Labels::getLabel('LBL_Bank_Name', $siteLangId), 'ub_bank_name');
         $frm->addTextBox(Labels::getLabel('LBL_Account_Holder_Name', $siteLangId), 'ub_account_holder_name');
         $frm->addTextBox(Labels::getLabel('LBL_Bank_Account_Number', $siteLangId), 'ub_account_number');
         $frm->addTextBox(Labels::getLabel('LBL_Swift_Code', $siteLangId), 'ub_ifsc_swift_code');
         $frm->addTextArea(Labels::getLabel('LBL_Bank_Address', $siteLangId), 'ub_bank_address');
-        
+
         $fld = $frm->addTextBox(Labels::getLabel('LBL_PayPal_Email_Account', $siteLangId), 'uextra_paypal_email_id');
         $fld->requirements()->setEmail();
-        
+
         $frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Register', $siteLangId));
         $frm->setFormTagAttribute('onsubmit', 'setupAffiliateRegister(this); return(false);');
         return $frm;
     }
-    
+
     private function getSharingForm( $siteLangId )
     {
         $siteLangId = FatUtility::int($siteLangId);
