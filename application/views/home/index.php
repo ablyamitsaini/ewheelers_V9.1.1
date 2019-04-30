@@ -25,7 +25,7 @@
 
 	/* Top Banner Layout[ */
 	if( isset($banners['Home_Page_Top_Banner'] ) ){
-		$this->includeTemplate( '_partial/banners/home-page-banner-layout.php', array( 'bannerLayout1' => $banners['Home_Page_Top_Banner'], 'siteLangId' => $siteLangId ),false );
+		$this->includeTemplate( '_partial/banners/home-banner-first-layout.php', array( 'bannerLayout1' => $banners['Home_Page_Top_Banner'], 'siteLangId' => $siteLangId ),false );
 	}
 	/* ] */
 	
@@ -37,7 +37,7 @@
 	
 	/* Bottom Banner Layout[ */
 	if( isset($banners['Home_Page_Bottom_Banner'] ) ){
-		$this->includeTemplate( '_partial/banners/home-page-banner-layout.php', array( 'bannerLayout1' => $banners['Home_Page_Bottom_Banner'], 'siteLangId' => $siteLangId ),false );
+		$this->includeTemplate( '_partial/banners/home-banner-second-layout.php', array( 'bannerLayout1' => $banners['Home_Page_Bottom_Banner'], 'siteLangId' => $siteLangId ),false );
 	}
 	/* ] */
 	

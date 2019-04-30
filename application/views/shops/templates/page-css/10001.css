@@ -21,6 +21,8 @@
 	max-width: 584px;
 }
 
+.shop-info .products__rating{ justify-content: flex-start; }
+
 .shop-name span {
 	font-size: 0.875rem;
 	color: var(--txt-color-light);

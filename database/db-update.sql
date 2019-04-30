@@ -293,5 +293,6 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 DELETE T1, T2 FROM tbl_navigations as T1 LEFT JOIN tbl_navigations_lang as T2 ON T1.nav_id = T2.navlang_nav_id WHERE T1.nav_id = 7;
 DELETE T1, T2 FROM tbl_navigation_links as T1 LEFT JOIN tbl_navigation_links_lang as T2 ON T1.nlink_id = T2.nlinklang_nlink_id WHERE T1.nlink_nav_id = 7;
 
-
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Favorite_Items';
+UPDATE `tbl_banner_locations` SET `blocation_banner_count` = '2' WHERE `tbl_banner_locations`.`blocation_id` = 2 and `tbl_banner_locations`.`blocation_id` = 3;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width`=600,`blocation_banner_height`=338 WHERE `bldimension_blocation_id` = 2 and `bldimension_blocation_id` = 3;

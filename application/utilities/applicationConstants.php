@@ -69,8 +69,6 @@ class applicationConstants
     const DASHBOARD_PAGE_SIZE = 3;
     const PAGE_SIZE = 20;
 
-    const DASHBOARD_PAGE_SIZE = 3;
-
     static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);

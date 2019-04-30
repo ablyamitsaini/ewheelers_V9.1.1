@@ -788,9 +788,11 @@ class BannersController extends AdminBaseController
     {
 
         $srch = new BannerSearch($this->adminLangId, false);
+        $srch->joinLocations();
         $srch->joinLocationDimension($deviceType);
-        $srch->addCondition('banner_blocation_id', '=', $bannerLocationId);
         $srch->addMultipleFields(array('blocation_banner_width','blocation_banner_height'));
+        $srch->addCondition('bldimension_blocation_id','=',$bannerLocationId);
+        $srch->addCondition('bldimension_device_type','=',$deviceType);
         $rs = $srch->getResultSet();
         $bannerDimensions = FatApp::getDb()->fetch($rs);
         $this->set('bannerWidth', $bannerDimensions['blocation_banner_width']);
