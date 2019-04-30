@@ -15,3 +15,4 @@ Enhancements:
 
 Fixex :
 	. Phpmailer Autoload function deprecated.
+	. Featured shops listing.

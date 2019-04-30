@@ -80,7 +80,7 @@ class ShopsController extends MyAppController
         );
 
         $featured = FatApp::getPostedData('featured', FatUtility::VAR_INT, 0);
-        if(1 > $featured) {
+        if (0 < $featured) {
             $srch->addCondition('shop_featured', '=', $featured);
         }
 
