@@ -52,7 +52,7 @@ $fld1->htmlAfterField = $htmlAfterField;
 <script>
 	$(document).on('change','.display-js',function(){
 		var deviceType = $(this).val();
-		fcom.ajax(fcom.makeUrl('Promotions', 'getBannerLocationDimensions', [<?php echo $blocation_id;?>,deviceType]), '', function(t) {
+		fcom.ajax(fcom.makeUrl('Banners', 'getBannerLocationDimensions', [<?php echo $blocation_id;?>,deviceType]), '', function(t) {
 			var ans = $.parseJSON(t);
 			$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, ans.bannerWidth +' * '+ ans.bannerHeight));
 		});

@@ -339,7 +339,7 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 	 <?php } ?>
      <section class="section section--gray">
 		<div class="container">
-			<div class="row justify-content-center">
+			<div class="row justify-content-center product--specifications">
 				<div class="col-md-12">
 					<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
 					<div class="row justify-content-between">
@@ -503,20 +503,19 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 					</div>
 				</div>
 			</div>
-			<div id="itemRatings">
-				<div class="gap"></div>
-				<?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
-				<div class="gap"></div>
-				<h4><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></h4>
-        <div class="gap"></div>
-				<?php echo $frmReviewSearch->getFormHtml(); ?>
-				  <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
-				<?php }?>
-			</div>
-      	<div class="gap"></div>
+            
+            <div id="itemRatings">
+                <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
+                <?php echo $frmReviewSearch->getFormHtml(); ?>
+                <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
+                <?php }?>
+            </div>
+                
+            <div class="gap"></div>
 			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 			<div class="gap"></div>
-			<div class="banner-ppc"> <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
+            <div class="row">
+            <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
 				$desktop_url = '';
 				$tablet_url = '';
 				$mobile_url = '';
@@ -539,7 +538,7 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 					}
 				}
 				?>
-			<a href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" target="<?php echo $val['banner_target'];?>" title="<?php echo $val['banner_title'];?>" class="advertise__block"><img data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>" class="img-responsive"></a>
+			<div class="col-md-6"><div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" target="<?php echo $val['banner_target'];?>" title="<?php echo $val['banner_title'];?>" class="advertise__block"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>" class="img-responsive"></a></div></div>
 			<?php } ?></div>
 				 <?php } if(isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
 				Promotion::updateImpressionData($val['banner_record_id']);

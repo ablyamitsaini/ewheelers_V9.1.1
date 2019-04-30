@@ -249,7 +249,6 @@ array_walk($catCodeArr,function(&$n) {
 		<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
 		</ul>
 	</div>
-	<div class="divider--filters"></div>
 	<!-- ] -->
 
 

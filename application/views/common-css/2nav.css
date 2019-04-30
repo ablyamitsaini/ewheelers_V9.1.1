@@ -43,7 +43,7 @@
 
 .navigations > li {
 	display: block;
-	font-size: 0.88em;
+	font-size: 1em;
 	font-weight: 400;
 	position: static;
 	margin: 0 5px;
@@ -62,7 +62,7 @@
 	color: inherit;
 	display: block;
 	overflow: hidden;
-	padding: 13px 0px;
+	padding:1rem 0px;
 	position: relative;
 	text-align: center;
 	text-overflow: ellipsis;
@@ -82,7 +82,7 @@
 	height: 2px;
 	width: 0;
 	position: absolute;
-	bottom: 0;
+	bottom: 6px;
 	-webkit-transition: 0.4s all ease;
 	transition: 0.4s all ease;
 }

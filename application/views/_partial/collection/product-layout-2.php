@@ -7,7 +7,7 @@ if( isset( $collections ) && count($collections) ){
 <?php if( isset($row['products']) && count($row['products']) ) {
 	?>
 
-<section class="section">
+<section class="">
 	<div class="container">
 		<div class="section-head">
 			<div class="section__heading">
@@ -20,7 +20,7 @@ if( isset( $collections ) && count($collections) ){
 		<div class="ft-products">
 			<div class="row">
 				<?php foreach( $row['products'] as $product ){ ?>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="col-lg-4 col-md-4 ">
 					<?php $layoutClass = 'products--layout'; include('product-layout-1-list.php'); ?>
 				</div>
 				<?php } ?>
