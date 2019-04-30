@@ -441,10 +441,10 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 			url = url.replace($currentPageUrl, fcom.makeUrl('Products','filters'));
 		}
 		var data = fcom.frmData(frm);
-		fcom.ajax(url, data, function(ans){
-			$('.productFilters-js').html(ans);
+		fcom.ajax(url, data, function(res){
+			$('.productFilters-js').html(res);
 			getSetSelectedOptionsUrl(frm);
-		},false,false);
+		});
 	};
 
 	removeLastSpace = function(str){
