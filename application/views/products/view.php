@@ -98,10 +98,11 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
-        <div class="gap"> </div>
+        
 
-			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){
-					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
+			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){ ?>
+            <div class="gap"> </div>
+					<?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
 				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>
 			<?php }?>
@@ -193,65 +194,58 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 
 			<?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
               <?php if($codEnabled){?>
-              <div class="cod-txt"><?php echo Labels::getLabel('LBL_Cash_on_delivery_is_available',$siteLangId);?> <i class="fa fa-question-circle-o tooltip tooltip--right"><span class="hovertxt"><?php echo Labels::getLabel('MSG_Cash_on_delivery_available._Choose_from_payment_options',$siteLangId);?> </span></i> </div>
+              <div class="condition-txt"><?php echo Labels::getLabel('LBL_Cash_on_delivery_is_available',$siteLangId);?> <i class="fa fa-question-circle-o tooltip tooltip--right"><span class="hovertxt"><?php echo Labels::getLabel('MSG_Cash_on_delivery_available._Choose_from_payment_options',$siteLangId);?> </span></i> </div>
               <?php }?>
 
 
 			<!-- Upsell Products [ -->
-              <?php if (count($upsellProducts)>0) { ?>
-              <div id="product">
-                <div class="cart-box">
-                  <div class="heading3"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
-                  <div class="gap"></div>
-                  <table class="table cart--full cart-tbl cart-tbl-addons item-yk" width="100%">
-                    <thead>
-                      <tr class="hide--mobile">
-                        <th></th>
-                        <th><?php echo Labels::getLabel('LBL_Name', $siteLangId); ?></th>
-                        <th><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></th>
-                        <th><?php echo Labels::getLabel('LBL_Qty', $siteLangId); ?></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <?php  foreach ($upsellProducts as $usproduct) {
-						$cancelClass ='';
-						$uncheckBoxClass='';
-						if($usproduct['selprod_stock']<=0){
-							$cancelClass ='cancelled--js';
-							$uncheckBoxClass ='remove-add-on';
-						}
-					?>
-                    <tr>
-                      <td class="<?php echo $cancelClass;?>"><div class="product-img"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></div></td>
-                      <td class="<?php echo $cancelClass;?>"><div class="item-yk-head-title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div>
-                       <?php if($usproduct['selprod_stock']<=0){ ?>
-						  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
-						  <?php  } ?></td>
-                      <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
-                      <td class="<?php echo $cancelClass;?>"><div class="qty" data-stock="<?php echo $usproduct['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
-                          <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
-                          <span class="increase increase-js">+</span> </div></td>
-                      <td class="<?php echo $cancelClass;?>"><label class="checkbox">
-                          <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
-                          <i class="input-helper"></i> </label>
-						</td>
-                    </tr>
-                    <?php } ?>
-                  </table>
+            <?php if (count($upsellProducts)>0) { ?>
+                <div class="gap"></div>
+                <div class="box box--gray box--radius box--space">
+                    <div class="h6 js-acc-triger acc-triger"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
+                    <div class=" acc-data">
+                        <table class="table cart--full cart-tbl cart-tbl-addons">
+                            <tbody>
+                            <?php  foreach ($upsellProducts as $usproduct) {
+                            $cancelClass ='';
+                            $uncheckBoxClass='';
+                            if($usproduct['selprod_stock']<=0){
+                                $cancelClass ='cancelled--js';
+                                $uncheckBoxClass ='remove-add-on';
+                            }
+                        ?>
+                        <tr>
+                          <td class="<?php echo $cancelClass;?>"><figure class="item__pic"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></figure></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="item__description">
+                                            <div class="item__title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div></div>
+                           <?php if($usproduct['selprod_stock']<=0){ ?>
+                              <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
+                              <?php  } ?></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart" data-stock="<?php echo $usproduct['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
+                              <input type="text" value="1" placeholder="Qty" class="no--focus cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
+                              <span class="increase increase-js">+</span> </div></td>
+                          <td class="<?php echo $cancelClass;?>"><label class="checkbox">
+                              <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
+                              <i class="input-helper"></i> </label>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-              </div>
-              <div class="gap"></div>
-              <?php } ?>
+            <?php } ?>
               <!-- ] -->
 			  <?php if($product['product_upc']!='') { ?>
 				<div class="gap"></div>
 				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
-				<div class="gap"></div>
 			  <?php }?>
 
 
 
-
+            <div class="gap"></div>
             <div class="">
 
 
@@ -333,12 +327,16 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
         </div>
       </div>
 	 </section>
-	 <?php if($recommendedProducts || $relatedProductsRs){ ?>
-	 <section class="section bg--second-color">
+	 <?php if($recommendedProducts){ ?>
+	 <section class="section bg--first-color">
 		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
+	 </section>
+	 <?php } ?>
+     <?php if($relatedProductsRs){ ?>
+	 <section class="section bg--second-color">
 		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
 	 </section>
-	 <?php }?>
+	 <?php } ?>
      <section class="section section--gray">
 		<div class="container">
 			<div class="row justify-content-center">
