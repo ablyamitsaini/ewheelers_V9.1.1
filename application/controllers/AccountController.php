@@ -1128,10 +1128,47 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    public function moveToWishList( $productId )
+    {
+        $defaultWishListId = $this->getDefaultWishListId();
+        echo $this->addRemoveWishListProduct( $productId, $defaultWishListId );
+    }
+
+    public function getDefaultWishListId()
+    {
+        $loggedUserId = UserAuthentication::getLoggedUserId();
+        $srch = UserWishList::getSearchObject($loggedUserId, true);
+        $srch->addCondition('uwlist_default', '=', applicationConstants::YES);
+        $srch->addMultipleFields( array( 'uwlist_id') );
+        $srch->setPageSize(1);
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+
+        if( !empty($row) ){
+            return $row['uwlist_id'];
+        }
+
+        $wListObj = new UserWishList();
+        $data_to_save_arr['uwlist_title'] = Labels::getLabel('LBL_Default_list', $this->siteLangId);;
+        $data_to_save_arr['uwlist_added_on'] = date('Y-m-d H:i:s');
+        $data_to_save_arr['uwlist_user_id'] = $loggedUserId;
+        $data_to_save_arr['uwlist_default'] = 1;
+        $wListObj->assignValues($data_to_save_arr);
+
+        /* create new List[ */
+        if ( !$wListObj->save() ) {
+            Message::addErrorMessage($wListObj->getError());
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        $uwlist_id = $wListObj->getMainTableRecordId();
+        return $uwlist_id;
+    }
+
     /* called from products listing page */
     public function viewWishList( $selprod_id )
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
+        $this->getDefaultWishListId();
         $wishLists = UserWishList::getUserWishLists($loggedUserId, true);
         $frm = $this->getCreateWishListForm();
         $frm->fill(array('selprod_id' => $selprod_id));
@@ -1196,9 +1233,38 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    public function addRemoveWishListProductArr(){
+
+        $selprod_id_arr = FatApp::getPostedData('selprod_id');
+        $uwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
+        if( empty( $selprod_id_arr ) || empty( $uwlist_id ) ){
+            Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
+        foreach ( $selprod_id_arr as $selprod_id ) {
+            $action = $this->updateWishList( $selprod_id, $uwlist_id );
+        }
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function updateRemoveWishListProduct( $selprod_id, $wish_list_id ){
+        $selprod_id_arr = FatApp::getPostedData('selprod_id');
+        $oldWwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
+
+        if( empty( $selprod_id_arr ) || empty( $oldWwlist_id ) ){
+            Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        foreach ( $selprod_id_arr as $selprod_id ) {
+            $this->updateWishList( $selprod_id, $oldWwlist_id );
+            $this->updateWishList( $selprod_id, $wish_list_id );
+        }
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
     public function addRemoveWishListProduct( $selprod_id, $wish_list_id )
     {
-
         $selprod_id = FatUtility::int($selprod_id);
         $wish_list_id = FatUtility::int($wish_list_id);
         $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -1207,42 +1273,8 @@ class AccountController extends LoggedUserController
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        $db = FatApp::getDb();
-        $wListObj = new UserWishList();
-        $srch = UserWishList::getSearchObject($loggedUserId);
-        $wListObj->joinWishListProducts($srch);
-        $srch->addMultipleFields(array('uwlist_id'));
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
-        $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
 
-        $rs = $srch->getResultSet();
-        $row = $db->fetch($rs);
-        $rs = $srch->getResultSet();
-
-        /* $selprod_code = '';
-        $res = SellerProduct::getAttributesById($selprod_id,array('selprod_code'));
-        if($res != false){
-        $selprod_code = $res['selprod_code'];
-        } */
-
-        $action = 'N'; //nothing happened
-        if(!$row = $db->fetch($rs) ) {
-            if(!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id) ) {
-                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
-                FatUtility::dieWithError(Message::getHtml());
-            }
-            $action = 'A'; //Added to wishlist
-            $this->set('msg', Labels::getLabel('LBL_Product_Added_in_list_successfully', $this->siteLangId));
-        } else {
-            if(!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
-                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
-                FatUtility::dieWithError(Message::getHtml());
-            }
-            $action = 'R'; //Removed from wishlist
-            $this->set('msg', Labels::getLabel('LBL_Product_Removed_from_list_successfully', $this->siteLangId));
-        }
+        $action = $this->updateWishList( $selprod_id, $wish_list_id );
 
         //UserWishList
         $srch = UserWishList::getSearchObject($loggedUserId);
@@ -1266,6 +1298,42 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    private function updateWishList( $selprod_id, $wish_list_id ){
+        $loggedUserId = UserAuthentication::getLoggedUserId();
+
+        $db = FatApp::getDb();
+        $wListObj = new UserWishList();
+        $srch = UserWishList::getSearchObject($loggedUserId);
+        $wListObj->joinWishListProducts($srch);
+        $srch->addMultipleFields(array('uwlist_id'));
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
+        $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
+
+        $rs = $srch->getResultSet();
+        $row = $db->fetch($rs);
+        $rs = $srch->getResultSet();
+
+        $action = 'N'; //nothing happened
+        if(!$row = $db->fetch($rs) ) {
+            if(!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id) ) {
+                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
+                FatUtility::dieWithError(Message::getHtml());
+            }
+            $action = 'A'; //Added to wishlist
+            $this->set('msg', Labels::getLabel('LBL_Product_Added_in_list_successfully', $this->siteLangId));
+        } else {
+            if(!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
+                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
+                FatUtility::dieWithError(Message::getHtml());
+            }
+            $action = 'R'; //Removed from wishlist
+            $this->set('msg', Labels::getLabel('LBL_Product_Removed_from_list_successfully', $this->siteLangId));
+        }
+        return $action;
+    }
+
     public function wishlist()
     {
         $this->_template->addCss('css/slick.css');
@@ -1277,11 +1345,12 @@ class AccountController extends LoggedUserController
     public function wishListSearch()
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
+        $defaultWishListId = $this->getDefaultWishListId();
+
         if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
             $wishLists[] = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
         }else{
             $wishLists = UserWishList::getUserWishLists($loggedUserId, false);
-
             if($wishLists ) {
                 $srchObj = new UserWishListProductSearch($this->siteLangId);
                 $db = FatApp::getDb();
@@ -1311,6 +1380,7 @@ class AccountController extends LoggedUserController
         }
 
         /* $wishLists = array_merge($favouriteProducts,$wishLists); */
+
         $frm = $this->getCreateWishListForm();
         $this->set('wishLists', $wishLists);
 
@@ -1403,7 +1473,7 @@ class AccountController extends LoggedUserController
             'product_id', 'prodcat_id', 'ufp_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','product_image_updated_on',
             'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand.brand_id', 'product_model',
             'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
-            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','ifnull(prod_rating,0) prod_rating' )
+            'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','IFNULL(uwlp.uwlp_uwlist_id, 0) as uwlp_uwlist_id','ifnull(prod_rating,0) prod_rating', 'selprod_min_order_qty'  )
         );
         $srch->addOrder('uwlp_added_on');
         $rs = $srch->getResultSet();
@@ -1440,6 +1510,7 @@ class AccountController extends LoggedUserController
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
+        $this->set('forPage', Labels::getLabel('LBL_Wishlist', $this->siteLangId));
 
         if($totalRecords > 0) {
             $this->set('html', $this->_template->render(false, false, 'products/products-list.php', true, false));
