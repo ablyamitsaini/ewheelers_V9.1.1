@@ -117,7 +117,6 @@ class BuyerController extends BuyerBaseController
 
     public function viewOrder($orderId,$opId = 0, $print = false )
     {
-
         if(!$orderId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
@@ -157,6 +156,7 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
 
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
+        //CommonHelper::printArray($childOrderDetail); exit;
 
         foreach( $childOrderDetail as $opID => $val){
             $childOrderDetail[$opID]['charges'] = $orderDetail['charges'][$opID];

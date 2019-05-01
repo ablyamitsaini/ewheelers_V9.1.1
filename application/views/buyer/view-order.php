@@ -1,14 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-    
     $canCancelOrder = true;
-    $canReturnRefund = true;
-    if( $childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
-		$canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
-		$canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true) ) );
-	} else {
-		$canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) );
-		$canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses() ) );
-	}
+    $canReturnRefund = true;    
+    if(true == $primaryOrder){
+        if( $childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
+            $canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
+            $canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true) ) );
+        } else {
+            $canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses()) );
+            $canReturnRefund = ( in_array( $childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses() ) );
+        }
+    }
 ?>
 
 <?php if( !$print ){ ?>
@@ -455,4 +456,3 @@
 		});
 	}
 </script>
-
