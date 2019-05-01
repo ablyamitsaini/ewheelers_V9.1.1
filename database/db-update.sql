@@ -296,3 +296,4 @@ DELETE T1, T2 FROM tbl_navigation_links as T1 LEFT JOIN tbl_navigation_links_lan
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Favorite_Items';
 UPDATE `tbl_banner_locations` SET `blocation_banner_count` = '2' WHERE `tbl_banner_locations`.`blocation_id` = 2 and `tbl_banner_locations`.`blocation_id` = 3;
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width`=600,`blocation_banner_height`=338 WHERE `bldimension_blocation_id` = 2 and `bldimension_blocation_id` = 3;
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Credits';

@@ -9,7 +9,6 @@ class HomeController extends AdminBaseController
         $this->canEdit = $this->objPrivilege->canEditAdminDashboard($this->admin_id, true);
         $this->set("canView", $this->canView);
         $this->set("canEdit", $this->canEdit);
-
         include_once CONF_INSTALLATION_PATH . 'library/phpfastcache.php';
     }
 
@@ -108,7 +107,7 @@ class HomeController extends AdminBaseController
             foreach($salesEarningsData as $key => $val ){
                 $salesEarningsChartData[$val["duration"]] = $val["value"];
             }
-
+            
             $signupsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'signups', array('user_is_buyer' => 1, 'user_is_supplier' => 1), 6);
             $signupsChartData = [];
             foreach($signupsData as $key => $val ){
