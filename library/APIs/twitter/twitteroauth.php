@@ -21,7 +21,7 @@ class TwitterOAuth {
   /* Set timeout default. */
   public $timeout = 30;
   /* Set connect timeout. */
-  public $connecttimeout = 30; 
+  public $connecttimeout = 30;
   /* Verify SSL Cert. */
   public $ssl_verifypeer = FALSE;
   /* Respons format. */
@@ -65,10 +65,10 @@ class TwitterOAuth {
    */
   function getRequestToken($oauth_callback) {
     $parameters = array();
-    $parameters['oauth_callback'] = $oauth_callback; 
-    $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);	
+    $parameters['oauth_callback'] = $oauth_callback;
+    $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
     $token = OAuthUtil::parse_parameters($request);
-	
+
 	if (isset($token['oauth_callback_confirmed']) && ($token['oauth_callback_confirmed'] == true)) {
 		$this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
 		return $token;
@@ -116,7 +116,7 @@ class TwitterOAuth {
    *                "user_id" => "9436992",
    *                "screen_name" => "abraham",
    *                "x_auth_expires" => "0")
-   */  
+   */
   function getXAuthToken($username, $password) {
     $parameters = array();
     $parameters['x_auth_username'] = $username;
@@ -137,7 +137,7 @@ class TwitterOAuth {
     }
     return $response;
   }
-  
+
   /**
    * POST wrapper for oAuthRequest.
    */

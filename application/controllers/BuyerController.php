@@ -715,6 +715,13 @@ class BuyerController extends BuyerBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 
+        $srch->addMultipleFields(
+            array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
+            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model')
+        );
+
+        $srch->addOrder('orrequest_date', 'DESC');
+
         $keyword = $post['keyword'];
         if(!empty($keyword) ) {
             $cnd = $srch->addCondition('op_invoice_number', '=', $keyword);

@@ -119,7 +119,6 @@ class SellerController extends SellerBaseController
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
-
         /*
         * Cancellation Request Listing
         */
@@ -127,6 +126,7 @@ class SellerController extends SellerBaseController
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
+        $this->set('returnRequestsCount', $srchReturnReq->recordCount());
 
         $txnObj = new Transactions();
         $txnsSummary = $txnObj->getTransactionSummary( $userId, date('Y-m-d') );

@@ -372,10 +372,9 @@ class User extends MyAppModel
         return $arr;
     }
 
-    public function getUserSearchObj($attr = null,$joinUserCredentials = false ,$skipDeleted = true)
+    public function getUserSearchObj($attr = null,$joinUserCredentials = true ,$skipDeleted = true)
     {
         $srch = static::getSearchObject($joinUserCredentials, $skipDeleted);
-        $srch->joinTable(static::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.'.static::DB_TBL_CRED_PREFIX.'user_id = u.user_id', 'uc');
 
         if($this->mainTableRecordId>0) {
             $srch->addCondition('u.'.static::DB_TBL_PREFIX.'id', '=', $this->mainTableRecordId);
@@ -2120,4 +2119,16 @@ class User extends MyAppModel
         return $row;
     }
 
+    public function referredByAffilates($affilateUserId)
+    {
+        if ($affilateUserId < 1) {
+            $this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED', $this->commonLangId);
+            return false;
+        }
+
+        $srch = $this->getUserSearchObj(null,true);
+        $srch->addCondition('user_affiliate_referrer_user_id', '=', $affilateUserId);
+
+        return $srch;
+    }
 }
