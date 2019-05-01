@@ -5,7 +5,7 @@ $yesNoArr = applicationConstants::getYesNoArr($siteLangId);
 $arr_flds = array(
 	'user_name'	=>	Labels::getLabel('LBL_User', $siteLangId),
 	'credential_email'	=>	Labels::getLabel('LBL_Email', $siteLangId),
-	'user_regdate'	=>	Labels::getLabel('LBL_Registeration_Date', $siteLangId),
+	'user_regdate'	=>	Labels::getLabel('Lbl_Registered_on', $siteLangId),
 	'credential_active'		=>	Labels::getLabel('LBL_Active', $siteLangId),
 	'credential_verified'	=>	Labels::getLabel('LBL_Verified', $siteLangId),
 );

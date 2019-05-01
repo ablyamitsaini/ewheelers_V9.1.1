@@ -29,6 +29,16 @@ $(document).ready(function(){
 		});
 	};
 
+	copy = function(obj){
+		var copyText = obj.attr('title');
+		document.addEventListener('copy', function(e) {
+			e.clipboardData.setData('text/plain', copyText);
+			e.preventDefault();
+		}, true);
+		document.execCommand('copy');
+		alert('copied text: ' + copyText);
+	}
+
 	addressInfo = function( el ){
 		$(tabListing).html( fcom.getLoader() );
 		fcom.ajax(fcom.makeUrl('Affiliate','addressInfo'), '', function(res){
@@ -47,24 +57,26 @@ $(document).ready(function(){
 	};
 
 	fbSubmit = function(){
-		FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-				facebook_redirect(response);
-			} else if (response.status === 'not_authorized') {
-				FB.login(function(response) {
-					facebook_redirect(response);
-				}, {
-					scope : facebookScope
-				});
-			} else {
-				FB.login(function(response) {
-					if (response.authResponse) {
-						facebook_redirect(response);
-					}
-				}, {
-					scope : facebookScope
-				});
-			}
-		});
+		FB.login(checkLoginStatus, {scope:'email'});
 	};
+
+	checkLoginStatus = function(response) {
+		if (response.status === 'connected') {
+			facebook_redirect(response);
+		} else if (response.status === 'not_authorized') {
+			FB.login(function(response) {
+				facebook_redirect(response);
+			}, {
+				scope : facebookScope
+			});
+		} else {
+			FB.login(function(response) {
+				if (response.authResponse) {
+					facebook_redirect(response);
+				}
+			}, {
+				scope : facebookScope
+			});
+		}
+	}
 })();

@@ -16,7 +16,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 		</div>
 	</div>
 	<div class="content-body">
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
 			<div class="col-lg-8 col-md-12">
                 <div class="cards">
                     <div class="cards-header p-3">
@@ -27,7 +27,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 		<div class="widget-wrapper mb-3">
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Account','credits'); ?>">
@@ -51,20 +51,34 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                 </a>
 			</div>
 			<div class="widget widget-stats">
+                <a href="<?php echo CommonHelper::generateUrl('Account','credits'); ?>">
+    				<div class="cards">
+    					<div class="cards-header">
+    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Revenue',$siteLangId);?></h5>
+    					</div>
+    					<div class="cards-content p-3">
+    						<div class="stats">
+    							<i class="icn"><svg class="svg">
+    									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
+    								</svg></i>
+
+    							<div class="stats-number">
+    								<h6 class="total"><?php echo Labels::getLabel('LBL_Total_Revenue',$siteLangId);?></h6>
+    								<?php echo CommonHelper::displayMoneyFormat($userRevenue);?>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+                </a>
+			</div>
+			<div class="widget widget-stats">
 				<div class="cards">
 					<div class="cards-header">
-						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Revenue',$siteLangId);?></h5>
+						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text',$siteLangId)?></h5>
 					</div>
 					<div class="cards-content p-3">
 						<div class="stats">
-							<i class="icn"><svg class="svg">
-									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
-								</svg></i>
-
-							<div class="stats-number">
-								<h6 class="total"><?php echo Labels::getLabel('LBL_Total_Revenue',$siteLangId);?></h6>
-								<?php echo CommonHelper::displayMoneyFormat($userRevenue);?>
-							</div>
+                            <a href="javascript:void(0)" title="<?php echo $affiliateTrackingUrl; ?>" onclick="copy($(this))"><?php echo Labels::getLabel('LBL_Click_to_copy',$siteLangId)?></a>
 						</div>
 					</div>
 				</div>
@@ -141,16 +155,19 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Referred_by_me',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('affiliate','referredByMe');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $user_listing ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('affiliate','referredByMe');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                             <tbody>
                                  <tr class="">
-                                    <th width="60%"><?php echo Labels::getLabel('LBL_User_Detail',$siteLangId);?></th>
-                                    <th width="20%"><?php echo Labels::getLabel('LBL_Active',$siteLangId);?></th>
+                                    <th width="40%"><?php echo Labels::getLabel('LBL_User_Detail',$siteLangId);?></th>
+                                    <th width="30%"><?php echo Labels::getLabel('Lbl_Registered_on',$siteLangId);?></th>
+                                    <th width="10%"><?php echo Labels::getLabel('LBL_Active',$siteLangId);?></th>
                                     <th width="20%"><?php echo Labels::getLabel('LBL_Verified',$siteLangId);?></th>
                                   </tr>
                                   <?php if( count( $user_listing ) > 0 ){
@@ -159,7 +176,6 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                           <tr>
                                             <td>
                                                 <div class="item__description">
-                                                    <div class="item__date" title="<?php echo Labels::getLabel('Lbl_Registered_on',$siteLangId)?>"><?php echo FatDate::format($row['user_regdate']);?></div>
                                                     <div class="item__title">
                                                         <?php if($row['user_name'] != ''){  echo $row['user_name']; } ?>
                                                     </div>
@@ -167,6 +183,11 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                                     <div class="item__brand">
                                                         <?php echo $row['credential_email'];?>
                                                     </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="item__description">
+                                                    <div class="item__date" title="<?php echo Labels::getLabel('Lbl_Registered_on',$siteLangId)?>"><?php echo FatDate::format($row['user_regdate']);?></div>
                                                 </div>
                                             </td>
                                             <td>
@@ -188,7 +209,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                   }else{ ?>
                                     <tr>
                                         <td colspan="3">
-                                            <?php echo Labels::getLabel('Lbl_Your_latest_orders_will_show_up_here.',$siteLangId)?>
+                                            <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -206,9 +227,11 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $transactions ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -256,8 +279,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                       <?php }
                                     }else{ ?>
                                       <tr>
-                                          <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_recent_transaction_will_show_up_here.',$siteLangId)?>
+                                          <td colspan="4">
+                                              <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                           </td>
                                       </tr>
                                   <?php } ?>
@@ -308,40 +331,27 @@ function twitter_shared(name){
 	/* $("#twitter_ajax").html(langLbl.thanksForSharing); */
 }
 </script>
+<script type="text/javascript">
+var newwindow;
+var intId;
+function twitter_login(){
+	var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
+		 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
+		 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
+		 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
+		 width    = 800,
+		 height   = 600,
+		 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
+		 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+		 features = (
+			'width=' + width +
+			',height=' + height +
+			',left=' + left +
+			',top=' + top
+		  );
+	newwindow=window.open('<?php echo $twitterUrl; ?>','Login_by_twitter',features);
 
-<?php
-$_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Affiliate','twitterCallback',array(),'',false);
-$twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
-$get_twitter_url=$_SESSION["TWITTER_URL"];
-$request_token = $twitteroauth->getRequestToken($get_twitter_url);
-$_SESSION['oauth_token'] = $request_token['oauth_token'];
-$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-if ($twitteroauth->http_code == 200) {
-	$url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
-	?>
-	<script type="text/javascript">
-	var newwindow;
-	var intId;
-	function twitter_login(){
-		var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
-			 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
-			 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
-			 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
-			 width    = 800,
-			 height   = 600,
-			 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
-			 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
-			 features = (
-				'width=' + width +
-				',height=' + height +
-				',left=' + left +
-				',top=' + top
-			  );
-		newwindow=window.open('<?php echo $url; ?>','Login_by_twitter',features);
-
-	   if (window.focus) {newwindow.focus()}
-	  return false;
-	}
-	</script>
-	<?php
+   if (window.focus) {newwindow.focus()}
+  return false;
 }
+</script>

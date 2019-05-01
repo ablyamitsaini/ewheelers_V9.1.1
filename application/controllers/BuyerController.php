@@ -13,7 +13,7 @@ class BuyerController extends LoggedUserController
         $this->set('bodyClass', 'is--dashboard');
     }
 
-    public function index() 
+    public function index()
     {
         $userId = UserAuthentication::getLoggedUserId();
         $user = new User($userId);
@@ -39,7 +39,7 @@ class BuyerController extends LoggedUserController
         $srch->setPageSize(5);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_product_type', 'op_status_id', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name') 
+            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_product_type', 'op_status_id', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name')
         );
         $rs = $srch->getResultSet();
         $orders = FatApp::getDb()->fetchAll($rs);
@@ -190,12 +190,12 @@ class BuyerController extends LoggedUserController
         $this->set('urlParts', $urlParts);
         if($print) {
             $print = true;
-        } 
+        }
         $this->set('print', $print);
         $this->_template->render(true, false);
     }
 
-    public function downloadDigitalFile($aFileId,$recordId = 0) 
+    public function downloadDigitalFile($aFileId,$recordId = 0)
     {
         $aFileId = FatUtility::int($aFileId);
         $recordId = FatUtility::int($recordId);
@@ -230,7 +230,7 @@ class BuyerController extends LoggedUserController
         AttachedFile::updateDownloadCount($res['afile_id']);
     }
 
-    public function downloadDigitalProductFromLink($linkId, $opId) 
+    public function downloadDigitalProductFromLink($linkId, $opId)
     {
         $linkId = FatUtility::int($linkId);
         $opId = FatUtility::int($opId);
@@ -328,7 +328,7 @@ class BuyerController extends LoggedUserController
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
             'totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
-            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name') 
+            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -482,7 +482,7 @@ class BuyerController extends LoggedUserController
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
         if(!$opDetail || CommonHelper::is_multidim_array($opDetail) ) {
-            Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));                
+            Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
@@ -597,7 +597,7 @@ class BuyerController extends LoggedUserController
         if(!$emailObj->SendOrderCancellationNotification($ocrequest_id, $this->siteLangId) ) {
             Message::addErrorMessage($emailObj->getError());
             FatUtility::dieWithError(Message::getHtml());
-        } 
+        }
 
         /* send notification to admin */
         $notificationData = array(
@@ -700,7 +700,7 @@ class BuyerController extends LoggedUserController
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
-            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model') 
+            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model')
         );
 
         $srch->addOrder('orrequest_date', 'DESC');
@@ -771,7 +771,7 @@ class BuyerController extends LoggedUserController
             'orrequest_date', 'orrequest_status', 'orrequest_reference', 'op_invoice_number', 'op_selprod_title', 'op_product_name',
             'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_qty',
             'op_unit_price', 'op_selprod_user_id', 'IFNULL(orreason_title, orreason_identifier) as orreason_title',
-            'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges') 
+            'op_shop_id', 'op_shop_name', 'op_shop_owner_name', 'order_tax_charged','op_other_charges','op_refund_amount','op_commission_percentage','op_affiliate_commission_percentage','op_commission_include_tax','op_commission_include_shipping','op_free_ship_upto','op_actual_shipping_charges')
         );
         $rs = $srch->getResultSet();
         $request = FatApp::getDb()->fetch($rs);
@@ -826,7 +826,7 @@ class BuyerController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function downloadAttachedFileForReturn($recordId, $recordSubid =0) 
+    public function downloadAttachedFileForReturn($recordId, $recordSubid =0)
     {
 
         $recordId = FatUtility::int($recordId);
@@ -1537,7 +1537,7 @@ class BuyerController extends LoggedUserController
         $this->set('totalRewardPoints',$records['totalRewardPoints']); */
 
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
-        $this->set('convertReward', $convertReward);        
+        $this->set('convertReward', $convertReward);
         $this->_template->render(true, false);
     }
 
@@ -1858,7 +1858,7 @@ class BuyerController extends LoggedUserController
             $emailNotificationObj = new EmailHandler();
             foreach( $email as $email_id ) {
                 $email_id = trim($email_id);
-                if(!CommonHelper::isValidEmail($email_id)) { continue; 
+                if(!CommonHelper::isValidEmail($email_id)) { continue;
                 }
                 /* email notification handling[ */
                 if (!$emailNotificationObj->sendMailShareEarn(UserAuthentication::getLoggedUserId(), $email_id, $personalMessage, $this->siteLangId) ) {
