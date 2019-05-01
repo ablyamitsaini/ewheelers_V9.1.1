@@ -10,58 +10,55 @@ class LoggedUserController extends MyAppController
         $userObj = new User(UserAuthentication::getLoggedUserId());
 
         $userInfo = $userObj->getUserInfo(array(), false, false);
-        //var_dump($userInfo); exit;
-        if(false == $userInfo || (!UserAuthentication::isGuestUserLogged() && $userInfo['credential_active'] != applicationConstants::ACTIVE )) {
-            if (FatUtility::isAjaxCall() ) {
-                // FatUtility::dieWithError(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
+
+        if (false == $userInfo || (!UserAuthentication::isGuestUserLogged() && $userInfo['credential_active'] != applicationConstants::ACTIVE)) {
+            if (FatUtility::isAjaxCall()) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));
                 FatUtility::dieWithError(Message::getHtml());
             }
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'logout'));
         }
 
-        if(!isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+        if (!isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
             $userPreferedDashboardType = ($userInfo['user_preferred_dashboard'])?$userInfo['user_preferred_dashboard']:$userInfo['user_registered_initially_for'];
 
-            switch($userPreferedDashboardType){
-            case User::USER_TYPE_BUYER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-                break;
-            case User::USER_TYPE_SELLER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-                break;
-            case User::USER_TYPE_AFFILIATE:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-                break;
-            case User::USER_TYPE_ADVERTISER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-                break;
+            switch ($userPreferedDashboardType) {
+                case User::USER_TYPE_BUYER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+                    break;
             }
         }
 
-
-        if((!UserAuthentication::isGuestUserLogged() && $userInfo['credential_verified'] != 1 ) && !($_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME] && $_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME]>0)) {
+        if ((!UserAuthentication::isGuestUserLogged() && $userInfo['credential_verified'] != 1 ) && !($_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME] && $_SESSION[USER::ADMIN_SESSION_ELEMENT_NAME]>0)) {
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'logout'));
         }
 
-        if(UserAuthentication::getLoggedUserId() < 1) {
+        if (UserAuthentication::getLoggedUserId() < 1) {
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'logout'));
         }
 
-        if(empty($userInfo['credential_email'])) {
+        if (empty($userInfo['credential_email'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_Please_Configure_Your_Email', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'configureEmail'));
         }
-
         $this->initCommonValues();
     }
 
     private function initCommonValues()
     {
-
+        $this->set('isUserDashboard', true);
     }
 
-    protected function getOrderCancellationRequestsSearchForm( $langId )
+    protected function getOrderCancellationRequestsSearchForm($langId)
     {
         $frm = new Form('frmOrderCancellationRequest');
         $frm->addTextBox('', 'op_invoice_number');
@@ -75,17 +72,15 @@ class LoggedUserController extends MyAppController
         return $frm;
     }
 
-    protected function getOrderReturnRequestsSearchForm( $langId )
+    protected function getOrderReturnRequestsSearchForm($langId)
     {
         $frm = new Form('frmOrderReturnRequest');
         $frm->addTextBox('', 'keyword');
         $frm->addSelectBox('', 'orrequest_status', array( '-1' => Labels::getLabel('LBL_Status_Does_Not_Matter', $langId) ) + OrderReturnRequest::getRequestStatusArr($langId), '', array(), '');
         $returnRquestArray = OrderReturnRequest::getRequestTypeArr($langId);
-        if(count($returnRquestArray) > applicationConstants::YES) {
+        if (count($returnRquestArray) > applicationConstants::YES) {
             $frm->addSelectBox('', 'orrequest_type', array( '-1' => Labels::getLabel('LBL_Request_Type_Does_Not_Matter', $langId) ) + $returnRquestArray, '', array(), '');
-        }
-        else
-        {
+        } else {
             $frm->addHiddenField('', 'orrequest_type', '-1');
         }
         $frm->addDateField('', 'orrequest_date_from', '', array('readonly'=>'readonly'));
@@ -96,7 +91,7 @@ class LoggedUserController extends MyAppController
         return $frm;
     }
 
-    protected function getOrderReturnRequestMessageSearchForm( $langId )
+    protected function getOrderReturnRequestMessageSearchForm($langId)
     {
         $frm = new Form('frmOrderReturnRequestMsgsSrch');
         $frm->addHiddenField('', 'page');
@@ -104,7 +99,7 @@ class LoggedUserController extends MyAppController
         return $frm;
     }
 
-    protected function getOrderReturnRequestMessageForm( $langId )
+    protected function getOrderReturnRequestMessageForm($langId)
     {
         $frm = new Form('frmOrderReturnRequestMessge');
         $frm->setRequiredStarPosition('');
