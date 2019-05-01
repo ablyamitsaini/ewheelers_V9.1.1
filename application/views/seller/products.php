@@ -51,6 +51,10 @@ $cancelBtnFld->developerTags['col'] = 2;
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_your_inventory',$siteLangId); ?></h5>
+                <div class="action">
+                    <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Toggle_status',$siteLangId); ?>" onclick="toggleBulkSellerProductsStatues()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Toggle_status',$siteLangId); ?></a>
+                    <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected',$siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected',$siteLangId); ?></a>
+                </div>
 			</div>
 			<div class="cards-content p-3">
 

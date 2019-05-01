@@ -97,6 +97,7 @@ class MyAppController extends FatController
         'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s', $this->siteLangId),
         'invalidCredentials' =>Labels::getLabel('LBL_Invalid_Credentials', $this->siteLangId),
         'searchString' =>Labels::getLabel('LBL_Search_string_must_be_atleast_3_characters_long.', $this->siteLangId),
+        'atleastOneRecord' =>Labels::getLabel('LBL_Please_select_atleast_one_record.', $this->siteLangId)
         );
 
         $languages = Language::getAllNames(false);
