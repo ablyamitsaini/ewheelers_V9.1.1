@@ -23,6 +23,7 @@
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_View_Order',$siteLangId);?></h2>
 		</div>
+        <?php if(true == $primaryOrder){ ?>
         <div class="col-md-auto">
 			<div class="btn-group">
                 <ul class="actions">
@@ -36,6 +37,7 @@
                 </ul>
 			</div>
 		</div>
+    <?php }?>
 	</div>
     <?php } ?>
 	<div class="content-body">
