@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
     $canCancelOrder = true;
-    $canReturnRefund = true;    
+    $canReturnRefund = true;
     if(true == $primaryOrder){
         if( $childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL ){
             $canCancelOrder = ( in_array($childOrderDetail["op_status_id"],(array)Orders::getBuyerAllowedOrderCancellationStatuses(true)) );
@@ -179,31 +179,31 @@
                   </tr>
                   <?php } if(!$primaryOrder){?>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('Lbl_Cart_Total',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('Lbl_Cart_Total',$siteLangId)?></td>
                     <td><?php echo CommonHelper::displayMoneyFormat($cartTotal);?></td>
                   </tr>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('LBL_Shipping_Charges',$siteLangId)?></td>
                     <td><?php echo CommonHelper::displayMoneyFormat($shippingCharges);?></td>
                   </tr>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('LBL_Tax_Charges',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('LBL_Tax_Charges',$siteLangId)?></td>
                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_tax_charged']);?></td>
                   </tr>
                   <?php if($orderDetail['order_discount_total']){ ?>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('LBL_Discount',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('LBL_Discount',$siteLangId)?></td>
                     <td>-<?php echo CommonHelper::displayMoneyFormat($orderDetail['order_discount_total']);?></td>
                   </tr>
                   <?php }?>
                   <?php if($orderDetail['order_volume_discount_total']){ ?>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId)?></td>
                     <td>-<?php echo CommonHelper::displayMoneyFormat($orderDetail['order_volume_discount_total']);?></td>
                   </tr>
                   <?php }?>
                   <tr>
-                    <td colspan="7"><?php echo Labels::getLabel('LBL_Total',$siteLangId)?></td>
+                    <td colspan="8"><?php echo Labels::getLabel('LBL_Total',$siteLangId)?></td>
                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_net_amount']);?></td>
                   </tr>
                   <?php }?>
