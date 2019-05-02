@@ -37,8 +37,16 @@
 
 								$navUrl = CommonHelper::getnavigationUrl( $link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'] );
                                 $OrgnavUrl = CommonHelper::getnavigationUrl( $link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'], $getOrgUrl );
+
+								$href = $navUrl;
+								$navchild = '';
+								if ( 0 < count($link['children']) ) {
+									$href = 'javascript:void(0)';
+									$navchild = 'navchild';
+								}
 								?>
-								<li class="<?php if( count($link['children']) ){ ?>navchild<?php } ?>"><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $navUrl; ?>"><?php echo $link['nlink_caption']; ?></a>
+								<li class="<?php echo $navchild; ?>">
+									<a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $href; ?>"><?php echo $link['nlink_caption']; ?></a>
 
 								<?php if( isset($link['children']) && count($link['children']) > 0 ){ ?>
 									<span class="link__mobilenav"></span>
@@ -111,14 +119,14 @@
 											<?php
 											//var_dump($subMoreNavigation); die;
 											foreach(  $subMoreNavigation  as $index => $link ){
-												$url = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id']); 
+												$url = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id']);
                                                 $OrgUrl = CommonHelper::getnavigationUrl($link['nlink_type'],$link['nlink_url'],$link['nlink_cpage_id'],$link['nlink_category_id'], $getOrgUrl);
                                                 ?>
 												<li><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgUrl; ?>" href="<?php echo $url;?>"><?php echo $link['nlink_caption']; ?></a></li>
 												<?php
 												if( count($link['children']) > 0 ){
 													foreach( $link['children'] as $subCat ) {
-														$catUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id'])); 
+														$catUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id']));
                                                         $catOrgUrl = CommonHelper::generateUrl('category','view',array($subCat['prodcat_id']), '', null, false, $getOrgUrl); ?>
 														<li><a data-org-url="<?php echo $catOrgUrl; ?>" href="<?php echo $catUrl; ?>"><?php echo $subCat['prodcat_name'];?></a>
 														<?php if(isset($subCat['children'])){

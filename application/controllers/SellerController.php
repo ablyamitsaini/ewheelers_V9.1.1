@@ -1,5 +1,5 @@
 <?php
-class SellerController extends LoggedUserController
+class SellerController extends SellerBaseController
 {
     // use Attributes;
     use Options;
@@ -11,21 +11,6 @@ class SellerController extends LoggedUserController
     public function __construct($action)
     {
         parent::__construct($action);
-        /* if( !User::isSeller() ){
-        Message::addErrorMessage( Labels::getLabel('MSG_Invalid_Access',$this->siteLangId) );
-        FatApp::redirectUser(CommonHelper::generateUrl('account'));
-        } */
-
-        if(UserAuthentication::isGuestUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('account'));
-        }
-
-        if(!User::canAccessSupplierDashboard() || !User::isSellerVerified(UserAuthentication::getLoggedUserId()) ) {
-            FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
-        }
-        $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-        $this->set('bodyClass', 'is--dashboard');
     }
 
     public function index()
@@ -134,7 +119,6 @@ class SellerController extends LoggedUserController
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
-
         /*
         * Cancellation Request Listing
         */
@@ -142,6 +126,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
+        $this->set('returnRequestsCount', $srchReturnReq->recordCount());
 
         $txnObj = new Transactions();
         $txnsSummary = $txnObj->getTransactionSummary( $userId, date('Y-m-d') );
@@ -208,7 +193,7 @@ class SellerController extends LoggedUserController
         $srch->setPageSize($pagesize);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name')
+            array( 'order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'orderstatus_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name' )
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');

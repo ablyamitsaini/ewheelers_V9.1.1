@@ -1,16 +1,10 @@
 <?php
 use Abraham\TwitterOAuth\TwitterOAuth;
-class BuyerController extends LoggedUserController
+class BuyerController extends BuyerBaseController
 {
     public function __construct($action)
     {
         parent::__construct($action);
-        if(!User::isBuyer() || UserAuthentication::isGuestUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel("LBL_Unauthorised_access", $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('account'));
-        }
-        $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-        $this->set('bodyClass', 'is--dashboard');
     }
 
     public function index()
@@ -123,7 +117,6 @@ class BuyerController extends LoggedUserController
 
     public function viewOrder($orderId,$opId = 0, $print = false )
     {
-
         if(!$orderId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
@@ -163,6 +156,7 @@ class BuyerController extends LoggedUserController
         $rs = $srch->getResultSet();
 
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
+        //CommonHelper::printArray($childOrderDetail); exit;
 
         foreach( $childOrderDetail as $opID => $val){
             $childOrderDetail[$opID]['charges'] = $orderDetail['charges'][$opID];
@@ -720,6 +714,13 @@ class BuyerController extends LoggedUserController
         $srch = $this->orderReturnRequestObj();
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+
+        $srch->addMultipleFields(
+            array( 'orrequest_id', 'orrequest_user_id', 'orrequest_qty', 'orrequest_type', 'orrequest_reference', 'orrequest_date', 'orrequest_status',
+            'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model')
+        );
+
+        $srch->addOrder('orrequest_date', 'DESC');
 
         $keyword = $post['keyword'];
         if(!empty($keyword) ) {

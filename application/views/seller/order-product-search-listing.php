@@ -13,7 +13,6 @@ $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
 }
-
 $sr_no = 0;
 foreach ($orders as $sn => $order){
 	$sr_no++;
@@ -61,10 +60,13 @@ foreach ($orders as $sn => $order){
 				'title'=>Labels::getLabel('LBL_View_Order',$siteLangId)),
 				'<i class="fa fa-eye"></i>', true);
 
-				$li = $ul->appendElement("li");
-				$li->appendElement('a', array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id']) ), 'class'=>'',
-				'title'=>Labels::getLabel('LBL_Cancel_Order',$siteLangId)),
-				'<i class="fa fa-close"></i>', true);
+				if ( !in_array( $order['orderstatus_id'], OrderStatus::nonCancellableStatuses() ) ) {
+					$li = $ul->appendElement("li");
+					$li->appendElement('a', array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id']) ), 'class'=>'',
+					'title'=>Labels::getLabel('LBL_Cancel_Order',$siteLangId)),
+					'<i class="fa fa-close"></i>', true);
+				}
+
 			break;
 			default:
 				$td->appendElement('plaintext', array(), ''.$order[$key],true);

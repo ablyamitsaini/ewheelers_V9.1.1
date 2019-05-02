@@ -189,9 +189,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('seller','sales');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $orders ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('seller','sales');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -256,7 +258,7 @@
                                   }else{ ?>
                                     <tr>
                                         <td colspan="3">
-                                            <?php echo Labels::getLabel('Lbl_Your_latest_orders_will_show_up_here.',$siteLangId)?>
+                                            <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -276,9 +278,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $transactions ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('Account','credits');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -334,8 +338,8 @@
                                       <?php }
                                     }else{ ?>
                                       <tr>
-                                          <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_recent_transaction_will_show_up_here.',$siteLangId)?>
+                                          <td colspan="7">
+                                              <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                           </td>
                                       </tr>
                                   <?php } ?>
@@ -355,9 +359,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('seller','orderReturnRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $returnRequests ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('seller','orderReturnRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -385,7 +391,7 @@
                                                 <div class="item__description">
                                                     <div class="request__date"><?php echo FatDate::format($row['orrequest_date']);?></div>
                                                     <div class="item__title">
-                                                        <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo $url;?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
+                                                        <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
                                                     </div>
                                                     <div class="item__title">
                                                         <?php if($row['op_selprod_title'] != ''){ ?>
@@ -426,8 +432,8 @@
                                       <?php }
                                     }else{ ?>
                                       <tr>
-                                          <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_order_return_request_will_show_up_here._Currently_you_dont_have_any_return_request.',$siteLangId)?>
+                                          <td colspan="4">
+                                              <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                           </td>
                                       </tr>
                                   <?php } ?>
@@ -448,9 +454,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Cancellation_requests',$siteLangId);?></h5>
-                        <div class="action">
-                            <a href="<?php echo CommonHelper::generateUrl('seller','orderCancellationRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
-                        </div>
+                        <?php if( count( $cancellationRequests ) > 0 ){ ?>
+                            <div class="action">
+                                <a href="<?php echo CommonHelper::generateUrl('seller','orderCancellationRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -512,7 +520,7 @@
                                     }else{ ?>
                                       <tr>
                                           <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_order_cancellation_request_will_show_up_here._Currently_you_dont_have_any_cancellation_request.',$siteLangId)?>
+                                             <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
                                           </td>
                                       </tr>
                                   <?php } ?>

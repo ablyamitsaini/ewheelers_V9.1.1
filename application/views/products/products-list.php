@@ -1,7 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 if($products){
+	$forPage = !empty( $forPage ) ? $forPage : '';
 	foreach($products as $product){
-	$productUrl = CommonHelper::generateUrl('Products','View',array($product['selprod_id']));
+		$productUrl = CommonHelper::generateUrl('Products','View',array($product['selprod_id']));
 	?>
 
 <div class="col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:3;?> col-6 column">
@@ -9,10 +10,12 @@ if($products){
 	<div class="products">
         <div class="products__quickview"> <a onClick='quickDetail(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content"></a> </div>
 		<div class="products__body">
-		<?php $this->includeTemplate('_partial/collection-ui.php',array('product'=>$product,'siteLangId'=>$siteLangId),false);?>
+		<?php $this->includeTemplate('_partial/collection-ui.php',array('product'=>$product,'siteLangId'=>$siteLangId, 'forPage'=> $forPage),false);?>
 			<div class="products__img">
             <?php $uploadedTime = ($product['product_image_updated_on'] > 0) ? '?'.strtotime($product['product_image_updated_on']) : '' ;?>
-				<a title="<?php echo $product['selprod_title'];?>" href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products','View',array($product['selprod_id'])):CommonHelper::generateUrl('Products','track',array($product['promotion_record_id']))?>"><img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').$uploadedTime; ?>" alt="<?php echo $product['prodcat_name'];?>"> </a>
+				<a title="<?php echo $product['selprod_title'];?>" href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products','View',array($product['selprod_id'])):CommonHelper::generateUrl('Products','track',array($product['promotion_record_id']))?>">
+					<img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').$uploadedTime; ?>" alt="<?php echo $product['prodcat_name'];?>">
+				</a>
 			</div>
 		</div>
 		<div class="products__footer">
@@ -26,10 +29,11 @@ if($products){
 				<?php } ?>
 			</div>
 		<?php } */ ?>
-			
+
 			<div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
 			<div class="products__title"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($product['selprod_id']));?>"><?php echo (mb_strlen($product['selprod_title']) > 30) ? mb_substr($product['selprod_title'],0,30)."..." : $product['selprod_title'];?> </a></div>
             <?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$product,'siteLangId'=>$siteLangId),false);?>
+
 		</div>
 	</div>
 	<!--/product tile-->

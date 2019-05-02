@@ -309,8 +309,8 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
-        $json['html'] = $this->_template->render(false, false, 'products/filters.php', true);
-        FatUtility::dieJsonSuccess($json);
+        echo $this->_template->render(false, false, 'products/filters.php', true);
+        exit;
     }
 
     public function view($selprod_id = 0)
@@ -826,7 +826,9 @@ class ProductsController extends MyAppController
         $this->_template->addJs('js/responsive-img.min.js');
         $this->_template->addCss('css/cart.css');
         $this->_template->addCss('css/xzoom.css');
+        $this->_template->addCss('css/magnific-popup.css');
         $this->_template->addJs('js/xzoom.js');
+        $this->_template->addJs('js/magnific-popup.js');
         $this->_template->render();
     }
 

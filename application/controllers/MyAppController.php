@@ -89,10 +89,15 @@ class MyAppController extends FatController
         'isNotAvailable' =>Labels::getLabel('VLBL_is_not_available', $this->siteLangId),
         'RemoveProductFromFavourite' =>Labels::getLabel('LBL_Remove_product_from_favourite_list', $this->siteLangId),
         'AddProductToFavourite' =>Labels::getLabel('LBL_Add_Product_To_favourite_list', $this->siteLangId),
+        'MovedSuccessfully' =>Labels::getLabel('LBL_Moved_Successfully', $this->siteLangId),
+        'RemovedSuccessfully' =>Labels::getLabel('LBL_Removed_Successfully', $this->siteLangId),
         'siteCurrencyId' =>$this->siteCurrencyId,
         'controllerName' =>$controllerName,
         'confirmDeletePersonalInformation' =>Labels::getLabel('LBL_Do_you_really_want_to_remove_all_your_personal_information', $this->siteLangId),
         'preferredDimensions' =>Labels::getLabel('LBL_Preferred_Dimensions_%s', $this->siteLangId),
+        'invalidCredentials' =>Labels::getLabel('LBL_Invalid_Credentials', $this->siteLangId),
+        'searchString' =>Labels::getLabel('LBL_Search_string_must_be_atleast_3_characters_long.', $this->siteLangId),
+        'atleastOneRecord' =>Labels::getLabel('LBL_Please_select_atleast_one_record.', $this->siteLangId)
         );
 
         $languages = Language::getAllNames(false);
@@ -112,12 +117,8 @@ class MyAppController extends FatController
         $themeDetail = ThemeColor::getAttributesById($themeId);
         $currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
         $currencySymbolRight = CommonHelper::getCurrencySymbolRight();
-        $isUserDashboard = false;
-        if ($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Affiliate' || $controllerName == 'Advertiser' || $controllerName == 'Account' || $controllerName == 'Reports' || $controllerName == 'ImportExport' || $controllerName == 'SavedProductsSearch') {
-            $isUserDashboard = true;
-        }
 
-        $this->set('isUserDashboard', $isUserDashboard);
+        $this->set('isUserDashboard', false);
         $this->set('currencySymbolLeft', $currencySymbolLeft);
         $this->set('currencySymbolRight', $currencySymbolRight);
         $this->set('themeDetail', $themeDetail);
