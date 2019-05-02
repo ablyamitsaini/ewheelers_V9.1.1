@@ -15,64 +15,54 @@ class AdvertiserController extends LoggedUserController
 
     public function index()
     {
-
         $userId = UserAuthentication::getLoggedUserId();
         $user = new User($userId);
 
         $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
 
-        $srch = new PromotionSearch($this->siteLangId);
-        $srch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
-        $srch->joinPromotionsLogForCount();
-
-        $srch->addMultipleFields(array('pr.promotion_id','ifnull(pr_l.promotion_name,pr.promotion_identifier)as promotion_name','pr.promotion_type','pr.promotion_cpc','pr.promotion_budget','pr.promotion_duration','pr.promotion_start_date','pr.promotion_end_date','pr.promotion_approved','bbl.blocation_promotion_cost','pri.impressions','pri.clicks','pri.orders'));
-        $srch->addCondition('promotion_deleted', '=', applicationConstants::NO);
-        $srch->addCondition('promotion_user_id', '=', $userId);
-
-        $srch->addOrder('promotion_id', 'DESC');
-        $srch->setPageNumber(1);
-        $srch->setPageSize(5);
-        $rs =  $srch->getResultSet();
-        $promotionList = FatApp::getDb()->fetchAll($rs, 'promotion_id');
-
-        //$txnObj = new Transactions();
-        //$accountSummary = $txnObj->getTransactionSummary($userId);
-        //$walletBalance = $accountSummary['total_earned'] - $accountSummary['total_used'];
-
         $walletBalance = User::getUserBalance($userId);
-
 
         $lowBalWarning  ='';
         $errorSet = false;
-        foreach($promotionList as $promotion){
+        /* foreach($promotionList as $promotion){
             if ($promotion["promotion_start_date"]<=date("Y-m-d") && $promotion["promotion_end_date"]>=date("Y-m-d") && ($walletBalance<FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE', FatUtility::VAR_INT, 0) && $errorSet==false)) {
                 $errorSet = true;
                 Message::addInfo(sprintf(Labels::getLabel('L_Please_maintain_minimum_balance_to_%s', $this->siteLangId), CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'))));
             }
+        } */
 
-        }
+       /* Transactions Listing [ */
+        $srch = Transactions::getUserTransactionsObj( $userId );
+        $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs = $srch->getResultSet();
+        $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
+        /* ] */
 
         /* Active Promotions [ */
-
         $pSrch = $this->searchPromotionsObj();
+        $pSrch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
+        $pSrch->joinPromotionsLogForCount();
+        $pSrch->addMultipleFields(array('pr.promotion_id','ifnull(pr_l.promotion_name,pr.promotion_identifier)as promotion_name','pr.promotion_type','pr.promotion_cpc','pr.promotion_budget','pr.promotion_duration','pr.promotion_start_date','pr.promotion_end_date','pr.promotion_approved','bbl.blocation_promotion_cost','pri.impressions', 'pri.clicks','pri.orders'));
         $pSrch->setDefinedCriteria();
         $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d") );
         $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES );
         $pSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs =  $pSrch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
-
         /* ] */
+
         $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
+        $this->set('transactions', $transactions);
+        $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
         $this->set('activePromotions', $records);
         $this->set('totActivePromotions', $pSrch->recordCount());
         $this->set('lowBalWarning', $lowBalWarning);
-        $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
+        // $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
         $this->set('walletBalance', $walletBalance);
         $typeArr = Promotion::getTypeArr($this->siteLangId);
         $this->set('typeArr', $typeArr);
-        $this->set('promotionList', $promotionList);
-        $this->set('promotionCount', $srch->recordCount());
+        // $this->set('promotionList', $promotionList);
+        // $this->set('promotionCount', $srch->recordCount());
         $this->_template->render(true, false);
     }
 
@@ -519,6 +509,14 @@ class AdvertiserController extends LoggedUserController
             $srch->addCondition('promotion_type', '=', $type);
         }
 
+        $active_promotion = FatApp::getPostedData('active_promotion', FatUtility::VAR_INT, '-1');
+        if($active_promotion != '-1' ) {
+            $srch->addCondition('promotion_active', '=', applicationConstants::YES );
+            $srch->addCondition('promotion_deleted', '=', applicationConstants::NO );
+            $srch->addCondition('promotion_end_date', '>', date("Y-m-d") );
+            $srch->addCondition('promotion_approved', '=', applicationConstants::YES );
+        }
+
         $dateFrom = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
         $dateTo = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
 
@@ -619,6 +617,11 @@ class AdvertiserController extends LoggedUserController
 
     public function promotions()
     {
+        $data = FatApp::getPostedData();
+        $frmSearchPromotions = $this->getPromotionSearchForm($this->siteLangId);
+        if($data) {
+            $frmSearchPromotions->fill($data);
+        }
         $userId = UserAuthentication::getLoggedUserId();
         $srch = new PromotionSearch($this->siteLangId);
         $srch->addMultipleFields(array('promotion_id'));
@@ -631,8 +634,6 @@ class AdvertiserController extends LoggedUserController
         $rs =  $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
 
-        $frmSearchPromotions = $this->getPromotionSearchForm($this->siteLangId);
-
         $this->_template->addJs(array('js/jquery.datetimepicker.js'), false);
         $this->_template->addCss(array('css/jquery.datetimepicker.css'), false);
 
@@ -640,6 +641,38 @@ class AdvertiserController extends LoggedUserController
         $this->set("records", $records);
         $this->_template->render(true, false);
 
+    }
+
+    public function promotionCharges()
+    {
+        $this->_template->render(true, false);
+    }
+
+    public function searchPromotionCharges()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+
+        $pagesize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+        $data = FatApp::getPostedData();
+        $page = (empty($data['page']) || $data['page'] <= 0) ? 1 : $data['page'];
+
+        $prmSrch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
+        $prmSrch->joinTable(Promotion::DB_TBL, 'INNER JOIN', 'pr.'.Promotion::DB_TBL_PREFIX.'id = tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'promotion_id', 'pr');
+        $prmSrch->addCondition('pr.promotion_user_id', '=', $userId);
+        $prmSrch->addMultipleFields(array('promotion_id','promotion_type','promotion_identifier','sum(pcharge_charged_amount)','sum(pcharge_clicks)','pcharge_date'));
+        $prmSrch->addGroupBy('promotion_id');
+        $prmSrch->addOrder('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'id', 'desc');
+        // echo $prmSrch->getQuery(); die;
+        $rs =  $prmSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+        $this->set("arr_listing", $records);
+        $this->set('pageCount', $prmSrch->pages());
+        $this->set("recordCount", $prmSrch->recordCount());
+        $typeArr = Promotion::getTypeArr($this->siteLangId);
+        $this->set('typeArr', $typeArr);
+        $this->set("pagesize", $pagesize);
+        $this->set("page", $page);
+        $this->_template->render(false, false);
     }
 
     public function promotionForm($promotionId = 0)
@@ -1249,7 +1282,7 @@ class AdvertiserController extends LoggedUserController
             unset($typeArr[Promotion::TYPE_SHOP]);
             unset($typeArr[Promotion::TYPE_PRODUCT]);
         }
-
+        $frm->addSelectBox('', 'active_promotion', array('-1'=>Labels::getLabel('LBL_All', $langId),'1'=>Labels::getLabel('LBL_Active_Promotions', $langId)), '', array(), '');
         $frm->addSelectBox('', 'type', array('-1'=>Labels::getLabel('LBL_All_Type', $langId))+$typeArr, '', array(), '');
 
         $frm->addDateField('', 'date_from', '', array('readonly'=>'readonly','class'=>'field--calender','placeholder'=>Labels::getLabel('LBL_Date_From', $langId)));

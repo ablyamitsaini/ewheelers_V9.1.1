@@ -98,7 +98,7 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
-        
+
 
 			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){ ?>
             <div class="gap"> </div>
@@ -503,14 +503,14 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 					</div>
 				</div>
 			</div>
-            
+
             <div id="itemRatings">
                 <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
                 <?php echo $frmReviewSearch->getFormHtml(); ?>
                 <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
                 <?php }?>
             </div>
-                
+
             <div class="gap"></div>
 			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 			<div class="gap"></div>

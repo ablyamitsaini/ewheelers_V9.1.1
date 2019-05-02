@@ -75,12 +75,9 @@ $action = strtolower($action);
 				<li class="menu__item <?php echo ($controller == 'savedproductssearch' && $action == 'listing') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Saved_Searches",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('SavedProductsSearch','listing');?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-saved-searches" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-saved-searches"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId);?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Password",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Email",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemailpassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Email",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmailPassword');?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email_Password',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
 			</ul>
 		</nav>

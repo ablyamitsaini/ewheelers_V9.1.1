@@ -251,7 +251,7 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function changePassword()
+    public function changeEmailPassword()
     {
         $this->set('siteLangId', $this->siteLangId);
         $this->_template->render(true, false);
@@ -1061,11 +1061,6 @@ class AccountController extends LoggedUserController
 
         $this->set('msg', Labels::getLabel('MSG_Setup_successful', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
-    }
-
-    public function changeEmail()
-    {
-        $this->_template->render(true, false);
     }
 
     public function changeEmailForm()

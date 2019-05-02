@@ -112,13 +112,12 @@
 					<div class="cards-header p-3">
 						<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders',$siteLangId);?></h5>
 						<div class="action">
-							<?php if( $ordersCount > 5 ){?>
+							<?php if(count($orders)>0){ ?>
 							<a href="<?php echo CommonHelper::generateUrl('buyer','orders');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
 							<?php }?>
 						</div>
 					</div>
 					<div class="cards-content p-3">
-					<?php if(count($orders)>0){ ?>
 						<table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
 							<tbody>
 								<tr class="">
@@ -126,7 +125,7 @@
 									<th width="20%"><?php echo Labels::getLabel('LBL_Amount',$siteLangId);?></th>
 									<th width="20%"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></th>
 								</tr>
-								<?php
+								<?php if(count($orders)>0){
 										$canCancelOrder = true;
 										$canReturnRefund = true;
 										foreach($orders as $orderId=>$row){
@@ -191,8 +190,14 @@
 									</ul>
 									</td>
 								</tr>
-								<?php }
-								?>
+                            <?php }
+                              }else{ ?>
+                                <tr>
+                                    <td colspan="4">
+                                        <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
 							</tbody>
 							<div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
 								<span class="scroll-hint-icon">
@@ -200,9 +205,6 @@
 								</span>
 							</div>
 						</table>
-						<?php } else{
-							$this->includeTemplate('_partial/no-record-found.php',array('siteLangId'=>$siteLangId),false);
-						} ?>
 					</div>
 				</div>
 			</div>
@@ -211,13 +213,12 @@
                     <div class="cards-header p-3">
 						<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Offers',$siteLangId);?></h5>
 						<div class="action">
-							<?php if( $ordersCount > 5 ){?>
+							<?php if(count($offers)>0){ ?>
 							<a href="<?php echo CommonHelper::generateUrl('buyer','offers');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
 							<?php }?>
 						</div>
 					</div>
                     <div class="cards-content p-3">
-					<?php if(count($offers)>0){ ?>
 						<table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
 							<tbody>
 								<tr class="">
@@ -225,7 +226,8 @@
 									<th width="20%"><?php echo Labels::getLabel('LBL_Expires_On',$siteLangId);?></th>
 									<th width="20%"><?php echo Labels::getLabel('LBL_Min_order',$siteLangId);?></th>
 								</tr>
-								<?php foreach($offers as $row){
+								<?php if(count($offers)>0){
+                                    foreach($offers as $row){
                             		$discountValue = ($row['coupon_discount_in_percent'] == ApplicationConstants::PERCENTAGE)?$row['coupon_discount_value'].' %':CommonHelper::displayMoneyFormat($row['coupon_discount_value']);
                             		?>
 								<tr>
@@ -243,7 +245,14 @@
 									    <?php echo CommonHelper::displayMoneyFormat($row['coupon_min_order_value']);?>
 									</td>
 								</tr>
-								<?php } ?>
+                            <?php }
+                              }else{ ?>
+                                <tr>
+                                    <td colspan="4">
+                                        <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
 							</tbody>
 							<div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
 								<span class="scroll-hint-icon">
@@ -251,9 +260,6 @@
 								</span>
 							</div>
 						</table>
-						<?php } else{
-							$this->includeTemplate('_partial/no-record-found.php',array('siteLangId'=>$siteLangId),false);
-						} ?>
 					</div>
 					<?php // $this->includeTemplate('_partial/userDashboardMessages.php'); ?>
 				</div>
@@ -264,9 +270,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests',$siteLangId);?></h5>
+                        <?php if( count( $returnRequests ) > 0 ){ ?>
                         <div class="action">
                             <a href="<?php echo CommonHelper::generateUrl('buyer','orderReturnRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
                         </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -278,65 +286,65 @@
                                     <th width="10%"><?php echo Labels::getLabel('LBL_Action',$siteLangId);?></th>
                                   </tr>
                                   <?php if( count( $returnRequests ) > 0 ){
-                                            foreach( $returnRequests as $row ){
-                                                $orderDetailUrl = CommonHelper::generateUrl('buyer', 'viewOrder', array($row['order_id'],$row['op_id'])  );
-                                                $prodOrBatchUrl = 'javascript:void(0)';
-                                                if( $row['op_is_batch'] ){
-                                                    $prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($row['op_selprod_id']));
-                                                } else {
-                                                    if(Product::verifyProductIsValid($row['op_selprod_id']) == true){
-                                                        $prodOrBatchUrl = CommonHelper::generateUrl('Products','view',array($row['op_selprod_id']));
-                                                    }
-                                                }
-                                        ?>
-                                          <tr>
-                                            <td>
-                                                <div class="item__description">
-                                                    <div class="request__date"><?php echo FatDate::format($row['orrequest_date']);?></div>
-                                                    <div class="item__title">
-                                                        <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id'])); ?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
-                                                    </div>
-                                                    <div class="item__title">
-                                                        <?php if($row['op_selprod_title'] != ''){ ?>
-                                                            <a title="<?php echo $row['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>">
-                                                                <?php echo $row['op_selprod_title']; ?>
-                                                            </a>
-                                                        <?php } else { ?>
-                                                            <a title="<?php echo $row['op_product_name'];?>" href="<?php echo $prodOrBatchUrl; ?>">
-                                                                <?php echo $row['op_product_name']; ?>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                             </td>
-                                            <td>
-                                                <div class="request__qty">
-                                                    <?php echo $row['orrequest_qty'];?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="request__status">
-                                                    <?php echo $OrderReturnRequestStatusArr[$row['orrequest_status']];?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                              <ul class="actions">
-                                                <li>
-                                                    <a title="<?php echo Labels::getLabel('LBL_View_Request',$siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'ViewOrderReturnRequest', array($row['orrequest_id']) ); ?>">
-                                                        <i class="fa fa-eye"></i>
+                                  foreach( $returnRequests as $row ){
+                                        $orderDetailUrl = CommonHelper::generateUrl('buyer', 'viewOrder', array($row['order_id'],$row['op_id'])  );
+                                        $prodOrBatchUrl = 'javascript:void(0)';
+                                        if( $row['op_is_batch'] ){
+                                            $prodOrBatchUrl = CommonHelper::generateUrl('Products','batch',array($row['op_selprod_id']));
+                                        } else {
+                                            if(Product::verifyProductIsValid($row['op_selprod_id']) == true){
+                                                $prodOrBatchUrl = CommonHelper::generateUrl('Products','view',array($row['op_selprod_id']));
+                                            }
+                                        }
+                                ?>
+                                  <tr>
+                                    <td>
+                                        <div class="item__description">
+                                            <div class="request__date"><?php echo FatDate::format($row['orrequest_date']);?></div>
+                                            <div class="item__title">
+                                                <a title="<?php echo Labels::getLabel('LBL_Invoice_number',$siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id'])); ?>" href="<?php echo $orderDetailUrl; ?>"><?php echo $row['op_invoice_number'];?></a>
+                                            </div>
+                                            <div class="item__title">
+                                                <?php if($row['op_selprod_title'] != ''){ ?>
+                                                    <a title="<?php echo $row['op_selprod_title'];?>" href="<?php echo $prodOrBatchUrl;?>">
+                                                        <?php echo $row['op_selprod_title']; ?>
                                                     </a>
-                                                </li>
-                                              </ul>
-                                             </td>
-                                          </tr>
-                                      <?php }
-                                    }else{ ?>
-                                      <tr>
-                                          <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_order_return_request_will_show_up_here._Currently_you_dont_have_any_return_request.',$siteLangId)?>
-                                          </td>
-                                      </tr>
-                                  <?php } ?>
+                                                <?php } else { ?>
+                                                    <a title="<?php echo $row['op_product_name'];?>" href="<?php echo $prodOrBatchUrl; ?>">
+                                                        <?php echo $row['op_product_name']; ?>
+                                                    </a>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                     </td>
+                                    <td>
+                                        <div class="request__qty">
+                                            <?php echo $row['orrequest_qty'];?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="request__status">
+                                            <?php echo $OrderReturnRequestStatusArr[$row['orrequest_status']];?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                      <ul class="actions">
+                                        <li>
+                                            <a title="<?php echo Labels::getLabel('LBL_View_Request',$siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'ViewOrderReturnRequest', array($row['orrequest_id']) ); ?>">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
+                                      </ul>
+                                     </td>
+                                  </tr>
+                              <?php }
+                                   }else{ ?>
+                                     <tr>
+                                         <td colspan="4">
+                                             <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
+                                         </td>
+                                     </tr>
+                                 <?php } ?>
                             </tbody>
                             <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
                                 <span class="scroll-hint-icon">
@@ -354,9 +362,11 @@
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Cancellation_requests',$siteLangId);?></h5>
+                        <?php if( count( $cancellationRequests ) > 0 ){ ?>
                         <div class="action">
                             <a href="<?php echo CommonHelper::generateUrl('buyer','orderCancellationRequests');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All',$siteLangId);?></a>
                         </div>
+                        <?php } ?>
                     </div>
                     <div class="cards-content p-3">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
@@ -367,7 +377,7 @@
                                     <th width="10%"><?php echo Labels::getLabel('LBL_Status',$siteLangId);?></th>
                                   </tr>
                                   <?php if( count( $cancellationRequests ) > 0 ){
-                                            foreach( $cancellationRequests as $row ){
+                                  foreach( $cancellationRequests as $row ){
                                                 $orderDetailUrl = CommonHelper::generateUrl('buyer', 'viewOrder', array($row['order_id'],$row['op_id']) );
                                                 $prodOrBatchUrl = 'javascript:void(0)';
                                                 if( $row['op_is_batch'] ){
@@ -415,13 +425,13 @@
                                             </td>
                                           </tr>
                                       <?php }
-                                    }else{ ?>
-                                      <tr>
-                                          <td colspan="3">
-                                              <?php echo Labels::getLabel('Lbl_Your_order_cancellation_request_will_show_up_here._Currently_you_dont_have_any_cancellation_request.',$siteLangId)?>
-                                          </td>
-                                      </tr>
-                                  <?php } ?>
+                                           }else{ ?>
+                                             <tr>
+                                                 <td colspan="3">
+                                                     <?php $this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false); ?>
+                                                 </td>
+                                             </tr>
+                                         <?php } ?>
                             </tbody>
                             <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
                                 <span class="scroll-hint-icon">
