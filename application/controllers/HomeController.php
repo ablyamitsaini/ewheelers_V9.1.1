@@ -2,7 +2,7 @@
 class HomeController extends MyAppController
 {
     public function index()
-    { 
+    {
         $db = FatApp::getDb();
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
 
@@ -189,7 +189,7 @@ class HomeController extends MyAppController
                     $rs = $tempObj->getResultSet();
 
                     if (!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id')) {
-                        continue;
+                        continue 2;
                     }
 
                     /* fetch Products data[ */
@@ -235,7 +235,7 @@ class HomeController extends MyAppController
 
                     $rs = $tempObj->getResultSet();
                     if (!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                        continue;
+                        continue 2;
                     }
 
                     /* fetch Categories data[ */
@@ -285,7 +285,7 @@ class HomeController extends MyAppController
                     $rs = $tempObj->getResultSet();
 
                     if (!$shopIds = $db->fetchAll($rs, 'ctps_shop_id')) {
-                        continue;
+                        continue 2;
                     }
 
                     $shopObj = new ShopSearch($langId);
@@ -331,7 +331,7 @@ class HomeController extends MyAppController
                     $brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
 
                     if (empty($brandIds)) {
-                        continue;
+                        continue 2;
                     }
 
                     /* fetch Brand data[ */
