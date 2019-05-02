@@ -28,7 +28,7 @@
 	<?php if($currencies && count($currencies) > 1){
 		$showDefalultLi = false;
 		?>
-		
+
 	<li class="dropdown dropdown--arrow">
 		<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
 			<i class="icn icn-currency">
@@ -40,7 +40,7 @@
 		<div class="dropdown__target dropdown__target-lang dropdown__target-js">
 			<div class="dropdown__target-space">
 				<span class="expand-heading"><?php echo Labels::getLabel('LBL_Select_Currency',$siteLangId);?></span>
-				<ul class="list-vertical list-vertical--tick">
+				<ul class="list-vertical list-vertical--tick" data-simplebar>
 					<?php foreach($currencies as $currencyId => $currency){ ?>
 					<li <?php echo ($siteCurrencyId == $currencyId)?'class="is-active"':'';?>><a href="javascript:void(0);" onClick="setSiteDefaultCurrency(<?php echo $currencyId;?>)"> <?php echo $currency; ?></a></li>
 					<?php } ?>

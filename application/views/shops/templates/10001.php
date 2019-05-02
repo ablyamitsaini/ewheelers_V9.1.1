@@ -6,20 +6,19 @@
             <?php if( $haveBannerImage ){ ?>
           <div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
             <?php foreach($haveBannerImage as $banner){ ?>
-            <div class="item"><img src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
+            <div class="item"><img data-ratio="16:9 (950x535)" src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
             <?php } ?>
           </div>
           <?php } ?>
-          <div class="shop-logo"><img src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
+          <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="<?php echo CommonHelper::generateUrl('image','shopLogo',array($shop['shop_id'],$siteLangId,'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
         </div>
     </div>
     <div class="shop-col column--md">
         <div class="shop-info">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <div class="shop-name">
-                        <h5><?php echo $shop['shop_name']; ?> <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_By', $siteLangId); ?> <strong> <?php echo $shop['user_name'];?> </strong></span></h5>
-
+                        <h5><?php echo $shop['shop_name']; ?> <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_On', $siteLangId); ?> <strong> <?php $date = new DateTime($shop['user_regdate']); echo $date->format('M d, Y'); ?> </strong></span></h5>
                     </div>
                     <div class="products__rating"> <i class="icn"><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -51,13 +50,13 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="shop-btn-group">
                         <?php $showAddToFavorite = true; if(UserAuthentication::isUserLogged() && (!User::isBuyer()) ) $showAddToFavorite = false; ?>
                         <?php if($showAddToFavorite) { ?>
                             <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
-                                </svg></i><?php echo Labels::getLabel('LBL_Love', $siteLangId);  echo " ".$shop['shop_name']; ?> !</a>
+                                </svg></i><?php echo Labels::getLabel('LBL_Favorite_Shop', $siteLangId); ?> </a>
                         <?php }?>
                         <?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) $showMoreButtons = false; ?>
                         <?php if($showMoreButtons){ ?>
@@ -88,7 +87,7 @@
                 </div>
                 <?php if($shop['shop_description']){?>
                 <div class="divider divider--single"></div>
-                <div class="box box--space shop-information">
+                <div class="box box--space shop-information" id="shop-information">
                     <p><strong><?php echo Labels::getLabel('LBL_Information', $siteLangId); ?></strong></p>
                     <p><?php echo nl2br($shop['shop_description']);?></p>
                 </div>
@@ -107,5 +106,9 @@
 	</div>
 </section>
 <script>
+new SimpleBar(document.getElementById('shop-information'), {
+    autoHide: false
+});
+
 $currentPageUrl = '<?php echo CommonHelper::generateFullUrl('Shops','view',array($shopId)); ?>';
 </script>

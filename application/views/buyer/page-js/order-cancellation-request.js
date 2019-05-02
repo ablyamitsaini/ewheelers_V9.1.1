@@ -7,5 +7,4 @@
 			setTimeout(function() { window.location.href = fcom.makeUrl('Buyer', 'orderCancellationRequests'); }, 200);
 		});
 	};
-
 })();

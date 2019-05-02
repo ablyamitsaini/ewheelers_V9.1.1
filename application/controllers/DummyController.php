@@ -238,7 +238,7 @@ class DummyController extends MyAppController
             return false;
         }
 
-        /* 	require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+        /*     require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
         $pusher = new Pusher($google_push_notification_api_key); */
         foreach($fcmDeviceIds as $pushNotificationApiToken){
             echo $google_push_notification_api_key."\n";
@@ -323,13 +323,13 @@ class DummyController extends MyAppController
         (
         'message'     => 'here is a message. message',
         'title'        => 'This is a title. title',
-        /* 'subtitle'	=> 'This is a subtitle. subtitle',
-        'id'	=> 12,
-        'tickerText'	=> 'Ticker text here...Ticker text here...Ticker text here',
-        'vibrate'	=> 1,
-        'sound'		=> 1,
-        'largeIcon'	=> 'large_icon',
-        'smallIcon'	=> 'small_icon' */
+        /* 'subtitle'    => 'This is a subtitle. subtitle',
+        'id'    => 12,
+        'tickerText'    => 'Ticker text here...Ticker text here...Ticker text here',
+        'vibrate'    => 1,
+        'sound'        => 1,
+        'largeIcon'    => 'large_icon',
+        'smallIcon'    => 'small_icon' */
         );
 
         $post = array(
@@ -673,7 +673,7 @@ class DummyController extends MyAppController
 
     function test()
     {
-        
+
         $orders = new Orders('O1552890658');
         $langId = 1;
         $childOrderInfo = $orders->getOrderProductsByOpId(413, 1);
@@ -827,16 +827,16 @@ class DummyController extends MyAppController
     $records = FatApp::getDb()->fetchAll($rs,'country_id');
     foreach($records as $country){
     $assignValues = array(
-				'country_id' => $country['country_id'],
-				'country_code' => $country['iso_code_2'],
-				'country_active' => applicationConstants::ACTIVE,
+                'country_id' => $country['country_id'],
+                'country_code' => $country['iso_code_2'],
+                'country_active' => applicationConstants::ACTIVE,
     );
     FatApp::getDb()->insertFromArray('tbl_countries',$assignValues,false,array(),$assignValues);
 
     $assignData = array(
-				'countrylang_country_id' => $country['country_id'],
-				'country_name' => $country['name'],
-				'countrylang_lang_id' => 1,
+                'countrylang_country_id' => $country['country_id'],
+                'country_name' => $country['name'],
+                'countrylang_lang_id' => 1,
     );
     FatApp::getDb()->insertFromArray('tbl_countries_lang',$assignData,false,array(),$assignData);
     }

@@ -62,16 +62,28 @@ class ProductsController extends AdminBaseController
             $srch->addCondition('product_approved', '=', $product_approved);
         }
 
+        $product_seller_id = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, 0);
+
         if(FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT') ) {
             $is_custom_or_catalog = FatApp::getPostedData('is_custom_or_catalog', FatUtility::VAR_INT, -1);
             if ($is_custom_or_catalog > -1) {
                 if($is_custom_or_catalog > 0 ) {
-                    $srch->addCondition('product_seller_id', '>', 0);
+                    if ( 0 < $product_seller_id ) {
+                        $srch->addCondition('product_seller_id', '=', $product_seller_id);
+                    }else{
+                        $srch->addCondition('product_seller_id', '>', 0);
+                    }
                 } else {
                     $srch->addCondition('product_seller_id', '=', 0);
                 }
             } else {
-                /* $srch->addCondition('product_seller_id', '=', 0 ); */
+                if ( 0 < $product_seller_id ) {
+                    $srch->addCondition('product_seller_id', '=', $product_seller_id);
+                }
+            }
+        }else{
+            if ( 0 < $product_seller_id ) {
+                $srch->addCondition('product_seller_id', '=', $product_seller_id);
             }
         }
 
@@ -116,7 +128,9 @@ class ProductsController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+
         $rs = $srch->getResultSet();
+
         $arr_listing = $db->fetchAll($rs);
 
         $this->set("arr_listing", $arr_listing);
@@ -1074,6 +1088,8 @@ class ProductsController extends AdminBaseController
             $frm->addSelectBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'is_custom_or_catalog', array( -1 =>Labels::getLabel('LBL_All', $this->adminLangId)) + applicationConstants::getCatalogTypeArr($this->adminLangId), -1, array(), '');
         }
 
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'product_seller', '');
+
         /* $frm->addSelectBox(Labels::getLabel('LBL_Attribute_Group',$this->adminLangId), 'product_attrgrp_id', array( -1 =>Labels::getLabel('LBL_Does_not_Matter',$this->adminLangId) ) + array( 0 => 'Not in any Group') + AttributeGroup::getAllNames(), '', array(), ''); */
         $prodCatObj = new ProductCategory();
         $arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId);
@@ -1092,6 +1108,7 @@ class ProductsController extends AdminBaseController
         $frm->addDateField(Labels::getLabel('LBL_Date_To', $this->adminLangId), 'date_to', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'product_id');
+        $frm->addHiddenField('', 'product_seller_id');
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
         $fld_submit->attachField($fld_cancel);
@@ -1263,10 +1280,10 @@ class ProductsController extends AdminBaseController
             if($prodspec_id<1) {
                 $prodSpecObj->assignValues($data_to_be_save);
 
-                if (!$prodSpecObj->save() ) {
+                if ( !$prodSpecObj->save() ) {
                     Message::addErrorMessage(Labels::getLabel($prodSpecObj->getError(), $this->adminLangId));
                     FatUtility::dieWithError(Message::getHtml());
-                };
+                }
                 $prodSpecObj = new ProdSpecification($prodSpecObj->getMainTableRecordId());
             }
 
@@ -1511,5 +1528,25 @@ class ProductsController extends AdminBaseController
         $this->set('lang_id', FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1));
         $this->_template->render(false, false, 'json-success.php');
     }
+
+    public function autoCompleteSellerJson()
+    {
+        $pagesize = applicationConstants::PAGE_SIZE;
+        $post = FatApp::getPostedData();
+        $srch = User::getSearchObject( true );
+        $srch->addCondition('user_is_supplier', '=', applicationConstants::YES);
+        $srch->addCondition('credential_active', '=', applicationConstants::ACTIVE);
+
+        $srch->addMultipleFields( array('credential_user_id', 'credential_username', 'credential_email' ) );
+
+        if( '' != $post['keyword'] ){
+            $srch->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
+            $srch->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
+        }
+        $srch->setPageSize($pagesize);
+        $rs = $srch->getResultSet();
+        $sellers = FatApp::getDb()->fetchAll($rs, 'credential_user_id');
+
+        die(json_encode($sellers));
+    }
 }
-?>

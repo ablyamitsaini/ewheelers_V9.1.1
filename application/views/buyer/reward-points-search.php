@@ -11,7 +11,7 @@ if($convertReward == 'coupon'){
 	$arr_flds = array_merge(array('select_option'=>''),$arr_flds);
 }
 
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => 'hide--mobile'));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

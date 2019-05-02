@@ -43,7 +43,7 @@
 <?php } ?>
 
 	<div class="same-as">
-		<?php if($addresses) { ?>
+		<?php if( $cartHasPhysicalProduct && $addresses ){ ?>
         <div class="same-delivery">
 			<h3><?php echo Labels::getLabel('LBL_Shipping_Address', $siteLangId); ?></h3>
 			<label class="checkbox">
@@ -57,15 +57,15 @@
 		<?php }?>
 		</p>
 		<a onClick="showAddressFormDiv();" name="addNewAddress" class="btn btn--primary-border ripplelink"> <?php echo Labels::getLabel('LBL_Add_New_Address', $siteLangId);?> </a>
+        <?php if( !$cartHasPhysicalProduct ){ ?>
+        <?php } ?>
 	</div>
 </div>
 
-
-
-
-<?php if( $cartHasPhysicalProduct && $addresses ){ ?>
+<?php if( $addresses ){ ?>
 <div class="divider "></div>
 <div class="address-wrapper step__body">
+<?php if( $cartHasPhysicalProduct ) {?>
 	<div class="row" id="shippingAddressContainer">
 	  <?php foreach( $addresses as $address ){
 				$selected_shipping_address_id = (!$selected_shipping_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_shipping_address_id; ?>
@@ -97,12 +97,10 @@
 				</div>
 	  <?php } ?>
 	</div>
-	<?php if($addresses) { ?>
+    <?php } ?>
 	<div class="row"><div class="col-md-12 text-right">
 		<a href="javascript:void(0)" onClick="setUpAddressSelection(this);" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a>
 	</div> </div> 	<div class="gap"></div>
-
-	<?php } ?>
 	</div>
 <?php } ?>
 

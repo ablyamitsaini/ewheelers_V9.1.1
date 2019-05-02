@@ -44,7 +44,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 				'Action'	=>	'',
 
 			);
-$tbl = new HtmlElement('table', array('class'=>'table'));
+$tbl = new HtmlElement('table', array('class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);

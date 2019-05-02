@@ -8,8 +8,8 @@
 					<?php if( $link['nlink_type'] == NavigationLinks::NAVLINK_TYPE_CMS && $link['nlink_cpage_id'] ): ?>
 					<li><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo CommonHelper::generateUrl('Cms','view',array($link['nlink_cpage_id']),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Cms','view', array($link['nlink_cpage_id'])); ?>"><?php echo $link['nlink_caption']; ?></a></li>
 					<?php endif; ?>
-					
-					<?php if( $link['nlink_type'] == NavigationLinks::NAVLINK_TYPE_EXTERNAL_PAGE ): 
+
+					<?php if( $link['nlink_type'] == NavigationLinks::NAVLINK_TYPE_EXTERNAL_PAGE ):
 					$url = str_replace('{SITEROOT}', CONF_WEBROOT_URL, $link['nlink_url']) ;
 					$url = CommonHelper::processURLString( $url );
 					?>

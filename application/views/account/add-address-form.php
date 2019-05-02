@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $addressFrm->setFormTagAttribute('id', 'addressFrm');
 $addressFrm->setFormTagAttribute('class','form');
-$addressFrm->developerTags['colClassPrefix'] = 'col-sm-6 col-md-';
-$addressFrm->developerTags['fld_default_col'] = 6;
+$addressFrm->developerTags['colClassPrefix'] = 'col-sm-4 col-md-';
+$addressFrm->developerTags['fld_default_col'] = 4;
 $addressFrm->setFormTagAttribute('onsubmit', 'setupAddress(this); return(false);');
 
 $countryFld = $addressFrm->getField('ua_country_id');
@@ -13,9 +13,7 @@ $stateFld = $addressFrm->getField('ua_state_id');
 $stateFld->setFieldTagAttribute('id','ua_state_id');
 $cancelFld = $addressFrm->getField('btn_cancel');
 $cancelFld->setFieldTagAttribute('onclick','searchAddresses()');
-$phoneFld = $addressFrm->getField('ua_phone');
-$phoneFld->setWrapperAttribute('class','col-sm-12');
-$phoneFld->developerTags['col'] = 12;
+
 $submitFld = $addressFrm->getField('btn_submit');
 
 ?>

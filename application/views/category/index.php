@@ -2,7 +2,7 @@
   <section class="dashboard">
     <div class="container">
       <div class="breadcrumbs">
-        <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
+        <?php /* $this->includeTemplate('_partial/custom/header-breadcrumb.php'); */ ?>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,19 +10,19 @@
             <h3><?php echo Labels::getLabel('LBL_Shop_By_Categories', $siteLangId);?></h3>
             <div class="cg-nav-wrapper cg--js">
 			<?php
-				$featuredCategory = array_slice($categoriesArr, 0, 7); 
+				$featuredCategory = array_slice($categoriesArr, 0, 7);
 				$chunkedCategories = array_chunk($featuredCategory,4,1);
 				$embedMoreCat = false;
 				if(count($categoriesArr)>7)
 					$embedMoreCat = true;
 				$catCount =1;
 				foreach($chunkedCategories as $chunkedCat){
-					
+
 					echo"<ul>";
 					foreach($chunkedCat as $category){
 					 ?>
 						 <li class=""><a class="anchor--js" data-role="anchor--js--link-<?php echo $catCount;?>"  href="javascript:void(0)"> <i class="cg-icon"><img src="<?php echo CommonHelper::generateUrl('category','icon',array($category['prodcat_id'],'1','collection_page'));?>"> </i> <span class="caption"><?php echo $category['prodcat_name']; ?></span> </a></li>
-						 <?php 
+						 <?php
 						  $catCount++;
 						 if($embedMoreCat && $catCount==8){
 							 ?>
@@ -34,14 +34,14 @@
   </g>
 </svg>
  </i> <span class="caption"><?php echo Labels::getLabel('LBL_More_Categories',$siteLangId); ?></span> </a></li>
-							 <?php 
+							 <?php
 						 }
-						
+
 					}
 					echo"</ul>";
-              
+
 				} ?>
-              
+
             </div>
             <span class="gap"></span>
 			<?php $this->includeTemplate('category/categories-list.php',array('categoriesArr'=>$categoriesArr),false);?>

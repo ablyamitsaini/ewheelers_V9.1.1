@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
-$buyQuantity->addFieldTagAttribute('class','qty');
+$buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 ?>
 
 <div id="body" class="body" role="main">
@@ -98,10 +98,11 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 				<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 				</div>
-        <div class="gap"> </div>
 
-			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){
-					$freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
+
+			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){ ?>
+            <div class="gap"> </div>
+					<?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
 				?>
 				<div class="note-messages"><?php echo str_replace('{amount}',$freeShipAmt,Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase',$siteLangId));?></div>
 			<?php }?>
@@ -193,66 +194,58 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 
 			<?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
               <?php if($codEnabled){?>
-              <div class="cod-txt"><?php echo Labels::getLabel('LBL_Cash_on_delivery_is_available',$siteLangId);?> <i class="fa fa-question-circle-o tooltip tooltip--right"><span class="hovertxt"><?php echo Labels::getLabel('MSG_Cash_on_delivery_available._Choose_from_payment_options',$siteLangId);?> </span></i> </div>
+              <div class="condition-txt"><?php echo Labels::getLabel('LBL_Cash_on_delivery_is_available',$siteLangId);?> <i class="fa fa-question-circle-o tooltip tooltip--right"><span class="hovertxt"><?php echo Labels::getLabel('MSG_Cash_on_delivery_available._Choose_from_payment_options',$siteLangId);?> </span></i> </div>
               <?php }?>
 
 
 			<!-- Upsell Products [ -->
-              <?php if (count($upsellProducts)>0) { ?>
-				<div class="gap"></div>
-				<div class="box box--gray box--radius box--space">
-					<div class="h6 js-acc-triger acc-triger"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
-					<div class="acc-data">
-						<table class="table cart--full cart-tbl cart-tbl-addons">
-							<thead>
-								<tr class="hide--mobile">
-								<th></th>
-								<th><?php echo Labels::getLabel('LBL_Name', $siteLangId); ?></th>
-								<th><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></th>
-								<th><?php echo Labels::getLabel('LBL_Qty', $siteLangId); ?></th>
-								<th></th>
-							  </tr>
-							</thead>
-							<tbody>
-								<?php  foreach ($upsellProducts as $usproduct) {
-								$cancelClass ='';
-								$uncheckBoxClass='';
-								if($usproduct['selprod_stock']<=0){
-									$cancelClass ='cancelled--js';
-									$uncheckBoxClass ='remove-add-on';
-								}
-							?>
-							<tr>
-							  <td class="<?php echo $cancelClass;?>"><div class="product-img"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></div></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="item__description"><div class="item__title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div></div>
-							   <?php if($usproduct['selprod_stock']<=0){ ?>
-								  <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
-								  <?php  } ?></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
-							  <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart"> <span class="decrease decrease-js">-</span>
-								  <input type="text" value="1" placeholder="Qty" class="cartQtyTextBox" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
-								  <span class="increase increase-js">+</span> </div></td>
-							  <td class="<?php echo $cancelClass;?>"><label class="checkbox">
-								  <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
-								  <i class="input-helper"></i> </label>
-								</td>
-							</tr>
-							<?php } ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-              <?php } ?>
+            <?php if (count($upsellProducts)>0) { ?>
+                <div class="gap"></div>
+                <div class="box box--gray box--radius box--space">
+                    <div class="h6 js-acc-triger acc-triger"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
+                    <div class=" acc-data">
+                        <table class="table cart--full cart-tbl cart-tbl-addons">
+                            <tbody>
+                            <?php  foreach ($upsellProducts as $usproduct) {
+                            $cancelClass ='';
+                            $uncheckBoxClass='';
+                            if($usproduct['selprod_stock']<=0){
+                                $cancelClass ='cancelled--js';
+                                $uncheckBoxClass ='remove-add-on';
+                            }
+                        ?>
+                        <tr>
+                          <td class="<?php echo $cancelClass;?>"><figure class="item__pic"><a title="<?php echo $usproduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products','view',array($usproduct['selprod_id']))?>"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] ) ), CONF_IMG_CACHE_TIME, '.jpg');?>" alt="<?php echo $usproduct['product_identifier']; ?>"> </a></figure></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="item__description">
+                                            <div class="item__title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']) )?>" ><?php echo $usproduct['selprod_title']?></a></div></div>
+                           <?php if($usproduct['selprod_stock']<=0){ ?>
+                              <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
+                              <?php  } ?></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
+                          <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart" data-stock="<?php echo $usproduct['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
+                              <input type="text" value="1" placeholder="Qty" class="no--focus cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
+                              <span class="increase increase-js">+</span> </div></td>
+                          <td class="<?php echo $cancelClass;?>"><label class="checkbox">
+                              <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
+                              <i class="input-helper"></i> </label>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            <?php } ?>
               <!-- ] -->
 			  <?php if($product['product_upc']!='') { ?>
 				<div class="gap"></div>
 				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
-				<div class="gap"></div>
 			  <?php }?>
 
 
 
-
+            <div class="gap"></div>
             <div class="">
 
 
@@ -264,8 +257,8 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
 					?>
               <div class="form__group">
-                <label class="h6"><?php echo $qtyFieldName;?></label>
-                <div class="qty"> <span class="decrease decrease-js">-</span>
+                <label><?php echo $qtyFieldName;?></label>
+                <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
                   <?php
 				  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
                   <span class="increase increase-js">+</span></div>
@@ -321,28 +314,32 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					  <?php if(count($product['moreSellersArr'])>0){ ?>
 					  <div class="more--seller"><a class="link"  href="<?php echo CommonHelper::generateUrl('products','sellers',array($product['selprod_id']));?>"><?php echo sprintf(Labels::getLabel('LBL_View_More_Sellers',$siteLangId),count($product['moreSellersArr']));?></a></div>
 					  <?php } ?>
-					  <div class="ftshops_item_head_right"> <!--<a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a><a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a>-->  </div>
+					  <div class="ftshops_item_head_right">
+                          <!--<a href="<?php echo CommonHelper::generateUrl('shops','View',array($shop['shop_id'])); ?>" class="btn btn--primary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_View_Store',$siteLangId); ?></a>
+                          <a onclick="return checkUserLoggedIn();" href="<?php echo CommonHelper::generateUrl('shops','sendMessage',array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary ripplelink block-on-mobile" tabindex="0"><?php echo Labels::getLabel('LBL_Ask_Question',$siteLangId); ?></a>-->
+                      </div>
 					</div>
 				</div>
 			</div>
 			<div class="gap"></div>
-
-
-
           </div>
           </div>
         </div>
       </div>
 	 </section>
-	 <?php if($recommendedProducts || $relatedProductsRs){ ?>
-	 <section class="section bg--second-color">
+	 <?php if($recommendedProducts){ ?>
+	 <section class="section bg--first-color">
 		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
+	 </section>
+	 <?php } ?>
+     <?php if($relatedProductsRs){ ?>
+	 <section class="section bg--second-color">
 		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
 	 </section>
-	 <?php }?>
+	 <?php } ?>
      <section class="section section--gray">
 		<div class="container">
-			<div class="row justify-content-center">
+			<div class="row justify-content-center product--specifications">
 				<div class="col-md-12">
 					<?php $youtube_embed_code=CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
 					<div class="row justify-content-between">
@@ -506,20 +503,19 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					</div>
 				</div>
 			</div>
-			<div id="itemRatings">
-				<div class="gap"></div>
-				<?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
-				<div class="gap"></div>
-				<h4><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></h4>
-        <div class="gap"></div>
-				<?php echo $frmReviewSearch->getFormHtml(); ?>
-				  <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
-				<?php }?>
-			</div>
-      	<div class="gap"></div>
+
+            <div id="itemRatings">
+                <?php if(FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)) { ?>
+                <?php echo $frmReviewSearch->getFormHtml(); ?>
+                <?php $this->includeTemplate('_partial/product-reviews.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']),false); ?>
+                <?php }?>
+            </div>
+
+            <div class="gap"></div>
 			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
 			<div class="gap"></div>
-			<div class="banner-ppc"> <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
+            <div class="row">
+            <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
 				$desktop_url = '';
 				$tablet_url = '';
 				$mobile_url = '';
@@ -542,7 +538,7 @@ $buyQuantity->addFieldTagAttribute('class','qty');
 					}
 				}
 				?>
-			<a href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" target="<?php echo $val['banner_target'];?>" title="<?php echo $val['banner_title'];?>" class="advertise__block"><img data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>" class="img-responsive"></a>
+			<div class="col-md-6"><div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" target="<?php echo $val['banner_target'];?>" title="<?php echo $val['banner_title'];?>" class="advertise__block"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>" class="img-responsive"></a></div></div>
 			<?php } ?></div>
 				 <?php } if(isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
 				Promotion::updateImpressionData($val['banner_record_id']);

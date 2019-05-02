@@ -21,23 +21,28 @@ if($totReviews){
 	$rate_1_width = round(FatUtility::convertToType($rated_1/$totReviews*100,FatUtility::VAR_FLOAT),2);
 }
 ?>
-<div class="row">
-	<?php $this->includeTemplate('_partial/product-overall-ratings.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id),false); ?>
-</div>
-<div class="gap"></div>
-<h4><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></h4>
-<div class="gap"></div>
-<div class="tabs tabs--flat-js">
-	<ul>
-		<li class="is-active"><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
-		<li><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
-	</ul>
-</div>
-<div class="gap"></div>
-<div class="box box--white box--radius box--space">
-	<div class="listing__all"></div>
-	<div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
-</div>
+<section class="section">
+    <h4><?php echo Labels::getLabel('LBl_Rating_&_Reviews', $siteLangId); ?></h4>
+    <div class="gap"></div>
+    <div class="row">
+        <?php $this->includeTemplate('_partial/product-overall-ratings.php',array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id),false); ?>
+    </div>
+</section>
+<section class="section">
+    <h4><?php echo Labels::getLabel('Lbl_Reviews_by',$siteLangId); ?></h4>
+    <div class="gap"></div>
+    <div class="tabs tabs--flat-js">
+        <ul>
+            <li class="is-active"><a href='javascript:void(0);' data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful',$siteLangId); ?></a></li>
+            <li><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent',$siteLangId); ?> </a></li>
+        </ul>
+    </div>
+    <div class="gap"></div>
+    <div class="box box--white box--radius box--space">
+        <div class="listing__all"></div>
+        <div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
+    </div>
+</section>
 <script>
 	var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId); ?>';
 	var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS',$siteLangId); ?>';

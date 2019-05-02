@@ -10,7 +10,7 @@ $arr_flds = array(
 	'product_shipped_by' => Labels::getLabel('LBL_Shipped_by_me', $siteLangId),
 	'action' => Labels::getLabel('LBL_Action', $siteLangId)
 );
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
@@ -63,17 +63,17 @@ foreach ($arr_listing as $sn => $row){
 				}
 				/* $td->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($canAddToStore) ? 'btn btn--primary btn--sm' : 'btn btn--primary btn--sm disabled','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId)), Labels::getLabel('LBL_Add_To_Store',$siteLangId), true); */
 
-               
+
 				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);
-                
+
                 $li = $ul->appendElement("li");
                 $li->appendElement('a', array('href'=>CommonHelper::generateUrl('Seller','sellerProductForm',array($row['product_id'])), 'class'=>($canAddToStore) ? 'icn-highlighted' : 'icn-highlighted disabled','title'=>Labels::getLabel('LBL_Add_To_Store',$siteLangId), true),
-				'<i class="fa fa-bank"></i>', true);
-                
+				'<i class="fa fa-plus-square"></i>', true);
+
 				$li = $ul->appendElement("li");
 				$li->appendElement('a', array('href'=>'javascript:void(0)', 'onclick'=>'catalogInfo('.$row['product_id'].')', 'class'=>'','title'=>Labels::getLabel('LBL_product_Info',$siteLangId), true),
 				'<i class="fa fa-eye"></i>', true);
-                
+
 
 				if(0 != $row['product_seller_id']){
 					$li = $ul->appendElement("li");

@@ -67,49 +67,48 @@ class AdminPrivilege
     const SECTION_ABUSIVE_WORDS = 64;
     const SECTION_QUESTION_BANKS = 65;
     const SECTION_MESSAGES = 66;
-    Const SECTION_POLLING = 67;
-    Const SECTION_QUESTIONS = 68;
-    Const SECTION_QUESTIONNAIRES = 69;
-    Const SECTION_SALES_REPORT = 70;
-    Const SECTION_USERS_REPORT = 71;
-    Const SECTION_PRODUCTS_REPORT = 72;
-    Const SECTION_SHOPS_REPORT = 73;
-    Const SECTION_TAX_REPORT = 74;
-    Const SECTION_COMMISSION_REPORT = 75;
-    Const SECTION_CATALOG_REPORT = 76;
-    Const SECTION_PERFORMANCE_REPORT = 77;
-    Const SECTION_POLICY_POINTS = 78;
-    Const SECTION_SELLER_PACKAGES = 79;
-    Const SECTION_SELLER_DISCOUNT_COUPONS = 80;
-    Const SECTION_TOOLS = 81;
-    Const SECTION_THEME_COLOR = 82;
-    Const SECTION_SUBSCRIPTION_ORDERS = 83;
-    Const SECTION_AFFILIATE_COMMISSION = 84;
-    Const SECTION_PROMOTIONS = 85;
-    Const SECTION_AFFILIATES_REPORT = 86;
-    Const SECTION_ADVERTISERS_REPORT = 87;
-    Const SECTION_BRAND_REQUESTS = 88;
-    Const SECTION_SHIPPING_COMPANY_USERS = 89;
-    Const SECTION_REWARDS_ON_PURCHASE = 90;
-    Const SECTION_LANGUAGE = 91;
-    Const SECTION_ORDER_STATUS = 92;
-    Const SECTION_NOTIFICATION = 93;
-    Const SECTION_TOOLTIP = 94;
-    Const SECTION_CUSTOM_PRODUCT_REQUESTS = 95;
-    Const SECTION_CUSTOM_CATALOG_PRODUCT_REQUESTS = 96;
-    Const SECTION_DATABASE_BACKUP = 96;
-    Const SECTION_USER_REQUESTS = 97;
-    Const SECTION_PRODUCT_TEMP_IMAGES = 98;
-    Const SECTION_IMPORT_INSTRUCTIONS = 99;
+    const SECTION_POLLING = 67;
+    const SECTION_QUESTIONS = 68;
+    const SECTION_QUESTIONNAIRES = 69;
+    const SECTION_SALES_REPORT = 70;
+    const SECTION_USERS_REPORT = 71;
+    const SECTION_PRODUCTS_REPORT = 72;
+    const SECTION_SHOPS_REPORT = 73;
+    const SECTION_TAX_REPORT = 74;
+    const SECTION_COMMISSION_REPORT = 75;
+    const SECTION_CATALOG_REPORT = 76;
+    const SECTION_PERFORMANCE_REPORT = 77;
+    const SECTION_POLICY_POINTS = 78;
+    const SECTION_SELLER_PACKAGES = 79;
+    const SECTION_SELLER_DISCOUNT_COUPONS = 80;
+    const SECTION_TOOLS = 81;
+    const SECTION_THEME_COLOR = 82;
+    const SECTION_SUBSCRIPTION_ORDERS = 83;
+    const SECTION_AFFILIATE_COMMISSION = 84;
+    const SECTION_PROMOTIONS = 85;
+    const SECTION_AFFILIATES_REPORT = 86;
+    const SECTION_ADVERTISERS_REPORT = 87;
+    const SECTION_BRAND_REQUESTS = 88;
+    const SECTION_SHIPPING_COMPANY_USERS = 89;
+    const SECTION_REWARDS_ON_PURCHASE = 90;
+    const SECTION_LANGUAGE = 91;
+    const SECTION_ORDER_STATUS = 92;
+    const SECTION_NOTIFICATION = 93;
+    const SECTION_TOOLTIP = 94;
+    const SECTION_CUSTOM_PRODUCT_REQUESTS = 95;
+    const SECTION_CUSTOM_CATALOG_PRODUCT_REQUESTS = 96;
+    const SECTION_DATABASE_BACKUP = 96;
+    const SECTION_USER_REQUESTS = 97;
+    const SECTION_PRODUCT_TEMP_IMAGES = 98;
+    const SECTION_IMPORT_INSTRUCTIONS = 99;
+    const SECTION_UPLOAD_BULK_IMAGES = 100;
 
     const PRIVILEGE_NONE = 0;
     const PRIVILEGE_READ = 1;
     const PRIVILEGE_WRITE = 2;
 
     private static $instance = null ;
-
     private $loadedPermissions = array();
-
 
     public static function getInstance()
     {
@@ -119,9 +118,9 @@ class AdminPrivilege
         return self::$instance;
     }
 
-    public static function isAdminSuperAdmin($adminId) 
+    public static function isAdminSuperAdmin($adminId)
     {
-        return ( 1 == $adminId );
+        return (1 == $adminId);
     }
 
     public static function getPermissionArr()
@@ -129,7 +128,7 @@ class AdminPrivilege
         $arr = array(
         static::PRIVILEGE_NONE => Labels::getLabel('MSG_None', CommonHelper::getLangId()),
         static::PRIVILEGE_READ => Labels::getLabel('MSG_Read_Only', CommonHelper::getLangId()),
-        static::PRIVILEGE_WRITE => Labels::getLabel('MSG_Read_and_Write', CommonHelper::getLangId()),
+        static::PRIVILEGE_WRITE => Labels::getLabel('MSG_Read_and_Write', CommonHelper::getLangId())
         );
         return $arr;
     }
@@ -174,7 +173,6 @@ class AdminPrivilege
         static::SECTION_LANGUAGE_LABELS => Labels::getLabel('MSG_Language_Labels', CommonHelper::getLangId()),
         static::SECTION_SLIDES => Labels::getLabel('MSG_Home_Page_Slide_Management', CommonHelper::getLangId()),
         static::SECTION_BANNERS => Labels::getLabel('MSG_Banners', CommonHelper::getLangId()),
-
 
         static::SECTION_SHIPPING_APIS => Labels::getLabel('MSG_Shipping_Api_Methods', CommonHelper::getLangId()),
         static::SECTION_SHIPPING_DURATIONS => Labels::getLabel('MSG_Shipping_Durations', CommonHelper::getLangId()),
@@ -237,6 +235,7 @@ class AdminPrivilege
         static::SECTION_USER_REQUESTS => Labels::getLabel('MSG_User_Requests', CommonHelper::getLangId()),
         static::SECTION_PRODUCT_TEMP_IMAGES => Labels::getLabel('MSG_Products_Temp_Images', CommonHelper::getLangId()),
         static::SECTION_IMPORT_INSTRUCTIONS => Labels::getLabel('MSG_Import_Instructions', CommonHelper::getLangId()),
+        static::SECTION_UPLOAD_BULK_IMAGES => Labels::getLabel('MSG_Bulk_Upload', CommonHelper::getLangId()),
 
         /* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
         static::SECTION_Languages => Labels::getLabel('MSG_Order_Status',CommonHelper::getLangId()), */
@@ -252,24 +251,29 @@ class AdminPrivilege
         static::SECTION_FILTER_GROUPS => 'Filter Groups',
         static::SECTION_FILTERS => 'Filters',
         static::SECTION_EXTRA_ATTRIBUTES => 'Extra Attributes',	 */
-        );
+    );
         return $arr;
     }
 
-    public static function getAdminPermissionLevel($adminId, $sectionId = 0) 
+    public static function getWriteOnlyPermissionModulesArr()
+    {
+        return array(
+            static::SECTION_UPLOAD_BULK_IMAGES,
+        );
+    }
+
+    public static function getAdminPermissionLevel($adminId, $sectionId = 0)
     {
         $db = FatApp::getDb();
-
         $adminId = FatUtility::int($adminId);
 
         /* Are you looking for permissions of administrator [ */
-        if (static::isAdminSuperAdmin($adminId) ) {
+        if (static::isAdminSuperAdmin($adminId)) {
             $arrLevels = array();
-            if ($sectionId > 0 ) {
+            if ($sectionId > 0) {
                 $arrLevels[$sectionId] = static::PRIVILEGE_WRITE;
-            }
-            else {
-                for($i = 0; $i <= 2; $i ++) {
+            } else {
+                for ($i = 0; $i <= 2; $i ++) {
                     $arrLevels [$i] = static::PRIVILEGE_WRITE;
                 }
             }
@@ -279,20 +283,18 @@ class AdminPrivilege
 
         $srch = new SearchBase('tbl_admin_permissions');
         $srch->addCondition('admperm_admin_id', '=', $adminId);
-        if (0 < $sectionId ) {
+        if (0 < $sectionId) {
             $srch->addCondition('admperm_section_id', '=', $sectionId);
         }
 
         $srch->addMultipleFields(array('admperm_section_id', 'admperm_value'));
-
         $rs = $srch->getResultSet();
-
         $arr = $db->fetchAllAssoc($rs);
 
         return $arr;
     }
 
-    private function cacheLoadedPermission($adminId, $secId, $level) 
+    private function cacheLoadedPermission($adminId, $secId, $level)
     {
         if (!isset($this->loadedPermissions[$adminId])) {
             $this->loadedPermissions[$adminId] = array();
@@ -300,7 +302,7 @@ class AdminPrivilege
         $this->loadedPermissions[$adminId][$secId] = $level;
     }
 
-    private function checkPermission($adminId, $secId, $level, $returnResult = false) 
+    private function checkPermission($adminId, $secId, $level, $returnResult = false)
     {
         $db = FatApp::getDb();
 
@@ -309,7 +311,7 @@ class AdminPrivilege
         }
 
         $adminId = FatUtility::convertToType($adminId, FatUtility::VAR_INT);
-        if (0 == $adminId ) {
+        if (0 == $adminId) {
             $adminId = AdminAuthentication::getLoggedAdminId();
         }
 
@@ -325,7 +327,7 @@ class AdminPrivilege
         }
 
         $row_admin = Admin::getAttributesById($adminId, array('admin_active'));
-        if (empty($row_admin) ) {
+        if (empty($row_admin)) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', CommonHelper::getLangId()));
         }
         if ($row_admin['admin_active'] != applicationConstants::ACTIVE) {
@@ -334,7 +336,7 @@ class AdminPrivilege
 
         $rs = $db->query(
             "SELECT admperm_value FROM tbl_admin_permissions WHERE
-				admperm_admin_id = " . $adminId . " AND admperm_section_id = " . $secId 
+				admperm_admin_id = " . $adminId . " AND admperm_section_id = " . $secId
         );
         if (! $row = $db->fetch($rs)) {
             $this->cacheLoadedPermission($adminId, $secId, static::PRIVILEGE_NONE);
@@ -352,90 +354,91 @@ class AdminPrivilege
         return (true);
     }
 
-    private function returnFalseOrDie($returnResult, $msg = '') 
+    private function returnFalseOrDie($returnResult, $msg = '')
     {
         if ($returnResult) {
             return (false);
         }
         Message::addErrorMessage(Labels::getLabel('MSG_Unauthorized_Access!', CommonHelper::getLangId()));
-        if ($msg == '') { $msg = Message::getHtml(); 
+        if ($msg == '') {
+            $msg = Message::getHtml();
         }
         FatUtility::dieWithError($msg);
     }
 
-    public function clearPermissionCache($adminId) 
+    public function clearPermissionCache($adminId)
     {
-        if (isset($this->loadedPermissions[$adminId]) ) {
+        if (isset($this->loadedPermissions[$adminId])) {
             unset($this->loadedPermissions[$adminId]);
         }
     }
 
-    public function canViewProductCategories($adminId = 0, $returnResult = false) 
+    public function canViewProductCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_CATEGORIES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditProductCategories($adminId = 0, $returnResult = false) 
+    public function canEditProductCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_CATEGORIES, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewProducts($adminId = 0, $returnResult = false) 
+    public function canViewProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditProducts($adminId = 0, $returnResult = false) 
+    public function canEditProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewBrands($adminId = 0, $returnResult = false) 
+    public function canViewBrands($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BRANDS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBrands($adminId = 0, $returnResult = false) 
+    public function canEditBrands($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BRANDS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewFilterGroups($adminId = 0, $returnResult = false) 
+    public function canViewFilterGroups($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FILTER_GROUPS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditFilterGroups($adminId = 0, $returnResult = false) 
+    public function canEditFilterGroups($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FILTER_GROUPS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewFilters($adminId = 0, $returnResult = false) 
+    public function canViewFilters($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FILTERS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditFilters($adminId = 0, $returnResult = false) 
+    public function canEditFilters($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FILTERS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewTags($adminId = 0, $returnResult = false) 
+    public function canViewTags($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TAGS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditTags($adminId = 0, $returnResult = false) 
+    public function canEditTags($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TAGS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewOptions($adminId = 0, $returnResult = false) 
+    public function canViewOptions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_OPTIONS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditOptions($adminId = 0, $returnResult = false) 
+    public function canEditOptions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_OPTIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
@@ -842,369 +845,373 @@ class AdminPrivilege
         return $this->checkPermission($adminId, static::SECTION_ORDER_RETURN_REASONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewMetaTags( $adminId = 0, $returnResult = false )
+    public function canViewMetaTags($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_META_TAGS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditMetaTags( $adminId = 0, $returnResult = false )
+    public function canEditMetaTags($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_META_TAGS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewAdminDashboard( $adminId = 0, $returnResult = false )
+    public function canViewAdminDashboard($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADMIN_DASHBOARD, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditAdminDashboard( $adminId = 0, $returnResult = false )
+    public function canEditAdminDashboard($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADMIN_DASHBOARD, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewFaqCategories( $adminId = 0, $returnResult = false )
+    public function canViewFaqCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FAQ_CATEGORY, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditFaqCategories( $adminId = 0, $returnResult = false )
+    public function canEditFaqCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FAQ_CATEGORY, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewFaq( $adminId = 0, $returnResult = false )
+    public function canViewFaq($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FAQ, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditFaq( $adminId = 0, $returnResult = false )
+    public function canEditFaq($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_FAQ, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewUrlRewrite( $adminId = 0, $returnResult = false )
+    public function canViewUrlRewrite($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_URL_REWRITE, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditUrlRewrite( $adminId = 0, $returnResult = false )
+    public function canEditUrlRewrite($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_URL_REWRITE, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewTestimonial( $adminId = 0, $returnResult = false )
+    public function canViewTestimonial($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TESTIMONIAL, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditTestimonial( $adminId = 0, $returnResult = false )
+    public function canEditTestimonial($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TESTIMONIAL, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewSuccessStories( $adminId = 0, $returnResult = false )
+    public function canViewSuccessStories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SUCCESS_STORIES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditSuccessStories( $adminId = 0, $returnResult = false )
+    public function canEditSuccessStories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SUCCESS_STORIES, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewRecomendedWeightages( $adminId = 0, $returnResult = false )
+    public function canViewRecomendedWeightages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SMART_RECOMENDED_WEIGHTAGES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditRecomendedWeightages( $adminId = 0, $returnResult = false )
+    public function canEditRecomendedWeightages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SMART_RECOMENDED_WEIGHTAGES, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewRecomendedTagProducts( $adminId = 0, $returnResult = false )
+    public function canViewRecomendedTagProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SMART_PRODUCT_TAG_PRODUCTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditRecomendedTagProducts( $adminId = 0, $returnResult = false )
+    public function canEditRecomendedTagProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SMART_PRODUCT_TAG_PRODUCTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewAdminPermissions( $adminId = 0, $returnResult = false )
+    public function canViewAdminPermissions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADMIN_PERMISSIONS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditAdminPermissions( $adminId = 0, $returnResult = false )
+    public function canEditAdminPermissions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADMIN_PERMISSIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewBlogPostCategories( $adminId = 0, $returnResult = false )
+    public function canViewBlogPostCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_POST_CATEGORIES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBlogPostCategories( $adminId = 0, $returnResult = false )
+    public function canEditBlogPostCategories($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_POST_CATEGORIES, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewBlogPosts( $adminId = 0, $returnResult = false )
+    public function canViewBlogPosts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_POSTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBlogPosts( $adminId = 0, $returnResult = false )
+    public function canEditBlogPosts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_POSTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewDiscountCoupons( $adminId = 0, $returnResult = false )
+    public function canViewDiscountCoupons($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_DISCOUNT_COUPONS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditDiscountCoupons( $adminId = 0, $returnResult = false )
+    public function canEditDiscountCoupons($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_DISCOUNT_COUPONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewBlogContributions( $adminId = 0, $returnResult = false )
+    public function canViewBlogContributions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_CONTRIBUTIONS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBlogContributions( $adminId = 0, $returnResult = false )
+    public function canEditBlogContributions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_CONTRIBUTIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewBlogComments( $adminId = 0, $returnResult = false )
+    public function canViewBlogComments($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_COMMENTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBlogComments( $adminId = 0, $returnResult = false )
+    public function canEditBlogComments($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BLOG_COMMENTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewSellerProducts( $adminId = 0, $returnResult = false )
+    public function canViewSellerProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_PRODUCTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditSellerProducts( $adminId = 0, $returnResult = false )
+    public function canEditSellerProducts($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_PRODUCTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewProductReviews( $adminId = 0, $returnResult = false )
+    public function canViewProductReviews($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_REVIEWS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditProductReviews( $adminId = 0, $returnResult = false )
+    public function canEditProductReviews($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_REVIEWS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewAbusiveWords( $adminId = 0, $returnResult = false )
+    public function canViewAbusiveWords($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ABUSIVE_WORDS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditAbusiveWords( $adminId = 0, $returnResult = false )
+    public function canEditAbusiveWords($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ABUSIVE_WORDS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewQuestionBanks( $adminId = 0, $returnResult = false )
+    public function canViewQuestionBanks($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTION_BANKS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditQuestionBanks( $adminId = 0, $returnResult = false )
+    public function canEditQuestionBanks($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTION_BANKS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewMessages( $adminId = 0, $returnResult = false )
+    public function canViewMessages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_MESSAGES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditPolling( $adminId = 0, $returnResult = false )
+    public function canEditPolling($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_POLLING, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewPolling( $adminId = 0, $returnResult = false )
+    public function canViewPolling($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_POLLING, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditQuestions( $adminId = 0, $returnResult = false )
+    public function canEditQuestions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewQuestions( $adminId = 0, $returnResult = false )
+    public function canViewQuestions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTIONS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditQuestionnaires( $adminId = 0, $returnResult = false )
+    public function canEditQuestionnaires($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTIONNAIRES, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewQuestionnaires( $adminId = 0, $returnResult = false )
+    public function canViewQuestionnaires($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_QUESTIONNAIRES, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditSalesReport( $adminId = 0, $returnResult = false )
+    public function canEditSalesReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewSalesReport( $adminId = 0, $returnResult = false )
+    public function canViewSalesReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditUsersReport( $adminId = 0, $returnResult = false )
+    public function canEditUsersReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USERS_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewUsersReport( $adminId = 0, $returnResult = false )
+    public function canViewUsersReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USERS_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditProductsReport( $adminId = 0, $returnResult = false )
+    public function canEditProductsReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCTS_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewProductsReport( $adminId = 0, $returnResult = false )
+    public function canViewProductsReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCTS_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditCatalogReport( $adminId = 0, $returnResult = false )
+    public function canEditCatalogReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CATALOG_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewCatalogReport( $adminId = 0, $returnResult = false )
+    public function canViewCatalogReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CATALOG_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditShopsReport( $adminId = 0, $returnResult = false )
+    public function canEditShopsReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SHOPS_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewShopsReport( $adminId = 0, $returnResult = false )
+    public function canViewShopsReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SHOPS_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditTaxReport( $adminId = 0, $returnResult = false )
+    public function canEditTaxReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TAX_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewTaxReport( $adminId = 0, $returnResult = false )
+    public function canViewTaxReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TAX_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditCommissionReport( $adminId = 0, $returnResult = false )
+    public function canEditCommissionReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_COMMISSION_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewCommissionReport( $adminId = 0, $returnResult = false )
+    public function canViewCommissionReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_COMMISSION_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditPerformanceReport( $adminId = 0, $returnResult = false )
+    public function canEditPerformanceReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PERFORMANCE_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewPerformanceReport( $adminId = 0, $returnResult = false )
+    public function canViewPerformanceReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PERFORMANCE_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditPolicyPoints( $adminId = 0, $returnResult = false )
+    public function canEditPolicyPoints($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_POLICY_POINTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewPolicyPoints( $adminId = 0, $returnResult = false )
+    public function canViewPolicyPoints($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_POLICY_POINTS, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canEditSellerPackages( $adminId = 0, $returnResult = false )
+    public function canEditSellerPackages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_PACKAGES, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewSellerPackages( $adminId = 0, $returnResult = false )
+    public function canViewSellerPackages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_PACKAGES, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canEditSellerDiscountCoupons( $adminId = 0, $returnResult = false )
+    public function canEditSellerDiscountCoupons($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_DISCOUNT_COUPONS, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewSellerDiscountCoupons( $adminId = 0, $returnResult = false )
+    public function canViewSellerDiscountCoupons($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SELLER_DISCOUNT_COUPONS, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canEditThemeColor( $adminId = 0, $returnResult = false )
+    public function canEditThemeColor($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_THEME_COLOR, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewThemeColor( $adminId = 0, $returnResult = false )
+    public function canViewThemeColor($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_THEME_COLOR, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canViewProductTempImages( $adminId = 0, $returnResult = false )
+    public function canViewProductTempImages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_TEMP_IMAGES, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canEditProductTempImages( $adminId = 0, $returnResult = false )
+    public function canEditProductTempImages($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_PRODUCT_TEMP_IMAGES, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewImportInstructions( $adminId = 0, $returnResult = false )
+    public function canUploadBulkImages($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_UPLOAD_BULK_IMAGES, static::PRIVILEGE_WRITE, $returnResult);
+    }
+    public function canViewImportInstructions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_IMPORT_INSTRUCTIONS, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canEditImportInstructions( $adminId = 0, $returnResult = false )
+    public function canEditImportInstructions($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_IMPORT_INSTRUCTIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canEditSubscriptionOrders( $adminId = 0, $returnResult = false )
+    public function canEditSubscriptionOrders($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SUBSCRIPTION_ORDERS, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewSubscriptionOrders( $adminId = 0, $returnResult = false )
+    public function canViewSubscriptionOrders($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SUBSCRIPTION_ORDERS, static::PRIVILEGE_READ, $returnResult);
     }
-    public function canViewTools( $adminId = 0, $returnResult = false )
+    public function canViewTools($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TOOLS, static::PRIVILEGE_READ, $returnResult);
     }
@@ -1229,133 +1236,133 @@ class AdminPrivilege
         return $this->checkPermission($adminId, static::SECTION_PROMOTIONS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewAffiliatesReport( $adminId = 0, $returnResult = false )
+    public function canViewAffiliatesReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_AFFILIATES_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditAffiliatesReport( $adminId = 0, $returnResult = false )
+    public function canEditAffiliatesReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_AFFILIATES_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewAdvertisersReport( $adminId = 0, $returnResult = false )
+    public function canViewAdvertisersReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADVERTISERS_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditAdvertisersReport( $adminId = 0, $returnResult = false )
+    public function canEditAdvertisersReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ADVERTISERS_REPORT, static::PRIVILEGE_WRITE, $returnResult);
     }
-    public function canViewBrandRequests( $adminId = 0, $returnResult = false )
+    public function canViewBrandRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BRAND_REQUESTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditBrandRequests( $adminId = 0, $returnResult = false )
+    public function canEditBrandRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_BRAND_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewShippingCompanyUsers( $adminId = 0, $returnResult = false )
+    public function canViewShippingCompanyUsers($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SHIPPING_COMPANY_USERS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditShippingCompanyUsers( $adminId = 0, $returnResult = false )
+    public function canEditShippingCompanyUsers($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SHIPPING_COMPANY_USERS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewRewardsOnPurchase( $adminId = 0, $returnResult = false )
+    public function canViewRewardsOnPurchase($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_REWARDS_ON_PURCHASE, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditRewardsOnPurchase( $adminId = 0, $returnResult = false )
+    public function canEditRewardsOnPurchase($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_REWARDS_ON_PURCHASE, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewLanguage( $adminId = 0, $returnResult = false )
+    public function canViewLanguage($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_LANGUAGE, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditLanguage( $adminId = 0, $returnResult = false )
+    public function canEditLanguage($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_LANGUAGE, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewOrderStatus( $adminId = 0, $returnResult = false )
+    public function canViewOrderStatus($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ORDER_STATUS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditOrderStatus( $adminId = 0, $returnResult = false )
+    public function canEditOrderStatus($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_ORDER_STATUS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewNotifications( $adminId = 0, $returnResult = false )
+    public function canViewNotifications($adminId = 0, $returnResult = false)
     {
-        // return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_READ, $returnResult);
+        // return $this->checkPermission($adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_READ, $returnResult);
         return true;
     }
 
-    public function canEditNotifications( $adminId = 0, $returnResult = false )
+    public function canEditNotifications($adminId = 0, $returnResult = false)
     {
-        // return $this->checkPermission( $adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_WRITE, $returnResult);
+        // return $this->checkPermission($adminId, static::SECTION_NOTIFICATION, static::PRIVILEGE_WRITE, $returnResult);
         return true;
     }
 
-    public function canViewTooltip($adminId = 0, $returnResult = false) 
+    public function canViewTooltip($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TOOLTIP, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditTooltip($adminId = 0, $returnResult = false) 
+    public function canEditTooltip($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TOOLTIP, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewCustomProductRequests( $adminId = 0, $returnResult = false )
+    public function canViewCustomProductRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CUSTOM_PRODUCT_REQUESTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditCustomProductRequests( $adminId = 0, $returnResult = false )
+    public function canEditCustomProductRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CUSTOM_PRODUCT_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewCustomCatalogProductRequests( $adminId = 0, $returnResult = false )
+    public function canViewCustomCatalogProductRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CUSTOM_CATALOG_PRODUCT_REQUESTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditCustomCatalogProductRequests( $adminId = 0, $returnResult = false )
+    public function canEditCustomCatalogProductRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_CUSTOM_CATALOG_PRODUCT_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewDatabaseBackupView( $adminId = 0, $returnResult = false )
+    public function canViewDatabaseBackupView($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_DATABASE_BACKUP, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditDatabaseBackupView( $adminId = 0, $returnResult = false )
+    public function canEditDatabaseBackupView($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_DATABASE_BACKUP, static::PRIVILEGE_WRITE, $returnResult);
     }
 
-    public function canViewUserRequests( $adminId = 0, $returnResult = false )
+    public function canViewUserRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_READ, $returnResult);
     }
 
-    public function canEditUserRequests( $adminId = 0, $returnResult = false )
+    public function canEditUserRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }

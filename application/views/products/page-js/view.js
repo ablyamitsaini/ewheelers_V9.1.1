@@ -1,4 +1,17 @@
 $("document").ready(function(){
+
+	$('.xzoom, .xzoom-gallery').bind('click', function(event) {
+        var xzoom = $(this).data('xzoom');
+        xzoom.closezoom();
+        var gallery = xzoom.gallery().cgallery;
+        var i, images = new Array();
+        for (i in gallery) {
+            images[i] = {src: gallery[i]};
+        }
+        $.magnificPopup.open({items: images, type:'image', gallery: {enabled: true}});
+        event.preventDefault();
+    });
+
 	/* Product Main image to be static on scroll par a particular window scroll range[ */
 
 	$(window).scroll(function(){
@@ -94,11 +107,6 @@ $("document").ready(function(){
 	$('.js-collection-corner').slick( getSlickSliderSettings(6) );
 	$('.slides--six-js').slick( getSlickSliderSettings(6) );
 
-	$('.items-scroller').enscroll({
-		verticalTrackClass: 'scroller__track',
-		verticalHandleClass: 'scroller__handle'
-	});
-
 	/* for on scoll jump navigation fix */
 	/* var elementPosition = $('.nav--jumps').offset();
 	$(window).scroll(function(){
@@ -113,7 +121,7 @@ $("document").ready(function(){
 		event.preventDefault();
 
 		var target_offset = $(".product--specifications").offset();
-		var target_top = target_offset.top-60;
+		var target_top = target_offset.top-100;
 		$('html, body').animate({scrollTop:target_top}, 1000);
 	});
 	/* for click scroll function */
@@ -132,7 +140,7 @@ $("document").ready(function(){
 		$('html, body').animate({scrollTop: $("#itemRatings").offset().top - 130 }, 'slow');
 		fcom.scrollToTop( $("#itemRatings") );
 	});
-	
+
 	bannerAdds();
 	reviews(document.frmReviewSearch);
 });
@@ -207,6 +215,7 @@ function setupReviewAbuse(frm){
 
 		fcom.updateWithAjax(fcom.makeUrl('Reviews','searchForProduct'), data, function(ans){
 			$.mbsmessage.close();
+
 			if( ans.totalRecords ){
 				$('#reviews-pagination-strip--js').show();
 			}

@@ -10,8 +10,8 @@
 		<?php
 			$frmLinks->setFormTagAttribute('class', 'form form--horizontal');
 			$frmLinks->setFormTagAttribute('onsubmit', 'setupProductLinks(this); return(false);');
-			$frmLinks->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-			$frmLinks->developerTags['fld_default_col'] = 12;
+			$frmLinks->developerTags['colClassPrefix'] = 'col-lg-6 col-md-';
+			$frmLinks->developerTags['fld_default_col'] = 6;
 			$frmLinks->removeField($frmLinks->getField('product_name'));
 			$fld1=$frmLinks->getField('tag_name');
 			// $fld1->fieldWrapper = array('<div class="col-md-8">', '</div>');
@@ -104,7 +104,7 @@
 				}); */
 				/* $("#product_links_list").html(fcom.getLoader()); */
 				$.ajax({
-					url: fcom.makeUrl('products', 'links_autocomplete'),
+					url: fcom.makeUrl('products', 'linksAutocomplete'),
 					data: {keyword: request,fIsAjax:1},
 					dataType: 'json',
 					type: 'post',

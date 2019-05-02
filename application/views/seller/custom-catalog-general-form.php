@@ -22,8 +22,8 @@
 				<div class="form__subcontent">
 				<?php
 				$customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
-				$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-				$customProductFrm->developerTags['fld_default_col'] = 12;
+				$customProductFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-4';
+				$customProductFrm->developerTags['fld_default_col'] = 4;
 				$customProductFrm->setFormTagAttribute('onSubmit', 'setupCustomProduct(this); return(false);');
 
 				$shippingCountryFld = $customProductFrm->getField('shipping_country');
@@ -71,6 +71,9 @@
 				$customProductFrm->getField('product_weight_unit')->fieldWrapper = array('<div class="g">','</div>'); */
 
 				//$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
+				$shippingInfoFld = $customProductFrm->getField('shipping_info_html');				
+				$shippingInfoFld->setWrapperAttribute('class','col-lg-12');
+				$shippingInfoFld->developerTags['col'] = 12;
 				echo $customProductFrm->getFormHtml();
 				?>
 			</div>

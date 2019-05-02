@@ -43,7 +43,7 @@
 			});
 		});
 	};
-	
+
 	importMediaForm = function(actionType){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('ImportExport', 'importMediaForm',[actionType]), '', function(t) {
@@ -70,10 +70,12 @@
 					try {
 						var ans = $.parseJSON(t);
 						if( ans.status == 1 ){
-							reloadList();
+							// reloadList();
 							$(document).trigger('close.facebox');
 							$(document).trigger('close.mbsmessage');
 							$.systemMessage(ans.msg, 'alert--success');
+							
+                            location.href = ans.CSVfileUrl;
 						} else {
 							$('#fileupload_div').html('');
 							$(document).trigger('close.mbsmessage');

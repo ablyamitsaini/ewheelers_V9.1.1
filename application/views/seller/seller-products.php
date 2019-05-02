@@ -1,5 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
+	'select_all'=>Labels::getLabel('LBL_Select_all',$siteLangId),
 	'listserial' => Labels::getLabel( 'LBL_Sr.', $siteLangId ),
 );
 /* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
@@ -11,10 +12,14 @@ $arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $si
 $arr_flds['selprod_active'] = Labels::getLabel('LBL_Status', $siteLangId);
 $arr_flds['action'] = Labels::getLabel('LBL_Action', $siteLangId);
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
-foreach ($arr_flds as $val) {
-	$e = $th->appendElement('th', array(), $val);
+foreach ($arr_flds as $key => $val) {
+    if ( 'select_all' == $key ) {
+        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input type="checkbox" onclick="selectAll( $(this) )" class="selectAll-js"><i class="input-helper"></i></label>'.$val , true);
+    }else{
+		$e = $th->appendElement('th', array(), $val);
+	}
 }
 if($page ==1){
 
@@ -30,6 +35,9 @@ foreach ($arrListing as $sn => $row){
 	foreach ($arr_flds as $key=>$val){
 		$td = $tr->appendElement('td');
 		switch ($key){
+			case 'select_all':
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_id[]" value='.$row['selprod_id'].'><i class="input-helper"></i></label>' , true);
+            break;
 			case 'listserial':
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
@@ -95,7 +103,11 @@ if (count($arrListing) == 0){ ?>
 	// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found_under_your_publication', $siteLangId));
 		//$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId));
 } else {
-	echo $tbl->getHtml();
+	?>
+		<form id="frmSellerProductsListing" name="frmSellerProductsListing" method="post" onsubmit="formAction(this); return(false);" class="form" action="<?php echo CommonHelper::generateUrl('Seller', 'deleteBulkSellerProducts'); ?>">
+			<?php echo $tbl->getHtml(); ?>
+		</form>
+	<?php
 }
 
 if( !$product_id ){

@@ -6,7 +6,7 @@
 <?php } ?>
  <?php if (!empty($promotions) && is_array($promotions)){?>
 
-<?php 
+<?php
 	$arr_flds = array(
 		'promotion_image'=>'',
 		'promotion_id' => Labels::getLabel('LBL_ID',$siteLangId),
@@ -19,7 +19,7 @@
 		'action' => Labels::getLabel('LBL_Action',$siteLangId),
 	);
 
-	$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
+	$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
 	$th = $tbl->appendElement('thead')->appendElement('tr');
 	foreach ($arr_flds as $val) {
 		$e = $th->appendElement('th', array(), $val);
@@ -33,7 +33,7 @@
 		foreach ($arr_flds as $key=>$val){
 			$td = $tr->appendElement('td');
 			switch ($key){
-				case 'promotion_image': 
+				case 'promotion_image':
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
 					$td->appendElement('plaintext', array(), '<div class="avtar"><img src="'.FatCache::getCachedUrl(CommonHelper::generateUrl('image','product',array($product['promotion_product_id'],'MINI',0,0,$siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').'" alt="'.$row["prod_name"].'"></div>' , true);
 					} else if($row['promotion_type']==Promotions::PROMOTE_SHOP) {
@@ -46,7 +46,7 @@
 					$td->appendElement('plaintext', array(), $row["promotion_number"] . '<br>', true);
 					$td->appendElement('plaintext', array(), '('.$row[$key].')', true);
 				break;
-				
+
 				case 'promotion_identifier':
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
 					$td->appendElement('plaintext', array(), $row["prod_name"] . '<br>', true);
@@ -60,10 +60,10 @@
 					}
 					if(isset($row['promotion_min_balance'])) { if ($row['promotion_min_balance']==1) {
 					$td->appendElement('plaintext', array(), '<span class="text-danger">***</span><br>', true);
-					} } 
+					} }
 
 				break;
-				
+
 				case 'promotion_type':
 					if ($row['promotion_type']==Promotions::PROMOTE_PRODUCT) {
 						$td->appendElement('plaintext', array(), .Labels::getLabel('LBL_Product',$siteLangId) . '<br>', true);
@@ -130,15 +130,15 @@
 			}
 		}
 	}
-	
+
 	echo $tbl->getHtml();
 
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmPromotionSearchPaging') );
 
 	$pagingArr=array('pageCount'=>$pages,'page'=>$page,'callBackJsFunc' => 'goToPromotionSearchPage');
 	$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
-	
-	} else { 
+
+	} else {
 		$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-	} 
-	?> 
+	}
+	?>

@@ -14,7 +14,7 @@ $action = strtolower($action);
 		<div class="logo-dashboard"><a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
 		<div class="js-hamburger hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
 	</div>
-	<div class="sidebar__content custom-scrollbar">
+	<div class="sidebar__content custom-scrollbar" data-simplebar>
 		<nav class="dashboard-menu">
 			<ul>
 				<li class="menu__item">
@@ -47,9 +47,11 @@ $action = strtolower($action);
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reward-points" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reward-points"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Reward_Points",$siteLangId); ?></span></a></div></li>
 				<?php if(FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE',FatUtility::VAR_INT,1)){?>
-				<li class="menu__item <?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','shareEarn'); ?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'buyer' && $action == 'shareearn') ? 'is-active' : ''; ?>">
+					<div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','shareEarn'); ?>">
+						<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use></svg>
+					</i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn",$siteLangId); ?></span></a></div>
+				</li>
 				<?php } ?>
 				<li class="menu__item <?php echo ($controller == 'buyer' && $action == 'offers') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_My_Offers",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer','offers'); ?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers"></use></svg>
@@ -75,12 +77,9 @@ $action = strtolower($action);
 				<li class="menu__item <?php echo ($controller == 'savedproductssearch' && $action == 'listing') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Saved_Searches",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('SavedProductsSearch','listing');?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-saved-searches" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-saved-searches"></use></svg>
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId);?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changepassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Password",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changePassword');?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Password',$siteLangId);?></span></a></div></li>
-				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemail') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Email",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmail');?>">
-				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?></span></a></div></li>
+				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemailpassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Change_Email",$siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmailPassword');?>">
+				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email_Password',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
 			</ul>
 		</nav>

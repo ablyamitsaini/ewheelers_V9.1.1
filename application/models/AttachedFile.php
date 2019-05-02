@@ -55,15 +55,23 @@ class AttachedFile extends MyAppModel
     const FILETYPE_CUSTOM_PRODUCT_IMAGE = 48;
     const FILETYPE_INVOICE_LOGO = 49;
     const FILETYPE_BRAND_COLLECTION_BG_IMAGE = 50;
+    const FILETYPE_BULK_IMAGES = 51;
     const FILETYPE_PRODCAT_IMAGE_PATH = 'category/';
     const FILETYPE_PRODUCT_IMAGE_PATH = 'product/';
     const FILETYPE_BLOG_POST_IMAGE_PATH = 'blog-post/';
+    const FILETYPE_BULK_IMAGES_PATH = 'bulk-images/';
 
     public function __construct($fileId = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $fileId);
         $this->objMainTableRecord->setSensitiveFields(array ());
     }
+
+    public static function getSearchObject() {
+		$srch = new SearchBase(static::DB_TBL, 'ta');
+		return $srch;
+	}
+
 
     public static function getFileTypeArray($langId)
     {
@@ -147,19 +155,19 @@ class AttachedFile extends MyAppModel
         return null;
     }
 
-    public function saveAttachment($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $langId = 0, $screen = 0)
+    public function validateFile( $file, $name, $defaultLangIdForErrors )
     {
-        $defaultLangIdForErrors = ( $langId == 0 ) ? $this->commonLangId : $langId;
-        if(!empty($name) && !empty($fl)) {
+        if( !empty($file) && !empty($name) && file_exists( $file ) ) {
+
             $fileExt = pathinfo($name, PATHINFO_EXTENSION);
-            $fileExt = strtolower($fileExt);
-            if(!in_array($fileExt, applicationConstants::allowedFileExtensions())) {
+
+            if( false === in_array( $fileExt, applicationConstants::allowedFileExtensions() ) ) {
                 $this->error = Labels::getLabel('MSG_INVALID_FILE_EXTENSION', $defaultLangIdForErrors);
                 return false;
             }
 
-            $fileMimeType = mime_content_type($fl);
-            if(!in_array($fileMimeType, applicationConstants::allowedMimeTypes())) {
+            $fileMimeType = mime_content_type($file);
+            if( false === in_array( $fileMimeType, applicationConstants::allowedMimeTypes() ) ) {
                 $this->error = Labels::getLabel('MSG_INVALID_FILE_MIME_TYPE', $defaultLangIdForErrors);
                 return false;
             }
@@ -168,29 +176,26 @@ class AttachedFile extends MyAppModel
             $this->error = Labels::getLabel('MSG_NO_FILE_UPLOADED', $defaultLangIdForErrors);
             return false;
         }
+    }
+
+    public function saveAttachment($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $langId = 0, $screen = 0)
+    {
+        $defaultLangIdForErrors = ( $langId == 0 ) ? $this->commonLangId : $langId;
+
+        if( false === $this->validateFile( $fl, $name, $defaultLangIdForErrors ) ){
+            return false;
+        }
+
         $path = CONF_UPLOADS_PATH;
 
-        /* files path[ */
-        switch($fileType){
-        case self::FILETYPE_PRODCAT_IMAGE:
-            $path .= self::FILETYPE_PRODCAT_IMAGE_PATH;
-            break;
-        case self::FILETYPE_PRODUCT_IMAGE:
-        case self::FILETYPE_CUSTOM_PRODUCT_IMAGE:
-            $path .= self::FILETYPE_PRODUCT_IMAGE_PATH;
-            break;
-        case self::FILETYPE_BLOG_POST_IMAGE:
-            $path .= self::FILETYPE_BLOG_POST_IMAGE_PATH;
-            break;
-        }
-        /* ] */
+        $path = $this->fileLocToSave( $fileType, $path );
 
         /* creation of folder date wise [ */
         $date_wise_path = date('Y') . '/' . date('m') . '/';
         /* ] */
         $path  = $path . $date_wise_path;
 
-        $saveName = time() . '-' . preg_replace('/[^a-zA-Z0-9]/', '', $name);
+        $saveName = time() . '-' .preg_replace('/[^a-zA-Z0-9]/', '', $name) ;
 
         if(!file_exists($path) ) {
             mkdir($path, 0777, true);
@@ -205,12 +210,58 @@ class AttachedFile extends MyAppModel
             return false;
         }
 
+        $fileLoc = $date_wise_path . $saveName;
+
+        return $this->updateFileToDb( $fileType, $recordId, $recordSubid, $fileLoc, $name, $langId, $screen, $displayOrder, $uniqueRecord );
+    }
+
+    public function moveAttachment($filePath, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $langId = 0, $screen = 0)
+    {
+        $defaultLangIdForErrors = ( $langId == 0 ) ? $this->commonLangId : $langId;
+
+        $path = CONF_UPLOADS_PATH;
+        $file = $path . $filePath.'/'.$name;
+
+        if( false === $this->validateFile( $file, $name, $defaultLangIdForErrors ) ){
+            return false;
+        }
+
+        $path = $this->fileLocToSave( $fileType, $path );
+
+        /* creation of folder date wise [ */
+        $date_wise_path = date('Y') . '/' . date('m') . '/';
+        /* ] */
+        $path  = $path . $date_wise_path;
+
+        $saveName = time() . '-' .preg_replace('/[^a-zA-Z0-9]/', '', $name) ;
+
+        if(!file_exists($path) ) {
+            mkdir($path, 0777, true);
+        }
+
+        while (file_exists($path . $saveName)) {
+            $saveName = rand(10, 99) . '-' . $saveName;
+        }
+
+        if ( false === rename( $file, $path . $saveName) ) {
+            $this->error = Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $defaultLangIdForErrors);
+            return false;
+        }
+
+        $fileLoc = $date_wise_path . $saveName;
+
+        return $this->updateFileToDb( $fileType, $recordId, $recordSubid, $fileLoc, $name, $langId, $screen, $displayOrder, $uniqueRecord );
+
+    }
+
+    private function updateFileToDb( $fileType, $recordId, $recordSubid, $fileLoc, $name, $langId, $screen, $displayOrder, $uniqueRecord )
+    {
         $this->assignValues(
             array(
             'afile_type'=>$fileType,
             'afile_record_id'=>$recordId,
             'afile_record_subid'=>$recordSubid,
-            'afile_physical_path'=>$date_wise_path . $saveName,
+            'afile_physical_path'=>$fileLoc,
             'afile_name'=>$name,
             'afile_lang_id' => $langId,
             'afile_screen' => $screen
@@ -249,7 +300,29 @@ class AttachedFile extends MyAppModel
             );
         }
 
-        return $date_wise_path . $saveName;
+        return $fileLoc;
+    }
+
+    public function fileLocToSave( $fileType, $path = '' )
+    {
+        /* files path[ */
+        switch($fileType){
+            case self::FILETYPE_PRODCAT_IMAGE:
+                $path .= self::FILETYPE_PRODCAT_IMAGE_PATH;
+                break;
+            case self::FILETYPE_PRODUCT_IMAGE:
+            case self::FILETYPE_CUSTOM_PRODUCT_IMAGE:
+                $path .= self::FILETYPE_PRODUCT_IMAGE_PATH;
+                break;
+            case self::FILETYPE_BLOG_POST_IMAGE:
+                $path .= self::FILETYPE_BLOG_POST_IMAGE_PATH;
+                break;
+            case self::FILETYPE_BULK_IMAGES:
+                $path .= self::FILETYPE_BULK_IMAGES_PATH;
+                break;
+        }
+        /* ] */
+        return $path;
     }
 
     public function saveImage($fl, $fileType, $recordId, $recordSubid, $name, $displayOrder = 0, $uniqueRecord = false, $lang_id = 0 , $mimeType='',  $screen = 0)
@@ -646,5 +719,20 @@ class AttachedFile extends MyAppModel
         }
         //@todo:: not deleted physical file from the system.
         return true;
+    }
+
+    public function extractZip( $file )
+    {
+        rename( $file, $file.'.zip');
+        $zip = new ZipArchive;
+        $res = $zip->open( $file.'.zip' );
+        if ($res === TRUE) {
+            $zip->extractTo( $file );
+            $zip->close();
+            unlink( $file.'.zip' );
+            return true;
+        } else {
+            return false;
+        }
     }
 }

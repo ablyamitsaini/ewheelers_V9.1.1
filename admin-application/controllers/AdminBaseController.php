@@ -14,9 +14,9 @@ class AdminBaseController extends FatController
     protected $str_invalid_Action;
     protected $str_setup_successful;
     protected $adminLangId;
-    
-    function __construct($action) 
-    { 
+
+    function __construct($action)
+    {
         parent::__construct($action);
 
         $controllerName = get_class($this);
@@ -54,7 +54,7 @@ class AdminBaseController extends FatController
         }
         $this->set("bodyClass", '');
         $this->setCommonValues();
-        
+
     }
 
     /*
@@ -187,7 +187,7 @@ class AdminBaseController extends FatController
         return $link;
     }
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
 
         $nodes = array();
@@ -220,7 +220,7 @@ class AdminBaseController extends FatController
         $this->_template->render(false, false, '_partial/states-list.php');
     }
 
-    protected function getUserSearchForm() 
+    protected function getUserSearchForm()
     {
         $frm = new Form('frmUserSearch');
         $keyword = $frm->addTextBox(Labels::getLabel('LBL_Name_Or_Email', $this->adminLangId), 'keyword', '', array('id'=>'keyword','autocomplete'=>'off'));
@@ -247,7 +247,7 @@ class AdminBaseController extends FatController
         return $frm;
     }
 
-    protected function getUserForm( $user_id = 0 , $userType = 0) 
+    protected function getUserForm( $user_id = 0 , $userType = 0)
     {
         $user_id = FatUtility::int($user_id);
         $userType = FatUtility::int($userType);
@@ -652,5 +652,4 @@ class AdminBaseController extends FatController
         $this->_template->addCss(array('css/1jquery-ui-timepicker-addon.css'), false);
         $this->_template->addJs(array('js/1jquery-ui-timepicker-addon.js'), false);
     }
-
 }

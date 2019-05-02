@@ -116,7 +116,7 @@
         <?php if( $gatewayCount > 0 ){ ?>
         <div class="col-lg-5 col-md-5 col-sm-12 col-xm-12 column">
           <?php if($paymentMethods){ ?>
-          <div class="payment_methods_list scrollbar">
+          <div class="payment_methods_list" data-simplebar>
             <ul id="payment_methods_tab">
                 <?php $count=0; foreach($paymentMethods as $key => $val ){
                     if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) continue;
@@ -146,14 +146,6 @@
       <?php } ?>
     </div>
 </div>
-<script>
-if($(window).width()>1050){
-	$('.scrollbar').enscroll({
-		verticalTrackClass: 'scroll__track',
-		verticalHandleClass: 'scroll__handle'
-	});
-}
-</script>
 <?php if($cartSummary['orderPaymentGatewayCharges']){ ?>
 <script type="text/javascript">
 var containerId = '#tabs-container';

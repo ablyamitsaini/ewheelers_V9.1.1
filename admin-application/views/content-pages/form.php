@@ -14,6 +14,8 @@ $urlFld->setFieldTagAttribute('id',"urlrewrite_custom");
 $urlFld->htmlAfterField = "<small class='text--small'>" . CommonHelper::generateFullUrl('Cms','View',array($cpage_id),CONF_WEBROOT_FRONT_URL).'</small>';
 $urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 
+$pageLayout = $blockFrm->getField('cpage_layout');
+$pageLayout->setFieldTagAttribute('onchange',"showLayout($(this))");
 ?>
 <section class="section">
 	<div class="sectionhead">
@@ -21,7 +23,7 @@ $urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 		<h4><?php echo Labels::getLabel('LBL_Content_Pages_Setup',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">
-		<div class="row">	
+		<div class="row">
 
 
 			<div class="col-sm-12">
@@ -29,17 +31,22 @@ $urlFld->setFieldTagAttribute('onKeyup',"getSlugUrl(this,this.value)");
 				<div class="tabs_nav_container responsive flat">
 					<ul class="tabs_nav">
 						<li><a class="active" href="javascript:void(0)" onclick="addForm(<?php echo $cpage_id ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-						<?php 
-						$inactive = ($cpage_id == 0)?'fat-inactive':'';	
+						<?php
+						$inactive = ($cpage_id == 0)?'fat-inactive':'';
 						foreach($languages as $langId=>$langName){?>
-						<li class="<?php echo $inactive;?>"><a href="javascript:void(0);" 
+						<li class="<?php echo $inactive;?>"><a href="javascript:void(0);"
 							<?php if($cpage_id>0){?> onclick="addLangForm(<?php echo $cpage_id ?>, <?php echo $langId;?>, <?php echo $cpage_layout;?>);" <?php }?>>
 							<?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
 							<?php } ?>
 						</ul>
 						<div class="tabs_panel_wrap">
 							<div class="tabs_panel">
-								<?php echo $blockFrm->getFormHtml(); ?>
+								<div class="row">
+									<div class="col-md-8">
+										<?php echo $blockFrm->getFormHtml(); ?>
+									</div>
+									<div class="col-md-4" id="viewLayout-js"></div>
+								</div>
 							</div>
 						</div>
 					</div>

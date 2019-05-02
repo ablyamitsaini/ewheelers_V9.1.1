@@ -638,9 +638,10 @@ trait CustomCatalogProducts
         $fld = $frm->addRequiredField(Labels::getLabel('LBL_Seller_Product_Title', $this->siteLangId), 'selprod_title');
         $fld->htmlAfterField = "<small class='text--small'>".Labels::getLabel('LBL_This_product_title_will_be_displayed_on_the_site', $this->siteLangId).'</small>';
         $frm->addTextBox(Labels::getLabel('LBL_Any_extra_comment_for_buyer', $this->siteLangId), 'selprod_comments');
+        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $this->siteLangId), 'product_youtube_video');
         //$frm->addHtmlEditor(Labels::getLabel('LBL_Description',$this->siteLangId),'product_description');
         $frm->addTextarea(Labels::getLabel('LBL_Description', $this->siteLangId), 'product_description');
-        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $this->siteLangId), 'product_youtube_video');
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $siteLangId));
         return $frm;
     }
@@ -827,7 +828,7 @@ trait CustomCatalogProducts
 
         $result = array();
         $result['prodcat_id'] = $prodCatId;
-        $str = "<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' rel=".$blockCount." id='categoryblock".$blockCount."' ><div class='box-border box-categories scrollbar'>";
+        $str = "<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' rel=".$blockCount." id='categoryblock".$blockCount."' ><div class='box-border box-categories' data-simplebar>";
         //$result['msg'] = Labels::getLabel('MSG_Loaded_successfully',$this->siteLangId);
         if(!empty($listing)) {
             $str.= "<ul>";
@@ -857,7 +858,7 @@ trait CustomCatalogProducts
 
         $emptyBlock ='';
         for($i = $blockCount+1; $i<=3;$i++ ){
-            $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories scrollbar'></div></div>";
+            $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories ' data-simplebar></div></div>";
         }
 
         $result['structure'] = $str;

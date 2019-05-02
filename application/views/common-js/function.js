@@ -47,7 +47,7 @@ $(document).ready(function () {
 	$(".tabs--flat-js li:first").addClass("is-active").show();
 	$(".tabs-content-js:first").show();
 	$(".tabs--flat-js li").click(function () {
-		$(".tabs--flat-js li").removeClass("is-active");
+		$(this).parent().find("li").removeClass("is-active");
 		$(this).addClass("is-active");
 		$(".tabs-content-js").hide();
 		var activeTab = $(this).find("a").attr("href");
@@ -383,6 +383,8 @@ $(document).ready(function(){
 		var e = document.getElementById(currentId);
 		if(e != undefined){
 			var catName = e.text;
+            $(e).parent().siblings().removeClass('is-active');
+            $(e).parent().addClass('is-active');
 			$('#selected__value-js').html(catName);
 			$('#selected__value-js').closest('form').find('input[name="category"]').val(id);
 		}
