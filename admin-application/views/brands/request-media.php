@@ -1,22 +1,33 @@
 <?php 
 defined('SYSTEM_INIT') or die('Invalid Usage.');
-$brandMediaFrm->setFormTagAttribute('class', 'web_form form_horizontal');
-$brandMediaFrm->developerTags['colClassPrefix'] = 'col-md-';
-$brandMediaFrm->developerTags['fld_default_col'] = 12; 	
-$fld2 = $brandMediaFrm->getField('logo');	
-$fld2->addFieldTagAttribute('class','btn btn--primary btn--sm');
-$idFld = $brandMediaFrm->getField('brand_id');	
+$brandLogoFrm->setFormTagAttribute('class', 'web_form form_horizontal');
+$brandLogoFrm->developerTags['colClassPrefix'] = 'col-md-';
+$brandLogoFrm->developerTags['fld_default_col'] = 12;
+$logoFld = $brandLogoFrm->getField('logo');	
+$logoFld->addFieldTagAttribute('class','btn btn--primary btn--sm');
+$idFld = $brandLogoFrm->getField('brand_id');	
 $idFld->addFieldTagAttribute('id','id-js');
-$langFld = $brandMediaFrm->getField('brand_lang_id');	
-$langFld->addFieldTagAttribute('class','language-js');
+$logoLangFld = $brandLogoFrm->getField('lang_id');	
+$logoLangFld->addFieldTagAttribute('class','logo-language-js');
+$logoPreferredDimensions = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'500*500').'</small>';
+$htmlAfterField = $logoPreferredDimensions; 
+$htmlAfterField .= '<div id="logo-listing"></div>';
+$logoFld->htmlAfterField = $htmlAfterField;
 
-$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimesions',$adminLangId),'192*82').'</small>';
-
-$htmlAfterField = $preferredDimensionsStr; 
+$brandImageFrm->setFormTagAttribute('class', 'web_form form_horizontal');
+$brandImageFrm->developerTags['colClassPrefix'] = 'col-md-';
+$brandImageFrm->developerTags['fld_default_col'] = 12; 	
+$imageFld = $brandImageFrm->getField('image');	
+$imageFld->addFieldTagAttribute('class','btn btn--primary btn--sm');
+$idFld = $brandImageFrm->getField('brand_id');	
+$idFld->addFieldTagAttribute('id','id-js');
+$imageLangFld = $brandImageFrm->getField('lang_id');	
+$imageLangFld->addFieldTagAttribute('class','image-language-js');
+$ImagePreferredDimensions = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'246*246').'<br/>'. Labels::getLabel('LBL_This_image_will_be_displayed_for_homepage_brands_collection',$adminLangId) .'</small>';
+$htmlAfterField = $ImagePreferredDimensions; 
 $htmlAfterField .= '<div id="image-listing"></div>';
-$fld2->htmlAfterField = $htmlAfterField;
+$imageFld->htmlAfterField = $htmlAfterField;
 ?>
-
 <section class="section">
 	<div class="sectionhead">
 
@@ -35,10 +46,16 @@ $fld2->htmlAfterField = $htmlAfterField;
 			<?php } ?>
 			<li><a class="active" href="javascript:void(0)" onclick="brandRequestMediaForm(<?php echo $brand_id ?>);"><?php echo Labels::getLabel('LBL_Media',$adminLangId); ?></a></li>
 		</ul>
-		<div class="tabs_panel_wrap">
-			<div class="tabs_panel">
-				<?php echo $brandMediaFrm->getFormHtml(); ?>			
-			</div>
-		</div>
+        <div class="tabs_panel_wrap">
+            <div class="tabs_panel">
+                <section class="">
+                    <?php echo $brandLogoFrm->getFormHtml(); ?>
+                </section>
+                <section class="">
+                <?php echo $brandImageFrm->getFormHtml(); ?>
+                </section>
+            </div>
+        </div>
+		
 	</div>
 </div>

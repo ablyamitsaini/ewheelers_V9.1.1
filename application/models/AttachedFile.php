@@ -56,6 +56,7 @@ class AttachedFile extends MyAppModel
     const FILETYPE_INVOICE_LOGO = 49;
     const FILETYPE_BRAND_COLLECTION_BG_IMAGE = 50;
     const FILETYPE_BULK_IMAGES = 51;
+    const FILETYPE_BRAND_IMAGE = 52;
     const FILETYPE_PRODCAT_IMAGE_PATH = 'category/';
     const FILETYPE_PRODUCT_IMAGE_PATH = 'product/';
     const FILETYPE_BLOG_POST_IMAGE_PATH = 'blog-post/';

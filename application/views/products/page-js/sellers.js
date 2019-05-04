@@ -24,9 +24,9 @@ $("document").ready(function(){
 					}
 					
 					$('span.cartQuantity').html(ans.total);
-					$('html, body').animate({ scrollTop: 0 }, 'slow');
+					/* $('html, body').animate({ scrollTop: 0 }, 'slow');
 					$('html').toggleClass("cart-is-active");
-					$('.cart').toggleClass("cart-is-active");
+					$('.cart').toggleClass("cart-is-active"); */
 					$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
 					});
 			return false;

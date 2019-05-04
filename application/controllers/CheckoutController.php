@@ -1669,4 +1669,12 @@ class CheckoutController extends MyAppController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Apply', $langId));
         return $frm;
     }
+    
+    function testCheckout()
+    {
+        $obj = new Extrapage();
+        $headerData = $obj->getContentByPageType(Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId);
+        $this->set('headerData', $headerData);
+        $this->_template->render();
+    }
 }

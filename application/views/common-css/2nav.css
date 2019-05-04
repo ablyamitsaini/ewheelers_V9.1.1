@@ -68,7 +68,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	line-height: 1;
-	font-weight: 600;
+	font-weight: 400;
 }
 
 .navigations > li > a:hover {

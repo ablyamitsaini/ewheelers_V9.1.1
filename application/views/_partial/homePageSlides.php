@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <section class="">
-	<div class="container">
+	<div class="">
 		<div class="js-hero-slider hero-slider" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 		<?php foreach($slides as $slide){
 			$desktop_url = '';
@@ -38,7 +38,7 @@
 				}
 			}
 			if( $haveUrl ){ $out .= '<a target="'.$slide['slide_target'].'" href="'.$slideUrl.'">'; }
-			$out .= '<div class="hero-media"><img data-ratio="10:3 (1200x360)" data-src-base="" data-src-base2x="" data-src="' . $mobile_url . $tablet_url  . $desktop_url . '" title="'.$slide['slide_title'].'" src="' . FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP,$siteLangId)),CONF_IMG_CACHE_TIME, '.jpg') . '" alt="'.$slide['slide_title'].'" /></div>';
+			$out .= '<div class="hero-media"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="' . $mobile_url . $tablet_url  . $desktop_url . '" title="'.$slide['slide_title'].'" src="' . FatCache::getCachedUrl(CommonHelper::generateUrl('Image','slide',array($slide['slide_id'], applicationConstants::SCREEN_DESKTOP,$siteLangId)),CONF_IMG_CACHE_TIME, '.jpg') . '" alt="'.$slide['slide_title'].'" /></div>';
 			if( $haveUrl ){ $out .= '</a>'; }
 			$out .= '</div>';
 			echo $out;

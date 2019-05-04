@@ -30,7 +30,6 @@ class BannerController extends MyAppController
         $url  = str_replace('{SITEURL}', CommonHelper::generateFullUrl(), $row['banner_url']);
 
         $userId = 0;
-
         if (UserAuthentication::isUserLogged()) {
             $userId = UserAuthentication::getLoggedUserId();
         }
@@ -86,12 +85,12 @@ class BannerController extends MyAppController
 
     public function HomePageBannerTopLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 1200, 360, $screen);
+        $this->showBanner($bannerId, $langId, 1350, 405, $screen);
     }
 
     public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 600, 338, $screen);
+        $this->showBanner($bannerId, $langId, 1000, 562, $screen);
     }
 
     public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0)

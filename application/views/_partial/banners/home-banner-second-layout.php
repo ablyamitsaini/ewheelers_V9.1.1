@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage');
 
-$bCount = 1; 
+$bCount = 1;
 
 if( $bannerLayout1['blocation_active']){ ?>
  <section class="">
@@ -19,7 +19,7 @@ if( $bannerLayout1['blocation_active']){ ?>
 		$desktop_url = '';
 		$tablet_url = '';
 		$mobile_url = '';
-		
+
 		if( !AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId ) ){
 			continue;
 		}else{
@@ -38,15 +38,15 @@ if( $bannerLayout1['blocation_active']){ ?>
 				}
 			}
 		}
-	
+
 		if($val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
-			Promotion::updateImpressionData($val['banner_record_id']);	
+			Promotion::updateImpressionData($val['banner_record_id']);
 		}/* else{
 			Banner::updateImpressionData($val['banner_id']);
 		} */
 	?>
-	<div class="col-md-6"> 
-        <div class="banner-ppc"><a  target="<?php echo $val['banner_target'];?>" href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" title="<?php echo $val['banner_title'];?>"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>"> </a> </div>
+	<div class="col-md-6">
+        <div class="banner-ppc"><a  target="<?php echo $val['banner_target'];?>" href="<?php echo CommonHelper::generateUrl('Banner','url',array($val['banner_id']));?>" title="<?php echo $val['banner_title'];?>"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner','HomePageAfterFirstLayout',array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP));?>" alt="<?php echo $val['banner_title'];?>"> </a> </div>
     </div>
 <?php $bCount++; } ?>
 	</div></div></section>

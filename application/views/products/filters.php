@@ -40,7 +40,7 @@ array_walk($catCodeArr,function(&$n) {
 <?php } ?>
    <!--Filters[ -->
 	<div class="widgets-head">
-	  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>
+	  <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>
        <a  class="reset-all" id="resetAll"><i class="icn reset-all">
 			<svg class="svg">
 				<use xlink:href="/images/retina/sprite.svg#reset" href="/images/retina/sprite.svg#reset"></use>
@@ -56,7 +56,7 @@ array_walk($catCodeArr,function(&$n) {
 
   <?php
   if( isset( $categoriesArr ) && $categoriesArr ){ ?>
-  <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
+  <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Categories',$siteLangId);?> </div>
  <?php if( !$shopCatFilters ){ ?>
   <div id="accordian" class="cat-accordion toggle-target scrollbar-filters">
 	<ul class="">
@@ -144,7 +144,7 @@ array_walk($catCodeArr,function(&$n) {
 
   <!--Price Filters[ -->
   <?php if( isset($priceArr) && $priceArr ){ ?>
-    <div class="widgets__heading"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
+    <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
 	  <div class="filter-content toggle-target">
 		<div class="prices " id="perform_price">
 			<input type="text" value="<?php echo floor($filterDefaultMinValue); ?>-<?php echo ceil($filterDefaultMaxValue); ?>" name="price_range" id="price_range" />
@@ -176,7 +176,7 @@ array_walk($catCodeArr,function(&$n) {
     <?php if(isset($brandsArr) && $brandsArr){
 	 $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array();
 	?>
-	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
+	<div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
 	<div class="scrollbar-filters" id="scrollbar-filters">
 	<ul class="list-vertical">
 		<?php foreach($brandsArr as $brand){ ?>
@@ -209,7 +209,7 @@ array_walk($catCodeArr,function(&$n) {
 					echo "</ul></div><div class='divider'></div>";
 				}
 				$optionName = ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier'];?>
-				<div class="widgets__heading"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
+				<div class="widgets__heading filter-head-js"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
 				<div>
 				<ul class="list-vertical"><?php
 			}
@@ -229,7 +229,7 @@ array_walk($catCodeArr,function(&$n) {
 	<?php if( isset($conditionsArr) && $conditionsArr ){
 	$conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array();
 	?>
-	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
+	<div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
 	<div>
 		<ul class="list-vertical">
 		<?php foreach($conditionsArr as $condition){ if($condition['selprod_condition']==0) continue; ?>
@@ -243,7 +243,7 @@ array_walk($catCodeArr,function(&$n) {
 
 	<!--Availability Filters[ -->
 	<?php $availability = isset($availability)?$availability:0;?>
-	<div class="widgets__heading"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
+	<div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
 	<div class="selected-filters toggle-target">
 		<ul class="listing--vertical listing--vertical-chcek">
 		<li><label class="checkbox availability" id="availability_1"><input name="out_of_stock" value="1" type="checkbox" <?php if($availability == 1){ echo "checked='true'";}?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
@@ -402,6 +402,21 @@ $to.on("change", function () {
 	/* ] */
 
     updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
+
+    /* if($(window).width()<1025){
+        $('.productFilters-js .widgets__heading').click(function(){
+            if($(this).hasClass('active')){
+              $(this).removeClass('active');
+              $(this).next().slideUp();
+            }
+            else{
+                $(this).addClass('active');
+                $(this).next().slideDown();
+            }
+        });
+
+    } */
+
 });
 
 /*  $(window).load(function(){

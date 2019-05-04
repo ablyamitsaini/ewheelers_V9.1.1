@@ -5,7 +5,13 @@
 <div id="sign-in">
 	<div class="login-wrapper">
 	  <div class="form-side">
-		<div class="heading"><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></div>
+			<div class="section-head  section--head--center">
+						<div class="section__heading">
+							<h2><?php echo Labels::getLabel('LBL_Login',$siteLangId);?></h2>
+						</div>
+								</div>
+
+
 		<?php
 		//$frm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
 		$loginFrm->setFormTagAttribute('class', 'form');
@@ -81,26 +87,35 @@
 
 		<?php if( $showSignUpLink ){ ?>
 		<div class="row">
-			<div class="col-md-12 col-xs-12 text-center"> <a class="links" href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a> </div>
+			<div class="col-md-12 col-xs-12 text-center"> <a class="link" href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?',$siteLangId),FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a> </div>
 		</div>
 		<?php } ?>
-
-	  </div>
 		<?php
 			$facebookLogin  = (FatApp::getConfig('CONF_ENABLE_FACEBOOK_LOGIN', FatUtility::VAR_INT , 0) && FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING , ''))?true:false ;
 			$googleLogin  =(FatApp::getConfig('CONF_ENABLE_GOOGLE_LOGIN', FatUtility::VAR_INT , 0)&& FatApp::getConfig('CONF_GOOGLEPLUS_CLIENT_ID', FatUtility::VAR_STRING , ''))?true:false ; if ($facebookLogin || $googleLogin ){?>
-	  <div class="add-side">
-		<div class="heading"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></div>
+
+<div class="other-option">
+
+
+			<div class="section-head section--head--center">
+						<div class="section__heading">
+							<h2><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></h2>
+						</div>
+								</div>
+
 		<div class="buttons-list">
-            <ul>
-                <?php if ($facebookLogin) { ?>
-                <li><a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn btn--social btn--fb"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/facebook.svg"></i><?php echo Labels::getLabel('LBL_Sign_up_With_Facebook',$siteLangId);?></a></li>
-                <?php } if ($googleLogin ) { ?>
-                <li><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('google')); ?>" class="btn btn--social btn--gp"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/google-plus.svg"></i><?php echo Labels::getLabel('LBL_Sign_up_With_Google',$siteLangId);?></a></li>
-                <?php }?>
-            </ul>
+						<ul>
+								<?php if ($facebookLogin) { ?>
+								<li><a href="javascript:void(0)" onclick="dofacebookInLoginForBuyerpopup()" class="btn btn--social btn--fb"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/facebook.svg"></i></a></li>
+
+								<?php } if ($googleLogin ) { ?>
+								<li><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'socialMediaLogin',array('google')); ?>" class="btn btn--social btn--gp"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/retina/google-plus.svg"></i></a></li>
+								<?php }?>
+						</ul>
 		</div>
-	  </div>
+
+	  </div></div>
+
 	  <?php } ?>
 	</div>
 </div>
