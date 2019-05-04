@@ -26,7 +26,7 @@ class BannersController extends AdminBaseController
     {
         $this->_template->render(false, false);
     }
-    
+
     public function search()
     {
         $this->objPrivilege->canViewBanners();
@@ -63,7 +63,7 @@ class BannersController extends AdminBaseController
     {
         $this->objPrivilege->canViewBanners();
         $bLocationId = FatUtility::int($bLocationId);
-        if(1 > $bLocationId) {
+        if (1 > $bLocationId) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
@@ -106,13 +106,13 @@ class BannersController extends AdminBaseController
         }
 
         $bLocationId = $post['blocation_id'];
-        if(1 > $bLocationId) {
+        if (1 > $bLocationId) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $bannerObj = new Banner();
-        if(!$bannerObj->updateLocationData($post)) {
+        if (!$bannerObj->updateLocationData($post)) {
             Message::addErrorMessage($bannerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -125,7 +125,7 @@ class BannersController extends AdminBaseController
     public function listing($bLocationId)
     {
         $bLocationId = FatUtility::int($bLocationId);
-        if(1 > $bLocationId) {
+        if (1 > $bLocationId) {
             FatUtility::dieJsonError($this->str_invalid_request);
         }
 
@@ -161,7 +161,7 @@ class BannersController extends AdminBaseController
         $post = $searchForm->getFormDataFromArray($data);
 
         $blocation_id = $post['blocation_id'];
-        if(1 > $blocation_id) {
+        if (1 > $blocation_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
@@ -179,7 +179,7 @@ class BannersController extends AdminBaseController
 
         $rs = $srch->getResultSet();
         $records = array();
-        if($rs) {
+        if ($rs) {
             $records = FatApp::getDb()->fetchAll($rs);
         }
 
@@ -195,10 +195,10 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function bannerForm($blocation_id,$banner_id)
+    public function bannerForm($blocation_id, $banner_id)
     {
         $blocation_id = FatUtility::int($blocation_id);
-        if(1 > $blocation_id) {
+        if (1 > $blocation_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
@@ -206,7 +206,7 @@ class BannersController extends AdminBaseController
         $data = array('banner_blocation_id'=>$blocation_id,'banner_id'=>$banner_id);
 
         $banner_id = FatUtility::int($banner_id);
-        if($banner_id > 0) {
+        if ($banner_id > 0) {
             $srch = Banner::getSearchObject($this->adminLangId, false);
             $srch->addCondition('banner_blocation_id', '=', $blocation_id);
             $srch->addCondition('banner_id', '=', $banner_id);
@@ -214,11 +214,11 @@ class BannersController extends AdminBaseController
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $data = array();
-            if($rs) {
+            if ($rs) {
                 $data = FatApp::getDb()->fetch($rs);
             }
         }
-        if($banner_id==0) {
+        if ($banner_id==0) {
             $data['banner_type'] = Banner::TYPE_BANNER;
         }
 
@@ -255,19 +255,19 @@ class BannersController extends AdminBaseController
         }
 
         $newTabLangId = 0;
-        if($banner_id > 0 ) {
+        if ($banner_id > 0) {
             $languages = Language::getAllNames();
-            foreach($languages as $langId =>$langName ){
-                if(!$row = Banner::getAttributesByLangId($langId, $banner_id)) {
+            foreach ($languages as $langId =>$langName) {
+                if (!$row = Banner::getAttributesByLangId($langId, $banner_id)) {
                     $newTabLangId = $langId;
                     break;
                 }
             }
-        }else{
+        } else {
             $banner_id = $record->getMainTableRecordId();
             $newTabLangId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
         }
-        if($newTabLangId == 0 && !$this->isMediaUploaded($banner_id)) {
+        if ($newTabLangId == 0 && !$this->isMediaUploaded($banner_id)) {
             $this->set('openMediaForm', true);
         }
         $this->set('msg', Labels::getLabel('MSG_Setup_Successful', $this->adminLangId));
@@ -277,20 +277,20 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function bannerLangForm($blocation_id,$banner_id = 0,$lang_id = 0)
+    public function bannerLangForm($blocation_id, $banner_id = 0, $lang_id = 0)
     {
         $this->objPrivilege->canViewBanners();
 
         $blocation_id = FatUtility::int($blocation_id);
         $banner_id = FatUtility::int($banner_id);
 
-        if(1 > $blocation_id || 1 > $banner_id) {
+        if (1 > $blocation_id || 1 > $banner_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $lang_id = FatUtility::int($lang_id);
 
-        if($banner_id == 0 || $lang_id == 0) {
+        if ($banner_id == 0 || $lang_id == 0) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
@@ -298,7 +298,7 @@ class BannersController extends AdminBaseController
 
         $langData = Banner::getAttributesByLangId($lang_id, $banner_id);
 
-        if($langData) {
+        if ($langData) {
             $bannerLangFrm->fill($langData);
         }
 
@@ -311,19 +311,19 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function bannerLocLangForm($blocationId,$lang_id = 0)
+    public function bannerLocLangForm($blocationId, $lang_id = 0)
     {
         $this->objPrivilege->canViewBanners();
 
         $blocationId = FatUtility::int($blocationId);
 
-        if(1 > $blocationId ) {
+        if (1 > $blocationId) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $lang_id = FatUtility::int($lang_id);
 
-        if($lang_id == 0) {
+        if ($lang_id == 0) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
@@ -331,7 +331,7 @@ class BannersController extends AdminBaseController
 
         $langData = BannerLocation::getAttributesByLangId($lang_id, $blocationId);
 
-        if($langData) {
+        if ($langData) {
             $bannerLocLangFrm->fill($langData);
         }
 
@@ -352,7 +352,7 @@ class BannersController extends AdminBaseController
         $banner_id = $post['banner_id'];
         $lang_id = $post['lang_id'];
 
-        if($banner_id == 0 || $lang_id == 0) {
+        if ($banner_id == 0 || $lang_id == 0) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -368,21 +368,21 @@ class BannersController extends AdminBaseController
         );
 
         $bannerObj = new Banner($banner_id);
-        if(!$bannerObj->updateLangData($lang_id, $data)) {
+        if (!$bannerObj->updateLangData($lang_id, $data)) {
             Message::addErrorMessage($taxObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $newTabLangId = 0;
         $languages = Language::getAllNames();
-        foreach($languages as $langId =>$langName ){
-            if(!$row = Banner::getAttributesByLangId($langId, $banner_id)) {
+        foreach ($languages as $langId =>$langName) {
+            if (!$row = Banner::getAttributesByLangId($langId, $banner_id)) {
                 $newTabLangId = $langId;
                 break;
             }
         }
 
-        if($newTabLangId == 0 && !$this->isMediaUploaded($banner_id)) {
+        if ($newTabLangId == 0 && !$this->isMediaUploaded($banner_id)) {
             $this->set('openMediaForm', true);
         }
         $this->set('msg', Labels::getLabel('MSG_Setup_Successful', $this->adminLangId));
@@ -401,7 +401,7 @@ class BannersController extends AdminBaseController
 
         $lang_id = $post['lang_id'];
 
-        if($lang_id == 0) {
+        if ($lang_id == 0) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -417,15 +417,15 @@ class BannersController extends AdminBaseController
         );
 
         $bannerObj = new BannerLocation($blocation_id);
-        if(!$bannerObj->updateLangData($lang_id, $data)) {
+        if (!$bannerObj->updateLangData($lang_id, $data)) {
             Message::addErrorMessage($bannerObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $newTabLangId = 0;
         $languages = Language::getAllNames();
-        foreach($languages as $langId =>$langName ){
-            if(!$row = BannerLocation::getAttributesByLangId($langId, $blocation_id)) {
+        foreach ($languages as $langId =>$langName) {
+            if (!$row = BannerLocation::getAttributesByLangId($langId, $blocation_id)) {
                 $newTabLangId = $langId;
                 break;
             }
@@ -437,23 +437,23 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function mediaForm($blocation_id,$banner_id)
+    public function mediaForm($blocation_id, $banner_id)
     {
         $blocation_id = FatUtility::int($blocation_id);
         $banner_id = FatUtility::int($banner_id);
 
-        if(1 > $blocation_id || 1 > $banner_id) {
+        if (1 > $blocation_id || 1 > $banner_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $bannerDetail = Banner::getAttributesById($banner_id);
-        if(!false == $bannerDetail && ($bannerDetail['banner_active'] != applicationConstants::ACTIVE)) {
+        if (!false == $bannerDetail && ($bannerDetail['banner_active'] != applicationConstants::ACTIVE)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request_Or_Inactive_Record', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $mediaFrm = $this->getMediaForm($blocation_id, $banner_id);
-        if(!false == $bannerDetail ) {
+        if (!false == $bannerDetail) {
             $bannerImgArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $banner_id, 0, -1);
             $this->set('bannerImgArr', $bannerImgArr);
         }
@@ -474,22 +474,22 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function images($blocation_id,$banner_id,$lang_id=0,$screen=0)
+    public function images($blocation_id, $banner_id, $lang_id=0, $screen=0)
     {
         $blocation_id = FatUtility::int($blocation_id);
         $banner_id = FatUtility::int($banner_id);
 
-        if(1 > $blocation_id || 1 > $banner_id) {
+        if (1 > $blocation_id || 1 > $banner_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $bannerDetail = Banner::getAttributesById($banner_id);
-        if(!false == $bannerDetail && ($bannerDetail['banner_active'] != applicationConstants::ACTIVE)) {
+        if (!false == $bannerDetail && ($bannerDetail['banner_active'] != applicationConstants::ACTIVE)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request_Or_Inactive_Record', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if(!false == $bannerDetail ) {
+        if (!false == $bannerDetail) {
             $bannerImgArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $banner_id, 0, $lang_id, false, $screen);
             $this->set('images', $bannerImgArr);
         }
@@ -507,12 +507,12 @@ class BannersController extends AdminBaseController
 
         $banner_id = FatUtility::int($banner_id);
 
-        if(1 > $banner_id) {
+        if (1 > $banner_id) {
             FatUtility::dieJsonError($this->str_invalid_request);
         }
 
         $post = FatApp::getPostedData();
-        if(empty($post) ) {
+        if (empty($post)) {
             FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->adminLangId));
         }
         $blocation_id = FatUtility::int($post['blocation_id']);
@@ -542,9 +542,17 @@ class BannersController extends AdminBaseController
 
         $fileHandlerObj = new AttachedFile();
 
-        if(!$res = $fileHandlerObj->saveImage(
-            $_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BANNER, $banner_id, 0,
-            $_FILES['file']['name'], -1, true, $lang_id, '', $banner_screen
+        if (!$res = $fileHandlerObj->saveImage(
+            $_FILES['file']['tmp_name'],
+            AttachedFile::FILETYPE_BANNER,
+            $banner_id,
+            0,
+            $_FILES['file']['name'],
+            -1,
+            true,
+            $lang_id,
+            '',
+            $banner_screen
         )
         ) {
             FatUtility::dieJsonError($fileHandlerObj->getError());
@@ -557,17 +565,17 @@ class BannersController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeBanner($banner_id,$lang_id,$screen)
+    public function removeBanner($banner_id, $lang_id, $screen)
     {
         $banner_id = FatUtility::int($banner_id);
         $lang_id = FatUtility::int($lang_id);
-        if(1 > $banner_id) {
+        if (1 > $banner_id) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $fileHandlerObj = new AttachedFile();
-        if(!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_BANNER, $banner_id, 0, 0, $lang_id, $screen)) {
+        if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_BANNER, $banner_id, 0, 0, $lang_id, $screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -580,7 +588,7 @@ class BannersController extends AdminBaseController
     {
         $this->objPrivilege->canEditBanners();
         $banner_id = FatApp::getPostedData('id', FatUtility::VAR_INT, 0);
-        if($banner_id < 1) {
+        if ($banner_id < 1) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -591,7 +599,7 @@ class BannersController extends AdminBaseController
         } */
 
         $bannerObj = new Banner($banner_id);
-        if(!$bannerObj->deleteRecord(true)) {
+        if (!$bannerObj->deleteRecord(true)) {
             Message::addErrorMessage($bannerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -600,7 +608,7 @@ class BannersController extends AdminBaseController
 
     private function isMediaUploaded($bannerId)
     {
-        if($attachment = AttachedFile::getAttachment(AttachedFile::FILETYPE_BANNER, $bannerId, 0)) {
+        if ($attachment = AttachedFile::getAttachment(AttachedFile::FILETYPE_BANNER, $bannerId, 0)) {
             return true;
         }
         return false;
@@ -618,7 +626,7 @@ class BannersController extends AdminBaseController
 
         $data = array();
 
-        if($rs) {
+        if ($rs) {
             $data = FatApp::getDb()->fetch($rs);
         }
 
@@ -681,7 +689,7 @@ class BannersController extends AdminBaseController
         return $frm;
     }
 
-    public function getBannerLangForm($blocation_id,$banner_id,$lang_id)
+    public function getBannerLangForm($blocation_id, $banner_id, $lang_id)
     {
         $this->objPrivilege->canViewBanners();
         $frm = new Form('frmBannerLang');
@@ -693,7 +701,7 @@ class BannersController extends AdminBaseController
         return $frm;
     }
 
-    public function getBannerLocLangForm($blocation_id,$lang_id)
+    public function getBannerLocLangForm($blocation_id, $lang_id)
     {
         $this->objPrivilege->canViewBanners();
         $frm = new Form('frmBannerLocLang');
@@ -709,22 +717,22 @@ class BannersController extends AdminBaseController
     {
         $this->objPrivilege->canEditBanners();
         $blocationId = FatApp::getPostedData('blocationId', FatUtility::VAR_INT, 0);
-        if(0 >= $blocationId ) {
+        if (0 >= $blocationId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $data = BannerLocation::getAttributesById($blocationId, array('blocation_id', 'blocation_active'));
 
-        if($data == false ) {
+        if ($data == false) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $status = ( $data['blocation_active'] == applicationConstants::ACTIVE ) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+        $status = ($data['blocation_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $obj = new BannerLocation($blocationId);
-        if (!$obj->changeStatus($status) ) {
+        if (!$obj->changeStatus($status)) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -736,22 +744,22 @@ class BannersController extends AdminBaseController
     {
         $this->objPrivilege->canEditBanners();
         $bannerId = FatApp::getPostedData('bannerId', FatUtility::VAR_INT, 0);
-        if(0 >= $bannerId ) {
+        if (0 >= $bannerId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $data = Banner::getAttributesById($bannerId, array('banner_id', 'banner_active'));
 
-        if($data == false ) {
+        if ($data == false) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $status = ( $data['banner_active'] == applicationConstants::ACTIVE ) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+        $status = ($data['banner_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $obj = new Banner($bannerId);
-        if (!$obj->changeStatus($status) ) {
+        if (!$obj->changeStatus($status)) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -760,7 +768,7 @@ class BannersController extends AdminBaseController
     }
 
 
-    private function getMediaForm($blocation_id, $banner_id = 0 )
+    private function getMediaForm($blocation_id, $banner_id = 0)
     {
         $frm = new Form('frmBannerMedia');
         $frm->addHiddenField('', 'banner_id', $banner_id);
@@ -786,13 +794,12 @@ class BannersController extends AdminBaseController
 
     public function getBannerLocationDimensions($bannerLocationId, $deviceType)
     {
-
         $srch = new BannerSearch($this->adminLangId, false);
         $srch->joinLocations();
         $srch->joinLocationDimension($deviceType);
         $srch->addMultipleFields(array('blocation_banner_width','blocation_banner_height'));
-        $srch->addCondition('bldimension_blocation_id','=',$bannerLocationId);
-        $srch->addCondition('bldimension_device_type','=',$deviceType);
+        $srch->addCondition('bldimension_blocation_id', '=', $bannerLocationId);
+        $srch->addCondition('bldimension_device_type', '=', $deviceType);
         $rs = $srch->getResultSet();
         $bannerDimensions = FatApp::getDb()->fetch($rs);
         $this->set('bannerWidth', $bannerDimensions['blocation_banner_width']);

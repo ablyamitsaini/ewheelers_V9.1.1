@@ -212,7 +212,7 @@ class BrandsController extends AdminBaseController {
 		/* ] */
 		$email = new EmailHandler();
 		if($post['brand_status']!=Brand::BRAND_REQUEST_PENDING){
-			if(!$email->SendBrandRequestStatusChangeNotification($this->adminLangId,$brandData)){
+			if(!$email->sendBrandRequestStatusChangeNotification($this->adminLangId,$brandData)){
 				Message::addErrorMessage(Labels::getLabel('LBL_Email_Could_Not_Be_Sent',$this->adminLangId));
 				FatUtility::dieWithError( Message::getHtml() );
 			}

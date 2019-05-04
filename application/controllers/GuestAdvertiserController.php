@@ -1,16 +1,15 @@
 <?php
 class GuestAdvertiserController extends MyAppController
 {
-
-    public function __construct($action) 
+    public function __construct($action)
     {
         parent::__construct($action);
         $this->_template->addCss('css/seller.css');
     }
 
-    function account()
+    public function account()
     {
-        if (UserAuthentication::isUserLogged() && ( User::isAdvertiser() || User::isSigningUpAdvertiser() )) {
+        if (UserAuthentication::isUserLogged() && (User::isAdvertiser() || User::isSigningUpAdvertiser())) {
             FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
         }
         if (UserAuthentication::isUserLogged()) {
@@ -27,7 +26,7 @@ class GuestAdvertiserController extends MyAppController
         $this->_template->render();
     }
 
-    function form()
+    public function form()
     {
         if (UserAuthentication::isUserLogged()) {
             Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
@@ -35,17 +34,15 @@ class GuestAdvertiserController extends MyAppController
         }
 
         $userId = $this->getRegisteredAdvertiserId();
-        if($userId > 0) {
+        if ($userId > 0) {
             $this->companyDetailsForm($userId);
-        }
-        else
-        {
+        } else {
             $cPageSrch = ContentPage::getSearchObject($this->siteLangId);
             $cPageSrch->addCondition('cpage_id', '=', FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE', FatUtility::VAR_INT, 0));
             $cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
-            if(!empty($cpage) && is_array($cpage)) {
+            if (!empty($cpage) && is_array($cpage)) {
                 $termsAndConditionsLinkHref = CommonHelper::generateUrl('Cms', 'view', array($cpage['cpage_id']));
-            }else{
+            } else {
                 $termsAndConditionsLinkHref = 'javascript:void(0)';
             }
 
@@ -59,7 +56,6 @@ class GuestAdvertiserController extends MyAppController
 
     public function companyDetailsForm()
     {
-
         $frm = $this->getAdvertiserRegistrationForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if ($post == false) {
@@ -90,12 +86,12 @@ class GuestAdvertiserController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(!CommonHelper::validateUsername($post['user_username']) ) {
+        if (!CommonHelper::validateUsername($post['user_username'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(!CommonHelper::validatePassword($post['user_password']) ) {
+        if (!CommonHelper::validatePassword($post['user_password'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -145,23 +141,23 @@ class GuestAdvertiserController extends MyAppController
 
 
 
-        if(FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
-            if(!$userObj->notifyAdminRegistration($post, $this->siteLangId)) {
+        if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
+            if (!$userObj->notifyAdminRegistration($post, $this->siteLangId)) {
                 Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                 $db->rollbackTransaction();
                 FatUtility::dieJsonError(Message::getHtml());
             }
         }
 
-        if(FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION', FatUtility::VAR_INT, 1)) {
-            if(!$userObj->userEmailVerification($userObj, $post, $this->siteLangId)) {
+        if (FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION', FatUtility::VAR_INT, 1)) {
+            if (!$userObj->userEmailVerification($userObj, $post, $this->siteLangId)) {
                 Message::addErrorMessage(Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                 $db->rollbackTransaction();
                 FatUtility::dieJsonError(Message::getHtml());
             }
-        }else{
-            if(FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1)) {
-                if(!$userObj->userWelcomeEmailRegistration($userObj, $post, $this->siteLangId)) {
+        } else {
+            if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1)) {
+                if (!$userObj->userWelcomeEmailRegistration($userObj, $post, $this->siteLangId)) {
                     Message::addErrorMessage(Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                     $db->rollbackTransaction();
                     FatUtility::dieJsonError(Message::getHtml());
@@ -170,9 +166,9 @@ class GuestAdvertiserController extends MyAppController
         }
 
         $db->commitTransaction();
-        if($verify) {
+        if ($verify) {
             $this->set('msg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP_VERIFIED", $this->siteLangId));
-        }else{
+        } else {
             $this->set('msg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP", $this->siteLangId));
         }
 
@@ -180,10 +176,9 @@ class GuestAdvertiserController extends MyAppController
         $this->set('userId', $userObj->getMainTableRecordId());
 
         $this->_template->render(false, false, 'json-success.php');
-
     }
 
-    /* 	public function setupPasswordForm(){
+    /*     public function setupPasswordForm(){
     $userId = $this->getRegisteredAdvertiserId();
 
     if (UserAuthentication::isUserLogged()) {
@@ -272,7 +267,7 @@ class GuestAdvertiserController extends MyAppController
     {
         $userId = FatUtility::int($userId);
 
-        if(!$this->isRegisteredSupplierId($userId)) {
+        if (!$this->isRegisteredSupplierId($userId)) {
             Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -285,14 +280,14 @@ class GuestAdvertiserController extends MyAppController
         $userObj = new User($userId);
         $userdata = $userObj->getUserInfo(array('credential_active','credential_verified'), false, false);
 
-        if(false == $userdata) {
+        if (false == $userdata) {
             Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(/* $userdata['credential_active'] == applicationConstants::ACTIVE &&  */$userdata['credential_verified'] == applicationConstants::YES) {
+        if (/* $userdata['credential_active'] == applicationConstants::ACTIVE &&  */$userdata['credential_verified'] == applicationConstants::YES) {
             $success_message = Labels::getLabel('MSG_SUCCESS_USER_SIGNUP_VERIFIED', $this->siteLangId);
-        }else{
+        } else {
             $success_message = Labels::getLabel('MSG_SUCCESS_USER_SIGNUP', $this->siteLangId);
         }
 
@@ -304,7 +299,7 @@ class GuestAdvertiserController extends MyAppController
 
     private function getRegisteredAdvertiserId()
     {
-        if(!isset($_SESSION['registered_supplier']['id'])) {
+        if (!isset($_SESSION['registered_supplier']['id'])) {
             return false;
         }
         return $_SESSION['registered_supplier']['id'];
@@ -312,12 +307,12 @@ class GuestAdvertiserController extends MyAppController
 
     private function isRegisteredSupplierId($userId)
     {
-        if(!isset($_SESSION['registered_supplier'])) {
+        if (!isset($_SESSION['registered_supplier'])) {
             return false;
         }
 
         $userId = FatUtility::int($userId);
-        if(1 > $userId || $userId != $_SESSION['registered_supplier']['id']) {
+        if (1 > $userId || $userId != $_SESSION['registered_supplier']['id']) {
             return false;
         }
         return true;

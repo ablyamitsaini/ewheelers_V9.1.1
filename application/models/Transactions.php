@@ -41,7 +41,7 @@ class Transactions extends MyAppModel
     public static function getStatusArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId == 0) {
+        if ($langId == 0) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', CommonHelper::getLangId()), E_USER_ERROR);
         }
         $arr=array(
@@ -54,7 +54,7 @@ class Transactions extends MyAppModel
     public static function getWithdrawlStatusArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId == 0) {
+        if ($langId == 0) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
         }
         $arr=array(
@@ -69,7 +69,7 @@ class Transactions extends MyAppModel
     public static function getCreditDebitTypeArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId == 0) {
+        if ($langId == 0) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
         }
 
@@ -80,19 +80,19 @@ class Transactions extends MyAppModel
         return $arr;
     }
 
-    public function getAttributesBywithdrawlId($withdrawalId,$attr = null)
+    public function getAttributesBywithdrawlId($withdrawalId, $attr = null)
     {
         $withdrawalId = FatUtility::int($withdrawalId);
-        if(1 > $withdrawalId) {
+        if (1 > $withdrawalId) {
             trigger_error(Labels::getLabel('MSG_INVALID_REQUEST', $this->commonLangId), E_USER_ERROR);
             return false;
         }
 
         $srch = static::getSearchObject();
-        if (null != $attr ) {
+        if (null != $attr) {
             if (is_array($attr)) {
                 $srch->addMultipleFields($attr);
-            }elseif (is_string($attr)) {
+            } elseif (is_string($attr)) {
                 $srch->addFld($attr);
             }
         }
@@ -102,45 +102,45 @@ class Transactions extends MyAppModel
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
 
-        if(!empty($row)) {
+        if (!empty($row)) {
             return $row;
         }
 
         return false;
     }
 
-    public function getAttributesWithUserInfo($userId = 0,$attr = null)
+    public function getAttributesWithUserInfo($userId = 0, $attr = null)
     {
         $userId = FatUtility::int($userId);
         $srch = static::getSearchObject();
         $srch->joinTable(User::DB_TBL, 'LEFT OUTER JOIN', 'u.user_id = utxn.utxn_user_id', 'u');
         $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'c.credential_user_id = u.user_id', 'c');
 
-        if (null != $attr ) {
+        if (null != $attr) {
             if (is_array($attr)) {
                 $srch->addMultipleFields($attr);
-            }elseif (is_string($attr)) {
+            } elseif (is_string($attr)) {
                 $srch->addFld($attr);
             }
         }
 
-        if($this->mainTableRecordId > 0 ) {
+        if ($this->mainTableRecordId > 0) {
             $srch->addCondition('utxn.utxn_id', '=', $this->mainTableRecordId);
         }
 
-        if($userId > 0 ) {
+        if ($userId > 0) {
             $srch->addCondition('utxn.utxn_user_id', '=', $userId);
         }
 
         $rs = $srch->getResultSet();
 
-        if($this->mainTableRecordId > 0 ) {
+        if ($this->mainTableRecordId > 0) {
             $row = FatApp::getDb()->fetch($rs);
-        }else{
+        } else {
             $row = FatApp::getDb()->fetchAll($rs, 'utxn_id');
         }
 
-        if(!empty($row)) {
+        if (!empty($row)) {
             return $row;
         }
 
@@ -151,7 +151,7 @@ class Transactions extends MyAppModel
     {
         $userId = FatUtility::int($data['utxn_user_id']);
 
-        if($userId < 1) {
+        if ($userId < 1) {
             trigger_error(Labels::getLabel('MSG_INVALID_REQUEST', $this->commonLangId), E_USER_ERROR);
             return false;
         }
@@ -168,11 +168,11 @@ class Transactions extends MyAppModel
         $userId = FatUtility::int($userId);
         $srch = static::getSearchObject();
 
-        if($userId > 0) {
+        if ($userId > 0) {
             $srch->addCondition('utxn.utxn_user_id', '=', $userId);
         }
 
-        if( !empty($date) ){
+        if (!empty($date)) {
             $srch->addCondition('mysql_func_DATE(utxn.utxn_date)', '=', $date, 'AND', true);
         }
 
@@ -182,35 +182,35 @@ class Transactions extends MyAppModel
         $srch->addCondition('utxn_status', '=', applicationConstants::ACTIVE);
         $rs = $srch->getResultSet();
 
-        if ($row = FatApp::getDb()->fetch($rs) ) {
+        if ($row = FatApp::getDb()->fetch($rs)) {
             return $row;
         }
 
         return array('total_earned'=>0,'total_used'=>0);
     }
 
-    static function formatTransactionNumber($txnId)
+    public static function formatTransactionNumber($txnId)
     {
         $newValue = str_pad($txnId, 7, '0', STR_PAD_LEFT);
         $newValue = "TN"."-".$newValue;
         return $newValue;
     }
 
-    static function formatTransactionComments($txnComments)
+    public static function formatTransactionComments($txnComments)
     {
         $strComments = $txnComments;
         $strComments = preg_replace('/<\/?a[^>]*>/', '', $strComments);
         return $strComments;
     }
 
-    public static function getUserTransactionsObj( $userId )
+    public static function getUserTransactionsObj($userId)
     {
         $balSrch = static::getSearchObject();
         $balSrch->doNotCalculateRecords();
         $balSrch->doNotLimitRecords();
         $balSrch->addMultipleFields(array('utxn.*',"utxn_credit - utxn_debit as bal"));
         $balSrch->addCondition('utxn_user_id', '=', $userId);
-        $balSrch->addCondition('utxn_status', '=',  applicationConstants::ACTIVE);
+        $balSrch->addCondition('utxn_status', '=', applicationConstants::ACTIVE);
         $qryUserPointsBalance = $balSrch->getQuery();
 
         $srch = static::getSearchObject();

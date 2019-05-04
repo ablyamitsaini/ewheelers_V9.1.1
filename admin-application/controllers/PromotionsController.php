@@ -383,7 +383,7 @@ class PromotionsController extends AdminBaseController
         $promotionDetails = Promotion::getAttributesById($promotionId);
         $currentApprovalStatus  = $promotionDetails['promotion_approved'];
         if($oldApprovalStatus == applicationConstants::INACTIVE && $currentApprovalStatus == applicationConstants::ACTIVE ) {
-            EmailHandler::SendPromotionStatusChangeNotification($this->adminLangId, $userId, $promotionDetails);
+            EmailHandler::sendPromotionStatusChangeNotification($this->adminLangId, $userId, $promotionDetails);
         }
 
         $this->set('promotionId', $promotionId);

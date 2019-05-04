@@ -5,7 +5,7 @@ class AffiliateBaseController extends LoggedUserController
     {
         parent::__construct($action);
         if (!User::isAffiliate()) {
-            if(FatUtility::isAjaxCall() ) {
+            if (FatUtility::isAjaxCall()) {
                 Message::addErrorMessage(Labels::getLabel("LBL_Unauthorised_access", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }

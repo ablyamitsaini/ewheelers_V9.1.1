@@ -3,67 +3,67 @@
 require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/stripe/init.php';
 class StripePayController extends PaymentController
 {
-    
-    private 
-    $keyName="Stripe",
-    $error = false,
-    $paymentSettings = false,
-    $currencyCode = 'usd';
-    
+    private $keyName="Stripe";
+
+    private $error = false;
+
+    private $paymentSettings = false;
+
+    private $currencyCode = 'usd';
+
     public function charge($orderId)
     {
-        
-        if(empty(trim($orderId)) ) {
+        if (empty(trim($orderId))) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
+
         $this->paymentSettings = $this->getPaymentSettings();
         $stripe = array(
         'secret_key'      => $this->paymentSettings['privateKey'],
         'publishable_key' => $this->paymentSettings['publishableKey']
         );
         $this->set('stripe', $stripe);
-        
-        if(!isset($this->paymentSettings['privateKey']) && !isset($this->paymentSettings['publishableKey'])) {
+
+        if (!isset($this->paymentSettings['privateKey']) && !isset($this->paymentSettings['publishableKey'])) {
             Message::addErrorMessage(Labels::getLabel('STRIPE_INVALID_PAYMENT_GATEWAY_SETUP_ERROR', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
-        if(strlen(trim($this->paymentSettings['privateKey'])) > 0 && strlen(trim($this->paymentSettings['publishableKey'])) > 0 ) {
-            if(strpos($this->paymentSettings['privateKey'], 'test') !== false || strpos($this->paymentSettings['publishableKey'], 'test') !== false ) { 
+
+        if (strlen(trim($this->paymentSettings['privateKey'])) > 0 && strlen(trim($this->paymentSettings['publishableKey'])) > 0) {
+            if (strpos($this->paymentSettings['privateKey'], 'test') !== false || strpos($this->paymentSettings['publishableKey'], 'test') !== false) {
             }
             \Stripe\Stripe::setApiKey($stripe['secret_key']);
         } else {
             $this->error = Labels::getLabel('STRIPE_INVALID_PAYMENT_GATEWAY_SETUP_ERROR', $this->siteLangId);
         }
-        
+
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $payableAmount = $this->formatPayableAmount($paymentAmount);
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
-        
-        if(!$orderInfo['id'] ) {
+
+        if (!$orderInfo['id']) {
             FatUtility::exitWithErrorCode(404);
-        } else if ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $this->currencyCode = strtolower($orderInfo["order_currency_code"]);
             $checkPayment = $this->doPayment($payableAmount, $orderInfo);
             $frm=$this->getPaymentForm($orderId);
             $this->set('frm', $frm);
-            if($checkPayment) {
+            if ($checkPayment) {
                 $this->set('success', true);
             }
         } else {
             $this->error = Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId);
         }
-        $this->set('paymentAmount',  $paymentAmount);
+        $this->set('paymentAmount', $paymentAmount);
         $this->set('orderInfo', $orderInfo);
-        if($this->error) {
+        if ($this->error) {
             $this->set('error', $this->error);
         }
-        
+
         $cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
-        if($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE ) {
+        if ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
             $cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
         }
         $this->set('cancelBtnUrl', $cancelBtnUrl);
@@ -71,31 +71,32 @@ class StripePayController extends PaymentController
         $this->_template->addCss('css/payment.css');
         $this->_template->render(true, false);
     }
-    
+
     public function checkCardType()
     {
-        $post = FatApp::getPostedData();        
-        $res=CommonHelper::validate_cc_number($post['cc']);        
-        echo json_encode($res); exit;
+        $post = FatApp::getPostedData();
+        $res=CommonHelper::validate_cc_number($post['cc']);
+        echo json_encode($res);
+        exit;
     }
-    
+
     private function formatPayableAmount($amount = null)
     {
-        if($amount == null) { return false; 
+        if ($amount == null) {
+            return false;
         }
         $amount = number_format($amount, 2, '.', '');
         return $amount*100;
     }
-    
+
     private function getPaymentSettings()
     {
         $pmObj=new PaymentSettings($this->keyName);
         return $pmObj->getPaymentSettings();
     }
-    
+
     private function getPaymentForm($orderId)
     {
-        
         $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('StripePay', 'charge', array($orderId)), 'class' =>"form form--normal"));
         $frm->addRequiredField(Labels::getLabel('LBL_ENTER_CREDIT_CARD_NUMBER', $this->siteLangId), 'cc_number');
         $frm->addRequiredField(Labels::getLabel('LBL_CARD_HOLDER_NAME', $this->siteLangId), 'cc_owner');
@@ -110,16 +111,16 @@ class StripePayController extends PaymentController
         $frm->addPasswordField(Labels::getLabel('LBL_CVV_SECURITY_CODE', $this->siteLangId), 'cc_cvv')->requirements()->setRequired();
         /* $frm->addCheckBox(Labels::getLabel('LBL_SAVE_THIS_CARD_FOR_FASTER_CHECKOUT',$this->siteLangId), 'cc_save_card','1'); */
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
-        
+
         return $frm;
     }
-    
+
     private function doPayment($payment_amount = null, $orderInfo = null)
     {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         $this->paymentSettings=$this->getPaymentSettings();
-        if($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null ) {
+        if ($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null) {
             return false;
         }
         $checkPayment = false;
@@ -132,10 +133,10 @@ class StripePayController extends PaymentController
                     'secret_key'      => $this->paymentSettings['privateKey'],
                     'publishable_key' => $this->paymentSettings['publishableKey']
                     );
-                    if(!empty(trim($this->paymentSettings['privateKey'])) && !empty(trim($this->paymentSettings['publishableKey'])) ) {
+                    if (!empty(trim($this->paymentSettings['privateKey'])) && !empty(trim($this->paymentSettings['publishableKey']))) {
                         \Stripe\Stripe::setApiKey($stripe['secret_key']);
                     }
-                    
+
                     $customer = \Stripe\Customer::create(
                         array(
                           "email" => $orderInfo['customer_email'],
@@ -151,9 +152,9 @@ class StripePayController extends PaymentController
                         )
                     );
                     $charge = $charge->__toArray();
-                    
-                    if(isset($charge['status'])) {
-                        if(strtolower($charge['status']) == 'succeeded') {
+
+                    if (isset($charge['status'])) {
+                        if (strtolower($charge['status']) == 'succeeded') {
                             $message = '';
                             $message .= 'Id: '.(string)$charge['id']. "&";
                             $message .= 'Object: '.(string)$charge['object']. "&";
@@ -185,7 +186,7 @@ class StripePayController extends PaymentController
                             /* End Recording Payment in DB */
                             $checkPayment = true;
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderInfo['id'])));
-                        }else{
+                        } else {
                             $orderPaymentObj->addOrderPaymentComments($message);
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
                         }
@@ -197,5 +198,4 @@ class StripePayController extends PaymentController
         }
         return $checkPayment;
     }
-    
 }

@@ -2,10 +2,10 @@
 
 class NotificationsController extends MyAppController
 {
-    public function __construct($action) 
+    public function __construct($action)
     {
         $ajaxCallArray = array();
-        if(!FatUtility::isAjaxCall() && in_array($action, $ajaxCallArray)) {
+        if (!FatUtility::isAjaxCall() && in_array($action, $ajaxCallArray)) {
             die($this->str_invalid_Action);
         }
         parent::__construct($action);
@@ -22,4 +22,3 @@ class NotificationsController extends MyAppController
         $this->_template->render();
     }
 }
-?>

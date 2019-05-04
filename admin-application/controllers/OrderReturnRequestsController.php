@@ -307,7 +307,7 @@ class OrderReturnRequestsController extends AdminBaseController
         
         /* sending of email notification[ */
         $emailNotificationObj = new EmailHandler();
-        if(!$emailNotificationObj->SendReturnRequestMessageNotification($orrmsg_id, $this->adminLangId) ) {
+        if(!$emailNotificationObj->sendReturnRequestMessageNotification($orrmsg_id, $this->adminLangId) ) {
             Message::addErrorMessage($emailNotificationObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -383,7 +383,7 @@ class OrderReturnRequestsController extends AdminBaseController
         }
         
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification($row['orrequest_id'], $this->adminLangId) ) {
+        if (!$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification($row['orrequest_id'], $this->adminLangId) ) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->adminLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('orderReturnRequests'));
         }
@@ -436,7 +436,7 @@ class OrderReturnRequestsController extends AdminBaseController
         
     // /* email notification handling[ */
     // $emailNotificationObj = new EmailHandler();
-    // if ( !$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification( $requestRow['orrequest_id'], $this->adminLangId ) ){
+    // if ( !$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification( $requestRow['orrequest_id'], $this->adminLangId ) ){
     // Message::addErrorMessage( Labels::getLabel($emailNotificationObj->getError(),$this->adminLangId) );
     // FatApp::redirectUser( CommonHelper::generateUrl('orderReturnRequests'));
     // }
@@ -475,7 +475,7 @@ class OrderReturnRequestsController extends AdminBaseController
         
     // /* email notification handling[ */
     // $emailNotificationObj = new EmailHandler();
-    // if ( !$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification( $request['orrequest_id'], $request['order_language_id'] ) ){
+    // if ( !$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification( $request['orrequest_id'], $request['order_language_id'] ) ){
     // Message::addErrorMessage( Labels::getLabel( $emailNotificationObj->getError(),$this->adminLangId ) );
     // CommonHelper::redirectUserReferer();
     // }

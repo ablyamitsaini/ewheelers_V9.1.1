@@ -1,8 +1,7 @@
 <?php
 class DummyController extends MyAppController
 {
-
-    function deleteUserUplaods()
+    public function deleteUserUplaods()
     {
         $dirName = CONF_INSTALLATION_PATH.'user-uploads';
         //CommonHelper::recursiveDelete( $dirName );
@@ -74,9 +73,9 @@ class DummyController extends MyAppController
         );
 
         foreach ($queries as $qry) {
-            if($printQuery) {
+            if ($printQuery) {
                 echo $qry.'<br><br>';
-            }else{
+            } else {
                 if (!$con->query($qry)) {
                     die($con->error);
                 }
@@ -85,7 +84,7 @@ class DummyController extends MyAppController
         //echo 'Created All the Procedures.';
     }
 
-    function updateCategoryTable()
+    public function updateCategoryTable()
     {
         $srch = ProductCategory::getSearchObject();
         $srch->doNotCalculateRecords();
@@ -93,19 +92,19 @@ class DummyController extends MyAppController
         $srch->addCondition('prodcat_parent', '=', 0);
         $rs = $srch->getResultSet();
         $result = FatApp::getDb()->fetchAll($rs);
-        foreach($result as $row){
+        foreach ($result as $row) {
             $productCategory = new ProductCategory($row['prodcat_id']);
             $productCategory->updateCatCode();
         }
         echo "Done";
     }
 
-    function updateCatOrderCode()
+    public function updateCatOrderCode()
     {
         ProductCategory::updateCatOrderCode();
     }
 
-    function updateOrderProdSetting()
+    public function updateOrderProdSetting()
     {
         $srch = new SearchBase(OrderProduct::DB_TBL);
         $srch->doNotCalculateRecords();
@@ -114,7 +113,7 @@ class DummyController extends MyAppController
         $rs = $srch->getResultSet();
         $urlRows = FatApp::getDb()->fetchAll($rs);
         $db = FatApp::getDb();
-        foreach($urlRows as $row){
+        foreach ($urlRows as $row) {
             $data = array(
             'opsetting_op_id'=>$row['op_id'],
             'op_tax_collected_by_seller'=>$row['op_tax_collected_by_seller'],
@@ -122,14 +121,14 @@ class DummyController extends MyAppController
             'op_commission_include_shipping'=>FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX', FatUtility::VAR_INT, 0),
             );
 
-            if(!$db->insertFromArray(OrderProduct::DB_TBL_SETTINGS, $data, false, array(), $data)) {
+            if (!$db->insertFromArray(OrderProduct::DB_TBL_SETTINGS, $data, false, array(), $data)) {
                 echo "Error with ".$row['op_id'].':'.$db->getError() .'<br>';
             }
         }
         echo "Done";
     }
 
-    function changeCustomUrl()
+    public function changeCustomUrl()
     {
         $urlSrch = UrlRewrite::getSearchObject();
         $urlSrch->doNotCalculateRecords();
@@ -138,26 +137,26 @@ class DummyController extends MyAppController
         $rs = $urlSrch->getResultSet();
         $urlRows = FatApp::getDb()->fetchAll($rs);
         $db = FatApp::getDb();
-        foreach($urlRows as $row){
+        foreach ($urlRows as $row) {
             $url = str_replace("/", "-", $row['urlrewrite_custom']);
-            if($db->updateFromArray(UrlRewrite::DB_TBL, array('urlrewrite_custom' => $url), array('smt' => 'urlrewrite_id = ?', 'vals' => array($row['urlrewrite_id'])))) {
+            if ($db->updateFromArray(UrlRewrite::DB_TBL, array('urlrewrite_custom' => $url), array('smt' => 'urlrewrite_id = ?', 'vals' => array($row['urlrewrite_id'])))) {
                 echo $row['urlrewrite_id']."<br>";
             }
         }
     }
 
-    function updateDecimal()
+    public function updateDecimal()
     {
         $database = CONF_DB_NAME;
         $qry = FatApp::getDb()->query("SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$database."' AND DATA_TYPE = 'decimal'");
-        while($row = FatApp::getDb()->fetch($qry)){
+        while ($row = FatApp::getDb()->fetch($qry)) {
             //FatApp::getDb()->query("ALTER TABLE ".$row['TABLE_NAME']." MODIFY COLUMN ".$row['COLUMN_NAME']." decimal(12,4)");
             echo 'Done:- '.$row['TABLE_NAME'].' - '.$row['COLUMN_NAME'].'<br>';
             //var_dump($row);
         }
     }
 
-    function updateCharset()
+    public function updateCharset()
     {
         $database = CONF_DB_NAME;
         /*FatApp::getDb()->query("ALTER DATABASE ".$database." CHARACTER SET utf8 COLLATE utf8_general_ci");
@@ -170,7 +169,7 @@ class DummyController extends MyAppController
         // ALTER TABLE tbl_affiliate_commission_settings MODIFY COLUMN afcommsetting_fees decimal(12,4)
     }
 
-    function testSmtp()
+    public function testSmtp()
     {
         include_once CONF_INSTALLATION_PATH . 'library/PHPMailer/PHPMailerAutoload.php';
         $mail = new PHPMailer(true);
@@ -188,7 +187,7 @@ class DummyController extends MyAppController
         $mail->Subject = 'test Headers test From marketsanat';
         $mail->AltBody="This is text only alternative body.";
         $mail->MsgHTML('<b>Headers test</b><br><br>Port: 26, Secure: tls');
-        if(!$mail->send()) {
+        if (!$mail->send()) {
             echo 'Message could not be sent.';
             echo 'Mailer Error: ' . $mail->ErrorInfo;
             exit;
@@ -196,15 +195,15 @@ class DummyController extends MyAppController
         echo 'Message has been sent';
     }
 
-    function abcd()
+    public function abcd()
     {
-
         $parent = 2500;
         $categoryData = ProductCategory::getAttributesById($parent, 'prodcat_id');
-        if(empty($categoryData) || $categoryData == false) {
+        if (empty($categoryData) || $categoryData == false) {
             $parent = 0;
         }
-        echo $parent; exit;
+        echo $parent;
+        exit;
 
         $urlKeyword = 'apparel-textiles-accessories-textiles-leather-products-textile-stock';
         $excludeThisOriginalUrl ='category/view/454';
@@ -214,7 +213,7 @@ class DummyController extends MyAppController
 
         $i = 1;
         $slug = $customUrl;
-        while(static::getDataByCustomUrl($slug, $excludeThisOriginalUrl)){
+        while (static::getDataByCustomUrl($slug, $excludeThisOriginalUrl)) {
             $slug = $customUrl . "-" . $i++;
         }
         exit;
@@ -227,20 +226,20 @@ class DummyController extends MyAppController
         );
         var_dump($fcmDeviceIds);
         echo "\n";
-        if(empty($fcmDeviceIds)) {
+        if (empty($fcmDeviceIds)) {
             return false;
         }
 
         $google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY", FatUtility::VAR_STRING, '');
         //$google_push_notification_api_key = 'AIzaSyDqigFC0880hWtyGChS6TlZi3Vm_I4Q4Qk';
 
-        if(trim($google_push_notification_api_key) == '') {
+        if (trim($google_push_notification_api_key) == '') {
             return false;
         }
 
         /*     require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
         $pusher = new Pusher($google_push_notification_api_key); */
-        foreach($fcmDeviceIds as $pushNotificationApiToken){
+        foreach ($fcmDeviceIds as $pushNotificationApiToken) {
             echo $google_push_notification_api_key."\n";
             echo $pushNotificationApiToken['uauth_fcm_id']."\n";
             Notifications::sendPushNotification($google_push_notification_api_key, $pushNotificationApiToken['uauth_fcm_id'], array( 'text' => 'bodu message', 'sound' => 'default', 'badge' => '1'));
@@ -289,12 +288,12 @@ class DummyController extends MyAppController
         $productCategory = new productCategory;
         $categoriesArr = $productCategory ->getCategoryTreeArr($this->siteLangId, $categoriesDataArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
 
-        CommonHelper::printArray($categoriesArr); exit;
+        CommonHelper::printArray($categoriesArr);
+        exit;
     }
 
-    function pushTest()
+    public function pushTest()
     {
-
         $firebase_push_notification_server_key = "AAAAc5bAbbg:APA91bE67wf1PrijhzCWRmb0vBcAEciA7-x-X_QrDUblDnbT1ij95hr619flMF2c4MFlfTOPU0g9usWaPPex0ho2W5bDxCGeKC0jlpBkmZEhXj0avb3MJ-NsTpwmEp-T7yQBq-e9MEHR";
         //$firebase_push_notification_server_key = "AIzaSyDqigFC0880hWtyGChS6TlZi3Vm_I4Q4Qk";
         //$deviceToken = "c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E";
@@ -319,8 +318,7 @@ class DummyController extends MyAppController
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
         //$data = array('title'=>'Yocabs Notification Title', 'message'=>'Yocabs Notification Message Body');
-        $msg = array
-        (
+        $msg = array(
         'message'     => 'here is a message. message',
         'title'        => 'This is a title. title',
         /* 'subtitle'    => 'This is a subtitle. subtitle',
@@ -343,7 +341,7 @@ class DummyController extends MyAppController
         $result = curl_exec($ch);
         $response = '';
 
-        if (curl_errno($ch) ) {
+        if (curl_errno($ch)) {
             $response .= 'Error ' . curl_error($ch) . print_r($post, true);
             echo $response;
             return false;
@@ -356,14 +354,13 @@ class DummyController extends MyAppController
         echo $result;
     }
 
-    function pushNotificaton()
+    public function pushNotificaton()
     {
         // API access key from Google API's Console
         $API_ACCESS_KEY =  'AAAAZA6vRK8:APA91bHlfYreFEpCK18CSBahNCe7e4pU-3c3925duLwhxXvxAGbWF5m4K7U4oMKWht_BBCAZ6VC6v8dGIBnR14_X-lNxJQwiORNUgeM3Djm9ZvUQJRk_n3hjkuAG2D8-iVAqtN2IC1GU' ;
         $registrationIds = 'c8T6nDKFl68:APA91bEWa0IYJGeWK7m89vxQErP8hR69INX3NgkZ75GfadIa282oWLd4EsGCv9lcYVRM0KvuPu78KZnCRuxtWOyKly-zii85jbi5XYIPCDmURJx11FKj5-80xK-m4b26i3yQigjSe44E';
         // prep the bundle
-        $msg = array
-        (
+        $msg = array(
         'message'     => 'here is a message. message',
         'title'        => 'This is a title. title',
         'subtitle'    => 'This is a subtitle. subtitle',
@@ -373,14 +370,12 @@ class DummyController extends MyAppController
         'largeIcon'    => 'large_icon',
         'smallIcon'    => 'small_icon'
         );
-        $fields = array
-        (
+        $fields = array(
         'registration_ids'     => $registrationIds,
         'data'            => $msg
         );
 
-        $headers = array
-        (
+        $headers = array(
         'Authorization: key=' . $API_ACCESS_KEY,
         'Content-Type: application/json'
         );
@@ -397,18 +392,18 @@ class DummyController extends MyAppController
         echo $result;
     }
 
-    function downloadImages()
+    public function downloadImages()
     {
         $res = Cronjob::autoDownloadProductImage();
-        if($res) {
+        if ($res) {
             echo "No Record Found";
-        }else{
+        } else {
             echo "Done";
         }
         exit;
     }
 
-    function format($number)
+    public function format($number)
     {
         $prefixes = 'KMGTPEZY';
         if ($number >= 1000) {
@@ -420,13 +415,12 @@ class DummyController extends MyAppController
         return $number;
     }
 
-    function index()
+    public function index()
     {
         $post = array();
 
-        if(array_key_exists('ua_id', $post)) {
+        if (array_key_exists('ua_id', $post)) {
             echo $ua_id = FatUtility::int($post['ua_id']);
-
         }
         exit;
 
@@ -437,7 +431,8 @@ class DummyController extends MyAppController
         3=>array('brand_id'=>1,'brand_name'=>'a'),
         );
         $arr = array_unique($arr, SORT_REGULAR);
-        var_dump($arr); exit;
+        var_dump($arr);
+        exit;
         exit;
         exit;
         $arr = array(
@@ -452,7 +447,7 @@ class DummyController extends MyAppController
         '12323689712254' =>'12323689712254',
         );
 
-        foreach($arr as $val){
+        foreach ($arr as $val) {
             echo $val.' - '. $this->format($val);
             echo "<br>";
         }
@@ -463,16 +458,18 @@ class DummyController extends MyAppController
 
         echo $file = file_get_contents($image_path);
 
-        var_dump($file_row); exit;
+        var_dump($file_row);
+        exit;
 
 
         exit;
-        echo str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)); exit;
+        echo str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId));
+        exit;
         $userId = UserAuthentication::getLoggedUserId();
         /* Check product group belongs to current user[ */
         $row = ProductGroup::getAttributesById(3);
 
-        if(!$row || $row['prodgroup_user_id'] != $userId ) {
+        if (!$row || $row['prodgroup_user_id'] != $userId) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Access!', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -483,7 +480,7 @@ class DummyController extends MyAppController
         $childOrderInfo = $obj->getOrderProductsByOpId(166, 1);
         $userId = $childOrderInfo['order_user_id'];
         $orderId = $childOrderInfo['op_order_id'];
-        if(!FatApp::getConfig('CONF_ENABLE_FIRST_TIME_BUYER_DISCOUNT')) {
+        if (!FatApp::getConfig('CONF_ENABLE_FIRST_TIME_BUYER_DISCOUNT')) {
             return Labels::getLabel('MSG_First_time_buyer_discount_module_is_disabled', FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
         }
         $userId =  FatUtility::int($userId);
@@ -495,7 +492,7 @@ class DummyController extends MyAppController
         $orderRs = $orderSrch->getResultSet();
         $orderData = FatApp::getDb()->fetch($orderRs);
 
-        if($orderData == false) {
+        if ($orderData == false) {
             return Labels::getLabel('MSG_No_Record_Found', FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1));
         }
 
@@ -511,7 +508,7 @@ class DummyController extends MyAppController
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
 
-        if($row['paidOrderCount'] > 0 ) {
+        if ($row['paidOrderCount'] > 0) {
             return;
         }
 
@@ -555,12 +552,12 @@ class DummyController extends MyAppController
         if ($record->save()) {
             $couponId = $record->getMainTableRecordId();
 
-            if($couponId > 0 && $userId > 0) {
+            if ($couponId > 0 && $userId > 0) {
                 $record->addUpdateCouponUser($couponId, $userId);
             }
 
             $languages = Language::getAllNames();
-            foreach($languages as $langId =>$langName ){
+            foreach ($languages as $langId =>$langName) {
                 $langData = array(
                 'coupon_title'=>Labels::getLabel('LBL_Discount_On_First_Purchase', $langId),
                 'couponlang_coupon_id'=>$couponId,
@@ -582,7 +579,7 @@ class DummyController extends MyAppController
         echo $tax = $taxObj->calculateTaxRates(59, 23, 119, 1, 1);
         exit;
         $obj = new EmailHandler();
-        $obj->NewOrderBuyerAdmin('O1496746780', 1);
+        $obj->newOrderBuyerAdmin('O1496746780', 1);
         echo  exit;
         $orderId = 'O1494913211';
         $op_id = 706;
@@ -595,16 +592,16 @@ class DummyController extends MyAppController
         $optionValueArr = array('15_12','13_1','1_2','13_2','13_11');
         //$res = SellerProduct::getSellerProductOptionsBySelProdCode('1_15_17');
         sort($optionValueArr);
-        foreach($optionValueArr as $val){
+        foreach ($optionValueArr as $val) {
             $opVal =  explode("_", $val);
             $opValArr[$opVal[0]][] = $opVal[1];
         }
         $str = '( ';
         $orCnd = '';
         $andCnd = '';
-        foreach($opValArr as $row){
+        foreach ($opValArr as $row) {
             $str.= $andCnd;
-            foreach($row as $val){
+            foreach ($row as $val) {
                 $str.= $orCnd." "."selprod_code like '_".$val."%'";
                 $orCnd = 'or';
             }
@@ -621,7 +618,7 @@ class DummyController extends MyAppController
         exit;
     }
 
-    function index_prinka()
+    public function index_prinka()
     {
         $sellerProductId = 1;
 
@@ -662,18 +659,19 @@ class DummyController extends MyAppController
 									select * from tbl_product_to_tags where ptt_product_id = $productId
 								) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
 								order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
-							) as set2)", 'inner join', 'set3.rec_product_id = product_id', 'set3'
+							) as set2)",
+            'inner join',
+            'set3.rec_product_id = product_id',
+            'set3'
         );
-                            $srch->addGroupBy('selprod_id');
+        $srch->addGroupBy('selprod_id');
         $recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
         var_dump($recommendedProducts);
         exit;
-
     }
 
-    function test()
+    public function test()
     {
-
         $orders = new Orders('O1552890658');
         $langId = 1;
         $childOrderInfo = $orders->getOrderProductsByOpId(413, 1);
@@ -682,16 +680,16 @@ class DummyController extends MyAppController
         $formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
         $comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved', $langId), $formattedRequestValue);
 
-        if(0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING, $childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']) {
+        if (0 < $childOrderInfo["op_free_ship_upto"] && array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING, $childOrderInfo['charges']) && $childOrderInfo["op_actual_shipping_charges"] != $childOrderInfo['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']) {
             $actualShipCharges = 0 ;
             $sellerProdTotalPrice = 0;
             $rows = Orderproduct::getOpArrByOrderId($childOrderInfo["op_order_id"]);
 
-            foreach($rows as $row){
-                if($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']) {
+            foreach ($rows as $row) {
+                if ($row['op_selprod_user_id'] != $childOrderInfo['op_selprod_user_id']) {
                     continue;
                 }
-                if($row['op_refund_qty'] == $row['op_qty'] ) {
+                if ($row['op_refund_qty'] == $row['op_qty']) {
                     continue;
                 }
                 $qty = $row['op_qty'] - $row['op_refund_qty'];
@@ -699,17 +697,17 @@ class DummyController extends MyAppController
             }
 
             $sellerPriceIfItemWillRefund = $sellerProdTotalPrice - ($childOrderInfo["op_unit_price"] * $childOrderInfo["op_refund_qty"]);
-            if($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund ) {
+            if ($childOrderInfo["op_free_ship_upto"] > $sellerPriceIfItemWillRefund) {
                 $unitShipCharges = round($childOrderInfo['op_actual_shipping_charges']/$childOrderInfo["op_qty"], 2);
                 $returnShipChargesToCust = 0;
-                if(FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER', FatUtility::VAR_INT, 0)) {
+                if (FatApp::getConfig('CONF_RETURN_SHIPPING_CHARGES_TO_CUSTOMER', FatUtility::VAR_INT, 0)) {
                     $returnShipChargesToCust = $unitShipCharges * $childOrderInfo["op_refund_qty"];
                 }
 
                 $actualShipCharges = $childOrderInfo['op_actual_shipping_charges'] - $returnShipChargesToCust;
             }
 
-            if(0 < $actualShipCharges) {
+            if (0 < $actualShipCharges) {
                 $comments = str_replace('{invoice}', $formattedRequestValue, Labels::getLabel('LBL_Deducted_Shipping_Charges_{invoice}', $langId));
                 $txnDataArr = array(
                 'utxn_user_id'    => $childOrderInfo['order_user_id'],
@@ -722,7 +720,7 @@ class DummyController extends MyAppController
                 var_dump($txnDataArr);
                 echo "<br>";
                 $transObj = new Transactions();
-                if($txnId = $transObj->addTransaction($txnDataArr)) {
+                if ($txnId = $transObj->addTransaction($txnDataArr)) {
                     $emailNotificationObj->sendTxnNotification($txnId, $langId);
                 }
 
@@ -738,7 +736,7 @@ class DummyController extends MyAppController
                 var_dump($txnDataArr);
                 echo "<br>";
                 $transObj = new Transactions();
-                if($txnId = $transObj->addTransaction($txnDataArr)) {
+                if ($txnId = $transObj->addTransaction($txnDataArr)) {
                     $emailNotificationObj->sendTxnNotification($txnId, $langId);
                 }
             }
@@ -746,7 +744,8 @@ class DummyController extends MyAppController
 
 
 
-        CommonHelper::printArray($childOrderInfo); exit;
+        CommonHelper::printArray($childOrderInfo);
+        exit;
     }
 
     private function getShopInfo($shop_id)
@@ -772,7 +771,7 @@ class DummyController extends MyAppController
         $shop_id = FatUtility::int($shop_id);
 
         $shopData = $this->getShopInfo($shop_id);
-        if(!$shopData ) {
+        if (!$shopData) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Home'));
         }
@@ -792,12 +791,12 @@ class DummyController extends MyAppController
         $shops = $db->fetchAll($rs);
 
         $totalProductsToShow = 4;
-        if($shops ) {
+        if ($shops) {
             $prodSrchObj = new ProductSearch($this->siteLangId);
             $prodSrchObj->setDefinedCriteria(0);
             $prodSrchObj->setPageNumber(1);
             $prodSrchObj->setPageSize($totalProductsToShow);
-            foreach( $shops as &$shop ){
+            foreach ($shops as &$shop) {
                 $prodSrch = clone $prodSrchObj;
                 $prodSrch->addShopIdCondition($shop['shop_id']);
                 $prodSrch->addMultipleFields(
@@ -842,7 +841,7 @@ class DummyController extends MyAppController
     }
     } */
 
-    function getCountries()
+    public function getCountries()
     {
         $srch = new SearchBase('tbl_countries', 'c');
         $srch->joinTable('tbl_countries_lang', 'INNER JOIN', 'c_l.countrylang_country_id = c.country_id and c_l.countrylang_lang_id = 1', 'c_l');
@@ -855,7 +854,7 @@ class DummyController extends MyAppController
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
         $arr = array();
-        foreach($records as $country){
+        foreach ($records as $country) {
             $arr[$country['country_temp_id']] = $country['country_id'];
         }
         //$this->getStates($arr);
@@ -865,24 +864,24 @@ class DummyController extends MyAppController
         //var_dump($records);
     }
 
-    function cookie()
+    public function cookie()
     {
         $isAffiliateCookieSet = false;
         $isReferrerCookieSet = false;
 
-        if(isset($_COOKIE['affiliate_referrer_code_signup']) && $_COOKIE['affiliate_referrer_code_signup'] != '' ) {
+        if (isset($_COOKIE['affiliate_referrer_code_signup']) && $_COOKIE['affiliate_referrer_code_signup'] != '') {
             $isAffiliateCookieSet = true;
         }
 
-        if(isset($_COOKIE['referrer_code_signup']) && $_COOKIE['referrer_code_signup'] != '' ) {
+        if (isset($_COOKIE['referrer_code_signup']) && $_COOKIE['referrer_code_signup'] != '') {
             $isReferrerCookieSet = true;
         }
 
         /* prioritize only when, both cookies are set, then credit on the basis of latest cookie set. [ */
-        if($isAffiliateCookieSet && $isReferrerCookieSet ) {
+        if ($isAffiliateCookieSet && $isReferrerCookieSet) {
             $affiliateReferrerCookieArr = unserialize($_COOKIE['affiliate_referrer_code_signup']);
             $referrerCookieArr = unserialize($_COOKIE['referrer_code_signup']);
-            if($affiliateReferrerCookieArr['creation_time'] > $referrerCookieArr['creation_time'] ) {
+            if ($affiliateReferrerCookieArr['creation_time'] > $referrerCookieArr['creation_time']) {
                 $isReferrerCookieSet = false;
             } else {
                 $isAffiliateCookieSet = false;
@@ -893,43 +892,38 @@ class DummyController extends MyAppController
 
     public function reviewReminder()
     {
-
         Cronjob::remindBuyerForPendingReviews();
-
     }
     public function autoRenewSubscription()
     {
-
         Cronjob::autoRenewSubscription();
-
     }
 
-    function get_category_structure()
+    public function get_category_structure()
     {
         $categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, 0, false);
         commonhelper::printarray($categoriesDataArr);
         die();
     }
 
-    function testCache()
+    public function testCache()
     {
         $collectionCache =  FatCache::get('testcache', 1000, '.txt');
 
-        if(!$collectionCache) {
+        if (!$collectionCache) {
             die;
             FatCache::set('testcache', 'testing the cache', '.txt');
         }
         echo FatCache::getCachedUrl('testcache', 100000, '.txt');
-
     }
 
 
-    function truncateTables( $type = 'orders' )
+    public function truncateTables($type = 'orders')
     {
-        if ($type == 'orders' ) {
+        if ($type == 'orders') {
             $tables = array('tbl_orders','tbl_orders_lang','tbl_orders_status_history','tbl_order_cancel_requests','tbl_order_extras','tbl_order_payments','tbl_order_products','tbl_order_products_lang','tbl_order_product_charges','tbl_order_product_charges_lang','tbl_order_product_digital_download_links','tbl_order_product_shipping','tbl_order_product_shipping_lang','tbl_order_product_to_shipping_users','tbl_order_return_requests','tbl_order_return_request_messages','tbl_order_seller_subscriptions','tbl_order_seller_subscriptions_lang','tbl_order_user_address','tbl_user_reward_points','tbl_user_reward_point_breakup','tbl_rewards_on_purchase','tbl_user_transactions','tbl_coupons_history','tbl_coupons_hold','tbl_user_cart','tbl_order_product_settings');
             FatApp::getDb()->query('UPDATE `tbl_seller_products` SET `selprod_sold_count` = 0 WHERE 1');
-        }elseif ($type == 'all' ) {
+        } elseif ($type == 'all') {
             $tables = array('tbl_abusive_words','tbl_admin_auth_token','tbl_admin_password_reset_requests','tbl_admin_permissions','tbl_affiliate_commission_setting_history','tbl_affiliate_commission_settings','tbl_attached_files_temp','tbl_attribute_group_attributes','tbl_attribute_group_attributes_lang','tbl_attribute_groups','tbl_banner_locations_lang','tbl_banners','tbl_banners_clicks','tbl_banners_lang','tbl_banners_logs','tbl_blog_contributions','tbl_blog_post','tbl_blog_post_categories','tbl_blog_post_categories_lang','tbl_blog_post_comments','tbl_blog_post_lang','tbl_blog_post_to_category','tbl_brands','tbl_brands_lang','tbl_catalog_request_messages','tbl_collection_to_product_categories','tbl_collection_to_seller_products','tbl_collection_to_shops','tbl_collections','tbl_collections_lang','tbl_commission_setting_history','tbl_content_block_to_category','tbl_coupon_to_category','tbl_coupon_to_plan','tbl_coupon_to_products','tbl_coupon_to_seller','tbl_coupon_to_users','tbl_coupons','tbl_coupons_history','tbl_coupons_hold','tbl_coupons_lang','tbl_cron_log','tbl_email_archives','tbl_extra_attribute_groups','tbl_extra_attribute_groups_lang','tbl_extra_attributes','tbl_extra_attributes_lang','tbl_failed_login_attempts','tbl_faq_categories','tbl_faq_categories_lang','tbl_faqs','tbl_faqs_lang','tbl_filter_groups','tbl_filter_groups_lang','tbl_filters','tbl_filters_lang','tbl_import_export_settings','tbl_manual_shipping_api','tbl_manual_shipping_api_lang','tbl_meta_tags_lang','tbl_notifications','tbl_option_values','tbl_option_values_lang','tbl_options','tbl_options_lang','tbl_order_cancel_reasons_lang','tbl_order_cancel_requests','tbl_order_extras','tbl_order_payments','tbl_order_product_charges','tbl_order_product_charges_lang','tbl_order_product_shipping','tbl_order_product_shipping_lang','tbl_order_product_to_shipping_users','tbl_order_products','tbl_order_products_lang','tbl_order_return_request_messages','tbl_order_return_requests','tbl_order_seller_subscriptions','tbl_order_seller_subscriptions_lang','tbl_order_seller_subscriptions_lang_old','tbl_order_user_address','tbl_orders','tbl_orders_lang','tbl_orders_status_history','tbl_orders_status_lang','tbl_policy_points','tbl_policy_points_lang','tbl_polling','tbl_polling_feedback','tbl_polling_lang','tbl_polling_to_category','tbl_polling_to_products','tbl_product_categories','tbl_product_categories_lang','tbl_product_groups','tbl_product_groups_lang','tbl_product_numeric_attributes','tbl_product_product_recommendation','tbl_product_shipping_rates','tbl_product_special_prices','tbl_product_specifications','tbl_product_specifications_lang','tbl_product_stock_hold','tbl_product_text_attributes','tbl_product_to_category','tbl_product_to_groups','tbl_product_to_options','tbl_product_to_tags','tbl_product_to_tax','tbl_product_volume_discount','tbl_products','tbl_products_browsing_history','tbl_products_lang','tbl_products_shipped_by_seller','tbl_products_shipping','tbl_products_temp_ids','tbl_promotion_item_charges','tbl_promotions','tbl_promotions_charges','tbl_promotions_clicks','tbl_promotions_lang','tbl_promotions_logs','tbl_promotions_old','tbl_question_banks','tbl_question_banks_lang','tbl_question_to_answers','tbl_questionnaire_feedback','tbl_questionnaires','tbl_questionnaires_lang','tbl_questionnaires_to_question','tbl_questions','tbl_questions_lang','tbl_recommendation_activity_browsing','tbl_related_products','tbl_rewards_on_purchase','tbl_search_items','tbl_seller_brand_requests','tbl_seller_brand_requests_lang','tbl_seller_catalog_requests','tbl_seller_packages','tbl_seller_packages_lang','tbl_seller_packages_plan','tbl_seller_product_options','tbl_seller_product_policies','tbl_seller_product_rating','tbl_seller_product_reviews','tbl_seller_product_reviews_abuse','tbl_seller_product_reviews_helpful','tbl_seller_products','tbl_seller_products_lang','tbl_seller_products_temp_ids','tbl_shipping_company','tbl_shipping_company_lang','tbl_shipping_durations','tbl_shipping_durations_lang','tbl_shippingapi_settings','tbl_shop_collection_products','tbl_shop_collections','tbl_shop_collections_lang','tbl_shop_reports','tbl_shops','tbl_shops_lang','tbl_shops_to_theme','tbl_smart_log_actions','tbl_smart_products_weightage','tbl_smart_remommended_products','tbl_smart_user_activity_browsing','tbl_smart_weightage_settings','tbl_social_platforms','tbl_social_platforms_lang','tbl_success_stories','tbl_success_stories_lang','tbl_tag_product_recommendation','tbl_tags','tbl_tags_lang','tbl_tax_categories','tbl_tax_categories_lang','tbl_tax_values','tbl_testimonials','tbl_testimonials_lang','tbl_theme','tbl_theme_lang','tbl_thread_messages','tbl_threads','tbl_tool_tips','tbl_tool_tips_lang','tbl_upsell_products','tbl_url_rewrite','tbl_user_address','tbl_user_auth_token','tbl_user_bank_details','tbl_user_cart','tbl_user_credentials','tbl_user_email_verification','tbl_user_extras','tbl_user_favourite_products','tbl_user_favourite_shops','tbl_user_password_reset_requests','tbl_user_product_recommendation','tbl_user_return_address','tbl_user_return_address_lang','tbl_user_reward_point_breakup','tbl_user_reward_points','tbl_user_supplier_request_values','tbl_user_supplier_request_values_lang','tbl_user_supplier_requests','tbl_user_transactions','tbl_user_wish_list_products','tbl_user_wish_lists','tbl_user_withdrawal_requests','tbl_users','tbl_order_product_settings','tbl_user_requests_history');
             /* DELETE FROM `tbl_attached_files` WHERE `afile_type` in (1,2,3,4,5,7,9,10,11,12,13,14,22,23,24,25,26,27,28,29,30,32,33,41,42,43,48)
             */
@@ -938,11 +932,10 @@ class DummyController extends MyAppController
             */
         }
 
-        foreach($tables as $table)
-        {
+        foreach ($tables as $table) {
             $result = FatApp::getDb()->query("TRUNCATE TABLE `".$table."`");
 
-            if($result) {
+            if ($result) {
                 echo 'Done: '.$table.' <br>';
             } else {
                 echo 'Error in: '.$table.' <br>';
@@ -950,30 +943,30 @@ class DummyController extends MyAppController
         }
     }
 
-    function sendMail()
+    public function sendMail()
     {
         $headers = "From: developer@4demo.biz" . "\r\n" .
         "CC: anup.rawat@ablysoft.com";
 
-        if(!mail("manpreet.kaur@fatbit.in", "testing", "Hello Manpreet Kaur", $headers)) {
+        if (!mail("manpreet.kaur@fatbit.in", "testing", "Hello Manpreet Kaur", $headers)) {
             die("mail has not been sent");
-        }else{
+        } else {
             die("mail has been sent successfully");
         }
     }
 
 
-    function testOrder()
+    public function testOrder()
     {
         $db = FatApp::getDb();
         $linkData = array();
         $sellerProduct = SellerProduct::getAttributesById(231, array('selprod_downloadable_link'));
         $downlodableLinks = preg_split("/\n|,/", $sellerProduct['selprod_downloadable_link']);
         /* CommonHelper::printArray($downlodableLinks);die; */
-        foreach($downlodableLinks as $link) {
+        foreach ($downlodableLinks as $link) {
             $linkData['opddl_op_id'] = 945;
             $linkData['opddl_downloadable_link'] = $link;
-            if(!$db->insertFromArray(OrderProductDigitalLinks::DB_TBL, $linkData)) {
+            if (!$db->insertFromArray(OrderProductDigitalLinks::DB_TBL, $linkData)) {
                 $db->rollbackTransaction();
                 $this->error = $opLangRecordObj->getError();
                 return false;
@@ -981,7 +974,7 @@ class DummyController extends MyAppController
         }
     }
 
-    function checkEmailTemplate()
+    public function checkEmailTemplate()
     {
         $selprod_id = array(109,141,148,59,66);
         $prodSrch = new ProductSearch(1);
@@ -1019,13 +1012,13 @@ class DummyController extends MyAppController
         $opSrch->doNotLimitRecords();
         $opSrch->addMultipleFields(array('op_id','op_selprod_id','op_selprod_user_id','op_unit_price','op_qty','op_actual_shipping_charges'));
         $opSrch->addCondition('op_order_id', '=', $orderId);
-        if($opId) {
+        if ($opId) {
             $opSrch->addCondition('op_id', '!=', $opId);
         }
-        if($isRefunded) {
+        if ($isRefunded) {
             $opSrch->addCondition(OrderProduct::DB_TBL_PREFIX . 'refund_qty', '=', 0);
         }
-        if($isCancelled) {
+        if ($isCancelled) {
             $opSrch->joinTable(OrderCancelRequest::DB_TBL, 'LEFT OUTER JOIN', 'ocr.'.OrderCancelRequest::DB_TBL_PREFIX.'op_id = op.op_id', 'ocr');
             $cnd = $opSrch->addCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', '!=', 1);
             $cnd->attachCondition(OrderCancelRequest::DB_TBL_PREFIX . 'status', 'IS', 'mysql_func_null', 'OR', true);
@@ -1033,12 +1026,13 @@ class DummyController extends MyAppController
         echo $opSrch->getQuery();
         $rs = $opSrch->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
-        CommonHelper::printArray($row); die;
+        CommonHelper::printArray($row);
+        die;
     }
 
 
 
-    function changeCustomUrl1()
+    public function changeCustomUrl1()
     {
         $urlSrch = UrlRewrite::getSearchObject();
         $urlSrch->doNotCalculateRecords();
@@ -1046,9 +1040,9 @@ class DummyController extends MyAppController
         $rs = $urlSrch->getResultSet();
         $urlRows = FatApp::getDb()->fetchAll($rs);
         $db = FatApp::getDb();
-        foreach($urlRows as $row){
+        foreach ($urlRows as $row) {
             $url = str_replace("/", "-", $row['urlrewrite_custom']);
-            if($db->updateFromArray(UrlRewrite::DB_TBL, array('urlrewrite_custom' => $url), array('smt' => 'urlrewrite_id = ?', 'vals' => array($row['urlrewrite_id'])))) {
+            if ($db->updateFromArray(UrlRewrite::DB_TBL, array('urlrewrite_custom' => $url), array('smt' => 'urlrewrite_id = ?', 'vals' => array($row['urlrewrite_id'])))) {
                 echo $row['urlrewrite_id']."<br>";
             }
         }

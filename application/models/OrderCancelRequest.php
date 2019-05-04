@@ -12,18 +12,18 @@ class OrderCancelRequest extends MyAppModel
     const CLASS_CANCELLED = 'danger';
 
 
-    public function __construct($id = 0) 
+    public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
     }
 
-    public static function getSearchObject( $langId = 0 ) 
+    public static function getSearchObject($langId = 0)
     {
         $srch = new SearchBase(static::DB_TBL, 'ocr');
         return $srch;
     }
 
-    static function getStatusClassArr()
+    public static function getStatusClassArr()
     {
         return array(
         static::CANCELLATION_REQUEST_STATUS_PENDING        =>    static::CLASS_PENDING,
@@ -32,10 +32,10 @@ class OrderCancelRequest extends MyAppModel
         );
     }
 
-    static function getRequestStatusArr( $langId )
+    public static function getRequestStatusArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId < 1) {
+        if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
@@ -45,10 +45,10 @@ class OrderCancelRequest extends MyAppModel
         );
     }
 
-    public static function getCancelRequestById($recordId, $attr = null) 
+    public static function getCancelRequestById($recordId, $attr = null)
     {
         $recordId = FatUtility::convertToType($recordId, FatUtility::VAR_INT);
-        if(1 > $recordId) {
+        if (1 > $recordId) {
             return false;
         }
 
@@ -57,11 +57,10 @@ class OrderCancelRequest extends MyAppModel
         $srch = new SearchBase(static::DB_TBL);
         $srch->addCondition('ocrequest_op_id', '=', $recordId);
 
-        if (null != $attr ) {
+        if (null != $attr) {
             if (is_array($attr)) {
                 $srch->addMultipleFields($attr);
-            }
-            elseif (is_string($attr)) {
+            } elseif (is_string($attr)) {
                 $srch->addFld($attr);
             }
         }
