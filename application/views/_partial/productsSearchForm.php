@@ -3,22 +3,47 @@
 	$keywordFld->overrideFldType("hidden");
 	echo $frmProductSearch->getFormTag();
 ?>
-<div class="page-sort hide_on_no_product" id="top-filters">
-	<ul>
-		<li>
-			<a href="javascript:void(0)" onclick="saveProductSearch()" ><i class="icn">
-					<svg class="svg">
-						<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
-					</svg>
-				</i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
-		</li>
-		<li class="d-xl-none">
-			<a href="javascript:void(0)" class="link__filter"><i class="icn">
-				<svg class="svg">
-					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
-				</svg>
-			</i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
-		</li>
+
+<div class="row justify-content-between align-items-center">
+	<div class="col-md-4">
+		<div class="total-products">
+        <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?></span>
+		</div>
+	</div>
+    <div class="col-md-8">
+        <div id="top-filters" class="page-sort hide_on_no_product">
+            <ul>
+                <li><div class="save-search">
+                    <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
+                        <svg class="svg">
+                            <use xlink:href="/images/retina/sprite.svg#savesearch" href="/images/retina/sprite.svg#savesearch"></use>
+                        </svg>
+                    </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a></div>
+                </li>
+                <li>
+                <?php echo $frmProductSearch->getFieldHtml('sortBy'); ?></li>
+                <li>
+                <?php echo $frmProductSearch->getFieldHtml('pageSize'); ?></li>
+                <li>
+                    <div class="list-grid-toggle switch--link-js">
+                        <div class="icon">
+                            <div class="icon-bar"></div>
+                            <div class="icon-bar"></div>
+                            <div class="icon-bar"></div>
+                        </div>
+                    </div>
+                    <div class="d-xl-none">
+                        <a href="javascript:void(0)" class="link__filter btn btn--border"><i class="icn">
+                            <svg class="svg">
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
+                            </svg>
+                        </i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 		<?php if((UserAuthentication::isUserLogged() && (User::isBuyer())) || (!UserAuthentication::isUserLogged())) { ?>
 
 		<?php }?>
@@ -36,31 +61,10 @@
 				</svg>
 			</i><span class="txt"><?php echo Labels::getLabel('LBL_List_View', $siteLangId); ?></span></a>
 		</li> */ ?>
-		<li>
-			<div class="sort-by">
-				<ul>
-					<?php if(!isset($doNotdisplaySortBy)){?>
-				  <li class="sort"><?php echo Labels::getLabel('LBL_Sort_By', $siteLangId); ?> </li>
-					<?php }?>
-				  <li>
-					<?php echo $frmProductSearch->getFieldHtml('sortBy'); ?>
-				  </li>
-				  <li class="hide--mobile">
-					<?php echo $frmProductSearch->getFieldHtml('pageSize'); ?>
-				  </li>
-				</ul>
-			</div>
-		</li>
-		<li>
-			<div class="list-grid-toggle switch--link-js">
-				<div class="icon">
-					<div class="icon-bar"></div>
-					<div class="icon-bar"></div>
-					<div class="icon-bar"></div>
-				</div>
-			</div>
-		</li>
-	</ul>
+		<div>
+
+		</div>
+
 	<?php
 		echo $frmProductSearch->getFieldHTML('keyword');
 		echo $frmProductSearch->getFieldHtml('category');
@@ -76,9 +80,6 @@
         echo $frmProductSearch->getExternalJS();
 	?>
 	</form>
-
-</div>
-
 <script>
 /* $(document).ready(function(){
 	if($('input[name="keyword"]').val() == ''){

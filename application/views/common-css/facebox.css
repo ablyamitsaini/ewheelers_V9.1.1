@@ -144,6 +144,8 @@
 
 #facebox .content.loginpopup {
   padding: 0;
+  max-height: none;
+  max-width: 450px;
 }
 
 #facebox .content>p:first-child {

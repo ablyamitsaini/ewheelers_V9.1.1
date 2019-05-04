@@ -33,11 +33,11 @@ class Collections extends MyAppModel
     const TYPE_BRAND_LAYOUT1 = 7;
 
     const LIMIT_PRODUCT_LAYOUT1 = 12;
-    const LIMIT_PRODUCT_LAYOUT2 = 4;
+    const LIMIT_PRODUCT_LAYOUT2 = 6;
     const LIMIT_PRODUCT_LAYOUT3 = 12;
     const LIMIT_CATEGORY_LAYOUT1 = 8;
-    const LIMIT_CATEGORY_LAYOUT2 = 3;
-    const LIMIT_SHOP_LAYOUT1= 2;
+    const LIMIT_CATEGORY_LAYOUT2 = 4;
+    const LIMIT_SHOP_LAYOUT1= 4;
     const LIMIT_BRAND_LAYOUT1 = 5;
 
     const COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH = 1;

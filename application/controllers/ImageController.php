@@ -434,15 +434,20 @@ class ImageController extends FatController
 
     function brandReal($recordId, $langId = 0, $sizeType = '', $afile_id = 0 )
     {
-        $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id, false);
+        $this->displayBrandLogo($recordId, $langId, $sizeType, $afile_id, false);
     }
-
+    
     function brand($recordId, $langId = 0, $sizeType = '', $afile_id = 0)
+    {
+        $this->displayBrandLogo($recordId, $langId, $sizeType, $afile_id);
+    }
+    
+    function brandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0 )
     {
         $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id);
     }
 
-    function displayBrandImage( $recordId, $langId = 0, $sizeType = '', $afile_id = 0 , $displayUniversalImage = true)
+    function displayBrandLogo( $recordId, $langId = 0, $sizeType = '', $afile_id = 0 , $displayUniversalImage = true)
     {
         $default_image = 'brand_deafult_image.jpg';
         $recordId = FatUtility::int($recordId);
@@ -460,26 +465,63 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch( strtoupper($sizeType) ){
-        case 'MINITHUMB':
-            $w = 42;
-            $h = 52;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'THUMB':
-            $w = 61;
-            $h = 61;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 150;
-            $h = 150;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 500;
-            $w = 500;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'MINITHUMB':
+                $w = 42;
+                $h = 52;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'THUMB':
+                $w = 61;
+                $h = 61;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'COLLECTION_PAGE':
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
+            case 'LISTING_PAGE':
+                $h = 530;
+                $w = 530;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 500;
+                $w = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+        }
+    }
+    
+    function displayBrandImage( $recordId, $langId = 0, $sizeType = '', $afile_id = 0 , $displayUniversalImage = true)
+    {
+        $default_image = 'brand_deafult_image.jpg';
+        $recordId = FatUtility::int($recordId);
+        $afile_id = FatUtility::int($afile_id);
+        $langId = FatUtility::int($langId);
+
+        if($afile_id > 0 ) {
+            $res = AttachedFile::getAttributesById($afile_id);
+            if(!false == $res && $res['afile_type'] == AttachedFile::FILETYPE_BRAND_IMAGE) {
+                $file_row = $res;
+            }
+        } else {
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_IMAGE, $recordId, 0, $langId, $displayUniversalImage);
+        }
+        $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
+
+        switch( strtoupper($sizeType) ){
+            case 'THUMB':
+                $w = 61;
+                $h = 61;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'COLLECTION_PAGE':
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
+            default:
+                $h = 246;
+                $w = 246;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
