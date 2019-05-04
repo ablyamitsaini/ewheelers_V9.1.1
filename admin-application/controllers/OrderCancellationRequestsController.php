@@ -210,7 +210,7 @@ class OrderCancellationRequestsController extends AdminBaseController
             }
         }
         $emailObj = new EmailHandler();
-        if(!$emailObj->SendOrderCancellationRequestUpdateNotification($row['ocrequest_id'], $this->adminLangId) ) {
+        if(!$emailObj->sendOrderCancellationRequestUpdateNotification($row['ocrequest_id'], $this->adminLangId) ) {
             Message::addErrorMessage(Labels::getLabel('LBL_Email_Sending_Error', $this->adminLangId). " " . $emailObj->getError());
             CommonHelper::redirectUserReferer();
         }

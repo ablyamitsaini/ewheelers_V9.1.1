@@ -1820,7 +1820,7 @@ class SellerProductsController extends AdminBaseController
 
         /* sending of email notification[ */
         $emailNotificationObj = new EmailHandler();
-        if(!$emailNotificationObj->SendCatalogRequestMessageNotification($scatrequestmsg_id, $this->adminLangId) ) {
+        if(!$emailNotificationObj->sendCatalogRequestMessageNotification($scatrequestmsg_id, $this->adminLangId) ) {
             Message::addErrorMessage($emailNotificationObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }

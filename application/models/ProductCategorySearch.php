@@ -3,42 +3,44 @@ class ProductCategorySearch extends SearchBase
 {
     private $langId;
 
-    function __construct( $langId = 0, $isActive = true, $isDeleted = true, $isOrderByCatCode = true, $doNotLimitRecords = true, $doNotCalculateRecords = true )
+    public function __construct($langId = 0, $isActive = true, $isDeleted = true, $isOrderByCatCode = true, $doNotLimitRecords = true, $doNotCalculateRecords = true)
     {
         parent::__construct(ProductCategory::DB_TBL, 'c');
         $this->langId = FatUtility::int($langId);
 
         if ($this->langId > 0) {
             $this->joinTable(
-                ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN',
+                ProductCategory::DB_LANG_TBL,
+                'LEFT OUTER JOIN',
                 'prodcatlang_prodcat_id = c.prodcat_id
-			AND prodcatlang_lang_id = ' . $langId, 'c_l'
+			AND prodcatlang_lang_id = ' . $langId,
+                'c_l'
             );
         }
         //$this->addMultipleFields( array('GETCATCODE(prodcat_id) AS prodcat_code') );
 
-        if($isActive ) {
+        if ($isActive) {
             $this->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE);
         }
 
-        if($isDeleted ) {
+        if ($isDeleted) {
             $this->addCondition('c.prodcat_deleted', '=', applicationConstants::NO);
         }
 
-        if($isOrderByCatCode ) {
+        if ($isOrderByCatCode) {
             $this->addOrder('c.prodcat_ordercode');
         }
 
-        if($doNotLimitRecords ) {
+        if ($doNotLimitRecords) {
             $this->doNotLimitRecords();
         }
 
-        if($doNotCalculateRecords ) {
+        if ($doNotCalculateRecords) {
             $this->doNotCalculateRecords();
         }
     }
 
-    public function setParent( $parentId = 0 )
+    public function setParent($parentId = 0)
     {
         $this->addCondition('prodcat_parent', '=', $parentId);
     }
@@ -70,4 +72,3 @@ class ProductCategorySearch extends SearchBase
     }
     */
 }
-?>

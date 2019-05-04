@@ -2,7 +2,7 @@
 class TransferbankPayController extends PaymentController
 {
     private $keyName="TransferBank";
-    
+
     public function charge($orderId)
     {
         $pmObj = new PaymentSettings($this->keyName);
@@ -13,22 +13,22 @@ class TransferbankPayController extends PaymentController
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
-        } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             $this->set('paymentAmount', $paymentAmount);
-        }else{
+        } else {
             $this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
         }
         $this->set('orderInfo', $orderInfo);
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
-        $this->_template->render(true, false);    
+        $this->_template->render(true, false);
     }
-    
-    public function send($orderId) 
+
+    public function send($orderId)
     {
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
@@ -43,17 +43,16 @@ class TransferbankPayController extends PaymentController
             $comment .= Labels::getLabel('MSG_PAYMENT_NOTE', $this->siteLangId);
             $orderPaymentObj->addOrderPaymentComments($comment);
             $json['redirect'] = CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId));
-        }else{
+        } else {
             $json['error'] = 'Invalid Request.';
         }
         echo json_encode($json);
     }
-    
+
     private function getPaymentForm($orderId)
     {
-        
         $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=> CommonHelper::generateUrl('TransferbankPay', 'send', array($orderId)), 'class' =>"form form--normal"));
-        
+
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
         $frm->addHtml('', 'htmlNote', Labels::getLabel('MSG_Bank_Transfer_Note', $this->siteLangId));
@@ -61,7 +60,7 @@ class TransferbankPayController extends PaymentController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Confirm_Order', $this->siteLangId), array('id'=>'button-confirm'));
         return $frm;
     }
-    
+
     /* public function charge_for_wallet($recharge_txn_id){
     $pmObj = new PPCPaymentsettings($this->keyName);
     if (!$paymentSettings = $pmObj->getPaymentSettings()){
@@ -79,15 +78,15 @@ class TransferbankPayController extends PaymentController
     $this->set('error', Utilities::getLabel('M_INVALID_ORDER_PAID_CANCELLED'));
     }
     $this->set('recharge_txn_info', $recharge_txn_info);
-    $this->_template->render(true,false);	
+    $this->_template->render(true,false);
     }
     */
-    
+
     /* public function send_wallet_recharge($recharge_txn_id) {
     Message::addMessage(Utilities::getLabel('M_transfer_fund_bank'));
-    Utilities::redirectUser(Utilities::generateUrl('account', 'credits'));	
+    Utilities::redirectUser(Utilities::generateUrl('account', 'credits'));
     } */
-    
+
     /* private function getWalletPaymentForm($recharge_txn_id){
     $frm=new Form('frmPaymentForm','frmPaymentForm');
     $frm->setRequiredStarWith('x');
@@ -106,5 +105,4 @@ class TransferbankPayController extends PaymentController
     $frm->setJsErrorDisplay('afterfield');
     return $frm;
     } */
-    
 }

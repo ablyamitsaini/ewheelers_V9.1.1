@@ -38,29 +38,31 @@ class Extrapage extends MyAppModel
     const SELLER_PRODUCT_INVENTORY_INSTRUCTIONS = 39;
     const PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS = 40;
 
-    CONST CONTENT_PAGES = 0;
-    CONST CONTENT_IMPORT_INSTRUCTION = 1;
+    const CONTENT_PAGES = 0;
+    const CONTENT_IMPORT_INSTRUCTION = 1;
 
-    CONST REWRITE_URL_PREFIX = 'custom/view/';
+    const REWRITE_URL_PREFIX = 'custom/view/';
 
-    public function __construct($epageId = 0) 
+    public function __construct($epageId = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $epageId);
     }
 
-    public static function getSearchObject($langId = 0, $isActive = true) 
+    public static function getSearchObject($langId = 0, $isActive = true)
     {
         $srch = new SearchBase(static::DB_TBL, 'ep');
 
-        if($langId > 0) {
+        if ($langId > 0) {
             $srch->joinTable(
-                static::DB_TBL_LANG, 'LEFT OUTER JOIN',
+                static::DB_TBL_LANG,
+                'LEFT OUTER JOIN',
                 'ep_l.'.static::DB_TBL_LANG_PREFIX.'epage_id = ep.'.static::tblFld('id').' and
-			ep_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId, 'ep_l'
+			ep_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId,
+                'ep_l'
             );
         }
 
-        if($isActive ) {
+        if ($isActive) {
             $srch->addCondition('epage_active', '=', applicationConstants::ACTIVE);
         }
 
@@ -70,7 +72,7 @@ class Extrapage extends MyAppModel
     public static function getContentBlockArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId < 1) {
+        if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
 
@@ -107,7 +109,8 @@ class Extrapage extends MyAppModel
         ); */
 
         if (!FatApp::getDb()->updateFromArray(
-            static::DB_TBL, $assignValues,
+            static::DB_TBL,
+            $assignValues,
             array('smt' => static::DB_TBL_PREFIX . 'id = ? ', 'vals' => array((int)$epage_id))
         )) {
             $this->error = FatApp::getDb()->getError();
@@ -123,9 +126,10 @@ class Extrapage extends MyAppModel
         return true;
     }
 
-    public function getContentByPageType($pageType = '',$langId = 0)
+    public function getContentByPageType($pageType = '', $langId = 0)
     {
-        if($pageType == '') { return;
+        if ($pageType == '') {
+            return;
         }
         $langId = FatUtility::int($langId);
 
@@ -140,7 +144,7 @@ class Extrapage extends MyAppModel
     public static function getContentBlockArrWithBg($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId < 1) {
+        if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
 

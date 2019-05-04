@@ -1,11 +1,11 @@
 <?php
 class ReportsController extends LoggedUserController
 {
-    public function __construct( $action )
+    public function __construct($action)
     {
         parent::__construct($action);
         $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
         $this->set('bodyClass', 'is--dashboard');
@@ -13,18 +13,18 @@ class ReportsController extends LoggedUserController
 
     public function index()
     {
-        if(User::isSeller()) {
+        if (User::isSeller()) {
             FatApp::redirectUser(CommonHelper::generateUrl('seller'));
-        }else if(User::isBuyer()) {
+        } elseif (User::isBuyer()) {
             FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-        }else{
+        } else {
             FatApp::redirectUser(CommonHelper::generateUrl(''));
         }
     }
 
     public function productsPerformance()
     {
-        if(!User::canAccessSupplierDashboard() || !User::isSellerVerified(UserAuthentication::getLoggedUserId())) {
+        if (!User::canAccessSupplierDashboard() || !User::isSellerVerified(UserAuthentication::getLoggedUserId())) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
         $srchFrm = $this->getProdPerformanceSrchForm();
@@ -32,9 +32,9 @@ class ReportsController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function searchProductsPerformance( $topPerformed = 0, $export = "" )
+    public function searchProductsPerformance($topPerformed = 0, $export = "")
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -48,7 +48,7 @@ class ReportsController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $shopDetails = Shop::getAttributesByUserId($userId, array('shop_id'), false);
 
-        if(!$shopDetails ) {
+        if (!$shopDetails) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -73,45 +73,46 @@ class ReportsController extends LoggedUserController
         $srch->addMultipleFields(array( 'op_selprod_title', 'op_product_name', 'op_selprod_options', 'op_brand_name', 'SUM(op_refund_qty) as totRefundQty', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'op.op_selprod_id', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlist_user_counts' ));
         $srch->addGroupBy('op.op_selprod_id');
         $srch->addGroupBy('op.op_is_batch');
-        if($topPerformed) {
+        if ($topPerformed) {
             $srch->addOrder('totSoldQty', 'desc');
             $srch->addHaving('totSoldQty', '>', 0);
-        }else{
+        } else {
             $srch->addOrder('totRefundQty', 'desc');
             $srch->addHaving('totRefundQty', '>', 0);
         }
 
-        if($export == "export" ) {
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $sheetData = array();
             $arr = array( Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title', $this->siteLangId), Labels::getLabel('LBL_Options', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_WishList_User_Counts', $this->siteLangId));
-            if($topPerformed) {
+            if ($topPerformed) {
                 array_push($arr, Labels::getLabel('LBL_Sold_Quantity', $this->siteLangId));
-            }else{
+            } else {
                 array_push($arr, Labels::getLabel('LBL_Refund_Quantity', $this->siteLangId));
             }
 
             array_push($sheetData, $arr);
-            while( $row = FatApp::getDb()->fetch($rs) ){
+            while ($row = FatApp::getDb()->fetch($rs)) {
                 $arr = array( $row['op_product_name'], $row['op_selprod_title'], $row['op_selprod_options'],  $row['op_brand_name'], $row['wishlist_user_counts'] );
 
-                if($topPerformed) {
+                if ($topPerformed) {
                     array_push($arr, $row['totSoldQty']);
-                }else{
+                } else {
                     array_push($arr, $row['totRefundQty']);
                 }
 
                 array_push($sheetData, $arr);
             }
             $csvName = '';
-            if($topPerformed) {
+            if ($topPerformed) {
                 $csvName = Labels::getLabel('LBL_Top_Performing_Products_Report', $this->siteLangId).date("Y-m-d").'.csv';
             } else {
                 $csvName = Labels::getLabel('LBL_Most_Refunded_Products_Report', $this->siteLangId).date("Y-m-d").'.csv';
             }
-            CommonHelper::convertToCsv($sheetData, $csvName, ','); exit;
+            CommonHelper::convertToCsv($sheetData, $csvName, ',');
+            exit;
         } else {
             $srch->setPageNumber($page);
             $srch->setPageSize($pageSize);
@@ -127,9 +128,9 @@ class ReportsController extends LoggedUserController
         }
     }
 
-    public function searchMostWishListAddedProducts( $export = "" )
+    public function searchMostWishListAddedProducts($export = "")
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -142,7 +143,7 @@ class ReportsController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $shopDetails = Shop::getAttributesByUserId($userId, array('shop_id'), false);
 
-        if(!$shopDetails ) {
+        if (!$shopDetails) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -172,18 +173,19 @@ class ReportsController extends LoggedUserController
         $srch->addOrder('wishlist_user_counts', 'DESC');
         $srch->addMultipleFields(array('selprod_id', 'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_active', 'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(tquwl.wishlist_user_counts, 0) as wishlist_user_counts'));
 
-        if($export == "export" ) {
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $sheetData = array();
             $arr = array( Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_User_Counts', $this->siteLangId));
             array_push($sheetData, $arr);
-            while( $row = FatApp::getDb()->fetch($rs) ){
+            while ($row = FatApp::getDb()->fetch($rs)) {
                 $arr = array( $row['product_name'], $row['selprod_title'], $row['brand_name'], $row['wishlist_user_counts'] );
                 array_push($sheetData, $arr);
             }
-            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Most_Favorites_Products_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
+            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Most_Favorites_Products_Report', $this->siteLangId).date("Y-m-d").'.csv', ',');
+            exit;
         } else {
             $srch->setPageNumber($page);
             $srch->setPageSize($pageSize);
@@ -205,14 +207,14 @@ class ReportsController extends LoggedUserController
         $this->searchMostWishListAddedProducts("export");
     }
 
-    public function exportProductPerformance( $orderBy = 'DESC' )
+    public function exportProductPerformance($orderBy = 'DESC')
     {
         $this->searchProductsPerformance($orderBy, "export");
     }
 
     public function productsInventory()
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
         $frmSrch = $this->getProductInventorySearchForm($this->siteLangId);
@@ -220,16 +222,16 @@ class ReportsController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function searchProductsInventory( $export = "" )
+    public function searchProductsInventory($export = "")
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
         $post = FatApp::getPostedData();
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE');
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 0);
-        if($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -249,24 +251,25 @@ class ReportsController extends LoggedUserController
             'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'b_l.brand_name')
         );
 
-        if($keyword = FatApp::getPostedData('keyword')) {
+        if ($keyword = FatApp::getPostedData('keyword')) {
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', "%$keyword%");
             $cnd->attachCondition('brand_name', 'LIKE', "%$keyword%");
         }
 
-        if($export == "export" ) {
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $sheetData = array();
             $arr = array(Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Custom_Title(If_Any)', $this->siteLangId), Labels::getLabel('LBL_Product_SKU', $this->siteLangId), Labels::getLabel('LBL_Brand', $this->siteLangId), Labels::getLabel('LBL_Stock_Quantity', $this->siteLangId));
             array_push($sheetData, $arr);
-            while( $row = FatApp::getDb()->fetch($rs) ){
+            while ($row = FatApp::getDb()->fetch($rs)) {
                 $arr = array( $row['product_name'], $row['selprod_title'], $row['selprod_sku'], $row['brand_name'], $row['selprod_stock'] );
                 array_push($sheetData, $arr);
             }
-            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
+            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ',');
+            exit;
         } else {
             $srch->setPageNumber($page);
             $srch->setPageSize($pageSize);
@@ -289,7 +292,7 @@ class ReportsController extends LoggedUserController
 
     public function productsInventoryStockStatus()
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
         $frmSrch = $this->getProductInventoryStockStatusSearchForm($this->siteLangId);
@@ -297,16 +300,16 @@ class ReportsController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function searchProductsInventoryStockStatus( $export = "" )
+    public function searchProductsInventoryStockStatus($export = "")
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
         $post = FatApp::getPostedData();
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE');
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 0);
-        if($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
 
@@ -341,13 +344,13 @@ class ReportsController extends LoggedUserController
             'b_l.brand_name', 'IFNULL(qryop.stock_on_order, 0) as stock_on_order')
         );
 
-        if($keyword = FatApp::getPostedData('keyword') ) {
+        if ($keyword = FatApp::getPostedData('keyword')) {
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', "%$keyword%");
             $cnd->attachCondition('brand_name', 'LIKE', "%$keyword%");
         }
 
-        if($export == "export" ) {
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
@@ -358,7 +361,8 @@ class ReportsController extends LoggedUserController
             $arr = array( $row['product_name'], $row['selprod_title'], $row['brand_name'], $row['selprod_stock'] );
             array_push($sheetData,$arr);
             } */
-            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
+            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Products_Inventory_Report', $this->siteLangId).date("Y-m-d").'.csv', ',');
+            exit;
         } else {
             $srch->setPageNumber($page);
             $srch->setPageSize($pageSize);
@@ -379,7 +383,7 @@ class ReportsController extends LoggedUserController
         $this->searchProductsInventoryStockStatus("export");
     }
 
-    private function getProductInventorySearchForm( $langId )
+    private function getProductInventorySearchForm($langId)
     {
         $frm = new Form('frmProductInventorySrch');
         $frm->addTextBox('', 'keyword', '');
@@ -390,7 +394,7 @@ class ReportsController extends LoggedUserController
         return $frm;
     }
 
-    private function getProductInventoryStockStatusSearchForm( $langId )
+    private function getProductInventoryStockStatusSearchForm($langId)
     {
         $frm = new Form('frmProductInventoryStockStatusSrch');
         $frm->addTextBox('', 'keyword', '');
@@ -411,7 +415,7 @@ class ReportsController extends LoggedUserController
 
     public function salesReport($orderDate = '')
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
         $frmSrch = $this->getSalesReportSearchForm($orderDate);
@@ -420,9 +424,9 @@ class ReportsController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function searchSalesReport( $export = "" )
+    public function searchSalesReport($export = "")
     {
-        if(!User::canAccessSupplierDashboard() ) {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -433,20 +437,20 @@ class ReportsController extends LoggedUserController
 
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE');
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 0);
-        if($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $srch = Report::salesReportObject();
-        if (empty($orderDate) ) {
+        if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
-            if (!empty($date_from) ) {
+            if (!empty($date_from)) {
                 $srch->addCondition('o.order_date_added', '>=', $date_from. ' 00:00:00');
             }
 
             $date_to = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
-            if (!empty($date_to) ) {
+            if (!empty($date_to)) {
                 $srch->addCondition('o.order_date_added', '<=', $date_to. ' 23:59:59');
             }
             $srch->addGroupBy('DATE(o.order_date_added)');
@@ -460,33 +464,34 @@ class ReportsController extends LoggedUserController
         $srch->addCondition('op_selprod_user_id', '=', $loggedUserId);
 
         $srch->addOrder('order_date', 'desc');
-        
-        if($export == "export" ) {
+
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $sheetData = array();
-            if (empty($orderDate) ) {
+            if (empty($orderDate)) {
                 $arr = array(Labels::getLabel('LBL_Date', $this->siteLangId), Labels::getLabel('LBL_No._of_Orders', $this->siteLangId), Labels::getLabel('LBL_No._of_Qty', $this->siteLangId), Labels::getLabel('LBL_Refunded_Qty', $this->siteLangId), Labels::getLabel('LBL_Inventory_Value', $this->siteLangId), Labels::getLabel('LBL_Order_Net_Amount', $this->siteLangId), Labels::getLabel('LBL_Tax_Charged', $this->siteLangId), Labels::getLabel('LBL_Shipping_Charges', $this->siteLangId), Labels::getLabel('LBL_Refunded_Amount', $this->siteLangId), Labels::getLabel('LBL_Sales_Earnings', $this->siteLangId));
-            }else{
+            } else {
                 $arr = array(Labels::getLabel('LBL_Invoice_Number', $this->siteLangId), Labels::getLabel('LBL_No._of_Qty', $this->siteLangId), Labels::getLabel('LBL_Refunded_Qty', $this->siteLangId), Labels::getLabel('LBL_Inventory_Value', $this->siteLangId), Labels::getLabel('LBL_Order_Net_Amount', $this->siteLangId), Labels::getLabel('LBL_Tax_Charged', $this->siteLangId), Labels::getLabel('LBL_Shipping_Charges', $this->siteLangId), Labels::getLabel('LBL_Refunded_Amount', $this->siteLangId), Labels::getLabel('LBL_Sales_Earnings', $this->siteLangId));
             }
 
             array_push($sheetData, $arr);
-            if (empty($orderDate) ) {
-                while( $row = FatApp::getDb()->fetch($rs) ){
+            if (empty($orderDate)) {
+                while ($row = FatApp::getDb()->fetch($rs)) {
                     $arr = array( $row['order_date'], $row['totOrders'], $row['totQtys'], $row['totRefundedQtys'], $row['inventoryValue'], $row['orderNetAmount'], $row['taxTotal'], $row['shippingTotal'], $row['totalRefundedAmount'], $row['totalSalesEarnings'] );
                     array_push($sheetData, $arr);
                 }
-            }else{
-                while( $row = FatApp::getDb()->fetch($rs) ){
+            } else {
+                while ($row = FatApp::getDb()->fetch($rs)) {
                     $arr = array( $row['op_invoice_number'], $row['totQtys'], $row['totRefundedQtys'], $row['inventoryValue'], $row['orderNetAmount'], $row['taxTotal'], $row['shippingTotal'], $row['totalRefundedAmount'], $row['totalSalesEarnings'] );
                     array_push($sheetData, $arr);
                 }
             }
 
 
-            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Sales_Report', $this->siteLangId).date("Y-m-d").'.csv', ','); exit;
+            CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Sales_Report', $this->siteLangId).date("Y-m-d").'.csv', ',');
+            exit;
         } else {
             $srch->setPageNumber($page);
             $srch->setPageSize($pageSize);
@@ -512,7 +517,7 @@ class ReportsController extends LoggedUserController
         $frm = new Form('frmSalesReportSrch');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'orderDate', $orderDate);
-        if(empty($orderDate)) {
+        if (empty($orderDate)) {
             $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender' ));
             $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender'));
             $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->siteLangId));
@@ -521,7 +526,4 @@ class ReportsController extends LoggedUserController
         }
         return $frm;
     }
-
-
 }
-?>

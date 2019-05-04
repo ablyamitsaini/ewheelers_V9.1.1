@@ -116,7 +116,7 @@ class UserGdprRequestsController extends AdminBaseController
         }
         
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->GdprRequestStatusUpdate($post['reqId'], $this->adminLangId)) {
+        if (!$emailNotificationObj->gdprRequestStatusUpdate($post['reqId'], $this->adminLangId)) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -202,7 +202,7 @@ class UserGdprRequestsController extends AdminBaseController
         }
         
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->GdprRequestStatusUpdate($post['reqId'], $this->adminLangId)) {
+        if (!$emailNotificationObj->gdprRequestStatusUpdate($post['reqId'], $this->adminLangId)) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }

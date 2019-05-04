@@ -3,14 +3,12 @@ require_once CONF_INSTALLATION_PATH . 'library/braintree/Braintree.php';
 
 class BraintreePayController extends PaymentController
 {
-
     const ENVOIRMENT_LIVE = 'live';
     const ENVOIRMENT_SANDBOX = 'sandbox';
 
-    private
-    $keyName = "Braintree",
-    $error = false,
-    $paymentSettings = false;
+    private $keyName = "Braintree";
+    private $error = false;
+    private $paymentSettings = false;
     private $currenciesAccepted = array(
                                     'United Arab Emirates Dirham' => 'AED',
                                     'Armenian Dram' => 'AMD',
@@ -151,14 +149,14 @@ class BraintreePayController extends PaymentController
 
     public function charge($orderId)
     {
-        if(empty(trim($orderId)) ) {
+        if (empty(trim($orderId))) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
         $clientToken = $this->getClientToken();
 
-        if(!$clientToken) {
+        if (!$clientToken) {
             Message::addErrorMessage(Labels::getLabel('BRAINTREE_INVALID_PAYMENT_GATEWAY_SETUP_ERROR', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -168,35 +166,35 @@ class BraintreePayController extends PaymentController
         $payableAmount = $this->formatPayableAmount($paymentAmount);
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
 
-        if(!in_array(strtoupper($orderInfo["order_currency_code"]), $this->currenciesAccepted)) {
+        if (!in_array(strtoupper($orderInfo["order_currency_code"]), $this->currenciesAccepted)) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWithErrorCode(404);
         }
         $currencyCode = '';
-        if (count($orderInfo) < 1 || ( count($orderInfo) > 1 && $orderInfo["order_is_paid"] != Orders::ORDER_IS_PENDING ) ) {
+        if (count($orderInfo) < 1 || (count($orderInfo) > 1 && $orderInfo["order_is_paid"] != Orders::ORDER_IS_PENDING)) {
             $this->error = Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId);
-        }else{
+        } else {
             $currencyCode = strtolower($orderInfo["order_currency_code"]);
             $checkPayment = $this->doPayment($payableAmount, $orderInfo);
             $frm=$this->getPaymentForm($orderId);
             $this->set('frm', $frm);
-            if($checkPayment) {
+            if ($checkPayment) {
                 $this->set('success', true);
             }
         }
 
-        $this->set('paymentAmount',  $paymentAmount);
+        $this->set('paymentAmount', $paymentAmount);
         $this->set('orderInfo', $orderInfo);
-        if($this->error) {
+        if ($this->error) {
             $this->set('error', $this->error);
         }
 
         $cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
-        if($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE ) {
+        if ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
             $cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
         }
 
@@ -214,12 +212,14 @@ class BraintreePayController extends PaymentController
     {
         $post = FatApp::getPostedData();
         $res=CommonHelper::validate_cc_number($post['cc']);
-        echo json_encode($res); exit;
+        echo json_encode($res);
+        exit;
     }
 
     private function formatPayableAmount($amount = null)
     {
-        if($amount == null) { return false; 
+        if ($amount == null) {
+            return false;
         }
         $amount = number_format($amount, 2, '.', '');
         return $amount*100;
@@ -243,7 +243,7 @@ class BraintreePayController extends PaymentController
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         $this->paymentSettings = $this->getPaymentSettings();
-        if($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null ) {
+        if ($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null) {
             return false;
         }
         $checkPayment = false;
@@ -252,7 +252,7 @@ class BraintreePayController extends PaymentController
                 if (!isset($_POST['paymentMethodNonce'])) {
                     throw new Exception("The paymentMethod Nonce was not generated correctly");
                 } else {
-                    if(!$this->getClientToken()) {
+                    if (!$this->getClientToken()) {
                         Message::addErrorMessage(Labels::getLabel('BRAINTREE_INVALID_PAYMENT_GATEWAY_SETUP_ERROR', $this->siteLangId));
                         CommonHelper::redirectUserReferer();
                     }
@@ -263,17 +263,16 @@ class BraintreePayController extends PaymentController
                                     'options' => [
                                         'submitForSettlement' => true
                                     ]
-                                ) 
+                                )
                     );
 
                     $charge = (array)$charge;
 
-                    if(isset($charge['success'])) {
+                    if (isset($charge['success'])) {
                         $message = '';
                         $orderPaymentObj = new OrderPayment($orderInfo['id']);
 
-                        if($charge['success'] || ( isset($charge['transaction']) && !is_null($charge['transaction']) ) ) {
-
+                        if ($charge['success'] || (isset($charge['transaction']) && !is_null($charge['transaction']))) {
                             $message .= 'Id: '.(string)$charge['transaction']->_attributes['id']. "&";
                             $message .= 'Object: '.(string)$charge['transaction']. "&";
                             $message .= 'Amount: '.(string)$charge['transaction']->_attributes['amount']. "&";
@@ -286,7 +285,7 @@ class BraintreePayController extends PaymentController
                             $checkPayment = true;
 
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderInfo['id'])));
-                        }else{
+                        } else {
                             $orderPaymentObj->addOrderPaymentComments($message);
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
                         }
@@ -301,9 +300,9 @@ class BraintreePayController extends PaymentController
 
     private function getClientToken()
     {
-        try{
+        try {
             $this->paymentSettings = $this->getPaymentSettings();
-            if(!isset($this->paymentSettings['private_key']) || !isset($this->paymentSettings['public_key']) || !isset($this->paymentSettings['merchant_id'])) {
+            if (!isset($this->paymentSettings['private_key']) || !isset($this->paymentSettings['public_key']) || !isset($this->paymentSettings['merchant_id'])) {
                 return false;
             }
             $envoirment = (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true)? static::ENVOIRMENT_LIVE : static::ENVOIRMENT_SANDBOX;
@@ -313,12 +312,9 @@ class BraintreePayController extends PaymentController
             Braintree_Configuration::publicKey($this->paymentSettings['public_key']);
             Braintree_Configuration::privateKey($this->paymentSettings['private_key']);
             return Braintree_ClientToken::generate();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             // return $e->getMessage();
             return false;
         }
-
     }
-
 }

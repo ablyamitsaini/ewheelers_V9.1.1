@@ -45,7 +45,7 @@ class CollectionsController extends MyAppController
         $data = FatApp::getPostedData();
         $collection_id = FatUtility::int($data['collection_id']);
         $loggedUserId = 0;
-        if(UserAuthentication::isUserLogged() ) {
+        if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
         $collection = Collections::getAttributesById($collection_id);
@@ -77,10 +77,10 @@ class CollectionsController extends MyAppController
         // $productSrchObj->setPageSize(10);
 
         /* $productSrchObj->joinFavouriteProducts($loggedUserId ); */
-        if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+        if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
             $productSrchObj->joinFavouriteProducts($loggedUserId);
             $productSrchObj->addFld('ufp_id');
-        }else{
+        } else {
             $productSrchObj->joinUserWishListProducts($loggedUserId);
             $productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
@@ -99,7 +99,7 @@ class CollectionsController extends MyAppController
         $productCatSrchObj->doNotLimitRecords();
         $productCatSrchObj->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_content_block'));
 
-        switch( $collection['collection_type'] ){
+        switch ($collection['collection_type']) {
         case Collections::COLLECTION_TYPE_PRODUCT:
             $tempObj = clone $collectionObj;
             $tempObj->joinCollectionProducts();
@@ -109,16 +109,16 @@ class CollectionsController extends MyAppController
             $tempObj->addCondition('ctsp_selprod_id', '!=', 'NULL');
             $rs = $tempObj->getResultSet();
 
-            if(!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id') ) {
+            if (!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id')) {
                 continue;
             }
 
             /* fetch Products data[ */
             $orderBy = 'ASC';
-            if($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH ) {
+            if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH) {
                 $orderBy = 'ASC';
             }
-            if($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW ) {
+            if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW) {
                 $orderBy = 'DESC';
             }
             $productSrchTempObj = clone $productSrchObj;
@@ -152,7 +152,7 @@ class CollectionsController extends MyAppController
             $tempObj->setPageSize($collection['collection_primary_records']);
             $rs = $tempObj->getResultSet();
 
-            if(!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id') ) {
+            if (!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id')) {
                 continue;
             }
 
@@ -164,8 +164,8 @@ class CollectionsController extends MyAppController
             $collections =  $db->fetchAll($rs);
             /* ] */
 
-            if($collections ) {
-                foreach( $collections as &$cat ){
+            if ($collections) {
+                foreach ($collections as &$cat) {
                     $cat['children'] = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $cat['prodcat_id']);
                 }
             }
@@ -186,8 +186,7 @@ class CollectionsController extends MyAppController
             $tempObj->addCondition('ctps_shop_id', '!=', 'NULL');
             $tempObj->setPageSize($collection['collection_primary_records']);
             $rs = $tempObj->getResultSet();
-            if(!$shopIds = $db->fetchAll($rs, 'ctps_shop_id') ) {
-
+            if (!$shopIds = $db->fetchAll($rs, 'ctps_shop_id')) {
                 continue;
             }
             $shopObj = clone $shopSearchObj;
@@ -203,7 +202,7 @@ class CollectionsController extends MyAppController
 
             $totalProdCountToDisplay = 3;
 
-            foreach($collections as $val){
+            foreach ($collections as $val) {
                 $prodSrch = clone $productSrchObj;
                 $prodSrch->addOrder('in_stock', 'DESC');
                 $prodSrch->addCondition('selprod_deleted', '=', applicationConstants::NO);

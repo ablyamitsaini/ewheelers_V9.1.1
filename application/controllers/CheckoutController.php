@@ -3,16 +3,16 @@ class CheckoutController extends MyAppController
 {
     private $cartObj;
 
-    public function __construct($action) 
+    public function __construct($action)
     {
         parent::__construct($action);
         $user_id = 0;
-        if(UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) {
+        if (UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) {
             $user_is_buyer = User::getAttributesById(UserAuthentication::getLoggedUserId(), 'user_is_buyer');
-            if(!$user_is_buyer ) {
+            if (!$user_is_buyer) {
                 $errMsg = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->siteLangId);
                 Message::addErrorMessage($errMsg);
-                if (FatUtility::isAjaxCall() ) {
+                if (FatUtility::isAjaxCall()) {
                     FatUtility::dieWithError(Message::getHtml());
                 }
                 FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
@@ -23,21 +23,22 @@ class CheckoutController extends MyAppController
         $this->set('exculdeMainHeaderDiv', true);
     }
 
-    private function isEligibleForNextStep( &$criteria = array())
+    private function isEligibleForNextStep(&$criteria = array())
     {
-        if(empty($criteria) ) { return true; 
+        if (empty($criteria)) {
+            return true;
         }
-        foreach( $criteria as $key => $val ) {
-            switch( $key ) {
+        foreach ($criteria as $key => $val) {
+            switch ($key) {
             case 'isUserLogged':
-                if(!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
+                if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
                     $key = false;
                     Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
                     return false;
                 }
                 break;
             case 'hasProducts':
-                if(!$this->cartObj->hasProducts() ) {
+                if (!$this->cartObj->hasProducts()) {
                     $key = false;
                     Message::addErrorMessage(Labels::getLabel('MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', $this->siteLangId));
                     return false;
@@ -60,7 +61,7 @@ class CheckoutController extends MyAppController
                 $cartProducts = $this->cartObj->getProducts($this->siteLangId);
                 //CommonHelper::printArray($cartProducts); exit;
                 foreach ($cartProducts as $product) {
-                    if (!$product['in_stock'] ) {
+                    if (!$product['in_stock']) {
                         $stock = false;
                         $key = false;
                         Message::addErrorMessage(Labels::getLabel('MSG_Products_are_out_of_stock', $this->siteLangId));
@@ -68,25 +69,25 @@ class CheckoutController extends MyAppController
                         break;
                     }
 
-                    if($product['is_batch'] && !empty($product['products'])) {
-                        foreach( $product['products'] as $pgproduct ){
+                    if ($product['is_batch'] && !empty($product['products'])) {
+                        foreach ($product['products'] as $pgproduct) {
                             $tempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id']);
                             $availableStock = $pgproduct['selprod_stock'] - $tempHoldStock;
                             $userTempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id'], $cart_user_id, $product['prodgroup_id'], true);
-                            if($availableStock < ( $product['quantity'] - $userTempHoldStock)) {
+                            if ($availableStock < ($product['quantity'] - $userTempHoldStock)) {
                                 $key = false;
-                                $productName = ( isset($pgproduct['selprod_title']) && $pgproduct['selprod_title'] != '' ) ? $pgproduct['selprod_title'] : $pgproduct['name'];
+                                $productName = (isset($pgproduct['selprod_title']) && $pgproduct['selprod_title'] != '') ? $pgproduct['selprod_title'] : $pgproduct['name'];
                                 Message::addErrorMessage(str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)));
                                 return false;
                             }
                         }
-                    }else{
+                    } else {
                         $tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
                         $availableStock = $product['selprod_stock'] - $tempHoldStock;
                         $userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'], $cart_user_id, 0, true);
-                        if($availableStock < ( $product['quantity'] - $userTempHoldStock)) {
+                        if ($availableStock < ($product['quantity'] - $userTempHoldStock)) {
                             $key = false;
-                            $productName = ( isset($product['selprod_title']) && $product['selprod_title'] != '' ) ? $product['selprod_title'] : $product['name'];
+                            $productName = (isset($product['selprod_title']) && $product['selprod_title'] != '') ? $product['selprod_title'] : $product['name'];
                             Message::addErrorMessage(str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)));
                             return false;
                         }
@@ -116,21 +117,21 @@ class CheckoutController extends MyAppController
                 }
                 break;
             case 'hasBillingAddress':
-                if(!$this->cartObj->getCartBillingAddress() ) {
+                if (!$this->cartObj->getCartBillingAddress()) {
                     $key = false;
                     Message::addErrorMessage(Labels::getLabel('MSG_Billing_Address_is_not_provided.', $this->siteLangId));
                     return false;
                 }
                 break;
             case 'hasShippingAddress':
-                if(!$this->cartObj->getCartShippingAddress() ) {
+                if (!$this->cartObj->getCartShippingAddress()) {
                     $key = false;
                     Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Address_is_not_provided.', $this->siteLangId));
                     return false;
                 }
                 break;
             case 'isProductShippingMethodSet':
-                if(!$this->cartObj->isProductShippingMethodSet() ) {
+                if (!$this->cartObj->isProductShippingMethodSet()) {
                     $key = false;
                     Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
                     return false;
@@ -141,22 +142,22 @@ class CheckoutController extends MyAppController
         return true;
     }
 
-    public function index($appParam = '',$appLang = '1',$appCurrency = '1')
+    public function index($appParam = '', $appLang = '1', $appCurrency = '1')
     {
         if ($appParam == 'api') {
             $langId =  FatUtility::int($appLang);
-            if(0 < $langId ) {
+            if (0 < $langId) {
                 $languages = Language::getAllNames();
-                if(array_key_exists($langId, $languages)) {
+                if (array_key_exists($langId, $languages)) {
                     setcookie('defaultSiteLang', $langId, time()+3600*24*10, CONF_WEBROOT_URL);
                 }
             }
 
             $currencyId =  FatUtility::int($appCurrency);
             $currencyObj = new Currency();
-            if(0 < $currencyId ) {
+            if (0 < $currencyId) {
                 $currencies = Currency::getCurrencyAssoc($this->siteLangId);
-                if(array_key_exists($currencyId, $currencies)) {
+                if (array_key_exists($currencyId, $currencies)) {
                     setcookie('defaultSiteCurrency', $currencyId, time()+3600*24*10, CONF_WEBROOT_URL);
                 }
             }
@@ -165,11 +166,11 @@ class CheckoutController extends MyAppController
         }
 
         $criteria = array('hasProducts' => true, 'hasStock' => true);
-        if(!$this->isEligibleForNextStep($criteria) ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
             FatApp::redirectUser(CommonHelper::generateUrl('cart'));
         }
         $cartHasPhysicalProduct = false;
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
 
@@ -207,7 +208,7 @@ class CheckoutController extends MyAppController
         $cPageSrch = ContentPage::getSearchObject($this->siteLangId);
         $cPageSrch->addCondition('cpage_id', '=', FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE', FatUtility::VAR_INT, 0));
         $cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
-        if(!empty($cpage) && is_array($cpage)) {
+        if (!empty($cpage) && is_array($cpage)) {
             $termsAndConditionsLinkHref = CommonHelper::generateUrl('Cms', 'view', array($cpage['cpage_id']));
         } else {
             $termsAndConditionsLinkHref = 'javascript:void(0)';
@@ -232,7 +233,7 @@ class CheckoutController extends MyAppController
     {
         $criteria = array( 'isUserLogged' => true );
         $cartObj = new Cart();
-        if(!$this->isEligibleForNextStep($criteria) ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
             $this->set('redirectUrl', CommonHelper::generateUrl('GuestUser', 'LoginForm'));
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
@@ -242,11 +243,11 @@ class CheckoutController extends MyAppController
         $addresses = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId);
 
         $cartHasPhysicalProduct = false;
-        if($cartObj->hasPhysicalProduct() ) {
+        if ($cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
         $cart_products = $this->cartObj->getProducts($this->siteLangId);
-        if(count($cart_products)==0) {
+        if (count($cart_products)==0) {
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -275,7 +276,7 @@ class CheckoutController extends MyAppController
         $hasPhysicalProduct = $this->cartObj->hasPhysicalProduct();
 
         $this->set('hasPhysicalProduct', $hasPhysicalProduct);
-        if(!$hasPhysicalProduct) {
+        if (!$hasPhysicalProduct) {
             $selected_billing_address_id = $cartObj->getCartBillingAddress();
             $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_billing_address_id);
         }
@@ -285,7 +286,7 @@ class CheckoutController extends MyAppController
 
     public function setUpAddressSelection()
     {
-        if(!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
+        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             $this->set('redirectUrl', CommonHelper::generateUrl('GuestUser', 'LoginForm'));
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
@@ -302,7 +303,7 @@ class CheckoutController extends MyAppController
         $hasProducts = $this->cartObj->hasProducts();
         $hasStock = $this->cartObj->hasStock();
 
-        if ((!$hasProducts) || ( !$hasStock ) ) {
+        if ((!$hasProducts) || (!$hasStock)) {
             $this->set('redirectUrl', CommonHelper::generateUrl('cart'));
             Message::addErrorMessage(Labels::getLabel('MSG_Cart_seems_to_be_empty_or_products_are_out_of_stock', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
@@ -310,12 +311,12 @@ class CheckoutController extends MyAppController
 
         $hasPhysicalProduct = $this->cartObj->hasPhysicalProduct();
 
-        if(!$billing_address_id ) {
+        if (!$billing_address_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Please_select_Billing_address', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if($hasPhysicalProduct && !$shipping_address_id ) {
+        if ($hasPhysicalProduct && !$shipping_address_id) {
             $this->set('loadAddressDiv', true);
             /* $this->set( 'msg', Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId) );
             $this->_template->render(false, false, 'json-success.php'); */
@@ -325,7 +326,7 @@ class CheckoutController extends MyAppController
 
         /* setup billing address[ */
         $BillingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $billing_address_id);
-        if(!$BillingAddressDetail ) {
+        if (!$BillingAddressDetail) {
             Message::addErrorMessage(Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -333,20 +334,20 @@ class CheckoutController extends MyAppController
 
         /* ] */
 
-        if($hasPhysicalProduct && $shipping_address_id ) {
-            if($isShippingSameAsBilling ) {
+        if ($hasPhysicalProduct && $shipping_address_id) {
+            if ($isShippingSameAsBilling) {
                 $this->cartObj->setShippingAddressSameAsBilling();
                 $shipping_address_id = $billing_address_id;
             }
             $ShippingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $shipping_address_id);
-            if(!$ShippingAddressDetail ) {
+            if (!$ShippingAddressDetail) {
                 Message::addErrorMessage(Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $this->cartObj->setCartShippingAddress($ShippingAddressDetail['ua_id']);
         }
 
-        if(!$isShippingSameAsBilling ) {
+        if (!$isShippingSameAsBilling) {
             $this->cartObj->unSetShippingAddressSameAsBilling();
         }
         $this->cartObj->removeProductShippingMethod();
@@ -359,10 +360,10 @@ class CheckoutController extends MyAppController
     $criteria = array( 'isUserLogged' => true, 'hasBillingAddress' => true, 'hasShippingAddress' => true );
     if( !$this->isEligibleForNextStep( $criteria ) ){
     if( Message::getErrorCount() ){
-				$errMsg = Message::getHtml();
+                $errMsg = Message::getHtml();
     } else {
-				Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
-				$errMsg = Message::getHtml();
+                Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
+                $errMsg = Message::getHtml();
     }
     FatUtility::dieWithError( $errMsg );
     }
@@ -378,8 +379,8 @@ class CheckoutController extends MyAppController
     public function shippingSummary()
     {
         $criteria = array( 'isUserLogged' => true );
-        if(!$this->isEligibleForNextStep($criteria) ) {
-            if(Message::getErrorCount() ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
+            if (Message::getErrorCount()) {
                 $errMsg = Message::getHtml();
             } else {
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
@@ -414,12 +415,11 @@ class CheckoutController extends MyAppController
         $shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 
         /* ] */
-        foreach($cart_products as $cartkey=>$cartval)
-        {
+        foreach ($cart_products as $cartkey=>$cartval) {
             $cart_products[$cartkey]['pship_id']= 0;
             $shipBy = 0;
 
-            if($cart_products[$cartkey]['psbs_user_id']) {
+            if ($cart_products[$cartkey]['psbs_user_id']) {
                 $shipBy = $cart_products[$cartkey]['psbs_user_id'];
             }
 
@@ -430,18 +430,15 @@ class CheckoutController extends MyAppController
             $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
 
             $cart_products[$cartkey]['is_shipping_selected'] =  isset($productSelectedShippingMethodsArr['product'][$cartval['selprod_id']])?$productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']:false;
-            if($cart_products[$cartkey]['is_shipping_selected'] && $productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']== SHIPPINGMETHODS::SHIPSTATION_SHIPPING) {
-
+            if ($cart_products[$cartkey]['is_shipping_selected'] && $productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']== SHIPPINGMETHODS::SHIPSTATION_SHIPPING) {
                 $cart_products[$cartkey]['selected_shipping_option']=$productSelectedShippingMethodsArr['product'][$cartval['selprod_id']];
-            }elseif($cart_products[$cartkey]['is_shipping_selected'] && $productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']== SHIPPINGMETHODS::MANUAL_SHIPPING) {
+            } elseif ($cart_products[$cartkey]['is_shipping_selected'] && $productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['mshipapi_id']== SHIPPINGMETHODS::MANUAL_SHIPPING) {
                 $cart_products[$cartkey]['pship_id']=$productSelectedShippingMethodsArr['product'][$cartval['selprod_id']]['pship_id'];
-
             }
             $cart_products[$cartkey]['shipping_rates'] = $shipping_options;
             $cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;
-
         }
-        if(count($cart_products)==0) {
+        if (count($cart_products)==0) {
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -458,9 +455,9 @@ class CheckoutController extends MyAppController
         $this->_template->render(false, false, 'checkout/shipping-summary-inner.php');
     }
 
-    public function getCarrierServicesList( $product_key, $carrier_id = 0) 
+    public function getCarrierServicesList($product_key, $carrier_id = 0)
     {
-        if(!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
+        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -485,22 +482,21 @@ class CheckoutController extends MyAppController
 
         $sn= 0;
         $json= array();
-        if(!empty($cartProducts) ) {
-
+        if (!empty($cartProducts)) {
             $prodSrchObj = new ProductSearch();
-            foreach($cartProducts as $cartkey=>$cartval){
+            foreach ($cartProducts as $cartkey=>$cartval) {
                 $sn++;
                 $shipping_address = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId);
                 $shipBy=0;
 
-                if($cartProducts[$cartkey]['psbs_user_id']) {
+                if ($cartProducts[$cartkey]['psbs_user_id']) {
                     $shipBy =$cartProducts[$cartkey]['psbs_user_id'];
                 }
                 $ua_country_id = isset($shippingAddressDetail['ua_country_id'])?$shippingAddressDetail['ua_country_id']:0;
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
-                if($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL ) {
+                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) {
 
                     /* get Product Data[ */
                     $prodSrch = clone $prodSrchObj;
@@ -520,10 +516,9 @@ class CheckoutController extends MyAppController
                     $product = FatApp::getDb()->fetch($productRs);
                     /* ] */
 
-                    if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey]) ) {
-                        foreach($shipping_options as $shipOption){
-                            if($shipOption['pship_id']==$post["shipping_locations"][$productKey]) {
-
+                    if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey])) {
+                        foreach ($shipping_options as $shipOption) {
+                            if ($shipOption['pship_id']==$post["shipping_locations"][$productKey]) {
                                 $productToShippingMethods['product'][$cartval['selprod_id']] = array(
                                 'selprod_id'    =>    $cartval['selprod_id'],
                                 'pship_id'    =>    $post["shipping_locations"][$productKey],
@@ -536,12 +531,12 @@ class CheckoutController extends MyAppController
                                 'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                                 'mshipcompany_name'    =>    $shipOption['scompany_name'],
                                 'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
-                                'mshipapi_cost' =>  ( $free_shipping_options == 0 )? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
+                                'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                                 );
                                 continue;
                             }
                         }
-                    }elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING ) && !empty($post["shipping_services"][$productKey]) ) {
+                    } elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING) && !empty($post["shipping_services"][$productKey])) {
                         list($carrier_name, $carrier_price) = explode("-", $post["shipping_services"][$productKey]);
                         $productToShippingMethods['product'][$cartval['selprod_id']] = array(
                           'selprod_id'    =>    $cartval['selprod_id'],
@@ -552,12 +547,9 @@ class CheckoutController extends MyAppController
                           'mshipapi_label' =>  str_replace("_", " ", $post["shipping_services"][$productKey]) ,
                           'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                                             );
-                                            continue;
-
-                    }else{
-
+                        continue;
+                    } else {
                         $json['error']['product'][$sn] = sprintf(Labels::getLabel('M_Shipping_Info_Required_for_%s', $this->siteLangId), htmlentities($cartval['product_name']));
-
                     }
                 }
             }
@@ -565,7 +557,7 @@ class CheckoutController extends MyAppController
 
             if (!$json) {
                 $this->cartObj->setProductShippingMethod($productToShippingMethods);
-                if(!$this->cartObj->isProductShippingMethodSet() ) {
+                if (!$this->cartObj->isProductShippingMethodSet()) {
                     //MSG_Error_in_Shipping_Method_Selection
                     Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
                     FatUtility::dieWithError(Message::getHtml());
@@ -573,24 +565,22 @@ class CheckoutController extends MyAppController
 
                 $this->set('msg', Labels::getLabel('MSG_Shipping_Method_selected_successfully.', $this->siteLangId));
                 $this->_template->render(false, false, 'json-success.php');
-            }else{
+            } else {
                 Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
         }
-
-
     }
 
     public function reviewCart()
     {
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
-        if(!$this->isEligibleForNextStep($criteria) ) {
-            if(Message::getErrorCount() ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
+            if (Message::getErrorCount()) {
                 $errMsg = Message::getHtml();
             } else {
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
@@ -601,7 +591,7 @@ class CheckoutController extends MyAppController
         $cartHasDigitalProduct = $this->cartObj->hasDigitalProduct();
         $cartHasPhysicalProduct = $this->cartObj->hasPhysicalProduct();
         $cart_products = $this->cartObj->getProducts($this->siteLangId);
-        if(count($cart_products)==0) {
+        if (count($cart_products)==0) {
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -639,7 +629,7 @@ class CheckoutController extends MyAppController
         return $productInfo = FatApp::getDb()->fetch($rs);
     }
 
-    private function getCartProductLangData($selprod_id,$lang_id)
+    private function getCartProductLangData($selprod_id, $lang_id)
     {
         $langProdSrch = new ProductSearch($lang_id);
         $langProdSrch->setDefinedCriteria();
@@ -660,13 +650,13 @@ class CheckoutController extends MyAppController
     public function PaymentSummary()
     {
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
 
-        if(!$this->isEligibleForNextStep($criteria) ) {
-            if(Message::getErrorCount() ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
+            if (Message::getErrorCount()) {
                 $errMsg = Message::getHtml();
             } else {
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
@@ -684,7 +674,7 @@ class CheckoutController extends MyAppController
         $pmSrch->doNotCalculateRecords();
         $pmSrch->doNotLimitRecords();
         $pmSrch->addMultipleFields(array('pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'pmethod_code', 'pmethod_description'));
-        if(!$cartSummary["isCodEnabled"] ) {
+        if (!$cartSummary["isCodEnabled"]) {
             $pmSrch->addCondition('pmethod_code', '!=', 'CashOnDelivery');
         }
 
@@ -713,10 +703,10 @@ class CheckoutController extends MyAppController
         $shippingAddressId = $this->cartObj->getCartShippingAddress();
         $billingAddressId = $this->cartObj->getCartBillingAddress();
 
-        if($shippingAddressId ) {
+        if ($shippingAddressId) {
             $shippingAddressArr = UserAddress::getUserAddresses($userId, $this->siteLangId, 0, $shippingAddressId);
         }
-        if($billingAddressId ) {
+        if ($billingAddressId) {
             $billingAddressArr = UserAddress::getUserAddresses($userId, $this->siteLangId, 0, $billingAddressId);
         }
 
@@ -743,7 +733,7 @@ class CheckoutController extends MyAppController
         'oua_zip'        =>    $billingAddressArr['ua_zip'],
         );
 
-        if(!empty($shippingAddressArr) ) {
+        if (!empty($shippingAddressArr)) {
             $userAddresses[1] = array(
             'oua_order_id'    =>    $order_id,
             'oua_type'        =>    Orders::SHIPPING_ADDRESS_TYPE,
@@ -821,7 +811,7 @@ class CheckoutController extends MyAppController
         $shippingData['opshipping_company_id'] =  $shippingApiRow['shippingapi_code'];
         $shippingData['opshipping_duration'] =  $shippingApiRow['shippingapi_code'];
         } */
-        if(!empty($cartSummary["cartDiscounts"])) {
+        if (!empty($cartSummary["cartDiscounts"])) {
             $orderData['order_discount_coupon_code'] = $cartSummary["cartDiscounts"]["coupon_code"];
             $orderData['order_discount_type'] = $cartSummary["cartDiscounts"]["coupon_discount_type"];
             $orderData['order_discount_value'] = $cartSummary["cartDiscounts"]["coupon_discount_value"];
@@ -863,7 +853,7 @@ class CheckoutController extends MyAppController
         $orderData['order_cart_data'] = Cart::getCartData($userId);
 
         $referrerUserId = 0;
-        if (isset($_COOKIE['referrer_code_checkout']) && !empty($_COOKIE['referrer_code_checkout']) ) {
+        if (isset($_COOKIE['referrer_code_checkout']) && !empty($_COOKIE['referrer_code_checkout'])) {
             $userReferrerCode = $_COOKIE['referrer_code_checkout'];
 
             $userSrchObj = User::getSearchObject();
@@ -874,13 +864,13 @@ class CheckoutController extends MyAppController
             $userSrchObj->addMultipleFields(array('user_id', 'user_referral_code', 'user_name' ));
             $rs = $userSrchObj->getResultSet();
             $referrerUserRow = FatApp::getDb()->fetch($rs);
-            if($referrerUserRow && $referrerUserRow['user_referral_code'] == $userReferrerCode && $userReferrerCode != '' && $referrerUserRow['user_referral_code'] != '' ) {
+            if ($referrerUserRow && $referrerUserRow['user_referral_code'] == $userReferrerCode && $userReferrerCode != '' && $referrerUserRow['user_referral_code'] != '') {
                 $referrerUserId = $referrerUserRow['user_id'];
                 //$referrerUserName = $referrerUserRow['user_name'];
             }
         }
 
-        if($referrerUserId > 0 && FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE") && $existingReferrerOrderRow['totalOrders'] == 0 ) {
+        if ($referrerUserId > 0 && FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE") && $existingReferrerOrderRow['totalOrders'] == 0) {
             $orderData['order_referrer_user_id'] = $referrerUserId;
             $orderData['order_referrer_reward_points'] = FatApp::getConfig("CONF_SALE_REFERRER_REWARD_POINTS", FatUtility::VAR_INT, 0);
             $orderData['order_referral_reward_points'] = FatApp::getConfig("CONF_SALE_REFERRAL_REWARD_POINTS", FatUtility::VAR_INT, 0);
@@ -891,13 +881,13 @@ class CheckoutController extends MyAppController
         $productSelectedShippingMethodsArr = $this->cartObj->getProductShippingMethod();
 
         $orderLangData = array();
-        foreach( $allLanguages as $lang_id => $language_name ){
+        foreach ($allLanguages as $lang_id => $language_name) {
             $order_shippingapi_name = '';
 
-            if($this->cartObj->getCartShippingApi() ) {
+            if ($this->cartObj->getCartShippingApi()) {
                 $shippingApiLangRow = ShippingApi::getAttributesByLangId($lang_id, $this->cartObj->getCartShippingApi());
                 $order_shippingapi_name = $shippingApiLangRow['shippingapi_name'];
-                if(empty($shippingApiLangRow) ) {
+                if (empty($shippingApiLangRow)) {
                     $order_shippingapi_name = $shippingApiRow['shippingapi_identifier'];
                 }
             }
@@ -918,20 +908,21 @@ class CheckoutController extends MyAppController
         $order_affiliate_user_id = 0;
         $order_affiliate_total_commission = 0;
 
-        if($cartProducts ) {
+        if ($cartProducts) {
             $productShippingData = array();
-            foreach( $cartProducts as $cartProduct ){
+            foreach ($cartProducts as $cartProduct) {
                 $productInfo = $this->getCartProductInfo($cartProduct['selprod_id']);
-                if(!$productInfo ) { continue; 
+                if (!$productInfo) {
+                    continue;
                 }
 
                 $sduration_name = '';
                 $shippingDurationTitle = '';
                 $shippingDurationRow = array();
 
-                if(!empty($productSelectedShippingMethodsArr['product']) && isset($productSelectedShippingMethodsArr['product'][$productInfo['selprod_id']]) ) {
+                if (!empty($productSelectedShippingMethodsArr['product']) && isset($productSelectedShippingMethodsArr['product'][$productInfo['selprod_id']])) {
                     $shippingDurationRow = $productSelectedShippingMethodsArr['product'][$productInfo['selprod_id']];
-                    if($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING) {
+                    if ($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING) {
                         $productShippingData = array(
                         'opshipping_method_id' =>$shippingDurationRow['mshipapi_id'],
                         'opshipping_pship_id' =>$shippingDurationRow['pship_id'],
@@ -939,20 +930,21 @@ class CheckoutController extends MyAppController
                         'opshipping_max_duration' =>$shippingDurationRow['sduration_to'],
                         'opshipping_duration_id' =>$shippingDurationRow['sduration_id'],
                         );
-                    } elseif($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING ) {
+                    } elseif ($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING) {
                         $productShippingData = array( 'opshipping_method_id' =>$shippingDurationRow['mshipapi_id'] );
                     }
                     $productShippingData['opshipping_by_seller_user_id'] = $shippingDurationRow['shipped_by_seller'];
                 }
                 $productsLangData = array();
                 $productShippingLangData = array();
-                foreach( $allLanguages as $lang_id => $language_name ){
+                foreach ($allLanguages as $lang_id => $language_name) {
                     $langSpecificProductInfo = $this->getCartProductLangData($productInfo['selprod_id'], $lang_id);
-                    if(!$langSpecificProductInfo ) { continue; 
+                    if (!$langSpecificProductInfo) {
+                        continue;
                     }
 
-                    if(!empty($shippingDurationRow) ) {
-                        if($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING ) {
+                    if (!empty($shippingDurationRow)) {
+                        if ($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING) {
                             $shippingDurationTitle = ShippingDurations::getShippingDurationTitle($shippingDurationRow, $lang_id);
                             $sduration_name = $shippingDurationRow['mshipcompany_name'];
                             $productShippingLangData[$lang_id] =  array(
@@ -960,7 +952,7 @@ class CheckoutController extends MyAppController
                             'opshipping_duration_name'=>$shippingDurationRow['mshipcompany_name'],
                             'opshippinglang_lang_id' => $lang_id
                             );
-                        } elseif($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING ) {
+                        } elseif ($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING) {
                             $sduration_name = $shippingDurationRow['mshipapi_label'];
                             $productShippingLangData[$lang_id] =  array(
                             'opshipping_carrier'=>$shippingDurationRow['mshipcompany_name'],
@@ -977,11 +969,11 @@ class CheckoutController extends MyAppController
                     /* stamping/locking of product options language based [ */
                     $op_selprod_options = '';
                     $productOptionsRows = SellerProduct::getSellerProductOptions($productInfo['selprod_id'], true, $lang_id);
-                    if(!empty($productOptionsRows) ) {
+                    if (!empty($productOptionsRows)) {
                         $optionCounter = 1;
-                        foreach($productOptionsRows as $poLang){
+                        foreach ($productOptionsRows as $poLang) {
                             $op_selprod_options .= $poLang['option_name'].': '.$poLang['optionvalue_name'];
-                            if($optionCounter != count($productOptionsRows) ) {
+                            if ($optionCounter != count($productOptionsRows)) {
                                 $op_selprod_options .= ' | ';
                             }
                             $optionCounter++;
@@ -1037,18 +1029,18 @@ class CheckoutController extends MyAppController
                 'op_selprod_max_download_times' => ($productInfo['selprod_max_download_times']!='-1')?$cartProduct['quantity']*$productInfo['selprod_max_download_times']:$productInfo['selprod_max_download_times'],
                 'op_selprod_download_validity_in_days' => $productInfo['selprod_download_validity_in_days'],
                 'op_sduration_id'            =>    $cartProduct['sduration_id'],
-                //'op_discount_total'	=>	0, //todo:: after coupon discount integration
-                //'op_tax_total'	=>	$cartProduct['tax'],
+                //'op_discount_total'    =>    0, //todo:: after coupon discount integration
+                //'op_tax_total'    =>    $cartProduct['tax'],
                 'op_commission_charged' => $cartProduct['commission'],
                 'op_commission_percentage'    => $cartProduct['commission_percentage'],
                 'op_affiliate_commission_percentage' => $cartProduct['affiliate_commission_percentage'],
                 'op_affiliate_commission_charged' => $cartProduct['affiliate_commission'],
                 'op_status_id'        =>    FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"),
-                // 'op_volume_discount_percentage'	=>	$cartProduct['volume_discount_percentage'],
+                // 'op_volume_discount_percentage'    =>    $cartProduct['volume_discount_percentage'],
                 'productsLangData'    =>    $productsLangData,
                 'productShippingData'    =>    $productShippingData,
                 'productShippingLangData'    =>    $productShippingLangData,
-                /* 'op_tax_collected_by_seller'	=>	$taxCollectedBySeller, */
+                /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
                 );
@@ -1057,21 +1049,21 @@ class CheckoutController extends MyAppController
                 $order_affiliate_total_commission += isset($cartProduct['affiliate_commission'])?$cartProduct['affiliate_commission']:'';
 
                 $discount = 0;
-                if(!empty($cartSummary["cartDiscounts"]["discountedSelProdIds"])) {
-                    if(array_key_exists($productInfo['selprod_id'], $cartSummary["cartDiscounts"]["discountedSelProdIds"])) {
+                if (!empty($cartSummary["cartDiscounts"]["discountedSelProdIds"])) {
+                    if (array_key_exists($productInfo['selprod_id'], $cartSummary["cartDiscounts"]["discountedSelProdIds"])) {
                         $discount = $cartSummary["cartDiscounts"]["discountedSelProdIds"][$productInfo['selprod_id']];
                     }
                 }
 
                 $shippingCost = $cartProduct['shipping_cost'];
-                if($cartProduct['shop_eligible_for_free_shipping'] && $cartProduct['psbs_user_id'] > 0) {
+                if ($cartProduct['shop_eligible_for_free_shipping'] && $cartProduct['psbs_user_id'] > 0) {
                     $shippingCost = 0;
                 }
 
                 $rewardPoints = 0;
                 $rewardPoints = $orderData['order_reward_point_value'];
                 $usedRewardPoint = 0;
-                if($rewardPoints > 0) {
+                if ($rewardPoints > 0) {
                     $selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingCost +  $cartProduct['tax']  - $discount - $cartProduct['volume_discount_total'] ;
                     $usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)), 2);
                 }
@@ -1104,7 +1096,7 @@ class CheckoutController extends MyAppController
         /* ] */
         /* ] */
         $orderObj = new Orders();
-        if($orderObj->addUpdateOrder($orderData, $this->siteLangId) ) {
+        if ($orderObj->addUpdateOrder($orderData, $this->siteLangId)) {
             $order_id = $orderObj->getOrderId();
             $_SESSION['order_id'] = $order_id;
         } else {
@@ -1120,7 +1112,7 @@ class CheckoutController extends MyAppController
         $rs = $srch->getResultSet();
         $orderInfo = FatApp::getDb()->fetch($rs);
         /* $orderInfo = $orderObj->getOrderById( $order_id, $this->siteLangId, array('payment_status' => 0) ); */
-        if(!$orderInfo ) {
+        if (!$orderInfo) {
             $this->cartObj->clear();
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrder', array($order_id)));
         }
@@ -1128,14 +1120,14 @@ class CheckoutController extends MyAppController
         $confirmForm = $this->getConfirmFormWithNoAmount($this->siteLangId);
         $userWalletBalance = User::getUserBalance($userId, true);
 
-        if((FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) > 0 ) && $cartSummary['cartWalletSelected'] && $cartSummary['orderNetAmount'] > 0 ) {
+        if ((FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) > 0) && $cartSummary['cartWalletSelected'] && $cartSummary['orderNetAmount'] > 0) {
             $WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay', 'Charge', array($order_id)));
             $WalletPaymentForm->fill(array('order_id' => $order_id));
             $WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
             $WalletPaymentForm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
         }
 
-        if($cartSummary['orderNetAmount'] <= 0) {
+        if ($cartSummary['orderNetAmount'] <= 0) {
             $confirmForm->addFormTagAttribute('action', CommonHelper::generateUrl('ConfirmPay', 'Charge', array($order_id)));
             $confirmForm->fill(array('order_id' => $order_id));
             /* $confirmForm->setFormTagAttribute('onsubmit', 'confirmOrderWithoutPayment(this); return(false);'); */
@@ -1146,7 +1138,7 @@ class CheckoutController extends MyAppController
 
         $this->set('redeemRewardFrm', $redeemRewardFrm);
         $cartHasPhysicalProduct = false;
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
 
@@ -1163,14 +1155,14 @@ class CheckoutController extends MyAppController
         $this->_template->render(false, false);
     }
 
-    public function PaymentTab( $order_id, $pmethod_id )
+    public function PaymentTab($order_id, $pmethod_id)
     {
         $pmethod_id = FatUtility::int($pmethod_id);
-        if(!$pmethod_id ) {
+        if (!$pmethod_id) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Invalid_Request!", $this->siteLangId));
         }
 
-        if(!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
+        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             /* Message::addErrorMessage( Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId) );
             FatUtility::dieWithError( Message::getHtml() ); */
             FatUtility::dieWithError(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
@@ -1185,7 +1177,7 @@ class CheckoutController extends MyAppController
         $orderInfo = FatApp::getDb()->fetch($rs);
         /* $orderObj = new Orders();
         $orderInfo = $orderObj->getOrderById( $order_id, $this->siteLangId, array('payment_status' => 0) ); */
-        if (!$orderInfo ) {
+        if (!$orderInfo) {
             /* Message::addErrorMessage( Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId) );
             $this->set('error', Message::getHtml() ); */
             FatUtility::dieWithError(Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
@@ -1201,7 +1193,7 @@ class CheckoutController extends MyAppController
         $pmRs = $pmSrch->getResultSet();
         $paymentMethod = FatApp::getDb()->fetch($pmRs);
         //var_dump($paymentMethod);
-        if(!$paymentMethod ) {
+        if (!$paymentMethod) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Selected_Payment_method_not_found!", $this->siteLangId));
         }
 
@@ -1220,8 +1212,8 @@ class CheckoutController extends MyAppController
         $this->set('paymentMethod', $paymentMethod);
         $this->set('frm', $frm);
         /* Partial Payment is not allowed, Wallet + COD, So, disabling COD in case of Partial Payment Wallet Selected. [ */
-        if(strtolower($paymentMethod['pmethod_code']) == "cashondelivery" ) {
-            if($this->cartObj->hasDigitalProduct() ) {
+        if (strtolower($paymentMethod['pmethod_code']) == "cashondelivery") {
+            if ($this->cartObj->hasDigitalProduct()) {
                 $str = Labels::getLabel('MSG_{COD}_is_not_available_if_your_cart_has_any_Digital_Product', $this->siteLangId);
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
@@ -1230,7 +1222,7 @@ class CheckoutController extends MyAppController
             $user_id = UserAuthentication::getLoggedUserId();
             $userWalletBalance = User::getUserBalance($user_id, true);
 
-            if($cartSummary['cartWalletSelected'] && $userWalletBalance < $cartSummary['orderNetAmount'] ) {
+            if ($cartSummary['cartWalletSelected'] && $userWalletBalance < $cartSummary['orderNetAmount']) {
                 $str = Labels::getLabel('MSG_Wallet_can_not_be_used_along_with_{COD}', $this->siteLangId);
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
@@ -1254,12 +1246,12 @@ class CheckoutController extends MyAppController
     {
         $post = FatApp::getPostedData();
 
-        if(false == $post ) {
+        if (false == $post) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if(empty($post['redeem_rewards']) ) {
+        if (empty($post['redeem_rewards'])) {
             Message::addErrorMessage(Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1269,7 +1261,7 @@ class CheckoutController extends MyAppController
         $totalBalance = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId(), $orderId);
 
         /* var_dump($totalBalance);exit; */
-        if($totalBalance == 0 || $totalBalance < $rewardPoints) {
+        if ($totalBalance == 0 || $totalBalance < $rewardPoints) {
             Message::addErrorMessage(Labels::getLabel('ERR_Insufficient_reward_point_balance', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -1282,7 +1274,7 @@ class CheckoutController extends MyAppController
         $rewardPointValues = min(CommonHelper::convertRewardPointToCurrency($rewardPoints), $cartTotalWithoutDiscount);
         $rewardPoints = CommonHelper::convertCurrencyToRewardPoint($rewardPointValues);
 
-        if($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')) {
+        if ($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')) {
             $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', $this->siteLangId);
             $msg = str_replace('{MIN}', FatApp::getConfig('CONF_MIN_REWARD_POINT'), $msg);
             $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
@@ -1290,7 +1282,7 @@ class CheckoutController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
+        if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1302,7 +1294,7 @@ class CheckoutController extends MyAppController
     public function removeRewardPoints()
     {
         $cartObj = new Cart();
-        if(!$cartObj->removeUsedRewardPoints()) {
+        if (!$cartObj->removeUsedRewardPoints()) {
             Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1316,10 +1308,10 @@ class CheckoutController extends MyAppController
         $order_type = FatApp::getPostedData('order_type', FatUtility::VAR_INT, 0);
 
         /* Loading Money to wallet[ */
-        if($order_type == Orders::ORDER_WALLET_RECHARGE ) {
+        if ($order_type == Orders::ORDER_WALLET_RECHARGE) {
             $criteria = array( 'isUserLogged' => true );
-            if(!$this->isEligibleForNextStep($criteria) ) {
-                if(Message::getErrorCount() > 0 ) {
+            if (!$this->isEligibleForNextStep($criteria)) {
+                if (Message::getErrorCount() > 0) {
                     $errMsg = Message::getHtml();
                 } else {
                     Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
@@ -1331,13 +1323,13 @@ class CheckoutController extends MyAppController
             $user_id = UserAuthentication::getLoggedUserId();
             $pmethod_id = FatApp::getPostedData('pmethod_id', FatUtility::VAR_INT, 0);
             $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
-            if(!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE ) {
+            if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
                 Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
 
             $order_id = FatApp::getPostedData("order_id", FatUtility::VAR_STRING, "");
-            if($order_id == '' ) {
+            if ($order_id == '') {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_Request', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -1352,7 +1344,7 @@ class CheckoutController extends MyAppController
             $srch->addCondition('order_type', '=', Orders::ORDER_WALLET_RECHARGE);
             $rs = $srch->getResultSet();
             $orderInfo = FatApp::getDb()->fetch($rs);
-            if(!$orderInfo ) {
+            if (!$orderInfo) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -1365,12 +1357,12 @@ class CheckoutController extends MyAppController
 
         /* ConfirmOrder function is called for both wallet payments and for paymentgateway selection as well. */
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
-        if(!$this->isEligibleForNextStep($criteria) ) {
-            if(Message::getErrorCount() > 0 ) {
+        if (!$this->isEligibleForNextStep($criteria)) {
+            if (Message::getErrorCount() > 0) {
                 $errMsg = Message::getHtml();
             } else {
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
@@ -1383,7 +1375,7 @@ class CheckoutController extends MyAppController
         $userWalletBalance = User::getUserBalance($user_id, true);
         $pmethod_id = FatApp::getPostedData('pmethod_id', FatUtility::VAR_INT, 0);
 
-        if($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'], FatUtility::VAR_FLOAT) ) && !$pmethod_id ) {
+        if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'], FatUtility::VAR_FLOAT)) && !$pmethod_id) {
             $this->_template->render(false, false, 'json-success.php');
             exit;
         }
@@ -1393,13 +1385,13 @@ class CheckoutController extends MyAppController
 
         $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
 
-        if(!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE ) {
+        if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if(strtolower($paymentMethodRow['pmethod_code']) == 'cashondelivery' && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '')) {
-            if(!CommonHelper::verifyCaptcha() ) {
+        if (strtolower($paymentMethodRow['pmethod_code']) == 'cashondelivery' && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '')) {
+            if (!CommonHelper::verifyCaptcha()) {
                 Message::addErrorMessage(Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
                 //FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
@@ -1431,14 +1423,14 @@ class CheckoutController extends MyAppController
         } */
         /* ] */
 
-        if($userWalletBalance >= $cartSummary['orderNetAmount'] && $cartSummary['cartWalletSelected'] && !$pmethod_id ) {
+        if ($userWalletBalance >= $cartSummary['orderNetAmount'] && $cartSummary['cartWalletSelected'] && !$pmethod_id) {
             $frm = $this->getWalletPaymentForm($this->siteLangId);
         } else {
             $frm = $this->getPaymentTabForm($this->siteLangId);
         }
 
         $post = $frm->getFormDataFromArray($post);
-        if(!isset($post['order_id']) || $post['order_id'] == '' ) {
+        if (!isset($post['order_id']) || $post['order_id'] == '') {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1453,22 +1445,22 @@ class CheckoutController extends MyAppController
         $srch->addCondition('order_is_paid', '=', Orders::ORDER_IS_PENDING);
         $rs = $srch->getResultSet();
         $orderInfo = FatApp::getDb()->fetch($rs);
-        if(!$orderInfo ) {
+        if (!$orderInfo) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if($cartSummary['cartWalletSelected'] && $cartSummary['orderPaymentGatewayCharges'] == 0 ) {
+        if ($cartSummary['cartWalletSelected'] && $cartSummary['orderPaymentGatewayCharges'] == 0) {
             Message::addErrorMessage(Labels::getLabel('MSG_Try_to_pay_using_wallet_balance_as_amount_for_payment_gateway_is_not_enough.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if($cartSummary['orderPaymentGatewayCharges'] == 0 && $pmethod_id ) {
+        if ($cartSummary['orderPaymentGatewayCharges'] == 0 && $pmethod_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Amount_for_payment_gateway_must_be_greater_than_zero.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if($pmethod_id ) {
+        if ($pmethod_id) {
             $_SESSION['cart_order_id'] = $order_id;
             $_SESSION['order_type'] = $order_type;
             $orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id));
@@ -1477,9 +1469,9 @@ class CheckoutController extends MyAppController
         }
 
         /* Deduct reward point in case of cashondelivery [ */
-        if(strtolower($paymentMethodRow['pmethod_code']) == 'cashondelivery' && $orderInfo['order_reward_point_used'] > 0 ) {
+        if (strtolower($paymentMethodRow['pmethod_code']) == 'cashondelivery' && $orderInfo['order_reward_point_used'] > 0) {
             $rewardDebited = UserRewards::debit($orderInfo['order_user_id'], $orderInfo['order_reward_point_used'], $order_id, $orderInfo['order_language_id']);
-            if(!$rewardDebited) {
+            if (!$rewardDebited) {
                 FatUtility::dieWithError(Message::getHtml());
             }
         }
@@ -1498,18 +1490,17 @@ class CheckoutController extends MyAppController
         $address_id = isset($post['address_id']) ? FatUtility::int($post['address_id']) : 0;
         $addressFrm = $this->getUserAddressForm($this->siteLangId);
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $address_id);
-        if($address_id) {
-
+        if ($address_id) {
             $stateId =  $address['ua_state_id'];
-        }else{
+        } else {
             $stateId = 0;
         }
         $addressFrm->fill($address);
         $this->set('addressFrm', $addressFrm);
         $this->set('address_id', $address_id);
-        if($address_id>0) {
+        if ($address_id>0) {
             $labelHeading =  Labels::getLabel('LBL_Edit_Address', $this->siteLangId);
-        }else{
+        } else {
             $labelHeading =  Labels::getLabel('LBL_Add_Address', $this->siteLangId);
         }
         $this->set('labelHeading', $labelHeading);
@@ -1517,15 +1508,15 @@ class CheckoutController extends MyAppController
         $this->_template->render(false, false, 'checkout/address-form.php');
     }
 
-    private function getCheckoutAddressForm( $langId )
+    private function getCheckoutAddressForm($langId)
     {
         $frm = new Form('frmAddress');
         $addresses = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $langId);
         $addressAssoc = array();
-        foreach( $addresses as $address ){
+        foreach ($addresses as $address) {
             $city = $address['ua_city'];
-            $state = ( strlen($address['ua_city']) > 0 ) ? ', '. $address['state_name'] : $address['state_name'];
-            $country = ( strlen($state) > 0 ) ? ', '.$address['country_name'] : $address['country_name'];
+            $state = (strlen($address['ua_city']) > 0) ? ', '. $address['state_name'] : $address['state_name'];
+            $country = (strlen($state) > 0) ? ', '.$address['country_name'] : $address['country_name'];
             $location = $city . $state. $country;
             $addressAssoc[$address['ua_id']] = $location;
         }
@@ -1534,7 +1525,7 @@ class CheckoutController extends MyAppController
         return $frm;
     }
 
-    private function getShippingApiForm( $langId )
+    private function getShippingApiForm($langId)
     {
         $srch = ShippingMethods::getListingObj($langId, array('shippingapi_id'));
         $srch->doNotCalculateRecords();
@@ -1546,7 +1537,7 @@ class CheckoutController extends MyAppController
         return $frm;
     }
 
-    private function getShippingMethods( $langId )
+    private function getShippingMethods($langId)
     {
         $srch = ShippingMethods::getListingObj($langId, array('shippingapi_id'));
         $srch->doNotCalculateRecords();
@@ -1556,12 +1547,12 @@ class CheckoutController extends MyAppController
         return $shippingApis;
     }
 
-    private function getPaymentTabForm( $langId, $paymentMethodCode = '' )
+    private function getPaymentTabForm($langId, $paymentMethodCode = '')
     {
         $frm = new Form('frmPaymentTabForm');
         $frm->setFormTagAttribute('id', 'frmPaymentTabForm');
 
-        if(strtolower($paymentMethodCode) == "cashondelivery" && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
+        if (strtolower($paymentMethodCode) == "cashondelivery" && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             $frm->addHtml('htmlNote', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Confirm_Payment', $langId));
@@ -1571,14 +1562,14 @@ class CheckoutController extends MyAppController
         return $frm;
     }
 
-    private function getWalletPaymentForm( $langId )
+    private function getWalletPaymentForm($langId)
     {
         $frm = new Form('frmWalletPayment');
         $frm->addHiddenField('', 'order_id');
         return $frm;
     }
 
-    private function getConfirmFormWithNoAmount( $langId )
+    private function getConfirmFormWithNoAmount($langId)
     {
         $frm = new Form('frmConfirmForm');
         $frm->addHiddenField('', 'order_id');
@@ -1603,7 +1594,7 @@ class CheckoutController extends MyAppController
     public function resetCartReview()
     {
         $cartHasPhysicalProduct = false;
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
         $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
@@ -1613,7 +1604,7 @@ class CheckoutController extends MyAppController
     public function resetPaymentSummary()
     {
         $cartHasPhysicalProduct = false;
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
         $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
@@ -1623,7 +1614,7 @@ class CheckoutController extends MyAppController
     public function loadCartReview()
     {
         $cartHasPhysicalProduct = false;
-        if($this->cartObj->hasPhysicalProduct() ) {
+        if ($this->cartObj->hasPhysicalProduct()) {
             $cartHasPhysicalProduct = true;
         }
         $products = $this->cartObj->getProducts($this->siteLangId);
@@ -1642,7 +1633,6 @@ class CheckoutController extends MyAppController
     public function removeShippingSummary()
     {
         $this->cartObj->removeProductShippingMethod();
-
     }
 
     public function getFinancialSummary()

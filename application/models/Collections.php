@@ -49,31 +49,33 @@ class Collections extends MyAppModel
         $this->db=FatApp::getDb();
     }
 
-    public static function getSearchObject( $isActive = true , $langId = 0)
+    public static function getSearchObject($isActive = true, $langId = 0)
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 'c');
 
         $srch->addCondition('c.'.static::DB_TBL_PREFIX.'deleted', '=', applicationConstants::NO);
-        if($isActive==true) {
+        if ($isActive==true) {
             $srch->addCondition('c.'.static::DB_TBL_PREFIX.'active', '=', applicationConstants::ACTIVE);
         }
 
-        if($langId > 0) {
+        if ($langId > 0) {
             $srch->joinTable(
-                static::DB_TBL_LANG, 'LEFT OUTER JOIN',
+                static::DB_TBL_LANG,
+                'LEFT OUTER JOIN',
                 'c_l.'.static::DB_TBL_LANG_PREFIX.'collection_id = c.'.static::tblFld('id').' and
-			c_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId, 'c_l'
+			c_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId,
+                'c_l'
             );
         }
 
         return $srch;
     }
 
-    public static function getTypeArr( $langId = 0 )
+    public static function getTypeArr($langId = 0)
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
-        if(!$langId ) {
+        if (!$langId) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
             return false;
         }
@@ -85,10 +87,10 @@ class Collections extends MyAppModel
         );
     }
 
-    public static function getLayoutTypeArr( $langId = 0 )
+    public static function getLayoutTypeArr($langId = 0)
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
-        if(!$langId ) {
+        if (!$langId) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
             return false;
         }
@@ -102,7 +104,6 @@ class Collections extends MyAppModel
         self::TYPE_SHOP_LAYOUT1 => Labels::getLabel('LBL_Shop_Layout1', $langId),
         self::TYPE_BRAND_LAYOUT1 => Labels::getLabel('LBL_Brand_Layout1', $langId),
         );
-
     }
 
     public static function getCriteria()
@@ -113,11 +114,11 @@ class Collections extends MyAppModel
         );
     }
 
-    public function addUpdateCollectionSelProd($collection_id , $selprod_id)
+    public function addUpdateCollectionSelProd($collection_id, $selprod_id)
     {
         $selprod_id = FatUtility::int($selprod_id);
         $collection_id = FatUtility::int($collection_id);
-        if(!$selprod_id || !$collection_id ) {
+        if (!$selprod_id || !$collection_id) {
             $this->error = Labels::getLabel('MSG_Invalid_Request', $this->commonLangId);
             return false;
         }
@@ -126,18 +127,18 @@ class Collections extends MyAppModel
         $to_save_arr[static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id'] = $collection_id;
         $to_save_arr[static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id'] = $selprod_id;
         $record->assignValues($to_save_arr);
-        if(!$record->addNew(array(), $to_save_arr) ) {
+        if (!$record->addNew(array(), $to_save_arr)) {
             $this->error = $record->getError();
             return false;
         }
         return true;
     }
 
-    public function addUpdateCollectionCategories($collection_id , $prodcat_id)
+    public function addUpdateCollectionCategories($collection_id, $prodcat_id)
     {
         $prodcat_id = FatUtility::int($prodcat_id);
         $collection_id = FatUtility::int($collection_id);
-        if(!$prodcat_id || !$collection_id ) {
+        if (!$prodcat_id || !$collection_id) {
             $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
@@ -146,18 +147,18 @@ class Collections extends MyAppModel
         $to_save_arr[static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX.'collection_id'] = $collection_id;
         $to_save_arr[static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX.'prodcat_id'] = $prodcat_id;
         $record->assignValues($to_save_arr);
-        if(!$record->addNew(array(), $to_save_arr) ) {
+        if (!$record->addNew(array(), $to_save_arr)) {
             $this->error = $record->getError();
             return false;
         }
         return true;
     }
 
-    public function addUpdateCollectionShops($collection_id , $shop_id)
+    public function addUpdateCollectionShops($collection_id, $shop_id)
     {
         $shop_id = FatUtility::int($shop_id);
         $collection_id = FatUtility::int($collection_id);
-        if(!$shop_id || !$collection_id ) {
+        if (!$shop_id || !$collection_id) {
             $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
@@ -166,7 +167,7 @@ class Collections extends MyAppModel
         $to_save_arr[static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX.'collection_id'] = $collection_id;
         $to_save_arr[static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX.'shop_id'] = $shop_id;
         $record->assignValues($to_save_arr);
-        if(!$record->addNew(array(), $to_save_arr) ) {
+        if (!$record->addNew(array(), $to_save_arr)) {
             $this->error = $record->getError();
             return false;
         }
@@ -198,13 +199,13 @@ class Collections extends MyAppModel
         unset($data['collection_id']);
         $assignValues = $data;
         $assignValues['collection_deleted'] = 0;
-        if($this->mainTableRecordId > 0) {
+        if ($this->mainTableRecordId > 0) {
             $assignValues['collection_id'] = $this->mainTableRecordId;
         }
         $record = new TableRecord(self::DB_TBL);
 
         $record->assignValues($assignValues);
-        if(!$record->addNew(array(), $assignValues) ) {
+        if (!$record->addNew(array(), $assignValues)) {
             $this->error = $record->getError();
             return false;
         }
@@ -213,11 +214,11 @@ class Collections extends MyAppModel
         return true;
     }
 
-    public static function getSellProds( $collection_id, $lang_id )
+    public static function getSellProds($collection_id, $lang_id)
     {
         $collection_id = FatUtility::convertToType($collection_id, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
-        if(!$collection_id || !$lang_id ) {
+        if (!$collection_id || !$lang_id) {
             trigger_error(Labels::getLabel('MSG_Arguments_not_specified.', $this->commonLangId), E_USER_ERROR);
             return false;
         }
@@ -234,55 +235,56 @@ class Collections extends MyAppModel
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
         $data = array();
-        while( $row = $db->fetch($rs) ){
-
+        while ($row = $db->fetch($rs)) {
             $data[] = $row;
         }
         return $data;
     }
 
-    public function removeCollectionSelProd( $collection_id, $selprod_id )
+    public function removeCollectionSelProd($collection_id, $selprod_id)
     {
         $db = FatApp::getDb();
         $collection_id = FatUtility::int($collection_id);
         $selprod_id = FatUtility::int($selprod_id);
-        if(!$collection_id || !$selprod_id ) {
+        if (!$collection_id || !$selprod_id) {
             $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
-        if(!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_SELPROD, array('smt'=> static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX . 'selprod_id = ?','vals' => array($collection_id, $selprod_id) ))) {
+        if (!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_SELPROD, array('smt'=> static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_SELPROD_PREFIX . 'selprod_id = ?','vals' => array($collection_id, $selprod_id) ))) {
             $this->error = $db->getError();
             return false;
         }
         return true;
     }
 
-    public function removeCollectionCategories( $collection_id, $prodcat_id )
+    public function removeCollectionCategories($collection_id, $prodcat_id)
     {
         $db = FatApp::getDb();
         $collection_id = FatUtility::int($collection_id);
         $prodcat_id = FatUtility::int($prodcat_id);
-        if(!$collection_id || !$prodcat_id ) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);;
+        if (!$collection_id || !$prodcat_id) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            ;
             return false;
         }
-        if(!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES, array('smt'=> static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX . 'prodcat_id = ?','vals' => array($collection_id, $prodcat_id) ))) {
+        if (!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES, array('smt'=> static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_PRODUCT_CATEGORIES_PREFIX . 'prodcat_id = ?','vals' => array($collection_id, $prodcat_id) ))) {
             $this->error = $db->getError();
             return false;
         }
         return true;
     }
 
-    public function removeCollectionShops( $collection_id, $shop_id )
+    public function removeCollectionShops($collection_id, $shop_id)
     {
         $db = FatApp::getDb();
         $collection_id = FatUtility::int($collection_id);
         $shop_id = FatUtility::int($shop_id);
-        if(!$collection_id || !$shop_id ) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);;
+        if (!$collection_id || !$shop_id) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            ;
             return false;
         }
-        if(!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_SHOPS, array('smt'=> static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX . 'shop_id = ?','vals' => array($collection_id, $shop_id) ))) {
+        if (!$db->deleteRecords(static::DB_TBL_COLLECTION_TO_SHOPS, array('smt'=> static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX.'collection_id = ? AND '.static::DB_TBL_COLLECTION_TO_SHOPS_PREFIX . 'shop_id = ?','vals' => array($collection_id, $shop_id) ))) {
             $this->error = $db->getError();
             return false;
         }
@@ -314,18 +316,18 @@ class Collections extends MyAppModel
         $srch->addFld('collection_id');
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!empty($row) && $row['collection_id']==$collection_id) {
+        if (!empty($row) && $row['collection_id']==$collection_id) {
             return true;
         }
         return false;
     }
 
-    public static function getCategories( $collection_id, $lang_id )
+    public static function getCategories($collection_id, $lang_id)
     {
         $collection_id = FatUtility::convertToType($collection_id, FatUtility::VAR_INT);
 
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
-        if(!$collection_id || !$lang_id ) {
+        if (!$collection_id || !$lang_id) {
             trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
             return false;
         }
@@ -345,12 +347,12 @@ class Collections extends MyAppModel
         return $data;
     }
 
-    public static function getShops( $collection_id, $lang_id )
+    public static function getShops($collection_id, $lang_id)
     {
         $collection_id = FatUtility::convertToType($collection_id, FatUtility::VAR_INT);
 
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
-        if(!$collection_id || !$lang_id ) {
+        if (!$collection_id || !$lang_id) {
             trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
             return false;
         }

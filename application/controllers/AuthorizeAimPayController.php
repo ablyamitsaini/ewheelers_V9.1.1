@@ -1,15 +1,13 @@
 <?php
 class AuthorizeAimPayController extends PaymentController
 {
-
     private $keyName = "AuthorizeAim";
     private $testEnvironmentUrl = 'https://test.authorize.net/gateway/transact.dll';
     private $liveEnvironmentUrl = 'https://secure.authorize.net/gateway/transact.dll';
 
-    public function charge( $orderId = '' )
+    public function charge($orderId = '')
     {
-
-        if(empty($orderId) ) {
+        if (empty($orderId)) {
             FatUtility::exitWIthErrorCode(404);
         }
 
@@ -23,9 +21,9 @@ class AuthorizeAimPayController extends PaymentController
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
 
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
-        } elseif ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             $this->set('paymentAmount', $paymentAmount);
@@ -34,7 +32,7 @@ class AuthorizeAimPayController extends PaymentController
         }
 
         $cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
-        if($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE ) {
+        if ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
             $cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
         }
 
@@ -46,9 +44,8 @@ class AuthorizeAimPayController extends PaymentController
         $this->_template->render(true, false);
     }
 
-    public function send($orderId) 
+    public function send($orderId)
     {
-
         $pmObj=new PaymentSettings($this->keyName);
         $paymentSettings=$pmObj->getPaymentSettings();
 
@@ -118,7 +115,7 @@ class AuthorizeAimPayController extends PaymentController
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($curl, CURLOPT_TIMEOUT, 10);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-            $response = curl_exec($curl);            
+            $response = curl_exec($curl);
 
             $json = array();
             if (curl_error($curl)) {
@@ -153,7 +150,7 @@ class AuthorizeAimPayController extends PaymentController
                     if (!$paymentSettings['md5_hash'] || (strtoupper($responseInfo[38]) == strtoupper(md5($paymentSettings['md5_hash'].$paymentSettings['login_id'].$responseInfo[7] . $orderActualPaid)))) {
                         /* Recording Payment in DB */
                         if (!$orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $responseInfo['7'], $orderPaymentAamount, Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message)) {
-                            $json['error'] = "Invalid Action"; 
+                            $json['error'] = "Invalid Action";
                         }
                         /* End Recording Payment in DB */
                     } else {
@@ -166,8 +163,7 @@ class AuthorizeAimPayController extends PaymentController
             } else {
                 $json['error'] = Labels::getLabel('MSG_EMPTY_GATEWAY_RESPONSE', $this->siteLangId);
             }
-        }
-        else{
+        } else {
             $json['error'] = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
         }
         curl_close($curl);
@@ -179,12 +175,12 @@ class AuthorizeAimPayController extends PaymentController
     {
         $post = FatApp::getPostedData();
         $res=CommonHelper::validate_cc_number($post['cc']);
-        echo json_encode($res); exit;
+        echo json_encode($res);
+        exit;
     }
 
     private function getPaymentForm($orderId = '')
     {
-
         $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('AuthorizeAimPay', 'send', array($orderId)), 'class' =>"form form--normal"));
         $frm->addRequiredField(Labels::getLabel('LBL_ENTER_CREDIT_CARD_NUMBER', $this->siteLangId), 'cc_number');
         $frm->addRequiredField(Labels::getLabel('LBL_CARD_HOLDER_NAME', $this->siteLangId), 'cc_owner');
@@ -201,5 +197,4 @@ class AuthorizeAimPayController extends PaymentController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
         return $frm;
     }
-
 }

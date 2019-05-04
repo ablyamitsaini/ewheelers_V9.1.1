@@ -14,7 +14,7 @@ class AffiliateController extends AffiliateBaseController
         include_once CONF_INSTALLATION_PATH.'library/Fbapi.php';
         // include_once CONF_INSTALLATION_PATH . 'library/APIs/twitter/twitteroauth.php';
 
-        $get_twitter_url = $_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Affiliate','twitterCallback');
+        $get_twitter_url = $_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Affiliate', 'twitterCallback');
 
         $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
         $request_token = $twitteroauth->oauth('oauth/request_token', array('oauth_callback' => $get_twitter_url));
@@ -38,7 +38,7 @@ class AffiliateController extends AffiliateBaseController
 
         $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);
         $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
-        if($userInfo['user_fb_access_token']!='') {
+        if ($userInfo['user_fb_access_token']!='') {
             $fbAccessToken = $userInfo['user_fb_access_token'];
         }
 
@@ -55,7 +55,7 @@ class AffiliateController extends AffiliateBaseController
         /*
         * Transactions Listing
         */
-        $srch = Transactions::getUserTransactionsObj( $loggedUserId );
+        $srch = Transactions::getUserTransactionsObj($loggedUserId);
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
@@ -91,7 +91,8 @@ class AffiliateController extends AffiliateBaseController
         'uextra_bank_account_number',
         'uextra_paypal_email_id') ); */
         $userExtraData = User::getUserExtraData(
-            $loggedUserId, array(
+            $loggedUserId,
+            array(
             'uextra_tax_id',
             'uextra_payment_method',
             'uextra_cheque_payee_name',
@@ -101,7 +102,7 @@ class AffiliateController extends AffiliateBaseController
         $userObj = new User($loggedUserId);
         $userBankInfo = $userObj->getUserBankInfo();
         $frmData = $userExtraData;
-        if(is_array($userBankInfo) && !empty($userBankInfo) ) {
+        if (is_array($userBankInfo) && !empty($userBankInfo)) {
             $frmData = array_merge($frmData, $userBankInfo);
         }
         $frm->fill($frmData);
@@ -114,9 +115,9 @@ class AffiliateController extends AffiliateBaseController
     {
         $frm = $this->getPaymentInfoForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
-        if ($post == false ) {
+        if ($post == false) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
-            if (FatUtility::isAjaxCall() ) {
+            if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
             }
             FatApp::redirectUser(CommonHelper::generateUrl('Affiliate'));
@@ -135,9 +136,9 @@ class AffiliateController extends AffiliateBaseController
         );
         $dataToUpdateOnDuplicate = $dataToSave;
         unset($dataToUpdateOnDuplicate['uextra_user_id']);
-        if(!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate) ) {
+        if (!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Details_could_not_be_saved!", $this->siteLangId));
-            if (FatUtility::isAjaxCall() ) {
+            if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
             }
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
@@ -152,9 +153,9 @@ class AffiliateController extends AffiliateBaseController
         'ub_ifsc_swift_code'    => $post['ub_ifsc_swift_code'],
         'ub_bank_address'        => $post['ub_bank_address'],
         );
-        if(!$userObj->updateBankInfo($bankInfoData) ) {
+        if (!$userObj->updateBankInfo($bankInfoData)) {
             Message::addErrorMessage($userObj->getError());
-            if (FatUtility::isAjaxCall() ) {
+            if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
             }
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
@@ -168,10 +169,10 @@ class AffiliateController extends AffiliateBaseController
     public function getFbToken()
     {
         $userId = UserAuthentication::getLoggedUserId();
-        if(isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['redirect_user'])) {
+        if (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['redirect_user'])) {
             $redirectUrl = $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['redirect_user'];
             unset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['redirect_user']);
-        }else{
+        } else {
             $redirectUrl = CommonHelper::generateUrl('Affiliate', 'Sharing');
         }
 
@@ -188,10 +189,10 @@ class AffiliateController extends AffiliateBaseController
 
         try {
             $accessToken = $helper->getAccessToken();
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (Facebook\Exceptions\FacebookResponseException $e) {
             Message::addErrorMessage($e->getMessage());
             FatApp::redirectUser($redirectUrl);
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
             Message::addErrorMessage($e->getMessage());
             FatApp::redirectUser($redirectUrl);
         }
@@ -199,11 +200,11 @@ class AffiliateController extends AffiliateBaseController
         if (! isset($accessToken)) {
             if ($helper->getError()) {
                 Message::addErrorMessage($helper->getErrorDescription());
-                //Message::addErrorMessage($helper->getErrorReason());
+            //Message::addErrorMessage($helper->getErrorReason());
             } else {
                 Message::addErrorMessage(Labels::getLabel('Msg_Bad_Request', $this->siteLangId));
             }
-        }else{
+        } else {
             // The OAuth 2.0 client handler helps us manage access tokens
             $oAuth2Client = $fbObj->getOAuth2Client();
 
@@ -230,18 +231,17 @@ class AffiliateController extends AffiliateBaseController
         }
         FatApp::redirectUser($redirectUrl);
     }
-    
+
     public function twitterCallback()
     {
         include_once CONF_INSTALLATION_PATH . 'library/APIs/twitteroauth-master/autoload.php';
         $get = FatApp::getQueryStringData();
 
         if (!empty($get['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty($_SESSION['oauth_token_secret'])) {
-
             $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"), $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-            try{
+            try {
                 $access_token = $twitteroauth->oauth("oauth/access_token", ["oauth_verifier" => $get['oauth_verifier']]);
-            }catch(exception $e){
+            } catch (exception $e) {
                 $this->set('errors', $e->getMessage());
                 $this->_template->render(false, false, 'buyer/twitter-response.php');
                 return;
@@ -267,36 +267,37 @@ class AffiliateController extends AffiliateBaseController
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SOCIAL_FEED_IMAGE, 0, 0, $this->siteLangId);
             $error = false;
             $postMedia = false;
-            if(!empty($file_row)) {
+            if (!empty($file_row)) {
                 $image_path = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
                 $image_path = CONF_UPLOADS_PATH.$image_path;
-                if(filesize($image_path) <= (5*1000000) ) { /*Max 5mb size image can be uploaded by Twitter*/
+                if (filesize($image_path) <= (5*1000000)) { /*Max 5mb size image can be uploaded by Twitter*/
                     $handle = fopen($image_path, 'rb');
                     $image = fread($handle, filesize($image_path));
                     fclose($handle);
                     $twitteroauth->setTimeouts(60, 30);
-                    try{
+                    try {
                         $result = $twitteroauth->upload('media/upload', array('media' => $image_path));
                         if ($twitteroauth->getLastHttpCode() == 200) {
                             $parameters = array('Name' => FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId), 'status' => $message, 'media_ids' => $result->media_id_string);
-                            try{
+                            try {
                                 $post = $twitteroauth->post('statuses/update', $parameters);
                                 $postMedia = true;
-                            }catch(exception $e){
+                            } catch (exception $e) {
                                 $error = $e->getMessage();
                             }
                         }
-                    }catch(exception $e){;
+                    } catch (exception $e) {
+                        ;
                         $error = $e->getMessage();
                     }
                 }
             }
 
-            if(!$postMedia) {
+            if (!$postMedia) {
                 $parameters = array('Name' => FatApp::getConfig("CONF_WEBSITE_NAME_".$this->siteLangId), 'status' => $message);
-                try{
+                try {
                     $post = $twitteroauth->post('statuses/update', $parameters, false);
-                }catch(exception $e){
+                } catch (exception $e) {
                     $error = $e->getMessage();
                 }
             }
@@ -322,7 +323,7 @@ class AffiliateController extends AffiliateBaseController
 
         $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);
         $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
-        if($userInfo['user_fb_access_token']!='') {
+        if ($userInfo['user_fb_access_token']!='') {
             $fbAccessToken = $userInfo['user_fb_access_token'];
         }
 
@@ -340,30 +341,31 @@ class AffiliateController extends AffiliateBaseController
         $sharingFrm = $this->getSharingForm($this->siteLangId);
         $post = $sharingFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if ($post == false ) {
+        if ($post == false) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $error = '';
         FatUtility::validateMultipleEmails($post["email"], $error);
-        if($error != '' ) {
+        if ($error != '') {
             Message::addErrorMessage($error);
             FatUtility::dieWithError(Message::getHtml());
         }
         $emailsArr = CommonHelper::multipleExplode(array(",",";","\t","\n"), trim($post["email"], ","));
         $emailsArr = array_unique($emailsArr);
-        if (count($emailsArr) && !empty($emailsArr) ) {
+        if (count($emailsArr) && !empty($emailsArr)) {
             $personalMessage = empty($post['message'])?"":"<b>".Labels::getLabel('Lbl_Personal_Message_From_Affiliate', $this->siteLangId).":</b> ".nl2br($post['message']);
             $emailNotificationObj = new EmailHandler();
-            foreach( $emailsArr as $email_id ) {
+            foreach ($emailsArr as $email_id) {
                 $email_id = trim($email_id);
-                if(!CommonHelper::isValidEmail($email_id) ) { continue;
+                if (!CommonHelper::isValidEmail($email_id)) {
+                    continue;
                 }
 
                 /* email notification handling[ */
                 $emailNotificationObj = new EmailHandler();
-                if (!$emailNotificationObj->sendAffiliateMailShare(UserAuthentication::getLoggedUserId(), $email_id, $personalMessage, $this->siteLangId) ) {
+                if (!$emailNotificationObj->sendAffiliateMailShare(UserAuthentication::getLoggedUserId(), $email_id, $personalMessage, $this->siteLangId)) {
                     Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
                     CommonHelper::redirectUserReferer();
                 }
@@ -392,14 +394,14 @@ class AffiliateController extends AffiliateBaseController
         $rs = $srch->getResultSet();
         $userData = FatApp::getDb()->fetch($rs);
 
-        $userExtraData = ( !empty($userExtraData) ) ? $userExtraData : array('uextra_company_name' => '', 'uextra_website' => '');
+        $userExtraData = (!empty($userExtraData)) ? $userExtraData : array('uextra_company_name' => '', 'uextra_website' => '');
         $userData = array_merge($userData, $userExtraData);
 
         $this->set('userData', $userData);
         $this->_template->render(false, false);
     }
 
-    private function getPaymentInfoForm( $siteLangId )
+    private function getPaymentInfoForm($siteLangId)
     {
         $siteLangId = FatUtility::int($siteLangId);
         $frm = new Form('frmPaymentInfoForm');
@@ -423,7 +425,7 @@ class AffiliateController extends AffiliateBaseController
         return $frm;
     }
 
-    private function getSharingForm( $siteLangId )
+    private function getSharingForm($siteLangId)
     {
         $siteLangId = FatUtility::int($siteLangId);
         $frm = new Form('frmAffiliateSharingForm');
@@ -439,7 +441,6 @@ class AffiliateController extends AffiliateBaseController
 
     public function referredByMe()
     {
-
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $usrObj = new User();
@@ -485,7 +486,7 @@ class AffiliateController extends AffiliateBaseController
         $post = $frmSearch->getFormDataFromArray($data);
 
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        if ($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
 
@@ -493,11 +494,11 @@ class AffiliateController extends AffiliateBaseController
         $srch = $userObj->referredByAffilates($loggedUserId);
 
         $user_id = FatApp::getPostedData('user_id', FatUtility::VAR_INT, -1);
-        if($user_id > 0 ) {
+        if ($user_id > 0) {
             $srch->addCondition('user_id', '=', $user_id);
         } else {
             $keyword = FatApp::getPostedData('keyword', null, '');
-            if(!empty($keyword) ) {
+            if (!empty($keyword)) {
                 $cond = $srch->addCondition('uc.credential_username', 'like', '%'.$keyword.'%');
                 $cond->attachCondition('uc.credential_email', 'like', '%'.$keyword.'%', 'OR');
                 $cond->attachCondition('u.user_name', 'like', '%'. $keyword .'%');
@@ -505,7 +506,7 @@ class AffiliateController extends AffiliateBaseController
         }
 
         $user_active = FatApp::getPostedData('user_active', FatUtility::VAR_INT, -1);
-        if($user_active > -1 ) {
+        if ($user_active > -1) {
             $srch->addCondition('uc.credential_active', '=', $user_active);
         }
 
@@ -537,7 +538,7 @@ class AffiliateController extends AffiliateBaseController
         $srch = $userObj->referredByAffilates($loggedUserId);
         $srch->addOrder('user_name', 'ASC');
         $keyword = FatApp::getPostedData('keyword', null, '');
-        if(!empty($keyword) ) {
+        if (!empty($keyword)) {
             $cond = $srch->addCondition('uc.credential_username', 'like', '%'.$keyword.'%');
             $cond->attachCondition('uc.credential_email', 'like', '%'.$keyword.'%', 'OR');
             $cond->attachCondition('u.user_name', 'like', '%'. $keyword .'%');
@@ -550,7 +551,7 @@ class AffiliateController extends AffiliateBaseController
         $users = $db->fetchAll($rs, 'user_id');
 
         $json = array();
-        foreach( $users as $key => $user ){
+        foreach ($users as $key => $user) {
             $json[] = array(
             'id' => $key,
             'name'      => strip_tags(html_entity_decode($user['user_name'], ENT_QUOTES, 'UTF-8')),
@@ -561,6 +562,4 @@ class AffiliateController extends AffiliateBaseController
 
         die(json_encode($json));
     }
-
 }
-?>

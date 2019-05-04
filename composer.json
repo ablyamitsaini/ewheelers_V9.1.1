@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpmd/phpmd": "^2.6",
+        "friendsofphp/php-cs-fixer": "^2.14"
+    }
+}

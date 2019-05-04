@@ -36,7 +36,7 @@ class Promotion extends MyAppModel
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
         $this->objMainTableRecord->setSensitiveFields(
-            array (
+            array(
             )
         );
     }
@@ -47,23 +47,25 @@ class Promotion extends MyAppModel
 
         if ($langId > 0) {
             $srch->joinTable(
-                static::DB_LANG_TBL, 'LEFT OUTER JOIN',
+                static::DB_LANG_TBL,
+                'LEFT OUTER JOIN',
                 'pr_l.promotionlang_promotion_id = pr.promotion_id
-			AND pr_l.promotionlang_lang_id = ' . $langId, 'pr_l'
+			AND pr_l.promotionlang_lang_id = ' . $langId,
+                'pr_l'
             );
         }
 
-        if($activeOnly) {
+        if ($activeOnly) {
             $srch->addCondition('promotion_active', '=', applicationConstants::ACTIVE);
         }
 
         return $srch;
     }
 
-    public static function getTypeArr($langId , $displayAdvertiserOnly = false)
+    public static function getTypeArr($langId, $displayAdvertiserOnly = false)
     {
         $langId = FatUtility::int($langId);
-        if($langId < 1) {
+        if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
 
@@ -72,7 +74,7 @@ class Promotion extends MyAppModel
         static::TYPE_SLIDES=>Labels::getLabel('LBL_Slides', $langId),
         );
 
-        if($displayAdvertiserOnly) {
+        if ($displayAdvertiserOnly) {
             return     $arr;
         }
 
@@ -86,7 +88,7 @@ class Promotion extends MyAppModel
 
     public static function updateImpressionData($promotionId = 0)
     {
-        if(1 > $promotionId) {
+        if (1 > $promotionId) {
             return ;
         }
 
@@ -102,8 +104,7 @@ class Promotion extends MyAppModel
 
     public static function getPromotionCostPerClick($promotionType, $blocation_id = 0)
     {
-
-        Switch ($promotionType){
+        switch ($promotionType) {
         case PROMOTION::TYPE_SHOP:
             return FatApp::getConfig('CONF_CPC_SHOP');
          break;
@@ -119,7 +120,7 @@ class Promotion extends MyAppModel
             $srch->addFld('blocation_promotion_cost');
             $rs = $srch->getResultSet();
             $row = FatApp::getDb()->fetch($rs);
-            if($row && array_key_exists('blocation_promotion_cost', $row)) {
+            if ($row && array_key_exists('blocation_promotion_cost', $row)) {
                 return $row['blocation_promotion_cost'];
             }
             return 0;
@@ -127,10 +128,10 @@ class Promotion extends MyAppModel
         }
     }
 
-    function getPromotionLastChargedEntry($promotionId = 0)
+    public function getPromotionLastChargedEntry($promotionId = 0)
     {
         $promotionId = FatUtility::int($promotionId);
-        if (1 > $promotionId ) {
+        if (1 > $promotionId) {
             return array();
         }
         $srch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
@@ -141,28 +142,28 @@ class Promotion extends MyAppModel
         $row = FatApp::getDb()->fetch($rs);
         if ($row == false) {
             return array();
-        }else{
+        } else {
             return $row;
         }
     }
 
-    static function getTotalChargedAmount($userId)
+    public static function getTotalChargedAmount($userId)
     {
         $srch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
         $srch->addCondition('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'user_id', '=', $userId);
         $srch->addFld("SUM(pcharge_charged_amount) totChargedAmount");
-		$rs = $srch->getResultSet();
-		$result = FatApp::getDb()->fetch($rs);
-		$totChargedAmount = $result['totChargedAmount'];
-		return $totChargedAmount;
+        $rs = $srch->getResultSet();
+        $result = FatApp::getDb()->fetch($rs);
+        $totChargedAmount = $result['totChargedAmount'];
+        return $totChargedAmount;
     }
 
-    function addUpdatePromotionCharges($data,$langId)
+    public function addUpdatePromotionCharges($data, $langId)
     {
         $pchargeUserId = FatUtility::int($data['user_id']);
         $pchargePromotionId = FatUtility::int($data['promotion_id']);
         $chargedAmount = $data['total_cost'];
-        if (($pchargeUserId < 1 ) || ($pchargePromotionId <1) || ($chargedAmount <=0 )) {
+        if (($pchargeUserId < 1) || ($pchargePromotionId <1) || ($chargedAmount <=0)) {
             return array();
         }
 
@@ -197,18 +198,17 @@ class Promotion extends MyAppModel
 
                 $emailNotificationObj->sendTxnNotification($txnId, $langId);
             }
-        }
-        else {
+        } else {
             $this->error = $this->db->getError();
             return false;
         }
         return $this->charge_log_id;
     }
 
-    static function getPromotionBudgetDurationArr($langId)
+    public static function getPromotionBudgetDurationArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId < 1) {
+        if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
 
@@ -219,9 +219,8 @@ class Promotion extends MyAppModel
         );
     }
 
-    static function isUserClickCountable($userId,$promotionId,$ip,$session)
+    public static function isUserClickCountable($userId, $promotionId, $ip, $session)
     {
-
         $srch = new SearchBase(PROMOTION::DB_TBL_CLICKS);
         $srch->addCondition(PROMOTION::DB_TBL_CLICKS_PREFIX.'promotion_id', '=', $promotionId);
         $srch->addCondition(PROMOTION::DB_TBL_CLICKS_PREFIX.'user_id', '=', $userId);
@@ -231,16 +230,16 @@ class Promotion extends MyAppModel
 
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if ($row == false) { return true;
+        if ($row == false) {
+            return true;
+        } else {
+            return false;
         }
-        else { return false;
-        }
-
     }
     public static function getPromotionReqStatusArr($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId == 0) {
+        if ($langId == 0) {
             trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
         }
         $arr = array(
@@ -251,9 +250,8 @@ class Promotion extends MyAppModel
         return $arr;
     }
 
-    static public function getPromotionWalleToBeCharged($user_id)
+    public static function getPromotionWalleToBeCharged($user_id)
     {
-
         $prmSrch = new PromotionSearch();
         $prmSrch->joinPromotionCharge();
         $prmSrch->addGroupBy('promotion_id');
@@ -267,8 +265,7 @@ class Promotion extends MyAppModel
 
         $prmObj = new Promotion();
         $promotionCharges = 0;
-        foreach($promotions as $pKey=>$pVal){
-
+        foreach ($promotions as $pKey=>$pVal) {
             $promotionId = $pVal['promotion_id'];
             $prChargeSummary = new SearchBase(Promotion::DB_TBL_ITEM_CHARGES, 'pci');
             $prChargeSummary->joinTable(Promotion::DB_TBL_CLICKS, 'LEFT JOIN', 'pcl.pclick_id=pci.picharge_pclick_id', 'pcl');
@@ -284,23 +281,19 @@ class Promotion extends MyAppModel
             $promotionClicks =FatApp::getDb()->fetch($rs);
 
 
-            if($promotionClicks) {
+            if ($promotionClicks) {
                 // Get User Wallet Balance
                 $userId = $pVal['promotion_user_id'];
                 /* $txnObj = new Transactions();
                 $accountSummary = $txnObj->getTransactionSummary($userId); */
                 //$balance = $accountSummary['total_earned'] - $accountSummary['total_used'];
 
-                if($promotionClicks) {
+                if ($promotionClicks) {
                     $promotionCharges += $promotionClicks['total_cost'];
                 }
             }
         }
 
         return $promotionCharges;
-
-
     }
-
-
 }

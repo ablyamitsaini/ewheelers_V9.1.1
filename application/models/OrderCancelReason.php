@@ -2,32 +2,34 @@
 class OrderCancelReason extends MyAppModel
 {
     const DB_TBL = 'tbl_order_cancel_reasons';
-    const DB_TBL_PREFIX = 'ocreason_';    
-    
+    const DB_TBL_PREFIX = 'ocreason_';
+
     const DB_TBL_LANG = 'tbl_order_cancel_reasons_lang';
-    
-    public function __construct( $id = 0 ) 
+
+    public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
         $this->db = FatApp::getDb();
     }
-    
-    public static function getSearchObject( $langId = 0) 
+
+    public static function getSearchObject($langId = 0)
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 'ocreason');
 
         if ($langId > 0) {
             $srch->joinTable(
-                static::DB_TBL_LANG, 'LEFT OUTER JOIN',
+                static::DB_TBL_LANG,
+                'LEFT OUTER JOIN',
                 'ocreason_l.ocreasonlang_ocreason_id = ocreason.ocreason_id
-			AND ocreasonlang_lang_id = ' . $langId, 'ocreason_l'
+			AND ocreasonlang_lang_id = ' . $langId,
+                'ocreason_l'
             );
         }
         return $srch;
     }
-    
-    static function getOrderCancelReasonArr( $langId = 0 )
+
+    public static function getOrderCancelReasonArr($langId = 0)
     {
         $srch = static::getSearchObject($langId);
         $srch->doNotCalculateRecords();

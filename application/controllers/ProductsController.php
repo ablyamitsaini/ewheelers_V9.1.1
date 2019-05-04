@@ -237,7 +237,7 @@ class ProductsController extends MyAppController
         $filterDefaultMinValue = $priceArr['minPrice'];
         $filterDefaultMaxValue = $priceArr['maxPrice'];
 
-        if ($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id', $headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId )) {
+        if ($this->siteCurrencyId != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) || (array_key_exists('currency_id', $headerFormParamsAssocArr) && $headerFormParamsAssocArr['currency_id'] != $this->siteCurrencyId)) {
             $filterDefaultMinValue = CommonHelper::displayMoneyFormat($priceArr['minPrice'], false, false, false);
             $filterDefaultMaxValue = CommonHelper::displayMoneyFormat($priceArr['maxPrice'], false, false, false);
             $priceArr['minPrice'] = $filterDefaultMinValue;
@@ -960,41 +960,41 @@ class ProductsController extends MyAppController
         $nodes = array();
         $parameters = FatApp::getParameters();
         switch ($action) {
-            case 'view':
-                if (isset($parameters[0]) && FatUtility::int($parameters[0]) > 0) {
-                    $selprod_id = FatUtility::int($parameters[0]);
-                    if ($selprod_id) {
-                        $srch = new ProductSearch($this->siteLangId);
-                        $srch->joinSellerProducts();
-                        $srch->joinProductToCategory();
-                        $srch->doNotCalculateRecords();
-                        $srch->doNotLimitRecords();
-                        $srch->addMultipleFields(array('IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(product_name, product_identifier)as product_name','prodcat_code'));
-                        $srch->addCondition('selprod_id', '=', $selprod_id);
-                        $rs = $srch->getResultSet();
-                        $row = FatApp::getDb()->fetch($rs);
-                        if ($row) {
-                            $productCatCode = $row['prodcat_code'];
-                            $productCatCode =  explode("_", $productCatCode);
-                            $productCatCode  = array_filter($productCatCode, 'strlen');
-                            $productCatObj = new ProductCategory;
-                            $prodCategories =  $productCatObj->getCategoriesForSelectBox($this->siteLangId, '', $productCatCode);
+        case 'view':
+            if (isset($parameters[0]) && FatUtility::int($parameters[0]) > 0) {
+                $selprod_id = FatUtility::int($parameters[0]);
+                if ($selprod_id) {
+                    $srch = new ProductSearch($this->siteLangId);
+                    $srch->joinSellerProducts();
+                    $srch->joinProductToCategory();
+                    $srch->doNotCalculateRecords();
+                    $srch->doNotLimitRecords();
+                    $srch->addMultipleFields(array('IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(product_name, product_identifier)as product_name','prodcat_code'));
+                    $srch->addCondition('selprod_id', '=', $selprod_id);
+                    $rs = $srch->getResultSet();
+                    $row = FatApp::getDb()->fetch($rs);
+                    if ($row) {
+                        $productCatCode = $row['prodcat_code'];
+                        $productCatCode =  explode("_", $productCatCode);
+                        $productCatCode  = array_filter($productCatCode, 'strlen');
+                        $productCatObj = new ProductCategory;
+                        $prodCategories =  $productCatObj->getCategoriesForSelectBox($this->siteLangId, '', $productCatCode);
 
-                            foreach ($productCatCode as $code) {
-                                $code= FatUtility::int($code);
-                                if (isset($prodCategories[$code]['prodcat_name'])) {
-                                    $prodCategories[$code]['prodcat_name'];
-                                    $nodes[] = array('title' => $prodCategories[$code]['prodcat_name'],'href'=>CommonHelper::generateUrl('category', 'view', array($code)));
-                                }
+                        foreach ($productCatCode as $code) {
+                            $code= FatUtility::int($code);
+                            if (isset($prodCategories[$code]['prodcat_name'])) {
+                                $prodCategories[$code]['prodcat_name'];
+                                $nodes[] = array('title' => $prodCategories[$code]['prodcat_name'],'href'=>CommonHelper::generateUrl('category', 'view', array($code)));
                             }
-                            $nodes[] = array('title' => ($row['selprod_title'])? $row['selprod_title']:$row['product_name']);
                         }
+                        $nodes[] = array('title' => ($row['selprod_title'])? $row['selprod_title']:$row['product_name']);
                     }
                 }
-                break;
-            default:
-                $nodes[] = array('title' => Labels::getLabel('LBL_'.FatUtility::camel2dashed($action), $this->siteLangId));
-                break;
+            }
+            break;
+        default:
+            $nodes[] = array('title' => Labels::getLabel('LBL_'.FatUtility::camel2dashed($action), $this->siteLangId));
+            break;
         }
         return $nodes;
     }

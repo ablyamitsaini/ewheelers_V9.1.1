@@ -2,17 +2,19 @@
 class BlogPostCategorySearch extends SearchBase
 {
     private $langId;
-    
-    function __construct( $langId = 0 ) 
+
+    public function __construct($langId = 0)
     {
         parent::__construct(BlogPostCategory::DB_TBL, 'bpc');
         $this->langId = FatUtility::int($langId);
-        
+
         if ($this->langId > 0) {
             $this->joinTable(
-                BlogPostCategory::DB_TBL_LANG, 'LEFT OUTER JOIN',
+                BlogPostCategory::DB_TBL_LANG,
+                'LEFT OUTER JOIN',
                 'bpcategorylang_bpcategory_id = bpc.bpcategory_id
-			AND bpcategorylang_lang_id = ' . $langId, 'bpc_l'
+			AND bpcategorylang_lang_id = ' . $langId,
+                'bpc_l'
             );
         }
         $this->addCondition('bpcategory_active', '=', applicationConstants::ACTIVE);
@@ -21,10 +23,9 @@ class BlogPostCategorySearch extends SearchBase
         $this->doNotCalculateRecords();
         $this->doNotLimitRecords();
     }
-    
-    public function setParent( $parentId = 0 )
+
+    public function setParent($parentId = 0)
     {
         $this->addCondition('bpcategory_parent', '=', $parentId);
     }
 }
-?>

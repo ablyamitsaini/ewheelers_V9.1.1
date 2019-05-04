@@ -1,38 +1,37 @@
 <?php
 class CronController extends FatController
 {
-
-    public function __construct($action) 
+    public function __construct($action)
     {
         $this->_autoCreateModel = false;
         parent::__construct($action);
     }
-    
-    public function index($id = 0) 
+
+    public function index($id = 0)
     {
         $db = FatApp::getDb();
-        
+
         $allCrons = Cron::getAllRecords(true, $id);
-        
-        foreach ( $allCrons as $row ) {
+
+        foreach ($allCrons as $row) {
             $cron = new Cron($row ['cron_id']);
             $cron->loadFromDb();
-            
+
             $logId = $cron->markStarted();
             if (! $logId) {
                 continue;
             }
-            
+
             $arr = explode('/', $row['cron_command']);
-            
+
             $class = $arr[0];
             $obj = new $class();
             array_shift($arr);
             $action = $arr[0];
             array_shift($arr);
-            
+
             $success = call_user_func_array(array($obj, $action), $arr);
-            
+
             if ($success !== false) {
                 $cron->markFinished($logId, 'Response Got: ' . $success);
             } else {
@@ -42,26 +41,26 @@ class CronController extends FatController
         }
         Cron::clearOldLog();
     }
-    
+
     public function manually($cron_command = '')
     {
         $allCrons = Cron::getAllRecords(true);
         $found = false;
-        
-        foreach($allCrons as $row){
-            if(strtolower($row['cron_command']) == strtolower('cronjob/'.$cron_command)) {
+
+        foreach ($allCrons as $row) {
+            if (strtolower($row['cron_command']) == strtolower('cronjob/'.$cron_command)) {
                 $cron = new Cron($row ['cron_id']);
-                $found = true;    
-                
+                $found = true;
+
                 $arr = explode('/', $row['cron_command']);
                 $class = $arr[0];
                 $obj = new $class();
                 array_shift($arr);
                 $action = $arr[0];
                 array_shift($arr);
-                
+
                 $success = call_user_func_array(array($obj, $action), $arr);
-                
+
                 if ($success !== false) {
                     echo 'Response Got: ' . $success;
                 } else {
@@ -70,8 +69,8 @@ class CronController extends FatController
                 echo '<br>Ended';
             }
         }
-        
-        if(!$found) {
+
+        if (!$found) {
             echo "No record found";
         }
     }

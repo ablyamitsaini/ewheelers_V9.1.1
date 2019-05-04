@@ -1,7 +1,6 @@
 <?php
 class Promotions extends MyAppModel
 {
-    
     const DB_TBL = 'tbl_promotions';
     const DB_TBL_PREFIX = 'promotion_';
     const DB_TBL_LANG ='tbl_promotions_lang';
@@ -12,30 +11,30 @@ class Promotions extends MyAppModel
     const DB_TBL_CLICKS_PREFIX ='pclick_';
     const DB_TBL_CHARGES = 'tbl_promotions_charges' ;
     const DB_TBL_CHARGES_PREFIX ='pcharge_';
-    
+
     const PROMOTE_BANNER =3;
     const PROMOTE_SHOP =2;
     const PROMOTE_PRODUCT =1;
-    
+
     private $langId = 0;
-    public function __construct($id = 0) 
+    public function __construct($id = 0)
     {
         $this->langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
     }
-    function getTotalPages()
+    public function getTotalPages()
     {
         return $this->total_pages;
     }
-    function getTotalRecords()
+    public function getTotalRecords()
     {
         return $this->total_records;
     }
-    function getError()
+    public function getError()
     {
         return $this->error;
     }
-    function addUpdatePromotion($data)
+    public function addUpdatePromotion($data)
     {
         $promotion_id = intval($data['promotion_id']);
         $promotion_user_id = intval($data['promotion_user_id']);
@@ -83,8 +82,7 @@ class Promotions extends MyAppModel
         $record->assignValues($assign_fields);
         if ($promotion_id === 0 && $record->addNew()) {
             $this->promotion_id = $record->getId();
-        }
-        elseif ($promotion_id > 0 && $record->update(
+        } elseif ($promotion_id > 0 && $record->update(
             array(
             'smt' => '`promotion_id`=? AND `promotion_user_id`=?',
             'vals' => array(
@@ -94,8 +92,7 @@ class Promotions extends MyAppModel
             )
         )) {
             $this->promotion_id = $promotion_id;
-        }
-        else {
+        } else {
             $this->error = FatApp::getDb()->getError();
             return false;
         }
@@ -106,11 +103,11 @@ class Promotions extends MyAppModel
     {
         $this->attributes = self::getPromotion($this->promotion_id);
     }
-    function getAttribute($attr)
+    public function getAttribute($attr)
     {
         return isset($this->attributes[$attr]) ? $this->attributes[$attr] : '';
     }
-    function getPromotion($promotion_id)
+    public function getPromotion($promotion_id)
     {
         $promotion_id = intval($promotion_id);
         $srch = new SearchBase(static::DB_TBL, 'tp');
@@ -135,7 +132,7 @@ class Promotions extends MyAppModel
         $rs = $srch->getResultSet();
         return FatApp::getDb()->fetch($rs);
     }
-    function getUserPromotion($promotion_id, $user_id, $type = 0)
+    public function getUserPromotion($promotion_id, $user_id, $type = 0)
     {
         $promotion_id = intval($promotion_id);
         $user_id = intval($user_id);
@@ -160,7 +157,7 @@ class Promotions extends MyAppModel
         $rs = $srch->getResultSet();
         return FatApp::getDb()->fetch($rs);
     }
-    function getPromotions($criterias)
+    public function getPromotions($criterias)
     {
         $srch = new SearchBase(static::DB_TBL_LOGS, 'tpl');
         $srch->doNotCalculateRecords();
@@ -221,9 +218,10 @@ class Promotions extends MyAppModel
         $srch->joinTable('tbl_promotions_lang', 'LEFT OUTER JOIN', 'tp.promotion_id = tpl.promotionlang_promotion_id and tpl.promotionlang_lang_id='.$this->langId, 'tpl');
         $srch->joinTable('(' . $qry_promotion_logs . ')', 'LEFT OUTER JOIN', 'tp.promotion_id = tqpl.lprom_id', 'tqpl');
         $srch->addCondition('promotion_is_deleted', '=', applicationConstants::NO);
-        
-        foreach($criterias as $key => $val) {
-            if (strval($val) == '') { continue; 
+
+        foreach ($criterias as $key => $val) {
+            if (strval($val) == '') {
+                continue;
             }
             switch ($key) {
             case 'promoter':
@@ -317,7 +315,7 @@ class Promotions extends MyAppModel
         return FatApp::getDb()->fetchAll($rs);
         /* return $criterias["pagesize"] == 1 ? FatApp::getDb()->fetch($rs) : FatApp::getDb()->fetchAll($rs); */
     }
-    function updatePromotionStatus($promotion_id, $data_update = array())
+    public function updatePromotionStatus($promotion_id, $data_update = array())
     {
         $promotion_id = intval($promotion_id);
         if ($promotion_id < 1 || count($data_update) < 1) {
@@ -325,7 +323,9 @@ class Promotions extends MyAppModel
             return false;
         }
         if (FatApp::getDb()->updateFromArray(
-            static::DB_TBL, $data_update, array(
+            static::DB_TBL,
+            $data_update,
+            array(
             'smt' => '`promotion_id` = ?',
             'vals' => array(
             $promotion_id
@@ -337,13 +337,14 @@ class Promotions extends MyAppModel
         $this->error = FatApp::getDb()->getError();
         return false;
     }
-    function getPromotionLogs($criterias)
+    public function getPromotionLogs($criterias)
     {
         $srch = new SearchBase(static::DB_TBL_LOGS, 'tpl');
         $srch->joinTable(static::DB_TBL, 'INNER JOIN', 'tpl.lprom_id = p.promotion_id', 'p');
         $srch->addCondition('promotion_is_deleted', '=', applicationConstants::NO);
-        foreach($criterias as $key => $val) {
-            if (strval($val) == '') { continue; 
+        foreach ($criterias as $key => $val) {
+            if (strval($val) == '') {
+                continue;
             }
             switch ($key) {
             case 'id':
@@ -377,9 +378,9 @@ class Promotions extends MyAppModel
         $this->total_pages = $srch->pages();
         return $criterias["pagesize"] ? FatApp::getDb()->fetch($rs) : FatApp::getDb()->fetchAll($rs);
     }
-    
-    
-    function addPromotionAnalysisRecord($data = array() , $column = 'impressions')
+
+
+    public function addPromotionAnalysisRecord($data = array(), $column = 'impressions')
     {
         $promotion_id = str_replace('mysql_func_', 'mysql_func ', $data['promotion_id']);
         $assign_fields = array(
@@ -387,7 +388,8 @@ class Promotions extends MyAppModel
         'lprom_date' => date('Y-m-d') ,
         );
         $onDuplicateKeyUpdate = array_merge(
-            $assign_fields, array(
+            $assign_fields,
+            array(
             'lprom_' . $column => 'mysql_func_lprom_' . $column . '+1'
             )
         );
@@ -395,11 +397,11 @@ class Promotions extends MyAppModel
             if ($this->addPromotionClicksHistory($promotion_id)) {
                 FatApp::getDb()->insert_from_array(static::DB_TBL_LOGS, $assign_fields, true, array('IGNORE'), $onDuplicateKeyUpdate);
             }
-        }else{
+        } else {
             FatApp::getDb()->insert_from_array(static::DB_TBL_LOGS, $assign_fields, true, array('IGNORE'), $onDuplicateKeyUpdate);
         }
     }
-    
+
     private function addPromotionClicksHistory($promotion_id)
     {
         $promotion_id = intval($promotion_id);
@@ -410,7 +412,8 @@ class Promotions extends MyAppModel
         $assign_fields['pclick_promotion_id'] = $promotion_id;
         $assign_fields['pclick_cost'] = $promotion['promotion_cost'];
         if ($uObj->isUserLogged()) {
-            $user_id = $uObj->getLoggedUserId();;
+            $user_id = $uObj->getLoggedUserId();
+            ;
         }
         $assign_fields['pclick_user_id'] = $user_id;
         $assign_fields['pclick_ip'] = $_SERVER['REMOTE_ADDR'];
@@ -423,22 +426,24 @@ class Promotions extends MyAppModel
         }
         return false;
     }
-    function getPromotionLastChargedEntry($promotion_id)
+    public function getPromotionLastChargedEntry($promotion_id)
     {
         $promotion_id = intval($promotion_id);
-        if ($promotion_id > 0 != true) { return array(); 
+        if ($promotion_id > 0 != true) {
+            return array();
         }
         $srch = new SearchBase(static::DB_TBL_CHARGES, 'tpc');
         $srch->addCondition('tpc.pcharge_promotion_id', '=', $promotion_id);
         $srch->addOrder('pcharge_id', 'desc');
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if ($row == false) { return array(); 
-        }
-        else { return $row; 
+        if ($row == false) {
+            return array();
+        } else {
+            return $row;
         }
     }
-    function getPromotionPayments($criterias)
+    public function getPromotionPayments($criterias)
     {
         $srch = new SearchBase(static::DB_TBL_CHARGES, 'tpc');
         $srch->joinTable('tbl_users', 'LEFT JOIN', 'tpc.pcharge_user_id = u.user_id', 'u');
@@ -448,8 +453,9 @@ class Promotions extends MyAppModel
             "u.user_name"
             )
         );
-        foreach($criterias as $key => $val) {
-            if (strval($val) == '') { continue; 
+        foreach ($criterias as $key => $val) {
+            if (strval($val) == '') {
+                continue;
             }
             switch ($key) {
             case 'promotion':
@@ -474,7 +480,7 @@ class Promotions extends MyAppModel
         $this->total_pages = $srch->pages();
         return FatApp::getDb()->fetchAll($rs);
     }
-    function getPromotionClicks($criterias)
+    public function getPromotionClicks($criterias)
     {
         $srch = new SearchBase(static::DB_TBL_CLICKS, 'tpc');
         $srch->joinTable('tbl_users', 'LEFT JOIN', 'tpc.pclick_user_id = u.user_id', 'u');
@@ -484,8 +490,9 @@ class Promotions extends MyAppModel
             "u.user_name"
             )
         );
-        foreach($criterias as $key => $val) {
-            if (strval($val) == '') { continue; 
+        foreach ($criterias as $key => $val) {
+            if (strval($val) == '') {
+                continue;
             }
             switch ($key) {
             case 'promotion':
@@ -510,7 +517,7 @@ class Promotions extends MyAppModel
         $this->total_pages = $srch->pages();
         return FatApp::getDb()->fetchAll($rs);
     }
-    function getPromotionClicksSummary($criterias)
+    public function getPromotionClicksSummary($criterias)
     {
         $srch = new SearchBase(static::DB_TBL_CLICKS, 'tpc');
         $srch->joinTable(static::DB_TBL, 'LEFT JOIN', 'tpc.pclick_promotion_id = tp.promotion_id', 'tp');
@@ -529,8 +536,9 @@ class Promotions extends MyAppModel
             "MAX(pclick_datetime) as end_click_date"
             )
         );
-        foreach($criterias as $key => $val) {
-            if (strval($val) == '') { continue; 
+        foreach ($criterias as $key => $val) {
+            if (strval($val) == '') {
+                continue;
             }
             switch ($key) {
             case 'promotion':
@@ -551,12 +559,13 @@ class Promotions extends MyAppModel
         $this->total_pages = $srch->pages();
         return ($criterias["pagesize"] == 1) ? FatApp::getDb()->fetch($rs) : FatApp::getDb()->fetchAll($rs);
     }
-    function addUpdatePromotionCharges($data)
+    public function addUpdatePromotionCharges($data)
     {
         $pcharge_user_id = intval($data['user_id']);
         $pcharge_promotion_id = intval($data['promotion_id']);
         $charged_amount = $data['total_cost'];
-        if (($pcharge_user_id > 0 != true) || ($pcharge_promotion_id > 0 != true) || ($charged_amount > 0 != true)) { return array(); 
+        if (($pcharge_user_id > 0 != true) || ($pcharge_promotion_id > 0 != true) || ($charged_amount > 0 != true)) {
+            return array();
         }
         $record = new TableRecord(static::DB_TBL_CHARGES);
         $assign_fields = array();
@@ -583,14 +592,13 @@ class Promotions extends MyAppModel
                 $emailNotificationObj = new Emailnotifications();
                 $emailNotificationObj->sendTxnNotification($txn_id);
             }
-        }
-        else {
+        } else {
             $this->error = FatApp::getDb()->getError();
             return false;
         }
         return $this->charge_log_id;
     }
-    function getDistinctPromotionMembers($name)
+    public function getDistinctPromotionMembers($name)
     {
         $srch = new SearchBase(static::DB_TBL, 'tp');
         $srch->joinTable('tbl_users', 'LEFT OUTER JOIN', 'tp.promotion_user_id = tu.user_id', 'tu');

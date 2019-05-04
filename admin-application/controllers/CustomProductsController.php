@@ -862,7 +862,7 @@ class CustomProductsController extends AdminBaseController
         $customCatalogReq = $data;
         $customCatalogReq['preq_status'] = $post['preq_status'];    
         $customCatalogReq['preq_comment'] = $post['preq_comment'];
-        if(!$email->SendCustomCatalogRequestStatusChangeNotification($this->adminLangId, $customCatalogReq)) {
+        if(!$email->sendCustomCatalogRequestStatusChangeNotification($this->adminLangId, $customCatalogReq)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel('MSG_Email_could_not_be_Sent', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());

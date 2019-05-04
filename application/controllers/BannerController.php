@@ -3,13 +3,12 @@ class BannerController extends MyAppController
 {
     public function index()
     {
-
     }
 
     public function url($bannerId = 0)
     {
         $bannerId = FatUtility::int($bannerId);
-        if(1 > $bannerId) {
+        if (1 > $bannerId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('home'));
         }
@@ -23,7 +22,7 @@ class BannerController extends MyAppController
         $srch->addMultipleFields(array('banner_id','banner_url','banner_type','banner_blocation_id','banner_record_id','blocation_promotion_cost','promotion_cpc'));
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if($row == false) {
+        if ($row == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('home'));
         }
@@ -31,12 +30,11 @@ class BannerController extends MyAppController
         $url  = str_replace('{SITEURL}', CommonHelper::generateFullUrl(), $row['banner_url']);
 
         $userId = 0;
-
-        if (UserAuthentication::isUserLogged()  ) {
+        if (UserAuthentication::isUserLogged()) {
             $userId = UserAuthentication::getLoggedUserId();
         }
-        if(Promotion::isUserClickCountable($userId, $row['banner_record_id'], $_SERVER['REMOTE_ADDR'], session_id())) {
-            switch($row['banner_type']){
+        if (Promotion::isUserClickCountable($userId, $row['banner_record_id'], $_SERVER['REMOTE_ADDR'], session_id())) {
+            switch ($row['banner_type']) {
             case Banner::TYPE_BANNER:
 
                 break;
@@ -83,15 +81,14 @@ class BannerController extends MyAppController
         }
 
         FatApp::redirectUser(CommonHelper::generateUrl(''));
-
     }
 
-    public function HomePageBannerTopLayout($bannerId , $langId = 0, $screen = 0)
+    public function HomePageBannerTopLayout($bannerId, $langId = 0, $screen = 0)
     {
         $this->showBanner($bannerId, $langId, 1350, 405, $screen);
     }
 
-    public function HomePageBannerBottomLayout($bannerId , $langId = 0, $screen = 0)
+    public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
         $this->showBanner($bannerId, $langId, 1000, 562, $screen);
     }
@@ -106,7 +103,7 @@ class BannerController extends MyAppController
         $this->showBanner($bannerId, $langId, 100, 100, $screen);
     }
 
-    public function showBanner($bannerId, $langId, $w = '200',$h = '200', $screen = 0)
+    public function showBanner($bannerId, $langId, $w = '200', $h = '200', $screen = 0)
     {
         $bannerId = FatUtility::int($bannerId);
         $langId = FatUtility::int($langId);
@@ -171,7 +168,8 @@ class BannerController extends MyAppController
 
     private function getBanners($type)
     {
-        if($type == '') { return;
+        if ($type == '') {
+            return;
         }
 
         $db = FatApp::getDb();
@@ -180,13 +178,14 @@ class BannerController extends MyAppController
         $rs = $bannerSrch->getResultSet();
         $bannerLocation = $db->fetch($rs);
 
-        if(empty($bannerLocation)) {return;
+        if (empty($bannerLocation)) {
+            return;
         }
 
         $srch = Banner::getSearchObject($this->siteLangId, true);
         $srch->doNotCalculateRecords();
 
-        if($bannerLocation['blocation_banner_count']>0) {
+        if ($bannerLocation['blocation_banner_count']>0) {
             $srch->setPageSize($bannerLocation['blocation_banner_count']);
         }
 
@@ -195,17 +194,14 @@ class BannerController extends MyAppController
         return $bannerListing = $db->fetchAll($rs, 'banner_id');
     }
 
-    public function locationFrames($frameId,$sizeType='')
+    public function locationFrames($frameId, $sizeType='')
     {
         $frameId = FatUtility::int($frameId);
-        if(1>$frameId) {
+        if (1>$frameId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_access', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
         $this->set('frameId', $frameId);
         $this->_template->render(false, false);
-
     }
-
-
 }
