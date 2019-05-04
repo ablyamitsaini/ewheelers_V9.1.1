@@ -1,11 +1,18 @@
 $(document).ready(function(){
 	searchProductBrands(document.frmSearch);
 });
-$(document).delegate('.language-js','change',function(){
+
+$(document).delegate('.logo-language-js','change',function(){
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	brandImages(brand_id,lang_id);
+	brandImages(brand_id, 'logo', lang_id);
 });
+$(document).delegate('.image-language-js','change',function(){
+	var lang_id = $(this).val();
+	var brand_id = $("input[id='id-js']").val();
+	brandImages(brand_id, 'image', lang_id);
+});
+
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
@@ -91,19 +98,24 @@ $(document).delegate('.language-js','change',function(){
 		});
 	};
 	
-	brandImages = function(brandId,lang_id){
-		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId,lang_id]), '', function(t) {
-			$('#image-listing').html(t);
+	brandImages = function(brandId, fileType, langId){
+		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId, fileType, langId]), '', function(t) {
+			if(fileType=='logo') {
+				$('#logo-listing').html(t);
+			} else {
+				$('#image-listing').html(t);
+			}
 			fcom.resetFaceboxHeight();
 		});
 	};
-	
+
 	brandMediaForm = function(brandId){
 		fcom.displayProcessing();
-			fcom.ajax(fcom.makeUrl('Brands', 'media', [brandId]), '', function(t) {
-				brandImages(brandId);
-				fcom.updateFaceboxContent(t);
-			});
+        fcom.ajax(fcom.makeUrl('Brands', 'media', [brandId]), '', function(t) {
+            brandImages(brandId, 'logo');
+            brandImages(brandId, 'image');
+            fcom.updateFaceboxContent(t);
+        });
 	};
 	
 	deleteRecord = function(id){
@@ -119,14 +131,14 @@ $(document).delegate('.language-js','change',function(){
 		searchProductBrands(document.frmSearch);
 	};
 	
-	deleteImage = function( brandId, langId ){
-		if(!confirm(langLbl.confirmDeleteLogo)){return;}
-		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandLogo',[brandId, langId]), '', function(t) {
-			brandImages(brandId,langId);
+	deleteMedia = function( brandId, fileType, langId ){
+		if(!confirm(langLbl.confirmDelete)){return;}
+		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandMedia',[brandId, fileType, langId]), '', function(t) {
+			brandImages(brandId,fileType,langId);
 			reloadList();
 		});
 	};
-	
+    
 	toggleStatus = function(e,obj,canEdit){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -267,15 +279,27 @@ $(document).on('click','.uploadFile-Js',function(){
 	$('#form-upload').remove();	
 	/* var brandId = document.frmProdBrandLang.brand_id.value;
 	var langId = document.frmProdBrandLang.lang_id.value; */
-	
-	var brandId = $(node).attr( 'data-brand_id' );	
-	var langId = document.frmBrandMedia.brand_lang_id.value;
-	
+    
+    var formName = $(node).attr('data-frm');
+	if(formName == 'frmBrandImage'){
+        var brandId = document.frmBrandImage.brand_id.value;
+        var langId = document.frmBrandImage.lang_id.value;
+        var imageType = 'image';
+	}else{	
+		var brandId = document.frmBrandLogo.brand_id.value;
+        var langId = document.frmBrandLogo.lang_id.value;
+		var imageType = 'logo';
+	}
+    
+    var fileType = $(node).attr('data-file_type');
+    
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
 	frm = frm.concat('<input type="file" name="file" />'); 
 	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>'); 	
-	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>'); 	
-	frm = frm.concat('</form>'); 	
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>');
+    frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');
+	frm = frm.concat('</form>');
+    
 	$( 'body' ).prepend( frm );
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if ( typeof timer != 'undefined' ) {
@@ -286,7 +310,7 @@ $(document).on('click','.uploadFile-Js',function(){
 			clearInterval(timer);
 			$val = $(node).val();			
 			$.ajax({
-				url: fcom.makeUrl('Brands', 'uploadLogo'),
+				url: fcom.makeUrl('Brands', 'uploadMedia'),
 				type: 'post',
 				dataType: 'json',
 				data: new FormData($('#form-upload')[0]),
@@ -305,8 +329,8 @@ $(document).on('click','.uploadFile-Js',function(){
 						if(ans.status==1)
 						{	
 							fcom.displaySuccessMessage(ans.msg);
-							$('#form-upload').remove();	
-							brandImages(ans.brandId,langId);
+							$('#form-upload').remove();
+							brandImages(ans.brandId,imageType,langId);
 							reloadList();
 						}else{
 							fcom.displayErrorMessage(ans.msg,'');

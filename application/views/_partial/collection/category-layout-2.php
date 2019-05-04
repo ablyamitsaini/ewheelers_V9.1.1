@@ -13,8 +13,8 @@
 								<?php }  ?>
 							</div>
 							<div class="row">
-							<?php $count = 1; foreach($row['categories'] as $category) { ?>
-								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 column">
+							<?php foreach($row['categories'] as $category) { ?>
+								<div class="col-lg-3 col-md-3 column">
 									<div class="top-categories">
 										<div class="cat-img"><img data-ratio="16:9 (1000x563)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MEDIUM')), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $category['prodcat_name']; ?> " title= "<?php echo $category['prodcat_name']; ?> "></div>
 										<div class="cat-tittle"> <a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($category['prodcat_id'] )); ?>"> <?php echo $category['prodcat_name']; ?></a></div>
@@ -30,7 +30,7 @@
 										</div>
 									</div>
 								</div>
-							<?php $count++; if($count > 3) break; }?>
+							<?php }?>
 							</div>
 						</div>
 					</section>

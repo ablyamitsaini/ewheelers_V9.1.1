@@ -10,13 +10,19 @@
     <div class="products__category"><?php echo $product['selprod_title']?> </div>
     <div class="gap"></div>
     <div class="product_qty">
-      <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
-		<input name="qty_<?php echo md5($product['key']); ?>" class="cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="text" />
-        <span class="increase increase-js">+</span> </div>
-		<ul class="actions">
-			<li><a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','')" title="<?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?>" class="icons-wrapper"><i class="icn"><svg class="svg">
-							<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
-						</svg></i></a>
+        <div class="qty-wrapper">
+            <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
+                <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0"/>
+            </div>
+            <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
+                <span class="increase increase-js"></span>
+                <span class="decrease decrease-js"></span>
+            </div>
+        </div>
+        <ul class="actions">
+			<li><a href="javascript:void(0)" class="icons-wrapper" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout','')" title="<?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?>" class="icons-wrapper"><i class="icn"><svg class="svg">
+                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
+            </svg></i></a>
 			</li>
 		</ul>
 		<!--<a class="refresh" title="<?php /* echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); */ ?>" href="javascript:void(0)" onclick="cart.update('<?php /* echo md5($product['key']); */ ?>','loadFinancialSummary')"><i class="fa fa-refresh"></i></a>-->

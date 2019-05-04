@@ -699,39 +699,45 @@ $(document).ready(function(){
 
     $(document).on("click", '.increase-js', function() {
        $(this).siblings('.not-allowed').removeClass('not-allowed');
-       var val = $(this).parent('div').find('input').val();
+       var val = $(this).parent().parent('div').find('input').val();
+       var key = $(this).parent().parent('div').find('input').attr('data-key');
        val = parseInt(val) + 1;
        if (val > $(this).parent().data('stock')) {
            val = $(this).parent().data('stock');
            $(this).addClass('not-allowed');
        }
-       $(this).parent('div').find('input').val(val);
-   });
+       $(this).parent().parent('div').find('input').val(val);
+       cart.update(key);
+    });
 
     $(document).on("change", '.productQty-js', function() {
        if ($(this).val() > $(this).parent().data('stock')) {
            val = $(this).parent().data('stock');
-           $(this).siblings('.increase-js').addClass('not-allowed');
-           $(this).siblings('.decrease-js').removeClass('not-allowed');
+           $(this).parent().parent('div').find('.increase-js').addClass('not-allowed');
+           $(this).parent().parent('div').find('.decrease-js').removeClass('not-allowed');
        } else if ($(this).val() <= 0) {
            val = 1;
-           $(this).siblings('.decrease-js').addClass('not-allowed');
-           $(this).siblings('.increase-js').removeClass('not-allowed');
+           $(this).parent().parent('div').find('.decrease-js').addClass('not-allowed');
+           $(this).parent().parent('div').find('.increase-js').removeClass('not-allowed');
        } else {
            val = $(this).val();
        }
        $(this).val(val);
+       var key = $(this).attr('data-key');
+       cart.update(key);
     });
 
    $(document).on("click", '.decrease-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
-        var val = $(this).parent('div').find('input').val();
+        var val = $(this).parent().parent('div').find('input').val();
+        var key = $(this).parent().parent('div').find('input').attr('data-key');
         val = parseInt(val) - 1;
         if (val <= 1) {
             val = 1;
             $(this).addClass('not-allowed');
         }
-        $(this).parent('div').find('input').val(val);
+        $(this).parent().parent('div').find('input').val(val);
+        cart.update(key);
     });
 
 	$(document).on("click",'.setactive-js li',function(){
@@ -1012,9 +1018,9 @@ $("document").ready(function(){
 					$(document).trigger('close.facebox');
 				}
 				$('span.cartQuantity').html(ans.total);
-				$('html, body').animate({ scrollTop: 0 }, 'slow');
+				/* $('html, body').animate({ scrollTop: 0 }, 'slow');
 				$('html').toggleClass("cart-is-active");
-				$('.cart').toggleClass("cart-is-active");
+				$('.cart').toggleClass("cart-is-active"); */
 				$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
 			});
 			return false;
