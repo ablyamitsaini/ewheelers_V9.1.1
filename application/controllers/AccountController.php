@@ -78,7 +78,7 @@ class AccountController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function supplierApprovalForm($p='')
+    public function supplierApprovalForm($p = '')
     {
         if (!User::canViewSupplierTab()) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_FOR_SUPPLIER_DASHBOARD', $this->siteLangId));
@@ -327,34 +327,34 @@ class AccountController extends LoggedUserController
         $dasboardType  = FatUtility::int($dasboardType);
 
         switch ($dasboardType) {
-        case User::USER_BUYER_DASHBOARD:
-            if (!User::canViewBuyerTab()) {
+            case User::USER_BUYER_DASHBOARD:
+                if (!User::canViewBuyerTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_SELLER_DASHBOARD:
+                if (!User::canViewSupplierTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_ADVERTISER_DASHBOARD:
+                if (!User::canViewAdvertiserTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_AFFILIATE_DASHBOARD:
+                if (!User::canViewAffiliateTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            default:
                 Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
                 FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_SELLER_DASHBOARD:
-            if (!User::canViewSupplierTab()) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_ADVERTISER_DASHBOARD:
-            if (!User::canViewAdvertiserTab()) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_AFFILIATE_DASHBOARD:
-            if (!User::canViewAffiliateTab()) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        default:
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-            break;
+                break;
         }
 
         $arr = array('user_preferred_dashboard' => $dasboardType);
@@ -531,15 +531,15 @@ class AccountController extends LoggedUserController
         }
         if ($debit_credit_type > 0) {
             switch ($debit_credit_type) {
-            case Transactions::CREDIT_TYPE:
-                $srch->addCondition('utxn.utxn_credit', '>', '0');
-                $srch->addCondition('utxn.utxn_debit', '=', '0');
-                break;
+                case Transactions::CREDIT_TYPE:
+                    $srch->addCondition('utxn.utxn_credit', '>', '0');
+                    $srch->addCondition('utxn.utxn_debit', '=', '0');
+                    break;
 
-            case Transactions::DEBIT_TYPE:
-                $srch->addCondition('utxn.utxn_debit', '>', '0');
-                $srch->addCondition('utxn.utxn_credit', '=', '0');
-                break;
+                case Transactions::DEBIT_TYPE:
+                    $srch->addCondition('utxn.utxn_debit', '>', '0');
+                    $srch->addCondition('utxn.utxn_credit', '=', '0');
+                    break;
             }
         }
         $records = array();
@@ -652,22 +652,19 @@ class AccountController extends LoggedUserController
         $withdrawal_comments = $post['withdrawal_comments'];
 
         switch ($withdrawal_payment_method) {
-        case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
-            $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
-            break;
-
-        case User::AFFILIATE_PAYMENT_METHOD_BANK:
-            $withdrawal_bank = $post['ub_bank_name'];
-            $withdrawal_account_holder_name = $post['ub_account_holder_name'];
-            $withdrawal_account_number = $post['ub_account_number'];
-            $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
-            $withdrawal_bank_address = $post['ub_bank_address'];
-
-            break;
-
-        case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
-            $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
-            break;
+            case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
+                $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
+                break;
+            case User::AFFILIATE_PAYMENT_METHOD_BANK:
+                $withdrawal_bank = $post['ub_bank_name'];
+                $withdrawal_account_holder_name = $post['ub_account_holder_name'];
+                $withdrawal_account_number = $post['ub_account_number'];
+                $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
+                $withdrawal_bank_address = $post['ub_bank_address'];
+                break;
+            case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
+                $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
+                break;
         }
 
 
@@ -754,14 +751,14 @@ class AccountController extends LoggedUserController
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -813,7 +810,7 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    public function ProfileInfoForm()
+    public function profileInfoForm()
     {
         $userId = UserAuthentication::getLoggedUserId();
 
@@ -2264,23 +2261,6 @@ class AccountController extends LoggedUserController
     private function userEmailVerification($userObj, $data)
     {
         return $this->userEmailVerifications($userObj, $data);
-        /* $verificationCode = $userObj->prepareUserVerificationCode($data['user_email']);
-
-        $link = CommonHelper::generateFullUrl('GuestUser', 'changeEmailVerification', array('verify'=>$verificationCode));
-
-        $data = array(
-            'user_name' => $data['user_name'],
-            'link' => $link,
-        'user_email' => $data['user_email'],
-        );
-
-        $email = new EmailHandler();
-
-        if(!$email->sendEmailVerificationLink($this->siteLangId,$data)){
-        return false;
-        }
-
-        return true; */
     }
 
     private function getProfileInfoForm()
@@ -2381,7 +2361,7 @@ class AccountController extends LoggedUserController
         return $frm;
     }
 
-    private function notifyAdminSupplierApproval($userObj, $data, $approval_request=1)
+    private function notifyAdminSupplierApproval($userObj, $data, $approval_request = 1)
     {
         $attr = array('user_name','credential_username','credential_email');
         $userData = $userObj->getUserInfo($attr);
@@ -2424,44 +2404,43 @@ class AccountController extends LoggedUserController
             $fieldName = 'sformfield_'.$field['sformfield_id'];
 
             switch ($field['sformfield_type']) {
+                case User::USER_FIELD_TYPE_TEXT:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXT:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_TEXTAREA:
+                    $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXTAREA:
-                $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_FILE:
+                    $fld1 = $frm->addButton(
+                        $field['sformfield_caption'],
+                        'button['.$field['sformfield_id'].']',
+                        Labels::getLabel('LBL_Upload_File', $this->siteLangId),
+                        array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
+                    );
+                    $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
+                    if ($field['sformfield_required'] == 1) {
+                        $fld1->captionWrapper = array('<div class="astrick">','</div>');
+                    }
+                    $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName , 'hidden'=>'hidden' , 'title' => $field['sformfield_caption']));
+                    $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
+                    $fld1->attachField($fld);
+                    break;
 
-            case User::USER_FIELD_TYPE_FILE:
-                $fld1 = $frm->addButton(
-                    $field['sformfield_caption'],
-                    'button['.$field['sformfield_id'].']',
-                    Labels::getLabel('LBL_Upload_File', $this->siteLangId),
-                    array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
-                );
-                $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
-                if ($field['sformfield_required'] == 1) {
-                    $fld1->captionWrapper = array('<div class="astrick">','</div>');
-                }
-                $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName , 'hidden'=>'hidden' , 'title' => $field['sformfield_caption']));
-                $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
-                $fld1->attachField($fld);
-                break;
+                case User::USER_FIELD_TYPE_DATE:
+                    $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATE:
-                $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
+                case User::USER_FIELD_TYPE_DATETIME:
+                    $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATETIME:
-                $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
-
-            case User::USER_FIELD_TYPE_TIME:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
-                $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
-                break;
+                case User::USER_FIELD_TYPE_TIME:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+                    $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
+                    break;
             }
 
             if ($field['sformfield_required'] == 1) {
@@ -2499,7 +2478,7 @@ class AccountController extends LoggedUserController
         FatApp::redirectUser(CommonHelper::generateUrl('member', 'account'));
     }
 
-    public function EscalateOrderReturnRequest($orrequest_id)
+    public function escalateOrderReturnRequest($orrequest_id)
     {
         $orrequest_id = FatUtility::int($orrequest_id);
         if (!$orrequest_id) {

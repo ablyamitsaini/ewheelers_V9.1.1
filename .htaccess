@@ -7,7 +7,7 @@ RewriteRule ^sitemap.xml$ user-uploads/sitemap.xml [L]
     Options -Multiviews
     RewriteEngine on
 	#satisfy any
-    RewriteBase /
+    RewriteBase /yokartv8/
 	RewriteRule ^cache/(.*)/images/(.*) /images/$2 [L]
 	RewriteRule ^cache/(.*)/fonts/(.*) /fonts/$2 [L]
 	RewriteRule ^(scripts|user-uploads/text-editor|user-uploads/sitemap.xml|user-uploads/sitemap) - [L]

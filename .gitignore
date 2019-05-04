@@ -1,4 +1,5 @@
 .*
+.htaccess
 !/.gitignore
 /library/license.txt
 /license.txt
