@@ -1,6 +1,14 @@
-@media only screen and (max-width: 1366px) {}
+@media only screen and (max-width: 1366px) {
+  .container {
+    max-width: 1250px;
+  }
+}
 
 @media only screen and (max-width: 1281px) {
+  .container {
+    max-width: 1120px;
+  }
+
   html {
     font-size: 14px;
   }
@@ -35,7 +43,6 @@
   }
 
   .widget-wrapper {
-
     margin: 0 auto;
   }
 
@@ -71,7 +78,7 @@
   }
 
   #header {
-    height:97px;
+    height: 97px;
   }
 
   .after-header {
@@ -761,7 +768,9 @@
     max-width: none;
   }
 
-  .buttons-list-checkout ul{ flex-direction: column;}
+  .buttons-list-checkout ul {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -934,9 +943,7 @@
     content: normal;
   }
 
-  .short-links>ul>li>a span {
-
-  }
+  .short-links>ul>li>a span {}
 
   .shop-bar {
     padding: 0;
@@ -1020,7 +1027,7 @@
   }
 
   .hero-slider .hero-item {
-    padding:0;
+    padding: 0;
   }
 
   .trending-corner .item-yk {
@@ -1235,8 +1242,8 @@
     flex-direction: column;
   }
 
-  .listing--grids ul li { margin: 5px 0;
-
+  .listing--grids ul li {
+    margin: 5px 0;
   }
 }
 
