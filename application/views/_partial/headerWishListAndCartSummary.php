@@ -32,14 +32,15 @@ if( UserAuthentication::isUserLogged() ){
                 <div class="item__category"><a href="<?php echo $shopUrl; ?>"><?php echo $product['shop_name']; ?> </a></div>
                 <div class="item__title"><a title="<?php echo $product['product_name']; ?>" href="<?php echo $productUrl; ?>"><?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?></a></div>
                 <div class="item__specification">
-                  <?php
-								if(isset($product['options']) && count($product['options'])){
-									foreach($product['options'] as $option){ ?>
-                  <?php echo ' | ' . $option['option_name'].':'; ?> <?php echo $option['optionvalue_name']; ?>
-                  <?php
-									}
-								}
-							?>
+                    <?php
+                        if(isset($product['options']) && count($product['options'])){
+                            $count = 0;
+                            foreach($product['options'] as $option){ ?>
+                                <?php echo ($count > 0) ? ' | ' : '' ; echo $option['option_name'].':'; ?> <?php echo $option['optionvalue_name']; ?>
+                                <?php $count++;
+                            }
+                        }
+                    ?>
                   | <?php echo Labels::getLabel('LBL_Quantity:', $siteLangId) ?> <?php echo $product['quantity']; ?> </div>
               </div></td>
             <td ><div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>

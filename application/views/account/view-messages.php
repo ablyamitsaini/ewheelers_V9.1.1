@@ -77,8 +77,8 @@
         <ul>
         </ul>
       </div>
-				<div class="messages-list" >
-          	<ul>
+			<div class="messages-list" >
+                <ul>
 				   <li>
 					   <div class="msg_db">
 						   <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image','user',array($loggedUserId,'thumb',true));?>" alt="<?php echo $loggedUserName; ?>"></div>
@@ -95,9 +95,8 @@
 
 
 					   </div>
-
 				   </li>
-			   </ul>
+                </ul>
 			</div>	</div>
 		</div>
 	</div>

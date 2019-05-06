@@ -57,17 +57,8 @@ $cancelBtnFld->developerTags['col'] = 2;
                 </div>
 			</div>
 			<div class="cards-content p-3">
-
-              <div class="btn-group">
-              <!--<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php /* echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId); */?></a>-->
-              <?php /* if( User::canAddCustomProduct() ){ ?>
-                <a href="<?php echo commonHelper::generateUrl('seller','catalog');?>" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Products_list', $siteLangId);?></a>
-              <?php } */ ?>
-            </div>
-
-
             <div class="bg-gray-light p-3 pb-0">
-                                  <?php echo $frmSearch->getFormHtml(); ?>
+                <?php echo $frmSearch->getFormHtml(); ?>
             </div>
             <span class="gap"></span>
             <?php echo $frmSearch->getExternalJS();?>

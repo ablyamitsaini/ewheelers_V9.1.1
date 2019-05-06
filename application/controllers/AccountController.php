@@ -846,7 +846,7 @@ class AccountController extends LoggedUserController
         if($file_row != false ) {
             $mode = 'Edit';
         }
-
+        
         $this->set('data', $data);
         $this->set('frm', $frm);
         $this->set('imgFrm', $imgFrm);

@@ -653,7 +653,7 @@ class AdvertiserController extends AdvertiserBaseController
         $prmSrch->joinTable(Promotion::DB_TBL, 'INNER JOIN', 'pr.'.Promotion::DB_TBL_PREFIX.'id = tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'promotion_id', 'pr');
         $prmSrch->addCondition('pr.promotion_user_id', '=', $userId);
         $prmSrch->addMultipleFields(array('promotion_id','promotion_type','promotion_identifier','sum(pcharge_charged_amount)','sum(pcharge_clicks)','pcharge_date'));
-        $prmSrch->addGroupBy('promotion_id');
+        // $prmSrch->addGroupBy('promotion_id');
         $prmSrch->addOrder('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'id', 'desc');
         // echo $prmSrch->getQuery(); die;
         $rs =  $prmSrch->getResultSet();

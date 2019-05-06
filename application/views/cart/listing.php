@@ -36,9 +36,10 @@
             <div class="item-yk-head-specification">
 				<?php
 				if( isset($product['options']) && count($product['options']) ){
+                    $count = 0;
 					foreach($product['options'] as $option){
-						echo ' | ' . $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
-						<?php
+						echo ($count > 0) ? ' | ' : '' ; echo $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
+						<?php $count++;
 					}
 				}
 				?>
