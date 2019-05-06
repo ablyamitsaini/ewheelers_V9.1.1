@@ -4,14 +4,14 @@ class AccountController extends LoggedUserController
     public function __construct($action)
     {
         parent::__construct($action);
-        if(!isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) ) {
-            if(User::isBuyer()  || User::isSigningUpBuyer()) {
+        if (!isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+            if (User::isBuyer()  || User::isSigningUpBuyer()) {
                 $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-            } else if(User::isSeller() || User::isSigningUpForSeller() ) {
+            } elseif (User::isSeller() || User::isSigningUpForSeller()) {
                 $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-            } else if(User::isAdvertiser() || User::isSigningUpAdvertiser() ) {
+            } elseif (User::isAdvertiser() || User::isSigningUpAdvertiser()) {
                 $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-            } else if(User::isAffiliate()  || User::isSigningUpAffiliate()) {
+            } elseif (User::isAffiliate()  || User::isSigningUpAffiliate()) {
                 $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
             }
         }
@@ -21,17 +21,17 @@ class AccountController extends LoggedUserController
     public function index()
     {
         /* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
-        if(UserAuthentication::isGuestUserLogged()) {
+        if (UserAuthentication::isGuestUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('home'));
         }
 
-        if(( User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B' ) {
+        if ((User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B') {
             FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-        } else if(( User::isSeller() || User::isSigningUpForSeller() )&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S' ) {
+        } elseif ((User::isSeller() || User::isSigningUpForSeller())&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S') {
             FatApp::redirectUser(CommonHelper::generateUrl('seller'));
-        }  else if((User::isAdvertiser() || User::isSigningUpAdvertiser() ) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad' ) {
+        } elseif ((User::isAdvertiser() || User::isSigningUpAdvertiser()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad') {
             FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
-        } else if((User::isAffiliate()  || User::isSigningUpAffiliate() ) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE' ) {
+        } elseif ((User::isAffiliate()  || User::isSigningUpAffiliate()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE') {
             FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
         } else {
             FatApp::redirectUser(CommonHelper::generateUrl(''));
@@ -46,7 +46,7 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $requestId = FatUtility::int($requestId);
 
-        if($userId < 1 || $requestId < 1) {
+        if ($userId < 1 || $requestId < 1) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'SupplierApprovalForm'));
             //FatUtility::dieJsonError( Message::getHtml() );
@@ -69,7 +69,7 @@ class AccountController extends LoggedUserController
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'SupplierApprovalForm'));
         }
         $maxAttempts = FatApp::getConfig('CONF_MAX_SUPPLIER_REQUEST_ATTEMPT', FatUtility::VAR_INT, 3);
-        if($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
+        if ($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
             $this->set('maxAttemptsReached', true);
         }
 
@@ -78,15 +78,15 @@ class AccountController extends LoggedUserController
         $this->_template->render(true, false);
     }
 
-    public function supplierApprovalForm($p='')
+    public function supplierApprovalForm($p = '')
     {
-        if(!User::canViewSupplierTab() ) {
+        if (!User::canViewSupplierTab()) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_FOR_SUPPLIER_DASHBOARD', $this->siteLangId));
-            if(User::isBuyer() ) {
+            if (User::isBuyer()) {
                 FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-            } else if(User::isAdvertiser() ) {
+            } elseif (User::isAdvertiser()) {
                 FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
-            } else if(User::isAffiliate() ) {
+            } elseif (User::isAffiliate()) {
                 FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
             } else {
                 FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
@@ -99,14 +99,14 @@ class AccountController extends LoggedUserController
         $srch->addFld(array('usuprequest_attempts','usuprequest_id'));
 
         $rs = $srch->getResultSet();
-        if(!$rs) {
+        if (!$rs) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $supplierRequest = FatApp::getDb()->fetch($rs);
         $maxAttempts = FatApp::getConfig('CONF_MAX_SUPPLIER_REQUEST_ATTEMPT', FatUtility::VAR_INT, 3);
-        if($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
+        if ($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
             Message::addErrorMessage(Labels::getLabel('MSG_You_have_already_consumed_max_attempts', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('account', 'viewSupplierRequest', array($supplierRequest["usuprequest_id"])));
         }
@@ -134,14 +134,14 @@ class AccountController extends LoggedUserController
         $srch->addFld(array('usuprequest_attempts','usuprequest_id'));
 
         $rs = $srch->getResultSet();
-        if(!$rs) {
+        if (!$rs) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $supplierRequest = FatApp::getDb()->fetch($rs);
         $maxAttempts = FatApp::getConfig('CONF_MAX_SUPPLIER_REQUEST_ATTEMPT', FatUtility::VAR_INT, 3);
-        if($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
+        if ($supplierRequest && $supplierRequest['usuprequest_attempts'] >= $maxAttempts) {
             Message::addErrorMessage(Labels::getLabel('MSG_You_have_already_consumed_max_attempts', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -157,7 +157,7 @@ class AccountController extends LoggedUserController
 
         $supplier_form_fields = $userObj->getSupplierFormFields($this->siteLangId);
 
-        foreach ( $supplier_form_fields as $field ) {
+        foreach ($supplier_form_fields as $field) {
             $fieldIdsArr[] = $field['sformfield_id'];
             //$fieldCaptionsArr[] = $field['sformfield_caption'];
             if ($field['sformfield_required'] && empty($post["sformfield_".$field['sformfield_id']])) {
@@ -165,7 +165,7 @@ class AccountController extends LoggedUserController
             }
         }
 
-        if(!empty($error_messages) ) {
+        if (!empty($error_messages)) {
             Message::addErrorMessage($error_messages);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -176,21 +176,21 @@ class AccountController extends LoggedUserController
         $db = FatApp::getDb();
         $db->startTransaction();
 
-        if(!$supplier_request_id = $userObj->addSupplierRequestData($data, $this->siteLangId)) {
+        if (!$supplier_request_id = $userObj->addSupplierRequestData($data, $this->siteLangId)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel('MSG_details_not_saved', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1) ) {
+        if (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1)) {
             $approval_request = 1;
             $msg = Labels::getLabel('MSG_Your_seller_approval_form_request_sent', $this->siteLangId);
-        }else{
+        } else {
             $approval_request = 0;
             $msg = Labels::getLabel('MSG_Your_application_is_approved', $this->siteLangId);
         }
 
-        if(!$this->notifyAdminSupplierApproval($userObj, $data, $approval_request)) {
+        if (!$this->notifyAdminSupplierApproval($userObj, $data, $approval_request)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel("MSG_SELLER_APPROVAL_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -205,7 +205,7 @@ class AccountController extends LoggedUserController
         'notification_added_on' => date('Y-m-d H:i:s'),
         );
 
-        if(!Notification::saveNotifications($notificationData)) {
+        if (!Notification::saveNotifications($notificationData)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -223,7 +223,7 @@ class AccountController extends LoggedUserController
 
         $post = FatApp::getPostedData();
 
-        if(empty($post) ) {
+        if (empty($post)) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -237,9 +237,14 @@ class AccountController extends LoggedUserController
         $fileHandlerObj = new AttachedFile();
         $fileHandlerObj->deleteFile($fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE, $userId, 0, $field_id);
 
-        if(!$res = $fileHandlerObj->saveAttachment(
-            $_FILES['file']['tmp_name'], $fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE,
-            $userId, $field_id,  $_FILES['file']['name'], -1, $unique_record = false
+        if (!$res = $fileHandlerObj->saveAttachment(
+            $_FILES['file']['tmp_name'],
+            $fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE,
+            $userId,
+            $field_id,
+            $_FILES['file']['name'],
+            -1,
+            $unique_record = false
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -270,17 +275,17 @@ class AccountController extends LoggedUserController
         $pwdFrm = $this->getChangePasswordForm();
         $post = $pwdFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if(!$pwdFrm->validate($post)) {
+        if (!$pwdFrm->validate($post)) {
             Message::addErrorMessage($pwdFrm->getValidationErrors());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if($post['new_password'] != $post['conf_new_password']) {
+        if ($post['new_password'] != $post['conf_new_password']) {
             Message::addErrorMessage(Labels::getLabel('MSG_New_Password_Confirm_Password_does_not_match', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(! CommonHelper::validatePassword($post['new_password'])) {
+        if (! CommonHelper::validatePassword($post['new_password'])) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId)
             );
@@ -291,7 +296,7 @@ class AccountController extends LoggedUserController
         $srch = $userObj->getUserSearchObj(array('user_id','credential_password'));
         $rs = $srch->getResultSet();
 
-        if(!$rs) {
+        if (!$rs) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -317,46 +322,46 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function setPrefferedDashboard( $dasboardType )
+    public function setPrefferedDashboard($dasboardType)
     {
         $dasboardType  = FatUtility::int($dasboardType);
 
-        switch ($dasboardType){
-        case User::USER_BUYER_DASHBOARD :
-            if(!User::canViewBuyerTab() ) {
+        switch ($dasboardType) {
+            case User::USER_BUYER_DASHBOARD:
+                if (!User::canViewBuyerTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_SELLER_DASHBOARD:
+                if (!User::canViewSupplierTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_ADVERTISER_DASHBOARD:
+                if (!User::canViewAdvertiserTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            case User::USER_AFFILIATE_DASHBOARD:
+                if (!User::canViewAffiliateTab()) {
+                    Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+                    FatUtility::dieJsonError(Message::getHtml());
+                }
+                break;
+            default:
                 Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
                 FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_SELLER_DASHBOARD :
-            if(!User::canViewSupplierTab() ) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_ADVERTISER_DASHBOARD :
-            if(!User::canViewAdvertiserTab() ) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        case User::USER_AFFILIATE_DASHBOARD :
-            if(!User::canViewAffiliateTab() ) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-                FatUtility::dieJsonError(Message::getHtml());
-            }
-            break;
-        default:
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-            break;
+                break;
         }
 
         $arr = array('user_preferred_dashboard' => $dasboardType);
 
         $userId = UserAuthentication::getLoggedUserId();
         $userId = FatUtility::int($userId);
-        if(1 > $userId) {
+        if (1 > $userId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -379,7 +384,7 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
 
         $canAddMoneyToWallet = true;
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $canAddMoneyToWallet = false;
         }
 
@@ -408,7 +413,7 @@ class AccountController extends LoggedUserController
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $order_net_amount = $post['amount'];
-        if($order_net_amount < $minimumRechargeAmount ) {
+        if ($order_net_amount < $minimumRechargeAmount) {
             $str = Labels::getLabel("LBL_Recharge_amount_must_be_greater_than_{minimumrechargeamount}", $this->siteLangId);
             $str = str_replace("{minimumrechargeamount}", CommonHelper::displayMoneyFormat($minimumRechargeAmount, true, true), $str);
             Message::addErrorMessage($str);
@@ -472,7 +477,7 @@ class AccountController extends LoggedUserController
 
         $orderData['orderLangData'] = array();
         $orderObj = new Orders();
-        if($orderObj->addUpdateOrder($orderData, $this->siteLangId) ) {
+        if ($orderObj->addUpdateOrder($orderData, $this->siteLangId)) {
             $order_id = $orderObj->getOrderId();
         } else {
             Message::addErrorMessage($orderObj->getError());
@@ -492,7 +497,7 @@ class AccountController extends LoggedUserController
 
         //$page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        if($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
         $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
@@ -502,13 +507,13 @@ class AccountController extends LoggedUserController
         $debit_credit_type = FatApp::getPostedData('debit_credit_type', FatUtility::VAR_INT, -1);
         $dateOrder = FatApp::getPostedData('date_order', FatUtility::VAR_STRING, "DESC");
 
-        $srch = Transactions::getUserTransactionsObj( $userId );
+        $srch = Transactions::getUserTransactionsObj($userId);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $srch->addOrder('utxn.utxn_date', $dateOrder);
 
         $keyword = FatApp::getPostedData('keyword', null, '');
-        if(!empty($keyword) ) {
+        if (!empty($keyword)) {
             $cond = $srch->addCondition('utxn.utxn_order_id', 'like', '%'.$keyword.'%');
             $cond->attachCondition('utxn.utxn_op_id', 'like', '%'.$keyword.'%', 'OR');
             $cond->attachCondition('utxn.utxn_comments', 'like', '%'.$keyword.'%', 'OR');
@@ -516,25 +521,25 @@ class AccountController extends LoggedUserController
         }
 
         $fromDate = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
-        if(!empty($fromDate) ) {
+        if (!empty($fromDate)) {
             $cond = $srch->addCondition('utxn.utxn_date', '>=', $fromDate);
         }
 
         $toDate = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
-        if(!empty($toDate) ) {
+        if (!empty($toDate)) {
             $cond = $srch->addCondition('cast( utxn.`utxn_date` as date)', '<=', $toDate, 'and', true);
         }
-        if($debit_credit_type > 0 ) {
-            switch( $debit_credit_type ){
-            case Transactions::CREDIT_TYPE:
-                $srch->addCondition('utxn.utxn_credit', '>', '0');
-                $srch->addCondition('utxn.utxn_debit', '=', '0');
-                break;
+        if ($debit_credit_type > 0) {
+            switch ($debit_credit_type) {
+                case Transactions::CREDIT_TYPE:
+                    $srch->addCondition('utxn.utxn_credit', '>', '0');
+                    $srch->addCondition('utxn.utxn_debit', '=', '0');
+                    break;
 
-            case Transactions::DEBIT_TYPE:
-                $srch->addCondition('utxn.utxn_debit', '>', '0');
-                $srch->addCondition('utxn.utxn_credit', '=', '0');
-                break;
+                case Transactions::DEBIT_TYPE:
+                    $srch->addCondition('utxn.utxn_debit', '>', '0');
+                    $srch->addCondition('utxn.utxn_credit', '=', '0');
+                    break;
             }
         }
         $records = array();
@@ -567,7 +572,7 @@ class AccountController extends LoggedUserController
         }
 
         $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT", FatUtility::VAR_INT, 0);
-        if ($balance < $minimumWithdrawLimit ) {
+        if ($balance < $minimumWithdrawLimit) {
             Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -577,7 +582,7 @@ class AccountController extends LoggedUserController
 
         $data['uextra_payment_method'] = User::AFFILIATE_PAYMENT_METHOD_CHEQUE;
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $userExtraData = User::getUserExtraData($userId, array('uextra_payment_method', 'uextra_cheque_payee_name', 'uextra_paypal_email_id'));
             $uextra_payment_method = isset($userExtraData['uextra_payment_method']) ? $userExtraData['uextra_payment_method'] : User::AFFILIATE_PAYMENT_METHOD_CHEQUE;
             $data = array_merge($data, $userExtraData);
@@ -636,7 +641,7 @@ class AccountController extends LoggedUserController
 
         $withdrawal_payment_method = FatApp::getPostedData('uextra_payment_method', FatUtility::VAR_INT, 0);
 
-        $withdrawal_payment_method = ( $withdrawal_payment_method > 0 && array_key_exists($withdrawal_payment_method, User::getAffiliatePaymentMethodArr($this->siteLangId)) ) ? $withdrawal_payment_method  : User::AFFILIATE_PAYMENT_METHOD_BANK;
+        $withdrawal_payment_method = ($withdrawal_payment_method > 0 && array_key_exists($withdrawal_payment_method, User::getAffiliatePaymentMethodArr($this->siteLangId))) ? $withdrawal_payment_method  : User::AFFILIATE_PAYMENT_METHOD_BANK;
         $withdrawal_cheque_payee_name = '';
         $withdrawal_paypal_email_id = '';
         $withdrawal_bank = '';
@@ -646,23 +651,22 @@ class AccountController extends LoggedUserController
         $withdrawal_bank_address = '';
         $withdrawal_comments = $post['withdrawal_comments'];
 
-        switch( $withdrawal_payment_method ){
-        case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
-            $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
-            break;
+        switch ($withdrawal_payment_method) {
+            case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
+                $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
+                break;
 
-        case User::AFFILIATE_PAYMENT_METHOD_BANK:
-            $withdrawal_bank = $post['ub_bank_name'];
-            $withdrawal_account_holder_name = $post['ub_account_holder_name'];
-            $withdrawal_account_number = $post['ub_account_number'];
-            $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
-            $withdrawal_bank_address = $post['ub_bank_address'];
+            case User::AFFILIATE_PAYMENT_METHOD_BANK:
+                $withdrawal_bank = $post['ub_bank_name'];
+                $withdrawal_account_holder_name = $post['ub_account_holder_name'];
+                $withdrawal_account_number = $post['ub_account_number'];
+                $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
+                $withdrawal_bank_address = $post['ub_bank_address'];
+                break;
 
-            break;
-
-        case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
-            $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
-            break;
+            case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
+                $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
+                break;
         }
 
 
@@ -678,7 +682,7 @@ class AccountController extends LoggedUserController
 
         $post['withdrawal_comments'] = $withdrawal_comments;
 
-        if(!$withdrawRequestId = $userObj->addWithdrawalRequest(array_merge($post, array("ub_user_id"=>$userId)), $this->siteLangId)) {
+        if (!$withdrawRequestId = $userObj->addWithdrawalRequest(array_merge($post, array("ub_user_id"=>$userId)), $this->siteLangId)) {
             Message::addErrorMessage(Labels::getLabel($userObj->getError(), $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -698,7 +702,7 @@ class AccountController extends LoggedUserController
         'notification_added_on' => date('Y-m-d H:i:s'),
         );
 
-        if(!Notification::saveNotifications($notificationData)) {
+        if (!Notification::saveNotifications($notificationData)) {
             Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -712,18 +716,18 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $userId = FatUtility::int($userId);
 
-        if(1 > $userId) {
+        if (1 > $userId) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $fileHandlerObj = new AttachedFile();
-        if(!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId)) {
+        if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if(!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)) {
+        if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -732,31 +736,31 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function userProfileImage($userId, $sizeType = '' ,$cropedImage = false)
+    public function userProfileImage($userId, $sizeType = '', $cropedImage = false)
     {
         $userId = UserAuthentication::getLoggedUserId();
         $recordId = FatUtility::int($userId);
 
         $file_row = false;
-        if($cropedImage == true) {
+        if ($cropedImage == true) {
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $recordId);
         }
 
-        if($file_row == false ) {
+        if ($file_row == false) {
             $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $recordId);
         }
 
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
-        switch( strtoupper($sizeType) ){
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+        switch (strtoupper($sizeType)) {
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -773,12 +777,12 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
 
         $data = User::getAttributesById($userId, array('user_preferred_dashboard', 'user_registered_initially_for'));
-        if ($data === false ) {
+        if ($data === false) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
 
         $showSellerActivateButton = false;
-        if(!User::canAccessSupplierDashboard() && $data['user_registered_initially_for'] == User::USER_TYPE_SELLER ) {
+        if (!User::canAccessSupplierDashboard() && $data['user_registered_initially_for'] == User::USER_TYPE_SELLER) {
             $showSellerActivateButton = true;
         }
 
@@ -808,9 +812,8 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    public function ProfileInfoForm()
+    public function profileInfoForm()
     {
-
         $userId = UserAuthentication::getLoggedUserId();
 
         $frm = $this->getProfileInfoForm();
@@ -823,17 +826,17 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
 
-        if($data['user_phone'] == 0 ) {
+        if ($data['user_phone'] == 0) {
             $data['user_phone'] = '';
         }
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $userExtraData = User::getUserExtraData($userId, array('uextra_company_name', 'uextra_website'));
-            $userExtraData = ( $userExtraData ) ? $userExtraData : array();
+            $userExtraData = ($userExtraData) ? $userExtraData : array();
             $data = array_merge($userExtraData, $data);
         }
 
-        if($data['user_dob'] == "0000-00-00" ) {
+        if ($data['user_dob'] == "0000-00-00") {
             $dobFld = $frm->getField('user_dob');
             $dobFld->requirements()->setRequired(true);
         }
@@ -843,10 +846,10 @@ class AccountController extends LoggedUserController
 
         $mode = 'Add';
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId);
-        if($file_row != false ) {
+        if ($file_row != false) {
             $mode = 'Edit';
         }
-        
+
         $this->set('data', $data);
         $this->set('frm', $frm);
         $this->set('imgFrm', $imgFrm);
@@ -856,13 +859,13 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    public function ProfileImageForm()
+    public function profileImageForm()
     {
         $userId = UserAuthentication::getLoggedUserId();
         $imgFrm = $this->getProfileImageForm();
         $mode = 'Add';
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId);
-        if($file_row != false ) {
+        if ($file_row != false) {
             $mode = 'Edit';
         }
         $this->set('mode', $mode);
@@ -876,11 +879,11 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
 
         $post = FatApp::getPostedData();
-        if(empty($post) ) {
+        if (empty($post)) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if($post['action'] == "demo_avatar") {
+        if ($post['action'] == "demo_avatar") {
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
                 FatUtility::dieJsonError(Message::getHtml());
@@ -888,7 +891,7 @@ class AccountController extends LoggedUserController
 
             $fileHandlerObj = new AttachedFile();
 
-            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
                 Message::addErrorMessage($fileHandlerObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
@@ -896,7 +899,7 @@ class AccountController extends LoggedUserController
             $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?'.time());
         }
 
-        if($post['action'] == "avatar") {
+        if ($post['action'] == "avatar") {
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
                 FatUtility::dieJsonError(Message::getHtml());
@@ -904,7 +907,7 @@ class AccountController extends LoggedUserController
 
             $fileHandlerObj = new AttachedFile();
 
-            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
                 Message::addErrorMessage($fileHandlerObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
@@ -937,11 +940,11 @@ class AccountController extends LoggedUserController
         }
 
         $post['user_state_id'] = $user_state_id;
-        if(isset($post['user_id'])) {
+        if (isset($post['user_id'])) {
             unset($post['user_id']);
         }
 
-        if($post['user_dob'] == "0000-00-00" || $post['user_dob'] == "" || strtotime($post['user_dob']) == 0 ) {
+        if ($post['user_dob'] == "0000-00-00" || $post['user_dob'] == "" || strtotime($post['user_dob']) == 0) {
             unset($post['user_dob']);
         }
         unset($post['credential_username']);
@@ -949,7 +952,7 @@ class AccountController extends LoggedUserController
 
 
         /* saving user extras[ */
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $dataToSave = array(
             'uextra_user_id'        =>    $userId,
             'uextra_company_name'    =>    $post['uextra_company_name'],
@@ -957,9 +960,9 @@ class AccountController extends LoggedUserController
             );
             $dataToUpdateOnDuplicate = $dataToSave;
             unset($dataToUpdateOnDuplicate['uextra_user_id']);
-            if(!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate) ) {
+            if (!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate)) {
                 Message::addErrorMessage(Labels::getLabel("LBL_Details_could_not_be_saved!", $this->siteLangId));
-                if (FatUtility::isAjaxCall() ) {
+                if (FatUtility::isAjaxCall()) {
                     FatUtility::dieWithError(Message::getHtml());
                 }
                 FatApp::redirectUser(CommonHelper::generateUrl('Account', 'ProfileInfo'));
@@ -970,7 +973,7 @@ class AccountController extends LoggedUserController
 
         $userObj = new User($userId);
         $userObj->assignValues($post);
-        if (!$userObj->save() ) {
+        if (!$userObj->save()) {
             Message::addErrorMessage($userObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -983,7 +986,7 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -992,7 +995,7 @@ class AccountController extends LoggedUserController
 
         $userObj = new User($userId);
         $data = $userObj->getUserBankInfo();
-        if($data != false) {
+        if ($data != false) {
             $frm->fill($data);
         }
 
@@ -1011,7 +1014,7 @@ class AccountController extends LoggedUserController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
-        if($data != false) {
+        if ($data != false) {
             $frm->fill($data);
         }
 
@@ -1077,12 +1080,12 @@ class AccountController extends LoggedUserController
         $emailFrm = $this->getChangeEmailForm();
         $post = $emailFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if(!$emailFrm->validate($post)) {
+        if (!$emailFrm->validate($post)) {
             Message::addErrorMessage($emailFrm->getValidationErrors());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if($post['new_email'] != $post['conf_new_email']) {
+        if ($post['new_email'] != $post['conf_new_email']) {
             Message::addErrorMessage(Labels::getLabel('MSG_New_email_confirm_email_does_not_match', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -1091,7 +1094,7 @@ class AccountController extends LoggedUserController
         $srch = $userObj->getUserSearchObj(array('user_id','credential_password','credential_email','user_name'));
         $rs = $srch->getResultSet();
 
-        if(!$rs) {
+        if (!$rs) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -1114,7 +1117,7 @@ class AccountController extends LoggedUserController
         'user_new_email' => $post['new_email']
         );
 
-        if(!$this->userEmailVerification($userObj, $arr)) {
+        if (!$this->userEmailVerification($userObj, $arr)) {
             Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_VERFICATION_EMAIL", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -1123,10 +1126,10 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function moveToWishList( $productId )
+    public function moveToWishList($productId)
     {
         $defaultWishListId = $this->getDefaultWishListId();
-        echo $this->addRemoveWishListProduct( $productId, $defaultWishListId );
+        echo $this->addRemoveWishListProduct($productId, $defaultWishListId);
     }
 
     public function getDefaultWishListId()
@@ -1134,24 +1137,25 @@ class AccountController extends LoggedUserController
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $srch = UserWishList::getSearchObject($loggedUserId, true);
         $srch->addCondition('uwlist_default', '=', applicationConstants::YES);
-        $srch->addMultipleFields( array( 'uwlist_id') );
+        $srch->addMultipleFields(array( 'uwlist_id'));
         $srch->setPageSize(1);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
 
-        if( !empty($row) ){
+        if (!empty($row)) {
             return $row['uwlist_id'];
         }
 
         $wListObj = new UserWishList();
-        $data_to_save_arr['uwlist_title'] = Labels::getLabel('LBL_Default_list', $this->siteLangId);;
+        $data_to_save_arr['uwlist_title'] = Labels::getLabel('LBL_Default_list', $this->siteLangId);
+        ;
         $data_to_save_arr['uwlist_added_on'] = date('Y-m-d H:i:s');
         $data_to_save_arr['uwlist_user_id'] = $loggedUserId;
         $data_to_save_arr['uwlist_default'] = 1;
         $wListObj->assignValues($data_to_save_arr);
 
         /* create new List[ */
-        if ( !$wListObj->save() ) {
+        if (!$wListObj->save()) {
             Message::addErrorMessage($wListObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1160,7 +1164,7 @@ class AccountController extends LoggedUserController
     }
 
     /* called from products listing page */
-    public function viewWishList( $selprod_id )
+    public function viewWishList($selprod_id)
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $this->getDefaultWishListId();
@@ -1178,7 +1182,7 @@ class AccountController extends LoggedUserController
         $frm = $this->getCreateWishListForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $selprod_id = FatUtility::int($post['selprod_id']);
-        if (false === $post ) {
+        if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1190,7 +1194,7 @@ class AccountController extends LoggedUserController
         $wListObj->assignValues($data_to_save_arr);
 
         /* create new List[ */
-        if (!$wListObj->save() ) {
+        if (!$wListObj->save()) {
             Message::addErrorMessage($wListObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1199,8 +1203,8 @@ class AccountController extends LoggedUserController
 
         $successMsg = Labels::getLabel('LBL_WishList_Created_Successfully', $this->siteLangId);
         /* Assign current product to newly created list[ */
-        if($uwlp_uwlist_id && $selprod_id ) {
-            if(!$wListObj->addUpdateListProducts($uwlp_uwlist_id, $selprod_id) ) {
+        if ($uwlp_uwlist_id && $selprod_id) {
+            if (!$wListObj->addUpdateListProducts($uwlp_uwlist_id, $selprod_id)) {
                 Message::addMessage($successMsg);
                 $msg = Labels::getLabel('LBL_Error_while_assigning_product_under_selected_list.');
                 Message::addErrorMessage($msg);
@@ -1218,7 +1222,7 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         $productIsInAnyList = false;
-        if($row ) {
+        if ($row) {
             $productIsInAnyList = true;
         }
 
@@ -1228,48 +1232,49 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function addRemoveWishListProductArr(){
-
+    public function addRemoveWishListProductArr()
+    {
         $selprod_id_arr = FatApp::getPostedData('selprod_id');
         $uwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
-        if( empty( $selprod_id_arr ) || empty( $uwlist_id ) ){
+        if (empty($selprod_id_arr) || empty($uwlist_id)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        foreach ( $selprod_id_arr as $selprod_id ) {
-            $action = $this->updateWishList( $selprod_id, $uwlist_id );
+        foreach ($selprod_id_arr as $selprod_id) {
+            $action = $this->updateWishList($selprod_id, $uwlist_id);
         }
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function updateRemoveWishListProduct( $selprod_id, $wish_list_id ){
+    public function updateRemoveWishListProduct($selprod_id, $wish_list_id)
+    {
         $selprod_id_arr = FatApp::getPostedData('selprod_id');
         $oldWwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
 
-        if( empty( $selprod_id_arr ) || empty( $oldWwlist_id ) ){
+        if (empty($selprod_id_arr) || empty($oldWwlist_id)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        foreach ( $selprod_id_arr as $selprod_id ) {
-            $this->updateWishList( $selprod_id, $oldWwlist_id );
-            $this->updateWishList( $selprod_id, $wish_list_id );
+        foreach ($selprod_id_arr as $selprod_id) {
+            $this->updateWishList($selprod_id, $oldWwlist_id);
+            $this->updateWishList($selprod_id, $wish_list_id);
         }
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function addRemoveWishListProduct( $selprod_id, $wish_list_id )
+    public function addRemoveWishListProduct($selprod_id, $wish_list_id)
     {
         $selprod_id = FatUtility::int($selprod_id);
         $wish_list_id = FatUtility::int($wish_list_id);
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
-        if(!$selprod_id || !$wish_list_id ) {
+        if (!$selprod_id || !$wish_list_id) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $action = $this->updateWishList( $selprod_id, $wish_list_id );
+        $action = $this->updateWishList($selprod_id, $wish_list_id);
 
         //UserWishList
         $srch = UserWishList::getSearchObject($loggedUserId);
@@ -1281,7 +1286,7 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         $productIsInAnyList = false;
-        if($row ) {
+        if ($row) {
             $productIsInAnyList = true;
         }
 
@@ -1293,7 +1298,8 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    private function updateWishList( $selprod_id, $wish_list_id ){
+    private function updateWishList($selprod_id, $wish_list_id)
+    {
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $db = FatApp::getDb();
@@ -1311,15 +1317,15 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
 
         $action = 'N'; //nothing happened
-        if(!$row = $db->fetch($rs) ) {
-            if(!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id) ) {
+        if (!$row = $db->fetch($rs)) {
+            if (!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id)) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $action = 'A'; //Added to wishlist
             $this->set('msg', Labels::getLabel('LBL_Product_Added_in_list_successfully', $this->siteLangId));
         } else {
-            if(!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
+            if (!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -1342,14 +1348,14 @@ class AccountController extends LoggedUserController
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $defaultWishListId = $this->getDefaultWishListId();
 
-        if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+        if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
             $wishLists[] = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
-        }else{
+        } else {
             $wishLists = UserWishList::getUserWishLists($loggedUserId, false);
-            if($wishLists ) {
+            if ($wishLists) {
                 $srchObj = new UserWishListProductSearch($this->siteLangId);
                 $db = FatApp::getDb();
-                foreach( $wishLists as &$wishlist ){
+                foreach ($wishLists as &$wishlist) {
                     $srch = clone $srchObj;
                     $srch->joinSellerProducts();
                     $srch->joinProducts();
@@ -1385,13 +1391,12 @@ class AccountController extends LoggedUserController
 
     public function viewFavouriteItems()
     {
-
         $db = FatApp::getDb();
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $favouriteListRow = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
 
-        if(!$favouriteListRow ) {
+        if (!$favouriteListRow) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1408,7 +1413,7 @@ class AccountController extends LoggedUserController
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
         $uwlist_id = FatUtility::int($post['uwlist_id']);
         $loggedUserId = 0;
-        if(UserAuthentication::isUserLogged() ) {
+        if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
         /* echo $loggedUserId; die; */
@@ -1419,7 +1424,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
         $rs = $srch->getResultSet();
         $wishListRow = $db->fetch($rs);
-        if(!$wishListRow ) {
+        if (!$wishListRow) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1436,7 +1441,7 @@ class AccountController extends LoggedUserController
         $srch->joinSellerProductSpecialPrice();
         $srch->joinFavouriteProducts($loggedUserId);
         $srch->addCondition('uwlp_uwlist_id', '=', $uwlist_id);
-        $srch->addCondition('selprod_deleted',  '=', applicationConstants::NO);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_active', '=', applicationConstants::YES);
         $selProdReviewObj = new SelProdReviewSearch();
         $selProdReviewObj->joinSellerProducts();
@@ -1450,7 +1455,7 @@ class AccountController extends LoggedUserController
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
         $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
 
-        /* 	$favProductObj = new UserWishListProductSearch();
+        /* $favProductObj = new UserWishListProductSearch();
         $favProductObj->joinFavouriteProducts(); */
 
 
@@ -1500,17 +1505,17 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
+        if ($totalRecords < $endRecord) {
+            $endRecord = $totalRecords;
         }
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
         $this->set('forPage', Labels::getLabel('LBL_Wishlist', $this->siteLangId));
 
-        if($totalRecords > 0) {
+        if ($totalRecords > 0) {
             $this->set('html', $this->_template->render(false, false, 'products/products-list.php', true, false));
-        }
-        else{
+        } else {
             $this->set('html', $this->_template->render(false, false, '_partial/no-record-found.php', true, false));
         }
         $this->set('loadMoreBtnHtml', $this->_template->render(false, false, 'products/products-list-load-more-btn.php', true, false));
@@ -1528,7 +1533,7 @@ class AccountController extends LoggedUserController
 
         $wishListRow = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
 
-        if(!$wishListRow ) {
+        if (!$wishListRow) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1611,17 +1616,17 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
+        if ($totalRecords < $endRecord) {
+            $endRecord = $totalRecords;
         }
 
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
 
-        if($totalRecords > 0) {
+        if ($totalRecords > 0) {
             $this->set('html', $this->_template->render(false, false, 'products/products-list.php', true, false));
-        }
-        else{
+        } else {
             $this->set('html', $this->_template->render(false, false, '_partial/no-record-found.php', true, false));
         }
         $this->set('loadMoreBtnHtml', $this->_template->render(false, false, 'products/products-list-load-more-btn.php', true, false));
@@ -1641,7 +1646,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!$row ) {
+        if (!$row) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1667,7 +1672,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
         $rs = $srch->getResultSet();
         $wishListRow = $db->fetch($rs);
-        if(!$wishListRow ) {
+        if (!$wishListRow) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1684,7 +1689,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('pssearch_id', '=', $pssearch_id);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!$row ) {
+        if (!$row) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1692,7 +1697,7 @@ class AccountController extends LoggedUserController
         $updateArray = array( 'pssearch_updated_on' => date('Y-m-d H:i:s') );
         $whr = array('smt'=>'pssearch_id = ?', 'vals'=> array($pssearch_id));
 
-        if(!FatApp::getDb()->updateFromArray(Product::DB_PRODUCT_SAVED_SEARCH, $updateArray, $whr)) {
+        if (!FatApp::getDb()->updateFromArray(Product::DB_PRODUCT_SAVED_SEARCH, $updateArray, $whr)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1721,7 +1726,7 @@ class AccountController extends LoggedUserController
         $shopRs = $srch->getResultSet();
         $shop = $db->fetch($shopRs);
 
-        if(!$shop ) {
+        if (!$shop) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1733,16 +1738,16 @@ class AccountController extends LoggedUserController
         $srch->addCondition('ufs_user_id', '=', $loggedUserId);
         $srch->addCondition('ufs_shop_id', '=', $shop_id);
         $rs = $srch->getResultSet();
-        if(!$row = $db->fetch($rs) ) {
+        if (!$row = $db->fetch($rs)) {
             $shopObj = new Shop();
-            if(!$shopObj->addUpdateUserFavoriteShop($loggedUserId, $shop_id) ) {
+            if (!$shopObj->addUpdateUserFavoriteShop($loggedUserId, $shop_id)) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $action = 'A'; //Added to favorite
             $this->set('msg', Labels::getLabel('LBL_Shop_is_marked_as_favoutite', $this->siteLangId));
         } else {
-            if(!$db->deleteRecords(Shop::DB_TBL_SHOP_FAVORITE, array('smt'=>'ufs_user_id = ? AND ufs_shop_id = ?', 'vals'=>array($loggedUserId, $shop_id)))) {
+            if (!$db->deleteRecords(Shop::DB_TBL_SHOP_FAVORITE, array('smt'=>'ufs_user_id = ? AND ufs_shop_id = ?', 'vals'=>array($loggedUserId, $shop_id)))) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -1775,7 +1780,7 @@ class AccountController extends LoggedUserController
         $shops = $db->fetchAll($rs);
 
         $totalProductsToShow = 4;
-        if($shops ) {
+        if ($shops) {
             $prodSrchObj = new ProductSearch($this->siteLangId);
             $prodSrchObj->setDefinedCriteria(0);
             $prodSrchObj->joinProductToCategory();
@@ -1785,7 +1790,7 @@ class AccountController extends LoggedUserController
             $prodSrchObj->addSubscriptionValidCondition();
             $prodSrchObj->joinProductRating();
             $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-            foreach( $shops as &$shop ){
+            foreach ($shops as &$shop) {
                 $prodSrch = clone $prodSrchObj;
                 $prodSrch->addShopIdCondition($shop['shop_id']);
                 $prodSrch->addMultipleFields(
@@ -1795,10 +1800,10 @@ class AccountController extends LoggedUserController
                 );
                 $prodSrch->addGroupBy('product_id');
 
-                if(FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+                if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
                     $prodSrch->joinFavouriteProducts($loggedUserId);
                     $prodSrch->addFld('ufp_id');
-                }else{
+                } else {
                     $prodSrch->joinUserWishListProducts($loggedUserId);
                     $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
                 }
@@ -1836,7 +1841,7 @@ class AccountController extends LoggedUserController
         $productRs = $srch->getResultSet();
         $product= $db->fetch($productRs);
 
-        if(!$product ) {
+        if (!$product) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1848,16 +1853,16 @@ class AccountController extends LoggedUserController
         $srch->addCondition('ufp_user_id', '=', $loggedUserId);
         $srch->addCondition('ufp_selprod_id', '=', $selprodId);
         $rs = $srch->getResultSet();
-        if(!$row = $db->fetch($rs) ) {
+        if (!$row = $db->fetch($rs)) {
             $prodObj = new Product();
-            if(!$prodObj->addUpdateUserFavoriteProduct($loggedUserId, $selprodId) ) {
+            if (!$prodObj->addUpdateUserFavoriteProduct($loggedUserId, $selprodId)) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $action = 'A'; //Added to favorite
             $this->set('msg', Labels::getLabel('LBL_Product_has_been_marked_as_favourite_successfully', $this->siteLangId));
         } else {
-            if(!$db->deleteRecords(Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $selprodId)))) {
+            if (!$db->deleteRecords(Product::DB_TBL_PRODUCT_FAVORITE, array('smt'=>'ufp_user_id = ? AND ufp_selprod_id = ?', 'vals'=>array($loggedUserId, $selprodId)))) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -1900,7 +1905,7 @@ class AccountController extends LoggedUserController
         $srch->addOrder('message_id', 'DESC');
         $srch->addGroupBy('ttm.message_thread_id');
         /* die($srch->getQuery()); */
-        if($post['keyword']!='') {
+        if ($post['keyword']!='') {
             $cnd = $srch->addCondition('tth.thread_subject', 'like', "%".$post['keyword']."%");
             $cnd->attachCondition('tfr.user_name', 'like', "%".$post['keyword']."%", 'OR');
             $cnd->attachCondition('tfr_c.credential_username', 'like', "%".$post['keyword']."%", 'OR');
@@ -1922,19 +1927,19 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    public function viewMessages($threadId,$messageId = 0)
+    public function viewMessages($threadId, $messageId = 0)
     {
         $threadId = FatUtility::int($threadId);
         $messageId = FatUtility::int($messageId);
         $userId = UserAuthentication::getLoggedUserId();
 
-        if(1 > $threadId) {
+        if (1 > $threadId) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
         $threadData = Thread::getAttributesById($messageId, array('thread_id,thread_type'));
-        if($threadData == false) {
+        if ($threadData == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1945,10 +1950,9 @@ class AccountController extends LoggedUserController
         $srch->joinMessagePostedFromUser();
         $srch->joinMessagePostedToUser();
         $srch->joinThreadStartedByUser();
-        if($threadData['thread_type'] == Thread::THREAD_TYPE_SHOP) {
+        if ($threadData['thread_type'] == Thread::THREAD_TYPE_SHOP) {
             $srch->joinShops($this->siteLangId);
-        }
-        else if($threadData['thread_type'] == Thread::THREAD_TYPE_PRODUCT) {
+        } elseif ($threadData['thread_type'] == Thread::THREAD_TYPE_PRODUCT) {
             $srch->joinProducts($this->siteLangId);
         }
 
@@ -1958,7 +1962,7 @@ class AccountController extends LoggedUserController
         /* die($srch->getQuery()); */
         $srch->addCondition('ttm.message_deleted', '=', 0);
         $srch->addCondition('tth.thread_id', '=', $threadId);
-        if($messageId) {
+        if ($messageId) {
             $srch->addCondition('ttm.message_id', '=', $messageId);
         }
         $cnd = $srch->addCondition('ttm.message_from', '=', $userId);
@@ -1967,7 +1971,7 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $threadDetails = FatApp::getDb()->fetch($rs);
         /* CommonHelper::printArray($threadDetails);die; */
-        if($threadDetails == false) {
+        if ($threadDetails == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1980,7 +1984,7 @@ class AccountController extends LoggedUserController
         $frm->fill(array('message_thread_id'=>$threadId,'message_id'=>$messageId));
 
         $threadObj = new Thread($threadId);
-        if(!$threadObj->markUserMessageRead($threadId, $userId)) {
+        if (!$threadObj->markUserMessageRead($threadId, $userId)) {
             Message::addErrorMessage($threadObj->getError());
         }
 
@@ -1999,7 +2003,7 @@ class AccountController extends LoggedUserController
         $post = FatApp::getPostedData();
         $threadId = FatUtility::int($post['thread_id']);
 
-        if(1 > $threadId) {
+        if (1 > $threadId) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2037,7 +2041,8 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)* $pagesize + 1 ;
         $endRecord = $pagesize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
+        if ($totalRecords < $endRecord) {
+            $endRecord = $totalRecords;
         }
 
         $this->set('totalRecords', $totalRecords);
@@ -2054,7 +2059,7 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $frm = $this->sendMessageForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
-        if (false === $post ) {
+        if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2062,7 +2067,7 @@ class AccountController extends LoggedUserController
         $threadId =  FatUtility::int($post['message_thread_id']);
         $messageId =  FatUtility::int($post['message_id']);
 
-        if(1 > $threadId || 1 > $messageId) {
+        if (1 > $threadId || 1 > $messageId) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2085,7 +2090,7 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
 
         $threadDetails = FatApp::getDb()->fetch($rs);
-        if(empty($threadDetails)) {
+        if (empty($threadDetails)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2103,12 +2108,12 @@ class AccountController extends LoggedUserController
 
         $tObj = new Thread();
 
-        if(!$insertId = $tObj->addThreadMessages($data)) {
+        if (!$insertId = $tObj->addThreadMessages($data)) {
             Message::addErrorMessage(Labels::getLabel($tObj->getError(), $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if($insertId) {
+        if ($insertId) {
             $emailObj = new EmailHandler();
             $emailObj->SendMessageNotification($insertId, $this->siteLangId);
         }
@@ -2129,7 +2134,7 @@ class AccountController extends LoggedUserController
         return $frm;
     }
 
-    private function getWithdrawalForm( $langId )
+    private function getWithdrawalForm($langId)
     {
         $frm = new Form('frmWithdrawal');
         $fld  = $frm->addRequiredField(Labels::getLabel('LBL_Amount_to_be_Withdrawn', $langId).' ['.commonHelper::getDefaultCurrencySymbol().']', 'withdrawal_amount');
@@ -2137,7 +2142,7 @@ class AccountController extends LoggedUserController
         $walletBalance = User::getUserBalance(UserAuthentication::getLoggedUserId());
         $fld->htmlAfterField = Labels::getLabel("LBL_Current_Wallet_Balance", $langId) .' '.CommonHelper::displayMoneyFormat($walletBalance, true, true);
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $PayMethodFld = $frm->addRadioButtons(Labels::getLabel('LBL_Payment_Method', $langId), 'uextra_payment_method', User::getAffiliatePaymentMethodArr($langId));
 
             /* [ */
@@ -2230,8 +2235,7 @@ class AccountController extends LoggedUserController
             $PayMethodFld->requirements()->addOnChangerequirementUpdate(User::AFFILIATE_PAYMENT_METHOD_CHEQUE, 'eq', 'uextra_paypal_email_id', $PPEmailIdUnReqFld);
             $PayMethodFld->requirements()->addOnChangerequirementUpdate(User::AFFILIATE_PAYMENT_METHOD_BANK, 'eq', 'uextra_paypal_email_id', $PPEmailIdUnReqFld);
             $PayMethodFld->requirements()->addOnChangerequirementUpdate(User::AFFILIATE_PAYMENT_METHOD_PAYPAL, 'eq', 'uextra_paypal_email_id', $PPEmailIdReqFld);
-            /* ] */
-
+        /* ] */
         } else {
             $frm->addRequiredField(Labels::getLabel('LBL_Bank_Name', $langId), 'ub_bank_name');
             $frm->addRequiredField(Labels::getLabel('LBL_Account_Holder_Name', $langId), 'ub_account_holder_name');
@@ -2287,7 +2291,7 @@ class AccountController extends LoggedUserController
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
         $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $frm->addTextBox(Labels::getLabel('LBL_Company', $this->siteLangId), 'uextra_company_name');
             $frm->addTextBox(Labels::getLabel('LBL_Website', $this->siteLangId), 'uextra_website');
             $frm->addTextBox(Labels::getLabel('LBL_Address_Line1', $this->siteLangId), 'user_address1')->requirements()->setRequired();
@@ -2302,11 +2306,11 @@ class AccountController extends LoggedUserController
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->siteLangId), 'user_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
         $frm->addTextBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city');
 
-        if(User::isAffiliate() ) {
+        if (User::isAffiliate()) {
             $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
         }
 
-        if(User::isAdvertiser() ) {
+        if (User::isAdvertiser()) {
             $fld=$frm->addTextBox(Labels::getLabel('L_Company', $this->siteLangId), 'user_company');
             $fld=$frm->addTextArea(Labels::getLabel('L_Brief_Profile', $this->siteLangId), 'user_profile_info');
             $fld->html_after_field='<small>'.Labels::getLabel('L_Please_tell_us_something_about_yourself', $this->siteLangId).'</small>';
@@ -2376,9 +2380,8 @@ class AccountController extends LoggedUserController
         return $frm;
     }
 
-    private function notifyAdminSupplierApproval($userObj, $data, $approval_request=1)
+    private function notifyAdminSupplierApproval($userObj, $data, $approval_request = 1)
     {
-
         $attr = array('user_name','credential_username','credential_email');
         $userData = $userObj->getUserInfo($attr);
 
@@ -2395,7 +2398,7 @@ class AccountController extends LoggedUserController
 
         $email = new EmailHandler();
 
-        if(!$email->sendSupplierApprovalNotification(CommonHelper::getLangId(), $data, $approval_request)) {
+        if (!$email->sendSupplierApprovalNotification(CommonHelper::getLangId(), $data, $approval_request)) {
             Message::addMessage(
                 Labels::getLabel(
                     "MSG_ERROR_IN_SENDING_SUPPLIER_APPROVAL_EMAIL",
@@ -2416,48 +2419,47 @@ class AccountController extends LoggedUserController
         $userObj = new User();
         $supplier_form_fields = $userObj->getSupplierFormFields($this->siteLangId);
 
-        foreach ( $supplier_form_fields as $field ) {
-
+        foreach ($supplier_form_fields as $field) {
             $fieldName = 'sformfield_'.$field['sformfield_id'];
 
-            switch( $field['sformfield_type'] ) {
+            switch ($field['sformfield_type']) {
+                case User::USER_FIELD_TYPE_TEXT:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXT:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_TEXTAREA:
+                    $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXTAREA:
-                $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_FILE:
+                    $fld1 = $frm->addButton(
+                        $field['sformfield_caption'],
+                        'button['.$field['sformfield_id'].']',
+                        Labels::getLabel('LBL_Upload_File', $this->siteLangId),
+                        array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
+                    );
+                    $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
+                    if ($field['sformfield_required'] == 1) {
+                        $fld1->captionWrapper = array('<div class="astrick">','</div>');
+                    }
+                    $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName , 'hidden'=>'hidden' , 'title' => $field['sformfield_caption']));
+                    $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
+                    $fld1->attachField($fld);
+                    break;
 
-            case User::USER_FIELD_TYPE_FILE:
-                $fld1 = $frm->addButton(
-                    $field['sformfield_caption'], 'button['.$field['sformfield_id'].']',
-                    Labels::getLabel('LBL_Upload_File', $this->siteLangId),
-                    array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
-                );
-                $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
-                if ($field['sformfield_required'] == 1) {
-                    $fld1->captionWrapper = array('<div class="astrick">','</div>');
-                }
-                $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName , 'hidden'=>'hidden' , 'title' => $field['sformfield_caption']));
-                $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
-                $fld1->attachField($fld);
-                break;
+                case User::USER_FIELD_TYPE_DATE:
+                    $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATE:
-                $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
+                case User::USER_FIELD_TYPE_DATETIME:
+                    $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATETIME:
-                $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
-
-            case User::USER_FIELD_TYPE_TIME:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
-                $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
-                break;
+                case User::USER_FIELD_TYPE_TIME:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+                    $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
+                    break;
             }
 
             if ($field['sformfield_required'] == 1) {
@@ -2466,7 +2468,6 @@ class AccountController extends LoggedUserController
             if ($field['sformfield_comment']) {
                 $fld->htmlAfterField = '<p class="note">'.$field['sformfield_comment'].'</p>';
             }
-
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         return $frm;
@@ -2477,25 +2478,28 @@ class AccountController extends LoggedUserController
         if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
             $attachment = new AttachedFile();
             if ($attachment->saveImage(
-                $_FILES['photo']['tmp_name'], AttachedFile::FILETYPE_USER_PHOTO,
-                UserAuthentication::getLoggedUserId(), 0, $_FILES['photo']['name'], 0, false
+                $_FILES['photo']['tmp_name'],
+                AttachedFile::FILETYPE_USER_PHOTO,
+                UserAuthentication::getLoggedUserId(),
+                0,
+                $_FILES['photo']['name'],
+                0,
+                false
             )) {
                 Message::addMessage(Labels::getLabel('MSG_Profile_Picture_Updated', $this->siteLangId));
-            }
-            else {
+            } else {
                 Message::addErrorMessage($attachment->getError());
             }
-        }
-        else {
+        } else {
             Message::addErrorMessage(Labels::getLabel('MSG_No_File_Uploaded', $this->siteLangId));
         }
         FatApp::redirectUser(CommonHelper::generateUrl('member', 'account'));
     }
 
-    public function EscalateOrderReturnRequest( $orrequest_id )
+    public function escalateOrderReturnRequest($orrequest_id)
     {
         $orrequest_id = FatUtility::int($orrequest_id);
-        if(!$orrequest_id ) {
+        if (!$orrequest_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -2515,14 +2519,14 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $request = FatApp::getDb()->fetch($rs);
 
-        if(!$request || $request['orrequest_id'] != $orrequest_id ) {
+        if (!$request || $request['orrequest_id'] != $orrequest_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
         /* buyer cannot escalate request[ */
         // if( $user_id == $request['orrequest_user_id'] ){
-        if(!User::isSeller() ) {
+        if (!User::isSeller()) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -2530,14 +2534,14 @@ class AccountController extends LoggedUserController
 
 
         $orrObj = new OrderReturnRequest();
-        if(!$orrObj->escalateRequest($request['orrequest_id'], $user_id, $this->siteLangId) ) {
+        if (!$orrObj->escalateRequest($request['orrequest_id'], $user_id, $this->siteLangId)) {
             Message::addErrorMessage(Labels::getLabel($orrObj->getError(), $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
 
         /* email notification handling[ */
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification($orrequest_id, $this->siteLangId) ) {
+        if (!$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification($orrequest_id, $this->siteLangId)) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -2584,7 +2588,8 @@ class AccountController extends LoggedUserController
         $startRecord = ($page-1)*$pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
+        if ($totalRecords < $endRecord) {
+            $endRecord = $totalRecords;
         }
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
@@ -2598,7 +2603,7 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
 
-        if(!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE", FatUtility::VAR_INT, 1) ) {
+        if (!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE", FatUtility::VAR_INT, 1)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Refferal_module_no_longer_active", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2609,7 +2614,7 @@ class AccountController extends LoggedUserController
         $friendlist = FatApp::getPostedData('friendlist');
         $friendlist = rtrim($friendlist, ',');
 
-        if(1 > $selprod_id && $friendlist == '') {
+        if (1 > $selprod_id && $friendlist == '') {
             Message::addErrorMessage(Labels::getLabel("LBL_INVALID_REQUEST", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2625,13 +2630,13 @@ class AccountController extends LoggedUserController
         $prodSrchObj->addMultipleFields(array('selprod_id'));
         $rs = $prodSrchObj->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!$row ) {
+        if (!$row) {
             Message::addErrorMessage(Labels::getLabel("LBL_Product_not_found_or_no_longer_available.", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $user_referral_code = User::getAttributesById($userId, "user_referral_code");
-        if($user_referral_code == '' ) {
+        if ($user_referral_code == '') {
             Message::addErrorMessage(Labels::getLabel("LBL_Your_referral_code_is_not_generated,_Please_contact_admin.", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2641,7 +2646,7 @@ class AccountController extends LoggedUserController
         $productSharingUrl = CommonHelper::generateFullUrl("custom", "referral", array( $user_referral_code, $productUrl));
 
         $userInfo = User::getAttributesById($userId, array('user_fb_access_token'));
-        if($userInfo['user_fb_access_token']=='') {
+        if ($userInfo['user_fb_access_token']=='') {
             Message::addErrorMessage(Labels::getLabel('MSG_Authenticate_Your_Account', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2659,7 +2664,7 @@ class AccountController extends LoggedUserController
         'message' => Labels::getLabel('MSG_Share_and_Earn_Mesage', $this->siteLangId),
         );
 
-        if($friendlist!='') {
+        if ($friendlist!='') {
             $linkData['tags'] = $friendlist;
         }
 
@@ -2668,10 +2673,10 @@ class AccountController extends LoggedUserController
         try {
             // Returns a `Facebook\FacebookResponse` object
             $response = $fbObj->post('/me/feed', $linkData, $fbAccessToken);
-        } catch(FacebookResponseException $e) {
+        } catch (FacebookResponseException $e) {
             Message::addErrorMessage($e->getMessage());
             FatUtility::dieJsonError(Message::getHtml());
-        } catch(FacebookSDKException $e) {
+        } catch (FacebookSDKException $e) {
             Message::addErrorMessage($e->getMessage());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2686,7 +2691,7 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
 
-        if(!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE", FatUtility::VAR_INT, 1) ) {
+        if (!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE", FatUtility::VAR_INT, 1)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Refferal_module_no_longer_active", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2694,7 +2699,7 @@ class AccountController extends LoggedUserController
         $selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $socialMediaName = FatApp::getPostedData('socialMediaName', FatUtility::VAR_STRING, 0);
 
-        if($selprod_id <= 0 || $socialMediaName == '' ) {
+        if ($selprod_id <= 0 || $socialMediaName == '') {
             Message::addErrorMessage(Labels::getLabel("LBL_INVALID_REQUEST", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2713,10 +2718,10 @@ class AccountController extends LoggedUserController
 
         $fbLoginUrl = '';
         $friendList = array();
-        if($userInfo['user_fb_access_token']=='') {
+        if ($userInfo['user_fb_access_token']=='') {
             $redirectUrl = CommonHelper::generateFullUrl('Buyer', 'getFbToken', array(), '', false);
             $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
-        }else{
+        } else {
             $fbAccessToken = $userInfo['user_fb_access_token'];
             $fbObj = $fb->getInstance();
 
@@ -2726,10 +2731,10 @@ class AccountController extends LoggedUserController
                 foreach ($graphEdge as $graphNode) {
                     $friendList[] = $graphNode->asArray();
                 }
-            } catch(FacebookResponseException $e) {
+            } catch (FacebookResponseException $e) {
                 Message::addErrorMessage($e->getMessage());
                 FatUtility::dieWithError(Message::getHtml());
-            } catch(FacebookSDKException $e) {
+            } catch (FacebookSDKException $e) {
                 Message::addErrorMessage($e->getMessage());
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -2741,7 +2746,7 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    private function getCreditsSearchForm( $langId )
+    private function getCreditsSearchForm($langId)
     {
         $frm = new Form('frmCreditSrch');
         $frm->addTextBox('', 'keyword', '');
@@ -2782,7 +2787,7 @@ class AccountController extends LoggedUserController
         return $frm;
     }
 
-    private function getRechargeWalletForm( $langId )
+    private function getRechargeWalletForm($langId)
     {
         $frm = new Form('frmRechargeWallet');
         $fld = $frm->addFloatField('', 'amount');
@@ -2799,7 +2804,7 @@ class AccountController extends LoggedUserController
     public function searchAddresses()
     {
         $addresses = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId);
-        if($addresses) {
+        if ($addresses) {
             $this->set('addresses', $addresses);
         } else {
             $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
@@ -2814,7 +2819,7 @@ class AccountController extends LoggedUserController
 
         $stateId = 0;
 
-        if($ua_id > 0) {
+        if ($ua_id > 0) {
             $data =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $ua_id);
             if ($data === false) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request', $this->siteLangId));
@@ -2847,7 +2852,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('ureq_deleted', '=', applicationConstants::NO);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if($row ) {
+        if ($row) {
             Message::addErrorMessage(Labels::getLabel('LBL_You_have_alrady_submitted_the_request', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2861,7 +2866,6 @@ class AccountController extends LoggedUserController
         $userReqObj = new UserGdprRequest();
         $userReqObj->assignValues($assignValues);
         if (!$userReqObj->save()) {
-
             Message::addErrorMessage($userReqObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2886,7 +2890,7 @@ class AccountController extends LoggedUserController
         $srch = $userObj->getUserSearchObj(array('credential_username','credential_email','user_name'));
         $rs = $srch->getResultSet();
 
-        if(!$rs) {
+        if (!$rs) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2901,7 +2905,7 @@ class AccountController extends LoggedUserController
         $cPageSrch->addCondition('cpage_id', '=', FatApp::getConfig('CONF_GDPR_POLICY_PAGE', FatUtility::VAR_INT, 0));
         $cpage = FatApp::getDb()->fetch($cPageSrch->getResultSet());
         $gdprPolicyLinkHref = '';
-        if(!empty($cpage) && is_array($cpage)) {
+        if (!empty($cpage) && is_array($cpage)) {
             $gdprPolicyLinkHref = CommonHelper::generateUrl('Cms', 'view', array($cpage['cpage_id']));
         }
 
@@ -2930,7 +2934,7 @@ class AccountController extends LoggedUserController
         $srch->addCondition('ureq_deleted', '=', applicationConstants::NO);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if($row ) {
+        if ($row) {
             Message::addErrorMessage(Labels::getLabel('LBL_You_have_alrady_submitted_the_data_request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2959,5 +2963,4 @@ class AccountController extends LoggedUserController
         $this->set('msg', Labels::getLabel('MSG_REQUEST_SENT_SUCCESSFULLY', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
-
 }

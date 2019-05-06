@@ -19,7 +19,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index($parent=0) 
+    public function index($parent=0)
     {
         $this->objPrivilege->canViewProductCategories();
         $parent = FatUtility::int($parent);
@@ -323,7 +323,7 @@ class ProductCategoriesController extends AdminBaseController
     $this->_template->render(false, false);
     } */
 
-    private function getForm($prodcat_id = 0) 
+    private function getForm($prodcat_id = 0)
     {
         $prodcat_id = FatUtility::int($prodcat_id);
         $prodCatObj = new ProductCategory();
@@ -594,7 +594,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function langSetup()    
+    public function langSetup()
     {
         $this->objPrivilege->canEditProductCategories();
         $post=FatApp::getPostedData();
@@ -818,7 +818,7 @@ class ProductCategoriesController extends AdminBaseController
         echo json_encode($json);
     }
 
-    public function getBreadcrumbNodes($action) 
+    public function getBreadcrumbNodes($action)
     {
         $nodes = array();
         $parameters = FatApp::getParameters();
