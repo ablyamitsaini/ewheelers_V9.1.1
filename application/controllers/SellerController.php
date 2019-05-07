@@ -718,7 +718,7 @@ class SellerController extends SellerBaseController
         if (!$this->isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) {
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }
-        if (!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+        if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -1356,7 +1356,7 @@ class SellerController extends SellerBaseController
 
     public function shop($tab='', $subTab='')
     {
-        if (!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+        if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }

@@ -2,9 +2,4 @@
 
 trait CommonServices
 {
-    
-    
-    
 }
-
-?>

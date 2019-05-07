@@ -26,7 +26,7 @@ class UserRewards extends MyAppModel
         return $output;
     }
 
-    public static function debit($userId, $rewardPointUsed, $orderId, $langId=0)
+    public static function debit($userId, $rewardPointUsed, $orderId, $langId = 0)
     {
         $rewardsRecord = new UserRewards();
         $rewarPointArr = array(

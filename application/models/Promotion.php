@@ -105,26 +105,26 @@ class Promotion extends MyAppModel
     public static function getPromotionCostPerClick($promotionType, $blocation_id = 0)
     {
         switch ($promotionType) {
-        case PROMOTION::TYPE_SHOP:
-            return FatApp::getConfig('CONF_CPC_SHOP');
-         break;
-        case PROMOTION::TYPE_PRODUCT:
-            return FatApp::getConfig('CONF_CPC_PRODUCT');
-         break;
-        case PROMOTION::TYPE_SLIDES:
-            return FatApp::getConfig('CONF_CPC_SLIDES');
-         break;
-        case PROMOTION::TYPE_BANNER:
-            $srch = Banner::getBannerLocationSrchObj();
-            $srch->addCondition('blocation_id', '=', $blocation_id);
-            $srch->addFld('blocation_promotion_cost');
-            $rs = $srch->getResultSet();
-            $row = FatApp::getDb()->fetch($rs);
-            if ($row && array_key_exists('blocation_promotion_cost', $row)) {
-                return $row['blocation_promotion_cost'];
-            }
-            return 0;
-         break;
+            case PROMOTION::TYPE_SHOP:
+                return FatApp::getConfig('CONF_CPC_SHOP');
+             break;
+            case PROMOTION::TYPE_PRODUCT:
+                return FatApp::getConfig('CONF_CPC_PRODUCT');
+             break;
+            case PROMOTION::TYPE_SLIDES:
+                return FatApp::getConfig('CONF_CPC_SLIDES');
+             break;
+            case PROMOTION::TYPE_BANNER:
+                $srch = Banner::getBannerLocationSrchObj();
+                $srch->addCondition('blocation_id', '=', $blocation_id);
+                $srch->addFld('blocation_promotion_cost');
+                $rs = $srch->getResultSet();
+                $row = FatApp::getDb()->fetch($rs);
+                if ($row && array_key_exists('blocation_promotion_cost', $row)) {
+                    return $row['blocation_promotion_cost'];
+                }
+                return 0;
+             break;
         }
     }
 
@@ -265,7 +265,7 @@ class Promotion extends MyAppModel
 
         $prmObj = new Promotion();
         $promotionCharges = 0;
-        foreach ($promotions as $pKey=>$pVal) {
+        foreach ($promotions as $pKey => $pVal) {
             $promotionId = $pVal['promotion_id'];
             $prChargeSummary = new SearchBase(Promotion::DB_TBL_ITEM_CHARGES, 'pci');
             $prChargeSummary->joinTable(Promotion::DB_TBL_CLICKS, 'LEFT JOIN', 'pcl.pclick_id=pci.picharge_pclick_id', 'pcl');

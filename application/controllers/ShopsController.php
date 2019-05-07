@@ -234,7 +234,7 @@ class ShopsController extends MyAppController
         }
 
         $shopDetails = Shop::getAttributesByid($shop_id);
-        if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId() == $shopDetails['shop_user_id'] && !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+        if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId() == $shopDetails['shop_user_id'] && !UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }

@@ -20,11 +20,11 @@ $(document).delegate('.bg-language-js','change',function(){
 	var currentPage = 1;
 	var runningAjaxReq = false;
 
-	goToSearchPage = function(page) {	
+	goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmShopSearchPaging;		
+		var frm = document.frmShopSearchPaging;
 		$(frm.page).val(page);
 		searchShops(frm);
 	}
@@ -37,19 +37,19 @@ $(document).delegate('.bg-language-js','change',function(){
 	addShopForm = function(id) {
 		$.facebox(function() {shopForm(id);
 		});
-	};	
+	};
 	shopForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmShopSearchPaging;			
-			fcom.ajax(fcom.makeUrl('Shops', 'form', [id]), '', function(t) {				
+		var frm = document.frmShopSearchPaging;
+			fcom.ajax(fcom.makeUrl('Shops', 'form', [id]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 			});
-			};	
+			};
 
 	setupShop = function(frm) {
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Shops', 'setup'), data, function(t) {			
+		fcom.updateWithAjax(fcom.makeUrl('Shops', 'setup'), data, function(t) {
 			reloadList();
 			if (t.langId>0) {
 				/* $.mbsmessage(t.msg,'','alert--success'); */
@@ -60,19 +60,19 @@ $(document).delegate('.bg-language-js','change',function(){
 		});
 	};
 
-	addShopLangForm = function(shopId, langId) {		
+	addShopLangForm = function(shopId, langId) {
 			fcom.displayProcessing();
 			fcom.ajax(fcom.makeUrl('Shops', 'langForm', [shopId, langId]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 			});
-		
+
 	};
-	
-	setupShopLang=function(frm){ 
+
+	setupShopLang=function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('Shops', 'langSetup'), data, function(t) {			
-			reloadList();				
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Shops', 'langSetup'), data, function(t) {
+			reloadList();
 			if (t.langId>0) {
 				addShopLangForm(t.shopId, t.langId);
 				return ;
@@ -81,22 +81,22 @@ $(document).delegate('.bg-language-js','change',function(){
 		});
 	};
 
-	searchShops = function(form){		
+	searchShops = function(form){
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);
 		}
 		/*]*/
-		
+
 		$("#shopListing").html(fcom.getLoader());
-		
+
 		fcom.ajax(fcom.makeUrl('Shops','search'),data,function(res){
-			
+
 			$("#shopListing").html(res);
 		});
-	};	
-	
+	};
+
 	clearShopSearch = function(){
 		document.frmShopSearch.reset();
 		searchShops(document.frmShopSearch);
@@ -109,17 +109,17 @@ $(document).delegate('.bg-language-js','change',function(){
 			$(dv).append(res);
 		});
 	};
-	
+
 	shopMediaForm = function(shopId){
 			fcom.displayProcessing();
 			fcom.ajax(fcom.makeUrl('shops', 'media', [shopId]), '', function(t) {
 				shopImages(shopId,'logo');
 				shopImages(shopId,'banner');
 				shopImages(shopId,'bg');
-				fcom.updateFaceboxContent(t);				
+				fcom.updateFaceboxContent(t);
 			});
 	};
-	
+
 	shopImages = function(shopId,imageType,lang_id){
 		fcom.ajax(fcom.makeUrl('shops', 'images', [shopId,imageType,lang_id]), '', function(t) {
 			if(imageType=='logo') {
@@ -132,50 +132,50 @@ $(document).delegate('.bg-language-js','change',function(){
 			fcom.resetFaceboxHeight();
 		});
 	};
-	
-	shopTemplates = function(shopId){	
+
+	shopTemplates = function(shopId){
 			fcom.displayProcessing();
-			fcom.ajax(fcom.makeUrl('shops', 'shopTemplate', [shopId]), '', function(t) {	
-				fcom.updateFaceboxContent(t);		
+			fcom.ajax(fcom.makeUrl('shops', 'shopTemplate', [shopId]), '', function(t) {
+				fcom.updateFaceboxContent(t);
 			});
 	};
-	
+
 	setTemplate = function (shopId,ltemplateId){
 		fcom.updateWithAjax(fcom.makeUrl('shops', 'setTemplate',[shopId,ltemplateId]), '', function(t) {
 			shopTemplates(shopId);
 			return ;
 		});
 	};
-	
+
 	shopCollectionProducts= function(shopId){
 		fcom.displayProcessing();
-			fcom.ajax(fcom.makeUrl('shops', 'shopCollection', [shopId]), '', function(t) {		
+			fcom.ajax(fcom.makeUrl('shops', 'shopCollection', [shopId]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 				getShopCollectionGeneralForm(shopId);
 			});
 	};
-	
+
 	getShopCollectionGeneralForm = function (shopId){
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionGeneralForm', [shopId]), '', function(t) {
 			fcom.updateFaceboxContent(t);
-		});	
+		});
 	}
-	
+
 	setupShopCollection = function (frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('shops', 'setupShopCollection'), data, function(t) {
 			if (t.langId>0) {
 				editShopCollectionLangForm(t.shop_id, t.collection_id, t.langId);
 				return ;
 			}
-		
+
 		});
 	}
-	
+
 	setupShopCollectionlangForm = function (frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('shops', 'setupShopCollectionLang'), data, function(t) {
 			if (t.langId>0) {
@@ -185,7 +185,7 @@ $(document).delegate('.bg-language-js','change',function(){
 		});
 
 	}
-	
+
 	editShopCollectionLangForm = function(shop_id,scollection_id,langId){
 		if (typeof(scollection_id) == "undefined" || scollection_id<0){
 			return false;
@@ -194,7 +194,7 @@ $(document).delegate('.bg-language-js','change',function(){
 			return false;
 		}
 		if (typeof(shop_id) == "undefined" || shop_id<0){
-			
+
 			return false;
 		}
 		fcom.displayProcessing();
@@ -202,22 +202,22 @@ $(document).delegate('.bg-language-js','change',function(){
 			fcom.updateFaceboxContent(t);
 		});
 	};
-	
+
 	sellerCollectionProducts = function( scollection_id,shop_id ) {
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('shops', 'sellerCollectionProductLinkFrm', [ scollection_id,shop_id ]), '', function(t) {
 			fcom.updateFaceboxContent(t);
 			bindAutoComplete();
-		});	
+		});
 	}
-	
+
 	setUpSellerCollectionProductLinks = function(frm){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('shops', 'setUpSellerCollectionProductLinks'), data, function(t) {
 		});
 	}
-	
+
 	deleteImage = function( fileId, shopId, imageType, langId){
 		var agree = confirm( langLbl.confirmDeleteImage );
 		if( !agree ){
@@ -227,7 +227,7 @@ $(document).delegate('.bg-language-js','change',function(){
 			shopImages( shopId, imageType, langId );
 		});
 	};
-	
+
 	toggleStatus = function(e,obj,canEdit){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -249,8 +249,8 @@ $(document).delegate('.bg-language-js','change',function(){
 			if( ans.status == 1 ){
 				$(obj).toggleClass("active");
 				fcom.displaySuccessMessage(ans.msg);
-				/* setTimeout(function(){ 
-					reloadList(); 
+				/* setTimeout(function(){
+					reloadList();
 				}, 1000); */
 			} else {
 				fcom.displayErrorMessage(ans.msg);
@@ -258,7 +258,15 @@ $(document).delegate('.bg-language-js','change',function(){
 		});
 		$.systemMessage.close();
 	};
-	
+
+	toggleBulkStatues = function(status){
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			return false;
+		}
+		$("#frmShopListing input[name='status']").val(status);
+		$("#frmShopListing").submit();
+	};
+
 })();
 
 function bindAutoComplete(){
@@ -270,7 +278,7 @@ function bindAutoComplete(){
 			type: 'post',
 			success: function(json) {
 				response($.map(json, function(item) {
-				
+
 					return { label: item['name'] +'['+item['product_identifier'] +']',	value: item['id']	};
 				}));
 			},
@@ -287,7 +295,7 @@ function bindAutoComplete(){
 $(document).on('click','.shopFile-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
-	var frmName = $(node).attr('data-frm');	
+	var frmName = $(node).attr('data-frm');
 	if('frmShopLogo' == frmName){
 		var langId = document.frmShopLogo.lang_id.value;
 		var shopId = document.frmShopLogo.shop_id.value;
@@ -301,22 +309,22 @@ $(document).on('click','.shopFile-Js',function(){
 		var shopId = document.frmBackgroundImage.shop_id.value;
 		var imageType = 'bg';
 	}
-	
-	var fileType = $(node).attr('data-file_type');	
-		
+
+	var fileType = $(node).attr('data-file_type');
+
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="shop_id" value="'+shopId+'"/>'); 
-	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'"></form>'); 
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="shop_id" value="'+shopId+'"/>');
+	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'"></form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if (typeof timer != 'undefined') {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 				url: fcom.makeUrl('Shops', 'uploadShopImages',[shopId, langId]),
 				type: 'post',
@@ -331,27 +339,27 @@ $(document).on('click','.shopFile-Js',function(){
 				complete: function() {
 					$(node).val($val);
 				},
-				success: function(ans) {												
+				success: function(ans) {
 						$('.text-danger').remove();
-						$('#input-field'+fileType).html(ans.msg);						
+						$('#input-field'+fileType).html(ans.msg);
 						if(ans.status == true){
 							$('#input-field'+fileType).removeClass('text-danger');
 							$('#input-field'+fileType).addClass('text-success');
 							$('#form-upload').remove();
 							shopImages(ans.shopId,imageType,langId);
 							fcom.displaySuccessMessage(ans.msg);
-							//addShopLangForm(ans.shopId, langId);	
+							//addShopLangForm(ans.shopId, langId);
 						}else{
 							$('#input-field'+fileType).removeClass('text-success');
 							$('#input-field'+fileType).addClass('text-danger');
 							fcom.displayErrorMessage(ans.msg);
-						}												
+						}
 					},
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+				});
 		}
 	}, 500);
-	
+
 });

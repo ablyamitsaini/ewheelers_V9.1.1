@@ -191,5 +191,5 @@ window.onafterprint = function () {
 </html>
 <?php
 //$content  = ob_get_clean();
-//echo CommonHelper::minify_html($content);
+//echo CommonHelper::minifyHtml($content);
 ?>

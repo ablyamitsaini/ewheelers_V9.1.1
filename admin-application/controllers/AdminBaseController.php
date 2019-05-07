@@ -15,7 +15,7 @@ class AdminBaseController extends FatController
     protected $str_setup_successful;
     protected $adminLangId;
 
-    function __construct($action)
+    public function __construct($action)
     {
         parent::__construct($action);
 
@@ -24,13 +24,13 @@ class AdminBaseController extends FatController
         array_pop($arr);
         $urlController = implode('-', $arr);
         $controllerName = ucfirst(FatUtility::dashed2Camel($urlController));
-        if($controllerName != 'AdminGuest' ) {
+        if ($controllerName != 'AdminGuest') {
             $_SESSION['admin_referer_page_url'] = CommonHelper::getCurrUrl();
         }
 
         if (!AdminAuthentication::isAdminLogged()) {
             CommonHelper::initCommonVariables(true);
-            if(FatUtility::isAjaxCall() ) {
+            if (FatUtility::isAjaxCall()) {
                 // FatUtility::dieWithError("Your session seems to be expired, Please try after reloading the page.");
                 Message::addErrorMessage(Labels::getLabel('LBL_Your_session_seems_to_be_expired', CommonHelper::getLangId()));
                 FatUtility::dieWithError(Message::getHtml());
@@ -42,7 +42,7 @@ class AdminBaseController extends FatController
         /* $this->checkPermissions(); */
         $this->admin_id = AdminAuthentication::getLoggedAdminId();
 
-        if (!FatUtility::isAjaxCall() ) {
+        if (!FatUtility::isAjaxCall()) {
             $session_element_name = AdminAuthentication::SESSION_ELEMENT_NAME;
             $cookie_name = $session_element_name.'layout';
             //@todo-ask::: Confirm about the usage of $_COOKIE.
@@ -54,7 +54,6 @@ class AdminBaseController extends FatController
         }
         $this->set("bodyClass", '');
         $this->setCommonValues();
-
     }
 
     /*
@@ -63,7 +62,6 @@ class AdminBaseController extends FatController
     */
     private function setCommonValues()
     {
-
         CommonHelper::initCommonVariables(true);
         $this->adminLangId = CommonHelper::getLangId();
         $this->layoutDirection = CommonHelper::getLayoutDirection();
@@ -138,17 +136,18 @@ class AdminBaseController extends FatController
         'confirmRestoreBackup' =>Labels::getLabel('LBL_Do_you_want_to_restore_database_to_this_record', $this->adminLangId),
         'confirmChangeRequestStatus' =>Labels::getLabel('LBL_Do_you_want_to_change_request_status', $this->adminLangId),
         'confirmTruncateUserData' =>Labels::getLabel('LBL_Do_you_want_to_truncate_User_Data', $this->adminLangId),
+        'atleastOneRecord' =>Labels::getLabel('LBL_Please_select_atleast_one_record.', $this->adminLangId)
         );
 
         $languages = Language::getAllNames(false);
-        foreach($languages as $val){
+        foreach ($languages as $val) {
             $jsVariables['language'.$val['language_id']] = $val['language_layout_direction'];
         }
 
         //get notifications count
         $db = FatApp::getDb();
         $notifyObject = Notification::getSearchObject();
-        if(!AdminPrivilege::isAdminSuperAdmin($this->admin_id)) {
+        if (!AdminPrivilege::isAdminSuperAdmin($this->admin_id)) {
             $recordTypeArr = Notification::getAllowedRecordTypeArr($this->admin_id);
             $notifyObject->addCondition('notification_record_type', 'IN', $recordTypeArr);
         }
@@ -168,16 +167,14 @@ class AdminBaseController extends FatController
         $this->set('isAdminLogged', AdminAuthentication::isAdminLogged());
         $this->set('layoutDirection', $this->layoutDirection);
 
-        if($this->layoutDirection == 'rtl') {
+        if ($this->layoutDirection == 'rtl') {
             $this->_template->addCss('css/style--arabic.css');
-
         }
-
     }
 
     public function getNavigationBreadcrumbArr($action)
     {
-        switch($action){
+        switch ($action) {
         case 'shops':
         case 'shops':
         case 'shops':
@@ -189,7 +186,6 @@ class AdminBaseController extends FatController
 
     public function getBreadcrumbNodes($action)
     {
-
         $nodes = array();
         $className = get_class($this);
         $arr = explode('-', FatUtility::camel2dashed($className));
@@ -198,7 +194,7 @@ class AdminBaseController extends FatController
         $className = ucwords(implode(' ', $arr));
         if ($action == 'index') {
             $nodes[] = array('title'=>$className);
-        }else {
+        } else {
             $arr = explode('-', FatUtility::camel2dashed($action));
             $action = ucwords(implode(' ', $arr));
             $nodes[] = array('title'=>$className, 'href'=>CommonHelper::generateUrl($urlController));
@@ -207,7 +203,7 @@ class AdminBaseController extends FatController
         return $nodes;
     }
 
-    public function getStates($countryId , $stateId = 0)
+    public function getStates($countryId, $stateId = 0)
     {
         $countryId = FatUtility::int($countryId);
         $stateId = FatUtility::int($stateId);
@@ -247,7 +243,7 @@ class AdminBaseController extends FatController
         return $frm;
     }
 
-    protected function getUserForm( $user_id = 0 , $userType = 0)
+    protected function getUserForm($user_id = 0, $userType = 0)
     {
         $user_id = FatUtility::int($user_id);
         $userType = FatUtility::int($userType);
@@ -269,8 +265,8 @@ class AdminBaseController extends FatController
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'user_state_id', array())->requirement->setRequired(true);
         $frm->addTextBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city');
 
-        switch($userType){
-        case User::USER_TYPE_SHIPPING_COMPANY :
+        switch ($userType) {
+        case User::USER_TYPE_SHIPPING_COMPANY:
             $frm->addTextBox(Labels::getLabel('LBL_Tracking_Site_Url', $this->adminLangId), 'user_order_tracking_url');
             break;
         }
@@ -279,10 +275,10 @@ class AdminBaseController extends FatController
         return $frm;
     }
 
-    protected function getSellerOrderSearchForm( $langId )
+    protected function getSellerOrderSearchForm($langId)
     {
         $currency_id = FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1);
-        $currencyData = Currency::getAttributesById($currency_id,    array('currency_code','currency_symbol_left','currency_symbol_right'));
+        $currencyData = Currency::getAttributesById($currency_id, array('currency_code','currency_symbol_left','currency_symbol_right'));
         $currencySymbol = ($currencyData['currency_symbol_left'] != '') ? $currencyData['currency_symbol_left'] : $currencyData['currency_symbol_right'];
 
         $frm = new Form('frmVendorOrderSearch');
@@ -307,12 +303,12 @@ class AdminBaseController extends FatController
         return $frm;
     }
 
-    protected function getProductCatalogForm( $attrgrp_id = 0 , $type = 'CUSTOM_PRODUCT')
+    protected function getProductCatalogForm($attrgrp_id = 0, $type = 'CUSTOM_PRODUCT')
     {
         $langId = $this->adminLangId;
         $this->objPrivilege->canViewProducts();
         $frm = new Form('frmProduct', array('id'=>'frmProduct'));
-        if($type == 'CUSTOM_PRODUCT') {
+        if ($type == 'CUSTOM_PRODUCT') {
             $fld = $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'selprod_user_shop_name', '', array(' ' => ' '));
             $fld->htmlAfterField = '<br/><small>'.Labels::getLabel('LBL_Please_leave_empty_if_you_want_to_add_product_in_system_catalog', $this->adminLangId).' </small>';
             $frm->addHtml('', 'user_shop', '<div id="user_shop_name"></div>');
@@ -324,7 +320,7 @@ class AdminBaseController extends FatController
 
         $pTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Product_Type', $this->adminLangId), 'product_type', Product::getProductTypes($langId), Product::PRODUCT_TYPE_PHYSICAL, array('id'=>'product_type'), '');
 
-        if($type == 'REQUESTED_CATALOG_PRODUCT') {
+        if ($type == 'REQUESTED_CATALOG_PRODUCT') {
             $fld = $frm->addRequiredField(Labels::getLabel('LBL_Brand/Manfacturer', $this->adminLangId), 'brand_name');
             //$fld1 = $frm->addTextBox(Labels::getLabel('LBL_Category',$this->adminLangId),'category_name');
 
@@ -433,7 +429,7 @@ class AdminBaseController extends FatController
 
         /* $frm->addTextBox('UPC','product_upc');
         $frm->addTextBox('ISBN Code','product_isbn'); */
-        if($type == 'CUSTOM_PRODUCT') {
+        if ($type == 'CUSTOM_PRODUCT') {
             $approveUnApproveArr = Product::getApproveUnApproveArr($langId);
             $frm->addSelectBox(Labels::getLabel('LBL_Approval_Status', $this->adminLangId), 'product_approved', $approveUnApproveArr, Product::APPROVED, array(), '');
         }
@@ -445,12 +441,12 @@ class AdminBaseController extends FatController
         $codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD', $this->adminLangId), 'product_cod_enabled', $yesNoArr, applicationConstants::NO, array(), '');
 
         $paymentMethod = new PaymentMethods;
-        if(!$paymentMethod->cashOnDeliveryIsActive()) {
+        if (!$paymentMethod->cashOnDeliveryIsActive()) {
             $codFld->addFieldTagAttribute('disabled', 'disabled');
             $codFld->htmlAfterField = '<br/><small>'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings', $this->adminLangId).'</small>';
         }
 
-        if($type == 'REQUESTED_CATALOG_PRODUCT') {
+        if ($type == 'REQUESTED_CATALOG_PRODUCT') {
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Option_Groups', $this->adminLangId), 'option_name');
             $fld1->htmlAfterField='<div class="box--scroller"><ul class="columlist list--vertical" id="product-option-js"></ul></div>';
 
@@ -469,7 +465,7 @@ class AdminBaseController extends FatController
 
 
         /* code to input values for the comparison attributes[ */
-        if($attrgrp_id ) {
+        if ($attrgrp_id) {
             $db = FatApp::getDb();
             //$attrGrpAttrObj = new AttrGroupAttribute();
             $srch = AttrGroupAttribute::getSearchObject();
@@ -480,10 +476,10 @@ class AdminBaseController extends FatController
             $srch->addMultipleFields(array('attr_identifier', 'attr_type', 'attr_fld_name', 'attr_name','attr_options','attr_prefix','attr_postfix'));
             $rs = $srch->getResultSet();
             $attributes = $db->fetchAll($rs);
-            if($attributes ) {
-                foreach( $attributes as $attr ){
+            if ($attributes) {
+                foreach ($attributes as $attr) {
                     $caption = ($attr['attr_name'] != '') ? $attr['attr_name'] : $attr['attr_identifier'];
-                    switch( $attr['attr_type'] ){
+                    switch ($attr['attr_type']) {
                     case AttrGroupAttribute::ATTRTYPE_NUMBER:
                         //$fld = $frm->addIntegerField($caption, $attr['attr_fld_name']);
                         $fld = $frm->addFloatField($caption, $attr['attr_fld_name']);
@@ -493,20 +489,20 @@ class AdminBaseController extends FatController
                         break;
                     case AttrGroupAttribute::ATTRTYPE_SELECT_BOX:
                         $arr_options = array();
-                        if($attr['attr_options'] != '' ) {
+                        if ($attr['attr_options'] != '') {
                             $arr_options = explode("\n", $attr['attr_options']);
-                            if(is_array($arr_options) ) {
+                            if (is_array($arr_options)) {
                                 $arr_options = array_map('trim', $arr_options);
                             }
                         }
                         $fld_txt_box = $frm->addSelectBox($caption, $attr['attr_fld_name'], $arr_options, '', array(), '');
                         break;
                     }
-                    if($attr['attr_prefix'] != '' ) {
+                    if ($attr['attr_prefix'] != '') {
                         $fld->htmlBeforeField = $attr['attr_prefix'];
                     }
                     $postfix_hint = '';
-                    if($attr['attr_postfix'] != '' ) {
+                    if ($attr['attr_postfix'] != '') {
                         $postfix_hint = '('.$attr['attr_postfix'].') ';
                     }
                     $postfix_hint .= " Enter -1 for N.A";
@@ -520,19 +516,19 @@ class AdminBaseController extends FatController
         return $frm;
     }
 
-    protected function getSellerProductForm( $product_id , $type = 'SELLER_PRODUCT')
+    protected function getSellerProductForm($product_id, $type = 'SELLER_PRODUCT')
     {
         $frm = new Form('frmSellerProduct');
         $defaultProductCond = '';
 
-        if($type == 'REQUESTED_CATALOG_PRODUCT') {
+        if ($type == 'REQUESTED_CATALOG_PRODUCT') {
             $reqData = ProductRequest::getAttributesById($product_id, array('preq_content'));
             $productData = array_merge($reqData, json_decode($reqData['preq_content'], true));
             $optionArr = isset($productData['product_option'])?$productData['product_option']:array();
-            if(!empty($optionArr)) {
+            if (!empty($optionArr)) {
                 $frm->addHtml('', 'optionSectionHeading', '');
             }
-            foreach($optionArr as $val){
+            foreach ($optionArr as $val) {
                 $optionSrch = Option::getSearchObject($this->adminLangId);
                 $optionSrch->addMultipleFields(array('IFNULL(option_name,option_identifier) as option_name','option_id'));
                 $optionSrch->doNotCalculateRecords();
@@ -540,7 +536,7 @@ class AdminBaseController extends FatController
                 $optionSrch->addCondition('option_id', '=', $val);
                 $rs = $optionSrch->getResultSet();
                 $option = FatApp::getDb()->fetch($rs);
-                if($option == false) {
+                if ($option == false) {
                     continue;
                 }
                 $optionValues = Product::getOptionValues($option['option_id'], $this->adminLangId);
@@ -548,16 +544,16 @@ class AdminBaseController extends FatController
                 $fld = $frm->addSelectBox($option_name, 'selprodoption_optionvalue_id['.$option['option_id'].']', $optionValues, '', array(), Labels::getLabel('LBL_Select', $this->adminLangId));
                 $fld->requirements()->setRequired();
             }
-        }else{
+        } else {
             $productData = Product::getAttributesById($product_id, array('product_type','product_min_selling_price'));
-            if($productData['product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+            if ($productData['product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
                 $defaultProductCond = Product::CONDITION_NEW;
             }
 
             $productOptions = Product::getProductOptions($product_id, $this->adminLangId, true);
-            if($productOptions ) {
+            if ($productOptions) {
                 $frm->addHtml('', 'optionSectionHeading', '');
-                foreach( $productOptions as $option ){
+                foreach ($productOptions as $option) {
                     $option_name = ($option['option_name'] != '') ? $option['option_name'] : $option['option_identifier'];
                     $fld = $frm->addSelectBox($option_name, 'selprodoption_optionvalue_id['.$option['option_id'].']', $option['optionValues'], '', array(), Labels::getLabel('LBL_Select', $this->adminLangId));
                     $fld->requirements()->setRequired();
@@ -571,7 +567,7 @@ class AdminBaseController extends FatController
 
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_price');
         $fld->requirements()->setPositive();
-        if(isset($productData['product_min_selling_price'])) {
+        if (isset($productData['product_min_selling_price'])) {
             $fld->requirements()->setRange($productData['product_min_selling_price'], 9999999999);
             $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Minimum_selling_price_for_this_product_is', $this->adminLangId).' '.CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true));
             $fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates', $this->adminLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price', $this->adminLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true).'</small>';
@@ -601,14 +597,14 @@ class AdminBaseController extends FatController
         }
         $fld_sku->htmlAfterField='<br/><small class="text--small">'.Labels::getLabel('LBL_Stock_Keeping_Unit', $this->adminLangId).'</small>';
 
-        if($productData['product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+        if ($productData['product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
             $fld = $frm->addIntegerField(Labels::getLabel('LBL_Max_Download_Times', $this->adminLangId), 'selprod_max_download_times');
             $fld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_-1_for_unlimited', $this->adminLangId).'</small>';
 
             $fld1 = $frm->addIntegerField(Labels::getLabel('LBL_Validity_(days)', $this->adminLangId), 'selprod_download_validity_in_days');
             $fld1->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_-1_for_unlimited', $this->adminLangId).'</small>';
             $frm->addHiddenField('', 'selprod_condition', $defaultProductCond);
-        }else{
+        } else {
             $fld = $frm->addSelectBox(Labels::getLabel('LBL_Product_Condition', $this->adminLangId), 'selprod_condition', Product::getConditionArr($this->adminLangId), '', array(), Labels::getLabel('LBL_Select_Condition', $this->adminLangId));
             $fld->requirements()->setRequired();
         }
@@ -624,7 +620,7 @@ class AdminBaseController extends FatController
         $yesNoArr = applicationConstants::getYesNoArr($this->adminLangId);
         $codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD', $this->adminLangId), 'selprod_cod_enabled', $yesNoArr, '0', array(), '');
         $paymentMethod = new PaymentMethods;
-        if(!$paymentMethod->cashOnDeliveryIsActive()) {
+        if (!$paymentMethod->cashOnDeliveryIsActive()) {
             $codFld->addFieldTagAttribute('disabled', 'disabled');
             $codFld->htmlAfterField = '<br/><small>'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings', $this->adminLangId).'</small>';
         }

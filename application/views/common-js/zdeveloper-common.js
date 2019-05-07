@@ -30,14 +30,17 @@ function selectAll( obj ){
 	showFormActionsBtns();
 }
 
-function formAction( frm ) {
-	if( typeof $(".selectItem--js:checked").val() === 'undefined' ){ $.mbsmessage(langLbl.atleastOneRecord, true, 'alert--danger'); return; }
+function formAction(frm, callback) {
+	if( typeof $(".selectItem--js:checked").val() === 'undefined' ){
+		$.mbsmessage(langLbl.atleastOneRecord, true, 'alert--danger');
+		return false;
+	}
 
 	$.mbsmessage(langLbl.processing,true,'alert--process alert');
 	data = fcom.frmData(frm);
 
 	fcom.updateWithAjax( frm.action, data, function(resp){
-		setTimeout(function() { location.reload(); }, 1000);
+		callback();
 	});
 }
 

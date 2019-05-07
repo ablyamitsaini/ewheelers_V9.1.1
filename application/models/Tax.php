@@ -250,7 +250,7 @@ class Tax extends MyAppModel
         return $tax;
     }
 
-    public static function getTaxCatByProductId($productId =0, $userId = 0, $langId = 0, $fields=array())
+    public static function getTaxCatByProductId($productId = 0, $userId = 0, $langId = 0, $fields = array())
     {
         $taxData =  array();
         $taxObj = static::getTaxCatObjByProductId($productId, $langId);

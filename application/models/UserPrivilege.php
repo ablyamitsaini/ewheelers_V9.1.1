@@ -46,7 +46,7 @@ class UserPrivilege
         return true;
     }
 
-    public static function canSellerEditCustomProduct($productId  = -1)
+    public static function canSellerEditCustomProduct($productId = -1)
     {
         if ($productId<0) {
             return false;
@@ -61,7 +61,7 @@ class UserPrivilege
         /* ] */
     }
 
-    public static function canEditSellerProduct($productId  = -1)
+    public static function canEditSellerProduct($productId = -1)
     {
         if ($productId<0) {
             return false;
@@ -77,7 +77,7 @@ class UserPrivilege
         /* ] */
     }
 
-    public static function canEditMetaTag($metaId= 0, $metaRecordId= 0)
+    public static function canEditMetaTag($metaId = 0, $metaRecordId = 0)
     {
         if ($metaId==0 && !self::canEditSellerProduct($metaRecordId)) {
             return false;
@@ -120,7 +120,7 @@ class UserPrivilege
     public static function canSellerAddNewProduct()
     {
         $userId =   UserAuthentication::getLoggedUserId();
-        if (!self::IsUserHasValidSubsription($userId)) {
+        if (!self::isUserHasValidSubsription($userId)) {
             return false;
         }
 
@@ -129,7 +129,7 @@ class UserPrivilege
         }
         /* if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE',FatUtility::VAR_INT,0)){
 
-        if(!self::IsUserHasValidSubsription($userId)){
+        if(!self::isUserHasValidSubsription($userId)){
         return false;
         }
         } */
@@ -143,7 +143,7 @@ class UserPrivilege
         return true;
     }
 
-    public static function IsUserHasValidSubsription($userId = 0)
+    public static function isUserHasValidSubsription($userId = 0)
     {
         if ($userId<1) {
             return false;
@@ -165,7 +165,7 @@ class UserPrivilege
 
     /* Subscription privildges */
 
-    public static function CanSellerUpgradeOrDowngradePlan($userId =0, $spPlanId = 0, $langId = 0)
+    public static function canSellerUpgradeOrDowngradePlan($userId = 0, $spPlanId = 0, $langId = 0)
     {
         $currentActivePlanId = OrderSubscription:: getUserCurrentActivePlanDetails($langId, $userId, array(OrderSubscription::DB_TBL_PREFIX.'id'));
         if (!$currentActivePlanId) {
@@ -187,7 +187,7 @@ class UserPrivilege
         return true;
     }
 
-    public static function CanSellerBuyFreePlan($userId =0, $sPackageId = 0, $langId = 0)
+    public static function canSellerBuyFreePlan($userId = 0, $sPackageId = 0, $langId = 0)
     {
         if (!OrderSubscription::canUserBuyFreeSubscription) {
             return false;
@@ -195,13 +195,13 @@ class UserPrivilege
         return true;
     }
 
-    public static function canEditSellerCollection($userId =0)
+    public static function canEditSellerCollection($userId = 0)
     {
         //Pending
         return true;
     }
 
-    public static function canSellerAddProductInCatalog($productId =0, $userId = 0)
+    public static function canSellerAddProductInCatalog($productId = 0, $userId = 0)
     {
         $product = Product::getAttributesById($productId);
 

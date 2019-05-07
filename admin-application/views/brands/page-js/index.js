@@ -10,11 +10,11 @@ $(document).delegate('.language-js','change',function(){
 	var currentPage = 1;
 	var runningAjaxReq = false;
 
-	goToSearchPage = function(page) {	
+	goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmBrandSearchPaging;		
+		var frm = document.frmBrandSearchPaging;
 		$(frm.page).val(page);
 		searchProductBrands(frm);
 	}
@@ -23,14 +23,14 @@ $(document).delegate('.language-js','change',function(){
 		var frm = document.frmBrandSearchPaging;
 		searchProductBrands(frm);
 	}
-	
+
 	addBrandForm= function(id){
 		$.facebox(function() {brandForm(id); });
 	};
 
 	brandForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmBrandSearchPaging;			
+		var frm = document.frmBrandSearchPaging;
 			fcom.ajax(fcom.makeUrl('brands', 'form', [id]), '', function(t) {
 			fcom.updateFaceboxContent(t);
 
@@ -55,18 +55,18 @@ $(document).delegate('.language-js','change',function(){
 		});
 	};
 
-	brandLangForm = function(brandId, langId) {	
-		fcom.displayProcessing();	
+	brandLangForm = function(brandId, langId) {
+		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('brands', 'langForm', [brandId, langId]), '', function(t) {
 			fcom.updateFaceboxContent(t);
 		});
 	};
-	
+
 	setupBrandLang=function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Brands', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId>0) {
 				brandLangForm(t.brandId, t.langId);
 				return ;
@@ -80,7 +80,7 @@ $(document).delegate('.language-js','change',function(){
 		});
 	};
 
-	searchProductBrands = function(form){		
+	searchProductBrands = function(form){
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);
@@ -90,14 +90,14 @@ $(document).delegate('.language-js','change',function(){
 			$("#listing").html(res);
 		});
 	};
-	
+
 	brandImages = function(brandId,lang_id){
 		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId,lang_id]), '', function(t) {
 			$('#image-listing').html(t);
 			fcom.resetFaceboxHeight();
 		});
 	};
-	
+
 	brandMediaForm = function(brandId){
 		fcom.displayProcessing();
 			fcom.ajax(fcom.makeUrl('Brands', 'media', [brandId]), '', function(t) {
@@ -105,20 +105,20 @@ $(document).delegate('.language-js','change',function(){
 				fcom.updateFaceboxContent(t);
 			});
 	};
-	
+
 	deleteRecord = function(id){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
-		fcom.updateWithAjax(fcom.makeUrl('brands','deleteRecord'),data,function(res){		
+		fcom.updateWithAjax(fcom.makeUrl('brands','deleteRecord'),data,function(res){
 			reloadList();
 		});
 	};
-	
+
 	clearSearch = function(){
 		document.frmSearch.reset();
 		searchProductBrands(document.frmSearch);
 	};
-	
+
 	deleteImage = function( brandId, langId ){
 		if(!confirm(langLbl.confirmDeleteLogo)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandLogo',[brandId, langId]), '', function(t) {
@@ -126,7 +126,7 @@ $(document).delegate('.language-js','change',function(){
 			reloadList();
 		});
 	};
-	
+
 	toggleStatus = function(e,obj,canEdit){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -153,138 +153,46 @@ $(document).delegate('.language-js','change',function(){
 		});
 	};
 
-	
-	/* exportBrandsForm = function(){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Brands', 'exportBrandsForm'), '', function(t) {
-				$.facebox(t,'faceboxWidth');
-			});
-		});
+	toggleBulkStatues = function(status){
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			return false;
+		}
+		$("#frmBrandListing input[name='status']").val(status);
+		$("#frmBrandListing").submit();
 	};
-	
-	exportBrands = function(form){
-		document.frmImportExport.action = fcom.makeUrl( 'Brands', 'exportBrands' );
-		document.frmImportExport.submit();				
-	};
-	
-	importBrandsForm = function(){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Brands', 'importBrandsForm'), '', function(t) {
-				$.facebox(t,'faceboxWidth');
-			});
-		});
-	};
-	
-	importMediaForm = function(){
-		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Brands', 'importMediaForm'), '', function(t) {
-				$.facebox(t,'faceboxWidth');
-			});
-		});
-	};
-	
-	exportMediaForm = function(){
-		document.frmImportExport.action = fcom.makeUrl( 'Brands', 'exportMedia' );
-		document.frmImportExport.submit();
-	};
-	
-	importFile = function(method){ 
-		var data = new FormData(  );
-		$inputs = $('#frmImportExport input[type=text],#frmImportExport select,#frmImportExport input[type=hidden]');
-		$inputs.each(function() { data.append( this.name,$(this).val());});
 
-		$.each( $('#import_file')[0].files, function(i, file) {
-			$('#fileupload_div').html(fcom.getLoader());			
-			data.append('import_file', file);
-			$.ajax({
-				url : fcom.makeUrl('Brands', method),
-				type: "POST",
-				data : data,
-				processData: false,
-				contentType: false,
-				success: function(t){					
-					try {
-						var ans = $.parseJSON(t);
-						if( ans.status == 1 ){
-							reloadList();
-							$(document).trigger('close.facebox');
-						} else {
-							$('#fileupload_div').html('');
-						}						
-						$.systemMessage( ans.msg );
-					}
-					catch(exc){						
-						$.systemMessage( t );
-					}
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					alert("Error Occured.");
-				}
-			});
-		});	
+	deleteSelected = function(){
+		if(!confirm(langLbl.confirmDelete)){
+			return false;
+		}
+		$("#frmBrandListing").attr("action",fcom.makeUrl('Brands','deleteSelected')).submit();
 	};
-	
-	importBrands = function(){
-		var data = new FormData(  );
-		$inputs = $('#frmImportExport input[type=text],#frmImportExport select,#frmImportExport input[type=hidden]');
-		$inputs.each(function() { data.append( this.name,$(this).val());});
 
-		$.each( $('#import_file')[0].files, function(i, file) {
-			$('#fileupload_div').html(fcom.getLoader());			
-			data.append('import_file', file);
-			$.ajax({
-				url : fcom.makeUrl('Brands', 'importBrands'),
-				type: "POST",
-				data : data,
-				processData: false,
-				contentType: false,
-				success: function(t){					
-					try {
-						var ans = $.parseJSON(t);
-						if( ans.status == 1 ){
-							reloadList();
-							$(document).trigger('close.facebox');
-						} else {
-							$('#fileupload_div').html('');
-						}						
-						$.systemMessage( ans.msg );
-					}
-					catch(exc){						
-						$.systemMessage( t );
-					}
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					alert("Error Occured.");
-				}
-			});
-		});	
-	}; */
-	
 })();
 
 $(document).on('click','.uploadFile-Js',function(){
 	var node = this;
-	$('#form-upload').remove();	
+	$('#form-upload').remove();
 	/* var brandId = document.frmProdBrandLang.brand_id.value;
 	var langId = document.frmProdBrandLang.lang_id.value; */
-	
-	var brandId = $(node).attr( 'data-brand_id' );	
+
+	var brandId = $(node).attr( 'data-brand_id' );
 	var langId = document.frmBrandMedia.brand_lang_id.value;
-	
+
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>'); 	
-	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>'); 	
-	frm = frm.concat('</form>'); 	
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>');
+	frm = frm.concat('</form>');
 	$( 'body' ).prepend( frm );
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if ( typeof timer != 'undefined' ) {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 				url: fcom.makeUrl('Brands', 'uploadLogo'),
 				type: 'post',
@@ -301,11 +209,11 @@ $(document).on('click','.uploadFile-Js',function(){
 				},
 				success: function(ans) {
 						$('.text-danger').remove();
-						$('#input-field').html(ans.msg);						
+						$('#input-field').html(ans.msg);
 						if(ans.status==1)
-						{	
+						{
 							fcom.displaySuccessMessage(ans.msg);
-							$('#form-upload').remove();	
+							$('#form-upload').remove();
 							brandImages(ans.brandId,langId);
 							reloadList();
 						}else{
@@ -315,7 +223,7 @@ $(document).on('click','.uploadFile-Js',function(){
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+				});
 		}
 	}, 500);
 });

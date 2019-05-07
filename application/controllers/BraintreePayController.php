@@ -211,7 +211,7 @@ class BraintreePayController extends PaymentController
     public function checkCardType()
     {
         $post = FatApp::getPostedData();
-        $res=CommonHelper::validate_cc_number($post['cc']);
+        $res=CommonHelper::validateCcNumber($post['cc']);
         echo json_encode($res);
         exit;
     }

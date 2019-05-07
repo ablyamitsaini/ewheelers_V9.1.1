@@ -4,12 +4,12 @@ $(document).ready(function(){
 (function() {
 	var runningAjaxReq = false;
 	var dv = '#listing';
-	
-	reloadList = function() {		
+
+	reloadList = function() {
 		searchNavigations();
 	};
-	
-	searchNavigations = function (form){		
+
+	searchNavigations = function (form){
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);
@@ -21,7 +21,7 @@ $(document).ready(function(){
 	};
 	addFormNew= function(id){
 		$.facebox(function() { addForm(id);
-			
+
 		});
 	}
 	addForm = function(id) {
@@ -33,9 +33,9 @@ $(document).ready(function(){
 			});
 		//});
 	};
-	
+
 	setup = function(frm) {
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Navigations', 'setup'), data, function(t) {
 			reloadList();
@@ -46,7 +46,7 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	};
-	
+
 	addLangForm = function(navId, langId){
 		fcom.displayProcessing();
 		//$.facebox(function() {
@@ -57,12 +57,12 @@ $(document).ready(function(){
 			});
 		//});
 	};
-	
+
 	setupLang = function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Navigations', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId > 0) {
 				addLangForm(t.navId, t.langId);
 				return ;
@@ -70,7 +70,7 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	};
-	
+
 	pages = function (navId){
 		fcom.ajax(fcom.makeUrl('Navigations', 'Pages', [navId]), '', function(t) {
 			$(dv).html(t);
@@ -80,11 +80,11 @@ $(document).ready(function(){
 
 	addNavigationLinkForm = function( nav_id, nlink_id){
 		$.facebox(function() {
-					navigationLinkForm( nav_id, nlink_id);	
+					navigationLinkForm( nav_id, nlink_id);
 		});
 	}
 
-	
+
 	navigationLinkForm = function( nav_id, nlink_id){
 		fcom.displayProcessing();
 		var data = 'nav_id=' + nav_id + '&nlink_id=' + nlink_id;
@@ -92,11 +92,11 @@ $(document).ready(function(){
 				fcom.updateFaceboxContent(t)
 			});
 	}
-	
+
 	setupNavigationLink = function(frm){
-		if ( !$(frm).validate() ) return;		
+		if ( !$(frm).validate() ) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax( fcom.makeUrl('Navigations', 'setupNavigationLink'), data, function(t) {			
+		fcom.updateWithAjax( fcom.makeUrl('Navigations', 'setupNavigationLink'), data, function(t) {
 			pages( $(frm.nlink_nav_id).val() );
 			if (t.langId>0 && t.nlinkId>0) {
 				navigationLinkLangForm($(frm.nlink_nav_id).val(),t.nlinkId, t.langId);
@@ -105,7 +105,7 @@ $(document).ready(function(){
 			$(document).trigger('close.facebox');
 		});
 	}
-	
+
 	navigationLinkLangForm = function( nav_id, nlink_id, lang_id ){
 		fcom.displayProcessing();
 		var data = 'nav_id=' + nav_id + '&nlink_id=' + nlink_id + '&lang_id=' + lang_id;
@@ -114,11 +114,11 @@ $(document).ready(function(){
 				fcom.updateFaceboxContent(t);
 			});
 	}
-	
+
 	setupNavigationLinksLang =  function(frm){
-		if ( !$(frm).validate() ) return;		
+		if ( !$(frm).validate() ) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax( fcom.makeUrl('Navigations', 'setupNavigationLinksLang'), data, function(t) {			
+		fcom.updateWithAjax( fcom.makeUrl('Navigations', 'setupNavigationLinksLang'), data, function(t) {
 			pages( $(frm.nav_id).val() );
 			if (t.langId>0 && t.nlinkId>0) {
 				navigationLinkLangForm($(frm.nav_id).val(),t.nlinkId, t.langId);
@@ -126,9 +126,9 @@ $(document).ready(function(){
 			}
 			$(document).trigger('close.facebox');
 		});
-		
+
 	}
-	
+
 	callPageTypePopulate = function(el){
 		var nlink_type = $(el).val();
 		if( nlink_type == 0 ){
@@ -136,7 +136,7 @@ $(document).ready(function(){
 			$("#nlink_url_div").hide();
 			$("#nlink_category_id_div").hide();
 			$("#nlink_cpage_id_div").show();
-			
+
 		}else if( nlink_type == 2 ){
 			//if External page
 			$("#nlink_url_div").show();
@@ -157,7 +157,7 @@ $(document).ready(function(){
 			pages(navId);
 		});
 	};
-	
+
 	toggleStatus = function(e,obj,canEdit){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -175,7 +175,7 @@ $(document).ready(function(){
 		data='navId='+navId;
 		fcom.ajax(fcom.makeUrl('Navigations','changeStatus'),data,function(res){
 		var ans = $.parseJSON(res);
-			if( ans.status == 1 ){				
+			if( ans.status == 1 ){
 				fcom.displaySuccessMessage(ans.msg);
 
 				$(obj).toggleClass("active");
@@ -185,4 +185,12 @@ $(document).ready(function(){
 			}
 		});
 	};
-})()	
+
+	toggleBulkStatues = function(status){
+        if(!confirm(langLbl.confirmUpdateStatus)){
+            return false;
+        }
+        $("#frmNavListing input[name='status']").val(status);
+        $("#frmNavListing").submit();
+    };
+})()

@@ -76,7 +76,7 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 
 	deleteBulkSellerProducts = function(){
 		if( !confirm(langLbl.confirmDelete) ){ return; }
-		$("#frmSellerProductsListing").submit();
+		$("#frmSellerProductsListing").attr("action",fcom.makeUrl('Seller','deleteBulkSellerProducts')).submit();
 	};
 
 	sellerProductCloneForm = function(product_id, selprod_id){
@@ -101,23 +101,17 @@ $(document).delegate('.selprodoption_optionvalue_id','change',function(){
 		});
 	};
 
+	reloadList = function() {
+		var frm = document.frmSearch;
+		loadSellerProducts(frm);
+	};
 
-	toggleBulkSellerProductsStatues = function(e){
+	toggleBulkStatues = function(status){
 		if( !confirm(langLbl.confirmUpdateStatus) ){
-			e.preventDefault();
-			return;
+			return false;
 		}
-		data = $("#frmSellerProductsListing").serialize();
-
-		fcom.ajax(fcom.makeUrl('Seller','changeBulkProductsStatus'),data,function(res){
-			var ans = $.parseJSON(res);
-			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, true, 'alert--success');
-			} else {
-				$.mbsmessage(ans.msg, true, 'alert--danger');
-			}
-			loadSellerProducts(document.frmSearchSellerProducts);
-		});
+		$("#frmSellerProductsListing input[name='status']").val(status);
+		$("#frmSellerProductsListing").attr("action",fcom.makeUrl('Seller','changeBulkProductsStatus')).submit();
 	}
 
 	toggleSellerProductStatus = function(e,obj){

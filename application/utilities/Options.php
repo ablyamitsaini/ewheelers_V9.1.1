@@ -1,7 +1,6 @@
 <?php
 trait Options
 {
-
     public function options()
     {
         $frmSearch = $this->getSearchForm();
@@ -22,7 +21,6 @@ trait Options
 
     public function searchOptions()
     {
-
         $pagesize=FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
         $frmSearch = $this->getSearchForm();
 
@@ -33,7 +31,7 @@ trait Options
         $post = $frmSearch->getFormDataFromArray($data);
         $userId = UserAuthentication::getLoggedUserId();
         $srch = Option::getSearchObject($this->siteLangId);
-        if(!empty($post['keyword']) ) {
+        if (!empty($post['keyword'])) {
             $condition=$srch->addCondition('o.option_identifier', 'like', '%'.$post['keyword'].'%');
             $condition->attachCondition('ol.option_name', 'like', '%'.$post['keyword'].'%', 'OR');
         }
@@ -58,8 +56,6 @@ trait Options
 
     public function setupOptions()
     {
-
-
         $frm = $this->getForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
@@ -69,8 +65,7 @@ trait Options
         }
 
         $option_id = FatUtility::int($post['option_id']);
-        if($option_id>0) {
-
+        if ($option_id>0) {
             UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
         }
         unset($post['option_id']);
@@ -93,24 +88,24 @@ trait Options
 
         $option_type=FatUtility::int($post['option_type']);
 
-        if(in_array($option_type, Option::ignoreOptionValues())) {
+        if (in_array($option_type, Option::ignoreOptionValues())) {
             $optionValueObj = new OptionValue();
             $arr=$optionValueObj->getAtttibutesByOptionId($option_id, array('optionvalue_id'));
-            foreach($arr as $val){
+            foreach ($arr as $val) {
                 $optionValueObj = new OptionValue($val['optionvalue_id']);
                 $optionValueObj->deleteRecord(true);
             }
         }
 
         $languages = Language::getAllNames();
-        foreach($languages as $langId=>$langName){
+        foreach ($languages as $langId=>$langName) {
             $data=array(
             'optionlang_lang_id' => $langId,
             'optionlang_option_id' => $option_id,
             'option_name' => $post['option_name'.$langId],
             );
 
-            if(!$optionObj->updateLangData($langId, $data)) {
+            if (!$optionObj->updateLangData($langId, $data)) {
                 Message::addErrorMessage($optionObj->getError());
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -123,15 +118,13 @@ trait Options
 
     public function optionForm($option_id = 0)
     {
-
         $option_id = FatUtility::int($option_id);
-        if($option_id>0) {
-
+        if ($option_id>0) {
             UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
         }
         $hideListBox = false;
 
-        if (0 < $option_id ) {
+        if (0 < $option_id) {
             $optionObj = new Option();
             $data = $optionObj->getOption($option_id);
 
@@ -139,7 +132,7 @@ trait Options
                 FatUtility::dieWithError($this->str_invalid_request);
             }
 
-            if(in_array($data['option_type'], Option::ignoreOptionValues())) {
+            if (in_array($data['option_type'], Option::ignoreOptionValues())) {
                 $hideListBox = true;
             }
         }
@@ -152,17 +145,13 @@ trait Options
 
     public function addOptionForm($option_id=0)
     {
-
-
-
         $option_id = FatUtility::int($option_id);
         $frmOptions = $this->getForm($option_id);
 
 
-        if (0 < $option_id ) {
+        if (0 < $option_id) {
             $optionObj = new Option();
-            if($option_id>0) {
-
+            if ($option_id>0) {
                 UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
             }
             $data = $optionObj->getOption($option_id);
@@ -185,13 +174,12 @@ trait Options
 
         /*Used when option created from product form */
         $post = FatApp::getPostedData();
-        if(isset($post['product_id']) && $post['product_id']!='') {
+        if (isset($post['product_id']) && $post['product_id']!='') {
             $product_id = FatUtility::int($post['product_id']);
         }
 
         $option_id = FatUtility::int($option_id);
-        if($option_id>0) {
-
+        if ($option_id>0) {
             UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
         }
 
@@ -206,7 +194,7 @@ trait Options
         );
 
         $languages = Language::getAllNames();
-        foreach($languages as $langId=>$langName){
+        foreach ($languages as $langId=>$langName) {
             $fld = $frm->addRequiredField(
                 Labels::getLabel('LBL_OPTION_NAME', $this->siteLangId).' '.$langName,
                 'option_name'.$langId
@@ -223,14 +211,18 @@ trait Options
 
         $yesNoArr = applicationConstants::getYesNoArr($this->siteLangId);
         $frm->addSelectBox(
-            Labels::getLabel('LBL_OPTION_HAVE_SEPARATE_IMAGE', $this->siteLangId), 'option_is_separate_images',
-            $yesNoArr, 0, array(), ''
+            Labels::getLabel('LBL_OPTION_HAVE_SEPARATE_IMAGE', $this->siteLangId),
+            'option_is_separate_images',
+            $yesNoArr,
+            0,
+            array(),
+            ''
         )->requirements()->setRequired();
 
         $frm->addSelectBox(Labels::getLabel('LBL_Option_is_Color', $this->siteLangId), 'option_is_color', $yesNoArr, 0, array(), '')->requirements()->setRequired();
 
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SAVE_CHANGES', $this->siteLangId));
-        if(isset($product_id) && $product_id > 0) {
+        if (isset($product_id) && $product_id > 0) {
             $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('BTN_CANCEL', $this->siteLangId), array('onClick'=>'productOptionsForm('.$product_id.')'));
             $fld_submit->attachField($fld_cancel);
         }
@@ -244,18 +236,19 @@ trait Options
         $post = FatApp::getPostedData();
         // var_dump($post);exit;
         $option_type = FatUtility::int($post['optionType']);
-        if(in_array($option_type, Option::ignoreOptionValues())) {
+        if (in_array($option_type, Option::ignoreOptionValues())) {
             $hideBox = true;
         }
         $this->set('hideBox', $hideBox);
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function bulkOptionsDelete(){
+    public function bulkOptionsDelete()
+    {
         $optionId_arr = FatApp::getPostedData('option_id');
-        if ( is_array( $optionId_arr ) && count( $optionId_arr ) ) {
+        if (is_array($optionId_arr) && count($optionId_arr)) {
             foreach ($optionId_arr as $option_id) {
-                $this->deleteOption( $option_id );
+                $this->deleteOption(FatUtility::int($option_id));
             }
             FatUtility::dieJsonSuccess(
                 Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->siteLangId)
@@ -269,34 +262,34 @@ trait Options
     public function deleteSellerOption()
     {
         $option_id = FatApp::getPostedData('id', FatUtility::VAR_INT, 0);
-        $this->deleteOption( $option_id );
+        $this->deleteOption($option_id);
 
         FatUtility::dieJsonSuccess(
             Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->siteLangId)
         );
     }
 
-    private function deleteOption( $option_id )
+    private function deleteOption($option_id)
     {
-        if( $option_id < 1 || empty( $option_id ) ) {
+        if ($option_id < 1 || empty($option_id)) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId)
             );
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if( $option_id > 0 ) {
+        if ($option_id > 0) {
             UserPrivilege::canSellerEditOption($option_id, $this->siteLangId);
         }
 
         $optionObj = new Option($option_id);
-        if(!$optionObj->canRecordMarkDelete($option_id)) {
+        if (!$optionObj->canRecordMarkDelete($option_id)) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId)
             );
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if($optionObj->isLinkedWithProduct($option_id)) {
+        if ($optionObj->isLinkedWithProduct($option_id)) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_This_option_is_linked_with_product', $this->siteLangId)
             );
@@ -304,13 +297,13 @@ trait Options
         }
 
         $optionObj->assignValues(array(Option::tblFld('deleted') => 1));
-        if(!$optionObj->save()) {
+        if (!$optionObj->save()) {
             Message::addErrorMessage($optionObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
     }
 
-    function autoCompleteOptions()
+    public function autoCompleteOptions()
     {
         $pagesize = 10;
         $post = FatApp::getPostedData();
@@ -326,7 +319,7 @@ trait Options
         'optionlang_option_id = option_id AND optionlang_lang_id = ' . FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 1)); */
         $srch->addMultipleFields(array('option_id, option_name, option_identifier'));
 
-        if (!empty($post['keyword']) ) {
+        if (!empty($post['keyword'])) {
             $cnd = $srch->addCondition('option_name', 'LIKE', '%' . $post['keyword']. '%');
             $cnd->attachCondition('option_identifier', 'LIKE', '%'. $post['keyword'] . '%', 'OR');
         }
@@ -337,7 +330,7 @@ trait Options
         $options = $db->fetchAll($rs, 'option_id');
 
         $json = array();
-        foreach( $options as $key => $option ){
+        foreach ($options as $key => $option) {
             $json[] = array(
             'id' => $key,
             'name'      => strip_tags(html_entity_decode($option['option_name'], ENT_QUOTES, 'UTF-8')),
@@ -346,8 +339,4 @@ trait Options
         }
         die(json_encode($json));
     }
-
-
-
-
 }

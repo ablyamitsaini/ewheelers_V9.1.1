@@ -12,16 +12,19 @@ class AffiliateController extends AffiliateBaseController
     public function index()
     {
         include_once CONF_INSTALLATION_PATH.'library/Fbapi.php';
-        // include_once CONF_INSTALLATION_PATH . 'library/APIs/twitter/twitteroauth.php';
 
         $get_twitter_url = $_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Affiliate', 'twitterCallback');
 
-        $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
-        $request_token = $twitteroauth->oauth('oauth/request_token', array('oauth_callback' => $get_twitter_url));
-        $_SESSION['oauth_token'] = $request_token['oauth_token'];
-        $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-        $twitterUrl = $twitteroauth->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
-
+        try {
+            $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
+            $request_token = $twitteroauth->oauth('oauth/request_token', array('oauth_callback' => $get_twitter_url));
+            $_SESSION['oauth_token'] = $request_token['oauth_token'];
+            $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+            $twitterUrl = $twitteroauth->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+            $this->set('twitterUrl', $twitterUrl);
+        } catch (\Exception $e) {
+            $this->set('twitterUrl', false);
+        }
 
         $usrObj = new User();
         $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -72,7 +75,6 @@ class AffiliateController extends AffiliateBaseController
         $this->set('affiliateTrackingUrl', $affiliateTrackingUrl);
         $this->set('userBalance', User::getUserBalance($loggedUserId));
         $this->set('userRevenue', User::getAffiliateUserRevenue($loggedUserId));
-        $this->set('twitterUrl', $twitterUrl);
         $this->_template->render(true, false);
     }
 
