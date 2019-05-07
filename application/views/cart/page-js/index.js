@@ -9,6 +9,26 @@ $(document).ready(function(){
 		});
 	};
 
+	getPromoCode = function(){
+		if( isUserLogged() == 0 ){
+			loginPopUpBox();
+			return false;
+		}
+
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
+				$.facebox(t,'faceboxWidth');
+				$("input[name='coupon_code']").focus();
+			});
+		});
+	};
+
+	triggerApplyCoupon = function(coupon_code){
+		document.frmPromoCoupons.coupon_code.value = coupon_code;
+		applyPromoCode(document.frmPromoCoupons);
+		return false;
+	};
+
 	applyPromoCode  = function(frm){
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
@@ -17,8 +37,18 @@ $(document).ready(function(){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Cart','applyPromoCode'),data,function(res){
+			$("#facebox .close").trigger('click');
+			$.systemMessage.close();
 			listCartProducts();
 		});
+	};
+
+	goToCheckout = function(){
+		if( isUserLogged() == 0 ){
+			loginPopUpBox();
+			return false;
+		}
+		document.location.href = fcom.makeUrl('Checkout');
 	};
 
 	removePromoCode  = function(){

@@ -1,7 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body body--checkout" role="main">
-    <section class="">
+    <section class="section">
         <div class="container">
+            <div class="checkout-flow">
+              <ul>
+                  <li class="completed" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing/Shipping_Address', $siteLangId); ?></span></li>
+                  <li class="inprogress" data-count="2"><span><?php echo Labels::getLabel('LBL_Shipping_Summary', $siteLangId); ?></span></li>
+                  <li class="pending" data-count="3"><span><?php echo Labels::getLabel('LBL_Review_Order', $siteLangId); ?></span></li>
+              </ul>
+            </div>
+
             <div class="row ">
                 <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 checkout--steps">
                     <div class="checkout--steps__inner">

@@ -354,6 +354,20 @@ $("document").ready(function()
 		});
 	};
 
+	getPromoCode = function(){
+		if( isUserLogged() == 0 ){
+			loginPopUpBox();
+			return false;
+		}
+
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
+				$.facebox(t,'faceboxWidth');
+				$("input[name='coupon_code']").focus();
+			});
+		});
+	};
+
 	applyPromoCode  = function(frm){
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
@@ -386,19 +400,6 @@ $("document").ready(function()
 			}
 		});
 	};
-
-	$(document).on('click','.coupon-input',function(){
-		if( isUserLogged() == 0 ){
-			$.mbsmessage(langLbl.userNotLogged,true,'alert--danger alert');
-		}else{
-			$.facebox(function() {
-				fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
-					$.facebox(t,'faceboxWidth');
-					$("input[name='coupon_code']").focus();
-				});
-			});
-		}
-	});
 
 	useRewardPoints  = function(frm){
 		$.systemMessage.close();
