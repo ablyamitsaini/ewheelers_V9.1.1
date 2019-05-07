@@ -21,7 +21,7 @@
                             <h2>
                                 <?php echo Labels::getLabel('LBL_CONTENT_PAGES',$siteLangId);?>
                             </h2>
-                            <div class="box box--white box--space">
+                            <div class="box box--white  p-4">
                                 <div class="site-map-list">
 
                                     <ul>
@@ -47,7 +47,7 @@
                             <h2>
                                 <?php echo Labels::getLabel('LBL_Categories', $siteLangId);?>
                             </h2>
-                            <div class="box box--white box--space">
+                            <div class="box box--white  p-4">
                                 <div class="site-map-list">
                                     <?php $this->includeTemplate('_partial/custom/categories-list.php',array('categoriesArr'=>$categoriesArr),false);?>
 
@@ -62,7 +62,7 @@
                                 <h2>
                                     <?php echo Labels::getLabel('LBL_Shops',$siteLangId);?>
                                 </h2>
-                                <div class="box box--white box--space">
+                                <div class="box box--white  p-4">
    <div class="site-map-list">
                                     <ul>
                                         <?php foreach($allShops as $shop){
@@ -85,7 +85,7 @@
                                     <h2>
                                         <?php echo Labels::getLabel('LBL_Brands',$siteLangId);?>
                                     </h2>
-                                    <div class="box box--white box--space">
+                                    <div class="box box--white  p-4">
    <div class="site-map-list">
                                         <ul>
                                             <?php foreach($allBrands as $brands){

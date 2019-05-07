@@ -303,10 +303,7 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
 				  </div>
 			  <?php }?>
               <!-- ] -->
-
-            </div>
-
-			<div class="gap"></div>
+<div class="gap"></div>
 			<div class="shops-detail-wrapper">
 				<div class="row align-items-center">
 					<div class="col-md-8 col-sm-12 col-xs-12">
@@ -335,6 +332,9 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
 					</div>
 				</div>
 			</div>
+            </div>
+
+			
 			<div class="gap"></div>
           </div>
           </div>

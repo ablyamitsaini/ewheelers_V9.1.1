@@ -5,7 +5,7 @@
 ?>
 
 <div class="row justify-content-between align-items-center">
-	<div class="col-md-4">
+	<div class="col-md-4 mb-2 mb-md-0">
 		<div class="total-products">
         <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?></span>
 		</div>
@@ -25,7 +25,7 @@
                 <li>
                 <?php echo $frmProductSearch->getFieldHtml('pageSize'); ?></li>
                 <li>
-                    <div class="list-grid-toggle switch--link-js">
+                    <div class="list-grid-toggle switch--link-js  d-none d-md-block">
                         <div class="icon">
                             <div class="icon-bar"></div>
                             <div class="icon-bar"></div>
