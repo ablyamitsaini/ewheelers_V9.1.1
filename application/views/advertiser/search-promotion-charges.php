@@ -58,7 +58,7 @@ if (count($arr_listing) == 0) {
 }
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array(
-        'name' => 'frmPromotionSearchPaging'
+        'name' => 'frmChargesSearchPaging'
 ));
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount);
 $this->includeTemplate('_partial/pagination.php', $pagingArr, false);

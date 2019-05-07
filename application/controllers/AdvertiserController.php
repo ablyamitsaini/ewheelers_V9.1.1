@@ -702,11 +702,9 @@ class AdvertiserController extends AdvertiserBaseController
     public function searchPromotionCharges()
     {
         $userId = UserAuthentication::getLoggedUserId();
-
         $pagesize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
         $data     = FatApp::getPostedData();
         $page     = (empty($data['page']) || $data['page'] <= 0) ? 1 : $data['page'];
-
         $prmSrch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
         $prmSrch->joinTable(Promotion::DB_TBL, 'INNER JOIN', 'pr.' . Promotion::DB_TBL_PREFIX . 'id = tpc.' . Promotion::DB_TBL_CHARGES_PREFIX . 'promotion_id', 'pr');
         $prmSrch->addCondition('pr.promotion_user_id', '=', $userId);
@@ -720,6 +718,8 @@ class AdvertiserController extends AdvertiserBaseController
         ));
         $prmSrch->addGroupBy('promotion_id');
         $prmSrch->addOrder('tpc.' . Promotion::DB_TBL_CHARGES_PREFIX . 'id', 'desc');
+        $prmSrch->setPageNumber($page);
+        $prmSrch->setPageSize($pagesize);
         $rs      = $prmSrch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
         $this->set("arr_listing", $records);
@@ -727,7 +727,7 @@ class AdvertiserController extends AdvertiserBaseController
         $this->set("recordCount", $prmSrch->recordCount());
         $typeArr = Promotion::getTypeArr($this->siteLangId);
         $this->set('typeArr', $typeArr);
-        $this->set("pagesize", $pagesize);
+        $this->set("pageSize", $pagesize);
         $this->set("page", $page);
         $this->_template->render(false, false);
     }
