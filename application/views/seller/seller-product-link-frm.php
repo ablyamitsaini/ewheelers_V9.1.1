@@ -50,7 +50,7 @@ $("document").ready(function(){
 			$('#buy-together-products').append('<li id="productBuyTogether' + item['value'] + '"><i class="remove_buyTogether remove_param fa fa-remove"></i> ' +item['label'] + '<input type="hidden" name="product_upsell[]" value="' + item['value'] + '" /></li>');
 		}
 	});
-	$('#buy-together-products').delegate('.remove_buyTogether', 'click', function() {
+	$('#buy-together-products').on('click', '.remove_buyTogether',function() {
 
 		$(this).parent().remove();
 	});
@@ -79,7 +79,7 @@ $("document").ready(function(){
 			$('#related-products').append('<li id="productRelated' + item['value'] + '"><i class="remove_related remove_param fa fa-remove"></i> ' +item['label'] + '<input type="hidden" name="product_related[]" value="' + item['value'] + '" /></li>');
 		}
 	});
-	$('#related-products').delegate('.remove_related', 'click', function() {
+	$('#related-products').on('click', '.remove_related', function() {
 
 		$(this).parent().remove();
 	});

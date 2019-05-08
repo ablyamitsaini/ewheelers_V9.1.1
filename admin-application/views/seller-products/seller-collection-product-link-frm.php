@@ -33,15 +33,10 @@
 
 <script type="text/javascript">
 $("document").ready(function(){
-	
-
-		$('#selprod-products').delegate('.remove_buyTogether', 'click', function() {
-	
-		$(this).parent().remove();
-	});
-	
-	
-	
+    $('#selprod-products').on('click', '.remove_buyTogether', function() {
+    /* $('#selprod-products').delegate('.remove_buyTogether', 'click', function() { */
+        $(this).parent().remove();
+    });	
 });
 
 

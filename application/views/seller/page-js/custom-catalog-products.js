@@ -2,7 +2,7 @@ $(document).ready(function(){
 	searchCustomCatalogProducts(document.frmSearchCustomCatalogProducts);
 });
 
-$(document).delegate('.option-js','change',function(){
+$(document).on('change','.option-js',function(){
 	var option_id = $(this).val();
 	var product_id = $('#frmCustomCatalogProductImage input[name=preq_id]').val();
 	var lang_id = $('.language-js').val();

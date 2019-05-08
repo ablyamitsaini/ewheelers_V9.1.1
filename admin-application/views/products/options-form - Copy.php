@@ -77,7 +77,8 @@ $("document").ready(function(){
 		}
 	});
 	
-	$('#product-option').delegate('.remove_option', 'click', function() {
+	$('#product-option').on('click', '.remove_option', function() {
+	/* $('#product-option').delegate('.remove_option', 'click', function() { */
 		$(this).parent().parent().remove();
 	});
 	

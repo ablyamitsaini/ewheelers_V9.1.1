@@ -1,13 +1,15 @@
 $(document).ready(function(){
 	searchListing(document.frmCustomProdReqSrch);	
 });
-$(document).delegate('.option-js','change',function(){
+$(document).on('change', '.option-js',function(){
+/* $(document).delegate('.option-js','change',function(){ */
 	var option_id = $(this).val();
 	var preq_id = $('#imageFrm input[name=preq_id]').val();
 	var lang_id = $('.language-js').val();
 	productImages(preq_id,option_id,lang_id);
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change', '.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var preq_id = $('#imageFrm input[name=preq_id]').val();
 	var option_id = $('.option-js').val();

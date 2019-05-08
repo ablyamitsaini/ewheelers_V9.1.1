@@ -34,7 +34,8 @@ $(document).ready(function(){
 	}
 });
 
-$(document).delegate(".link--post-comment-form",'click',function(){
+$(document).on('click',".link--post-comment-form",function(){
+/* $(document).delegate(".link--post-comment-form",'click',function(){ */
 	$('html, body').animate({scrollTop: $("#container--comment-form").offset().top - 150 }, 'slow');
 	fcom.scrollToTop( $("#container--comment-form") );
 });

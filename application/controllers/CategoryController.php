@@ -72,6 +72,7 @@ class CategoryController extends MyAppController
         }
 
         $rs = $srch->getResultSet();
+        
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
 

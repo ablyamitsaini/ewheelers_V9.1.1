@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	searchBlogPosts(document.frmSearch);
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var post_id = $("input[name='post_id']").val();
 	images(post_id,lang_id);

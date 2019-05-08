@@ -84,10 +84,10 @@
 				}
 			});
 			
-			$('#product-tag').delegate('.remove_tag', 'click', function() {
-		
-			$(this).parent().remove();
-		});
+			$('#product-tag').on('click', '.remove_tag', function() {
+			/* $('#product-tag').delegate('.remove_tag', 'click', function() { */
+                $(this).parent().remove();
+            });
 		<?php foreach($product_tags as $key => $val){
 			
 			?>

@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	searchCoupons(document.frmCouponSearch);
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var coupon_id = $("input[name='coupon_id']").val();
 	couponImages(coupon_id,lang_id);

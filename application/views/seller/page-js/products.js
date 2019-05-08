@@ -2,7 +2,7 @@ $(document).ready(function(){
 	loadSellerProducts(document.frmSearchSellerProducts);
 });
 
-$(document).delegate('.selprodoption_optionvalue_id','change',function(){
+$(document).on('change','.selprodoption_optionvalue_id',function(){
 	var frm = document.frmSellerProduct;
 	var selprodId = $( frm.selprod_id ).val();
 	$( frm.selprod_id ).val('');

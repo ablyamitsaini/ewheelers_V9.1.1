@@ -470,7 +470,8 @@ $(document).ready(function() {
 
 
     /* for search form toggle */
-    $(document).delegate('.togglelink a, .section.searchform_filter .sectionhead', 'click', function() {
+    $(document).on('click','.togglelink a, .section.searchform_filter .sectionhead',function(){
+    /* $(document).delegate('.togglelink a, .section.searchform_filter .sectionhead', 'click', function() { */
         $(this).toggleClass("active");
         $('.togglewrap').slideToggle();
     });
@@ -662,7 +663,8 @@ $(document).ready(function() {
                 }
 
                 $(this).after('<ul class="dropdown-menu"></ul>');
-                $(this).siblings('ul.dropdown-menu').delegate('a', 'click', $.proxy(this.click, this));
+                /* $(this).siblings('ul.dropdown-menu').delegate('a', 'click', $.proxy(this.click, this)); */
+                $(this).siblings('ul.dropdown-menu').on('click', 'a', $.proxy(this.click, this));
             });
         }
     })(window.jQuery);

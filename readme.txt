@@ -19,6 +19,7 @@ Enhancements:
 	. Updated Affiliate dashboard elements.
 	. Restrict empty search, Search string must be atleast 3 characters long.
 	. Disabled parent category link in header navigation.
+	. jQuery library updated to V3.4.1.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.

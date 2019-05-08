@@ -81,12 +81,12 @@ $("document").ready(function(){
 			
 		});
 	};
-	$(document).delegate(".confirmReview",'click',function(){
+	$(document).on('click',".confirmReview",function(){
 		getReviewSCart();
 		$(sCartReviewDiv).removeClass("is-current");
 		loadPaymentSummary();
 	});
-	$(document).delegate(".reviewOrder",'click',function(){
+	$(document).on('click',".reviewOrder",function(){
 		loadSubscriptionCartReviewDiv();
 		loadPaymentBlankDiv();
 	});

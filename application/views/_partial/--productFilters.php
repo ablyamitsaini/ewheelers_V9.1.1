@@ -387,7 +387,7 @@ $to.on("change", function () {
 	/* ] */
 });
 
-/*  $(window).load(function(){
+/*  $(window).on('load',function(){
 	$('#accordian').viewMore({limit: <?php echo intval($count_for_view_more); ?>});
  }); */
 </script>

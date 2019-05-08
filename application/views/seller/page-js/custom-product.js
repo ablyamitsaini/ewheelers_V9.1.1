@@ -2,13 +2,13 @@ $(document).ready(function(){
 	searchCustomProducts(document.frmSearchCustomProduct);
 	var productOptions=[] ;	
 });
-$(document).delegate('.option','change',function(){
+$(document).on('change','.option',function(){
 	var option_id = $(this).val();
 	var product_id = $('#frmCustomProductImage input[name=product_id]').val();
 	var lang_id = $('.language').val();
 	productImages(product_id,option_id,lang_id);
 });
-$(document).delegate('.language','change',function(){
+$(document).on('change','.language',function(){
 	var lang_id = $(this).val();
 	var product_id = $('#frmCustomProductImage input[name=product_id]').val();
 	var option_id = $('.option').val();
