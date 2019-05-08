@@ -24,11 +24,11 @@
                             $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
                             $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
 
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
 
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
                             echo $ul->getHtml();
                         }
                         ?>

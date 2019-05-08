@@ -40,8 +40,8 @@
                             $innerLiAddPage=$innerUl->appendElement('li');
                             $innerLiAddPage->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_Page', $adminLangId),"onclick"=>"addFormNew(0)"), Labels::getLabel('LBL_Add_Page', $adminLangId), true);
                             
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
                         }
                         $innerLiAddPage=$innerUl->appendElement('li');
                         $innerLiAddPage->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('Lbl_Layouts_Instructions', $adminLangId),"onclick"=>"pagesLayouts()"), Labels::getLabel('Lbl_Layouts_Instructions', $adminLangId), true);

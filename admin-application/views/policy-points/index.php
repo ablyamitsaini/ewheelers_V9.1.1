@@ -30,14 +30,14 @@
                         }
 
                         if ($canEdit) {
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
 
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
 
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
 
                             $innerLiAddCat=$innerUl->appendElement('li');
                             $innerLiAddCat->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_Policy_Point', $adminLangId),"onclick"=>"addPolicyPointForm(0)"), Labels::getLabel('LBL_Add_Policy_Point', $adminLangId), true);

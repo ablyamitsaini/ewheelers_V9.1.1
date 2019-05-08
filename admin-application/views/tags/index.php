@@ -50,8 +50,8 @@
                         <!--<a href="javascript:void(0)" class="themebtn btn-default btn-sm" onClick="importForm(<?php echo Importexport::TYPE_TAG; ?>)";><?php echo Labels::getLabel('LBL_Import', $adminLangId); ?></a>-->
                         <?php } ?>
                         <?php if ($canEdit) {
-                            $innerLiNewProduct=$innerUl->appendElement('li');
-                            $innerLiNewProduct->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+                            $innerLi=$innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
 
                             $innerLiAddCat=$innerUl->appendElement('li');
                             $innerLiAddCat->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_New_Tag', $adminLangId),"onclick"=>"addTagFormNew(0)"), Labels::getLabel('LBL_Add_New_Tag', $adminLangId), true); ?>
