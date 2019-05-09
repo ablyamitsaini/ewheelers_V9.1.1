@@ -277,7 +277,7 @@ class ContentPagesController extends AdminBaseController
 
     public function deleteSelected()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditContentPages();
         $cpageIdsArr = FatUtility::int(FatApp::getPostedData('cpage_ids'));
 
         if (empty($cpageIdsArr)) {

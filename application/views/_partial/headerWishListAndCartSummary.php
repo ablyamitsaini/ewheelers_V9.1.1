@@ -57,7 +57,7 @@ if (UserAuthentication::isUserLogged()) {
               </div>
               </td>
 <td class=""><a href="javascript:void(0)" class="icons-wrapper" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_', $siteLangId); ?><i class="icn"><svg class="svg">
-					<use xlink:href="/images/retina/sprite.svg#bin" href="/images/retina/sprite.svg#bin"></use>
+					<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
 					</svg></i></a></td>
           </tr>
           <?php

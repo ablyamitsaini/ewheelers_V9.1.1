@@ -275,7 +275,7 @@ class OptionsController extends AdminBaseController
 
     public function deleteSelected()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditOptions();
         $optionIdsArr = FatUtility::int(FatApp::getPostedData('option_ids'));
 
         if (empty($optionIdsArr)) {

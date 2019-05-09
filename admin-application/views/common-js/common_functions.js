@@ -89,13 +89,13 @@ $(document).ready(function() {
             if ($(this).hasClass('haschild')) {
                 parentCat = $(this);
                 $(this).find('ul li').each(function() {
-                    if ($(this).find('a').attr('href') == uri) {
+                    if (uri.includes($(this).find('a').attr('href'))) {
                         $(this).addClass('active');
                         $(parentCat).children('a').trigger('click');
                     }
                 });
             } else {
-                if ($(this).find('a').attr('href') == uri) {
+                if (uri.includes($(this).find('a').attr('href'))) {
                     $(this).addClass('active');
                 }
             }

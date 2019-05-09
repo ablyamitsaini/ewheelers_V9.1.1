@@ -412,7 +412,7 @@ class CollectionsController extends AdminBaseController
 
     public function toggleBulkStatuses()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditCollections();
 
         $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
         $collectionIdsArr = FatUtility::int(FatApp::getPostedData('collection_ids'));
@@ -879,7 +879,7 @@ class CollectionsController extends AdminBaseController
 
     public function deleteSelected()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditCollections();
         $collectionIdsArr = FatUtility::int(FatApp::getPostedData('collection_ids'));
 
         if (empty($collectionIdsArr)) {

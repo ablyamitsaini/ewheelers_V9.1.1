@@ -259,13 +259,13 @@ class SocialPlatformController extends AdminBaseController
     {
         $this->objPrivilege->canEditSocialPlatforms();
 
-        $reasonId = FatApp::getPostedData('splatformId', FatUtility::VAR_INT, 0);
-        if ($reasonId < 1) {
+        $splatform_id = FatApp::getPostedData('splatformId', FatUtility::VAR_INT, 0);
+        if ($splatform_id < 1) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $this->markAsDeleted($reasonId);
+        $this->markAsDeleted($splatform_id);
 
         FatUtility::dieJsonSuccess($this->str_delete_record);
     }
@@ -281,25 +281,25 @@ class SocialPlatformController extends AdminBaseController
             );
         }
 
-        foreach ($splatformIdsArr as $reasonId) {
-            if (1 > $reasonId) {
+        foreach ($splatformIdsArr as $splatform_id) {
+            if (1 > $splatform_id) {
                 continue;
             }
-            $this->markAsDeleted($reasonId);
+            $this->markAsDeleted($splatform_id);
         }
         $this->set('msg', $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    private function markAsDeleted($reasonId)
+    private function markAsDeleted($splatform_id)
     {
-        $reasonId = FatUtility::int($reasonId);
-        if (1 > $reasonId) {
+        $splatform_id = FatUtility::int($splatform_id);
+        if (1 > $splatform_id) {
             FatUtility::dieWithError(
                 Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
             );
         }
-        $obj = new SocialPlatform($reasonId);
+        $obj = new SocialPlatform($splatform_id);
         if (!$obj->deleteRecord(true)) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieJsonError(Message::getHtml());

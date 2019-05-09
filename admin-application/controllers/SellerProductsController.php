@@ -2107,7 +2107,7 @@ class SellerProductsController extends AdminBaseController
 
     public function deleteSelected()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditSellerProducts();
         $selprod_ids_arr = FatUtility::int(FatApp::getPostedData('selprod_ids'));
         if (empty($selprod_ids_arr)) {
             FatUtility::dieWithError(
@@ -2167,7 +2167,7 @@ class SellerProductsController extends AdminBaseController
 
     public function toggleBulkStatuses()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditSellerProducts();
         $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
         $selprodIdsArr = FatUtility::int(FatApp::getPostedData('selprod_ids'));
         if (empty($selprodIdsArr) || -1 == $status) {

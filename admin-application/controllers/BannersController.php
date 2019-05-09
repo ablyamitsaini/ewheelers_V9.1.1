@@ -18,7 +18,7 @@ class BannersController extends AdminBaseController
     {
         $this->objPrivilege->canViewBanners();
         /* $frmSearch = $this->getSearchForm();
-        $this->set('frmSearch',$frmSearch);	 */
+        $this->set('frmSearch',$frmSearch);     */
         $this->_template->render();
     }
 
@@ -731,13 +731,48 @@ class BannersController extends AdminBaseController
 
         $status = ($data['blocation_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
+        $this->updateBannerLocationStatus($blocationId, $status);
+
+        FatUtility::dieJsonSuccess($this->str_update_record);
+    }
+
+    public function toggleBulkStatuses()
+    {
+        $this->objPrivilege->canEditBanners();
+
+        $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
+        $blocationIdsArr = FatUtility::int(FatApp::getPostedData('blocation_ids'));
+        if (empty($blocationIdsArr) || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($blocationIdsArr as $blocationId) {
+            if (1 > $blocationId) {
+                continue;
+            }
+            $this->updateBannerLocationStatus($blocationId, $status);
+        }
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function updateBannerLocationStatus($blocationId, $status)
+    {
+        $status = FatUtility::int($status);
+        $blocationId = FatUtility::int($blocationId);
+        if (1 > $blocationId || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
         $obj = new BannerLocation($blocationId);
         if (!$obj->changeStatus($status)) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
-        FatUtility::dieJsonSuccess($this->str_update_record);
     }
 
     public function changeStatus()
@@ -766,7 +801,6 @@ class BannersController extends AdminBaseController
 
         FatUtility::dieJsonSuccess($this->str_update_record);
     }
-
 
     private function getMediaForm($blocation_id, $banner_id = 0)
     {

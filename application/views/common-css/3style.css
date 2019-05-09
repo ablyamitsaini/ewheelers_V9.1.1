@@ -582,7 +582,7 @@ ol li {
  animation: loader 2s infinite ease;*/
   margin: 15px auto;
   text-align: center;
-  background: url(/images/retina/oval.svg) no-repeat center;
+  background: url(../images/retina/oval.svg) no-repeat center;
   background-size: 20px;
 }
 
@@ -1378,7 +1378,7 @@ input[type="file"] {
 
 select {
   padding-inline-end: 35px;
-  background-image: url(/images/retina/down-arrow.svg);
+  background-image: url(../images/retina/down-arrow.svg);
   background-size: 10px;
   background-color: #fff;
   background-repeat: no-repeat;
@@ -2180,7 +2180,7 @@ body.fixed .top-bar {
 }
 
 .toggle--search .icn {
-  background: url(/images/retina/magni-black.svg) no-repeat center;
+  background: url(../images/retina/magni-black.svg) no-repeat center;
   vertical-align: top;
   background-size: 20px 20px;
   display: inline-block;
@@ -2259,7 +2259,7 @@ body.fixed .top-bar {
 .search--btn {
   width: auto;
   height: 36px;
-  background-image: url(/images/retina/magni-white.svg);
+  background-image: url(../images/retina/magni-white.svg);
   background-size: 30px;
   background-repeat: no-repeat;
   background-position: 15px center;
@@ -2359,7 +2359,7 @@ body.fixed .top-bar {
 }
 
 .cart span.icn {
-  background: url(/images/retina/cart.svg) no-repeat center;
+  background: url(../images/retina/cart.svg) no-repeat center;
   vertical-align: top;
   background-size: 20px 20px;
   display: inline-block;
@@ -2646,7 +2646,7 @@ table.cart-tbl-addons .item__pic {
 }
 
 .login-account .icn {
-  background: url(/images/retina/account.svg) no-repeat center;
+  background: url(../images/retina/account.svg) no-repeat center;
   vertical-align: top;
   background-size: 20px 20px;
   display: inline-block;
@@ -2905,7 +2905,7 @@ table.cart-tbl-addons .item__pic {
   left: -15px;
   top: calc(50% - 5px);
   content: "";
-  background: url(/images/retina/tick.svg) no-repeat 0 0;
+  background: url(../images/retina/tick.svg) no-repeat 0 0;
   background-size: 10px;
   width: 10px;
   height: 10px;
@@ -4318,7 +4318,7 @@ img {
 }
 
 .trending-bg {
-  background: url(/images/slide2.jpg) no-repeat center center;
+  background: url(../images/slide2.jpg) no-repeat center center;
   position: relative;
   background-size: cover;
   background-attachment: fixed;
@@ -4873,7 +4873,7 @@ img {
   display: table-cell;
   max-width: 40%;
   flex: 0 0 40%;
-  background: #fff url(/images/login-with.png) no-repeat bottom center;
+  background: #fff url(../images/login-with.png) no-repeat bottom center;
 }
 
 .login-wrapper .add-side .heading {
@@ -5528,7 +5528,7 @@ span.subheading {
   left: 0;
   top: 0;
   content: "";
-  background: url(/images/qoute.png) no-repeat 0 0;
+  background: url(../images/qoute.png) no-repeat 0 0;
   display: block;
   width: 44px;
   height: 41px;
@@ -8515,14 +8515,14 @@ a.box--share:hover {
   display: block;
   border: solid 1px var(--border-color);
   border-radius: 50px;
-  background: #fff url(/images/retina/heart.svg) no-repeat center;
+  background: #fff url(../images/retina/heart.svg) no-repeat center;
   background-size: 12px;
 }
 
 .favourite.is-active a,
 .favourite a:hover {
   /*  border-color: var(--first-color);*/
-  background: #fff url(/images/retina/heart-filled.svg) no-repeat center;
+  background: #fff url(../images/retina/heart-filled.svg) no-repeat center;
   background-size: 12px;
 }
 
@@ -9397,7 +9397,7 @@ form.custom-form input[type="submit"] {
 }
 
 .products__quickview>a {
-  background: var(--first-color) url(/images/retina/icn-view.svg) no-repeat center;
+  background: var(--first-color) url(../images/retina/icn-view.svg) no-repeat center;
   background-size: 16px;
   border-radius: 50%;
   width: 26px;
@@ -9752,13 +9752,13 @@ form.custom-form input[type="submit"] {
 }
 
 .hero-slider .slick-prev {
-  background: #ffffff url(/images/arrow-left.png) no-repeat center;
+  background: #ffffff url(../images/arrow-left.png) no-repeat center;
   background-size: 36px;
   left: calc(50% - 38vw);
 }
 
 .hero-slider .slick-next {
-  background: #ffffff url(/images/arrow-right.png) no-repeat center;
+  background: #ffffff url(../images/arrow-right.png) no-repeat center;
   background-size: 36px;
   right: calc(50% - 38vw);
 }
@@ -10339,7 +10339,7 @@ html.quick-view--open {
 
 .icn-buy-now,
 .icn-add-cart {
-  background: url(/images/retina/buy-now.svg) no-repeat 0 0;
+  background: url(../images/retina/buy-now.svg) no-repeat 0 0;
   background-size: 20px;
   width: 20px;
   height: 20px;
@@ -10348,7 +10348,7 @@ html.quick-view--open {
 }
 
 .icn-add-cart {
-  background: url(/images/retina/add-cart.svg) no-repeat 0 0;
+  background: url(../images/retina/add-cart.svg) no-repeat 0 0;
 }
 
 .section--fill {
@@ -12619,7 +12619,7 @@ main.main {
 .selected-panel-type:before {
   position: absolute;
   left: 0;
-  background: url(/images/retina/green-check.svg) no-repeat 0 0;
+  background: url(../images/retina/green-check.svg) no-repeat 0 0;
   width: 17px;
   height: 17px;
   display: block;
@@ -13657,7 +13657,7 @@ main.main {
   height: 100px;
   margin: 1rem auto;
   display: block;
-  background: url(/images/browsers-bg.png) no-repeat;
+  background: url(../images/browsers-bg.png) no-repeat;
   background-size: auto 200px;
 }
 

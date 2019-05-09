@@ -17,7 +17,7 @@ if($controllerName='Products' && isset($action) && $action=='view'){
                     </label>
                 </span>
                 <a class="btn btn--primary btn--sm" onClick="addToCart( $(this), event );" href="javascript:void(0)" data-id='<?php echo $product['selprod_id']; ?>'>
-                    <i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart" href="/images/retina/sprite.svg#add-cart"></use></svg></i><?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
+                    <i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart"></use></svg></i><?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
                 </a>
                 <span class="float-right">
 					<a title="Delete" onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="text--normal-secondary">

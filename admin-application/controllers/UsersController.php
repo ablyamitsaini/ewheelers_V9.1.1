@@ -76,22 +76,22 @@ class UsersController extends AdminBaseController
         $type = FatApp::getPostedData('type', FatUtility::VAR_STRING, 0);
 
         switch ($type) {
-        case User::USER_TYPE_SELLER:
-            $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_BUYER:
-            $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_ADVERTISER:
-            $srch->addCondition('u.user_is_advertiser', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_AFFILIATE:
-            $srch->addCondition('u.user_is_affiliate', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_BUYER_SELLER:
-            $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
-            $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
-            break;
+            case User::USER_TYPE_SELLER:
+                $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_BUYER:
+                $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_ADVERTISER:
+                $srch->addCondition('u.user_is_advertiser', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_AFFILIATE:
+                $srch->addCondition('u.user_is_affiliate', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_BUYER_SELLER:
+                $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
+                $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
+                break;
         }
 
         $srch->addCondition('u.user_is_shipping_company', '=', applicationConstants::NO);
@@ -626,7 +626,7 @@ class UsersController extends AdminBaseController
 
     public function deleteSelected()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditUsers();
         $userIdsArr = FatUtility::int(FatApp::getPostedData('user_ids'));
 
         if (empty($userIdsArr)) {
@@ -1144,7 +1144,7 @@ class UsersController extends AdminBaseController
         $newTabLangId=0;
         if ($sformfield_id>0) {
             $languages=Language::getAllNames();
-            foreach ($languages as $langId =>$langName) {
+            foreach ($languages as $langId => $langName) {
                 if (!$row=SupplierFormFields::getAttributesByLangId($langId, $sformfield_id)) {
                     $newTabLangId = $langId;
                     break;
@@ -1225,7 +1225,7 @@ class UsersController extends AdminBaseController
 
         $newTabLangId = 0;
         $languages = Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             if (!$row = SupplierFormFields::getAttributesByLangId($langId, $sformfield_id)) {
                 $newTabLangId = $langId;
                 break;
@@ -1238,7 +1238,7 @@ class UsersController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function langSellerApprovalForm($sformfield_id=0, $lang_id=0)
+    public function langSellerApprovalForm($sformfield_id = 0, $lang_id = 0)
     {
         $this->objPrivilege->canEditSellerApprovalForm();
 
@@ -1552,7 +1552,7 @@ class UsersController extends AdminBaseController
         }
 
         $userObj = new User();
-        $srch = $userObj->getUserSearchObj(array( 'u.user_name', 'u.user_id', 'credential_username', 'credential_email'), false, $skipDeletedUser);
+        $srch = $userObj->getUserSearchObj(array( 'u.user_name', 'u.user_id', 'credential_username', 'credential_email'), true, $skipDeletedUser);
         if (!$skipDeletedUser) {
             $srch->addCondition('user_deleted', '=', applicationConstants::YES);
         }

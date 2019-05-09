@@ -272,7 +272,7 @@ class EmptyCartItemsController extends AdminBaseController
 
     public function toggleBulkStatuses()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditEmptyCartItems();
 
         $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
         $emptyCartItemIdsArr = FatUtility::int(FatApp::getPostedData('emptycartitem_ids'));
