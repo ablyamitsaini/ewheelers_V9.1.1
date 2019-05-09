@@ -10,7 +10,7 @@
 						<div class="panel__head">
 						   <h2><?php echo Labels::getLabel('LBL_Category_banners',$siteLangId); ?></h2>						   </div>
 						<div class="panel__body">
-							<div class="box box--white box--space">
+							<div class="box box--white  p-4">
 								<div class="box__head">
 								   <h5><?php echo Labels::getLabel('LBL_Banners_listing',$siteLangId); ?></h5>
 								</div>

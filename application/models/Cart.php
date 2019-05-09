@@ -650,8 +650,15 @@ class Cart extends FatModel
         return true;
     }
 
-    public function setCartBillingAddress($address_id)
+    public function setCartBillingAddress($address_id = 0)
     {
+        $address_id = FatUtility::int($address_id);
+        if (1 > $address_id) {
+            $address = UserAddress::getDefaultAddressId($this->cart_user_id);            
+            if (!empty($address)) {
+                $address_id = $address['ua_id'];
+            }
+        }
         $this->SYSTEM_ARR['shopping_cart']['billing_address_id'] = $address_id;
         $this->updateUserCart();
         return true;

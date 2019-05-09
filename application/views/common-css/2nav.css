@@ -95,13 +95,13 @@
 	right: 50%;
 }
 
-.navigations > li > a:hover:after {
+.navigations > li > a:hover:after, .navigations > li.active > a:after {
 	left: 0;
 	width: 50%;
 	background: var(--first-color);
 }
 
-.navigations > li > a:hover:before {
+.navigations > li > a:hover:before, .navigations > li.active > a:before {
 	right: 0;
 	width: 50%;
 	background: var(--first-color);
@@ -193,9 +193,7 @@
 
 .navigations > li .subnav__wrapper {
 	background: #fff;
-	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20); 
 	left: 0;
 	margin: 0;
 	opacity: 0;
@@ -206,6 +204,7 @@
 	top: 120%;
 	z-index: 2;
 	padding-bottom: 10px;
+	border-radius: 0px 0 4px 4px;
 }
 
 .subnav__wrapper.addspace {
@@ -229,7 +228,7 @@
 
 .sublinks > li > a {
 	color: inherit;
-	display: block;
+	display: inline-block;
 	font-size: 0.9em;
 	text-transform: uppercase;
 	padding: 0;

@@ -30,7 +30,7 @@ if($isUserLogged){
     <div class="row justify-content-center">
       <div class="col-xl-6  col-md-6 col-12">
 
-          <div class="box box--white box--space box--fixed cols--group ">
+          <div class="box box--white  p-4 box--fixed cols--group ">
             <div class="box__head">
               <h4><?php echo Labels::getLabel('Lbl_Blog_Contribution',$siteLangId); ?></h4>
 			  <?php $backPageUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : CommonHelper::generateUrl('Blog') ;?>

@@ -19,6 +19,17 @@
         return $srch;
     }
 
+    public static function getDefaultAddressId($user_id)
+    {
+        $user_id = FatUtility::int($user_id);
+        $srch = static::getSearchObject($user_id);
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
+        $srch->addOrder(static::tblFld('is_default'), 'DESC');
+        $rs = $srch->getResultSet();
+        return FatApp::getDb()->fetch($rs);
+    }
+
     public static function getUserAddresses($user_id = 0, $lang_id = 0, $ua_is_default = 0, $ua_id = 0)
     {
         $ua_id = FatUtility::int($ua_id);
@@ -50,6 +61,7 @@
         if ($ua_is_default) {
             $srch->addCondition(static::tblFld('is_default'), '=', 1);
         }
+        
         $rs = $srch->getResultSet();
 
         if ($ua_id) {
