@@ -1,6 +1,9 @@
 $(document).ready(function(){
 		/* alert(singleFeaturedProduct); */
 		/* home page main slider */
+        
+        $('.js-collection-corner').slick( getSlickSliderSettings(6, 6, langLbl.layoutDirection) );
+        
 		if(langLbl.layoutDirection == 'rtl'){
 
 			$('.js-hero-slider').slick({
@@ -41,7 +44,7 @@ $(document).ready(function(){
 				}]
 			});
 
-			$('.js-collection-corner').slick({
+			/* $('.js-collection-corner').slick({
 				dots: false,
 				arrows: false,
 				autoplay: true,
@@ -61,7 +64,7 @@ $(document).ready(function(){
 						slidesToShow: 2,
 					}
 						}]
-			});
+			}); */
 
 			$('.featured-item-js').slick({
 
@@ -180,7 +183,7 @@ $(document).ready(function(){
 				}]
 			});
 
-			$('.js-collection-corner').slick({
+			/* $('.js-collection-corner').slick({
 				dots: false,
 				arrows: false,
 				autoplay: true,
@@ -199,7 +202,7 @@ $(document).ready(function(){
 						slidesToShow: 2,
 					}
 						}]
-			});
+			}); */
 
 		$('.featured-item-js').slick({
 		  centerMode: true,

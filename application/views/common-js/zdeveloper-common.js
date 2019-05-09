@@ -64,7 +64,7 @@ function recentlyViewedProducts(selprodId){
 
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
+		$('.slides--six-js').slick( getSlickSliderSettings(6,6,langLbl.layoutDirection,true) );
 		$('.slides--six-js').slick('reinit');
 	});
 }
@@ -381,85 +381,48 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay ){
+function getSlickSliderSettings( slidesToShow, slidesToScroll = 2, layoutDirection = 'ltr', autoInfinitePlay = true ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
-	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
+	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 2;
 	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
-	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : false;
-
+	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : true;
+        
+    var sliderSettings = {
+                            dots: false,
+                            slidesToShow: slidesToShow,
+                            slidesToScroll: slidesToScroll,
+                            infinite: autoInfinitePlay,
+                            autoplay: autoInfinitePlay,
+                            arrows: true,
+                            responsive: [{
+                                    breakpoint: 1050,
+                                    settings: {
+                                        slidesToShow: slidesToShow - 1,
+                                    }
+                                },
+                                {
+                                    breakpoint: 800,
+                                    settings: {
+                                        slidesToShow: 4,
+                                    }
+                                },
+                                {
+                                    breakpoint: 500,
+                                    settings: {
+                                        slidesToShow: 2,
+                                    }
+                                }
+                            ]
+                        };
+        
 	if(layoutDirection == 'rtl'){
-		return {
-			slidesToShow: slidesToShow,
-			slidesToScroll: slidesToScroll,
-			infinite: autoInfinitePlay,
-			autoplay: autoInfinitePlay,
-			arrows: true,
-			rtl:true,
-			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
-			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',
-			responsive: [{
-				breakpoint:1050,
-				settings: {
-					slidesToShow: slidesToShow - 1,
-				}
-				},
-				{
-					breakpoint:990,
-					settings: {
-						slidesToShow: 3,
-					}
-				},
-				{
-					breakpoint:767,
-					settings: {
-						slidesToShow: 2,
-					}
-				} ,
-				{
-					breakpoint:400,
-					settings: {
-						slidesToShow: 1,
-					}
-				}
-				]
-		}
-	}else{
-		return {
-			slidesToShow: slidesToShow,
-			slidesToScroll: slidesToScroll,
-			infinite: autoInfinitePlay,
-			autoplay: autoInfinitePlay,
-			arrows: true,
-			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
-			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',
-			responsive: [{
-				breakpoint:1050,
-				settings: {
-					slidesToShow: slidesToShow - 1,
-				}
-				},
-				{
-					breakpoint:990,
-					settings: {
-						slidesToShow: 3,
-					}
-				},
-				{
-					breakpoint:767,
-					settings: {
-						slidesToShow: 2,
-					}
-				} ,
-				{
-					breakpoint:400,
-					settings: {
-						slidesToShow: 1,
-					}
-				}
-				]
-		}
+		sliderSettings['rtl'] = true;
 	}
+    
+    return sliderSettings;
 }
+
+
 function codeLatLng(lat, lng) {
 	var latlng = new google.maps.LatLng(lat, lng);
     geocoder.geocode({'latLng': latlng}, function(results, status) {
