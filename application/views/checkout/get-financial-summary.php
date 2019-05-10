@@ -32,7 +32,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');?>
             <div class="product_qty">
                 <div class="qty-wrapper">
                     <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                        <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
+                        <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" data-page="checkout" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
                     </div>
                     <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
                         <span class="increase increase-js"></span>

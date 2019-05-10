@@ -211,7 +211,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
     </section>
     <div class="row align-items-center mt-4">
-    	<div class="col"><a class="btn btn--primary-border" onclick="setUpShippingMethod();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a></div>
+    	<div class="col"><a class="btn btn--primary-border" onclick="showAddressList();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a></div>
     	<a class="btn btn--primary " onClick="setUpShippingMethod();" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a>
     </div>
 </div>

@@ -654,7 +654,7 @@ class Cart extends FatModel
     {
         $address_id = FatUtility::int($address_id);
         if (1 > $address_id) {
-            $address = UserAddress::getDefaultAddressId($this->cart_user_id);            
+            $address = UserAddress::getDefaultAddressId($this->cart_user_id);
             if (!empty($address)) {
                 $address_id = $address['ua_id'];
             }
@@ -675,6 +675,7 @@ class Cart extends FatModel
     {
         $billing_address_id = $this->getCartBillingAddress();
         if ($billing_address_id) {
+            $this->setCartShippingAddress($billing_address_id);
             $this->SYSTEM_ARR['shopping_cart']['isShippingSameAsBilling'] = true;
         }
     }

@@ -164,6 +164,7 @@ $("document").ready(function()
 		fcom.updateWithAjax(fcom.makeUrl('Addresses', 'setUpAddress'), data, function(t) {
 			if( t.status == 1 ){
 				showShippingSummaryDiv(t.ua_id);
+				loadFinancialSummary();
 			}
 		});
 	};
@@ -187,7 +188,7 @@ $("document").ready(function()
 						loadShippingAddress();
 						loadCartReviewDiv();
 					}
-					//$(addressDivFooter).show();
+					loadFinancialSummary();
 				}
 			}
 		});
@@ -430,20 +431,8 @@ $("document").ready(function()
 	};
 
 	resetCheckoutDiv = function(){
-		if($(paymentDiv).hasClass('is-current')){
-				removeShippingSummary();
-				resetPaymentSummary();
-				loadShippingSummaryDiv();
-
-		}else if($(cartReviewDiv).hasClass('is-current')){
-				removeShippingSummary();
-				loadShippingSummaryDiv();
-
-				resetCartReview();
-
-		}else if($(shippingSummaryDiv).hasClass('is-current')){
-				loadShippingSummaryDiv();
-		}
-
+		removeShippingSummary();
+		resetPaymentSummary();
+		loadShippingSummaryDiv();
 	};
 })();
