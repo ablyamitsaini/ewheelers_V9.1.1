@@ -1,17 +1,20 @@
 $(document).ready(function(){
 	searchShops(document.frmShopSearch);
 });
-$(document).delegate('.logo-language-js','change',function(){
+$(document).on('change','.logo-language-js',function(){
+/* $(document).delegate('.logo-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = $("input[name='shop_id']").val();
 	shopImages(shop_id,'logo',lang_id);
 });
-$(document).delegate('.banner-language-js','change',function(){
+$(document).on('change','.banner-language-js',function(){
+/* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = $("input[name='shop_id']").val();
 	shopImages(shop_id,'banner',lang_id);
 });
-$(document).delegate('.bg-language-js','change',function(){
+$(document).on('change','.bg-language-js',function(){
+/* $(document).delegate('.bg-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = $("input[name='shop_id']").val();
 	shopImages(shop_id,'bg',lang_id);

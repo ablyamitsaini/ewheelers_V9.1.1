@@ -380,7 +380,7 @@ $to.on("change", function () {
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
 
-    <?php if( !$shopCatFilters ){ ?>
+    <?php if( true === $shopCatFilters ){ ?>
         new SimpleBar(document.getElementById('accordian'));
     <?php } ?>
     var x = document.getElementsByClassName("scrollbar-filters");
@@ -404,7 +404,7 @@ $to.on("change", function () {
     updatePriceFilter(<?php echo floor($priceArr['minPrice']);?>,<?php echo ceil($priceArr['maxPrice']);?>);
 });
 
-/*  $(window).load(function(){
+/*  $(window).on('load',function(){
 	$('#accordian').viewMore({limit: <?php echo intval($count_for_view_more); ?>});
  }); */
 </script>

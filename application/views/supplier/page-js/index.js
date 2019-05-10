@@ -1,6 +1,6 @@
 window.recordCount = 0;
 $(document).ready(function(){
-	$(document).delegate('.acc_ctrl','click',function(e){
+	$(document).on('click','.acc_ctrl',function(e){
 		/* $(".questions-section").hide(); */
 		e.preventDefault();
 		if ($(this).hasClass('active')) {
@@ -28,7 +28,7 @@ $(document).ready(function(){
 		searchFaqs(document.frmSearchFaqs);
 	};
 	
-	$(document).delegate('a.selectedCat','click',function(){
+	$(document).on('click','a.selectedCat',function(){
 		var catId=$(this).attr('id');
 		searchFaqs(catId);
 	});
@@ -70,7 +70,7 @@ $(document).ready(function(){
 })();
 
 /******** for faq accordians  ****************/ 
-$(document).delegate('.accordians__trigger-js','click',function(){
+$(document).on('click','.accordians__trigger-js',function(){
 	if( $(this).hasClass('is-active') ){
 		$(this).removeClass('is-active');
 		$(this).siblings('.accordians__target-js').slideUp();
@@ -82,7 +82,7 @@ $(document).delegate('.accordians__trigger-js','click',function(){
 	$(this).siblings('.accordians__target-js').slideDown();
 });
 
-$(document).delegate('.nav--vertical-js li','click',function(){
+$(document).on('click','.nav--vertical-js li',function(){
 	if( !window.recordCount ){
 		document.frmSearchFaqs.reset();
 		$this = $(this).find('a');
@@ -96,7 +96,7 @@ $(document).delegate('.nav--vertical-js li','click',function(){
 });
 
 /* for click scroll function */
-$(document).delegate(".scroll",'click',function( event ){
+$(document).on('click',".scroll",function( event ){
 	if( !window.recordCount ){
 		document.frmSearchFaqs.reset();
 		$this = $(this);//.find('a');

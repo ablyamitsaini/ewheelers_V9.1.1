@@ -142,7 +142,7 @@ $(document).ready(function(){
 	});
 
 
-	$(window).load(function(){
+	$(window).on('load',function(){
 		showSelectedFilters();
 		initialize();
 	})
@@ -406,15 +406,19 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 	var $range = $("#price_range");
 	range = $range.data("ionRangeSlider");
 	updateRange(minPrice,maxPrice);
-	range.reset();
+    if (typeof range !== 'undefined'){
+        range.reset();
+    }
 }
 
 (function() {
 	updateRange = function (from,to) {
-		range.update({
-			from: from,
-			to: to
-		});
+        if (typeof range !== 'undefined'){
+            range.update({
+                from: from,
+                to: to
+            });
+        }
 	};
 
 	bannerAdds = function(url){

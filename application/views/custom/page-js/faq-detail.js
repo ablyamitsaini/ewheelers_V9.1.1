@@ -32,7 +32,8 @@ $(document).ready(function(){
 		searchFaqs(document.frmSearchFaqs);
 	};
 	
-	$(document).delegate('a.selectedFaq','click',function(){
+    $(document).on('click', 'a.selectedFaq', function(){
+	/* $(document).delegate('a.selectedFaq','click',function(){ */
 		var faqId=$(this).attr('data-id');
 		var faqCatId=$(this).attr('data-cat-id');
 		getFaq(faqCatId,faqId);
@@ -90,7 +91,8 @@ $(document).ready(function(){
 
  /******** for faq accordians  ****************/ 
 
-$(document).delegate('.accordians__trigger-js','click',function(){
+ $(document).on('click', '.accordians__trigger-js', function(){
+/* $(document).delegate('.accordians__trigger-js','click',function(){ */
   if($(this).hasClass('is-active')){
       $(this).removeClass('is-active');
       $(this).siblings('.accordians__target-js').slideUp();
@@ -102,7 +104,8 @@ $(document).delegate('.accordians__trigger-js','click',function(){
  $(this).siblings('.accordians__target-js').slideDown();
 });
 
-$(document).delegate('.nav--vertical-js li','click',function(){
+$(document).on('click', '.nav--vertical-js li', function(){
+/* $(document).delegate('.nav--vertical-js li','click',function(){ */
 
 	if(!window.recordCount)
 	{
@@ -119,7 +122,8 @@ $(document).delegate('.nav--vertical-js li','click',function(){
 });
 
 /* for click scroll function */
-$(document).delegate(".scroll",'click',function(event){
+$(document).on('click',".scroll",function(event){
+/* $(document).delegate(".scroll",'click',function(event){ */
 
 	if(!window.recordCount)
 	{

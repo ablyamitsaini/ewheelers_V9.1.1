@@ -1,19 +1,22 @@
 $(document).ready(function(){
 	searchPromotions(document.frmPromotionSearch);
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var langId = $(this).val();
 	var promotion_id = $("form#frm_fat_id_frmPromotionMedia input[name='promotion_id']").val();
 	var screen = $(".display-js").val();
 	images(promotion_id,langId,screen);
 });
-$(document).delegate('.display-js','change',function(){
+$(document).on('change','.display-js',function(){
+/* $(document).delegate('.display-js','change',function(){ */
 	var screen = $(this).val();
 	var promotion_id = $("form#frm_fat_id_frmPromotionMedia input[name='promotion_id']").val();
 	var langId = $(".language-js").val();
 	images(promotion_id,langId,screen);
 });
-$(document).delegate("input[name='promotion_budget']",'blur',function(){
+$(document).on('blur',"input[name='promotion_budget']",function(){
+/* $(document).delegate("input[name='promotion_budget']",'blur',function(){ */
 	var frm = document.frmPromotion;
 	var data = fcom.frmData(frm);
 	fcom.ajax(fcom.makeUrl('Promotions', 'checkValidPromotionBudget'), data, function(t) {
@@ -25,7 +28,8 @@ $(document).delegate("input[name='promotion_budget']",'blur',function(){
 		$.mbsmessage.close();
 	});
 });
-$(document).delegate("select[name='banner_blocation_id']",'change',function(){
+$(document).on('change',"select[name='banner_blocation_id']",function(){
+/* $(document).delegate("select[name='banner_blocation_id']",'change',function(){ */
 	$("input[name='promotion_budget']").trigger('blur');
 });
 (function() {

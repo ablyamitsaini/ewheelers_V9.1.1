@@ -34,7 +34,7 @@
 <script type="text/javascript">
 $("document").ready(function(){
 
-	$('#selprod-products').delegate('.remove_link', 'click', function() {
+	$('#selprod-products').on('click', '.remove_link', function() {
 
 		$(this).parent().remove();
 	});

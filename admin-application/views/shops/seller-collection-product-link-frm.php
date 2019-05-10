@@ -73,7 +73,8 @@
 
     <script type="text/javascript">
         $("document").ready(function() {
-            $('#selprod-products ul').delegate('.remove_buyTogether', 'click', function() {
+            $('#selprod-products ul').on('click', '.remove_buyTogether', function() {
+            /* $('#selprod-products ul').delegate('.remove_buyTogether', 'click', function() { */
                 $(this).parent().remove();
             });
         });

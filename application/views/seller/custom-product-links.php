@@ -87,7 +87,7 @@
 				}
 			});
 
-			$('#product-tag').delegate('.remove_tag', 'click', function() {
+			$('#product-tag').on('click', '.remove_tag', function() {
 
 			$(this).parent().remove();
 		});

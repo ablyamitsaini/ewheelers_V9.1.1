@@ -21,7 +21,8 @@ $(document).ready(function(){
 		}
 	});	
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
 	brandImages(brand_id,lang_id);

@@ -1,8 +1,8 @@
 window.recordCount = 0;
 $(document).ready(function(){
-   $(document).delegate('.acc_ctrl','click',function(e){ 
+   $(document).on('click', '.acc_ctrl',function(e){
 
-	 
+
     e.preventDefault();
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
@@ -16,10 +16,10 @@ $(document).ready(function(){
       .slideDown(300);
     }
   });
-	
+
 	searchFaqs(document.frmSearchFaqs);
 	faqRightPanel();
-	
+
 });
 
 (function() {
@@ -30,59 +30,59 @@ $(document).ready(function(){
 	reloadListing = function(){
 		searchFaqs(document.frmSearchFaqs);
 	};
-	
-	$(document).delegate('a.selectedCat','click',function(){
+
+	$(document).on('click', 'a.selectedCat',function(){
 		var catId=$(this).attr('id');
 		searchFaqs(catId);
 	});
-	
+
 	searchFaqs = function(catId){
 
 			if(catId<0)
 				catId =0;
-		
+
 			$(dv).html(fcom.getLoader());
 
 		fcom.updateWithAjax(fcom.makeUrl('supplier','SearchFaqs', [catId]), '', function(ans){
-			$.mbsmessage.close();			
-		
+			$.mbsmessage.close();
+
 				$(dv).find('.loader-yk').remove();
 				$(dv).html(ans.html);
-			
+
 			window.recordCount = ans.recordCount;
-			
-		}); 		
-		
+
+		});
+
 	};
-	
+
 	faqRightPanel = function(){
-		
+
 		fcom.updateWithAjax(fcom.makeUrl('supplier','faqCategoriesPanel'), '', function(ans){
-			$.mbsmessage.close();			
-			
+			$.mbsmessage.close();
+
 				$(dv).find('.loader-yk').remove();
 				$(dvCategoryPanel).html(ans.categoriesPanelHtml);
-			
+
 			window.recordCount = ans.recordCount;
-			
-		}); 
+
+		});
 	}
 	goToLoadMore = function(page){
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
 		currPage = page;
-		
-		var frm = document.frmSearchFaqsPaging;		
+
+		var frm = document.frmSearchFaqsPaging;
 		$(frm.page).val(page);
 		searchFaqs(frm,1);
 	};
-	
+
 })();
 
- /******** for faq accordians  ****************/ 
+ /******** for faq accordians  ****************/
 
-$(document).delegate('.accordians__trigger-js','click',function(){
+$(document).on('click', '.accordians__trigger-js',function(){
   if($(this).hasClass('is-active')){
       $(this).removeClass('is-active');
       $(this).siblings('.accordians__target-js').slideUp();
@@ -94,7 +94,7 @@ $(document).delegate('.accordians__trigger-js','click',function(){
  $(this).siblings('.accordians__target-js').slideDown();
 });
 
-$(document).delegate('.nav--vertical-js li','click',function(){
+$(document).on('click', '.nav--vertical-js li',function(){
 
 	if(!window.recordCount)
 	{
@@ -111,7 +111,7 @@ $(document).delegate('.nav--vertical-js li','click',function(){
 });
 
 /* for click scroll function */
-$(document).delegate(".scroll",'click',function(event){
+$(document).on('click', ".scroll",function(event){
 
 	if(!window.recordCount)
 	{

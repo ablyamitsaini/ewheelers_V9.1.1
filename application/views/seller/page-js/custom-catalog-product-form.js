@@ -1,11 +1,11 @@
-$(document).delegate('.option-js','change',function(){
+$(document).on('change','.option-js',function(){
 	var option_id = $(this).val();
 	var product_id = $('#frmCustomCatalogProductImage input[name=preq_id]').val();
 	var lang_id = $('.language-js').val();
 	productImages(product_id,option_id,lang_id);
 });
 
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
 	var lang_id = $(this).val();
 	var product_id = $('#frmCustomCatalogProductImage input[name=preq_id]').val();
 	var option_id = $('.option-js').val();

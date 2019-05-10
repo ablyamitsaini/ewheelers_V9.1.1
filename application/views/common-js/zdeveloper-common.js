@@ -249,17 +249,20 @@ removeFromCart = function( key ){
 };
 
 function submitSiteSearch(frm){
+    
+    var keyword = $(frm).find('input[name="keyword"]').val();
+
+    if (3 > keyword.length || '' === keyword) {
+        $.mbsmessage( langLbl.searchString, true,'alert--danger');
+        return;
+    }
+    
 	//var data = fcom.frmData(frm);
 	var qryParam=($(frm).serialize_without_blank());
+    
 	var url_arr = [];
 	if( qryParam.indexOf("keyword") > -1 ){
 		//url_arr.push('keyword');
-		var keyword = $(frm).find('input[name="keyword"]').val();
-
-		if ( keyword.length < 3 ) {
-			$.mbsmessage( langLbl.searchString, true,'alert--danger');
-			return;
-		}
 
 		var protomatch = /^(https?|ftp):\/\//;
 		url_arr.push('keyword-'+encodeURIComponent(keyword.replace(protomatch,'').replace(/\//g,'-')));
@@ -834,7 +837,8 @@ function quickDetail(selprod_id){
 }
 
 /* read more functionality [ */
-$(document).delegate('.readMore' ,'click' , function(){
+$(document).on('click', '.readMore', function(){
+/* $(document).delegate('.readMore' ,'click' , function(){ */
 	var $this = $(this) ;
 	var $moreText = $this.siblings('.moreText') ;
 	var $lessText = $this.siblings('.lessText') ;
@@ -853,7 +857,8 @@ $(document).delegate('.readMore' ,'click' , function(){
 /* ] */
 
 /* Request a demo button [ */
-$(document).delegate('#btn-demo' ,'click' , function(){
+$(document).on('click', '#btn-demo', function(){
+/* $(document).delegate('#btn-demo' ,'click' , function(){ */
 	$.facebox(function() {
 		fcom.ajax(fcom.makeUrl('Custom','requestDemo'), '', function(t){
 			fcom.updateFaceboxContent(t,'faceboxWidth requestdemo');
@@ -993,7 +998,7 @@ $(document).delegate('#btn-demo' ,'click' , function(){
 				}
 
 				$(this).after('<ul class="dropdown-menu box--scroller"></ul>');
-				$(this).siblings('ul.dropdown-menu').delegate('a', 'click', $.proxy(this.click, this));
+				$(this).siblings('ul.dropdown-menu').on('click', 'a', $.proxy(this.click, this));
 			});
 		}
 	})(window.jQuery);
@@ -1010,8 +1015,8 @@ $("document").ready(function(){
 		return false;
 	}); */
 
-	/* $(".add-to-cart--js").on('click', function(event){ */
-		$(document).delegate('.add-to-cart--js' ,'click' , function(event){
+        $(document).on('click', '.add-to-cart--js' , function(event){
+		/* $(document).delegate('.add-to-cart--js' ,'click' , function(event){ */
 			$btn = $(this);
 			event.preventDefault();
 			var data = $(this).closest("#frmBuyProduct").serialize();
