@@ -7,23 +7,31 @@
 
     $keyFld = $frmSearch->getField('keyword');
     $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
-    $keyFld->setWrapperAttribute('class', 'col-sm-6');
-    $keyFld->developerTags['col'] = 8;
+    $keyFld->setWrapperAttribute('class', 'col-lg-6');
+    $keyFld->developerTags['col'] = 6;
+    $keyFld->developerTags['noCaptionTag'] = true;
 
     $submitBtnFld = $frmSearch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $submitBtnFld->setWrapperAttribute('class', 'col-sm-3');
-    $submitBtnFld->developerTags['col'] = 2;
+    $submitBtnFld->setWrapperAttribute('class', 'col-lg-3');
+    $submitBtnFld->developerTags['col'] = 3;
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
     $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $cancelBtnFld->setWrapperAttribute('class', 'col-sm-3');
-    $cancelBtnFld->developerTags['col'] = 2; ?> <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?> <main id="main-area" class="main" role="main">
+    $cancelBtnFld->setWrapperAttribute('class', 'col-lg-3');
+    $cancelBtnFld->developerTags['col'] = 3;
+    $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header row justify-content-between mb-3">
-            <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?> <h2 class="content-header-title">
-                    <?php echo Labels::getLabel('LBL_Store_Inventory', $siteLangId); ?> <div class="delivery-term">
+            <div class="col-md-auto">
+                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
+                <h2 class="content-header-title">
+                    <?php echo Labels::getLabel('LBL_Store_Inventory', $siteLangId); ?>
+                    <div class="delivery-term">
                         <a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
                         <div id="inventoryToolTip" style="display:none">
                             <div class="delivery-term-data-inner">
@@ -44,25 +52,33 @@
                 <div class="cards-header p-3">
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_your_inventory', $siteLangId); ?></h5>
                     <div class="action">
-                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?>" onclick="toggleBulkSellerProductsStatues()"
-                            href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?></a>
-                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteBulkSellerProducts()"
-                            href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
+                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?>" onclick="toggleBulkSellerProductsStatues()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?></a>
+                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
                     </div>
                 </div>
                 <div class="cards-content p-3">
-                    <div class="bg-gray-light p-3 pb-0"> <?php echo $frmSearch->getFormHtml(); ?> </div>
-                    <span class="gap"></span> <?php echo $frmSearch->getExternalJS();?> <div id="listing"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
+                    <div class="bg-gray-light p-3 pb-0">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <?php echo $frmSearch->getFormHtml(); ?>
+                                <?php echo $frmSearch->getExternalJS();?>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="gap"></span>
+                    <div id="listing">
+                        <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</main> <?php echo FatUtility::createHiddenFormFromData(array('product_id'=>$product_id), array('name' => 'frmSearchSellerProducts'));?> <script>
+</main>
+<?php echo FatUtility::createHiddenFormFromData(array('product_id'=>$product_id), array('name' => 'frmSearchSellerProducts'));?>
+<script>
     jQuery(document).ready(function($) {
-        $(".initTooltip").click(function() {
-            $.facebox({
-                div: '#inventoryToolTip'
-            }, 'catalog-bg');
+        $(".initTooltip").click(function(){
+            $.facebox({ div: '#inventoryToolTip' }, 'catalog-bg');
         });
     });
 </script>

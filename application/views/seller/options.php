@@ -7,18 +7,21 @@
 
     $keyFld = $frmSearch->getField('keyword');
     $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
-    $keyFld->setWrapperAttribute('class', 'col-lg-8');
-    $keyFld->developerTags['col'] = 8;
+    $keyFld->setWrapperAttribute('class', 'col-lg-6');
+    $keyFld->developerTags['col'] = 6;
+    $keyFld->developerTags['noCaptionTag'] = true;
 
     $submitBtnFld = $frmSearch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $submitBtnFld->setWrapperAttribute('class', 'col-lg-2');
-    $submitBtnFld->developerTags['col'] = 2;
+    $submitBtnFld->setWrapperAttribute('class', 'col-lg-3');
+    $submitBtnFld->developerTags['col'] = 3;
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
     $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $cancelBtnFld->setWrapperAttribute('class', 'col-lg-2');
-    $cancelBtnFld->developerTags['col'] = 2;
+    $cancelBtnFld->setWrapperAttribute('class', 'col-lg-3');
+    $cancelBtnFld->developerTags['col'] = 3;
+    $cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
@@ -41,10 +44,13 @@
                 </div>
                 <div class="cards-content p-3">
                     <div class="bg-gray-light p-3 pb-0">
-                        <?php echo $frmSearch->getFormHtml(); ?>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <?php echo $frmSearch->getFormHtml(); ?>
+                            </div>
+                        </div>
                     </div>
                     <span class="gap"></span>
-                    <?php echo $frmSearch->getExternalJS();?>
                     <div id="optionListing"></div>
                 </div>
             </div>

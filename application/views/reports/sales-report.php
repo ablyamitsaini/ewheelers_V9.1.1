@@ -1,18 +1,22 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
     $frmSrch->setFormTagAttribute('onSubmit', 'searchSalesReport(this); return false;');
     $frmSrch->setFormTagAttribute('class', 'form');
-    $frmSrch->developerTags['colClassPrefix'] = 'col-md-';
-    $frmSrch->developerTags['fld_default_col'] = 4;
+    $frmSrch->developerTags['colClassPrefix'] = 'col-lg-2 col-md-';
+    $frmSrch->developerTags['fld_default_col'] = 2;
+
+    $submitBtnFld = $frmSrch->getField('date_from');
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
+
+    $submitBtnFld = $frmSrch->getField('date_to');
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $submitBtnFld = $frmSrch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $submitBtnFld->setWrapperAttribute('class', 'col-sm-3');
-    $submitBtnFld->developerTags['col'] = 2;
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $cancelBtnFld = $frmSrch->getField('btn_clear');
     $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $cancelBtnFld->setWrapperAttribute('class', 'col-sm-3');
-    $cancelBtnFld->developerTags['col'] = 2;
+    $cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
