@@ -8,11 +8,11 @@ $langFrm->developerTags['fld_default_col'] = 12;
 	<div class="sectionhead">
 		<h4><?php echo Labels::getLabel('LBL_Payment_Method_Setup',$adminLangId); ?></h4>
 	</div>
-	<div class="sectionbody space">      
+	<div class="sectionbody space">
 		<div class="tabs_nav_container responsive flat">
 			<ul class="tabs_nav">
 				<li><a href="javascript:void(0);" onclick="gatewayForm(<?php echo $pMethodId ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-				<?php 
+				<?php
 				if ($pMethodId > 0) {
 					foreach($languages as $langId=>$langName){?>
 						<li><a class="<?php echo ($lang_id == $langId)?'active':''?>" href="javascript:void(0);" onclick="editGatewayLangForm(<?php echo $pMethodId ?>, <?php echo $langId;?>);"><?php echo $langName;?></a></li>
@@ -24,8 +24,7 @@ $langFrm->developerTags['fld_default_col'] = 12;
 				<div class="tabs_panel">
 					<?php echo $langFrm->getFormHtml(); ?>
 				</div>
-			</div>						
+			</div>
 		</div>
-	</div>						
+	</div>
 </section>
-

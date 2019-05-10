@@ -651,23 +651,21 @@ class AccountController extends LoggedUserController
         $withdrawal_bank_address = '';
         $withdrawal_comments = $post['withdrawal_comments'];
 
-    switch ($withdrawal_payment_method) {
-        case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
-            $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
-            break;
-
-        case User::AFFILIATE_PAYMENT_METHOD_BANK:
-            $withdrawal_bank = $post['ub_bank_name'];
-            $withdrawal_account_holder_name = $post['ub_account_holder_name'];
-            $withdrawal_account_number = $post['ub_account_number'];
-            $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
-            $withdrawal_bank_address = $post['ub_bank_address'];
-            break;
-
-        case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
-            $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
-            break;
-    }
+        switch ($withdrawal_payment_method) {
+            case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
+                $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
+                break;
+            case User::AFFILIATE_PAYMENT_METHOD_BANK:
+                $withdrawal_bank = $post['ub_bank_name'];
+                $withdrawal_account_holder_name = $post['ub_account_holder_name'];
+                $withdrawal_account_number = $post['ub_account_number'];
+                $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
+                $withdrawal_bank_address = $post['ub_bank_address'];
+                break;
+            case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
+                $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
+                break;
+        }
 
 
         $post['withdrawal_payment_method'] = $withdrawal_payment_method;
@@ -2263,23 +2261,6 @@ class AccountController extends LoggedUserController
     private function userEmailVerification($userObj, $data)
     {
         return $this->userEmailVerifications($userObj, $data);
-        /* $verificationCode = $userObj->prepareUserVerificationCode($data['user_email']);
-
-        $link = CommonHelper::generateFullUrl('GuestUser', 'changeEmailVerification', array('verify'=>$verificationCode));
-
-        $data = array(
-            'user_name' => $data['user_name'],
-            'link' => $link,
-        'user_email' => $data['user_email'],
-        );
-
-        $email = new EmailHandler();
-
-        if(!$email->sendEmailVerificationLink($this->siteLangId,$data)){
-        return false;
-        }
-
-        return true; */
     }
 
     private function getProfileInfoForm()

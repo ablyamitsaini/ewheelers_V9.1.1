@@ -30,7 +30,7 @@ class PaymentMethodsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function form($pMethodId)
+    public function form( $pMethodId )
     {
         $this->objPrivilege->canViewPaymentMethods();
         $pMethodId =  FatUtility::int($pMethodId);
@@ -41,7 +41,7 @@ class PaymentMethodsController extends AdminBaseController
         }
 
         $data = PaymentMethods::getAttributesById($pMethodId, array('pmethod_id','pmethod_identifier','pmethod_active'));
-        if ($data === false) {
+        if ($data === false ) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
         $frm->fill($data);
@@ -56,7 +56,7 @@ class PaymentMethodsController extends AdminBaseController
         $this->objPrivilege->canEditPaymentMethods();
         $frm = $this->getForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
-        if (false === $post) {
+        if (false === $post ) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -77,10 +77,10 @@ class PaymentMethodsController extends AdminBaseController
         }
 
         $newTabLangId=0;
-        if ($pMethodId > 0) {
+        if($pMethodId > 0 ) {
             $languages=Language::getAllNames();
-            foreach ($languages as $langId => $langName) {
-                if (!$row = PaymentMethods::getAttributesByLangId($langId, $pMethodId)) {
+            foreach( $languages as $langId => $langName ){
+                if(!$row = PaymentMethods::getAttributesByLangId($langId, $pMethodId) ) {
                     $newTabLangId = $langId;
                     break;
                 }
@@ -95,20 +95,20 @@ class PaymentMethodsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function langForm($pMethodId = 0, $lang_id = 0)
+    public function langForm($pMethodId = 0,$lang_id = 0)
     {
         $this->objPrivilege->canViewPaymentMethods();
 
         $pMethodId = FatUtility::int($pMethodId);
         $lang_id = FatUtility::int($lang_id);
 
-        if ($pMethodId == 0 || $lang_id == 0) {
+        if($pMethodId == 0 || $lang_id == 0 ) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $langFrm = $this->getLangForm($pMethodId, $lang_id);
         $langData = PaymentMethods::getAttributesByLangId($lang_id, $pMethodId);
-        if ($langData) {
+        if($langData ) {
             $langFrm->fill($langData);
         }
 
@@ -128,7 +128,7 @@ class PaymentMethodsController extends AdminBaseController
         $pMethodId = $post['pmethod_id'];
         $lang_id = $post['lang_id'];
 
-        if ($pMethodId == 0 || $lang_id == 0) {
+        if($pMethodId == 0 || $lang_id == 0) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -147,15 +147,15 @@ class PaymentMethodsController extends AdminBaseController
 
         $pMethodObj = new PaymentMethods($pMethodId);
 
-        if (!$pMethodObj->updateLangData($lang_id, $data)) {
+        if(!$pMethodObj->updateLangData($lang_id, $data)) {
             Message::addErrorMessage($pMethodObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $newTabLangId=0;
         $languages=Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
-            if (!$row = PaymentMethods::getAttributesByLangId($langId, $pMethodId)) {
+        foreach($languages as $langId =>$langName ){
+            if(!$row = PaymentMethods::getAttributesByLangId($langId, $pMethodId)) {
                 $newTabLangId = $langId;
                 break;
             }
@@ -173,7 +173,7 @@ class PaymentMethodsController extends AdminBaseController
 
         $pmethod_id = FatUtility::int($pmethod_id);
 
-        if (1 > $pmethod_id) {
+        if(1 > $pmethod_id) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -187,14 +187,9 @@ class PaymentMethodsController extends AdminBaseController
 
         $fileHandlerObj = new AttachedFile();
 
-        if (!$res = $fileHandlerObj->saveAttachment(
-            $_FILES['file']['tmp_name'],
-            AttachedFile::FILETYPE_PAYMENT_METHOD,
-            $pmethod_id,
-            0,
-            $_FILES['file']['name'],
-            -1,
-            $unique_record = true
+        if(!$res = $fileHandlerObj->saveAttachment(
+            $_FILES['file']['tmp_name'], AttachedFile::FILETYPE_PAYMENT_METHOD,
+            $pmethod_id, 0,    $_FILES['file']['name'], -1, $unique_record = true
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -236,57 +231,21 @@ class PaymentMethodsController extends AdminBaseController
 
         $data = PaymentMethods::getAttributesById($pmethodId, array('pmethod_id', 'pmethod_active'));
 
-        if ($data == false) {
+        if($data == false ) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $status = ($data['pmethod_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
-
-        $this->updatePaymentMethodStatus($pmethodId, $status);
-
-        $this->set('msg', $this->str_update_record);
-        $this->_template->render(false, false, 'json-success.php');
-    }
-
-    public function toggleBulkStatuses()
-    {
-        $this->objPrivilege->canEditPaymentMethods();
-
-        $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
-        $pmethodIdsArr = FatUtility::int(FatApp::getPostedData('pmethod_ids'));
-        if (empty($pmethodIdsArr) || -1 == $status) {
-            FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
-            );
-        }
-
-        foreach ($pmethodIdsArr as $pmethodId) {
-            if (1 > $pmethodId) {
-                continue;
-            }
-
-            $this->updatePaymentMethodStatus($pmethodId, $status);
-        }
-        $this->set('msg', $this->str_update_record);
-        $this->_template->render(false, false, 'json-success.php');
-    }
-
-    private function updatePaymentMethodStatus($pmethodId, $status)
-    {
-        $status = FatUtility::int($status);
-        $pmethodId = FatUtility::int($pmethodId);
-        if (1 > $pmethodId || -1 == $status) {
-            FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
-            );
-        }
+        $status = ( $data['pmethod_active'] == applicationConstants::ACTIVE ) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $obj = new PaymentMethods($pmethodId);
-        if (!$obj->changeStatus($status)) {
+        if (!$obj->changeStatus($status) ) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
+
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
     }
 
     private function getForm($pMethodId = 0)
@@ -302,16 +261,16 @@ class PaymentMethodsController extends AdminBaseController
 
         $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), 'pmethod_active', $activeInactiveArr, '', array(), '');
 
-        // $fld = $frm->addButton('Icon','pmethod_icon','Upload File',
-        // array('class'=>'uploadFile-Js','id'=>'pmethod_icon','data-pmethod_id'=>$pMethodId));
-        // $fld->htmlAfterField='<span id="gateway_icon"></span>
-        // <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','paymentMethod',array($pMethodId,'THUMB'),CONF_WEBROOT_FRONT_URL).'"></div>';
+        $fld = $frm->addButton('Icon','pmethod_icon','Upload File',
+        array('class'=>'uploadFile-Js','id'=>'pmethod_icon','data-pmethod_id'=>$pMethodId));
+        $fld->htmlAfterField='<span id="gateway_icon"></span>
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','paymentMethod',array($pMethodId,'MEDIUM'),CONF_WEBROOT_FRONT_URL).'"></div>';
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
     }
 
-    private function getLangForm($pMethodId = 0, $lang_id = 0)
+    private function getLangForm($pMethodId = 0,$lang_id = 0)
     {
         $this->objPrivilege->canViewPaymentMethods();
         $frm = new Form('frmGatewayLang');

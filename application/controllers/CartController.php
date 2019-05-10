@@ -126,7 +126,7 @@ class CartController extends MyAppController
     private function addProductToCart($productsToAdd, $selprod_id)
     {
         $ProductAdded = false;
-        foreach ($productsToAdd as $productId =>$quantity) {
+        foreach ($productsToAdd as $productId => $quantity) {
             if ($productId <= 0) {
                 Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());

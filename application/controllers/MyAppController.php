@@ -300,9 +300,9 @@ class MyAppController extends FatController
         $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip');
         $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone');
         $frm->addHiddenField('', 'ua_id');
-        $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $siteLangId));
         $fldCancel = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $siteLangId));
-        $fldSubmit->attachField($fldCancel);
+        $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $siteLangId));
+        $fldCancel->attachField($fldSubmit);
         return $frm;
     }
 
