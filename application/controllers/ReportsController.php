@@ -388,9 +388,8 @@ class ReportsController extends LoggedUserController
         $frm = new Form('frmProductInventorySrch');
         $frm->addTextBox('', 'keyword', '');
         $frm->addHiddenField('', 'page');
-        $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
-        $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
-        $fldSubmit->attachField($fldCancel);
+        $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
+        $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         return $frm;
     }
 
@@ -399,9 +398,8 @@ class ReportsController extends LoggedUserController
         $frm = new Form('frmProductInventoryStockStatusSrch');
         $frm->addTextBox('', 'keyword', '');
         $frm->addHiddenField('', 'page');
-        $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
-        $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
-        $fldSubmit->attachField($fldCancel);
+        $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
+        $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         return $frm;
     }
 
@@ -520,9 +518,8 @@ class ReportsController extends LoggedUserController
         if (empty($orderDate)) {
             $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender' ));
             $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender'));
-            $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->siteLangId));
-            $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear', $this->siteLangId), array('onclick'=>'clearSearch();'));
-            $fld_submit->attachField($fld_cancel);
+            $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->siteLangId));
+            $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear', $this->siteLangId), array('onclick'=>'clearSearch();'));
         }
         return $frm;
     }

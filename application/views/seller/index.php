@@ -42,7 +42,7 @@
     								<?php echo CommonHelper::displayMoneyFormat($totalSoldSales);?>
     							</div>
     							<div class="stats-number">
-    								<h6 class="today"><?php echo Labels::getLabel('LBL_Sale_for_today',$siteLangId);?></h6>
+    								<h6 class="total"><?php echo Labels::getLabel('LBL_Sale_for_today',$siteLangId);?></h6>
     								<?php echo CommonHelper::displayMoneyFormat($todaySoldSales);?>
     							</div>
     						</div>

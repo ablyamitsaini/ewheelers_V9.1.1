@@ -19,7 +19,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index($parent=0)
+    public function index($parent = 0)
     {
         $this->objPrivilege->canViewProductCategories();
         $parent = FatUtility::int($parent);
@@ -90,7 +90,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function form($prodcat_id=0, $prodcat_parent=0)
+    public function form($prodcat_id = 0, $prodcat_parent = 0)
     {
         $this->objPrivilege->canEditProductCategories();
         $prodcat_id = FatUtility::int($prodcat_id);
@@ -183,7 +183,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function images($prodcat_id, $imageType='', $lang_id=0)
+    public function images($prodcat_id, $imageType = '', $lang_id = 0)
     {
         $this->objPrivilege->canViewShops();
         $shop_id = FatUtility::int($prodcat_id);
@@ -262,7 +262,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeImage($afileId, $prodCatId, $imageType='', $langId)
+    public function removeImage($afileId, $prodCatId, $imageType = '', $langId = 0)
     {
         $afileId = FatUtility::int($afileId);
         $prodCatId = FatUtility::int($prodCatId);
@@ -557,7 +557,7 @@ class ProductCategoriesController extends AdminBaseController
                 FatUtility::dieJsonError(Message::getHtml());
                 //$this->set('msg', $record->getError());
 
-                //	$this->_template->render(false, false, 'json-error.php');
+                //$this->_template->render(false, false, 'json-error.php');
             }
             $newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
             $this->set('msg', Labels::getLabel('LBL_Category_Setup_Successful', $this->adminLangId));
@@ -577,7 +577,7 @@ class ProductCategoriesController extends AdminBaseController
             if ($prodcat_id>0) {
                 $catId=$prodcat_id;
                 $languages=Language::getAllNames();
-                foreach ($languages as $langId =>$langName) {
+                foreach ($languages as $langId => $langName) {
                     if (!$row=ProductCategory::getAttributesByLangId($langId, $prodcat_id)) {
                         $newTabLangId = $langId;
                         break;
@@ -637,7 +637,7 @@ class ProductCategoriesController extends AdminBaseController
 
         $newTabLangId=0;
         $languages=Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             if (!$row=ProductCategory::getAttributesByLangId($langId, $prodcat_id)) {
                 $newTabLangId = $langId;
                 break;
@@ -780,7 +780,7 @@ class ProductCategoriesController extends AdminBaseController
                 Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
             );
         }
-        
+
         $prodCateObj = new ProductCategory($prodcat_id);
         if (!$prodCateObj->canRecordMarkDelete($prodcat_id)) {
             Message::addErrorMessage($this->str_invalid_request_id);
@@ -857,7 +857,7 @@ class ProductCategoriesController extends AdminBaseController
         }
         } */
 
-        foreach ($matches as $key=>$val) {
+        foreach ($matches as $key => $val) {
             $json[] = array(
             'prodcat_id' => $key,
             'prodcat_identifier'      => strip_tags(html_entity_decode($val, ENT_QUOTES, 'UTF-8'))
@@ -878,29 +878,29 @@ class ProductCategoriesController extends AdminBaseController
         $nodes = array();
         $parameters = FatApp::getParameters();
         switch ($action) {
-        case 'index':
-            $nodes[] = array('title'=>Labels::getLabel('LBL_Root_Categories', $this->adminLangId), 'href'=>CommonHelper::generateUrl('ProductCategories'));
-            if (isset($parameters[0]) && $parameters[0] > 0) {
-                $parent=FatUtility::int($parameters[0]);
-                if ($parent>0) {
-                    $cntInc=1;
-                    $prodCateObj = new ProductCategory();
-                    $category_structure = $prodCateObj->getCategoryStructure($parent);
-                    $category_structure = array_reverse($category_structure);
-                    foreach ($category_structure as $catKey=>$catVal) {
-                        if ($cntInc<count($category_structure)) {
-                            $nodes[] = array('title'=>$catVal["prodcat_identifier"], 'href'=>CommonHelper::generateUrl('ProductCategories', 'index', array($catVal['prodcat_id'])));
-                        } else {
-                            $nodes[] = array('title'=>$catVal["prodcat_identifier"]);
+            case 'index':
+                $nodes[] = array('title'=>Labels::getLabel('LBL_Root_Categories', $this->adminLangId), 'href'=>CommonHelper::generateUrl('ProductCategories'));
+                if (isset($parameters[0]) && $parameters[0] > 0) {
+                    $parent=FatUtility::int($parameters[0]);
+                    if ($parent>0) {
+                        $cntInc=1;
+                        $prodCateObj = new ProductCategory();
+                        $category_structure = $prodCateObj->getCategoryStructure($parent);
+                        $category_structure = array_reverse($category_structure);
+                        foreach ($category_structure as $catKey => $catVal) {
+                            if ($cntInc<count($category_structure)) {
+                                $nodes[] = array('title'=>$catVal["prodcat_identifier"], 'href'=>CommonHelper::generateUrl('ProductCategories', 'index', array($catVal['prodcat_id'])));
+                            } else {
+                                $nodes[] = array('title'=>$catVal["prodcat_identifier"]);
+                            }
+                            $cntInc++;
                         }
-                        $cntInc++;
                     }
                 }
-            }
-            break;
+                break;
 
-        case 'form':
-            break;
+            case 'form':
+                break;
         }
         return $nodes;
     }

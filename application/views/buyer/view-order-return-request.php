@@ -155,8 +155,7 @@
                     <div class="gap"></div>
                     <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
                     <div id="loadMoreBtnDiv"></div>
-                    <ul class="media media--details" id="messagesList">
-                    </ul>
+                    <ul class="messages-list" id="messagesList"></ul>
 
                     <?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
 
@@ -165,21 +164,24 @@
                     $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
                     $frmMsg->developerTags['fld_default_col'] = 12;
                     ?>
-                    <ul class="media media--details">
-                        <li>
-                            <div class="grid grid--first">
-                                <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
-                            </div>
-                            <div class="grid grid--second">
-                                <span class="media__title"><?php echo $logged_user_name; ?></span>
-                                <div class="grid grid--third">
-                                    <div class="bg-gray-light p-3 pb-0">
-                                    <?php echo $frmMsg->getFormHtml(); ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    
+                    <div class="messages-list" >
+                        <ul>
+                           <li>
+                               <div class="msg_db">
+                                   <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
+                               </div>
+                               <div class="msg__desc">
+                                   <span class="msg__title"><?php echo $logged_user_name; ?></span>
+
+                                        <?php echo $frmMsg->getFormHtml(); ?>
+
+
+                               </div>
+                           </li>
+                        </ul>
+                    </div>
+                    
                     <?php } ?>
 				</div>
                 <?php } ?>

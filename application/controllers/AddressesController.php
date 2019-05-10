@@ -62,7 +62,7 @@ class AddressesController extends LoggedUserController
         $updateArray = array( 'ua_is_default'=>0);
         $whr = array('smt'=>'ua_user_id = ?', 'vals'=>array(UserAuthentication::getLoggedUserId()));
 
-        if (!FatApp::getDb()->updateFromArray(UserAddress::DB_TBL, $updateArray, $whr)) {
+        if(!FatApp::getDb()->updateFromArray(UserAddress::DB_TBL, $updateArray, $whr)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }

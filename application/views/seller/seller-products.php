@@ -103,12 +103,10 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    ?>
-	<div class="block--empty align--center">
-		<img class="block__img" src="<?php echo CONF_WEBROOT_URL; ?>images/empty_item.svg" alt="<?php echo Labels::getLabel('LBL_No_record_found', $siteLangId); ?>" width="80">
-		<h4><?php echo Labels::getLabel("LBL_No_Products_added_yet.", $siteLangId); //Labels::getLabel('LBL_No_record_found', $siteLangId);?></h4>
-	</div>
-<?php
+    ?> <div class="block--empty align--center">
+    <img class="block__img" src="<?php echo CONF_WEBROOT_URL; ?>images/empty_item.svg" alt="<?php echo Labels::getLabel('LBL_No_record_found', $siteLangId); ?>" width="80">
+    <h4><?php echo Labels::getLabel("LBL_No_Products_added_yet.", $siteLangId); //Labels::getLabel('LBL_No_record_found', $siteLangId);?></h4>
+</div> <?php
     // $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found_under_your_publication', $siteLangId));
         //$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId));
 } else {
@@ -120,10 +118,7 @@ if (count($arrListing) == 0) {
 
     echo $frm->getFormTag();
     echo $frm->getFieldHtml('status');
-    echo $tbl->getHtml();
-?>
-</form>
-<?php
+    echo $tbl->getHtml(); ?> </form> <?php
 }
 
 if (!$product_id) {

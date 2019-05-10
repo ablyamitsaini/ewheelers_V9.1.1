@@ -135,6 +135,7 @@ $(document).on('change',"select[name='banner_blocation_id']",function(){
 
 	clearPromotionSearch = function(){
 		document.frmPromotionSearch.reset();
+		document.frmPromotionSearch.active_promotion.value = '-1';
 		searchPromotions(document.frmPromotionSearch);
 	};
 

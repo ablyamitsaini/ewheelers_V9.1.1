@@ -1,13 +1,11 @@
 .*
 !/.gitignore
-/library/license.txt
-/license.txt
 /user-uploads/*
 /admin-application/views/innovas
 /application/views/innovas
 /conf
 /index.php
-/library/core/*
+/library/core
 /public/cache/*
 /public/settings.php
 /public/sitemap.xml
