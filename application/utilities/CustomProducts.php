@@ -8,7 +8,7 @@ trait CustomProducts
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }
 
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -79,7 +79,7 @@ trait CustomProducts
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'customProduct'));
 
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -116,7 +116,7 @@ trait CustomProducts
     FatApp::redirectUser(CommonHelper::generateUrl('Seller','customProduct'));
 
     }
-    if( !UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
+    if( !UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ){
     Message::addInfo( Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId) );
     FatApp::redirectUser(CommonHelper::generateUrl('Seller','Packages'));
     }
@@ -219,7 +219,7 @@ trait CustomProducts
 
     public function setupCustomProduct()
     {
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
 
@@ -345,7 +345,7 @@ trait CustomProducts
         if(!User::canAddCustomProduct() ) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         $product_id = FatUtility::int($product_id);
@@ -396,7 +396,7 @@ trait CustomProducts
         if(!User::canAddCustomProduct() ) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         $post = FatApp::getPostedData();
@@ -457,7 +457,7 @@ trait CustomProducts
         if(!$product_id) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
 
@@ -531,7 +531,7 @@ trait CustomProducts
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
 
@@ -668,7 +668,7 @@ trait CustomProducts
         if(!User::canAddCustomProduct() ) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         $product_id = FatUtility::int($product_id);
@@ -702,7 +702,7 @@ trait CustomProducts
         if(!User::canAddCustomProduct() ) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         $product_id = FatUtility::int($product_id);
@@ -765,7 +765,7 @@ trait CustomProducts
         if(!User::canAddCustomProduct() ) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieJsonError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         // $this->objPrivilege->canEditProducts();
@@ -995,7 +995,7 @@ trait CustomProducts
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        if(!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
+        if(!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId()) ) {
             FatUtility::dieWithError(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
         }
         if($prodspec_id>0) {

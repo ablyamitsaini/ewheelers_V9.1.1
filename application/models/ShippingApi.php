@@ -50,7 +50,7 @@ class ShippingApi extends MyAppModel
     // echo $srch->getQuery(); die;
         $srch->doNotLimitRecords(true);
         $srch->doNotCalculateRecords(true);
-       	$rs = $srch->getResultSet();
+        $rs=$srch->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
         if($row==false) return array();
         else return $row;

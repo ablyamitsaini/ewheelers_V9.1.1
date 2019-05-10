@@ -1,14 +1,16 @@
 $(document).ready(function(){
 	bannerListing(document.frmListingSearch);
 });
-$(document).delegate('.language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var langId = $(this).val();
 	var bannerId = $("input[name='banner_id']").val();
 	var blocationId = $("input[name='blocation_id']").val();
 	var screen = $(".display-js").val();
 	images(blocationId,bannerId,langId,screen);
 });
-$(document).delegate('.display-js','change',function(){
+$(document).on('change','.display-js',function(){
+/* $(document).delegate('.display-js','change',function(){ */
 	var screen = $(this).val();
 	var bannerId = $("input[name='banner_id']").val();
 	var blocationId = $("input[name='blocation_id']").val();

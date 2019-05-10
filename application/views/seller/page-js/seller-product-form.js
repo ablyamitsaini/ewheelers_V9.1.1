@@ -2,7 +2,7 @@ $(document).ready(function(){
 	sellerProductForm(product_id,selprod_id);
 });
 
-$(document).delegate('.selprodoption_optionvalue_id','change',function(){
+$(document).on('change','.selprodoption_optionvalue_id',function(){
 	var frm = document.frmSellerProduct;
 	var data = fcom.frmData(frm);
 	fcom.ajax(fcom.makeUrl('Seller', 'checkSellProdAvailableForUser'), data, function(t) {

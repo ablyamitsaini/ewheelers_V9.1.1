@@ -5,31 +5,31 @@ $frmOrderSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderSrch->developerTags['fld_default_col'] = 12;
 
 $keywordFld = $frmOrderSrch->getField('keyword');
-$keywordFld->setWrapperAttribute('class','col-lg-4');
-$keywordFld->developerTags['col'] = 4;
+$keywordFld->setWrapperAttribute('class','col-lg-3');
+$keywordFld->developerTags['col'] = 3;
 /* $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Buyer_account_orders_listing_search_form_keyword_help_txt', $siteLangId).'</small>'; */
 
 $statusFld = $frmOrderSrch->getField('status');
-$statusFld->setWrapperAttribute('class','col-lg-4');
-$statusFld->developerTags['col'] = 4;
+$statusFld->setWrapperAttribute('class','col-lg-3');
+$statusFld->developerTags['col'] = 3;
 
 $priceFromFld = $frmOrderSrch->getField('price_from');
-$priceFromFld->setWrapperAttribute('class','col-lg-2');
-$priceFromFld->developerTags['col'] = 2;
+$priceFromFld->setWrapperAttribute('class','col-lg-3');
+$priceFromFld->developerTags['col'] = 3;
 
 $priceToFld = $frmOrderSrch->getField('price_to');
-$priceToFld->setWrapperAttribute('class','col-lg-2');
-$priceToFld->developerTags['col'] = 2;
+$priceToFld->setWrapperAttribute('class','col-lg-3');
+$priceToFld->developerTags['col'] = 3;
 
 $dateFromFld = $frmOrderSrch->getField('date_from');
 $dateFromFld->setFieldTagAttribute('class','field--calender');
-$dateFromFld->setWrapperAttribute('class','col-lg-4');
-$dateFromFld->developerTags['col'] = 4;
+$dateFromFld->setWrapperAttribute('class','col-lg-3');
+$dateFromFld->developerTags['col'] = 3;
 
 $dateToFld = $frmOrderSrch->getField('date_to');
 $dateToFld->setFieldTagAttribute('class','field--calender');
-$dateToFld->setWrapperAttribute('class','col-lg-4');
-$dateToFld->developerTags['col'] = 4;
+$dateToFld->setWrapperAttribute('class','col-lg-3');
+$dateToFld->developerTags['col'] = 3;
 
 $submitBtnFld = $frmOrderSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');

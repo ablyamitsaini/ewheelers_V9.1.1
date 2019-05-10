@@ -17,7 +17,7 @@ if( isset( $collections ) && count($collections) ){
 				<div class="section__action"><a href="<?php echo CommonHelper::generateUrl('Collections','View',array($row['collection_id']));?>" class="link"><?php echo Labels::getLabel('LBL_View_More',$siteLangId); ?></a> </div>
 			<?php }  ?>
 		</div>
-		<div class="collection-corner js-collection-corner product-listing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+		<div class="js-collection-corner collection-corner product-listing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 			<?php foreach( $row['products'] as $product ){ ?>
 				<?php include('product-layout-1-list.php'); ?>
 			<?php } ?>

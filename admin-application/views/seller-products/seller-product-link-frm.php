@@ -61,8 +61,8 @@ $("document").ready(function(){
 			$('#buy-together-products ul').append('<li id="productBuyTogether' + item['value'] + '"><i class="remove_buyTogether remove_param ion-android-delete icon"></i> ' +item['label'] + '<input type="hidden" name="product_upsell[]" value="' + item['value'] + '" /></li>');
 		}
 	});
-	$('#buy-together-products').delegate('.remove_buyTogether', 'click', function() {
-	
+    $('#buy-together-products').on('click', '.remove_buyTogether', function() {
+	/* $('#buy-together-products').delegate('.remove_buyTogether', 'click', function() { */
 		$(this).parent().remove();
 	});
 	$('input[name=\'products_related\']').autocomplete({
@@ -90,8 +90,8 @@ $("document").ready(function(){
 			$('#related-products ul').append('<li id="productRelated' + item['value'] + '"><i class="remove_related remove_param ion-android-delete icon"></i> ' +item['label'] + '<input type="hidden" name="product_related[]" value="' + item['value'] + '" /></li>');
 		}
 	});
-	$('#related-products').delegate('.remove_related', 'click', function() {
-	
+    $('#related-products').on('click', '.remove_related', function() {
+	/* $('#related-products').delegate('.remove_related', 'click', function() { */
 		$(this).parent().remove();
 	});
 	<?php foreach($upsellProducts as $key => $val){

@@ -4957,6 +4957,10 @@ img {
 
 .login-wrapper .add-side {
   padding: 2rem;
+  display: table-cell;
+  max-width: 40%;
+  flex: 0 0 40%;
+  background: #fff url(../images/login-with.png) no-repeat bottom center;
 }
 
 .login-wrapper .add-side .heading {}

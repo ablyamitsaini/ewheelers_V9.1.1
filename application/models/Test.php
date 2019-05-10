@@ -120,7 +120,7 @@ class Test
 
         if ($includeCommon) {
             $pth = CONF_THEME_PATH . 'common-js';
-            // 			$dir = opendir($pth);
+            //$dir = opendir($pth);
             $last_updated = 0;
 
             $arrCommonfiles = scandir($pth, SCANDIR_SORT_ASCENDING);

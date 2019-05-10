@@ -718,7 +718,7 @@ class SellerController extends SellerBaseController
         if (!$this->isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) {
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }
-        if (!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+        if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -1356,7 +1356,7 @@ class SellerController extends SellerBaseController
 
     public function shop($tab='', $subTab='')
     {
-        if (!UserPrivilege::IsUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+        if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -3246,7 +3246,7 @@ class SellerController extends SellerBaseController
     private function getCatalogProductSearchForm()
     {
         $frm = new Form('frmSearchCatalogProduct');
-        $frm->addTextBox('', 'keyword');
+        $frm->addTextBox(Labels::getLabel('LBL_Search_By', $this->siteLangId), 'keyword');
 
         /* if( !User::canAddCustomProductAvailableToAllSellers() ){ */
         if (FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT')) {
@@ -3261,6 +3261,7 @@ class SellerController extends SellerBaseController
         /* if( !User::canAddCustomProductAvailableToAllSellers() ){ */
         $frm->addButton('&nbsp;', 'btn_clear', Labels::getLabel('LBL_Clear', $this->siteLangId));
         /* } */
+        //$fldSubmit->attachField($fldCancel);
         $frm->addHiddenField('', 'page');
         return $frm;
     }

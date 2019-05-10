@@ -43,7 +43,7 @@ array_walk($catCodeArr,function(&$n) {
 	  <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_FILTERS',$siteLangId);?>
        <a  class="reset-all" id="resetAll"><i class="icn reset-all">
 			<svg class="svg">
-				<use xlink:href="/images/retina/sprite.svg#reset" href="/images/retina/sprite.svg#reset"></use>
+				<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset"></use>
 			</svg>
 		</i></a></div>
 	</div>
@@ -380,7 +380,7 @@ $to.on("change", function () {
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
 
-    <?php if( !$shopCatFilters ){ ?>
+    <?php if( true === $shopCatFilters ){ ?>
         new SimpleBar(document.getElementById('accordian'));
     <?php } ?>
     var x = document.getElementsByClassName("scrollbar-filters");
@@ -419,7 +419,7 @@ $to.on("change", function () {
 
 });
 
-/*  $(window).load(function(){
+/*  $(window).on('load',function(){
 	$('#accordian').viewMore({limit: <?php echo intval($count_for_view_more); ?>});
  }); */
 </script>

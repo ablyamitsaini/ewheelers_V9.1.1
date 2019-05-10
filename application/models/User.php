@@ -319,18 +319,18 @@ class User extends MyAppModel
     public static function getPreferedDashbordRedirectUrl($preferredDashboard)
     {
         switch ($preferredDashboard) {
-        case User::USER_BUYER_DASHBOARD:
-            return CommonHelper::generateFullUrl('buyer');
-         break;
-        case User::USER_SELLER_DASHBOARD:
-            return CommonHelper::generateFullUrl('seller');
-         break;
-        case User::USER_ADVERTISER_DASHBOARD:
-            return CommonHelper::generateFullUrl('advertiser');
-         break;
-        case User::USER_AFFILIATE_DASHBOARD:
-            return CommonHelper::generateFullUrl('affiliate');
-         break;
+            case User::USER_BUYER_DASHBOARD:
+                return CommonHelper::generateFullUrl('buyer');
+             break;
+            case User::USER_SELLER_DASHBOARD:
+                return CommonHelper::generateFullUrl('seller');
+             break;
+            case User::USER_ADVERTISER_DASHBOARD:
+                return CommonHelper::generateFullUrl('advertiser');
+             break;
+            case User::USER_AFFILIATE_DASHBOARD:
+                return CommonHelper::generateFullUrl('affiliate');
+             break;
         }
         return CommonHelper::generateFullUrl('account');
     }
@@ -885,7 +885,7 @@ class User extends MyAppModel
         }
         /* ] */
 
-        foreach ($data['fieldIdsArr'] as $key=>$fieldId) {
+        foreach ($data['fieldIdsArr'] as $key => $fieldId) {
             if (isset($data['sformfield_'.$fieldId]) && $data['sformfield_'.$fieldId]!='') {
                 $arr = array(
                 'sfreqvalue_request_id' => (int)$supplier_request_id,
@@ -911,8 +911,8 @@ class User extends MyAppModel
                         /* foreach( $sformFieldCaptionsArr[$language_id] as $data ){
                         $langData = array(
                         'sfreqvaluelang_sfreqvalue_id' => $sfreqvalue_id,
-                        'sfreqvaluelang_lang_id'	=>	$language_id,
-                        'sfreqvalue_sformfield_caption'	=>	$data['sformfield_caption']
+                        'sfreqvaluelang_lang_id'=>$language_id,
+                        'sfreqvalue_sformfield_caption'=>$data['sformfield_caption']
                         );
                         $db->insertFromArray( 'tbl_user_supplier_request_values_lang', $langData );
                         } */
@@ -929,7 +929,7 @@ class User extends MyAppModel
         return $supplier_request_id;
     }
 
-    public function updateSupplierRequest($data=array())
+    public function updateSupplierRequest($data = array())
     {
         if (empty($data)) {
             $this->error = Labels::getLabel('ERR_INVALID_REQUEST', $this->commonLangId);
@@ -1673,7 +1673,7 @@ class User extends MyAppModel
         return true;
     }
 
-    public function notifyAdminSupplierApproval($userObj, $data, $approval_request=1, $langId)
+    public function notifyAdminSupplierApproval($userObj, $data, $approval_request = 1, $langId)
     {
         $attr = array('user_name','credential_username','credential_email');
         $userData = $userObj->getUserInfo($attr, false, false);
@@ -1923,7 +1923,7 @@ class User extends MyAppModel
 
     return $row;
     } */
-    public static function getUserShopName($user_id=0)
+    public static function getUserShopName($user_id = 0)
     {
         $user_id = FatUtility::int($user_id);
         $srch = new SearchBase(static::DB_TBL, 'tu');

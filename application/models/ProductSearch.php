@@ -769,7 +769,7 @@ class ProductSearch extends SearchBase
         }
     }
 
-    public function joinSellerSubscription($langId= 0, $joinSeller = false)
+    public function joinSellerSubscription($langId = 0, $joinSeller = false)
     {
         $langId = FatUtility::int($langId);
         if ($this->langId && 1 > $langId) {
@@ -785,7 +785,7 @@ class ProductSearch extends SearchBase
         //$this->addSubscriptionValidCondition();
     }
 
-    public function addSubscriptionValidCondition($date='')
+    public function addSubscriptionValidCondition($date = '')
     {
         if ($date =='') {
             $date = date("Y-m-d");

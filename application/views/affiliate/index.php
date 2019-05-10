@@ -95,7 +95,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                     </a>
     			</div>
             <?php } ?>
-            <?php if (!empty(FatApp::getConfig("CONF_TWITTER_API_KEY",FatUtility::VAR_STRING,'')) && !empty(FatApp::getConfig("CONF_TWITTER_API_SECRET",FatUtility::VAR_STRING,''))){ ?>
+            <?php if (false !== $twitterUrl){ ?>
                 <div class="widget widget-stats">
                     <a class="box--share box--share-tw" id="twitter_btn" href="javascript:void(0);"> <i class="fa fa-twitter"></i>
                         <h5><?php echo Labels::getLabel('L_Share_on',$siteLangId)?></h5>

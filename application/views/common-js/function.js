@@ -75,7 +75,7 @@ $("document").ready(function(){
 });
 
 // Wait for window load
-$(window).load(function() {
+$(window).on('load',function() {
 	// Animate loader off screen
 	$(".pageloader").remove();
 	setSelectedCatValue();
@@ -290,7 +290,8 @@ $(document).ready(function(){
 $(document).ready(function(){
 	var debug = /*true ||*/ false;
 	var h = document.querySelector('.heart-wrapper');
-	$(document).delegate('.heart-wrapper','click',function(){
+    $(document).on('click', '.heart-wrapper',function(){
+	/* $(document).delegate('.heart-wrapper','click',function(){ */
 		product_id= $(this).attr('data-id');
 		toggleProductFavorite(product_id,$(this));
 		h = document.querySelector('heart-wrapper');

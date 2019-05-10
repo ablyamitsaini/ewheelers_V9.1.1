@@ -12,7 +12,7 @@ class Testimonial extends MyAppModel
         $this->db = FatApp::getDb();
     }
 
-    public static function getSearchObject($langId = 0, $active =  true)
+    public static function getSearchObject($langId = 0, $active = true)
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 't');

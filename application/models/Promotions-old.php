@@ -224,68 +224,68 @@ class Promotions extends MyAppModel
                 continue;
             }
             switch ($key) {
-            case 'promoter':
-                $srch->addCondition('user_name', 'like', '%' . $val . '%');
-                break;
-            case 'user':
-                $srch->addCondition('promotion_user_id', '=', intval($val));
-                break;
-            case 'shop':
-                $srch->addCondition('promotion_shop_id', '=', intval($val));
-                break;
-            case 'product':
-                $srch->addCondition('promotion_product_id', '=', intval($val));
-                break;
-            case 'type':
-                $srch->addCondition('promotion_type', '=', intval($val));
-                break;
-            case 'position':
-                $srch->addCondition('promotion_banner_position', '=', $val);
-                break;
-            case 'date_from':
-                $srch->addDirectCondition("('".FatApp::getDb()->quoteVariable($val)."' BETWEEN promotion_start_date and promotion_end_date)");
-                break;
-            case 'date_to':
-                $srch->addDirectCondition("('".FatApp::getDb()->quoteVariable($val)."' BETWEEN promotion_start_date and promotion_end_date)");
-                break;
-            case 'date_interval':
-                $arr = explode("~", $val);
-                $srch->addDirectCondition("((promotion_start_date BETWEEN ".FatApp::getDb()->quoteVariable($arr[0])." and ".FatApp::getDb()->quoteVariable($arr[1]).") OR (promotion_end_date BETWEEN ".FatApp::getDb()->quoteVariable($arr[0])." and '".FatApp::getDb()->quoteVariable($arr[1])."'))");
-                break;
-            case 'impressions_from':
-                $srch->addCondition('totImpressions', '>=', intval($val));
-                break;
-            case 'impressions_to':
-                $srch->addCondition('totImpressions', '<=', intval($val));
-                break;
-            case 'clicks_from':
-                $srch->addCondition('totClicks', '>=', intval($val));
-                break;
-            case 'clicks_to':
-                $srch->addCondition('totClicks', '<=', intval($val));
-                break;
-            case 'status':
-                $srch->addCondition('promotion_status', '=', $val);
-                break;
-            case 'approved':
-                $srch->addCondition('promotion_is_approved', '=', $val);
-                break;
-            case 'page':
-                $srch->setPageNumber($val);
-                break;
-            case 'order_by':
-                switch ($val) {
-                case 'cost':
-                    $srch->addOrder('promotion_cost', 'desc');
+                case 'promoter':
+                    $srch->addCondition('user_name', 'like', '%' . $val . '%');
                     break;
-                case 'random':
-                    $srch->addOrder('rand()');
+                case 'user':
+                    $srch->addCondition('promotion_user_id', '=', intval($val));
                     break;
-                }
-                break;
-            case 'pagesize':
-                $srch->setPageSize($val);
-                break;
+                case 'shop':
+                    $srch->addCondition('promotion_shop_id', '=', intval($val));
+                    break;
+                case 'product':
+                    $srch->addCondition('promotion_product_id', '=', intval($val));
+                    break;
+                case 'type':
+                    $srch->addCondition('promotion_type', '=', intval($val));
+                    break;
+                case 'position':
+                    $srch->addCondition('promotion_banner_position', '=', $val);
+                    break;
+                case 'date_from':
+                    $srch->addDirectCondition("('".FatApp::getDb()->quoteVariable($val)."' BETWEEN promotion_start_date and promotion_end_date)");
+                    break;
+                case 'date_to':
+                    $srch->addDirectCondition("('".FatApp::getDb()->quoteVariable($val)."' BETWEEN promotion_start_date and promotion_end_date)");
+                    break;
+                case 'date_interval':
+                    $arr = explode("~", $val);
+                    $srch->addDirectCondition("((promotion_start_date BETWEEN ".FatApp::getDb()->quoteVariable($arr[0])." and ".FatApp::getDb()->quoteVariable($arr[1]).") OR (promotion_end_date BETWEEN ".FatApp::getDb()->quoteVariable($arr[0])." and '".FatApp::getDb()->quoteVariable($arr[1])."'))");
+                    break;
+                case 'impressions_from':
+                    $srch->addCondition('totImpressions', '>=', intval($val));
+                    break;
+                case 'impressions_to':
+                    $srch->addCondition('totImpressions', '<=', intval($val));
+                    break;
+                case 'clicks_from':
+                    $srch->addCondition('totClicks', '>=', intval($val));
+                    break;
+                case 'clicks_to':
+                    $srch->addCondition('totClicks', '<=', intval($val));
+                    break;
+                case 'status':
+                    $srch->addCondition('promotion_status', '=', $val);
+                    break;
+                case 'approved':
+                    $srch->addCondition('promotion_is_approved', '=', $val);
+                    break;
+                case 'page':
+                    $srch->setPageNumber($val);
+                    break;
+                case 'order_by':
+                    switch ($val) {
+                        case 'cost':
+                            $srch->addOrder('promotion_cost', 'desc');
+                            break;
+                        case 'random':
+                            $srch->addOrder('rand()');
+                            break;
+                    }
+                    break;
+                case 'pagesize':
+                    $srch->setPageSize($val);
+                    break;
             }
         }
         $srch->addMultipleFields(
@@ -347,24 +347,24 @@ class Promotions extends MyAppModel
                 continue;
             }
             switch ($key) {
-            case 'id':
-                $srch->addCondition('promotion_id', '=', intval($val));
-                break;
-            case 'user':
-                $srch->addCondition('promotion_user_id', '=', intval($val));
-                break;
-            case 'date_from':
-                $srch->addCondition('lprom_date', '>=', $val . ' 00:00:00');
-                break;
-            case 'date_to':
-                $srch->addCondition('lprom_date', '<=', $val . ' 23:59:59');
-                break;
-            case 'page':
-                $srch->setPageNumber($val);
-                break;
-            case 'pagesize':
-                $srch->setPageSize($val);
-                break;
+                case 'id':
+                    $srch->addCondition('promotion_id', '=', intval($val));
+                    break;
+                case 'user':
+                    $srch->addCondition('promotion_user_id', '=', intval($val));
+                    break;
+                case 'date_from':
+                    $srch->addCondition('lprom_date', '>=', $val . ' 00:00:00');
+                    break;
+                case 'date_to':
+                    $srch->addCondition('lprom_date', '<=', $val . ' 23:59:59');
+                    break;
+                case 'page':
+                    $srch->setPageNumber($val);
+                    break;
+                case 'pagesize':
+                    $srch->setPageSize($val);
+                    break;
             }
         }
         $srch->addMultipleFields(
@@ -458,21 +458,21 @@ class Promotions extends MyAppModel
                 continue;
             }
             switch ($key) {
-            case 'promotion':
-                $srch->addCondition('pcharge_promotion_id', '=', intval($val));
-                break;
-            case 'date_from':
-                $srch->addCondition('pcharge_date', '>=', $val . ' 00:00:00');
-                break;
-            case 'date_to':
-                $srch->addCondition('pcharge_date', '<=', $val . ' 23:59:59');
-                break;
-            case 'page':
-                $srch->setPageNumber($val);
-                break;
-            case 'pagesize':
-                $srch->setPageSize($val);
-                break;
+                case 'promotion':
+                    $srch->addCondition('pcharge_promotion_id', '=', intval($val));
+                    break;
+                case 'date_from':
+                    $srch->addCondition('pcharge_date', '>=', $val . ' 00:00:00');
+                    break;
+                case 'date_to':
+                    $srch->addCondition('pcharge_date', '<=', $val . ' 23:59:59');
+                    break;
+                case 'page':
+                    $srch->setPageNumber($val);
+                    break;
+                case 'pagesize':
+                    $srch->setPageSize($val);
+                    break;
             }
         }
         $rs = $srch->getResultSet();
@@ -495,21 +495,21 @@ class Promotions extends MyAppModel
                 continue;
             }
             switch ($key) {
-            case 'promotion':
-                $srch->addCondition('pclick_promotion_id', '=', intval($val));
-                break;
-            case 'date_from':
-                $srch->addCondition('pclick_datetime', '>=', $val . ' 00:00:00');
-                break;
-            case 'date_to':
-                $srch->addCondition('pclick_datetime', '<=', $val . ' 23:59:59');
-                break;
-            case 'page':
-                $srch->setPageNumber($val);
-                break;
-            case 'pagesize':
-                $srch->setPageSize($val);
-                break;
+                case 'promotion':
+                    $srch->addCondition('pclick_promotion_id', '=', intval($val));
+                    break;
+                case 'date_from':
+                    $srch->addCondition('pclick_datetime', '>=', $val . ' 00:00:00');
+                    break;
+                case 'date_to':
+                    $srch->addCondition('pclick_datetime', '<=', $val . ' 23:59:59');
+                    break;
+                case 'page':
+                    $srch->setPageNumber($val);
+                    break;
+                case 'pagesize':
+                    $srch->setPageSize($val);
+                    break;
             }
         }
         $rs = $srch->getResultSet();
@@ -541,16 +541,16 @@ class Promotions extends MyAppModel
                 continue;
             }
             switch ($key) {
-            case 'promotion':
-                $srch->addCondition('pclick_promotion_id', '=', intval($val));
-                break;
-            case 'date':
-                $srch->addCondition('pclick_datetime', '>', $val . ' 00:00:00');
-                break;
-            case 'start_id':
-                $srch->addCondition('pclick_id', '>', intval($val));
-                //echo($srch->getquery()."<br/><br/>");
-                break;
+                case 'promotion':
+                    $srch->addCondition('pclick_promotion_id', '=', intval($val));
+                    break;
+                case 'date':
+                    $srch->addCondition('pclick_datetime', '>', $val . ' 00:00:00');
+                    break;
+                case 'start_id':
+                    $srch->addCondition('pclick_id', '>', intval($val));
+                    //echo($srch->getquery()."<br/><br/>");
+                    break;
             }
         }
         //echo($srch->getquery()."<br/><br/>");

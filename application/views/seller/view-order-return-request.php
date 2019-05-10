@@ -6,23 +6,31 @@
 		<div class="content-header  row justify-content-between mb-3">
 			<div class="col-md-auto">
 				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ;
-        /* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']); */ ?></h2>
+				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ; ?></h2>
 			</div>
+            <div class="col-md-auto">
+                <div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller', 'orderReturnRequests'); ?>" class="btn btn--primary ripplelink btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+            </div>
 		</div>
 		<div class="content-body">
 			<div class="cards">
 				<div class="cards-header p-3">
 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
-				<div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller', 'orderReturnRequests'); ?>" class="link"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
+                    <div class="btn-group"><?php if( $canEscalateRequest ){ ?>
+                            <a class="btn btn--secondary ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
+                            <?php } ?>
+                            <?php if( $canApproveReturnRequest ){ ?>
+                            <a class="btn btn--primary ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Seller','approveOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Approve_Refund', $siteLangId); ?></a>
+                            <?php } ?>
+                    </div>
 				</div>
 				<div class="cards-content p-3">
           <div class="grids--offset">
              <div class="grid-layout">
                <div class="row">
                  <div class="col-lg-6 col-md-6 col-sm-6">
-                  <h5><?php echo Labels::getLabel( 'LBL_Vendor_Return_Address', $siteLangId ); ?></h5>
-                  <?php echo ($vendorReturnAddress['ura_name'] != NULL ) ? '<h6>'.$vendorReturnAddress['ura_name'].'</h6>' : '';?>
+                  <h6><?php echo Labels::getLabel( 'LBL_Vendor_Return_Address', $siteLangId ); ?></h6>
+                  <?php echo ($vendorReturnAddress['ura_name'] != NULL ) ? '<strong>'.$vendorReturnAddress['ura_name'].'</strong>' : '';?>
                   <p>
                   <?php echo (strlen($vendorReturnAddress['ura_address_line_1']) > 0) ? $vendorReturnAddress['ura_address_line_1'].'<br/>' : '';?>
                   <?php echo (strlen($vendorReturnAddress['ura_address_line_2'])>0)?$vendorReturnAddress['ura_address_line_2'].'<br>':'';?>
@@ -49,7 +57,6 @@
                 </div>
                </div>
 
-
             <div class="btn-grp"><?php if( $canEscalateRequest ){ ?>
                               <a class="btn btn--primary ripplelink btn--sm " onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','escalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
             <?php } ?>
@@ -57,6 +64,7 @@
             <?php if( $canApproveReturnRequest ){ ?>
             <a class="btn btn--primary ripplelink btn--sm " onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Seller','approveOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Approve_Refund', $siteLangId); ?></a>
             <?php } ?> </div>
+
              </div>
           </div>
 
@@ -143,8 +151,7 @@
             <div class="gap"></div>
             <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
             <div id="loadMoreBtnDiv"></div>
-            <ul class="media media--details" id="messagesList">
-            </ul>
+            <ul class="messages-list" id="messagesList"></ul>
 
             <?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
 
@@ -153,22 +160,19 @@
             $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
             $frmMsg->developerTags['fld_default_col'] = 12;
             ?>
-            <ul class="media media--details">
-              <li>
-                <div class="grid grid--first">
-                  <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
-                </div>
-                <div class="grid grid--second">
-                  <span class="media__title"><?php echo $logged_user_name; ?></span>
-                  <div class="grid grid--third">
-                    <div class="bg-gray-light p-3 pb-0">
-                    <?php echo $frmMsg->getFormHtml(); ?>
-                    </div>
-                  </div>
-                </div>
-
-              </li>
-            </ul>
+            <div class="messages-list" >
+                <ul>
+                   <li>
+                       <div class="msg_db">
+                           <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($logged_user_id, 'THUMB', 1)); ?>" alt="<?php echo $logged_user_name; ?>" title="<?php echo $logged_user_name; ?>"></div>
+                       </div>
+                       <div class="msg__desc">
+                           <span class="msg__title"><?php echo $logged_user_name; ?></span>
+                            <?php echo $frmMsg->getFormHtml(); ?>
+                       </div>
+                   </li>
+                </ul>
+            </div>
             <?php } ?>
 
 				</div>

@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	searchProductBrands(document.frmSearch);
-	
+
 	$('input[name=\'user_name\']').autocomplete({
-		'source': function(request, response) {		
+		'source': function(request, response) {
 			$.ajax({
 				url: fcom.makeUrl('Users', 'autoCompleteJson'),
 				data: {keyword: request, fIsAjax:1},
@@ -19,9 +19,10 @@ $(document).ready(function(){
 			$("input[name='user_id']").val( item['value'] );
 			$("input[name='user_name']").val( item['name'] );
 		}
-	});	
+	});
 });
-$(document).delegate('.logo-language-js','change',function(){
+$(document).on('change','.language-js',function(){
+/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
 	brandImages(brand_id, 'logo', lang_id);
@@ -35,11 +36,11 @@ $(document).delegate('.image-language-js','change',function(){
 	var currentPage = 1;
 	var runningAjaxReq = false;
 
-	goToSearchPage = function(page) {	
+	goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmBrandSearchPaging;		
+		var frm = document.frmBrandSearchPaging;
 		$(frm.page).val(page);
 		searchProductBrands(frm);
 	}
@@ -49,7 +50,7 @@ $(document).delegate('.image-language-js','change',function(){
 		searchProductBrands(frm);
 	}
 
-	
+
 
 	setupBrand = function(frm) {
 		if (!$(frm).validate()) return;
@@ -75,12 +76,12 @@ $(document).delegate('.image-language-js','change',function(){
 				fcom.updateFaceboxContent(t);
 			});
 			};
-	
+
 	setupBrandLang=function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('brands', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId>0) {
 				brandRequestLangForm(t.brandId, t.langId);
 				return ;
@@ -104,7 +105,7 @@ $(document).delegate('.image-language-js','change',function(){
 			$("#listing").html(res);
 		});
 	};
-	
+
     brandRequestMediaForm = function(brandId){
 		fcom.displayProcessing();
         fcom.ajax(fcom.makeUrl('Brands', 'requestMedia', [brandId]), '', function(t) {
@@ -113,7 +114,7 @@ $(document).delegate('.image-language-js','change',function(){
             fcom.updateFaceboxContent(t);
         });
 	};
-	
+
 	brandImages = function(brandId, fileType, langId){
 		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId, fileType, langId]), '', function(t) {
 			if(fileType=='logo') {
@@ -125,20 +126,20 @@ $(document).delegate('.image-language-js','change',function(){
 		});
 	};
 
-	
+
 	deleteRecord = function(id){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
-		fcom.ajax(fcom.makeUrl('brands','deleteRecord'),data,function(res){		
+		fcom.ajax(fcom.makeUrl('brands','deleteRecord'),data,function(res){
 			reloadList();
 		});
 	};
-	
+
 	clearSearch = function(){
 		document.frmSearch.reset();
 		searchProductBrands(document.frmSearch);
 	};
-	
+
 	deleteMedia = function( brandId, fileType, langId ){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandMedia',[brandId, fileType, langId]), '', function(t) {
@@ -150,31 +151,31 @@ $(document).delegate('.image-language-js','change',function(){
 	addBrandRequestForm= function(id){
 
 		$.facebox(function() {brandRequestForm(id)
-			
+
 		});
 	}
 	brandRequestForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmBrandSearchPaging;			
+		var frm = document.frmBrandSearchPaging;
 			fcom.ajax(fcom.makeUrl('brands', 'requestForm', [id]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 		});
 	};
-	
+
 	showHideCommentBox = function(val){
 		if(val == 2){
 			$('#div_comments_box').removeClass('hide');
 		}else{
 			$('#div_comments_box').addClass('hide');
-		}		
+		}
 	};
 
 })();
 
-$(document).on('click','.uploadFile-Js',function(){ 
+$(document).on('click','.uploadFile-Js',function(){
 	var node = this;
-	$('#form-upload').remove();	
-	
+	$('#form-upload').remove();
+
 	var formName = $(node).attr('data-frm');
 	if(formName == 'frmBrandImage'){
         var brandId = document.frmBrandImage.brand_id.value;
@@ -185,24 +186,24 @@ $(document).on('click','.uploadFile-Js',function(){
         var langId = document.frmBrandLogo.lang_id.value;
 		var imageType = 'logo';
 	}
-    
+
     var fileType = $(node).attr('data-file_type');
-    
+
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>'); 	
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>');
 	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>');
-    frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');  	
-	frm = frm.concat('</form>'); 	
+    frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');
+	frm = frm.concat('</form>');
 	$( 'body' ).prepend( frm );
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if ( typeof timer != 'undefined' ) {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 				url: fcom.makeUrl('Brands', 'uploadMedia'),
 				type: 'post',
@@ -219,7 +220,7 @@ $(document).on('click','.uploadFile-Js',function(){
 				},
 				success: function(ans) {
 						$('.text-danger').remove();
-						$('#input-field').html(ans.msg);						
+						$('#input-field').html(ans.msg);
 						if( ans.status == true ){
 							$('#input-field').removeClass('text-danger');
 							$('#input-field').addClass('text-success');
@@ -234,7 +235,7 @@ $(document).on('click','.uploadFile-Js',function(){
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+				});
 		}
 	}, 500);
 });

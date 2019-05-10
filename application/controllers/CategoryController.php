@@ -21,7 +21,6 @@ class CategoryController extends MyAppController
 
         $db = FatApp::getDb();
         $frm = $this->getProductSearchForm();
-        //$get = FatApp::getParameters();
         $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
 
         $get['category'] = $categoryId;
@@ -72,6 +71,7 @@ class CategoryController extends MyAppController
         }
 
         $rs = $srch->getResultSet();
+        
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
 

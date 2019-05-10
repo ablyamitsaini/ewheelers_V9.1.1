@@ -143,6 +143,14 @@ $(document).ready(function(){
 		});
 	};
 
+	toggleBulkStatues = function(status){
+        if(!confirm(langLbl.confirmUpdateStatus)){
+            return false;
+        }
+        $("#frmContentBlockListing input[name='status']").val(status);
+        $("#frmContentBlockListing").submit();
+    };
+
 })();
 
 $(document).on('click','.bgImageFile-Js',function(){

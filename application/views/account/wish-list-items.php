@@ -13,7 +13,7 @@
             </i><?php echo Labels::getLabel('LBL_Move', $siteLangId); ?>
         </a>
         <a class="btn btn--primary btn--sm" onClick="addSelectedToCart(event);" href="javascript:void(0)">
-            <i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart" href="/images/retina/sprite.svg#add-cart"></use></svg></i><?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
+            <i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#add-cart"></use></svg></i><?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
         </a>
         <a class="btn btn--primary btn--sm" onClick="removeSelectedFromWishlist( <?php echo $wishListRow['uwlist_id']; ?>, event );" href="javascript:void(0)">
             <i class="fa fa-times"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>

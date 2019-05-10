@@ -6,16 +6,23 @@
 		<div class="col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Profile',$siteLangId);?></h2>
-      <?php  if( $showSellerActivateButton ){ ?>
-                    <a href="<?php echo CommonHelper::generateUrl('Seller');?>" class="btn btn--secondary btn--sm panel__head_action" title="<?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?>" ><strong> <?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?></strong> </a>
-      <?php  } ?>
-
 		</div>
+        <div class="col-md-auto">
+            <div class="actions">
+                <?php if( $showSellerActivateButton ){ ?>
+                        <a href="<?php echo CommonHelper::generateUrl('Seller');?>" class="btn btn--secondary btn--sm panel__head_action" title="<?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?>" ><strong> <?php echo Labels::getLabel('LBL_Activate_Seller_Account',$siteLangId); ?></strong> </a>
+                <?php } ?>
+            </div>
+        </div>
 	</div>
 	<div class="content-body">
 		<div class="cards">
 			<div class="cards-header p-3">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Account_Information',$siteLangId);?></h5>
+                <div class="btn-group">
+                    <a class="btn btn--secondary btn--sm" href="javascript:void(0)" onclick="truncateDataRequestPopup()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data',$siteLangId); ?></a>
+                    <a class="btn btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
+                </div>
 			</div>
 			<div class="cards-content p-3">
 				<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
@@ -29,26 +36,8 @@
 						<?php } ?>
 					</ul>
 				</div>
-				<div class="row">
-				 <div class="col-lg-9 col-md-9" id="profileInfoFrmBlock">
-					<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
-				 </div>
-				 <div class="col-lg-3 col-md-3 ">
-				 <?php if( User::canViewBuyerTab() && User::canViewSupplierTab() ){ ?>
-					<label class="field_label"><strong><?php echo Labels::getLabel('LBL_Preferred_Dashboard',$siteLangId);?> </strong></label>
-					<?php } ?>
-					 <ul class="switch setactive-js">
-						<?php if( User::canViewBuyerTab() && ( User::canViewSupplierTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() ) ){ ?>
-						<li <?php echo (User::USER_BUYER_DASHBOARD == $userPreferredDashboard)?'class="is-active"':''?>><a href="javascript:void(0)" onClick="setPreferredDashboad(<?php echo User::USER_BUYER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Buyer',$siteLangId);?></a></li>
-						<?php } ?>
-						<?php if( User::canViewSupplierTab() && ( User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() ) ){ ?>
-						<li <?php echo (User::USER_SELLER_DASHBOARD == $userPreferredDashboard)?'class="is-active"':''?>><a href="javascript:void(0)" onClick="setPreferredDashboad(<?php echo User::USER_SELLER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Seller',$siteLangId);?></a></li><?php }?>
-					 </ul>
-					 <div class="gap"></div>
-					 <div class="gap"></div>
-					 <a class="btn btn--block btn--secondary btn--sm" href="javascript:void(0)" onclick="truncateDataRequestPopup()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data',$siteLangId); ?></a>
-					 <a class="btn btn--block btn--primary btn--sm" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data',$siteLangId); ?></a>
-				 </div>
+				<div id="profileInfoFrmBlock">
+					<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>				 
 				</div>
 			</div>
 		</div>

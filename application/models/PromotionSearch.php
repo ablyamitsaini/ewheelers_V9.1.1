@@ -27,7 +27,7 @@ class PromotionSearch extends SearchBase
         $this->addCondition('promotion_active', '=', applicationConstants::YES);
     }
 
-    public function joinSlides($langId = 0, $type = Promotion::TYPE_SLIDES, $alias ='sl')
+    public function joinSlides($langId = 0, $type = Promotion::TYPE_SLIDES, $alias = 'sl')
     {
         $langId = FatUtility::int($langId);
         if ($this->langId) {
@@ -42,7 +42,7 @@ class PromotionSearch extends SearchBase
         );
     }
 
-    public function joinBannersAndLocation($langId = 0, $type = Promotion::TYPE_BANNER, $alias ='b', $deviceType = 0)
+    public function joinBannersAndLocation($langId = 0, $type = Promotion::TYPE_BANNER, $alias = 'b', $deviceType = 0)
     {
         $langId = FatUtility::int($langId);
         $deviceType = FatUtility::int($deviceType);

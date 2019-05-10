@@ -104,14 +104,14 @@ class ShopSearch extends SearchBase
             }
         }
     }
-    public function joinSellerSubscription($langId= 0)
+    public function joinSellerSubscription($langId = 0)
     {
         $this->joinSellerOrder();
         $this->joinSellerOrderSubscription($langId);
         $this->addSubscriptionValidCondition();
     }
 
-    public function addSubscriptionValidCondition($date='')
+    public function addSubscriptionValidCondition($date = '')
     {
         if ($date =='') {
             $date = date("Y-m-d");

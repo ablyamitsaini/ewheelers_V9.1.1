@@ -189,7 +189,7 @@
 			$('#product_options_list').append('<li id="product-option' + item['value'] + '"><i class="remove_option-js remove_param fa fa-trash"></i> ' +item['label'] + '<input type="hidden" name="product_option[]" value="' + item['value'] + '"  /></li>');
 		}
 	});
-	$('#product_options_list').delegate('.remove_option-js', 'click', function() {
+	$('#product_options_list').on('click', '.remove_option-js', function() {
 		$(this).parent().remove();
 	});
 
@@ -229,7 +229,7 @@
 			}
 		});
 
-		$('#product-tag-js').delegate('.remove_tag-js', 'click', function() {
+		$('#product-tag-js').on('click', '.remove_tag-js', function() {
 			$(this).parent().remove();
 		});
 

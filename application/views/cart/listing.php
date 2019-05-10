@@ -63,6 +63,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                                             <a href="javascript:void(0)" class="btn btn--sm btn--gray ripplelink" onClick="moveToWishlist( <?php echo $product['selprod_id']; ?>, event, '<?php echo md5($product['key']); ?>' );"
                                         title="<?php echo Labels::getLabel('LBL_Move_to_wishlist', $siteLangId); ?>"><?php echo Labels::getLabel('LBL_Move_to_wishlist', $siteLangId); ?></a>
                                         <?php  } else {
+
                                             echo Labels::getLabel('LBL_Already_added_to_your_wishlist.', $siteLangId);
                                         }
                                     }
@@ -130,6 +131,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
             <a class="coupon-input btn btn--secondary btn--block" href="javascript:void(0)" onclick="getPromoCode()"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId); ?></a>
         </div>
         <?php }?>
+
         <div class="cartdetail__footer">
             <table class="table--justify">
                 <tbody>
@@ -157,6 +159,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                     <?php }?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
+
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
@@ -167,6 +170,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                             <div class="buy-group">
                                 <a class="btn btn--primary" href="<?php echo CommonHelper::generateUrl(); ?>"><?php echo Labels::getLabel('LBL_Shop_More', $siteLangId); ?></a>
                                 <a class="btn btn--primary-border" href="javascript:void(0)" onclick="goToCheckout()"><?php echo Labels::getLabel('LBL_Checkout', $siteLangId); ?></a>
+
                             </div>
                         </td>
                     </tr>

@@ -857,7 +857,7 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false);
     }
 
-    public function ProfileImageForm()
+    public function profileImageForm()
     {
         $userId = UserAuthentication::getLoggedUserId();
         $imgFrm = $this->getProfileImageForm();
@@ -1453,7 +1453,7 @@ class AccountController extends LoggedUserController
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
         $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
 
-        /*     $favProductObj = new UserWishListProductSearch();
+        /* $favProductObj = new UserWishListProductSearch();
         $favProductObj->joinFavouriteProducts(); */
 
 
@@ -2466,8 +2466,7 @@ class AccountController extends LoggedUserController
                 $_FILES['photo']['name'],
                 0,
                 false
-            )
-            ) {
+            )) {
                 Message::addMessage(Labels::getLabel('MSG_Profile_Picture_Updated', $this->siteLangId));
             } else {
                 Message::addErrorMessage($attachment->getError());

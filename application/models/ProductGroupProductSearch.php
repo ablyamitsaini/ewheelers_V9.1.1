@@ -23,7 +23,7 @@ class ProductGroupProductSearch extends SearchBase
         $this->productsJoined = false;
         /* if ( $this->langId > 0 ) {
         $this->joinTable( ProductGroup::DB_TBL_LANG, 'LEFT OUTER JOIN',
-        'prodgrouplang_prodgroup_id = pg. 	prodgroup_id
+        'prodgrouplang_prodgroup_id = pg.prodgroup_id
         AND prodgrouplang_lang_id = ' . $this->langId, 'pg_l');
         } */
     }

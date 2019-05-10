@@ -1,15 +1,15 @@
 $(document).ready(function(){ 
 	shopForm();		
 });
-$(document).delegate('.logo-language-js','change',function(){
+$(document).on('change','.logo-language-js',function(){
 	var lang_id = $(this).val();
 	shopImages('logo',lang_id);
 });
-$(document).delegate('.banner-language-js','change',function(){
+$(document).on('change','.banner-language-js',function(){
 	var lang_id = $(this).val();
 	shopImages('banner',lang_id);
 });
-$(document).delegate('.bg-language-js','change',function(){
+$(document).on('change','.bg-language-js',function(){
 	var lang_id = $(this).val();
 	shopImages('bg',lang_id);
 });

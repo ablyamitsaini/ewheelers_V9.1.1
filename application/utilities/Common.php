@@ -6,7 +6,7 @@ class Common
         $cartObj = new Cart();
         $siteLangId = CommonHelper::getLangId();
         $loggedUserId = 0;
-        if(UserAuthentication::isUserLogged() ) {
+        if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
 
@@ -32,7 +32,7 @@ class Common
     public static function countWishList()
     {
         $loggedUserId = 0;
-        if(UserAuthentication::isUserLogged() ) {
+        if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
 
@@ -72,7 +72,7 @@ class Common
         $template->set('siteLangId', CommonHelper::getLangId());
         $isUserLogged = UserAuthentication::isUserLogged();
         $template->set('isUserLogged', $isUserLogged);
-        if($isUserLogged ) {
+        if ($isUserLogged) {
             $template->set('userName', ucfirst(CommonHelper::getUserFirstName(UserAuthentication::getLoggedUserAttribute('user_name'))));
             $template->set('userEmail', UserAuthentication::getLoggedUserAttribute('user_email'));
             $template->set('profilePicUrl', CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(),'croped',true)));
@@ -109,14 +109,10 @@ class Common
 
         $categoriesMainRootArr = array();
 
-        if($productRows) {
-
-
-
+        if ($productRows) {
             $categoriesMainRootArr = array_unique($mainRootCategories);
 
             array_flip($categoriesMainRootArr);
-
         }
 
         /* ] */
@@ -127,14 +123,13 @@ class Common
         $catSrch->doNotCalculateRecords();
         $catSrch->addCondition('prodcat_active', '=', applicationConstants::YES);
         $catSrch->addCondition('prodcat_deleted', '=', applicationConstants::NO);
-        if($categoriesMainRootArr) {
-
+        if ($categoriesMainRootArr) {
             $catSrch->addCondition('prodcat_id', 'in', $categoriesMainRootArr);
         }
         $catSrch->setPageSize(25);
         $catRs = $catSrch->getResultSet();
         $categoriesArr = [];
-        while($row = FatApp::getDb()->fetch($catRs)){
+        while ($row = FatApp::getDb()->fetch($catRs)) {
             $categoriesArr[$row['prodcat_id']] = strip_tags($row['category_name']);
         }
 
@@ -149,7 +144,7 @@ class Common
         //$template->set( 'productRootCategoriesArr', $productRootCategoriesArr );
     }
 
-    static function getSiteSearchForm()
+    public static function getSiteSearchForm()
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmSiteSearch');
@@ -178,7 +173,7 @@ class Common
         $template->set('siteLangId', $siteLangId);
     }
 
-    static function footerTopBrands( $template )
+    public static function footerTopBrands($template)
     {
         $siteLangId = CommonHelper::getLangId();
 
@@ -201,7 +196,7 @@ class Common
         $template->set('siteLangId', $siteLangId);
     }
 
-    static function footerTopCategories( $template )
+    public static function footerTopCategories($template)
     {
         $siteLangId = CommonHelper::getLangId();
 
@@ -224,7 +219,7 @@ class Common
         $template->set('siteLangId', $siteLangId);
     }
 
-    static function footerTrustBanners($template)
+    public static function footerTrustBanners($template)
     {
         $siteLangId = CommonHelper::getLangId();
 
@@ -233,7 +228,7 @@ class Common
         $template->set('footerData', $footerData);
     }
 
-    static function getNewsLetterForm($langId)
+    public static function getNewsLetterForm($langId)
     {
         $frm = new Form('frmNewsLetter');
         $frm->setRequiredStarWith('');
@@ -278,7 +273,7 @@ class Common
         $template->set('siteLangId', CommonHelper::getLangId());
     }
 
-    public static function footerSocialMedia( $template )
+    public static function footerSocialMedia($template)
     {
         $siteLangId = CommonHelper::getLangId();
 
@@ -334,7 +329,7 @@ class Common
         $template->set('siteLangId', $siteLangId);
     }
 
-    static function getBlogSearchForm()
+    public static function getBlogSearchForm()
     {
         $frm = new Form('frmBlogSearch');
         $frm->setFormTagAttribute('autocomplete', 'off');
@@ -344,7 +339,7 @@ class Common
         return $frm;
     }
 
-    static function getPollForm($pollId, $langId)
+    public static function getPollForm($pollId, $langId)
     {
         $frm = new Form('frmPoll');
         $frm->addHiddenField('', 'pollfeedback_polling_id', $pollId);
@@ -355,24 +350,22 @@ class Common
         return $frm;
     }
 
-    static function pollForm($template)
+    public static function pollForm($template)
     {
         $action = FatApp::getAction();
         $controller = FatApp::getController();
         $params = FatApp::getParameters();
 
-        if($controller == 'ProductsController' && $action == 'view' && !empty($params)) {
+        if ($controller == 'ProductsController' && $action == 'view' && !empty($params)) {
             $productId = FatUtility::int($params[0]);
             $selProd = SellerProduct::getAttributesById($productId, array('selprod_product_id'), false);
             $pollQuest = Polling::getProductPoll($selProd['selprod_product_id'], CommonHelper::getLangId());
-        }
-        elseif($controller == 'CategoryController' && $action == 'view' && !empty($params)) {
-
+        } elseif ($controller == 'CategoryController' && $action == 'view' && !empty($params)) {
             $categoryId = FatUtility::int($params[0]);
             $pollQuest = Polling::getCategoryPoll($categoryId, CommonHelper::getLangId());
         }
 
-        if(empty($pollQuest)) {
+        if (empty($pollQuest)) {
             $pollQuest = Polling::getGeneraicPoll(CommonHelper::getLangId());
         }
 

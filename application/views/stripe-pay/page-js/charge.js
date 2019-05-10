@@ -23,7 +23,7 @@
 	var _this			= false;
 	var _subText 		= false;
 	$(document).ready(function() {
-		$(window).load(function(){
+		$(window).on('load',function(){
 			try{
 				
 				if(typeof publishable_key != typeof undefined){

@@ -496,7 +496,7 @@ class BuyerController extends BuyerBaseController
         $srch->addMultipleFields(array('op_status_id', 'op_id','op_product_type'));
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -553,7 +553,7 @@ class BuyerController extends BuyerBaseController
         $srch->addOrder("op_id", "DESC");
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1073,7 +1073,7 @@ class BuyerController extends BuyerBaseController
         /* $srch->addMultipleFields( array('op_status_id', 'op_selprod_user_id', 'op_selprod_code','op_order_id','op_selprod_id','op_is_batch') ); */
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1142,7 +1142,7 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1324,7 +1324,7 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1391,7 +1391,7 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2152,7 +2152,7 @@ class BuyerController extends BuyerBaseController
     $rs = $srch->getResultSet();
     $opDetail = FatApp::getDb()->fetch( $rs );
 
-    if( !$opDetail || CommonHelper::is_multidim_array($opDetail) ){
+    if( !$opDetail || CommonHelper::isMultidimArray($opDetail) ){
     Message::addErrorMessage(Labels::getLabel( 'MSG_ERROR_INVALID_ACCESS', $this->siteLangId ));
     CommonHelper::redirectUserReferer();
     }

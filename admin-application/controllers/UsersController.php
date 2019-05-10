@@ -76,22 +76,22 @@ class UsersController extends AdminBaseController
         $type = FatApp::getPostedData('type', FatUtility::VAR_STRING, 0);
 
         switch ($type) {
-        case User::USER_TYPE_SELLER:
-            $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_BUYER:
-            $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_ADVERTISER:
-            $srch->addCondition('u.user_is_advertiser', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_AFFILIATE:
-            $srch->addCondition('u.user_is_affiliate', '=', applicationConstants::YES);
-            break;
-        case User::USER_TYPE_BUYER_SELLER:
-            $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
-            $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
-            break;
+            case User::USER_TYPE_SELLER:
+                $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_BUYER:
+                $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_ADVERTISER:
+                $srch->addCondition('u.user_is_advertiser', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_AFFILIATE:
+                $srch->addCondition('u.user_is_affiliate', '=', applicationConstants::YES);
+                break;
+            case User::USER_TYPE_BUYER_SELLER:
+                $srch->addCondition('u.user_is_supplier', '=', applicationConstants::YES);
+                $srch->addCondition('u.user_is_buyer', '=', applicationConstants::YES);
+                break;
         }
 
         $srch->addCondition('u.user_is_shipping_company', '=', applicationConstants::NO);
@@ -618,15 +618,46 @@ class UsersController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
+        $this->markAsDeleted($user_id);
+        $this->set('msg', $this->str_setup_successful);
+        $this->_template->render(false, false, 'json-success.php');
+    }
 
+    public function deleteSelected()
+    {
+        $this->objPrivilege->canEditUsers();
+        $userIdsArr = FatUtility::int(FatApp::getPostedData('user_ids'));
+
+        if (empty($userIdsArr)) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($userIdsArr as $user_id) {
+            if (1 > $user_id) {
+                continue;
+            }
+            $this->markAsDeleted($user_id);
+        }
+        $this->set('msg', $this->str_delete_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function markAsDeleted($user_id)
+    {
+        $user_id = FatUtility::int($user_id);
+        if (1 > $user_id) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
         $userObj = new User($user_id);
         $userObj->assignValues(array('user_deleted'=>applicationConstants::YES));
         if (!$userObj->save()) {
             Message::addErrorMessage($userObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $this->set('msg', $this->str_setup_successful);
-        $this->_template->render(false, false, 'json-success.php');
     }
 
     public function changePasswordForm($user_id)
@@ -1112,7 +1143,7 @@ class UsersController extends AdminBaseController
         $newTabLangId=0;
         if ($sformfield_id>0) {
             $languages=Language::getAllNames();
-            foreach ($languages as $langId =>$langName) {
+            foreach ($languages as $langId => $langName) {
                 if (!$row=SupplierFormFields::getAttributesByLangId($langId, $sformfield_id)) {
                     $newTabLangId = $langId;
                     break;
@@ -1193,7 +1224,7 @@ class UsersController extends AdminBaseController
 
         $newTabLangId = 0;
         $languages = Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             if (!$row = SupplierFormFields::getAttributesByLangId($langId, $sformfield_id)) {
                 $newTabLangId = $langId;
                 break;
@@ -1206,7 +1237,7 @@ class UsersController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function langSellerApprovalForm($sformfield_id=0, $lang_id=0)
+    public function langSellerApprovalForm($sformfield_id = 0, $lang_id = 0)
     {
         $this->objPrivilege->canEditSellerApprovalForm();
 
@@ -1602,24 +1633,58 @@ class UsersController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
+
         $userObj = new User($userId);
         $srch = $userObj->getUserSearchObj();
         $rs = $srch->getResultSet();
         $data=FatApp::getDb()->fetch($rs);
+        $status = ($data['credential_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
-        if ($data==false) {
-            Message::addErrorMessage($this->str_invalid_request);
-            FatUtility::dieWithError(Message::getHtml());
+        $this->updateUserStatus($userId, $status);
+
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function toggleBulkStatuses()
+    {
+        $this->objPrivilege->canEditUsers();
+
+        $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
+        $userIdsArr = FatUtility::int(FatApp::getPostedData('user_ids'));
+        if (empty($userIdsArr) || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
         }
 
-        $status = ($data['credential_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+        foreach ($userIdsArr as $userId) {
+            if (1 > $userId) {
+                continue;
+            }
+
+            $this->updateUserStatus($userId, $status);
+        }
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function updateUserStatus($userId, $status)
+    {
+        $status = FatUtility::int($status);
+        $userId = FatUtility::int($userId);
+        if (1 > $userId || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        $userObj = new User($userId);
+
         if (!$userObj->activateAccount($status)) {
             Message::addErrorMessage($userObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
-        $this->set('msg', $this->str_update_record);
-        $this->_template->render(false, false, 'json-success.php');
     }
 
     public function activate()

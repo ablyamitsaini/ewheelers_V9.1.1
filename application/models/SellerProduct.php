@@ -349,8 +349,8 @@ class SellerProduct extends MyAppModel
             $record = new TableRecord(static::DB_TBL_SELLER_PROD_OPTIONS);
             foreach ($data as $option_id => $optionvalue_id) {
                 $data_to_save = array(
-                    static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'selprod_id'	=>	$selprod_id,
-                    static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'option_id'	=>	$option_id,
+                    static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'selprod_id'=>$selprod_id,
+                    static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'option_id'=>$option_id,
                     static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'optionvalue_id' => $optionvalue_id
                 );
                 $record->assignValues($data_to_save);
@@ -634,7 +634,7 @@ class SellerProduct extends MyAppModel
         return true;
     }
 
-    public function getRelatedProducts($sellProdId=0, $lang_id=0, $criteria=array())
+    public function getRelatedProducts($sellProdId = 0, $lang_id = 0, $criteria = array())
     {
         $sellProdId = FatUtility::convertToType($sellProdId, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
@@ -766,15 +766,15 @@ class SellerProduct extends MyAppModel
                 $originalUrl = Product::PRODUCT_REVIEWS_ORGINAL_URL.$this->mainTableRecordId;
                 $seoUrl = preg_replace('/-reviews$/', '', $seoUrl);
                 $seoUrl.=  '-reviews';
-            break;
+                break;
             case 'moresellers':
                 $originalUrl = Product::PRODUCT_MORE_SELLERS_ORGINAL_URL.$this->mainTableRecordId;
                 $seoUrl = preg_replace('/-sellers$/', '', $seoUrl);
                 $seoUrl.=  '-sellers';
-            break;
+                break;
             default:
                 $originalUrl = Product::PRODUCT_VIEW_ORGINAL_URL.$this->mainTableRecordId;
-            break;
+                break;
         }
 
         $seoUrl.= '-'.$this->mainTableRecordId;

@@ -19,7 +19,10 @@ Enhancements:
 	. Updated Affiliate dashboard elements.
 	. Restrict empty search, Search string must be atleast 3 characters long.
 	. Disabled parent category link in header navigation.
+	. User can perform multi select operation on page listing.
+	. jQuery library updated to V3.4.1.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
 	. Featured shops listing.
+	. Recently viewed products slider on product view page.

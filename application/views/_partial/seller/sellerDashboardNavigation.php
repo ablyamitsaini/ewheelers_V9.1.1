@@ -93,7 +93,7 @@ $action = strtolower($action);
 				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_My_Credits',$siteLangId);?></span></a></div></li>
 				<li class="menu__item <?php echo ($controller == 'account' && $action == 'changeemailpassword') ? 'is-active' : ''; ?>"><div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Change_Email',$siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Account','changeEmailPassword');?>">
 				<i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-email" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-change-password"></use></svg>
-				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email_Password',$siteLangId);?></span></a></div></li>
+				</i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email_/_Password',$siteLangId);?></span></a></div></li>
 				<li class="divider"></li>
 
 

@@ -4676,7 +4676,7 @@ END,   special_price_found ) as special_price_found'
         $srch->addMultipleFields(array('op_status_id', 'op_id', 'op_qty','op_product_type'));
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
 
@@ -4749,7 +4749,7 @@ END,   special_price_found ) as special_price_found'
         $srch->addOrder("op_id", "DESC");
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
         }
 
@@ -5053,7 +5053,7 @@ END,   special_price_found ) as special_price_found'
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail)) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
         }
 
@@ -5184,7 +5184,7 @@ END,   special_price_found ) as special_price_found'
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
-        if (!$opDetail || CommonHelper::is_multidim_array($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
         }
 

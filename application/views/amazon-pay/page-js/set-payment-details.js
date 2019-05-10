@@ -2,7 +2,7 @@ var submitBtnNode = null;
 (function($){
 	try{
 		var $ajax = true;
-		$(window).load(function(){
+		$(window).on('load',function(){
 			$(document).on('click', '.amazon-submit', function(){
 				if(typeof orderRefId != typeof undefined && typeof orderId != typeof undefined){
 					if(orderRefId != '' && orderId != ''){

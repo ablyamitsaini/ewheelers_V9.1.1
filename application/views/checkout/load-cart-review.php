@@ -8,10 +8,11 @@
 			foreach( $products as $product ){ ?>
 			<p><?php echo $product['selprod_title']; ?><?php
 							if(isset($product['options']) && count($product['options'])){
+                                $count = 0;
 								foreach($product['options'] as $option){ ?>
-									<?php echo ' | ' . $option['option_name'].':'; ?>
+									<?php echo ($count > 0) ? ' | ' : '' ; echo $option['option_name'].':'; ?>
 									<?php echo $option['optionvalue_name']; ?>
-									<?php
+									<?php $count++;
 								}
 							}
 							echo ' | Quantity: '.$product['quantity'] ; 

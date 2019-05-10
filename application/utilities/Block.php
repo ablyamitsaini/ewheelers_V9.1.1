@@ -1,7 +1,6 @@
 <?php
 class Block
 {
-    
     public static function loginPageRight($template)
     {
         $db = FatApp::getDb();

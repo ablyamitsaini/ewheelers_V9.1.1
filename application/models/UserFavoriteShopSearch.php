@@ -151,7 +151,7 @@ class UserFavoriteShopSearch extends SearchBase
         }
     }
 
-    public function joinSellerOrderSubscription($langId = 0, $date ='')
+    public function joinSellerOrderSubscription($langId = 0, $date = '')
     {
         $langId = FatUtility::int($langId);
         if ($this->langId) {

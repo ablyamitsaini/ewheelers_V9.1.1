@@ -71,7 +71,7 @@ class SubscriptionCartController extends MyAppController
         }
         $spplan_id = $sellerPlanRow['spplan_id'];
         /* Subscription Downgrade And Upgrade Check check[ */
-        if (!UserPrivilege ::CanSellerUpgradeOrDowngradePlan(UserAuthentication::getLoggedUserId(), $spplan_id, $this->siteLangId)) {
+        if (!UserPrivilege ::canSellerUpgradeOrDowngradePlan(UserAuthentication::getLoggedUserId(), $spplan_id, $this->siteLangId)) {
             FatUtility::dieWithError(Message::getHtml());
         }
         /* ] */
