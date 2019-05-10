@@ -13746,3 +13746,5 @@ main.main {
   height: 15px;
   margin-inline-start: 1rem !important;
 }
+
+.wrapper{ margin: 0 auto; max-width: 1600px;}

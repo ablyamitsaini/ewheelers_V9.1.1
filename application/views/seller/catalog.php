@@ -55,8 +55,6 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         $frmSearchCatalogProduct->getField('keyword')->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_by_keyword/EAN/ISBN/UPC_code', $siteLangId));
                         $frmSearchCatalogProduct->developerTags['colClassPrefix'] = 'col-md-';
                         $frmSearchCatalogProduct->developerTags['fld_default_col'] = 12;
-                        $fldSubmit= $frmSearchCatalogProduct->getField('btn_submit');
-                        $fldSubmit->setFieldTagAttribute('class', 'btn--block');
 
                         $keywordFld = $frmSearchCatalogProduct->getField('keyword');
                         $keywordFld->setFieldTagAttribute('id', 'tour-step-3');
@@ -66,12 +64,12 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         if (FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT')) {
                             $dateFromFld = $frmSearchCatalogProduct->getField('type');
                             $dateFromFld->setFieldTagAttribute('class', '');
-                            $dateFromFld->setWrapperAttribute('class', 'col-lg-4');
-                            $dateFromFld->developerTags['col'] = 4;
+                            $dateFromFld->setWrapperAttribute('class', 'col-lg-2');
+                            $dateFromFld->developerTags['col'] = 2;
                         }
                         $typeFld = $frmSearchCatalogProduct->getField('product_type');
-                        $typeFld->setWrapperAttribute('class', 'col-lg-4');
-                        $typeFld->developerTags['col'] = 4;
+                        $typeFld->setWrapperAttribute('class', 'col-lg-2');
+                        $typeFld->developerTags['col'] = 2;
 
                         $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
                         $submitFld->setFieldTagAttribute('class', 'btn--block');
