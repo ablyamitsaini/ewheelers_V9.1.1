@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
-$buyQuantity->addFieldTagAttribute('class','qty productQty-js');
+$buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-js');
 ?>
 
 <div id="body" class="body" role="main">
@@ -222,9 +222,17 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
                               <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
                               <?php  } ?></td>
                           <td class="<?php echo $cancelClass;?>"><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div></td>
-                          <td class="<?php echo $cancelClass;?>"><div class="qty qty--border qty--cart" data-stock="<?php echo $usproduct['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
-                              <input type="text" value="1" placeholder="Qty" class="no--focus cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"   name="addons[<?php echo $usproduct['selprod_id']?>]">
-                              <span class="increase increase-js">+</span> </div></td>
+                          <td class="<?php echo $cancelClass;?>">
+                            <div class="qty-wrapper">
+                                <div class="qty-input-wrapper" data-stock="<?php echo $usproduct['selprod_stock']; ?>">
+                                    <input type="text" value="1" placeholder="Qty" class="qty-input cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]" name="addons[<?php echo $usproduct['selprod_id']?>]">
+                                </div>
+                                <div class="quantity" data-stock="<?php echo $usproduct['selprod_stock']; ?>">
+                                    <span class="increase increase-js"></span>
+                                    <span class="decrease decrease-js"></span>
+                                </div>
+                            </div>
+                          </td>
                           <td class="<?php echo $cancelClass;?>"><label class="checkbox">
                               <input <?php if($usproduct['selprod_stock']>0){ ?>checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId);?>">
                               <i class="input-helper"></i> </label>
@@ -256,12 +264,18 @@ $buyQuantity->addFieldTagAttribute('class','qty productQty-js');
 					$qtyFieldName =  $qtyField->getCaption();
 					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
 					?>
-              <div class="form__group">
-                <label><?php echo $qtyFieldName;?></label>
-                <div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
-                  <?php
-				  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
-                  <span class="increase increase-js">+</span></div>
+                <div class="form__group">
+                    <label><?php echo $qtyFieldName;?></label>
+                    <div class="qty-wrapper">
+                        <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
+                            <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
+                        </div>
+                        <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
+                            <span class="increase increase-js"></span>
+                            <span class="decrease decrease-js"></span>
+                        </div>
+                    </div>
+                </div>
               </div>
 			  <?php }?>
               <div class="gap"></div>

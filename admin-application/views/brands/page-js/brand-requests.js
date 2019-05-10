@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	searchProductBrands(document.frmSearch);
-	
+
 	$('input[name=\'user_name\']').autocomplete({
-		'source': function(request, response) {		
+		'source': function(request, response) {
 			$.ajax({
 				url: fcom.makeUrl('Users', 'autoCompleteJson'),
 				data: {keyword: request, fIsAjax:1},
@@ -19,23 +19,28 @@ $(document).ready(function(){
 			$("input[name='user_id']").val( item['value'] );
 			$("input[name='user_name']").val( item['name'] );
 		}
-	});	
+	});
 });
 $(document).on('change','.language-js',function(){
 /* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	brandImages(brand_id,lang_id);
+	brandImages(brand_id, 'logo', lang_id);
+});
+$(document).delegate('.image-language-js','change',function(){
+	var lang_id = $(this).val();
+	var brand_id = $("input[id='id-js']").val();
+	brandImages(brand_id, 'image', lang_id);
 });
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
 
-	goToSearchPage = function(page) {	
+	goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmBrandSearchPaging;		
+		var frm = document.frmBrandSearchPaging;
 		$(frm.page).val(page);
 		searchProductBrands(frm);
 	}
@@ -45,7 +50,7 @@ $(document).on('change','.language-js',function(){
 		searchProductBrands(frm);
 	}
 
-	
+
 
 	setupBrand = function(frm) {
 		if (!$(frm).validate()) return;
@@ -71,12 +76,12 @@ $(document).on('change','.language-js',function(){
 				fcom.updateFaceboxContent(t);
 			});
 			};
-	
+
 	setupBrandLang=function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('brands', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId>0) {
 				brandRequestLangForm(t.brandId, t.langId);
 				return ;
@@ -100,39 +105,45 @@ $(document).on('change','.language-js',function(){
 			$("#listing").html(res);
 		});
 	};
-	
-	brandRequestMediaForm = function(brandId){
+
+    brandRequestMediaForm = function(brandId){
 		fcom.displayProcessing();
-		fcom.ajax(fcom.makeUrl('brands', 'requestMedia', [brandId]), '', function(t) {
-			brandImages(brandId);
-			fcom.updateFaceboxContent(t);
-		});
+        fcom.ajax(fcom.makeUrl('Brands', 'requestMedia', [brandId]), '', function(t) {
+            brandImages(brandId, 'logo');
+            brandImages(brandId, 'image');
+            fcom.updateFaceboxContent(t);
+        });
 	};
-	
-	brandImages = function(brandId,lang_id){
-		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId,lang_id]), '', function(t) {
-			$('#image-listing').html(t);
+
+	brandImages = function(brandId, fileType, langId){
+		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId, fileType, langId]), '', function(t) {
+			if(fileType=='logo') {
+				$('#logo-listing').html(t);
+			} else {
+				$('#image-listing').html(t);
+			}
 			fcom.resetFaceboxHeight();
 		});
 	};
-	
+
+
 	deleteRecord = function(id){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
-		fcom.ajax(fcom.makeUrl('brands','deleteRecord'),data,function(res){		
+		fcom.ajax(fcom.makeUrl('brands','deleteRecord'),data,function(res){
 			reloadList();
 		});
 	};
-	
+
 	clearSearch = function(){
 		document.frmSearch.reset();
 		searchProductBrands(document.frmSearch);
 	};
-	
-	deleteImage = function( brandId, langId ){
-		if(!confirm(langLbl.confirmDeleteLogo)){return;}
-		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandLogo',[brandId, langId]), '', function(t) {
-			brandImages(brandId,langId);
+
+	deleteMedia = function( brandId, fileType, langId ){
+		if(!confirm(langLbl.confirmDelete)){return;}
+		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandMedia',[brandId, fileType, langId]), '', function(t) {
+			brandImages(brandId,fileType,langId);
 			reloadList();
 		});
 	};
@@ -140,52 +151,61 @@ $(document).on('change','.language-js',function(){
 	addBrandRequestForm= function(id){
 
 		$.facebox(function() {brandRequestForm(id)
-			
+
 		});
 	}
 	brandRequestForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmBrandSearchPaging;			
+		var frm = document.frmBrandSearchPaging;
 			fcom.ajax(fcom.makeUrl('brands', 'requestForm', [id]), '', function(t) {
 				fcom.updateFaceboxContent(t);
 		});
 	};
-	
+
 	showHideCommentBox = function(val){
 		if(val == 2){
 			$('#div_comments_box').removeClass('hide');
 		}else{
 			$('#div_comments_box').addClass('hide');
-		}		
+		}
 	};
 
 })();
 
 $(document).on('click','.uploadFile-Js',function(){
 	var node = this;
-	$('#form-upload').remove();	
-	/* var brandId = document.frmProdBrandLang.brand_id.value;
-	var langId = document.frmProdBrandLang.lang_id.value; */
-	
-	var brandId = $(node).attr( 'data-brand_id' );	
-	var langId = document.frmBrandMedia.brand_lang_id.value;
-	
+	$('#form-upload').remove();
+
+	var formName = $(node).attr('data-frm');
+	if(formName == 'frmBrandImage'){
+        var brandId = document.frmBrandImage.brand_id.value;
+        var langId = document.frmBrandImage.lang_id.value;
+        var imageType = 'image';
+	}else{
+		var brandId = document.frmBrandLogo.brand_id.value;
+        var langId = document.frmBrandLogo.lang_id.value;
+		var imageType = 'logo';
+	}
+
+    var fileType = $(node).attr('data-file_type');
+
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>'); 	
-	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>'); 	
-	frm = frm.concat('</form>'); 	
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>');
+    frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');
+	frm = frm.concat('</form>');
 	$( 'body' ).prepend( frm );
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if ( typeof timer != 'undefined' ) {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
-				url: fcom.makeUrl('Brands', 'uploadLogo'),
+				url: fcom.makeUrl('Brands', 'uploadMedia'),
 				type: 'post',
 				dataType: 'json',
 				data: new FormData($('#form-upload')[0]),
@@ -200,12 +220,12 @@ $(document).on('click','.uploadFile-Js',function(){
 				},
 				success: function(ans) {
 						$('.text-danger').remove();
-						$('#input-field').html(ans.msg);						
+						$('#input-field').html(ans.msg);
 						if( ans.status == true ){
 							$('#input-field').removeClass('text-danger');
 							$('#input-field').addClass('text-success');
 							$('#form-upload').remove();
-							brandImages(ans.brandId,langId);
+							brandImages(ans.brandId,imageType,langId);
 						}else{
 							$('#input-field').removeClass('text-success');
 							$('#input-field').addClass('text-danger');
@@ -215,7 +235,7 @@ $(document).on('click','.uploadFile-Js',function(){
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
-				});			
+				});
 		}
 	}, 500);
 });

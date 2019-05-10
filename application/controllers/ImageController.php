@@ -32,31 +32,31 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 150;
-            $h = 150;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'MINI':
-            $w = 70;
-            $h = 70;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            $w = 200;
-            $h = 200;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'MEDIUM':
-            $w = 500;
-            $h = 500;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            /* $h = 100;
-            $w = 100; */
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 150;
+                $h = 150;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'MINI':
+                $w = 70;
+                $h = 70;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                $w = 200;
+                $h = 200;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'MEDIUM':
+                $w = 500;
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                /* $h = 100;
+                $w = 100; */
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -82,27 +82,27 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? AttachedFile::FILETYPE_PRODUCT_IMAGE_PATH . $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            // image size required in product listing
-            $w = 150;
-            $h = 150;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'MEDIUM':
-            $w = 542;
-            $h = 480;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                // image size required in product listing
+                $w = 150;
+                $h = 150;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'MEDIUM':
+                $w = 542;
+                $h = 480;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -186,52 +186,52 @@ class ImageController extends FatController
         ob_start(); */
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'MINI':
-            $w = 50;
-            $h = 50;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
-            break;
-        case 'EXTRA-SMALL':
-            $w = 60;
-            $h = 60;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
-            break;
-        case 'SMALL':
-            // image size required in product listing
-            $w = 230;
-            $h = 230;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
-        case 'MEDIUM':
-            $w = 500;
-            $h = 500;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
-        case 'CLAYOUT3':
-            $w = 230;
-            $h = 230;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
-        case 'CLAYOUT2':
-            $w = 398;
-            $h = 398;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
-        case 'ORIGINAL':
-            $w = 2000;
-            $h = 2000;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'MINI':
+                $w = 50;
+                $h = 50;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
+                break;
+            case 'EXTRA-SMALL':
+                $w = 60;
+                $h = 60;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
+                break;
+            case 'SMALL':
+                // image size required in product listing
+                $w = 230;
+                $h = 230;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
+            case 'MEDIUM':
+                $w = 500;
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
+            case 'CLAYOUT3':
+                $w = 230;
+                $h = 230;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
+            case 'CLAYOUT2':
+                $w = 398;
+                $h = 398;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
+            case 'ORIGINAL':
+                $w = 2000;
+                $h = 2000;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
         }
 
         /*   $str = ob_get_clean();
@@ -267,11 +267,11 @@ class ImageController extends FatController
     {
         $default_image = 'product_default_image.jpg';
         switch (strtoupper($type)) {
-        case 'MINI':
-            return AttachedFile::displayImage($img, 50, 50, 'promotions/', 'shop_default.jpg');
-         break;
-        default:
-            return AttachedFile::displayImage($img, 50, 50, $default_image);
+            case 'MINI':
+                return AttachedFile::displayImage($img, 50, 50, 'promotions/', 'shop_default.jpg');
+             break;
+            default:
+                return AttachedFile::displayImage($img, 50, 50, $default_image);
         }
     }
 
@@ -295,32 +295,32 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'TEMP2':
-            $w = 1298;
-            $h = 600;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP3':
-            $w = 1583;
-            $h = 475;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP4':
-            $w = 1583;
-            $h = 473;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP5':
-            $w = 1440;
-            $h = 600;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'TEMP2':
+                $w = 1298;
+                $h = 600;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP3':
+                $w = 1583;
+                $h = 475;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP4':
+                $w = 1583;
+                $h = 473;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP5':
+                $w = 1440;
+                $h = 600;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
 
-        default:
-            $w = 1087;
-            $h = 500;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            default:
+                $w = 1087;
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -344,58 +344,57 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'TEMP2':
-            $w = 1298;
-            $h = 600;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP3':
-            $w = 1583;
-            $h = 475;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP4':
-            $w = 1583;
-            $h = 473;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'TEMP5':
-            $w = 1440;
-            $h = 600;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $w = 1298;
-            $h = 600;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'TEMP2':
+                $w = 1298;
+                $h = 600;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP3':
+                $w = 1583;
+                $h = 475;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP4':
+                $w = 1583;
+                $h = 473;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'TEMP5':
+                $w = 1440;
+                $h = 600;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $w = 1298;
+                $h = 600;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
     public function shopBackgroundImage($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0, $templateId = '')
     {
         switch ($templateId) {
-
-        case Shop::TEMPLATE_ONE:
-            $default_image='defaults/'.'logo-red.png';
-            break;
-        case Shop::TEMPLATE_TWO:
-            $default_image='defaults/'.'transparent.png';
-            break;
-        case Shop::TEMPLATE_THREE:
-            $default_image= 'defaults/'.'transparent.png';
-            break;
-        case Shop::TEMPLATE_FOUR:
-            $default_image='defaults/'.'shop-bg.jpg';
-            break;
-        case Shop::TEMPLATE_FIVE:
-            $default_image='defaults/'.'shop-5-bg.jpg';
-            break;
-        default:
-            $h = '';
-            $w = '';
-            $default_image = '';
-            break;
+            case Shop::TEMPLATE_ONE:
+                $default_image='defaults/'.'logo-red.png';
+                break;
+            case Shop::TEMPLATE_TWO:
+                $default_image='defaults/'.'transparent.png';
+                break;
+            case Shop::TEMPLATE_THREE:
+                $default_image= 'defaults/'.'transparent.png';
+                break;
+            case Shop::TEMPLATE_FOUR:
+                $default_image='defaults/'.'shop-bg.jpg';
+                break;
+            case Shop::TEMPLATE_FIVE:
+                $default_image='defaults/'.'shop-5-bg.jpg';
+                break;
+            default:
+                $h = '';
+                $w = '';
+                $default_image = '';
+                break;
         }
 
 
@@ -417,20 +416,25 @@ class ImageController extends FatController
             $image_name = $default_image;
         }
         switch (strtoupper($sizeType)) {
-        default:
-            $h = '';
-            $w = '';
-            AttachedFile::displayOriginalImage($image_name, $default_image);
-            break;
+            default:
+                $h = '';
+                $w = '';
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
         }
     }
 
     public function brandReal($recordId, $langId = 0, $sizeType = '', $afile_id = 0)
     {
-        $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id, false);
+        $this->displayBrandLogo($recordId, $langId, $sizeType, $afile_id, false);
     }
 
     public function brand($recordId, $langId = 0, $sizeType = '', $afile_id = 0)
+    {
+        $this->displayBrandLogo($recordId, $langId, $sizeType, $afile_id);
+    }
+
+    public function brandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0)
     {
         $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id);
     }
@@ -453,26 +457,26 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'MINITHUMB':
-            $w = 42;
-            $h = 52;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'THUMB':
-            $w = 61;
-            $h = 61;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 150;
-            $h = 150;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 500;
-            $w = 500;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'MINITHUMB':
+                $w = 42;
+                $h = 52;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'THUMB':
+                $w = 61;
+                $h = 61;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'COLLECTION_PAGE':
+                $w = 150;
+                $h = 150;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 500;
+                $w = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -495,21 +499,21 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            $w = 200;
-            $h = 200;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                $w = 200;
+                $h = 200;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -521,21 +525,21 @@ class ImageController extends FatController
         $filePath = LayoutTemplate::LAYOUTTYPE_SHOP_IMAGE_PATH;
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 200;
-            $h = 200;
-            AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
-            break;
-        case 'SMALL':
-            $w = 250;
-            $h = 250;
-            AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
-            break;
+            case 'THUMB':
+                $w = 200;
+                $h = 200;
+                AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
+                break;
+            case 'SMALL':
+                $w = 250;
+                $h = 250;
+                AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($recordId, $w, $h, $default_image, $filePath);
+                break;
         }
     }
 
@@ -548,16 +552,16 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 37;
-            $w = 168;
-            AttachedFile::displayOriginalImage($image_name, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 37;
+                $w = 168;
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
         }
     }
 
@@ -570,21 +574,21 @@ class ImageController extends FatController
         $default_image = 'no_image.jpg';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $w = 100;
-            $h = 100;
-            if ($image_name=='' || empty($image_name)) {
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            } else {
-                /* echo $image_name; die; */
-                AttachedFile::displayOriginalImage($image_name, $default_image);
-            }
-            break;
+                break;
+            default:
+                $w = 100;
+                $h = 100;
+                if ($image_name=='' || empty($image_name)) {
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                } else {
+                    /* echo $image_name; die; */
+                    AttachedFile::displayOriginalImage($image_name, $default_image);
+                }
+                break;
         }
     }
 
@@ -597,16 +601,16 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 120;
-            $h = 80;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 240;
-            $w = 160;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 120;
+                $h = 80;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 240;
+                $w = 160;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -619,16 +623,16 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $w = 268;
-            $h = 82;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $w = 268;
+                $h = 82;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -641,14 +645,14 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
         }
     }
 
@@ -661,19 +665,19 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'MINI':
-            $w = 72;
-            $h = 72;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            $w = 114;
-            $h = 114;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name, $default_image);
-            break;
+            case 'MINI':
+                $w = 72;
+                $h = 72;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                $w = 114;
+                $h = 114;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
         }
     }
 
@@ -686,16 +690,16 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 82;
-            $w = 268;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 82;
+                $w = 268;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -708,16 +712,16 @@ class ImageController extends FatController
         $default_image = '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 37;
-            $w = 168;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 37;
+                $w = 168;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -727,14 +731,14 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -744,14 +748,14 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -763,21 +767,21 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'NORMAL':
-            $w = 120;
-            $h = 150;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $w = 600;
-            $h = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'NORMAL':
+                $w = 120;
+                $h = 150;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $w = 600;
+                $h = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -826,16 +830,16 @@ class ImageController extends FatController
         }
         if ($sizeType) {
             switch (strtoupper($sizeType)) {
-            case 'THUMB':
-                $w = 200;
-                $h = 100;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
-                break;
-            default:
-                $w = 2000;
-                $h = 360;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
-                break;
+                case 'THUMB':
+                    $w = 200;
+                    $h = 100;
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    break;
+                default:
+                    $w = 2000;
+                    $h = 360;
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    break;
             }
         } else {
             AttachedFile::displayOriginalImage($image_name, $default_image);
@@ -873,16 +877,16 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 200;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $w = 30;
-            $h = 30;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 200;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $w = 30;
+                $h = 30;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -905,19 +909,19 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'home':
-            $w = 76;
-            $h = 92;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'home':
+                $w = 76;
+                $h = 92;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -938,14 +942,14 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -979,26 +983,26 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? AttachedFile::FILETYPE_BLOG_POST_IMAGE_PATH . $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($size_type)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            $w = 200;
-            $h = 200;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'BANNER':
-            $w = 945;
-            $h = 532;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                $w = 200;
+                $h = 200;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'BANNER':
+                $w = 945;
+                $h = 532;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -1013,21 +1017,21 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'SMALL':
-            $w = 200;
-            $h = 200;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 400;
-            $w = 400;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SMALL':
+                $w = 200;
+                $h = 200;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 400;
+                $w = 400;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -1049,22 +1053,22 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'MINITHUMB':
-            $w = 42;
-            $h = 52;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'MINITHUMB':
+                $w = 42;
+                $h = 52;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
 
-        case 'THUMB':
-            $w = 61;
-            $h = 61;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        default:
-            $h = 118;
-            $w = 276;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
+            case 'THUMB':
+                $w = 61;
+                $h = 61;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                $h = 118;
+                $w = 276;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
         }
     }
 
@@ -1076,19 +1080,19 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 45;
-            $h = 41;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'COLLECTION_PAGE':
+                $w = 45;
+                $h = 41;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -1100,14 +1104,14 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'DEFAULT':
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DEFAULT':
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -1120,24 +1124,23 @@ class ImageController extends FatController
             FatUtility::dieJsonError(Message::getHtml());
         }
         switch ($frameId) {
-        case Banner::BANNER_HOME_PAGE_LAYOUT_1:
-            $image =  'defaults/banner_layouts/layout-1.jpg';
-            break;
-        case Banner::BANNER_HOME_PAGE_LAYOUT_2:
-            $image =  'defaults/banner_layouts/layout-2.jpg';
-            break;
-        case Banner::BANNER_PRODUCT_PAGE_LAYOUT_1:
-            $image =  'defaults/banner_layouts/layout-3.jpg';
-            break;
+            case Banner::BANNER_HOME_PAGE_LAYOUT_1:
+                $image =  'defaults/banner_layouts/layout-1.jpg';
+                break;
+            case Banner::BANNER_HOME_PAGE_LAYOUT_2:
+                $image =  'defaults/banner_layouts/layout-2.jpg';
+                break;
+            case Banner::BANNER_PRODUCT_PAGE_LAYOUT_1:
+                $image =  'defaults/banner_layouts/layout-3.jpg';
+                break;
         }
         if ($sizeType) {
             switch (strtoupper($sizeType)) {
-
-            default:
-                $w = 200;
-                $h = 360;
-                AttachedFile::displayImage($image, $w, $h, $default_image);
-                break;
+                default:
+                    $w = 200;
+                    $h = 360;
+                    AttachedFile::displayImage($image, $w, $h, $default_image);
+                    break;
             }
         } else {
             AttachedFile::displayOriginalImage($image, $default_image);

@@ -112,19 +112,22 @@
 		  <?php if( $product['in_stock'] ){
 				echo $frmBuyProduct->getFormTag();
 				$qtyField =  $frmBuyProduct->getField('quantity');
-                $qtyField->addFieldTagAttribute('class','productQty-js');
+                $qtyField->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-js');
 				/* $fld = $frmBuyProduct->getField('btnAddToCart');
 				$fld->addFieldTagAttribute('class','quickView'); */
 				$qtyFieldName =  $qtyField->getCaption(); ?>
-		  <div class="form__group">
-			<label><?php echo $qtyFieldName;?></label>
-			<?php if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){ ?>
-			<div class="qty" data-stock="<?php echo $product['selprod_stock']; ?>"> <span class="decrease decrease-js">-</span>
-			  <?php
-			  echo $frmBuyProduct->getFieldHtml('quantity'); ?>
-			  <span class="increase increase-js">+</span></div>
-			<?php }?>
-		  </div>
+            <div class="form__group">
+                <label><?php echo $qtyFieldName;?></label>
+                <div class="qty-wrapper">
+                    <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
+                        <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
+                    </div>
+                    <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
+                        <span class="increase increase-js"></span>
+                        <span class="decrease decrease-js"></span>
+                    </div>
+                </div>
+            </div>
 		  <div class="gap"></div>
 		  <div class="buy-group">
 			<?php
