@@ -269,7 +269,7 @@ class ImageController extends FatController
         switch (strtoupper($type)) {
             case 'MINI':
                 return AttachedFile::displayImage($img, 50, 50, 'promotions/', 'shop_default.jpg');
-             break;
+            break;
             default:
                 return AttachedFile::displayImage($img, 50, 50, $default_image);
         }
@@ -439,7 +439,7 @@ class ImageController extends FatController
         $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id);
     }
 
-    public function displayBrandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
+    public function displayBrandLogo($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
     {
         $default_image = 'brand_deafult_image.jpg';
         $recordId = FatUtility::int($recordId);
@@ -468,13 +468,50 @@ class ImageController extends FatController
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
             case 'COLLECTION_PAGE':
-                $w = 150;
-                $h = 150;
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
+            case 'LISTING_PAGE':
+                $h = 530;
+                $w = 530;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
             default:
                 $h = 500;
                 $w = 500;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+        }
+    }
+
+    public function displayBrandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
+    {
+        $default_image = 'brand_deafult_image.jpg';
+        $recordId = FatUtility::int($recordId);
+        $afile_id = FatUtility::int($afile_id);
+        $langId = FatUtility::int($langId);
+
+        if ($afile_id > 0) {
+            $res = AttachedFile::getAttributesById($afile_id);
+            if (!false == $res && $res['afile_type'] == AttachedFile::FILETYPE_BRAND_IMAGE) {
+                $file_row = $res;
+            }
+        } else {
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_IMAGE, $recordId, 0, $langId, $displayUniversalImage);
+        }
+        $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
+
+        switch (strtoupper($sizeType)) {
+            case 'THUMB':
+                $w = 61;
+                $h = 61;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'COLLECTION_PAGE':
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
+            default:
+                $h = 246;
+                $w = 246;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
         }
@@ -815,7 +852,7 @@ class ImageController extends FatController
         }
     }
 
-    public function slide($slide_id, $screen=0, $lang_id, $sizeType = '', $displayUniversalImage = true)
+    public function slide($slide_id, $screen = 0, $lang_id, $sizeType = '', $displayUniversalImage = true)
     {
         $default_image = 'brand_deafult_image.jpg';
         $slide_id = FatUtility::int($slide_id);
@@ -846,7 +883,7 @@ class ImageController extends FatController
         }
     }
 
-    /*     Moved in banner controller
+    /* Moved in banner controller
     function banner( $banner_id, $sizeType = ''){
     $default_image = 'brand_deafult_image.jpg';
     $banner_id = FatUtility::int($banner_id);

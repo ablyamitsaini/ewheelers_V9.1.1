@@ -40,9 +40,9 @@ class UploadBulkImagesController extends AdminBaseController
     public function upload()
     {
         $frm = $this->getUploadForm();
-        $post = $frm->getFormDataFromArray( $_FILES );
+        $post = $frm->getFormDataFromArray($_FILES);
 
-        if( false === $post ){
+        if (false === $post) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Data', $this->langId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -50,33 +50,33 @@ class UploadBulkImagesController extends AdminBaseController
         $fileName = $_FILES['bulk_images']['name'];
         $tmp_name = $_FILES['bulk_images']['tmp_name'];
 
-        $fileExt = pathinfo( $fileName, PATHINFO_EXTENSION );
-        $fileExt = strtolower( $fileExt );
-        if( 'zip' != $fileExt ) {
+        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileExt = strtolower($fileExt);
+        if ('zip' != $fileExt) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE', $this->langId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $fileHandlerObj = new AttachedFile();
 
-        $savedFile = $fileHandlerObj->saveAttachment( $tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, 0, 0, $fileName );
+        $savedFile = $fileHandlerObj->saveAttachment($tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, 0, 0, $fileName);
 
-        if( false === $savedFile ) {
-            Message::addErrorMessage( $fileHandlerObj->getError() );
-            FatUtility::dieJsonError( Message::getHtml() );
+        if (false === $savedFile) {
+            Message::addErrorMessage($fileHandlerObj->getError());
+            FatUtility::dieJsonError(Message::getHtml());
         }
 
 
         $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
 
-        if( false === $fileHandlerObj->extractZip( $path . $savedFile ) ){
+        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
             Message::addErrorMessage(Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->langId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $filePath = AttachedFile::FILETYPE_BULK_IMAGES_PATH . $savedFile;
 
-        $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->langId) );
+        $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->langId));
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->langId) .' '.$msg;
 
         FatUtility::dieJsonSuccess($msg);
@@ -110,17 +110,17 @@ class UploadBulkImagesController extends AdminBaseController
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
 
         $obj = new UploadBulkImages();
-		$srch = $obj->bulkMediaFileObject();
+        $srch = $obj->bulkMediaFileObject();
 
         $keyword = FatApp::getPostedData('keyword', null, '');
 
-        if(!empty($keyword) ) {
+        if (!empty($keyword)) {
             $cnd = $srch->addCondition('afile_physical_path', 'like', '%' . $keyword . '%');
         }
 
         $uploadedBy = FatApp::getPostedData('afile_record_id');
-        if ( '' != $uploadedBy ) {
-            $srch->addCondition( 'afile_record_id', '=', $uploadedBy );
+        if ('' != $uploadedBy) {
+            $srch->addCondition('afile_record_id', '=', $uploadedBy);
         }
 
 
@@ -135,27 +135,48 @@ class UploadBulkImagesController extends AdminBaseController
         $this->set('page', $page);
         $this->set('pageSize', $pagesize);
         $this->set('postedData', $post);
-        $this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->adminLangId, true) );
+        $this->set('canViewUsers', $this->objPrivilege->canViewUsers($this->adminLangId, true));
         $this->set('adminLangId', $this->adminLangId);
         $this->_template->render(false, false);
     }
 
-    public function removeDir( $directory )
+    public function removeDir($directory)
     {
         $directory = CONF_UPLOADS_PATH . base64_decode($directory).'/' ;
+
+        $msg = $obj->deleteSingleBulkMediaDir($directory);
+        FatUtility::dieJsonSuccess($msg);
+    }
+
+    public function deleteSelected()
+    {
+        $uploadDirsArr = FatApp::getPostedData('uploadDirs');
+
+        if (empty($uploadDirsArr)) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
         $obj = new UploadBulkImages();
-        $msg = $obj->deleteSingleBulkMediaDir( $directory );
-        FatUtility::dieJsonSuccess( $msg );
+        foreach ($uploadDirsArr as $uploadDir) {
+            if (empty($uploadDir)) {
+                continue;
+            }
+            $directory = CONF_UPLOADS_PATH . base64_decode($uploadDir).'/' ;
+            $msg = $obj->deleteSingleBulkMediaDir($directory);
+        }
+        $this->set('msg', $msg);
+        $this->_template->render(false, false, 'json-success.php');
     }
 
     public function autoCompleteSellerJson()
     {
         $pagesize = applicationConstants::PAGE_SIZE;
         $post = FatApp::getPostedData();
-        $sellersObj = Product::getSellers( array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ) );
+        $sellersObj = Product::getSellers(array( "product_seller_id", "IFNULL(credential_username,'Admin') as seller", "credential_email" ));
         $sellersObj->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'product_seller_id = afile_record_id AND afile_type = '.AttachedFile::FILETYPE_BULK_IMAGES);
         $sellersObj->addOrder('seller');
-        if( '' != $post['keyword'] ){
+        if ('' != $post['keyword']) {
             $sellersObj->addCondition('credential_username', 'like', '%' . $post['keyword'] . '%');
             $sellersObj->addCondition('credential_email', 'like', '%' . $post['keyword'] . '%', 'OR');
         }
