@@ -64,8 +64,7 @@ function recentlyViewedProducts(selprodId){
 
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6,6,langLbl.layoutDirection,true) );
-		$('.slides--six-js').slick('reinit');
+		$('.js-collection-corner:not(.slick-initialized)').slick( getSlickSliderSettings(6,6,langLbl.layoutDirection,true) );
 	});
 }
 
