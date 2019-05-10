@@ -1,5 +1,3 @@
-var pageContent = '.checkout-content-js';
-
 var loginDiv = '#login-register';
 var addressDiv = '#address';
 var addressFormDiv = '#addressFormDiv';
@@ -29,8 +27,8 @@ function showAddressFormDiv()
 function showAddressList()
 {
 	loadAddressDiv();
-	// resetShippingSummary();
-	// resetPaymentSummary();
+	resetShippingSummary();
+	resetPaymentSummary();
 }
 function resetAddress(){
 	loadAddressDiv();
@@ -45,23 +43,24 @@ function showCartReviewDiv()
 }
 $("document").ready(function()
 {
-	//loadAddressDiv();
-	loadFinancialSummary();
-	// $('.step').removeClass("is-current");
-	// if( !isUserLogged()){
-	// 	$(loginDiv).find('.step__body').show();
-	// 	$(loginDiv).find('.step__body').html(fcom.getLoader());
-	// 	fcom.ajax(fcom.makeUrl('Checkout', 'login'), '', function(ans) {
-	// 		$(loginDiv).find('.step__body').html(ans);
-	//
-	// 		$(loginDiv).addClass("is-current");
-	// 		loadFinancialSummary();
-	// 	});
-	// } else {
-	// 	$(alreadyLoginDiv).show();
-	// 	loadAddressDiv();
-	// 	loadFinancialSummary();
-	// }
+
+	$('.step').removeClass("is-current");
+
+	if( !isUserLogged()){
+		$(loginDiv).find('.step__body').show();
+		$(loginDiv).find('.step__body').html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Checkout', 'login'), '', function(ans) {
+			$(loginDiv).find('.step__body').html(ans);
+
+			$(loginDiv).addClass("is-current");
+			loadFinancialSummary();
+		});
+	} else {
+
+		$(alreadyLoginDiv).show();
+		loadAddressDiv();
+		loadFinancialSummary();
+	}
 });
 
 
@@ -145,16 +144,15 @@ $("document").ready(function()
 	};
 
 	editAddress = function( address_id ){
-		if(typeof address_id == 'undefined'){
-			address_id = 0;
-		}
 		fcom.ajax(fcom.makeUrl('Checkout', 'editAddress'), 'address_id=' + address_id , function( ans ) {
-			$(pageContent).html(ans);
-			// $(addressFormDiv).html( ans ).show();
-			// $(addressWrapper).hide();
-			// $(addressWrapperContainer).hide();
-			// $(addressWrapper).hide();
-			// $(addressFormDiv).addClass("is-current");
+			$(addressFormDiv).html( ans ).show();
+			$(addressWrapper).hide();
+			$(addressWrapperContainer).hide();
+			$(addressWrapper).hide();
+			$(addressFormDiv).addClass("is-current");
+			/* $("#shipping-summary-inner").html( ans );
+			fcom.scrollToTop("#shipping-summary");
+			$(".sduration_id-Js").trigger("change"); */
 		});
 	};
 
@@ -163,19 +161,23 @@ $("document").ready(function()
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Addresses', 'setUpAddress'), data, function(t) {
 			if( t.status == 1 ){
-				showShippingSummaryDiv(t.ua_id);
-				loadFinancialSummary();
+				loadAddressDiv(t.ua_id);
 			}
 		});
 	};
 
+
 	setUpAddressSelection = function(elm){
 
 		var shipping_address_id = $(elm).parent().parent().parent().find('input[name="shipping_address_id"]:checked').val();
+
 		var billing_address_id = $(elm).parent().parent().parent().parent().find('input[name="billing_address_id"]:checked').val();
+
 		var isShippingSameAsBilling = $('input[name="isShippingSameAsBilling"]:checked').val();
+
 		var data = 'shipping_address_id='+shipping_address_id+'&billing_address_id='+billing_address_id+'&isShippingSameAsBilling='+isShippingSameAsBilling;
 		fcom.updateWithAjax(fcom.makeUrl('Checkout', 'setUpAddressSelection'), data , function(t) {
+
 			if( t.status == 1 ){
 				if( t.loadAddressDiv ){
 					loadAddressDiv();
@@ -188,7 +190,7 @@ $("document").ready(function()
 						loadShippingAddress();
 						loadCartReviewDiv();
 					}
-					loadFinancialSummary();
+					//$(addressDivFooter).show();
 				}
 			}
 		});
@@ -228,18 +230,15 @@ $("document").ready(function()
 	};
 
 	loadAddressDiv = function(ua_id){
-		// $(addressDiv).html( fcom.getLoader());
-		// fcom.ajax(fcom.makeUrl('Checkout', 'addresses'), '', function(ans) {
-		// 	$(addressDiv).html(ans);
-		// 	$('.section-checkout').removeClass('is-current');
-		// 	$(addressDiv).addClass('is-current');
-		// 	$(addressDiv).find(".address-"+ua_id +" label .radio").click();
-		// });
-		$(pageContent).html( fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Checkout', 'addresses'), '', function(ans) {
-			$(pageContent).html(ans);
-		});
 
+
+		$(addressDiv).html( fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Checkout', 'addresses'), '', function(ans) {
+			$(addressDiv).html(ans);
+			$('.section-checkout').removeClass('is-current');
+			$(addressDiv).addClass('is-current');
+			$(addressDiv).find(".address-"+ua_id +" label .radio").click();
+		});
 	};
 
 	loadShippingAddress  = function(){
@@ -290,21 +289,18 @@ $("document").ready(function()
 	};
 
 	loadShippingSummaryDiv = function(){
-		// $(shippingSummaryDiv).show();
-		// $(addressDiv).html(fcom.getLoader() );
-		// $(shippingSummaryDiv).append(fcom.getLoader() );
-		// loadShippingAddress();
-		// $('.section-checkout').removeClass('is-current');
-		// $(shippingSummaryDiv).addClass('is-current');
-		// $(shippingSummaryDiv + ".selected-panel-data").html( fcom.getLoader());
-		// fcom.ajax(fcom.makeUrl('Checkout', 'shippingSummary'), '' , function(ans) {
-		// 	$(shippingSummaryDiv ).html( ans );
-		// 	$(".sduration_id-Js").trigger("change");
-		// });
-		$(pageContent).html( fcom.getLoader());
+		$(shippingSummaryDiv).show();
+		$(addressDiv).html(fcom.getLoader() );
+		$(shippingSummaryDiv).append(fcom.getLoader() );
+		/* $(shippingSummaryDiv+' .short-detail').append(fcom.getLoader() ); */
+		loadShippingAddress();
+		$('.section-checkout').removeClass('is-current');
+		$(shippingSummaryDiv).addClass('is-current');
+		$(shippingSummaryDiv + ".selected-panel-data").html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'shippingSummary'), '' , function(ans) {
-		 	$(pageContent ).html( ans );
-		 	$(".sduration_id-Js").trigger("change");
+			$(shippingSummaryDiv ).html( ans );
+			/* fcom.scrollToTop("#shipping-summary"); */
+			$(".sduration_id-Js").trigger("change");
 		});
 	};
 
@@ -322,15 +318,11 @@ $("document").ready(function()
 	};
 
 	loadCartReviewDiv = function(){
-		// $(cartReviewDiv).html( fcom.getLoader() );
-		// $('.section-checkout').removeClass('is-current');
-		// $(cartReviewDiv).addClass('is-current');
-		// fcom.ajax(fcom.makeUrl('Checkout', 'reviewCart'), '', function(ans) {
-		// 	$(cartReviewDiv).html(ans);
-		// });
-		$(pageContent).html( fcom.getLoader());
+		$(cartReviewDiv).html( fcom.getLoader() );
+		$('.section-checkout').removeClass('is-current');
+		$(cartReviewDiv).addClass('is-current');
 		fcom.ajax(fcom.makeUrl('Checkout', 'reviewCart'), '', function(ans) {
-			$(pageContent).html(ans);
+			$(cartReviewDiv).html(ans);
 		});
 	};
 
@@ -341,19 +333,16 @@ $("document").ready(function()
 	};
 
 	loadPaymentSummary = function(){
-		// loadCartReview();
-		// $(paymentDiv).html( fcom.getLoader() );
-		// $('.section-checkout').removeClass('is-current');
-		// $(paymentDiv).addClass('is-current');
-		// fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
-		// 	$(paymentDiv).addClass('is-current');
-		// 	$(paymentDiv).html(ans);
-		// 	$("#payment_methods_tab  li:first a").trigger('click');
-		// });
-		$(pageContent).html( fcom.getLoader());
+		loadCartReview();
+		$(paymentDiv).html( fcom.getLoader() );
+		$('.section-checkout').removeClass('is-current');
+		$(paymentDiv).addClass('is-current');
 		fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
-			$(pageContent).html(ans);
-			//$("#payment_methods_tab  li:first a").trigger('click');
+			$(paymentDiv).addClass('is-current');
+			$(paymentDiv).html(ans);
+
+			$("#payment_methods_tab  li:first a").trigger('click');
+
 		});
 	};
 
@@ -431,8 +420,20 @@ $("document").ready(function()
 	};
 
 	resetCheckoutDiv = function(){
-		removeShippingSummary();
-		resetPaymentSummary();
-		loadShippingSummaryDiv();
+		if($(paymentDiv).hasClass('is-current')){
+				removeShippingSummary();
+				resetPaymentSummary();
+				loadShippingSummaryDiv();
+
+		}else if($(cartReviewDiv).hasClass('is-current')){
+				removeShippingSummary();
+				loadShippingSummaryDiv();
+
+				resetCartReview();
+
+		}else if($(shippingSummaryDiv).hasClass('is-current')){
+				loadShippingSummaryDiv();
+		}
+
 	};
 })();

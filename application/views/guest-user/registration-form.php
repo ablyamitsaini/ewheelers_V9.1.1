@@ -5,7 +5,7 @@
     <div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-6">
-				<div class="box box--white box--space">
+				<div class="box box--white  p-4">
 				  <div class="box__cell <?php echo (empty($pageData)) ? '' : '';?>">
 					<?php $this->includeTemplate('guest-user/registerationFormTemplate.php', $data,false ); ?>
 				  </div>

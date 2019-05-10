@@ -735,13 +735,14 @@ $(document).ready(function(){
        $(this).siblings('.not-allowed').removeClass('not-allowed');
        var val = $(this).parent().parent('div').find('input').val();
        var key = $(this).parent().parent('div').find('input').attr('data-key');
+       var page = $(this).parent().parent('div').find('input').attr('data-page');
        val = parseInt(val) + 1;
        if (val > $(this).parent().data('stock')) {
            val = $(this).parent().data('stock');
            $(this).addClass('not-allowed');
        }
        $(this).parent().parent('div').find('input').val(val);
-       cart.update(key);
+       cart.update(key, page);
     });
 
     $(document).on("change", '.productQty-js', function() {
@@ -758,20 +759,22 @@ $(document).ready(function(){
        }
        $(this).val(val);
        var key = $(this).attr('data-key');
-       cart.update(key);
+       var page = $(this).attr('data-page');
+       cart.update(key, page);
     });
 
    $(document).on("click", '.decrease-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
         var val = $(this).parent().parent('div').find('input').val();
         var key = $(this).parent().parent('div').find('input').attr('data-key');
+		var page = $(this).parent().parent('div').find('input').attr('data-page');
         val = parseInt(val) - 1;
         if (val <= 1) {
             val = 1;
             $(this).addClass('not-allowed');
         }
         $(this).parent().parent('div').find('input').val(val);
-        cart.update(key);
+        cart.update(key, page);
     });
 
 	$(document).on("click",'.setactive-js li',function(){

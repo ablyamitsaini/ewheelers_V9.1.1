@@ -1,5 +1,24 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<?php if(!empty($defaultAddress)) {?>
+<div class="box box--white box--radius order-summary">
+    <div class="p-4">
+		<div class="section-head">
+			<div class="section__heading">
+				<h6><?php echo Labels::getLabel('LBL_Shipping_to:', $siteLangId); ?></h6>
+			</div>
+			<div class="section__action"><a href="#" class="btn btn--primary-border btn--sm" onClick="showAddressList()" ><?php echo Labels::getLabel('LBL_Change_Address', $siteLangId); ?></a> </div>
+		</div>
+		<div class="shipping-address">
+			<?php echo $defaultAddress['ua_name']; ?><br>
+			<?php echo $defaultAddress['ua_address1'];?>, <?php echo (strlen($defaultAddress['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).$defaultAddress['ua_zip'].'<br>':'';?>
+			<?php echo (strlen($defaultAddress['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$defaultAddress['ua_phone'].'<br>':'';?>
+		</div>
+	</div>
+	<div class="divider"></div>
+</div>
+<?php }?>
+
 <div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> <span><span>[<?php echo count($products); ?> <?php echo Labels::getLabel('LBL_Items', $siteLangId); ?>]</span></span> </div>
 <div class="gap"></div>
@@ -13,7 +32,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');?>
             <div class="product_qty">
                 <div class="qty-wrapper">
                     <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                        <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
+                        <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" data-page="checkout" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
                     </div>
                     <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
                         <span class="increase increase-js"></span>
