@@ -3,10 +3,10 @@ class MetaTag extends MyAppModel
 {
     const DB_TBL = 'tbl_meta_tags';
     const DB_TBL_PREFIX = 'meta_';
-    
+
     const DB_LANG_TBL ='tbl_meta_tags_lang';
     const DB_LANG_TBL_PREFIX ='metalang_';
-    
+
     const META_GROUP_ALL_PRODUCTS = 'all_product' ;
     const META_GROUP_PRODUCT_DETAIL = 'product_view' ;
     const META_GROUP_ALL_SHOPS = 'all_shop' ;
@@ -20,18 +20,18 @@ class MetaTag extends MyAppModel
     const META_GROUP_BLOG_PAGE = 'BLOG_PAGE' ;
     const META_GROUP_BLOG_CATEGORY = 'Blog_Category' ;
     const META_GROUP_BLOG_POST = 'Blog_Post' ;
-    
-    public function __construct( $id = 0 ) 
+
+    public function __construct($id = 0)
     {
-        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);        
+        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
     }
-    
+
     public static function getTabsArr($langId = 0)
     {
         $langId = FatUtility::int($langId);
-        if(!$langId) {
-            $langId = CommonHelper::getLangId();    
-        }            
+        if (!$langId) {
+            $langId = CommonHelper::getLangId();
+        }
         $metaGroups = array(
         static::META_GROUP_ALL_PRODUCTS => array(
         'serial' => 2,
@@ -132,9 +132,10 @@ class MetaTag extends MyAppModel
         'isEntity' => true
         )
         );
-        
+
         uasort(
-            $metaGroups, function ($group1, $group2) {
+            $metaGroups,
+            function ($group1, $group2) {
                 if ($group1['serial'] == $group2['serial']) {
                     return 0;
                 }
@@ -144,12 +145,11 @@ class MetaTag extends MyAppModel
 
         return $metaGroups;
     }
-    
+
     public static function getSearchObject()
     {
         $srch = new SearchBase(static::DB_TBL, 'mt');
-    
+
         return $srch;
     }
-    
 }

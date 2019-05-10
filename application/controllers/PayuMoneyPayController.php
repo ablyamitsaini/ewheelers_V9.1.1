@@ -1,17 +1,15 @@
 <?php
 class PayuMoneyPayController extends PaymentController
 {
-    
     private $keyName="PayuMoney";
-    
+
     public function charge($orderId)
     {
-        
-        if(empty(trim($orderId)) ) {
+        if (empty(trim($orderId))) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
+
         $pmObj = new PaymentSettings($this->keyName);
         if (!$paymentSettings = $pmObj->getPaymentSettings()) {
             Message::addErrorMessage($pmObj->getError());
@@ -20,9 +18,9 @@ class PayuMoneyPayController extends PaymentController
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
-        } else if ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             $this->set('paymentAmount', $paymentAmount);
@@ -32,9 +30,9 @@ class PayuMoneyPayController extends PaymentController
         $this->set('orderInfo', $orderInfo);
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
-        $this->_template->render(true, false);    
+        $this->_template->render(true, false);
     }
-    
+
     public function callback()
     {
         $pmObj = new PaymentSettings($this->keyName);
@@ -49,12 +47,12 @@ class PayuMoneyPayController extends PaymentController
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
         if ($orderInfo) {
             $orderPaymentGatewayDescription = sprintf(Labels::getLabel('MSG_Order_Payment_Gateway_Description', $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
-            switch($post['status']) {
+            switch ($post['status']) {
             case 'success':
                 $receiver_match = (strtolower($post['key']) == strtolower($paymentSettings['merchant_key']));
                 $total_paid_match = ((float)$post['amount'] == (float)$paymentGatewayCharge);
                 $hash_string = $paymentSettings["salt"]."|".$post["status"]."||||||||||".$post["udf1"]."|".$post["email"]."|".$post["firstname"]."|".$post["productinfo"]."|".$post["amount"]."|".$post["txnid"]."|".$post["key"];
-                $reverse_hash=strtolower(hash('sha512', $hash_string)); 
+                $reverse_hash=strtolower(hash('sha512', $hash_string));
                 $reverse_hash_match=($post['hash'] == $reverse_hash);
                 if ($receiver_match && $total_paid_match && $reverse_hash_match) {
                     $order_payment_status = 1;
@@ -73,19 +71,18 @@ class PayuMoneyPayController extends PaymentController
             if ($order_payment_status==1) {
                 $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $post["mihpayid"], $paymentGatewayCharge, Labels::getLabel("LBL_Received_Payment", $this->siteLangId), $request);
                 FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId)));
-            }else{
+            } else {
                 $orderPaymentObj->addOrderPaymentComments($request);
                 FatApp::redirectUser(CommonHelper::getPaymentFailurePageUrl());
             }
-        }else{
+        } else {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::getPaymentFailurePageUrl());
         }
     }
-    
+
     private function getPaymentForm($orderId)
     {
-        
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
@@ -95,9 +92,9 @@ class PayuMoneyPayController extends PaymentController
         } else {
             $actionUrl = 'https://test.payu.in/_payment';
         }
-        
+
         $frm = new Form('frmPayuMoney', array('id'=>'frmPayuMoney','action'=>$actionUrl, 'class' =>"form form--normal"));
-        
+
         /* Retrieve Primary Info corresponding to your order */
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
         $firstname = $orderInfo["customer_name"];
@@ -124,7 +121,7 @@ class PayuMoneyPayController extends PaymentController
         $amount = $paymentGatewayCharge;
         $salt = $paymentSettings["salt"];
         $udf1 = $orderId;
-        $Hash = hash('sha512', $key.'|'.$txnid.'|'.$paymentGatewayCharge.'|'.$orderPaymentGatewayDescription.'|'.$firstname.'|'.$email.'|'.$udf1.'||||||||||'.$salt); 
+        $Hash = hash('sha512', $key.'|'.$txnid.'|'.$paymentGatewayCharge.'|'.$orderPaymentGatewayDescription.'|'.$firstname.'|'.$email.'|'.$udf1.'||||||||||'.$salt);
         $frm->addHiddenField('hash', 'hash', $Hash);
         $frm->addHiddenField('udf1', 'udf1', $udf1);
         $frm->addHiddenField('Pg', 'Pg', 'CC');

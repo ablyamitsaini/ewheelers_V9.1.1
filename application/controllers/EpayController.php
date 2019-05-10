@@ -3,36 +3,31 @@
 require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/epayco/autoload.php';
 class EpayController extends PaymentController
 {
-    
-    private 
-    $keyName="epayco",
-    $error = false,
-    $paymentSettings = false,
-    $currencyCode = 'usd';
-    
+    private $keyName="epayco";
+
+    private $error = false;
+
+    private $paymentSettings = false;
+
+    private $currencyCode = 'usd';
+
     public function charge($orderId='')
     {
-        
-        
-        
-        
-        
-        
         /*$epayco = new Epayco\Epayco(array(
         "apiKey" => "005fc56edd19addea4f4a86e03c50376",
         "privateKey" => "84a1d3e0db7f5d73682288aba273e86f",
         "lenguage" => "ES",
         "test" => true
         ));
-		 
+
         $token = $epayco->token->create(array(
         "card[number]" => "4575623182290326",
         "card[exp_year]" => "2017",
         "card[exp_month]" => "07",
         "card[cvc]" => "123"
         ));
-		
-		 
+
+
         $client = $epayco->customer->create(array(
             "token_card" => $token->id,
             "name" => "Joe Doe",
@@ -41,9 +36,9 @@ class EpayController extends PaymentController
             "default" => true
         ));
 
-       
-		 
-		 
+
+
+
         $pay = $epayco->charge->create(array(
         "token_card" => $token->id,
         "customer_id" => $client->data->customerId,
@@ -60,55 +55,55 @@ class EpayController extends PaymentController
         "currency" => "COP",
         "dues" => "12"
         )); */
-        
+
         //CommonHelper::printArray($pay);  die;
-        
+
         $this->_template->render();
     }
-    
-    
+
+
     public function response()
     {
-        
         mail("pooja.rani@ablysoft.com", "Test Response", serialize($_POST));
         $this->set('data', $_POST);
-        var_dump($_POST); die;
+        var_dump($_POST);
+        die;
     }
-    
-    
+
+
     public function confirm()
     {
-        
         mail("pooja.rani@ablysoft.com", "Test Response", serialize($_POST));
         $this->set('data', $_POST);
         $this->_template->render();
     }
-    
-    
+
+
     public function checkCardType()
     {
-        $post = FatApp::getPostedData();        
-        $res=CommonHelper::validate_cc_number($post['cc']);        
-        echo json_encode($res); exit;
+        $post = FatApp::getPostedData();
+        $res=CommonHelper::validate_cc_number($post['cc']);
+        echo json_encode($res);
+        exit;
     }
-    
+
     private function formatPayableAmount($amount = null)
     {
-        if($amount == null) { return false; 
+        if ($amount == null) {
+            return false;
         }
         $amount = number_format($amount, 2, '.', '');
         return $amount*100;
     }
-    
+
     private function getPaymentSettings()
     {
         $pmObj=new PaymentSettings($this->keyName);
         return $pmObj->getPaymentSettings();
     }
-    
+
     private function getPaymentForm($orderId)
     {
-        
         $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('StripePay', 'charge', array($orderId)), 'class' =>"form form--normal"));
         $frm->addRequiredField(Labels::getLabel('LBL_ENTER_CREDIT_CARD_NUMBER', $this->siteLangId), 'cc_number');
         $frm->addRequiredField(Labels::getLabel('LBL_CARD_HOLDER_NAME', $this->siteLangId), 'cc_owner');
@@ -123,16 +118,16 @@ class EpayController extends PaymentController
         $frm->addPasswordField(Labels::getLabel('LBL_CVV_SECURITY_CODE', $this->siteLangId), 'cc_cvv')->requirements()->setRequired();
         /* $frm->addCheckBox(Labels::getLabel('LBL_SAVE_THIS_CARD_FOR_FASTER_CHECKOUT',$this->siteLangId), 'cc_save_card','1'); */
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
-        
+
         return $frm;
     }
-    
+
     private function doPayment($payment_amount = null, $orderInfo = null)
     {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         $this->paymentSettings=$this->getPaymentSettings();
-        if($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null ) {
+        if ($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null) {
             return false;
         }
         $checkPayment = false;
@@ -145,10 +140,10 @@ class EpayController extends PaymentController
                     'secret_key'      => $this->paymentSettings['privateKey'],
                     'publishable_key' => $this->paymentSettings['publishableKey']
                     );
-                    if(!empty(trim($this->paymentSettings['privateKey'])) && !empty(trim($this->paymentSettings['publishableKey'])) ) {
+                    if (!empty(trim($this->paymentSettings['privateKey'])) && !empty(trim($this->paymentSettings['publishableKey']))) {
                         \Stripe\Stripe::setApiKey($stripe['secret_key']);
                     }
-                    
+
                     $customer = \Stripe\Customer::create(
                         array(
                           "email" => $orderInfo['customer_email'],
@@ -164,9 +159,9 @@ class EpayController extends PaymentController
                         )
                     );
                     $charge = $charge->__toArray();
-                    
-                    if(isset($charge['status'])) {
-                        if(strtolower($charge['status']) == 'succeeded') {
+
+                    if (isset($charge['status'])) {
+                        if (strtolower($charge['status']) == 'succeeded') {
                             $message = '';
                             $message .= 'Id: '.(string)$charge['id']. "&";
                             $message .= 'Object: '.(string)$charge['object']. "&";
@@ -198,7 +193,7 @@ class EpayController extends PaymentController
                             /* End Recording Payment in DB */
                             $checkPayment = true;
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderInfo['id'])));
-                        }else{
+                        } else {
                             $orderPaymentObj->addOrderPaymentComments($message);
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
                         }
@@ -210,5 +205,4 @@ class EpayController extends PaymentController
         }
         return $checkPayment;
     }
-    
 }

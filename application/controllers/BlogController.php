@@ -12,7 +12,6 @@ class BlogController extends MyAppController
 
     public function getBreadcrumbNodes($action)
     {
-
         $nodes = array();
         $className = get_class($this);
         $arr = explode('-', FatUtility::camel2dashed($className));
@@ -22,27 +21,26 @@ class BlogController extends MyAppController
 
         if ($action == 'index') {
             $nodes[] = array('title'=>$className);
-        }
-        else {
+        } else {
             $nodes[] = array('title'=>$className, 'href'=>CommonHelper::generateUrl($urlController));
         }
         $parameters = FatApp::getParameters();
 
-        if(!empty($parameters) ) {
-            if($action == 'category') {
+        if (!empty($parameters)) {
+            if ($action == 'category') {
                 $id = reset($parameters);
                 $id = FatUtility::int($id);
                 $data = BlogPostCategory::getAttributesByLangId($this->siteLangId, $id);
                 $title = $data['bpcategory_name'];
                 $nodes[] = array('title'=>$title);
-            } elseif($action == 'postDetail') {
+            } elseif ($action == 'postDetail') {
                 $id = reset($parameters);
                 $id = FatUtility::int($id);
                 $data = BlogPost::getAttributesByLangId($this->siteLangId, $id);
                 $title = CommonHelper::truncateCharacters($data['post_title'], 40);
                 $nodes[] = array('title'=>$title);
             }
-        } elseif($action == 'contributionForm' || $action == 'setupContribution' ) {
+        } elseif ($action == 'contributionForm' || $action == 'setupContribution') {
             $nodes[] = array('title'=>Labels::getLabel('Lbl_Contribution', $this->siteLangId));
         }
 
@@ -51,7 +49,6 @@ class BlogController extends MyAppController
 
     public function index()
     {
-
         $srch = BlogPost::getSearchObject($this->siteLangId, true, false, true);
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
         $srch->addCondition('postlang_post_id', 'is not', 'mysql_func_null', 'and', true);
@@ -59,7 +56,7 @@ class BlogController extends MyAppController
         $srch->addOrder('post_added_on', 'desc');
         $srch->setPageSize(5);
         $srch->addGroupby('post_id');
-        $rs = $srch->getResultSet();        
+        $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 
         $this->set('postList', $records);
@@ -71,7 +68,7 @@ class BlogController extends MyAppController
     public function category($categoryId)
     {
         $categoryId = FatUtility::int($categoryId);
-        if($categoryId < 1) {
+        if ($categoryId < 1) {
             Message::addErrorMessage(Labels::getLabel('Lbl_Invalid_Request', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -100,7 +97,7 @@ class BlogController extends MyAppController
         $headerFormParamsAssocArr = BlogPost::convertArrToSrchFiltersAssocArr($headerFormParamsArr);
         $frm = $this->getBlogSearchForm();
         $frm->fill($headerFormParamsAssocArr);
-        if(isset($headerFormParamsAssocArr['keyword'])) {
+        if (isset($headerFormParamsAssocArr['keyword'])) {
             $keyword = $headerFormParamsAssocArr['keyword'];
             $this->set('keyword', $keyword);
             $this->set('srchFrm', $frm);
@@ -120,10 +117,10 @@ class BlogController extends MyAppController
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
         $srch->addCondition('postlang_post_id', 'is not', 'mysql_func_null', 'and', true);
 
-        if($categoryId = FatApp::getPostedData('categoryId', FatUtility::VAR_INT, 0) ) {
+        if ($categoryId = FatApp::getPostedData('categoryId', FatUtility::VAR_INT, 0)) {
             $srch->addCondition('ptc_bpcategory_id', '=', $categoryId);
             $this->set('bpCategoryId', $categoryId);
-        }elseif($keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '') ) {
+        } elseif ($keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '')) {
             $keywordCond= $srch->addCondition('post_title', 'like', "%$keyword%");
             $keywordCond->attachCondition('post_short_description', 'like', "%$keyword%");
             $keywordCond->attachCondition('post_description', 'like', "%$keyword%");
@@ -138,10 +135,11 @@ class BlogController extends MyAppController
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 
-        $startRecord = ( $page - 1 ) * $pageSize + 1 ;
+        $startRecord = ($page - 1) * $pageSize + 1 ;
         $endRecord = $page * $pageSize;
         $totalRecords = $srch->recordCount();
-        if ($totalRecords < $endRecord) { $endRecord = $totalRecords;
+        if ($totalRecords < $endRecord) {
+            $endRecord = $totalRecords;
         }
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());
@@ -150,7 +148,7 @@ class BlogController extends MyAppController
         $this->set('postedData', $post);
 
         $json['totalRecords'] = $totalRecords;
-        $json['startRecord'] = ( $totalRecords > 0 ) ? 1 : 0 ;
+        $json['startRecord'] = ($totalRecords > 0) ? 1 : 0 ;
         $json['endRecord'] = $endRecord;
         $json['html'] = $this->_template->render(false, false, 'blog/blog-listing.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, 'blog/load-more-btn.php', true, false);
@@ -160,7 +158,7 @@ class BlogController extends MyAppController
     public function postDetail($blogPostId)
     {
         $blogPostId = FatUtility::int($blogPostId);
-        if($blogPostId <= 0) {
+        if ($blogPostId <= 0) {
             Message::addErrorMessage(Labels::getLabel('Lbl_Invalid_Request', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Blog'));
         }
@@ -173,7 +171,7 @@ class BlogController extends MyAppController
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_description' , 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames'));
         $srchComment = clone $srch;
         $srch->addGroupby('post_id');
-        if(!$blogPostData = FatApp::getDb()->fetch($srch->getResultSet())) {
+        if (!$blogPostData = FatApp::getDb()->fetch($srch->getResultSet())) {
             Message::addErrorMessage(Labels::getLabel('Lbl_Invalid_Request', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Blog'));
         }
@@ -188,9 +186,9 @@ class BlogController extends MyAppController
         $this->set('commentsCount', $srchComment->recordCount());
         $this->set('blogPostComments', FatApp::getDb()->fetchAll($commentsResultSet));
 
-        if($blogPostData['post_comment_opened'] && UserAuthentication::isUserLogged()) {
+        if ($blogPostData['post_comment_opened'] && UserAuthentication::isUserLogged()) {
             $frm = $this->getPostCommentForm($blogPostId);
-            if(UserAuthentication::isUserLogged()) {
+            if (UserAuthentication::isUserLogged()) {
                 $loggedUserId = UserAuthentication::getLoggedUserId(true);
                 $userObj = new User($loggedUserId);
                 $userInfo = $userObj->getUserInfo();
@@ -225,26 +223,26 @@ class BlogController extends MyAppController
     {
         $userId = UserAuthentication::getLoggedUserId(true);
         $userId = FatUtility::int($userId);
-        if(1 > $userId) {
+        if (1 > $userId) {
             Message::addErrorMessage(Labels::getLabel('MSG_User_Not_Logged', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
         $blogPostId = FatApp::getPostedData('bpcomment_post_id', FatUtility::VAR_INT, 0);
-        if($blogPostId <=0) {
+        if ($blogPostId <=0) {
             Message::addErrorMessage(Labels('Lbl_Invalid_Request'));
             FatUtility::dieWithError(Message::getHtml());
         }
         $frm = $this->getPostCommentForm($blogPostId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
-        if(false === $post) {
+        if (false === $post) {
             Message::addErrorMessage($frm->getValidationErrors());
             FatUtility::dieWithError(Message::getHtml());
         }
 
         /* checking Abusive Words[ */
         $enteredAbusiveWordsArr = array();
-        if(!Abusive::validateContent($post['bpcomment_content'], $enteredAbusiveWordsArr) ) {
-            if(!empty($enteredAbusiveWordsArr) ) {
+        if (!Abusive::validateContent($post['bpcomment_content'], $enteredAbusiveWordsArr)) {
+            if (!empty($enteredAbusiveWordsArr)) {
                 $errStr =  Labels::getLabel("LBL_Word_{abusiveword}_is/are_not_allowed_to_post", $this->siteLangId);
                 $errStr = str_replace("{abusiveword}", '"'.implode(", ", $enteredAbusiveWordsArr).'"', $errStr);
                 Message::addErrorMessage($errStr);
@@ -260,7 +258,7 @@ class BlogController extends MyAppController
 
         $blogComment = new BlogComment();
         $blogComment->assignValues($post);
-        if(!$blogComment->save()) {
+        if (!$blogComment->save()) {
             Message::addErrorMessage($blogComment->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -275,7 +273,7 @@ class BlogController extends MyAppController
         'notification_added_on' => date('Y-m-d H:i:s'),
         );
 
-        if(!Notification::saveNotifications($notificationData)) {
+        if (!Notification::saveNotifications($notificationData)) {
             Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -285,7 +283,6 @@ class BlogController extends MyAppController
 
     public function searchComments()
     {
-
         $post = FatApp::getPostedData();
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
@@ -315,9 +312,8 @@ class BlogController extends MyAppController
 
     public function contributionForm()
     {
-
         $frm = $this->getContributionForm();
-        if(UserAuthentication::isUserLogged()) {
+        if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId(true);
             $userObj = new User($loggedUserId);
             $userInfo = $userObj->getUserInfo();
@@ -332,7 +328,7 @@ class BlogController extends MyAppController
             $frm->getField('bcontributions_author_email')->value = $userInfo['credential_email'];
             $frm->getField('bcontributions_author_phone')->value = $userInfo['user_phone'];
         }
-        if($post = FatApp::getPostedData()) {
+        if ($post = FatApp::getPostedData()) {
             $frm->fill($post);
         }
         $this->set('frm', $frm);
@@ -341,20 +337,19 @@ class BlogController extends MyAppController
 
     public function setupContribution()
     {
-
         $frm = $this->getContributionForm();
         $post = FatApp::getPostedData();
         $post['file'] = 'file';
         $post = $frm->getFormDataFromArray($post);
 
-        if (false === $post ) {
+        if (false === $post) {
             Message::addErrorMessage($frm->getValidationErrors());
             $this->contributionForm();
             return false;
         }
 
-        if(FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
-            if(!CommonHelper::verifyCaptcha()) {
+        if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
+            if (!CommonHelper::verifyCaptcha()) {
                 Message::addErrorMessage(Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId));
                 $this->contributionForm();
                 return false;
@@ -362,7 +357,7 @@ class BlogController extends MyAppController
         }
         $post['bcontributions_added_on'] = date('Y-m-d H:i:s');
         $post['bcontributions_user_id'] = UserAuthentication::getLoggedUserId(true);
-        if($loggedUserId = UserAuthentication::getLoggedUserId(true)) {
+        if ($loggedUserId = UserAuthentication::getLoggedUserId(true)) {
             $userObj = new User($loggedUserId);
             $userInfo = $userObj->getUserInfo();
             $nameArr = explode(' ', $userInfo['user_name']);
@@ -375,17 +370,17 @@ class BlogController extends MyAppController
             Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
             $this->contributionForm();
             return false;
-        }else{
+        } else {
             $fileExt = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
             $fileExt = strtolower($fileExt);
-            if(!in_array($fileExt, applicationConstants::allowedFileExtensions())) {
+            if (!in_array($fileExt, applicationConstants::allowedFileExtensions())) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE_EXTENSION', $this->siteLangId));
                 $this->contributionForm();
                 return false;
             }
 
             $fileMimeType = mime_content_type($_FILES['file']['tmp_name']);
-            if(!in_array($fileMimeType, applicationConstants::allowedMimeTypes())) {
+            if (!in_array($fileMimeType, applicationConstants::allowedMimeTypes())) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE_MIME_TYPE', $this->siteLangId));
                 $this->contributionForm();
                 return false;
@@ -394,7 +389,7 @@ class BlogController extends MyAppController
 
         $uploadedFile = $_FILES['file']['tmp_name'];
 
-        if(!AttachedFile::checkSize($uploadedFile, 10240000) ) {
+        if (!AttachedFile::checkSize($uploadedFile, 10240000)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Please_upload_file_size_less_than_10MB', $this->siteLangId));
             $this->contributionForm();
             return false;
@@ -402,7 +397,7 @@ class BlogController extends MyAppController
 
         $contribution = new BlogContribution();
         $contribution->assignValues($post);
-        if(!$contribution->save()) {
+        if (!$contribution->save()) {
             Message::addErrorMessage($contribution->getError());
             $this->contributionForm();
             return false;
@@ -417,13 +412,13 @@ class BlogController extends MyAppController
         'notification_added_on' => date('Y-m-d H:i:s'),
         );
 
-        if(!Notification::saveNotifications($notificationData)) {
+        if (!Notification::saveNotifications($notificationData)) {
             Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $fileHandlerObj = new AttachedFile();
-        if(!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BLOG_CONTRIBUTION, $contributionId, 0,    $_FILES['file']['name'], -1, $unique_record = true)) {
+        if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BLOG_CONTRIBUTION, $contributionId, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             $this->contributionForm();
             return false;
@@ -442,7 +437,7 @@ class BlogController extends MyAppController
         $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone');
         $fld_phn->requirements()->setRegularExpressionToValidate('^[\s()+-]*([0-9][\s()+-]*){5,20}$');
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);
-        if(FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
+        if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT', $this->siteLangId));
@@ -451,7 +446,6 @@ class BlogController extends MyAppController
 
     private function getPostCommentForm($postId)
     {
-
         $frm = new Form('frmBlogPostComment');
         $frm->addRequiredField(Labels::getLabel('', $this->siteLangId), 'bpcomment_author_name');
         $frm->addEmailField(Labels::getLabel('', $this->siteLangId), 'bpcomment_author_email', '');
@@ -463,7 +457,6 @@ class BlogController extends MyAppController
 
     private function getCommentSearchForm($postId)
     {
-
         $frm = new Form('frmSearchComments');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'post_id', $postId);

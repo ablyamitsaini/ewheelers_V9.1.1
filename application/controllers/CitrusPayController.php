@@ -1,9 +1,8 @@
 <?php
 class CitrusPayController extends PaymentController
 {
-    
     private $keyName="Citrus";
-    
+
     public function charge($orderId)
     {
         $pmObj=new PaymentSettings($this->keyName);
@@ -14,22 +13,22 @@ class CitrusPayController extends PaymentController
         $orderPaymentObj=new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount=$orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo=$orderPaymentObj->getOrderPrimaryinfo();
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
-        } elseif ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             $this->set('paymentAmount', $paymentAmount);
-        }else{
+        } else {
             $this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
         }
         $this->set('orderInfo', $orderInfo);
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
-        $this->_template->render(true, false);    
+        $this->_template->render(true, false);
     }
-    
-    public function callback() 
+
+    public function callback()
     {
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
@@ -45,31 +44,30 @@ class CitrusPayController extends PaymentController
                 //resp signature validation
                 $str=$post['TxId'].$post['TxStatus'].$post['amount'].$post['pgTxnNo'].$post['issuerRefNo'].$post['authIdCode'].$post['firstName'].$post['lastName'].$post['pgRespCode'].$post['addressZip'];
                 $respSig=$post['signature'];
-                if(hash_hmac('sha1', $str, $paymentSettings['merchant_secret_key']) == $respSig) {
+                if (hash_hmac('sha1', $str, $paymentSettings['merchant_secret_key']) == $respSig) {
                     $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $post['pgTxnNo'], $paymentGatewayCharge, Labels::getLabel("LBL_Received_Payment", $this->siteLangId), $request);
                     FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId)));
-                }else{
+                } else {
                     $request .= "\n\n Citrus :: Invalid or forged transactiond.  \n\n";
                     $orderPaymentObj->addOrderPaymentComments($request);
                     FatApp::redirectUser(CommonHelper::getPaymentFailurePageUrl());
                 }
-            }else{
+            } else {
                 $orderPaymentObj->addOrderPaymentComments($request);
-                if($post['pgRespCode']==3) {
+                if ($post['pgRespCode']==3) {
                     FatApp::redirectUser(CommonHelper::getPaymentCancelPageUrl());
                 }
-                
+
                 FatApp::redirectUser(CommonHelper::getPaymentFailurePageUrl());
             }
-        }else{
+        } else {
             FatUtility::exitWithErrorCode(404);
         }
     }
-    
-    
+
+
     private function getPaymentForm($orderId)
     {
-        
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
@@ -87,9 +85,9 @@ class CitrusPayController extends PaymentController
             $actionUrl = 'https://sandbox.citruspay.com/sslperf/';
         }
         $actionUrl = $actionUrl."$vanityUrl";
-        
+
         $frm = new Form('frm-citrus-payment', array('id'=>'frm-citrus-payment','action'=>$actionUrl, 'class' =>"form form--normal"));
-        
+
         $frm->addHiddenField('', 'merchantTxnId', $orderId);
         $frm->addHiddenField('', 'orderAmount', $paymentGatewayCharge);
         $frm->addHiddenField('', 'currency', "INR");

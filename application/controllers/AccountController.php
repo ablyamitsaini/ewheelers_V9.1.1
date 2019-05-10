@@ -651,23 +651,23 @@ class AccountController extends LoggedUserController
         $withdrawal_bank_address = '';
         $withdrawal_comments = $post['withdrawal_comments'];
 
-        switch ($withdrawal_payment_method) {
-            case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
-                $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
-                break;
+    switch ($withdrawal_payment_method) {
+        case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
+            $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
+            break;
 
-            case User::AFFILIATE_PAYMENT_METHOD_BANK:
-                $withdrawal_bank = $post['ub_bank_name'];
-                $withdrawal_account_holder_name = $post['ub_account_holder_name'];
-                $withdrawal_account_number = $post['ub_account_number'];
-                $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
-                $withdrawal_bank_address = $post['ub_bank_address'];
-                break;
+        case User::AFFILIATE_PAYMENT_METHOD_BANK:
+            $withdrawal_bank = $post['ub_bank_name'];
+            $withdrawal_account_holder_name = $post['ub_account_holder_name'];
+            $withdrawal_account_number = $post['ub_account_number'];
+            $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
+            $withdrawal_bank_address = $post['ub_bank_address'];
+            break;
 
-            case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
-                $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
-                break;
-        }
+        case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
+            $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
+            break;
+    }
 
 
         $post['withdrawal_payment_method'] = $withdrawal_payment_method;
@@ -688,7 +688,7 @@ class AccountController extends LoggedUserController
         }
 
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendWithdrawRequestNotification($withdrawRequestId, $this->siteLangId, "A")) {
+        if (!$emailNotificationObj->sendWithdrawRequestNotification($withdrawRequestId, $this->siteLangId, "A")) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -2541,7 +2541,7 @@ class AccountController extends LoggedUserController
 
         /* email notification handling[ */
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendOrderReturnRequestStatusChangeNotification($orrequest_id, $this->siteLangId)) {
+        if (!$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification($orrequest_id, $this->siteLangId)) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -2955,7 +2955,7 @@ class AccountController extends LoggedUserController
 
         $post['user_id'] = $userId;
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendDataRequestNotification($post, $this->siteLangId)) {
+        if (!$emailNotificationObj->sendDataRequestNotification($post, $this->siteLangId)) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }

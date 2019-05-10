@@ -1,7 +1,6 @@
 <?php
 class orderStatus extends MyAppModel
 {
-
     const DB_TBL = 'tbl_orders_status';
     const DB_TBL_PREFIX = 'orderstatus_';
 
@@ -22,27 +21,30 @@ class orderStatus extends MyAppModel
         $this->db=FatApp::getDb();
     }
 
-    public static function getSearchObject( $isActive = true , $langId = 0)
+    public static function getSearchObject($isActive = true, $langId = 0)
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 'ostatus');
 
-        if($isActive==true) {
+        if ($isActive==true) {
             $srch->addCondition('ostatus.'.static::DB_TBL_PREFIX.'is_active', '=', applicationConstants::ACTIVE);
         }
 
-        if($langId > 0) {
+        if ($langId > 0) {
             $srch->joinTable(
-                static::DB_TBL_LANG, 'LEFT OUTER JOIN',
+                static::DB_TBL_LANG,
+                'LEFT OUTER JOIN',
                 'ostatus_l.'.static::DB_TBL_LANG_PREFIX.'orderstatus_id = ostatus.'.static::tblFld('id').' and
-			ostatus_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId, 'ostatus_l'
+			ostatus_l.'.static::DB_TBL_LANG_PREFIX.'lang_id = '.$langId,
+                'ostatus_l'
             );
         }
 
         return $srch;
     }
 
-    public static function nonCancellableStatuses(){
+    public static function nonCancellableStatuses()
+    {
         return array(
             static::ORDER_SHIPPED,
             static::ORDER_DELIVERED,
@@ -63,9 +65,9 @@ class orderStatus extends MyAppModel
 
     public function updateOrder($order)
     {
-        if(is_array($order) && sizeof($order) > 0) {
-            foreach($order as $i => $id){
-                if(FatUtility::int($id) < 1) {
+        if (is_array($order) && sizeof($order) > 0) {
+            foreach ($order as $i => $id) {
+                if (FatUtility::int($id) < 1) {
                     continue;
                 }
 
@@ -84,6 +86,4 @@ class orderStatus extends MyAppModel
         }
         return false;
     }
-
-
 }

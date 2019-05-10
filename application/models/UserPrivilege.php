@@ -1,228 +1,213 @@
 <?php
 class UserPrivilege
 {
-    
     private static $instance = null ;
 
     private $loadedPermissions = array();
 
-    private function __construct() 
-    { 
+    private function __construct()
+    {
     }
 
     public static function getInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new self();            
+            self::$instance = new self();
         }
         return self::$instance;
     }
 
-    Static public function canSellerEditOption($optionId,$langId)
+    public static function canSellerEditOption($optionId, $langId)
     {
         $userId =   UserAuthentication::getLoggedUserId();
         $option = new Option();
-        if(!$row = $option->getOption($optionId, $userId)) {
+        if (!$row = $option->getOption($optionId, $userId)) {
             return false;
         }
         return true;
     }
-    
-    Static public function canSellerEditOptionValue($optionId,$optionValueId,$langId)
+
+    public static function canSellerEditOptionValue($optionId, $optionValueId, $langId)
     {
         $userId =   UserAuthentication::getLoggedUserId();
         $optionValue = new OptionValue($optionValueId);
-        if(!$row = $optionValue->getOptionValue($optionId)) {
+        if (!$row = $optionValue->getOptionValue($optionId)) {
             return false;
         }
         return true;
     }
-    
-    Static public function canEditSellerProductSpecification($specificationId,$productId)
-    {        
-        $prodSpecObj = new ProdSpecification();
-        if(!$row = $prodSpecObj->getProdSpecification($specificationId, $productId, '', false)) {
-            return false;
-        }
-        return true;
-    }
-    
-    Static public function canSellerEditCustomProduct($productId  = -1)
+
+    public static function canEditSellerProductSpecification($specificationId, $productId)
     {
-        
-        if($productId<0) {
+        $prodSpecObj = new ProdSpecification();
+        if (!$row = $prodSpecObj->getProdSpecification($specificationId, $productId, '', false)) {
             return false;
         }
-        
+        return true;
+    }
+
+    public static function canSellerEditCustomProduct($productId  = -1)
+    {
+        if ($productId<0) {
+            return false;
+        }
+
         /* Validate product belongs to current logged seller[ */
         $productRow = Product::getAttributesById($productId, array('product_seller_id'));
-        if(!$productRow ||  $productRow['product_seller_id'] != UserAuthentication::getLoggedUserId() ) {
+        if (!$productRow ||  $productRow['product_seller_id'] != UserAuthentication::getLoggedUserId()) {
             return false;
         }
         return true;
         /* ] */
     }
-    
-    Static public function canEditSellerProduct($productId  = -1)
+
+    public static function canEditSellerProduct($productId  = -1)
     {
-        
-        if($productId<0) {
+        if ($productId<0) {
             return false;
         }
-        
+
         /* Validate product belongs to current logged seller[ */
         $sellerProductRow = SellerProduct::getAttributesById($productId, array('selprod_user_id'));
 
-        if(!$sellerProductRow ||  $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId() ) {
+        if (!$sellerProductRow ||  $sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
             return false;
         }
         return true;
         /* ] */
     }
-    
-    static public function canEditMetaTag($metaId= 0, $metaRecordId= 0)
+
+    public static function canEditMetaTag($metaId= 0, $metaRecordId= 0)
     {
-        if($metaId==0 && !self::canEditSellerProduct($metaRecordId)) {
+        if ($metaId==0 && !self::canEditSellerProduct($metaRecordId)) {
             return false;
         }
-        if($metaId>0 &&  !$data = MetaTag::getAttributesById($metaId, array('meta_record_id'))) {
-            
+        if ($metaId>0 &&  !$data = MetaTag::getAttributesById($metaId, array('meta_record_id'))) {
             return false;
-            
-        }    
-        
+        }
+
         return true;
     }
-    
-    static public function canSellerUpdateTag($tagId)
+
+    public static function canSellerUpdateTag($tagId)
     {
-        
         $userId =   UserAuthentication::getLoggedUserId();
-    
-        if(!$data = Tag::getAttributesById($tagId, array('tag_user_id'))) {
-            
+
+        if (!$data = Tag::getAttributesById($tagId, array('tag_user_id'))) {
             return false;
-        }else{
-            if($data['tag_user_id']!=$userId) {
+        } else {
+            if ($data['tag_user_id']!=$userId) {
                 return false;
             }
         }
         return true;
     }
-    
-    static public function canSellerUpdateBrandRequest($brandId)
+
+    public static function canSellerUpdateBrandRequest($brandId)
     {
-        
         $userId =   UserAuthentication::getLoggedUserId();
-    
-        if(!$data = Brand::getAttributesById($brandId, array('brand_seller_id'))) {
+
+        if (!$data = Brand::getAttributesById($brandId, array('brand_seller_id'))) {
             return false;
-        }else{
-            if($data['brand_seller_id']!=$userId) {
+        } else {
+            if ($data['brand_seller_id']!=$userId) {
                 return false;
             }
         }
         return true;
     }
-    
-    static public function canSellerAddNewProduct()
-    {        
-        
-        $userId =   UserAuthentication::getLoggedUserId(); 
-        if(!self::IsUserHasValidSubsription($userId)) {
+
+    public static function canSellerAddNewProduct()
+    {
+        $userId =   UserAuthentication::getLoggedUserId();
+        if (!self::IsUserHasValidSubsription($userId)) {
             return false;
         }
-        
-        if(!FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0)) {
-            return true;    
-        }    
+
+        if (!FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0)) {
+            return true;
+        }
         /* if(FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE',FatUtility::VAR_INT,0)){
-		
+
         if(!self::IsUserHasValidSubsription($userId)){
         return false;
         }
         } */
         $products = new Product();
         $productsAllowed = OrderSubscription::getUserCurrentActivePlanDetails(CommonHelper::getLangId(), $userId, array('ossubs_products_allowed'));
-        
-        $totalProducts  =  $products->getTotalProductsAddedByUser($userId); 
-        if($totalProducts >= $productsAllowed) {
-        
+
+        $totalProducts  =  $products->getTotalProductsAddedByUser($userId);
+        if ($totalProducts >= $productsAllowed) {
             return false;
-        }  
+        }
         return true;
     }
-    
-    static function IsUserHasValidSubsription($userId = 0)
+
+    public static function IsUserHasValidSubsription($userId = 0)
     {
-        if($userId<1) {
+        if ($userId<1) {
             return false;
         }
-        
-        if(!FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0)) {
+
+        if (!FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0)) {
             return true;
-        }    
-        
+        }
+
         $latestOrder = OrderSubscription::getUserCurrentActivePlanDetails(CommonHelper::getLangId(), $userId, array('ossubs_till_date','ossubs_id'));
-        if(empty($latestOrder)) {
+        if (empty($latestOrder)) {
             return false;
-        }elseif($latestOrder['ossubs_till_date']<date("Y-m-d")) { 
+        } elseif ($latestOrder['ossubs_till_date']<date("Y-m-d")) {
             return false;
         }
-        
+
         return true;
-        
     }
-    
+
     /* Subscription privildges */
-    
-    static function CanSellerUpgradeOrDowngradePlan($userId =0 , $spPlanId = 0 , $langId = 0)
+
+    public static function CanSellerUpgradeOrDowngradePlan($userId =0, $spPlanId = 0, $langId = 0)
     {
         $currentActivePlanId = OrderSubscription:: getUserCurrentActivePlanDetails($langId, $userId, array(OrderSubscription::DB_TBL_PREFIX.'id'));
-        if(!$currentActivePlanId) {
+        if (!$currentActivePlanId) {
             return true;
-        }else{
+        } else {
             /* if Downgrading package then give message to reduce products */
             $planDetails = SellerPackagePlans::getSubscriptionPlanDataByPlanId($spPlanId, $langId);
             $products = new Product();
             $totalProducts  =  $products->getTotalProductsAddedByUser(UserAuthentication::getLoggedUserId());
-            if($totalProducts > $planDetails[SellerPackages::DB_TBL_PREFIX.'products_allowed'] ) {
+            if ($totalProducts > $planDetails[SellerPackages::DB_TBL_PREFIX.'products_allowed']) {
                 Message::addErrorMessage(sprintf(Labels::getLabel('M_YOU_ARE_DOWNGRADING_YOUR_PACKAGE', $langId), $planDetails[SellerPackages::DB_TBL_PREFIX.'products_allowed'], $totalProducts));
                 return false;
-            } 
-        
+            }
+
             /* ] */
-            /* $totalProductsAdded  = 
-            $totalImagesAdded  = */ 
+            /* $totalProductsAdded  =
+            $totalImagesAdded  = */
         }
         return true;
     }
-    
-    static function CanSellerBuyFreePlan($userId =0 , $sPackageId = 0 , $langId = 0)
+
+    public static function CanSellerBuyFreePlan($userId =0, $sPackageId = 0, $langId = 0)
     {
-        if(!OrderSubscription::CanUserBuyFreeSubscription) {
-            
+        if (!OrderSubscription::canUserBuyFreeSubscription) {
             return false;
         }
         return true;
     }
-    
-    static function canEditSellerCollection($userId =0)
+
+    public static function canEditSellerCollection($userId =0)
     {
         //Pending
         return true;
     }
-    
-    static function canSellerAddProductInCatalog($productId =0, $userId = 0)
+
+    public static function canSellerAddProductInCatalog($productId =0, $userId = 0)
     {
-        
-    
         $product = Product::getAttributesById($productId);
-    
-        if($userId !=$product['product_seller_id'] && $product['product_seller_id']!=0) {
+
+        if ($userId !=$product['product_seller_id'] && $product['product_seller_id']!=0) {
             return false;
         }
         return true;
     }
-    
 }

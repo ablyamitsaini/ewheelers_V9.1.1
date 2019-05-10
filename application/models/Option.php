@@ -18,18 +18,20 @@ class Option extends MyAppModel
         $this->db=FatApp::getDb();
     }
 
-    public static function getSearchObject( $langId = 0, $isDeleted = true )
+    public static function getSearchObject($langId = 0, $isDeleted = true)
     {
         $srch = new SearchBase(static::DB_TBL, 'o');
 
-        if($langId ) {
+        if ($langId) {
             $srch->joinTable(
-                Option::DB_TBL . '_lang', 'LEFT OUTER JOIN',
-                'ol.optionlang_option_id = o.option_id AND ol.optionlang_lang_id = ' . $langId, 'ol'
+                Option::DB_TBL . '_lang',
+                'LEFT OUTER JOIN',
+                'ol.optionlang_option_id = o.option_id AND ol.optionlang_lang_id = ' . $langId,
+                'ol'
             );
         }
 
-        if($isDeleted == true ) {
+        if ($isDeleted == true) {
             $srch->addCondition('o.'.static::DB_TBL_PREFIX.'deleted', '=', applicationConstants::NO);
         }
         return $srch;
@@ -53,7 +55,7 @@ class Option extends MyAppModel
         );
     }
 
-    public static function validateOptionFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    public static function validateOptionFields($columnIndex, $columnTitle, $columnValue, $langId)
     {
         $requiredFields = static::requiredOptionFields();
         return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
@@ -74,7 +76,7 @@ class Option extends MyAppModel
         );
     }
 
-    public static function validateOptionValFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    public static function validateOptionValFields($columnIndex, $columnTitle, $columnValue, $langId)
     {
         $requiredFields = static::requiredOptionValFields();
         return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
@@ -94,16 +96,16 @@ class Option extends MyAppModel
         );
     }
 
-    public static function validateProdOptionFields( $columnIndex, $columnTitle, $columnValue, $langId )
+    public static function validateProdOptionFields($columnIndex, $columnTitle, $columnValue, $langId)
     {
         $requiredFields = static::requiredProdOptionFields();
         return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
     }
 
-    public static function getOptionTypes( $langId )
+    public static function getOptionTypes($langId)
     {
         $langId = FatUtility::int($langId);
-        if($langId == 0) {
+        if ($langId == 0) {
             trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
         }
         $arr = array(
@@ -127,10 +129,13 @@ class Option extends MyAppModel
         $srch->addCondition('option_id', '=', $optionId);
         $rs = $srch->getResultSet();
         $record = FatApp::getDb()->fetch($rs);
-        if($record) {
+        if ($record) {
             $lang_record = CommonHelper::getLangFields(
                 $optionId,
-                'optionlang_option_id', 'optionlang_lang_id', array('option_name'), static::DB_TBL.'_lang'
+                'optionlang_option_id',
+                'optionlang_lang_id',
+                array('option_name'),
+                static::DB_TBL.'_lang'
             );
             return  array_merge($record, $lang_record);
         }
@@ -149,22 +154,23 @@ class Option extends MyAppModel
     return $srch;
     } */
 
-    public function getMaxOrder($userId=0)
+    public function getMaxOrder($userId = 0)
     {
         $srch = new SearchBase(static::DB_TBL);
         $srch->addFld("MAX(" . static::DB_TBL_PREFIX . "display_order) as max_order");
 
         $userId=FatUtility::int($userId);
-        if($userId>0) {
+        if ($userId>0) {
             $srch->addCondition(static::DB_TBL_PREFIX.'seller_id', '=', $userId);
         }
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
-        if(!$rs) { return 1;
+        if (!$rs) {
+            return 1;
         }
         $record = FatApp::getDb()->fetch($rs);
-        if(!empty($record)) {
+        if (!empty($record)) {
             return $record['max_order']+1;
         }
         return 1;
@@ -177,7 +183,7 @@ class Option extends MyAppModel
         $srch->addFld('o.'.static::DB_TBL_PREFIX.'id');
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!empty($row) && $row[static::DB_TBL_PREFIX.'id']==$id) {
+        if (!empty($row) && $row[static::DB_TBL_PREFIX.'id']==$id) {
             return true;
         }
         return false;
@@ -192,7 +198,7 @@ class Option extends MyAppModel
         $srch->addFld('product_id');
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if(!empty($row)) {
+        if (!empty($row)) {
             return true;
         }
         return false;

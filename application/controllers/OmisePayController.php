@@ -3,66 +3,62 @@ require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/omise/lib/Omise.p
 
 class OmisePayController extends PaymentController
 {
-
     private $keyName = "omise";
     private $paymentSettings = "omise";
 
     public function __construct($action)
     {
-        
         parent::__construct($action);
         $pmObj = new PaymentSettings($this->keyName);
         if (!$this->paymentSettings = $pmObj->getPaymentSettings()) {
             Message::addErrorMessage($pmObj->getError());
             CommonHelper::redirectUserReferer();
         }
-        if(!defined('OMISE_PUBLIC_KEY')) {
-            define('OMISE_PUBLIC_KEY', $this->paymentSettings['public_key']); 
+        if (!defined('OMISE_PUBLIC_KEY')) {
+            define('OMISE_PUBLIC_KEY', $this->paymentSettings['public_key']);
         }
-        if(!defined('OMISE_SECRET_KEY')) {
-            define('OMISE_SECRET_KEY', $this->paymentSettings['secret_key']); 
+        if (!defined('OMISE_SECRET_KEY')) {
+            define('OMISE_SECRET_KEY', $this->paymentSettings['secret_key']);
         }
     }
 
     public function charge($orderId = '')
     {
-        
-        if(empty(trim($orderId)) ) {
+        if (empty(trim($orderId))) {
             FatUtility::exitWIthErrorCode(404);
         }
-        
+
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
-        if(!$orderInfo['id'] ) {
+        if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
-        } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING ) {
+        } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
-        }else{
+        } else {
             $this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
         }
-        
+
         $cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
-        if($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE ) {
+        if ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
             $cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
         }
-        
+
         $this->set('cancelBtnUrl', $cancelBtnUrl);
-        
+
         $this->set('paymentAmount', $paymentAmount);
         $this->set('orderInfo', $orderInfo);
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
-        $this->_template->render(true, false);        
+        $this->_template->render(true, false);
     }
-    public function send($orderId) 
+    public function send($orderId)
     {
-        
         $post = FatApp::getPostedData();
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $orderPaymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
-        
+
         if ($orderPaymentAmount > 0) {
             $orderInfo=$orderPaymentObj->getOrderPrimaryinfo();
             $orderActualPaid = ceil($orderPaymentAmount)*100; /* payment accepted in satang. i.e. to charge ฿20.00, you should set amount=2000 (฿20.00). */
@@ -71,7 +67,7 @@ class OmisePayController extends PaymentController
                 $livemode = false;
             }
             $json = array();
-            try{
+            try {
                 $token = OmiseToken::create(
                     array(
                     'card' => array(
@@ -105,8 +101,8 @@ class OmisePayController extends PaymentController
                     // 'card'        => $token_ref,
                     'livemode'      => $livemode
                     )
-                ); 
-                if(!$response) {
+                );
+                if (!$response) {
                     throw new Exception(Labels::getLabel('MSG_EMPTY_GATEWAY_RESPONSE', $this->siteLangId));
                 }
                 if (strtolower($response->offsetGet('status'))!='successful' || strtolower($response->offsetGet('paid')) != true) {
@@ -120,26 +116,23 @@ class OmisePayController extends PaymentController
                     throw new Exception(Labels::getLabel('MSG_INVALID_TRANSACTION_AMOUNT', $this->siteLangId));
                 }
                 /* Recording Payment in DB */
-                if (!$orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $response->offsetGet('transaction'), $orderPaymentAmount, Labels::getLabel("LBL_Received_Payment", $this->siteLangId),  json_encode((array)$response))) {
+                if (!$orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $response->offsetGet('transaction'), $orderPaymentAmount, Labels::getLabel("LBL_Received_Payment", $this->siteLangId), json_encode((array)$response))) {
                     $json['error'] = "Invalid Action";
                 } else {
                     $json['redirect'] = CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId));
                 }
                 /* End Recording Payment in DB */
-            }
-            catch(OmiseNotFoundException $e){
+            } catch (OmiseNotFoundException $e) {
+                $json['error'] = 'ERROR: ' . $e->getMessage();
+            } catch (exception $e) {
                 $json['error'] = 'ERROR: ' . $e->getMessage();
             }
-            catch(exception $e){
-                $json['error'] = 'ERROR: ' . $e->getMessage();
-            }
-        }    
-        else{
+        } else {
             $json['error'] = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
         }
         echo json_encode($json);
     }
-    
+
     private function getPaymentForm($orderId)
     {
         $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('OmisePay', 'send', array($orderId)), 'class' =>"form form--normal"));

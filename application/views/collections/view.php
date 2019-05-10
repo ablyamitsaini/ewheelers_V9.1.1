@@ -1,10 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 <div id="body" class="body bg--gray">
-	<div class="section section--pagebar">
-      <div class="container container--fixed">
-        <h4><?php echo $collection['collection_name']; ?></h4>
-      </div>
-    </div>
+    <section class="section section--pagebar">
+		<div class="container">
+			<div class="section-head justify-content-center mb-0">
+				<div class="section__heading">
+					<h2 class="mb-0"><?php echo $collection['collection_name']; ?></h2>
+				</div>
+			</div>
+		</div>
+	</section>
 	<section class="top-space">
 		<div class="container">
 			<div id="listing"></div>

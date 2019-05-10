@@ -97,49 +97,41 @@ class AdvertiserController extends AdvertiserBaseController
                 $srch->addCondition('shop_user_id', '=', $userId);
                 $srch->setPageSize(1);
                 $srch->doNotCalculateRecords();
-                $srch->addMultipleFields(array(
-                    'ifnull(shop_name,shop_identifier) as shop_name',
-                    'shop_id'
-                ));
-                $rs  = $srch->getResultSet();
+                $srch->addMultipleFields(array('ifnull(shop_name,shop_identifier) as shop_name','shop_id'));
+                $rs = $srch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs);
                 if (empty($row)) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
                     FatUtility::dieJsonError(Message::getHtml());
                 }
                 $promotion_record_id = $row['shop_id'];
-                $promotionApproved   = applicationConstants::YES;
-                $minBudget           = FatApp::getConfig('CONF_CPC_SHOP', FatUtility::VAR_FLOAT, 0);
+                $promotionApproved = applicationConstants::YES;
+                $minBudget = FatApp::getConfig('CONF_CPC_SHOP', FatUtility::VAR_FLOAT, 0);
                 break;
-
             case Promotion::TYPE_PRODUCT:
                 $selProdId = $post['promotion_record_id'];
-
-                $srch = new ProductSearch($this->siteLangId);
-                $srch->joinSellerProducts();
-                $srch->joinProductToCategory();
-                $srch->joinSellerSubscription($this->siteLangId, true);
-                $srch->addSubscriptionValidCondition();
-                $srch->joinBrands();
-                $srch->setPageSize(1);
-                $srch->doNotCalculateRecords();
-                $srch->addCondition('selprod_id', '=', $selProdId);
-                $srch->addCondition('selprod_user_id', '=', $userId);
-                $srch->addMultipleFields(array(
-                    'selprod_id'
-                ));
-
-                $rs  = $srch->getResultSet();
-                $row = FatApp::getDb()->fetch($rs);
-
                 if (empty($row)) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
                     FatUtility::dieJsonError(Message::getHtml());
                 }
                 $promotion_record_id = $row['selprod_id'];
-                $promotionApproved   = applicationConstants::YES;
-                $minBudget           = FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0);
+                $promotionApproved = applicationConstants::YES;
+                $minBudget = FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0);
                 break;
+
+                $rs  = $srch->getResultSet();
+                $row = FatApp::getDb()->fetch($rs);
+
+            $bannerLocationId = Fatutility::int($post['banner_blocation_id']);
+            $srch = BannerLocation::getSearchObject($this->siteLangId);
+            $srch->addMultipleFields(array('blocation_promotion_cost'));
+            $srch->addCondition('blocation_id', '=', $bannerLocationId);
+            $rs = $srch->getResultSet();
+            $row = FatApp::getDb()->fetch($rs, 'blocation_id');
+            if (!empty($row)) {
+                $minBudget = $row['blocation_promotion_cost'];
+            }
+            break;
 
             case Promotion::TYPE_BANNER:
                 $promotion_record_id = 0;
@@ -232,11 +224,11 @@ class AdvertiserController extends AdvertiserBaseController
             $data['promotion_approved'] = $promotionApproved;
         }
 
-        if ($post['promotion_type'] == Promotion::TYPE_SHOP) {
+        if ($post['promotion_type']==Promotion::TYPE_SHOP) {
             $data['promotion_cpc'] = $post['promotion_shop_cpc'];
-        } else if ($post['promotion_type'] == Promotion::TYPE_PRODUCT) {
+        } elseif ($post['promotion_type']==Promotion::TYPE_PRODUCT) {
             $data['promotion_cpc'] = $post['promotion_product_cpc'];
-        } else if ($post['promotion_type'] == Promotion::TYPE_SLIDES) {
+        } elseif ($post['promotion_type']==Promotion::TYPE_SLIDES) {
             $data['promotion_cpc'] = $post['promotion_slides_cpc'];
         } else {
             $srch = BannerLocation::getSearchObject($this->siteLangId);
@@ -279,13 +271,11 @@ class AdvertiserController extends AdvertiserBaseController
         switch ($post['promotion_type']) {
             case Promotion::TYPE_BANNER:
                 $bannerId = 0;
-                $srch     = Banner::getSearchObject();
+                $srch = Banner::getSearchObject();
                 $srch->addCondition('banner_type', '=', Banner::TYPE_PPC);
                 $srch->addCondition('banner_record_id', '=', $promotionId);
-                $srch->addMultipleFields(array(
-                    'banner_id'
-                ));
-                $rs  = $srch->getResultSet();
+                $srch->addMultipleFields(array('banner_id'));
+                $rs = $srch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs);
 
                 if ($row) {
@@ -304,13 +294,11 @@ class AdvertiserController extends AdvertiserBaseController
 
             case Promotion::TYPE_SLIDES:
                 $slideId = 0;
-                $srch    = Slides::getSearchObject();
+                $srch = Slides::getSearchObject();
                 $srch->addCondition('slide_type', '=', Slides::TYPE_PPC);
                 $srch->addCondition('slide_record_id', '=', $promotionId);
-                $srch->addMultipleFields(array(
-                    'slide_id'
-                ));
-                $rs  = $srch->getResultSet();
+                $srch->addMultipleFields(array('slide_id'));
+                $rs = $srch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs);
                 if ($row) {
                     $slideId = $row['slide_id'];
@@ -359,10 +347,8 @@ class AdvertiserController extends AdvertiserBaseController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $promotionData = Promotion::getAttributesById($promotionId, array(
-            'promotion_user_id'
-        ));
-        if (!$promotionData || ($promotionData && $promotionData['promotion_user_id'] != $userId)) {
+        $promotionData = Promotion::getAttributesById($promotionId, array('promotion_user_id'));
+        if (!$promotionData || ($promotionData && $promotionData['promotion_user_id']!=$userId)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -383,17 +369,15 @@ class AdvertiserController extends AdvertiserBaseController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $promotionType = Promotion::getAttributesById($promotionId, array(
-            'promotion_type'
-        ));
+        $promotionType = Promotion::getAttributesById($promotionId, array('promotion_type'));
         if ($promotionType['promotion_type'] == Promotion::TYPE_SHOP || $promotionType['promotion_type'] == Promotion::TYPE_PRODUCT) {
             $this->set('noMediaTab', 'noMediaTab');
         }
 
         $newTabLangId = 0;
-        $languages    = Language::getAllNames();
+        $languages = Language::getAllNames();
         foreach ($languages as $langIdKey => $langName) {
-            if ($langIdKey > $langId) {
+            if ($langIdKey>$langId) {
                 $newTabLangId = $langIdKey;
                 break;
             }
@@ -445,16 +429,16 @@ class AdvertiserController extends AdvertiserBaseController
         switch ($promotionType) {
             case Promotion::TYPE_BANNER:
                 $srch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
-                $rs               = $srch->getResultSet();
+                $rs = $srch->getResultSet();
                 $promotionDetails = FatApp::getDb()->fetch($rs);
-                $recordId         = $promotionDetails['banner_id'];
+                $recordId = $promotionDetails['banner_id'];
                 $attachedFileType = AttachedFile::FILETYPE_BANNER;
                 break;
             case Promotion::TYPE_SLIDES:
                 $srch->joinSlides();
-                $rs               = $srch->getResultSet();
+                $rs = $srch->getResultSet();
                 $promotionDetails = FatApp::getDb()->fetch($rs);
-                $recordId         = $promotionDetails['slide_id'];
+                $recordId = $promotionDetails['slide_id'];
                 $attachedFileType = AttachedFile::FILETYPE_HOME_PAGE_BANNER;
                 break;
         }
@@ -486,7 +470,7 @@ class AdvertiserController extends AdvertiserBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         $objEmailHandler = new EmailHandler();
-        $objEmailHandler->SendPromotionApprovalRequestAdmin($this->siteLangId, $userId, $promotionDetails);
+        $objEmailHandler->sendPromotionApprovalRequestAdmin($this->siteLangId, $userId, $promotionDetails);
 
         $notificationData = array(
             'notification_record_type' => Notification::TYPE_PROMOTION,
@@ -614,11 +598,8 @@ class AdvertiserController extends AdvertiserBaseController
                 $srch->addCondition('shop_user_id', '=', $userId);
                 $srch->setPageSize(1);
                 $srch->doNotCalculateRecords();
-                $srch->addMultipleFields(array(
-                    'ifnull(shop_name,shop_identifier) as shop_name',
-                    'shop_id'
-                ));
-                $rs  = $srch->getResultSet();
+                $srch->addMultipleFields(array('ifnull(shop_name,shop_identifier) as shop_name','shop_id'));
+                $rs = $srch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs);
                 if (empty($row)) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
@@ -682,12 +663,8 @@ class AdvertiserController extends AdvertiserBaseController
         $rs      = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
 
-        $this->_template->addJs(array(
-            'js/jquery.datetimepicker.js'
-        ), false);
-        $this->_template->addCss(array(
-            'css/jquery.datetimepicker.css'
-        ), false);
+        $this->_template->addJs(array('js/jquery.datetimepicker.js'), false);
+        $this->_template->addCss(array('css/jquery.datetimepicker.css'), false);
 
         $this->set("frmSearchPromotions", $frmSearchPromotions);
         $this->set("records", $records);
@@ -738,7 +715,7 @@ class AdvertiserController extends AdvertiserBaseController
         $promotionId = FatUtility::int($promotionId);
 
         $promotionDetails = array();
-        $promotionType    = 0;
+        $promotionType = 0;
         if ($promotionId) {
             $srch = new PromotionSearch($this->siteLangId);
             $srch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
@@ -779,9 +756,9 @@ class AdvertiserController extends AdvertiserBaseController
                 $promotionDetails['promotion_end_time']   = date('H:i', strtotime($promotionDetails['promotion_end_time']));
                 if ($promotionDetails['promotion_type'] == Promotion::TYPE_SHOP) {
                     $promotionDetails['promotion_shop_cpc'] = $promotionDetails['promotion_cpc'];
-                } else if ($promotionDetails['promotion_type'] == Promotion::TYPE_PRODUCT) {
+                } elseif ($promotionDetails['promotion_type'] == Promotion::TYPE_PRODUCT) {
                     $promotionDetails['promotion_product_cpc'] = $promotionDetails['promotion_cpc'];
-                } else if ($promotionDetails['promotion_type'] == Promotion::TYPE_SLIDES) {
+                } elseif ($promotionDetails['promotion_type'] == Promotion::TYPE_SLIDES) {
                     $promotionDetails['promotion_slides_cpc'] = $promotionDetails['promotion_cpc'];
                 }
             }
@@ -815,9 +792,7 @@ class AdvertiserController extends AdvertiserBaseController
         }
 
         $promotionType = 0;
-        $row           = Promotion::getAttributesById($promotionId, array(
-            'promotion_type'
-        ));
+        $row = Promotion::getAttributesById($promotionId, array('promotion_type'));
         if (!empty($row)) {
             $promotionType = $row['promotion_type'];
         }
@@ -866,23 +841,23 @@ class AdvertiserController extends AdvertiserBaseController
         $attachedFileType = 0;
 
         switch ($promotionType) {
-            case Promotion::TYPE_BANNER:
-                $imgDetail        = Banner::getAttributesById($promotionDetails['banner_id']);
-                $attachedFileType = AttachedFile::FILETYPE_BANNER;
-                $recordId         = $promotionDetails['banner_id'];
-                break;
-            case Promotion::TYPE_SLIDES:
-                $imgDetail        = Slides::getAttributesById($promotionDetails['slide_id']);
-                $attachedFileType = AttachedFile::FILETYPE_HOME_PAGE_BANNER;
-                $recordId         = $promotionDetails['slide_id'];
-                break;
+        case Promotion::TYPE_BANNER:
+            $imgDetail = Banner::getAttributesById($promotionDetails['banner_id']);
+            $attachedFileType = AttachedFile::FILETYPE_BANNER;
+            $recordId = $promotionDetails['banner_id'];
+            break;
+        case Promotion::TYPE_SLIDES:
+            $imgDetail = Slides::getAttributesById($promotionDetails['slide_id']);
+            $attachedFileType = AttachedFile::FILETYPE_HOME_PAGE_BANNER;
+            $recordId = $promotionDetails['slide_id'];
+            break;
         }
 
         $mediaFrm     = $this->getPromotionMediaForm($promotionId, $promotionType);
         $bannerWidth  = '1920';
         $bannerHeight = '550';
         if ($promotionType == Promotion::TYPE_BANNER) {
-            $bannerWidth  = FatUtility::convertToType($promotionDetails['blocation_banner_width'], FatUtility::VAR_FLOAT);
+            $bannerWidth = FatUtility::convertToType($promotionDetails['blocation_banner_width'], FatUtility::VAR_FLOAT);
             $bannerHeight = FatUtility::convertToType($promotionDetails['blocation_banner_height'], FatUtility::VAR_FLOAT);
         }
 
@@ -935,14 +910,14 @@ class AdvertiserController extends AdvertiserBaseController
 
         switch ($promotionType) {
             case Promotion::TYPE_BANNER:
-                $imgDetail        = Banner::getAttributesById($promotionDetails['banner_id']);
+                $imgDetail = Banner::getAttributesById($promotionDetails['banner_id']);
                 $attachedFileType = AttachedFile::FILETYPE_BANNER;
-                $recordId         = $promotionDetails['banner_id'];
+                $recordId = $promotionDetails['banner_id'];
                 break;
             case Promotion::TYPE_SLIDES:
-                $imgDetail        = Slides::getAttributesById($promotionDetails['slide_id']);
+                $imgDetail = Slides::getAttributesById($promotionDetails['slide_id']);
                 $attachedFileType = AttachedFile::FILETYPE_HOME_PAGE_BANNER;
-                $recordId         = $promotionDetails['slide_id'];
+                $recordId = $promotionDetails['slide_id'];
                 break;
         }
 
@@ -1063,7 +1038,7 @@ class AdvertiserController extends AdvertiserBaseController
         $rs = $srch->getResultSet();
 
         $products = $db->fetchAll($rs, 'selprod_id');
-        $json     = array();
+        $json = array();
         foreach ($products as $key => $product) {
             $json[] = array(
                 'id' => $key,
@@ -1075,8 +1050,7 @@ class AdvertiserController extends AdvertiserBaseController
 
     public function analytics($promotionId = 0)
     {
-
-        $userId     = UserAuthentication::getLoggedUserId();
+        $userId = UserAuthentication::getLoggedUserId();
         $searchForm = $this->getPPCAnalyticsSearchForm($this->siteLangId);
         $searchForm->fill(array(
             'promotion_id' => $promotionId
@@ -1145,11 +1119,10 @@ class AdvertiserController extends AdvertiserBaseController
         $srch->addGroupBy('plog_date');
         $srch->addOrder('plog_date', 'DESC');
         if ($fromDate != '') {
-            $srch->addCondition('i.plog_date', '>=', $fromDate . ' 00:00:00');
+            $srch->addCondition('i.plog_date', '>=', $fromDate.' 00:00:00');
         }
-
         if ($toDate != '') {
-            $srch->addCondition('i.plog_date', '<=', $toDate . ' 23:59:59');
+            $srch->addCondition('i.plog_date', '<=', $toDate.' 23:59:59');
         }
         if ($promotionId != '') {
             $srch->addCondition('i.plog_promotion_id', '=', $promotionId);
@@ -1518,12 +1491,10 @@ class AdvertiserController extends AdvertiserBaseController
                 break;
             case Promotion::TYPE_BANNER:
                 $bannerLocationId = Fatutility::int($post['banner_blocation_id']);
-                $srch             = BannerLocation::getSearchObject($this->siteLangId);
-                $srch->addMultipleFields(array(
-                    'blocation_promotion_cost'
-                ));
+                $srch = BannerLocation::getSearchObject($this->siteLangId);
+                $srch->addMultipleFields(array('blocation_promotion_cost'));
                 $srch->addCondition('blocation_id', '=', $bannerLocationId);
-                $rs  = $srch->getResultSet();
+                $rs = $srch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs, 'blocation_id');
                 if (!empty($row)) {
                     $minBudget = $row['blocation_promotion_cost'];
@@ -1543,7 +1514,6 @@ class AdvertiserController extends AdvertiserBaseController
 
     public function getBannerLocationDimensions($promotionId, $deviceType)
     {
-
         $srch = new PromotionSearch($this->siteLangId);
         $srch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b', $deviceType);
         $srch->addCondition('promotion_id', '=', $promotionId);

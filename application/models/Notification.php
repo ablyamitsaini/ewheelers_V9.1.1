@@ -54,7 +54,7 @@ class Notification extends MyAppModel
 
 
 
-    public function __construct($notificationId = 0) 
+    public function __construct($notificationId = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $notificationId);
     }
@@ -63,7 +63,7 @@ class Notification extends MyAppModel
     {
         $notificationObj = new Notification();
         $notificationObj->assignValues($notificationData);
-        if(!$notificationObj->save()) {
+        if (!$notificationObj->save()) {
             $this->error = $notificationObj->getError();
         }
         return true;
@@ -72,7 +72,6 @@ class Notification extends MyAppModel
 
     public static function getLabelKeyString($langId)
     {
-
         $brandRequestApproval = FatApp::getConfig('CONF_BRAND_REQUEST_APPROVAL');
         $brandRequestUrl = ($brandRequestApproval) ? 'brands/brand-requests' : 'brands' ;
 
@@ -111,7 +110,7 @@ class Notification extends MyAppModel
         return $labelArr;
     }
 
-    public static function getSearchObject() 
+    public static function getSearchObject()
     {
         $srch = new SearchBase(static::DB_TBL, 'n');
         $srch->joinTable(User::DB_TBL, 'LEFT OUTER JOIN', 'u.'.User::DB_TBL_PREFIX.'id = n.notification_user_id', 'u');
@@ -130,16 +129,16 @@ class Notification extends MyAppModel
     public function deleteNotifications($recordId)
     {
         $db = FatApp::getDb();
-        if(!$db->query("UPDATE tbl_notifications SET notification_deleted = 1 WHERE notification_id in (".$recordId.")")) {
+        if (!$db->query("UPDATE tbl_notifications SET notification_deleted = 1 WHERE notification_id in (".$recordId.")")) {
             return false;
         }
         return true;
     }
 
-    public function changeNotifyStatus($status,$recordId)
+    public function changeNotifyStatus($status, $recordId)
     {
         $db = FatApp::getDb();
-        if(!$db->query("UPDATE tbl_notifications SET notification_marked_read = ".$status." WHERE notification_id in (".$recordId.")")) {
+        if (!$db->query("UPDATE tbl_notifications SET notification_marked_read = ".$status." WHERE notification_id in (".$recordId.")")) {
             return false;
         }
         return true;
@@ -169,7 +168,7 @@ class Notification extends MyAppModel
 
     public static function getAllowedRecordTypeArr($adminId)
     {
-        if(AdminPrivilege::isAdminSuperAdmin($adminId)) {
+        if (AdminPrivilege::isAdminSuperAdmin($adminId)) {
             return array_flip(self::getPermissionsArr());
         }
 
@@ -179,11 +178,10 @@ class Notification extends MyAppModel
         $permissionsArr = self::getPermissionsArr();
         $validType = array(-1 => -1);
         foreach ($permissionsArr as $notificationType => $permissionType) {
-            if(array_key_exists($permissionType, $userPermissions) ) {
+            if (array_key_exists($permissionType, $userPermissions)) {
                 $validType[] = $notificationType;
             }
         }
         return $validType;
     }
 }
-?>

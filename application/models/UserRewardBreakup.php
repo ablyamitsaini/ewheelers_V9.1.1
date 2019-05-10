@@ -3,28 +3,28 @@ class UserRewardBreakup extends MyAppModel
 {
     const DB_TBL = 'tbl_user_reward_point_breakup';
     const DB_TBL_PREFIX = 'urpbreakup_';
-    
-    public function __construct( $id = 0 ) 
+
+    public function __construct($id = 0)
     {
-        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);        
+        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
         $this->db = FatApp::getDb();
     }
-    
+
     public static function getSearchObject()
     {
         $srch =  new SearchBase(static::DB_TBL, 'urpb');
-        return $srch;    
+        return $srch;
     }
-    
+
     public static function rewardPointBalance($userId = 0, $orderId = '')
     {
         $userId = FatUtility::int($userId);
-        if(1 > $userId) {
+        if (1 > $userId) {
             return 0;
         }
-        
+
         $totalBalance = 0;
-        
+
         $srch = new UserRewardSearch();
         $srch->joinUserRewardBreakup();
         $srch->addCondition('urp.urp_user_id', '=', $userId);
@@ -37,13 +37,13 @@ class UserRewardBreakup extends MyAppModel
         /* die($srch->getQuery()); */
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        if($row != false) { 
+        if ($row != false) {
             $totalBalance = $totalBalance + FatUtility::int($row['balance']);
         }
-        
+
         $srch = new OrderProductSearch();
         $srch->joinorders();
-        $srch->joinPaymentMethod();        
+        $srch->joinPaymentMethod();
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('order_reward_point_used', '>', 0);
@@ -51,20 +51,20 @@ class UserRewardBreakup extends MyAppModel
         $cnd->attachCondition('pmethod_code', '=', 'CashOnDelivery');
         $srch->addCondition('op.op_status_id', '=', FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"));
         $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s'). ' - 2 hours'));
-        //$srch->addDirectCondition('DATE(o.order_date_added) = DATE(NOW())');		
-        $srch->addCondition('o.order_date_added', '>=', $date);        
+        //$srch->addDirectCondition('DATE(o.order_date_added) = DATE(NOW())');
+        $srch->addCondition('o.order_date_added', '>=', $date);
         $srch->addMultipleFields(array('sum(order_reward_point_used) as usedRewards'));
-        if($orderId != '' ) {
-            $srch->addCondition('order_id', '!=', $orderId);    
-        }    
+        if ($orderId != '') {
+            $srch->addCondition('order_id', '!=', $orderId);
+        }
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
-        
-        if($row == false || $totalBalance < $row['usedRewards']) {
+
+        if ($row == false || $totalBalance < $row['usedRewards']) {
             return 0;
         }
-        
-        $totalBalance = $totalBalance - FatUtility::int($row['usedRewards']);            
+
+        $totalBalance = $totalBalance - FatUtility::int($row['usedRewards']);
         return $totalBalance;
     }
-}    
+}

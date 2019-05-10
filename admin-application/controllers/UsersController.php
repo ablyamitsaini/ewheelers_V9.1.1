@@ -887,7 +887,7 @@ class UsersController extends AdminBaseController
         $supplierRequest['usuprequest_status'] = $post['status'];    
         $supplierRequest['usuprequest_comments'] = $post['comments'];    
         
-        if(!$email->SendSupplierRequestStatusChangeNotification($this->adminLangId, $supplierRequest)) {
+        if(!$email->sendSupplierRequestStatusChangeNotification($this->adminLangId, $supplierRequest)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel('LBL_Email_Could_Not_Be_Sent', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
@@ -1004,7 +1004,7 @@ class UsersController extends AdminBaseController
         
         /* sending of email notification[ */
         $emailNotificationObj = new EmailHandler();
-        if(!$emailNotificationObj->SendCatalogRequestMessageNotification($scatrequestmsg_id, $this->adminLangId) ) {
+        if(!$emailNotificationObj->sendCatalogRequestMessageNotification($scatrequestmsg_id, $this->adminLangId) ) {
             Message::addErrorMessage($emailNotificationObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1438,7 +1438,7 @@ class UsersController extends AdminBaseController
         $catalogRequest['scatrequest_status'] = $post['status'];    
         $catalogRequest['scatrequest_comments'] = $post['comments'];    
         
-        if(!$email->SendCatalogRequestStatusChangeNotification($this->adminLangId, $catalogRequest)) {
+        if(!$email->sendCatalogRequestStatusChangeNotification($this->adminLangId, $catalogRequest)) {
             $db->rollbackTransaction();
             Message::addErrorMessage(Labels::getLabel('LBL_Email_Could_Not_Be_Sent', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());

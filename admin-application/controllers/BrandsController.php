@@ -212,7 +212,7 @@ class BrandsController extends AdminBaseController {
 		/* ] */
 		$email = new EmailHandler();
 		if($post['brand_status']!=Brand::BRAND_REQUEST_PENDING){
-			if(!$email->SendBrandRequestStatusChangeNotification($this->adminLangId,$brandData)){
+			if(!$email->sendBrandRequestStatusChangeNotification($this->adminLangId,$brandData)){
 				Message::addErrorMessage(Labels::getLabel('LBL_Email_Could_Not_Be_Sent',$this->adminLangId));
 				FatUtility::dieWithError( Message::getHtml() );
 			}
@@ -362,17 +362,28 @@ class BrandsController extends AdminBaseController {
 	public function media($brand_id = 0){
 		$this->objPrivilege->canEditBrands();
 		$brand_id = FatUtility::int($brand_id);
-		$brandMediaFrm = $this->getMediaForm( $brand_id );
+		$brandLogoFrm = $this->getBrandLogoForm( $brand_id );
+		$brandImageFrm = $this->getBrandImageForm( $brand_id );
 		$this->set('languages', Language::getAllNames());
 		$this->set('brand_id', $brand_id);
-		$this->set('brandMediaFrm', $brandMediaFrm);
+		$this->set('brandLogoFrm', $brandLogoFrm);
+		$this->set('brandImageFrm', $brandImageFrm);
 		$this->_template->render(false, false);
 	}
 
-	function images( $brand_id, $lang_id=0 ){
+	function images( $brand_id, $file_type, $lang_id=0 ){
 		$brand_id = FatUtility::int($brand_id);
-		$brandImages = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BRAND_LOGO, $brand_id ,0,$lang_id,false);
-		$this->set('images', $brandImages);
+        if($file_type=='logo') {
+            $brandLogos = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BRAND_LOGO, $brand_id, 0, $lang_id, false);
+            $this->set('images', $brandLogos);
+            $this->set('imageFunction', 'brandReal');
+        } else {
+            $brandImages = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BRAND_IMAGE, $brand_id, 0, $lang_id, false);
+            $this->set('images', $brandImages);
+            $this->set('imageFunction', 'brandImage');
+        }
+		
+		$this->set('file_type', $file_type );
 		$this->set('brand_id', $brand_id );
 		$this->set( 'languages', Language::getAllNames() );
 		$this->_template->render(false, false);
@@ -381,16 +392,17 @@ class BrandsController extends AdminBaseController {
 	public function requestMedia($brand_id = 0){
 		$this->objPrivilege->canEditBrands();
 		$brand_id = FatUtility::int($brand_id);
-		$brandMediaFrm = $this->getMediaForm( $brand_id );
+		$brandLogoFrm = $this->getBrandLogoForm( $brand_id );
+		$brandImageFrm = $this->getBrandImageForm( $brand_id );
 		$this->set('languages', Language::getAllNames());
 		$this->set('brand_id', $brand_id);
-		$this->set('brandMediaFrm', $brandMediaFrm);
+		$this->set('brandLogoFrm', $brandLogoFrm);
+		$this->set('brandImageFrm', $brandImageFrm);
 		$this->_template->render(false, false);
 	}
 
-	public function uploadLogo(){
+	public function uploadMedia(){
 		$this->objPrivilege->canEditBrands();
-		//$brand_id = FatUtility::int($brand_id);
 		$post = FatApp::getPostedData();
 		if( empty($post) ){
 			Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported',$this->adminLangId));
@@ -398,6 +410,7 @@ class BrandsController extends AdminBaseController {
 		}
 		$brand_id = FatApp::getPostedData( 'brand_id', FatUtility::VAR_INT, 0 );
 		$lang_id = FatApp::getPostedData( 'lang_id', FatUtility::VAR_INT, 0 );
+		$file_type = FatApp::getPostedData( 'file_type', FatUtility::VAR_INT, 0 );
 		if ( !$brand_id  ) {
 			Message::addErrorMessage( $this->str_invalid_request_id );
 			FatUtility::dieJsonError( Message::getHtml() );
@@ -409,9 +422,9 @@ class BrandsController extends AdminBaseController {
 		}
 
 		$fileHandlerObj = new AttachedFile();
-		$fileHandlerObj->deleteFile( $fileHandlerObj::FILETYPE_BRAND_LOGO, $brand_id, 0, 0, $lang_id );
+		$fileHandlerObj->deleteFile( $file_type, $brand_id, 0, 0, $lang_id );
 
-		if(!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], $fileHandlerObj::FILETYPE_BRAND_LOGO,
+		if(!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], $file_type,
 		$brand_id, 0,  $_FILES['file']['name'], -1, $unique_record = false, $lang_id)
 		){
 			Message::addErrorMessage($fileHandlerObj->getError());
@@ -432,16 +445,30 @@ class BrandsController extends AdminBaseController {
 		return false;
 	}
 
-	public function getMediaForm( $brand_id ){
-		$frm = new Form('frmBrandMedia');
+	public function getBrandLogoForm( $brand_id ){
+		$frm = new Form('frmBrandLogo');
+        $frm->addHTML('', Labels::getLabel('LBL_logo', $this->adminLangId), '<h3>'.Labels::getLabel('LBL_Logo', $this->adminLangId).'</h3>');
 		$languagesAssocArr = Language::getAllNames();
 		$frm->addHTML( '', 'brand_logo_heading', '' );
 		$frm->addHiddenField( '', 'brand_id', $brand_id );
-		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'brand_lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId ) ) + $languagesAssocArr, '', array(), '' );
+		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId ) ) + $languagesAssocArr, '', array(), '' );
 		$frm->addButton(Labels::getLabel('Lbl_Logo',$this->adminLangId), 'logo',Labels::getLabel('LBL_Upload_Logo',$this->adminLangId),
-					array('class'=>'uploadFile-Js','id'=>'logo','data-file_type'=>AttachedFile::FILETYPE_BRAND_LOGO,'data-brand_id' => $brand_id ));
-
+					array('class'=>'uploadFile-Js', 'id'=>'logo','data-file_type'=>AttachedFile::FILETYPE_BRAND_LOGO,'data-brand_id' => $brand_id, 'data-image_type'=>'logo', 'data-frm'=>'frmBrandLogo' ));
 		$frm->addHtml( '', 'brand_logo_display_div', '' );
+
+		return $frm;
+	}
+    
+    public function getBrandImageForm( $brand_id ){
+		$frm = new Form('frmBrandImage');
+        $frm->addHTML('', Labels::getLabel('LBL_Image', $this->adminLangId), '<h3>'.Labels::getLabel('LBL_Image', $this->adminLangId).'</h3>');
+		$languagesAssocArr = Language::getAllNames();
+		$frm->addHTML( '', 'brand_logo_heading', '' );
+		$frm->addHiddenField( '', 'brand_id', $brand_id );
+		$frm->addSelectBox( Labels::getLabel('LBL_Language',$this->adminLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId ) ) + $languagesAssocArr, '', array(), '' );
+        $frm->addButton(Labels::getLabel('Lbl_Image',$this->adminLangId), 'image',Labels::getLabel('LBL_Upload_Image',$this->adminLangId),
+					array('class'=>'uploadFile-Js','id'=>'image','data-file_type'=>AttachedFile::FILETYPE_BRAND_IMAGE,'data-brand_id' => $brand_id, 'data-image_type'=>'image', 'data-frm'=>'frmBrandImage' ));
+		$frm->addHtml( '', 'brand_image_display_div', '' );
 
 		return $frm;
 	}
@@ -547,23 +574,27 @@ class BrandsController extends AdminBaseController {
 		$this->_template->render(false, false);
 	}
 
-	public function removeBrandLogo( $brand_id = 0, $lang_id = 0 ){
+	public function removeBrandMedia( $brand_id, $imageType='', $lang_id = 0 ){
 		$brand_id = FatUtility::int($brand_id);
 		$lang_id = FatUtility::int($lang_id);
 		if( !$brand_id  ){
 			Message::addErrorMessage($this->str_invalid_request);
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
-
+        
+        if($imageType=='logo') {
+            $fileType = AttachedFile::FILETYPE_BRAND_LOGO;
+        } elseif($imageType=='image') {
+            $fileType = AttachedFile::FILETYPE_BRAND_IMAGE;
+        }
 		$fileHandlerObj = new AttachedFile();
-		if( !$fileHandlerObj->deleteFile( AttachedFile::FILETYPE_BRAND_LOGO, $brand_id, 0, 0, $lang_id )){
+		if( !$fileHandlerObj->deleteFile( $fileType, $brand_id, 0, 0, $lang_id )){
 			Message::addErrorMessage($fileHandlerObj->getError());
 			FatUtility::dieJsonError( Message::getHtml() );
 		}
 
 		$this->set('msg',Labels::getLabel('MSG_Deleted_Successfully',$this->adminLangId));
 		$this->_template->render(false, false, 'json-success.php');
-
 	}
 
 	private function getLangForm($brand_id=0,$lang_id=0){

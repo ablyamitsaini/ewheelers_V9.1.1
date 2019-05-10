@@ -11,14 +11,14 @@ class AddressesController extends LoggedUserController
     {
         $frm = $this->getUserAddressForm($this->siteLangId);
         $post = FatApp::getPostedData();
-        if($post == false) {
+        if ($post == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $ua_state_id = FatUtility::int($post['ua_state_id']);
         $post = $frm->getFormDataFromArray($post);
-        if (false === $post ) {
+        if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -36,7 +36,7 @@ class AddressesController extends LoggedUserController
             Message::addErrorMessage($addressObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-        if(0<=$ua_id) {
+        if (0<=$ua_id) {
             $ua_id = $addressObj->getMainTableRecordId();
         }
         $this->set('ua_id', $ua_id);
@@ -48,13 +48,13 @@ class AddressesController extends LoggedUserController
     public function setDefault()
     {
         $post = FatApp::getPostedData();
-        if($post == false) {
+        if ($post == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $ua_id = FatUtility::int($post['id']);
-        if(1 > $ua_id) {
+        if (1 > $ua_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -87,13 +87,13 @@ class AddressesController extends LoggedUserController
     public function deleteRecord()
     {
         $post = FatApp::getPostedData();
-        if($post == false) {
+        if ($post == false) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $ua_id = FatUtility::int($post['id']);
-        if(1 > $ua_id) {
+        if (1 > $ua_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -105,7 +105,7 @@ class AddressesController extends LoggedUserController
         }
 
         $addressObj = new UserAddress($ua_id);
-        if(!$addressObj->deleteRecord()) {
+        if (!$addressObj->deleteRecord()) {
             Message::addErrorMessage($addressObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }

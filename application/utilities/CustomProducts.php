@@ -1646,7 +1646,7 @@ trait CustomProducts
             $brandReqId = $record->getMainTableRecordId();
             $brandData = Brand::getAttributesById($brandReqId);
             $email = new EmailHandler();
-            if(!$email->SendBrandRequestAdminNotification($this->siteLangId, $brandData)) {
+            if(!$email->sendBrandRequestAdminNotification($this->siteLangId, $brandData)) {
 
             }
         }

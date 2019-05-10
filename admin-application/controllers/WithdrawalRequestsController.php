@@ -156,7 +156,7 @@ class WithdrawalRequestsController extends AdminBaseController
         }
 
         $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->SendWithdrawRequestNotification($withdrawalId, $this->adminLangId, "U")) {
+        if (!$emailNotificationObj->sendWithdrawRequestNotification($withdrawalId, $this->adminLangId, "U")) {
             Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }    

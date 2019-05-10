@@ -1,23 +1,21 @@
-<?php 
+<?php
 require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/PayFortStart/autoload.php';
 class PayFortStartPayController extends PaymentController
 {
-    
     private $keyName = "PayFortStart";
     private $error = false;
-        
-    public function charge( $orderId = '' )
+
+    public function charge($orderId = '')
     {
-        
-        if(empty($orderId) ) {
+        if (empty($orderId)) {
             FatUtility::exitWIthErrorCode(404);
         }
-        
+
         $paymentSettings = $this->getPaymentSettings();
-        
-        if(!$this->validatePayFortStartSettings($paymentSettings) ) {
-            $this->error = Labels::getLabel('PAYFORTSTART_Invalid_Payment_Gateway_Setup_Error', $this->siteLangId);            
-        }else{
+
+        if (!$this->validatePayFortStartSettings($paymentSettings)) {
+            $this->error = Labels::getLabel('PAYFORTSTART_Invalid_Payment_Gateway_Setup_Error', $this->siteLangId);
+        } else {
             $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
             $paymentGatewayCharge = $orderPaymentObj->getOrderPaymentGatewayAmount();
             $amount_in_cents = $this->formatPayableAmount($paymentGatewayCharge);
@@ -25,7 +23,7 @@ class PayFortStartPayController extends PaymentController
             $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
             $orderPaymentGatewayDescription = sprintf(Labels::getLabel('MSG_Order_Payment_Gateway_Description', $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
         }
-        
+
         $this->set('open_key', $paymentSettings['open_key']);
         $this->set('paymentAmount', $paymentGatewayCharge);
         $this->set('amount_in_cents', $amount_in_cents);
@@ -40,13 +38,11 @@ class PayFortStartPayController extends PaymentController
         $this->_template->addCss('css/payment.css');
         $this->_template->render(true, false);
     }
-    
-    public function payFortCharge() 
-    {
 
+    public function payFortCharge()
+    {
         $post = FatApp::getPostedData();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
             $orderId = $post["ord"];
             $paymentSettings = $this->getPaymentSettings();
             $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
@@ -86,8 +82,8 @@ class PayFortStartPayController extends PaymentController
         Message::addErrorMessage(Labels::getLabel('LBL_Page_not_found', $this->siteLangId));
         CommonHelper::redirectUserReferer();
     }
-    
-    protected function notifyCallBack($response) 
+
+    protected function notifyCallBack($response)
     {
         $order_id = $response['order_id'];
         $pmObj = new Paymentsettings($this->keyName);
@@ -98,11 +94,9 @@ class PayFortStartPayController extends PaymentController
         $orderPaymentObj = new OrderPayment($order_id, $this->siteLangId);
         $payment_gateway_charge = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $order_info = $orderPaymentObj->getOrderPrimaryinfo();
-        
+
         if ($order_info) {
-
             if (count($response) > 0 and isset($response['state'])) {
-
                 $order_payment_status = 0;
                 switch (strtolower($response['state'])) {
                 case 'captured':
@@ -133,33 +127,34 @@ class PayFortStartPayController extends PaymentController
             }
         }
     }
-    
+
     private function getPaymentSettings()
     {
         $pmObj = new PaymentSettings($this->keyName);
         return $pmObj->getPaymentSettings();
     }
-    
+
     private function formatPayableAmount($amount = null)
     {
-        if($amount == null) { return false; 
+        if ($amount == null) {
+            return false;
         }
         $amount = number_format($amount, 2, '.', '');
         return $amount*100;
         return $amount;
     }
-    
+
     private function validatePayFortStartSettings($paymentSettings = array())
     {
         $settingVal = array('transaction_mode','secret_key','open_key');
-        foreach($settingVal as $val){
-            if(!isset($paymentSettings[$val]) || strlen(trim($paymentSettings[$val])) == 0) {
+        foreach ($settingVal as $val) {
+            if (!isset($paymentSettings[$val]) || strlen(trim($paymentSettings[$val])) == 0) {
                 return false;
             }
         }
         return true;
     }
-    
+
     private function getPaymentForm($order_id)
     {
         return '';
