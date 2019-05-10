@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks
 RewriteEngine on
-RewriteBase /yokartv8/
+#RewriteBase /yokartv8/
 
 RewriteRule ^admin$ admin.php [PT,L]
 RewriteRule ^admin/(.*)$ admin.php?url=$1 [PT,L]

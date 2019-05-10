@@ -31,12 +31,13 @@ class AddressesController extends LoggedUserController
 
         $data_to_be_save = $post;
         $data_to_be_save['ua_user_id'] = UserAuthentication::getLoggedUserId();
+
         $addressObj->assignValues($data_to_be_save, true);
         if (!$addressObj->save()) {
             Message::addErrorMessage($addressObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-        if (0<=$ua_id) {
+        if (0 <= $ua_id) {
             $ua_id = $addressObj->getMainTableRecordId();
         }
         $this->set('ua_id', $ua_id);
@@ -59,7 +60,7 @@ class AddressesController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $updateArray = array( 'ua_is_default'=>0);
+        $updateArray = array('ua_is_default'=>0);
         $whr = array('smt'=>'ua_user_id = ?', 'vals'=>array(UserAuthentication::getLoggedUserId()));
 
         if(!FatApp::getDb()->updateFromArray(UserAddress::DB_TBL, $updateArray, $whr)) {

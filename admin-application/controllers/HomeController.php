@@ -107,7 +107,7 @@ class HomeController extends AdminBaseController
             foreach($salesEarningsData as $key => $val ){
                 $salesEarningsChartData[$val["duration"]] = $val["value"];
             }
-            
+
             $signupsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'signups', array('user_is_buyer' => 1, 'user_is_supplier' => 1), 6);
             $signupsChartData = [];
             foreach($signupsData as $key => $val ){
@@ -184,93 +184,93 @@ class HomeController extends AdminBaseController
         $dashboardInfo = array();
 
         switch(strtolower($type)){
-        case 'statistics':
-            $dashboardInfo["stats"]["totalUsers"] = $statsObj->getStats('total_members');
-            $dashboardInfo["stats"]["totalSellerProducts"] = $statsObj->getStats('total_seller_products');
-            $dashboardInfo["stats"]["totalShops"] = $statsObj->getStats('total_shops');
-            $dashboardInfo["stats"]["totalOrders"] = $statsObj->getStats('total_orders');
-            $dashboardInfo["stats"]["totalSales"] = $statsObj->getStats('total_sales');
-            $dashboardInfo["stats"]["totalWithdrawalRequests"] = $statsObj->getStats('total_withdrawal_requests');
-            $dashboardInfo["stats"]["totalAffiliateCommission"] = $statsObj->getStats('total_affiliate_commission');
-            $dashboardInfo["stats"]["totalPpc"] = $statsObj->getStats('total_ppc_earnings');
-            $dashboardInfo["stats"]["subscriptionEarnings"] = $statsObj->getStats('total_subscription_earnings');
-            $dashboardInfo["stats"]["affiliateWithdrawalRequest"] = $statsObj->getStats('total_affiliate_withdrawal_requests');
-            $dashboardInfo["stats"]["productReviews"] = $statsObj->getStats('total_product_reviews');
-            break;
-        case 'sellerproducts':
-            $srch = new ProductSearch($this->adminLangId);
-            $srch->doNotCalculateRecords();
-            $srch->setPageNumber(1);
-            $srch->setPageSize(10);
-            $srch->setDefinedCriteria(0);
-            $srch->joinProductToCategory();
-            $srch->addMultipleFields(array('selprod_title', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(shop_name, shop_identifier) as shop_name', 'theprice', 'selprod_stock'));
-            /* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
-            $srch->addGroupBy('selprod_id');
-            $srch->addOrder('selprod_added_on', 'DESC');
-            /* ] */
-            $rs = $srch->getResultSet();
-            $sellerProductsList = FatApp::getDb()->fetchAll($rs);
-            $dashboardInfo['sellerProductsList'] = $sellerProductsList;
-            break;
-        case 'shops':
-            $srch = new ShopSearch($this->adminLangId);
-            $srch->setDefinedCriteria($this->adminLangId, 0);
-            $srch->doNotCalculateRecords();
-            $srch->setPageNumber(1);
-            $srch->setPageSize(10);
-            $srch->addOrder('shop_created_on', 'DESC');
-            $srch->addMultipleFields(
-                array('IFNULL(shop_name, shop_identifier) as shop_name',
-                'credential_username as shop_owner_username', 'shop_created_on', 'shop_active')
-            );
+            case 'statistics':
+                $dashboardInfo["stats"]["totalUsers"] = $statsObj->getStats('total_members');
+                $dashboardInfo["stats"]["totalSellerProducts"] = $statsObj->getStats('total_seller_products');
+                $dashboardInfo["stats"]["totalShops"] = $statsObj->getStats('total_shops');
+                $dashboardInfo["stats"]["totalOrders"] = $statsObj->getStats('total_orders');
+                $dashboardInfo["stats"]["totalSales"] = $statsObj->getStats('total_sales');
+                $dashboardInfo["stats"]["totalWithdrawalRequests"] = $statsObj->getStats('total_withdrawal_requests');
+                $dashboardInfo["stats"]["totalAffiliateCommission"] = $statsObj->getStats('total_affiliate_commission');
+                $dashboardInfo["stats"]["totalPpc"] = $statsObj->getStats('total_ppc_earnings');
+                $dashboardInfo["stats"]["subscriptionEarnings"] = $statsObj->getStats('total_subscription_earnings');
+                $dashboardInfo["stats"]["affiliateWithdrawalRequest"] = $statsObj->getStats('total_affiliate_withdrawal_requests');
+                $dashboardInfo["stats"]["productReviews"] = $statsObj->getStats('total_product_reviews');
+                break;
+            case 'sellerproducts':
+                $srch = new ProductSearch($this->adminLangId);
+                $srch->doNotCalculateRecords();
+                $srch->setPageNumber(1);
+                $srch->setPageSize(10);
+                $srch->setDefinedCriteria(0);
+                $srch->joinProductToCategory();
+                $srch->addMultipleFields(array('selprod_title', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(shop_name, shop_identifier) as shop_name', 'theprice', 'selprod_stock'));
+                /* groupby added, because if same product is linked with multiple categories, then showing in repeat for each category[ */
+                $srch->addGroupBy('selprod_id');
+                $srch->addOrder('selprod_added_on', 'DESC');
+                /* ] */
+                $rs = $srch->getResultSet();
+                $sellerProductsList = FatApp::getDb()->fetchAll($rs);
+                $dashboardInfo['sellerProductsList'] = $sellerProductsList;
+                break;
+            case 'shops':
+                $srch = new ShopSearch($this->adminLangId);
+                $srch->setDefinedCriteria($this->adminLangId, 0);
+                $srch->doNotCalculateRecords();
+                $srch->setPageNumber(1);
+                $srch->setPageSize(10);
+                $srch->addOrder('shop_created_on', 'DESC');
+                $srch->addMultipleFields(
+                    array('IFNULL(shop_name, shop_identifier) as shop_name',
+                    'credential_username as shop_owner_username', 'shop_created_on', 'shop_active')
+                );
 
-            $rs = $srch->getResultSet();
-            $dashboardInfo['shopsList'] = FatApp::getDb()->fetchAll($rs);
-            break;
-        case 'signups':
-            $userObj = new User();
-            $srch = $userObj->getUserSearchObj();
-            $srch->doNotCalculateRecords();
-            $srch->addOrder('u.user_id', 'DESC');
-            $cnd = $srch->addCondition('u.user_is_supplier', '=', 1);
-            $cnd->attachCondition('u.user_is_buyer', '=', 1);
-            $srch->addMultipleFields(
-                array('user_name', 'credential_username', 'credential_email', 'user_phone',
-                'user_regdate', 'user_is_buyer', 'user_is_supplier')
-            );
-            $srch->setPageNumber(1);
-            $srch->setPageSize(10);
-            $rs = $srch->getResultSet();
-            $buyerSellerList = FatApp::getDb()->fetchAll($rs);
-            $dashboardInfo['buyerSellerList'] = $buyerSellerList;
-            break;
-        case 'advertisers':
-            $userObj = new User();
-            $srch = $userObj->getUserSearchObj();
-            $srch->doNotCalculateRecords();
-            $srch->addOrder('u.user_id', 'DESC');
-            $srch->addCondition('u.user_is_advertiser', '=', 1);
-            $srch->addMultipleFields(array('user_name', 'credential_username', 'credential_email', 'user_phone', 'user_regdate'));
-            $srch->setPageNumber(1);
-            $srch->setPageSize(10);
-            $rs = $srch->getResultSet();
-            $advertisersList = FatApp::getDb()->fetchAll($rs);
-            $dashboardInfo['advertisersList'] = $advertisersList;
-            break;
-        case 'affiliates':
-            $userObj = new User();
-            $srch = $userObj->getUserSearchObj();
-            $srch->doNotCalculateRecords();
-            $srch->addOrder('u.user_id', 'DESC');
-            $srch->addCondition('u.user_is_affiliate', '=', 1);
-            $srch->addMultipleFields(array('user_name', 'credential_username', 'credential_email', 'user_phone', 'user_regdate'));
-            $srch->setPageNumber(1);
-            $srch->setPageSize(10);
-            $rs = $srch->getResultSet();
-            $affiliatesList = FatApp::getDb()->fetchAll($rs);
-            $dashboardInfo['affiliatesList'] = $affiliatesList;
-            break;
+                $rs = $srch->getResultSet();
+                $dashboardInfo['shopsList'] = FatApp::getDb()->fetchAll($rs);
+                break;
+            case 'signups':
+                $userObj = new User();
+                $srch = $userObj->getUserSearchObj();
+                $srch->doNotCalculateRecords();
+                $srch->addOrder('u.user_id', 'DESC');
+                $cnd = $srch->addCondition('u.user_is_supplier', '=', 1);
+                $cnd->attachCondition('u.user_is_buyer', '=', 1);
+                $srch->addMultipleFields(
+                    array('user_name', 'credential_username', 'credential_email', 'user_phone',
+                    'user_regdate', 'user_is_buyer', 'user_is_supplier')
+                );
+                $srch->setPageNumber(1);
+                $srch->setPageSize(10);
+                $rs = $srch->getResultSet();
+                $buyerSellerList = FatApp::getDb()->fetchAll($rs);
+                $dashboardInfo['buyerSellerList'] = $buyerSellerList;
+                break;
+            case 'advertisers':
+                $userObj = new User();
+                $srch = $userObj->getUserSearchObj();
+                $srch->doNotCalculateRecords();
+                $srch->addOrder('u.user_id', 'DESC');
+                $srch->addCondition('u.user_is_advertiser', '=', 1);
+                $srch->addMultipleFields(array('user_name', 'credential_username', 'credential_email', 'user_phone', 'user_regdate'));
+                $srch->setPageNumber(1);
+                $srch->setPageSize(10);
+                $rs = $srch->getResultSet();
+                $advertisersList = FatApp::getDb()->fetchAll($rs);
+                $dashboardInfo['advertisersList'] = $advertisersList;
+                break;
+            case 'affiliates':
+                $userObj = new User();
+                $srch = $userObj->getUserSearchObj();
+                $srch->doNotCalculateRecords();
+                $srch->addOrder('u.user_id', 'DESC');
+                $srch->addCondition('u.user_is_affiliate', '=', 1);
+                $srch->addMultipleFields(array('user_name', 'credential_username', 'credential_email', 'user_phone', 'user_regdate'));
+                $srch->setPageNumber(1);
+                $srch->setPageSize(10);
+                $rs = $srch->getResultSet();
+                $affiliatesList = FatApp::getDb()->fetchAll($rs);
+                $dashboardInfo['affiliatesList'] = $affiliatesList;
+                break;
         }
 
         $this->set('type', $type);

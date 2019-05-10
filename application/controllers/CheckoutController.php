@@ -20,6 +20,11 @@ class CheckoutController extends MyAppController
             $user_id = UserAuthentication::getLoggedUserId();
         }
         $this->cartObj = new Cart($user_id, $this->siteLangId);
+        if (1 > $this->cartObj->getCartBillingAddress()) {
+            $this->cartObj->setCartBillingAddress();
+            $this->cartObj->setShippingAddressSameAsBilling();
+        }
+
         $this->set('exculdeMainHeaderDiv', true);
     }
 
@@ -30,113 +35,113 @@ class CheckoutController extends MyAppController
         }
         foreach ($criteria as $key => $val) {
             switch ($key) {
-            case 'isUserLogged':
-                if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
-                    return false;
-                }
-                break;
-            case 'hasProducts':
-                if (!$this->cartObj->hasProducts()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', $this->siteLangId));
-                    return false;
-                }
-                break;
-            case 'hasStock':
-                /* if( !$this->cartObj->hasStock() ){
-                $key = false;
-                Message::addErrorMessage(Labels::getLabel('MSG_Products_are_out_of_stock', $this->siteLangId));
-                return false;
-                } */
-
-                /* to check that product is temporary hold[ */
-                $cart_user_id = Cart::getCartUserId();
-                $intervalInMinutes = FatApp::getConfig('cart_stock_hold_minutes', FatUtility::VAR_INT, 15);
-                //$srch->addCondition('pshold_user_id', '!=', $cart_user_id);
-
-                /* ] */
-
-                $cartProducts = $this->cartObj->getProducts($this->siteLangId);
-                //CommonHelper::printArray($cartProducts); exit;
-                foreach ($cartProducts as $product) {
-                    if (!$product['in_stock']) {
-                        $stock = false;
+                case 'isUserLogged':
+                    if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
                         $key = false;
-                        Message::addErrorMessage(Labels::getLabel('MSG_Products_are_out_of_stock', $this->siteLangId));
+                        Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
                         return false;
-                        break;
                     }
+                    break;
+                case 'hasProducts':
+                    if (!$this->cartObj->hasProducts()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', $this->siteLangId));
+                        return false;
+                    }
+                    break;
+                case 'hasStock':
+                    /* if( !$this->cartObj->hasStock() ){
+                    $key = false;
+                    Message::addErrorMessage(Labels::getLabel('MSG_Products_are_out_of_stock', $this->siteLangId));
+                    return false;
+                    } */
 
-                    if ($product['is_batch'] && !empty($product['products'])) {
-                        foreach ($product['products'] as $pgproduct) {
-                            $tempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id']);
-                            $availableStock = $pgproduct['selprod_stock'] - $tempHoldStock;
-                            $userTempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id'], $cart_user_id, $product['prodgroup_id'], true);
+                    /* to check that product is temporary hold[ */
+                    $cart_user_id = Cart::getCartUserId();
+                    $intervalInMinutes = FatApp::getConfig('cart_stock_hold_minutes', FatUtility::VAR_INT, 15);
+                    //$srch->addCondition('pshold_user_id', '!=', $cart_user_id);
+
+                    /* ] */
+
+                    $cartProducts = $this->cartObj->getProducts($this->siteLangId);
+                    //CommonHelper::printArray($cartProducts); exit;
+                    foreach ($cartProducts as $product) {
+                        if (!$product['in_stock']) {
+                            $stock = false;
+                            $key = false;
+                            Message::addErrorMessage(Labels::getLabel('MSG_Products_are_out_of_stock', $this->siteLangId));
+                            return false;
+                            break;
+                        }
+
+                        if ($product['is_batch'] && !empty($product['products'])) {
+                            foreach ($product['products'] as $pgproduct) {
+                                $tempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id']);
+                                $availableStock = $pgproduct['selprod_stock'] - $tempHoldStock;
+                                $userTempHoldStock = Product::tempHoldStockCount($pgproduct['selprod_id'], $cart_user_id, $product['prodgroup_id'], true);
+                                if ($availableStock < ($product['quantity'] - $userTempHoldStock)) {
+                                    $key = false;
+                                    $productName = (isset($pgproduct['selprod_title']) && $pgproduct['selprod_title'] != '') ? $pgproduct['selprod_title'] : $pgproduct['name'];
+                                    Message::addErrorMessage(str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)));
+                                    return false;
+                                }
+                            }
+                        } else {
+                            $tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
+                            $availableStock = $product['selprod_stock'] - $tempHoldStock;
+                            $userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'], $cart_user_id, 0, true);
                             if ($availableStock < ($product['quantity'] - $userTempHoldStock)) {
                                 $key = false;
-                                $productName = (isset($pgproduct['selprod_title']) && $pgproduct['selprod_title'] != '') ? $pgproduct['selprod_title'] : $pgproduct['name'];
+                                $productName = (isset($product['selprod_title']) && $product['selprod_title'] != '') ? $product['selprod_title'] : $product['name'];
                                 Message::addErrorMessage(str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)));
                                 return false;
                             }
                         }
-                    } else {
-                        $tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
-                        $availableStock = $product['selprod_stock'] - $tempHoldStock;
-                        $userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'], $cart_user_id, 0, true);
-                        if ($availableStock < ($product['quantity'] - $userTempHoldStock)) {
-                            $key = false;
-                            $productName = (isset($product['selprod_title']) && $product['selprod_title'] != '') ? $product['selprod_title'] : $product['name'];
-                            Message::addErrorMessage(str_replace('{product-name}', $productName, Labels::getLabel('MSG_{product-name}_is_temporary_out_of_stock_or_hold_by_other_customer', $this->siteLangId)));
-                            return false;
-                        }
-                    }
 
-                    /* $srch = new SearchBase('tbl_product_stock_hold');
-                    $srch->doNotCalculateRecords();
-                    $srch->addOrder('pshold_id', 'ASC');
-                    $srch->addCondition( 'pshold_added_on', '>=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $intervalInMinutes . ' MINUTE )', 'AND', true );
-                    $srch->addCondition( 'pshold_selprod_id', '=', $product['selprod_id'] );
-                    $srch->addOrder('pshold_id');
-                    $srch->setPageNumber(1);
-                    $srch->setPageSize(1);
-                    $rs = $srch->getResultSet();
-                    $stockHoldRow = FatApp::getDb()->fetch($rs);
-                    if( $stockHoldRow && ($stockHoldRow['pshold_user_id'] != $cart_user_id) && ($product['selprod_stock'] - $stockHoldRow['pshold_selprod_stock']) < $product['quantity'] ){
-                    $key = false;
-                    $productName = ( isset($product['selprod_title']) && $product['selprod_title'] != '' ) ? $product['selprod_title'] : $product['name'];
-                    Message::addErrorMessage($productName . " is temporary out of stock or hold by other customer, please try after some time.");
-                    return false;
-                    } */
-                    /* if( array_key_exists($product['selprod_id'], $rows ) && ($product['selprod_stock'] - $rows[$product['selprod_id']]['pshold_selprod_stock'] < $product['quantity'] ) ){
-                    $key = false;
-                    Message::addErrorMessage("Product Stock is currently hold by some other user, please try after some time.");
-                    return false;
-                    } */
-                }
-                break;
-            case 'hasBillingAddress':
-                if (!$this->cartObj->getCartBillingAddress()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Billing_Address_is_not_provided.', $this->siteLangId));
-                    return false;
-                }
-                break;
-            case 'hasShippingAddress':
-                if (!$this->cartObj->getCartShippingAddress()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Address_is_not_provided.', $this->siteLangId));
-                    return false;
-                }
-                break;
-            case 'isProductShippingMethodSet':
-                if (!$this->cartObj->isProductShippingMethodSet()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
-                    return false;
-                }
-                break;
+                        /* $srch = new SearchBase('tbl_product_stock_hold');
+                        $srch->doNotCalculateRecords();
+                        $srch->addOrder('pshold_id', 'ASC');
+                        $srch->addCondition( 'pshold_added_on', '>=', 'mysql_func_DATE_SUB( NOW(), INTERVAL ' . $intervalInMinutes . ' MINUTE )', 'AND', true );
+                        $srch->addCondition( 'pshold_selprod_id', '=', $product['selprod_id'] );
+                        $srch->addOrder('pshold_id');
+                        $srch->setPageNumber(1);
+                        $srch->setPageSize(1);
+                        $rs = $srch->getResultSet();
+                        $stockHoldRow = FatApp::getDb()->fetch($rs);
+                        if( $stockHoldRow && ($stockHoldRow['pshold_user_id'] != $cart_user_id) && ($product['selprod_stock'] - $stockHoldRow['pshold_selprod_stock']) < $product['quantity'] ){
+                        $key = false;
+                        $productName = ( isset($product['selprod_title']) && $product['selprod_title'] != '' ) ? $product['selprod_title'] : $product['name'];
+                        Message::addErrorMessage($productName . " is temporary out of stock or hold by other customer, please try after some time.");
+                        return false;
+                        } */
+                        /* if( array_key_exists($product['selprod_id'], $rows ) && ($product['selprod_stock'] - $rows[$product['selprod_id']]['pshold_selprod_stock'] < $product['quantity'] ) ){
+                        $key = false;
+                        Message::addErrorMessage("Product Stock is currently hold by some other user, please try after some time.");
+                        return false;
+                        } */
+                    }
+                    break;
+                case 'hasBillingAddress':
+                    if (!$this->cartObj->getCartBillingAddress()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Billing_Address_is_not_provided.', $this->siteLangId));
+                        return false;
+                    }
+                    break;
+                case 'hasShippingAddress':
+                    if (!$this->cartObj->getCartShippingAddress()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Address_is_not_provided.', $this->siteLangId));
+                        return false;
+                    }
+                    break;
+                case 'isProductShippingMethodSet':
+                    if (!$this->cartObj->isProductShippingMethodSet()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId));
+                        return false;
+                    }
+                    break;
             }
         }
         return true;
@@ -177,14 +182,18 @@ class CheckoutController extends MyAppController
         $obj = new Extrapage();
         $headerData = $obj->getContentByPageType(Extrapage::CHECKOUT_PAGE_HEADER_BLOCK, $this->siteLangId);
 
-        $products = $this->cartObj->getProducts($this->siteLangId);
-        $this->set('products', $products);
+        $addresses = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId);
+
+        // $products = $this->cartObj->getProducts($this->siteLangId);
+        // $this->set('products', $products);
         $this->cartObj->removeProductShippingMethod();
         $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
-        $this->set('cartSummary', $this->cartObj->getCartFinancialSummary($this->siteLangId));
+        // $this->set('cartSummary', $this->cartObj->getCartFinancialSummary($this->siteLangId));
+
         $obj = new Extrapage();
         $pageData = $obj->getContentByPageType(Extrapage::CHECKOUT_PAGE_RIGHT_BLOCK, $this->siteLangId);
         $this->set('pageData', $pageData);
+        $this->set('addresses', $addresses);
         $this->set('headerData', $headerData);
         $this->_template->render(true, false);
     }
@@ -1503,6 +1512,13 @@ class CheckoutController extends MyAppController
         } else {
             $labelHeading =  Labels::getLabel('LBL_Add_Address', $this->siteLangId);
         }
+
+        $cartHasPhysicalProduct = false;
+        if ($this->cartObj->hasPhysicalProduct()) {
+            $cartHasPhysicalProduct = true;
+        }
+
+        $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
         $this->set('labelHeading', $labelHeading);
         $this->set('stateId', $stateId);
         $this->_template->render(false, false, 'checkout/address-form.php');
@@ -1639,8 +1655,13 @@ class CheckoutController extends MyAppController
     {
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         $products = $this->cartObj->getProducts($this->siteLangId);
+
+        $selected_shipping_address_id = $this->cartObj->getCartShippingAddress();
+        $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
+
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
+        $this->set('defaultAddress', $address);
         $this->_template->render(false, false);
     }
 
@@ -1669,7 +1690,7 @@ class CheckoutController extends MyAppController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Apply', $langId));
         return $frm;
     }
-    
+
     function testCheckout()
     {
         $obj = new Extrapage();

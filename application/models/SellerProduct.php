@@ -590,21 +590,20 @@ class SellerProduct extends MyAppModel
         return $products;
     }
 
-    public function getGroupsToProduct($selprod_id, $lang_id = 0)
+    public function getGroupsToProduct($lang_id = 0)
     {
-        $selprod_id = FatUtility::int($selprod_id);
-        $lang_id = FatUtility::int($lang_id);
-
-        if ($selprod_id <= 0) {
-            trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
+        if ($this->mainTableRecordId < 1) {
+            return array();
         }
+
+        $lang_id = FatUtility::int($lang_id);
 
         $srch = new SearchBase(ProductGroup::DB_PRODUCT_TO_GROUP, 'ptg');
         $srch->joinTable(static::DB_TBL, 'INNER JOIN', 'ptg.'.ProductGroup::DB_PRODUCT_TO_GROUP_PREFIX . 'selprod_id = sp.selprod_id', 'sp');
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'sp.selprod_product_id = p.product_id', 'p');
         $srch->joinTable(ProductGroup::DB_TBL, 'INNER JOIN', 'ptg.'.ProductGroup::DB_PRODUCT_TO_GROUP_PREFIX.'prodgroup_id = pg.prodgroup_id', 'pg');
 
-        $srch->addCondition(ProductGroup::DB_PRODUCT_TO_GROUP_PREFIX . 'selprod_id', '=', $selprod_id);
+        $srch->addCondition(ProductGroup::DB_PRODUCT_TO_GROUP_PREFIX . 'selprod_id', '=', $this->mainTableRecordId);
         $srch->addCondition('pg.prodgroup_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('p.product_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('p.product_approved', '=', Product::APPROVED);
@@ -620,8 +619,7 @@ class SellerProduct extends MyAppModel
         $srch->addMultipleFields(array( 'selprod_id', 'ptg_prodgroup_id', 'pg.prodgroup_price' ));
         $srch->addOrder('pg.prodgroup_price');
         $rs = $srch->getResultSet();
-        $products = FatApp::getDb()->fetchAll($rs);
-        return $products;
+        return FatApp::getDb()->fetchAll($rs);
     }
 
     public function addPolicyPointToSelProd($data)
@@ -737,6 +735,21 @@ class SellerProduct extends MyAppModel
             }
         }
         return $variantStr;
+    }
+
+    public function getVolumeDiscounts()
+    {
+        if ($this->mainTableRecordId < 1) {
+            return array();
+        }
+
+        $srch = new SellerProductVolumeDiscountSearch();
+        $srch->doNotCalculateRecords();
+        $srch->addMultipleFields(array('voldiscount_min_qty', 'voldiscount_percentage'));
+        $srch->addCondition('voldiscount_selprod_id', '=', $this->mainTableRecordId);
+        $srch->addOrder('voldiscount_min_qty', 'ASC');
+        $rs = $srch->getResultSet();
+        return FatApp::getDb()->fetchAll($rs);
     }
 
     private function rewriteUrl($keyword, $type = 'product')

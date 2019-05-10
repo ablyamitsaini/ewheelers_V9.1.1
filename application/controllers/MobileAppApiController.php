@@ -1485,8 +1485,8 @@ END,   special_price_found ) as special_price_found'
 
 
         /* product combo/batch[ */
-        $sellerProductObj = new SellerProduct();
-        $productGroups = $sellerProductObj->getGroupsToProduct($selprod_id, $this->siteLangId);
+        $sellerProductObj = new SellerProduct($selprod_id);
+        $productGroups = $sellerProductObj->getGroupsToProduct($this->siteLangId);
         if ($productGroups) {
             foreach ($productGroups as $key => &$pg) {
                 $srch = new ProductSearch($this->siteLangId, ProductGroup::DB_PRODUCT_TO_GROUP, ProductGroup::DB_PRODUCT_TO_GROUP_PREFIX.'product_id');
@@ -1658,13 +1658,8 @@ END,   special_price_found ) as special_price_found'
         $this->set('pollQuest', $pollQuest);
         /* ] */
         /* Get Product Volume Discount (if any)[ */
-        $srch = new SellerProductVolumeDiscountSearch();
-        $srch->doNotCalculateRecords();
-        $srch->addMultipleFields(array('voldiscount_min_qty', 'voldiscount_percentage'));
-        $srch->addCondition('voldiscount_selprod_id', '=', $product['selprod_id']);
-        $srch->addOrder('voldiscount_min_qty', 'ASC');
-        $rs = $srch->getResultSet();
-        $volumeDiscountRows = FatApp::getDb()->fetchAll($rs);
+        $sellerProduct = new SellerProduct($product['selprod_id']);
+        $volumeDiscountRows = $sellerProduct->getVolumeDiscounts();
         foreach ($volumeDiscountRows as &$volumeDiscountRow) {
             $volumeDiscount = $product['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
             $price = ($product['theprice'] - $volumeDiscount);

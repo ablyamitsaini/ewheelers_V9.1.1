@@ -2,7 +2,7 @@
 if(!empty($allShops)){ $i=0;
 foreach($allShops as $shop){ /* CommonHelper::printArray($shop); die; */ ?>
 
-<div class="ftshops ftshops row <?php echo ($i%2!=0) ? 'ftshops-rtl' : ''; ?>">
+<div class="ftshops row <?php echo ($i%2!=0) ? 'ftshops-rtl' : ''; ?>">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 column">
         <div class="ftshops_item">
           <div class="shop-detail-side">

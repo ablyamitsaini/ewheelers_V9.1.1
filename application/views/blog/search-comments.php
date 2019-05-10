@@ -22,7 +22,7 @@ if($commentsCount){
 
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSearchCommentsPaging') );
 } else{ ?>
-	<div class="comment box box--white box--space">
+	<div class="comment box box--white  p-4">
 	<?php if(!UserAuthentication::isUserLogged()){ ?>
 	   <span class=""><a href="<?php echo CommonHelper::generateUrl('GuestUser','loginForm'); ?>" ><?php echo Labels::getLabel('Lbl_Login',$siteLangId); ?> </a> <?php echo Labels::getLabel('Lbl_Login_required_to_post_comment',$siteLangId); ?></span>
    <?php }else{

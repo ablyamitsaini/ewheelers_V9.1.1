@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
-$frmOrderReturnRequestsSrch->setFormTagAttribute('onSubmit','searchOrderReturnRequests(this); return false;');
+$frmOrderReturnRequestsSrch->setFormTagAttribute('onSubmit', 'searchOrderReturnRequests(this); return false;');
 $frmOrderReturnRequestsSrch->setFormTagAttribute('class', 'form');
 $frmOrderReturnRequestsSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderReturnRequestsSrch->developerTags['fld_default_col'] = 12;
@@ -7,38 +7,45 @@ $frmOrderReturnRequestsSrch->developerTags['fld_default_col'] = 12;
 $keywordFld = $frmOrderReturnRequestsSrch->getField('keyword');
 $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
 $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Search_in_Order_Id/Invoice_number,_Product_Name,_Brand_Name,_SKU,_Model', $siteLangId).'</small>';
-$keywordFld->setWrapperAttribute('class','col-lg-8');
-$keywordFld->developerTags['col'] = 8;
+$keywordFld->setWrapperAttribute('class', 'col-lg-6');
+$keywordFld->developerTags['col'] = 6;
+$keywordFld->developerTags['noCaptionTag'] = true;
 
 $statusFld = $frmOrderReturnRequestsSrch->getField('orrequest_status');
-$statusFld->setWrapperAttribute('class','col-lg-4');
-$statusFld->developerTags['col'] = 4;
+$statusFld->setWrapperAttribute('class', 'col-lg-2');
+$statusFld->developerTags['col'] = 2;
+$statusFld->developerTags['noCaptionTag'] = true;
 
 $typeFld = $frmOrderReturnRequestsSrch->getField('orrequest_type');
-$typeFld->setWrapperAttribute('class','col-lg-4');
-$typeFld->developerTags['col'] = 4;
+$typeFld->setWrapperAttribute('class', 'col-lg-2');
+$typeFld->developerTags['col'] = 2;
+$typeFld->developerTags['noCaptionTag'] = true;
 
 $orrequestDateFromFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_from');
-$orrequestDateFromFld->setFieldTagAttribute('class','field--calender');
+$orrequestDateFromFld->setFieldTagAttribute('class', 'field--calender');
 $orrequestDateFromFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_From', $siteLangId));
-$orrequestDateFromFld->setWrapperAttribute('class','col-lg-4');
-$orrequestDateFromFld->developerTags['col'] = 4;
+$orrequestDateFromFld->setWrapperAttribute('class', 'col-lg-2');
+$orrequestDateFromFld->developerTags['col'] = 2;
+$orrequestDateFromFld->developerTags['noCaptionTag'] = true;
 
 $orrequestDateToFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_to');
-$orrequestDateToFld->setFieldTagAttribute('class','field--calender');
+$orrequestDateToFld->setFieldTagAttribute('class', 'field--calender');
 $orrequestDateToFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Date_to', $siteLangId));
-$orrequestDateToFld->setWrapperAttribute('class','col-lg-4');
-$orrequestDateToFld->developerTags['col'] = 4;
+$orrequestDateToFld->setWrapperAttribute('class', 'col-lg-2');
+$orrequestDateToFld->developerTags['col'] = 2;
+$orrequestDateToFld->developerTags['noCaptionTag'] = true;
 
 $submitBtnFld = $frmOrderReturnRequestsSrch->getField('btn_submit');
-$submitBtnFld->setFieldTagAttribute('class','btn--block');
-$submitBtnFld->setWrapperAttribute('class','col-lg-2');
+$submitBtnFld->setFieldTagAttribute('class', 'btn--block');
+$submitBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
+$submitBtnFld->developerTags['noCaptionTag'] = true;
 
 $cancelBtnFld = $frmOrderReturnRequestsSrch->getField('btn_clear');
-$cancelBtnFld->setFieldTagAttribute('class','btn--block');
-$cancelBtnFld->setWrapperAttribute('class','col-lg-2');
+$cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
+$cancelBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
+$cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?>
 
 
