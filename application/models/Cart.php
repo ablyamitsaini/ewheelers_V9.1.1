@@ -868,7 +868,9 @@ class Cart extends FatModel
         if (!self::getCartDiscountCoupon()) {
             return false;
         }
-        $couponInfo = $couponObj->getValidCoupons($this->cart_user_id, $this->cart_lang_id, self::getCartDiscountCoupon());
+
+        $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+        $couponInfo = $couponObj->getValidCoupons($this->cart_user_id, $this->cart_lang_id, self::getCartDiscountCoupon(),$orderId);
         //$couponInfo = $couponObj->getCoupon( self::getCartDiscountCoupon(), $this->cart_lang_id );
         //CommonHelper::printArray($couponInfo); die();
         $cartSubTotal = self::getSubTotal();
