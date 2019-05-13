@@ -673,7 +673,7 @@ class CheckoutController extends MyAppController
             }
             FatUtility::dieWithError($errMsg);
         }
-
+        
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         //commonHelper::printArray($cartSummary);
         $userId = UserAuthentication::getLoggedUserId();
