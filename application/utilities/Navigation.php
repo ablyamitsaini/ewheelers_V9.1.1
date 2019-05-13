@@ -67,6 +67,21 @@ class Navigation
         if(!false == $shopDetails ) {
             $shop_id = $shopDetails['shop_id'];
         }
+        
+        $controller = str_replace('Controller', '', FatApp::getController());
+        $activeTab = 'B';
+        $sellerActiveTabControllers = array('Seller');
+        $buyerActiveTabControllers = array('Buyer');
+
+        if(in_array($controller, $sellerActiveTabControllers)) {
+            $activeTab = 'S';
+        }else if(in_array($controller, $buyerActiveTabControllers)) {
+            $activeTab = 'B';
+        }else if(isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+            $activeTab = $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'];
+        }
+        
+        $template->set('activeTab', $activeTab);
         $template->set('shop_id', $shop_id);
         $template->set('isShopActive', Shop::isShopActive($userId));
         $template->set('todayUnreadMessageCount', $todayUnreadMessageCount);
