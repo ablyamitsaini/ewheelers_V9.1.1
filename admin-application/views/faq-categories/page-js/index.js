@@ -5,12 +5,12 @@ $(document).ready(function(){
 (function() {
 	var currentPage = 1;
 	var dv = '#listing';
-	
-	goToSearchPage = function(page) {	
+
+	goToSearchPage = function(page) {
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
-		var frm = document.frmFaqCatSearchPaging;		
+		var frm = document.frmFaqCatSearchPaging;
 		$(frm.page).val(page);
 		searchFaqCategories(frm);
 	};
@@ -24,16 +24,16 @@ $(document).ready(function(){
 		var frm = document.frmFaqCatSearchPaging;
 		searchFaqCategories(frm);
 	};
-	searchFaqCategories = function(form){		
+	searchFaqCategories = function(form){
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);
 		}
 		/*]*/
-		
+
 		$(dv).html(fcom.getLoader());
-		
+
 		fcom.ajax(fcom.makeUrl('FaqCategories','search'),data,function(res){
 			$(dv).html(res);
 		});
@@ -45,22 +45,22 @@ $(document).ready(function(){
 			});
 		});
 	};
-	
+
 	setupFaqToCms = function(frm){
-		if (!$(frm).validate()) return;	
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('FaqCategories', 'setupFaqToCms'), data, function(t) {
 			$(document).trigger('close.facebox');
 		});
 	};
 	addFaqCatForm = function(id) {
-		//var frm = document.frmFaqCatSearchPaging;			
+		//var frm = document.frmFaqCatSearchPaging;
 		$.facebox(function() { faqCatForm(id); });
 	};
-	
+
 	faqCatForm = function(id) {
 		fcom.displayProcessing();
-		var frm = document.frmFaqCatSearchPaging;			
+		var frm = document.frmFaqCatSearchPaging;
 	//	$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('FaqCategories', 'form', [id]), '', function(t) {
 				//$.facebox(t,'faceboxWidth');
@@ -69,19 +69,19 @@ $(document).ready(function(){
 		//});
 	};
 	setup = function(frm){
-		if (!$(frm).validate()) return;	
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('FaqCategories', 'setup'), data, function(t) {
 			reloadList();
 			if (t.langId > 0) {
 				faqCatLangForm(t.catId, t.langId);
 				return ;
-			}			
+			}
 			$(document).trigger('close.facebox');
 		});
 	};
-	
-	faqCatLangForm = function(faqcatId, langId) {		
+
+	faqCatLangForm = function(faqcatId, langId) {
 		//$.facebox(function() {
 			fcom.displayProcessing();
 			fcom.ajax(fcom.makeUrl('FaqCategories', 'langForm', [faqcatId, langId]), '', function(t) {
@@ -90,33 +90,33 @@ $(document).ready(function(){
 			});
 		//});
 	};
-	
-	setupLang = function(frm){ 
+
+	setupLang = function(frm){
 		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);		
+		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('FaqCategories', 'langSetup'), data, function(t) {
-			reloadList();				
+			reloadList();
 			if (t.langId>0) {
 				faqCatLangForm(t.catId, t.langId);
 				return ;
-			}			
+			}
 			$(document).trigger('close.facebox');
 		});
 	};
-	
+
 	deleteRecord = function(id){
 		if(!confirm(langLbl.confirmDelete)){return;}
 		data='id='+id;
-		fcom.updateWithAjax(fcom.makeUrl('FaqCategories','deleteRecord'),data,function(res){		
+		fcom.updateWithAjax(fcom.makeUrl('FaqCategories','deleteRecord'),data,function(res){
 			reloadList();
 		});
 	};
-	
+
 	clearSearch = function(){
 		document.frmSearch.reset();
 		searchFaqCategories(document.frmSearch);
 	};
-	
+
 	toggleStatus = function( e,obj,canEdit ){
 		if(canEdit == 0){
 			e.preventDefault();
@@ -146,5 +146,20 @@ $(document).ready(function(){
 			}
 		});
 	};
-	
+
+	toggleBulkStatues = function(status){
+        if(!confirm(langLbl.confirmUpdateStatus)){
+            return false;
+        }
+        $("#frmFaqCatListing input[name='status']").val(status);
+        $("#frmFaqCatListing").submit();
+    };
+
+    deleteSelected = function(){
+        if(!confirm(langLbl.confirmDelete)){
+            return false;
+        }
+        $("#frmFaqCatListing").attr("action",fcom.makeUrl('FaqCategories','deleteSelected')).submit();
+    };
+
 })();

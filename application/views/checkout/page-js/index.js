@@ -221,8 +221,9 @@ $("document").ready(function()
 		fcom.updateWithAjax(fcom.makeUrl('Checkout', 'setUpShippingMethod'), data , function(t) {
 			if( t.status == 1 ){
 				loadFinancialSummary();
-				loadShippingSummary();
-				loadCartReviewDiv();
+				loadPaymentSummary();
+				//loadShippingSummary();
+				//loadCartReviewDiv();
 			}
 		});
 	};
