@@ -10,7 +10,7 @@
 	</div>
 	<div class="content-body">
         <div class="row">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('Lbl_Change_Email',$siteLangId);?></h5>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
     		</div>
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="cards">
                     <div class="cards-header p-3">
                         <h5 class="cards-title "><?php echo Labels::getLabel('Lbl_Change_password',$siteLangId);?></h5>

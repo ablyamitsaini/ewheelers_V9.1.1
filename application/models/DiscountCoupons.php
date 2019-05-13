@@ -443,14 +443,13 @@ AND couponlang_lang_id = ' . $langId,
         /* ] */
 
         /* coupon temp hold for order[ */
-
+        $pendingOrderHoldSrch = new SearchBase(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER);
+        $pendingOrderHoldSrch->addMultipleFields(array('count(ochold_order_id) as pending_order_hold_count','ochold_coupon_id'));
+        $pendingOrderHoldSrch->doNotLimitRecords();
+        $pendingOrderHoldSrch->addGroupBy('ochold_coupon_id');
+        $pendingOrderHoldSrch->doNotCalculateRecords();
         if ($orderId !='') {
-            $pendingOrderHoldSrch = new SearchBase(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER);
             $pendingOrderHoldSrch->addCondition('ochold_order_id', '!=', $orderId);
-            $pendingOrderHoldSrch->addMultipleFields(array('count(ochold_order_id) as pending_order_hold_count','ochold_coupon_id'));
-            $pendingOrderHoldSrch->doNotLimitRecords();
-            $pendingOrderHoldSrch->addGroupBy('ochold_coupon_id');
-            $pendingOrderHoldSrch->doNotCalculateRecords();
         }
         /* ] */
 
@@ -501,9 +500,9 @@ AND couponlang_lang_id = ' . $langId,
         $srch->joinTable('('.$cCategorySrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctc.ctc_coupon_id', 'ctc');
 
 
-        if ($orderId !='') {
-            $srch->joinTable('('.$pendingOrderHoldSrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctop.ochold_coupon_id', 'ctop');
-        }
+        // if ($orderId !='') {
+        $srch->joinTable('('.$pendingOrderHoldSrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = ctop.ochold_coupon_id', 'ctop');
+        // }
 
 
         $srch->addCondition('coupon_type', '=', DiscountCoupons::TYPE_DISCOUNT);
@@ -523,9 +522,9 @@ AND couponlang_lang_id = ' . $langId,
         /* $srch->addMultipleFields(array( 'dc.*', 'dc_l.coupon_description', 'IFNULL(dc_l.coupon_title, dc.coupon_identifier) as coupon_title', 'IFNULL(COUNT(coupon_history.couponhistory_id), 0) as coupon_used_count', 'IFNULL(COUNT(coupon_hold.couponhold_coupon_id), 0) as coupon_hold_count','count(user_coupon_history.couponhistory_id) as user_coupon_used_count', 'ctu.grouped_coupon_users', 'ctp.grouped_coupon_products', 'ctc.grouped_coupon_categories')); */
 
         $selectArr = array( 'dc.*', 'dc_l.coupon_description', 'IFNULL(dc_l.coupon_title, dc.coupon_identifier) as coupon_title', 'IFNULL(coupon_history.coupon_used_count, 0) as coupon_used_count', 'IFNULL(COUNT(coupon_hold.couponhold_coupon_id), 0) as coupon_hold_count','count(user_coupon_history.couponhistory_id) as user_coupon_used_count', 'ctu.grouped_coupon_users', 'ctp.grouped_coupon_products', 'ctc.grouped_coupon_categories');
-        if ($orderId !='') {
-            $selectArr =  array_merge($selectArr, array('IFNULL(ctop.pending_order_hold_count,0) as pending_order_hold_count'));
-        }
+        // if ($orderId !='') {
+        $selectArr =  array_merge($selectArr, array('IFNULL(ctop.pending_order_hold_count,0) as pending_order_hold_count'));
+        // }
         $srch->addMultipleFields($selectArr);
 
         /* checking current coupon is valid for current logged user[ */
@@ -560,14 +559,15 @@ AND couponlang_lang_id = ' . $langId,
         $srch->addDirectCondition("(". $directCondtion1.' OR ( '. $directCondtion2 . $directCondtion3 . $directCondition4 .' )' . " )", 'AND');
 
         $srch->addGroupBy('dc.coupon_id');
-        if ($orderId !='') {
-            $srch->addHaving('coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count + pending_order_hold_count', 'AND', true);
-            $srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
-        } else {
-            $srch->addHaving('coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count', 'AND', true);
-            $srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
-        }
-
+        $srch->addHaving('coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count + pending_order_hold_count', 'AND', true);
+        $srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+        // if ($orderId !='') {
+        //     $srch->addHaving('coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count + pending_order_hold_count', 'AND', true);
+        //     $srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+        // } else {
+        //     $srch->addHaving('coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count', 'AND', true);
+        //     $srch->addHaving('coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
+        // }
 
         $rs = $srch->getResultSet();
         if ($coupon_code != '') {

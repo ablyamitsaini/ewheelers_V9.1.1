@@ -14,7 +14,7 @@ class AdminUsersController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function createProcedures() 
+    public function createProcedures()
     {
         $db = FatApp::getDb();
         $con = $db->getConnectionObject();
@@ -87,7 +87,7 @@ class AdminUsersController extends AdminBaseController
         echo 'Created All the Procedures.';
     }
 
-    public function index() 
+    public function index()
     {
         $this->objPrivilege->canViewAdminUsers();
         $this->_template->render();
@@ -103,7 +103,7 @@ class AdminUsersController extends AdminBaseController
 
         $rs = $srch->getResultSet();
         $records = array();
-        if($rs) {
+        if ($rs) {
             $records = FatApp::getDb()->fetchAll($rs);
         }
 
@@ -124,7 +124,7 @@ class AdminUsersController extends AdminBaseController
 
         $frm = $this->getForm($adminId);
 
-        if (0 < $adminId ) {
+        if (0 < $adminId) {
             $data = AdminUsers::getAttributesById($adminId);
 
             if ($data === false) {
@@ -155,7 +155,7 @@ class AdminUsersController extends AdminBaseController
         }
         unset($post['admin_id']);
         $record = new AdminUsers($adminId);
-        if($adminId == 0) {
+        if ($adminId == 0) {
             $password = $post['password'];
             $encryptedPassword = UserAuthentication::encryptPassword($password);
             $post['admin_password'] = $encryptedPassword;
@@ -164,7 +164,6 @@ class AdminUsersController extends AdminBaseController
         $record->assignValues($post);
 
         if (!$record->save()) {
-
             Message::addErrorMessage($record->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -181,7 +180,7 @@ class AdminUsersController extends AdminBaseController
         $adminId =  FatUtility::int($adminId);
         $frm = $this->getChangePasswordForm($adminId);
 
-        if(0 >= $adminId) {
+        if (0 >= $adminId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -202,7 +201,7 @@ class AdminUsersController extends AdminBaseController
         $adminId = FatUtility::int($post['admin_id']);
         unset($post['admin_id']);
 
-        if(0 >= $adminId) {
+        if (0 >= $adminId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -238,34 +237,70 @@ class AdminUsersController extends AdminBaseController
     {
         $this->objPrivilege->canEditAdminUsers();
         $adminId = FatApp::getPostedData('adminId', FatUtility::VAR_INT, 0);
-        if(0 >= $adminId) {
+        if (0 >= $adminId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $data = AdminUsers::getAttributesById($adminId, array('admin_id','admin_active'));
 
-        if($data==false) {
+        if ($data==false) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $status=($data['admin_active'] == applicationConstants::ACTIVE)?0:1;
 
+        $this->updateAdminUserStatus($adminId, $status);
+
+        FatUtility::dieJsonSuccess($this->str_update_record);
+    }
+
+    public function toggleBulkStatuses()
+    {
+        $this->objPrivilege->canEditAdminUsers();
+
+        $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
+        $adminIdsArr = FatUtility::int(FatApp::getPostedData('admin_ids'));
+        if (empty($adminIdsArr) || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($adminIdsArr as $adminId) {
+            if (1 > $adminId) {
+                continue;
+            }
+
+            $this->updateAdminUserStatus($adminId, $status);
+        }
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function updateAdminUserStatus($adminId, $status)
+    {
+        $status = FatUtility::int($status);
+        $adminId = FatUtility::int($adminId);
+        if (1 > $adminId || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
         $adminObj = new AdminUsers($adminId);
-        if ($adminObj->changeStatus($status)) {
+        if (!$adminObj->changeStatus($status)) {
             Message::addErrorMessage($adminObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
-        FatUtility::dieJsonSuccess($this->str_update_record);
     }
 
     public function permissions($adminId = 0)
     {
         $this->objPrivilege->canViewAdminPermissions();
         $adminId = FatUtility::int($adminId);
-        if(1 > $adminId || $adminId==1 || $adminId==$this->admin_id) {
+        if (1 > $adminId || $adminId==1 || $adminId==$this->admin_id) {
             Message::addErrorMessage($this->str_invalid_request);
             FatApp::redirectUser(CommonHelper::generateUrl('adminUsers'));
         }
@@ -292,7 +327,7 @@ class AdminUsersController extends AdminBaseController
         $adminId = FatUtility::int($post['admin_id']);
 
         $userData = array();
-        if($adminId > 0) {
+        if ($adminId > 0) {
             $userData = AdminUsers::getUserPermissions($adminId);
         }
 
@@ -304,7 +339,7 @@ class AdminUsersController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function updatePermission($moduleId,$permission)
+    public function updatePermission($moduleId, $permission)
     {
         $this->objPrivilege->canEditAdminPermissions();
 
@@ -316,7 +351,7 @@ class AdminUsersController extends AdminBaseController
 
         $adminId = FatUtility::int($post['admin_id']);
 
-        if(2 > $adminId ) {
+        if (2 > $adminId) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -326,19 +361,19 @@ class AdminUsersController extends AdminBaseController
         'admperm_value'=>$permission,
         );
         $obj = new AdminUsers();
-        if($moduleId == 0) {
-            if(!$obj->updatePermissions($data, true)) {
+        if ($moduleId == 0) {
+            if (!$obj->updatePermissions($data, true)) {
                 Message::addErrorMessage($obj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
             }
-        }else{
+        } else {
             $permissionModules = AdminPrivilege::getPermissionModulesArr();
             $permissionArr = AdminPrivilege::getPermissionArr();
-            if(!array_key_exists($moduleId, $permissionModules) || !array_key_exists($permission, $permissionArr)) {
+            if (!array_key_exists($moduleId, $permissionModules) || !array_key_exists($permission, $permissionArr)) {
                 Message::addErrorMessage($this->str_invalid_request);
                 FatUtility::dieJsonError(Message::getHtml());
             }
-            if(!$obj->updatePermissions($data)) {
+            if (!$obj->updatePermissions($data)) {
                 Message::addErrorMessage($obj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
             }
@@ -371,7 +406,7 @@ class AdminUsersController extends AdminBaseController
         $emailFld = $frm->addRequiredField(Labels::getLabel('LBL_Email', $this->adminLangId), 'admin_email', '', array('id'=>'admin_username'));
         $emailFld->setUnique(AdminUsers::DB_TBL, AdminUsers::DB_TBL_PREFIX.'email', 'admin_id', 'admin_id', 'admin_id');
 
-        if($adminId == 0) {
+        if ($adminId == 0) {
             $fld=$frm->addPasswordField(Labels::getLabel('LBL_Password', $this->adminLangId), 'password');
             $fld->requirements()->setRequired();
             $fld->requirements()->setPassword();
@@ -380,7 +415,7 @@ class AdminUsersController extends AdminBaseController
             $fld->requirements()->setCompareWith('password', 'eq', '');
         }
         $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
-        if($adminId != 1) {
+        if ($adminId != 1) {
             $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), 'admin_active', $activeInactiveArr, '', array(), '');
         }
 
@@ -415,5 +450,4 @@ class AdminUsersController extends AdminBaseController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
     }
-
 }

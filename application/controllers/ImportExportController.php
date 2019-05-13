@@ -13,7 +13,7 @@ class ImportExportController extends LoggedUserController
 
     public function index()
     {
-        $this->_template->render();
+        $this->_template->render(true, false);
     }
 
     public function exportData($actionType)
@@ -35,32 +35,32 @@ class ImportExportController extends LoggedUserController
         $min = null;
         $max = null;
         switch ($exportDataRange) {
-        case Importexport::BY_ID_RANGE:
-            if (isset($startId) && $startId >0) {
-                $min = $startId;
-            }
+            case Importexport::BY_ID_RANGE:
+                if (isset($startId) && $startId >0) {
+                    $min = $startId;
+                }
 
-            if (isset($endId) && $endId >1 && $endId  > $min) {
-                $max = $endId;
-            }
-            $obj->export($actionType, $langId, $sheetType, null, null, $min, $max, $userId);
-            break;
-        case Importexport::BY_BATCHES:
-            if (isset($batchNumber) && $batchNumber >0) {
-                $min = $batchNumber;
-            }
+                if (isset($endId) && $endId >1 && $endId  > $min) {
+                    $max = $endId;
+                }
+                $obj->export($actionType, $langId, $sheetType, null, null, $min, $max, $userId);
+                break;
+            case Importexport::BY_BATCHES:
+                if (isset($batchNumber) && $batchNumber >0) {
+                    $min = $batchNumber;
+                }
 
-            $max = Importexport::MAX_LIMIT;
-            if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
-                $max = $batchCount;
-            }
-            $min = (!$min)?1:$min;
-            $obj->export($actionType, $langId, $sheetType, $min, $max, null, null, $userId);
-            break;
+                $max = Importexport::MAX_LIMIT;
+                if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
+                    $max = $batchCount;
+                }
+                $min = (!$min)?1:$min;
+                $obj->export($actionType, $langId, $sheetType, $min, $max, null, null, $userId);
+                break;
 
-        default:
-            $obj->export($actionType, $langId, $sheetType, null, null, null, null, $userId);
-            break;
+            default:
+                $obj->export($actionType, $langId, $sheetType, null, null, null, null, $userId);
+                break;
         }
     }
 
@@ -101,33 +101,33 @@ class ImportExportController extends LoggedUserController
         $max = null;
 
         switch ($exportDataRange) {
-        case Importexport::BY_ID_RANGE:
-            if (isset($startId) && $startId >0) {
-                $min = $startId;
-            }
+            case Importexport::BY_ID_RANGE:
+                if (isset($startId) && $startId >0) {
+                    $min = $startId;
+                }
 
-            if (isset($endId) && $endId >1 && $endId  > $min) {
-                $max = $endId;
-            }
+                if (isset($endId) && $endId >1 && $endId  > $min) {
+                    $max = $endId;
+                }
 
-            $obj->exportMedia($actionType, $langId, null, null, $min, $max, $userId);
-            break;
-        case Importexport::BY_BATCHES:
-            if (isset($batchNumber) && $batchNumber >0) {
-                $min = $batchNumber;
-            }
+                $obj->exportMedia($actionType, $langId, null, null, $min, $max, $userId);
+                break;
+            case Importexport::BY_BATCHES:
+                if (isset($batchNumber) && $batchNumber >0) {
+                    $min = $batchNumber;
+                }
 
-            $max = Importexport::MAX_LIMIT;
-            if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
-                $max = $batchCount;
-            }
-            $min = (!$min)?1:$min;
-            $obj->exportMedia($actionType, $langId, $min, $max, null, null, $userId);
-            break;
+                $max = Importexport::MAX_LIMIT;
+                if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
+                    $max = $batchCount;
+                }
+                $min = (!$min)?1:$min;
+                $obj->exportMedia($actionType, $langId, $min, $max, null, null, $userId);
+                break;
 
-        default:
-            $obj->exportMedia($actionType, $langId, null, null, null, null, $userId);
-            break;
+            default:
+                $obj->exportMedia($actionType, $langId, null, null, null, null, $userId);
+                break;
         }
     }
 
@@ -154,22 +154,22 @@ class ImportExportController extends LoggedUserController
     public function loadForm($formType)
     {
         switch (strtoupper($formType)) {
-        case 'GENERAL_INSTRUCTIONS':
-            $this->generalInstructions();
-            break;
-        case 'IMPORT':
-            $this->import();
-            break;
-        case 'EXPORT':
-            $this->export();
-            break;
-        case 'SETTINGS':
-            $this->settings();
-            break;
-        case 'BULK_MEDIA':
-            $this->bulkMedia();
-            break;
-        }
+            case 'GENERAL_INSTRUCTIONS':
+                $this->generalInstructions();
+                break;
+            case 'IMPORT':
+                $this->import();
+                break;
+            case 'EXPORT':
+                $this->export();
+                break;
+            case 'SETTINGS':
+                $this->settings();
+                break;
+            case 'BULK_MEDIA':
+                $this->bulkMedia();
+                break;
+            }
     }
 
     public function exportForm($actionType)

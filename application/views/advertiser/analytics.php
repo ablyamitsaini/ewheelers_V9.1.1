@@ -27,16 +27,31 @@
 							$searchForm->developerTags['fld_default_col'] = 4;
 							$fldSubmit = $searchForm->getField('btn_submit');
 							
+                            $dateFromFld = $searchForm->getField('date_from');
+                            $dateFromFld->setFieldTagAttribute('class', 'field--calender');
+                            $dateFromFld->setWrapperAttribute('class', 'col-lg-2');
+                            $dateFromFld->developerTags['col'] = 2;
+                            $dateFromFld->developerTags['noCaptionTag'] = true;
+
+                            $dateToFld = $searchForm->getField('date_to');
+                            $dateToFld->setFieldTagAttribute('class', 'field--calender');
+                            $dateToFld->setWrapperAttribute('class', 'col-lg-2');
+                            $dateToFld->developerTags['col'] = 2;
+                            $dateToFld->developerTags['noCaptionTag'] = true;
+                            
 							$submitBtnFld = $searchForm->getField('btn_submit');
 							$submitBtnFld->setFieldTagAttribute('class','btn--block');
 							$submitBtnFld->setWrapperAttribute('class','col-sm-6 ');
-							$submitBtnFld->developerTags['col'] = 2;
+                            $submitBtnFld->developerTags['col'] = 2;
+                            $submitBtnFld->developerTags['noCaptionTag'] = true;
 
 							$cancelBtnFld = $searchForm->getField('btn_clear');
 							$cancelBtnFld->setFieldTagAttribute('class','btn--block');
 							$cancelBtnFld->setWrapperAttribute('class','col-sm-6 ');
 							$cancelBtnFld->developerTags['col'] = 2;
-						echo $searchForm->getFormHTML();?>
+                            $cancelBtnFld->developerTags['noCaptionTag'] = true;
+                            
+                            echo $searchForm->getFormHTML();?>
 						</div>
 						<div id="ppcListing"></div>
 					</div>      
