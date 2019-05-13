@@ -35,12 +35,12 @@ foreach ($requests as $sn => $row){
 				$td->appendElement('plaintext', array(), $returnRequestTypeArr[$row[$key]] , true);
 			break;
 			case 'products':
-				$txt = '';
+				$txt = '<div class="item__description">';
 				if( $row['op_selprod_title'] != '' ){
 					$txt .= '<div class="item__title">'.$row['op_selprod_title'].'</div>';
 				}
 				$txt .= '<div class="item__sub_title">'.$row['op_product_name'].'</div>';
-				$txt .= '<div class="item__specification">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$row['op_brand_name'];
+				$txt .= '<div class="item__brand">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$row['op_brand_name'];
 				if( $row['op_selprod_options'] != '' ){
 					$txt .= ' | ' . $row['op_selprod_options'];
 				}
@@ -51,6 +51,7 @@ foreach ($requests as $sn => $row){
 				if( $row['op_product_model'] != '' ){
 					$txt .= '<div class="item__model">'.Labels::getLabel('LBL_Model', $siteLangId).':  ' . $row['op_product_model'].'</div>';
 				}
+                $txt .= '</div>';
 				$td->appendElement('plaintext', array(), $txt , true);
 			break;
 			case 'orrequest_status':
