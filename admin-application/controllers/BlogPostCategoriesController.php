@@ -395,7 +395,7 @@ class BlogPostCategoriesController extends AdminBaseController
 
     public function toggleBulkStatuses()
     {
-        $this->objPrivilege->canEditProducts();
+        $this->objPrivilege->canEditBlogPostCategories();
 
         $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
         $bpcategoryIdsArr = FatUtility::int(FatApp::getPostedData('bpcategory_ids'));
