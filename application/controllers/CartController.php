@@ -403,7 +403,8 @@ class CartController extends MyAppController
         /* $couponObj = new DiscountCoupons();
         $couponInfo = $couponObj->getCoupon($couponCode,$this->siteLangId);
         */
-        $couponInfo = DiscountCoupons::getValidCoupons($loggedUserId, $this->siteLangId, $couponCode);
+        $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+        $couponInfo = DiscountCoupons::getValidCoupons($loggedUserId, $this->siteLangId, $couponCode, $orderId);
         if ($couponInfo == false) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Coupon_Code', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());

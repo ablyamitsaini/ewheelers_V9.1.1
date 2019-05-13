@@ -25,10 +25,12 @@ function showLoginDiv()
 function showAddressFormDiv()
 {
 	editAddress();
+	setCheckoutFlow('BILLING');
 }
 function showAddressList()
 {
 	loadAddressDiv();
+	setCheckoutFlow('BILLING');
 	// resetShippingSummary();
 	// resetPaymentSummary();
 }
@@ -150,6 +152,7 @@ $("document").ready(function()
 		}
 		fcom.ajax(fcom.makeUrl('Checkout', 'editAddress'), 'address_id=' + address_id , function( ans ) {
 			$(pageContent).html(ans);
+			setCheckoutFlow('BILLING');
 			// $(addressFormDiv).html( ans ).show();
 			// $(addressWrapper).hide();
 			// $(addressWrapperContainer).hide();
@@ -222,6 +225,7 @@ $("document").ready(function()
 			if( t.status == 1 ){
 				loadFinancialSummary();
 				loadPaymentSummary();
+				setCheckoutFlow('PAYMENT');
 				//loadShippingSummary();
 				//loadCartReviewDiv();
 			}
@@ -261,7 +265,6 @@ $("document").ready(function()
 	removeShippingSummary = function(){
 		resetCartReview();
 		fcom.ajax(fcom.makeUrl('Checkout', 'removeShippingSummary'), '' , function(ans) {
-
 
 		});
 	};
@@ -306,6 +309,7 @@ $("document").ready(function()
 		fcom.ajax(fcom.makeUrl('Checkout', 'shippingSummary'), '' , function(ans) {
 		 	$(pageContent ).html( ans );
 		 	$(".sduration_id-Js").trigger("change");
+			setCheckoutFlow('SHIPPING');
 		});
 	};
 
@@ -354,7 +358,9 @@ $("document").ready(function()
 		$(pageContent).html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
 			$(pageContent).html(ans);
-			//$("#payment_methods_tab  li:first a").trigger('click');
+			setTimeout(function(){ $('#payment_methods_tab').find('li:first a')[0].click(); }, 500);
+
+			//$("#payment_methods_tab li:first a").trigger('click');
 		});
 	};
 
@@ -436,4 +442,39 @@ $("document").ready(function()
 		resetPaymentSummary();
 		loadShippingSummaryDiv();
 	};
+
+	setCheckoutFlow = function(type){
+		var obj = $('.checkout-flow');
+		obj.find('li').removeClass('completed');
+		obj.find('li').removeClass('inprogress');
+		obj.find('li').removeClass('pending');
+		switch(type) {
+		  case 'BILLING':
+			obj.find('.billing-js').addClass('inprogress');
+			obj.find('.shipping-js').addClass('pending');
+			obj.find('.payment-js').addClass('pending');
+			obj.find('.order-complete-js').addClass('pending');
+		    break;
+		  case 'SHIPPING': console.log(type);
+			obj.find('.billing-js').addClass('completed');
+			obj.find('.shipping-js').addClass('inprogress');
+			obj.find('.payment-js').addClass('pending');
+			obj.find('.order-complete-js').addClass('pending');
+		    break;
+		  case 'PAYMENT':
+			  obj.find('.billing-js').addClass('completed');
+			  obj.find('.shipping-js').addClass('completed');
+			  obj.find('.payment-js').addClass('inprogress');
+			  obj.find('.order-complete-js').addClass('pending');
+		    break;
+		  case 'COMPLETED':
+			  obj.find('.billing-js').addClass('completed');
+			  obj.find('.shipping-js').addClass('completed');
+			  obj.find('.payment-js').addClass('completed');
+			  obj.find('.order-complete-js').addClass('pending');
+		    break;
+		  default:
+			  obj.find('li').addClass('pending');
+		}
+	}
 })();
