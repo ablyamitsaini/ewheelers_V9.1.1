@@ -7,7 +7,7 @@ $formFields = $frm->getAllFields();
 ?>
 
 <div id="body" class="body bg--white">
-  <section class="top-space bg--white">
+  <section class="section bg--white">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 align--center">
