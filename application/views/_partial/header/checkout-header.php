@@ -18,10 +18,10 @@
 				
 				<div class="checkout-flow">
 				<ul>
-					<li class="completed" data-count="1"><span>Billing</span></li>
-					<li class="inprogress" data-count="2"><span>Shiping</span></li>
-					<li class="pending" data-count="3"><span>Payment</span></li>
-					<li class="pending" data-count="4"><span>Order completed</span></li>
+					<li class="completed" data-count="1"><i class="count">1</i><span>Billing</span></li>
+					<li class="inprogress" data-count="2"><i class="count">2</i><span>Shiping</span></li>
+					<li class="pending" data-count="3"><i class="count">3</i><span>Payment</span></li>
+					<li class="pending" data-count="4"><i class="count">4</i><span>Order completed</span></li>
 				</ul>
 			</div>
 			

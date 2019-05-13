@@ -16,7 +16,7 @@
                 <li><div class="save-search">
                     <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
                         <svg class="svg">
-                            <use xlink:href="/images/retina/sprite.svg#savesearch" href="/images/retina/sprite.svg#savesearch"></use>
+                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
                         </svg>
                     </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a></div>
                 </li>

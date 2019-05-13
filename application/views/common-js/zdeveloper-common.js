@@ -23,9 +23,13 @@ function recentlyViewedProducts(selprodId){
 	$("#recentlyViewedProductsDiv").html(fcom.getLoader());
 
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
-		$("#recentlyViewedProductsDiv").html(ans);
-		$('.slides--six-js').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
-		$('.slides--six-js').slick('reinit');
+		$("#recentlyViewedProductsDiv").html(ans);			
+		$('.js-collection-corner').each(function(key){
+			var currObj = $(this);						
+			currObj.addClass('collection-corner-'+key);
+			$('.collection-corner-'+key).slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
+			//$('.collection-corner-'+key).slick('reinit');						
+		});			
 	});
 }
 
@@ -223,7 +227,7 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	if(imagesForNav){
 		if(layoutDirection == 'rtl'){
 			return{
-				slidesToShow: 4,
+				slidesToShow: 5,
 				slidesToScroll: 1,
 				asNavFor: '.slider-for',
 				dots: false,
@@ -231,6 +235,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 				focusOnSelect: true,
 				autoplay:true,
 				rtl:true,
+				vertical: true, 
+				verticalSwiping: true,
 				responsive: [
 				{
 					breakpoint: 1050,
@@ -239,9 +245,11 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					}
 				},
 				{
-					breakpoint: 500,
+					breakpoint:800,
 					settings: {
 						slidesToShow:3,
+						vertical: true, 
+				verticalSwiping: true,
 
 					}
 				},
@@ -249,6 +257,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					breakpoint: 400,
 					settings: {
 						slidesToShow: 2,
+						vertical: true, 
+				verticalSwiping: true,
 					}
 				}
 			  ]
@@ -257,14 +267,17 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 		}else{
 
 			return{
-				slidesToShow: 4,
+				slidesToShow: 5,
 				  slidesToScroll: 1,
 				  asNavFor: '.slider-for',
 				  dots: false,
 				  centerMode: false,
 				  autoplay:false,
 				  focusOnSelect: true,
-					ltr:true,
+				ltr:true,
+				 arrows: true,
+				vertical: true, 
+				verticalSwiping: true,
 				  responsive: [
 					{
 					breakpoint: 1050,
@@ -273,9 +286,11 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					}
 					},
 					{
-						breakpoint: 500,
+						breakpoint: 800,
 						settings: {
 							slidesToShow:3,
+							vertical: true, 
+				verticalSwiping: true,
 						}
 					}
 					  ,
@@ -283,6 +298,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 						breakpoint: 400,
 						settings: {
 							slidesToShow: 2,
+							vertical: true, 
+				verticalSwiping: true,
 						}
 					}
 				  ]
@@ -312,84 +329,44 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay ){
-	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
-	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
-	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
-	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : false;
-
-	if(layoutDirection == 'rtl'){
-		return {
-			slidesToShow: slidesToShow,
-			slidesToScroll: slidesToScroll,
-			infinite: autoInfinitePlay,
-			autoplay: autoInfinitePlay,
-			arrows: true,
-			rtl:true,
-			prevArrow: '<a data-role="none" class="slick-prev" aria-label="'+langLbl.next+'"></a>',
-			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',
-			responsive: [{
-				breakpoint:1050,
-				settings: {
-					slidesToShow: slidesToShow - 1,
-				}
-				},
-				{
-					breakpoint:990,
-					settings: {
-						slidesToShow: 3,
-					}
-				},
-				{
-					breakpoint:767,
-					settings: {
-						slidesToShow: 2,
-					}
-				} ,
-				{
-					breakpoint:400,
-					settings: {
-						slidesToShow: 1,
-					}
-				}
-				]
-		}
-	}else{
-		return {
-			slidesToShow: slidesToShow,
-			slidesToScroll: slidesToScroll,
-			infinite: autoInfinitePlay,
-			autoplay: autoInfinitePlay,
-			arrows: true,
-			prevArrow: '<a data-role="none" class="slick-prev" aria-label="previous"></a>',
-			nextArrow: '<a data-role="none" class="slick-next" aria-label="next"></a>',
-			responsive: [{
-				breakpoint:1050,
-				settings: {
-					slidesToShow: slidesToShow - 1,
-				}
-				},
-				{
-					breakpoint:990,
-					settings: {
-						slidesToShow: 3,
-					}
-				},
-				{
-					breakpoint:767,
-					settings: {
-						slidesToShow: 2,
-					}
-				} ,
-				{
-					breakpoint:400,
-					settings: {
-						slidesToShow: 1,
-					}
-				}
-				]
-		}
-	}
+function getSlickSliderSettings( slidesToShow, slidesToScroll = 2, layoutDirection = 'ltr', autoInfinitePlay = true ){
+slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
+slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 2;
+layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
+autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : true;
+       
+   var sliderSettings = {
+                           dots: false,
+                           slidesToShow: slidesToShow,
+                           slidesToScroll: slidesToScroll,
+                           autoplay: autoInfinitePlay,
+                           arrows: true,
+                           responsive: [{
+                                   breakpoint: 1050,
+                                   settings: {
+                                       slidesToShow: slidesToShow - 1,
+                                   }
+                               },
+                               {
+                                   breakpoint: 800,
+                                   settings: {
+                                       slidesToShow: 4,
+                                   }
+                               },
+                               {
+                                   breakpoint: 500,
+                                   settings: {
+                                       slidesToShow: 2,
+                                   }
+                               }
+                           ]
+                       };
+       
+if(layoutDirection == 'rtl'){
+sliderSettings['rtl'] = true;
+}
+   
+   return sliderSettings;
 }
 function codeLatLng(lat, lng) {
 	var latlng = new google.maps.LatLng(lat, lng);
@@ -801,11 +778,16 @@ function setSiteDefaultCurrency(currencyId){
 }
 
 function quickDetail(selprod_id){
-	fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
+	$.facebox(function() {
+		fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
+			fcom.updateFaceboxContent(t,'faceboxWidth productQuickView ');
+		});
+	});
+	/* fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
 		$('#quick-view-section').html(t);
 		$('html').toggleClass("quick-view--open");
 		$('#quick-view-section').toggleClass("quick-view--open");
-	});
+	}); */
 }
 
 /* read more functionality [ */

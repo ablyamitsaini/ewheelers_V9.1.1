@@ -26,7 +26,7 @@
 	<?php }	?>
 	<section class="section section--pagebar">
 		<div class="container">
-			<div class="section-head justify-content-center mb-0">
+			<div class="section-head section--white--head justify-content-center mb-0">
 				<div class="section__heading">
 					<h2 class="mb-0"><?php echo $pageTitle; ?>
 						<?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record" ><?php echo $page;?> - </span><span id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span> */ ?>

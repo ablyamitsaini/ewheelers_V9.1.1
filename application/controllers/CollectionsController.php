@@ -110,7 +110,7 @@ class CollectionsController extends MyAppController
             $rs = $tempObj->getResultSet();
 
             if(!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id') ) {
-                continue;
+                break;
             }
 
             /* fetch Products data[ */
@@ -153,7 +153,7 @@ class CollectionsController extends MyAppController
             $rs = $tempObj->getResultSet();
 
             if(!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id') ) {
-                continue;
+                break;
             }
 
             /* fetch Categories data[ */
@@ -188,7 +188,7 @@ class CollectionsController extends MyAppController
             $rs = $tempObj->getResultSet();
             if(!$shopIds = $db->fetchAll($rs, 'ctps_shop_id') ) {
 
-                continue;
+                break;
             }
             $shopObj = clone $shopSearchObj;
             $shopObj->joinSellerSubscription();
@@ -235,7 +235,7 @@ class CollectionsController extends MyAppController
 
             unset($tempObj);
             if (empty($brandIds)) {
-                continue;
+                break;
             }
 
             /* fetch Categories data[ */

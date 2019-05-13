@@ -91,8 +91,7 @@ $("document").ready(function(){
 		$(".item__main").find('img').attr('src',mainSrc);
 	});
 
-	$('.js-collection-corner').slick( getSlickSliderSettings(6) );
-	$('.slides--six-js').slick( getSlickSliderSettings(6) );
+$('.js-collection-corner').slick( getSlickSliderSettings(6, 6, langLbl.layoutDirection) );
 
 	/* for on scoll jump navigation fix */
 	/* var elementPosition = $('.nav--jumps').offset();

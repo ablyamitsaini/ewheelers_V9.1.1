@@ -7,7 +7,7 @@
 				<h2><?php echo Labels::getLabel('LBL_Recently_Viewed', $siteLangId); ?></h2>
 			</div>
 		</div>
-		<div class="slides--six-js collection-corner product-listing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
+		<div class="js-collection-corner collection-corner product-listing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 			<?php foreach($recentViewedProducts as $rProduct){
 				$productUrl = CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));
 			?>

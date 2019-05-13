@@ -16,7 +16,7 @@
         <div class="back-to-top">
             <a href="#top">
 							<svg class="svg">
-					<use xlink:href="/images/retina/sprite.svg#up-arrow" href="/images/retina/sprite.svg#up-arrow"></use>
+					<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#up-arrow" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#up-arrow"></use>
 				</svg></a>
         </div>
     </section>
