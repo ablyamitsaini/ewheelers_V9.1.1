@@ -5,7 +5,7 @@
 	$shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 
-<div class="section section--pagebar">
+<div class="section section--pagebar ">
   <div class="container container--fixed">
     <div class="row">
       <div class="col-md-8 col-sm-8">

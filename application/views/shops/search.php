@@ -28,7 +28,7 @@ foreach($allShops as $shop){ /* CommonHelper::printArray($shop); die; */ ?>
           <div class="product-wrapper">
             <div class="row">
             <?php foreach($shop['products'] as $product){?>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 column">
+                <div class="col-lg-3 col-md-4  col-sm-3 mb-3 mb-md-0">
                     <?php include(CONF_THEME_PATH.'_partial/collection/product-layout-1-list.php'); ?>
                 </div>
                 <?php } ?>

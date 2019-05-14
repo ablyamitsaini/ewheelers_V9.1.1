@@ -1073,4 +1073,10 @@ class ShopsController extends MyAppController
         );
         return $data;
     }
-}
+
+public function testView($selprod_id = 0)
+    {
+        $this->_template->render();
+    }
+	
+	}

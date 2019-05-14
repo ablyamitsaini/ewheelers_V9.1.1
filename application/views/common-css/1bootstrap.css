@@ -605,7 +605,18 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    /*max-width: 1230px;*/
+      max-width: 1120px;
+  }
+}
+
+@media (min-width: 1366px) {
+  .container {     
+    max-width: 1250px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {     
     max-width: 1350px;
   }
 }
