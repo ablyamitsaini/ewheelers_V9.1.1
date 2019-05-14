@@ -100,7 +100,7 @@
                   <?php
 					$fld = $frm->getField('cc_save_card');
 					$fld->addFieldTagAttribute('onclick','alert("|SAVE THIS CARD| Not Functional!");return false;');
-					$fldHtml = $fld->getHTML();  
+					$fldHtml = $fld->getHTML();
 					$fldHtml = str_replace("<label >","",$fldHtml);
 					$fldHtml = str_replace("</label>","",$fldHtml);
 					echo $fldHtml;
