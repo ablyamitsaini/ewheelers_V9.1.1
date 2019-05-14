@@ -1,6 +1,6 @@
 <div id="body" class="body template-10001" role="main">
 	<section class="bg-shop">
-		<div class="shop-banner" style="background-image: url(/yokartv8/images/shop-bg.jpg)"></div>
+		<div class="shop-banner" style="background-image: url(/yokartv8/images/shop-bg.jpg)" data-ratio="4:1"></div>
 	</section>
 	<section class="bg--second">
 		<div class="container">
@@ -17,7 +17,6 @@
 			</div>
 		</div>
 	</section>
-
 	<section class="pt-5 pb-3">
 		<div class="container">
 			<div class="row align-items-center">
@@ -603,6 +602,4 @@
 			</div>
 		</div>
 	</section>
-
-
 </div>
