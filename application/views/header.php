@@ -39,7 +39,7 @@ echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 $commonHead2Data = array(
     'siteLangId' => $siteLangId,
     'controllerName' => $controllerName,
-    'isUserDashboard' => $isUserDashboard
+    'isUserDashboard' => $isUserDashboard,
 );
 if (isset($layoutTemplate) && $layoutTemplate != '') {
     $commonHead2Data['layoutTemplate'] = $layoutTemplate;
@@ -54,7 +54,7 @@ if (isset($includeEditor) && $includeEditor == true) {
 $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data, false);
 
 if (isset($isUserDashboard) && $isUserDashboard) {
-    $this->includeTemplate('_partial/topHeaderDashboard.php', $commonHead2Data, false);
+    $this->includeTemplate('_partial/topHeaderDashboard.php', array('siteLangId'=>$siteLangId,'isUserDashboard'=>$isUserDashboard), false);
     $exculdeMainHeaderDiv = true;
 }
 

@@ -11,7 +11,7 @@ $(document).ready(function(){
 
 	getPromoCode = function(){
 		if( isUserLogged() == 0 ){
-			loginPopUpBox();
+			loginPopUpBox(true);
 			return false;
 		}
 
@@ -31,7 +31,7 @@ $(document).ready(function(){
 
 	applyPromoCode  = function(frm){
 		if( isUserLogged() == 0 ){
-			loginPopUpBox();
+			loginPopUpBox(true);
 			return false;
 		}
 		if (!$(frm).validate()) return;
@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 	goToCheckout = function(){
 		if( isUserLogged() == 0 ){
-			loginPopUpBox();
+			loginPopUpBox(true);
 			return false;
 		}
 		document.location.href = fcom.makeUrl('Checkout');

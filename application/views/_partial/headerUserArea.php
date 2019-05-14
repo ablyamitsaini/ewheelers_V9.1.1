@@ -1,10 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 
 <?php if( !$isUserLogged ){ ?>
+	<?php if(UserAuthentication::isGuestUserLogged()){ ?>
+		<li class="logout"><a data-org-url="<?php echo CommonHelper::generateUrl('GuestUser','logout',array(),'',null,false,$getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('GuestUser','logout');?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a></li>
+	<?php } else {?>
 	<li> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
 		<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login"></use>
 	</svg></i> <span>
 	<strong><?php echo Labels::getLabel('LBL_Login_/_Sign_Up', $siteLangId); ?></strong></span></a></li>
+<?php }?>
 	 <?php
 	// $this->includeTemplate('guest-user/loginFormTemplate.php');
 	 } else {
