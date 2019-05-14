@@ -839,6 +839,11 @@ class Cart extends FatModel
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
+        $isCodValidForNetAmt = false;
+        if (($orderPaymentGatewayCharges >= FatApp::getConfig("CONF_MIN_COD_ORDER_LIMIT")) && ($orderPaymentGatewayCharges <= FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT")) && ($isCodEnabled)) {
+            $isCodValidForNetAmt = true;
+        }
+
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount: 0);
 
         $cartSummary = array(
@@ -854,6 +859,7 @@ class Cart extends FatModel
             'orderNetAmount' => $orderNetAmount,
             'WalletAmountCharge'=> $WalletAmountCharge,
             'isCodEnabled' => $isCodEnabled,
+            'isCodValidForNetAmt' => $isCodValidForNetAmt,
             'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
             'netChargeAmount' => $netChargeAmt,
         );
