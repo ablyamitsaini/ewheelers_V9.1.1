@@ -106,14 +106,14 @@
 
 
 						</div>
-					</div>					
+					</div>
 					<div class="gap"></div>
 					<div class="filters bg-gray rounded">
 						<div class="filters__ele productFilters-js">
 							<div class="product-search">
-								 
+
 								<form name="frmSearch" method="post" id="frm_fat_id_frmSearch" onsubmit="searchProducts(this); return(false);"><input placeholder="Shop Search" class="input-field nofocus" title="Shop Search" data-fatreq="{&quot;required&quot;:false}" type="text" name="keyword" value=""><input name="btnSrchSubmit" value="" type="submit" class="input-submit"><input title="" data-fatreq="{&quot;required&quot;:false}" type="hidden" name="shop_id" value="1"><input title="" data-fatreq="{&quot;required&quot;:false}" type="hidden" name="join_price" value="0"></form>
-							 
+
 							</div>
 							<!--Filters[ -->
 							<div class="widgets-head">

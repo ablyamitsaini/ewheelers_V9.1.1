@@ -2000,10 +2000,10 @@ class SellerController extends SellerBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $unique_record = false;
-        if ($file_type != AttachedFile::FILETYPE_SHOP_BANNER) {
+        $unique_record = true;
+        /* if ($file_type != AttachedFile::FILETYPE_SHOP_BANNER) {
             $unique_record = true;
-        }
+        } */
 
         $fileHandlerObj = new AttachedFile();
         if (!$res = $fileHandlerObj->saveImage(

@@ -380,9 +380,9 @@ $to.on("change", function () {
 	/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
 	?>
 
-    <?php if( true === $shopCatFilters ){ ?>
+    <?php /* if( true === $shopCatFilters ){ ?>
         new SimpleBar(document.getElementById('accordian'));
-    <?php } ?>
+    <?php } */ ?>
     var x = document.getElementsByClassName("scrollbar-filters");
     var i;
     for (i = 0; i < x.length; i++) {

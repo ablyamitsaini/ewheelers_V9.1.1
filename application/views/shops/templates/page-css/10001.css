@@ -1,7 +1,5 @@
 /*Shop page*/
-.bg-shop {
- 
-}
+.bg-shop {}
 
 .shop-banner {
 	background-position: center top;
@@ -20,19 +18,22 @@
 }
 
 .shop-info {
-	padding: 3rem;
-	padding-right: 0;
-	max-width: 584px;
+	padding: 0;
+	text-align: center;
+
 }
 
 .shop-info .products__rating {
-	-webkit-box-pack: start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.shop-name {
+	margin-bottom: 1rem;
 }
 
 .shop-name span {
-	font-size: 0.875rem;
+	font-size: 0.775rem;
 	color: var(--txt-color-light);
 }
 
@@ -98,11 +99,14 @@
 	border-radius: 15px;
 }
 
+.shop-information {
+	background: #f3f3f3;
+}
 
 .shop-logo {
 	border-radius: 50%;
-	width: 220px;
-	height: 220px;
+	width: 170px;
+	height: 170px;
 	margin: 0 auto;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -113,24 +117,20 @@
 	-webkit-box-pack: center;
 	-ms-flex-pack: center;
 	justify-content: center;
-	padding: 3rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
 	background: #fff;
-	-webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-	position: absolute;
-	top: calc(50% - 110px);
-	left: calc(50% - 110px);
 	overflow: hidden;
 }
 
-.shop-btn-group {
-	max-width: 350px;
-}
+.shop-btn-group {}
 
 .shop-btn-group .btn {
-	display: block;
-	margin: 8px 0;
-	padding: 7px 10px;
+	background: #9b9a9a;
+}
+
+.shop-btn-group .btn:hover {
+	background: var(--first-color);
 }
 
 .shop-profile {
