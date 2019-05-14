@@ -294,7 +294,7 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	if(imagesForNav){
 		if(layoutDirection == 'rtl'){
 			return{
-				slidesToShow: 4,
+				slidesToShow: 5,
 				slidesToScroll: 1,
 				asNavFor: '.slider-for',
 				dots: false,
@@ -302,6 +302,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 				focusOnSelect: true,
 				autoplay:true,
 				rtl:true,
+				vertical: true,
+				verticalSwiping: true,
 				responsive: [
 				{
 					breakpoint: 1050,
@@ -310,9 +312,11 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					}
 				},
 				{
-					breakpoint: 500,
+					breakpoint:800,
 					settings: {
 						slidesToShow:3,
+						vertical: true,
+				verticalSwiping: true,
 
 					}
 				},
@@ -320,6 +324,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					breakpoint: 400,
 					settings: {
 						slidesToShow: 2,
+						vertical: true,
+				verticalSwiping: true,
 					}
 				}
 			  ]
@@ -328,14 +334,17 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 		}else{
 
 			return{
-				slidesToShow: 4,
+				slidesToShow: 5,
 				  slidesToScroll: 1,
 				  asNavFor: '.slider-for',
 				  dots: false,
 				  centerMode: false,
 				  autoplay:false,
 				  focusOnSelect: true,
-					ltr:true,
+				ltr:true,
+				 arrows: true,
+				vertical: true,
+				verticalSwiping: true,
 				  responsive: [
 					{
 					breakpoint: 1050,
@@ -344,9 +353,11 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 					}
 					},
 					{
-						breakpoint: 500,
+						breakpoint: 800,
 						settings: {
 							slidesToShow:3,
+							vertical: true,
+				verticalSwiping: true,
 						}
 					}
 					  ,
@@ -354,6 +365,8 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 						breakpoint: 400,
 						settings: {
 							slidesToShow: 2,
+							vertical: true,
+				verticalSwiping: true,
 						}
 					}
 				  ]
@@ -863,11 +876,16 @@ function setSiteDefaultCurrency(currencyId){
 }
 
 function quickDetail(selprod_id){
-	fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
+	$.facebox(function() {
+		fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
+			fcom.updateFaceboxContent(t,'faceboxWidth productQuickView ');
+		});
+	});
+	/* fcom.ajax(fcom.makeUrl('Products','productQuickDetail',[selprod_id]), '', function(t){
 		$('#quick-view-section').html(t);
 		$('html').toggleClass("quick-view--open");
 		$('#quick-view-section').toggleClass("quick-view--open");
-	});
+	}); */
 }
 
 /* read more functionality [ */

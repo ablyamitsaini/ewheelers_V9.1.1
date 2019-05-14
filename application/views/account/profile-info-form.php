@@ -83,13 +83,17 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
           $frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
           $frm->setFormTagAttribute('class', 'form');
           $frm->developerTags['colClassPrefix'] = 'col-md-';
-          $frm->developerTags['fld_default_col'] = 6;
+          $frm->developerTags['fld_default_col'] = 4;
 
-          $fld = $frm->getField('user_company');
-          $fld->developerTags['col'] = 12;
+          $fld = $frm->getField('user_profile_info');
+          $fld->developerTags['col'] = 6;
+          
+          $fld = $frm->getField('user_products_services');
+          $fld->developerTags['col'] = 6;
 
-          $fld = $frm->getField('btn_submit');
-          $fld->developerTags['col'] = 12;
+          $submitFld = $frm->getField('btn_submit');
+          $submitFld->developerTags['col'] = 12;
+          $submitFld->developerTags['noCaptionTag'] = true;
 
           echo $frm->getFormHtml();?>
     </div>

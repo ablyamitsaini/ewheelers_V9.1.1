@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div class="msg__desc">
-                <span class="msg__date"><?php echo FatDate::format($message['orrmsg_date'], true); ?></span>
                 <span class="msg__title"><?php echo ($message['orrmsg_from_admin_id']) ? $message['admin_name']: $message['msg_user_name'].$shop_name; ?></span>
                 <p class="msg__detail"><?php echo nl2br($message['orrmsg_msg']); ?></p>
+                <span class="msg__date"><?php echo FatDate::format($message['orrmsg_date'], true); ?></span>
             </div>
         </li>
         <?php } ?>

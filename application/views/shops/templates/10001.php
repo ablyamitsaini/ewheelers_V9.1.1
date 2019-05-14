@@ -1,12 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');?>
 <?php $haveBannerImage = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '' , $siteLangId ); ?>
 <section class="bg-shop">
+  
     <div class="shop-col column--md">
         <div class="shop-logo-wrapper">
             <?php if( $haveBannerImage ){ ?>
           <div class="shops-sliders" dir="<?php echo CommonHelper::getLayoutDirection();?>">
             <?php foreach($haveBannerImage as $banner){ ?>
-            <div class="item"><img data-ratio="16:9 (950x535)" src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
+            <div class="item"><img data-ratio="4:1 (2000x500)" src="<?php echo CommonHelper::generateUrl('image','shopBanner',array($banner['afile_record_id'],$siteLangId,'TEMP2',$banner['afile_id'])); ?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner', $siteLangId); ?>"></div>
             <?php } ?>
           </div>
           <?php } ?>
@@ -94,9 +95,9 @@
                 <?php } ?>
             </div>
         </div>
-    </div>
+    </div> 
 </section>
-<section class="section--gray">
+<section class="bg--second">
 	<div class="container">
 		<div class="shop-nav">
 			<?php

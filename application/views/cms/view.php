@@ -53,7 +53,7 @@
 	}
 	//echo FatUtility::decodeHtmlEntities( $cPage['cpage_content'] ) ?>
 	<?php } else { ?>
-	<section class="top-space bg--white">
+	<section class="section bg--white">
 	  <div class="container">
 		<?php if(!$isAppUser){?>
 		<div class="breadcrumbs">

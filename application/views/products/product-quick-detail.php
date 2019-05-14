@@ -1,6 +1,5 @@
-<a href="javascript:void(0)" id="close-quick-js" class="close-layer"></a>
 <div class="row">
-	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 quick-col-1">
+	<div class="col-lg-6 col-md-6 quick-col-1">
 	  <?php if( $productImagesArr ){ ?>
 		<div class="js-product-gallery product-gallery" dir="<?php echo CommonHelper::getLayoutDirection();?>">
 			<?php
@@ -22,48 +21,18 @@
 			  <div class="item__main"><img src="<?php echo $mainImgUrl; ?>"></div>
 			  <?php } ?>
 	</div>
-	<div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 quick-col-2">
-	  <div class="product-detail product-description">
+	<div class="col-lg-6 col-md-6 quick-col-2" >
+	  <div class="product-detail product-description product-detail-quickview"  >
 		<div class="product-description-inner">
 			<div class="products__title"><?php echo $product['selprod_title'];?>
 			</div>
 			<div class="detail-grouping">
-				<div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
-				<div class="products__rating">
-				<?php if(round($product['prod_rating'])>0 && FatApp::getConfig("CONF_ALLOW_REVIEWS",FatUtility::VAR_INT,0)){ ?>
-				<i class="icn"><svg class="svg">
-							<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-						</svg></i> <span class="rate"><?php echo round($product['prod_rating'],1);?></span>
-						<?php if(round($product['prod_rating'])==0 ){  ?>
-						  <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
-						<?php } ?>
-				<?php }?>
-				</div>
-				<?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
+				<?php $showAddToFavorite = false; include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
 			</div>
 			<div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
 			<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
 			</div>
 		</div>
-		<?php if( count($productSpecifications)>0 ){ ?>
-		<div class="gap"></div>
-		<div class="box box--gray box--radius box--space">
-			<div class="h6"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?>:</div>
-			<div class="list list--specification">
-				<ul>
-				  <?php $count=1;
-					foreach($productSpecifications as $key => $specification){
-						if($count>5) continue;
-						?>
-				  <li><?php echo '<span>'.$specification['prodspec_name']." :</span> ".$specification['prodspec_value']; ?></li>
-				  <?php $count++;  } ?>
-				  <?php if(count($productSpecifications)>5) { ?>
-				  <li class="link_li"><a href="javascript:void()"  ><?php echo Labels::getLabel('LBL_View_All_Details', $siteLangId); ?></a></li>
-				  <?php } ?>
-				</ul>
-			</div>
-		</div>
-		<?php }?>
 	  <?php if( !empty($optionRows) ){ ?>
 		<div class="gap"></div>
 		<div class="box box--gray box--radius box--space">
@@ -72,7 +41,7 @@
 				<?php $selectedOptionsArr = $product['selectedOptionValues'];
 
 				foreach($optionRows as $option){ ?>
-				<div class="<?php echo ($option['option_is_color']) ? 'col-lg-12 col-md-5 column' : 'col-md-6 column'; ?>">
+				<div class="<?php echo ($option['option_is_color']) ? 'col-auto column' : 'col-auto column'; ?>">
 					<div class="h6"><?php echo $option['option_name']; ?> :</div>
 					<div class="article-options <?php echo ($option['option_is_color']) ? 'options--color' : 'options--size'; ?>">
 						<?php if($option['values']){ ?>
@@ -116,19 +85,7 @@
 				/* $fld = $frmBuyProduct->getField('btnAddToCart');
 				$fld->addFieldTagAttribute('class','quickView'); */
 				$qtyFieldName =  $qtyField->getCaption(); ?>
-            <div class="form__group">
-                <label><?php echo $qtyFieldName;?></label>
-                <div class="qty-wrapper">
-                    <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                        <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
-                    </div>
-                    <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
-                        <span class="increase increase-js"></span>
-                        <span class="decrease decrease-js"></span>
-                    </div>
-                </div>
-            </div>
-		  <div class="gap"></div>
+            
 		  <div class="buy-group">
 			<?php
 				if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){

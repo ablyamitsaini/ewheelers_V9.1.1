@@ -17,9 +17,9 @@
 			<li>
 				<div class="msg_db"><img src="<?php echo CommonHelper::generateUrl('Image','user',array($row['message_from_user_id'],'thumb',true));?>" alt="<?php echo $row['message_from_name']; ?>"></div>
 				<div class="msg__desc">
-					<span class="msg__date"><?php echo FatDate::format($row['message_date'],true);?></span>
 					<span class="msg__title"><?php echo htmlentities($row['message_from_name']);?></span>
 					<p class="msg__detail"><?php  echo CommonHelper::truncateCharacters($row['message_text'],85,'','',true);?></p>
+                    <span class="msg__date"><?php echo FatDate::format($row['message_date'],true);?></span>
 				</div>
 			</li>
 			<?php }?>
