@@ -52,7 +52,8 @@
                 <div class="cards-header p-3">
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_your_inventory', $siteLangId); ?></h5>
                     <div class="action">
-                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?>" onclick="toggleBulkSellerProductsStatues()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Toggle_status', $siteLangId); ?></a>
+                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?>" onclick="toggleBulkStatues(1)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?></a>
+                        <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?>" onclick="toggleBulkStatues(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?></a>
                         <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
                     </div>
                 </div>
