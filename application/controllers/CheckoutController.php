@@ -7,7 +7,10 @@ class CheckoutController extends MyAppController
     {
         parent::__construct($action);
         $user_id = 0;
-        if (UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) {
+        if (!UserAuthentication::isUserLogged()){
+            FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
+        }
+        if (UserAuthentication::isGuestUserLogged()) {
             $user_is_buyer = User::getAttributesById(UserAuthentication::getLoggedUserId(), 'user_is_buyer');
             if (!$user_is_buyer) {
                 $errMsg = Labels::getLabel('MSG_Please_login_with_buyer_account', $this->siteLangId);
@@ -673,7 +676,7 @@ class CheckoutController extends MyAppController
             }
             FatUtility::dieWithError($errMsg);
         }
-        
+
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         //commonHelper::printArray($cartSummary);
         $userId = UserAuthentication::getLoggedUserId();
@@ -1230,6 +1233,14 @@ class CheckoutController extends MyAppController
             $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
             $user_id = UserAuthentication::getLoggedUserId();
             $userWalletBalance = User::getUserBalance($user_id, true);
+
+            if (!$cartSummary['isCodValidForNetAmt']) {
+                $str = Labels::getLabel('MSG_Sorry_{COD}_is_not_available_on_this_order.', $this->siteLangId).' <br/>'.Labels::getLabel('MSG_{COD}_is_available_on_payable_amount_between_{MIN}_and_{MAX}', $this->siteLangId);
+                $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
+                $str = str_replace('{min}', CommonHelper::displayMoneyFormat(FatApp::getConfig("CONF_MIN_COD_ORDER_LIMIT")), $str);
+                $str = str_replace('{max}', CommonHelper::displayMoneyFormat(FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT")), $str);
+                FatUtility::dieWithError($str);
+            }
 
             if ($cartSummary['cartWalletSelected'] && $userWalletBalance < $cartSummary['orderNetAmount']) {
                 $str = Labels::getLabel('MSG_Wallet_can_not_be_used_along_with_{COD}', $this->siteLangId);

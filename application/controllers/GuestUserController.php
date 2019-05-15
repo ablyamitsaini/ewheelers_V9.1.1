@@ -180,12 +180,20 @@ class GuestUserController extends MyAppController
 
     public function LogInFormPopUp()
     {
-        $frm = $this->getLoginForm();
+        $includeGuestLogin = FatApp::getPostedData('includeGuestLogin', FatUtility::VAR_STRING, false);
+        $frm = $this->getLoginForm($includeGuestLogin);
         $data = array(
         'loginFrm'             => $frm,
-        'siteLangId'    => $this->siteLangId
+        'siteLangId'    => $this->siteLangId,
+        'includeGuestLogin'    => $includeGuestLogin,
         );
         $this->set('data', $data);
+        $this->_template->render(false, false);
+    }
+
+    public function form(){
+        $frm = $this->getGuestUserForm($this->siteLangId);
+        $this->set('frm', $frm);
         $this->_template->render(false, false);
     }
 

@@ -61,7 +61,7 @@ class CartController extends MyAppController
 
     public function add()
     {
-        $post = FatApp::getPostedData();
+        $post = FatApp::getPostedData();        
         if (false == $post) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl());
