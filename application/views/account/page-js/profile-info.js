@@ -9,7 +9,7 @@ $(document).ready(function(){
 
 	profileInfoForm = function(){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Account', 'profileInfoForm'), '', function(t) {			
+		fcom.ajax(fcom.makeUrl('Account', 'profileInfoForm'), '', function(t) {
 			$(dv).html(t);
 		});
 	};
@@ -25,7 +25,8 @@ $(document).ready(function(){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Account', 'updateProfileInfo'), data, function(t) {
-			//$.mbsmessage.close();
+			profileInfoForm();
+			$.mbsmessage.close();
 		});
 	};
 

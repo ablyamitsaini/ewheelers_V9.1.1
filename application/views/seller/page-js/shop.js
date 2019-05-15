@@ -1,5 +1,5 @@
-$(document).ready(function(){ 
-	shopForm();		
+$(document).ready(function(){
+	shopForm();
 });
 $(document).on('change','.logo-language-js',function(){
 	var lang_id = $(this).val();
@@ -17,7 +17,7 @@ $(document).on('change','.bg-language-js',function(){
 	var runningAjaxReq = false;
 	var dv = '#shopFormBlock';
 	var dvt = '#shopFormChildBlock';
-	
+
 	checkRunningAjax = function(){
 		if( runningAjaxReq == true ){
 			//console.log(runningAjaxMsg);
@@ -25,23 +25,23 @@ $(document).on('change','.bg-language-js',function(){
 		}
 		runningAjaxReq = true;
 	};
-	
+
 	goToCategoryBannerSrchPage = function(page){
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
-		var frm = document.frmCategoryBannerSrchPaging;		
+		var frm = document.frmCategoryBannerSrchPaging;
 		$(frm.page).val(page);
 		searchCategoryBanners(frm);
 	};
-	
+
 	categoryBanners = function(){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Seller', 'searchCategoryBanners'), '', function(t) {			
+		fcom.ajax(fcom.makeUrl('Seller', 'searchCategoryBanners'), '', function(t) {
 			$(dv).html(t);
 		});
 	};
-	
+
 	addCategoryBanner = function(prodCatId){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller', 'addCategoryBanner',[prodCatId]), '', function(t) {
@@ -49,7 +49,7 @@ $(document).on('change','.bg-language-js',function(){
 			});
 		});
 	};
-	
+
 	/* categoryBannerLangForm = function( prodCatId, langId ){
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller', 'categoryBannerLangForm',[prodCatId, langId]), '', function(t) {
@@ -57,21 +57,21 @@ $(document).on('change','.bg-language-js',function(){
 			});
 		});
 	} */
-	
-	searchCategoryBanners = function(frm){ 		
+
+	searchCategoryBanners = function(frm){
 		/*[ this block should be written before overriding html of 'form's parent div/element, otherwise it will through exception in ie due to form being removed from div */
 		var data = fcom.frmData(frm);
 		/*]*/
 		$(dv).html( fcom.getLoader() );
-		fcom.ajax(fcom.makeUrl('Seller','searchCategoryBanners'),data,function(res){			
+		fcom.ajax(fcom.makeUrl('Seller','searchCategoryBanners'),data,function(res){
 			$(dv).html(res);
 		});
 	};
-	
+
 	reloadCategoryBannerList = function(){
 		searchCategoryBanners(document.frmCategoryBannerSrchPaging);
 	};
-	
+
 	removeCategoryBanner = function ( prodCatId, lang_id ){
 		var agree = confirm( langLbl.confirmRemove );
 		if( !agree ){
@@ -82,73 +82,73 @@ $(document).on('change','.bg-language-js',function(){
 			addCategoryBanner( prodCatId);
 		});
 	};
-	
+
 	shopForm = function(){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Seller', 'shopForm'), '', function(t) {			
+		fcom.ajax(fcom.makeUrl('Seller', 'shopForm'), '', function(t) {
 			$(dv).html(t);
 			jscolor.installByClassName("jscolor");
 		});
 	};
-	
-	setupShop = function(frm){		
+
+	setupShop = function(frm){
 		if (!$(frm).validate()) return;
-		checkRunningAjax();	
-		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShop'), data, function(t) {			
+		checkRunningAjax();
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShop'), data, function(t) {
 			runningAjaxReq = false;
 			if (t.langId>0) {
 				shopLangForm(t.shopId, t.langId);
 				return ;
 			}
-			
-			shopForm();	
-			return;		
+
+			shopForm();
+			return;
 		});
 	};
-	
+
 	shopLangForm = function(shopId , langId){
 		$(dv).html(fcom.getLoader());
-		
-		fcom.ajax(fcom.makeUrl('Seller', 'shopLangForm',[shopId,langId]), '', function(t) {			
+
+		fcom.ajax(fcom.makeUrl('Seller', 'shopLangForm',[shopId,langId]), '', function(t) {
 			$(dv).html(t);
 			fcom.setEditorLayout(langId);
 			var frm = $(dv+' form')[0];
 			var validator = $(frm).validation( {errordisplay: 3} );
 			$(frm).submit(function(e) {
 				e.preventDefault();
-				if (validator.validate() == false) {	
+				if (validator.validate() == false) {
 					return ;
 				}
 				var data = fcom.frmData(frm);
-				fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShopLang'), data, function(t) {			
-					runningAjaxReq = false; 
-					$.mbsmessage.close();					
+				fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShopLang'), data, function(t) {
+					runningAjaxReq = false;
+					$.mbsmessage.close();
 					if (t.langId > 0 && t.shopId > 0) {
 						shopLangForm(t.shopId , t.langId);
 						return;
 					}
-					returnAddressForm();		
+					returnAddressForm();
 				});
-			});	
+			});
 		});
 	};
-	
+
 	setupShopLang = function(frm){
 		if (!$(frm).validate()) return;
-		checkRunningAjax();	
-		var data = fcom.frmData(frm);		
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShopLang'), data, function(t) {			
-			runningAjaxReq = false; 
-			$.mbsmessage.close();			
+		checkRunningAjax();
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupShopLang'), data, function(t) {
+			runningAjaxReq = false;
+			$.mbsmessage.close();
 			if (t.langId > 0 && t.shopId > 0) {
 				shopLangForm(t.shopId , t.langId);
 				return;
 			}
-			shopForm();			
+			shopForm();
 		});
 	};
-	
+
 	shopMediaForm = function (el){
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller', 'shopMediaForm'), '', function(t) {
@@ -160,7 +160,7 @@ $(document).on('change','.bg-language-js',function(){
 			shopImages('bg');
 		});
 	};
-	
+
 	shopImages = function(imageType,lang_id){
 		fcom.ajax(fcom.makeUrl('Seller', 'shopImages', [imageType,lang_id]), '', function(t) {
 			if(imageType=='logo') {
@@ -172,45 +172,45 @@ $(document).on('change','.bg-language-js',function(){
 			}
 		});
 	};
-	
+
 	shopTemplates = function(el){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Seller', 'shopTemplate'), '', function(t) {			
+		fcom.ajax(fcom.makeUrl('Seller', 'shopTemplate'), '', function(t) {
 			$(dv).html(t);
 			$(el).parent().siblings().removeClass('is-active');
 			$(el).parent().addClass('is-active');
 		});
-	};	
+	};
 	themeColor = function(el){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Seller', 'shopThemeColor'), '', function(t) {			
+		fcom.ajax(fcom.makeUrl('Seller', 'shopThemeColor'), '', function(t) {
 			$(dv).html(t);
 			jscolor.installByClassName("jscolor");
-			
+
 		});
 	};
-	
+
 	setTemplate = function (ltemplateId){
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setTemplate',[ltemplateId]), '', function(t) {
 			shopTemplates();
 		});
 	};
-	
-	/* getCountryStates = function(countryId,stateId,dv){ 
+
+	/* getCountryStates = function(countryId,stateId,dv){
 		fcom.ajax(fcom.makeUrl('Seller','getStates',[countryId,stateId]),'',function(res){
 			$(dv).empty();
 			$(dv).append(res);
 		});
 	}; */
-	
+
 	setUpThemeColor = function (frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupThemeColor'), data, function(t) {			
+		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupThemeColor'), data, function(t) {
 			$.mbsmessage.close();
 		});
 	};
-	
+
 	removeShopImage = function( BannerId, langId, imageType ){
 		var agree = confirm( langLbl.confirmRemove );
 		if( !agree ){
@@ -220,7 +220,7 @@ $(document).on('change','.bg-language-js',function(){
 			shopImages( imageType, langId );
 		});
 	};
-	
+
 	shopCollectionProducts= function(el){
 		$(dv).html(fcom.getLoader());
 		// console.log($(el).parent());
@@ -228,33 +228,33 @@ $(document).on('change','.bg-language-js',function(){
 			$(dv).html(t);
 			$(el).parent().siblings().removeClass('is-active');
 			$(el).parent().addClass('is-active');
-			getShopCollectionGeneralForm();		
+			getShopCollectionGeneralForm();
 		});
 	};
-	
+
 	getShopCollectionGeneralForm = function (){
 		fcom.ajax(fcom.makeUrl('Seller', 'shopCollectionGeneralForm'), '', function(t) {
 			$(dvt).html(t);
-		});	
+		});
 	};
-	
+
 	setupShopCollection = function (frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupShopCollection'), data, function(t) {			
+		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupShopCollection'), data, function(t) {
 			$.mbsmessage.close();
 			if (t.langId>0) {
 				editShopCollectionLangForm(t.collection_id, t.langId);
 				return ;
 			}
-		
+
 		});
 	};
-	
+
 	setupShopCollectionlangForm = function (frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupShopCollectionLang'), data, function(t) {			
+		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupShopCollectionLang'), data, function(t) {
 			$.mbsmessage.close();
 			if (t.langId>0) {
 				editShopCollectionLangForm(t.scollection_id, t.langId);
@@ -267,7 +267,7 @@ $(document).on('change','.bg-language-js',function(){
 		});
 
 	};
-	
+
 	editShopCollectionLangForm = function(scollection_id,langId){
 		if (typeof(scollection_id) == "undefined" || scollection_id<0){
 			return false;
@@ -279,15 +279,15 @@ $(document).on('change','.bg-language-js',function(){
 			$(dvt).html(t);
 		});
 	};
-	
+
 	sellerCollectionProducts = function( scollection_id ) {
 		$(dvt).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller', 'sellerCollectionProductLinkFrm', [ scollection_id ]), '', function(t) {
 			$(dvt).html(t);
 			bindAutoComplete();
-		});	
+		});
 	};
-	
+
 	setUpSellerCollectionProductLinks = function(frm){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
@@ -295,7 +295,7 @@ $(document).on('change','.bg-language-js',function(){
 			$.mbsmessage.close();
 		});
 	};
-	
+
 	resetDefaultCurrentTemplate = function(){
 		var agree = confirm( langLbl.confirmReset );
 		if( !agree ){
@@ -306,37 +306,37 @@ $(document).on('change','.bg-language-js',function(){
 			themeColor();
 		});
 	};
-	
+
 	returnAddressForm = function(){
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller','returnAddressForm'),'',function(t){
 			$(dv).html(t);
 		});
 	};
-	
+
 	setReturnAddress = function(frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddress'), data, function(t) {	
-			returnAddressLangForm(t.langId);						
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddress'), data, function(t) {
+			returnAddressLangForm(t.langId);
 		});
 	};
-	
+
 	returnAddressLangForm = function(langId){
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller','returnAddressLangForm',[langId]),'',function(t){
 			$(dv).html(t);
 		});
 	};
-	
+
 	setReturnAddressLang = function(frm){
-		if (!$(frm).validate()) return;		
+		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddressLang'), data, function(t) {	
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setReturnAddressLang'), data, function(t) {
 			if(t.langId){
 				returnAddressLangForm(t.langId);
 			}else{
-				returnAddressForm();						
+				returnAddressForm();
 			}
 		});
 	};
@@ -353,7 +353,7 @@ function bindAutoComplete(){
 				type: 'post',
 				success: function(json) {
 					response($.map(json, function(item) {
-					
+
 						return { label: item['name'] +'['+item['product_identifier'] +']',	value: item['id']	};
 					}));
 				},
@@ -370,7 +370,7 @@ $(document).on('click','.shopFile-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
 	var frmName = $(node).attr('data-frm');
-	var fileType = $(node).attr('data-file_type');	
+	var fileType = $(node).attr('data-file_type');
 	if('frmShopLogo' == frmName){
 		var lang_id = document.frmShopLogo.lang_id.value;
 		var imageType = 'logo';
@@ -382,9 +382,9 @@ $(document).on('click','.shopFile-Js',function(){
 		var imageType = 'bg';
 	}
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
-	frm = frm.concat('<input type="hidden" name="lang_id" value="'+lang_id+'">'); 
-	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'"></form>'); 
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="'+lang_id+'">');
+	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'"></form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if (typeof timer != 'undefined') {
@@ -412,7 +412,7 @@ $(document).on('click','.shopFile-Js',function(){
 					$.mbsmessage.close();
 					$.systemMessage.close();
 					$('.text-danger').remove();
-					$('#input-field'+fileType).html(ans.msg);						
+					$('#input-field'+fileType).html(ans.msg);
 					if(ans.status == true){
 						$.mbsmessage( ans.msg,'','alert--success');
 						$('#input-field'+fileType).removeClass('text-danger');
@@ -428,7 +428,7 @@ $(document).on('click','.shopFile-Js',function(){
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 				}
-				});			
+				});
 		}
 	}, 500);
 });
@@ -439,19 +439,19 @@ $(document).on('click','.catFile-Js',function(){
 	var prodcat_id = document.frmCategoryMedia.prodcat_id.value;
 	var lang_id = document.frmCategoryMedia.lang_id.value;
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
-	frm = frm.concat('<input type="file" name="file" />'); 
+	frm = frm.concat('<input type="file" name="file" />');
 	frm = frm.concat('<input type="hidden" name="prodcat_id" value="' + prodcat_id + '">');
 	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
-	frm = frm.concat('</form>'); 
+	frm = frm.concat('</form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
 	if ( typeof timer != 'undefined' ) {
 		clearInterval(timer);
-	}	
+	}
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);
-			$val = $(node).val();			
+			$val = $(node).val();
 			$.ajax({
 				url: fcom.makeUrl('Seller', 'setupCategoryBanner'),
 				type: 'post',
@@ -470,7 +470,7 @@ $(document).on('click','.catFile-Js',function(){
 					$.mbsmessage.close();
 					$.systemMessage.close();
 					//$.mbsmessage(ans.msg, true, 'alert--success');
-					var dv = '#mediaResponse';						
+					var dv = '#mediaResponse';
 					$('.text-danger').remove();
 					if( ans.status == true ){
 						$.systemMessage( ans.msg,'alert--success');
@@ -482,14 +482,13 @@ $(document).on('click','.catFile-Js',function(){
 						$.systemMessage(ans.msg,'alert--danger');
 						$(dv).removeClass('text-success');
 						$(dv).addClass('text-danger');
-					}												
+					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 				}
-			});			
+			});
 		}
 	}, 500);
-	
-});
 
+});

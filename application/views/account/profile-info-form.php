@@ -1,8 +1,19 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $frm->setFormTagAttribute('id', 'profileInfoFrm');
 $frm->setFormTagAttribute('class', 'form');
-$frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-$frm->developerTags['fld_default_col'] = 12;
+$frm->developerTags['colClassPrefix'] = 'col-md-';
+$frm->developerTags['fld_default_col'] = 4;
+
+$fld = $frm->getField('user_profile_info');
+$fld->developerTags['col'] = 6;
+
+$fld = $frm->getField('user_products_services');
+$fld->developerTags['col'] = 6;
+
+$submitFld = $frm->getField('btn_submit');
+$submitFld->developerTags['col'] = 12;
+$submitFld->developerTags['noCaptionTag'] = true;
+
 $frm->setFormTagAttribute('onsubmit', 'updateProfileInfo(this); return(false);');
 
 $usernameFld = $frm->getField('credential_username');
@@ -79,23 +90,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
         <?php } ?>
     </div>
     <div class="col-md-8">
-        <?php
-          $frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
-          $frm->setFormTagAttribute('class', 'form');
-          $frm->developerTags['colClassPrefix'] = 'col-md-';
-          $frm->developerTags['fld_default_col'] = 4;
-
-          $fld = $frm->getField('user_profile_info');
-          $fld->developerTags['col'] = 6;
-          
-          $fld = $frm->getField('user_products_services');
-          $fld->developerTags['col'] = 6;
-
-          $submitFld = $frm->getField('btn_submit');
-          $submitFld->developerTags['col'] = 12;
-          $submitFld->developerTags['noCaptionTag'] = true;
-
-          echo $frm->getFormHtml();?>
+        <?php echo $frm->getFormHtml();?>
     </div>
 </div>
 <script language="javascript">
