@@ -2030,7 +2030,7 @@ body.fixed .top-bar {
 .short-links > ul > li {
 	display: inline-block;
 	margin: 0 15px;
-	padding: 8px 0;
+	padding: 14px 0;
 	position: relative;
 	vertical-align: top;
 }
@@ -11122,7 +11122,7 @@ html.quick-view--open {
 .is-dashboard {
 	min-height: 100%;
 	height: 100%;
-	background-color: rgb(84, 209, 241);
+	/*background-color: rgb(84, 209, 241);
 	background: -moz-linear-gradient(-45deg, rgba(84, 209, 241, 1) 0%, rgba(246, 118, 192, 1) 100%);
 	background: -webkit-linear-gradient(-45deg, rgba(84, 209, 241, 1) 0%, rgba(246, 118, 192, 1) 100%);
 	background: linear-gradient(135deg, rgba(84, 209, 241, 1) 0%, rgba(246, 118, 192, 1) 100%);
@@ -11131,13 +11131,18 @@ html.quick-view--open {
 	-moz-animation: AnimationName 8s infinite linear;
 	animation: AnimationName 8s infinite linear;
 	background-size: 300% 300%;
+	*/
+	background: #e8ecf4;
 	padding: 40px 15px 100px;
 }
 
 .is-dashboard .wrapper {
 	position: relative;
 	max-width: 1430px;
-	margin:  auto;
+	margin: auto;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 80px rgba(0, 0, 0, 0.11);
 }
 
 @-webkit-keyframes AnimationName {
@@ -11193,7 +11198,7 @@ html.quick-view--open {
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
-	background: var(--first-color);
+	background:#fff;
 	-webkit-transition: padding 0.5s ease-in-out;
 	-moz-transition: padding 0.5s ease-in-out;
 	-ms-transition: padding 0.5s ease-in-out;
@@ -11207,7 +11212,7 @@ html.quick-view--open {
 
 .user-type {
 	display: flex;
-	background: rgba(0, 0, 0, 0.1);
+	/*background: rgba(0, 0, 0, 0.1);*/
 	width: auto;
 	align-items: center;
 	border-inline-end: 1px solid rgba(0, 0, 0, 0.05);
@@ -11532,7 +11537,7 @@ html.quick-view--open {
 	justify-content: flex-end;
 	align-items: center;
 	padding: 10px;
-	height: 58px;
+	height: 70px;
 	border-bottom: solid 1px var(--border-color);
 	position: absolute;
 	top: 0;
@@ -11544,12 +11549,12 @@ html.quick-view--open {
 .logo-dashboard {
 	transition: all 0.5s ease-in-out;
 	position: absolute;
-	left: 10px;
+	left: 24px;
 	opacity: 1;
 }
 
 .logo-dashboard img {
-	max-width: 150px;
+	max-width: 100px;
 	max-height: 84px;
 }
 
@@ -11736,6 +11741,8 @@ html.quick-view--open {
 	stroke: #fff;
 }
 
+.dashboard-menu .divider{ margin: 15px 0;}
+
 @keyframes draw {
 	0% {
 		stroke-dasharray: 0 400;
@@ -11762,7 +11769,8 @@ html.quick-view--open {
 	}
 }
 
-main.main { background: #f3f3f3;
+main.main {
+	background: #f3f3f3;
 	width: 100%;
 	height: 100%;
 	padding-top: 72px;
@@ -11782,7 +11790,7 @@ main.main { background: #f3f3f3;
 .content-wrapper {}
 
 .content-wrapper.content-space {
-	margin: 30px;
+	margin: 50px;
 }
 
 .content-header {
@@ -11855,20 +11863,25 @@ main.main { background: #f3f3f3;
 
 .widget-wrapper {
 	display: flex;
-	margin-inline-start: -10px;
-	margin-inline-end: -10px;
+	margin-inline-start: -15px;
+	margin-inline-end: -15px;
 	/*overflow: hidden;
 	overflow-x: auto;
 	-ms-flex-wrap: nowrap;
 	flex-wrap: nowrap;
 	-webkit-overflow-scrolling: touch;*/
+	margin-bottom: 1.875rem
 }
 
 .widget-stats {
 	/*  flex: 0 0 20%;
   max-width: 20%;*/
-	padding-inline-end: 10px;
-	padding-inline-start: 10px;
+	padding-inline-end: 15px;
+	padding-inline-start: 15px;
+}
+
+.widget-stats .cards-header {
+	justify-content: flex-start;
 }
 
 .widget-stats .icn svg {
@@ -11876,7 +11889,10 @@ main.main { background: #f3f3f3;
 	height: 34px;
 	margin: 10px;
 }
-.widget-stats a{ color: inherit;}
+
+.widget-stats a {
+	color: inherit;
+}
 
 .stats {
 	display: flex;
@@ -11889,7 +11905,7 @@ main.main { background: #f3f3f3;
 	color: var(--txt-color);
 	/*font-size: 1.625rem;*/
 	font-size: calc(112.5% + 0.2vw);
-	text-align: right;
+
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
