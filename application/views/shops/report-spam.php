@@ -17,7 +17,7 @@
         <div class="col-md-8 col-sm-8">
           <div class="cell">
             <div class="shop-info">
-              <h3><?php echo $shop['shop_name']; ?></h3>
+              <h5><?php echo $shop['shop_name']; ?></h5>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
             </div>
           </div>

@@ -1,9 +1,25 @@
 <div class="wrapper">
     <header id="header-dashboard" class="header-dashboard no-print" role="header-dashboard">
-        <div class="row">
-            <div class="col-lg-4 col-xs-6">
+        <div class="dropdown dropdown--arrow user-type">
+				<a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
+					<span>Seller</span><i class="chevron"></i></a>
+				<div class="dropdown__target dropdown__target-lang dropdown__target-js">
+					<div class="dropdown__target-space">
+						<span class="expand-heading">Select Language</span>
+						<ul class="list-vertical list-vertical--tick">
+							<li class="is-active"><a href="javascript:void(0);">Seller</a></li>
+							<li class=""><a href="javascript:void(0);">Buyer</a></li>
+							<li class=""><a href="javascript:void(0);">Advertiser</a></li>
+							<li class=""><a href="javascript:void(0);">Affiliate</a></li>
+
+
+						</ul>
+					</div>
+				</div>
+			</div>
+            
                 <?php if ((User::canViewSupplierTab() && User::canViewBuyerTab()) || (User::canViewSupplierTab() && User::canViewAdvertiserTab()) || (User::canViewBuyerTab() && User::canViewAdvertiserTab())) { ?>
-                <div class="dashboard-types no-print">
+               <!-- <div class="dashboard-types no-print">
                     <ul>
                         <?php if (User::canViewSupplierTab()) { ?>
                         <li <?php if ($activeTab == 'S') {
@@ -24,10 +40,10 @@
                             <a href="<?php echo CommonHelper::generateUrl('Advertiser'); ?>"><?php echo Labels::getLabel('Lbl_Advertiser', $siteLangId);?></a></li>
                         <?php }?>
                     </ul>
-                </div>
+                </div> -->
                 <?php } ?>
-            </div>
-            <div class="col-lg-8 col-xs-12">
+           
+           
                 <div class="header-icons-group">
                     <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
                     <div class="c-header-icon shop">
@@ -64,6 +80,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
+            
+        
     </header>

@@ -28,7 +28,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                 </div>
             </div>
         </div> -->
-		<div class="widget-wrapper mb-3">
+		<div class="widget-wrapper mb-3 simplebar-horizontal"  data-simplebar>
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Account','credits'); ?>">
     				<div class="cards">
