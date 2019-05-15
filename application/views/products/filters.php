@@ -399,19 +399,15 @@ if (isset($prodcat_code)) {
                     updateValues();
                     updateRange();
                 });
-                <?php
-        } ?>
+                <?php } ?>
 
                 /* left side filters scroll bar[ */
                 <?php /* if( isset($brandsArr) && $brandsArr && count($brandsArr) > 5 ){ */
-/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */
-?>
+/* code is here, becoz brands section has defined height, and looking bad when there are less brands in the box, so, added this to avoid height */ ?>
 
-                <?php if (true === $shopCatFilters) {
-    ?>
-                new SimpleBar(document.getElementById('accordian'));
-                <?php
-} ?>
+                <?php if (true === $shopCatFilters) { ?>
+                    // new SimpleBar(document.getElementById('accordian'));
+                <?php } ?>
                 var x = document.getElementsByClassName("scrollbar-filters");
                 var i;
                 for (i = 0; i < x.length; i++) {

@@ -23,6 +23,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
         <?php } ?>
     </section>
 <?php } ?>
+<?php if (isset($pageTitle)) { ?>
 <section class="section section--pagebar">
     <div class="container">
         <div class="section-head justify-content-center mb-0">
@@ -33,11 +34,58 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
         </div>
     </div>
 </section>
-<section class="section">
+<?php } ?>
+<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount), false);  ?>
+<section class="">
     <div class="container">
         <div class="row">
         <?php if (!isset($noProductFound)) { ?>
-            <div class="col-lg-3 col-md-3 column">
+            <div class="col-lg-3">
+            <?php if (isset($shop)) { ?>
+                <div class="bg-gray rounded shop-information p-5 ">
+                    <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="/yokartv8/image/shop-logo/1/1/SMALL" alt="Kanwar's Shop"></div>
+                    <div class="shop-info">
+                        <div class="shop-name">
+                            <h5>
+                                <?php echo $shop['shop_name']; ?>
+                                <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_On', $siteLangId); ?> <strong> <?php $date = new DateTime($shop['user_regdate']); echo $date->format('M d, Y'); ?> </strong></span>
+                            </h5>
+                        </div>
+                        <div class="products__rating"> <i class="icn"><svg class="svg">
+                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                            </svg></i> <span class="rate"><?php echo round($shopRating, 1),' ',Labels::getLabel('Lbl_Out_of', $siteLangId),' ', '5';
+                            if ($shopTotalReviews) { ?>
+                                 - <a href="<?php echo CommonHelper::generateUrl('Reviews', 'shop', array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews, ' ', Labels::getLabel('Lbl_Reviews', $siteLangId); ?></a>
+                            <?php } ?> </span>
+                        </div>
+                        <div class="shop-btn-group">
+                            <?php $showAddToFavorite = true;
+                            if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {
+                                $showAddToFavorite = false;
+                            }
+                            ?>
+                            <?php if ($showAddToFavorite) { ?>
+                                <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
+                                    </svg></i><?php echo Labels::getLabel('LBL_Favorite_Shop', $siteLangId); ?> </a>
+                            <?php }?>
+                            <?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) {
+                                $showMoreButtons = false;
+                            } ?>
+                            <?php if ($showMoreButtons) { ?>
+                                <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report"></use>
+                                        </svg></i><?php echo Labels::getLabel('LBL_Report_Spam', $siteLangId); ?></a>
+
+                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use>
+                                        </svg></i><?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="gap"></div>
+            <?php } ?>
                 <?php if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
                     ?> <div class="brands-block-wrapper">
                             <div class="brands-block">
@@ -45,7 +93,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                             </div>
                         </div> <?php
                 } ?>
-                <div class="filters">
+                <div class="filters bg-gray rounded">
                     <div class="filters__ele productFilters-js"></div>
                 </div>
             </div>
@@ -56,9 +104,8 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
         } else {
             $class= 'col-lg-12';
         } ?>
-            <div class="<?php echo $class;?>"> <?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount), false);  ?> <div
-                    class="gap"></div>
-                <div class="listing-products -listing-products ">
+        <div class="<?php echo $class; ?>">
+            <div class="listing-products -listing-products ">
                     <div id="productsList" role="main-listing" class="row product-listing">
                     <?php if ($recordCount > 0) {
                         $productsData = array(

@@ -46,6 +46,7 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
 ?>
 
 <header class="header-blog">
+<div class="top-head-blog"></div>
 	<div class="container">
 		<div class="header-blog-inner">
 			<?php $this->includeTemplate( '_partial/blogNavigation.php'); ?>
