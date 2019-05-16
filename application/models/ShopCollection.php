@@ -37,16 +37,20 @@ class ShopCollection extends MyAppModel
         return $this->mainTableRecordId;
     }
 
-    public static function getCollectionGeneralDetail($shop_id)
+    public static function getCollectionGeneralDetail($shop_id, $scollection_id = 0)
     {
         $srch = self::getSearchObject();
         $srch->addCondition(static::DB_TBL_PREFIX . "shop_id", "=", $shop_id);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
+        if (0 < $scollection_id) {
+            $srch->addCondition(static::DB_TBL_PREFIX . "id", "=", $scollection_id);
+            $rs = $srch->getResultSet();
+            return  FatApp::getDb()->fetch($rs);
+        }
         $rs = $srch->getResultSet();
-        return  FatApp::getDb()->fetch($rs);
+        return  FatApp::getDb()->fetchAll($rs);
     }
-
 
     public function addUpdateShopCollectionLang($data = array())
     {
