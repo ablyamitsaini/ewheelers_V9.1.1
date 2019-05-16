@@ -4210,7 +4210,7 @@ img {
 
 .top-brand-list .brands-img:before {
 	content: "";
-	background: #eef3f5 url(images/retina/image.svg) no-repeat center;
+	background: #eef3f5 url(../images/retina/image.svg) no-repeat center;
 	background-size: 3rem;
 	position: absolute;
 	height: 100%;
