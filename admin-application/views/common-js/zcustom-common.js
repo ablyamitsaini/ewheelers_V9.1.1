@@ -1,3 +1,26 @@
+$(document).ready(function () {
+	$(document).on('keypress', 'input.zip-js', function (e) {
+        var regex = new RegExp("^[a-zA-Z0-9]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (regex.test(str)) {
+            return true;
+        }
+
+        e.preventDefault();
+        return false;
+    });
+    $(document).on('keypress', 'input.phone-js', function (e) {
+        var regex = new RegExp("^[0-9]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (regex.test(str)) {
+            return true;
+        }
+
+        e.preventDefault();
+        return false;
+    });
+});
+
 (function($) {
     var screenHeight = $(window).height() - 100;
     window.onresize = function(event) {

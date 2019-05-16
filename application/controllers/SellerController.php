@@ -3140,8 +3140,8 @@ class SellerController extends SellerBaseController
         $frm->addRequiredField(Labels::getLabel('Lbl_Identifier', $this->siteLangId), 'shop_identifier');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shop_SEO_Friendly_URL', $this->siteLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
-        $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode');
-        $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone');
+        $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode', '', array('class'=>'phone-js'));
+        $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js'));
 
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($this->siteLangId);
@@ -4101,8 +4101,8 @@ class SellerController extends SellerBaseController
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->siteLangId), 'ura_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
         /* $frm->addTextBox(Labels::getLabel('LBL_City',$this->siteLangId), 'ura_city');     */
-        $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip');
-        $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone');
+        $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip', '', array('class'=>'zip-js'));
+        $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone', '', array('class'=>'phone-js'));
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;
