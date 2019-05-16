@@ -26,3 +26,4 @@ Fixes :
 	. Phpmailer Autoload function deprecated.
 	. Featured shops listing.
 	. Recently viewed products slider on product view page.
+	. Check unique slide identifier.
