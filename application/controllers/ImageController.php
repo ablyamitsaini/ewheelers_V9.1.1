@@ -295,31 +295,14 @@ class ImageController extends FatController
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-            case 'TEMP2':
-                $w = 1298;
-                $h = 600;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
-                break;
-            case 'TEMP3':
-                $w = 1583;
-                $h = 475;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
-                break;
-            case 'TEMP4':
-                $w = 1583;
-                $h = 473;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
-                break;
-            case 'TEMP5':
-                $w = 1440;
-                $h = 600;
+            case 'TEMP1':
+                $w = 2000;
+                $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
 
             default:
-                $w = 1087;
-                $h = 500;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }
     }

@@ -2109,19 +2109,22 @@ trait SellerProducts
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function changeBulkProductsStatus()
+
+    public function toggleBulkStatuses()
     {
         $status = FatApp::getPostedData('status', FatUtility::VAR_INT, -1);
         $selprodIdsArr = FatUtility::int(FatApp::getPostedData('selprod_ids'));
         if (empty($selprodIdsArr) || -1 == $status) {
             FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
             );
         }
+
         foreach ($selprodIdsArr as $selprod_id) {
             if (1 > $selprod_id) {
                 continue;
             }
+
             $this->updateSellerProductStatus($selprod_id, $status);
         }
         $this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully', $this->siteLangId));

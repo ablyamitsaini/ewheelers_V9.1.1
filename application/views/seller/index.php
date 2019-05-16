@@ -24,7 +24,7 @@
 		</div>
 	</div>
 	<div class="content-body">
-		<div class="widget-wrapper mb-3">
+		<div class="widget-wrapper mb-3 simplebar-horizontal"  data-simplebar>
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>">
     				<div class="cards">

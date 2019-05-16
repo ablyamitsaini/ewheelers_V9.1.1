@@ -53,8 +53,8 @@
       <div class="row">
         <div class="col-md-8 col-sm-8">
           <div class="cell">
-            <div class="shop-info">
-              <h3><?php echo $shop['shop_name']; ?></h3>
+            <div class="shop-info text-left">
+              <h5><?php echo $shop['shop_name']; ?></h5>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
             </div>
           </div>
@@ -62,12 +62,17 @@
         <div class="col-md-4 col-sm-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>  </div>
       </div>
        <div class="section clearfix">
-		  <div class="section__head">
-		    <h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
-			<?php if( $shop['shop_user_id'] === $loggedUserData['user_id']){ ?>
-			<div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $siteLangId); ?></div>
+	   
+	   <div class="section-head">
+			<div class="section__heading">
+				<h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
+			</div>
+							<div class="section__action"><div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $siteLangId); ?></div></div><?php if( $shop['shop_user_id'] === $loggedUserData['user_id']){ ?>
+			
 			<?php } ?>
-		  </div>
+					</div>
+					
+ 
 		  <div class="">
 		    <div class="box box--white box--radius box--border box--space"> <?php echo $frm->getFormHtml(); ?> </div>
 		  </div>

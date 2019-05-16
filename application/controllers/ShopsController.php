@@ -193,7 +193,6 @@ class ShopsController extends MyAppController
 
         $arr = array(
             'frmProductSearch'=>$frm,
-            'pageTitle'=>Labels::getLabel('LBL_SHOP_PRODUCTS', $this->siteLangId),
             'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'view', array($shop_id)),
             'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
             'recordId'=>$shop_id,
@@ -383,7 +382,6 @@ class ShopsController extends MyAppController
 
         $arr = array(
             'frmProductSearch'=>$frm,
-            'pageTitle'=>Labels::getLabel('LBL_SHOP_TOP_PRODUCTS', $this->siteLangId),
             'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'topProducts', array($shop_id)),
             'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
             'recordId'=>$shop_id,
@@ -457,7 +455,6 @@ class ShopsController extends MyAppController
 
         $arr = array(
             'frmProductSearch'=>$frm,
-            'pageTitle'=>Labels::getLabel('LBL_SHOP_PRODUCTS', $this->siteLangId),
             'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'collection', array($shop_id)),
             'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
             'recordId'=>$shop_id,
@@ -1078,5 +1075,5 @@ public function testView($selprod_id = 0)
     {
         $this->_template->render();
     }
-	
+
 	}

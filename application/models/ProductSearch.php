@@ -421,6 +421,11 @@ class ProductSearch extends SearchBase
         $this->joinTable(Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_selprod_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp');
     }
 
+    public function joinProductToTax()
+    {
+        $this->joinTable(Tax::DB_TBL_PRODUCT_TO_TAX, 'LEFT OUTER JOIN', 'ptt.ptt_product_id = product_id', 'ptt');
+    }
+
     public function joinUserWishListProducts($user_id)
     {
         $wislistPSrchObj = new UserWishListProductSearch();

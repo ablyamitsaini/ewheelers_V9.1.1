@@ -24,7 +24,7 @@ $(document).ready(function(){
 	redirectPreview= function(redirecrt){
 
 		var url=	SITE_ROOT_URL +''+redirecrt;
-		window.location=url;
+        window.open(url,'_blank');
 	}
 	searchThemeColor = function(form){		
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/

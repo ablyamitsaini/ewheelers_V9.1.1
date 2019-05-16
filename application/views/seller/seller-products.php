@@ -113,7 +113,8 @@ if (count($arrListing) == 0) {
     $frm = new Form('frmSellerProductsListing', array('id'=>'frmSellerProductsListing'));
     $frm->setFormTagAttribute('class', 'form');
     $frm->setFormTagAttribute('onsubmit', 'formAction(this, reloadList ); return(false);');
-    $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'deleteBulkSellerProducts'));
+    // $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'deleteBulkSellerProducts'));
+    $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'toggleBulkStatuses'));
     $frm->addHiddenField('', 'status');
 
     echo $frm->getFormTag();
