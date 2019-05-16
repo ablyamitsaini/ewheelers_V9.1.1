@@ -1265,15 +1265,25 @@ END,   special_price_found ) as special_price_found'
                 $srch->excludeOutOfStockProducts();
             }
         }
-
-        if (array_key_exists('min_price_range', $criteria)) {
+        //CommonHelper::printArray($criteria);
+        if (array_key_exists('price-min-range', $criteria)) {
+            if (!empty($criteria['price-min-range'])) {
+                $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['price-min-range'], false, false);
+                $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
+            }
+        } elseif (array_key_exists('min_price_range', $criteria)) {
             if (!empty($criteria['min_price_range'])) {
                 $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['min_price_range'], false, false);
                 $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
             }
         }
 
-        if (array_key_exists('max_price_range', $criteria)) {
+        if (array_key_exists('price-max-range', $criteria)) {
+            if (!empty($criteria['price-max-range'])) {
+                $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['price-max-range'], false, false);
+                $srch->addCondition('theprice', '<=', $max_price_range_default_currency);
+            }
+        } elseif (array_key_exists('max_price_range', $criteria)) {
             if (!empty($criteria['max_price_range'])) {
                 $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['max_price_range'], false, false);
                 $srch->addCondition('theprice', '<=', $max_price_range_default_currency);

@@ -107,12 +107,12 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 	};
 
 	toggleBulkStatues = function(status){
-		if( !confirm(langLbl.confirmUpdateStatus) ){
-			return false;
-		}
-		$("#frmSellerProductsListing input[name='status']").val(status);
-		$("#frmSellerProductsListing").attr("action",fcom.makeUrl('Seller','changeBulkProductsStatus')).submit();
-	}
+        if(!confirm(langLbl.confirmUpdateStatus)){
+            return false;
+        }
+        $("#frmSellerProductsListing input[name='status']").val(status);
+        $("#frmSellerProductsListing").submit();
+    };
 
 	toggleSellerProductStatus = function(e,obj){
 		if(!confirm(langLbl.confirmUpdateStatus)){
