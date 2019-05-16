@@ -839,6 +839,12 @@ class DiscountCouponsController extends AdminBaseController
         $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
         $frm->addSelectBox(Labels::getLabel('LBL_Coupon_Status', $this->adminLangId), 'coupon_active', $activeInactiveArr, '', array(), '');
 
+        $flatDiscountVal = new FormFieldRequirement('coupon_discount_value', Labels::getLabel('LBL_Discount_Value', $this->adminLangId));
+        $flatDiscountVal->setRequired(true);
+        $percentDiscountVal = new FormFieldRequirement('coupon_discount_value', Labels::getLabel('LBL_Discount_Value', $this->adminLangId));
+        $percentDiscountVal->setRequired(true);
+        $percentDiscountVal->setRange(1, 100);
+
         $couponMinOrderValueReqTrue = new FormFieldRequirement('coupon_min_order_value', 'value');
         $couponMinOrderValueReqTrue->setRequired();
         $couponMinOrderValueReqFalse = new FormFieldRequirement('coupon_min_order_value', 'value');
@@ -857,6 +863,10 @@ class DiscountCouponsController extends AdminBaseController
         $cType_fld->requirements()->addOnChangerequirementUpdate(DiscountCoupons::TYPE_SELLER_PACKAGE, 'eq', 'coupon_min_order_value', $couponMinOrderValueReqFalse);
 
         $coupon_discount_in_percent_fld = $frm->getField('coupon_discount_in_percent');
+
+        $coupon_discount_in_percent_fld->requirements()->addOnChangerequirementUpdate(applicationConstants::FLAT, 'eq', 'coupon_discount_value', $flatDiscountVal);
+        $coupon_discount_in_percent_fld->requirements()->addOnChangerequirementUpdate(applicationConstants::PERCENTAGE, 'eq', 'coupon_discount_value', $percentDiscountVal);
+
         $coupon_discount_in_percent_fld->requirements()->addOnChangerequirementUpdate(applicationConstants::PERCENTAGE, 'eq', 'coupon_max_discount_value', $couponMaxDiscountValueReqTrue);
         $coupon_discount_in_percent_fld->requirements()->addOnChangerequirementUpdate(applicationConstants::FLAT, 'eq', 'coupon_max_discount_value', $couponMaxDiscountValueReqFalse);
 

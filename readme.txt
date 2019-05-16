@@ -28,3 +28,4 @@ Fixes :
 	. Recently viewed products slider on product view page.
 	. Check unique slide identifier.
 	. Accepting 'Date From' greater than 'Date To' in discount coupon form.
+	. Int and Alphanumeric validation for Phone No. and Zip Code.

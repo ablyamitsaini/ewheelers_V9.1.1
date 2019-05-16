@@ -298,8 +298,13 @@ class MyAppController extends FatController
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $siteLangId), 'ua_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $siteLangId))->requirement->setRequired(true);
         $frm->addRequiredField(Labels::getLabel('LBL_City', $siteLangId), 'ua_city');
-        $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip', '', array('class'=>'zip-js'));
-        $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone', '', array('class'=>'phone-js'));
+
+        $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip');
+        $zipFld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]+$");
+
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone');
+        $phnFld->requirements()->setRegularExpressionToValidate("^[0-9]+$");
+
         $frm->addHiddenField('', 'ua_id');
         $fldCancel = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $siteLangId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $siteLangId));

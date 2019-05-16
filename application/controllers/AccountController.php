@@ -2271,6 +2271,7 @@ class AccountController extends LoggedUserController
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->siteLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
         $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
+        $phoneFld->requirements()->setRegularExpressionToValidate("^[0-9]+$");
 
         if (User::isAffiliate()) {
             $frm->addTextBox(Labels::getLabel('LBL_Company', $this->siteLangId), 'uextra_company_name');
@@ -2288,7 +2289,8 @@ class AccountController extends LoggedUserController
         $frm->addTextBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city');
 
         if (User::isAffiliate()) {
-            $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
+            $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
+            $zipFld->requirements()->setRegularExpressionToValidate("^[a-zA-Z0-9]+$");
         }
 
         if (User::isAdvertiser()) {
