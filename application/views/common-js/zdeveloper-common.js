@@ -896,12 +896,12 @@ $(document).on('click', '.readMore', function(){
 	var $lessText = $this.siblings('.lessText') ;
 
 	if($this.hasClass('expanded')){
-		$lessText.show();
 		$moreText.hide();
+		$lessText.fadeIn();
 		$this.text($linkMoreText) ;
 	}else{
+        $lessText.hide();
 		$moreText.slideDown(1000);
-		$lessText.hide();
 		$this.text($linkLessText) ;
 	}
 	$this.toggleClass('expanded');

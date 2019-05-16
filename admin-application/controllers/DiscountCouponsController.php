@@ -825,7 +825,7 @@ class DiscountCouponsController extends AdminBaseController
         $frm->addSelectBox(Labels::getLabel('LBL_Discount_in', $this->adminLangId), 'coupon_discount_in_percent', $percentageFlatArr, '', array(), '');
 
         $frm->addFloatField(Labels::getLabel('LBL_Discount_Value', $this->adminLangId), 'coupon_discount_value');
-        $frm->addFloatField(Labels::getLabel('LBL_Min_Order_Value', $this->adminLangId), 'coupon_min_order_value');
+        $frm->addFloatField(Labels::getLabel('LBL_Min_Order_Value', $this->adminLangId), 'coupon_min_order_value')->requirements()->setFloatPositive();
         $frm->addFloatField(Labels::getLabel('LBL_Max_Discount_Value', $this->adminLangId), 'coupon_max_discount_value');
 
         $frm->addDateField(Labels::getLabel('LBL_Date_From', $this->adminLangId), 'coupon_start_date', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
