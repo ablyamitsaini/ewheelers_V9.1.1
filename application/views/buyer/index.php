@@ -49,8 +49,7 @@
                                     </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
-                                <div class="stats">
-                                    
+                                <div class="stats">                                    
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?> </h6>
                                         <?php echo $todayOrderCount;?>

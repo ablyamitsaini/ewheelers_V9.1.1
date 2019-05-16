@@ -1,20 +1,19 @@
-<?php
-defined('SYSTEM_INIT') or die('Invalid Usage.');
-$buyQuantity = $frmBuyProduct->getField('quantity');
-$buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-js');
-?>
-<div id="body" class="body" role="main">
-<section class="pt-3">
-	<div class="container">  
-     <div class="breadcrumbs">
-      <?php  $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
-    </div></div>
-</section>
-<section>
-  <div class="container">
-    
-      <div class="row">
-        <div class="col-lg-7">
+
+<div id="body" class="body detail-page" role="main">
+<section class="">
+	<div class="container">
+		<div class="section">
+		<div class="breadcrumbs breadcrumbs--center">
+      <ul class="clearfix">
+	<li><a href="/yokartv8">Home </a></li>
+	<li><a href="/yokartv8">All Products</a></li>
+  	<li>Cera Calista Wash Basin 655 x 500 mm</li>  			
+		</ul>
+    </div>
+    </div>		
+			<div class="detail-wrapper">			
+			<div class="row">
+			  <div class="col-lg-6"> 
           <div id="img-static" class="product-detail-gallery">
               <?php $data['product'] = $product;
 				$data['productImagesArr'] = $productImagesArr;
@@ -47,153 +46,130 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
 						<div class="thumb"><a href="<?php echo $originalImgUrl; ?>"><img class="xzoom-gallery" width="80" src="<?php echo $mainImgUrl; ?>"></a></div>
 					  <?php } ?>
 					</div>
-				<?php } ?>
-				 
-          </div>
+				<?php } ?>				 
+          </div>             
+          <div class="favourite-wrapper ">
+             <div class="favourite heart-wrapper wishListLink-Js " id="listDisplayDiv_118" data-id="118">
+                    <a href="javascript:void(0)" onclick="viewWishList(118,this,event);" title="Add Product To Your Wishlist">
+                        <div class="ring"></div>
+                        <div class="circles"></div>
+                    </a>
+                </div>
+            <div class="share-button">
+            <a href="#" class="social-toggle"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+                    </svg>
+                </i></a>
+            <div class="social-networks">
+                <ul>
+                    <li class="social-twitter">
+                        <a href="https://www.twitter.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+                    </svg>
+                </i></a>
+                    </li>
+                    <li class="social-facebook">
+                        <a href="https://www.facebook.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+                    </svg>
+                </i></a>
+                    </li>
+                    <li class="social-gplus">
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#gp" href="/yokartv8/images/retina/sprite.svg#gp"></use>
+                    </svg>
+                </i></a>
+                    </li>
+					<li class="social-pintrest">
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+                    </svg>
+                </i></a>
+                    </li>
+					
+					<li class="social-email">
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+                    </svg>
+                </i></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-lg-5">
-			<div class="product-description">
+    </div>
+        </div>
+        
+				<div class="col-lg-6">
+						<div class="product-description">
 				<div class="product-description-inner">
 					<div class="products__title">
 					<div class="section-head">
-						<div class="section__heading"><h2><?php echo $product['selprod_title'];?></h2></div>
-						<?php $productView = true; ?>	
-					<?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
-					</div>
-					</div>					
-					<div class="detail-grouping">
-					<div class="row mb-3">
-						<div class="col">Brand: Nike</div>
-						<div class="col-auto">Sold By: <a href="#" class="">Vike fashion store</a> </div>
-					</div>					
-					<div class="row mb-3">
-						<div class="col">
-							<div class="products__rating"> <i class="icn"><svg class="svg">
+						<div class="section__heading"><h2>Apple iPhone 6s Plus Gold, 32 GB</h2></div>
+					 
+					 <div class="products-reviews">                                                         
+                              <span class="rate"> <i class="icn"><svg class="svg">
                                 <use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
-                            </svg></i> <span class="rate">2.7 Out Of 5 - <a href="/yokartv8/reviews/shop/1">1 Reviews</a> </span>
-                    </div>                    
-						</div> <div class="col-auto">
-							<a href="#" class="btn btn--primary-border btn--sm">Ask Question</a>
-						</div> 
-						</div>
-						
-					</div> 
-				</div>
-				
-				
-        
-
-			<?php  if($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']){ ?>
-            <div class="gap"> </div>
-					<?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']);
-				?>
-			 
-			<?php }?>
-			<?php if( count($productSpecifications)>0 ){ ?>
-			<div class="gap"></div>
-		 
-			<?php }?>
-			<?php if( !empty($optionRows) ){ ?>
-			<div class="gap"></div>
-			<div class="box box--gray box--radius box--space">
-				<div class="row">
-					<?php $selectedOptionsArr = $product['selectedOptionValues'];
-
-					foreach($optionRows as $option){ ?>
-					<div class="<?php echo ($option['option_is_color']) ? 'col-auto column' : 'col-auto column'; ?>">
-						<div class="h6"><?php echo $option['option_name']; ?> :</div>
-						<div class="article-options <?php echo ($option['option_is_color']) ? 'options--color' : 'options--size'; ?>">
-							<?php if($option['values']){ ?>
-							<ul>
-								<?php foreach( $option['values'] as $opVal ){
-									$isAvailable = true;
-									if(in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])){
-										$optionUrl = CommonHelper::generateUrl('Products','view',array($product['selprod_id']));
-									} else {
-									$optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
-										$optionUrlArr = explode("::", $optionUrl);
-										if( is_array($optionUrlArr) && count($optionUrlArr) == 2 ){
-											$optionUrl = $optionUrlArr[0];
-											$isAvailable = false;
-										}
-									}
-								?>
-							  <li class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' is--active' : ' '; echo (!$optionUrl) ? ' is-disabled' : ''; echo (!$isAvailable) ? 'not--available':'';?>">
-								<?php   if($option['option_is_color'] && $opVal['optionvalue_color_code'] != '' ){ ?>
-								<a  optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues = "<?php echo implode("_",$selectedOptionsArr); ?>" title="<?php echo $opVal['optionvalue_name']; echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available',$siteLangId) : ''; ?>" class="<?php echo (!$option['option_is_color']) ? 'selector__link' : ''; echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' ' : ' '; echo (!$optionUrl) ? ' is-disabled' : '';  ?>" href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <span style="background-color:#<?php echo $opVal['optionvalue_color_code']; ?>;"></span></a>
-								<?php   } else{ ?>
-								<a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues = "<?php echo implode("_",$selectedOptionsArr); ?>" title="<?php echo $opVal['optionvalue_name']; echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available',$siteLangId) : ''; ?>" class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? '' : ' '; echo (!$optionUrl) ? ' is-disabled' : '' ?>" href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <?php echo $opVal['optionvalue_name'];  ?> </a>
-								<?php } ?>
-							  </li>
-							  <?php } ?>
-							</ul>
-							<?php } ?>
-						</div>
+                            </svg></i> 4.3 / 5</span><a href="/yokartv8/reviews/shop/1" class="totals-review link">20 Reviews</a>
+                    </div>
 					</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php }?>
-
-			
-              <!-- ] -->
-			  <?php if($product['product_upc']!='') { ?>
-				<div class="gap"></div>
-				<div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
-			  <?php }?>
-
-            <div class="gap"></div>
-            <div class="">
-              <!-- Add To Cart [ -->
-              <?php if( $product['in_stock'] ){
-					echo $frmBuyProduct->getFormTag();
-					$qtyField =  $frmBuyProduct->getField('quantity');
-					$qtyFieldName =  $qtyField->getCaption();
-					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
-					?>
-                
-                   <div class="row align-items-end">
+					</div>						
+						<div class="brand-data">Brand: Apple</div>                     
+                    <div class="divider"></div>
+                    
+                    
+                    <div class="row">
+										<div class="col-md-6 mb-2">
+						<div class="h6">Select Size</div>
+						
+						<select>
+							<option>39W x 39D cm</option>
+							<option>39W x 39D cm</option>
+							<option>39W x 39D cm</option>
+							<option>39W x 39D cm</option>
+						</select>
+						
+						 
+					</div>
+										<div class="col-md-6 mb-2">
+						<div class="h6">Choose Color</div>						
+						<select>
+							<option>Brown</option>
+							<option>Brown</option> 
+							<option>Brown</option> 
+							<option>Brown</option> 
+							<option>Brown</option> 
+						</select>					
+						 
+					</div>		</div>
+                   
+                   <div class="row">
                    <div class="col-auto form__group">
-                    <label><?php echo $qtyFieldName;?></label>
-                    <div class="qty-wrapper">
-                        <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                            <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
-                        </div>
-                        <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
+                       <div class="h6">SELECT QTY</div>		
+                         <div class="qty-wrapper">
+                        <div class="qty-input-wrapper" data-stock="9900">
+                            <input maxlength="3" class="qty-input cartQtyTextBox productQty-js" title="Quantity" data-fatreq="{&quot;required&quot;:false,&quot;integer&quot;:true,&quot;range&quot;:{&quot;minval&quot;:0,&quot;maxval&quot;:9999999999,&quot;numeric&quot;:true}}" type="text" name="quantity" value="1">                        </div>
+                        <div class="quantity" data-stock="9900">
                             <span class="increase increase-js"></span>
                             <span class="decrease decrease-js"></span>
                         </div>
-                    </div>
-                </div>
-                
-                 <div class="col products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>  <?php if($product['special_price_found']){ ?>
-				<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span><?php } ?>
-				</div>
-            </div>
-             
-              </div>
-              
-             
-			  <?php }?>
-              <div class="gap"></div>
-              <div class="buy-group">
-                <?php
-					if(strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){
-						echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-						echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-					}
-					echo $frmBuyProduct->getFieldHtml('selprod_id');
-					?>
-              </div>
-              
-              </form>
-              
-              <?php /* Volume Discounts[ */
-			 if( isset($volumeDiscountRows) && !empty($volumeDiscountRows) ){
-			?>
-			<div class="gap"></div>
-			<div class="box box--gray box--radius box--space">
-				<div class="h6 js-acc-triger acc-triger active"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)',$siteLangId);?>:</div>
+                    </div></div>
+                   	
+                   	<div class="col products__price">$85.00  				<span class="products__price_old"> $120.00</span> <span class="product_off">-29%</span>				</div>
+                   	
+                   </div>
+                   
+                   <div class="buy-group">
+                <button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary add-to-cart--js btnBuyNow"> Buy Now</button><button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary   btn--primary-border add-to-cart--js">Add To Cart</button><input title="" data-fatreq="{&quot;required&quot;:false}" type="hidden" name="selprod_id" value="118">              </div>
+                   
+                   
+                  
+				<div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)',$siteLangId);?>:</div>
 				<ul class="js--discount-slider discount-slider acc-data" dir="<?php echo CommonHelper::getLayoutDirection();?>" >
                     <?php foreach($volumeDiscountRows as $volumeDiscountRow ){
 							$volumeDiscount = $product['theprice'] * ( $volumeDiscountRow['voldiscount_percentage'] / 100 );
@@ -204,21 +180,16 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
 					</li>
                     <?php } ?>
                   </ul>
-			</div>
+			
 			<script type="text/javascript">
 				$("document").ready(function(){
 					$('.js--discount-slider').slick( getSlickSliderSettings(2,1,langLbl.layoutDirection) );
 				});
 			</script>
-			<?php } /* ] */ ?>
-             
-             <!-- Upsell Products [ -->
-            <?php if (count($upsellProducts)>0) { ?>
-                <div class="gap"></div>
-                <div class="box box--gray box--radius box--space">
-                    <div class="h6 js-acc-triger acc-triger"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
-                    <div class="acc-data">
-                       <div class="addons-scrollbar" data-simplebar> <table class="table cart--full cart-tbl cart-tbl-addons">
+                   
+                   
+                   <div class="h6"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
+                   <div class="addons-scrollbar" data-simplebar> <table class="table cart--full cart-tbl cart-tbl-addons">
                             <tbody>
                             <?php  foreach ($upsellProducts as $usproduct) {
                             $cancelClass ='';
@@ -254,33 +225,17 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
                         </tr>
                         <?php } ?>
                             </tbody>
-                        </table></div>                       
-                    </div>
-                </div>
-            <?php } ?>         
-              
-              
-              <?php echo $frmBuyProduct->getExternalJs();
-					} else { ?>
-              <div class="sold">
-                <h4 class=""><?php echo Labels::getLabel('LBL_Sold_Out',$siteLangId); ?></h4>
-                <p class=""><?php echo Labels::getLabel('LBL_This_item_is_currently_out_of_stock', $siteLangId); ?></p>
-              </div>
-              <?php } ?>
-			  <?php if(strtotime($product['selprod_available_from'])> strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))){?>
-				<div class="sold">
-					<h4><?php echo Labels::getLabel('LBL_Not_Available',$siteLangId); ?></h4>
-					<p><?php echo str_replace('{available-date}',FatDate::Format($product['selprod_available_from']),Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId)); ?></p>
-				  </div>
-			  <?php }?>
-              <!-- ] --> 
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-	 </section>
-	 <?php if($recommendedProducts){ ?>	 
+                        </table></div> 
+                   
+                    
+                    
+                    
+							</div>
+					</div>					
+				</div>				
+			</div>
+			
+				 
 	 <section class="section certified-bar">
 	 	<div class="container">
 	 		<div class="row justify-content-between">
@@ -341,31 +296,19 @@ $buyQuantity->addFieldTagAttribute('class','qty-input cartQtyTextBox productQty-
 	 	</div>	 	
 	 </section>
 	 
+	 <div class="nav-detail">Description              Shipping & Policies               Video               Ratings & Reviews</div>
 	 
-	 <section class="section">
-	 	<div class="container">
-	 		<div class="row">
-	 			<div class="col-md-6">
-	 			<div class="section-head">
+	 <div class="section-head">
 			<div class="section__heading">
 			<h2>Description</h2>
 			</div>
 		</div>
-	 				<div class="cms product-specifications border rounded p-4" data-simplebar>
-	 				<p>Perfect Keto Nut Butter is the ultimate snack for a low-carb or ketogenic lifestyle. It’s packed with raw macadamia nuts, cashews, coconut butter and MCT oil, plus real vanilla beans you can actually see (just look at the bottom of the jar). It’s so good you’ll want to eat it straight from the jar. And with nothing but clean ingredients, you can. Enjoy it by the spoonful (no judgement here) or in your favorite keto recipe. Hint: it’s amazing on top of a Keto Bar (all three flavors).
-<br>
-Perfect Keto Nut Butter is the ultimate snack for a low-carb or ketogenic lifestyle. It’s packed with raw macadamia nuts, cashews, coconut butter and MCT oil, plus real vanilla beans you can actually see (just look at the bottom of the jar). It’s so good you’ll want to eat it straight from the jar. And with nothing but clean ingredients, you can. Enjoy it by the spoonful (no judgement here) or in your favorite keto recipe. Hint: it’s amazing on top of a Keto Bar (all three flavors).</p>
+	 				<div class="cms">
+	 				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit </p>
  			</div>
-	 			</div>
-	 			
-	 			<div class="col-md-6">
-	 			<div class="section-head">
-			<div class="section__heading">
-			<h2>Specifications</h2>
-			</div>
-		</div>
-	 				<div class="cms product-specifications border rounded p-4" data-simplebar> 
-	 				<table>
+ 			
+ 			<h3>Specification</h3>
+ 			<table>
 										<tbody>
 																						<tr>
 												<th>Neck Type :</th>
@@ -405,41 +348,84 @@ Perfect Keto Nut Butter is the ultimate snack for a low-carb or ketogenic lifest
 											</tr>
 																					</tbody>
 									</table>
- 			</div>
-	 			</div>
-	 		</div>
-	 	</div>
-	 </section>
-	 
-	 
-	 <section class="section bg--first-color">
-		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
-	 </section>
-	 <?php } ?>
-     <?php if($relatedProductsRs){ ?>
-	 <section class="section bg--second-color">
-		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
-	 </section>
-	 <?php } ?>
-     <section class="section">
-		<div class="container">
-		<div class="section-head">
-		<div class="section__heading">
-			<h2>Reviews By</h2>
+									
+									
+								 <div class="section-head">
+			<div class="section__heading">
+			<h2>Shipping & Policies</h2>
+			</div>
 		</div>
-	</div>
-	 		
-	 		
-	 		<div class="tabs tabs--flat-js">
-        <ul>
-            <li class="is-active"><a href="javascript:void(0);" data-sort="most_helpful" onclick="getSortedReviews(this);return false;">Most Helpful</a></li>
-            <li><a href="javascript:void(0);" data-sort="most_recent" onclick="getSortedReviews(this);return false;">Most Recent </a></li>
-        </ul>
-    </div>		  
-		 <div class="row">
-		 	<div class="col-md-8 mb-3 mb-md-0">    
-    <div class="border rounded h-100">
-        <div class="listing__all">
+		
+		<div class="cms">
+			<p>Payment</p>
+			<p>We accept PayPal. You may use a credit card on PayPal without creating a PayPal account. Click the "Check out with PayPal" button. You'll be taken to a secure page on PayPal. Look for a link below the log-in form reading "Don't have a PayPal account?" You'll then be prompted to fill in your billing and credit card information.</p>
+			<p>Shipping</p>
+			<p>All Items shipped via International registered air mail within 1-3 work days (according to the Israeli calender). Once the item is shipped an email with a tracking number will be sent to you to enable you track the package status. Express shipping is available - you may contact us for specific information. Any additional costs that may be charged due to the customer's local duty or tax laws will be payed by the customer. We are shipping to the address you provided, please make sure it is correct.</p>
+			<p>Refunds Exchanges</p>
+			<p>We do not offer refunds - Exchange only. Please mark all returns for exchange as "Returned Goods" on the customs form and send items back via REGULAR post, otherwise there is a C.O.D. charge that will be charged to the customer.   The customer is responsible for shipping fees and customs costs if any. Once the order is received at our end, we will send you the exchange item.   Please ask any questions you have before purchasing!</p>
+		</div>
+		
+		<div class="section-head">
+			<div class="section__heading">
+			<h2>Video</h2>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6">
+				<h2>Ratings & Reviews</h2>
+		<div class="products__rating"> <i class="icn"><svg class="svg">
+                                 <use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
+                             </svg></i> <span class="rate">2.7<span></span></span>
+                     </div>
+                     
+                     <p>44 out of 4 (100%)
+Customers recommend this product.</p>
+			</div>
+			<div class="col-md-6">
+			<div class="listing--progress-wrapper p-4">
+		<ul class="listing--progress">
+			<li>
+				<span class="progress_count">5 Star</span>
+				<div class="progress__bar">
+					<div title="50% Number Of Reviews Have 5 Stars" style="width: 50%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">4 Star</span>
+				<div class="progress__bar">
+					<div title="50% Number Of Reviews Have 4 Stars" style="width: 50%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">3 Star</span>
+				<div class="progress__bar">
+					<div title="0% Number Of Reviews Have 3 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">2 Star</span>
+				<div class="progress__bar">
+					<div title="0% Number Of Reviews Have 2 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+			<li>
+				<span class="progress_count">1 Star</span>
+				<div class="progress__bar">
+					<div title="0% Number Of Reviews Have 1 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
+				</div>
+			</li>
+		</ul>
+	</div></div>
+		</div>
+		
+		<div class="row">
+		<div class="col"><a href="#" class="btn btn--primary">Add Review</a></div>
+			<div class="col"><a href="#" class="btn btn--secondary add-to-cart--js btn--primary-border">Newest</a></div>
+		</div>
+		
+		
+		 <div class="listing__all">
         <ul>
 		<li>
 		<div class="row">
@@ -544,105 +530,29 @@ Perfect Keto Nut Butter is the ultimate snack for a low-carb or ketogenic lifest
 
 </div>
         <div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
-    </div>	 		
-		 	</div>
-		 	<div class="col-md-4">  		 	
-		 	<div class="border rounded h-100">
-		 		<div class="shop-reviews-wrapper text-center p-4">
-		<div class="shop-reviews">
-			<svg class="svg">
-				<use xlink:href="/yokartv8/images/retina/sprite.svg#rating-star" href="/yokartv8/images/retina/sprite.svg#rating-star"></use>
-			</svg>
-			<div class="shop-reviews-points">4.5</div>
-		</div>
-		<div class="total-reviews">Based On 2 Ratings</div>
+		 		
+	</div>		
 	</div>
-		 	<div class="divider"></div>
-		 	<div class="listing--progress-wrapper p-4">
-		<ul class="listing--progress">
-			<li>
-				<span class="progress_count">5 Star</span>
-				<div class="progress__bar">
-					<div title="50% Number Of Reviews Have 5 Stars" style="width: 50%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
-				</div>
-			</li>
-			<li>
-				<span class="progress_count">4 Star</span>
-				<div class="progress__bar">
-					<div title="50% Number Of Reviews Have 4 Stars" style="width: 50%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
-				</div>
-			</li>
-			<li>
-				<span class="progress_count">3 Star</span>
-				<div class="progress__bar">
-					<div title="0% Number Of Reviews Have 3 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
-				</div>
-			</li>
-			<li>
-				<span class="progress_count">2 Star</span>
-				<div class="progress__bar">
-					<div title="0% Number Of Reviews Have 2 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
-				</div>
-			</li>
-			<li>
-				<span class="progress_count">1 Star</span>
-				<div class="progress__bar">
-					<div title="0% Number Of Reviews Have 1 Stars" style="width: 0%; clip: rect(0px, 144px, 160px, 0px);" role="progressbar" class="progress__fill"></div>
-				</div>
-			</li>
-		</ul>
-	</div><div class="divider"></div>
-	 	
-	 	<div class="have-you p-4">
-		<p><strong>Have You Used This Product?</strong></p>
-		<div class="gap"></div>
-		<a onclick="rateAndReviewProduct(47)" href="javascript:void(0)" class="btn btn--secondary ripplelink">Rate And Review Product</a>
-	</div>
-		 	</div>				
-		 	</div>
-		 </div>
-	 
-			 
-            
-             
-                
-            
-			 <?php if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
-			
-            <div class="row">
-            <?php foreach( $banners['Product_Detail_Page_Banner']['banners'] as $val ){
-				$desktop_url = '';
-				$tablet_url = '';
-				$mobile_url = '';
-				if( !AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId ) ){
-					continue;
-				}else{
-					$slideArr = AttachedFile::getMultipleAttachments( AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId );
-					foreach($slideArr as $slideScreen){
-						switch($slideScreen['afile_screen']){
-							case applicationConstants::SCREEN_MOBILE:
-								$mobile_url = '<736:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).",";
-								break;
-							case applicationConstants::SCREEN_IPAD:
-								$tablet_url = ' >768:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).",";
-								break;
-							case applicationConstants::SCREEN_DESKTOP:
-								$desktop_url = ' >1025:' .CommonHelper::generateUrl('Banner','productDetailPageBanner',array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)).",";
-								break;
-						}
-					}
-				}
-				?>
-		 
-			<?php } ?></div>
-				 <?php } if(isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC){
-				Promotion::updateImpressionData($val['banner_record_id']);
-			}
-			?>
-		</div>
-	  </section>
+</section>
+
+
+
+ 
+<section>
+ 
+	 <?php if($recommendedProducts){ ?> 	 
+	 <section class="section bg--first-color">
+		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
+	 </section>
+	 <?php } ?>
+     <?php if($relatedProductsRs){ ?>
+	 <section class="section bg--second-color">
+		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
+	 </section>
+	 <?php } ?>
+      
 	  <div id="recentlyViewedProductsDiv"></div>
-</div>
+ 
 <script type="text/javascript">
 var mainSelprodId = <?php echo $product['selprod_id'];?>;
 var layout = '<?php echo CommonHelper::getLayoutDirection();?>';
@@ -704,6 +614,4 @@ $(function () {
 
 
 	});
-</script>
-<!--Here is the facebook OG for this product  -->
-<?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>
+</script> 
