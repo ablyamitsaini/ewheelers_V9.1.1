@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-md-6 col-6">
                     <div class="field-set">
                         <div class="field-wraper">

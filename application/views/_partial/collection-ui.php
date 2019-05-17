@@ -63,13 +63,40 @@ if ($showAddToFavorite) { ?>
             <div class="social-networks">
                 <ul>
                     <li class="social-twitter">
-                        <a href="https://www.twitter.com">T</a>
+                        <a href="https://www.twitter.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+                    </svg>
+                </i></a>
                     </li>
                     <li class="social-facebook">
-                        <a href="https://www.facebook.com">F</a>
+                        <a href="https://www.facebook.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+                    </svg>
+                </i></a>
                     </li>
                     <li class="social-gplus">
-                        <a href="http://www.gplus.com">G+</a>
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#gp" href="/yokartv8/images/retina/sprite.svg#gp"></use>
+                    </svg>
+                </i></a>
+                    </li>
+					<li class="social-pintrest">
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+                    </svg>
+                </i></a>
+                    </li>
+					
+					<li class="social-email">
+                        <a href="http://www.gplus.com"><i class="icn">
+                    <svg class="svg">
+                        <use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+                    </svg>
+                </i></a>
                     </li>
                 </ul>
             </div>

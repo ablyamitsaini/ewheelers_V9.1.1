@@ -16,7 +16,7 @@
         </div>
         <div class="content-body">
 		<div class="widget-scroll simplebar-horizontal"  data-simplebar>
-            <div class="widget-wrapper mb-3">
+            <div class="widget-wrapper">
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('account', 'credits');?>">
                         <div class="cards">
@@ -25,7 +25,7 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
                                         </svg>
-                                    </i> <h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
+                                    </i> <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
                                 <div class="stats">                                   
@@ -46,11 +46,10 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
+                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
-                                <div class="stats">
-                                    
+                                <div class="stats">                                    
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?> </h6>
                                         <?php echo $todayOrderCount;?>
@@ -70,7 +69,7 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
                                 <div class="stats">
@@ -94,7 +93,7 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId);?></h5>
+                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
                                 <div class="stats">
@@ -116,7 +115,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="cards">
                         <div class="cards-header p-3">
-                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
                             <div class="action">
                                 <?php if (count($orders)>0) { ?>
                                 <a href="<?php echo CommonHelper::generateUrl('buyer', 'orders');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All', $siteLangId);?></a>
