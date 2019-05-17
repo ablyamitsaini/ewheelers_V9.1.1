@@ -1,4 +1,3 @@
-
 <div id="body" class="body detail-page" role="main">
 <section class="">
 	<div class="container">
@@ -11,9 +10,11 @@
 		</ul>
     </div>
     </div>		
-			<div class="detail-wrapper">			
-			<div class="row">
-			  <div class="col-lg-6"> 
+			<div class="detail-wrapper">		
+		
+		  <div class="detail-first-fold ">
+		  <div class="row justify-content-between">
+			  <div class="col-lg-7"> 
           <div id="img-static" class="product-detail-gallery">
               <?php $data['product'] = $product;
 				$data['productImagesArr'] = $productImagesArr;
@@ -48,7 +49,7 @@
 					</div>
 				<?php } ?>				 
           </div>             
-          <div class="favourite-wrapper ">
+          <div class="favourite-wrapper favourite-wrapper-detail ">
              <div class="favourite heart-wrapper wishListLink-Js " id="listDisplayDiv_118" data-id="118">
                     <a href="javascript:void(0)" onclick="viewWishList(118,this,event);" title="Add Product To Your Wishlist">
                         <div class="ring"></div>
@@ -105,22 +106,19 @@
     </div>
         </div>
         
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 						<div class="product-description">
 				<div class="product-description-inner">
 					<div class="products__title">
-					<div class="section-head">
-						<div class="section__heading"><h2>Apple iPhone 6s Plus Gold, 32 GB</h2></div>
-					 
-					 <div class="products-reviews">                                                         
+					<h2>Apple iPhone 6s Plus Gold, 32 GB</h2><div class="products-reviews">                                                         
                               <span class="rate"> <i class="icn"><svg class="svg">
                                 <use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
                             </svg></i> 4.3 / 5</span><a href="/yokartv8/reviews/shop/1" class="totals-review link">20 Reviews</a>
                     </div>
-					</div>
+				 
 					</div>						
-						<div class="brand-data">Brand: Apple</div>                     
-                    <div class="divider"></div>
+						<div class="brand-data"><span class="txt">Brand:</span> Apple</div>                     
+                <div class="gap"></div>      <div class="gap"></div><div class="divider"></div><div class="gap"></div>  <div class="gap"></div>
                     
                     
                     <div class="row">
@@ -147,15 +145,19 @@
 						</select>					
 						 
 					</div>		</div>
+                  
+                  <div class="gap"></div>
                    
-                   <div class="row">
+                   <div class="row align-items-end">
                    <div class="col-auto form__group">
                        <div class="h6">SELECT QTY</div>		
                          <div class="qty-wrapper">
+                         <div class="quantity" data-stock="9900">
+                          <span class="increase increase-js"></span>
                         <div class="qty-input-wrapper" data-stock="9900">
-                            <input maxlength="3" class="qty-input cartQtyTextBox productQty-js" title="Quantity" data-fatreq="{&quot;required&quot;:false,&quot;integer&quot;:true,&quot;range&quot;:{&quot;minval&quot;:0,&quot;maxval&quot;:9999999999,&quot;numeric&quot;:true}}" type="text" name="quantity" value="1">                        </div>
-                        <div class="quantity" data-stock="9900">
-                            <span class="increase increase-js"></span>
+                            <input maxlength="3" class="qty-input cartQtyTextBox productQty-js" title="Quantity" data-fatreq="{&quot;required&quot;:false,&quot;integer&quot;:true,&quot;range&quot;:{&quot;minval&quot;:0,&quot;maxval&quot;:9999999999,&quot;numeric&quot;:true}}" type="text" name="quantity" value="1">  </div>
+                        
+                           
                             <span class="decrease decrease-js"></span>
                         </div>
                     </div></div>
@@ -163,9 +165,12 @@
                    	<div class="col products__price">$85.00  				<span class="products__price_old"> $120.00</span> <span class="product_off">-29%</span>				</div>
                    	
                    </div>
+                   <div class="gap"></div>
                    
                    <div class="buy-group">
                 <button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary add-to-cart--js btnBuyNow"> Buy Now</button><button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary   btn--primary-border add-to-cart--js">Add To Cart</button><input title="" data-fatreq="{&quot;required&quot;:false}" type="hidden" name="selprod_id" value="118">              </div>
+                  
+                  <div class="gap"></div>
                    
                    
                   
@@ -226,14 +231,10 @@
                         <?php } ?>
                             </tbody>
                         </table></div> 
-                   
-                    
-                    
-                    
 							</div>
 					</div>					
 				</div>				
-			</div>
+			</div></div>	
 			
 				 
 	 <section class="section certified-bar">
