@@ -691,7 +691,8 @@ class SupplierController extends MyAppController
         $frm = new Form('frmSeller');
         $frm->setFormTagAttribute("class", "form invalid");
         $frm->setFormTagAttribute("action", CommonHelper::generateUrl('supplier', 'account'));
-        $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'user_email', '');
+        $fld = $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'user_email', '');
+        $fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'user_name', '');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_Start_Selling', $this->siteLangId));
         /* $frm->addHtml('', 'htmlNote',Labels::getLabel('Lbl_Need_help_in_getting_PAN/VAT',$this->siteLangId).'?');

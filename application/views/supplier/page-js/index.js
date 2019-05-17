@@ -27,49 +27,49 @@ $(document).ready(function(){
 	reloadListing = function(){
 		searchFaqs(document.frmSearchFaqs);
 	};
-	
+
 	$(document).on('click','a.selectedCat',function(){
 		var catId=$(this).attr('id');
 		searchFaqs(catId);
 	});
-	
+
 	searchFaqs = function(catId){
 		if( catId < 0 ){
 			catId = 0;
 		}
 		$(dv).html(fcom.getLoader());
-		
-		fcom.updateWithAjax(fcom.makeUrl('supplier','SearchFaqs', [catId]), '', function(ans){			
+
+		fcom.updateWithAjax(fcom.makeUrl('supplier','SearchFaqs', [catId]), '', function(ans){
 			$(dv).find('.loader-yk').remove();
 			$(dv).html(ans.html);
 			window.recordCount = ans.recordCount;
-		}); 		
+		});
 	};
-	
+
 	faqRightPanel = function(){
 		fcom.updateWithAjax(fcom.makeUrl('supplier','faqCategoriesPanel'), '', function(ans){
-			$.mbsmessage.close();	
+			$.mbsmessage.close();
 			$(dv).find('.loader-yk').remove();
 			$(dvCategoryPanel).html(ans.categoriesPanelHtml);
 			if(ans.recordCount!=0){
 				$(".questions-section").show();
 			}
 			window.recordCount = ans.recordCount;
-		}); 
+		});
 	}
-	
+
 	goToLoadMore = function( page ){
 		if( typeof page == undefined || page == null){
 			page = 1;
 		}
 		currPage = page;
-		var frm = document.frmSearchFaqsPaging;		
+		var frm = document.frmSearchFaqsPaging;
 		$(frm.page).val(page);
 		searchFaqs(frm,1);
 	};
 })();
 
-/******** for faq accordians  ****************/ 
+/******** for faq accordians  ****************/
 $(document).on('click','.accordians__trigger-js',function(){
 	if( $(this).hasClass('is-active') ){
 		$(this).removeClass('is-active');
