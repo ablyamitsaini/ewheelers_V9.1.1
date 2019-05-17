@@ -435,7 +435,7 @@ class BlogController extends MyAppController
         $frm->addRequiredField(Labels::getLabel('LBL_Last_Name', $this->siteLangId), 'bcontributions_author_last_name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Email_Address', $this->siteLangId), 'bcontributions_author_email', '');
         $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone');
-        $fld_phn->requirements()->setRegularExpressionToValidate('^[\s()+-]*([0-9][\s()+-]*){5,20}$');
+        $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);
         if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');

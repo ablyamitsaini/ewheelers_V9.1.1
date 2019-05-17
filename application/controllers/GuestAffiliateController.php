@@ -46,7 +46,7 @@ class GuestAffiliateController extends MyAppController
             $post['user_password'] = FatApp::getPostedData('user_password', FatUtility::VAR_STRING, '');
             $post['user_username'] = FatApp::getPostedData('user_username', FatUtility::VAR_STRING, '');
 
-            if (!CommonHelper::validateUsername($post['user_username'])) {
+            if (!ValidateElement::username($post['user_username'])) {
                 Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
                 if (FatUtility::isAjaxCall()) {
                     FatUtility::dieWithError(Message::getHtml());
@@ -54,7 +54,7 @@ class GuestAffiliateController extends MyAppController
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestAffiliate'));
             }
 
-            if (!CommonHelper::validatePassword($post['user_password'])) {
+            if (!ValidateElement::password($post['user_password'])) {
                 Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
                 if (FatUtility::isAjaxCall()) {
                     FatUtility::dieWithError(Message::getHtml());
@@ -356,7 +356,7 @@ class GuestAffiliateController extends MyAppController
 
             $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $siteLangId), 'user_password');
             $fld->requirements()->setRequired();
-            $fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
+            $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
             $fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));
 
             $fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD', $siteLangId), 'password1');

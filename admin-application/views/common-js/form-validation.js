@@ -548,6 +548,6 @@
 	};
 	
 	checkUniqueErrorNotify = function (caption, value) {
-		alert(caption + " '" + value + " " +langLbl.isNotAvailable);
+        $.systemMessage(caption + " '" + value + " " +langLbl.isNotAvailable, 'alert--danger');
 	};
 })();

@@ -1121,9 +1121,9 @@ class SellerController extends SellerBaseController
         } */
         $srch->addDirectCondition(
             '((CASE
-					WHEN product_seller_id = 0 THEN product_active = 1
-					WHEN product_seller_id > 0 THEN product_active IN (1, 0)
-					END ) )'
+                    WHEN product_seller_id = 0 THEN product_active = 1
+                    WHEN product_seller_id > 0 THEN product_active IN (1, 0)
+                    END ) )'
         );
         if (User::canAddCustomProduct()) {
             $srch->addDirectCondition('((product_seller_id = 0 AND product_added_by_admin_id = '.applicationConstants::YES.') OR product_seller_id = '.UserAuthentication::getLoggedUserId().')');
@@ -1354,7 +1354,7 @@ class SellerController extends SellerBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function shop($tab='', $subTab='')
+    public function shop($tab = '', $subTab = '')
     {
         if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
@@ -2963,8 +2963,9 @@ class SellerController extends SellerBaseController
             //
             $selprod_id = FatUtility::int($dataArray[0]);
             $selprod_sku = $dataArray[1];
-            $selprod_price = FatUtility::float($dataArray[3]);
-            $selprod_stock = FatUtility::int($dataArray[4]);
+            $selprod_cost_price = FatUtility::float($dataArray[3]);
+            $selprod_price = FatUtility::float($dataArray[4]);
+            $selprod_stock = FatUtility::int($dataArray[5]);
 
             $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
             $prodData = Product::getAttributesById($productId, array('product_min_selling_price'));
@@ -2976,10 +2977,10 @@ class SellerController extends SellerBaseController
             if ($selprod_price != '') {
                 $assignValues['selprod_price'] = $selprod_price;
             }
-            if ($selprod_stock < 0 || $selprod_price < 0) {
+            if ($selprod_stock < 0 || $selprod_price < 0 || $selprod_cost_price <= 0) {
                 continue;
             }
-
+            $assignValues['selprod_cost'] = $selprod_cost_price;
             $assignValues['selprod_stock'] = $selprod_stock;
             if ($selprod_id > 0) {
                 $whereSmt = array( 'smt'=>'selprod_user_id = ? and selprod_id = ?', 'vals'=>array( $loggedUserId, $selprod_id ) );
@@ -3024,12 +3025,12 @@ class SellerController extends SellerBaseController
         $arr = $this->getInventorySheetColoum($this->siteLangId);
         array_push($sheetData, $arr);
 
-        foreach ($inventoryData as $key=>$val) {
+        foreach ($inventoryData as $key => $val) {
             $title = $val['product_name'];
             if ($val['selprod_title'] != "") {
                 $title .= "-[" . $val['selprod_title'] . "]";
             }
-            $arr = array($val['selprod_id'],$val['selprod_sku'], $title, $val['selprod_price'],$val['selprod_stock']);
+            $arr = array($val['selprod_id'],$val['selprod_sku'], $title, $val['selprod_cost'], $val['selprod_price'],$val['selprod_stock']);
             array_push($sheetData, $arr);
         }
 
@@ -3140,9 +3141,10 @@ class SellerController extends SellerBaseController
         $frm->addRequiredField(Labels::getLabel('Lbl_Identifier', $this->siteLangId), 'shop_identifier');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shop_SEO_Friendly_URL', $this->siteLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
-        $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode');
-        $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone');
-
+        $zipFld = $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode', '', array('class'=>'phone-js'));
+        $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
+        $phnFld = $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js'));
+        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($this->siteLangId);
         $fld = $frm->addSelectBox(Labels::getLabel('Lbl_Country', $this->siteLangId), 'shop_country_id', $countriesArr, FatApp::getConfig('CONF_COUNTRY', FatUtility::VAR_INT, 223), array(), Labels::getLabel('Lbl_Select', $this->siteLangId));
@@ -3809,11 +3811,16 @@ class SellerController extends SellerBaseController
         }
 
         $frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->siteLangId), 'selprod_url_keyword')->requirements()->setRequired();
+
+        $costPrice = $frm->addFloatField(Labels::getLabel('LBL_Cost_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_cost');
+        $costPrice->requirements()->setPositive();
+
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_price');
         $fld->requirements()->setPositive();
         if (isset($productData['product_min_selling_price'])) {
             $fld->requirements()->setRange($productData['product_min_selling_price'], 9999999999);
-            $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Minimum_selling_price_for_this_product_is', $this->siteLangId).' '.CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true));
+            // $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Minimum_selling_price_for_this_product_is', $this->siteLangId).' '.CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true));
+
             $fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates', $this->siteLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price', $this->siteLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true).'</small>';
         }
 
@@ -4101,8 +4108,10 @@ class SellerController extends SellerBaseController
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->siteLangId), 'ura_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
         /* $frm->addTextBox(Labels::getLabel('LBL_City',$this->siteLangId), 'ura_city');     */
-        $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip');
-        $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone');
+        $zipFld = $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip');
+        $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone');
+        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;

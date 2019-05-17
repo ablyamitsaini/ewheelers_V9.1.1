@@ -245,7 +245,7 @@ class MyAppController extends FatController
 
         $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $siteLangId), 'user_password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD', $siteLangId)));
         $fld->requirements()->setRequired();
-        $fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
+        $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
         $fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));
 
         $fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD', $siteLangId), 'password1', '', array('placeholder'=>Labels::getLabel('LBL_CONFIRM_PASSWORD', $siteLangId)));
@@ -298,8 +298,13 @@ class MyAppController extends FatController
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $siteLangId), 'ua_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $siteLangId))->requirement->setRequired(true);
         $frm->addRequiredField(Labels::getLabel('LBL_City', $siteLangId), 'ua_city');
-        $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip');
-        $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone');
+
+        $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip');
+        $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
+
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone');
+        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
+
         $frm->addHiddenField('', 'ua_id');
         $fldCancel = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $siteLangId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $siteLangId));

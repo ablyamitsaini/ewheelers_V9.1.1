@@ -285,7 +285,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if (! CommonHelper::validatePassword($post['new_password'])) {
+        if (! ValidateElement::password($post['new_password'])) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId)
             );
@@ -2271,6 +2271,7 @@ class AccountController extends LoggedUserController
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->siteLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
         $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
+        $phoneFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
 
         if (User::isAffiliate()) {
             $frm->addTextBox(Labels::getLabel('LBL_Company', $this->siteLangId), 'uextra_company_name');
@@ -2288,7 +2289,8 @@ class AccountController extends LoggedUserController
         $frm->addTextBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city');
 
         if (User::isAffiliate()) {
-            $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
+            $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
+            $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         }
 
         if (User::isAdvertiser()) {
@@ -2346,7 +2348,7 @@ class AccountController extends LoggedUserController
         );
         $newPwd->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password', $this->siteLangId), 'User@123').'</span>';
         $newPwd->requirements()->setRequired();
-        $newPwd->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
+        $newPwd->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
         $newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
         $conNewPwd = $frm->addPasswordField(
             Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD', $this->siteLangId),
@@ -2438,7 +2440,7 @@ class AccountController extends LoggedUserController
 
                 case User::USER_FIELD_TYPE_TIME:
                     $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                    $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+                    $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     break;
             }

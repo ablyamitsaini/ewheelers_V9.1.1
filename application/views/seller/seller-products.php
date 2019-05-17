@@ -45,7 +45,7 @@ foreach ($arrListing as $sn => $row) {
                 $variantStr .= ($row['selprod_title'] != '') ? '<div class="item__sub_title">' . wordwrap($row['selprod_title'], 150, "<br>\n").'</div>' : '';
                 if (is_array($row['options']) && count($row['options'])) {
                     foreach ($row['options'] as $op) {
-                        $variantStr .= '<div class="item__specification">'.wordwrap($op['option_name'].': '.$op['optionvalue_name'], 150, "<br>\n").': '.$op['optionvalue_name'].'</div>';
+                        $variantStr .= '<div class="item__specification">'.wordwrap($op['option_name'].': '.$op['optionvalue_name'], 150, "<br>\n").'</div>';
                     }
                 }
                 $td->appendElement('plaintext', array(), $variantStr, true);

@@ -130,7 +130,7 @@ var fcom = {
 				processMsg = true;
 			}
 			if(processMsg){
-				$.mbsmessage(langLbl.requestProcessing,true,'alert--process alert');
+				$.mbsmessage(langLbl.requestProcessing,false,'alert--process alert');
 			}
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {
