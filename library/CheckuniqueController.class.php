@@ -38,6 +38,8 @@ class CheckuniqueController {
 				case 'tbl_admin':
 				case 'admin_username':				
 				case 'admin_email':	
+                case Slides::DB_TBL:
+                case Slides::DB_TBL_PREFIX.'identifier':
 					
 				break;
 				default:

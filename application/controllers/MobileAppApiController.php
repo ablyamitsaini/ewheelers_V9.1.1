@@ -1758,7 +1758,7 @@ END,   special_price_found ) as special_price_found'
             FatUtility::dieJsonError(Labels::getLabel('MSG_New_Password_Confirm_Password_does_not_match', $this->siteLangId));
         }
 
-        if (! CommonHelper::validatePassword($new_password)) {
+        if (! ValidateElement::password($new_password)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
         }
 
@@ -1983,7 +1983,7 @@ END,   special_price_found ) as special_price_found'
         if ($post == false) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
-        if (!CommonHelper::validatePassword($post['user_password'])) {
+        if (!ValidateElement::password($post['user_password'])) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
         }
 

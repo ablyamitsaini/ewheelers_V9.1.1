@@ -112,7 +112,7 @@ class SupplierController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if (!CommonHelper::validateUsername($post['user_username'])) {
+        if (!ValidateElement::username($post['user_username'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
@@ -122,7 +122,7 @@ class SupplierController extends MyAppController
             }
         }
 
-        if (!CommonHelper::validatePassword($post['user_password'])) {
+        if (!ValidateElement::password($post['user_password'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
@@ -599,7 +599,7 @@ class SupplierController extends MyAppController
 
         $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $this->siteLangId), 'user_password');
         $fld->requirements()->setRequired();
-        $fld->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
+        $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
         $fld->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
 
         $fld1 = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_PASSWORD', $this->siteLangId), 'password1');
@@ -669,7 +669,7 @@ class SupplierController extends MyAppController
 
             case User::USER_FIELD_TYPE_TIME:
                 $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                $fld->requirement->setRegularExpressionToValidate('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
+                $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
                 $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                 break;
             }

@@ -685,7 +685,7 @@ class UsersController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if (! CommonHelper::validatePassword($post['new_password'])) {
+        if (! ValidateElement::password($post['new_password'])) {
             Message::addErrorMessage(
                 Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->adminLangId)
             );

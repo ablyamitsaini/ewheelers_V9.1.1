@@ -597,7 +597,7 @@ class GuestUserController extends MyAppController
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)));
         }
 
-        if (!CommonHelper::validateUsername($post['user_username'])) {
+        if (!ValidateElement::username($post['user_username'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
@@ -607,7 +607,7 @@ class GuestUserController extends MyAppController
             }
         }
 
-        if (!CommonHelper::validatePassword($post['user_password'])) {
+        if (!ValidateElement::password($post['user_password'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
@@ -1170,7 +1170,7 @@ class GuestUserController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if (! CommonHelper::validatePassword($post['new_pwd'])) {
+        if (! ValidateElement::password($post['new_pwd'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -1297,7 +1297,7 @@ class GuestUserController extends MyAppController
         $fld_np = $frm->addPasswordField(Labels::getLabel('LBL_NEW_PASSWORD', $siteLangId), 'new_pwd');
         $fld_np->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password', $siteLangId), 'User@123').'</span>';
         $fld_np->requirements()->setRequired();
-        $fld_np->requirements()->setRegularExpressionToValidate("^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$");
+        $fld_np->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
         $fld_np->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));
         $fld_cp = $frm->addPasswordField(Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD', $siteLangId), 'confirm_pwd');
         $fld_cp->requirements()->setRequired();
