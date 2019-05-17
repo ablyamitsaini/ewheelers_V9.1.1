@@ -793,30 +793,32 @@ class ShopsController extends AdminBaseController
         );
     }
 
-    public function shopCollectionMediaForm($scollection_id)
+    public function shopCollectionMediaForm($shop_id, $scollection_id)
     {
-        $collectionMediaFrm =  $this->getShopCollectionMediaForm($scollection_id);
+        $shop_id = $this->commonShopCollection($shop_id);
+        $collectionMediaFrm =  $this->getShopCollectionMediaForm($shop_id, $scollection_id);
         $this->set('frm', $collectionMediaFrm);
         $this->set('language', Language::getAllNames());
         $this->set('scollection_id', $scollection_id);
         $this->_template->render(false, false);
     }
 
-    private function getShopCollectionMediaForm($scollection_id)
+    private function getShopCollectionMediaForm($shop_id, $scollection_id)
     {
         $frm = new Form('frmCollectionMedia');
         $frm->addHiddenField('', 'scollection_id', $scollection_id);
+        $frm->addHiddenField('', 'shop_id', $shop_id);
         $bannerTypeArr = applicationConstants::bannerTypeArr();
         $frm->addSelectBox(Labels::getLabel('Lbl_Language', $this->adminLangId), 'lang_id', $bannerTypeArr, '', array('class'=>'collection-language-js'), '');
         $fld1 =  $frm->addButton('', 'collection_image', Labels::getLabel('LBL_Upload_File', $this->adminLangId), array('class'=>'shopCollection-Js','id'=>'collection_image'));
         return $frm;
     }
 
-    public function shopCollectionImages($scollection_id, $lang_id = 0)
+    public function shopCollectionImages($shop_id, $scollection_id, $lang_id = 0)
     {
         $scollection_id = FatUtility::int($scollection_id);
         $lang_id = FatUtility::int($lang_id);
-        $this->commonShopCollection();
+        $this->commonShopCollection($shop_id);
         if (1 > $scollection_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
@@ -863,12 +865,13 @@ class ShopsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeCollectionImage($scollection_id, $lang_id = 0)
+    public function removeCollectionImage($shop_id, $scollection_id, $lang_id = 0)
     {
+        $shop_id = FatUtility::int($shop_id);
         $scollection_id = FatUtility::int($scollection_id);
         $lang_id = FatUtility::int($lang_id);
 
-        $this->commonShopCollection();
+        $shop_id = $this->commonShopCollection($shop_id);
         if (1 > $scollection_id) {
             FatUtility::dieWithError($this->str_invalid_request);
         }

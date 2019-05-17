@@ -17,6 +17,9 @@
             <?php echo Labels::getLabel('TXT_LINK', $adminLangId);?>
         </a>
     </li>
+    <li> 
+        <a onclick="collectionMediaForm(<?php echo $shop_id; ?>,<?php echo $scollection_id ?>)" href="javascript:void(0);"> <?php echo Labels::getLabel('TXT_MEDIA', $adminLangId);?> </a>
+    </li>
 </ul>
 <div class="tabs_panel_wrap">
     <div class="form__subcontent">
