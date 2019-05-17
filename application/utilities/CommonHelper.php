@@ -1046,29 +1046,6 @@ class CommonHelper extends FatUtility
         return FatDate::nowInTimezone($timeZone, trim($format));
     }
 
-    public static function validatePassword($string = '')
-    {
-        if (strlen($string) < 1) {
-            return false;
-        }
-
-        if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$/', $string)) {
-            return false;
-        }
-        return true;
-    }
-
-    public static function validateUsername($string = '')
-    {
-        if (strlen($string) < 3) {
-            return false;
-        }
-        if (!preg_match('/^[a-zA-Z0-9]{3,30}$/', $string)) {
-            return false;
-        }
-        return true;
-    }
-
     public static function getLangFields($condition_id = 0, $condition_field = "", $condition_lang_field = "", $lang_flds = array(), $lang_table = "")
     {
         $condition_id = FatUtility::int($condition_id);
@@ -1638,43 +1615,7 @@ class CommonHelper extends FatUtility
             '10'=>4
         );
     }
-    public static function validateCcNumber($cardNumber)
-    {
-        $cardNumber = preg_replace('/\D/', '', ($cardNumber));
-        $len = strlen($cardNumber);
-        $result=array();
-        if ($len > 16) {
-            $result['card_type']='Invalid';
-            return $result;
-        }
-        switch ($cardNumber) {
-            case 0:
-                $result['card_type']='';
-                break;
-            case (preg_match('/^4/', $cardNumber) >= 1):
-                $result['card_type']='VISA';
-                break;
-            case (preg_match('/^5[1-5]/', $cardNumber) >= 1):
-                $result['card_type']='MASTER';
-                break;
-            case (preg_match('/^3[47]/', $cardNumber) >= 1):
-                $result['card_type']='AMEX';
-                break;
-            case (preg_match('/^3(?:0[0-5]|[68])/', $cardNumber) >= 1):
-                $result['card_type']='DINERS_CLUB';
-                break;
-            case (preg_match('/^6(?:011|5)/', $cardNumber) >= 1):
-                $result['card_type']='DISCOVER';
-                break;
-            case (preg_match('/^(?:2131|1800|35\d{3})/', $cardNumber) >= 1):
-                $result['card_type']='JCB';
-                break;
-            default:
-                $result['card_type']='';
-                break;
-        }
-        return $result;
-    }
+
     public static function getUserFirstName($userName = '')
     {
         $nameArr = explode(" ", $userName);

@@ -75,7 +75,7 @@ class StripePayController extends PaymentController
     public function checkCardType()
     {
         $post = FatApp::getPostedData();
-        $res=CommonHelper::validateCcNumber($post['cc']);
+        $res=ValidateElement::ccNumber($post['cc']);
         echo json_encode($res);
         exit;
     }

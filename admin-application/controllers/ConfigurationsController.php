@@ -525,9 +525,9 @@ class ConfigurationsController extends AdminBaseController
             case Configurations::FORM_GENERAL:
                 $frm->addEmailField(Labels::getLabel('LBL_Store_Owner_Email', $this->adminLangId), 'CONF_SITE_OWNER_EMAIL');
                 $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Telephone', $this->adminLangId), 'CONF_SITE_PHONE');
-                $phnFld->requirements()->setRegularExpressionToValidate("^[0-9]+$");
+                $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
                 $faxFld = $frm->addTextBox(Labels::getLabel('LBL_Fax', $this->adminLangId), 'CONF_SITE_FAX');
-                $faxFld->requirements()->setRegularExpressionToValidate("^[0-9]+$");
+                $faxFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
 
                 $cpagesArr = ContentPage::getPagesForSelectBox($this->adminLangId);
 

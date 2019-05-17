@@ -21,6 +21,7 @@ Enhancements:
 	. Disabled parent category link in header navigation.
 	. User can perform multi select operation on page listing.
 	. jQuery library updated to V3.4.1.
+	. Handled Form elements validations via a centralized class.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
