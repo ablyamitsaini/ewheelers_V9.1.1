@@ -143,7 +143,7 @@ trait CustomProducts
     $this->_template->render(true,false);
     } */
 
-    public function customProductGeneralForm($product_id= 0, $prodcat_id = 0)
+    public function customProductGeneralForm($product_id = 0, $prodcat_id = 0)
     {
         $product_id = FatUtility::int($product_id);
         /* Validate product belongs to current logged seller[ */
@@ -1515,7 +1515,7 @@ trait CustomProducts
                     'pship_country'=>(isset($val["country_id"]) && FatUtility::int($val["country_id"]))?FatUtility::int($val["country_id"]):0,
                     'pship_company'=>(isset($val["company_id"]) && FatUtility::int($val["company_id"]))?FatUtility::int($val["company_id"]):0,
                     'pship_duration'=>(isset($val["processing_time_id"]) && FatUtility::int($val["processing_time_id"]))?FatUtility::int($val["processing_time_id"]):0,
-                    'pship_charges'=>FatUtility::float($val["cost"]),
+                    'pship_charges'=> (1 > FatUtility::float($val["cost"]) ? 0 : FatUtility::float($val["cost"])),
                     'pship_additional_charges'=>FatUtility::float($val["additional_cost"]),
                     );
                     if (isset($val["pship_id"])) {

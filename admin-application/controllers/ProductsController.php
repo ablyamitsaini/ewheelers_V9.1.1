@@ -331,7 +331,7 @@ class ProductsController extends AdminBaseController
 
         /*Save Product Shipping Details [*/
         if (!empty($productShiping) && 0 < count($productShiping)) {
-            if ($this->addUpdateProductShippingRates($product_id, $productShiping, $userId)) {
+            if (!$this->addUpdateProductShippingRates($product_id, $productShiping, $userId)) {
                 Message::addErrorMessage(FatApp::getDb()->getError());
                 FatUtility::dieWithError(Message::getHtml());
             }
