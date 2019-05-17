@@ -3163,7 +3163,7 @@ class SellerController extends SellerBaseController
 
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Free_Shipping_On', $this->siteLangId), 'shop_free_ship_upto');
         $fld->requirements()->setInt();
-
+        $fld->requirements()->setPositive();
 
 
 
