@@ -1174,6 +1174,7 @@ class ImageController extends FatController
 
     public function shopCollectionImage($recordId, $langId = 0, $sizeType = '', $displayUniversalImage = true)
     {
+        $default_image = 'shop-collection-default.jpg';
         $recordId = FatUtility::int($recordId);
         $langId = FatUtility::int($langId);
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $recordId, 0, $langId, $displayUniversalImage);
@@ -1183,10 +1184,15 @@ class ImageController extends FatController
             case 'THUMB':
                 $w = 100;
                 $h = 100;
-                AttachedFile::displayImage($image_name, $w, $h);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-            case 'DEFAULT':
-                AttachedFile::displayOriginalImage($image_name);
+            case 'SHOP':
+                $w = 610;
+                $h = 343;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }
     }

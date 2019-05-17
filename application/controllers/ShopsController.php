@@ -323,7 +323,6 @@ class ShopsController extends MyAppController
         }
 
         $collection_data= ShopCollection::getShopCollectionsDetail($shop_id, $this->siteLangId);
-
         $this->set('collectionData', $collection_data);
         $this->set('layoutTemplate', 'shop');
         // $this->set('template_id', ($shop['shop_ltemplate_id']==0)?SHOP::TEMPLATE_ONE:$shop['shop_ltemplate_id']);
@@ -415,17 +414,17 @@ class ShopsController extends MyAppController
         $this->_template->render();
     }
 
-    public function collection($shop_id)
+    public function collection($shop_id, $scollectionId)
     {
         $db = FatApp::getDb();
-
-        $this->shopDetail($shop_id);
-
-        $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id);
-        $scollectionId = $shopcolDetails['scollection_id'];
+        $shop_id = FatUtility::int($shop_id);
+        $scollectionId = FatUtility::int($scollectionId);
         if (1 > $scollectionId) {
             FatApp::redirectUser(CommonHelper::generateUrl(''));
         }
+        $this->shopDetail($shop_id);
+
+        $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id, $scollectionId);
 
         $frm = $this->getProductSearchForm();
 
