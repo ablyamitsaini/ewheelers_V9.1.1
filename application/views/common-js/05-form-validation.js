@@ -479,7 +479,6 @@
 
 (function() {
 	checkUnique = function(fld, tbl, tbl_fld, tbl_key, key_fld, constraints){
-        alert('called');
 		fld.removeClass('field-unique-error');
 		fld.removeClass('field-unique-success');
 		fld.addClass('field-processing');
@@ -549,6 +548,6 @@
 	};
 	
 	checkUniqueErrorNotify = function (caption, value) {
-		alert(caption + " '" + value + " " +langLbl.isNotAvailable);
+        $.systemMessage(caption + " '" + value + "' " +langLbl.isNotAvailable, 'alert--danger');
 	};
 })();
