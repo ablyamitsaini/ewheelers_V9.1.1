@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if( !empty($images) ){ ?>
 	<ul class="grids--onethird" id="<?php if($canEdit){ ?>sortable<?php } ?>">
-	<?php 
+	<?php
 		$count=1;
 		foreach( $images as $afile_id => $row ){ ?>
 		<li id="<?php echo $row['afile_id']; ?>">
@@ -11,8 +11,8 @@
 			</div>
 			<?php if(isset($imgTypesArr) && !empty($imgTypesArr[$row['afile_record_subid']])){
 							echo '<small class=""><strong>'.Labels::getLabel('LBL_Type',$adminLangId).': </strong> '.$imgTypesArr[$row['afile_record_subid']].'</small><br/>';
-						} 
-						
+						}
+
 						$lang_name = Labels::getLabel('LBL_All',$adminLangId);
 						if( $row['afile_lang_id'] > 0 ){
 							$lang_name = $languages[$row['afile_lang_id']];

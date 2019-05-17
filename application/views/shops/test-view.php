@@ -17,67 +17,14 @@
 			</div>
 		</div>
 	</section>
-	<section class="pt-5 pb-3">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6">
-					<div class="breadcrumbs">
-						<ul class="clearfix">
-							<li><a href="/yokartv8">Home </a></li>
-							<li>Test-view</li>
-						</ul>
-					</div>
-					<div class="total-products">
-						<span class="hide_on_no_product"><span id="total_records">2</span> Items Total</span>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div id="top-filters" class="page-sort hide_on_no_product">
-						<ul>
-							<li>
-								<div class="save-search">
-									<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
-											<svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#savesearch" href="/yokartv8/images/retina/sprite.svg#savesearch"></use>
-											</svg>
-										</i><span class="txt">Save Search</span></a></div>
-							</li>
-							<li>
-								<select id="sortBy" title="" data-fatreq="{&quot;required&quot;:false}" name="sortBy">
-									<option value="price_asc" selected="selected">Price (Low To High)</option>
-									<option value="price_desc">Price (High To Low)</option>
-									<option value="popularity_desc">Sort By Popularity</option>
-									<option value="rating_desc">Sort By Rating</option>
-								</select></li>
-							<li>
-								<select id="pageSize" title="" data-fatreq="{&quot;required&quot;:false}" name="pageSize">
-									<option value="10" selected="selected">10 Items</option>
-									<option value="25">25 Items</option>
-									<option value="50">50 Items</option>
-								</select></li>
-							<li>
-								<div class="list-grid-toggle switch--link-js  d-none d-md-block">
-									<div class="icon">
-										<div class="icon-bar"></div>
-										<div class="icon-bar"></div>
-										<div class="icon-bar"></div>
-									</div>
-								</div>
-								<div class="d-lg-none">
-									<a href="javascript:void(0)" class="link__filter btn btn--border"><i class="icn">
-											<svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#filter" href="/yokartv8/images/retina/sprite.svg#filter"></use>
-											</svg>
-										</i><span class="txt">Filter</span></a>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="">
+
+
+
+
+
+
+
+	<section class="section">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3">
@@ -91,6 +38,57 @@
 										<use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
 									</svg></i> <span class="rate">2.7 Out Of 5 - <a href="/yokartv8/reviews/shop/1">1 Reviews</a> </span>
 							</div>
+
+
+							<div class="share-button share-button--static-horizontal">
+								<a href="#" class="social-toggle"><i class="icn">
+										<svg class="svg">
+											<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+										</svg>
+									</i></a>
+								<div class="social-networks open-menu">
+									<ul>
+										<li class="social-twitter">
+											<a href="https://www.twitter.com"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+													</svg>
+												</i></a>
+										</li>
+										<li class="social-facebook">
+											<a href="https://www.facebook.com"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+													</svg>
+												</i></a>
+										</li>
+										<li class="social-gplus">
+											<a href="http://www.gplus.com"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#gp" href="/yokartv8/images/retina/sprite.svg#gp"></use>
+													</svg>
+												</i></a>
+										</li>
+										<li class="social-pintrest">
+											<a href="http://www.gplus.com"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+													</svg>
+												</i></a>
+										</li>
+
+										<li class="social-email">
+											<a href="http://www.gplus.com"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+													</svg>
+												</i></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="gap"></div>
+
 							<div class="shop-btn-group">
 								<a href="javascript:void(0)" onclick="toggleShopFavorite(1);" class="btn btn--primary btn--sm  " id="shop_1"><i class="icn"><svg class="svg">
 											<use xlink:href="/yokartv8/images/retina/sprite.svg#heart" href="/yokartv8/images/retina/sprite.svg#heart"></use>
@@ -253,6 +251,56 @@
 					</div>
 				</div>
 				<div class="col-lg-9">
+					<div class="row align-items-center mb-3">
+						<div class="col-lg-6">
+							<div class="total-products">
+								<span class="hide_on_no_product"><span id="total_records">2</span> Items Total</span>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div id="top-filters" class="page-sort hide_on_no_product">
+								<ul>
+									<li>
+										<div class="save-search">
+											<a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#savesearch" href="/yokartv8/images/retina/sprite.svg#savesearch"></use>
+													</svg>
+												</i><span class="txt">Save Search</span></a></div>
+									</li>
+									<li>
+										<select id="sortBy" title="" data-fatreq="{&quot;required&quot;:false}" name="sortBy">
+											<option value="price_asc" selected="selected">Price (Low To High)</option>
+											<option value="price_desc">Price (High To Low)</option>
+											<option value="popularity_desc">Sort By Popularity</option>
+											<option value="rating_desc">Sort By Rating</option>
+										</select></li>
+									<li>
+										<select id="pageSize" title="" data-fatreq="{&quot;required&quot;:false}" name="pageSize">
+											<option value="10" selected="selected">10 Items</option>
+											<option value="25">25 Items</option>
+											<option value="50">50 Items</option>
+										</select></li>
+									<li>
+										<div class="list-grid-toggle switch--link-js  d-none d-md-block">
+											<div class="icon">
+												<div class="icon-bar"></div>
+												<div class="icon-bar"></div>
+												<div class="icon-bar"></div>
+											</div>
+										</div>
+										<div class="d-lg-none">
+											<a href="javascript:void(0)" class="link__filter btn btn--border"><i class="icn">
+													<svg class="svg">
+														<use xlink:href="/yokartv8/images/retina/sprite.svg#filter" href="/yokartv8/images/retina/sprite.svg#filter"></use>
+													</svg>
+												</i><span class="txt">Filter</span></a>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 					<div class="listing-products -listing-products ">
 						<div id="productsList" role="main-listing" class="row product-listing">
 
@@ -602,4 +650,64 @@
 			</div>
 		</div>
 	</section>
+	<section class="section">
+		<div class="container container-fluid">
+			<div class="js-shop-slider shop-slider">
+				<div class="item">
+					<figure><img class="" src="/yokartv8/images/shops-slider-1.jpg" alt="" data-ratio="16:9"></figure>
+					<div class="overlay-content">
+						<h4>Trending Now</h4>
+						<p>From the runway to your wardrobe</p>
+						<a href="#" class="link">Explore</a>
+					</div>
+				</div>
+				<div class="item">
+					<figure><img class="" src="/yokartv8/images/shops-slider-1.jpg" alt="" data-ratio="16:9"></figure>
+					<div class="overlay-content">
+						<h4>Trending Now</h4>
+						<p>From the runway to your wardrobe</p>
+						<a href="#" class="link">Explore</a>
+					</div>
+				</div>
+				<div class="item">
+					<figure><img class="" src="/yokartv8/images/shops-slider-1.jpg" alt="" data-ratio="16:9"></figure>
+					<div class="overlay-content">
+						<h4>Trending Now</h4>
+						<p>From the runway to your wardrobe</p>
+						<a href="#" class="link">Explore</a>
+					</div>
+				</div>
+				<div class="item">
+					<figure><img class="" src="/yokartv8/images/shops-slider-1.jpg" alt="" data-ratio="16:9"></figure>
+					<div class="overlay-content">
+						<h4>Trending Now</h4>
+						<p>From the runway to your wardrobe</p>
+						<a href="#" class="link">Explore</a>
+					</div>
+				</div>
+				<div class="item">
+					<figure><img class="" src="/yokartv8/images/shops-slider-1.jpg" alt="" data-ratio="16:9"></figure>
+					<div class="overlay-content">
+						<h4>Trending Now</h4>
+						<p>From the runway to your wardrobe</p>
+						<a href="#" class="link">Explore</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>
+<script src="/yokartv8/public/index.php?url=js-css/js&f=js%2Fslick.min.js&min=0&sid=1557140553"></script>
+<script>
+	$('.js-shop-slider').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 1
+	});
+
+	$('.social-toggle').on('click', function() {
+		setTimeout(function() {
+			$(this).next().toggleClass('open-menu');
+		}, 100);
+	});
+</script>

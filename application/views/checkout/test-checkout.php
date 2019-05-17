@@ -540,11 +540,9 @@
 								</div>
 							</div>
 						</div>
-
-
-
-						<div class="payment_methods_list mb-4">
-							<ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar>
+							<div class="row">
+							<div class="col-md-4"><div class="payment_methods_list">
+							<ul id="payment_methods_tab" class="" data-simplebar>
 								<li class="is-active">
 									<a href="/checkout/payment-tab/O1556972536/5">
 										<div class="payment-box">
@@ -596,8 +594,8 @@
 								</li>
 							</ul>
 
-						</div>
-						<div class="payment-from">
+						</div></div>
+							<div class="col-md-8"><div class="payment-from">
 							<form id="frmPaymentForm" action="/authorize-aim-pay/send/O1557124055" class="form form--payment p-4" name="frmPaymentForm" method="post" onsubmit="sendPayment(this); return(false);">
 								<div class="row">
 									<div class="col-md-12">
@@ -687,7 +685,12 @@
 							</form>
 
 
-						</div>
+						</div></div>
+							</div>
+
+
+						
+						
 
 
 
