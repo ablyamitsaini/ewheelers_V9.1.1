@@ -31,3 +31,4 @@ Fixes :
 	. Accepting 'Date From' greater than 'Date To' in discount coupon form.
 	. Int and Alphanumeric validation for Phone No. and Zip Code.
 	. Applied Validation for adding more than 100% volume discount.
+	. Unique key validation on Supplier form identifier.
