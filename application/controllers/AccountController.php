@@ -2445,6 +2445,7 @@ class AccountController extends LoggedUserController
                     $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
                     $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
+                    $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
                     break;
             }
 
