@@ -1171,4 +1171,29 @@ class ImageController extends FatController
             AttachedFile::displayOriginalImage($image, $default_image);
         }
     }
+
+    public function shopCollectionImage($recordId, $langId = 0, $sizeType = '', $displayUniversalImage = true)
+    {
+        $default_image = 'shop-collection-default.jpg';
+        $recordId = FatUtility::int($recordId);
+        $langId = FatUtility::int($langId);
+        $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $recordId, 0, $langId, $displayUniversalImage);
+        $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
+
+        switch (strtoupper($sizeType)) {
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'SHOP':
+                $w = 610;
+                $h = 343;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
+        }
+    }
 }
