@@ -470,4 +470,8 @@ class BlogController extends MyAppController
         $frm->addSubmitButton('', 'btnProductSrchSubmit', '');
         return $frm;
     }
+public function testView($selprod_id = 0)
+    {
+        $this->_template->render();
+    }	
 }

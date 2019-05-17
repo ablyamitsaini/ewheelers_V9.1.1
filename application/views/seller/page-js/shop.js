@@ -13,6 +13,11 @@ $(document).on('change','.bg-language-js',function(){
 	var lang_id = $(this).val();
 	shopImages('bg',lang_id);
 });
+$(document).on('change','.collection-language-js',function(){
+	var lang_id = $(this).val();
+	var scollection_id = document.frmCollectionMedia.scollection_id.value;
+	shopCollectionImages(scollection_id, lang_id);
+});
 (function() {
 	var runningAjaxReq = false;
 	var dv = '#shopFormBlock';
@@ -384,6 +389,16 @@ $(document).on('change','.bg-language-js',function(){
 		});
 	};
 
+	removeCollectionImage = function( scollection_id, langId ){
+		var agree = confirm( langLbl.confirmRemove );
+		if( !agree ){
+			return false;
+		}
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'removeCollectionImage',[scollection_id, langId]), '', function(t) {
+			shopCollectionImages( scollection_id, langId );
+		});
+	};
+
 })();
 function bindAutoComplete(){
 		$("input[name='scp_selprod_id']").autocomplete({
@@ -539,11 +554,11 @@ $(document).on('click','.catFile-Js',function(){
 $(document).on('click','.shopCollection-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
-	var prodcat_id = document.frmCategoryMedia.prodcat_id.value;
-	var lang_id = document.frmCategoryMedia.lang_id.value;
+	var scollection_id = document.frmCollectionMedia.scollection_id.value;
+	var lang_id = document.frmCollectionMedia.lang_id.value;
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
 	frm = frm.concat('<input type="file" name="file" />');
-	frm = frm.concat('<input type="hidden" name="prodcat_id" value="' + prodcat_id + '">');
+	frm = frm.concat('<input type="hidden" name="scollection_id" value="' + scollection_id + '">');
 	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
 	frm = frm.concat('</form>');
 	$('body').prepend(frm);
@@ -556,7 +571,7 @@ $(document).on('click','.shopCollection-Js',function(){
 			clearInterval(timer);
 			$val = $(node).val();
 			$.ajax({
-				url: fcom.makeUrl('Seller', 'setupCategoryBanner'),
+				url: fcom.makeUrl('Seller', 'uploadCollectionImage'),
 				type: 'post',
 				dataType: 'json',
 				data: new FormData($('#form-upload')[0]),
@@ -579,8 +594,7 @@ $(document).on('click','.shopCollection-Js',function(){
 						$.systemMessage( ans.msg,'alert--success');
 						$(dv).removeClass('text-danger');
 						$(dv).addClass('text-success');
-						reloadCategoryBannerList();
-						addCategoryBanner( prodcat_id);
+						shopCollectionImages(scollection_id, lang_id);
 					} else {
 						$.systemMessage(ans.msg,'alert--danger');
 						$(dv).removeClass('text-success');

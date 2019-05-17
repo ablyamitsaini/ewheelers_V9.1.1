@@ -20,7 +20,7 @@
             <?php if ($shop_id > 0) { ?>
             onClick="shopMediaForm(this)"
             <?php } ?>> <?php echo Labels::getLabel('LBL_Media', $siteLangId); ?></a></li>
-        <li class="<?php echo !empty($action) && ($action=='shopCollection' || $action=='shopCollectionGeneralForm' || $action=='shopCollectionLangForm' || $action=='sellerCollectionProductLinkFrm')? 'is-active' : ''; ?>"><a href="javascript:void(0)"
+        <li class="<?php echo !empty($action) && ($action=='shopCollections') ? 'is-active' : ''; ?>"><a href="javascript:void(0)"
                 <?php if ($shop_id > 0) { ?>
                     onClick="shopCollections(this)"
                 <?php } ?>><?php echo Labels::getLabel('LBL_COLLECTIONS', $siteLangId); ?></a></li>

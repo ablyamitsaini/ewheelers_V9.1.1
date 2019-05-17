@@ -322,12 +322,8 @@ class ShopsController extends MyAppController
             $this->set('socialPlatforms', $socialPlatforms);
         }
 
-        $detail= ShopCollection::getCollectionDetail($shop_id, $this->siteLangId);
-        $collection_data=array();
-        if (!empty($detail)) {
-            $collectionName= isset($detail['scollection_name'])?$detail['scollection_name']:$detail['scollection_identifier'];
-            $collection_data= array('collectionName'=>$collectionName,'collectionId'=>$detail['scollection_id']);
-        }
+        $collection_data= ShopCollection::getShopCollectionsDetail($shop_id, $this->siteLangId);
+
         $this->set('collectionData', $collection_data);
         $this->set('layoutTemplate', 'shop');
         // $this->set('template_id', ($shop['shop_ltemplate_id']==0)?SHOP::TEMPLATE_ONE:$shop['shop_ltemplate_id']);
@@ -340,18 +336,18 @@ class ShopsController extends MyAppController
     public function getAllowedShowBg($templateId = '')
     {
         switch ($templateId) {
-        case Shop::TEMPLATE_ONE:
-        case Shop::TEMPLATE_TWO:
-        case Shop::TEMPLATE_THREE:
-            return false;
-            break;
-        case Shop::TEMPLATE_FOUR:
-        case Shop::TEMPLATE_FIVE:
-            return true;
+            case Shop::TEMPLATE_ONE:
+            case Shop::TEMPLATE_TWO:
+            case Shop::TEMPLATE_THREE:
+                return false;
                 break;
-        default:
-            return false;
-             break;
+            case Shop::TEMPLATE_FOUR:
+            case Shop::TEMPLATE_FIVE:
+                return true;
+                    break;
+            default:
+                return false;
+                 break;
         }
     }
 

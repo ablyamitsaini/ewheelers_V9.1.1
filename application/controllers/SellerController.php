@@ -3881,6 +3881,7 @@ class SellerController extends SellerBaseController
         /* fetch requested product[ */
         $prodSrch = clone $prodSrchObj;
         $prodSrch->joinProductToCategory(0, false, false, false);
+        $prodSrch->joinProductToTax();
         $prodSrch->joinBrands(0, false, false, false);
         $prodSrch->addCondition('product_id', '=', $product_id);
         $prodSrch->doNotLimitRecords();
@@ -3888,7 +3889,7 @@ class SellerController extends SellerBaseController
 
         $prodSrch->addMultipleFields(
             array(
-            'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name','product_min_selling_price')
+            'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model', 'product_type', 'product_short_description', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name','product_min_selling_price', 'ptt_taxcat_id ')
         );
         $productRs = $prodSrch->getResultSet();
         $product = FatApp::getDb()->fetch($productRs);
@@ -4066,7 +4067,7 @@ class SellerController extends SellerBaseController
         }
         $newTabLangId     = 0;
         $languages = Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             $userObj = new User($userId);
             $srch = new SearchBase(User::DB_TBL_USR_RETURN_ADDR_LANG);
             $srch->addCondition('uralang_user_id', '=', $userId);

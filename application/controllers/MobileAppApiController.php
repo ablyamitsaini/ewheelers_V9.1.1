@@ -120,7 +120,7 @@ class MobileAppApiController extends MyAppController
     public function cleanArray($arr)
     {
         $arrStr = array();
-        foreach ($arr as $key=>$val) {
+        foreach ($arr as $key => $val) {
             if (!is_array($val)) {
                 if (!is_object($val)) {
                     //$arrStr[$key] = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
@@ -249,153 +249,153 @@ class MobileAppApiController extends MyAppController
                         continue;
                     }
                     switch ($collection['collection_type']) {
-                    case Collections::COLLECTION_TYPE_PRODUCT:
-                        $tempObj = clone $collectionObj;
-                        $tempObj->joinCollectionProducts();
-                        $tempObj->addCondition('collection_id', '=', $collection_id);
-                        $tempObj->setPageSize($collection['collection_primary_records']);
-                        $tempObj->addMultipleFields(array( 'ctsp_selprod_id' ));
-                        $tempObj->addCondition('ctsp_selprod_id', '!=', 'NULL');
-                        $rs = $tempObj->getResultSet();
+                        case Collections::COLLECTION_TYPE_PRODUCT:
+                            $tempObj = clone $collectionObj;
+                            $tempObj->joinCollectionProducts();
+                            $tempObj->addCondition('collection_id', '=', $collection_id);
+                            $tempObj->setPageSize($collection['collection_primary_records']);
+                            $tempObj->addMultipleFields(array( 'ctsp_selprod_id' ));
+                            $tempObj->addCondition('ctsp_selprod_id', '!=', 'NULL');
+                            $rs = $tempObj->getResultSet();
 
-                        if (!$productIds = $this->db->fetchAll($rs, 'ctsp_selprod_id')) {
-                            continue;
-                        }
-
-                        /* fetch Products data[ */
-
-                        if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH) {
-                            $orderBy = 'ASC';
-                        }
-                        if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW) {
-                            $orderBy = 'DESC';
-                        }
-                        $productSrchTempObj = clone $productSrchObj;
-                        $productSrchTempObj->addCondition('selprod_id', 'IN', array_keys($productIds));
-                        $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-                        $productSrchTempObj->addOrder('theprice', $orderBy);
-                        $productSrchTempObj->joinSellers();
-                        $productSrchTempObj->joinSellerSubscription($this->siteLangId);
-                        $productSrchTempObj->addGroupBy('selprod_id');
-                        $productSrchTempObj->setPageSize($collection['collection_primary_records']);
-                        $rs = $productSrchTempObj->getResultSet();
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                        $collection_products = $this->db->fetchAll($rs, 'selprod_id');
-                        $home_collection_products = array();
-                        foreach ($collection_products as $skey=>$sval) {
-                            $arr_product_val = array(
-                            "discounted_text"=>CommonHelper::showProductDiscountedText($sval, $this->siteLangId),
-                            "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId)),
-                            "currency_selprod_price"=>CommonHelper::displayMoneyFormat($sval['selprod_price'], true, false, false),
-                            "currency_theprice"=>CommonHelper::displayMoneyFormat($sval['theprice'], true, false, false),
-                            );
-                            $home_collection_products[] = array_merge($sval, $arr_product_val);
-                            //$home_collection_products[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('image','product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId))));
-                        }
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $home_collection_products;
-                        //commonHelper::printArray($collections); die;
-                        /* ] */
-                        unset($tempObj);
-                        unset($productSrchTempObj);
-                        break;
-
-                    case Collections::COLLECTION_TYPE_CATEGORY:
-                        $tempObj = clone $collectionObj;
-                        $tempObj->addCondition('collection_id', '=', $collection_id);
-                        $tempObj->joinCollectionCategories($this->siteLangId);
-                        $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
-                        $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
-                        $tempObj->setPageSize($collection['collection_primary_records']);
-                        $rs = $tempObj->getResultSet();
-
-                        if (!$categoryIds = $this->db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                            continue;
-                        }
-
-                        /* fetch Categories data[ */
-                        $productCatSrchTempObj = clone $productCatSrchObj;
-                        $productCatSrchTempObj->addCondition('prodcat_id', 'IN', array_keys($categoryIds));
-                        $rs = $productCatSrchTempObj->getResultSet();
-                        /* ] */
-
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-
-                        $collection_categories = $this->db->fetchAll($rs);
-                        $home_collection_categories = array();
-                        foreach ($collection_categories as $skey=>$sval) {
-                            $home_collection_categories[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('category', 'icon', array($sval['prodcat_id'],$this->siteLangId))));
-                        }
-
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'] = $home_collection_categories;
-
-                        unset($tempObj);
-                        break;
-                    case Collections::COLLECTION_TYPE_SHOP:
-                        $tempObj = clone $collectionObj;
-                        $tempObj->addCondition('collection_id', '=', $collection_id);
-                        $tempObj->joinCollectionShops();
-                        $tempObj->addMultipleFields(array( 'ctps_shop_id' ));
-                        $tempObj->addCondition('ctps_shop_id', '!=', 'NULL');
-                        // $tempObj->setPageSize( $collection['collection_primary_records'] );
-                        $rs = $tempObj->getResultSet();
-                        /* echo $tempObj->getQuery(); die; */
-                        if (!$shopIds = $this->db->fetchAll($rs, 'ctps_shop_id')) {
-                            continue;
-                        }
-                        $shopObj = clone $shopSearchObj;
-                        $shopObj->joinSellerSubscription();
-                        $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
-                        $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','shop_name','country_name','state_name'));
-                        $rs = $shopObj->getResultSet();
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                        while ($shopsData = $this->db->fetch($rs)) {
-                            if (!$collection['collection_child_records']) {
+                            if (!$productIds = $this->db->fetchAll($rs, 'ctsp_selprod_id')) {
                                 continue;
                             }
-                            /* fetch Shop data[ */
-                            $productShopSrchTempObj = clone $productSrchObj;
-                            $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
-                            $productShopSrchTempObj->addGroupBy('selprod_product_id');
-                            $productShopSrchTempObj->setPageSize($collection['collection_child_records']);
-                            $Prs = $productShopSrchTempObj->getResultSet();
 
+                            /* fetch Products data[ */
 
-                            if (!FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
-                                $rating = 0;
-                            } else {
-                                $rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
+                            if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH) {
+                                $orderBy = 'ASC';
                             }
-                            $shopsData['rating'] = $rating;
-                            $shopsData['shop_logo']=CommonHelper::generateFullUrl('image', 'shopLogo', array($shopsData['shop_id'], $this->siteLangId));
-                            $shopsData['shop_banner']=CommonHelper::generateFullUrl('image', 'shopBanner', array($shopsData['shop_id'], $this->siteLangId));
-
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
-
-
-
-                            $collectionProds = $this->db->fetchAll($Prs);
-                            $home_collectionProds = array();
-                            foreach ($collectionProds as $pkey=>$pval) {
+                            if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW) {
+                                $orderBy = 'DESC';
+                            }
+                            $productSrchTempObj = clone $productSrchObj;
+                            $productSrchTempObj->addCondition('selprod_id', 'IN', array_keys($productIds));
+                            $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+                            $productSrchTempObj->addOrder('theprice', $orderBy);
+                            $productSrchTempObj->joinSellers();
+                            $productSrchTempObj->joinSellerSubscription($this->siteLangId);
+                            $productSrchTempObj->addGroupBy('selprod_id');
+                            $productSrchTempObj->setPageSize($collection['collection_primary_records']);
+                            $rs = $productSrchTempObj->getResultSet();
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            $collection_products = $this->db->fetchAll($rs, 'selprod_id');
+                            $home_collection_products = array();
+                            foreach ($collection_products as $skey => $sval) {
                                 $arr_product_val = array(
-                                "discounted_text"=>CommonHelper::showProductDiscountedText($pval, $this->siteLangId),
-                                "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($pval['product_id'], "MEDIUM", $pval['selprod_id'], 0, $this->siteLangId)),
-                                "currency_selprod_price"=>CommonHelper::displayMoneyFormat($pval['selprod_price'], true, false, false),
-                                "currency_theprice"=>CommonHelper::displayMoneyFormat($pval['theprice'], true, false, false),
+                                "discounted_text"=>CommonHelper::showProductDiscountedText($sval, $this->siteLangId),
+                                "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId)),
+                                "currency_selprod_price"=>CommonHelper::displayMoneyFormat($sval['selprod_price'], true, false, false),
+                                "currency_theprice"=>CommonHelper::displayMoneyFormat($sval['theprice'], true, false, false),
                                 );
-                                $home_collectionProds[] = array_merge($pval, $arr_product_val);
+                                $home_collection_products[] = array_merge($sval, $arr_product_val);
+                                //$home_collection_products[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('image','product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId))));
+                            }
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $home_collection_products;
+                            //commonHelper::printArray($collections); die;
+                            /* ] */
+                            unset($tempObj);
+                            unset($productSrchTempObj);
+                            break;
 
-                                //$home_collectionProds[] = array_merge($pval, array("image_url"=>CommonHelper::generateFullUrl('image','product', array($pval['product_id'], "MEDIUM", $pval['selprod_id'], 0, $this->siteLangId))));
+                        case Collections::COLLECTION_TYPE_CATEGORY:
+                            $tempObj = clone $collectionObj;
+                            $tempObj->addCondition('collection_id', '=', $collection_id);
+                            $tempObj->joinCollectionCategories($this->siteLangId);
+                            $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
+                            $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
+                            $tempObj->setPageSize($collection['collection_primary_records']);
+                            $rs = $tempObj->getResultSet();
+
+                            if (!$categoryIds = $this->db->fetchAll($rs, 'ctpc_prodcat_id')) {
+                                continue;
                             }
 
-
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $home_collectionProds;
-                            //$collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
-
+                            /* fetch Categories data[ */
+                            $productCatSrchTempObj = clone $productCatSrchObj;
+                            $productCatSrchTempObj->addCondition('prodcat_id', 'IN', array_keys($categoryIds));
+                            $rs = $productCatSrchTempObj->getResultSet();
                             /* ] */
-                        }
-                        $rs = $tempObj->getResultSet();
-                        unset($tempObj);
-                        break;
+
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+
+                            $collection_categories = $this->db->fetchAll($rs);
+                            $home_collection_categories = array();
+                            foreach ($collection_categories as $skey => $sval) {
+                                $home_collection_categories[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('category', 'icon', array($sval['prodcat_id'],$this->siteLangId))));
+                            }
+
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'] = $home_collection_categories;
+
+                            unset($tempObj);
+                            break;
+                        case Collections::COLLECTION_TYPE_SHOP:
+                            $tempObj = clone $collectionObj;
+                            $tempObj->addCondition('collection_id', '=', $collection_id);
+                            $tempObj->joinCollectionShops();
+                            $tempObj->addMultipleFields(array( 'ctps_shop_id' ));
+                            $tempObj->addCondition('ctps_shop_id', '!=', 'NULL');
+                            // $tempObj->setPageSize( $collection['collection_primary_records'] );
+                            $rs = $tempObj->getResultSet();
+                            /* echo $tempObj->getQuery(); die; */
+                            if (!$shopIds = $this->db->fetchAll($rs, 'ctps_shop_id')) {
+                                continue;
+                            }
+                            $shopObj = clone $shopSearchObj;
+                            $shopObj->joinSellerSubscription();
+                            $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
+                            $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','shop_name','country_name','state_name'));
+                            $rs = $shopObj->getResultSet();
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            while ($shopsData = $this->db->fetch($rs)) {
+                                if (!$collection['collection_child_records']) {
+                                    continue;
+                                }
+                                /* fetch Shop data[ */
+                                $productShopSrchTempObj = clone $productSrchObj;
+                                $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
+                                $productShopSrchTempObj->addGroupBy('selprod_product_id');
+                                $productShopSrchTempObj->setPageSize($collection['collection_child_records']);
+                                $Prs = $productShopSrchTempObj->getResultSet();
+
+
+                                if (!FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+                                    $rating = 0;
+                                } else {
+                                    $rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
+                                }
+                                $shopsData['rating'] = $rating;
+                                $shopsData['shop_logo']=CommonHelper::generateFullUrl('image', 'shopLogo', array($shopsData['shop_id'], $this->siteLangId));
+                                $shopsData['shop_banner']=CommonHelper::generateFullUrl('image', 'shopBanner', array($shopsData['shop_id'], $this->siteLangId));
+
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
+
+
+
+                                $collectionProds = $this->db->fetchAll($Prs);
+                                $home_collectionProds = array();
+                                foreach ($collectionProds as $pkey => $pval) {
+                                    $arr_product_val = array(
+                                    "discounted_text"=>CommonHelper::showProductDiscountedText($pval, $this->siteLangId),
+                                    "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($pval['product_id'], "MEDIUM", $pval['selprod_id'], 0, $this->siteLangId)),
+                                    "currency_selprod_price"=>CommonHelper::displayMoneyFormat($pval['selprod_price'], true, false, false),
+                                    "currency_theprice"=>CommonHelper::displayMoneyFormat($pval['theprice'], true, false, false),
+                                    );
+                                    $home_collectionProds[] = array_merge($pval, $arr_product_val);
+
+                                    //$home_collectionProds[] = array_merge($pval, array("image_url"=>CommonHelper::generateFullUrl('image','product', array($pval['product_id'], "MEDIUM", $pval['selprod_id'], 0, $this->siteLangId))));
+                                }
+
+
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $home_collectionProds;
+                                //$collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
+
+                                /* ] */
+                            }
+                            $rs = $tempObj->getResultSet();
+                            unset($tempObj);
+                            break;
                     }
                 }
             }
@@ -442,7 +442,7 @@ class MobileAppApiController extends MyAppController
             $rs = $srch->getResultSet();
             $slides = $this->db->fetchAll($rs, 'slide_id');
             $home_slides = array();
-            foreach ($slides as $key=>$val) {
+            foreach ($slides as $key => $val) {
                 $home_slides[] = array_merge($val, array("image_url"=>CommonHelper::generateFullUrl('Image', 'slide', array($val['slide_id'],applicationConstants::SCREEN_MOBILE,$this->siteLangId))));
             }
         }
@@ -489,7 +489,7 @@ class MobileAppApiController extends MyAppController
                 $bannerListing = $this->db->fetchAll($rs, 'banner_id');
 
                 $home_banners = array();
-                foreach ($bannerListing as $bkey=>$bval) {
+                foreach ($bannerListing as $bkey => $bval) {
                     $home_banners[] = array_merge($bval, array("image_url"=>CommonHelper::generateFullUrl('Banner', 'HomePageAfterFirstLayout', array($bval['banner_id'], $this->siteLangId))));
                 }
                 $banners[$val['blocation_key']]['banners'] = $home_banners;
@@ -541,7 +541,7 @@ class MobileAppApiController extends MyAppController
                 $sponsoredShops['rating'][$shops['shop_id']] =  $rating;
                 $sponsoredShops_products = $this->db->fetchAll($Prs);
                 $home_sponsoredShops_products = array();
-                foreach ($sponsoredShops_products as $skey=>$sval) {
+                foreach ($sponsoredShops_products as $skey => $sval) {
                     $arr_product_val = array(
                       "discounted_text"=>CommonHelper::showProductDiscountedText($sval, $this->siteLangId),
                       "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId)),
@@ -585,7 +585,7 @@ class MobileAppApiController extends MyAppController
             $rs = $productSrchSponObj->getResultSet();
             $sponsoredProds = $this->db->fetchAll($rs);
             $home_sponsoredProds = array();
-            foreach ($sponsoredProds as $skey=>$sval) {
+            foreach ($sponsoredProds as $skey => $sval) {
                 $arr_product_val = array(
                 "discounted_text"=>CommonHelper::showProductDiscountedText($sval, $this->siteLangId),
                 "image_url"=>CommonHelper::generateFullUrl('image', 'product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId)),
@@ -629,7 +629,7 @@ class MobileAppApiController extends MyAppController
     private function resetKeyValues($arr)
     {
         $result = array();
-        foreach ($arr as $key=>$val) {
+        foreach ($arr as $key => $val) {
             if (!array_key_exists('prodcat_id', $val)) {
                 continue;
             }
@@ -974,18 +974,18 @@ END,   special_price_found ) as special_price_found'
             $sortBy = isset($sortByArr[0]) ? $sortByArr[0] : $sortBy;
             $sortOrder = isset($sortByArr[1]) ? $sortByArr[1] : $sortOrder;
             switch ($sortBy) {
-            case 'price':
-                $srch->addOrder('theprice', $sortOrder);
-                break;
-            case 'keyword_relevancy':
-                $srch->addOrder('keyword_relevancy', $sortOrder);
-                break;
-            case 'popularity':
-                $srch->addOrder('selprod_sold_count', $sortOrder);
-                break;
-            case 'rating':
-                $srch->addOrder('prod_rating', $sortOrder);
-                break;
+                case 'price':
+                    $srch->addOrder('theprice', $sortOrder);
+                    break;
+                case 'keyword_relevancy':
+                    $srch->addOrder('keyword_relevancy', $sortOrder);
+                    break;
+                case 'popularity':
+                    $srch->addOrder('selprod_sold_count', $sortOrder);
+                    break;
+                case 'rating':
+                    $srch->addOrder('prod_rating', $sortOrder);
+                    break;
             }
         } elseif (!empty($keyword)) {
             $srch->addOrder('keyword_relevancy', 'DESC');
@@ -1029,7 +1029,7 @@ END,   special_price_found ) as special_price_found'
 
         $sortByArr = array( 'price_asc' => Labels::getLabel('LBL_Price_(Low_to_High)', $this->siteLangId), 'price_desc' => Labels::getLabel('LBL_Price_(High_to_Low)', $this->siteLangId), 'popularity_desc' => Labels::getLabel('LBL_Sort_by_Popularity', $this->siteLangId), 'rating_desc' => Labels::getLabel('LBL_Sort_by_Rating', $this->siteLangId) );
         $count = 0;
-        foreach ($sortByArr as $key=>$val) {
+        foreach ($sortByArr as $key => $val) {
             $getSortArr[$count]['key']= $key;
             $getSortArr[$count]['value']= $val;
             $count++;
@@ -1046,24 +1046,24 @@ END,   special_price_found ) as special_price_found'
         $type = FatApp::getPostedData('type', null, '');
         $image_url = "";
         switch (strtoupper($type)) {
-        case 'PRODUCT_PRIMARY':
-            $product_id = FatApp::getPostedData('product_id', null, '');
-            $seller_product_id = FatApp::getPostedData('seller_product_id', null, '');
-            $image_url = CommonHelper::generateFullUrl('image', 'product', array($product_id, "MEDIUM", $seller_product_id, 0, $this->siteLangId));
-            break;
-        case 'SLIDE':
-            $slide_id = FatApp::getPostedData('slide_id', null, '');
-            $image_url = CommonHelper::generateFullUrl('Image', 'slide', array($slide_id,0,$this->siteLangId));
-            break;
-        case 'BANNER':
-            $banner_id = FatApp::getPostedData('banner_id', null, '');
-            $image_url = CommonHelper::generateFullUrl('Banner', 'HomePageAfterFirstLayout', array($banner_id, $this->siteLangId));
-            break;
+            case 'PRODUCT_PRIMARY':
+                $product_id = FatApp::getPostedData('product_id', null, '');
+                $seller_product_id = FatApp::getPostedData('seller_product_id', null, '');
+                $image_url = CommonHelper::generateFullUrl('image', 'product', array($product_id, "MEDIUM", $seller_product_id, 0, $this->siteLangId));
+                break;
+            case 'SLIDE':
+                $slide_id = FatApp::getPostedData('slide_id', null, '');
+                $image_url = CommonHelper::generateFullUrl('Image', 'slide', array($slide_id,0,$this->siteLangId));
+                break;
+            case 'BANNER':
+                $banner_id = FatApp::getPostedData('banner_id', null, '');
+                $image_url = CommonHelper::generateFullUrl('Banner', 'HomePageAfterFirstLayout', array($banner_id, $this->siteLangId));
+                break;
         }
         die($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$image_url)));
     }
 
-    public function relatedProductsById($ids=array())
+    public function relatedProductsById($ids = array())
     {
         $loggedUserId = $this->getAppLoggedUserId();
         if (isset($ids) && is_array($ids) && count($ids)) {
@@ -1294,7 +1294,7 @@ END,   special_price_found ) as special_price_found'
         $moreSellerRs = $moreSellerSrch->getResultSet();
         $moreSellersArr = FatApp::getDb()->fetchAll($moreSellerRs);
         if (!empty($moreSellersArr)) {
-            foreach ($moreSellersArr as $key=>$prod) {
+            foreach ($moreSellersArr as $key => $prod) {
                 $moreSellersArr[$key]['discounted_text'] = CommonHelper::showProductDiscountedText($prod, $this->siteLangId);
                 $moreSellersArr[$key]['currency_selprod_price'] = CommonHelper::displayMoneyFormat($prod['selprod_price'], true, false, false);
                 $moreSellersArr[$key]['currency_theprice'] = CommonHelper::displayMoneyFormat($prod['theprice'], true, false, false);
@@ -1730,12 +1730,12 @@ END,   special_price_found ) as special_price_found'
         $srch->setPageSize($pageSize);
 
         switch ($orderBy) {
-        case 'most_helpful':
-            $srch->addOrder('helpful', 'desc');
-            break;
-        default:
-            $srch->addOrder('spr.spreview_posted_on', 'desc');
-            break;
+            case 'most_helpful':
+                $srch->addOrder('helpful', 'desc');
+                break;
+            default:
+                $srch->addOrder('spr.spreview_posted_on', 'desc');
+                break;
         }
         $records = FatApp::getDb()->fetchAll($srch->getResultSet());
 
@@ -3816,13 +3816,6 @@ END,   special_price_found ) as special_price_found'
         $rs = $srchCat->getResultSet();
         $shopCategories = $db->fetchAll($rs, 'prodcat_id');
 
-        $detail= ShopCollection::getCollectionDetail($shop_id, $this->siteLangId);
-        $collection_data=array();
-        if (!empty($detail)) {
-            $collectionName= isset($detail['scollection_name'])?$detail['scollection_name']:$detail['scollection_identifier'];
-            $collection_data= array('collectionName'=>$collectionName,'collectionId'=>$detail['scollection_id']);
-        }
-
         $api_shop_detail_elements['shop'] = $shop;
         $api_shop_detail_elements['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
         $api_shop_detail_elements['shopTotalReviews'] = SelProdReview::getSellerTotalReviews($shop['shop_user_id']);
@@ -3919,7 +3912,7 @@ END,   special_price_found ) as special_price_found'
     {
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($this->siteLangId);
-        foreach ($countriesArr as $key=>$val) {
+        foreach ($countriesArr as $key => $val) {
             $arr_country[]=array("id"=>$key,'name'=>$val);
         }
         die($this->json_encode_unicode(array('status'=>1, 'countries'=>$arr_country)));
@@ -3931,7 +3924,7 @@ END,   special_price_found ) as special_price_found'
         $stateObj = new States();
         $statesArr = $stateObj->getStatesByCountryId($countryId, $this->siteLangId);
         $arr_states = [];
-        foreach ($statesArr as $key=>$val) {
+        foreach ($statesArr as $key => $val) {
             $arr_states[]=array("id"=>$key,'name'=>$val);
         }
         die($this->json_encode_unicode(array('status'=>1, 'states'=>$arr_states)));
@@ -4016,15 +4009,15 @@ END,   special_price_found ) as special_price_found'
 
         if ($debit_credit_type > 0) {
             switch ($debit_credit_type) {
-            case Transactions::CREDIT_TYPE:
-                $srch->addCondition('utxn.utxn_credit', '>', '0');
-                $srch->addCondition('utxn.utxn_debit', '=', '0');
-                break;
+                case Transactions::CREDIT_TYPE:
+                    $srch->addCondition('utxn.utxn_credit', '>', '0');
+                    $srch->addCondition('utxn.utxn_debit', '=', '0');
+                    break;
 
-            case Transactions::DEBIT_TYPE:
-                $srch->addCondition('utxn.utxn_debit', '>', '0');
-                $srch->addCondition('utxn.utxn_credit', '=', '0');
-                break;
+                case Transactions::DEBIT_TYPE:
+                    $srch->addCondition('utxn.utxn_debit', '>', '0');
+                    $srch->addCondition('utxn.utxn_credit', '=', '0');
+                    break;
             }
         }
         $records = array();
@@ -4551,7 +4544,7 @@ END,   special_price_found ) as special_price_found'
             $charges = $oObj->getOrderProductChargesArr($order['op_id']);
             /*$arrCharges = array();
             $count = 0;
-            foreach($charges as $key=>$val){
+            foreach($charges as $key => $val){
             $arrCharges[$count]['type']= $val['opcharge_type'];
             $arrCharges[$count]['amount']= $val['opcharge_amount'];
             $arrCharges[$count]['currency_amount'] = CommonHelper::displayMoneyFormat($val['opcharge_amount'],true,false,false);
@@ -4650,7 +4643,7 @@ END,   special_price_found ) as special_price_found'
     {
         $orderCancelReasonsArr = OrderCancelReason::getOrderCancelReasonArr($this->siteLangId);
         $count = 0;
-        foreach ($orderCancelReasonsArr as $key=>$val) {
+        foreach ($orderCancelReasonsArr as $key => $val) {
             $cancelReasonsArr[$count]['key']= $key;
             $cancelReasonsArr[$count]['value']= $val;
             $count++;
@@ -4663,7 +4656,7 @@ END,   special_price_found ) as special_price_found'
         $user_id = $this->getAppLoggedUserId();
         $orderReturnReasonsArr = OrderReturnReason::getOrderReturnReasonArr($this->siteLangId);
         $count = 0;
-        foreach ($orderReturnReasonsArr as $key=>$val) {
+        foreach ($orderReturnReasonsArr as $key => $val) {
             $returnReasonsArr[$count]['key']= $key;
             $returnReasonsArr[$count]['value']= $val;
             $count++;
@@ -4864,7 +4857,7 @@ END,   special_price_found ) as special_price_found'
 
         $returnRequestTypeArr = OrderReturnRequest::getRequestTypeArr($this->siteLangId);
         $count = 0;
-        foreach ($returnRequestTypeArr as $key=>$val) {
+        foreach ($returnRequestTypeArr as $key => $val) {
             $returnRequestTypeDispArr[$count]['key']= $key;
             $returnRequestTypeDispArr[$count]['value']= $val;
             $count++;
@@ -4940,7 +4933,7 @@ END,   special_price_found ) as special_price_found'
         $returnRequestTypeArr = OrderReturnRequest::getRequestTypeArr($this->siteLangId);
 
         $count = 0;
-        foreach ($returnRequestTypeArr as $key=>$val) {
+        foreach ($returnRequestTypeArr as $key => $val) {
             $returnRequestTypeDispArr[$count]['key']= $key;
             $returnRequestTypeDispArr[$count]['value']= $val;
             $count++;
@@ -5397,7 +5390,7 @@ END,   special_price_found ) as special_price_found'
 
         $orderStatuses = Orders::getOrderProductStatusArr($this->siteLangId);
         $count = 0;
-        foreach ($orderStatuses as $key=>$val) {
+        foreach ($orderStatuses as $key => $val) {
             $orderStsArr[$count]['key']= $key;
             $orderStsArr[$count]['value']= $val;
             $count++;
@@ -5419,7 +5412,7 @@ END,   special_price_found ) as special_price_found'
         $orderObj = new Orders();
         $orderStatuses = Orders::getOrderProductStatusArr($this->siteLangId);
         /* $count = 0;
-        foreach($orderStatuses as $key=>$val){
+        foreach($orderStatuses as $key => $val){
         $orderStsArr[$count]['key']= $key;
         $orderStsArr[$count]['value']= $val;
         $count++;
@@ -5476,7 +5469,7 @@ END,   special_price_found ) as special_price_found'
 
         $count = 0;
         $orderStsArr = array();
-        foreach ($orderStatuses as $key=>$val) {
+        foreach ($orderStatuses as $key => $val) {
             if (!array_key_exists($key, $allowedStatuses)) {
                 continue;
             }
@@ -5912,7 +5905,7 @@ END,   special_price_found ) as special_price_found'
 
         $returnRequestTypeArr = OrderReturnRequest::getRequestTypeArr($this->siteLangId);
         $count = 0;
-        foreach ($returnRequestTypeArr as $key=>$val) {
+        foreach ($returnRequestTypeArr as $key => $val) {
             $returnRequestTypeDispArr[$count]['key']= $key;
             $returnRequestTypeDispArr[$count]['value']= $val;
             $count++;
@@ -5930,7 +5923,7 @@ END,   special_price_found ) as special_price_found'
         die($this->json_encode_unicode(array('status'=>1,'currencySymbol'=>$this->currencySymbol,'unread_notifications'=>$this->totalUnreadNotificationCount,'data'=>$return_request,'cart_count'=>$this->cart_items,'fav_count'=>$this->totalFavouriteItems,'unread_messages'=>$this->totalUnreadMessageCount)));
     }
 
-    public function downloadAttachedFileForReturn($recordId, $recordSubid=0)
+    public function downloadAttachedFileForReturn($recordId, $recordSubid = 0)
     {
         $recordId = FatUtility::int($recordId);
         if (1 > $recordId) {
@@ -6019,7 +6012,7 @@ END,   special_price_found ) as special_price_found'
 
         $returnRequestTypeArr = OrderReturnRequest::getRequestTypeArr($this->siteLangId);
         $count = 0;
-        foreach ($returnRequestTypeArr as $key=>$val) {
+        foreach ($returnRequestTypeArr as $key => $val) {
             $returnRequestTypeDispArr[$count]['key']= $key;
             $returnRequestTypeDispArr[$count]['value']= $val;
             $count++;
@@ -6314,7 +6307,7 @@ END,   special_price_found ) as special_price_found'
         die($this->json_encode_unicode(array('status'=>1,'suggestions'=>$json)));
     }
 
-    public function faq($catId='')
+    public function faq($catId = '')
     {
         $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
@@ -6441,22 +6434,22 @@ END,   special_price_found ) as special_price_found'
         $withdrawal_comments = $post['withdrawal_comments'];
 
         switch ($withdrawal_payment_method) {
-        case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
-            $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
-            break;
+            case User::AFFILIATE_PAYMENT_METHOD_CHEQUE:
+                $withdrawal_cheque_payee_name = $post['uextra_cheque_payee_name'];
+                break;
 
-        case User::AFFILIATE_PAYMENT_METHOD_BANK:
-            $withdrawal_bank = $post['ub_bank_name'];
-            $withdrawal_account_holder_name = $post['ub_account_holder_name'];
-            $withdrawal_account_number = $post['ub_account_number'];
-            $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
-            $withdrawal_bank_address = $post['ub_bank_address'];
+            case User::AFFILIATE_PAYMENT_METHOD_BANK:
+                $withdrawal_bank = $post['ub_bank_name'];
+                $withdrawal_account_holder_name = $post['ub_account_holder_name'];
+                $withdrawal_account_number = $post['ub_account_number'];
+                $withdrawal_ifc_swift_code = $post['ub_ifsc_swift_code'];
+                $withdrawal_bank_address = $post['ub_bank_address'];
 
-            break;
+                break;
 
-        case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
-            $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
-            break;
+            case User::AFFILIATE_PAYMENT_METHOD_PAYPAL:
+                $withdrawal_paypal_email_id = $post['uextra_paypal_email_id'];
+                break;
         }
 
 
@@ -6711,7 +6704,7 @@ END,   special_price_found ) as special_price_found'
     {
         $orderCancelReasonsArr = ShopReportReason::getReportReasonArr($this->siteLangId);
         $count = 0;
-        foreach ($orderCancelReasonsArr as $key=>$val) {
+        foreach ($orderCancelReasonsArr as $key => $val) {
             $cancelReasonsArr[$count]['key']= $key;
             $cancelReasonsArr[$count]['value']= $val;
             $count++;

@@ -91,9 +91,9 @@ trait SellerCollections
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $addressObj = new UserAddress($ua_id);
-        if (!$addressObj->deleteRecord()) {
-            Message::addErrorMessage($addressObj->getError());
+        $collection = new ShopCollection();
+        if (!$collection->deleteCollection($scollection_id)) {
+            Message::addErrorMessage($collection->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
         FatUtility::dieJsonSuccess(
@@ -326,10 +326,10 @@ trait SellerCollections
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    private function shopCollectionMediaForm($scollection_id)
+    public function shopCollectionMediaForm($scollection_id)
     {
         $collectionMediaFrm =  $this->getShopCollectionMediaForm($scollection_id);
-        $this->set('collectionMediaFrm', $collectionMediaFrm);
+        $this->set('frm', $collectionMediaFrm);
         $this->set('language', Language::getAllNames());
         $this->set('scollection_id', $scollection_id);
         $this->_template->render(false, false);
@@ -337,76 +337,44 @@ trait SellerCollections
 
     private function getShopCollectionMediaForm($scollection_id)
     {
-        $frm = new Form('frmCategoryMedia');
+        $frm = new Form('frmCollectionMedia');
         $frm->addHiddenField('', 'scollection_id', $scollection_id);
         $bannerTypeArr = applicationConstants::bannerTypeArr();
-        $frm->addSelectBox(Labels::getLabel('Lbl_Language', $this->siteLangId), 'lang_id', $bannerTypeArr, '', array(), '');
+        $frm->addSelectBox(Labels::getLabel('Lbl_Language', $this->siteLangId), 'lang_id', $bannerTypeArr, '', array('class'=>'collection-language-js'), '');
         $fld1 =  $frm->addButton('', 'collection_image', Labels::getLabel('LBL_Upload_File', $this->siteLangId), array('class'=>'shopCollection-Js','id'=>'collection_image'));
         return $frm;
     }
 
     public function shopCollectionImages($scollection_id, $lang_id = 0)
     {
-        $userId = UserAuthentication::getLoggedUserId();
-        $shopDetails = Shop::getAttributesByUserId($userId, null, false);
-
-        if (!false == $shopDetails && $shopDetails['shop_active'] != applicationConstants::ACTIVE) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_shop_deactivated_contact_admin', $this->siteLangId));
-            FatUtility::dieWithError(Message::getHtml());
+        $scollection_id = FatUtility::int($scollection_id);
+        $lang_id = FatUtility::int($lang_id);
+        $this->commonShopCollection();
+        if (1 > $scollection_id) {
+            FatUtility::dieWithError($this->str_invalid_request);
         }
 
-        $shop_id = 0;
-        $stateId = 0;
-        $bannerAttachments = array();
-        $logoAttachments = array();
-        $backgroundAttachments = array();
-
-        if (!false == $shopDetails) {
-            $shop_id =  $shopDetails['shop_id'];
-            $stateId = $shopDetails['shop_state_id'];
-
-            if ($imageType=='logo') {
-                $logoAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_LOGO, $shop_id, 0, $lang_id, false);
-                $this->set('images', $logoAttachments);
-                $this->set('imageFunction', 'shopLogo');
-            } elseif ($imageType=='banner') {
-                $bannerAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop_id, 0, $lang_id, false);
-                $this->set('images', $bannerAttachments);
-                $this->set('imageFunction', 'shopBanner');
-            } else {
-                $backgroundAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BACKGROUND_IMAGE, $shop_id, 0, $lang_id, false);
-                $this->set('images', $backgroundAttachments);
-                $this->set('imageFunction', 'shopBackgroundImage');
-            }
-        }
-        $this->set('imageType', $imageType);
-        $this->set('shopDetails', $shopDetails);
-        $this->set('shop_id', $shop_id);
+        $collectionImg = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $scollection_id, 0, $lang_id, false);
+        $this->set('images', $collectionImg);
         $this->set('languages', applicationConstants::bannerTypeArr());
+        $this->set('scollection_id', $scollection_id);
+        $this->set('lang_id', $lang_id);
         $this->_template->render(false, false);
     }
 
-    public function uploadCollectionImage($scollection_id)
+    public function uploadCollectionImage()
     {
-        $userId = UserAuthentication::getLoggedUserId();
-
         $post = FatApp::getPostedData();
         if (empty($post)) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0);
+
         $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
+        $scollection_id = FatApp::getPostedData('scollection_id', FatUtility::VAR_INT, 0);
 
-        if (!$file_type) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        $allowedFileTypeArr = array(AttachedFile::FILETYPE_SHOP_LOGO,AttachedFile::FILETYPE_SHOP_BANNER,AttachedFile::FILETYPE_SHOP_BACKGROUND_IMAGE);
-
-        if (!in_array($file_type, $allowedFileTypeArr)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        if ($scollection_id == 0) {
+            Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -414,64 +382,32 @@ trait SellerCollections
             Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $unique_record = true;
-        /* if ($file_type != AttachedFile::FILETYPE_SHOP_BANNER) {
-            $unique_record = true;
-        } */
 
         $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveImage(
-            $_FILES['file']['tmp_name'],
-            $file_type,
-            $shop_id,
-            0,
-            $_FILES['file']['name'],
-            -1,
-            $unique_record,
-            $lang_id
-        )
+        if (!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $scollection_id, 0, $_FILES['file']['name'], -1, true, $lang_id)
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $this->set('file', $_FILES['file']['name']);
-        $this->set('shopId', $shop_id);
-        /* Message::addMessage(  Labels::getLabel('MSG_File_uploaded_successfully' ,$this->siteLangId) );
-        FatUtility::dieJsonSuccess(Message::getHtml()); */
+        $this->set('scollection_id', $scollection_id);
         $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
-        /* $this->set('msg', Message::getHtml() );
-        $this->_template->render(false, false, 'json-success.php'); */
     }
 
-    public function removeCollectionImage($banner_id, $langId, $imageType)
+    public function removeCollectionImage($scollection_id, $lang_id = 0)
     {
-        $userId = UserAuthentication::getLoggedUserId();
-        $langId = FatUtility::int($langId);
+        $scollection_id = FatUtility::int($scollection_id);
+        $lang_id = FatUtility::int($lang_id);
 
-        if (!$shopDetails = $this->isShopActive($userId, 0, true)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_shop_deactivated_contact_admin', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+        $this->commonShopCollection();
+        if (1 > $scollection_id) {
+            FatUtility::dieWithError($this->str_invalid_request);
         }
-
-        $shop_id = $shopDetails['shop_id'];
-        if (!$shop_id) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        if ($imageType=='logo') {
-            $fileType = AttachedFile::FILETYPE_SHOP_LOGO;
-        } elseif ($imageType=='banner') {
-            $fileType = AttachedFile::FILETYPE_SHOP_BANNER;
-        } else {
-            $fileType = AttachedFile::FILETYPE_SHOP_BACKGROUND_IMAGE;
-        }
-
 
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $shop_id, $banner_id, 0, $langId)) {
+        if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $scollection_id, 0, 0, $lang_id)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
