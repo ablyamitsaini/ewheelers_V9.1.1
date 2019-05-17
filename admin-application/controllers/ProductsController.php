@@ -276,7 +276,9 @@ class ProductsController extends AdminBaseController
             $data_to_be_save['product_approved'] = 1;
             $data_to_be_save['product_added_by_admin_id'] = applicationConstants::YES;
         }
+
         $prodObj->assignValues($data_to_be_save, true);
+
         if (!$prodObj->save()) {
             Message::addErrorMessage($prodObj->getError());
             FatUtility::dieWithError(Message::getHtml());
@@ -294,6 +296,7 @@ class ProductsController extends AdminBaseController
             Message::addErrorMessage($prodObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
+
         /* ] */
 
         /*Save Prodcut tax category [*/
@@ -313,6 +316,7 @@ class ProductsController extends AdminBaseController
             Message::addErrorMessage($taxObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
+
         /*]*/
 
         $data_to_be_save = $post;
@@ -326,9 +330,11 @@ class ProductsController extends AdminBaseController
         /*]*/
 
         /*Save Product Shipping Details [*/
-        if (!$this->addUpdateProductShippingRates($product_id, $productShiping, $userId)) {
-            Message::addErrorMessage(FatApp::getDb()->getError());
-            FatUtility::dieWithError(Message::getHtml());
+        if (!empty($productShiping) && 0 < count($productShiping)) {
+            if ($this->addUpdateProductShippingRates($product_id, $productShiping, $userId)) {
+                Message::addErrorMessage(FatApp::getDb()->getError());
+                FatUtility::dieWithError(Message::getHtml());
+            }
         }
         /*]*/
 
@@ -413,7 +419,7 @@ class ProductsController extends AdminBaseController
 
         $newTabLangId = 0;
         $languages = Language::getAllNames();
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             if (!$row=Product::getAttributesByLangId($langId, $product_id)) {
                 $newTabLangId = $langId;
                 break;

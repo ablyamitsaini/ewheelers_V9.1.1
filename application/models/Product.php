@@ -1041,6 +1041,7 @@ class Product extends MyAppModel
     public static function addUpdateProductShippingRates($product_id, $data, $userId = 0)
     {
         static::removeProductShippingRates($product_id, $userId);
+
         if (empty($data) || count($data) == 0) {
             return false;
         }
