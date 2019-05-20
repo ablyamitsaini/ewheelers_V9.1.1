@@ -34,3 +34,4 @@ Fixes :
 	. Unique key validation on Supplier form identifier.
 	. Restrict to enter negative value in free shipping on, on shop detail page.
 	. Requested new brand count will be displayed on admin sidebar.
+	. Seller Product not avaliable if avaliabity from date is current date.
