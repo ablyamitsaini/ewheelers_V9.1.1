@@ -1734,7 +1734,7 @@ class ProductsController extends MyAppController
         /* more sellers[ */
         $product['moreSellersArr'] = $this->getMoreSeller($product['selprod_code'], $this->siteLangId);
 
-        foreach ($moreSellersArr as $seller) {
+        foreach ($product['moreSellersArr'] as $seller) {
             if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                 $product['rating'][$seller['selprod_user_id']]= SelProdRating::getSellerRating($seller['selprod_user_id']);
             } else {

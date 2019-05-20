@@ -338,7 +338,12 @@ function getSearchQueryUrl(includeBaseUrl){
 	} */
 
 	var e = document.getElementById("sortBy");
-	var sortBy = e.options[e.selectedIndex].value;
+	if($(e).is("select")) {
+		var sortBy = e.options[e.selectedIndex].value;
+	}else{
+		var sortBy = e.value;
+	}
+
 	if(sortBy){
 		url = url +'/'+'sort-'+sortBy.replace(/_/g,'-');
 	}

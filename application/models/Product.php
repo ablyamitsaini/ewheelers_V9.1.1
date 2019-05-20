@@ -1041,7 +1041,9 @@ class Product extends MyAppModel
     public static function addUpdateProductShippingRates($product_id, $data, $userId = 0)
     {
         static::removeProductShippingRates($product_id, $userId);
+
         if (empty($data) || count($data) == 0) {
+            $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
             return false;
         }
 
@@ -1053,12 +1055,13 @@ class Product extends MyAppModel
                 'pship_user_id'=>$userId,
                 'pship_company'=>(isset($val["company_id"]) && FatUtility::int($val["company_id"]))?FatUtility::int($val["company_id"]):0,
                 'pship_duration'=>(isset($val["processing_time_id"]) && FatUtility::int($val["processing_time_id"]))?FatUtility::int($val["processing_time_id"]):0,
-                'pship_charges'=>FatUtility::float($val["cost"]),
+                'pship_charges'=>(1 > FatUtility::float($val["cost"]) ? 0 : FatUtility::float($val["cost"])),
                 'pship_additional_charges'=>FatUtility::float($val["additional_cost"]),
                 );
 
                 if (!FatApp::getDb()->insertFromArray(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, $prodShipData, false, array(), $prodShipData)) {
                     $this->error = FatApp::getDb()->getError();
+
                     return false;
                 }
             }

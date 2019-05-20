@@ -28,6 +28,13 @@ class Navigation
         $custProdReqResult = $db->fetch($custReqSrchObj->getResultset());
         $custProdReqCount = FatUtility::int($custProdReqResult['countOfRec']);
         
+        /* Custom brand requests */
+        $brandReqSrchObj = Brand::getSearchObject(0, true, false);
+        $brandReqSrchObj->addCondition('brand_status', '=', Brand::BRAND_REQUEST_PENDING);
+        $brandReqSrchObj->addMultipleFields(array('count(brand_id) as countOfRec'));
+        $brandReqResult = $db->fetch($brandReqSrchObj->getResultset());
+        $brandReqCount = FatUtility::int($brandReqResult['countOfRec']);
+        
         /* withdrawal requests */
         $drReqSrchObj = new WithdrawalRequestsSearch();
         $drReqSrchObj->addCondition('withdrawal_status', '=', 0);
@@ -97,6 +104,7 @@ class Navigation
         $gdprReqCount = $gdprSrch->recordCount();
         
         /* set counter variables [ */
+        $template->set('brandReqCount', $brandReqCount);
         $template->set('custProdReqCount', $custProdReqCount);
         $template->set('supReqCount', $supReqCount);
         $template->set('catReqCount', $catReqCount);
