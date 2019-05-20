@@ -1242,6 +1242,24 @@ class ShopsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    private function updateShopStatus($shopId, $status)
+    {
+        $shopId = FatUtility::int($shopId);
+        $status = FatUtility::int($status);
+        if (1 > $shopId || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        $shopObj = new Shop($shopId);
+        $resp = $shopObj->changeStatus($status);
+        if (!$resp) {
+            Message::addErrorMessage($shopObj->getError());
+            FatUtility::dieWithError(Message::getHtml());
+        }
+    }
+
     public function toggleBulkCollectionStatuses()
     {
         $this->objPrivilege->canEditShops();
@@ -1262,24 +1280,6 @@ class ShopsController extends AdminBaseController
         }
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
-    }
-
-    private function updateShopStatus($shopId, $status)
-    {
-        $shopId = FatUtility::int($shopId);
-        $status = FatUtility::int($status);
-        if (1 > $shopId || -1 == $status) {
-            FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
-            );
-        }
-
-        $shopObj = new Shop($shopId);
-        $resp = $shopObj->changeStatus($status);
-        if (!$resp) {
-            Message::addErrorMessage($shopObj->getError());
-            FatUtility::dieWithError(Message::getHtml());
-        }
     }
 
     private function updateShopCollectionStatus($scollection_id, $status)

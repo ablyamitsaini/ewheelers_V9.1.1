@@ -30,7 +30,7 @@ foreach ($arr_listing as $sn => $row) {
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="scollection_id[]" value='.$row['scollection_id'].'><i class="input-helper"></i></label>', true);
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="scollection_ids[]" value='.$row['scollection_id'].'><i class="input-helper"></i></label>', true);
                 break;
             case 'listserial':
                 $td->appendElement('plaintext', array(), $sr_no);
@@ -84,15 +84,22 @@ foreach ($arr_listing as $sn => $row) {
 if (count($arr_listing) == 0) {
     $message = Labels::getLabel('LBL_No_Collection_found', $siteLangId);
     $linkArr = array(
-    0=>array(
-    'href'=>'javascript:void(0);',
-    'label'=>Labels::getLabel('LBL_Add_Collection', $siteLangId),
-    'onClick'=>"getShopCollectionGeneralForm(0)",
-    )
+        0=>array(
+        'href'=>'javascript:void(0);',
+        'label'=>Labels::getLabel('LBL_Add_Collection', $siteLangId),
+        'onClick'=>"getShopCollectionGeneralForm(0)",
+        )
     );
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
-} else { ?>
-    <form id="frmCollectionsListing" name="frmCollectionsListing" method="post" onsubmit="formAction(this); return(false);" class="form" action="<?php echo CommonHelper::generateUrl('Seller', 'bulkOptionsDelete'); ?>">
-        <?php echo $tbl->getHtml(); ?>
+} else {
+    $frm = new Form('frmCollectionsListing', array('id'=>'frmCollectionsListing'));
+    $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+    $frm->setFormTagAttribute('onsubmit', 'formAction(this, searchShopCollections ); return(false);');
+    $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'toggleBulkCollectionStatuses'));
+    $frm->addHiddenField('', 'collection_status', '');
+
+    echo $frm->getFormTag();
+    echo $frm->getFieldHtml('collection_status');
+    echo $tbl->getHtml(); ?>
     </form>
 <?php } ?>
