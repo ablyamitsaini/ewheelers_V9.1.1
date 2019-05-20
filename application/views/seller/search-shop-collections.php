@@ -38,10 +38,19 @@ foreach ($arr_listing as $sn => $row) {
             case 'scollection_identifier':
                 $td->appendElement('plaintext', array(), $row[$key], true);
                 break;
+
             case 'scollection_active':
-                $activeInactiveArr = applicationConstants::getActiveInactiveArr($siteLangId);
-                $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]], true);
+                /* $td->appendElement( 'plaintext', array(), $activeInactiveArr[$row[$key]],true ); */
+                $active = "";
+                if (applicationConstants::ACTIVE == $row['scollection_active']) {
+                    $active = 'checked';
+                }
+
+                $str = '<label class="toggle-switch" for="switch'.$row['scollection_id'].'"><input '.$active.' type="checkbox" value="'.$row['scollection_id'].'" id="switch'.$row['scollection_id'].'" onclick="toggleShopCollectionStatus(event,this)"/><div class="slider round"></div></label>';
+
+                $td->appendElement('plaintext', array(), $str, true);
                 break;
+
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions"));
                     $li = $ul->appendElement("li");

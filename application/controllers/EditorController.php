@@ -20,7 +20,7 @@ class EditorController extends FatController
 
 
         if (!is_file($pth)) {
-            $pth = CONF_INSTALLATION_PATH . 'user-uploads/defaults/no_image.jpg';
+            $pth = CONF_INSTALLATION_PATH . 'images/defaults/no_image.jpg';
         }
         $fileMimeType = mime_content_type($pth);
         /*  if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($pth))) {
