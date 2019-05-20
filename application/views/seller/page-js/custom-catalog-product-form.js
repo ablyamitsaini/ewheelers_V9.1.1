@@ -225,8 +225,8 @@ $(document).on('change','.language-js',function(){
 			var validator = $(frm).validation({errordisplay: 3});
 			$(frm).submit(function(e) {
 				e.preventDefault();
-				if (validator.validate() == false) {
-					return ;
+				if (false === validator.validate() || false == validator.valid) {
+					return false;
 				}
 				var data = fcom.frmData(frm);
 				fcom.updateWithAjax(fcom.makeUrl('Seller', 'setupCustomCatalogProductLangForm'), data, function(t) {

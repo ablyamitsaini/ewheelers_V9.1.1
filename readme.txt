@@ -32,4 +32,5 @@ Fixes :
 	. Int and Alphanumeric validation for Phone No. and Zip Code.
 	. Applied Validation for adding more than 100% volume discount.
 	. Unique key validation on Supplier form identifier.
-	. Restrict to enter negative value in free shipping on, on shop detail page. 
+	. Restrict to enter negative value in free shipping on, on shop detail page.
+	. Requested new brand count will be displayed on admin sidebar.

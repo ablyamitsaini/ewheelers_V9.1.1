@@ -85,7 +85,7 @@
 					<?php } ?>
 					<?php
 					if($objPrivilege->canViewBrandRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_BRAND_REQUEST_APPROVAL', FatUtility::VAR_INT, 0)){ ?>
-					<li><a href="<?php echo CommonHelper::generateUrl('Brands','BrandRequests');?>"><?php echo Labels::getLabel('LBL_Brand_Requests',$adminLangId);?></a></li>
+					<li><a href="<?php echo CommonHelper::generateUrl('Brands','BrandRequests');?>"><?php echo Labels::getLabel('LBL_Brand_Requests',$adminLangId);?><?php if($brandReqCount){ ?><span class='badge'>(<?php echo $brandReqCount; ?>)</span><?php } ?></a></li>
 					<?php } ?>
 					<?php /* if($objPrivilege->canViewSellerCatalogRequests(AdminAuthentication::getLoggedAdminId(), true) && FatApp::getConfig('CONF_SELLER_CAN_REQUEST_PRODUCT', FatUtility::VAR_INT, 0)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('Users','sellerCatalogRequests');?>"><?php echo Labels::getLabel('LBL_Product_Catalog_Requests',$adminLangId);?> <?php if($catReqCount){ ?><span class='badge'>(<?php echo $catReqCount; ?>)</span><?php } ?></a></li>
