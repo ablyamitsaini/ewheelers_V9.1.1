@@ -206,7 +206,7 @@ class BlogCommentsController extends AdminBaseController
         $frm = new Form('frmBlogComment', array('id'=>'frmBlogComment'));
         $frm->addHiddenField('', 'bpcomment_id', $bpcomment_id);
         $statusArr = applicationConstants::getBlogCommentStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Comment_Status', $this->adminLangId), 'bpcomment_approved', $statusArr, '', array('class'=>'small'), '');
+        $frm->addSelectBox(Labels::getLabel('LBL_Comment_Status', $this->adminLangId), 'bpcomment_approved', $statusArr);
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
     }
