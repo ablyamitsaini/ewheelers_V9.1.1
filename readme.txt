@@ -30,3 +30,9 @@ Fixes :
 	. Check unique slide identifier.
 	. Accepting 'Date From' greater than 'Date To' in discount coupon form.
 	. Int and Alphanumeric validation for Phone No. and Zip Code.
+	. Applied Validation for adding more than 100% volume discount.
+	. Unique key validation on Supplier form identifier.
+	. Restrict to enter negative value in free shipping on, on shop detail page.
+	. Requested new brand count will be displayed on admin sidebar.
+	. Seller Product not avaliable if avaliabity from date is current date.
+	. Heading layout direction in Seller order view.

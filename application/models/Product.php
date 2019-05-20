@@ -1041,7 +1041,9 @@ class Product extends MyAppModel
     public static function addUpdateProductShippingRates($product_id, $data, $userId = 0)
     {
         static::removeProductShippingRates($product_id, $userId);
+
         if (empty($data) || count($data) == 0) {
+            $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
             return false;
         }
 
@@ -1053,12 +1055,13 @@ class Product extends MyAppModel
                 'pship_user_id'=>$userId,
                 'pship_company'=>(isset($val["company_id"]) && FatUtility::int($val["company_id"]))?FatUtility::int($val["company_id"]):0,
                 'pship_duration'=>(isset($val["processing_time_id"]) && FatUtility::int($val["processing_time_id"]))?FatUtility::int($val["processing_time_id"]):0,
-                'pship_charges'=>FatUtility::float($val["cost"]),
+                'pship_charges'=>(1 > FatUtility::float($val["cost"]) ? 0 : FatUtility::float($val["cost"])),
                 'pship_additional_charges'=>FatUtility::float($val["additional_cost"]),
                 );
 
                 if (!FatApp::getDb()->insertFromArray(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, $prodShipData, false, array(), $prodShipData)) {
                     $this->error = FatApp::getDb()->getError();
+
                     return false;
                 }
             }
@@ -1265,25 +1268,15 @@ END,   special_price_found ) as special_price_found'
                 $srch->excludeOutOfStockProducts();
             }
         }
-        //CommonHelper::printArray($criteria);
-        if (array_key_exists('price-min-range', $criteria)) {
-            if (!empty($criteria['price-min-range'])) {
-                $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['price-min-range'], false, false);
-                $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
-            }
-        } elseif (array_key_exists('min_price_range', $criteria)) {
+
+        if (array_key_exists('min_price_range', $criteria)) {
             if (!empty($criteria['min_price_range'])) {
                 $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['min_price_range'], false, false);
                 $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
             }
         }
 
-        if (array_key_exists('price-max-range', $criteria)) {
-            if (!empty($criteria['price-max-range'])) {
-                $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['price-max-range'], false, false);
-                $srch->addCondition('theprice', '<=', $max_price_range_default_currency);
-            }
-        } elseif (array_key_exists('max_price_range', $criteria)) {
+        if (array_key_exists('max_price_range', $criteria)) {
             if (!empty($criteria['max_price_range'])) {
                 $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['max_price_range'], false, false);
                 $srch->addCondition('theprice', '<=', $max_price_range_default_currency);

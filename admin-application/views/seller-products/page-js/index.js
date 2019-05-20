@@ -130,7 +130,7 @@ $(document).ready(function(){
 
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductSpecialPrice'), data, function(t) {
-			sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
+			// sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
 			$(document).trigger('close.facebox');
 		});
 		return false;
@@ -140,7 +140,7 @@ $(document).ready(function(){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductSpecialPrice'), 'splprice_id=' + splprice_id, function(t) {
-			sellerProductSpecialPrices( t.selprod_id );
+			// sellerProductSpecialPrices( t.selprod_id );
 			$(document).trigger('close.facebox');
 		});
 	};
@@ -463,7 +463,7 @@ $(document).ready(function(){
 	};
 
 	deleteSelected = function(){
-		if(!confirm(langLbl.confirmDelete)){			
+		if(!confirm(langLbl.confirmDelete)){
 			return false;
 		}
 		$("#frmSelProdListing").attr("action",fcom.makeUrl('SellerProducts','deleteSelected')).submit();

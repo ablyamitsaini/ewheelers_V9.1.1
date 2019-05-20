@@ -19,9 +19,16 @@ $(document).on('change','.bg-language-js',function(){
 	var shop_id = $("input[name='shop_id']").val();
 	shopImages(shop_id,'bg',lang_id);
 });
+$(document).on('change','.collection-language-js',function(){
+	var lang_id = $(this).val();
+	var scollection_id = document.frmCollectionMedia.scollection_id.value;
+	var shop_id = document.frmCollectionMedia.shop_id.value;
+	shopCollectionImages(shop_id, scollection_id, lang_id);
+});
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
+	var dvt = '#shopFormChildBlock';
 
 	goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
@@ -105,7 +112,7 @@ $(document).on('change','.bg-language-js',function(){
 		searchShops(document.frmShopSearch);
 	};
 
-	getCountryStates = function(countryId,stateId,dv){
+	getCountryStates = function(countryId, stateId, dv){
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('Shops','getStates',[countryId,stateId]),'',function(res){
 			$(dv).empty();
@@ -150,20 +157,44 @@ $(document).on('change','.bg-language-js',function(){
 		});
 	};
 
-	shopCollectionProducts= function(shopId){
+	/* shopCollectionProducts= function(shopId){
 		fcom.displayProcessing();
-			fcom.ajax(fcom.makeUrl('shops', 'shopCollection', [shopId]), '', function(t) {
-				fcom.updateFaceboxContent(t);
-				getShopCollectionGeneralForm(shopId);
-			});
+		fcom.ajax(fcom.makeUrl('shops', 'shopCollection', [shopId]), '', function(t) {
+			fcom.updateFaceboxContent(t);
+			getShopCollectionGeneralForm(shopId);
+		});
+	}; */
+
+	deleteShopCollection=function(shop_id, scollection_id){
+		var agree = confirm( langLbl.confirmDelete );
+		if( !agree ){
+			return false;
+		}
+		fcom.ajax(fcom.makeUrl('shops','deleteShopCollection', [shop_id, scollection_id] ),'',function(res){
+			searchShopCollections(shop_id);
+		});
 	};
 
-	getShopCollectionGeneralForm = function (shopId){
+	shopCollections= function(shopId){
 		fcom.displayProcessing();
-		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionGeneralForm', [shopId]), '', function(t) {
+		fcom.ajax(fcom.makeUrl('shops', 'shopCollections', [shopId]), '', function(t) {
 			fcom.updateFaceboxContent(t);
+			searchShopCollections(shopId);
 		});
-	}
+	};
+
+	searchShopCollections= function(shopId){
+		$(dvt).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('shops', 'searchShopCollections', [shopId]), '', function(t) {
+			$(dvt).html(t);
+		});
+	};
+
+	getShopCollectionGeneralForm = function (shop_id, scollection_id){
+		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionGeneralForm', [shop_id, scollection_id]), '', function(t) {
+			$(dvt).html(t);
+		});
+	};
 
 	setupShopCollection = function (frm){
 		if (!$(frm).validate()) return;
@@ -200,26 +231,48 @@ $(document).on('change','.bg-language-js',function(){
 
 			return false;
 		}
-		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionLangForm', [shop_id,scollection_id,langId]), '', function(t) {
-			fcom.updateFaceboxContent(t);
+			$(dvt).html(t);
 		});
 	};
 
-	sellerCollectionProducts = function( scollection_id,shop_id ) {
-		fcom.displayProcessing();
+	sellerCollectionProducts = function( scollection_id, shop_id ) {
 		fcom.ajax(fcom.makeUrl('shops', 'sellerCollectionProductLinkFrm', [ scollection_id,shop_id ]), '', function(t) {
-			fcom.updateFaceboxContent(t);
+			$(dvt).html(t);
 			bindAutoComplete();
 		});
-	}
+	};
 
 	setUpSellerCollectionProductLinks = function(frm){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('shops', 'setUpSellerCollectionProductLinks'), data, function(t) {
 		});
-	}
+	};
+
+	collectionMediaForm = function (shop_id, scollection_id){
+		$(dvt).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionMediaForm', [shop_id, scollection_id]), '', function(t) {
+			$(dvt).html(t);
+			shopCollectionImages(shop_id, scollection_id);
+		});
+	};
+
+	shopCollectionImages = function(shop_id, scollection_id, lang_id){
+		fcom.ajax(fcom.makeUrl('shops', 'shopCollectionImages', [shop_id, scollection_id, lang_id]), '', function(t) {
+			$('#imageListing').html(t);
+		});
+	};
+
+	removeCollectionImage = function( shop_id, scollection_id, langId ){
+		var agree = confirm( langLbl.confirmRemove );
+		if( !agree ){
+			return false;
+		}
+		fcom.updateWithAjax(fcom.makeUrl('shops', 'removeCollectionImage',[shop_id, scollection_id, langId]), '', function(t) {
+			shopCollectionImages( shop_id, scollection_id, langId );
+		});
+	};
 
 	deleteImage = function( fileId, shopId, imageType, langId){
 		var agree = confirm( langLbl.confirmDeleteImage );
@@ -273,15 +326,15 @@ $(document).on('change','.bg-language-js',function(){
 })();
 
 function bindAutoComplete(){
+	var shopId = document.frmLinks1.shop_id.value;
 	$("input[name='scp_selprod_id']").autocomplete({'source': function(request, response) {
 		$.ajax({
 			url: fcom.makeUrl('Shops', 'autoCompleteProducts'),
-			data: {keyword: request,fIsAjax:1,shopId:$("input[name='shop_id']").val()},
+			data: {keyword: request,fIsAjax:1,shopId:shopId},
 			dataType: 'json',
 			type: 'post',
 			success: function(json) {
 				response($.map(json, function(item) {
-
 					return { label: item['name'] +'['+item['product_identifier'] +']',	value: item['id']	};
 				}));
 			},
@@ -362,6 +415,67 @@ $(document).on('click','.shopFile-Js',function(){
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
 				});
+		}
+	}, 500);
+
+});
+
+$(document).on('click','.shopCollection-Js',function(){
+	var node = this;
+	$('#form-upload').remove();
+	var shop_id = document.frmCollectionMedia.shop_id.value;
+	var scollection_id = document.frmCollectionMedia.scollection_id.value;
+	var lang_id = document.frmCollectionMedia.lang_id.value;
+	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
+	frm = frm.concat('<input type="file" name="file" />');
+	frm = frm.concat('<input type="hidden" name="scollection_id" value="' + scollection_id + '">');
+	frm = frm.concat('<input type="hidden" name="shop_id" value="' + shop_id + '">');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
+	frm = frm.concat('</form>');
+	$('body').prepend(frm);
+	$('#form-upload input[name=\'file\']').trigger('click');
+	if ( typeof timer != 'undefined' ) {
+		clearInterval(timer);
+	}
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+			$val = $(node).val();
+			$.ajax({
+				url: fcom.makeUrl('Shops', 'uploadCollectionImage'),
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).val('loading..');
+				},
+				complete: function() {
+					$(node).val($val);
+				},
+				success: function(ans) {
+					$.mbsmessage.close();
+					$.systemMessage.close();
+					//$.mbsmessage(ans.msg, true, 'alert--success');
+					var dv = '#mediaResponse';
+					$('.text-danger').remove();
+					if( ans.status == true ){
+						$.systemMessage( ans.msg,'alert--success');
+						$(dv).removeClass('text-danger');
+						$(dv).addClass('text-success');
+						shopCollectionImages(shop_id, scollection_id, lang_id);
+					} else {
+						$.systemMessage(ans.msg,'alert--danger');
+						$(dv).removeClass('text-success');
+						$(dv).addClass('text-danger');
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
 		}
 	}, 500);
 

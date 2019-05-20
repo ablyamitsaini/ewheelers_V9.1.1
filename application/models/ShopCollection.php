@@ -37,16 +37,20 @@ class ShopCollection extends MyAppModel
         return $this->mainTableRecordId;
     }
 
-    public static function getCollectionGeneralDetail($shop_id)
+    public static function getCollectionGeneralDetail($shop_id, $scollection_id = 0)
     {
         $srch = self::getSearchObject();
         $srch->addCondition(static::DB_TBL_PREFIX . "shop_id", "=", $shop_id);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
+        if (0 < $scollection_id) {
+            $srch->addCondition(static::DB_TBL_PREFIX . "id", "=", $scollection_id);
+            $rs = $srch->getResultSet();
+            return  FatApp::getDb()->fetch($rs);
+        }
         $rs = $srch->getResultSet();
-        return  FatApp::getDb()->fetch($rs);
+        return  FatApp::getDb()->fetchAll($rs);
     }
-
 
     public function addUpdateShopCollectionLang($data = array())
     {
@@ -133,5 +137,45 @@ class ShopCollection extends MyAppModel
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
         return  FatApp::getDb()->fetch($rs);
+    }
+
+    public static function getShopCollectionsDetail($shop_id, $lang_id)
+    {
+        $srch = self::getSearchObject();
+        $srch->joinTable(static::DB_TBL_LANG, 'LEFT OUTER JOIN', static::DB_TBL_LANG_PREFIX.'scollection_id = '.static::DB_TBL_PREFIX.'id');
+        $srch->addMultipleFields(array( 'scollection_id', 'IFNULL(scollection_name, scollection_identifier) as scollection_name', 'scollection_shop_id'));
+        $srch->addCondition(static::DB_TBL_PREFIX . "shop_id", "=", $shop_id);
+        $srch->addCondition(static::DB_TBL_PREFIX . "active", "=", applicationConstants::YES);
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $rs = $srch->getResultSet();
+        return  FatApp::getDb()->fetchAll($rs);
+    }
+
+    public function deleteCollection($collection_id)
+    {
+        $collection_id = FatUtility::int($collection_id);
+        $db = FatApp::getDb();
+        if (1 > $collection_id) {
+            $this->error = Labels::getLabel('ERR_INVALID_REQUEST.', $this->commonLangId);
+            return false;
+        }
+
+        if (!$db->deleteRecords(static::DB_TBL, array('smt' => static::DB_TBL_PREFIX.'id = ?', 'vals' => array($collection_id)))) {
+            $this->error = $db->getError();
+            return false;
+        }
+
+        if (!$db->deleteRecords(static::DB_TBL_LANG, array('smt' => static::DB_TBL_LANG_PREFIX.'scollection_id =  ?', 'vals' => array($collection_id)))) {
+            $this->error = $db->getError();
+            return false;
+        }
+
+        if (!$db->deleteRecords(static::DB_TBL_SHOP_COLLECTION_PRODUCTS, array('smt'=> static::DB_TBL_SHOP_COLLECTION_PRODUCTS_PREFIX.'scollection_id = ?','vals' => array($collection_id) ))) {
+            $this->error = $db->getError();
+            return false;
+        }
+
+        return true;
     }
 }

@@ -545,7 +545,7 @@ class BrandsController extends AdminBaseController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Brand_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
         $reqStatusArr = Brand::getBrandReqStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_brand_status', $this->adminLangId), 'brand_status', $reqStatusArr, '', array('class'=>'small'), '');
+        $frm->addSelectBox(Labels::getLabel('LBL_brand_status', $this->adminLangId), 'brand_status', $reqStatusArr);
         $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
         $frm->addTextArea('', 'brand_comments', '');
         /* $frm->addCheckBox(Labels::getLabel('LBL_Featured',$this->adminLangId), 'brand_featured', 1,array(),false,0); */
