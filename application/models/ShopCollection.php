@@ -16,9 +16,9 @@ class ShopCollection extends MyAppModel
     const DB_SELLER_PRODUCTS_LANG_TBL = 'tbl_seller_products_lang';
     const DB_SELLER_PRODUCTS_LANG_TBL_PREFIX = 'selprodlang_';
 
-    public function __construct($shopId = 0)
+    public function __construct($shopCollectionId = 0)
     {
-        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $shopId);
+        parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $shopCollectionId);
         $this->objMainTableRecord->setSensitiveFields(array());
     }
 

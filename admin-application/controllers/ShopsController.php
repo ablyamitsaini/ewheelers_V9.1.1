@@ -778,6 +778,37 @@ class ShopsController extends AdminBaseController
     {
         $scollection_id = FatUtility::int($scollection_id);
         $shop_id = $this->commonShopCollection($shop_id);
+        $this->markCollectionAsDeleted($shop_id, $scollection_id);
+        FatUtility::dieJsonSuccess(
+            Labels::getLabel('MSG_RECORD_DELETED', $this->adminLangId)
+        );
+    }
+
+    public function deleteSelectedCollections()
+    {
+        $this->objPrivilege->canEditShops();
+        $scollectionIdsArr = FatUtility::int(FatApp::getPostedData('scollection_ids'));
+        $collection_shopId = FatUtility::int(FatApp::getPostedData('collection_shopId'));
+        $shop_id = $this->commonShopCollection($collection_shopId);
+
+        if (empty($scollectionIdsArr)) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($scollectionIdsArr as $scollection_id) {
+            if (1 > $scollection_id) {
+                continue;
+            }
+            $this->markCollectionAsDeleted($collection_shopId, $scollection_id);
+        }
+        $this->set('msg', $this->str_delete_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function markCollectionAsDeleted($shop_id, $scollection_id)
+    {
         $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id, $scollection_id);
         if (empty($shopcolDetails)) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID1', $this->adminLangId));
@@ -788,9 +819,6 @@ class ShopsController extends AdminBaseController
             Message::addErrorMessage($collection->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-        FatUtility::dieJsonSuccess(
-            Labels::getLabel('MSG_RECORD_DELETED', $this->adminLangId)
-        );
     }
 
     public function shopCollectionMediaForm($shop_id, $scollection_id)
@@ -1051,7 +1079,7 @@ class ShopsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         $sellProdObj  = new ShopCollection();
-        //		$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
+        //$sellerProductRow = SellerProduct::getAttributesById( $selprod_id );
         $products = $sellProdObj->getShopCollectionProducts($scollection_id, $this->adminLangId);
 
         $sellerCollectionproductLinkFrm =  $this->getCollectionLinksFrm();
@@ -1162,10 +1190,31 @@ class ShopsController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieWithError(Message::getHtml());
         }
-
         $status = ($shopData['shop_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateShopStatus($shopId, $status);
+        //FatUtility::dieJsonSuccess($this->str_update_record);
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function changeCollectionStatus()
+    {
+        $this->objPrivilege->canEditShops();
+        $scollection_id = FatApp::getPostedData('scollection_id', FatUtility::VAR_INT, 0);
+        if (1 > $scollection_id) {
+            Message::addErrorMessage($this->str_invalid_request_id);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        $shopCollectionData = ShopCollection::getAttributesById($scollection_id, array('scollection_active'));
+
+        if ($shopCollectionData == false) {
+            Message::addErrorMessage($this->str_invalid_request);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        $status = ($shopCollectionData['scollection_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+
+        $this->updateShopCollectionStatus($scollection_id, $status);
         //FatUtility::dieJsonSuccess($this->str_update_record);
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
@@ -1193,6 +1242,28 @@ class ShopsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    public function toggleBulkCollectionStatuses()
+    {
+        $this->objPrivilege->canEditShops();
+        $status = FatApp::getPostedData('collection_status', FatUtility::VAR_INT, -1);
+        $scollectionIdsArr = FatUtility::int(FatApp::getPostedData('scollection_ids'));
+
+        if (empty($scollectionIdsArr) || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($scollectionIdsArr as $scollection_id) {
+            if (1 > $scollection_id) {
+                continue;
+            }
+            $this->updateShopCollectionStatus($scollection_id, $status);
+        }
+        $this->set('msg', $this->str_update_record);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
     private function updateShopStatus($shopId, $status)
     {
         $shopId = FatUtility::int($shopId);
@@ -1204,9 +1275,27 @@ class ShopsController extends AdminBaseController
         }
 
         $shopObj = new Shop($shopId);
-
-        if (!$shopObj->changeStatus($status)) {
+        $resp = $shopObj->changeStatus($status);
+        if (!$resp) {
             Message::addErrorMessage($shopObj->getError());
+            FatUtility::dieWithError(Message::getHtml());
+        }
+    }
+
+    private function updateShopCollectionStatus($scollection_id, $status)
+    {
+        $scollection_id = FatUtility::int($scollection_id);
+        $status = FatUtility::int($status);
+        if (1 > $scollection_id || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        $shopCollectionObj = new ShopCollection($scollection_id);
+
+        if (!$shopCollectionObj->changeStatus($status)) {
+            Message::addErrorMessage($shopCollectionObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
     }

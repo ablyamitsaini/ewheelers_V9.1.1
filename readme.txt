@@ -22,6 +22,7 @@ Enhancements:
 	. User can perform multi select operation on page listing.
 	. jQuery library updated to V3.4.1.
 	. Handled Form elements validations via a centralized class.
+	. Admin can perform multi select bulk operations(Update statues and Delete) on shop collection as well.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
