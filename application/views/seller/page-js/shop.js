@@ -399,6 +399,26 @@ $(document).on('change','.collection-language-js',function(){
 		});
 	};
 
+	toggleShopCollectionStatus = function(e,obj){
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			e.preventDefault();
+			return;
+		}
+		var scollection_id = parseInt(obj.value);
+		if( scollection_id < 1 ){
+			return false;
+		}
+		data='scollection_id='+scollection_id;
+		fcom.ajax(fcom.makeUrl('Seller','changeShopCollectionStatus'),data,function(res){
+			var ans = $.parseJSON(res);
+			if( ans.status == 1 ){
+				$.mbsmessage(ans.msg, true, 'alert--success');
+			} else {
+				$.mbsmessage(ans.msg, true, 'alert--danger');
+			}
+		});
+	};
+
 })();
 function bindAutoComplete(){
 		$("input[name='scp_selprod_id']").autocomplete({

@@ -110,6 +110,8 @@ trait SellerCollections
         $frm->addRequiredField(Labels::getLabel('LBL_Identifier', $this->siteLangId), 'scollection_identifier');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_SEO_Friendly_URL', $this->siteLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
+        $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->siteLangId);
+        $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->siteLangId), 'scollection_active', $activeInactiveArr, applicationConstants::YES, array(), '');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         return $frm;
     }
@@ -165,6 +167,23 @@ trait SellerCollections
         $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
         $this->set('collection_id', $collection_id);
         $this->set('langId', $newTabLangId);
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function changeShopCollectionStatus()
+    {
+        $scollectionId = FatApp::getPostedData('scollection_id', FatUtility::VAR_INT, 0);
+        $shopId = $this->commonShopCollection();
+        $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shopId, $scollectionId);
+        $status = ($shopcolDetails['scollection_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
+
+        $scollection = new ShopCollection($scollectionId);
+        if (!$scollection->changeStatus($status)) {
+            Message::addErrorMessage($sellerProdObj->getError());
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
+        $this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
