@@ -5,7 +5,7 @@ $slideFrm->developerTags['colClassPrefix'] = 'col-md-';
 $slideFrm->developerTags['fld_default_col'] = 12;
 
 $slide_identifier = $slideFrm->getField('slide_identifier');
-$slide_identifier->addFieldTagAttribute('onchange', "checkUnique($(this), 'tbl_slides', 'slide_identifier', 'slide_id', $('#slide_identifier'), []);");
+$slide_identifier->setUnique('tbl_slides', 'slide_identifier', 'slide_id', 'slide_id', 'slide_id');
 ?>
 <section class="section">
     <div class="sectionhead">

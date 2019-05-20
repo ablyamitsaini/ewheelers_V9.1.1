@@ -4,7 +4,7 @@ $frm->setFormTagAttribute('onsubmit', 'setupFormFields(this); return(false);');
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 $sformfield_identifier = $frm->getField('sformfield_identifier');
-$sformfield_identifier->addFieldTagAttribute('onchange', "checkUnique($(this), 'tbl_user_supplier_form_fields', 'sformfield_identifier', 'sformfield_id', $('#sformfield_identifier'), []);");
+$sformfield_identifier->setUnique('tbl_user_supplier_form_fields', 'sformfield_identifier', 'sformfield_id', 'sformfield_id', 'sformfield_id');
 ?> <section class="section">
     <div class="sectionhead">
         <h4><?php echo Labels::getLabel('LBL_Set_Up_Form_Fields', $adminLangId); ?></h4>
