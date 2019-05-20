@@ -359,19 +359,19 @@ class ImageController extends FatController
     {
         switch ($templateId) {
             case Shop::TEMPLATE_ONE:
-                $default_image='defaults/'.'logo-red.png';
+                $default_image='images/defaults/'.'logo-red.png';
                 break;
             case Shop::TEMPLATE_TWO:
-                $default_image='defaults/'.'transparent.png';
+                $default_image='images/defaults/'.'transparent.png';
                 break;
             case Shop::TEMPLATE_THREE:
-                $default_image= 'defaults/'.'transparent.png';
+                $default_image= 'images/defaults/'.'transparent.png';
                 break;
             case Shop::TEMPLATE_FOUR:
-                $default_image='defaults/'.'shop-bg.jpg';
+                $default_image='images/defaults/'.'shop-bg.jpg';
                 break;
             case Shop::TEMPLATE_FIVE:
-                $default_image='defaults/'.'shop-5-bg.jpg';
+                $default_image='images/defaults/'.'shop-5-bg.jpg';
                 break;
             default:
                 $h = '';
@@ -1150,13 +1150,13 @@ class ImageController extends FatController
         }
         switch ($frameId) {
             case Banner::BANNER_HOME_PAGE_LAYOUT_1:
-                $image =  'defaults/banner_layouts/layout-1.jpg';
+                $image =  'images/defaults/banner_layouts/layout-1.jpg';
                 break;
             case Banner::BANNER_HOME_PAGE_LAYOUT_2:
-                $image =  'defaults/banner_layouts/layout-2.jpg';
+                $image =  'images/defaults/banner_layouts/layout-2.jpg';
                 break;
             case Banner::BANNER_PRODUCT_PAGE_LAYOUT_1:
-                $image =  'defaults/banner_layouts/layout-3.jpg';
+                $image =  'images/defaults/banner_layouts/layout-3.jpg';
                 break;
         }
         if ($sizeType) {
