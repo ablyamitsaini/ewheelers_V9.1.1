@@ -12,20 +12,20 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-3">
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('Lbl_Change_Email', $siteLangId);?></h5>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <div id="changeEmailFrmBlock"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-3">
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('Lbl_Change_password', $siteLangId);?></h5>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <div id="changePassFrmBlock"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                         </div>
                     </div>

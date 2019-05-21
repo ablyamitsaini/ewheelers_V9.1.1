@@ -52,7 +52,7 @@ $cancelBtnFld->developerTags['col'] = 2;
  		</div>
  		<div class="content-body">
  			<div class="cards">
- 				<div class="cards-header p-3">
+ 				<div class="cards-header p-4">
  					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Subscriptions',$siteLangId);?></h5>
  				<?php if($currentActivePlan) {
 									if(strtotime(date("Y-m-d"))>=strtotime('-3 day',strtotime($currentActivePlan[OrderSubscription::DB_TBL_PREFIX.'till_date'])) ){
@@ -101,7 +101,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                     <?php  echo $message;?>
                   </p>
 				<?php }?>
- 				<div class="cards-content p-3">
+ 				<div class="cards-content pl-4 pr-4 ">
 					<div class="bg-gray-light p-3 pb-0"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
 					<span class="gap"></span>
 					<div id="ordersListing"></div>

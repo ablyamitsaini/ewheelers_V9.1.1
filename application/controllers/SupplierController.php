@@ -633,46 +633,45 @@ class SupplierController extends MyAppController
             $fieldName = 'sformfield_'.$field['sformfield_id'];
 
             switch ($field['sformfield_type']) {
+                case User::USER_FIELD_TYPE_TEXT:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXT:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_TEXTAREA:
+                    $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
+                    break;
 
-            case User::USER_FIELD_TYPE_TEXTAREA:
-                $fld = $frm->addTextArea($field['sformfield_caption'], $fieldName);
-                break;
+                case User::USER_FIELD_TYPE_FILE:
+                    $fld1 = $frm->addButton(
+                        $field['sformfield_caption'],
+                        'button['.$field['sformfield_id'].']',
+                        Labels::getLabel('LBL_Upload_File', $this->siteLangId),
+                        array('class'=>'fileType-Js btn--sm','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
+                    );
+                    $fld1->htmlAfterField='<span id="input-sformfield'.$field['sformfield_id'].'"></span>';
+                    if ($field['sformfield_required'] == 1) {
+                        $fld1->captionWrapper = array('<div class="astrick">','</div>');
+                    }
+                    // $fld = $frm->addHiddenField($field['sformfield_caption'],$fieldName,'',array('id'=>$fieldName));
+                    $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName, 'hidden'=>'hidden', 'title'=>$field['sformfield_caption']));
+                    $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
+                    $fld1->attachField($fld);
+                    break;
 
-            case User::USER_FIELD_TYPE_FILE:
-                $fld1 = $frm->addButton(
-                    $field['sformfield_caption'],
-                    'button['.$field['sformfield_id'].']',
-                    Labels::getLabel('LBL_Upload_File', $this->siteLangId),
-                    array('class'=>'fileType-Js btn--sm','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
-                );
-                $fld1->htmlAfterField='<span id="input-sformfield'.$field['sformfield_id'].'"></span>';
-                if ($field['sformfield_required'] == 1) {
-                    $fld1->captionWrapper = array('<div class="astrick">','</div>');
-                }
-                // $fld = $frm->addHiddenField($field['sformfield_caption'],$fieldName,'',array('id'=>$fieldName));
-                $fld = $frm->addTextBox('', $fieldName, '', array('id'=>$fieldName, 'hidden'=>'hidden', 'title'=>$field['sformfield_caption']));
-                $fld->setRequiredStarWith(Form::FORM_REQUIRED_STAR_WITH_NONE);
-                $fld1->attachField($fld);
-                break;
+                case User::USER_FIELD_TYPE_DATE:
+                    $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATE:
-                $fld = $frm->addDateField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
+                case User::USER_FIELD_TYPE_DATETIME:
+                    $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
+                    break;
 
-            case User::USER_FIELD_TYPE_DATETIME:
-                $fld = $frm->addDateTimeField($field['sformfield_caption'], $fieldName, '', array('readonly'=>'readonly'));
-                break;
-
-            case User::USER_FIELD_TYPE_TIME:
-                $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
-                $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
-                $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
-                $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
-                break;
+                case User::USER_FIELD_TYPE_TIME:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName);
+                    $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
+                    $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
+                    $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
+                    break;
             }
 
             if ($field['sformfield_required'] == 1) {
@@ -689,6 +688,7 @@ class SupplierController extends MyAppController
     private function getSellerForm()
     {
         $frm = new Form('frmSeller');
+        $frm->addHiddenField('', 'user_id', 0, array('id'=>'user_id'));
         $frm->setFormTagAttribute("class", "form invalid");
         $frm->setFormTagAttribute("action", CommonHelper::generateUrl('supplier', 'account'));
         $fld = $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'user_email', '');

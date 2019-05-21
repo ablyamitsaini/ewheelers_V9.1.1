@@ -5,7 +5,7 @@
 <?php }?>
 </div>
 <?php if (count($messages) > 0){ ?>
-<div class="cards-content p-3">
+<div class="cards-content pl-4 pr-4 ">
 	<div class="messages-list">
 		<ul>
 			<?php foreach($messages as $row){
@@ -27,7 +27,7 @@
 	</div>
 </div>
 <?php }else{?>
-	<div class="cards-content p-3">
+	<div class="cards-content pl-4 pr-4 ">
 		<div class="messages-list">
 			<?php echo Labels::getLabel('LBL_No_record_found',$siteLangId); ?>
 		</div>

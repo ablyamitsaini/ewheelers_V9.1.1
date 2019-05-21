@@ -1,7 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="section-head">
-    <h2><?php echo Labels::getLabel('LBL_My_Cart', $siteLangId); ?></h2>
+    <div class="section__heading"><h2><?php echo Labels::getLabel('LBL_My_Cart', $siteLangId); ?></h2></div>
     <div class="section__action">
         <a href="javascript:void(0)" onclick="cart.remove('all','cart')" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Empty_Cart', $siteLangId); ?></a>
     </div>
@@ -27,7 +27,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                             $shopUrl = CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']));
                             $imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>
 
-                    <tr class="<?php echo (!$product['in_stock']) ? 'disabled' : ''; ?>">
+                    <tr class="<?php echo md5($product['key']); ?> <?php echo (!$product['in_stock']) ? 'disabled' : ''; ?>">
                         <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Item_Details', $siteLangId); ?></span>
                             <div class="product-img"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></div>
                         </td>
@@ -39,8 +39,11 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                                 <div class="item-yk-head-specification">
                                 <?php
                                 if (isset($product['options']) && count($product['options'])) {
-                                    foreach ($product['options'] as $option) {
-                                        echo ' | ' . $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
+                                    foreach ($product['options'] as $key => $option) {
+                                        if (0 < $key){
+                                            echo ' | ';
+                                        }
+                                        echo $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
                                     <?php }
                                 }
 

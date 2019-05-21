@@ -17,6 +17,15 @@
     <div class="sidebar__content custom-scrollbar" data-simplebar>
         <nav class="dashboard-menu">
             <ul>
+                <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'index') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner">
+                        <a title="<?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('buyer'); ?>">
+                            <i class="fa fa-dashboard icn"></i>
+                            <span class="menu-item__title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></span>
+                        </a>
+                    </div>
+                </li>
+                <li class="divider"></li>
                 <li class="menu__item">
                     <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Orders", $siteLangId); ?></span></div>
                 </li>
@@ -211,6 +220,12 @@
                     </div>
                 </li>
                 <li class="divider"></li>
+				<li class="menu__item"><div class="menu__item__inner"><a href="">
+				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language"></use></svg>
+				</i><span class="menu-item__title">English</span></a></div></li>
+				<li class="menu__item"><div class="menu__item__inner"><a title="" href="">
+				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency"></use></svg>
+				</i><span class="menu-item__title"> Currency</span></a></div></li>
             </ul>
         </nav>
     </div>

@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<div class="cards-header p-3">
+<div class="cards-header p-4">
     <h5 class="cards-title"><?php echo $productCatalogName; ?></h5>
     <div class="action">
         <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a>
     </div>
 </div>
-<div class="cards-content p-3">
+<div class="cards-content pl-4 pr-4 ">
     <div class="tabs tabs--small   tabs--scroll clearfix">
         <?php require_once('sellerCatalogProductTop.php');?>
     </div>

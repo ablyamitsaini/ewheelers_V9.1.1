@@ -10,10 +10,10 @@
  		</div>
  		<div class="content-body">
  			<div class="cards">
- 				<div class="cards-header p-3">
+ 				<div class="cards-header p-4">
  					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Saved_Searches',$siteLangId);?></h5>
  				</div>
- 				<div class="cards-content p-3">
+ 				<div class="cards-content pl-4 pr-4 ">
 					<div class="" id="SearchesListingDiv"></div>
 					<div class="gap"></div>
 					<div id="loadMoreBtnDiv"></div>

@@ -52,8 +52,7 @@ $frm->developerTags['fld_default_col'] = 12; */
       </div>
       <div class="field-wraper">
         <div class="field_cover"><?php echo $frm->getFieldHTML('user_password');?></div>
-        <span class="text--small"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),
-'User@123') ?></span> </div>
+        <span class="text--small"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId), 'User@123') ?></span> </div>
     </div>
   </div>
   <div class="col-md-6">
@@ -73,8 +72,8 @@ $frm->developerTags['fld_default_col'] = 12; */
   <div class="col-md-12">
     <div class="field-set">
       <label class="checkbox">
-        <?php 	
-					$fld = $frm->getFieldHTML('agree');  
+        <?php
+					$fld = $frm->getFieldHTML('agree');
 					$fld = str_replace("<label >","",$fld);
 					$fld = str_replace("</label>","",$fld);
 					echo $fld;
@@ -84,8 +83,8 @@ $frm->developerTags['fld_default_col'] = 12; */
       <?php if($frm->getField('user_newsletter_signup')) { ?>
       <span class="gap"></span>
       <label class="checkbox">
-        <?php 	
-					$fld = $frm->getFieldHTML('user_newsletter_signup');  
+        <?php
+					$fld = $frm->getFieldHTML('user_newsletter_signup');
 					$fld = str_replace("<label >","",$fld);
 					$fld = str_replace("</label>","",$fld);
 					echo $fld;

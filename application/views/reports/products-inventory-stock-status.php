@@ -33,10 +33,10 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
        </div>
        <div class="content-body">
            <div class="cards">
-               <div class="cards-header p-3">
+               <div class="cards-header p-4">
                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Products_Inventory_Stock_Status_Report', $siteLangId);?></h5>
                </div>
-               <div class="cards-content p-3">
+               <div class="cards-content pl-4 pr-4 ">
                    <div class="grids--profile">
                        <div class="bg-gray-light p-3 pb-0">
                            <div class="row">

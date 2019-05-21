@@ -9,7 +9,7 @@
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 				<div class="message message--success align--center">
 					<?php
 					if ($supplierRequest["usuprequest_status"] == User::SUPPLIER_REQUEST_PENDING) { ?>

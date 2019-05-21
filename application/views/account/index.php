@@ -10,7 +10,7 @@
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Buyer_dashboard_page',$siteLangId); ?></h5>
 			</div>
 		</div>

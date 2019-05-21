@@ -10,10 +10,10 @@
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('Lbl_Request_My_Data',$siteLangId);?></h5>
 			</div>
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 				<div class="form__content">
 					<div class="col-md-8" id="requestDataFrmBlock">
 						<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
