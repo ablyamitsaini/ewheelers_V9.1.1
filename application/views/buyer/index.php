@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="content-body">
-		<div class="widget-scroll simplebar-horizontal"  data-simplebar>
+        <div class="widget-scroll simplebar-horizontal"  data-simplebar>
             <div class="widget-wrapper">
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('account', 'credits');?>">
@@ -28,7 +28,7 @@
                                     </i> <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
-                                <div class="stats">                                   
+                                <div class="stats">
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></h6>
                                         <?php echo CommonHelper::displayMoneyFormat($userBalance);?>
@@ -49,7 +49,7 @@
                                     </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
                             </div>
                             <div class="cards-content p-3">
-                                <div class="stats">                                    
+                                <div class="stats">
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?> </h6>
                                         <?php echo $todayOrderCount;?>
@@ -73,7 +73,7 @@
                             </div>
                             <div class="cards-content p-3">
                                 <div class="stats">
-                                   
+
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Unread_Notification_Today', $siteLangId);?></h6>
                                         <?php echo $todayUnreadMessageCount;?>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="cards-content p-3">
                                 <div class="stats">
-                                   
+
                                     <div class="stats-number">
                                         <h6 class="total"><?php echo Labels::getLabel('LBL_Current_Reward_Points', $siteLangId);?></h6>
                                         <?php echo $totalRewardPoints;?>
@@ -110,7 +110,7 @@
                     </a>
                 </div>
             </div>
-			</div>
+        </div>
             <div class="row mb-3">
                 <div class="col-lg-6 col-md-12">
                     <div class="cards">
@@ -126,13 +126,14 @@
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
-                                        <th colspan="2" width="60%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
-                                        <th width="20%"><?php echo Labels::getLabel('LBL_Amount', $siteLangId);?></th>
+                                        <th colspan="2" width="50%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
+                                        <th width="10%"><?php echo Labels::getLabel('LBL_Amount', $siteLangId);?></th>
+                                        <th width="20%"><?php echo Labels::getLabel('LBL_Payment_Status', $siteLangId);?></th>
                                         <th width="20%"><?php echo Labels::getLabel('LBL_Action', $siteLangId);?></th>
                                     </tr>
                                     <?php if (count($orders)>0) {
-                                                            $canCancelOrder = true;
-                                                            $canReturnRefund = true;
+                                        $canCancelOrder = true;
+                                        $canReturnRefund = true;
                                         foreach ($orders as $orderId => $row) {
                                             $orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id']));
                                             if ($row['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
@@ -175,10 +176,10 @@
                                                 <?php if ($row['totOrders'] > 1) {
                                                     echo Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'])).'">'.$row['order_id'].'</a>';
                                                 } ?>
-                                                <div class="item__specification"><span><?php echo Labels::getLabel('Lbl_Payment_Status', $siteLangId)?>:</span> <?php echo $row['orderstatus_name']; ?></div>
                                             </div>
                                         </td>
                                         <td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */; ?></span></td>
+                                        <td><div class="item__specification"><span><?php echo $row['orderstatus_name']; ?></div></td>
                                         <td>
                                             <ul class="actions">
                                                 <li><a title="<?php echo Labels::getLabel('LBL_View_Order', $siteLangId); ?>" href="<?php echo $orderDetailUrl; ?>"><i class="fa fa-eye"></i></a></li>
