@@ -44,17 +44,22 @@ $(document).on('change','.collection-language-js',function(){
 		searchShops(frm);
 	}
 
+	reloadCollectionList = function(){
+		shopCollections($("input[name='collection_shopId']").val());
+	}
+
 	addShopForm = function(id) {
-		$.facebox(function() {shopForm(id);
+		$.facebox(function() {
+			shopForm(id);
 		});
 	};
 	shopForm = function(id) {
 		fcom.displayProcessing();
 		var frm = document.frmShopSearchPaging;
-			fcom.ajax(fcom.makeUrl('Shops', 'form', [id]), '', function(t) {
-				fcom.updateFaceboxContent(t);
-			});
-			};
+		fcom.ajax(fcom.makeUrl('Shops', 'form', [id]), '', function(t) {
+			fcom.updateFaceboxContent(t);
+		});
+	};
 
 	setupShop = function(frm) {
 		if (!$(frm).validate()) return;
@@ -174,6 +179,12 @@ $(document).on('change','.collection-language-js',function(){
 			searchShopCollections(shop_id);
 		});
 	};
+	deleteSelectedCollection = function(){
+        if(!confirm(langLbl.confirmDelete)){
+            return false;
+        }
+        $("#frmCollectionsListing").attr("action",fcom.makeUrl('Shops','deleteSelectedCollections')).submit();
+    };
 
 	shopCollections= function(shopId){
 		fcom.displayProcessing();
@@ -313,6 +324,45 @@ $(document).on('change','.collection-language-js',function(){
 			}
 		});
 		$.systemMessage.close();
+	};
+
+	toggleCollectionStatus = function(e,obj,canEdit){
+		if(canEdit == 0){
+			e.preventDefault();
+			return;
+		}
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			e.preventDefault();
+			return;
+		}
+		var shopCollectionId = parseInt(obj.value);
+		if(shopCollectionId < 1){
+			fcom.displayErrorMessage(langLbl.invalidRequest);
+			return false;
+		}
+		data='scollection_id='+shopCollectionId;
+		fcom.displayProcessing();
+		fcom.ajax(fcom.makeUrl('Shops','changeCollectionStatus'),data,function(res){
+		var ans =$.parseJSON(res);
+			if( ans.status == 1 ){
+				$(obj).toggleClass("active");
+				fcom.displaySuccessMessage(ans.msg);
+				/* setTimeout(function(){
+					reloadList();
+				}, 1000); */
+			} else {
+				fcom.displayErrorMessage(ans.msg);
+			}
+		});
+		$.systemMessage.close();
+	};
+
+	toggleBulkCollectionStatues = function(status){
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			return false;
+		}
+		$("#frmCollectionsListing input[name='collection_status']").val(status);
+		$("#frmCollectionsListing").submit();
 	};
 
 	toggleBulkStatues = function(status){

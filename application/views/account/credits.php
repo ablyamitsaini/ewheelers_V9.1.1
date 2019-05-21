@@ -82,8 +82,9 @@ $cancelBtnFld->developerTags['col'] = 2;
                             <div class="col-lg-<?php echo $totalBalanceAvailableDiv; ?> col-md-<?php echo $totalBalanceAvailableDiv; ?> mb-3 mb-md-0">
                                 <div class="balancebox" id="rechargeWalletDiv">
                                     <p><?php echo Labels::getLabel('LBL_Total_Balance_Available', $siteLangId); ?>: </p>
-                                    <h2><strong><?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance); ?></strong></h2> \
+                                    <h2><strong><?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance); ?></strong></h2>
                                     <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                                        \
                                         <small>
                                             <?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?>
                                             <?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance, true, true); ?>

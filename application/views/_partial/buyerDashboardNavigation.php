@@ -17,6 +17,15 @@
     <div class="sidebar__content custom-scrollbar" data-simplebar>
         <nav class="dashboard-menu">
             <ul>
+                <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'index') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner">
+                        <a title="<?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('buyer'); ?>">
+                            <i class="fa fa-dashboard icn"></i>
+                            <span class="menu-item__title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></span>
+                        </a>
+                    </div>
+                </li>
+                <li class="divider"></li>
                 <li class="menu__item">
                     <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Orders", $siteLangId); ?></span></div>
                 </li>

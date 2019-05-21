@@ -1,6 +1,6 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
-<script type="text/javascript" language="javascript" 
+<script type="text/javascript" language="javascript"
 							src="/yokartv8/public/index.php?url=js-css/js&f=js%2Fslick.min.js&min=0&sid=1557140553" ></script>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="content-body">
-		<div class="js-widget-scroll widget-scroll">            
+		<div class="js-widget-scroll widget-scroll">
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('account', 'credits');?>">
                         <div class="cards">
@@ -27,18 +27,18 @@
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
                                         </svg>
                                     </i>
-									
+
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
-                                <div class="stats">                                   
+                                <div class="stats">
                                     <div class="stats-number">
                                        <ul>
                                        	<li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
                                        	<span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span></li>
                                        		<li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
                                        	<span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span></li>
-                                       </ul>                                       
-                                        
+                                       </ul>
+
                                     </div>
                                 </div>
                             </div>
@@ -53,10 +53,10 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order"></use>
                                         </svg>
-                                    </i> 
+                                    </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
-                                <div class="stats">                                    
+                                <div class="stats">
                                     <div class="stats-number">
                                        <ul>
                                        	<li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
@@ -64,7 +64,7 @@
 										   <li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
 											   <span class="total-numbers"><?php echo $todayOrderCount;?></span> </li>
                                        </ul>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -79,23 +79,23 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
                                         </svg>
-                                    </i>  
+                                    </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
-                                   
+
                                     <div class="stats-number">
-                                       
+
                                        <ul>
                                        	<li><span class="total"><?php echo Labels::getLabel('LBL_Unread_Notification_Today', $siteLangId);?></span>
                                        	<span class="total-numbers"><?php echo $todayUnreadMessageCount;?></span></li>
 										   <li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
 											   <span class="total-numbers"><?php echo $totalMessageCount;?></span> </li>
                                        </ul>
-                                       
-                                       
-                                        
-                                        
+
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -110,11 +110,11 @@
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change"></use>
                                         </svg>
-                                    </i>  
+                                    </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
-                                   
+
                                     <div class="stats-number">
                                        <ul>
                                        	<li><span class="total"><?php echo Labels::getLabel('LBL_Current_Reward_Points', $siteLangId);?></span>
@@ -122,16 +122,16 @@
 										   <li><span class="total"><?php echo Labels::getLabel('LBL_Currency_Value', $siteLangId);?></span>
 											   <span class="total-numbers"> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($totalRewardPoints)); ?></span> </li>
                                        </ul>
-                                       
-                                         
-                                       
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </div>
-            
+
 			</div>
             <div class="row mb-4">
                 <div class="col-lg-6 col-md-12">
@@ -148,13 +148,14 @@
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
-                                        <th colspan="2" width="60%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
-                                        <th width="20%"><?php echo Labels::getLabel('LBL_Amount', $siteLangId);?></th>
+                                        <th colspan="2" width="50%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
+                                        <th width="10%"><?php echo Labels::getLabel('LBL_Amount', $siteLangId);?></th>
+                                        <th width="20%"><?php echo Labels::getLabel('LBL_Payment_Status', $siteLangId);?></th>
                                         <th width="20%"><?php echo Labels::getLabel('LBL_Action', $siteLangId);?></th>
                                     </tr>
                                     <?php if (count($orders)>0) {
-                                                            $canCancelOrder = true;
-                                                            $canReturnRefund = true;
+                                        $canCancelOrder = true;
+                                        $canReturnRefund = true;
                                         foreach ($orders as $orderId => $row) {
                                             $orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'],$row['op_id']));
                                             if ($row['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
@@ -197,10 +198,10 @@
                                                 <?php if ($row['totOrders'] > 1) {
                                                     echo Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'])).'">'.$row['order_id'].'</a>';
                                                 } ?>
-                                                <div class="item__specification"><span><?php echo Labels::getLabel('Lbl_Payment_Status', $siteLangId)?>:</span> <?php echo $row['orderstatus_name']; ?></div>
                                             </div>
                                         </td>
                                         <td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */; ?></span></td>
+                                        <td><div class="item__specification"><span><?php echo $row['orderstatus_name']; ?></div></td>
                                         <td>
                                             <ul class="actions">
                                                 <li><a title="<?php echo Labels::getLabel('LBL_View_Order', $siteLangId); ?>" href="<?php echo $orderDetailUrl; ?>"><i class="fa fa-eye"></i></a></li>
@@ -503,7 +504,7 @@ $('.js-widget-scroll').slick({
         slidesToScroll: 1
       }
     }
-     
+
   ]
 });
 </script>

@@ -29,7 +29,7 @@ foreach ($arr_listing as $sn => $row) {
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="scollection_id[]" value='.$row['scollection_id'].'><i class="input-helper"></i></label>', true);
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="scollection_ids[]" value='.$row['scollection_id'].'><i class="input-helper"></i></label>', true);
                 break;
             case 'listserial':
                 $td->appendElement('plaintext', array(), $sr_no);
@@ -38,8 +38,21 @@ foreach ($arr_listing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $row[$key], true);
                 break;
             case 'scollection_active':
-                $activeInactiveArr = applicationConstants::getActiveInactiveArr($adminLangId);
-                $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]], true);
+                // $activeInactiveArr = applicationConstants::getActiveInactiveArr($adminLangId);
+
+                $active = "";
+                if ($row['scollection_active']) {
+                    $active = 'checked';
+                }
+                $statusAct = ($canEdit === true) ? 'toggleCollectionStatus(event,this,' .applicationConstants::YES. ')' : 'toggleCollectionStatus(event,this,' .applicationConstants::NO. ')';
+                $statusClass = ($canEdit === false) ? 'disabled' : '';
+                    $str='<label class="statustab -txt-uppercase">
+                     <input '.$active.' type="checkbox" id="switch'.$row['scollection_id'].'" value="'.$row['scollection_id'].'" onclick="'.$statusAct.'" class="switch-labels"/>
+                    <i class="switch-handles '.$statusClass.'"></i></label>';
+                    $td->appendElement('plaintext', array(), $str, true);
+                break;
+
+                // $td->appendElement('plaintext', array(), $activeInactiveArr[$row[$key]], true);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));
@@ -68,9 +81,42 @@ if (count($arr_listing) == 0) {?>
 <?php } else { ?>
     <div class="sectionhead nopadding">
         <h4><?php echo Labels::getLabel('LBL_Shop_Collections', $adminLangId); ?></h4>
-        <a href="javascript:void(0);" class="btn-default btn-sm" onclick="getShopCollectionGeneralForm(<?php echo $shopId; ?>, 0)"><?php echo Labels::getLabel('LBL_Add_Collection', $adminLangId); ?></a>
+        <?php
+        if ($canEdit) {
+            $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));
+            $li = $ul->appendElement("li", array('class'=>'droplink'));
+
+            $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
+            $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
+            $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
+
+            $innerLi=$innerUl->appendElement('li');
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
+
+            $innerLi=$innerUl->appendElement('li');
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
+
+            $innerLi=$innerUl->appendElement('li');
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_New_Product', $adminLangId),"onclick"=>"getShopCollectionGeneralForm(".$shopId.", 0)"), Labels::getLabel('LBL_Add_Collection', $adminLangId), true);
+
+            $innerLi=$innerUl->appendElement('li');
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelectedCollection()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+
+            echo $ul->getHtml();
+        }
+        ?>
     </div>
-    <form id="frmCollectionsListing" name="frmCollectionsListing" method="post" onsubmit="formAction(this); return(false);" class="form" action="<?php echo CommonHelper::generateUrl('Seller', 'bulkOptionsDelete'); ?>">
-        <?php echo $tbl->getHtml(); ?>
-    </form>
+    <?php
+        $frm = new Form('frmCollectionsListing', array('id'=>'frmCollectionsListing'));
+        $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+        $frm->setFormTagAttribute('onsubmit', 'formAction(this, reloadCollectionList ); return(false);');
+        $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Shops', 'toggleBulkCollectionStatuses'));
+        $frm->addHiddenField('', 'collection_status', '');
+        $frm->addHiddenField('', 'collection_shopId', $shopId);
+
+        echo $frm->getFormTag();
+        echo $frm->getFieldHtml('collection_status');
+        echo $frm->getFieldHtml('collection_shopId');
+        echo $tbl->getHtml(); ?>
+        </form>
 <?php } ?>
