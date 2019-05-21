@@ -8,31 +8,30 @@ class Navigation
 
         $headerTopNavigationCache =  FatCache::get('headerTopNavigation_'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
-        if($headerTopNavigationCache) {
+        if ($headerTopNavigationCache) {
             $headerTopNavigation  = unserialize($headerTopNavigationCache);
-
-        }else{
+        } else {
             $headerTopNavigation = self::getNavigation(Navigations::NAVTYPE_TOP_HEADER);
             FatCache::set('headerTopNavigationCache_'.$siteLangId, serialize($headerTopNavigation), '.txt');
         }
         $template->set('top_header_navigation', $headerTopNavigation);
     }
 
-    public static function headerNavigation( $template )
+    public static function headerNavigation($template)
     {
         $db = FatApp::getDb();
         $siteLangId = CommonHelper::getLangId();
         $template->set('siteLangId', $siteLangId);
         $headerNavigationCache =  FatCache::get('headerNavigation_'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
-        if($headerNavigationCache) {
+        if ($headerNavigationCache) {
             $headerNavigation  = unserialize($headerNavigationCache);
-        }else{
+        } else {
             $headerNavigation = self::getNavigation(Navigations::NAVTYPE_HEADER, true);
             FatCache::set('headerNavigation_'.$siteLangId, serialize($headerNavigation), '.txt');
         }
 
         $isUserLogged = UserAuthentication::isUserLogged();
-        if($isUserLogged ) {
+        if ($isUserLogged) {
             $template->set('userName', ucfirst(CommonHelper::getUserFirstName(UserAuthentication::getLoggedUserAttribute('user_name'))));
         }
         $template->set('isUserLogged', $isUserLogged);
@@ -64,23 +63,23 @@ class Navigation
         /*]*/
         $shopDetails = Shop::getAttributesByUserId($userId, array('shop_id'), false);
         $shop_id = 0;
-        if(!false == $shopDetails ) {
+        if (!false == $shopDetails) {
             $shop_id = $shopDetails['shop_id'];
         }
-        
+
         $controller = str_replace('Controller', '', FatApp::getController());
         $activeTab = 'B';
         $sellerActiveTabControllers = array('Seller');
         $buyerActiveTabControllers = array('Buyer');
 
-        if(in_array($controller, $sellerActiveTabControllers)) {
+        if (in_array($controller, $sellerActiveTabControllers)) {
             $activeTab = 'S';
-        }else if(in_array($controller, $buyerActiveTabControllers)) {
+        } elseif (in_array($controller, $buyerActiveTabControllers)) {
             $activeTab = 'B';
-        }else if(isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+        } elseif (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
             $activeTab = $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'];
         }
-        
+
         $template->set('activeTab', $activeTab);
         $template->set('shop_id', $shop_id);
         $template->set('isShopActive', Shop::isShopActive($userId));
@@ -112,7 +111,7 @@ class Navigation
         $shopDetails = Shop::getAttributesByUserId($userId, array('shop_id'), false);
 
         $shop_id = 0;
-        if(!false == $shopDetails ) {
+        if (!false == $shopDetails) {
             $shop_id = $shopDetails['shop_id'];
         }
 
@@ -124,7 +123,7 @@ class Navigation
         $template->set('todayUnreadMessageCount', $todayUnreadMessageCount);
     }
 
-    public static function affiliateDashboardNavigation( $template )
+    public static function affiliateDashboardNavigation($template)
     {
         $siteLangId = CommonHelper::getLangId();
         $controller = str_replace('Controller', '', FatApp::getController());
@@ -144,11 +143,11 @@ class Navigation
         $sellerActiveTabControllers = array('Seller');
         $buyerActiveTabControllers = array('Buyer');
 
-        if(in_array($controller, $sellerActiveTabControllers)) {
+        if (in_array($controller, $sellerActiveTabControllers)) {
             $activeTab = 'S';
-        }else if(in_array($controller, $buyerActiveTabControllers)) {
+        } elseif (in_array($controller, $buyerActiveTabControllers)) {
             $activeTab = 'B';
-        }else if(isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+        } elseif (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
             $activeTab = $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'];
         }
 
@@ -191,7 +190,7 @@ class Navigation
         $template->set('siteLangId', $siteLangId);
     }
 
-    public static function getNavigation( $type = 0, $includeChildCategories = false )
+    public static function getNavigation($type = 0, $includeChildCategories = false)
     {
         $siteLangId = CommonHelper::getLangId();
 
@@ -208,16 +207,15 @@ class Navigation
 
         $navigationCatCache =  FatCache::get('navigationCatCache', CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
-        if($navigationCatCache) {
+        if ($navigationCatCache) {
             $categoriesMainRootArr  = unserialize($navigationCatCache);
-
-        }else{
-
+        } else {
             $rs = $prodSrchObj->getResultSet();
             $productRows = FatApp::getDb()->fetchAll($rs);
             $categoriesMainRootArr = array_column($productRows, 'prodrootcat_code');
             array_walk(
-                $categoriesMainRootArr, function (&$n) {
+                $categoriesMainRootArr,
+                function (&$n) {
                     $n = FatUtility::int(substr($n, 0, 6));
                 }
             );
@@ -227,7 +225,7 @@ class Navigation
         }
 
         $catWithProductConditoon ='';
-        if($categoriesMainRootArr) {
+        if ($categoriesMainRootArr) {
             $catWithProductConditoon = " and nlink_category_id in(".implode($categoriesMainRootArr, ",").")";
         }
 
@@ -262,7 +260,7 @@ class Navigation
         );
 
         $isUserLogged = UserAuthentication::isUserLogged();
-        if($isUserLogged) {
+        if ($isUserLogged) {
             $cnd = $srch->addCondition('nlink_login_protected', '=', NavigationLinks::NAVLINK_LOGIN_BOTH);
             $cnd->attachCondition('nlink_login_protected', '=', NavigationLinks::NAVLINK_LOGIN_YES, 'OR');
         }
@@ -276,16 +274,16 @@ class Navigation
         $navigation = array();
         $previous_nav_id = 0;
         $productCategory = new productCategory;
-        if($rows ) {
-            foreach( $rows as $key => $row ){
-                if($key == 0 || $previous_nav_id != $row['nav_id']) {
+        if ($rows) {
+            foreach ($rows as $key => $row) {
+                if ($key == 0 || $previous_nav_id != $row['nav_id']) {
                     $previous_nav_id = $row['nav_id'];
                 }
                 $navigation[$previous_nav_id]['parent'] = $row['nav_name'];
                 $navigation[$previous_nav_id]['pages'][$key] = $row;
 
                 $childrenCats = array();
-                if($row['nlink_category_id'] > 0 ) {
+                if ($row['nlink_category_id'] > 0) {
                     $catObj = clone $prodSrchObj;
                     $catObj->addCategoryCondition($row['nlink_category_id']);
                     $categoriesDataArr = ProductCategory::getProdCatParentChildWiseArr($siteLangId, $row['nlink_category_id'], false, false, false, $catObj, false);
@@ -304,10 +302,9 @@ class Navigation
         $db = FatApp::getDb();
         $siteLangId = CommonHelper::getLangId();
         $footerNavigationCache =  FatCache::get('footerNavigation', CONF_HOME_PAGE_CACHE_TIME, '.txt');
-        if($footerNavigationCache) {
+        if ($footerNavigationCache) {
             $footerNavigation  = unserialize($footerNavigationCache);
-
-        }else{
+        } else {
             $footerNavigation = self::getNavigation(Navigations::NAVTYPE_FOOTER);
             FatCache::set('footerNavigationCache', serialize($footerNavigation), '.txt');
         }
