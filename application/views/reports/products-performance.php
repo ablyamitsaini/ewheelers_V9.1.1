@@ -10,11 +10,11 @@
 		</div>
 		<div class="content-body">
 			<div class="cards">
-				<div class="cards-header p-3">
+				<div class="cards-header p-4">
 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Products_Performance_Report',$siteLangId);?></h5>
 				<div class="action">		<a href="javascript:void(0)" id="performanceReportExport" onclick="exportProdPerformanceReport('DESC')" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Export',$siteLangId);?></a></div>
 				</div>
-				<div class="cards-content p-3">
+				<div class="cards-content pl-4 pr-4 ">
           <div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
             <ul>
               <li class="is-active"><a href="javascript:void(0);" onClick="topPerformingProducts()"><?php echo Labels::getLabel('LBL_Top_Performing_Products',$siteLangId);?></a></li>

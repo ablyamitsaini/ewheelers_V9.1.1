@@ -29,11 +29,11 @@
         </div>
         <div class="content-body">
             <div class="cards">
-                <div class="cards-header p-3">
+                <div class="cards-header p-4">
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h5>
                     <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
                 </div>
-                <div class="cards-content p-3">
+                <div class="cards-content pl-4 pr-4 ">
                     <div class="grids--profile">
                         <?php if (empty($orderDate)) { ?>
                         <div class="bg-gray-light p-3 pb-0"> <?php echo $frmSrch->getFormHtml(); ?> </div>

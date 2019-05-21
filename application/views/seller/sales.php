@@ -59,10 +59,10 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
         </div>
         <div class="content-body">
             <div class="cards">
-                <div class="cards-header p-3">
+                <div class="cards-header p-4">
                     <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
                 </div>
-                <div class="cards-content p-3">
+                <div class="cards-content pl-4 pr-4 ">
                     <div class="bg-gray-light p-3 pb-0">
                         <?php echo $frmOrderSrch->getFormHtml(); ?>
                     </div>

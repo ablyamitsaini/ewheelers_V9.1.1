@@ -34,7 +34,7 @@
         </div>
         <div class="content-body">
             <div class="cards">
-                <div class="cards-header p-3">
+                <div class="cards-header p-4">
                     <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Manage_Seller_Options', $siteLangId); ?></h5>
                     <div class="action">
                         <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
@@ -42,7 +42,7 @@
                         <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
                     </div>
                 </div>
-                <div class="cards-content p-3">
+                <div class="cards-content pl-4 pr-4 ">
                     <div class="bg-gray-light p-3 pb-0">
                         <div class="row">
                             <div class="col-lg-6">

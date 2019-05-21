@@ -1,4 +1,4 @@
-<div class="cards-header p-3">
+<div class="cards-header p-4">
 	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Add_Custom_Product',$siteLangId); ?></h5>
 		<div class="btn-group">
 			<?php if(isset($preqId) && $preqId >0){ ?>

@@ -46,7 +46,7 @@ $cancelBtnFld->developerTags['col'] = 2;
         <div class="content-body">
             <div class="cards">
                 <div id="withdrawalReqForm"></div>
-                <div class="cards-content p-3">
+                <div class="cards-content pl-4 pr-4 ">
                     <!-- wallet balance[ -->
                     <?php
                     $balanceTotalBlocksDisplayed = 1;

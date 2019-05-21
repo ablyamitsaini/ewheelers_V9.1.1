@@ -32,7 +32,19 @@
         </div>
         <?php } ?>
         <div class="header-icons-group">
-            <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+            
+			<?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+			<ul class="c-header-links">
+			<li class="is-active"><a href="#" class="">Dashboard</a></li>
+			<li><a href="#" class="">Shop</a></li>
+			</ul>			
+			<div class="c-header-icon bell">
+					<a href="#"><i class="icn"><svg class="svg bell-shake-delay">
+								<use xlink:href="images/retina/sprite.svg#notification" href="images/retina/sprite.svg#notification"></use>
+							</svg>
+						</i>
+						<span class="h-badge"><span class="heartbit"></span>5</span></a>
+				</div>
             <div class="c-header-icon shop">
                 <a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Home'); ?>" title="<?php echo Labels::getLabel('LBL_Home', $siteLangId);?>">
                     <i class="icn"><svg class="svg">

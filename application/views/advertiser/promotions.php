@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
  <div class="content-wrapper content-space">
-    <div class="content-header justify-content-between row mb-3">
+    <div class="content-header justify-content-between row mb-4">
         <div class="content-header-left col-md-auto">
             <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
             <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></h2>
@@ -18,11 +18,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="cards">
-                    <div class="cards-header p-3">
+                    <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></h5>
                         <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions', $siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?>
                     </div>
-                    <div class="cards-content p-3">
+                    <div class="cards-content pl-4 pr-4 ">
                         <div id="promotionForm">
                             <div class="bg-gray-light p-3 pb-0 formshowhide-js">
                                 <?php

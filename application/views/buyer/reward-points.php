@@ -16,10 +16,10 @@ $frmSrch->developerTags['fld_default_col'] = 12;
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Current_Reward_Points',$siteLangId);?> (<?php echo $totalRewardPoints;?>) - <?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($totalRewardPoints));?></h5>
 			</div>
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 				<h2><?php echo Labels::getLabel("LBL_Reward_Point_History", $siteLangId); ?></h2>
 				<div id="rewardPointsListing"><?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?></div>
 			</div>

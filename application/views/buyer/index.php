@@ -1,37 +1,44 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
+<script type="text/javascript" language="javascript" 
+							src="/yokartv8/public/index.php?url=js-css/js&f=js%2Fslick.min.js&min=0&sid=1557140553" ></script>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-3">
+        <div class="content-header justify-content-between row mb-4">
             <div class="content-header-left col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></h2>
             </div>
             <div class="content-header-right col-auto">
-                <div class="btn-group">
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--sm"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--secondary btn--sm"> <?php echo Labels::getLabel('LBL_Manage_Address', $siteLangId);?> </a>
+                <div class="">
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--primary-border "> <?php echo Labels::getLabel('LBL_Manage_Address', $siteLangId);?> </a>
                 </div>
             </div>
         </div>
         <div class="content-body">
-		<div class="widget-scroll simplebar-horizontal"  data-simplebar>
-            <div class="widget-wrapper">
+		<div class="js-widget-scroll widget-scroll">            
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('account', 'credits');?>">
                         <div class="cards">
-                            <div class="cards-header">
+                            <div class="cards-header p-4"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
                                 <i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
                                         </svg>
-                                    </i> <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
+                                    </i>
+									
                             </div>
-                            <div class="cards-content p-3">
+                            <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">                                   
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></h6>
-                                        <?php echo CommonHelper::displayMoneyFormat($userBalance);?>
+                                       <ul>
+                                       	<li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+                                       	<span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span></li>
+                                       		<li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+                                       	<span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span></li>
+                                       </ul>                                       
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -41,20 +48,23 @@
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('buyer', 'orders');?>">
                         <div class="cards">
-                            <div class="cards-header">
+                            <div class="cards-header p-4"> <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
                               <i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
+                                    </i> 
                             </div>
-                            <div class="cards-content p-3">
+                            <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">                                    
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?> </h6>
-                                        <?php echo $todayOrderCount;?>
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?> </h6>
-                                        <?php echo $todayOrderCount;?>
+                                       <ul>
+                                       	<li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
+                                       	<span class="total-numbers"><?php echo $todayOrderCount;?></span></li>
+										   <li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
+											   <span class="total-numbers"><?php echo $todayOrderCount;?></span> </li>
+                                       </ul>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -64,21 +74,28 @@
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('account', 'messages');?>">
                         <div class="cards">
-                            <div class="cards-header">
+                            <div class="cards-header p-4"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
                                <i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                                    </i>  
                             </div>
-                            <div class="cards-content p-3">
+                            <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
                                    
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Unread_Notification_Today', $siteLangId);?></h6>
-                                        <?php echo $todayUnreadMessageCount;?>
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></h6>
-                                        <?php echo $totalMessageCount;?>
+                                       
+                                       <ul>
+                                       	<li><span class="total"><?php echo Labels::getLabel('LBL_Unread_Notification_Today', $siteLangId);?></span>
+                                       	<span class="total-numbers"><?php echo $todayUnreadMessageCount;?></span></li>
+										   <li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+											   <span class="total-numbers"><?php echo $totalMessageCount;?></span> </li>
+                                       </ul>
+                                       
+                                       
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -88,33 +105,38 @@
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('buyer', 'rewardPoints');?>">
                         <div class="cards">
-                            <div class="cards-header">
+                            <div class="cards-header p-4"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId);?></h5>
                                <i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#rewards-change"></use>
                                         </svg>
-                                    </i>  <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId);?></h5>
+                                    </i>  
                             </div>
-                            <div class="cards-content p-3">
+                            <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
                                    
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Current_Reward_Points', $siteLangId);?></h6>
-                                        <?php echo $totalRewardPoints;?>
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Currency_Value', $siteLangId);?></h6>
-                                        <?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($totalRewardPoints)); ?>
+                                       <ul>
+                                       	<li><span class="total"><?php echo Labels::getLabel('LBL_Current_Reward_Points', $siteLangId);?></span>
+                                       	<span class="total-numbers"> <?php echo $totalRewardPoints;?></span></li>
+										   <li><span class="total"><?php echo Labels::getLabel('LBL_Currency_Value', $siteLangId);?></span>
+											   <span class="total-numbers"> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($totalRewardPoints)); ?></span> </li>
+                                       </ul>
+                                       
+                                         
+                                       
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </div>
-            </div>
+            
 			</div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-lg-6 col-md-12">
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
                             <div class="action">
                                 <?php if (count($orders)>0) { ?>
@@ -122,7 +144,7 @@
                                 <?php }?>
                             </div>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
@@ -214,7 +236,7 @@
                 </div>
                 <div class="col-lg-6 col-md-12">
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Offers', $siteLangId);?></h5>
                             <div class="action">
                                 <?php if (count($offers)>0) { ?>
@@ -222,7 +244,7 @@
                                 <?php }?>
                             </div>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
@@ -269,10 +291,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-lg-6 col-md-12">
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests', $siteLangId);?></h5>
                             <?php if (count($returnRequests) > 0) { ?>
                             <div class="action">
@@ -280,7 +302,7 @@
                             </div>
                             <?php } ?>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
@@ -363,7 +385,7 @@
                         <?php // $this->includeTemplate('_partial/userDashboardMessages.php');?>
                         </div> -->
                     <div class="cards">
-                        <div class="cards-header p-3">
+                        <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Cancellation_requests', $siteLangId);?></h5>
                             <?php if (count($cancellationRequests) > 0) { ?>
                             <div class="action">
@@ -371,7 +393,7 @@
                             </div>
                             <?php } ?>
                         </div>
-                        <div class="cards-content p-3">
+                        <div class="cards-content pl-4 pr-4 ">
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
@@ -448,3 +470,40 @@
         </div>
     </div>
 </main>
+
+
+<script>
+$('.js-widget-scroll').slick({
+  dots: false,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+     
+  ]
+});
+</script>

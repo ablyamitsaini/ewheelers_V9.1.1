@@ -15,10 +15,10 @@ $frm->developerTags['fld_default_col'] = 12;
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product',$siteLangId),' : ',(!empty($opDetail['op_selprod_title']) ? $opDetail['op_selprod_title'] : $opDetail['op_product_name']) ,' | ', Labels::getLabel('LBL_Shop',$siteLangId),' : ', $opDetail['op_shop_name'] ; ?></h5>
 			</div>
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 				<div class="form__content">
 					<?php echo $frm->getFormHtml(); ?>
 				</div>

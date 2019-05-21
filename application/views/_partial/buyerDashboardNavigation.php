@@ -211,6 +211,12 @@
                     </div>
                 </li>
                 <li class="divider"></li>
+				<li class="menu__item"><div class="menu__item__inner"><a href="">
+				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language"></use></svg>
+				</i><span class="menu-item__title">English</span></a></div></li>
+				<li class="menu__item"><div class="menu__item__inner"><a title="" href="">
+				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency"></use></svg>
+				</i><span class="menu-item__title"> Currency</span></a></div></li>
             </ul>
         </nav>
     </div>

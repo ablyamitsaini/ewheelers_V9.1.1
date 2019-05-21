@@ -21,16 +21,17 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Share_and_Earn',$siteLangId);?></h5>
 			</div>
 
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 
         <div class="row">
           <div class="col-md-12">
-          <div class="bg-gray-light p-3">
-              <h5><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message',$siteLangId)?><br/><strong><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below',$siteLangId)?></strong></h5>
+          <div class="rounded border p-4">
+            <p><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message',$siteLangId)?></p>
+              <h5><br/><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below',$siteLangId)?></h5>
             <div class=""><?php echo $referralTrackingUrl; ?></div>
           </div>
         </div>

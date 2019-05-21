@@ -240,9 +240,9 @@
 										Vike Fashion Store <br> <br>
 										<a href="#" class="link">View Shop</a>
 									</div>
-									<div class="col-auto">
-										<a href="#" class="btn btn--secondary btn--primary-border">Ask Question</a>
-										<a href="#" class="btn btn--secondary btn--primary-border">All Seller</a>
+									<div class="col-auto seller-action">
+										<a href="#" class="btn btn--secondary btn--primary-border d-block mb-3">Ask Question</a>
+										<a href="#" class="btn btn--secondary btn--primary-border d-block">All Seller</a>
 									</div>
 								</div>
 							</div>
@@ -309,10 +309,10 @@
 				<div class="col-md-7">
 					<div class="nav-detail">
 						<ul>
-							<li><a href="#">Description</a></li>
-							<li><a href="#">Shipping & Policies </a></li>
-							<li><a href="#">Video</a></li>
-							<li><a href="#">Ratings & Reviews</a></li>
+							<li><a href="#description">Description</a></li>
+							<li><a href="#shipping">Shipping & Policies </a></li>
+							<li><a href="#video">Video</a></li>
+							<li><a href="#ratings">Ratings & Reviews</a></li>
 						</ul>
 					</div>
 
@@ -323,7 +323,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-7">
 			<div class="section-head">
-				<div class="section__heading">
+				<div id="description" class="section__heading">
 					<h2>Description</h2>
 				</div>
 			</div>
@@ -373,7 +373,7 @@
 				</tbody>
 				</table></div>
 			<div class="section-head">
-				<div class="section__heading">
+				<div id="shipping" class="section__heading">
 					<h2>Shipping & Policies</h2>
 				</div>
 			</div>
@@ -389,7 +389,7 @@
 			</div>
 
 			<div class="section-head">
-				<div class="section__heading">
+				<div id="video" class="section__heading">
 					<h2>Video</h2>
 				</div>
 			</div>
@@ -400,9 +400,9 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 </iframe> 
 				</div>
 
-			<div class="row">
+			<div class="row justify-content-between">
 				<div class="col-md-5">
-				<div class="section-head">
+				<div id="ratings" class="section-head">
 					<div class="section__heading"><h2>Ratings & Reviews</h2></div>
 				</div>
 					
@@ -414,7 +414,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 					<p class="small">44 out of 4 (100%)<br>
 						Customers recommend this product.</p>
 				</div>
-				<div class="col-md-7">
+				<div class="col-md-6">
 					<div class="listing--progress-wrapper">
 						<ul class="listing--progress">
 							<li>
@@ -451,16 +451,15 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 					</div>
 				</div>
 			</div>
-
-			<div class="row mt-4">
+			<div class="row mt-5">
 				<div class="col-md-6"><a href="#" class="btn btn--primary">Add Review</a> <a href="#" class="btn btn--secondary add-to-cart--js btn--primary-border">Newest</a></div>
 				 
 			</div>
-			<div class="listing__all">
+			<div class="listing__all mt-5">
 				<ul>
 					<li>
 						<div class="row">
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="profile-avatar">
 									<div class="profile__dp"><img src="/yokartv8/image/user/10/thumb/1" alt="Jenny"></div>
 									<div class="profile__bio">
@@ -474,7 +473,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 									</div>
 								</div>
 							</div>
-							<div class="col-md-9">
+							<div class="col-md-8">
 								<div class="reviews-desc">
 									<div class="products__rating"> <i class="icn"><svg class="svg">
 												<use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
@@ -494,7 +493,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 					</li>
 					<li>
 						<div class="row">
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="profile-avatar">
 									<div class="profile__dp"><img src="/yokartv8/image/user/8/thumb/1" alt="مانبريت كور"></div>
 									<div class="profile__bio">
@@ -508,7 +507,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 									</div>
 								</div>
 							</div>
-							<div class="col-md-9">
+							<div class="col-md-8">
 								<div class="reviews-desc">
 									<div class="products__rating"> <i class="icn"><svg class="svg">
 												<use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
@@ -525,7 +524,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 					</li>
 					<li>
 						<div class="row">
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="profile-avatar">
 									<div class="profile__dp"><img src="/yokartv8/image/user/8/thumb/1" alt="مانبريت كور"></div>
 									<div class="profile__bio">
@@ -539,7 +538,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 									</div>
 								</div>
 							</div>
-							<div class="col-md-9">
+							<div class="col-md-8">
 								<div class="reviews-desc">
 									<div class="products__rating"> <i class="icn"><svg class="svg">
 												<use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
@@ -555,11 +554,8 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 						</div>
 					</li>
 				</ul>
-				<div class="align--center"><a href="/yokartv8/reviews/product/122" class="link">Showing All 2 Reviews </a></div>
-				<div class="gap"></div>
-				<form name="frmSearchReviewsPaging"><input type="hidden" name="selprod_id" value="122"><input type="hidden" name="page" value=""><input type="hidden" name="pageSize" value="5"><input type="hidden" name="orderBy" value="most_helpful"><input type="hidden" name="fOutMode" value="json"><input type="hidden" name="fIsAjax" value="1"></form>
+			 
 			</div>
-			<div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
 
 		</div>
 		</div>

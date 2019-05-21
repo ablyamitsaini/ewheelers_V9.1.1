@@ -10,7 +10,7 @@ $img_fld = $imagesFrm->getField('prod_image');
 $img_fld->setFieldTagAttribute( 'onchange','setupCustomCatalogProductImages(); return false;');
 ?>
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
-<div class="cards-content p-3">
+<div class="cards-content pl-4 pr-4 ">
 <div class="tabs__content form">
 	<div class="form__content">
 		<div class="col-md-12">
