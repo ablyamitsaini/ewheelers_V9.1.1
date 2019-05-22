@@ -9,10 +9,10 @@
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
 			</div>
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
                          <div class="box box--white  p-4">
                            <div class="box__head no-print" >
                                <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>

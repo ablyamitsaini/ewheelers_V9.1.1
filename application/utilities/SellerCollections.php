@@ -85,10 +85,44 @@ trait SellerCollections
     {
         $scollection_id = FatUtility::int($scollection_id);
         $shop_id = $this->commonShopCollection();
-        $colectionForm = $this->getCollectionGeneralForm('', $shop_id);
+        $this->markCollectionAsDeleted($shop_id, $scollection_id);
+        FatUtility::dieJsonSuccess(
+            Labels::getLabel('MSG_RECORD_DELETED', $this->siteLangId)
+        );
+    }
+
+    public function deleteSelectedCollections()
+    {
+        $scollectionIdsArr = FatUtility::int(FatApp::getPostedData('scollection_ids'));
+        $shop_id = $this->commonShopCollection();
+
+        if (empty($scollectionIdsArr)) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+            );
+        }
+
+        foreach ($scollectionIdsArr as $scollection_id) {
+            if (1 > $scollection_id) {
+                continue;
+            }
+            $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id, $scollection_id);
+            if (empty($shopcolDetails)) {
+                continue;
+            }
+
+            $this->markCollectionAsDeleted($shop_id, $scollection_id);
+        }
+        FatUtility::dieJsonSuccess(
+            Labels::getLabel('MSG_RECORD_DELETED', $this->siteLangId)
+        );
+    }
+
+    private function markCollectionAsDeleted($shop_id, $scollection_id)
+    {
         $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shop_id, $scollection_id);
         if (empty($shopcolDetails)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
         $collection = new ShopCollection();
@@ -96,9 +130,6 @@ trait SellerCollections
             Message::addErrorMessage($collection->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-        FatUtility::dieJsonSuccess(
-            Labels::getLabel('MSG_RECORD_DELETED', $this->siteLangId)
-        );
     }
 
     private function getCollectionGeneralForm($scollection_id = 0, $shop_id = 0)
@@ -177,14 +208,48 @@ trait SellerCollections
         $shopcolDetails = ShopCollection::getCollectionGeneralDetail($shopId, $scollectionId);
         $status = ($shopcolDetails['scollection_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
+        $this->updateShopCollectionStatus($scollectionId, $status);
+
+        $this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully', $this->siteLangId));
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function toggleBulkCollectionStatuses()
+    {
+        $this->commonShopCollection();
+        $status = FatApp::getPostedData('collection_status', FatUtility::VAR_INT, -1);
+        $scollectionIdsArr = FatUtility::int(FatApp::getPostedData('scollection_ids'));
+
+        if (empty($scollectionIdsArr) || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
+            );
+        }
+
+        foreach ($scollectionIdsArr as $scollectionId) {
+            if (1 > $scollectionId) {
+                continue;
+            }
+            $this->updateShopCollectionStatus($scollectionId, $status);
+        }
+        $this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully', $this->siteLangId));
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function updateShopCollectionStatus($scollectionId, $status)
+    {
+        $scollectionId = FatUtility::int($scollectionId);
+        $status = FatUtility::int($status);
+        if (1 > $scollectionId || -1 == $status) {
+            FatUtility::dieWithError(
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
+            );
+        }
         $scollection = new ShopCollection($scollectionId);
         if (!$scollection->changeStatus($status)) {
             Message::addErrorMessage($sellerProdObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
-        $this->set('msg', Labels::getLabel('MSG_Status_changed_Successfully', $this->siteLangId));
-        $this->_template->render(false, false, 'json-success.php');
     }
 
     public function shopCollectionLangForm($scollection_id, $langId)

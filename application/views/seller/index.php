@@ -28,10 +28,10 @@
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>">
     				<div class="cards">
-    					<div class="cards-header">
-    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></h5>
+    					<div class="cards-header p-4">
+    						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_My_Sales',$siteLangId);?></h5>
     					</div>
-    					<div class="cards-content p-3">
+    					<div class="cards-content pl-4 pr-4 ">
     						<div class="stats">
     							<i class="icn"><svg class="svg">
     									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales" href="
@@ -53,10 +53,10 @@
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Account','credits'); ?>">
     				<div class="cards">
-    					<div class="cards-header">
-    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Credits',$siteLangId);?></h5>
+    					<div class="cards-header p-4">
+    						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits',$siteLangId);?></h5>
     					</div>
-    					<div class="cards-content p-3">
+    					<div class="cards-content pl-4 pr-4 ">
     						<div class="stats">
     							<i class="icn"><svg class="svg">
     									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
@@ -80,10 +80,10 @@
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Seller','sales'); ?>">
     				<div class="cards">
-    					<div class="cards-header">
-    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Order',$siteLangId);?></h5>
+    					<div class="cards-header p-4">
+    						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order',$siteLangId);?></h5>
     					</div>
-    					<div class="cards-content p-3">
+    					<div class="cards-content pl-4 pr-4 ">
     						<div class="stats">
     							<i class="icn"><svg class="svg">
     									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order"></use>
@@ -102,10 +102,10 @@
 			</div>
 			<!-- <div class="widget widget-stats">
 				<div class="cards">
-					<div class="cards-header">
-						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></h5>
+					<div class="cards-header p-4">
+						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sold',$siteLangId);?></h5>
 					</div>
-					<div class="cards-content p-3">
+					<div class="cards-content pl-4 pr-4 ">
 						<div class="stats">
 							<i class="icn"><svg class="svg">
 									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#sold" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#sold"></use>
@@ -125,10 +125,10 @@
     			<div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('Seller','subscriptions'); ?>">
         				<div class="cards">
-        					<div class="cards-header">
-        						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Active_Subscription',$siteLangId);?></h5>
+        					<div class="cards-header p-4">
+        						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Active_Subscription',$siteLangId);?></h5>
         					</div>
-        					<div class="cards-content p-3">
+        					<div class="cards-content pl-4 pr-4 ">
         						<div class="stats">
         							<i class="icn"><svg class="svg">
         									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
@@ -154,10 +154,10 @@
 			<div class="widget widget-stats">
                 <a href="<?php echo CommonHelper::generateUrl('Account','messages'); ?>">
     				<div class="cards">
-    					<div class="cards-header">
-    						<h5 class="cards-title p-3"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
+    					<div class="cards-header p-4">
+    						<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
     					</div>
-    					<div class="cards-content p-3">
+    					<div class="cards-content pl-4 pr-4 ">
     						<div class="stats">
     							<i class="icn"><svg class="svg">
     									<use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
@@ -177,17 +177,17 @@
 		<div class="row mb-3">
 			<div class="col-lg-6 col-md-12  ">
 				<div class="cards">
-					<div class="cards-header p-3">
+					<div class="cards-header p-4">
 						<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sales_Graph',$siteLangId);?></h5>
 					</div>
-					<div class="cards-content p-3 graph">
+					<div class="cards-content pl-4 pr-4  graph">
 						<?php $this->includeTemplate('_partial/seller/sellerSalesGraph.php'); ?>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-12">
                 <div class="cards">
-                    <div class="cards-header p-3">
+                    <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders',$siteLangId);?></h5>
                         <?php if( count( $orders ) > 0 ){ ?>
                             <div class="action">
@@ -195,7 +195,7 @@
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="cards-content p-3">
+                    <div class="cards-content pl-4 pr-4 ">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                             <tbody>
                                  <tr class="">
@@ -276,7 +276,7 @@
         <div class="row mb-3">
 			<div class="col-lg-12 col-md-12">
                 <div class="cards">
-                    <div class="cards-header p-3">
+                    <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History',$siteLangId);?></h5>
                         <?php if( count( $transactions ) > 0 ){ ?>
                             <div class="action">
@@ -284,7 +284,7 @@
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="cards-content p-3">
+                    <div class="cards-content pl-4 pr-4 ">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                             <tbody>
                                  <tr class="">
@@ -357,7 +357,7 @@
 		<div class="row">
 			<div class="col-lg-6 col-md-12">
                 <div class="cards">
-                    <div class="cards-header p-3">
+                    <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests',$siteLangId);?></h5>
                         <?php if( count( $returnRequests ) > 0 ){ ?>
                             <div class="action">
@@ -365,7 +365,7 @@
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="cards-content p-3">
+                    <div class="cards-content pl-4 pr-4 ">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                             <tbody>
                                  <tr class="">
@@ -452,7 +452,7 @@
 					<?php // $this->includeTemplate('_partial/userDashboardMessages.php'); ?>
 				</div> -->
                 <div class="cards">
-                    <div class="cards-header p-3">
+                    <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Cancellation_requests',$siteLangId);?></h5>
                         <?php if( count( $cancellationRequests ) > 0 ){ ?>
                             <div class="action">
@@ -460,7 +460,7 @@
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="cards-content p-3">
+                    <div class="cards-content pl-4 pr-4 ">
                         <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                             <tbody>
                                  <tr class="">

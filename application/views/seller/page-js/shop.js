@@ -419,6 +419,21 @@ $(document).on('change','.collection-language-js',function(){
 		});
 	};
 
+	toggleBulkCollectionStatues = function(status){
+		if(!confirm(langLbl.confirmUpdateStatus)){
+			return false;
+		}
+		$("#frmCollectionsListing input[name='collection_status']").val(status);
+		$("#frmCollectionsListing").submit();
+	};
+
+	deleteSelectedCollection = function(){
+        if(!confirm(langLbl.confirmDelete)){
+            return false;
+        }
+        $("#frmCollectionsListing").attr("action",fcom.makeUrl('Seller','deleteSelectedCollections')).submit();
+    };
+
 })();
 function bindAutoComplete(){
 		$("input[name='scp_selprod_id']").autocomplete({

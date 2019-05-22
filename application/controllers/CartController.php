@@ -61,7 +61,7 @@ class CartController extends MyAppController
 
     public function add()
     {
-        $post = FatApp::getPostedData();        
+        $post = FatApp::getPostedData();
         if (false == $post) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl());
@@ -80,7 +80,7 @@ class CartController extends MyAppController
         }
         $json = array();
         $selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0); //FatUtility::int($post['selprod_id']);
-        $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 0); //FatUtility::int($post['quantity']);
+        $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 1); //FatUtility::int($post['quantity']);
 
         $productsToAdd  = isset($post['addons'])?$post['addons']:array();
         $productsToAdd[$selprod_id] = $quantity;

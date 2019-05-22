@@ -18,7 +18,7 @@ $cancelBtnFld = $frm->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
 $cancelBtnFld->developerTags['col'] = 2; ?>
-<div class="cards-content p-3">
+<div class="cards-content pl-4 pr-4 ">
 <?php echo $frm->getFormHtml(); ?>
 <div class="search-form"></div>
 <h5><?php echo Labels::getLabel('Lbl_Select_Your_Product_category',$siteLangId);?></h5>

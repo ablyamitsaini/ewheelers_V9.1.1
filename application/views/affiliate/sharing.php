@@ -8,7 +8,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 <?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
   <div class="content-wrapper content-space">
-	<div class="content-header justify-content-between row mb-3">
+	<div class="content-header justify-content-between row mb-4">
 		<div class="content-header-left col-md-auto">
 			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
 			<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Sharing' , $siteLangId); ?></h2>
@@ -18,7 +18,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 		<div class="row">
 			<div class="col-md-12">
 				<div class="cards">
-					<div class="cards-header p-3"><h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sharing_Information',$siteLangId);?></h5></div>
+					<div class="cards-header p-4"><h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sharing_Information',$siteLangId);?></h5></div>
 					<div class="grids--container">
 						<div class="row">						
 							<div class="col-md-12">
@@ -27,7 +27,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 							</div>
 						</div>
 					</div>
-					<div class="cards-content p-3">
+					<div class="cards-content pl-4 pr-4 ">
 						<ul class="grid--onethird grid--onethird-large">
 						  <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){?>
 						  <li> <a id="facebook_btn" href="javascript:void(0);" class="box--share box--share-fb"> <i class="fa fa-facebook"></i>

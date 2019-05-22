@@ -212,7 +212,7 @@ $("document").ready(function(){
 		$.mbsmessage(langLbl.processing,false,'alert--process alert');
 		fcom.updateWithAjax(fcom.makeUrl('cart', 'addSelectedToCart' ),$('#wishlistForm').serialize(), function(ans) {
 			updateWishlist();
-			setTimeout(function(){ location.href = fcom.makeUrl('cart', 'index'); }, 1000);
+			setTimeout(function(){ location.href = fcom.makeUrl('cart'); }, 1000);
 		});
 	};
 

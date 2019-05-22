@@ -15,10 +15,10 @@ $approvalFrm->developerTags['fld_default_col'] = '12';
 	</div>
 	<div class="content-body">
 		<div class="cards">
-			<div class="cards-header p-3">
+			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('Lbl_Seller_Approval_Form',$siteLangId);?></h5>
 			</div>
-			<div class="cards-content p-3">
+			<div class="cards-content pl-4 pr-4 ">
 				<div class="form__content">
 					<?php echo $approvalFrm->getFormHtml(); ?>
 				</div>

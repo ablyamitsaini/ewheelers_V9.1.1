@@ -1,10 +1,10 @@
-<div class="cards-header p-3">
+<div class="cards-header p-4">
 	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Social_Platforms',$siteLangId);?></h5>
 	<div class="action">
 		<a href="javascript:void(0)" class="btn btn--primary btn--sm" onclick="addForm(0)"><?php echo Labels::getLabel('LBL_Add_Social_Platform',$siteLangId);?></a>
 	</div>
 </div>
-<div class="cards-content p-3">
+<div class="cards-content pl-4 pr-4 ">
 <?php
 $arr_flds = array(
 		'listserial'=>Labels::getLabel('LBL_Sr._no.',$siteLangId),
