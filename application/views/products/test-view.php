@@ -140,9 +140,9 @@
 			<li><a>Radon</a></li>
 		</ul>
 	</div>
-									 
-										
-									 
+
+
+
 									</div>
 									<div class="col-md-6 mb-2">
 										<div class="h6">Choose Color</div>
@@ -157,7 +157,7 @@
 			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
 			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
 		</ul>
-	</div>										 
+	</div>
 
 									</div>
 								</div>
@@ -344,7 +344,7 @@
 			</div>
 			<div class="cms bg-gray p-4 mb-4">
 				<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit </p>
-			</div>	
+			</div>
 
 			<h5>Specification</h5>
 			<div class="cms bg-gray p-4 mb-4"><table>
@@ -394,7 +394,7 @@
 			</div>
 			<div class="cms bg-gray p-4 mb-4">
 			<h6>Payment</h6>
-				 
+
 				<p>We accept PayPal. You may use a credit card on PayPal without creating a PayPal account. Click the "Check out with PayPal" button. You'll be taken to a secure page on PayPal. Look for a link below the log-in form reading "Don't have a PayPal account?" You'll then be prompted to fill in your billing and credit card information.</p>
 			<br>
 				<h6>Shipping </h6>
@@ -409,10 +409,10 @@
 				</div>
 			</div>
 			<div class="mb-4 video-wrapper">
-			
+
 			 <iframe width="100%" height="315"
 src="https://www.youtube.com/embed/tgbNymZ7vqY">
-</iframe> 
+</iframe>
 				</div>
 
 			<div class="row justify-content-between">
@@ -420,7 +420,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 				<div id="ratings" class="section-head">
 					<div class="section__heading"><h2>Ratings & Reviews</h2></div>
 				</div>
-					
+
 					<div class="products__rating"> <i class="icn"><svg class="svg">
 								<use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
 							</svg></i> <span class="rate">2.7<span></span></span>
@@ -467,8 +467,8 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 				</div>
 			</div>
 			<div class="row mt-5">
-				<div class="col-md-3">				
-				<a href="#" class="btn btn--primary d-block">Add Review</a>				
+				<div class="col-md-3">
+				<a href="#" class="btn btn--primary d-block">Add Review</a>
 				</div>
 				<div class="col-md-3">
 				<div class="js-wrap-drop wrap-drop wrap-drop--first">
@@ -483,7 +483,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 			<li><a>Radon</a></li>
 		</ul>
 	</div></div>
-				 
+
 			</div>
 			<div class="listing__all mt-5">
 				<ul>
@@ -584,13 +584,13 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 						</div>
 					</li>
 				</ul>
-			 
+
 			</div>
 
 		</div>
 		</div>
 		</section>
-		
+
 	</div>
 
 
@@ -600,10 +600,10 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 
 
 
- 
+
 <section>
- 
-	 <?php if($recommendedProducts){ ?> 	 
+
+	 <?php if($recommendedProducts){ ?>
 	 <section class="section bg--first-color">
 		<?php include(CONF_THEME_PATH.'products/recommended-products.php'); ?>
 	 </section>
@@ -613,9 +613,9 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 		 <?php include(CONF_THEME_PATH.'products/related-products.php'); ?>
 	 </section>
 	 <?php } ?>
-      
+
 	  <div id="recentlyViewedProductsDiv"></div>
- 
+
 <script type="text/javascript">
 var mainSelprodId = <?php echo $product['selprod_id'];?>;
 var layout = '<?php echo CommonHelper::getLayoutDirection();?>';
@@ -668,15 +668,15 @@ $(function () {
 			}
 		});
 		/* ] */
-		
+
 		$('.social-toggle').on('click', function() {
 		   setTimeout(function(){ $(this).next().toggleClass('open-menu'); }, 100);
 		});
-		
-		
 
 
-		
+
+
+
 function DropDown(el) {
     this.dd = el;
     this.placeholder = this.dd.children('span');
@@ -721,6 +721,4 @@ $(function () {
     });
 });
 	});
-</script> 
-
-
+</script>

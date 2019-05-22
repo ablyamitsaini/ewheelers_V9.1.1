@@ -483,7 +483,6 @@ class ProductsController extends MyAppController
         $product['moreSellersArr'] = $this->getMoreSeller($product['selprod_code'], $this->siteLangId, $product['selprod_user_id']);
         $product['selprod_return_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'], PolicyPoint::PPOINT_TYPE_RETURN, $this->siteLangId);
         $product['selprod_warranty_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'], PolicyPoint::PPOINT_TYPE_WARRANTY, $this->siteLangId);
-
         /* Form buy product[ */
         $frm = $this->getCartForm($this->siteLangId);
         $frm->fill(array('selprod_id' => $selprod_id));
@@ -582,8 +581,7 @@ class ProductsController extends MyAppController
         $srch->setDefinedCriteria($this->siteLangId);
         $srch->doNotCalculateRecords();
         $srch->addMultipleFields(
-            array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'ifNULL(shop_name,shop_identifier)as shop_name', 'shop_description',
-            'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city','shop_free_ship_upto' )
+            array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'ifNULL(shop_name,shop_identifier)as shop_name', 'shop_description', 'shop_payment_policy', 'shop_delivery_policy', 'shop_refund_policy',  'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city','shop_free_ship_upto' )
         );
         $srch->addCondition('shop_id', '=', $product['shop_id']);
         $shopRs = $srch->getResultSet();
@@ -1360,14 +1358,13 @@ class ProductsController extends MyAppController
             if (!isset($cookiesProductsArr) || !is_array($cookiesProductsArr) || count($cookiesProductsArr) <= 0) {
                 return '';
             }
+            if ($productId && in_array($productId, $cookiesProductsArr)) {
+                $pos = array_search($productId, $cookiesProductsArr);
+                unset($cookiesProductsArr[$pos]);
+            }
             if (isset($cookiesProductsArr) && is_array($cookiesProductsArr) && count($cookiesProductsArr)) {
                 $cookiesProductsArr = array_map('intval', $cookiesProductsArr);
                 $cookiesProductsArr = array_reverse($cookiesProductsArr);
-
-                if ($productId && in_array($productId, $cookiesProductsArr)) {
-                    $pos = array_search($productId, $cookiesProductsArr);
-                    unset($cookiesProductsArr[$pos]);
-                }
 
                 $prodSrch = new ProductSearch($this->siteLangId);
                 $prodSrch->setDefinedCriteria();
@@ -1390,6 +1387,7 @@ class ProductsController extends MyAppController
                     'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
                     'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price')
                 );
+                // echo $prodSrch->getQuery(); die;
 
                 $productRs = $prodSrch->getResultSet();
                 $recentViewedProducts = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
