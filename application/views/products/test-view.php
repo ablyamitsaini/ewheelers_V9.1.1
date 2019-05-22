@@ -128,22 +128,37 @@
 								<div class="row">
 									<div class="col-md-6 mb-2">
 										<div class="h6">Select Size</div>
-										<select>
-											<option>39W x 39D cm</option>
-											<option>39W x 39D cm</option>
-											<option>39W x 39D cm</option>
-											<option>39W x 39D cm</option>
-										</select>
+										<div class="js-wrap-drop wrap-drop"  >
+		<span>39W x 39D cm</span>
+		<ul class="drop">
+			<li class="selected"><a>39W x 39D cm</a></li>
+			<li><a>Helium</a></li>
+			<li><a>Neon</a></li>
+			<li><a>Argon</a></li>
+			<li><a>Krypton</a></li>
+			<li><a>Xenon</a></li>
+			<li><a>Radon</a></li>
+		</ul>
+	</div>
+									 
+										
+									 
 									</div>
 									<div class="col-md-6 mb-2">
 										<div class="h6">Choose Color</div>
-										<select>
-											<option>Brown</option>
-											<option>Brown</option>
-											<option>Brown</option>
-											<option>Brown</option>
-											<option>Brown</option>
-										</select>
+										 <div class="js-wrap-drop wrap-drop">
+		<span><span class="colors" style="background-color:#b86848;"></span>Brown</span>
+		<ul class="drop">
+			<li class="selected"><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+			<li><a><span class="colors" style="background-color:#b86848;"></span>Brown</a></li>
+		</ul>
+	</div>										 
+
 									</div>
 								</div>
 
@@ -452,7 +467,22 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
 				</div>
 			</div>
 			<div class="row mt-5">
-				<div class="col-md-6"><a href="#" class="btn btn--primary">Add Review</a> <a href="#" class="btn btn--secondary add-to-cart--js btn--primary-border">Newest</a></div>
+				<div class="col-md-3">				
+				<a href="#" class="btn btn--primary d-block">Add Review</a>				
+				</div>
+				<div class="col-md-3">
+				<div class="js-wrap-drop wrap-drop wrap-drop--first">
+		<span>Newest</span>
+		<ul class="drop">
+			<li class="selected"><a>Newest</a></li>
+			<li><a>Helium</a></li>
+			<li><a>Neon</a></li>
+			<li><a>Argon</a></li>
+			<li><a>Krypton</a></li>
+			<li><a>Xenon</a></li>
+			<li><a>Radon</a></li>
+		</ul>
+	</div></div>
 				 
 			</div>
 			<div class="listing__all mt-5">
@@ -646,5 +676,51 @@ $(function () {
 		
 
 
+		
+function DropDown(el) {
+    this.dd = el;
+    this.placeholder = this.dd.children('span');
+    this.opts = this.dd.find('ul.drop li');
+    this.val = '';
+    this.index = -1;
+    this.initEvents();
+}
+
+DropDown.prototype = {
+    initEvents: function () {
+        var obj = this;
+        obj.dd.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).toggleClass('active');
+        });
+        obj.opts.on('click', function () {
+            var opt = $(this);
+            obj.val = opt.text();
+            obj.index = opt.index();
+            obj.placeholder.text(obj.val);
+            opt.siblings().removeClass('selected');
+            opt.filter(':contains("' + obj.val + '")').addClass('selected');
+        }).change();
+    },
+    getValue: function () {
+        return this.val;
+    },
+    getIndex: function () {
+        return this.index;
+    }
+};
+
+$(function () {
+    // create new variable for each menu
+    var dd1 = new DropDown($('.js-wrap-drop'));
+    // var dd2 = new DropDown($('#other-gases'));
+    $(document).click(function () {
+        // close menu on document click
+        $('.wrap-drop').removeClass('active');
+    });
+});
 	});
 </script> 
+
+
