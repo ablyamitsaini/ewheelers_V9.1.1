@@ -298,3 +298,5 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Change_Email_Password
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_banner_text';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_banner_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed on your store.');
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_collection_image_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on the store page.');
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Rate_And_Review_Product';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Have_You_Used_This_Product';

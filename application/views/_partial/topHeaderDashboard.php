@@ -32,49 +32,25 @@
         </div>
         <?php } ?>
         <div class="header-icons-group">
-            
-			<?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
-			<ul class="c-header-links">
-			<li class="is-active"><a href="#" class="">Dashboard</a></li>
-			<li><a href="#" class="">Shop</a></li>
-			</ul>			
-			<div class="c-header-icon bell">
-					<a href="#"><i class="icn"><svg class="svg bell-shake-delay">
-								<use xlink:href="images/retina/sprite.svg#notification" href="images/retina/sprite.svg#notification"></use>
-							</svg>
-						</i>
-						<span class="h-badge"><span class="heartbit"></span>5</span></a>
-				</div>
-            <div class="c-header-icon shop">
-                <a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Home'); ?>" title="<?php echo Labels::getLabel('LBL_Home', $siteLangId);?>">
-                    <i class="icn"><svg class="svg">
-                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#home" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#home"></use>
-                        </svg>
-                    </i>
-            </div>
-            <div class="c-header-icon shop">
-                <a data-org-url="<?php echo CommonHelper::generateUrl('Account', 'Messages', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account', 'Messages'); ?>" title="<?php echo Labels::getLabel('LBL_Messages', $siteLangId);?>">
-                    <i class="icn"><svg class="svg">
-                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#message"></use>
+            <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
+            <ul class="c-header-links">
+                <li class="<?php echo (($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Advertiser' || $controllerName == 'Affiliate') && $action == 'index') ? 'is-active' : ''; ?>"><a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Home'); ?>"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></a></li>
+                <?php if ($isShopActive && $shop_id > 0) { ?>
+                <li><a data-org-url="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id), '', null, false, $getOrgUrl); ?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id)); ?>"><?php echo Labels::getLabel('LBL_Shop', $siteLangId);?></a></li>
+                <?php } ?>
+            </ul>
+            <div class="c-header-icon bell">
+                <a data-org-url="<?php echo CommonHelper::generateUrl('Account', 'Messages', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account', 'Messages'); ?>" title="<?php echo Labels::getLabel('LBL_Messages', $siteLangId);?>"><i class="icn"><svg class="svg bell-shake-delay">
+                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification"></use>
                         </svg>
                     </i>
                     <?php if ($todayUnreadMessageCount > 0) { ?>
                     <span class="h-badge"><span class="heartbit"></span><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span></a>
                     <?php } ?>
             </div>
-            <?php if ($isShopActive && $shop_id > 0) { ?>
-            <div class="c-header-icon messages">
-                <a data-org-url="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id), '', null, false, $getOrgUrl); ?>" title="<?php echo Labels::getLabel('LBL_View_Shop', $siteLangId);?>" target="_blank"
-                    href="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id)); ?>">
-                    <i class="icn"><svg class="svg">
-                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#view-shop-header" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#view-shop-header"></use>
-                        </svg>
-                    </i>
-            </div>
-            <?php } ?>
             <div class="short-links">
                 <ul>
-                    <?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?>
+                    <?php /*$this->includeTemplate('_partial/headerLanguageArea.php');*/ ?>
                     <?php $this->includeTemplate('_partial/headerUserArea.php', array('isUserDashboard' => $isUserDashboard)); ?>
                 </ul>
             </div>

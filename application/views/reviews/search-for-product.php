@@ -47,7 +47,8 @@
     <?php } ?>
 </ul>
 <div class=" align--center"><a href="<?php echo CommonHelper::generateUrl('Reviews', 'Product', array($selprod_id)); ?>"
-        class="btn btn--primary ripplelink"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging'));
-} else {
+        class="link"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging')); ?>
+        <div class="gap"></div>
+<?php } else {
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
 }?>
