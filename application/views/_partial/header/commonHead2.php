@@ -34,9 +34,23 @@ if ($controllerName == 'Blog') {
 if ($controllerName == 'Checkout') {
     $bodyClass = 'is-checkout';
 }
+
 if (isset($isUserDashboard) && $isUserDashboard) {
-    $bodyClass = 'is-dashboard sidebar-is-reduced';
+    $bodyClass = 'is-dashboard';
+    
+    $expanded = 'sidebar-is-reduced'; 
+    
+    if(!array_key_exists('openSidebar', $_COOKIE)){
+        setcookie('openSidebar', 1, '', CONF_WEBROOT_URL);
+    }
+    
+    if(array_key_exists('openSidebar', $_COOKIE) && 1 == $_COOKIE['openSidebar']){
+        $expanded = 'sidebar-is-expanded';
+    }
+    
+    $bodyClass = $bodyClass.' '.$expanded;
 }
+
 ?>
 <body class="<?php echo $bodyClass; ?>">
     <?php

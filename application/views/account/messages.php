@@ -32,21 +32,44 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
-                </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div id="withdrawalReqForm"></div>
-                    <div class="bg-gray-light p-3 pb-0">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <?php echo $frmSrch->getFormHtml(); ?>
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="withdrawalReqForm"></div>
+                            <div class="bg-gray-light p-3 pb-0">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <?php
+                                        $submitFld = $frmSrch->getField('btn_submit');
+                                        $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
+                                        $fldClear= $frmSrch->getField('btn_clear');
+                                        $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+                                        echo $frmSrch->getFormHtml();
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
+                            <span class="gap"></span>
                         </div>
                     </div>
-                    <span class="gap"></span>
-                    <div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
+                            <span class="gap"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,17 @@
 $(document).ready(function () {
+	/*if('' == getCookie('openSidebar') || 1 == getCookie('openSidebar')){
+		document.cookie = "openSidebar=1";
+		$('.js-hamburger.hamburger-toggle').addClass('is-opened');
+		$('body.is-dashboard').removeClass('sidebar-is-reduced').addClass('sidebar-is-expanded');
+	}else{
+		$('.js-hamburger.hamburger-toggle').removeClass('is-opened');
+		$('body.is-dashboard').removeClass('sidebar-is-expanded').addClass('sidebar-is-reduced');
+	}*/
+
+	$(document).on('click', '.js-hamburger', function(){
+		fcom.ajax(fcom.makeUrl('Home','setupSidebarVisibility'),'',function(res){});
+	});
+
 	setTimeout(function () {
 		$('body').addClass('loaded');
 	}, 1000);
@@ -9,9 +22,13 @@ $(document).ready(function () {
 		}
 		showFormActionsBtns();
 	});
+
+	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false));
 });
 
+
 function showFormActionsBtns() {
+	console.log('called');
 	if( typeof $(".selectItem--js:checked").val() === 'undefined' ){
 		$(".formActionBtn-js").addClass('formActions-css');
 	}else{
@@ -64,7 +81,7 @@ function recentlyViewedProducts(selprodId){
 
 	fcom.ajax( fcom.makeUrl('Products','recentlyViewedProducts',[selprodId]),'',function(ans){
 		$("#recentlyViewedProductsDiv").html(ans);
-		$('.js-collection-corner:not(.slick-initialized)').slick( getSlickSliderSettings(6,6,langLbl.layoutDirection,true) );
+		$('.js-collection-corner:not(.slick-initialized)').slick( getSlickSliderSettings(6,1,langLbl.layoutDirection,true) );
 	});
 }
 
@@ -396,9 +413,9 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll = 2, layoutDirection = 'ltr', autoInfinitePlay = true ){
+function getSlickSliderSettings( slidesToShow, slidesToScroll = 1, layoutDirection = 'ltr', autoInfinitePlay = true ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
-	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 2;
+	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
 	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
 	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : true;
 

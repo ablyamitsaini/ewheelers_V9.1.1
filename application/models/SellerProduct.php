@@ -709,7 +709,7 @@ class SellerProduct extends MyAppModel
         if ($limit) {
             $srch->setPageSize($limit);
         }
-        return FatApp::getDb()->fetchAllAssoc($srch->getResultSet());
+        return FatApp::getDb()->fetch($srch->getResultSet());
     }
 
     public static function getProductDisplayTitle($selprod_id, $langId)

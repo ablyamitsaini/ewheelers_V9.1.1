@@ -1,7 +1,7 @@
 <?php if($relatedProductsRs){ ?>
 
 <div class="container">
-	<div class="section-head section--white--head section--head--center">
+	<div class="section-head section--head--center">
 		<div class="section__heading">
 			<h2><?php echo Labels::getLabel('LBL_Similar_Products',$siteLangId); ?></h2>
 		</div>
@@ -31,7 +31,7 @@
 				<?php } ?>
 			</div>
 			<?php } */ ?>
-			
+
 			<div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($rProduct['prodcat_id']));?>"><?php echo $rProduct['prodcat_name'];?> </a></div>
 			<div class="products__title"><a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));?>"><?php echo (mb_strlen($rProduct['selprod_title']) > 30) ? mb_substr($rProduct['selprod_title'],0,30)."..." : $rProduct['selprod_title'];?> </a></div>
             <?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId),false);?>

@@ -1,31 +1,20 @@
 <?php
     $controller = strtolower($controller);
-    $action = strtolower($action);
-    ?>
+    $action = strtolower($action); ?>
 <div class="sidebar no-print">
     <div class="logo-wrapper">
         <?php
-            if (CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'])) {
-                $logoUrl = CommonHelper::generateUrl('home', 'index');
-            } else {
-                $logoUrl = CommonHelper::generateUrl();
-            }
-            ?>
+        if (CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'])) {
+            $logoUrl = CommonHelper::generateUrl('home', 'index');
+        } else {
+            $logoUrl = CommonHelper::generateUrl();
+        } ?>
         <div class="logo-dashboard"><a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
-        <div class="js-hamburger hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+        <div class="js-hamburger hamburger-toggle <?php echo empty(FatUtility::int($_COOKIE['openSidebar'])) ? '' : 'is-opened'; ?>"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
     </div>
     <div class="sidebar__content custom-scrollbar" data-simplebar>
         <nav class="dashboard-menu">
             <ul>
-                <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'index') ? 'is-active' : ''; ?>">
-                    <div class="menu__item__inner">
-                        <a title="<?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('buyer'); ?>">
-                            <i class="fa fa-dashboard icn"></i>
-                            <span class="menu-item__title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></span>
-                        </a>
-                    </div>
-                </li>
-                <li class="divider"></li>
                 <li class="menu__item">
                     <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Orders", $siteLangId); ?></span></div>
                 </li>
@@ -78,8 +67,7 @@
                     </div>
                 </li>
                 <li class="divider"></li>
-                <?php if (User::canViewBuyerTab()) {
-                ?>
+                <?php if (User::canViewBuyerTab()) { ?>
                 <li class="menu__item">
                     <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Addresses", $siteLangId); ?></span></div>
                 </li>
@@ -111,22 +99,20 @@
                         </a>
                     </div>
                 </li>
-                <?php if (FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE', FatUtility::VAR_INT, 1)) {
-                    ?>
-                <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'shareearn') ? 'is-active' : ''; ?>">
-                    <div class="menu__item__inner">
-                        <a title="<?php echo Labels::getLabel("LBL_Share_and_Earn", $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'shareEarn'); ?>">
-                            <i class="icn shop">
-                                <svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use>
-                                </svg>
-                            </i>
-                            <span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn", $siteLangId); ?></span>
-                        </a>
-                    </div>
-                </li>
-                <?php
-                } ?>
+                    <?php if (FatApp::getConfig('CONF_ENABLE_REFERRER_MODULE', FatUtility::VAR_INT, 1)) { ?>
+                    <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'shareearn') ? 'is-active' : ''; ?>">
+                        <div class="menu__item__inner">
+                            <a title="<?php echo Labels::getLabel("LBL_Share_and_Earn", $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'shareEarn'); ?>">
+                                <i class="icn shop">
+                                    <svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-share-earn"></use>
+                                    </svg>
+                                </i>
+                                <span class="menu-item__title"><?php echo Labels::getLabel("LBL_Share_and_Earn", $siteLangId); ?></span>
+                            </a>
+                        </div>
+                    </li>
+                    <?php } ?>
                 <li class="menu__item <?php echo ($controller == 'buyer' && $action == 'offers') ? 'is-active' : ''; ?>">
                     <div class="menu__item__inner">
                         <a title="<?php echo Labels::getLabel("LBL_My_Offers", $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Buyer', 'offers'); ?>">
@@ -140,8 +126,7 @@
                     </div>
                 </li>
                 <li class="divider"></li>
-                <?php
-            } ?>
+                <?php } ?>
                 <li class="menu__item">
                     <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Profile", $siteLangId); ?></span></div>
                 </li>
@@ -165,9 +150,10 @@
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-messages" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-messages"></use>
                                 </svg>
                             </i>
-                            <span class="menu-item__title"><?php echo Labels::getLabel("LBL_Messages", $siteLangId); ?> <?php if ($todayUnreadMessageCount > 0) {
-                ?><span class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span> <?php
-            } ?></span>
+                            <span class="menu-item__title"><?php echo Labels::getLabel("LBL_Messages", $siteLangId); ?>
+                            <?php if ($todayUnreadMessageCount > 0) { ?>
+                                <span class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span>
+                            <?php } ?></span>
                         </a>
                     </div>
                 </li>
@@ -220,12 +206,21 @@
                     </div>
                 </li>
                 <li class="divider"></li>
-				<li class="menu__item"><div class="menu__item__inner"><a href="">
-				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language"></use></svg>
-				</i><span class="menu-item__title">English</span></a></div></li>
-				<li class="menu__item"><div class="menu__item__inner"><a title="" href="">
-				<i class="icn "><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency"></use></svg>
-				</i><span class="menu-item__title"> Currency</span></a></div></li>
+                <li class="menu__item">
+                    <div class="menu__item__inner"><a href="">
+                        <i class="icn "><svg class="svg">
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language"></use>
+                            </svg>
+                        </i><span class="menu-item__title">English</span></a>
+                    </div>
+                </li>
+                <li class="menu__item">
+                    <div class="menu__item__inner"><a title="" href="">
+                        <i class="icn "><svg class="svg">
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency"></use>
+                            </svg>
+                        </i><span class="menu-item__title"> Currency</span></a></div>
+                </li>
             </ul>
         </nav>
     </div>
@@ -233,35 +228,35 @@
 <script>
     var Dashboard = function () {
 
-    	var menuChangeActive = function menuChangeActive(el) {
-    		var hasSubmenu = $(el).hasClass("has-submenu");
-    		$(global.menuClass + " .is-active").removeClass("is-active");
-    		$(el).addClass("is-active");
+        var menuChangeActive = function menuChangeActive(el) {
+            var hasSubmenu = $(el).hasClass("has-submenu");
+            $(global.menuClass + " .is-active").removeClass("is-active");
+            $(el).addClass("is-active");
 
 
-    	};
+        };
 
-    	var sidebarChangeWidth = function sidebarChangeWidth() {
-    		var $menuItemsTitle = $("li .menu-item__title");
+        var sidebarChangeWidth = function sidebarChangeWidth() {
+            var $menuItemsTitle = $("li .menu-item__title");
 
-    		$("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
-    		$(".hamburger-toggle").toggleClass("is-opened");
-
-
-
-    	};
-
-    	return {
-    		init: function init() {
-    			$(".js-hamburger").on("click", sidebarChangeWidth);
-
-    			$(".js-menu li").on("click", function (e) {
-    				menuChangeActive(e.currentTarget);
-    			});
+            $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+            $(".hamburger-toggle").toggleClass("is-opened");
 
 
-    		}
-    	};
+
+        };
+
+        return {
+            init: function init() {
+                $(".js-hamburger").on("click", sidebarChangeWidth);
+
+                $(".js-menu li").on("click", function (e) {
+                    menuChangeActive(e.currentTarget);
+                });
+
+
+            }
+        };
 
     }();
 

@@ -52,16 +52,40 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Order_Cancellation_Requests', $siteLangId); ?></h5>
-                </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div class="bg-gray-light p-3 pb-0">
-                        <?php echo $frmOrderCancellationRequestsSrch->getFormHtml(); ?>
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Order_Cancellation_Requests', $siteLangId); ?></h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="bg-gray-light p-3 pb-0">
+                                <?php
+                                $submitFld = $frmOrderCancellationRequestsSrch->getField('btn_submit');
+                                $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
+                                $fldClear= $frmOrderCancellationRequestsSrch->getField('btn_clear');
+                                $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+                                echo $frmOrderCancellationRequestsSrch->getFormHtml();
+                                ?>
+                            </div>
+                            <span class="gap"></span>
+
+                        </div>
                     </div>
-                    <span class="gap"></span>
-                    <div id="cancelOrderRequestsListing"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="cancelOrderRequestsListing"></div>
+                            <span class="gap"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
