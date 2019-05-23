@@ -40,7 +40,7 @@ $priceToFld->developerTags['col'] = 2;
 $priceToFld->developerTags['noCaptionTag'] = true;
 
 $submitBtnFld = $frmOrderSrch->getField('btn_submit');
-$submitBtnFld->setFieldTagAttribute('class', 'btn--block');
+$submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
 $submitBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
 $submitBtnFld->developerTags['noCaptionTag'] = true;
@@ -50,40 +50,36 @@ $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border
 $cancelBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
 $cancelBtnFld->developerTags['noCaptionTag'] = true;
-?>
-<?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
-<main id="main-area" class="main" role="main">
- <div class="content-wrapper content-space">
-    <div class="content-header justify-content-between row mb-4">
-        <div class="content-header-left col-md-auto">
-            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-            <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Orders', $siteLangId); ?></h2>
+?> <?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?> <main id="main-area" class="main" role="main">
+    <div class="content-wrapper content-space">
+        <div class="content-header justify-content-between row mb-4">
+            <div class="content-header-left col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Orders', $siteLangId); ?></h2>
+            </div>
         </div>
-    </div>
-    <div class="content-body">
-      <div class="row mb-4">
-      	<div class="col-lg-12">
-			<div class="cards">
-    	<div class="cards-header p-4">
-                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
+        <div class="content-body">
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 "><?php echo $frmOrderSrch->getFormHtml(); ?></div>
+                    </div>
+                </div>
             </div>
-            <div class="cards-content pl-4 pr-4 "><?php echo $frmOrderSrch->getFormHtml(); ?></div>
-            </div>
-     	
-      	</div>
-      </div>
-       
-        <div class="cards">
-           <div class="cards-header p-4">
-                <h5 class="cards-title">Data heading goes here</h5>
-            </div>
-            
-            <div class="cards-content pl-4 pr-4 ">
-              
-                <span class="gap"></span>
-                <div id="ordersListing"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="ordersListing"></div>
+                            <span class="gap"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </main>

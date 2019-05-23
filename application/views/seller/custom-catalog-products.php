@@ -49,42 +49,52 @@
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
-                    <div class="action">
-                        <?php if (User::canAddCustomProductAvailableToAllSellers()) {?>
-                        <a href="<?php echo CommonHelper::generateUrl('Seller', 'customCatalogProductForm');?>" class="btn btn--primary ripplelink btn--sm"><?php echo Labels::getLabel('LBL_Request_New_Product', $siteLangId);?></a>
-                        <?php }?>
-                    </div>
-                </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div class="bg-gray-light p-3 pb-0">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <?php
-                                $submitFld = $frmSearchCustomCatalogProducts->getField('btn_submit');
-                                $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
-
-                                $fldClear= $frmSearchCustomCatalogProducts->getField('btn_clear');
-                                $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
-
-                                echo $frmSearchCustomCatalogProducts->getFormHtml();
-                                ?>
-                                <?php echo $frmSearchCustomCatalogProducts->getExternalJS(); ?>
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
+                            <div class="action">
+                                <?php if (User::canAddCustomProductAvailableToAllSellers()) {?>
+                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'customCatalogProductForm');?>" class="btn btn--primary ripplelink btn--block"><?php echo Labels::getLabel('LBL_Request_New_Product', $siteLangId);?></a>
+                                <?php }?>
                             </div>
                         </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="bg-gray-light p-3 pb-0">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <?php
+                                        $submitFld = $frmSearchCustomCatalogProducts->getField('btn_submit');
+                                        $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
+                                        $fldClear= $frmSearchCustomCatalogProducts->getField('btn_clear');
+                                        $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+
+                                        echo $frmSearchCustomCatalogProducts->getFormHtml();
+                                        ?>
+                                        <?php echo $frmSearchCustomCatalogProducts->getExternalJS(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="gap"></span>
+                        </div>
                     </div>
-                    <span class="gap"></span>
                 </div>
             </div>
-            <span class="gap"></span>
-            <div class="cards">
-                <div class="cards-content pl-4 pr-4 ">
-                    <div id="listing">
-                        <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="listing">
+                                <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
+                            </div>
+                            <span class="gap"></span>
+                        </div>
                     </div>
-                    <span class="gap"></span>
                 </div>
             </div>
         </div>

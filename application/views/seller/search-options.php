@@ -87,16 +87,25 @@ foreach ($arr_listing as $sn => $row) {
     }
 }
 if (count($arr_listing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    /*$tbl->appendElement('tr')->appendElement(
         'td',
         array(
         'colspan'=>count($arr_flds)),
         'No records found'
-    );
+    );*/
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId));
+    die;
 }
+$frm = new Form('frmOptionListing', array('id'=>'frmOptionListing'));
+$frm->setFormTagAttribute('class', 'form');
+$frm->setFormTagAttribute('onsubmit', 'formAction(this, reloadList ); return(false);');
+$frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'bulkOptionsDelete'));
+$frm->addHiddenField('', 'status');
+
+echo $frm->getFormTag();
+echo $frm->getFieldHtml('status');
+echo $tbl->getHtml();
 ?>
-<form id="frmOptionListing" name="frmOptionListing" method="post" onsubmit="formAction(this); return(false);" class="form" action="<?php echo CommonHelper::generateUrl('Seller', 'bulkOptionsDelete'); ?>">
-    <?php echo $tbl->getHtml(); ?>
 </form>
 <?php
 
