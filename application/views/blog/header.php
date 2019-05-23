@@ -46,12 +46,29 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
 ?>
 
 <header class="header-blog">
-<div class="top-head-blog"></div>
-	<div class="container">
+	<div class="main-bar-blog"><div class="container">
 		<div class="header-blog-inner">
 			<?php $this->includeTemplate( '_partial/blogNavigation.php'); ?>
 		</div>
+		</div>
 	</div>
+	<div class="last-bar">
+    <div class="container">
+        <div class="navigations__overlayx"></div>
+        <a class="navs_toggle" href="javascript:void(0)"><span></span></a>
+        <div class="navigation-wrapper">
+            <ul class="navigations">			                                                                                                                                    
+                                <li class=""><a target="_self" data-org-url="/yokartv8/cms/view/1" href="/yokartv8/cms/view/1">Blog Home</a></li>
+								<li class=""><a target="_self" data-org-url="/yokartv8/category/view/113" href="javascript:void(0)">eCommerce</a></li>
+								<li class=""><a target="_self" data-org-url="/yokartv8/category/view/156" href="javascript:void(0)">Multi-Vendor Store</a></li>
+								<li class=""><a target="_self" data-org-url="/yokartv8/category/view/112" href="javascript:void(0)">Startups</a></li>
+                                <li class=""><a target="_self" data-org-url="/yokartv8/category/view/109" href="javascript:void(0)">Tips & Trends</a></li>
+                                <li class=""><a target="_self" data-org-url="/yokartv8/blog" href="/yokartv8/blog">YoKart Features</a></li>
+                            
+            </ul>
+        </div>
+    </div>
+</div>
 </header>
 <div class="after-header-blog"></div>
 <div class="clear"></div>

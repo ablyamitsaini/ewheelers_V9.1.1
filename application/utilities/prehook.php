@@ -51,4 +51,4 @@ FatApp::setViewDataProvider('_partial/seller/sellerSalesGraph.php', array('Stati
 
 FatApp::setViewDataProvider('_partial/blogSidePanel.php', array('Common', 'blogSidePanelArea'));
 FatApp::setViewDataProvider('_partial/blogTopFeaturedCategories.php', array('Common', 'blogTopFeaturedCategories'));
-FatApp::setViewDataProvider('_partial/poll-form.php', array('Common', 'pollForm'));
+//FatApp::setViewDataProvider('_partial/poll-form.php', array('Common', 'pollForm'));
