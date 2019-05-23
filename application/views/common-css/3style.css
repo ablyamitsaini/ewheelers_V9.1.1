@@ -1590,6 +1590,7 @@ input:checked + .slider:before {
 	background: #fff;
 	border-radius: 4px;
 	overflow: hidden;
+	padding-bottom: 1rem;
 }
 
 .pagination.pagination--center {
@@ -2003,7 +2004,7 @@ body.fixed #header {
 }
 
 body.fixed .top-bar {
-	margin-top: -45px;
+	margin-top: -31px;
 }
 
 .slogan {
@@ -2326,7 +2327,7 @@ body.fixed .top-bar {
 	height: 48px;
 	border-radius: 50%;
 	border: solid 1px var(--first-color);
-	margin-inline-end: 5px;
+	margin-inline-end: 10px;
 }
 
 .cart .icn-txt {
@@ -2341,24 +2342,24 @@ body.fixed .top-bar {
 	font-weight: 300;
 }
 
-/*
+ 
 .cart .cartQuantity {
-	background: #fff;
 	border-radius: 50%;
 	width: 22px;
 	height: 22px;
 	display: block;
 	position: absolute;
 	z-index: 0;
-	top: 0px;
-	right: 0px;
-	color: var(--first-color);
-	border: solid 2px var(--first-color);
-	font-size: 0.7em;
+	bottom: 13px;
+	left: 30px;
+	color:#fff;
+	border: solid 1px var(--first-color);
+	background: var(--first-color);
+	font-size: 0.8em;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 2;
-}*/
+	line-height: 20px;
+} 
 .dropsection {
 	position: fixed;
 	width: 450px;
@@ -4395,7 +4396,7 @@ img {
 }
 
 .ftshops .ftshops_location {
-	color: var(--txt-color-light);
+	color: #fff;
 	font-size: 0.8em;
 	font-weight: 300;
 }
@@ -7139,6 +7140,9 @@ body.is--dashboard {
 	font-size: 0.875em;
 	border-bottom: solid 1px var(--border-color);
 }
+.table th a, .table td a{ color: inherit;}
+
+.table th a:hover, .table td a:hover{ text-decoration: underline;}
 
 .table thead th,
 .table th {
@@ -7566,7 +7570,7 @@ body.is--dashboard {
 	border: solid 1px var(--border-color);
 	margin: 0 0 20px;
 	position: relative;
-	padding: 10px;
+	padding: 1rem;
 	height: 100%;
 }
 
@@ -11977,6 +11981,19 @@ html.quick-view--open {
 	white-space: nowrap;
 }
 
+.dashboard-menu .accordianbody {
+	padding: 0;
+	display: none;
+}
+
+.dashboard-menu .accordianbody li a {
+	padding-left: 70px;
+	color: var(--body-color);
+	font-size: 0.8125rem;
+	line-height: 2rem;
+
+}
+
 .dashboard-menu .icn {
 	display: flex;
 	align-items: center;
@@ -14909,7 +14926,10 @@ main.main {
 	color: var(--first-color);
 }
 
-.wrap-drop.wrap-drop--first:after, .wrap-drop.wrap-drop--first:before{background-color: var(--first-color);}
+.wrap-drop.wrap-drop--first:after,
+.wrap-drop.wrap-drop--first:before {
+	background-color: var(--first-color);
+}
 
 
 .wrap-drop .drop {
@@ -14968,6 +14988,6 @@ main.main {
 	height: 10px;
 	border-radius: 50%;
 	display: inline-block;
-	margin-inline-end: 5px; 
-	
+	margin-inline-end: 5px;
+
 }
