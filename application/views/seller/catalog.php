@@ -7,9 +7,10 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
                 <h2 class="content-header-title">
-                    <?php echo Labels::getLabel('LBL_Marketplace_Products', $siteLangId); ?>
+                    <?php
+                        //echo Labels::getLabel('LBL_Marketplace_Products', $siteLangId); 
+                    ?>
                     <div class="delivery-term">
-                        <a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
                         <div id="catalogToolTip" style="display:none">
                             <div class="delivery-term-data-inner">
                                 <div class="heading">Products<span>All the information you need regarding this page</span></div>
@@ -37,7 +38,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
                     <div class="action">
                         <?php if (User::canAddCustomProduct()) { ?>
-                        <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary ripplelink btn--sm"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
+                        <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
                         <?php }
                         ?>
                         <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
@@ -72,13 +73,13 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         $typeFld->developerTags['col'] = 2;
 
                         $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
-                        $submitFld->setFieldTagAttribute('class', 'btn--block');
+                        $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
                         $submitFld->setWrapperAttribute('class', 'col-lg-2');
                         $submitFld->developerTags['col'] = 2;
 
                         $fldClear= $frmSearchCatalogProduct->getField('btn_clear');
                         $fldClear->setFieldTagAttribute('onclick', 'clearSearch()');
-                        $fldClear->setFieldTagAttribute('class', 'btn--block');
+                        $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
                         $fldClear->setWrapperAttribute('class', 'col-lg-2');
                         $fldClear->developerTags['col'] = 2;
                             /* if( User::canAddCustomProductAvailableToAllSellers() ){
@@ -90,6 +91,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         ?>
                     </div>
                     <span class="gap"></span>
+                </div>
+            </div>
+            <div class="gap"></div>
+            <div class="cards">
+                <div class="cards-content pl-4 pr-4 ">
                     <div id="listing"> </div>
                     <span class="gap"></span>
                 </div>

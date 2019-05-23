@@ -67,7 +67,13 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                         <?php echo $frmOrderSrch->getFormHtml(); ?>
                     </div>
                     <span class="gap"></span>
+                </div>
+            </div>
+            <span class="gap"></span>
+            <div class="cards">
+                <div class="cards-content pl-4 pr-4 ">
                     <div id="ordersListing"></div>
+                    <span class="gap"></span>
                 </div>
             </div>
         </div>

@@ -31,9 +31,10 @@
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
                 <h2 class="content-header-title">
-                    <?php echo Labels::getLabel('LBL_Requested_Products', $siteLangId); ?>
+                    <?php
+                    //echo Labels::getLabel('LBL_Requested_Products', $siteLangId);
+                    ?>
                     <div class="delivery-term">
-                        <a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
                         <div id="requestedProductsToolTip" style="display:none">
                             <div class="delivery-term-data-inner">
                                 <div class="heading">Requested Products<span>All the information you need regarding this page</span></div>
@@ -61,15 +62,29 @@
                     <div class="bg-gray-light p-3 pb-0">
                         <div class="row">
                             <div class="col-lg-6">
-                                <?php echo $frmSearchCustomCatalogProducts->getFormHtml(); ?>
+                                <?php
+                                $submitFld = $frmSearchCustomCatalogProducts->getField('btn_submit');
+                                $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
+                                $fldClear= $frmSearchCustomCatalogProducts->getField('btn_clear');
+                                $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+
+                                echo $frmSearchCustomCatalogProducts->getFormHtml();
+                                ?>
                                 <?php echo $frmSearchCustomCatalogProducts->getExternalJS(); ?>
                             </div>
                         </div>
                     </div>
                     <span class="gap"></span>
+                </div>
+            </div>
+            <span class="gap"></span>
+            <div class="cards">
+                <div class="cards-content pl-4 pr-4 ">
                     <div id="listing">
                         <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                     </div>
+                    <span class="gap"></span>
                 </div>
             </div>
         </div>

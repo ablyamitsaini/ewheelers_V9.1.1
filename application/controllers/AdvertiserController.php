@@ -70,6 +70,7 @@ class AdvertiserController extends AdvertiserBaseController
         $this->set('typeArr', $typeArr);
         // $this->set('promotionList', $promotionList);
         // $this->set('promotionCount', $srch->recordCount());
+        $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }
 

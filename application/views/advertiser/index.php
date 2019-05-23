@@ -9,23 +9,30 @@
             </div>
         </div>
         <div class="content-body">
-            <div class="widget-wrapper mb-3 simplebar-horizontal"  data-simplebar>
+            <div class="js-widget-scroll widget-scroll">
                 <div class="widget widget-stats">
-                    <a href="<?php echo CommonHelper::generateUrl('account', 'credits');?>">
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'credits'); ?>">
                         <div class="cards">
                             <div class="cards-header p-4">
                                 <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
+                                    </svg>
+                                </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
-                                    <i class="icn">
-                                        <svg class="svg">
-                                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
-                                        </svg>
-                                    </i>
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></h6>
-                                        <?php echo CommonHelper::displayMoneyFormat($walletBalance);?>
+                                        <ul>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
+                                            </li>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -37,17 +44,24 @@
                         <div class="cards">
                             <div class="cards-header p-4">
                                 <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Active_Promotions', $siteLangId);?></h5>
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#speaker" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#speaker"></use>
+                                    </svg>
+                                </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
-                                    <i class="icn">
-                                        <svg class="svg">
-                                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#speaker" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#speaker"></use>
-                                        </svg>
-                                    </i>
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Total_Active_promotions', $siteLangId);?> </h6>
-                                        <?php  echo $totActivePromotions; ?>
+                                        <ul>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Active_promotions', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo $totActivePromotions; ?></span>
+                                            </li>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Active_promotions', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totActivePromotions);?></span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -59,17 +73,25 @@
                         <div class="cards">
                             <div class="cards-header p-4">
                                 <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Amount_Spent_on_Promotions', $siteLangId);?></h5>
+                                <i class="icn">
+                                    <svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money"></use>
+                                    </svg>
+                                </i>
                             </div>
                             <div class="cards-content pl-4 pr-4 ">
                                 <div class="stats">
-                                    <i class="icn">
-                                        <svg class="svg">
-                                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money"></use>
-                                        </svg>
-                                    </i>
                                     <div class="stats-number">
-                                        <h6 class="total"><?php echo Labels::getLabel('LBL_Total_Charged_Amount', $siteLangId);?></h6>
-                                        <?php echo CommonHelper::displayMoneyFormat($totChargedAmount);?>
+                                        <ul>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Charged_Amount', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totChargedAmount); ?></span>
+                                            </li>
+                                            <li>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Charged_Amount', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totChargedAmount);?></span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
