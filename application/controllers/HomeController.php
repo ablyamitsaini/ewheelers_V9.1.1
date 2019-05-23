@@ -499,4 +499,5 @@ class HomeController extends MyAppController
         $rs = $productSrchSponObj->getResultSet();
         return $db->fetchAll($rs);
     }
+
 }

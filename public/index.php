@@ -25,6 +25,19 @@ if (file_exists($filename)) {
     }
     @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
 }
+/*$filename = CONF_UPLOADS_PATH.'database-restore-progress.txt';
+if (file_exists($filename)) {
+    $filelastmodified = filemtime($filename);
+    if ((time() - $filelastmodified) < 8*60) {
+        if (!strpos($_SERVER['REQUEST_URI'], 'app-api')=== false) {
+            $arr = array('status'=>0,'msg'=>'We are restoring database as a scheduled process. Please try in about a minute.');
+            die(json_encode($arr));
+        }
+        require_once('maintenance.php');
+        exit;
+    }
+    @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
+}*/
 
 require_once dirname(__FILE__) . '/application-top.php';
 

@@ -162,7 +162,7 @@
 $fl = 'js/variables.js';
 echo FatUtility::generateUrl ( 'JsCss', 'js', array (), '', false ). '&f=' . rawurlencode ( $fl );
 ?>"></script>
-<div class="no-print">
+<div class="no-print" >
 <?php if(CommonHelper::demoUrl()){ ?>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
@@ -182,9 +182,12 @@ window.onbeforeprint = function () {
 window.onafterprint = function () {
 	Tawk_API.showWidget();
 };
+
 </script>
 <!--End of Tawk.to Script-->
-<?php } ?>
+<?php
+$this->includeTemplate( 'restore-system/page-content.php');
+}?>
 </div>
 </div>
 </body>

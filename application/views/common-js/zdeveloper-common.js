@@ -888,6 +888,7 @@ function quickDetail(selprod_id){
 	}); */
 }
 
+
 /* read more functionality [ */
 $(document).on('click', '.readMore', function(){
 /* $(document).delegate('.readMore' ,'click' , function(){ */
