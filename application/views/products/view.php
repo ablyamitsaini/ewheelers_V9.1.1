@@ -109,6 +109,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     </div>
                                     <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
                                     <div class="gap"></div>
+                                    <div class="divider"></div>
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
@@ -120,6 +121,70 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
                             <div class="note-messages"><?php echo str_replace('{amount}', $freeShipAmt, Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase', $siteLangId));?></div>
                             <?php }?>
+                            <div class="gap"></div>
+
+                            <?php if (!empty($optionRows)) { ?>
+                            <div class="row">
+                                <?php $selectedOptionsArr = $product['selectedOptionValues'];
+                                /*CommonHelper::printArray($selectedOptionsArr);
+                                CommonHelper::printArray($optionRows);*/
+                                $count = 0;
+                                foreach ($optionRows as $key => $option) {
+                                    $selectedOptionValue = $option['values'][$selectedOptionsArr[$key]]['optionvalue_name'];
+                                    $selectedOptionColor = $option['values'][$selectedOptionsArr[$key]]['optionvalue_color_code'];
+                                    ?>
+                                <div class="col-md-6 mb-2">
+                                    <div class="h6"><?php echo $option['option_name']; ?></div>
+                                    <div class="js-wrap-drop wrap-drop" id="js-wrap-drop<?php echo $count; ?>">
+                                        <span>
+                                        <?php if ($option['option_is_color']) { ?>
+                                            <span class="colors" style="background-color:#<?php echo $selectedOptionColor; ?>; ?>;"></span>
+                                        <?php } ?>
+                                        <?php echo $selectedOptionValue; ?></span>
+                                        <?php if ($option['values']) { ?>
+                                        <ul class="drop">
+                                            <?php foreach ($option['values'] as $opVal) {
+                                                $isAvailable = true;
+                                                if (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
+                                                    $optionUrl = CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
+                                                } else {
+                                                    $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
+                                                    $optionUrlArr = explode("::", $optionUrl);
+                                                    if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
+                                                        $optionUrl = $optionUrlArr[0];
+                                                        $isAvailable = false;
+                                                    }
+                                                } ?>
+                                            <li class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' selected' : ' ';
+                                            echo (!$optionUrl) ? ' is-disabled' : '';
+                                            echo (!$isAvailable) ? 'not--available':'';?>">
+                                                <?php if ($option['option_is_color'] && $opVal['optionvalue_color_code'] != '') { ?>
+                                                <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>"
+                                                    title="<?php echo $opVal['optionvalue_name'];
+                                                    echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
+                                                    class="<?php echo (!$option['option_is_color']) ? 'selector__link' : '';
+                                                    echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' ' : ' ';
+                                                    echo (!$optionUrl) ? ' is-disabled' : '';  ?>"
+                                                    href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <span class="colors" style="background-color:#<?php echo $opVal['optionvalue_color_code']; ?>;"></span><?php echo $opVal['optionvalue_name'];?></a>
+                                                <?php } else { ?>
+                                                <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>"
+                                                    title="<?php echo $opVal['optionvalue_name'];
+                                                    echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
+                                                    class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? '' : ' '; echo (!$optionUrl) ? ' is-disabled' : '' ?>" href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>">
+                                                    <?php echo $opVal['optionvalue_name'];  ?> </a>
+                                                <?php } ?>
+                                            </li>
+                                            <?php } ?>
+
+                                            </ul>
+                                        <?php }?>
+                                    </div>
+                                </div>
+                                    <?php $count++;
+                                }?>
+                            </div>
+                            <?php }?>
+
                             <?php /*if (count($productSpecifications) > 0) { ?>
                             <div class="gap"></div>
                             <div class="box box--gray box--radius box--space">
@@ -141,57 +206,6 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 </div>
                             </div>
                             <?php }*/?>
-                            <?php if (!empty($optionRows)) { ?>
-                            <div class="gap"></div>
-                            <div class="box box--gray box--radius box--space">
-                                <div class="row">
-                                    <?php $selectedOptionsArr = $product['selectedOptionValues'];
-                                    foreach ($optionRows as $option) { ?>
-                                    <div class="<?php echo ($option['option_is_color']) ? 'col-auto column' : 'col-auto column'; ?>">
-                                        <div class="h6"><?php echo $option['option_name']; ?> :</div>
-                                        <div class="article-options <?php echo ($option['option_is_color']) ? 'options--color' : 'options--size'; ?>">
-                                            <?php if ($option['values']) { ?>
-                                            <ul>
-                                                <?php foreach ($option['values'] as $opVal) {
-                                                    $isAvailable = true;
-                                                    if (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
-                                                        $optionUrl = CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
-                                                    } else {
-                                                        $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
-                                                        $optionUrlArr = explode("::", $optionUrl);
-                                                        if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
-                                                            $optionUrl = $optionUrlArr[0];
-                                                            $isAvailable = false;
-                                                        }
-                                                    } ?>
-                                                <li class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' is--active' : ' ';
-                                                    echo (!$optionUrl) ? ' is-disabled' : '';
-                                                    echo (!$isAvailable) ? 'not--available':''; ?>">
-                                                    <?php   if ($option['option_is_color'] && $opVal['optionvalue_color_code'] != '') { ?>
-                                                    <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>"
-                                                        title="<?php echo $opVal['optionvalue_name'];
-                                                        echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
-                                                        class="<?php echo (!$option['option_is_color']) ? 'selector__link' : '';
-                                                        echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' ' : ' ';
-                                                        echo (!$optionUrl) ? ' is-disabled' : '';  ?>"
-                                                        href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <span style="background-color:#<?php echo $opVal['optionvalue_color_code']; ?>;"></span></a>
-                                                    <?php   } else { ?>
-                                                    <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>"
-                                                        title="<?php echo $opVal['optionvalue_name'];
-                                                        echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
-                                                        class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? '' : ' '; echo (!$optionUrl) ? ' is-disabled' : '' ?>"
-                                                        href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <?php echo $opVal['optionvalue_name'];  ?> </a>
-                                                    <?php } ?>
-                                                </li>
-                                                <?php } ?>
-                                            </ul>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <?php }?>
 
                             <!-- Add To Cart [ -->
                             <?php if ($product['in_stock']) {
@@ -360,23 +374,23 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <?php $youtube_embed_code = CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
                         <div class="nav-detail">
                             <ul>
-                                <?php if (count($productSpecifications)>0) { ?>
-                                <li class="is-active"><a href="#tb-1"><?php echo Labels::getLabel('LBL_Specification', $siteLangId); ?></a></li>
+                                <?php if (count($productSpecifications)>0) {?>
+                                <li class="is-active"><a href="#specifications"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?></a></li>
                                 <?php }?>
                                 <?php if ($product['product_description']!='') { ?>
-                                <li class=""><a href="#tb-2"><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?> </a></li>
+                                <li class=""><a href="#description"><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?> </a></li>
                                 <?php }?>
                                 <?php if ($youtube_embed_code) { ?>
-                                <li class=""><a href="#tb-3"><?php echo Labels::getLabel('LBL_Video', $siteLangId); ?> </a></li>
+                                <li class=""><a href="#video"><?php echo Labels::getLabel('LBL_Video', $siteLangId); ?> </a></li>
                                 <?php }?>
                                 <?php if ($shop['shop_payment_policy'] != '' || !empty($shop["shop_delivery_policy"] != "") || !empty($shop["shop_delivery_policy"] != "")) { ?>
-                                <li class=""><a href="#tb-4"><?php echo Labels::getLabel('LBL_Shop_Policies', $siteLangId); ?> </a></li>
+                                <li class=""><a href="#shop-policies"><?php echo Labels::getLabel('LBL_Shop_Policies', $siteLangId); ?> </a></li>
                                 <?php }?>
                                 <?php if (!empty($product['selprodComments'])) { ?>
-                                <li class=""><a href="#tb-5"><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?> </a></li>
+                                <li class=""><a href="#extra-comments"><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?> </a></li>
                                 <?php }?>
                                 <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
-                                <li class=""><a href="#tb-5"><?php echo Labels::getLabel('LBL_Ratings_and_Reviews', $siteLangId); ?> </a></li>
+                                <li class=""><a href="#itemRatings"><?php echo Labels::getLabel('LBL_Ratings_and_Reviews', $siteLangId); ?> </a></li>
                                 <?php }?>
                             </ul>
                         </div>
@@ -389,8 +403,8 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                     <div class="col-md-7">
                         <?php if (count($productSpecifications)>0) {?>
                             <div class="section-head">
-                                <div class="section__heading">
-                                    <h2><?php echo Labels::getLabel('LBL_Specification', $siteLangId); ?></h2>
+                                <div class="section__heading" id="specifications">
+                                    <h2><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?></h2>
                                 </div>
                             </div>
                             <div class="cms bg-gray p-4 mb-4">
@@ -408,7 +422,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <?php }?>
                         <?php if ($product['product_description']!='') { ?>
                             <div class="section-head">
-                                <div class="section__heading">
+                                <div class="section__heading" id="description">
                                     <h2><?php echo Labels::getLabel('LBL_Description', $siteLangId); ?></h2>
                                 </div>
                             </div>
@@ -418,7 +432,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <?php } ?>
                         <?php if ($youtube_embed_code) { ?>
                             <div class="section-head">
-                                <div class="section__heading">
+                                <div class="section__heading" id="video">
                                     <h2><?php echo Labels::getLabel('LBL_Video', $siteLangId); ?></h2>
                                 </div>
                             </div>
@@ -431,7 +445,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <?php } ?>
                         <?php if ($shop['shop_payment_policy'] != '' || !empty($shop["shop_delivery_policy"] != "") || !empty($shop["shop_delivery_policy"] != "")) { ?>
                             <div class="section-head">
-                                <div class="section__heading">
+                                <div class="section__heading" id="shop-policies">
                                     <h2><?php echo Labels::getLabel('LBL_Shop_Policies', $siteLangId); ?></h2>
                                 </div>
                             </div>
@@ -454,7 +468,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <?php } ?>
                         <?php if (!empty($product['selprodComments'])) { ?>
                             <div class="section-head">
-                                <div class="section__heading">
+                                <div class="section__heading" id="extra-comments">
                                     <h2><?php echo Labels::getLabel('LBL_Extra_comments', $siteLangId); ?></h2>
                                 </div>
                             </div>
@@ -559,6 +573,56 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                 setProductWeightage('<?php echo $product['selprod_code']; ?>');
             }
         }, 5000);
+
+        function DropDown(el) {
+            this.dd = el;
+            this.placeholder = this.dd.children('span');
+            this.opts = this.dd.find('ul.drop li');
+            this.val = '';
+            this.index = -1;
+            this.initEvents();
+        }
+
+        DropDown.prototype = {
+            initEvents: function() {
+                var obj = this;
+                obj.dd.on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $(this).toggleClass('active');
+                });
+                obj.opts.on('click', function() {
+                    var opt = $(this);
+                    obj.val = opt.text();
+                    obj.index = opt.index();
+                    obj.placeholder.text(obj.val);
+                    opt.siblings().removeClass('selected');
+                    opt.filter(':contains("' + obj.val + '")').addClass('selected');
+                    var link = opt.filter(':contains("' + obj.val + '")').find('a').attr('href');
+                    window.location.replace(link);
+                }).change();
+            },
+            getValue: function() {
+                return this.val;
+            },
+            getIndex: function() {
+                return this.index;
+            }
+        };
+
+        $(function() {
+            // create new variable for each menu
+
+            $(document).click(function() {
+                // close menu on document click
+                $('.wrap-drop').removeClass('active');
+            });
+        });
+
+        $( ".js-wrap-drop" ).each(function( index, element ) {
+            var div = '#js-wrap-drop'+index;
+            new DropDown($(div));
+        });
     });
 
     <?php /* if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>

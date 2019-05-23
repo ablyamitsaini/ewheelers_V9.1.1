@@ -78,12 +78,12 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
             <td>
             <span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Quantity', $siteLangId); ?></span>
             <div class="qty-wrapper">
-                <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                    <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
-                </div>
                 <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
-                    <span class="increase increase-js"></span>
-                    <span class="decrease decrease-js"></span>
+                    <span class="decrease decrease-js">-</span>
+                    <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
+                        <input name="qty_<?php echo md5($product['key']); ?>" data-key="<?php echo md5($product['key']); ?>" class="qty-input cartQtyTextBox productQty-js" value="<?php echo $product['quantity']; ?>" type="number" min="0" />
+                    </div>
+                    <span class="increase increase-js">+</span>
                 </div>
                 <!-- <a class="refresh" title="<?php echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); ?>" href="javascript:void(0)" onclick="cart.update('<?php echo md5($product['key']); ?>')"><i class="fa fa-refresh"></i></a> -->
                 <?php
