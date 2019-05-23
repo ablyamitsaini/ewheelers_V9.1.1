@@ -499,4 +499,10 @@ class HomeController extends MyAppController
         $rs = $productSrchSponObj->getResultSet();
         return $db->fetchAll($rs);
     }
+
+    public function setupSidebarVisibility()
+    {
+        $openSidebar = (array_key_exists('openSidebar', $_COOKIE) && 0 < FatUtility::int($_COOKIE['openSidebar']) ? 0 : 1);
+        setcookie('openSidebar', $openSidebar, '', CONF_WEBROOT_URL);
+    }
 }

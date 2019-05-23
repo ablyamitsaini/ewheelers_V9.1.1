@@ -113,6 +113,7 @@ class BuyerController extends BuyerBaseController
         $this->set('totalMessageCount', $totalMessageCount);
         $this->set('userBalance', User::getUserBalance($userId));
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
+        $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }
 

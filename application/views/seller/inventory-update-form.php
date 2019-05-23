@@ -4,6 +4,6 @@ $frm->setFormTagAttribute('id', 'frmImportExportSettings');
 $frm->developerTags['colClassPrefix'] = 'col-lg-8 col-md-8 col-sm-';
 $frm->developerTags['fld_default_col'] = 8;
 $fld = $frm->getField('csvfile');
-$fld->addFieldTagAttribute('class','btn btn--secondary btn--sm');
-$fld->htmlAfterField = ' <a class = "btn btn--primary btn--sm" href="'.CommonHelper::generateUrl('seller','exportInventory').'">'.Labels::getLabel('LBL_Export_CSV_File',$siteLangId).'</a>';
+$fld->addFieldTagAttribute('class','btn btn--primary');
+$fld->htmlAfterField = ' <a class = "btn btn--primary-border" href="'.CommonHelper::generateUrl('seller','exportInventory').'">'.Labels::getLabel('LBL_Export_CSV_File',$siteLangId).'</a>';
 echo $frm->getFormHtml();

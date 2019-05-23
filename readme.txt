@@ -37,3 +37,4 @@ Fixes :
 	. Requested new brand count will be displayed on admin sidebar.
 	. Seller Product not avaliable if avaliabity from date is current date.
 	. Heading layout direction in Seller order view.
+	. PAYFORT Payment gateway payment failure.

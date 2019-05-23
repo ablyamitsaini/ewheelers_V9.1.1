@@ -7,9 +7,10 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
                 <h2 class="content-header-title">
-                    <?php echo Labels::getLabel('LBL_Marketplace_Products', $siteLangId); ?>
+                    <?php
+                        //echo Labels::getLabel('LBL_Marketplace_Products', $siteLangId);
+                    ?>
                     <div class="delivery-term">
-                        <a href="javascript:void(0)" class="initTooltip" rel="facebox"> <i class="fa fa-question-circle"></i></a>
                         <div id="catalogToolTip" style="display:none">
                             <div class="delivery-term-data-inner">
                                 <div class="heading">Products<span>All the information you need regarding this page</span></div>
@@ -32,66 +33,81 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
-                    <div class="action">
-                        <?php if (User::canAddCustomProduct()) { ?>
-                        <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary ripplelink btn--sm"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
-                        <?php }
-                        ?>
-                        <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
-                        <?php if ((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true)) {?>
-                        <a href="<?php echo CommonHelper::generateUrl('Seller', 'requestedCatalog');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId);?></a>
-                        <?php } ?>
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
+                            <div class="action">
+                                <?php if (User::canAddCustomProduct()) { ?>
+                                <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
+                                <?php }
+                                ?>
+                                <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
+                                <?php if ((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true)) {?>
+                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'requestedCatalog');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId);?></a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="bg-gray-light p-3 pb-0">
+                                <?php
+                                $frmSearchCatalogProduct->setFormTagAttribute('id', 'frmSearchCatalogProduct');
+                                $frmSearchCatalogProduct->setFormTagAttribute('class', 'form');
+                                $frmSearchCatalogProduct->setFormTagAttribute('onsubmit', 'searchCatalogProducts(this); return(false);');
+                                $frmSearchCatalogProduct->getField('keyword')->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_by_keyword/EAN/ISBN/UPC_code', $siteLangId));
+                                $frmSearchCatalogProduct->developerTags['colClassPrefix'] = 'col-md-';
+                                $frmSearchCatalogProduct->developerTags['fld_default_col'] = 12;
+
+                                $keywordFld = $frmSearchCatalogProduct->getField('keyword');
+                                $keywordFld->setFieldTagAttribute('id', 'tour-step-3');
+                                $keywordFld->setWrapperAttribute('class', 'col-lg-4');
+                                $keywordFld->developerTags['col'] = 4;
+
+                                if (FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT')) {
+                                    $dateFromFld = $frmSearchCatalogProduct->getField('type');
+                                    $dateFromFld->setFieldTagAttribute('class', '');
+                                    $dateFromFld->setWrapperAttribute('class', 'col-lg-2');
+                                    $dateFromFld->developerTags['col'] = 2;
+                                }
+                                $typeFld = $frmSearchCatalogProduct->getField('product_type');
+                                $typeFld->setWrapperAttribute('class', 'col-lg-2');
+                                $typeFld->developerTags['col'] = 2;
+
+                                $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
+                                $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+                                $submitFld->setWrapperAttribute('class', 'col-lg-2');
+                                $submitFld->developerTags['col'] = 2;
+
+                                $fldClear= $frmSearchCatalogProduct->getField('btn_clear');
+                                $fldClear->setFieldTagAttribute('onclick', 'clearSearch()');
+                                $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+                                $fldClear->setWrapperAttribute('class', 'col-lg-2');
+                                $fldClear->developerTags['col'] = 2;
+                                    /* if( User::canAddCustomProductAvailableToAllSellers() ){
+                                      $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
+                                      $submitFld->setFieldTagAttribute('class','btn--block');
+                                      $submitFld->developerTags['col'] = 4;
+                                    } */
+                                echo $frmSearchCatalogProduct->getFormHtml();
+                                ?>
+                            </div>
+                            <span class="gap"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div class="bg-gray-light p-3 pb-0">
-                        <?php
-                        $frmSearchCatalogProduct->setFormTagAttribute('id', 'frmSearchCatalogProduct');
-                        $frmSearchCatalogProduct->setFormTagAttribute('class', 'form');
-                        $frmSearchCatalogProduct->setFormTagAttribute('onsubmit', 'searchCatalogProducts(this); return(false);');
-                        $frmSearchCatalogProduct->getField('keyword')->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_by_keyword/EAN/ISBN/UPC_code', $siteLangId));
-                        $frmSearchCatalogProduct->developerTags['colClassPrefix'] = 'col-md-';
-                        $frmSearchCatalogProduct->developerTags['fld_default_col'] = 12;
-
-                        $keywordFld = $frmSearchCatalogProduct->getField('keyword');
-                        $keywordFld->setFieldTagAttribute('id', 'tour-step-3');
-                        $keywordFld->setWrapperAttribute('class', 'col-lg-4');
-                        $keywordFld->developerTags['col'] = 4;
-
-                        if (FatApp::getConfig('CONF_ENABLED_SELLER_CUSTOM_PRODUCT')) {
-                            $dateFromFld = $frmSearchCatalogProduct->getField('type');
-                            $dateFromFld->setFieldTagAttribute('class', '');
-                            $dateFromFld->setWrapperAttribute('class', 'col-lg-2');
-                            $dateFromFld->developerTags['col'] = 2;
-                        }
-                        $typeFld = $frmSearchCatalogProduct->getField('product_type');
-                        $typeFld->setWrapperAttribute('class', 'col-lg-2');
-                        $typeFld->developerTags['col'] = 2;
-
-                        $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
-                        $submitFld->setFieldTagAttribute('class', 'btn--block');
-                        $submitFld->setWrapperAttribute('class', 'col-lg-2');
-                        $submitFld->developerTags['col'] = 2;
-
-                        $fldClear= $frmSearchCatalogProduct->getField('btn_clear');
-                        $fldClear->setFieldTagAttribute('onclick', 'clearSearch()');
-                        $fldClear->setFieldTagAttribute('class', 'btn--block');
-                        $fldClear->setWrapperAttribute('class', 'col-lg-2');
-                        $fldClear->developerTags['col'] = 2;
-                            /* if( User::canAddCustomProductAvailableToAllSellers() ){
-                              $submitFld = $frmSearchCatalogProduct->getField('btn_submit');
-                              $submitFld->setFieldTagAttribute('class','btn--block');
-                              $submitFld->developerTags['col'] = 4;
-                            } */
-                        echo $frmSearchCatalogProduct->getFormHtml();
-                        ?>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="listing"> </div>
+                            <span class="gap"></span>
+                        </div>
                     </div>
-                    <span class="gap"></span>
-                    <div id="listing"> </div>
-                    <span class="gap"></span>
                 </div>
             </div>
         </div>
