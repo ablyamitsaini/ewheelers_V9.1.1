@@ -26,28 +26,18 @@ class PayFortPayController extends PaymentController
             FatUtility::exitWIthErrorCode(404);
         }
 
-        $paymentSettings = $this->getPaymentSettings();
-
-        if (!$this->validatePayFortSettings($paymentSettings)) {
-            $this->error = Labels::getLabel('PAYFORT_Invalid_Payment_Gateway_Setup_Error', $this->siteLangId);
-        } elseif (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+        $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
+        $paymentGatewayCharge = 0.00;
+        $orderInfo  = array();
+        $requestParams = $this->generatePaymentFormParams($orderId, $orderPaymentObj, $orderInfo, $paymentGatewayCharge);
+        if ($requestParams) {
+            $frm = $this->getPaymentForm($requestParams);
+            $this->set('paymentAmount', $paymentGatewayCharge);
+            $this->set('frm', $frm);
+            $this->set('orderInfo', $orderInfo);
+            $this->set('requestParams', $requestParams);
         } else {
-            $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
-            $paymentGatewayCharge = 0.00;
-            $orderInfo = array();
-            $requestParams = $this->generatePaymentFormParams($orderId, $orderPaymentObj, $orderInfo, $paymentGatewayCharge);
-
-            if ($requestParams) {
-                $frm = $this->getPaymentForm($requestParams);
-                $this->set('paymentAmount', $paymentGatewayCharge);
-                $this->set('frm', $frm);
-                $this->set('orderInfo', $orderInfo);
-                $this->set('requestParams', $requestParams);
-            } else {
-                $this->error = Labels::getLabel('PAYFORT_Invalid_request_parameters', $this->siteLangId);
-            }
+            $this->error = Labels::getLabel('PAYFORT_Invalid_request_parameters', $this->siteLangId);
         }
 
         if ($this->error) {
@@ -124,14 +114,24 @@ class PayFortPayController extends PaymentController
 
     private function generatePaymentFormParams($orderId, $orderPaymentObj, &$orderInfo, &$paymentGatewayCharge = 0.00, $returnParams = true)
     {
-        if (!$orderId || !$orderPaymentObj) {
+        if (!$orderId) {
             $this->error = Labels::getLabel('MSG_Invalid_order_request', $this->siteLangId);
             return false;
         }
 
         $paymentGatewayCharge = $this->formatPayableAmount($orderPaymentObj->getOrderPaymentGatewayAmount());
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
+
         $paymentSettings = $this->getPaymentSettings();
+
+        if (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
+
+        if (!$this->validatePayFortSettings($paymentSettings)) {
+            $this->error = Labels::getLabel('PAYFORT_Invalid_Payment_Gateway_Setup_Error', $this->siteLangId);
+        }
 
         if (!$orderInfo['id']) {
             $this->error = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);

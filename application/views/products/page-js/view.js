@@ -104,7 +104,7 @@ $("document").ready(function(){
 		$(".item__main").find('img').attr('src',mainSrc);
 	});
     
-    $('.js-collection-corner').slick( getSlickSliderSettings(6, 6, langLbl.layoutDirection) );
+    $('.js-collection-corner').slick( getSlickSliderSettings(6, 1, langLbl.layoutDirection) );
 
 	/* for on scoll jump navigation fix */
 	/* var elementPosition = $('.nav--jumps').offset();
