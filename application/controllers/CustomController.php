@@ -1,7 +1,6 @@
-<?php
-class CustomController extends MyAppController
+<?php class CustomController extends MyAppController
 {
-    public function ContactUs()
+    public function contactUs()
     {
         /* $srch = Extrapage::getSearchObject($this->siteLangId);
         $srch->addCondition('ep.epage_type','=',Extrapage::CONTACT_US_CONTENT_BLOCK);
@@ -639,15 +638,15 @@ class CustomController extends MyAppController
     private function contactUsForm()
     {
         $frm = new Form('frmContact');
-        $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '', array('placeholder'=>Labels::getLabel('LBL_Your_Name', $this->siteLangId)));
-        $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '', array('placeholder'=>Labels::getLabel('LBL_Your_Email', $this->siteLangId)));
+        $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '');
+        $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '');
 
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('placeholder'=>Labels::getLabel('LBL_Your_Phone', $this->siteLangId)));
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '');
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
-        $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '', array('placeholder'=>Labels::getLabel('LBL_Your_Message', $this->siteLangId)))->requirements()->setRequired();
+        $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '')->requirements()->setRequired();
 
         $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT', $this->siteLangId));

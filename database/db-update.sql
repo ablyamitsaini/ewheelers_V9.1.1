@@ -300,3 +300,4 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_collection_image_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on the store page.');
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Rate_And_Review_Product';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Have_You_Used_This_Product';
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'LBL_Get_in_Touch_Txt', '1', 'Want to get in touch? We would love to hear from you.<br>Here is how you can reach us...');

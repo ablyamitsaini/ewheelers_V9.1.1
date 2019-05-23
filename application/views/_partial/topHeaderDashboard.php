@@ -34,19 +34,18 @@
         <div class="header-icons-group">
             <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
             <ul class="c-header-links">
-                <li class="<?php echo (($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Advertiser' || $controllerName == 'Affiliate') && $action == 'index') ? 'is-active' : ''; ?>"><a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Home'); ?>"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></a></li>
+                <li class="<?php echo (($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Advertiser' || $controllerName == 'Affiliate') && $action == 'index') ? 'is-active' : ''; ?>"><a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl($controllerName); ?>"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></a></li>
                 <?php if ($isShopActive && $shop_id > 0) { ?>
                 <li><a data-org-url="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id), '', null, false, $getOrgUrl); ?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id)); ?>"><?php echo Labels::getLabel('LBL_Shop', $siteLangId);?></a></li>
                 <?php } ?>
             </ul>
             <div class="c-header-icon bell">
-                <a data-org-url="<?php echo CommonHelper::generateUrl('Account', 'Messages', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account', 'Messages'); ?>" title="<?php echo Labels::getLabel('LBL_Messages', $siteLangId);?>"><i class="icn"><svg class="svg bell-shake-delay">
-                            <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification"></use>
-                        </svg>
-                    </i>
-                    <?php if ($todayUnreadMessageCount > 0) { ?>
-                    <span class="h-badge"><span class="heartbit"></span><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span></a>
-                    <?php } ?>
+                <a data-org-url="<?php echo CommonHelper::generateUrl('Account', 'Messages', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('Account', 'Messages'); ?>" title="<?php echo Labels::getLabel('LBL_Messages', $siteLangId);?>">
+                <i class="icn"><svg class="svg bell-shake-delay">
+                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification"></use>
+                    </svg>
+                </i>
+                <span class="h-badge"><span class="heartbit"></span><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span></a>
             </div>
             <div class="short-links">
                 <ul>
