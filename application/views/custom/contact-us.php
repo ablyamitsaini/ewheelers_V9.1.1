@@ -129,16 +129,16 @@
 						<div class="social">
 							<ul class="">
 								<li>
-									<a class="fb" href="#"><img src="/images/social-fb.png"></a>
+									<a class="fb" href="#"><img src="<?php echo CONF_WEBROOT_URL;?>images/social-fb.png"></a>
 								</li>
 								<li>
-									<a class="twtr" href="#"><img src="images/social-tw.png"></a>
+									<a class="twtr" href="#"><img src="<?php echo CONF_WEBROOT_URL;?>images/social-tw.png"></a>
 								</li>
 								<li>
-									<a class="g-pls" href="#"><img src="images/social-gp.png"></a>
+									<a class="g-pls" href="#"><img src="<?php echo CONF_WEBROOT_URL;?>images/social-gp.png"></a>
 								</li>
 								<li>
-									<a class="linkdn" href="#"><img src="images/social-in.png"></a>
+									<a class="linkdn" href="#"><img src="<?php echo CONF_WEBROOT_URL;?>images/social-in.png"></a>
 								</li>
 							</ul>
 						</div>

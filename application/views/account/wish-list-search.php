@@ -43,13 +43,9 @@
 								$functionName = 'viewFavouriteItems';
 							} ?>
 							<?php if($wishlist['totalProducts']>0){ ?>
-								<div class="dashboard-types">
-									<ul>
-										<li class="is-active">
-											<a onClick="<?php echo $functionName;?>(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="text--normal-primary"> <?php echo str_replace('{n}', $wishlist['totalProducts'], Labels::getLabel('LBL_View_{n}_items', $siteLangId)); ?> <i class="fa fa-eye"></i></a>
-										</li>
-									</ul>
-								</div>
+							<div class="divider"></div>
+							
+								<div class="align--center mt-3"><a onClick="<?php echo $functionName;?>(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="btn btn--primary-border"> <?php echo str_replace('{n}', $wishlist['totalProducts'], Labels::getLabel('LBL_View_{n}_items', $siteLangId)); ?> <i class="fa fa-eye"></i></a></div>
 							<?php } ?>
 						</div>
 					</div>

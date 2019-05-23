@@ -207,19 +207,34 @@
                 </li>
                 <li class="divider"></li>
                 <li class="menu__item">
-                    <div class="menu__item__inner"><a href="">
+                    <div class="menu__item__inner">
+					<a href="" class="accordianheader">
                         <i class="icn "><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#language"></use>
                             </svg>
-                        </i><span class="menu-item__title">English</span></a>
+                        </i><span class="menu-item__title">Language</span></a>
+						
+						 <ul class="accordianbody">
+                                <li class="is-active"><a href="javascript:void(0);" onclick="setSiteDefaultLang(1)">English</a></li>
+                                <li><a href="javascript:void(0);" onclick="setSiteDefaultLang(2)">English 2</a></li>
+                            </ul>
+							
+				 
                     </div>
                 </li>
+				
                 <li class="menu__item">
-                    <div class="menu__item__inner"><a title="" href="">
+                    <div class="menu__item__inner"><a title="" href=""  class="accordianheader">
                         <i class="icn "><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#currency"></use>
                             </svg>
-                        </i><span class="menu-item__title"> Currency</span></a></div>
+                        </i><span class="menu-item__title"> Currency</span></a>
+						 <ul class="accordianbody">
+                                <li class="is-active"><a href="javascript:void(0);" onclick="setSiteDefaultLang(1)"> USD</a></li>
+                                <li><a href="javascript:void(0);" onclick="setSiteDefaultLang(2)">INR</a></li>
+                                <li><a href="javascript:void(0);" onclick="setSiteDefaultLang(2)">CAD</a></li>
+                            </ul>
+							</div>
                 </li>
             </ul>
         </nav>
@@ -261,4 +276,14 @@
     }();
 
     Dashboard.init();
+	
+	
+	var $title = $('.accordianheader');
+var copy   = '.accordianbody';
+
+$title.click(function () {
+  $(this).next(copy).slideToggle();
+  $(this).parent().siblings().children().next().slideUp();
+  return false;
+});
 </script>

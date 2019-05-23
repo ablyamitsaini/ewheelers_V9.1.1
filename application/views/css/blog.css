@@ -71,7 +71,7 @@
 }
 
 .after-header-blog {
-	height: 61px;
+	height: 118px;
 }
 
 .post-detail {
@@ -1725,4 +1725,60 @@ input.query {
 	}
 }
 
-/*pawan*/
+/*New blog*/
+
+.first-fold {}
+
+.post {
+	position: relative;
+	padding: 0;
+	margin: 0;
+}
+
+.post_media {
+	margin: 0;
+}
+
+.post_media img {
+	border-radius: 4px;
+	display: block;
+}
+
+.post_bg {
+	position: relative;
+	background: #fff;
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	max-width: 510px;
+	padding: 3rem;
+	border-radius: 0px 4px 4px 0;
+}
+
+.post_category {
+	display: flex;
+	margin-bottom: 1rem;
+}
+
+.post_category li {
+	border-left: solid 1px var(--border-color);
+	margin-left: 10px;
+	padding-left: 10px;
+}
+
+.post_category li:first-child {
+	border-left: none;
+	padding-inline-start: 0;
+	margin-inline-start: 0;
+}
+
+.post_category li a {
+	color: var(--first-color);
+	font-size: 0.875rem;
+	line-height: 1.2;
+}
+
+.post_title {
+	line-height: 1.5;
+}
