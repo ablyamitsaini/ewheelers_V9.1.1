@@ -206,6 +206,7 @@
                     </div>
                 </li>
                 <li class="divider"></li>
+                <?php $this->includeTemplate('_partial/dashboardLanguageArea.php'); ?>
                 <li class="menu__item">
                     <div class="menu__item__inner"><a href="">
                         <i class="icn "><svg class="svg">
