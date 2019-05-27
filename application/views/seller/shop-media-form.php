@@ -21,36 +21,33 @@
     // $shopLayout= ($shopDetails['shop_ltemplate_id'])?$shopDetails['shop_ltemplate_id']:SHOP::TEMPLATE_ONE;
     $shopLayout= SHOP::TEMPLATE_ONE;
 ?>
-<?php     $variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
-
+<?php $variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false); ?>
 <div class="tabs__content">
     <div class="form__content ">
-
-            <div class="row" id="shopFormBlock">
-                <div id="mediaResponse"></div>
-                <div class="col-md-4">
-                    <div class="preview">
-                      <small class="text--small"><?php echo Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId); ?></small>
-                        <?php echo $shopBannerFrm->getFormHtml();?>
-                        <div id="banner-image-listing" class="row"></div>
-                    </div>
+        <div class="row" id="shopFormBlock">
+            <div id="mediaResponse"></div>
+            <div class="col-md-6">
+                <div class="preview">
+                  <small class="text--small"><?php echo Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId); ?></small>
+                    <?php echo $shopBannerFrm->getFormHtml();?>
+                    <div id="banner-image-listing" class="row"></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="preview">
-                        <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $siteLangId), '150*150')?></small>
-                        <?php echo $shopLogoFrm->getFormHtml();?>
-                           <div id="logo-image-listing" class="row" ></div>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="preview">
+                    <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $siteLangId), '150*150')?></small>
+                    <?php echo $shopLogoFrm->getFormHtml();?>
+                       <div id="logo-image-listing" class="row" ></div>
                 </div>
-
-                    <?php /* <div class="col-md-4">    <div class="preview">
-                            <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_background_text',$siteLangId),'60*60')?></small>
-                            <?php echo $shopBackgroundImageFrm->getFormHtml();?>
-                                <div id="bg-image-listing" class="row"></div>
-
-                        </div></div> */ ?>
             </div>
 
+                <?php /* <div class="col-md-4">    <div class="preview">
+                        <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_background_text',$siteLangId),'60*60')?></small>
+                        <?php echo $shopBackgroundImageFrm->getFormHtml();?>
+                            <div id="bg-image-listing" class="row"></div>
+
+                    </div></div> */ ?>
+        </div>
     </div>
 </div>

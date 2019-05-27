@@ -27,6 +27,7 @@ FatApp::setViewDataProvider('_partial/headerUserArea.php', array('Common', 'head
 FatApp::setViewDataProvider('_partial/headerNavigation.php', array('Navigation', 'headerNavigation'));
 FatApp::setViewDataProvider('_partial/headerSearchFormArea.php', array('Common', 'headerSearchFormArea'));
 FatApp::setViewDataProvider('_partial/headerLanguageArea.php', array('Common', 'headerLanguageArea'));
+FatApp::setViewDataProvider('_partial/dashboardLanguageArea.php', array('Common', 'headerLanguageArea'));
 
 FatApp::setViewDataProvider('_partial/loginPageRight.php', array('Block', 'loginPageRight'));
 FatApp::setViewDataProvider('_partial/customPageLeft.php', array('Navigation', 'customPageLeft'));
