@@ -13,7 +13,7 @@ if (!defined('CONF_WEBROOT_FRONTEND') || is_file('install/install_step.php')) {
 }
 require_once dirname(__DIR__) . '/conf/conf.php';
 
-$filename = CONF_UPLOADS_PATH.'database-restore-progress.txt';
+/*$filename = CONF_UPLOADS_PATH.'database-restore-progress.txt';
 if (file_exists($filename)) {
     $filelastmodified = filemtime($filename);
     if ((time() - $filelastmodified) < 1*60) {
@@ -24,8 +24,8 @@ if (file_exists($filename)) {
         die('We are restoring database as a scheduled process. Please try in about a minute.');
     }
     @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
-}
-/*$filename = CONF_UPLOADS_PATH.'database-restore-progress.txt';
+}*/
+$filename = CONF_UPLOADS_PATH.'database-restore-progress.txt';
 if (file_exists($filename)) {
     $filelastmodified = filemtime($filename);
     if ((time() - $filelastmodified) < 8*60) {
@@ -37,7 +37,7 @@ if (file_exists($filename)) {
         exit;
     }
     @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
-}*/
+}
 
 require_once dirname(__FILE__) . '/application-top.php';
 
