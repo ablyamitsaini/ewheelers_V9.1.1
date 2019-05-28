@@ -7,11 +7,11 @@
 }
 
 #header.header-supplier {
-  height: 138px;
+  height: 126px;
 }
 
 #header.header-supplier~.after-header {
-  height: 138px;
+  height: 126px;
 }
 
 .seller-login {
@@ -33,6 +33,7 @@
 .form.seller-login input, .form.seller-login input[type="submit"] {
   height: 34px;
   line-height: 30px;
+	font-size: 0.75rem;
 }
 
 .forgot {}
@@ -131,6 +132,7 @@
   padding: 20px;
   background: rgba(255, 255, 255, 0.95);
   width: 100%;
+	border-radius: 4px;
 }
 
 .seller-register-form.affiliate-register-form {
