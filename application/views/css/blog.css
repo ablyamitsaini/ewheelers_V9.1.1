@@ -71,7 +71,7 @@
 }
 
 .after-header-blog {
-	height: 118px;
+	height: 136px;
 }
 
 .post-detail {
@@ -1726,8 +1726,42 @@ input.query {
 }
 
 /*New blog*/
+.main-bar-blog {
+	padding: 0.6rem 0;
+}
+
+.main-search {
+	max-width: 655px;
+}
+
+.backto {
+	display: flex;
+	align-items: center;
+}
+
+.backto a {
+	color: var(--first-color);
+	font-size: 0.875rem;
+	font-weight: 600;
+
+
+}
+
+.backto .icn-arrow {
+	width: 16px;
+	height: auto;
+	fill: var(--first-color);
+	margin-inline-start: 0.3rem;
+}
 
 .first-fold {}
+
+.first-fold .post_title {
+	color: #000;
+	font-size: 2rem;
+}
+
+.first-fold .post_media{ margin: 0;}
 
 .post {
 	position: relative;
@@ -1735,8 +1769,13 @@ input.query {
 	margin: 0;
 }
 
+.post a :hover {
+	text-decoration: underline;
+}
+
 .post_media {
 	margin: 0;
+	margin-bottom: 2.5rem;
 }
 
 .post_media img {
@@ -1751,8 +1790,8 @@ input.query {
 	left: 0;
 	top: 50%;
 	transform: translateY(-50%);
-	max-width: 510px;
-	padding: 3rem;
+	max-width: 480px;
+	padding: 4rem 3rem;
 	border-radius: 0px 4px 4px 0;
 }
 
@@ -1780,5 +1819,105 @@ input.query {
 }
 
 .post_title {
+	color: inherit;
 	line-height: 1.5;
+	font-weight: 600;
+	font-size: 1.25rem;
+	margin-bottom: 1rem;
+	color: var(--txt-color);
+}
+
+.post_title a {
+	color: inherit;
+}
+
+.section-head .section__heading h2 {
+	font-weight: 600;
+	font-size: 2rem;
+}
+
+.arrows {
+	cursor: pointer;
+}
+
+.arrows--left {
+	margin-inline-end: 1.5rem;
+}
+
+.arrows svg {
+	width: 30px;
+	height: auto;
+	fill: #b8b8b7;
+}
+
+
+.arrows:hover svg {
+	fill: var(--first-color);
+}
+
+.popular-stories {
+	max-width: 2000px;
+	margin: 0 auto;
+}
+
+.popular-stories .item {
+	text-align: left;
+	margin: 0 15px;
+}
+
+.blog-subscribers {
+	text-align: center;
+	color: #fff;
+}
+
+.blog-subscribers h4 {
+	color: inherit;
+	font-size: 2.5rem;
+
+	font-weight: 600;
+}
+
+.blog-subscribers p { font-size: 1.125rem;
+	color: inherit;
+}
+
+.form-subscribe {
+	margin: 2rem auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.form-subscribe input[type="text"] {
+	flex: 1;
+	background: #fff;
+	height: 3.5rem;
+	width: 100%;
+	line-height: 1.2;
+	font-size: 1em;
+	padding: 5px 20px;
+	margin: 0;
+	margin-inline-end: -3px;
+	border: solid 1px var(--border-color);
+	border-radius: 50px 0 0 50px;
+	color: var(--txt-color);
+	vertical-align: top;
+}
+
+.form-subscribe input[type="submit"] {
+	font-size: 1em;
+	background: #000;
+	height: 3.5rem;
+	width: 100%;
+	max-width: 136px;
+	line-height: 1.2;
+	padding: 5px 15px;
+	margin: 0;
+	border: none;
+	color: #fff;
+	vertical-align: top;
+	font-weight: 300;
+	border-radius: 0 50px 50px 0;
+	cursor: pointer;
 }
