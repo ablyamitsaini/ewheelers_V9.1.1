@@ -1709,7 +1709,7 @@ class BuyerController extends BuyerBaseController
 
     public function offers()
     {
-        $this->_template->render(true, true, 'buyer/offers.php');
+        $this->_template->render(true, false, 'buyer/offers.php');
     }
 
     public function searchOffers()

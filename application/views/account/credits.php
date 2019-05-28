@@ -120,8 +120,9 @@ $cancelBtnFld->developerTags['col'] = 2;
                                                 <small><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount, true, true); ?></small>
                                             <?php } ?>
                                         </div>
-                                    </div> <?php
-                                } ?> <div class="col-lg-<?php echo $currentBalanceDiv; ?> col-md-<?php echo $currentBalanceDiv; ?> ">
+                                    </div>
+                                <?php } ?>
+                                <div class="col-lg-<?php echo $currentBalanceDiv; ?> col-md-<?php echo $currentBalanceDiv; ?> mt-4">
                                         <div class="balancebox">
                                             <p><?php echo Labels::getLabel('LBL_Current_Balance', $siteLangId);?>: </p>
                                             <h2><strong>

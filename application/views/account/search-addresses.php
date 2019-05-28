@@ -25,7 +25,7 @@
                         <?php echo (strlen($address['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$address['ua_phone'].'<br>':''; ?> </p>
                 </address>
                 <a href="javascript:void(0)" onClick="addAddressForm(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--primary"><?php echo Labels::getLabel('LBL_Edit', $siteLangId); ?></a>
-                <a href="javascript:void(0)" onClick="removeAddress(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--secondary"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
+                <a href="javascript:void(0)" onClick="removeAddress(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--primary-border"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
             </label>
         </div> <?php
     }
