@@ -22,23 +22,23 @@ class RestoreSystemController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        if (!$this->isRestoredSuccessfully()) {
-            $this->resetRestoreTime(CONF_DB_NAME);
-
-            $anotherDbName = $this->getAnotherDbName();
-            $this->restoreDatabase($anotherDbName);
-            //$this->resetRestoreTime();
-
-            Message::addMessage('System unable to process the request and re-scheduled the restore process!');
-            FatUtility::dieJsonSuccess(Message::getHtml());
-        }
-
         $dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +'.static::RESTORE_TIME_INTERVAL_HOURS.' hours'));
         $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_STRING, $dateTime);
 
         if (strtotime($restoreTime) >= strtotime(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +1 min')))) {
             Message::addErrorMessage('Auto restore scheduled on '.$restoreTime);
             FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        if (!$this->isRestoredSuccessfully()) {
+            $this->resetRestoreTime(CONF_DB_NAME);
+
+            $anotherDbName = $this->getAnotherDbName();
+            $this->restoreDatabase($anotherDbName);
+            //$this->resetRestoreTime($anotherDbName);
+
+            Message::addMessage('System unable to process the request and re-scheduled the restore process!');
+            FatUtility::dieJsonSuccess(Message::getHtml());
         }
 
         $this->createRestoreProcessFile();
@@ -136,7 +136,7 @@ class RestoreSystemController extends MyAppController
         if ($rs = $mysqli->query($sql)) {
             while ($row = $rs->fetch_array()) {
                 $tableName=$row["Tables_in_".$databasename];
-                $mysqli->query("DROP TABLE $databasename.$tableName");DATABASE_SECOND
+                $mysqli->query("DROP TABLE $databasename.$tableName");
             }
         }
         $cmd ="mysql --user=" . $dbUser . " --password='" . $dbPassword . "' " . $databasename . " < " . $backupFile;
