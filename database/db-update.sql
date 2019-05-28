@@ -301,3 +301,4 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Rate_And_Review_Product';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'Lbl_Have_You_Used_This_Product';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'LBL_Get_in_Touch_Txt', '1', 'Want to get in touch? We would love to hear from you.<br>Here is how you can reach us...');
+ALTER TABLE `tbl_blog_post` ADD `post_featured` TINYINT(1) NOT NULL AFTER `post_comment_opened`;
