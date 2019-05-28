@@ -43,12 +43,13 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
             <div class="col-lg-3">
             <?php if (isset($shop)) { ?>
                 <div class="bg-gray rounded shop-information p-5 ">
-                    <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="/yokartv8/image/shop-logo/1/1/SMALL" alt="Kanwar's Shop"></div>
+                    <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="<?php echo CommonHelper::generateUrl('image', 'shopLogo', array($shop['shop_id'], $siteLangId, 'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
                     <div class="shop-info">
                         <div class="shop-name">
                             <h5>
                                 <?php echo $shop['shop_name']; ?>
-                                <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_On', $siteLangId); ?> <strong> <?php $date = new DateTime($shop['user_regdate']); echo $date->format('M d, Y'); ?> </strong></span>
+                                <span class="blk-txt"><?php echo Labels::getLabel('LBL_Shop_Opened_On', $siteLangId); ?> <strong> <?php $date = new DateTime($shop['user_regdate']);
+                                echo $date->format('M d, Y'); ?> </strong></span>
                             </h5>
                         </div>
                         <div class="products__rating"> <i class="icn"><svg class="svg">
@@ -57,6 +58,45 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                             if ($shopTotalReviews) { ?>
                                  - <a href="<?php echo CommonHelper::generateUrl('Reviews', 'shop', array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews, ' ', Labels::getLabel('Lbl_Reviews', $siteLangId); ?></a>
                             <?php } ?> </span>
+                        </div>
+                        <div class="share-button share-button--static-horizontal">
+                            <a href="javascript:void(0)" class="social-toggle"><i class="icn">
+                                <svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
+                                </svg>
+                            </i></a>
+                            <div class="social-networks open-menu">
+                                <ul>
+                                    <li class="social-facebook">
+                                        <a class="social-link st-custom-button" data-network="facebook">
+                                            <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
+                                                </svg></i>
+                                        </a>
+                                    </li>
+                                    <li class="social-twitter">
+                                        <a class="social-link st-custom-button" data-network="twitter">
+                                            <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#tw"></use>
+                                                </svg></i>
+                                        </a>
+                                    </li>
+                                    <li class="social-pintrest">
+                                        <a class="social-link st-custom-button" data-network="pinterest">
+                                            <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#pt"></use>
+                                                </svg></i>
+                                        </a>
+                                    </li>
+                                    <li class="social-email">
+                                        <a class="social-link st-custom-button" data-network="email">
+                                            <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#envelope"></use>
+                                                </svg></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="shop-btn-group">
                             <?php $showAddToFavorite = true;

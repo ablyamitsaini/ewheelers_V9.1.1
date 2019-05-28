@@ -24,6 +24,7 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
     </div>
 </section>
 <?php } ?>
+<?php echo $this->includeTemplate( '_partial/shareThisScript.php' ); ?>
 <script>
     $(document).ready(function(){
         $('.js-shop-slider').slick( getSlickSliderSettings(3, 1, langLbl.layoutDirection) );
