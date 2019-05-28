@@ -17,19 +17,20 @@ class RestoreSystemController extends MyAppController
             FatUtility::dieJsonSuccess(Message::getHtml());
         }
 
+        if (!FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+            Message::addErrorMessage('Auto restore disabled by admin!');
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
         if (!$this->isRestoredSuccessfully()) {
             $this->resetRestoreTime(CONF_DB_NAME);
 
             $anotherDbName = $this->getAnotherDbName();
             $this->restoreDatabase($anotherDbName);
+            //$this->resetRestoreTime();
 
             Message::addMessage('System unable to process the request and re-scheduled the restore process!');
             FatUtility::dieJsonSuccess(Message::getHtml());
-        }
-
-        if (!FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
-            Message::addErrorMessage('Auto restore disabled by admin!');
-            FatUtility::dieJsonError(Message::getHtml());
         }
 
         $dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +'.static::RESTORE_TIME_INTERVAL_HOURS.' hours'));
@@ -40,9 +41,7 @@ class RestoreSystemController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $f = fopen(CONF_UPLOADS_PATH.'database-restore-progress.txt', 'w');
-        $rs = fwrite($f, time());
-        fclose($f);
+        $this->createRestoreProcessFile();
 
         $anotherDbName = $this->getAnotherDbName();
         $this->writeSettings(CONF_DB_SERVER, CONF_DB_USER, CONF_DB_PASS, $anotherDbName);
@@ -53,7 +52,7 @@ class RestoreSystemController extends MyAppController
 
         $this->restoreDatabase(CONF_DB_NAME);
 
-        @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
+        $this->unlinkRestoreProcessFile();
 
         Message::addMessage('Restored Successfully!');
         FatUtility::dieJsonSuccess(Message::getHtml());
@@ -64,6 +63,18 @@ class RestoreSystemController extends MyAppController
         $this->set('restoreInverval', static::RESTORE_TIME_INTERVAL_HOURS);
         echo $this->_template->render(false, false, 'restore-system/custom-message.php', true);
         exit;
+    }
+
+    private function createRestoreProcessFile()
+    {
+        $f = fopen(CONF_UPLOADS_PATH.'database-restore-progress.txt', 'w');
+        $rs = fwrite($f, time());
+        fclose($f);
+    }
+
+    private function unlinkRestoreProcessFile()
+    {
+        @unlink(CONF_UPLOADS_PATH.'database-restore-progress.txt');
     }
 
     private function getAnotherDbName()
@@ -125,7 +136,7 @@ class RestoreSystemController extends MyAppController
         if ($rs = $mysqli->query($sql)) {
             while ($row = $rs->fetch_array()) {
                 $tableName=$row["Tables_in_".$databasename];
-                $mysqli->query("DROP TABLE $databasename.$tableName");
+                $mysqli->query("DROP TABLE $databasename.$tableName");DATABASE_SECOND
             }
         }
         $cmd ="mysql --user=" . $dbUser . " --password='" . $dbPassword . "' " . $databasename . " < " . $backupFile;

@@ -75,9 +75,7 @@ var countDownDate = new Date('<?php echo $restoreTime;?>').getTime();
         clearInterval(x);
         $('#restoreCounter').html("Process...");
         showRestorePopup();
-        /*fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index'), '', function(resp){
-            setTimeout(function(){ window.location.reload(); }, 3000);
-        });*/
+        restoreSystem();
     }
 }, 1000);
 function showRestorePopup(){
@@ -86,5 +84,12 @@ function showRestorePopup(){
             $.facebox(ans,'catalog-bg"');
         });
     });
+}
+
+function restoreSystem(){
+    $.mbsmessage('Restore is in process..',false,'alert--process alert');
+    fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index'), '', function(resp){
+        setTimeout(function(){ window.location.reload(); }, 3000);
+    },false,false);
 }
 </script>
