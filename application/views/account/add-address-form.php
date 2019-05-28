@@ -18,26 +18,26 @@ $cancelFld->setFieldTagAttribute('class', 'btn btn--primary-border');
 $submitFld = $addressFrm->getField('btn_submit');
 $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 ?>
-<div class="tabs tabs--small tabs--scroll clearfix">
+<!-- <div class="tabs tabs--small tabs--scroll clearfix">
     <ul>
         <li>
             <a href="javascript:void(0);" onClick="searchAddresses()"><?php echo Labels::getLabel('LBL_My_Addresses', $siteLangId);?></a>
         </li>
-<?php if ($ua_id > 0) { ?>
+<?php //if ($ua_id > 0) { ?>
         <li class="is-active">
             <a href="javascript:void(0);" onClick="addAddressForm(<?php echo $ua_id; ?>)">
             <?php echo Labels::getLabel('LBL_Update_Address', $siteLangId); ?>
             </a>
         </li>
-<?php } else { ?>
+<?php //} else { ?>
         <li class="is-active">
             <a href="javascript:void(0);" onClick="addAddressForm(0)">
                 <?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId); ?>
             </a>
         </li>
-<?php } ?>
+<?php //} ?>
     </ul>
-</div>
+</div> -->
 <div class="container--addresses"> <?php echo $addressFrm->getFormHtml();?> </div>
 <script language="javascript">
     $(document).ready(function() {

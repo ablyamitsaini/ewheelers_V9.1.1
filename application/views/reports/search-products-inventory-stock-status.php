@@ -73,11 +73,9 @@ foreach ($arrListing as $sn => $listing){
 	}
 }
 if( count($arrListing) == 0 ){
-	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-} else {
-	/* echo '<div class="box__head"><div class="btn-group"><a href="javascript:void(0)" onClick="exportProductsInventoryStockStatusReport()" class="btn btn--secondary btn--sm">'.Labels::getLabel('LBL_Export',$siteLangId).'</a></div></div>'; */
-	echo $tbl->getHtml();
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
+echo $tbl->getHtml();
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmProductInventoryStockStatusSrchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToProductsInventoryStockStatusPage');

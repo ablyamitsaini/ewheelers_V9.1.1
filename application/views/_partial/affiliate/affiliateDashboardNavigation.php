@@ -14,9 +14,9 @@ $action = strtolower($action);
     </div>
     <div class="sidebar__content custom-scrollbar" data-simplebar>
         <nav class="dashboard-menu">
-            <ul> <?php if (User::canViewAffiliateTab()) {
-            ?>
-            <li class="menu__item <?php echo ($controller == 'affiliate' && $action == 'referredbyme  ') ? 'is-active' : ''; ?>">
+            <ul>
+                <?php if (User::canViewAffiliateTab()) { ?>
+            <li class="menu__item <?php echo ($controller == 'affiliate' && $action == 'referredbyme') ? 'is-active' : ''; ?>">
                     <div class="menu__item__inner"><a title="<?php echo Labels::getLabel("LBL_Sharing", $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('Affiliate', 'ReferredByMe'); ?>">
                             <i class="icn shop"><svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reffered" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-reffered"></use>

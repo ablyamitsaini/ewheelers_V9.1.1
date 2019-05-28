@@ -183,7 +183,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title">Data heading goes here</h5>
+                            <h5 class="cards-title"></h5>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="creditListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>

@@ -3,7 +3,7 @@
         <div class="content-header  row justify-content-between mb-3">
             <div class="col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Addresses', $siteLangId);?></h2>
+                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Manage_Addresses', $siteLangId);?></h2>
             </div>
         </div>
         <div class="content-body">
