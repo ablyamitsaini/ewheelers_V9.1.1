@@ -131,16 +131,18 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
-                            <div class="action"> <?php if (count($orders)>0) { ?> <a href="<?php echo CommonHelper::generateUrl('buyer', 'orders');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All', $siteLangId);?></a> <?php }?> </div>
+                            <div class="action">
+                            <?php if (count($orders)>0) { ?>
+                                <a href="<?php echo CommonHelper::generateUrl('buyer', 'orders');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All', $siteLangId);?></a>
+                            <?php } ?> </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
                             <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                                 <tbody>
                                     <tr class="">
-                                        <th colspan="2" width="50%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
-                                        <th width="10%"><?php echo Labels::getLabel('LBL_Amount', $siteLangId);?></th>
-                                        <th width="20%"><?php echo Labels::getLabel('LBL_Payment_Status', $siteLangId);?></th>
-                                        <th width="20%"><?php echo Labels::getLabel('LBL_Action', $siteLangId);?></th>
+                                        <th colspan="2" width="70%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
+                                        <th width="20%"><?php echo Labels::getLabel('LBL_Payment_Info', $siteLangId);?></th>
+                                        <th width="10%"><?php echo Labels::getLabel('LBL_Action', $siteLangId);?></th>
                                     </tr> <?php if (count($orders)>0) {
                                         $canCancelOrder = true;
                                         $canReturnRefund = true;
@@ -175,15 +177,18 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                                     }
                                                     $prodName.= $row['op_product_name']; ?> <a title="<?php echo $row['op_product_name']; ?>" href="<?php echo $prodOrBatchUrl; ?>"><?php echo $prodName; ?></a>
                                                 </div>
-                                                <div class="item__brand"><span><?php echo Labels::getLabel('Lbl_Brand', $siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId, $row['op_brand_name']); ?></div>
+                                                <!-- <div class="item__brand"><span><?php /*echo Labels::getLabel('Lbl_Brand', $siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId, $row['op_brand_name']);*/ ?></div> -->
                                                 <?php if ($row['op_selprod_options'] != '') { ?> <div class="item__specification"><?php echo $row['op_selprod_options'];?></div> <?php } ?> <?php if ($row['totOrders'] > 1) {
                                                     echo Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'])).'">'.$row['order_id'].'</a>';
                                                 } ?>
                                             </div>
                                         </td>
-                                        <td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) /* CommonHelper::displayMoneyFormat($row['order_net_amount']) */; ?></span></td>
                                         <td>
-                                            <div class="item__specification"><span><?php echo $row['orderstatus_name']; ?></div>
+                                            <div class="item__specification">
+                                                <span class="item__price"><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($row)) ; ?></span>
+                                                <br>
+                                                <span><?php echo $row['orderstatus_name']; ?>
+                                            </div>
                                         </td>
                                         <td>
                                             <ul class="actions">

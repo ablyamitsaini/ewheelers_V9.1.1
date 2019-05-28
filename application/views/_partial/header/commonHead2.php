@@ -37,17 +37,17 @@ if ($controllerName == 'Checkout') {
 
 if (isset($isUserDashboard) && $isUserDashboard) {
     $bodyClass = 'is-dashboard';
-    
-    $expanded = 'sidebar-is-reduced'; 
-    
+
+    $expanded = 'sidebar-is-reduced';
+
     if(!array_key_exists('openSidebar', $_COOKIE)){
-        setcookie('openSidebar', 1, '', CONF_WEBROOT_URL);
+        setcookie('openSidebar', 1, 0, CONF_WEBROOT_URL);
     }
-    
+
     if(array_key_exists('openSidebar', $_COOKIE) && 1 == $_COOKIE['openSidebar']){
         $expanded = 'sidebar-is-expanded';
     }
-    
+
     $bodyClass = $bodyClass.' '.$expanded;
 }
 

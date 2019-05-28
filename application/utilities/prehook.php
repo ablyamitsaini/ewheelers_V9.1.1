@@ -27,6 +27,7 @@ FatApp::setViewDataProvider('_partial/headerUserArea.php', array('Common', 'head
 FatApp::setViewDataProvider('_partial/headerNavigation.php', array('Navigation', 'headerNavigation'));
 FatApp::setViewDataProvider('_partial/headerSearchFormArea.php', array('Common', 'headerSearchFormArea'));
 FatApp::setViewDataProvider('_partial/headerLanguageArea.php', array('Common', 'headerLanguageArea'));
+FatApp::setViewDataProvider('_partial/dashboardLanguageArea.php', array('Common', 'headerLanguageArea'));
 
 FatApp::setViewDataProvider('_partial/loginPageRight.php', array('Block', 'loginPageRight'));
 FatApp::setViewDataProvider('_partial/customPageLeft.php', array('Navigation', 'customPageLeft'));
@@ -50,4 +51,4 @@ FatApp::setViewDataProvider('_partial/seller/sellerSalesGraph.php', array('Stati
 
 FatApp::setViewDataProvider('_partial/blogSidePanel.php', array('Common', 'blogSidePanelArea'));
 FatApp::setViewDataProvider('_partial/blogTopFeaturedCategories.php', array('Common', 'blogTopFeaturedCategories'));
-FatApp::setViewDataProvider('_partial/poll-form.php', array('Common', 'pollForm'));
+//FatApp::setViewDataProvider('_partial/poll-form.php', array('Common', 'pollForm'));
