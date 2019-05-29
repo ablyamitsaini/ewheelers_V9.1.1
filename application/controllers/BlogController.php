@@ -1,7 +1,6 @@
-<?php
-class BlogController extends MyAppController
+<?php class BlogController extends MyAppController
 {
-    public function __construct($action='')
+    public function __construct($action = '')
     {
         parent::__construct($action);
         $this->set('blogPage', true);
@@ -50,17 +49,26 @@ class BlogController extends MyAppController
     public function index()
     {
         $srch = $this->getBlogSearchObject();
+        $srch->addOrder('post_added_on', 'desc');
         $srch->setPageSize(7);
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 
         $featuredSrch = $this->getBlogSearchObject();
         $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
         $featuredRs = $featuredSrch->getResultSet();
         $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
 
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(7);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+        
         $this->set('postList', $records);
         $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
         $this->_template->addJs('js/slick.min.js');
         $this->_template->addCss('css/slick.css');
         $this->_template->render();
@@ -72,7 +80,6 @@ class BlogController extends MyAppController
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
         $srch->addCondition('postlang_post_id', 'is not', 'mysql_func_null', 'and', true);
         $srch->addCondition('post_published', '=', applicationConstants::YES);
-        $srch->addOrder('post_added_on', 'desc');
         $srch->addGroupby('post_id');
         return $srch;
     }
@@ -219,6 +226,26 @@ class BlogController extends MyAppController
         'description'=>$post_description,
         'image'=>$postImageUrl,
         );
+
+        /* View Count functionality [ */
+        if (empty($_SESSION['postid'])) {
+            $_SESSION['postid'] = $blogPostId;
+            $flag = 1;
+        } else {
+            $finalarray = explode(',', $_SESSION['postid']);
+            if (in_array($blogPostId, $finalarray)) {
+                $flag = 0;
+            } else {
+                $_SESSION['postid'] .= ',' . $blogPostId;
+                $flag = 1;
+            }
+        }
+        if ($flag == 1) {
+            $blog = new BlogPost();
+            $blog->setPostViewsCount($blogPostId);
+        }
+        /* ] */
+
         $this->set('socialShareContent', $socialShareContent);
 
         $srchCommentsFrm = $this->getCommentSearchForm($blogPostId);
