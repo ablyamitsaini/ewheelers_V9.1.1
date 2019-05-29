@@ -1856,7 +1856,7 @@ class CommonHelper extends FatUtility
     }
 
     public static function demoUrl()
-    {        
+    {
         if ($_SERVER['SERVER_NAME']== 'v8.demo.yo-kart.com') {
             return true;
         }

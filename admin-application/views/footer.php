@@ -64,10 +64,10 @@
 		if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){
 			echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'');
 		}
-
+		$this->includeTemplate( 'restore-system/page-content.php');
 	}
-	
-$this->includeTemplate( 'restore-system/page-content.php');
+
+
 	?>
 
 </body>
