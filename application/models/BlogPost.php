@@ -198,4 +198,28 @@ class BlogPost extends MyAppModel
     {
         return SearchItem::convertArrToSrchFiltersAssocArr($arr);
     }
+
+    public function setPostViewsCount($post_id = 0)
+    {
+        $post_id = FatUtility :: int($post_id);
+        if ($post_id < 1) {
+            $this->error = Labels::getLabel('MSG_Invalid_Request!', $this->commonLangId);
+            return false;
+        }
+
+        $srch = new SearchBase(static::DB_TBL, 'bp');
+        $srch->addCondition('post_id', '=', $post_id);
+        $srch->addFld('post_view_count');
+        $rs = $srch->getResultSet();
+        $this->total_records = $srch->recordCount();
+        $result_data = $this->db->fetch($rs);
+        $record = new TableRecord(static::DB_TBL);
+        $assign_field['post_view_count'] = $result_data['post_view_count'] + 1;
+        $record->assignValues($assign_field);
+        if ($record->update(array('smt' => '`post_id`=?', 'vals' => array($post_id)))) {
+            return true;
+        }
+        $this->error = $this->db->getError();
+        return false;
+    }
 }

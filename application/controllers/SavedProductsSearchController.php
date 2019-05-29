@@ -8,7 +8,7 @@ class SavedProductsSearchController extends LoggedUserController
 
     public function listing()
     {
-        $this->_template->render();
+        $this->_template->render(true, false);
     }
 
     public function search()

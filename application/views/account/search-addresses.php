@@ -1,9 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="tabs tabs--small tabs--scroll clearfix">
-    <ul>
+    <!-- <ul>
         <li class="is-active"><a href="javascript:void(0);" onClick="searchAddresses()"><?php echo Labels::getLabel('LBL_My_Addresses', $siteLangId);?></a></li>
         <li><a href="javascript:void(0);" onClick="addAddressForm(0)"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?></a></li>
-    </ul>
+    </ul> -->
+    <a href="javascript:void(0);" onClick="addAddressForm(0)" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?> </a>
 </div>
 <div class="container--addresses">
     <div class="row">
@@ -25,7 +26,7 @@
                         <?php echo (strlen($address['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$address['ua_phone'].'<br>':''; ?> </p>
                 </address>
                 <a href="javascript:void(0)" onClick="addAddressForm(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--primary"><?php echo Labels::getLabel('LBL_Edit', $siteLangId); ?></a>
-                <a href="javascript:void(0)" onClick="removeAddress(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--secondary"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
+                <a href="javascript:void(0)" onClick="removeAddress(<?php echo $address['ua_id']; ?>)" class="btn btn--sm btn--primary-border"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
             </label>
         </div> <?php
     }

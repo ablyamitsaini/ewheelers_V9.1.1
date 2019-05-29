@@ -58,7 +58,7 @@
             $paymentText=Labels::getLabel('LBL_Proceed_To_Confirm', $siteLangId) ;
         }
         ?>
-        <td class="text-right"><a href="javascript:void(0)" class="btn btn--primary ripplelink block-on-mobile confirmReview"><?php echo $paymentText ;?></a></td>
+        <td class="text-right"><a href="javascript:void(0)" class="btn btn--primary-border ripplelink block-on-mobile confirmReview"><?php echo $paymentText ;?></a></td>
         
      </tr>
     </table>

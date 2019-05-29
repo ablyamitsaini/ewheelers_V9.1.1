@@ -45,7 +45,6 @@
 						<p><?php echo Labels::getLabel('LBL_Be_the_first_to_here_about_the_latest_trends,_new_arrivals_&_exclusive_offers', $siteLangId);?></p>
 					</div>
 					<?php $this->includeTemplate( '_partial/footerNewsLetterForm.php'); } ?>
-
 					<ul class="contact-info">
 						<?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
 						if( $site_conatct ){ ?>
@@ -182,7 +181,6 @@ window.onbeforeprint = function () {
 window.onafterprint = function () {
 	Tawk_API.showWidget();
 };
-
 </script>
 <!--End of Tawk.to Script-->
 <?php

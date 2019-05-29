@@ -87,14 +87,7 @@ foreach ($arr_listing as $sn => $row) {
     }
 }
 if (count($arr_listing) == 0) {
-    /*$tbl->appendElement('tr')->appendElement(
-        'td',
-        array(
-        'colspan'=>count($arr_flds)),
-        'No records found'
-    );*/
-    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId));
-    die;
+    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
 $frm = new Form('frmOptionListing', array('id'=>'frmOptionListing'));
 $frm->setFormTagAttribute('class', 'form');

@@ -6,14 +6,14 @@ $frmOrderReturnRequestsSrch->developerTags['fld_default_col'] = 12;
 
 $keywordFld = $frmOrderReturnRequestsSrch->getField('keyword');
 $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
-$keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Search_in_Order_Id/Invoice_number,_Product_Name,_Brand_Name,_SKU,_Model,_,Request_reference_number', $siteLangId).'</small>';
-$keywordFld->setWrapperAttribute('class', 'col-lg-6');
-$keywordFld->developerTags['col'] = 6;
+// $keywordFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_Search_in_Order_Id/Invoice_number,_Product_Name,_Brand_Name,_SKU,_Model,_,Request_reference_number', $siteLangId).'</small>';
+$keywordFld->setWrapperAttribute('class', 'col-lg-4');
+$keywordFld->developerTags['col'] = 4;
 $keywordFld->developerTags['noCaptionTag'] = true;
 
 $statusFld = $frmOrderReturnRequestsSrch->getField('orrequest_status');
-$statusFld->setWrapperAttribute('class', 'col-lg-2');
-$statusFld->developerTags['col'] = 2;
+$statusFld->setWrapperAttribute('class', 'col-lg-4');
+$statusFld->developerTags['col'] = 4;
 $statusFld->developerTags['noCaptionTag'] = true;
 
 $orrequestDateFromFld = $frmOrderReturnRequestsSrch->getField('orrequest_date_from');
@@ -48,7 +48,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
     <div class="content-header row justify-content-between mb-3">
         <div class="col-md-auto">
             <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-            <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Order_Return_Requests', $siteLangId);?></h2>
+            <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Return_Requests', $siteLangId);?></h2>
         </div>
     </div>
     <div class="content-body">
@@ -56,7 +56,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="col-lg-12">
                 <div class="cards">
                     <div class="cards-header p-4">
-                        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Order_Return_Requests', $siteLangId);?></h5>
+                        <h5 class="cards-title"><?php //echo Labels::getLabel('LBL_Search_Order_Return_Requests', $siteLangId);?></h5>
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div class="bg-gray-light p-3 pb-0">
@@ -78,7 +78,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="col-lg-12">
                 <div class="cards">
                     <div class="cards-header p-4">
-                        <h5 class="cards-title">Data heading goes here</h5>
+                        <h5 class="cards-title"></h5>
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div id="returnOrderRequestsListing"></div>
