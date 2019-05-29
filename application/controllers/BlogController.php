@@ -476,5 +476,13 @@ class BlogController extends MyAppController
 public function testView($selprod_id = 0)
     {
         $this->_template->render();
-    }	
+    }
+	public function testView1($selprod_id = 0)
+    {
+        $this->_template->render();
+    }
+	public function testView2($selprod_id = 0)
+    {
+        $this->_template->render();
+    }
 }
