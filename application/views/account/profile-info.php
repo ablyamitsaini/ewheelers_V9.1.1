@@ -2,7 +2,7 @@
 $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header  row justify-content-between mb-3">
-            <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Profile', $siteLangId);?></h2>
+            <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Account_Settings', $siteLangId);?></h2>
             </div>
             <div class="col-md-auto">
                 <div class="actions">
@@ -20,7 +20,7 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Account_Information', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php //echo Labels::getLabel('LBL_Account_Information', $siteLangId);?></h5>
                             <div class="field_cover">
                                 <a class="btn btn--primary" href="javascript:void(0)" onclick="truncateDataRequestPopup()"><?php echo Labels::getLabel('LBL_Request_to_remove_my_data', $siteLangId); ?></a>
                                 <a class="btn btn--primary-border" href="javascript:void(0)" onclick="requestData()"><?php echo Labels::getLabel('LBL_Request_My_Data', $siteLangId); ?></a>
@@ -50,9 +50,6 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title">Data heading goes here</h5>
-                        </div>
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="profileInfoFrmBlock"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                             <span class="gap"></span>

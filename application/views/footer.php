@@ -181,7 +181,6 @@ window.onbeforeprint = function () {
 window.onafterprint = function () {
 	Tawk_API.showWidget();
 };
-
 </script>
 <!--End of Tawk.to Script-->
 <?php

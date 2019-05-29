@@ -37,8 +37,7 @@ $(document).ready(function(){
 	};
 	
 	setDefaultAddress = function(id){
-		var agree = confirm(langLbl.confirmDefault);
-		if( !agree ){
+		if( !confirm(langLbl.confirmDefault) ){
 			return false;
 		}
 		data='id='+id;

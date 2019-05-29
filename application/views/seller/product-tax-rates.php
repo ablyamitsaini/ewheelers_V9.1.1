@@ -25,49 +25,46 @@
 				}
 
 				$sr_no = 0;
-				if (is_array($arrListing) && count($arrListing) > 0 && !empty($arrListing[0])){
-					foreach ($arrListing as $sn => $row){
-						$sr_no++;
-						$tr = $tbl->appendElement('tr',array());
+				
+                foreach ($arrListing as $sn => $row){
+                    $sr_no++;
+                    $tr = $tbl->appendElement('tr',array());
 
-						if(is_array($row) && count($row)){
-							foreach ($arr_flds as $key=>$val){
-								$td = $tr->appendElement('td');
-								switch ($key){
-									case 'listserial':
-										$td->appendElement('plaintext', array(), $sr_no,true);
-									break;
-									case 'taxval_value';
-										$str = CommonHelper::displayTaxFormat($row['taxval_is_percent'],$row['taxval_value']);
-										$td->appendElement( 'plaintext', array(), $str,true );
-									break;
-									case 'action':
-											$ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
-											$li = $ul->appendElement("li");
-											$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
-											'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"changeTaxCategory(".$selprod_id.")"),
-											'<i class="fa fa-edit"></i>', true);
-										if($row['ptt_seller_user_id'] == $userId){
-											$li = $ul->appendElement("li");
-											$li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
-											'title'=>Labels::getLabel('LBL_Reset_to_Default',$siteLangId),"onclick"=>"resetTaxRates(".$selprod_id.")"),
-											'<i class="fa fa-undo"></i>', true);
-										}
-									break;
-									default:
-										$td->appendElement('plaintext', array(), $row[$key],true);
-									break;
-								}
-							}
-						}
-					}
-					echo $tbl->getHtml();
-				}
-				else{
-					// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Tax_Rates_added_to_this_product', $siteLangId));
-					$this->includeTemplate('_partial/no-record-found.php',array('siteLangId' => $siteLangId),false);
-				}
-				// echo $tbl->getHtml();
+                    if(is_array($row) && count($row)){
+                        foreach ($arr_flds as $key=>$val){
+                            $td = $tr->appendElement('td');
+                            switch ($key){
+                                case 'listserial':
+                                    $td->appendElement('plaintext', array(), $sr_no,true);
+                                break;
+                                case 'taxval_value';
+                                    $str = CommonHelper::displayTaxFormat($row['taxval_is_percent'],$row['taxval_value']);
+                                    $td->appendElement( 'plaintext', array(), $str,true );
+                                break;
+                                case 'action':
+                                        $ul = $td->appendElement("ul",array("class"=>"actions"),'',true);
+                                        $li = $ul->appendElement("li");
+                                        $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
+                                        'title'=>Labels::getLabel('LBL_Edit',$siteLangId),"onclick"=>"changeTaxCategory(".$selprod_id.")"),
+                                        '<i class="fa fa-edit"></i>', true);
+                                    if($row['ptt_seller_user_id'] == $userId){
+                                        $li = $ul->appendElement("li");
+                                        $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
+                                        'title'=>Labels::getLabel('LBL_Reset_to_Default',$siteLangId),"onclick"=>"resetTaxRates(".$selprod_id.")"),
+                                        '<i class="fa fa-undo"></i>', true);
+                                    }
+                                break;
+                                default:
+                                    $td->appendElement('plaintext', array(), $row[$key],true);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (count($arrListing) == 0){
+                    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
+                }
+                echo $tbl->getHtml();
 				?>
 				</div>
 			</div>

@@ -2343,7 +2343,7 @@ body.fixed .top-bar {
 	font-weight: 300;
 }
 
- 
+
 .cart .cartQuantity {
 	border-radius: 50%;
 	width: 22px;
@@ -2360,7 +2360,7 @@ body.fixed .top-bar {
 	text-align: center;
 	vertical-align: middle;
 	line-height: 20px;
-} 
+}
 .dropsection {
 	position: fixed;
 	width: 450px;
@@ -4908,7 +4908,7 @@ img {
 .login-wrapper .form-side {
 	padding: 2rem;
 	/*color: #fff;
-	
+
 	background: -moz-linear-gradient(112deg, rgba(235,54,129,1) 0%, rgba(255,58,89,1) 100%); /* ff3.6+
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,58,89,1)), color-stop(100%, rgba(235,54,129,1))); /* safari4+,chrome
 	background: -webkit-linear-gradient(112deg, rgba(235,54,129,1) 0%, rgba(255,58,89,1) 100%); /* safari5.1+,chrome10+
@@ -14991,4 +14991,87 @@ main.main {
 	display: inline-block;
 	margin-inline-end: 5px;
 
+}
+
+/* Demo button */
+.fixed-demo-btn {
+	line-height: 1.8;
+	position: fixed;
+	right: -100px;
+	top: 300px;
+	z-index: 10;
+	background: var(--first-color);
+	border-radius: 2px 2px 0px 0px;
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+	display: block;
+	height: 50px;
+	width: 228px;
+	color: #fff;
+	font-size: 1.5em;
+	/* font-weight: 600; */
+	text-align: center;
+}
+
+.fixed-demo-btn #btn-demo {
+	color: #fff;
+	display: block;
+}
+
+.crcle-btn svg {
+  display: inline-block;
+  height: 25px;
+  margin: -3px 0 0;
+  vertical-align: middle;
+}
+
+.crcle-btn svg path {
+  fill: #fff;
+}
+
+.cap {
+  color: #ec5d3f;
+  display: inline-block;
+  font-size: 10px;
+  margin-top: 12px;
+  padding: 3px 8px;
+  vertical-align: middle;
+  position: relative;
+  opacity: 0;
+  margin-right: 0;
+  text-transform: uppercase;
+}
+
+.feedback-btn:hover .cap {
+  opacity: 1;
+  margin-inline-end: 10px;
+}
+
+.crcle-btn svg {
+  margin: -8px 0 0 -17px;
+  height: 30px;
+}
+
+.crcle-btn {
+  background-color: #FF3A59;
+  border-radius: 50%;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  position: relative;
+  display: block;
+  width: 45px;
+  float: right;
+  cursor: pointer;
+  z-index: 99999;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  padding: 0;
+}
+
+.feedback-btn {
+  position: fixed;
+  bottom: 130px;
+  right: 6px;
+  z-index: 9999;
 }

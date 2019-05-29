@@ -45,11 +45,9 @@ foreach ($arr_listing as $sn => $row){
 ?>
 <?php
 if (count($arr_listing) == 0){
-	// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_record_found', $siteLangId));
-	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-} else {
-	echo $tbl->getHtml();
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
+echo $tbl->getHtml();
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmCategoryBannerSrchPaging') );
 

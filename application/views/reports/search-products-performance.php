@@ -58,12 +58,13 @@ foreach ($arrListing as $sn => $listing){
 		}
 	}
 }
+
 if (count($arrListing) == 0){
-	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-} else {
-	$noteLbl = Labels::getLabel("LBL_Note:_Performance_Report_on_the_basis_of_Sold_Quantity", $siteLangId);
-	echo $tbl->getHtml();
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
+$noteLbl = Labels::getLabel("LBL_Note:_Performance_Report_on_the_basis_of_Sold_Quantity", $siteLangId);
+echo $tbl->getHtml();
+
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSrchProdPerformancePaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToTopPerformingProductsSearchPage');
