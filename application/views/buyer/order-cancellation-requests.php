@@ -6,13 +6,13 @@ $frmOrderCancellationRequestsSrch->developerTags['fld_default_col'] = 12;
 
 $orderIdFld = $frmOrderCancellationRequestsSrch->getField('op_invoice_number');
 $orderIdFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Order_Id/Invoice_Number', $siteLangId));
-$orderIdFld->setWrapperAttribute('class', 'col-lg-2');
-$orderIdFld->developerTags['col'] = 2;
+$orderIdFld->setWrapperAttribute('class', 'col-lg-4');
+$orderIdFld->developerTags['col'] = 4;
 $orderIdFld->developerTags['noCaptionTag'] = true;
 
 $statusFld = $frmOrderCancellationRequestsSrch->getField('ocrequest_status');
-$statusFld->setWrapperAttribute('class', 'col-lg-2');
-$statusFld->developerTags['col'] = 2;
+$statusFld->setWrapperAttribute('class', 'col-lg-4');
+$statusFld->developerTags['col'] = 4;
 $statusFld->developerTags['noCaptionTag'] = true;
 
 $ocrequestDateFromFld = $frmOrderCancellationRequestsSrch->getField('ocrequest_date_from');
@@ -55,7 +55,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="col-lg-12">
                 <div class="cards">
                     <div class="cards-header p-4">
-                        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Order_Cancellation_Requests', $siteLangId); ?></h5>
+                        <h5 class="cards-title"><?php //echo Labels::getLabel('LBL_Search_Order_Cancellation_Requests', $siteLangId); ?></h5>
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div class="bg-gray-light p-3 pb-0">
@@ -77,7 +77,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="col-lg-12">
                 <div class="cards">
                     <div class="cards-header p-4">
-                        <h5 class="cards-title">Data heading goes here</h5>
+                        <h5 class="cards-title"></h5>
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div id="cancelOrderRequestsListing"></div>

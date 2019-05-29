@@ -17,12 +17,12 @@ $keywordFld->setWrapperAttribute('class', 'col-lg-2');
 $keywordFld->developerTags['col'] = 2;
 
 $submitBtnFld = $frmSearch->getField('btn_submit');
-$submitBtnFld->setFieldTagAttribute('class', 'btn--block');
+$submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
 $submitBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
 
 $cancelBtnFld = $frmSearch->getField('btn_clear');
-$cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
+$cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn--primary-border');
 $cancelBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
 ?>
@@ -36,16 +36,31 @@ $cancelBtnFld->developerTags['col'] = 2;
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Users', $siteLangId); ?></h5>
-                </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div class="bg-gray-light p-3 pb-0">
-                        <?php echo $frmSearch->getFormHtml(); ?>
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Users', $siteLangId); ?></h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="bg-gray-light p-3 pb-0">
+                                <?php echo $frmSearch->getFormHtml(); ?>
+                            </div>
+                            <span class="gap"></span>
+                        </div>
                     </div>
-                    <span class="gap"></span>
-                    <div id="usersListing"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title ">Data heading goes here</h5>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div id="usersListing"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

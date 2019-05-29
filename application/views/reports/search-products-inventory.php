@@ -46,10 +46,9 @@ foreach ($arrListing as $sn => $listing){
 	}
 }
 if( count($arrListing) == 0 ){
-	$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-} else {
-	echo $tbl->getHtml();
+	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
+echo $tbl->getHtml();
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmProductInventorySrchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToProductsInventorySearchPage');

@@ -44,11 +44,9 @@ foreach ($requests as $sn => $row) {
     }
 }
 if (count($requests) == 0) {
-    // $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_Unable_to_find_any_record', $siteLangId));
-    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
-} else {
-    echo $tbl->getHtml();
+    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
+echo $tbl->getHtml();
 
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmOrderCancellationRequestSrchPaging'));

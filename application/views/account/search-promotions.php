@@ -1,12 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); $prm_budget_dur_arr = Promotion::getPromotionBudgetDurationArr($siteLangId); ?>
 <?php if ($error_warning) { ?>
-<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo CommonHelper::renderHtml($error_warning); ?>
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-</div>
-<?php } ?>
- <?php if (!empty($promotions) && is_array($promotions)){?>
-
-<?php
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo CommonHelper::renderHtml($error_warning); ?>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+<?php }
 	$arr_flds = array(
 		'promotion_image'=>'',
 		'promotion_id' => Labels::getLabel('LBL_ID',$siteLangId),
@@ -26,6 +23,7 @@
 	}
 
 	$sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
+    
 	foreach ($promotions as $sn => $row){
 		$sr_no++;
 		$tr = $tbl->appendElement('tr',array('class' => ($row['promotion_status'] == 0) ? 'fat-inactive' : '' ));
@@ -130,6 +128,9 @@
 			}
 		}
 	}
+    if (count($promotions) == 0){
+        $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
+    }
 
 	echo $tbl->getHtml();
 
@@ -137,8 +138,3 @@
 
 	$pagingArr=array('pageCount'=>$pages,'page'=>$page,'callBackJsFunc' => 'goToPromotionSearchPage');
 	$this->includeTemplate('_partial/pagination.php', $pagingArr,false);
-
-	} else {
-		$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId),false);
-	}
-	?>

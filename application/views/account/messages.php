@@ -12,14 +12,14 @@ $keyFld->developerTags['noCaptionTag'] = true;
 
 $submitBtnFld = $frmSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
-$submitBtnFld->setWrapperAttribute('class', 'col-sm-3');
-$submitBtnFld->developerTags['col'] = 3;
+$submitBtnFld->setWrapperAttribute('class', 'col-sm-2');
+$submitBtnFld->developerTags['col'] = 2;
 $submitBtnFld->developerTags['noCaptionTag'] = true;
 
 $cancelBtnFld = $frmSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
-$cancelBtnFld->setWrapperAttribute('class', 'col-sm-3');
-$cancelBtnFld->developerTags['col'] = 3;
+$cancelBtnFld->setWrapperAttribute('class', 'col-sm-2');
+$cancelBtnFld->developerTags['col'] = 2;
 $cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?>
 <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
@@ -36,13 +36,13 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php //echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="withdrawalReqForm"></div>
                             <div class="bg-gray-light p-3 pb-0">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <?php
                                         $submitFld = $frmSrch->getField('btn_submit');
                                         $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
@@ -63,7 +63,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title">Data heading goes here</h5>
+                            <h5 class="cards-title"></h5>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>

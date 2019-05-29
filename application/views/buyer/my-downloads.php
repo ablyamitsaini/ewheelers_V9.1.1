@@ -5,7 +5,7 @@
     <div class="content-header justify-content-between row mb-4">
         <div class="content-header-left col-md-auto">
             <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-            <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Downloads', $siteLangId); ?></h2>
+            <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Downloads', $siteLangId); ?></h2>
         </div>
     </div>
     <div class="content-body">
@@ -13,7 +13,7 @@
             <div class="col-lg-12">
                 <div class="cards">
                     <div class="cards-header p-4">
-                        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_My_Downloads', $siteLangId); ?></h5>
+                        <!-- <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Downloads', $siteLangId); ?></h5> -->
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div class="tabs tabs--small   tabs--scroll clearfix">
