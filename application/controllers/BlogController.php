@@ -1,7 +1,6 @@
-<?php
-class BlogController extends MyAppController
+<?php class BlogController extends MyAppController
 {
-    public function __construct($action='')
+    public function __construct($action = '')
     {
         parent::__construct($action);
         $this->set('blogPage', true);
@@ -49,20 +48,40 @@ class BlogController extends MyAppController
 
     public function index()
     {
+        $srch = $this->getBlogSearchObject();
+        $srch->addOrder('post_added_on', 'desc');
+        $srch->setPageSize(7);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+
+        $featuredSrch = $this->getBlogSearchObject();
+        $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
+        $featuredRs = $featuredSrch->getResultSet();
+        $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
+
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(7);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+        
+        $this->set('postList', $records);
+        $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addCss('css/slick.css');
+        $this->_template->render();
+    }
+
+    private function getBlogSearchObject()
+    {
         $srch = BlogPost::getSearchObject($this->siteLangId, true, false, true);
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
         $srch->addCondition('postlang_post_id', 'is not', 'mysql_func_null', 'and', true);
         $srch->addCondition('post_published', '=', applicationConstants::YES);
-        $srch->addOrder('post_added_on', 'desc');
-        $srch->setPageSize(5);
         $srch->addGroupby('post_id');
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs);
-
-        $this->set('postList', $records);
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss('css/slick.css');
-        $this->_template->render();
+        return $srch;
     }
 
     public function category($categoryId)
@@ -207,6 +226,26 @@ class BlogController extends MyAppController
         'description'=>$post_description,
         'image'=>$postImageUrl,
         );
+
+        /* View Count functionality [ */
+        if (empty($_SESSION['postid'])) {
+            $_SESSION['postid'] = $blogPostId;
+            $flag = 1;
+        } else {
+            $finalarray = explode(',', $_SESSION['postid']);
+            if (in_array($blogPostId, $finalarray)) {
+                $flag = 0;
+            } else {
+                $_SESSION['postid'] .= ',' . $blogPostId;
+                $flag = 1;
+            }
+        }
+        if ($flag == 1) {
+            $blog = new BlogPost();
+            $blog->setPostViewsCount($blogPostId);
+        }
+        /* ] */
+
         $this->set('socialShareContent', $socialShareContent);
 
         $srchCommentsFrm = $this->getCommentSearchForm($blogPostId);
@@ -438,7 +477,7 @@ class BlogController extends MyAppController
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
-        
+
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);
         if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
@@ -470,11 +509,12 @@ class BlogController extends MyAppController
     {
         $frm = new Form('frmBlogSearch');
         $frm->addTextBox('', 'keyword', '', array('id'=>'keyword'));
-        $frm->addSubmitButton('', 'btnProductSrchSubmit', '');
+        $frm->addSubmitButton('', 'btnProductSrchSubmit', Labels::getLabel('btn_search', $this->siteLangId));
         return $frm;
     }
-public function testView($selprod_id = 0)
+
+    public function testView($selprod_id = 0)
     {
         $this->_template->render();
-    }	
+    }
 }
