@@ -8,7 +8,7 @@ class RestoreSystemController extends MyAppController
     const BACKUP_FILE = CONF_INSTALLATION_PATH."restore/database/yokart-db.sql";
     const DATABASE_FIRST = 'yokartv8_1';
     const DATABASE_SECOND = 'yokartv8_2';
-    const RESTORE_TIME_INTERVAL_HOURS = 2;
+    const RESTORE_TIME_INTERVAL_HOURS = 4;
 
     public function index()
     {
