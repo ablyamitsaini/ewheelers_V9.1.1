@@ -413,11 +413,22 @@ function getSlickGallerySettings( imagesForNav,layoutDirection ){
 	}
 }
 
-function getSlickSliderSettings( slidesToShow, slidesToScroll = 1, layoutDirection = 'ltr', autoInfinitePlay = true ){
+var screenResolutionForSlider = {
+        1024: 4,
+        768: 4,
+        480: 2
+    }
+
+function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay,slidesToShowForDiffResolution ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
 	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
 	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
 	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : true;
+	if(typeof slidesToShowForDiffResolution != "undefined" ){
+		slidesToShowForDiffResolution = $.extend(screenResolutionForSlider, slidesToShowForDiffResolution);
+	}else{
+		slidesToShowForDiffResolution = screenResolutionForSlider;
+	}
 
     var sliderSettings = {
                             dots: false,
@@ -427,21 +438,21 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll = 1, layoutDirecti
                             autoplay: autoInfinitePlay,
                             arrows: true,
                             responsive: [{
-                                    breakpoint: 1050,
+                                    breakpoint: 1024,
                                     settings: {
-                                        slidesToShow: slidesToShow - 1,
+                                        slidesToShow: slidesToShowForDiffResolution[1024],
                                     }
                                 },
                                 {
-                                    breakpoint: 800,
+                                    breakpoint: 768,
                                     settings: {
-                                        slidesToShow: 4,
+                                        slidesToShow: slidesToShowForDiffResolution[768],
                                     }
                                 },
                                 {
-                                    breakpoint: 500,
+                                    breakpoint: 480,
                                     settings: {
-                                        slidesToShow: 2,
+                                        slidesToShow: slidesToShowForDiffResolution[480],
                                     }
                                 }
                             ]
