@@ -55,9 +55,9 @@
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_your_inventory', $siteLangId); ?></h5>
                             <div class="action">
-                                <a class="btn btn--primary btn--block formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?>" onclick="toggleBulkStatues(1)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?></a>
-                                <a class="btn btn--primary-border btn--block formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?>" onclick="toggleBulkStatues(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?></a>
-                                <a class="btn btn--primary btn--block formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
+                                <a class="btn btn--primary formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?>" onclick="toggleBulkStatues(1)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_Active', $siteLangId); ?></a>
+                                <a class="btn btn--primary-border formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?>" onclick="toggleBulkStatues(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId); ?></a>
+                                <a class="btn btn--primary formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
                             </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">

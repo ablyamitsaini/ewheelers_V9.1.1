@@ -65,7 +65,7 @@
         $popularSrch->setPageSize(7);
         $popularRs = $popularSrch->getResultSet();
         $popularRecords = FatApp::getDb()->fetchAll($popularRs);
-        
+
         $this->set('postList', $records);
         $this->set('featuredPostList', $featuredRecords);
         $this->set('popularPostList', $popularRecords);
@@ -514,6 +514,14 @@
     }
 
     public function testView($selprod_id = 0)
+    {
+        $this->_template->render();
+    }
+	public function testView1($selprod_id = 0)
+    {
+        $this->_template->render();
+    }
+	public function testView2($selprod_id = 0)
     {
         $this->_template->render();
     }
