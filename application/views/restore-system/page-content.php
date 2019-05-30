@@ -36,7 +36,78 @@
   letter-spacing: 0.05em;
   white-space: nowrap;
   background-color: rgba(0,0,0,0.2);
-}</style>
+}
+
+.restore-demo-bg {
+    background-image: url('<?php echo CommonHelper::generateFullUrl('','',array(),CONF_WEBROOT_FRONT_URL).'/images/catalog-bg.png';?>')!important;
+    background-color: #fff!important;
+    background-repeat: no-repeat!important;
+    background-position: 130% top!important;
+}
+
+.restore-demo .demo-data-inner > ul,
+.restore-demo .demo-data-inner .heading {
+    max-width: 500px;
+    margin-right: 250px;
+}
+
+.demo-data-inner {
+    margin: 20px;
+    color: #4c4c4c;
+}
+
+.demo-data-inner .heading {
+    font-size: 4rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    position: relative;
+    line-height: 1.2;
+    margin-bottom: 40px;
+    color: inherit;
+}
+
+.demo-data-inner .heading:after {
+    background: var(--second-color);
+    width: 60px;
+    height: 3px;
+    position: absolute;
+    bottom: -10px;
+    content: "";
+    display: block;
+}
+
+.demo-data-inner .heading span {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: none;
+}
+
+.demo-data-inner ul li {
+    position: relative;
+    margin: 10px 0;
+    padding: 0 15px;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.demo-data-inner ul li:before {
+    width: 5px;
+    height: 5px;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    transform: rotate(45deg);
+    background: #4c4c4c;
+}
+
+.demo-data-inner ul ul {
+    margin-inline-start: 15px;
+    margin-bottom: 20px;
+}
+
+</style>
 <div class="-fixed-wrap">
   <a href="javascript:void(0)" onClick="showRestorePopup()">
     <small>Database Will Restore in</small>
@@ -79,12 +150,12 @@ var countDownDate = new Date('<?php echo $restoreTime;?>').getTime();
     }
 }, 1000);
 function showRestorePopup(){
-    $.facebox('<div class="delivery-term-data-inner"><div class="heading">Yo!kart<span></span></div> <p>To improve your demo experience, we frequently restore our database (every 2 hours) as part of site maintenance</p><br> <p>For technical issues :-</p> <ul> <li><strong>Call us at: </strong>+1 469 844 3346, +91 85919 19191, +91 95555 96666, +91 73075 70707, +91 93565 35757</li> <li><strong>Mail us at : </strong> <a href="mailto:sales@fatbit.com">sales@fatbit.com</a></li> </ul> <br> Create Your Dream Multi-vendor Ecommerce Store With Yo!Kart <a href="https://www.yo-kart.com/contact-us.html" target="_blank">Click here</a></li></div>','catalog-bg');
+    $.facebox('<div class="demo-data-inner"><div class="heading">Yo!kart<span></span></div> <p>To enhance your demo experience, we periodically  restore our database every 4 hours.</p><br> <p>For technical issues :-</p> <ul> <li><strong>Call us at: </strong>+1 469 844 3346, +91 85919 19191, +91 95555 96666, +91 73075 70707, +91 93565 35757</li> <li><strong>Mail us at : </strong> <a href="mailto:sales@fatbit.com">sales@fatbit.com</a></li> </ul> <br> Create Your Dream Multi-vendor Ecommerce Store With Yo!Kart <a href="https://www.yo-kart.com/contact-us.html" target="_blank">Click here</a></li></div>','restore-demo restore-demo-bg');
 }
 
 function restoreSystem(){
     $.mbsmessage('Restore is in process..',false,'alert--process alert');
-    fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index'), '', function(resp){
+    fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL; ?>'), '', function(resp){
         setTimeout(function(){ window.location.reload(); }, 3000);
     },false,false);
 }

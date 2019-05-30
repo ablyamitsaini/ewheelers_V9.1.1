@@ -489,7 +489,6 @@ class BlogPostsController extends AdminBaseController
     private function getForm($post_id = 0)
     {
         $post_id = FatUtility::int($post_id);
-
         $frm = new Form('frmBlogPost', array('id'=>'frmBlogPost'));
         $frm->addHiddenField('', 'post_id', 0);
         $frm->addRequiredField(Labels::getLabel('LBL_Post_Identifier', $this->adminLangId), 'post_identifier');
@@ -498,8 +497,8 @@ class BlogPostsController extends AdminBaseController
         $postStatusArr = applicationConstants::getBlogPostStatusArr($this->adminLangId);
         $frm->addSelectBox(Labels::getLabel('LBL_Post_Status', $this->adminLangId), 'post_published', $postStatusArr, '', array('class'=>'small'), '');
         $frm->addCheckBox(Labels::getLabel('LBL_Comment_Open', $this->adminLangId), 'post_comment_opened', 1, array(), false, 0);
+        $frm->addCheckBox(Labels::getLabel('LBL_Featured', $this->adminLangId), 'post_featured', 1, array(), false, 0);
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
-
         return $frm;
     }
 

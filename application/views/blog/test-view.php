@@ -479,218 +479,212 @@
 
 
 <section class="section bg-gray">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="post">
-					<figure class="post_media">
-						<a href="#"><img data-ratio="" src="/yokartv8/images/blog-main.jpg"></a></figure>
-					<ul class="post_category">
-						<li><a href="#">Home &amp; Living</a></li>
-						<li><a href="#">Inspiration</a></li>
-					</ul>
-					<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
-					<div class="share-button share-button--static-horizontal justify-content-start">
-						<a href="#" class="social-toggle"><i class="icn">
-								<svg class="svg">
-									<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
-								</svg>
-							</i></a>
-						<div class="social-networks">
-							<ul>
-								<li class="social-facebook">
-									<a class="st-custom-button st-hide-label" data-network="facebook">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-twitter">
-									<a class="st-custom-button st-hide-label" data-network="twitter">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-pintrest">
-									<a class="st-custom-button st-hide-label" data-network="pinterest">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-email">
-									<a class="st-custom-button st-hide-label" data-network="email">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
-											</svg></i>
-									</a>
-								</li>
-							</ul>
+	<div class="container"> <div class="row">
+						<div class="col-md-6 mb-5">
+							<div class="post">
+								<figure class="post_media">
+									<a href="#"><img data-ratio="" src="/yokartv8/images/blog-main.jpg"></a></figure>
+								<ul class="post_category">
+									<li><a href="#">Home &amp; Living</a></li>
+									<li><a href="#">Inspiration</a></li>
+								</ul>
+								<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
+								<div class="share-button share-button--static-horizontal justify-content-start">
+									<a href="#" class="social-toggle"><i class="icn">
+											<svg class="svg">
+												<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+											</svg>
+										</i></a>
+									<div class="social-networks">
+										<ul>
+											<li class="social-facebook">
+												<a class="st-custom-button st-hide-label" data-network="facebook">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-twitter">
+												<a class="st-custom-button st-hide-label" data-network="twitter">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-pintrest">
+												<a class="st-custom-button st-hide-label" data-network="pinterest">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-email">
+												<a class="st-custom-button st-hide-label" data-network="email">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+														</svg></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6 mb-5">
+							<div class="post">
+								<figure class="post_media">
+									<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
+								<ul class="post_category">
+									<li><a href="#">Home &amp; Living</a></li>
+									<li><a href="#">Inspiration</a></li>
+								</ul>
+								<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
+								<div class="share-button share-button--static-horizontal justify-content-start">
+									<a href="#" class="social-toggle"><i class="icn">
+											<svg class="svg">
+												<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+											</svg>
+										</i></a>
+									<div class="social-networks">
+										<ul>
+											<li class="social-facebook">
+												<a class="st-custom-button st-hide-label" data-network="facebook">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-twitter">
+												<a class="st-custom-button st-hide-label" data-network="twitter">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-pintrest">
+												<a class="st-custom-button st-hide-label" data-network="pinterest">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-email">
+												<a class="st-custom-button st-hide-label" data-network="email">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+														</svg></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="post">
+								<figure class="post_media">
+									<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
+								<ul class="post_category">
+									<li><a href="#">Home &amp; Living</a></li>
+									<li><a href="#">Inspiration</a></li>
+								</ul>
+								<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
+								<div class="share-button share-button--static-horizontal justify-content-start">
+									<a href="#" class="social-toggle"><i class="icn">
+											<svg class="svg">
+												<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+											</svg>
+										</i></a>
+									<div class="social-networks">
+										<ul>
+											<li class="social-facebook">
+												<a class="st-custom-button st-hide-label" data-network="facebook">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-twitter">
+												<a class="st-custom-button st-hide-label" data-network="twitter">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-pintrest">
+												<a class="st-custom-button st-hide-label" data-network="pinterest">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-email">
+												<a class="st-custom-button st-hide-label" data-network="email">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+														</svg></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="post">
+								<figure class="post_media">
+									<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
+								<ul class="post_category">
+									<li><a href="#">Home &amp; Living</a></li>
+									<li><a href="#">Inspiration</a></li>
+								</ul>
+								<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
+								<div class="share-button share-button--static-horizontal justify-content-start">
+									<a href="#" class="social-toggle"><i class="icn">
+											<svg class="svg">
+												<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
+											</svg>
+										</i></a>
+									<div class="social-networks">
+										<ul>
+											<li class="social-facebook">
+												<a class="st-custom-button st-hide-label" data-network="facebook">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-twitter">
+												<a class="st-custom-button st-hide-label" data-network="twitter">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-pintrest">
+												<a class="st-custom-button st-hide-label" data-network="pinterest">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
+														</svg></i>
+												</a>
+											</li>
+											<li class="social-email">
+												<a class="st-custom-button st-hide-label" data-network="email">
+													<i class="icn"><svg class="svg">
+															<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
+														</svg></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
-
-				</div>
-			</div>
-
-			<div class="col-md-6">
-				<div class="post">
-					<figure class="post_media">
-						<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
-					<ul class="post_category">
-						<li><a href="#">Home &amp; Living</a></li>
-						<li><a href="#">Inspiration</a></li>
-					</ul>
-					<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
-					<div class="share-button share-button--static-horizontal justify-content-start">
-						<a href="#" class="social-toggle"><i class="icn">
-								<svg class="svg">
-									<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
-								</svg>
-							</i></a>
-						<div class="social-networks">
-							<ul>
-								<li class="social-facebook">
-									<a class="st-custom-button st-hide-label" data-network="facebook">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-twitter">
-									<a class="st-custom-button st-hide-label" data-network="twitter">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-pintrest">
-									<a class="st-custom-button st-hide-label" data-network="pinterest">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-email">
-									<a class="st-custom-button st-hide-label" data-network="email">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
-											</svg></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-
-			<div class="col-md-6">
-				<div class="post">
-					<figure class="post_media">
-						<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
-					<ul class="post_category">
-						<li><a href="#">Home &amp; Living</a></li>
-						<li><a href="#">Inspiration</a></li>
-					</ul>
-					<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
-					<div class="share-button share-button--static-horizontal justify-content-start">
-						<a href="#" class="social-toggle"><i class="icn">
-								<svg class="svg">
-									<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
-								</svg>
-							</i></a>
-						<div class="social-networks">
-							<ul>
-								<li class="social-facebook">
-									<a class="st-custom-button st-hide-label" data-network="facebook">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-twitter">
-									<a class="st-custom-button st-hide-label" data-network="twitter">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-pintrest">
-									<a class="st-custom-button st-hide-label" data-network="pinterest">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-email">
-									<a class="st-custom-button st-hide-label" data-network="email">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
-											</svg></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-
-			<div class="col-md-6">
-				<div class="post">
-					<figure class="post_media">
-						<a href="#"><img src="/yokartv8/images/blog-main.jpg"></a></figure>
-					<ul class="post_category">
-						<li><a href="#">Home &amp; Living</a></li>
-						<li><a href="#">Inspiration</a></li>
-					</ul>
-					<h2 class="post_title"> <a href="#">How To Choose The Most Profitable Dropshipping Products To Sell Online</a></h2>
-					<div class="share-button share-button--static-horizontal justify-content-start">
-						<a href="#" class="social-toggle"><i class="icn">
-								<svg class="svg">
-									<use xlink:href="/yokartv8/images/retina/sprite.svg#share" href="/yokartv8/images/retina/sprite.svg#share"></use>
-								</svg>
-							</i></a>
-						<div class="social-networks">
-							<ul>
-								<li class="social-facebook">
-									<a class="st-custom-button st-hide-label" data-network="facebook">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#fb" href="/yokartv8/images/retina/sprite.svg#fb"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-twitter">
-									<a class="st-custom-button st-hide-label" data-network="twitter">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#tw" href="/yokartv8/images/retina/sprite.svg#tw"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-pintrest">
-									<a class="st-custom-button st-hide-label" data-network="pinterest">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#pt" href="/yokartv8/images/retina/sprite.svg#pt"></use>
-											</svg></i>
-									</a>
-								</li>
-								<li class="social-email">
-									<a class="st-custom-button st-hide-label" data-network="email">
-										<i class="icn"><svg class="svg">
-												<use xlink:href="/yokartv8/images/retina/sprite.svg#envelope" href="/yokartv8/images/retina/sprite.svg#envelope"></use>
-											</svg></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
 
 	</div>
 </section>
