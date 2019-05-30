@@ -39,7 +39,7 @@
 }
 
 .restore-demo-bg {
-    background-image: url('<?php echo CommonHelper::generateFullUrl().'/images/catalog-bg.png';?>')!important;
+    background-image: url('<?php echo CommonHelper::generateFullUrl('','',array(),CONF_WEBROOT_FRONT_URL).'/images/catalog-bg.png';?>')!important;
     background-color: #fff!important;
     background-repeat: no-repeat!important;
     background-position: 130% top!important;
@@ -155,7 +155,7 @@ function showRestorePopup(){
 
 function restoreSystem(){
     $.mbsmessage('Restore is in process..',false,'alert--process alert');
-    fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','',<?php echo CONF_WEBROOT_FRONT_URL; ?>), '', function(resp){
+    fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL; ?>'), '', function(resp){
         setTimeout(function(){ window.location.reload(); }, 3000);
     },false,false);
 }
