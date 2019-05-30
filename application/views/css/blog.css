@@ -1,11 +1,26 @@
  /*New blog*/
+ .header-blog {
+ 	color: var(--header-txt-color);
+ 	position: fixed;
+	 z-index: 2;
+ 	top: 0;
+ 	width: 100%;
+ 	font-weight: 300;
+ 	background: #fff; 	 
+ 	border-bottom: none;
+ 	box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.20);
+ 	border-bottom: solid 1px var(--border-color);
+ }
+.after-header-blog{ height: 137px;}
+
  .header-blog-inner {
  	display: flex;
  	align-items: center;
  	justify-content: space-between;
  }
 
- .post-detail {
+ .post-detail,
+ .post-listing {
  	padding-top: 3.75rem;
  	position: relative;
  }
@@ -34,10 +49,6 @@
  .posted-media img {
  	border-radius: 4px;
  }
-
-
-
-
  .post-detail .container {
  	position: relative;
  	z-index: 1;

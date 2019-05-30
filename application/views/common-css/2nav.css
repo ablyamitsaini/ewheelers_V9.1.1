@@ -46,7 +46,7 @@
 	font-size: 1em;
 	font-weight: 400;
 	position: static;
-	margin: 0 5px;
+	margin: 0 1rem;
 }
 
 .navigations > li:first-child {
@@ -62,7 +62,7 @@
 	color: inherit;
 	display: block;
 	overflow: hidden;
-	padding:1rem 0px;
+	padding: 1rem 0px;
 	position: relative;
 	text-align: center;
 	text-overflow: ellipsis;
@@ -95,13 +95,15 @@
 	right: 50%;
 }
 
-.navigations > li > a:hover:after, .navigations > li.active > a:after {
+.navigations > li > a:hover:after,
+.navigations > li.active > a:after {
 	left: 0;
 	width: 50%;
 	background: var(--first-color);
 }
 
-.navigations > li > a:hover:before, .navigations > li.active > a:before {
+.navigations > li > a:hover:before,
+.navigations > li.active > a:before {
 	right: 0;
 	width: 50%;
 	background: var(--first-color);
@@ -193,7 +195,7 @@
 
 .navigations > li .subnav__wrapper {
 	background: #fff;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20); 
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20);
 	left: 0;
 	margin: 0;
 	opacity: 0;

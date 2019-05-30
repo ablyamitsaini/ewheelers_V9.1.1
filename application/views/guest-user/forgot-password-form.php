@@ -3,10 +3,11 @@
 	<section class="section">
 		<div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
-                    <div class="text-center">
+                <div class="col-md-10 <?php echo (empty($pageData)) ? '' : '';?>">
+                   <div class="row  justify-content-center"> 
+                       <div class="col-md-6">
                         <div class="section-head">
-                            <div class="section__heading m-3"><h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
+                            <div class="section__heading"><h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
                        <p><?php echo Labels::getLabel('LBL_Forgot_Password_Msg',$siteLangId);?></p></div></div>
 
                     <?php
@@ -69,9 +70,10 @@
                 <?php echo $frm->getExternalJS();?>
                    
                   <p class="text--dark"><?php echo Labels::getLabel('LBL_Back_to_login',$siteLangId);?>
-                  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Click_Here',$siteLangId);?></a></p>
+                  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="link"><?php echo Labels::getLabel('LBL_Click_Here',$siteLangId);?></a></p>
                 </div></div>
                 <?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData,false ); } ?>
+			</div>
 			</div>
 		</div>
 	</section>
