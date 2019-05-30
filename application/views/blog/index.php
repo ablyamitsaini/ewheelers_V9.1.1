@@ -194,7 +194,7 @@
                 <div class="col-md-6">
                     <div class="blog-subscribers">
                         <h4><?php echo Labels::getLabel('LBL_Get_Weekly_Insights', $siteLangId)?></h4>
-                        <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_tech_insights_-_Blogs,_eBooks_and_Webinars', $siteLangId)?></p>
+                        <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_weekly_newsletter', $siteLangId)?></p>
                         <?php $this->includeTemplate('_partial/footerNewsLetterForm.php', array('blogPage'=>true)); ?>
                     </div>
                 </div>

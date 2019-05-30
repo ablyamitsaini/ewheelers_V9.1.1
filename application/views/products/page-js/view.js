@@ -103,7 +103,7 @@ $("document").ready(function(){
 		var mainSrc = $(this).find('img').attr('main-src');
 		$(".item__main").find('img').attr('src',mainSrc);
 	});
-    
+
     $('.js-collection-corner').slick( getSlickSliderSettings(6, 1, langLbl.layoutDirection) );
 
 	/* for on scoll jump navigation fix */

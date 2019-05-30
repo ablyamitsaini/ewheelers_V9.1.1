@@ -121,6 +121,23 @@
             $this->set('keyword', $keyword);
             $this->set('srchFrm', $frm);
         }
+
+        $featuredSrch = $this->getBlogSearchObject();
+        $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
+        $featuredSrch->setPageSize(4);
+        $featuredRs = $featuredSrch->getResultSet();
+        $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
+
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(4);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+
+        $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
+
         $this->_template->addJs('js/slick.min.js');
         $this->_template->addCss('css/slick.css');
         $this->_template->render(true, true);
@@ -245,6 +262,22 @@
             $blog->setPostViewsCount($blogPostId);
         }
         /* ] */
+
+        $featuredSrch = $this->getBlogSearchObject();
+        $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
+        $featuredSrch->setPageSize(4);
+        $featuredRs = $featuredSrch->getResultSet();
+        $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
+
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(4);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+
+        $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
 
         $this->set('socialShareContent', $socialShareContent);
 
