@@ -202,7 +202,7 @@ $("document").ready(function(){
 			$(this).prop("checked", false);
 		});
 
-		obj.parent().siblings('div').find('span.itemValue--js .selectItem--js').prop("checked", true);
+		obj.parent().siblings('li').find('.selectItem--js').prop("checked", true);
 
 		addSelectedToCart( event );
 	};

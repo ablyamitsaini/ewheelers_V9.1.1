@@ -29,8 +29,8 @@
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Credits_earned_today', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($txnsSummary['total_earned']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -59,7 +59,7 @@
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Total_Active_promotions', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totActivePromotions);?></span>
+                                                <span class="total-numbers"><?php echo $totActivePromotions; ?></span>
                                             </li>
                                         </ul>
                                     </div>

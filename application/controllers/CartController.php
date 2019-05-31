@@ -197,7 +197,7 @@ class CartController extends MyAppController
                 $ProductAdded = true;
             }
         }
-        $strProduct = '<a href="'.CommonHelper::generateUrl('Products', 'view', array($selprod_id)).'">'.$sellerProductRow['product_name'].'</a>';
+        $strProduct = '<a href="'.CommonHelper::generateUrl('Products', 'view', array($selprod_id)).'">'.strip_tags(html_entity_decode($sellerProductRow['product_name'], ENT_QUOTES, 'UTF-8')).'</a>';
         $strCart = '<a href="'.CommonHelper::generateUrl('Cart').'">'.Labels::getLabel('Lbl_Shopping_Cart', $this->siteLangId).'</a>';
         if (isset($productErr)) {
             Message::addInfo($productErr);
