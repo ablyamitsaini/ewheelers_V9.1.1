@@ -48,7 +48,7 @@ var cart = {
 				fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
 					if( ans.status ){
 						loadFinancialSummary();
-						resetCheckoutDiv();						
+						resetCheckoutDiv();
 					}
 					$.mbsmessage.close();
 				});

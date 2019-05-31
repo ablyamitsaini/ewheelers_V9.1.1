@@ -325,11 +325,13 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class=""><label class="checkbox"> <input
+                                                <td class="<?php echo $cancelClass;?>"><label class="checkbox">
+                                                  <input
                                                     <?php if ($usproduct['selprod_stock'] > 0) { ?>
-                                                           
-                                                    <?php } ?> type="checkbox" class="cancel " id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId);?>">
-                                                        <i class="input-helper"></i> </label>
+                                                      checked="checked"
+                                                    <?php } ?>
+                                                  type="checkbox" class="cancel <?php echo $uncheckBoxClass;?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId);?>">
+                                                  <i class="input-helper"></i> </label>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -366,9 +368,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         </div>
                     </div>
                 </div>
-                <section class="section certified-bar">
-                    <?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
-                </section>
+                <?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
                 <div class="row justify-content-center">
                     <div class="col-md-7">
                         <?php $youtube_embed_code = CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>

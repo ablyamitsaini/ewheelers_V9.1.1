@@ -423,43 +423,54 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 	return sliderSettings;
 }
 
-function getSlickSliderSettings(slidesToShow, slidesToScroll = 1, layoutDirection = 'ltr', autoInfinitePlay = true) {
-    slidesToShow = (typeof slidesToShow != "undefined") ? parseInt(slidesToShow) : 4;
-    slidesToScroll = (typeof slidesToScroll != "undefined") ? parseInt(slidesToScroll) : 1;
-    layoutDirection = (typeof layoutDirection != "undefined") ? layoutDirection : 'ltr';
-    autoInfinitePlay = (typeof autoInfinitePlay != "undefined") ? autoInfinitePlay : true;
+var screenResolutionForSlider = {
+        1024: 4,
+        768: 4,
+        480: 2
+    }
+
+function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay,slidesToShowForDiffResolution ){
+	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
+	slidesToScroll = (typeof slidesToScroll != "undefined" ) ? parseInt(slidesToScroll) : 1;
+	layoutDirection = (typeof layoutDirection != "undefined" ) ? layoutDirection : 'ltr';
+	autoInfinitePlay = (typeof autoInfinitePlay != "undefined" ) ? autoInfinitePlay : true;
+	if(typeof slidesToShowForDiffResolution != "undefined" ){
+		slidesToShowForDiffResolution = $.extend(screenResolutionForSlider, slidesToShowForDiffResolution);
+	}else{
+		slidesToShowForDiffResolution = screenResolutionForSlider;
+	}
 
     var sliderSettings = {
-        dots: false,
-        slidesToShow: slidesToShow,
-        slidesToScroll: slidesToScroll,
-        infinite: autoInfinitePlay,
-        autoplay: autoInfinitePlay,
-        arrows: true,
-        responsive: [{
-                breakpoint: 1050,
-                settings: {
-                    slidesToShow: slidesToShow - 1,
-                }
-            },
-            {
-                breakpoint: 800,
-                settings: {
-                    slidesToShow: 4,
-                }
-            },
-            {
-                breakpoint: 500,
-                settings: {
-                    slidesToShow: 2,
-                }
-            }
-        ]
-    };
+                            dots: false,
+                            slidesToShow: slidesToShow,
+                            slidesToScroll: slidesToScroll,
+                            infinite: autoInfinitePlay,
+                            autoplay: autoInfinitePlay,
+                            arrows: true,
+                            responsive: [{
+                                    breakpoint: 1024,
+                                    settings: {
+                                        slidesToShow: slidesToShowForDiffResolution[1024],
+                                    }
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: slidesToShowForDiffResolution[768],
+                                    }
+                                },
+                                {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: slidesToShowForDiffResolution[480],
+                                    }
+                                }
+                            ]
+                        };
 
-    if (layoutDirection == 'rtl') {
-        sliderSettings['rtl'] = true;
-    }
+	if(layoutDirection == 'rtl'){
+		sliderSettings['rtl'] = true;
+	}
 
     return sliderSettings;
 }
@@ -1116,10 +1127,10 @@ $("document").ready(function() {
         var data = fcom.frmData(document.frmBuyProduct);
         var yourArray = [];
         var selprodId = $(this).siblings('input[name="selprod_id"]').val();
-        if (typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId) {
-            $(".cart-tbl").find("input").each(function(e) {
-                if (($(this).val() > 0) && (!$(this).parent().parent().siblings().hasClass("cancelled--js"))) {
-                    data = data + '&' + $(this).attr('lang') + "=" + $(this).val();
+        if( typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId ){
+            $(".cart-tbl").find("input").each(function(e){
+                if (($(this).val()>0) && (!$(this).closest("td").siblings().hasClass("cancelled--js"))){
+                    data = data+'&'+$(this).attr('lang')+"="+$(this).val();
                 }
             });
         }
