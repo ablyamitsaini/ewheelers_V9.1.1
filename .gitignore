@@ -1,5 +1,5 @@
 .*
-.htaccess
+/.htaccess
 !/.gitignore
 /user-uploads/*
 /admin-application/views/innovas
