@@ -308,7 +308,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         foreach ($transactions as $row) { ?>
                                     <tr>
                                         <td>
-                                            <div class="txn__id"> <?php echo Labels::getLabel('Lbl_Txn._Id', $siteLangId)?>: <?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
+                                            <div class="txn__id"><?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
                                         </td>
                                         <td>
                                             <div class="txn__date"> <?php echo FatDate::format($row['utxn_date']); ?> </div>
