@@ -57,6 +57,11 @@ if (!empty($postList)) {
         </div>
     </div>
     <?php } ?>
+    <?php
+    $postedData['page'] = $page;
+    echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmBlogSearchPaging'));
+    $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToSearchPage');
+    $this->includeTemplate('_partial/pagination.php', $pagingArr, false); ?>
 <?php } else { ?>
     <div class="post box box--white">
         <?php $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false); ?>

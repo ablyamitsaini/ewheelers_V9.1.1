@@ -6,10 +6,20 @@ $(document).ready(function(){
 		searchBlogs(keyword);
 	});*/
 });
-
+goToSearchPage = function(page) {
+	if(typeof page == undefined || page == null){
+		page =1;
+	}
+	var frm = document.frmBlogSearchPaging;
+	$(frm.page).val(page);
+	searchBlogs('', frm);
+};
 var dv = '#blogs-listing-js';
-searchBlogs = function(keyword){
+searchBlogs = function(keyword, form){
 	var data = '';
+	if (form) {
+        data = fcom.frmData(form);
+    }
 	if(keyword!=''){
 		data +='&keyword='+keyword;
 	}
