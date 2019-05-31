@@ -1,5 +1,9 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage');
-if ($languages && count($languages) > 1) { ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
+<li class="divider"></li>
+<li class="menu__item">
+    <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Language_&_Currency", $siteLangId); ?></span></div>
+</li>
+<?php if ($languages && count($languages) > 1) { ?>
 <li class="menu__item">
     <div class="menu__item__inner">
     <a href="" class="accordianheader">
@@ -30,3 +34,4 @@ if ($currencies && count($currencies) > 1) { ?>
             </div>
 </li>
 <?php } ?>
+<li class="divider"></li>

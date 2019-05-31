@@ -12,7 +12,7 @@
 		<div class="cards">
 			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages',$siteLangId);?></h5>
-				<div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Account','messages');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_messages',$siteLangId);?></a></div>
+				<div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Account','messages');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_messages',$siteLangId);?></a></div>
 			</div>
 			<div class="cards-content pl-4 pr-4 ">
 				<table class="table table--orders">

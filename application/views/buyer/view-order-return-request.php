@@ -17,9 +17,9 @@
 			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
                 <?php if( !$print ){ ?>
-                    <div class="btn-group">
+                    <div class="">
                         <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
-                        <a href="<?php echo CommonHelper::generateUrl('Buyer','orderReturnRequests');?>" class="btn btn--secondary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back',$siteLangId);?></a>
+                        <a href="<?php echo CommonHelper::generateUrl('Buyer','orderReturnRequests');?>" class="btn btn--primary-border btn--sm no-print"><?php echo Labels::getLabel('LBL_Back',$siteLangId);?></a>
                     </div>
                 <?php } ?>
 			</div>

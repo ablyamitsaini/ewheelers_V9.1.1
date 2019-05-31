@@ -6,7 +6,7 @@
     </div>
     <small class="text--small"><?php echo $languages[$images['afile_lang_id']];?></small>
     <div class="btngroup--fix">
-        <a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removeCollectionImage(<?php echo $scollection_id; ?>,<?php echo $lang_id; ?>)"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
+        <a class = "btn btn--primary btn--sm" href="javascript:void(0);" onClick="removeCollectionImage(<?php echo $scollection_id; ?>,<?php echo $lang_id; ?>)"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
     </div>
 </div>
 <?php } ?>

@@ -7,7 +7,7 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
             <div class="col-md-auto">
                 <div class="actions">
                     <?php if ($showSellerActivateButton) { ?>
-                    <a href="<?php echo CommonHelper::generateUrl('Seller'); ?>" class="btn btn--secondary btn--sm panel__head_action"
+                    <a href="<?php echo CommonHelper::generateUrl('Seller'); ?>" class="btn btn--primary btn--sm panel__head_action"
                         title="<?php echo Labels::getLabel('LBL_Activate_Seller_Account', $siteLangId); ?>">
                         <strong> <?php echo Labels::getLabel('LBL_Activate_Seller_Account', $siteLangId); ?></strong>
                     </a>

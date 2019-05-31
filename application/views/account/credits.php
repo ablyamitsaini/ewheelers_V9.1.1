@@ -81,7 +81,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                             ?>
                             <div class="row">
                                 <?php if ($showTotalBalanceAvailableDiv) { ?>
-                                    <div class="col-lg-<?php echo $totalBalanceAvailableDiv; ?> col-md-<?php echo $totalBalanceAvailableDiv; ?> mb-3 mb-md-0">
+                                    <div class="col-lg-<?php echo $totalBalanceAvailableDiv; ?> col-md-<?php echo $totalBalanceAvailableDiv; ?> mb-3 mb-md-0 mt-4">
                                         <div class="balancebox" id="rechargeWalletDiv">
                                             <p><?php echo Labels::getLabel('LBL_Total_Balance_Available', $siteLangId); ?>: </p>
                                             <h2><strong><?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance); ?></strong></h2>
@@ -96,7 +96,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                                     </div>
                                 <?php }
                                 if ($showPromotionWalletChargedDiv) { ?>
-                                    <div class="col-lg-<?php echo $promotionWalletChargedDiv; ?> col-md-<?php echo $promotionWalletChargedDiv; ?>  mb-3 mb-md-0 ">
+                                    <div class="col-lg-<?php echo $promotionWalletChargedDiv; ?> col-md-<?php echo $promotionWalletChargedDiv; ?>  mb-3 mb-md-0 mt-4">
                                         <div class="balancebox">
                                             <p><?php echo Labels::getLabel('LBL_Promotion_Wallet_To_Be_Charged', $siteLangId); ?>: </p>
                                             <h2><strong>
@@ -111,7 +111,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                                     </div>
                                 <?php }
                                 if ($showWithdrawalRequestAmountDiv) {
-                                    ?> <div class="col-lg-<?php echo $withdrawalRequestAmountDiv; ?> col-md-<?php echo $withdrawalRequestAmountDiv; ?> ">
+                                    ?> <div class="col-lg-<?php echo $withdrawalRequestAmountDiv; ?> col-md-<?php echo $withdrawalRequestAmountDiv; ?> mt-4">
                                         <div class="balancebox">
                                             <p><?php echo Labels::getLabel('LBL_Withdrawl_Request_Amount', $siteLangId); ?>: </p>
                                             <h2><strong>

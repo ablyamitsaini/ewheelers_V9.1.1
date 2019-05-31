@@ -19,7 +19,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 					<img src="<?php echo CommonHelper::generateUrl('Category','sellerBanner',array($img['afile_record_id'],$img['afile_record_subid'],$img['afile_lang_id'],'WIDE')).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Shop_Banner',$siteLangId);?>">
 					<small class="text--small"><?php echo $bannerTypeArr[$img['afile_lang_id']];?></small>
 					<div class="btngroup--fix">
-						<a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removeCategoryBanner(<?php echo $img['afile_record_subid']; ?>,<?php echo $img['afile_lang_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
+						<a class = "btn btn--primary btn--sm" href="javascript:void(0);" onClick="removeCategoryBanner(<?php echo $img['afile_record_subid']; ?>,<?php echo $img['afile_lang_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
 					</div>
 					<span class="gap"></span>
 					<?php }?>

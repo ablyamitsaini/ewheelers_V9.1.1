@@ -16,7 +16,7 @@
                          <div class="box box--white  p-4">
                            <div class="box__head no-print" >
                                <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
+                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
                            </div>
                             <div class="box__body">
                                  <div class="grids--offset">

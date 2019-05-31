@@ -1,7 +1,8 @@
 <?php
 class ValidateElement extends FatUtility
 {
-    const PHONE_REGEX = '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s#-]\d{3}[\s#-]\d{4}$';
+    // const PHONE_REGEX = '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s#-]\d{3}[\s#-]\d{4}$';
+    const PHONE_REGEX = '^\(\d\d\d\) \d\d\d-\d\d\d\d$';
     const ZIP_REGEX = '^[a-zA-Z0-9]+$';
     const CITY_NAME_REGEX = '^([^0-9]*)$';
     const PASSWORD_REGEX = '^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$';
@@ -14,13 +15,13 @@ class ValidateElement extends FatUtility
     const JCB_REGEX = '^(?:2131|1800|35\d{3})';
     const TIME_REGEX = '^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$';
 
-    const PHONE_FORMATS = [
+    /*const PHONE_FORMATS = [
         '123-456-7890',
         '(123) 456-7890',
         '123 456 7890',
         '123#456#7890',
         '+91 123 456 7890',
-    ];
+    ];*/
 
 
     public static function phone($string = '')
