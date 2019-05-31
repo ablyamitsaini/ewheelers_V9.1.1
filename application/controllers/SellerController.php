@@ -66,14 +66,12 @@ class SellerController extends SellerBaseController
         $orderSrch->addSellerCompletedOrdersStats(date('Y-m-d'), date('Y-m-d'), 'todaySold');
 
         $orderSrch->addSellerCompletedOrdersStats(false, false, 'totalSold');
-        $orderSrch->addGroupBy('op_selprod_user_id');
+        $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('op_selprod_user_id', '=', $userId);
         $orderSrch->addMultipleFields(array('todayOrderCount' ,'todaySoldCount','totalSoldCount','totalSoldSales', 'todaySoldSales' ));
 
         $rs = $orderSrch->getResultSet();
-
         $ordersStats = FatApp::getDb()->fetch($rs);
-
         /* ]*/
 
         $threadObj = new Thread();
@@ -115,16 +113,16 @@ class SellerController extends SellerBaseController
         /*
         * Transactions Listing
         */
-        $srch = Transactions::getUserTransactionsObj($userId);
-        $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs = $srch->getResultSet();
+        $transSrch = Transactions::getUserTransactionsObj($userId);
+        $transSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs = $transSrch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
         /*
         * Cancellation Request Listing
         */
-        $srch = $this->cancelRequestListingObj();
-        $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs = $srch->getResultSet();
+        $canSrch = $this->cancelRequestListingObj();
+        $canSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs = $canSrch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
         $this->set('returnRequestsCount', $srchReturnReq->recordCount());
 
@@ -3008,7 +3006,7 @@ class SellerController extends SellerBaseController
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
         $srch->addOrder('product_name');
         $srch->addOrder('selprod_active', 'DESC');
-        $srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_price', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
+        $srch->addMultipleFields(array('selprod_id','selprod_sku','selprod_price', 'selprod_cost', 'selprod_stock','IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
@@ -3142,13 +3140,13 @@ class SellerController extends SellerBaseController
         $frm->addRequiredField(Labels::getLabel('Lbl_Identifier', $this->siteLangId), 'shop_identifier');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shop_SEO_Friendly_URL', $this->siteLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
-        $zipFld = $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode', '', array('class'=>'phone-js'));
+        $zipFld = $frm->addTextBox(Labels::getLabel('Lbl_Postalcode', $this->siteLangId), 'shop_postalcode');
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
 
-        $phnFld = $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js'));
+        $phnFld = $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         $countryObj = new Countries();
@@ -4117,9 +4115,11 @@ class SellerController extends SellerBaseController
         $zipFld = $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip');
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
-        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone');
+
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+
         $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));

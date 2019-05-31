@@ -58,7 +58,7 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Change_Email_/_Password', $siteLangId);?></span></a></div>
                 </li>
-                <li class="divider"></li>
+                <?php $this->includeTemplate('_partial/dashboardLanguageArea.php'); ?>
             </ul>
         </nav>
     </div>

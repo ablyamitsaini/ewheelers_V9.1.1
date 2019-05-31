@@ -205,10 +205,6 @@
                         </a>
                     </div>
                 </li>
-                <li class="divider"></li>
-                <li class="menu__item">
-                    <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel("LBL_Language_&_Currency", $siteLangId); ?></span></div>
-                </li>
                 <?php $this->includeTemplate('_partial/dashboardLanguageArea.php'); ?>
             </ul>
         </nav>
@@ -250,14 +246,4 @@
     }();
 
     Dashboard.init();
-
-
-	var $title = $('.accordianheader');
-var copy   = '.accordianbody';
-
-$title.click(function () {
-  $(this).next(copy).slideToggle();
-  $(this).parent().siblings().children().next().slideUp();
-  return false;
-});
 </script>

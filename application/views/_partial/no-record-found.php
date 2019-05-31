@@ -10,7 +10,7 @@
     <?php if (!empty($linkArr)) {
         foreach ($linkArr as $link) {
             $onClick = isset($link['onClick']) ? "onClick='".$link['onClick']."'" : "";
-            echo "<a href='".$link['href']."' class='btn btn--secondary btn--sm'" .$onClick.  ">".$link['label']."</a>";
+            echo "<a href='".$link['href']."' class='btn btn--primary btn--sm'" .$onClick.  ">".$link['label']."</a>";
         }
     }?>
 </div>

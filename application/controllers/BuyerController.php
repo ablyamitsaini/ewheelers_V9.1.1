@@ -90,15 +90,18 @@ class BuyerController extends BuyerBaseController
         /*
         * Cancellation Request Listing
         */
-        $srch = $this->orderCancellationRequestObj();
-        $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs = $srch->getResultSet();
+        $canSrch = $this->orderCancellationRequestObj();
+        $canSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs = $canSrch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
 
         /*
         * Offers Listing
         */
         $offers = DiscountCoupons::getUserCoupons(UserAuthentication::getLoggedUserId(), $this->siteLangId);
+
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
 
         $this->set('offers', $offers);
         $this->set('data', $user->getProfileData());
@@ -113,6 +116,7 @@ class BuyerController extends BuyerBaseController
         $this->set('totalMessageCount', $totalMessageCount);
         $this->set('userBalance', User::getUserBalance($userId));
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
+        $this->set('txnsSummary', $txnsSummary);
         $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }
@@ -336,6 +340,18 @@ class BuyerController extends BuyerBaseController
         $srch = new OrderProductSearch($this->siteLangId, true, true);
         $srch->addCountsOfOrderedProducts();
         $srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
+        $srch->joinTable(
+            OrderReturnRequest::DB_TBL,
+            'LEFT OUTER JOIN',
+            'orr.orrequest_op_id = op.op_id',
+            'orr'
+        );
+        $srch->joinTable(
+            OrderCancelRequest::DB_TBL,
+            'LEFT OUTER JOIN',
+            'ocr.ocrequest_op_id = op.op_id',
+            'ocr'
+        );
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->joinPaymentMethod();
         $srch->addOrder("op_id", "DESC");
@@ -344,7 +360,7 @@ class BuyerController extends BuyerBaseController
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
             'totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
-            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name')
+            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -508,6 +524,7 @@ class BuyerController extends BuyerBaseController
         $oReturnRequestSrch->addCondition('orrequest_op_id', '=', $opDetail['op_id']);
         $oReturnRequestSrch->addCondition('orrequest_status', '!=', OrderReturnRequest::RETURN_REQUEST_STATUS_CANCELLED);
         $oReturnRequestRs = $oReturnRequestSrch->getResultSet();
+
         if (FatApp::getDb()->fetch($oReturnRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_return_request', $this->siteLangId));
             CommonHelper::redirectUserReferer();
@@ -1310,6 +1327,7 @@ class BuyerController extends BuyerBaseController
         $oCancelRequestSrch->addCondition('ocrequest_op_id', '=', $op_id);
         $oCancelRequestSrch->addCondition('ocrequest_status', '!=', OrderCancelRequest::CANCELLATION_REQUEST_STATUS_DECLINED);
         $oCancelRequestRs = $oCancelRequestSrch->getResultSet();
+
         if (FatApp::getDb()->fetch($oCancelRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_cancel_request', $this->siteLangId));
             CommonHelper::redirectUserReferer();

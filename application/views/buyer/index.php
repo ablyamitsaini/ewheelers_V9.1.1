@@ -33,8 +33,8 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Credits_earned_today', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($txnsSummary['total_earned']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -58,9 +58,9 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                 <div class="stats">
                                     <div class="stats-number">
                                         <ul>
-                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $todayOrderCount;?></span></li>
-                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Today_Orders', $siteLangId);?></span>
+                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Total_Orders', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo $ordersCount;?></span></li>
+                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Orders_for_today', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo $todayOrderCount;?></span> </li>
                                         </ul>
                                     </div>

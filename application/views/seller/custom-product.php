@@ -35,8 +35,9 @@ $cancelBtnFld->developerTags['col'] = 2;
 				<div class="cards-header p-4">
 					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_My_Products_list',$siteLangId); ?></h5>
 					<div class="action">
-						<div class="btn-group">
-							<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a><a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Products_List', $siteLangId);?></a>
+						<div class="">
+							<a href="javascript:void(0)" onclick="addCatalogPopup()" class = "btn btn--primary btn--sm"><?php echo Labels::getLabel( 'LBL_Add_New_Product', $siteLangId);?></a>
+                            <a href="<?php echo CommonHelper::generateUrl('seller','catalog' );?>" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Products_List', $siteLangId);?></a>
 						</div>
 					</div>
 				</div>

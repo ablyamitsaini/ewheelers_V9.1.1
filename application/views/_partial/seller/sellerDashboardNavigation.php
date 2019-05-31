@@ -175,7 +175,7 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Products_Inventory_Stock_Status', $siteLangId); ?></span></a></div>
                 </li>
-                <li class="divider"></li>
+                <?php $this->includeTemplate('_partial/dashboardLanguageArea.php'); ?>
             </ul>
         </nav>
     </div>

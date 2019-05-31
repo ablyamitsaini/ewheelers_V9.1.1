@@ -823,11 +823,9 @@ class AccountController extends LoggedUserController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
-
-        if ($data['user_phone'] == 0) {
+        if (empty($data['user_phone'])) {
             $data['user_phone'] = '';
         }
-
         if (User::isAffiliate()) {
             $userExtraData = User::getUserExtraData($userId, array('uextra_company_name', 'uextra_website'));
             $userExtraData = ($userExtraData) ? $userExtraData : array();
@@ -2270,9 +2268,9 @@ class AccountController extends LoggedUserController
         $frm->addTextBox(Labels::getLabel('LBL_Email', $this->siteLangId), 'credential_email', '');
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->siteLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
-        $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
+        $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $phoneFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $phoneFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $phoneFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $phoneFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         if (User::isAffiliate()) {
