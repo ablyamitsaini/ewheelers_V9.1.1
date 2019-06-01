@@ -29,7 +29,7 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
     </div>
 	<section class="section section--gray">
 		<div class="container">
-			<div id="itemRatings" class="section section--info clearfix">
+			<div id="itemRatings">
 				<div class="section__head">
 				  <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. $shop['shop_name'];?></h4>
 				   <?php echo $frmReviewSearch->getFormHtml(); ?>
