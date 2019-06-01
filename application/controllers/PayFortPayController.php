@@ -155,8 +155,8 @@ class PayFortPayController extends PaymentController
             $payfortIntegration->customer_ip            = $_SERVER['REMOTE_ADDR'];
             $payfortIntegration->customer_email         = $orderInfo['customer_email'];
             $payfortIntegration->command                   = 'PURCHASE';
-            $payfortIntegration->return_url             = CommonHelper::generateNoAuthUrl('PayFortPay', 'doPayment', array($orderId));
-            //$payfortIntegration->return_url             = CommonHelper::generateFullUrl('PayFortPay','doPayment',array($orderId),'',false);
+            // $payfortIntegration->return_url             = CommonHelper::generateNoAuthUrl('PayFortPay', 'doPayment', array($orderId));
+            $payfortIntegration->return_url             = CommonHelper::generateFullUrl('PayFortPay', 'doPayment', array($orderId), '', false);
 
             $requestParams  = $payfortIntegration->getRequestParams();
             $signature      = $payfortIntegration->calculateSignature($requestParams, $paymentSettings['sha_request_phrase'], $paymentSettings['sha_type']);

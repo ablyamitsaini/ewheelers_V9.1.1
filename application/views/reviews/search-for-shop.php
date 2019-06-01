@@ -28,12 +28,13 @@
 						<p>
 							<span class='lessText'><?php echo CommonHelper::truncateCharacters($review['spreview_description'],200,'','',true);?></span>
 							<?php if(strlen($review['spreview_description']) > 200) { ?>
-							<span class='moreText' hidden>
+							<span class='moreText hidden'>
 							<?php echo nl2br($review['spreview_description']); ?>
 							</span>
 							<a class="readMore link--arrow" href="javascript:void(0);"> <?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId) ; ?> </a>
 							<?php } ?>
 						</p>
+                        <a class="btn btn--secondary btn--primary-border mt-3" href="<?php echo CommonHelper::generateUrl('Reviews','shopPermalink',array($review['spreview_seller_user_id'] , $review['spreview_id'])) ?>"><?php echo Labels::getLabel('Lbl_Permalink',$siteLangId); ?> </a>
 					</div>
 				</div>
 			</div>
@@ -45,11 +46,4 @@
 	echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSearchReviewsPaging') );
 	} else{
 		$this->includeTemplate('_partial/no-record-found.php',array('siteLangId'=>$siteLangId),false);
-	}?>
-
-
-
-
-
-
-
+	}

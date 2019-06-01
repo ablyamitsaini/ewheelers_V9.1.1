@@ -24,41 +24,37 @@ if ($showAddToFavorite) { ?>
     <?php } else { ?>
             <?php $showFavtBtn = true;
             if (Labels::getLabel('LBL_Wishlist', $siteLangId) ==  $forPage) { ?>
-                <div class="container">
-                    <div class="row mt-2">
-                        <div class="col-md-4">
-                           <span class="float-left itemValue--js">
-                               <label class="checkbox">
-                                   <input type="checkbox" name='selprod_id[]' class="selectItem--js" value="<?php echo $product['selprod_id']; ?>"/>
-                                   <i class="input-helper"></i>
-                               </label>
-                           </span>
-                        </div>
-                        <div class="col-md-4">
-                            <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' onClick="addToCart( $(this), event );" href="javascript:void(0)" data-id='<?php echo $product['selprod_id']; ?>'>
-                                <i class="fa fa-shopping-cart"></i>
+                <div class="container wishlist_items--css">
+                    <ul class="actions mt-2">
+                        <li>
+                            <a title='<?php echo Labels::getLabel('LBL_Select_Item', $siteLangId); ?>' href="javascript:void(0)" class="icn-highlighted">
+                                <label class="checkbox">
+                                    <input type="checkbox" name='selprod_id[]' class="selectItem--js" value="<?php echo $product['selprod_id']; ?>"/>
+                                    <i class="input-helper"></i>
+                                </label>
                             </a>
-                        </div>
-                        <div class="col-md-4">
-                            <span class="float-right">
-                                <a  title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>'onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="text--normal-secondary">
-                                   <i class="fa fa-trash"></i>
-                                </a>
-                            </span>
-                        </div>
-                    </div>
+                        </li>
+                        <li>
+                            <a onClick="addToCart( $(this), event );" href="javascript:void(0)" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>" data-id='<?php echo $product['selprod_id']; ?>'><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                        <li>
+                            <a  title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>' onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="icn-highlighted">
+                               <i class="fa fa-trash"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            <?php $showFavtBtn = false; } 
+                <?php $showFavtBtn = false;
+            }
             if ($showFavtBtn) { ?>
-
-            <div class="favourite heart-wrapper wishListLink-Js <?php echo($product['is_in_any_wishlist'])?'is-active':''; ?>" id="listDisplayDiv_<?php echo $product['selprod_id']; ?>" data-id="<?php echo $product['selprod_id']; ?>">
-                <a href="javascript:void(0)" onClick="viewWishList(<?php echo $product['selprod_id']; ?>,this,event);"
-                    title="<?php echo($product['is_in_any_wishlist'])? Labels::getLabel('LBL_Remove_product_from_your_wishlist', $siteLangId) : Labels::getLabel('LBL_Add_Product_to_your_wishlist', $siteLangId); ?>">
-                    <div class="ring"></div>
-                    <div class="circles"></div>
-                </a>
-            </div>
-    <?php }
+                <div class="favourite heart-wrapper wishListLink-Js <?php echo($product['is_in_any_wishlist'])?'is-active':''; ?>" id="listDisplayDiv_<?php echo $product['selprod_id']; ?>" data-id="<?php echo $product['selprod_id']; ?>">
+                    <a href="javascript:void(0)" onClick="viewWishList(<?php echo $product['selprod_id']; ?>,this,event);"
+                        title="<?php echo($product['is_in_any_wishlist'])? Labels::getLabel('LBL_Remove_product_from_your_wishlist', $siteLangId) : Labels::getLabel('LBL_Add_Product_to_your_wishlist', $siteLangId); ?>">
+                        <div class="ring"></div>
+                        <div class="circles"></div>
+                    </a>
+                </div>
+            <?php }
     }
     if (isset($productView) && true == $productView) { ?>
         <div class="share-button">

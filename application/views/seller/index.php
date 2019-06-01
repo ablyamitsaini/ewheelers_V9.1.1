@@ -37,11 +37,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_sales', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Completed_Sales', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totalSoldSales);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Sale_for_today', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Inprocess_Sales', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($todaySoldSales);?></span>
                                             </li>
                                         </ul>
@@ -95,11 +95,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Orders', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Completed_Orders', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo $ordersCount;?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Orders_for_today', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo $todayOrderCount;?></span>
                                             </li>
                                         </ul>
@@ -308,7 +308,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         foreach ($transactions as $row) { ?>
                                     <tr>
                                         <td>
-                                            <div class="txn__id"> <?php echo Labels::getLabel('Lbl_Txn._Id', $siteLangId)?>: <?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
+                                            <div class="txn__id"><?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
                                         </td>
                                         <td>
                                             <div class="txn__date"> <?php echo FatDate::format($row['utxn_date']); ?> </div>

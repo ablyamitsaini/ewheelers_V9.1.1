@@ -2,12 +2,12 @@
 class SitemapController extends AdminBaseController
 {
 
-    public function generate() 
+    public function generate()
     {
-        
+
         $this->startSitemapXml();
-        
-        
+
+
         $prodSrchObj = new ProductSearch($this->adminLangId);
         $prodSrchObj->setDefinedCriteria(1);
         $prodSrchObj->joinProductToCategory();
@@ -15,23 +15,23 @@ class SitemapController extends AdminBaseController
         $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
-        
-        
+
+
         /* Category Pages [ */
-        
+
         $catSrch = clone $prodSrchObj;
         $catSrch->addGroupBy('prodcat_id');
         $categoriesArr = productCategory::getProdCatParentChildWiseArr($this->adminLangId, 0, true, false, true, $catSrch);
-        
+
         foreach($categoriesArr as $key=>$val){
             $this->write_sitemap_url(CommonHelper::generateFullUrl('category', 'view', array($val['prodcat_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
-        
+
         /* Product Pages [ */
-        
+
         $prodSrch = clone $prodSrchObj;
-        
+
         $prodSrch->addMultipleFields(array('selprod_id'));
         $prodSrch->addGroupBy('selprod_id');
         $prodSrch->doNotCalculateRecords();
@@ -42,7 +42,7 @@ class SitemapController extends AdminBaseController
             $this->write_sitemap_url(CommonHelper::generateFullUrl('products', 'view', array($val['selprod_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
-        
+
         /* Brand Pages [ */
         $brandSrch = clone $prodSrchObj;
         $brandSrch->addMultipleFields(array('brand_id'));
@@ -52,14 +52,14 @@ class SitemapController extends AdminBaseController
         $brandSrch->doNotLimitRecords();
         $brandRs = $brandSrch->getResultSet();
         $brandsArr = FatApp::getDb()->fetchAll($brandRs);
-        
+
         foreach($brandsArr as $key=>$val){
             $this->write_sitemap_url(CommonHelper::generateFullUrl('brands', 'view', array($val['brand_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
-        
+
         /* Shop Pages [ */
-        
+
         $shopSrch = new ShopSearch($this->adminLangId);
         $shopSrch->setDefinedCriteria($this->adminLangId);
         $shopSrch->joinShopCountry();
@@ -74,7 +74,7 @@ class SitemapController extends AdminBaseController
             $this->write_sitemap_url(CommonHelper::generateFullUrl('shops', 'view', array($val['shop_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
-        
+
         /* CMS Pages [ */
         $cmsSrch = new NavigationLinkSearch($this->adminLangId);
         $cmsSrch->joinNavigation();
@@ -84,7 +84,7 @@ class SitemapController extends AdminBaseController
         $cmsSrch->doNotLimitRecords();
         $cmsSrch->addOrder('nav_id');
         $cmsSrch->addOrder('nlink_display_order');
-    
+
         $cmsSrch->addCondition('nlink_deleted', '=', '0');
         $cmsSrch->addCondition('nav_active', '=', applicationConstants::ACTIVE);
         $cmsSrch->addMultipleFields(array('nlink_cpage_id, nlink_type'));
@@ -96,28 +96,28 @@ class SitemapController extends AdminBaseController
             }
         }
         /* ]*/
-        
+
         $this->endSitemapXml();
         $this->write_sitemap_index();
         Message::addMessage(Labels::getLabel('MSG_Sitemap_has_been_updated_successfully', $this->adminLangId));
         CommonHelper::redirectUserReferer();
     }
-    
-    private function startSitemapXml() 
+
+    private function startSitemapXml()
     {
         ob_start();
         echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     }
-    
-    private    function write_sitemap_url($url, $freq) 
+
+    private function write_sitemap_url($url, $freq)
     {
         static $sitemap_i;
         $sitemap_i++;
         if($sitemap_i>2000) {
             $sitemap_i=1;
-            endSitemapXml();
-            startSitemapXml();
+            $this->endSitemapXml();
+            $this->startSitemapXml();
         }
         echo "
 			<url>
@@ -125,8 +125,8 @@ class SitemapController extends AdminBaseController
 			</url>";
         echo "\n";
     }
-    
-    private function endSitemapXml() 
+
+    private function endSitemapXml()
     {
         global $sitemapListInc;
         $sitemapListInc++;
@@ -135,8 +135,8 @@ class SitemapController extends AdminBaseController
         $rs = '';
         CommonHelper::writeFile('sitemap/list_'.$sitemapListInc.'.xml', $contents, $rs);
     }
-    
-    private function write_sitemap_index() 
+
+    private function write_sitemap_index()
     {
         global $sitemapListInc;
         ob_start();

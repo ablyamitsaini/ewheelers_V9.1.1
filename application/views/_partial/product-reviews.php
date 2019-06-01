@@ -21,7 +21,7 @@ if ($totReviews) {
     $rate_1_width = round(FatUtility::convertToType($rated_1/$totReviews*100, FatUtility::VAR_FLOAT), 2);
 }
 ?>
-<div class="row">
+<div class="row justify-content-between">
     <div class="col-md-5">
         <div class="section-head">
             <div class="section__heading">
@@ -35,14 +35,16 @@ if ($totReviews) {
     </div>
     <?php $this->includeTemplate('_partial/product-overall-ratings.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id), false); ?>
 </div>
-<div class="row mt-4">
-    <div class="col-md-6">
-        <a onClick="rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--primary"><?php echo Labels::getLabel('Lbl_Add_Review', $siteLangId); ?></a>
-        <a href="javascript:void(0);" class="btn btn--secondary btn--primary-border" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Newest', $siteLangId); ?> </a>
+<div class="row mt-5">
+    <div class="col-md-3">
+        <a onClick="rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--primary d-block"><?php echo Labels::getLabel('Lbl_Add_Review', $siteLangId); ?></a>
+    </div>
+    <div class="col-md-3">
+        <a href="javascript:void(0);" class="btn btn--secondary d-block btn--primary-border" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Newest', $siteLangId); ?> </a>
     </div>
 </div>
-<div class="listing__all"></div>
-<div id="loadMoreReviewsBtnDiv" class="reviews-lisitng"></div>
+<div class="listing__all mt-5"></div>
+<div id="loadMoreReviewsBtnDiv" class="align--center"></div>
 
 <script>
     var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId); ?>';

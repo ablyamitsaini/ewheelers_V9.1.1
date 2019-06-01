@@ -1,4 +1,4 @@
-<div class="tabs tabs--small   tabs--scroll clearfix setactive-js">
+<div class="tabs tabs--small clearfix">
     <ul>
         <li class="<?php echo ($controllerName == 'seller' && $action == 'catalog') ? 'is-active' : ''; ?>">
             <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>">

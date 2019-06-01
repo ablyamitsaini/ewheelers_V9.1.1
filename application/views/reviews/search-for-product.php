@@ -1,8 +1,10 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?> <?php if ($reviewsList) {
-    ?> <ul> <?php foreach ($reviewsList as $review) { ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php if ($reviewsList) { ?>
+    <ul>
+    <?php foreach ($reviewsList as $review) { ?>
         <li>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="profile-avatar">
                     <div class="profile__dp">
                         <img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($review['spreview_postedby_user_id'],'thumb',true)); ?>" alt="<?php echo $review['user_name']; ?>"></div>
@@ -20,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="reviews-desc">
                     <div class="products__rating"> <i class="icn"><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -48,7 +50,6 @@
 </ul>
 <div class=" align--center"><a href="<?php echo CommonHelper::generateUrl('Reviews', 'Product', array($selprod_id)); ?>"
         class="link"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging')); ?>
-        <div class="gap"></div>
 <?php } else {
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
 }?>

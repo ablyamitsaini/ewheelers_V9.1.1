@@ -27,7 +27,7 @@
   </div>
   <section class="section section--gray">
     <div class="container">
-		<div id="itemRatings" class="section   clearfix">
+		<div id="itemRatings">
 			<div class="section__head">
 			 <h4><?php echo Labels::getLabel('Lbl_Reviews_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']);?></h4>
 			 <?php echo $frmReviewSearch->getFormHtml(); ?>

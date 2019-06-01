@@ -356,7 +356,7 @@ if (isset($prodcat_code)) {
                         from = data.from;
                         to = data.to;
                         updateValues();
-                        addPricefilter(true);
+                        // addPricefilter(true);
                     }
                 });
 

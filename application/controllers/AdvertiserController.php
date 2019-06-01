@@ -50,6 +50,11 @@ class AdvertiserController extends AdvertiserBaseController
             'pri.clicks',
             'pri.orders'
         ));
+
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
+        $this->set('txnsSummary', $txnsSummary);
+
         $pSrch->setDefinedCriteria();
         $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d"));
         $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES);
@@ -111,6 +116,22 @@ class AdvertiserController extends AdvertiserBaseController
                 break;
             case Promotion::TYPE_PRODUCT:
                 $selProdId = $post['promotion_record_id'];
+
+                $srch = new ProductSearch($this->siteLangId);
+                $srch->joinSellerProducts();
+                $srch->joinProductToCategory();
+                $srch->joinSellerSubscription($this->siteLangId, true);
+                $srch->addSubscriptionValidCondition();
+                $srch->joinBrands();
+                $srch->setPageSize(1);
+                $srch->doNotCalculateRecords();
+                $srch->addCondition('selprod_id', '=', $selProdId);
+                $srch->addCondition('selprod_user_id', '=', $userId);
+                $srch->addMultipleFields(array('selprod_id'));
+
+                $rs = $srch->getResultSet();
+                $row = FatApp::getDb()->fetch($rs);
+
                 if (empty($row)) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
                     FatUtility::dieJsonError(Message::getHtml());
@@ -119,20 +140,6 @@ class AdvertiserController extends AdvertiserBaseController
                 $promotionApproved = applicationConstants::YES;
                 $minBudget = FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0);
                 break;
-
-                $rs  = $srch->getResultSet();
-                $row = FatApp::getDb()->fetch($rs);
-
-            $bannerLocationId = Fatutility::int($post['banner_blocation_id']);
-            $srch = BannerLocation::getSearchObject($this->siteLangId);
-            $srch->addMultipleFields(array('blocation_promotion_cost'));
-            $srch->addCondition('blocation_id', '=', $bannerLocationId);
-            $rs = $srch->getResultSet();
-            $row = FatApp::getDb()->fetch($rs, 'blocation_id');
-            if (!empty($row)) {
-                $minBudget = $row['blocation_promotion_cost'];
-            }
-            break;
 
             case Promotion::TYPE_BANNER:
                 $promotion_record_id = 0;
@@ -173,6 +180,7 @@ class AdvertiserController extends AdvertiserBaseController
                 FatUtility::dieJsonError(Message::getHtml());
                 break;
         }
+
         $promotionBudget = Fatutility::float($post['promotion_budget']);
         if ($minBudget > $promotionBudget) {
             Message::addErrorMessage(Labels::getLabel("MSG_Budget_should_be_greater_than_CPC", $this->siteLangId));
