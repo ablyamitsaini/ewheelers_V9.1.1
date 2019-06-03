@@ -23,14 +23,12 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
                         <!-- <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Share_and_Earn', $siteLangId);?></h5>
                         </div> -->
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content p-4">
                             <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <div class="rounded border p-4 mt-4">
-                                        <p><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message', $siteLangId)?></p>
-                                        <h5><br /><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below', $siteLangId)?></h5>
-                                        <div class=""><?php echo $referralTrackingUrl; ?></div>
-                                    </div>
+                                    <p><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message', $siteLangId)?></p>
+                                    <h5><br /><?php echo Labels::getLabel('L_You_may_copy_invitation_link_below', $siteLangId)?></h5>
+                                    <div class=""><?php echo $referralTrackingUrl; ?></div>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +37,7 @@ $request_token = $twitteroauth->getRequestToken($get_twitter_url);
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="cards">
+                    <div class="cards p-4">
                         <div class="row">
                             <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))) { ?>
                             <div class="col-md-4 mt-2">

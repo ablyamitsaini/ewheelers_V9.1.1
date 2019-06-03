@@ -21,8 +21,8 @@ th, .grids--offset .grid-layout p {
 }
 
 .cart .cartQuantity {
-  right: auto;
-  left: 0;
+  right: 30px;
+  left:auto;
 }
 
 .form--search-popup .select__value {
@@ -84,11 +84,13 @@ th, .grids--offset .grid-layout p {
   text-align: left;
 }
 
+/*
 .checkbox,
 .radio {
   padding-right: 30px;
   padding-left: 0;
 }
+*/
 
 .checkbox input,
 .radio input,
@@ -470,6 +472,28 @@ input[type="text"].p-cards.meastro {
   left: auto;
   right: 10px;
 }
+
+.dashboard-menu .accordianbody li a{padding-left: 0;padding-right: 70px;}
+.header-icons-group{margin-left: 0; margin-right: auto;}
+.dropdown__target{left: auto;right: 0;}
+.dropdown__target:before{left:auto;right: 20px;}
+
+.quantity .decrease{border-right:none;border-left: solid 1px var(--border-color);}
+.quantity .increase{border-left:none;border-right: solid 1px var(--border-color);}
+.certified-bar .icn{margin: 0 0 0 10px;}
+.divider--filters:after{left: auto;right: 0;}
+.checkbox input, .radio input{margin-right:0;margin-left: 0.5rem;}
+.sidebar-is-expanded .header-dashboard{padding-left: 20px;}
+.alert--process:before{left:auto;right: 15px;}
+.sold-by{text-align: right;}
+.sold-by .products__rating{padding-right: 0;}
+.btn .icn svg, .btn .icn img{margin-right: 0; margin-left: 8px;}
+.sidebar{border-right:none;border-left: solid 1px var(--border-color);}
+.header-icons-group .dropdown__target{left: 0;right: auto;}
+.header-icons-group .dropdown__target:before{left:20px;right:auto;}
+
+.select-categories-slider .slick-prev{left: -40px;}
+.select-categories-slider .slick-next{right: -40px;}
 
 @media only screen and (max-width: 1600px) {
   .post-data.is-fixed .sticky-element {
