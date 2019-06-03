@@ -66,18 +66,20 @@ class SellerController extends SellerBaseController
         $orderSrch->addSellerCompletedOrdersStats(date('Y-m-d'), date('Y-m-d'), 'todaySold');
 
         $orderSrch->addSellerCompletedOrdersStats(false, false, 'totalSold');
+        $orderSrch->addSellerInprocessOrdersStats(false, false, 'totalInprocess');
+        $orderSrch->addSellerRefundedOrdersStats();
+        $orderSrch->addSellerCancelledOrdersStats();
         $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('op_selprod_user_id', '=', $userId);
-        $orderSrch->addMultipleFields(array('todayOrderCount' ,'todaySoldCount','totalSoldCount','totalSoldSales', 'todaySoldSales' ));
-
+        $orderSrch->addMultipleFields(array('todayOrderCount', 'totalInprocessSales', 'totalSoldSales', 'refundedOrderCount', 'refundedOrderAmount', 'cancelledOrderCount', 'cancelledOrderAmount' ));
         $rs = $orderSrch->getResultSet();
         $ordersStats = FatApp::getDb()->fetch($rs);
         /* ]*/
 
-        $threadObj = new Thread();
+        /*$threadObj = new Thread();
         $todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD, date('Y-m-d'));
         $unreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD);
-        $totalMessageCount = $threadObj->getMessageCount($userId);
+        $totalMessageCount = $threadObj->getMessageCount($userId);*/
         /*]*/
         $orderObj = new Orders();
         $notAllowedStatues = $orderObj->getNotAllowedOrderCancellationStatuses();
@@ -141,14 +143,8 @@ class SellerController extends SellerBaseController
         $this->set('orders', $orders);
         $this->set('ordersCount', $srch->recordCount());
         $this->set('data', $user->getProfileData());
-        $this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
-        $this->set('totalMessageCount', $totalMessageCount);
         $this->set('userBalance', User::getUserBalance($userId));
-        $this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
-        $this->set('totalSoldCount', FatUtility::int($ordersStats['totalSoldCount']));
-        $this->set('totalSoldSales', $ordersStats['totalSoldSales']);
-        $this->set('todaySoldCount', FatUtility::int($ordersStats['todaySoldCount']));
-        $this->set('todaySoldSales', $ordersStats['todaySoldSales']);
+        $this->set('ordersStats', $ordersStats);
         $this->set('dashboardStats', Stats::getUserSales($userId));
 
         $this->_template->addJs(array('js/chartist.min.js'));
