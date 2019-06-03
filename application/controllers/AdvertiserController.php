@@ -32,6 +32,41 @@ class AdvertiserController extends AdvertiserBaseController
         /* ] */
 
         /* Active Promotions [ */
+        $activePSrch = $this->getPromotionsSearch(true);
+        $rs = $activePSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
+        /* ] */
+
+        /* Total Promotions [ */
+        $totalPSrch = $this->getPromotionsSearch();
+        $rs = $totalPSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
+        /* ] */
+
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
+        $this->set('txnsSummary', $txnsSummary);
+
+        $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
+        $this->set('activePromotionChargedAmount', Promotion::getTotalChargedAmount($userId, true));
+        $this->set('transactions', $transactions);
+        $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
+        $this->set('activePromotions', $records);
+        $this->set('totPromotions', $totalPSrch->recordCount());
+        $this->set('totActivePromotions', $activePSrch->recordCount());
+        $this->set('lowBalWarning', $lowBalWarning);
+        // $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
+        $this->set('walletBalance', $walletBalance);
+        $typeArr = Promotion::getTypeArr($this->siteLangId);
+        $this->set('typeArr', $typeArr);
+        // $this->set('promotionList', $promotionList);
+        // $this->set('promotionCount', $srch->recordCount());
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->render(true, false);
+    }
+
+    public function getPromotionsSearch($active = false)
+    {
         $pSrch = $this->searchPromotionsObj();
         $pSrch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
         $pSrch->joinPromotionsLogForCount();
@@ -51,32 +86,17 @@ class AdvertiserController extends AdvertiserBaseController
             'pri.orders'
         ));
 
-        $txnObj = new Transactions();
-        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
-        $this->set('txnsSummary', $txnsSummary);
 
-        $pSrch->setDefinedCriteria();
-        $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d"));
-        $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES);
+        if ($active) {
+            $pSrch->setDefinedCriteria();
+            $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d"));
+            $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES);
+        } else {
+            // $pSrch->addCondition('promotion_deleted', '=', applicationConstants::NO);
+        }
+
         $pSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs      = $pSrch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
-        /* ] */
-
-        $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
-        $this->set('transactions', $transactions);
-        $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
-        $this->set('activePromotions', $records);
-        $this->set('totActivePromotions', $pSrch->recordCount());
-        $this->set('lowBalWarning', $lowBalWarning);
-        // $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
-        $this->set('walletBalance', $walletBalance);
-        $typeArr = Promotion::getTypeArr($this->siteLangId);
-        $this->set('typeArr', $typeArr);
-        // $this->set('promotionList', $promotionList);
-        // $this->set('promotionCount', $srch->recordCount());
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        return $pSrch;
     }
 
     public function setupPromotion()

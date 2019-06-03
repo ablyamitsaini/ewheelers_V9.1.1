@@ -12213,6 +12213,14 @@ main.main {
 
 .stats-number .total-numbers {}
 
+.credits-number ul li {
+    color: var(--txt-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
 .table--orders {}
 
 .table--orders th:first-child,

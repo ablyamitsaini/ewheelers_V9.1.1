@@ -65,18 +65,22 @@ class BuyerController extends BuyerBaseController
         $orderSrch->doNotCalculateRecords();
         $orderSrch->doNotLimitRecords();
         /* $orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder'); */
-        $orderSrch->addBuyerOrdersCounts(date('Y-m-d'), date('Y-m-d'), 'todayOrder');
+        $orderSrch->addBuyerOrdersCounts(false, false, 'pendingOrder');
+        $completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS", FatUtility::VAR_STRING, ''));
+        if (!empty($completedOrderStatus)) {
+            $srch->addCondition('op_status_id', 'NOT IN', $completedOrderStatus);
+        }
         $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('order_user_id', '=', $userId);
-        $orderSrch->addMultipleFields(array('todayOrderCount'));
+        $orderSrch->addMultipleFields(array('pendingOrderCount'));
         $rs = $orderSrch->getResultSet();
         $ordersStats = FatApp::getDb()->fetch($rs);
         /* ]*/
 
         /* Unread Message Count [*/
-        $threadObj = new Thread();
+        /*$threadObj = new Thread();
         $todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD, date('Y-m-d'));
-        $totalMessageCount = $threadObj->getMessageCount($userId);
+        $totalMessageCount = $threadObj->getMessageCount($userId);*/
         /*]*/
 
         /*
@@ -111,9 +115,7 @@ class BuyerController extends BuyerBaseController
         $this->set('OrderReturnRequestStatusArr', OrderReturnRequest::getRequestStatusArr($this->siteLangId));
         $this->set('OrderCancelRequestStatusArr', OrderCancelRequest::getRequestStatusArr($this->siteLangId));
         $this->set('ordersCount', $srch->recordCount());
-        $this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
-        $this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
-        $this->set('totalMessageCount', $totalMessageCount);
+        $this->set('pendingOrderCount', FatUtility::int($ordersStats['pendingOrderCount']));
         $this->set('userBalance', User::getUserBalance($userId));
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
         $this->set('txnsSummary', $txnsSummary);

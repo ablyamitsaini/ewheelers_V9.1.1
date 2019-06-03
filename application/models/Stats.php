@@ -1,8 +1,13 @@
 <?php
 class Stats extends MyAppModel
 {
-    const SELLER_DASHBOARD_SALES_MONTH=6;
-    public static function getSalesStatsObj($startDate = false, $endDate = false, $alias = 'stats')
+    const SELLER_DASHBOARD_SALES_MONTH = 6;
+    const COMPLETED_SALES = 1;
+    const INPROCESS_SALES = 2;
+    const REFUNDED_SALES = 3;
+    const CANCELLED_SALES = 4;
+
+    public static function getSalesStatsObj($startDate = false, $endDate = false, $alias = 'stats', $type = self::COMPLETED_SALES)
     {
         $srch = new SearchBase(Orders::DB_TBL_ORDER_PRODUCTS, $alias);
         $srch->joinTable(Orders::DB_TBL, 'LEFT OUTER JOIN', $alias.'.op_order_id = '.$alias.'temp.order_id', $alias.'temp');
@@ -13,14 +18,29 @@ class Stats extends MyAppModel
         if ($startDate) {
             $srch->addCondition($alias.'temp.order_date_added', '>=', $startDate. ' 00:00:00');
         }
+
         if ($endDate) {
             $srch->addCondition($alias.'temp.order_date_added', '<=', $endDate. ' 23:59:59');
         }
         $completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS", FatUtility::VAR_STRING, ''));
-        if (!empty($completedOrderStatus)) {
-            $srch->addCondition($alias.'.op_status_id', 'IN', $completedOrderStatus);
-        } else {
-            $srch->addCondition($alias.'.op_status_id', '=', 0);
+        switch ($type) {
+            case self::COMPLETED_SALES:
+                if (!empty($completedOrderStatus)) {
+                    $srch->addCondition($alias.'.op_status_id', 'IN', $completedOrderStatus);
+                }
+                break;
+            case self::INPROCESS_SALES:
+                if (!empty($completedOrderStatus)) {
+                    $srch->addCondition($alias.'.op_status_id', 'NOT IN', $completedOrderStatus);
+                }
+                $srch->addCondition($alias.'.op_status_id', '!=', FatApp::getConfig('CONF_DEFAULT_ORDER_STATUS'));
+                break;
+            case self::REFUNDED_SALES:
+                $srch->addCondition($alias.'.op_status_id', '=', FatApp::getConfig('CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS'));
+                break;
+            case self::CANCELLED_SALES:
+                $srch->addCondition($alias.'.op_status_id', '!=', FatApp::getConfig('CONF_DEFAULT_CANCEL_ORDER_STATUS'));
+                break;
         }
 
         $cnd = $srch->addCondition($alias.'temp.order_is_paid', '=', Orders::ORDER_IS_PAID);

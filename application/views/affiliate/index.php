@@ -31,9 +31,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                         <div class="cards">
                             <div class="cards-header p-4">
                                 <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Credits', $siteLangId);?></h5>
-                                <i class="icn">
-                                    <svg class="svg">
-                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#my-sales"></use>
+                                <i class="icn"><svg class="svg">
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
                                     </svg>
                                 </i>
                             </div>
@@ -46,8 +45,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Credits_earned_today', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($txnsSummary['total_earned']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -76,8 +75,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userRevenue);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Revenue', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userRevenue);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Today_Revenue', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($todayRevenue);?></span>
                                             </li>
                                         </ul>
                                     </div>

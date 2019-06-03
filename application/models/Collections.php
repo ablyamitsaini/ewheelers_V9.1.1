@@ -310,7 +310,7 @@ class Collections extends MyAppModel
 
     public function canRecordMarkDelete($collection_id)
     {
-        $srch = static::getSearchObject();
+        $srch = static::getSearchObject(false);
         $srch->addCondition('collection_deleted', '=', applicationConstants::NO);
         $srch->addCondition('collection_id', '=', $collection_id);
         $srch->addFld('collection_id');

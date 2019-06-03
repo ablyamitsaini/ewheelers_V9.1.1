@@ -38,11 +38,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         <ul>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Completed_Sales', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totalSoldSales);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['totalSoldSales']);?></span>
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Inprocess_Sales', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($todaySoldSales);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['totalInprocessSales']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -66,7 +66,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Credits', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
                                             </li>
                                             <li>
@@ -100,7 +100,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $todayOrderCount;?></span>
+                                                <span class="total-numbers"><?php echo $ordersStats['todayOrderCount'];?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -152,10 +152,10 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             </div>
             <?php } ?>
             <div class="widget widget-stats">
-                <a href="<?php echo CommonHelper::generateUrl('Account', 'messages');?>">
+                <a href="<?php echo CommonHelper::generateUrl('Seller', 'orderReturnRequests');?>">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Refund', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
                                 </svg>
@@ -166,12 +166,41 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                 <div class="stats-number">
                                     <ul>
                                         <li>
-                                            <span class="total"><?php echo Labels::getLabel('LBL_Unread_messages', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $todayUnreadMessageCount;?></span>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Orders', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo $ordersStats['refundedOrderCount'];?></span>
                                         </li>
                                         <li>
-                                            <span class="total"><?php echo Labels::getLabel('LBL_Total_messages', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $totalMessageCount;?></span>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Amount', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo $ordersStats['refundedOrderAmount'];?></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="widget widget-stats">
+                <a href="<?php echo CommonHelper::generateUrl('Seller', 'orderCancellationRequests');?>">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Cancellation', $siteLangId);?></h5>
+                            <i class="icn"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                </svg>
+                            </i>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="stats">
+                                <div class="stats-number">
+                                    <ul>
+                                        <li>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo $ordersStats['cancelledOrderCount'];?></span>
+                                        </li>
+                                        <li>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders_Amount', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo $ordersStats['cancelledOrderAmount'];?></span>
                                         </li>
                                     </ul>
                                 </div>

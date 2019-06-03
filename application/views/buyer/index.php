@@ -47,7 +47,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                     <a href="<?php echo CommonHelper::generateUrl('buyer', 'orders');?>">
                         <div class="cards">
                             <div class="cards-header p-4">
-                                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order', $siteLangId);?></h5>
+                                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Orders', $siteLangId);?></h5>
                                 <i class="icn">
                                     <svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#order"></use>
@@ -60,36 +60,8 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                         <ul>
                                             <li><span class="total"><?php echo Labels::getLabel('LBL_Total_Orders', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo $ordersCount;?></span></li>
-                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Orders_for_today', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $todayOrderCount;?></span> </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="widget widget-stats">
-                    <a href="<?php echo CommonHelper::generateUrl('account', 'messages');?>">
-                        <div class="cards">
-                            <div class="cards-header p-4">
-                                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
-                                <i class="icn">
-                                    <svg class="svg">
-                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
-                                    </svg>
-                                </i>
-                            </div>
-                            <div class="cards-content pl-4 pr-4 ">
-                                <div class="stats">
-                                    <div class="stats-number">
-                                        <ul>
-                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Unread_Notification_Today', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $todayUnreadMessageCount;?></span></li>
-                                            <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $totalMessageCount;?></span>
-                                            </li>
+                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo $pendingOrderCount;?></span> </li>
                                         </ul>
                                     </div>
                                 </div>
