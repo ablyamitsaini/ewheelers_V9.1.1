@@ -47,10 +47,11 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
                     </div>
                 </div>
             </div>
+            <span class="gap"></span><span class="gap"></span>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content p-4 pr-4 ">
                             <div id="profileInfoFrmBlock"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                             <span class="gap"></span>
                         </div>

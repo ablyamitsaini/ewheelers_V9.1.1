@@ -86,13 +86,13 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                     </a>
                 </div>
                 <div class="widget widget-stats">
-                    <div class="cards">
+                    <div class="cards d-flex -direction-col">
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text', $siteLangId)?></h5>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content p-4 pr-4 ">
                             <div class="stats">
-                                <a href="javascript:void(0)" title="<?php echo $affiliateTrackingUrl; ?>" onclick="copy($(this))"><?php echo Labels::getLabel('LBL_Click_to_copy', $siteLangId)?></a>
+                                <a href="javascript:void(0)" class="-inline-link" title="<?php echo $affiliateTrackingUrl; ?>" onclick="copy($(this))"><?php echo Labels::getLabel('LBL_Click_to_copy', $siteLangId)?></a>
                             </div>
                         </div>
                     </div>

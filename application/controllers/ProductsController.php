@@ -606,6 +606,7 @@ class ProductsController extends MyAppController
         $this->set('product', $product);
         $this->set('shop_rating', $shop_rating);
         $this->set('shop', $shop);
+		$this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
         $this->set('productImagesArr', $productGroupImages);
         //    $this->set( 'productGroups', $productGroups );
         $frmReviewSearch = $this->getReviewSearchForm(5);
