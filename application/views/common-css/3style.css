@@ -1,19 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,800|Poppins:300,400,400i,500,600,700,800');
 
-:root {
-	--first-color: #FF3A59;
-	--second-color: #26a9d7;
-	--third-color: #323232;
-	--txt-color: #323232;
-	--txt-color-light: #525252;
-	--border-color: #e8e7ea;
-	--second-btn-color: #26a9d7;
-	--header-txt-color: #525252;
-	--border-color-second: #e8e7ea;
-	--body-color: #525252;
-	--gray-light: #f8f8f8;
-}
-
 body {
 	font-family: 'Poppins', sans-serif;
 	font-family: 'Open Sans', sans-serif;
