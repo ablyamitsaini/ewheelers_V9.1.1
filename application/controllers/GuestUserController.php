@@ -240,7 +240,7 @@ class GuestUserController extends MyAppController
 
         $db = FatApp::getDb();
         $userObj = new User();
-        $srch = $userObj->getUserSearchObj(array('user_id','user_facebook_id','credential_email','credential_active','user_deleted'), false, false);
+        $srch = $userObj->getUserSearchObj(array('user_id','user_facebook_id','credential_email','credential_active','user_deleted'), true, false);
         if (!empty($facebookEmail)) {
             $srch->addCondition('credential_email', '=', $facebookEmail);
         } else {
