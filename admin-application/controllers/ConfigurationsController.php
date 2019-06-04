@@ -70,6 +70,7 @@ class ConfigurationsController extends AdminBaseController
 
         $this->set('frm', $frm);
         $this->set('frmType', $frmType);
+        $this->set('record', $record);
         $this->set('dispLangTab', $dispLangTab);
         $this->set('lang_id', 0);
         $this->set('formLayout', '');
