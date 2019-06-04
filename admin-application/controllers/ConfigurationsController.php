@@ -1252,35 +1252,44 @@ class ConfigurationsController extends AdminBaseController
                 );
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Referrer_Url/Link_Validity_Period", $this->adminLangId), 'CONF_REFERRER_URL_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $string = Labels::getLabel("LBL_Days,_after_which_Referrer_Url_is_Expired.", $this->adminLangId);
                 $fld->htmlAfterField = "<small>". $string ."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_Registration", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_register.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_register_through_referrer.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_First_Purchase", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_make_first_purchase.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_will_make_first_purchase_through_their_referrers.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Rewards_points_validity_in_days", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 /* $fld = $frm->addTextarea('Live Chat Code','CONF_LIVE_CHAT_CODE');
