@@ -301,17 +301,7 @@ class ConfigurationsController extends AdminBaseController
         }
 
         $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveAttachment(
-            $_FILES['file']['tmp_name'],
-            $file_type,
-            0,
-            0,
-            $_FILES['file']['name'],
-            -1,
-            $unique_record = true,
-            $lang_id
-        )
-        ) {
+        if (!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'], $file_type, 0, 0, $_FILES['file']['name'], -1, true, $lang_id)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
