@@ -48,6 +48,7 @@ $(document).ready(function(){
 	};
 
 	setupRewardsOnPurchase = function(frm){
+		$(frm.btn_submit).attr("disabled", true);
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('RewardsOnPurchase', 'setup'), data, function(t) {

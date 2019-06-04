@@ -1150,38 +1150,6 @@ class ImageController extends FatController
         }
     }
 
-    public function bannerFrame($frameId)
-    {
-        $frameId = FatUtility::int($frameId);
-        $default_image = '';
-        if (1>$frameId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_access', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-        switch ($frameId) {
-            case Banner::BANNER_HOME_PAGE_LAYOUT_1:
-                $image =  'images/defaults/banner_layouts/layout-1.jpg';
-                break;
-            case Banner::BANNER_HOME_PAGE_LAYOUT_2:
-                $image =  'images/defaults/banner_layouts/layout-2.jpg';
-                break;
-            case Banner::BANNER_PRODUCT_PAGE_LAYOUT_1:
-                $image =  'images/defaults/banner_layouts/layout-3.jpg';
-                break;
-        }
-        if ($sizeType) {
-            switch (strtoupper($sizeType)) {
-                default:
-                    $w = 200;
-                    $h = 360;
-                    AttachedFile::displayImage($image, $w, $h, $default_image);
-                    break;
-            }
-        } else {
-            AttachedFile::displayOriginalImage($image, $default_image);
-        }
-    }
-
     public function shopCollectionImage($recordId, $langId = 0, $sizeType = '', $displayUniversalImage = true)
     {
         $default_image = 'shop-collection-default.jpg';
