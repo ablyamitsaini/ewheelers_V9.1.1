@@ -1754,7 +1754,7 @@ class User extends MyAppModel
     }
 
 
-    public static function getAffiliateUserRevenue($user_id)
+    public static function getAffiliateUserRevenue($user_id, $date = '')
     {
         $user_id = FatUtility::int($user_id);
         $srch = new SearchBase('tbl_user_transactions', 'txn');
@@ -1766,6 +1766,9 @@ class User extends MyAppModel
         $srch->addCondition('utxn_status', '=', Transactions::STATUS_COMPLETED);
         $cnd = $srch->addCondition('utxn_type', '=', Transactions::TYPE_AFFILIATE_REFERRAL_SIGN_UP);
         $cnd->attachCondition('utxn_type', '=', Transactions::TYPE_AFFILIATE_REFERRAL_ORDER);
+        if (!empty($date)) {
+            $srch->addCondition('mysql_func_DATE(utxn_date)', '=', $date, 'AND', true);
+        }
         $rs = $srch->getResultSet();
         if (!$row = FatApp::getDb()->fetch($rs)) {
             return 0;

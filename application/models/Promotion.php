@@ -147,11 +147,18 @@ class Promotion extends MyAppModel
         }
     }
 
-    public static function getTotalChargedAmount($userId)
+    public static function getTotalChargedAmount($userId, $active = false)
     {
         $srch = new SearchBase(Promotion::DB_TBL_CHARGES, 'tpc');
         $srch->addCondition('tpc.'.Promotion::DB_TBL_CHARGES_PREFIX.'user_id', '=', $userId);
         $srch->addFld("SUM(pcharge_charged_amount) totChargedAmount");
+        if ($active) {
+            $srch->joinTable(Promotion::DB_TBL, 'LEFT JOIN', 'tpc. pcharge_promotion_id=p.promotion_id', 'p');
+            $srch->addCondition('promotion_active', '=', applicationConstants::ACTIVE);
+            $srch->addCondition('promotion_end_date', '>', date("Y-m-d"));
+            $srch->addCondition('promotion_approved', '=', applicationConstants::YES);
+            $srch->addCondition('promotion_deleted', '=', applicationConstants::NO);
+        }
         $rs = $srch->getResultSet();
         $result = FatApp::getDb()->fetch($rs);
         $totChargedAmount = $result['totChargedAmount'];

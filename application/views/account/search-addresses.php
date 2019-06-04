@@ -1,10 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="tabs tabs--small tabs--scroll clearfix">
-    <!-- <ul>
+<!-- <div class="tabs tabs--small tabs--scroll clearfix">
+    <ul>
         <li class="is-active"><a href="javascript:void(0);" onClick="searchAddresses()"><?php echo Labels::getLabel('LBL_My_Addresses', $siteLangId);?></a></li>
         <li><a href="javascript:void(0);" onClick="addAddressForm(0)"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?></a></li>
-    </ul> -->
-    <a href="javascript:void(0);" onClick="addAddressForm(0)" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?> </a>
+    </ul>
+</div> -->
+<div class="cards-header p-4">
+    <h5 class="cards-title "></h5>
+    <div class="action">
+        <a href="javascript:void(0);" onClick="addAddressForm(0)" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?> </a>
+    </div>
 </div>
 <div class="container--addresses">
     <div class="row">

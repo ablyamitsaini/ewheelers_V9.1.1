@@ -6,7 +6,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 <div id="body" class="body detail-page" role="main">
     <section class="">
         <div class="container">
-            <div class="section">
+            <div class="section p-4">
                 <div class="breadcrumbs breadcrumbs--center">
                     <?php  $this->includeTemplate('_partial/custom/header-breadcrumb.php');  ?>
                 </div>
@@ -269,7 +269,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             if (isset($volumeDiscountRows) && !empty($volumeDiscountRows)) { ?>
                             <div class="gap"></div>
                             <div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:</div>
-                            <ul class="js--discount-slider discount-slider acc-data" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
+                            <ul class="<?php echo (count($volumeDiscountRows) > 2) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
                                 <?php foreach ($volumeDiscountRows as $volumeDiscountRow) {
                                     $volumeDiscount = $product['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
                                     $price = ($product['theprice'] - $volumeDiscount); ?>
@@ -345,8 +345,18 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 <div class="sold-by bg-gray p-4 rounded">
                                     <div class="row align-items-center">
                                         <div class="col">
+                                            <div class="d-flex">
+                                                
+                                                <div>
+                                                    
+                                               
                                             <div class="h6"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId);?>:</div>
-                                            <?php echo $shop['shop_name'];?> <br><br>
+                                            <?php echo $shop['shop_name'];?> <br>
+											
+                                             <div class="products__rating"> <i class="icn"><svg class="svg">
+                                                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                                                    </svg></i> <span class="rate"><?php echo round($shop_rating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a><?php } ?> </span>
+                                            </div>
                                             <?php /*if ($shop_rating>0) { ?>
                                             <div class="products__rating"> <i class="icn"><svg class="svg">
                                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -354,11 +364,13 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                             </div><br>
                                             <?php }*/?>
                                             <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>" class="link"><?php echo Labels::getLabel('LBL_View_Shop', $siteLangId); ?></a>
+                                             </div>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--secondary btn--primary-border"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
+                                            <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border d-block"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
                                             <?php if (count($product['moreSellersArr'])>0) { ?>
-                                                <a href="<?php echo CommonHelper::generateUrl('products', 'sellers', array($product['selprod_id']));?>" class="btn btn--secondary btn--primary-border"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></a>
+                                                <a href="<?php echo CommonHelper::generateUrl('products', 'sellers', array($product['selprod_id']));?>" class="btn btn--primary d-block"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></a>
                                             <?php } ?>
                                         </div>
                                     </div>

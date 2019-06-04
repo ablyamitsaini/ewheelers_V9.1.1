@@ -23,7 +23,7 @@
                 comparewith_eq: "{caption} "+langLbl.mustBeSameAs+" {comparefield}.",
                 comparewith_ne: "{caption} "+langLbl.shouldNotBeSameAs+" {comparefield}."
         };
-        
+
         parseDate = function(str, format) {
         	if ( typeof(datePickerFormatToDate) == 'function' ) {
     			return datePickerFormatToDate(str, format);
@@ -32,7 +32,7 @@
     			return $.datepicker.parseDate( format, str );
     		}
         };
-        
+
         var rules = {
             email : {
                check: function(rval, value) {
@@ -41,10 +41,10 @@
                    return true;
                }
             },
-            
+
             required : {
                check: function(rval, value) {
-                  if(rval){ 
+                  if(rval){
                        if(value){
                            return true;
                        }
@@ -120,7 +120,7 @@
                     return true;
                 }
             },
-            
+
             selectionrange: {
                 check: function(rval, value){
                     if($.isArray(rval) && rval.length==2){
@@ -153,7 +153,7 @@
 
             comparewith:{
                 check: function(rval, value, o){
-                    
+
                     if(o.dateFormat && rval != '' && value != ''){
                         rval = $.Validation.convertStringToDate(rval, o.dateFormat).getTime();
                         value = $.Validation.convertStringToDate(value, o.dateFormat).getTime();
@@ -162,7 +162,7 @@
                         rval=parseFloat(rval);
                         value=parseFloat(value);
                     }
-                    
+
                     switch (o.operator) {
                     case 'lt':
                         return(value < rval);
@@ -191,7 +191,7 @@
             return regExp.test(value);
         }
         return {
-            
+
             addRule : function(name, rule) {
 
                 rules[name] = rule;
@@ -207,15 +207,15 @@
             setMessages: function(obj){
                 jQuery.extend(messages, obj);
             },
-            
+
             convertStringToDate: function (str, format) {
             	return parseDate(str, format);
             }
         }
     };
-    
-    /* 
-    Form factory 
+
+    /*
+    Form factory
     */
     var Form = function(form, options) {
         this.form=form;
@@ -251,24 +251,24 @@
     				if ( 0 == $form.options.errordisplay && !field.valid ) {
     					this.focus();
     					return false;
-    				} 
+    				}
     			});
-    			
+
     		},
     		isValid : function() {
     			return this.valid;
     		}
     }
-    
-    /* 
-    Field factory 
+
+    /*
+    Field factory
     */
     var Field = function(field, options) {
         this.settings=options;
         this.field = $(field);
         this.valid = false;
         if(this.settings.errordisplay != 0 && this.settings.errordisplay != 1) this.attach("change");
-        
+
         if(this.settings.errordisplay==1 && this.settings.summaryElementId=='validation_default') {
         	this.settings.summaryElementId=$(field).parents('form').attr('id');
         }
@@ -277,9 +277,9 @@
         }
     }
     Field.prototype = {
-        
+
         attach : function(event) {
-        
+
             var obj = this;
             if(event == "change") {
                 obj.field.bind("change",function() {
@@ -297,31 +297,31 @@
             if (this.field.attr('data-fat-arr-index')) {
             	clname += '_' + this.field.attr('data-fat-arr-index');
             }
-            
+
             $('.'+clname).remove();
-            
+
             var obj = this,
                 field = obj.field,
                 errorClass = "errorlist",
                 errorlist = $(document.createElement("ul")).addClass(errorClass).addClass(clname),
                 types = {};
-            
+
             	if (jQuery(field).attr('data-fatreq')) {
             		var s = eval('[' + jQuery(field).attr('data-fatreq') + ']');
             		types = s[0];
             	}
-            
-                errors = []; 
+
+                errors = [];
             jQuery.each(types, function(rname, rval){
                 if(rname!='customMessage'){
                     var rule=$.Validation.getRule(rname);
-                    
+
                     var fldval = $.trim(field.val());
-                    
+
                     if (field.attr('data-fatdateformat') && 'range' == rname) {
                     	rval.dateFormat = field.attr('data-fatdateformat');
                     }
-                    
+
                     if (field.attr('type')){
                         if(field.attr('type').toLowerCase()==='checkbox'){
                         	if (field.attr('name').indexOf('[') > 0 && rname == 'selectionrange') {
@@ -334,7 +334,7 @@
                         	}
                         }
                     }
-                    
+
                     if(rname=='comparewith'){
                         for (x in rval){
                         	if (field.attr('data-fatdateformat')) {
@@ -347,7 +347,7 @@
                     else{
                         var validvalue=rule.check(rval, fldval);
                     }
-                    
+
                     if(!validvalue){
                         field.addClass("error");
                         if(types.customMessage){
@@ -356,13 +356,13 @@
                         else{
                             if(rname=='comparewith'){
                                 msg=$.Validation.getMessage(rname+'_'+rval[x].operator);
-                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('data-field-caption'));
+                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('title'));
                             }
                             else{
                                 msg=$.Validation.getMessage(rname);
                             }
                         }
-                        msg=msg.replace("{caption}",$(field).attr('data-field-caption'));
+                        msg=msg.replace("{caption}",$(field).attr('title'));
                         if(jQuery.isArray(rval) && rval.length==2){
                             msg=msg.replace("{minval}", rval[0]);
                             msg=msg.replace("{minlength}", rval[0]);
@@ -373,11 +373,11 @@
                             msg=msg.replace("{minval}", rval.minval);
                             msg=msg.replace("{maxval}", rval.maxval);
                         }
-                        
+
                         errors.push(msg);
                     }
             }});
-            
+
             if(errors.length) {
                 if(this.settings.errordisplay!=0 && this.settings.errordisplay!=1){
                     obj.field.unbind("keyup");
@@ -405,7 +405,7 @@
                 	}
                     break;
                 case 0:
-                    
+
                     break;
                 }
                 for(error in errors) {
@@ -419,7 +419,7 @@
                     }
                 }
                 obj.valid = false;
-            } 
+            }
             else {
                 errorlist.remove();
                 field.removeClass("error");
@@ -433,21 +433,21 @@
             }
         }
     }
-    
-    /* 
+
+    /*
     Validation extends jQuery prototype
     */
     $.extend($.fn, {
-        
+
         validation : function(options) {
-            
+
         	$('[data-fat-req-change]', $(this)).each(function() {
             	$(this).trigger('change');
             });
-        	
+
             var validator = new Form($(this), options);
             $.data($(this)[0], 'validator', validator);
-            
+
             var $this = $(this);
             $(this).bind("submit", function(e) {
             	if ($this.hasClass('data-fat-submitted')) {
@@ -455,7 +455,7 @@
             		console.log('Prevented resubmit of form.');
             		return ;
             	}
-                validator.validate(); 
+                validator.validate();
                 if(!validator.isValid()) {
                     e.preventDefault();
                 }
@@ -493,8 +493,8 @@
 	            $(fld).attr('data-mbsunichk', 1);
 	            if(ans.status==0){
 	            	fld.addClass('field-unique-error');
-	            	
-	            	checkUniqueErrorNotify(fld.attr('data-field-caption'),  entered);
+
+	            	checkUniqueErrorNotify(fld.attr('title'),  entered);
 	                fld.val(ans.existing_value);
 	                fld.focus();
 	            }
@@ -503,14 +503,14 @@
 	            }
 	        }
 	    });
-	    
+
 	    fld.bind('keyup', function(event) {
 	    	$( this ).removeClass('field-unique-error');
 	    	$( this ).removeClass('field-unique-success');
 	    	$( this ).unbind( event );
 	    });
 	}
-	
+
 	fatUpdateRequirement = function(el) {
 		el = $(el);
 		var str = el.attr('data-fat-req-change');
@@ -546,7 +546,7 @@
 			$(el[0].form.elements[arr[i].fldname]).attr('data-fatreq', JSON.stringify(arr[i].requirement));
 		}
 	};
-	
+
 	checkUniqueErrorNotify = function (caption, value) {
         $.systemMessage(caption + " '" + value + "' " +langLbl.isNotAvailable, 'alert--danger');
 	};
