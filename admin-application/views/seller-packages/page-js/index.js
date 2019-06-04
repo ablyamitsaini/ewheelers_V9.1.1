@@ -69,7 +69,7 @@ $(document).ready(function() {
     searchPlans = function(spackageId) {
         $(dv).html(fcom.getLoader());
         fcom.ajax(fcom.makeUrl('SellerPackages', 'searchPlans'), 'spackageId=' + spackageId, function(t) {
-            $(dv).html(t);
+            $("#packageDetail").html(t);
             $(".new-plan").removeClass('hide');
 
         });
