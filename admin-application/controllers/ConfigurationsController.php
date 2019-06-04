@@ -1600,7 +1600,7 @@ class ConfigurationsController extends AdminBaseController
                     $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'mobileLogo', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
                 }
 
-                // $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+                $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
                 //
                 // $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
                 //
