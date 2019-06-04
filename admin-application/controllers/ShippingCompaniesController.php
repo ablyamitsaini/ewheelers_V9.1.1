@@ -25,6 +25,7 @@ class ShippingCompaniesController extends AdminBaseController
 
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
+        $srch->addOrder('scompany_id', 'DESC');
 
         $rs = $srch->getResultSet();
         $records =array();

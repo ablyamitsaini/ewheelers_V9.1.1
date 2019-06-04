@@ -43,6 +43,7 @@ class ContentPagesController extends AdminBaseController
         $page = (empty($page) || $page <= 0)?1:$page;
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
+        $srch->addOrder('cpage_id', 'DESC');
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();
 

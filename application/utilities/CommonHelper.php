@@ -902,7 +902,9 @@ class CommonHelper extends FatUtility
         $pattern .= ')';                  #  End host alternatives.
         $pattern .= '([\w-]{11})';        # 11 characters (Length of Youtube video ids).
         $pattern .= '(?:.+)?$#x';         # Optional other ending URL parameters.
+
         preg_match($pattern, $url, $matches);
+
         return (isset($matches[1])) ? $matches[1] : false;
     }
 

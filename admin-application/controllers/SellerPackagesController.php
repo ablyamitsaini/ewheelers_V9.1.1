@@ -21,7 +21,8 @@ class SellerPackagesController extends AdminBaseController
         $this->objPrivilege->canViewSellerPackages($this->admin_id);
         $srch = SellerPackages::getSearchObject($this->adminLangId);
         $srch->addMultipleFields(array( "sp.*", "IFNULL( spl.".SellerPackages::DB_TBL_PREFIX."name, sp.".SellerPackages::DB_TBL_PREFIX."identifier ) as ".SellerPackages::DB_TBL_PREFIX."name"));
-        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'active', 'desc');
+        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'active', 'DESC');
+        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'id', 'DESC');
         $srch->addOrder(SellerPackages::DB_TBL_PREFIX."display_order");
 
         $rs = $srch->getResultSet();

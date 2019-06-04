@@ -51,7 +51,6 @@ class RewardsOnPurchaseController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
-
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 

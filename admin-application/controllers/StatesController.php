@@ -75,6 +75,7 @@ class StatesController extends AdminBaseController
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('state_name', 'ASC');
 
         $rs = $srch->getResultSet();
         $records = array();

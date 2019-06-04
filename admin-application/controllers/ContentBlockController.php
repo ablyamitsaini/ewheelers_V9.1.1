@@ -42,6 +42,7 @@ class ContentBlockController extends AdminBaseController
         $srch->addCondition('epage_content_for', '=', $importInstructions);
 
         $srch->addOrder('epage_active', 'DESC');
+        $srch->addOrder('epage_id', 'DESC');
         $rs = $srch->getResultSet();
 
         $records = FatApp::getDb()->fetchAll($rs);
