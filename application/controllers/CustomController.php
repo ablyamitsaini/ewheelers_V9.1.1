@@ -2,15 +2,6 @@
 {
     public function contactUs()
     {
-        /* $srch = Extrapage::getSearchObject($this->siteLangId);
-        $srch->addCondition('ep.epage_type','=',Extrapage::CONTACT_US_CONTENT_BLOCK);
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $rs = $srch->getResultSet();
-        $pageData = FatApp::getDb()->fetch($rs); */
-        $obj = new Extrapage();
-        $pageData = $obj->getContentByPageType(Extrapage::CONTACT_US_CONTENT_BLOCK, $this->siteLangId);
-
         $contactFrm = $this->contactUsForm();
         $post = $contactFrm->getFormDataFromArray(FatApp::getPostedData());
         if (false != $post) {
@@ -18,7 +9,6 @@
         }
         $this->set('contactFrm', $contactFrm);
         $this->set('siteLangId', $this->siteLangId);
-        $this->set('pageData', $pageData);
         $this->_template->render(true, true, 'custom/contact-us.php');
     }
 

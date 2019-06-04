@@ -324,3 +324,8 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Promotion_Wallet_To_B
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Withdrawl_Request_Amount';
 
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width`=600,`blocation_banner_height`=338 WHERE `bldimension_blocation_id` = 2 or `bldimension_blocation_id` = 3;
+
+DELETE tbl_extra_pages, tbl_extra_pages_lang
+FROM tbl_extra_pages
+INNER JOIN tbl_extra_pages_lang ON tbl_extra_pages.epage_id = tbl_extra_pages_lang.epagelang_epage_id
+WHERE tbl_extra_pages.epage_type = 1;
