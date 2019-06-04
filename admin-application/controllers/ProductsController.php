@@ -1005,7 +1005,7 @@ class ProductsController extends AdminBaseController
         $srch = ShippingDurations::getSearchObject($this->adminLangId, true);
         $srch->addOrder('sduration_name');
 
-        $srch->addMultipleFields(array('sduration_id, sduration_name','sduration_from','sduration_to','sduration_days_or_weeks'));
+        $srch->addMultipleFields(array('sduration_id, IFNULL(sduration_name, sduration_identifier) as sduration_name','sduration_from','sduration_to','sduration_days_or_weeks'));
 
         if (!empty($post['keyword'])) {
             $cnd = $srch->addCondition('sduration_id', 'LIKE', '%' . $post['keyword']. '%');
