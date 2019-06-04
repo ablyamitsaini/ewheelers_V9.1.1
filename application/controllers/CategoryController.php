@@ -71,7 +71,7 @@ class CategoryController extends MyAppController
         }
 
         $rs = $srch->getResultSet();
-        
+
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
 
@@ -176,6 +176,7 @@ class CategoryController extends MyAppController
 
     public function banner($prodCatId, $langId = 0, $sizeType = '', $subRcordId = 0)
     {
+        $default_image = 'product_default_image.jpg';
         $prodCatId = FatUtility::int($prodCatId);
         $subRcordId = FatUtility::int($subRcordId);
         $langId = FatUtility::int($langId);
@@ -187,20 +188,20 @@ class CategoryController extends MyAppController
         case 'THUMB':
             $w = 250;
             $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
+            AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         case 'MEDIUM':
             $w = 380;
             $h = 213;
-            AttachedFile::displayImage($image_name, $w, $h);
+            AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         case 'WIDE':
             $w = 1000;
             $h = 563;
-            AttachedFile::displayImage($image_name, $w, $h);
+            AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         default:
-            AttachedFile::displayOriginalImage($image_name);
+            AttachedFile::displayOriginalImage($image_name, $default_image);
             break;
         }
     }
