@@ -28,6 +28,7 @@ class SocialPlatformController extends AdminBaseController
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('splatform_user_id', '=', 0);
+        $srch->addOrder('splatform_id', 'DESC');
         $rs = $srch->getResultSet();
 
         $records = array();

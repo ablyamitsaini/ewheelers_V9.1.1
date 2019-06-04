@@ -438,7 +438,7 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 	};
 
 	searchProducts = function(frm){
-		$("input[id=keyword]").val($(frm.keyword).val());
+		$("input[id=keyword]").val($.trim($(frm.keyword).val()));
 		reloadProductListing(frm);
 	};
 

@@ -48,6 +48,7 @@ class BlogPostsController extends AdminBaseController
         }
         $srch->addMultipleFields(array('*,ifnull(post_title,post_identifier) post_title , group_concat(ifnull(bpcategory_name ,bpcategory_identifier)) categories'));
         $srch->addGroupby('post_id');
+        $srch->addOrder('post_id', 'DESC');
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();

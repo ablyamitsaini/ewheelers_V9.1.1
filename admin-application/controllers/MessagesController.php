@@ -78,6 +78,7 @@ class MessagesController extends AdminBaseController
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('ttm.message_date', 'DESC');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

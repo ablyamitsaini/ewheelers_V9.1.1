@@ -31,6 +31,7 @@ class OrderReturnReasonsController extends AdminBaseController
         $srch = OrderReturnReason::getSearchObject($this->adminLangId);
 
         $srch->addMultipleFields(array('orreason.*' , 'orreason_l.orreason_title'));
+        $srch->addOrder('orreason_id', 'DESC');
 
         $rs = $srch->getResultSet();
         $records = array();

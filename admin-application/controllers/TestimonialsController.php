@@ -32,6 +32,7 @@ class TestimonialsController extends AdminBaseController
 
         $srch->addMultipleFields(array('t.*' , 't_l.testimonial_title' , 't_l.testimonial_text'));
         $srch->addOrder('testimonial_active', 'desc');
+        $srch->addOrder('testimonial_added_on', 'desc');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

@@ -31,7 +31,7 @@ class OrderCancelReasonsController extends AdminBaseController
         $srch = OrderCancelReason::getSearchObject($this->adminLangId);
 
         $srch->addMultipleFields(array('ocreason.*' , 'ocreason_l.ocreason_title'));
-
+        $srch->addOrder('ocreason_id', 'DESC');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

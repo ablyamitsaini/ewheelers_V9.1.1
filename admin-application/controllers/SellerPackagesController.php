@@ -21,7 +21,8 @@ class SellerPackagesController extends AdminBaseController
         $this->objPrivilege->canViewSellerPackages($this->admin_id);
         $srch = SellerPackages::getSearchObject($this->adminLangId);
         $srch->addMultipleFields(array( "sp.*", "IFNULL( spl.".SellerPackages::DB_TBL_PREFIX."name, sp.".SellerPackages::DB_TBL_PREFIX."identifier ) as ".SellerPackages::DB_TBL_PREFIX."name"));
-        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'active', 'desc');
+        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'active', 'DESC');
+        $srch->addOrder(SellerPackages::DB_TBL_PREFIX.'id', 'DESC');
         $srch->addOrder(SellerPackages::DB_TBL_PREFIX."display_order");
 
         $rs = $srch->getResultSet();
@@ -68,11 +69,19 @@ class SellerPackagesController extends AdminBaseController
         if (0 == $spackageId) {
             $packageTypeFld->requirements()->setRequired();
         }
-        $frm->addFloatField(Labels::getLabel('LBL_Package_Commision_Rate_in_Percentage', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'commission_rate');
-        $frm->addIntegerField(Labels::getLabel('LBL_Package_Products_Allowed', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'products_allowed');
-        $frm->addIntegerField(Labels::getLabel('LBL_Package_Images_Per_Catalog', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'images_per_product');
+        $commissionRate = $frm->addFloatField(Labels::getLabel('LBL_Package_Commision_Rate_in_Percentage', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'commission_rate');
+        $commissionRate->requirements()->setRange(0, 100);
+
+        $fld = $frm->addIntegerField(Labels::getLabel('LBL_Package_Products_Allowed', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'products_allowed');
+        $fld->requirements()->setIntPositive();
+
+        $fld = $frm->addIntegerField(Labels::getLabel('LBL_Package_Images_Per_Catalog', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'images_per_product');
+        $fld->requirements()->setIntPositive();
+
         $frm->addSelectBox(Labels::getLabel('LBL_Package_Status', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'active', applicationConstants::getActiveInactiveArr($this->adminLangId), applicationConstants::ACTIVE, array(), '');
-        $frm->addRequiredField(Labels::getLabel('LBL_Package_Display_Order', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'display_order');
+
+        $fld = $frm->addRequiredField(Labels::getLabel('LBL_Package_Display_Order', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'display_order');
+        $fld->requirements()->setIntPositive();
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SAVE_CHANGES', $this->adminLangId));
         return $frm;
     }
@@ -276,15 +285,17 @@ class SellerPackagesController extends AdminBaseController
         $fldFreq->attachField($fldFreqText);
 
 
-        $frm->addIntegerField(Labels::getLabel('LBL_Time_Interval_(FREQUENCY)', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'interval');
+        $fld = $frm->addIntegerField(Labels::getLabel('LBL_Time_Interval_(FREQUENCY)', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'interval');
+        $fld->requirements()->setIntPositive();
 
         if ($sPackageData[SellerPackages::DB_TBL_PREFIX.'type'] !=SellerPackages::FREE_TYPE) {
-            $priceFld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'price') ->requirements()->setRange('0.01', '9999999999');
+            $priceFld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'price')->requirements()->setRange('0.01', '9999999999');
             $fldPckPrice=$frm->getField(SellerPackagePlans::DB_TBL_PREFIX.'price');
             $fldPckPrice->setWrapperAttribute('class', 'package_price');
         }
 
-        $frm->addIntegerField(Labels::getLabel('LBL_Plan_Display_Order', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'display_order');
+        $fld = $frm->addIntegerField(Labels::getLabel('LBL_Plan_Display_Order', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'display_order');
+        $fld->requirements()->setIntPositive();
         $arr_options = applicationConstants::getActiveInactiveArr($this->adminLangId);
         $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), SellerPackagePlans::DB_TBL_PREFIX.'active', $arr_options, '', array(), '');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SAVE_CHANGES', $this->adminLangId));

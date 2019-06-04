@@ -45,6 +45,8 @@ class ShippingDurationsController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('sduration_id', 'DESC');
+
         $rs = $srch->getResultSet();
         $records =array();
         if ($rs) {

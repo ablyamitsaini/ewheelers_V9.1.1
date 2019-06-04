@@ -141,7 +141,7 @@ class SellerProductsController extends AdminBaseController
         );
 
         $srch->addOrder('selprod_active', 'DESC');
-        $srch->addOrder('selprod_added_on');
+        $srch->addOrder('selprod_added_on', 'DESC');
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);
@@ -2010,6 +2010,7 @@ class SellerProductsController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('selprod_id', 'DESC');
         /* echo $srch->getQuery(); die; */
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
@@ -2114,7 +2115,7 @@ class SellerProductsController extends AdminBaseController
                 Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
             );
         }
-        
+
         foreach ($selprod_ids_arr as $selprod_id) {
             if (0 >= $selprod_id) {
                 continue;

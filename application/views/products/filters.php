@@ -39,7 +39,7 @@ if (isset($prodcat_code)) {
 <!--Filters[ -->
 <div class="widgets-head">
     <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_FILTERS', $siteLangId);?>
-        <a class="reset-all" id="resetAll"><i class="icn reset-all">
+        <a class="reset-all" id="resetAll" onClick="resetListingFilter()"><i class="icn reset-all">
                 <svg class="svg">
                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset"></use>
                 </svg>
