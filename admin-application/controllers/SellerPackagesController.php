@@ -69,7 +69,9 @@ class SellerPackagesController extends AdminBaseController
         if (0 == $spackageId) {
             $packageTypeFld->requirements()->setRequired();
         }
-        $frm->addFloatField(Labels::getLabel('LBL_Package_Commision_Rate_in_Percentage', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'commission_rate');
+        $commissionRate = $frm->addFloatField(Labels::getLabel('LBL_Package_Commision_Rate_in_Percentage', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'commission_rate');
+        $commissionRate->requirements()->setRange(0, 100);
+
         $frm->addIntegerField(Labels::getLabel('LBL_Package_Products_Allowed', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'products_allowed');
         $frm->addIntegerField(Labels::getLabel('LBL_Package_Images_Per_Catalog', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'images_per_product');
         $frm->addSelectBox(Labels::getLabel('LBL_Package_Status', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'active', applicationConstants::getActiveInactiveArr($this->adminLangId), applicationConstants::ACTIVE, array(), '');
