@@ -57,7 +57,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     <div class="social-networks">
                                         <ul>
                                             <li class="social-facebook">
-                                                <a class="st-custom-button" data-network="facebook">
+                                                <a class="st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Products', 'view', array($product['selprod_id'])); ?>/">
                                                     <i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                         </svg></i>
@@ -346,13 +346,13 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     <div class="row align-items-center">
                                         <div class="col">
                                             <div class="d-flex">
-                                                
+
                                                 <div>
-                                                    
-                                               
+
+
                                             <div class="h6"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId);?>:</div>
                                             <?php echo $shop['shop_name'];?> <br>
-											
+
                                              <div class="products__rating"> <i class="icn"><svg class="svg">
                                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                                                     </svg></i> <span class="rate"><?php echo round($shop_rating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a><?php } ?> </span>
