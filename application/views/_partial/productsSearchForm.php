@@ -17,6 +17,7 @@
             <div class="col-lg-6">
                 <div id="top-filters" class="page-sort hide_on_no_product">
                     <ul>
+                        <?php if (!(UserAuthentication::isUserLogged()) || (UserAuthentication::isUserLogged() && (User::isBuyer()))) { ?>
                         <li><div class="save-search">
                             <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
                                 <svg class="svg">
@@ -24,6 +25,7 @@
                                 </svg>
                             </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a></div>
                         </li>
+                        <?php }?>
                         <li>
                         <?php echo $frmProductSearch->getFieldHtml('sortBy'); ?></li>
                         <li>
