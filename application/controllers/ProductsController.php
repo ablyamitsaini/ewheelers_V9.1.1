@@ -407,7 +407,6 @@ class ProductsController extends MyAppController
                 $productSelectedOptionValues[$op['selprodoption_option_id']] = $op['selprodoption_optionvalue_id'];
             }
         }
-
         if ($productImagesArr) {
             foreach ($productImagesArr as $image) {
                 $afileId = $image['afile_id'];
@@ -623,7 +622,7 @@ class ProductsController extends MyAppController
         /* ] */
 
         if (!empty($product)) {
-            $afile_id = !empty($productImagesArr)? array_keys($productImagesArr)[0] : 0;
+            $afile_id = !empty($productGroupImages)? array_keys($productGroupImages)[0] : 0;
             $this->set('socialShareContent', $this->getOgTags($product, $afile_id));
         }
 
@@ -811,7 +810,7 @@ class ProductsController extends MyAppController
         $productImageUrl = '';
         /* $productImageUrl = CommonHelper::generateFullUrl('Image','product', array($product['product_id'],'', $product['selprod_id'],0,$this->siteLangId )); */
         if (0 < $afile_id) {
-            $productImageUrl = CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $afile_id ));
+            $productImageUrl = CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'FB_RECOMMEND', 0, $afile_id ));
         }
         $socialShareContent = array(
         'type'=>'Product',
