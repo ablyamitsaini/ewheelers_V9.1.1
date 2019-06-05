@@ -3039,6 +3039,7 @@ class SellerController extends SellerBaseController
         Labels::getLabel("LBL_Seller_Product_Id", $langId),
         Labels::getLabel("LBL_SKU", $langId),
         Labels::getLabel("LBL_Product", $langId),
+        Labels::getLabel('LBL_Cost_Price', $langId),
         Labels::getLabel("LBL_Price", $langId),
         Labels::getLabel("LBL_Stock/Quantity", $langId)
         );
