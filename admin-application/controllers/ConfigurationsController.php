@@ -914,10 +914,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $frm->addHtml('', 'Cart', '<h3>'.Labels::getLabel("LBL_Cart", $this->adminLangId).'</h3>');
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_Cancelling_the_payment", $this->adminLangId)."</small>";
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_payment_failure", $this->adminLangId)."</small>";
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Reminder_Interval_For_Products_In_Cart_[Days]", $this->adminLangId), 'CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART', '');
