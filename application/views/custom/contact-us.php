@@ -46,6 +46,10 @@ $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
                                 <h6><?php echo Labels::getLabel('LBL_Address', $siteLangId);?></h6>
                                 <p class="small"><?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId, FatUtility::VAR_STRING, ''));?></p>
                                 <div class="gap"></div>
+                                <div class="divider"></div>
+                                <div class="gap"></div>
+                                <p class="small"><?php echo html_entity_decode($pageData['epage_content']);?></p>
+                                <div class="gap"></div>
                                 <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
                             </div>
                         </div>

@@ -10,7 +10,7 @@
         $pageData = FatApp::getDb()->fetch($rs); */
         $obj = new Extrapage();
         $pageData = $obj->getContentByPageType(Extrapage::CONTACT_US_CONTENT_BLOCK, $this->siteLangId);
-
+        
         $contactFrm = $this->contactUsForm();
         $post = $contactFrm->getFormDataFromArray(FatApp::getPostedData());
         if (false != $post) {
