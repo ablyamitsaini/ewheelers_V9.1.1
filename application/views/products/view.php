@@ -269,7 +269,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             if (isset($volumeDiscountRows) && !empty($volumeDiscountRows)) { ?>
                             <div class="gap"></div>
                             <div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:</div>
-                            <ul class="<?php echo (count($volumeDiscountRows) > 2) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
+                            <ul class="<?php echo (count($volumeDiscountRows) > 1) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
                                 <?php foreach ($volumeDiscountRows as $volumeDiscountRow) {
                                     $volumeDiscount = $product['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
                                     $price = ($product['theprice'] - $volumeDiscount); ?>
