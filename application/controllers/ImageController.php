@@ -227,6 +227,11 @@ class ImageController extends FatController
                 $h = 2000;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
                 break;
+            case 'FB_RECOMMEND':
+                $w = 1200;
+                $h = 630;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                break;
             default:
                 $h = 400;
                 $w = 400;
