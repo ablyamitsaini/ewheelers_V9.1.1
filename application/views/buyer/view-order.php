@@ -20,31 +20,34 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
     <div class="content-wrapper content-space">
         <?php if (!$print) { ?>
         <div class="content-header row justify-content-between mb-3">
-            <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId); ?></h2>
+            <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+                <h2 class="content-header-title no-print"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId); ?></h2>
             </div>
             <?php if (true == $primaryOrder) { ?>
             <div class="col-md-auto">
                 <div class="btn-group">
-                    <ul class="actions">
-                        <?php if ($canCancelOrder) { ?>
-                            <li>
-                                <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Cancel_Order', $siteLangId); ?>"><i
-                                        class="fa fa-close"></i></a>
-                            </li>
-                        <?php }
-                        if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0) && $canReviewOrders) {
-                            ?> <li>
-                                        <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Feedback', $siteLangId); ?>"><i
-                                                class="fa fa-star"></i></a>
-                                    </li> <?php
-                        }
-                        if ($canReturnRefund) { ?>
-                            <li>
-                                <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Refund', $siteLangId); ?>"><i
-                                        class="fa fa-dollar"></i></a>
-                            </li>
-                        <?php } ?>
-                    </ul>
+                    <?php if (!$print) { ?>
+                        <ul class="actions no-print">
+                            <?php if ($canCancelOrder) { ?>
+                                <li>
+                                    <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderCancellationRequest', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Cancel_Order', $siteLangId); ?>"><i
+                                            class="fa fa-close"></i></a>
+                                </li>
+                            <?php }
+                            if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0) && $canReviewOrders) {
+                                ?> <li>
+                                    <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Feedback', $siteLangId); ?>"><i
+                                            class="fa fa-star"></i></a>
+                                </li> <?php
+                            }
+                            if ($canReturnRefund) { ?>
+                                <li>
+                                    <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Refund', $siteLangId); ?>"><i
+                                            class="fa fa-dollar"></i></a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
                 </div>
             </div>
             <?php } ?>
@@ -56,7 +59,7 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                     <h5 class="cards-title"> <?php //echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5> <?php if (!$print) {
         ?> <div class="action">
                         <div class="">
-                            <a href="javascript:window.print();" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
+                            <a href="<?php echo Fatutility::generateUrl('buyer', 'viewOrder', $urlParts) . '/print'; ?>" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
                             <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders'); ?>" class="btn btn--primary-border no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId); ?></a>
                         </div>
                     </div> <?php
@@ -403,14 +406,15 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
             </div>
         </div>
     </div>
-</main> <?php if ($print) {
-                            ?> <script>
+</main> <?php if ($print) {?>
+    <script>
+    $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
     window.print();
     window.onafterprint = function() {
         location.href = history.back();
     }
-</script> <?php
-                        } ?> <script>
+</script>
+<?php } ?> <script>
     function increaseDownloadedCount(linkId, opId) {
         fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId, opId]), '', function(t) {
             var ans = $.parseJSON(t);
