@@ -3,7 +3,9 @@ $contactFrm->setFormTagAttribute('class', 'form form--normal');
 $contactFrm->setFormTagAttribute('action', CommonHelper::generateUrl('Custom', 'contactSubmit'));
 $contactFrm->developerTags['colClassPrefix'] = 'col-md-';
 $contactFrm->developerTags['fld_default_col'] = 6;
-$fld = $contactFrm->getField('ub_bank_address');
+$fld = $contactFrm->getField('phone');
+$fld->developerTags['col'] = 12;
+$fld = $contactFrm->getField('message');
 $fld->developerTags['col'] = 12;
 $fldSubmit = $contactFrm->getField('btn_submit');
 $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
@@ -45,10 +47,6 @@ $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
                                 <div class="gap"></div>
                                 <h6><?php echo Labels::getLabel('LBL_Address', $siteLangId);?></h6>
                                 <p class="small"><?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId, FatUtility::VAR_STRING, ''));?></p>
-                                <div class="gap"></div>
-                                <div class="divider"></div>
-                                <div class="gap"></div>
-                                <p class="small"><?php echo html_entity_decode($pageData['epage_content']);?></p>
                                 <div class="gap"></div>
                                 <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
                             </div>

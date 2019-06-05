@@ -684,7 +684,7 @@ class ProductsController extends MyAppController
         if (1 > $selprod_id) {
             return;
         }
-        
+
         $recentProductsArr = array();
         if (!isset($_COOKIE['recentViewedProducts'])) {
             setcookie('recentViewedProducts', $selprod_id.'_', time()+60*60*72, CONF_WEBROOT_URL);

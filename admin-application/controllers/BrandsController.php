@@ -265,6 +265,18 @@ class BrandsController extends AdminBaseController
 
         $frm = $this->getLangForm($brand_id, $lang_id);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+
+        /* Check if same brand name already exists [ */
+        $tblRecord = new TableRecord(Brand::DB_LANG_TBL);
+        if ($tblRecord->loadFromDb(array('smt' => 'brand_name = ?', 'vals' => array($post['brand_name'])))) {
+            $brandRow = $tblRecord->getFlds();
+            if ($brandRow['brandlang_brand_id'] != $brand_id) {
+                Message::addErrorMessage(Labels::getLabel('LBL_Brand_name_already_exists', $this->adminLangId));
+                FatUtility::dieWithError(Message::getHtml());
+            }
+        }
+        /* ] */
+        
         unset($post['brand_id']);
         unset($post['lang_id']);
         $data=array(

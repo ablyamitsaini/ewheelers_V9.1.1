@@ -177,7 +177,7 @@ class OrderPayment extends Orders
                             return false;
                         }
                         FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD, array('smt' => 'couponhold_coupon_id = ? and couponhold_user_id = ?', 'vals' => array($row['coupon_id'], $orderDetails['order_user_id'] ) ));
-                        FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, array( 'smt' => 'ochold_order_id = ?', 'vals'=> array( $orderId ) ));
+                        FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, array( 'smt' => 'ochold_order_id = ?', 'vals'=> array( $orderDetails['order_id'] ) ));
                     }
                 }
             }
