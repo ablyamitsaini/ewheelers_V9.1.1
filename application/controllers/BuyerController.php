@@ -1,4 +1,5 @@
 <?php
+require_once CONF_INSTALLATION_PATH . 'library/APIs/twitteroauth-master/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class BuyerController extends BuyerBaseController
@@ -1877,7 +1878,21 @@ class BuyerController extends BuyerBaseController
             Message::addErrorMessage(Labels::getLabel('Msg_Referral_Code_is_empty', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        include_once CONF_INSTALLATION_PATH . 'library/APIs/twitter/twitteroauth.php';
+
+        $get_twitter_url = $_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Buyer', 'twitterCallback');
+
+        try {
+            $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
+
+            $request_token = $twitteroauth->oauth('oauth/request_token', array('oauth_callback' => $get_twitter_url));
+
+            $_SESSION['oauth_token'] = $request_token['oauth_token'];
+            $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+            $twitterUrl = $twitteroauth->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+            $this->set('twitterUrl', $twitterUrl);
+        } catch (\Exception $e) {
+            $this->set('twitterUrl', false);
+        }
 
         $this->set('referralTrackingUrl', CommonHelper::referralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code')));
         $this->set('sharingfrm', $this->getFriendsSharingForm($this->siteLangId));
