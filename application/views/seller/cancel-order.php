@@ -178,16 +178,16 @@
                                 </div>
               <?php }?>
               <?php if (!$notEligible){?>
-                                 <div class="section--repeated no-print">
-                <h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
-                                    <?php
-                $frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
-                $frm->setFormTagAttribute('class','form');
-                $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-                $frm->developerTags['fld_default_col'] = 12;
+                    <div class="section--repeated no-print cancelReason-js">
+                        <h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
+                        <?php
+                        $frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
+                        $frm->setFormTagAttribute('class','form');
+                        $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                        $frm->developerTags['fld_default_col'] = 12;
 
-                echo $frm->getFormHtml();?>
-                                 </div>
+                        echo $frm->getFormHtml();?>
+                    </div>
                <?php }?>
                             </div>
                         </div>
@@ -196,4 +196,3 @@
 	</div>
   </div>
 </main>
- 
