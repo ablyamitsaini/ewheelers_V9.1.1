@@ -349,14 +349,14 @@ class MobileAppApiController extends MyAppController
                             $rs = $shopObj->getResultSet();
                             $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
                             while ($shopsData = $this->db->fetch($rs)) {
-                                if (!$collection['collection_child_records']) {
-                                    continue;
-                                }
+                                // if (!$collection['collection_child_records']) {
+                                //     continue;
+                                // }
                                 /* fetch Shop data[ */
                                 $productShopSrchTempObj = clone $productSrchObj;
                                 $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
                                 $productShopSrchTempObj->addGroupBy('selprod_product_id');
-                                $productShopSrchTempObj->setPageSize($collection['collection_child_records']);
+                                $productShopSrchTempObj->setPageSize(3);
                                 $Prs = $productShopSrchTempObj->getResultSet();
 
 
