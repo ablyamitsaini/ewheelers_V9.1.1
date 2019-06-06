@@ -329,3 +329,8 @@ DELETE tbl_extra_pages, tbl_extra_pages_lang
 FROM tbl_extra_pages
 INNER JOIN tbl_extra_pages_lang ON tbl_extra_pages.epage_id = tbl_extra_pages_lang.epagelang_epage_id
 WHERE tbl_extra_pages.epage_type = 1;
+
+UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "We‘re here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "We‘re here, ready to talk") > 0;
+UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "Weâ€˜re here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "Weâ€˜re here, ready to talk") > 0;
+UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "Weâ&euro;˜re here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "Weâ&euro;˜re here, ready to talk") > 0;
+UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "We're here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "We're here, ready to talk, ready to talk") > 0;

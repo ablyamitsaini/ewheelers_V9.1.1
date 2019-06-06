@@ -16,14 +16,10 @@ var shopId = '<?php echo $shopId; ?>';
 						</div>
 					</div>
 				</div>
-				<section class="section">
-					<div class="sectionhead">
-						<h4><?php echo Labels::getLabel('LBL_Shop_Reports_Listing',$adminLangId); ?></h4>
-					</div>
-				</section>
 				<div class="col-sm-12"> 		
 					<section class="section">
 						<div class="sectionhead">
+                            <h4><?php echo Labels::getLabel('LBL_Shop_Reports_Listing',$adminLangId); ?></h4>
 							<?php
 							$ul = new HtmlElement( "ul",array("class"=>"actions actions--centered") );
 							$li = $ul->appendElement("li",array('class'=>'droplink'));
