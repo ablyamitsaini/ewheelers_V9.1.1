@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
         // Reset if they highlight and type over first char.
         else if ($phone.val().charAt(0) !== '(') {
-            $phone.val('(' + String.fromCharCode(e.keyCode) + '');
+            $phone.val('(');
         }
 
         // Auto-format- do not expose the mask as the user begins to type
