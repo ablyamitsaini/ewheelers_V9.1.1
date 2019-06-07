@@ -41,6 +41,7 @@ class BannersController extends AdminBaseController
         $srch->addMultipleFields(array('blocation_banner_count','blocation_banner_width','blocation_banner_height','blocation_id','blocation_promotion_cost','blocation_active',"IFNULL(blocation_name,blocation_identifier) as blocation_name"));
 
         $srch->addOrder(Banner::DB_TBL_LOCATIONS_PREFIX . 'active', 'DESC');
+        $srch->addOrder(Banner::DB_TBL_LOCATIONS_PREFIX . 'id', 'DESC');
         $page = (empty($page) || $page <= 0)?1:$page;
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);

@@ -35,10 +35,10 @@ class ProductTempImagesController extends AdminBaseController
         $srch->joinProduct();
         $srch->addMultipleFields(
             array('afile_id','afile_downloaded','afile_record_id', 'afile_physical_path',
-            'afile_name', 'IFNULL(tp.product_identifier,tp_l.product_name) as product_name') 
+            'afile_name', 'IFNULL(tp.product_identifier,tp_l.product_name) as product_name')
         );
 
-        $srch->addOrder('af.' . ProductTempImage::DB_TBL_PREFIX . 'id', 'ASC');
+        $srch->addOrder('af.' . ProductTempImage::DB_TBL_PREFIX . 'id', 'DESC');
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 

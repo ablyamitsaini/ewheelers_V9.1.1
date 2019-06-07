@@ -883,8 +883,8 @@ class AdvertiserController extends AdvertiserBaseController
         }
 
         $mediaFrm     = $this->getPromotionMediaForm($promotionId, $promotionType);
-        $bannerWidth  = '1920';
-        $bannerHeight = '550';
+        $bannerWidth  = '1200';
+        $bannerHeight = '360';
         if ($promotionType == Promotion::TYPE_BANNER) {
             $bannerWidth = FatUtility::convertToType($promotionDetails['blocation_banner_width'], FatUtility::VAR_FLOAT);
             $bannerHeight = FatUtility::convertToType($promotionDetails['blocation_banner_height'], FatUtility::VAR_FLOAT);

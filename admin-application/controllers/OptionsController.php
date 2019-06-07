@@ -60,6 +60,7 @@ class OptionsController extends AdminBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(array( "o.*", "IFNULL( ol.option_name, o.option_identifier ) as option_name, u.user_name"));
+        $srch->addOrder('option_id', 'DESC');
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 

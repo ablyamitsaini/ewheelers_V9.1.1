@@ -70,6 +70,7 @@ class ConfigurationsController extends AdminBaseController
 
         $this->set('frm', $frm);
         $this->set('frmType', $frmType);
+        $this->set('record', $record);
         $this->set('dispLangTab', $dispLangTab);
         $this->set('lang_id', 0);
         $this->set('formLayout', '');
@@ -300,17 +301,7 @@ class ConfigurationsController extends AdminBaseController
         }
 
         $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveAttachment(
-            $_FILES['file']['tmp_name'],
-            $file_type,
-            0,
-            0,
-            $_FILES['file']['name'],
-            -1,
-            $unique_record = true,
-            $lang_id
-        )
-        ) {
+        if (!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'], $file_type, 0, 0, $_FILES['file']['name'], -1, true, $lang_id)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -923,10 +914,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $frm->addHtml('', 'Cart', '<h3>'.Labels::getLabel("LBL_Cart", $this->adminLangId).'</h3>');
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_Cancelling_the_payment", $this->adminLangId)."</small>";
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_payment_failure", $this->adminLangId)."</small>";
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Reminder_Interval_For_Products_In_Cart_[Days]", $this->adminLangId), 'CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART', '');
@@ -1261,35 +1252,44 @@ class ConfigurationsController extends AdminBaseController
                 );
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Referrer_Url/Link_Validity_Period", $this->adminLangId), 'CONF_REFERRER_URL_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $string = Labels::getLabel("LBL_Days,_after_which_Referrer_Url_is_Expired.", $this->adminLangId);
                 $fld->htmlAfterField = "<small>". $string ."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_Registration", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_register.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_register_through_referrer.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_First_Purchase", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_make_first_purchase.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_will_make_first_purchase_through_their_referrers.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Rewards_points_validity_in_days", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 /* $fld = $frm->addTextarea('Live Chat Code','CONF_LIVE_CHAT_CODE');
@@ -1599,7 +1599,7 @@ class ConfigurationsController extends AdminBaseController
                     $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'mobileLogo', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
                 }
 
-                // $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+                $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
                 //
                 // $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
                 //

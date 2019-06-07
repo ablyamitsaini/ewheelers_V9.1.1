@@ -78,9 +78,7 @@
                     <span class="radio">
                         <input <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="shipping_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
                     </span>
-                    <div class="address-type"><?php echo ($address['ua_identifier'] != '') ? $address['ua_identifier'].': '.$address['ua_name'] : $address['ua_name']; ?></div>
-
-                    <p><strong><?php echo $address['ua_name'];?></strong>
+                    <p><strong><?php echo ($address['ua_identifier'] != '') ? $address['ua_identifier'].': '.$address['ua_name'] : $address['ua_name']; ?></strong>
                         <?php echo $address['ua_address1'];?><br>
                         <?php echo (strlen($address['ua_address2'])>0)?$address['ua_address2'].'<br>':'';?>
                         <?php echo (strlen($address['ua_city'])>0)?$address['ua_city'].',':'';?>

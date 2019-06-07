@@ -101,7 +101,7 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_My_Subscriptions", $siteLangId); ?></span></a></div>
                 </li>
-                <li class="menu__item <?php echo ($controller == 'seller' && ($action == 'subscriptions' || $action == 'viewsubscriptionorder')) ? 'is-active' : ''; ?>">
+                <li class="menu__item <?php echo ($controller == 'seller' && ($action == 'packages')) ? 'is-active' : ''; ?>">
                     <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Subscription_Packages', $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('seller', 'Packages'); ?>">
                             <i class="icn shop"><svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-subscription-packages" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-subscription-packages"></use>

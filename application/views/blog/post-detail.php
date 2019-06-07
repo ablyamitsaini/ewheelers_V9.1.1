@@ -42,7 +42,7 @@
                                     <div class="social-networks">
                                         <ul>
                                             <li class="social-facebook">
-                                                <a class="social-link st-custom-button" data-network="facebook">
+                                                <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Blog', 'postDetail', array($blogPostData['post_id'])); ?>/">
                                                     <i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                         </svg></i>

@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-                <section class="section">
+                <section class="section" id="packageDetail">
                     <div class="sectionhead">
                         <h4><?php echo Labels::getLabel('LBL_Seller_Packages_Listings', $adminLangId); ?> </h4>
                         <?php

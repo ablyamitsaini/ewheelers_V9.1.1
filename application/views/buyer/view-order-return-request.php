@@ -18,8 +18,9 @@
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
                 <?php if( !$print ){ ?>
                     <div class="">
-                        <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
-                        <a href="<?php echo CommonHelper::generateUrl('Buyer','orderReturnRequests');?>" class="btn btn--primary-border btn--sm no-print"><?php echo Labels::getLabel('LBL_Back',$siteLangId);?></a>
+                        <a href="<?php echo Fatutility::generateUrl('buyer','viewOrderReturnRequest',$urlParts) . '/print'; ?>" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>
+                        <!-- <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a> -->
+                        <a href="<?php echo CommonHelper::generateUrl('Buyer','orderReturnRequests');?>" class="btn btn--primary-border no-print"><?php echo Labels::getLabel('LBL_Back',$siteLangId);?></a>
                     </div>
                 <?php } ?>
 			</div>
@@ -164,7 +165,7 @@
                     $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
                     $frmMsg->developerTags['fld_default_col'] = 12;
                     ?>
-                    
+
                     <div class="messages-list" >
                         <ul>
                            <li>
@@ -181,7 +182,7 @@
                            </li>
                         </ul>
                     </div>
-                    
+
                     <?php } ?>
 				</div>
                 <?php } ?>
@@ -192,6 +193,7 @@
 </main>
 <?php if($print){ ?>
     <script>
+        $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
         window.print();
         window.onafterprint = function(){
             location.href = history.back();

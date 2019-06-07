@@ -9,7 +9,7 @@ $(document).ready(function () {
         e.preventDefault();
         return false;
     });
-	
+
 	$(document).on('keydown', 'input.phone-js', function(e) {
         var key = e.which || e.charCode || e.keyCode || 0;
         $phone = $(this);

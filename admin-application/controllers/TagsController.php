@@ -67,7 +67,7 @@ class TagsController extends AdminBaseController
             'tl'
         );
         $srch->addMultipleFields(array("tl.tag_name"));
-
+        $srch->addOrder('tag_id', 'DESC');
         $rs = $srch->getResultSet();
         $records =array();
         if ($rs) {

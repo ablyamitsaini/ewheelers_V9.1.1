@@ -888,7 +888,7 @@ class CommonHelper extends FatUtility
 
     public static function parseYouTubeurl($url)
     {
-        $pattern = '#^(?:https?://)?';    # Optional URL scheme. Either http or https.
+        /*$pattern = '#^(?:https?://)?';    # Optional URL scheme. Either http or https.
         $pattern .= '(?:www\.)?';         #  Optional www subdomain.
         $pattern .= '(?:';                #  Group host alternatives:
         $pattern .=   'youtu\.be/';       #    Either youtu.be,
@@ -902,10 +902,13 @@ class CommonHelper extends FatUtility
         $pattern .= ')';                  #  End host alternatives.
         $pattern .= '([\w-]{11})';        # 11 characters (Length of Youtube video ids).
         $pattern .= '(?:.+)?$#x';         # Optional other ending URL parameters.
-        preg_match($pattern, $url, $matches);
+
+        preg_match($pattern, $url, $matches);*/
+
+        preg_match("/(?:[\/]|v=)([a-zA-Z0-9-_]{11})/", $url, $matches);
+
         return (isset($matches[1])) ? $matches[1] : false;
     }
-
     public static function getCurrUrl()
     {
         return self::getUrlScheme() . $_SERVER["REQUEST_URI"];

@@ -23,15 +23,14 @@
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
                                 </svg>
                             </i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
-                            
+                            <?php if (!(UserAuthentication::isUserLogged()) || (UserAuthentication::isUserLogged() && (User::isBuyer()))) { ?>
                             <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--primary-border btn--filters-control"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
                                 </svg>
                             </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
-                            
+							<?php } ?>
                         </li>
-                       
                         <li>
                         <?php echo $frmProductSearch->getFieldHtml('sortBy'); ?></li>
                         <li>

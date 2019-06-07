@@ -37,6 +37,7 @@ class CommissionController extends AdminBaseController
             $cond->attachCondition('tuc.credential_username', 'like', '%'.$post['keyword'].'%', 'OR');
             $cond->attachCondition('product_identifier', 'like', '%'.$post['keyword'].'%', 'OR');
         }
+        $srch->addOrder('commsetting_id', 'DESC');
         /* echo $srch->getQuery();die; */
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);

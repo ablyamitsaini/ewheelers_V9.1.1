@@ -9,10 +9,10 @@
 				t = $.parseJSON(t);
 				if(t.errorMsg)
 				{
-					$.systemMessage(t.errorMsg,'alert--danger');
+					$.systemMessage(t.errorMsg,'alert--danger',true);
 					return false;
 				}
-				$.systemMessage(t.msg,'alert--success');
+				$.systemMessage(t.msg,'alert--success',true);
 			}
 			catch(exc){
 				console.log(exc);

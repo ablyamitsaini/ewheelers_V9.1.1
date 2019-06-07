@@ -3,7 +3,9 @@ $contactFrm->setFormTagAttribute('class', 'form form--normal');
 $contactFrm->setFormTagAttribute('action', CommonHelper::generateUrl('Custom', 'contactSubmit'));
 $contactFrm->developerTags['colClassPrefix'] = 'col-md-';
 $contactFrm->developerTags['fld_default_col'] = 6;
-$fld = $contactFrm->getField('ub_bank_address');
+$fld = $contactFrm->getField('phone');
+$fld->developerTags['col'] = 12;
+$fld = $contactFrm->getField('message');
 $fld->developerTags['col'] = 12;
 $fldSubmit = $contactFrm->getField('btn_submit');
 $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>

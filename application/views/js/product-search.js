@@ -438,7 +438,12 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 	};
 
 	searchProducts = function(frm){
-		$("input[id=keyword]").val($(frm.keyword).val());
+        var keyword = $.trim($(frm.keyword).val());
+        if (3 > keyword.length || '' === keyword) {
+            $.mbsmessage(langLbl.searchString, true, 'alert--danger');
+            return;
+        }
+		$("input[id=keyword]").val(keyword);
 		reloadProductListing(frm);
 	};
 

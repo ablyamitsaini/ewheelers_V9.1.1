@@ -394,12 +394,17 @@ class AccountController extends LoggedUserController
         $this->set('accountSummary', $accountSummary);
         $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
         $this->set('canAddMoneyToWallet', $canAddMoneyToWallet);
+        $this->_template->render(true, false);
+    }
+
+    public function creditsInfo()
+    {
         $this->set('userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()));
         $this->set('userTotalWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId(), false, false));
         $this->set('promotionWalletToBeCharged', Promotion::getPromotionWalleToBeCharged(UserAuthentication::getLoggedUserId()));
         $this->set('withdrawlRequestAmount', User::getUserWithdrawnRequestAmount(UserAuthentication::getLoggedUserId()));
         $this->set('userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()));
-        $this->_template->render(true, false);
+        $this->_template->render(false, false);
     }
 
     public function setUpWalletRecharge()
