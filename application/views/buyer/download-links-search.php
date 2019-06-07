@@ -1,5 +1,4 @@
-<?php
-defined('SYSTEM_INIT') or die('Invalid Usage.');
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 $frmSrch->setFormTagAttribute('onSubmit', 'searchBuyerDownloadLinks(this); return false;');
 $frmSrch->setFormTagAttribute('class', 'form');
@@ -60,20 +59,16 @@ foreach ($digitalDownloadLinks as $sn => $row) {
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'opddl_downloadable_link':
-                /* $link = ($row['downloadable']!=1) ? Labels::getLabel('LBL_N/A',$siteLangId) : $row['opddl_downloadable_link'];
-                $linkUrl = ($row['downloadable']!=1) ? 'javascript:void(0)' : $row['opddl_downloadable_link'];
-                $linkOnClick = ($row['downloadable']!=1) ? '' : 'increaseDownloadedCount('.$row['opddl_link_id'].')';
-                $linkTitle = ($row['downloadable']!=1) ? '' : Labels::getLabel('LBL_Click_to_download',$siteLangId);
-
-                $td->appendElement('a', array('href'=> $linkUrl, 'class'=>'', 'title'=>$linkTitle, 'onClick'=>$linkOnClick),
-                $link, true); */
                 if ($row['downloadable'] != 1) {
                     $td->appendElement('plaintext', array(), Labels::getLabel('LBL_N/A', $siteLangId), true);
                 } else {
+                    $linkOnClick = ($row['downloadable']!=1) ? '' : 'return increaseDownloadedCount('.$row['opddl_link_id'].','.$row['op_id'].')';
                     $ul = $td->appendElement("ul", array("class" => "actions"), '', true);
-
                     $li = $ul->appendElement("li");
-                    $li->appendElement('a', array('href' => $row['opddl_downloadable_link'], 'class'=>'', 'title'=>Labels::getLabel('LBL_Click_to_open', $siteLangId)), '<i class="fa fa-download"></i>', true);
+
+                    $li->appendElement('a', array('href' => $row['opddl_downloadable_link'], 'target' => '_blank', 'onClick' => $linkOnClick, 'class'=>'', 'title'=>Labels::getLabel('LBL_Click_to_download', $siteLangId)), '<i class="fa fa-download"></i>', true);
+
+                    // $li->appendElement('a', array('href' => $row['opddl_downloadable_link'], 'class'=>'', 'title'=>Labels::getLabel('LBL_Click_to_open', $siteLangId)), '<i class="fa fa-download"></i>', true);
 
                     /* $li = $ul->appendElement("li");
                     $li->appendElement('a', array('href'=> 'javascript:void(0)', 'id'=>'dataLink', 'data-link'=>$row['opddl_downloadable_link'], 'onclick'=>'copyToClipboard(this)',
@@ -102,7 +97,7 @@ foreach ($digitalDownloadLinks as $sn => $row) {
     }
 }
 if (count($digitalDownloadLinks) == 0) {
-   $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
+    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
 }
 echo $tbl->getHtml();
 
@@ -113,12 +108,26 @@ $this->includeTemplate('_partial/pagination.php', $pagingArr, false);
 
 ?>
 <script>
-function copyToClipboard(element) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  $temp.val($('#dataLink').attr("data-link")).select();
-  document.execCommand("copy");
-  $temp.remove();
-  alert('<?php echo Labels::getLabel('LBL_Your_link_is_copied_to_clipboard', $siteLangId); ?>');
-}
+    function increaseDownloadedCount( linkId, opId ){
+        fcom.ajax(fcom.makeUrl('buyer', 'downloadDigitalProductFromLink', [linkId,opId]), '', function(t) {
+            var ans = $.parseJSON(t);
+            if( ans.status == 0 ){
+                $.systemMessage( ans.msg, 'alert--danger');
+                return false;
+            }
+            /* var dataLink = $(this).attr('data-link');
+            window.location.href= dataLink; */
+            location.reload();
+            return true;
+        });
+    }
+
+    function copyToClipboard(element) {
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val($('#dataLink').attr("data-link")).select();
+      document.execCommand("copy");
+      $temp.remove();
+      alert('<?php echo Labels::getLabel('LBL_Your_link_is_copied_to_clipboard', $siteLangId); ?>');
+    }
 </script>

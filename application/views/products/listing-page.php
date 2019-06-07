@@ -23,7 +23,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
    </section>
 <?php } ?>
 
-<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount,'pageTitle'=>$pageTitle), false);  ?>
+<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount,'pageTitle'=>(isset($pageTitle)) ? $pageTitle : ''), false);  ?>
 <section class="">
     <div class="container">
         <div class="row">
