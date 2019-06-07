@@ -72,9 +72,8 @@ trait SellerCollections
             /* ] */
             $scollection_id = (array_key_exists('scollection_id', $shopcolDetails)) ? $shopcolDetails['scollection_id'] : 0;
             $colectionForm->fill($shopcolDetails);
-            $this->set('scollection_id', $scollection_id);
         }
-
+        $this->set('scollection_id', $scollection_id);
         $this->set('baseUrl', $baseUrl);
         $this->set('shop_id', $shop_id);
         $this->set('colectionForm', $colectionForm);
