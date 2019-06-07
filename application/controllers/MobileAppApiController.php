@@ -2105,6 +2105,10 @@ END,   special_price_found ) as special_price_found'
     public function login()
     {
         $post = FatApp::getPostedData();
+        if (empty($post['username']) || empty($post['password'])) {
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId)));
+        }
+
         $authentication = new UserAuthentication();
         if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
             FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(), $this->siteLangId)));
