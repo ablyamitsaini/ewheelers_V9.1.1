@@ -252,6 +252,7 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller', 'sellerProductDownloadFrm', [ selprod_id,type ]), '', function(t) {
 			$(dv).html(t);
+			$("select[name='download_type']").trigger("change");
 		});
 	};
 
