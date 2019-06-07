@@ -28,9 +28,9 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
     <div class="container">
         <div class="row">
         <?php if (!isset($noProductFound)) { ?>
-            <div class="col-lg-3">
+            <div class="col-xl-3 col-lg-12">
             <?php if (isset($shop)) { ?>
-                <div class="bg-gray rounded shop-information p-5 ">
+                <div class="bg-gray rounded shop-information">
                     <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="<?php echo CommonHelper::generateUrl('image', 'shopLogo', array($shop['shop_id'], $siteLangId, 'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
                     <div class="shop-info">
                         <div class="shop-name">
@@ -47,13 +47,15 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                  - <a href="<?php echo CommonHelper::generateUrl('Reviews', 'shop', array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews, ' ', Labels::getLabel('Lbl_Reviews', $siteLangId); ?></a>
                             <?php } ?> </span>
                         </div>
-                        <div class="share-button share-button--static-horizontal">
-                            <a href="javascript:void(0)" class="social-toggle"><i class="icn">
+                        
+                        <div class="shop-btn-group">
+                           <div class="share-button">
+                            <a href="#" class="social-toggle"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
                                 </svg>
                             </i></a>
-                            <div class="social-networks open-menu">
+                            <div class="social-networks">
                                 <ul>
                                     <li class="social-facebook">
                                         <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Shops', 'view', array($shop['shop_id'])); ?>/">
@@ -86,7 +88,6 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                 </ul>
                             </div>
                         </div>
-                        <div class="shop-btn-group">
                             <?php $showAddToFavorite = true;
                             if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {
                                 $showAddToFavorite = false;
@@ -95,7 +96,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                             <?php if ($showAddToFavorite) { ?>
                                 <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
-                                    </svg></i><?php echo Labels::getLabel('LBL_Favorite_Shop', $siteLangId); ?> </a>
+                                    </svg></i></a>
                             <?php }?>
                             <?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) {
                                 $showMoreButtons = false;
@@ -103,11 +104,11 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                             <?php if ($showMoreButtons) { ?>
                                 <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report"></use>
-                                        </svg></i><?php echo Labels::getLabel('LBL_Report_Spam', $siteLangId); ?></a>
+                                        </svg></i></a>
 
                                 <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use>
-                                        </svg></i><?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
+                                        </svg></i></a>
                             <?php } ?>
                         </div>
                     </div>
@@ -128,9 +129,9 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
             <?php
         }
         if (!isset($noProductFound)) {
-            $class ='col-xl-9';
+            $class ='col-xl-9 col-lg-12';
         } else {
-            $class= 'col-lg-12';
+            $class= 'col-xl-12 col-lg-12';
         } ?>
         <div class="<?php echo $class; ?>">
             <div class="listing-products -listing-products ">
