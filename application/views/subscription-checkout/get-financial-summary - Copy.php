@@ -1,8 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<?php if( !empty($cartSummary['scartDiscounts']['coupon_code']) ){ ?>
+<?php if( !empty($cartSummary['cartDiscounts']['coupon_code']) ){ ?>
 	<div class="gap"></div>
-	<div class="applied-coupon"><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['scartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?> <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink fr"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
+	<div class="applied-coupon"><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?> <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--sm btn--white ripplelink fr"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
 	<div class="gap"></div>
 <?php } else { ?>
 	<div class="coupon">
@@ -26,10 +26,10 @@
         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartAdjustableAmount']); ?></td>
       </tr>
       <?php }?>
-      <?php if(!empty($cartSummary['scartDiscounts'])){?>
+      <?php if(!empty($cartSummary['cartDiscounts'])){?>
       <tr>
         <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>
-        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['scartDiscounts']['coupon_discount_total']); ?></td>
+        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
       </tr>
       <?php }?>
 	   <?php if(!empty($cartSummary['cartRewardPoints'])){?>
