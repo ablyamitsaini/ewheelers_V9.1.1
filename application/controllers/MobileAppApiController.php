@@ -232,7 +232,11 @@ class MobileAppApiController extends MyAppController
             $productCatSrchObj->doNotCalculateRecords();
             /* $productCatSrchObj->setPageSize(4); */
             $productCatSrchObj->addMultipleFields(array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description'));
-            $collections = new ArrayObject();
+
+            $collections = array();
+            if (MOBILE_APP_API_VERSION < '1.3') {
+                $collections = new ArrayObject();
+            }
 
             /* [ */
 
@@ -244,6 +248,7 @@ class MobileAppApiController extends MyAppController
                 $shopSearchObj = new ShopSearch($this->siteLangId);
                 $shopSearchObj ->setDefinedCriteria($this->siteLangId);
 
+                $i = 0;
                 foreach ($collectionsDbArr as $collection_id => $collection) {
                     if (!$collection['collection_primary_records']) {
                         continue;
@@ -279,7 +284,11 @@ class MobileAppApiController extends MyAppController
                             $productSrchTempObj->addGroupBy('selprod_id');
                             $productSrchTempObj->setPageSize($collection['collection_primary_records']);
                             $rs = $productSrchTempObj->getResultSet();
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            if (MOBILE_APP_API_VERSION < '1.3') {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            } else {
+                                $collections[$i] = $collection;
+                            }
                             $collection_products = $this->db->fetchAll($rs, 'selprod_id');
                             $home_collection_products = array();
                             foreach ($collection_products as $skey => $sval) {
@@ -292,7 +301,11 @@ class MobileAppApiController extends MyAppController
                                 $home_collection_products[] = array_merge($sval, $arr_product_val);
                                 //$home_collection_products[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('image','product', array($sval['product_id'], "MEDIUM", $sval['selprod_id'], 0, $this->siteLangId))));
                             }
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $home_collection_products;
+                            if (MOBILE_APP_API_VERSION < '1.3') {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $home_collection_products;
+                            } else {
+                                $collections[$i]['products'] = $home_collection_products;
+                            }
                             //commonHelper::printArray($collections); die;
                             /* ] */
                             unset($tempObj);
@@ -318,7 +331,11 @@ class MobileAppApiController extends MyAppController
                             $rs = $productCatSrchTempObj->getResultSet();
                             /* ] */
 
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            if (MOBILE_APP_API_VERSION < '1.3') {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            } else {
+                                $collections[$i] = $collection;
+                            }
 
                             $collection_categories = $this->db->fetchAll($rs);
                             $home_collection_categories = array();
@@ -326,7 +343,11 @@ class MobileAppApiController extends MyAppController
                                 $home_collection_categories[] = array_merge($sval, array("image_url"=>CommonHelper::generateFullUrl('category', 'icon', array($sval['prodcat_id'],$this->siteLangId))));
                             }
 
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'] = $home_collection_categories;
+                            if (MOBILE_APP_API_VERSION < '1.3') {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'] = $home_collection_categories;
+                            } else {
+                                $collections[$i]['categories'] = $home_collection_categories;
+                            }
 
                             unset($tempObj);
                             break;
@@ -347,16 +368,26 @@ class MobileAppApiController extends MyAppController
                             $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
                             $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','shop_name','country_name','state_name'));
                             $rs = $shopObj->getResultSet();
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            if (MOBILE_APP_API_VERSION < '1.3') {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                            } else {
+                                $collections[$i] = $collection;
+                            }
                             while ($shopsData = $this->db->fetch($rs)) {
-                                if (!$collection['collection_child_records']) {
-                                    continue;
+                                $pageSize = 3;
+                                if (MOBILE_APP_API_VERSION < '1.3') {
+                                    if (!$collection['collection_child_records']) {
+                                        continue;
+                                    }
+                                    $pageSize = $collection['collection_child_records'];
                                 }
                                 /* fetch Shop data[ */
                                 $productShopSrchTempObj = clone $productSrchObj;
                                 $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
                                 $productShopSrchTempObj->addGroupBy('selprod_product_id');
-                                $productShopSrchTempObj->setPageSize($collection['collection_child_records']);
+
+                                $productShopSrchTempObj->setPageSize($pageSize);
+
                                 $Prs = $productShopSrchTempObj->getResultSet();
 
 
@@ -369,7 +400,11 @@ class MobileAppApiController extends MyAppController
                                 $shopsData['shop_logo']=CommonHelper::generateFullUrl('image', 'shopLogo', array($shopsData['shop_id'], $this->siteLangId));
                                 $shopsData['shop_banner']=CommonHelper::generateFullUrl('image', 'shopBanner', array($shopsData['shop_id'], $this->siteLangId));
 
-                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
+                                if (MOBILE_APP_API_VERSION < '1.3') {
+                                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
+                                } else {
+                                    $collections[$i]['shops'][$shopsData['shop_id']]['shopData']=$shopsData;
+                                }
 
 
 
@@ -388,8 +423,14 @@ class MobileAppApiController extends MyAppController
                                 }
 
 
-                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $home_collectionProds;
+                                if (MOBILE_APP_API_VERSION < '1.3') {
+                                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $home_collectionProds;
+                                } else {
+                                    $collections[$i]['shops'][$shopsData['shop_id']]['products'] = $home_collectionProds;
+                                }
+
                                 //$collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
+
 
                                 /* ] */
                             }
@@ -397,8 +438,14 @@ class MobileAppApiController extends MyAppController
                             unset($tempObj);
                             break;
                     }
+                    $i++;
                 }
             }
+
+            if (MOBILE_APP_API_VERSION > '1.2') {
+                $collections = array_values($collections);
+            }
+
             FatCache::set('collectionCache', serialize($collections), '.txt');
         }
         /* ] */
@@ -2105,6 +2152,10 @@ END,   special_price_found ) as special_price_found'
     public function login()
     {
         $post = FatApp::getPostedData();
+        if (empty($post['username']) || empty($post['password'])) {
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId)));
+        }
+
         $authentication = new UserAuthentication();
         if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
             FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(), $this->siteLangId)));
