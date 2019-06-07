@@ -8,9 +8,9 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
         <span class="icn"> </span>
         <span class="icn-txt"><strong><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></strong>
             <span class="cartQuantity"><?php echo $totalCartItems.' '; ?></span>
-            <?php if (0 < $cartSummary['cartTotal']) { ?>
+            <?php /* if (0 < $cartSummary['cartTotal']) { */ ?>
                 <span class="cartValue"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></span>
-            <?php } ?>
+            <?php /* } */ ?>
         </span>
     </a>
     <div class="dropsection cart-detail">

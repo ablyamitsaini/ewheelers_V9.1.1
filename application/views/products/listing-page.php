@@ -12,13 +12,13 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
     <section class="section page-category">
         <div class="container">
            <div class="page-category__media"><img src="<?php echo $bannerImage; ?>"></div>
-           
+
                <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
                     <div class="page-category__content">
                     <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
                      </div>
                 <?php } ?>
-          
+
         </div>
    </section>
 <?php } ?>
