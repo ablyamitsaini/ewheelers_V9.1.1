@@ -375,7 +375,7 @@ $(document).ready(function(){
         }
    }
 
-   function setSelectedCatValue(id){
+    function setSelectedCatValue(id){
 		var currentId = 'category--js-'+id;
 		var e = document.getElementById(currentId);
 		if(e != undefined){
@@ -384,6 +384,7 @@ $(document).ready(function(){
             $(e).parent().addClass('is-active');
 			$('#selected__value-js').html(catName);
 			$('#selected__value-js').closest('form').find('input[name="category"]').val(id);
+            $('.dropdown__trigger-js').parent('.dropdown').removeClass("is-active");
 		}
 	}
 

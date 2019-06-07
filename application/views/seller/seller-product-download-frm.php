@@ -100,22 +100,20 @@
     var DIGITAL_DOWNLOAD_FILE = <?php echo applicationConstants::DIGITAL_DOWNLOAD_FILE; ?>;
     var DIGITAL_DOWNLOAD_LINK = <?php echo applicationConstants::DIGITAL_DOWNLOAD_LINK; ?>;
 
-    $(document).ready(function() {
-        $("select[name='download_type']").change(function() {
-            alert('hi');
-            if ($(this).val() == DIGITAL_DOWNLOAD_FILE) {
-                $(".lang_fld").show();
-                $(".downloadable_file_fld").show();
-                $(".filesList").show();
-                $(".downloadable_link_fld").hide();
-                $(".submit_button").hide();
-            } else {
-                $(".lang_fld").hide();
-                $(".downloadable_file_fld").hide();
-                $(".filesList").hide();
-                $(".downloadable_link_fld").show();
-                $(".submit_button").show();
-            }
-        });
+    $(document).on("change", "select[name='download_type']", function(){
+        if ($(this).val() == DIGITAL_DOWNLOAD_FILE) {
+            $(".lang_fld").show();
+            $(".downloadable_file_fld").show();
+            $(".filesList").show();
+            $(".downloadable_link_fld").hide();
+            $(".submit_button").hide();
+        } else {
+            $(".lang_fld").hide();
+            $(".downloadable_file_fld").hide();
+            $(".filesList").hide();
+            $(".downloadable_link_fld").show();
+            $(".submit_button").show();
+        }
     });
+    $("select[name='download_type']").trigger("change");
 </script>
