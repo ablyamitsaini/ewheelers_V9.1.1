@@ -20,7 +20,7 @@ if( isset( $collections ) && count($collections) ){
 		<div class="ft-products">
 			<div class="row">
 				<?php foreach( $row['products'] as $product ){ ?>
-				<div class="col-lg-4 col-md-4 ">
+				<div class="col-xl-4 col-lg-6 col-md-6">
 					<?php $layoutClass = 'products--layout'; include('product-layout-1-list.php'); ?>
 				</div>
 				<?php } ?>

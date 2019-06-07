@@ -5,7 +5,7 @@
         <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
     </h5>
     <div class="action">
-        <label class="checkbox">
+        <label class="checkbox checkbox-inline">
             <input type="checkbox" class='selectAll-js' onclick="selectAll($(this));"><i class="input-helper"></i>Select all
         </label>
         <a title='<?php echo Labels::getLabel('LBL_Move_to_other_wishlist', $siteLangId); ?>' class="btn btn--primary btn--sm" onclick="viewWishList(0,this,event);" href="javascript:void(0)">

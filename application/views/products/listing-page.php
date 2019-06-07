@@ -9,33 +9,21 @@ if (!empty($category['banner'])) {
     $bannerImage = CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide'));
 }
 if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?>
-    <section class="section bg-brands" style="background-image: url(<?php echo $bannerImage; ?>)">
-        <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-9">
-                        <div class="text-center">
-                            <h6 class="txt-white"><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-    </section>
-<?php } ?>
-<?php if (isset($pageTitle)) { ?>
-<section class="section section--pagebar">
-    <div class="container">
-        <div class="section-head  section--white--head justify-content-center mb-0">
-            <div class="section__heading">
-                <h2 class="mb-0"><?php echo $pageTitle; ?> <?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record"><?php echo $page;?> - </span><span
-                        id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span> */ ?> </h2>
-            </div>
+    <section class="section page-category">
+        <div class="container">
+           <div class="page-category__media"><img src="<?php echo $bannerImage; ?>"></div>
+           
+               <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
+                    <div class="page-category__content">
+                    <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
+                     </div>
+                <?php } ?>
+          
         </div>
-    </div>
-</section>
+   </section>
 <?php } ?>
-<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount), false);  ?>
+
+<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount,'pageTitle'=>$pageTitle), false);  ?>
 <section class="">
     <div class="container">
         <div class="row">

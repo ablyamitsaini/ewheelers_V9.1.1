@@ -424,8 +424,9 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 }
 
 var screenResolutionForSlider = {
-        1024: 4,
-        768: 4,
+        1199: 3,
+        1024: 3,
+        768: 2,
         480: 2
     }
 
@@ -448,12 +449,18 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
                             autoplay: autoInfinitePlay,
                             arrows: true,
                             responsive: [{
+                                    breakpoint: 1199,
+                                    settings: {
+                                        slidesToShow: slidesToShowForDiffResolution[1199],
+                                    }
+                                },
+								{
                                     breakpoint: 1024,
                                     settings: {
                                         slidesToShow: slidesToShowForDiffResolution[1024],
                                     }
                                 },
-                                {
+								{
                                     breakpoint: 768,
                                     settings: {
                                         slidesToShow: slidesToShowForDiffResolution[768],
