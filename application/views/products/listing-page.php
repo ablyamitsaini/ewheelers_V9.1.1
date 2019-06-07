@@ -1,10 +1,19 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-    $frmProductSearch->setFormTagAttribute('onSubmit', 'searchProducts(this); return(false);');
-    $keywordFld = $frmProductSearch->getField('keyword');
-    $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
-    $keywordFld = $frmProductSearch->getField('keyword');
-    $keywordFld->overrideFldType("hidden");
-    $bannerImage = '';
+if(empty($products)){
+    $pSrchFrm = Common::getSiteSearchForm();
+    $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $siteLangId)));
+    $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
+
+    $this->includeTemplate('_partial/no-product-found.php', array('pSrchFrm'=>$pSrchFrm,'siteLangId'=>$siteLangId,'postedData'=>$postedData), true);
+    return;
+}
+
+$frmProductSearch->setFormTagAttribute('onSubmit', 'searchProducts(this); return(false);');
+$keywordFld = $frmProductSearch->getField('keyword');
+$keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
+$keywordFld = $frmProductSearch->getField('keyword');
+$keywordFld->overrideFldType("hidden");
+$bannerImage = '';
 if (!empty($category['banner'])) {
     $bannerImage = CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide'));
 }
@@ -12,13 +21,13 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
     <section class="section page-category">
         <div class="container">
            <div class="page-category__media"><img src="<?php echo $bannerImage; ?>"></div>
-           
+
                <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
                     <div class="page-category__content">
                     <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
                      </div>
                 <?php } ?>
-          
+
         </div>
    </section>
 <?php } ?>
@@ -27,7 +36,6 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
 <section class="">
     <div class="container">
         <div class="row">
-        <?php if (!isset($noProductFound)) { ?>
             <div class="col-lg-3">
             <?php if (isset($shop)) { ?>
                 <div class="bg-gray rounded shop-information p-5 ">
@@ -125,17 +133,10 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                     <div class="filters__ele productFilters-js"></div>
                 </div>
             </div>
-            <?php
-        }
-        if (!isset($noProductFound)) {
-            $class ='col-xl-9';
-        } else {
-            $class= 'col-lg-12';
-        } ?>
-        <div class="<?php echo $class; ?>">
+        <div class="col-xl-9">
             <div class="listing-products -listing-products ">
                     <div id="productsList" role="main-listing" class="row product-listing">
-                    <?php if ($recordCount > 0) {
+                    <?php
                         $productsData = array(
                                         'products'=> $products,
                                         'page'=> $page,
@@ -145,13 +146,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                         'siteLangId'=> $siteLangId,
                                     );
                         $this->includeTemplate('products/products-list.php', $productsData, false);
-                    } else {
-                        $pSrchFrm = Common::getSiteSearchForm();
-                        $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $siteLangId)));
-                        $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
-
-                        $this->includeTemplate('_partial/no-product-found.php', array('pSrchFrm'=>$pSrchFrm,'siteLangId'=>$siteLangId,'postedData'=>$postedData), true);
-                    } ?> </div>
+                    ?> </div>
                 </div>
             </div>
         </div>
