@@ -139,6 +139,15 @@ class ProductsController extends MyAppController
         $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
         /* ] */
 
+        /*$recordSrch = clone $prodSrchObj;
+        $recordSrch->addMultipleFields(array('product_id'));
+        $recordSrch->setPageSize(1);
+        $rs = $recordSrch->getResultSet();
+        $totalRecords = FatApp::getDb()->totalRecords($rs);
+        if(1 > $totalRecords){
+            exit();
+        }*/
+
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
 

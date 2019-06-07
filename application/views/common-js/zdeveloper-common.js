@@ -361,8 +361,8 @@ function submitSiteSearch(frm) {
     document.location.href = url;
 }
 
-function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5, slidesToScroll = 1) {
-    slidesToShow = (typeof slidesToShow != "undefined") ? parseInt(slidesToShow) : 5;
+function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4, slidesToScroll = 1) {
+    slidesToShow = (typeof slidesToShow != "undefined") ? parseInt(slidesToShow) : 4;
     slidesToScroll = (typeof slidesToScroll != "undefined") ? parseInt(slidesToScroll) : 1;
     layoutDirection = (typeof layoutDirection != "undefined") ? layoutDirection : 'ltr';
     if (imagesForNav) {
@@ -378,27 +378,21 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 			vertical: true,
 			verticalSwiping: true,
 			responsive: [{
-					breakpoint: 1050,
+					breakpoint: 1199,
 					settings: {
 						slidesToShow: 4,
+                        vertical: false,
+			            verticalSwiping: false,
 					}
 				},
+				
 				{
-					breakpoint: 800,
-					settings: {
-						slidesToShow: 3,
-						vertical: true,
-						verticalSwiping: true,
-
-					}
-				},
-				{
-					breakpoint: 400,
+					breakpoint: 767,
 					settings: {
 						slidesToShow: 2,
-						vertical: true,
-						verticalSwiping: true,
-					}
+                         vertical: false,
+			            verticalSwiping: false,
+				    }
 				}
 			]
 		};
@@ -424,9 +418,9 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 }
 
 var screenResolutionForSlider = {
-        1199: 3,
-        1024: 3,
-        768: 2,
+        1199: 4,
+        1023: 3,
+        767: 2,
         480: 2
     }
 
@@ -455,15 +449,15 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
                                     }
                                 },
 								{
-                                    breakpoint: 1024,
+                                    breakpoint: 1023,
                                     settings: {
-                                        slidesToShow: slidesToShowForDiffResolution[1024],
+                                        slidesToShow: slidesToShowForDiffResolution[1023],
                                     }
                                 },
 								{
-                                    breakpoint: 768,
+                                    breakpoint: 767,
                                     settings: {
-                                        slidesToShow: slidesToShowForDiffResolution[768],
+                                        slidesToShow: slidesToShowForDiffResolution[767],
                                     }
                                 },
                                 {

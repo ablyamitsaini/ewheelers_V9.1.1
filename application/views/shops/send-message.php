@@ -47,23 +47,28 @@
 	$shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 
-<div id="body" class="body bg--gray">
-  <section class="top-space">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-sm-8">
-          <div class="cell">
-            <div class="shop-info text-left">
-              <h5><?php echo $shop['shop_name']; ?></h5>
+<div id="body" class="body">
+ 
+ <div class="section section--pagebar">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h1><?php echo $shop['shop_name']; ?></h1>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
-            </div>
+            
           </div>
+          <div class="col-md-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a> </div>
         </div>
-        <div class="col-md-4 col-sm-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>  </div>
       </div>
-       <div class="section clearfix">
-	   
-	   <div class="section-head">
+    </div>
+ 
+ 
+  <section class="section">
+    <div class="container">
+      
+		  <div class="row justify-content-center">
+			  <div class="col-xl-8 col-lg-8">
+			  <div class="section-head">
 			<div class="section__heading">
 				<h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
 			</div>
@@ -71,13 +76,12 @@
 			
 			<?php } ?>
 					</div>
-					
- 
-		  <div class="">
-		    <div class="box box--white box--radius box--border box--space"> <?php echo $frm->getFormHtml(); ?> </div>
+			  
+				<div class="box box--gray box--radius box--border p-5"> <?php echo $frm->getFormHtml(); ?> </div>
+			  </div>
 		  </div>
-		</div>
+		<div class="gap"></div><div class="gap"></div><div class="gap"></div>
     </div>
   </section>
-	<div class="gap"></div>
+	
 </div>

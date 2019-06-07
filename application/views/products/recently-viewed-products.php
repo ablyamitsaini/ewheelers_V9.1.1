@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 if ($recentViewedProducts) {
-    ?> <section class="section bg--second-color">
+    ?> <section class="section bg--gray">
     <div class="container">
         <div class="section-head section--white--head section--head--center">
             <div class="section__heading">

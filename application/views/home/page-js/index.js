@@ -2,7 +2,7 @@ $(document).ready(function(){
 		/* alert(singleFeaturedProduct); */
 		/* home page main slider */
         
-        $('.js-collection-corner').slick( getSlickSliderSettings(6, 1, langLbl.layoutDirection) );
+        $('.js-collection-corner').slick( getSlickSliderSettings(5, 1, langLbl.layoutDirection) );
         
 		if(langLbl.layoutDirection == 'rtl'){
 

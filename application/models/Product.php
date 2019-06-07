@@ -1269,18 +1269,28 @@ END,   special_price_found ) as special_price_found'
             }
         }
 
-        if (array_key_exists('min_price_range', $criteria)) {
-            if (!empty($criteria['min_price_range'])) {
-                $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['min_price_range'], false, false);
-                $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
-            }
+        $minPriceRange = '';
+        if (array_key_exists('price-min-range', $criteria)) {
+            $minPriceRange = $criteria['price-min-range'];
+        } elseif (array_key_exists('min_price_range', $criteria)) {
+            $minPriceRange = $criteria['min_price_range'];
         }
 
-        if (array_key_exists('max_price_range', $criteria)) {
-            if (!empty($criteria['max_price_range'])) {
-                $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($criteria['max_price_range'], false, false);
-                $srch->addCondition('theprice', '<=', $max_price_range_default_currency);
-            }
+        if (!empty($minPriceRange)) {
+            $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($minPriceRange, false, false);
+            $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
+        }
+
+        $maxPriceRange = '';
+        if (array_key_exists('price-max-range', $criteria)) {
+            $maxPriceRange = $criteria['price-max-range'];
+        } elseif (array_key_exists('max_price_range', $criteria)) {
+            $maxPriceRange = $criteria['max_price_range'];
+        }
+
+        if (!empty($maxPriceRange)) {
+            $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($maxPriceRange, false, false);
+            $srch->addCondition('theprice', '<=', $max_price_range_default_currency);
         }
 
         if (array_key_exists('featured', $criteria)) {
