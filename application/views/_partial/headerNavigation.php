@@ -3,7 +3,7 @@
 <div class="last-bar">
     <div class="container">
         <div class="navigations__overlayx"></div>
-        <a class="navs_toggle" href="javascript:void(0)"><span></span></a>
+        
         <div class="navigation-wrapper">
             <ul class="navigations">
                 <?php

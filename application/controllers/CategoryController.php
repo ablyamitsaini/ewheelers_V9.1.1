@@ -196,9 +196,9 @@ class CategoryController extends MyAppController
             AttachedFile::displayImage($image_name, $w, $h, $default_image);
             break;
         case 'WIDE':
-            $w = 1000;
-            $h = 563;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
+            $w = 1350;
+            $h = 400;
+            AttachedFile::displayImage($image_name, $w, $h);
             break;
         default:
             AttachedFile::displayOriginalImage($image_name, $default_image);

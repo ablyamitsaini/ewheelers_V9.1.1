@@ -5,7 +5,7 @@ if (!$isUserLogged) {
         data-org-url="<?php echo CommonHelper::generateUrl('GuestUser', 'logout', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout'); ?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a>
 </li> <?php
     } else {
-        ?> <li> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
+        ?> <li class="dropdown--user"> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#login"></use>
             </svg></i> <span>
             <strong><?php echo Labels::getLabel('LBL_Login_/_Sign_Up', $siteLangId); ?></strong></span></a></li> <?php
@@ -34,7 +34,7 @@ if (!$isUserLogged) {
     if (!$userActiveTab) {
         $dashboardUrl = CommonHelper::generateUrl('Account');
         $dashboardOrgUrl = CommonHelper::generateUrl('Account', '', array(), '', null, false, $getOrgUrl);
-    } ?> <li class="dropdown dropdown--arrow"> <?php if (isset($isUserDashboard) && ($isUserDashboard)) { ?>
+    } ?> <li class="dropdown dropdown--arrow dropdown--user"> <?php if (isset($isUserDashboard) && ($isUserDashboard)) { ?>
         <a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
         <img class="my-account__avatar" src="<?php echo $profilePicUrl; ?>" alt="">
     </a> <?php

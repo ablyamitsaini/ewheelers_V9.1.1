@@ -6,7 +6,7 @@ $bCount = 1;
 if( $bannerLayout1['blocation_active']){ ?>
  <section class="">
  <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
 	<?php foreach($bannerLayout1['banners'] as $val){
 		/* if($bCount%2==0)
 		{
