@@ -10,9 +10,9 @@
                 <div class="breadcrumbs">
                     <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
                 </div>
-                <h5 class="mt-3 mb-0"><?php echo $pageTitle; ?> <?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record"><?php echo $page;?> - </span><span
-                        id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span> */ ?> <span class="hide_on_no_product -color-light">(<span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?>)</span></h5>
-                
+                <h5 class="mt-3 mb-0"><?php echo $pageTitle; ?> <?php /*<span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record"><?php echo $page;?> - </span><span
+                        id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span>*/ ?>  <span class="small -color-light">(<span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS', $siteLangId); ?>)</span> </h5>
+
             </div>
             <div class="col-xl-6">
                 <div id="top-filters" class="page-sort hide_on_no_product">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>

@@ -266,7 +266,9 @@ class HomeController extends MyAppController
                             $productShopSrchTempObj->addGroupBy('selprod_product_id');
                             $productShopSrchTempObj->setPageSize(7);
                             $Prs = $productShopSrchTempObj->getResultSet();
-
+                            if ($productShopSrchTempObj->recordCount() == 0) {
+                                continue;
+                            }
                             $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
                             $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
                             /* ] */
