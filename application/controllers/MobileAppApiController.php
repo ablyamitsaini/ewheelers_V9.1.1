@@ -438,6 +438,7 @@ class MobileAppApiController extends MyAppController
                             unset($tempObj);
                             break;
                     }
+                    $i++;
                 }
             }
 
