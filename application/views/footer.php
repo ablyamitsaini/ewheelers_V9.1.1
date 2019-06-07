@@ -25,36 +25,50 @@
         <div class="up-footer section">
             <div class="row">
                 <?php $this->includeTemplate( '_partial/footerNavigation.php'); ?>
-                <div class="col-lg-2 col-md-2 col-sm-12 column">
-					<div class="">
-						<div class="f-heading">
-							<?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?>
+                <div class="col-lg-2 col-md-4 col-sm-12 column">
+                
+                	<div class="toggle-group">
+						<h5 class="toggle__trigger toggle__trigger-js"><?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?></h5>
+						<div class="toggle__target toggle__target-js">
+							<div class="store-button">
+							<a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--primary ripplelink storeBtn-js"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/store-icn.png" alt=""></i>
+								<?php echo Labels::getLabel('LBL_Open_a_store', $siteLangId); ?> </a>
+							</div>
+							<?php /* <div class="gap"></div>
+							<div class="f-heading"><?php echo Labels::getLabel('LBL_DOWNLOAD_THE_APP',$siteLangId); ?> [Pending]</div>
+							<div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
 						</div>
-						<div class="store-button">
-						<a href="<?php echo CommonHelper::generateUrl('supplier');?>" class="btn btn--primary ripplelink storeBtn-js"><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/store-icn.png" alt=""></i>
-							<?php echo Labels::getLabel('LBL_Open_a_store', $siteLangId); ?> </a>
-						</div>
-						<?php /* <div class="gap"></div>
-						<div class="f-heading"><?php echo Labels::getLabel('LBL_DOWNLOAD_THE_APP',$siteLangId); ?> [Pending]</div>
-						<div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
 					</div>
+                
+                
+					
 				</div>
-				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 column">
-					<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){ ?><div class="newsletter">
-						<h4><?php echo Labels::getLabel('LBL_Sign_Up_To_Our_Newsletter', $siteLangId);?></h4>
-						<p><?php echo Labels::getLabel('LBL_Be_the_first_to_here_about_the_latest_trends,_new_arrivals_&_exclusive_offers', $siteLangId);?></p>
+				<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 column">
+					
+					<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){ ?>
+					<div class="toggle-group">
+						<h5 class="toggle__trigger toggle__trigger-js"><?php echo Labels::getLabel('LBL_Sign_Up_To_Our_Newsletter', $siteLangId);?></h5>
+						<div class="toggle__target toggle__target-js">
+							<p><?php echo Labels::getLabel('LBL_Be_the_first_to_here_about_the_latest_trends,_new_arrivals_&_exclusive_offers', $siteLangId);?></p>
+							
+					
+							<?php $this->includeTemplate( '_partial/footerNewsLetterForm.php'); } ?>
+							<ul class="contact-info">
+								<?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
+								if( $site_conatct ){ ?>
+									<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-mobile.png"></i><?php echo $site_conatct;?></li>
+								<?php } ?>
+								<?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,'');
+								if( $email_id ){ ?>
+									<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-email.png"></i> <a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a> </li>
+								<?php } ?>
+							</ul>
+							
+							
+						</div>
 					</div>
-					<?php $this->includeTemplate( '_partial/footerNewsLetterForm.php'); } ?>
-					<ul class="contact-info">
-						<?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
-						if( $site_conatct ){ ?>
-							<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-mobile.png"></i><?php echo $site_conatct;?></li>
-						<?php } ?>
-						<?php $email_id = FatApp::getConfig('CONF_CONTACT_EMAIL',FatUtility::VAR_STRING,'');
-						if( $email_id ){ ?>
-							<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-email.png"></i> <a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a> </li>
-						<?php } ?>
-					</ul>
+				
+					
 				</div>
 			</div>
 		</div>

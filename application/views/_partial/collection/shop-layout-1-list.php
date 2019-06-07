@@ -1,6 +1,6 @@
 <div class="row">
 <?php $i=0; foreach( $row['shops'] as $shop ){ ?>
-    <div class="col-lg-3 col-md-3 mb-sm-3">
+    <div class="col-lg-3 col-md-6 mb-sm-3">
         <div class="featured-item">
          <div class="featured_inner p-2 pt-4 pb-4">
                  <div class="featured_logo mt-2 mb-3"><img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','shopLogo', array($shop['shopData']['shop_id'], $siteLangId, "THUMB", 0, false),CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $shop['shopData']['shop_name']; ?>"></div>

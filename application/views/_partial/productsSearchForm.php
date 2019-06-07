@@ -3,49 +3,48 @@
     $keywordFld->overrideFldType("hidden");
     echo $frmProductSearch->getFormTag();
 ?>
-<section class="pt-5 pb-3">
+<section class="section-controls">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6">
+            <div class="col-xl-6">
                 <div class="breadcrumbs">
                     <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
                 </div>
-                <div class="total-products">
-                    <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?></span>
-                </div>
+                <h5 class="mt-3 mb-0"><?php echo $pageTitle; ?> <?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record"><?php echo $page;?> - </span><span
+                        id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span>  <span class="hide_on_no_product -color-light"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS_TOTAL', $siteLangId); ?></span>*/ ?> </h5>
+
             </div>
-            <div class="col-lg-6">
+            <div class="col-xl-6">
                 <div id="top-filters" class="page-sort hide_on_no_product">
                     <ul>
-                        <?php if (!(UserAuthentication::isUserLogged()) || (UserAuthentication::isUserLogged() && (User::isBuyer()))) { ?>
-                        <li><div class="save-search">
-                            <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--border"><i class="icn">
+                        <li class="list__item">
+                           <a href="javascript:void(0)" class="link__filter btn btn--secondary-border d-xl-none btn--filters-control"><i class="icn">
+                                <svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
+                                </svg>
+                            </i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
+                            <?php if (!(UserAuthentication::isUserLogged()) || (UserAuthentication::isUserLogged() && (User::isBuyer()))) { ?>
+                            <a href="javascript:void(0)" onclick="saveProductSearch()" class="btn btn--primary-border btn--filters-control"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#savesearch"></use>
                                 </svg>
-                            </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a></div>
+                            </i><span class="txt"><?php echo Labels::getLabel('LBL_Save_Search', $siteLangId); ?></span></a>
+							<?php } ?>
                         </li>
-                        <?php }?>
                         <li>
                         <?php echo $frmProductSearch->getFieldHtml('sortBy'); ?></li>
                         <li>
                         <?php echo $frmProductSearch->getFieldHtml('pageSize'); ?></li>
-                        <li>
-                            <div class="list-grid-toggle switch--link-js  d-none d-md-block">
+                        <li class="d-none d-md-block">
+                            <div class="list-grid-toggle switch--link-js">
                                 <div class="icon">
                                     <div class="icon-bar"></div>
                                     <div class="icon-bar"></div>
                                     <div class="icon-bar"></div>
                                 </div>
                             </div>
-                            <div class="d-xl-none">
-                                <a href="javascript:void(0)" class="link__filter btn btn--border"><i class="icn">
-                                    <svg class="svg">
-                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#filter"></use>
-                                    </svg>
-                                </i><span class="txt"><?php echo Labels::getLabel('LBL_Filter', $siteLangId); ?></span></a>
-                            </div>
                         </li>
+
                     </ul>
                 </div>
             </div>

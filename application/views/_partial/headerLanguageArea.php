@@ -3,7 +3,7 @@ $showDefalultLi = true;
 if ($languages && count($languages) > 1) {
     $showDefalultLi = false;
     ?>
-<li class="dropdown dropdown--arrow">
+<li class="dropdown dropdown--arrow dropdown--lang">
     <a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
         <i class="icn icn--language">
             <svg class="svg">
@@ -26,7 +26,7 @@ if ($languages && count($languages) > 1) {
 if ($currencies && count($currencies) > 1) {
     $showDefalultLi = false;
     ?>
-<li class="dropdown dropdown--arrow">
+<li class="dropdown dropdown--arrow  dropdown--currency">
     <a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js">
         <i class="icn icn-currency">
             <svg class="svg">
