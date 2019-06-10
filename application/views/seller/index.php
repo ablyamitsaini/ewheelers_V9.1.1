@@ -96,11 +96,14 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         <ul>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Completed_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo FatUtility::int($ordersCount);?></span>
+                                                <span class="total-numbers"><?php echo FatUtility::int($ordersStats['totalSoldCount']);?></span>
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo FatUtility::int($ordersStats['todayOrderCount']);?></span>
+                                                <span class="total-numbers">
+                                                    <?php $pendingOrders = $ordersCount - $ordersStats['totalSoldCount'];
+                                                    echo $pendingOrders;?>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>

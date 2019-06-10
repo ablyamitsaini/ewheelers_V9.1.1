@@ -62,7 +62,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                             <div class="products-reviews">
                                                 <span class="rate"> <i class="icn"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="<?php echo CONF_WEBROOT_URL; ?>reviews/shop/1" class="totals-review link"><?php echo round($product['totReviews'], 1);?> <?php echo Labels::getLabel('LBL_Reviews', $siteLangId); ?></a>
+                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo round($product['totReviews'], 1);?> <?php echo Labels::getLabel('LBL_Reviews', $siteLangId); ?></a>
                                             </div>
                                             <?php } ?>
                                             <?php /* if (round($product['prod_rating']) == 0) {  ?>
@@ -282,7 +282,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             <?php } */ ?>
 
                             <?php /* Volume Discounts[ */
-                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows)) { ?>
+                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows) && $product['in_stock']) { ?>
                             <div class="gap"></div>
                             <div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:</div>
                             <ul class="<?php echo (count($volumeDiscountRows) > 1) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
