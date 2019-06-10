@@ -8,6 +8,3 @@ $data = array(
     'banners' => $banners,
     'collections' => $collections,
 );
-
-$data = array_merge($commonData,$data);
-CommonHelper::jsonEncodeUnicode($data);
