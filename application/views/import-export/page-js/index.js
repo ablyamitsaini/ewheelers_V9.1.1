@@ -106,13 +106,14 @@ $(document).ready(function() {
                             } else {
                                 importMediaForm(actionType);
                             }
-                            if (typeof ans.CSVfileUrl !== 'undefined') {
-                                location.href = ans.CSVfileUrl;
-                            }
                         } else {
                             $('#fileupload_div').html('');
                             $(document).trigger('close.mbsmessage');
                             $.systemMessage(ans.msg, 'alert--danger');
+                        }
+                        
+                        if (typeof ans.CSVfileUrl !== 'undefined') {
+                            location.href = ans.CSVfileUrl;
                         }
                     } catch (exc) {
                         $(document).trigger('close.mbsmessage');
