@@ -3,9 +3,9 @@ class TopCategoriesReportController extends AdminBaseController
 {
     private $canView;
     private $canEdit;
-    
+
     public function __construct($action)
-    { 
+    {
         parent::__construct($action);
         $this->admin_id = AdminAuthentication::getLoggedAdminId();
         $this->canView = $this->objPrivilege->canViewPerformanceReport($this->admin_id, true);
@@ -13,27 +13,27 @@ class TopCategoriesReportController extends AdminBaseController
         $this->set("canView", $this->canView);
         $this->set("canEdit", $this->canEdit);
     }
-    
-    public function index() 
+
+    public function index()
     {
-        $this->objPrivilege->canViewPerformanceReport();    
+        $this->objPrivilege->canViewPerformanceReport();
         $frmSearch = $this->getSearchForm();
-        $this->set('frmSearch', $frmSearch);    
+        $this->set('frmSearch', $frmSearch);
         $this->_template->render();
     }
-    
+
     public function search( $export = false )
     {
         $this->objPrivilege->canViewPerformanceReport();
         $db = FatApp::getDb();
-        
+
         $srchFrm = $this->getSearchForm();
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $pageSize = FatApp::getPostedData('pagesize', FatUtility::VAR_INT, 10);
         $orderBy = FatApp::getPostedData('order_by', FatUtility::VAR_STRING, 'DESC');
-        
-        
+
+
         /* Sub Query to get, how many users added current product in his/her wishlist[ */
         $uWsrch = new UserWishListProductSearch();
         $uWsrch->doNotCalculateRecords();
@@ -44,9 +44,9 @@ class TopCategoriesReportController extends AdminBaseController
         $uWsrch->joinProductToCategory();
         $uWsrch->addGroupBy('ptc_prodcat_id');
         $uWsrch->addMultipleFields(array( 'uwlp_selprod_id', 'uwlist_user_id', 'ptc_prodcat_id', 'count(uwlist_user_id) as wishlist_user_counts' ));
-        
+
         /* ] */
-        
+
         /* $srch = new OrderProductSearch( 0, true );
         //$srch->joinTable( '(' . $uWsrch->getQuery() . ')', 'LEFT OUTER JOIN', 'tquwl.uwlp_selprod_id = op.op_selprod_id', 'tquwl' );
         $srch->joinTable( Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'SUBSTRING( op_selprod_code, 1, (LOCATE( "_", op_selprod_code ) - 1 ) ) = ptc.ptc_product_id', 'ptc' );
@@ -59,17 +59,17 @@ class TopCategoriesReportController extends AdminBaseController
         $srch->addGroupBy('pc.prodcat_id');
         $srch->addMultipleFields( array( 'pc.prodcat_id', 'IFNULL(pc_l.prodcat_name, pc.prodcat_identifier) as prodcat_name', 'count(op_id) as totSoldQty' , 'GROUP_CONCAT(op_id)') );
         $srch->addOrder ( 'totSoldQty', $orderBy ); */
-        
+
         //$srch->addCondition('prodcat_id', '=', '35');
         //$srch->addHaving( 'op_product_id', '=', '19' );
         //$srch->addCondition( 'op_id', '=', 325 );
-        
+
         $srch = new ProductCategorySearch($this->adminLangId, false, false, false, false);
         $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'ptc');
         $srch->joinTable(SellerProduct::DB_TBL, 'LEFT OUTER JOIN', 'sp.selprod_product_id = ptc.ptc_product_id', 'sp');
         $srch->joinTable('(' . $uWsrch->getQuery() . ')', 'LEFT OUTER JOIN', 'tquwl.ptc_prodcat_id = c.prodcat_id', 'tquwl');
-        
-        
+
+
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
         $srch->doNotCalculateRecords();
@@ -84,13 +84,13 @@ class TopCategoriesReportController extends AdminBaseController
             $catObj = new ProductCategory();
             $catTreeAssocArr = $catObj->getProdCatTreeStructure(0, $this->adminLangId, '', 0, '', false, false, true);
             /* ] */
-            
+
             $rs = $srch->getResultSet();
             $sheetData = array();
             $arr = array(Labels::getLabel('LBL_Category', $this->adminLangId),Labels::getLabel('LBL_Sold_Quantity', $this->adminLangId), Labels::getLabel('LBL_Favorites', $this->adminLangId));
             array_push($sheetData, $arr);
             while( $row = $db->fetch($rs) ){
-                $arr = array( $catTreeAssocArr[$row['prodcat_id']], $row['totSoldQty'], $row['followers'] );
+                $arr = array( $catTreeAssocArr[$row['prodcat_id']], $row['totSoldQty'], $row['wishlistUserCounts'] );
                 array_push($sheetData, $arr);
             }
             if($orderBy == "DESC" ) {
@@ -116,12 +116,12 @@ class TopCategoriesReportController extends AdminBaseController
             $this->_template->render(false, false);
         }
     }
-    
+
     public function export()
     {
         $this->search('export');
     }
-    
+
     private function getSearchForm()
     {
         $frm = new Form('frmTopCategoriesReportSearch');
