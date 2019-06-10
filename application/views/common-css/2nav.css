@@ -82,7 +82,7 @@
 	height: 2px;
 	width: 0;
 	position: absolute;
-	bottom: 6px;
+	bottom: 0;
 	-webkit-transition: 0.4s all ease;
 	transition: 0.4s all ease;
 }

@@ -6,28 +6,21 @@ $shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : 
 $shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
 
-<div id="body" class="body bg--gray">
+<div id="body" class="body">
     <div class="section section--pagebar">
       <div class="container container--fixed">
-        <div class="row">
+        <div class="row align-items-center">
           <div class="col-md-8">
-            <div class="cell">
-             <!-- <div class="cell__left">
-                <div class="avtar"><img alt="" src="images/150x150_4.jpg"></div>
-              </div>-->
-              <div class="cell__right">
-                <div class="avtar__info">
-                  <h5><?php echo $shop['shop_name']; ?></h5>
-                  <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
-                </div>
-              </div>
-            </div>
+           
+            <h1><?php echo $shop['shop_name']; ?></h1>
+            <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
+            
           </div>
-          <div class="col-md-4 align--right"><span class="gap"></span><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
+          <div class="col-md-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
         </div>
       </div>
     </div>
-	<section class="section section--gray">
+	<section class="section">
 		<div class="container">
 			<div id="itemRatings">
 				<div class="section__head">

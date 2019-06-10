@@ -10,8 +10,8 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
                     <div class="form__group">
                         <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(1)" class="btn btn--primary formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Make_Active', $siteLangId);?></a>
                         <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(0)" class="btn btn--primary-border formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Make_InActive', $siteLangId);?></a>
-                        <a href="javascript:void(0)" onClick="getShopCollectionGeneralForm(0)" class="btn btn--primary formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Add_Collection', $siteLangId);?></a>
-                        <a href="javascript:void(0)" onClick="deleteSelectedCollection()" class="btn btn--primary-border formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId);?></a>
+                        <a href="javascript:void(0)" onClick="deleteSelectedCollection()" class="btn btn--primary formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId);?></a>
+                        <a href="javascript:void(0)" onClick="getShopCollectionGeneralForm(0)" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_Add_Collection', $siteLangId);?></a>
                     </div>
                 </div>
             </div>
