@@ -1865,4 +1865,16 @@ class CommonHelper extends FatUtility
         }
         return false;
     }
+
+    public static function jsonEncodeUnicode($data, $convertToType = false)
+    {
+        die(FatUtility::convertToJson($data, 0));
+        /*
+        if($convertToType){
+        die(json_encode($data));
+        }
+        $data = $this->cleanArray($data);
+        FatUtility::dieJsonSuccess($data); */
+        //die (json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
 }

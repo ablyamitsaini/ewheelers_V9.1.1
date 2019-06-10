@@ -8,22 +8,39 @@ class CustomRouter
         if ('mobile-app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', '1.0');
+            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
         } elseif ('app-api' == $controller) {
-            $controller = 'mobile-app-api';
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', str_replace('v', '', $action));
+            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
 
-            if (!array_key_exists(0, $queryString)) {
-                $queryString[0] = '';
-            }
-            if (!array_key_exists(1, $queryString)) {
-                $queryString[1] = '';
+            if (MOBILE_APP_API_VERSION <= '1.2') {
+                $controller = 'mobile-app-api';
+                if (!array_key_exists(0, $queryString)) {
+                    $queryString[0] = '';
+                }
+                if (!array_key_exists(1, $queryString)) {
+                    $queryString[1] = '';
+                }
+            } else {
+                if (!array_key_exists(0, $queryString)) {
+                    $arr = array('status'=>-1,'msg'=>"Invalid Request");
+                    die(json_encode($arr));
+                }
+
+                $controller = $queryString[0];
+                array_shift($queryString);
+
+                if (!array_key_exists(0, $queryString)) {
+                    $queryString[0] = '';
+                }
             }
 
             $action = $queryString[0];
             if ($controller != '' && $action == '') {
                 $action = 'index';
             }
+
             array_shift($queryString);
 
             $token = null;
@@ -34,6 +51,7 @@ class CustomRouter
         } else {
             define('MOBILE_APP_API_CALL', false);
             define('MOBILE_APP_API_VERSION', '');
+            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'views/');
         }
 
         define('MOBILE_APP_USER_TYPE', $userType);

@@ -26,19 +26,22 @@ class HomeController extends MyAppController
         $productSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock'));
 
-        $collections = $this->getCollections($this->siteLangId, $productSrchObj);
-        $sponsoredShops = $this->getSponsoredShops($this->siteLangId, $productSrchObj);
-        $sponsoredProds = $this->getSponsoredProducts($this->siteLangId, $productSrchObj);
-        $slides = $this->getSlides($this->siteLangId);
-        $banners = $this->getBanners($this->siteLangId);
+        $collections = $this->getCollections($productSrchObj);
+        $sponsoredShops = $this->getSponsoredShops($productSrchObj);
+        $sponsoredProds = $this->getSponsoredProducts($productSrchObj);
+        $slides = $this->getSlides();
+        $banners = $this->getBanners();
 
         $this->set('sponsoredProds', $sponsoredProds);
         $this->set('sponsoredShops', $sponsoredShops);
         $this->set('slides', $slides);
         $this->set('banners', $banners);
         $this->set('collections', $collections);
-        $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
-        $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+
+        if (false ===  MOBILE_APP_API_CALL) {
+            $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
+            $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+        }
         $this->_template->render();
     }
 
@@ -145,8 +148,9 @@ class HomeController extends MyAppController
         FatApp::redirectUser(CommonHelper::generateUrl());
     }
 
-    private function getCollections($langId, $productSrchObj)
+    private function getCollections($productSrchObj)
     {
+        $langId = $this->siteLangId;
         $collectionCache =  FatCache::get('collectionCache_'.$langId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
         if ($collectionCache) {
@@ -358,8 +362,9 @@ class HomeController extends MyAppController
         return $collections;
     }
 
-    private function getSlides($langId)
+    private function getSlides()
     {
+        $langId = $this->siteLangId;
         $db = FatApp::getDb();
         $srchSlide = new SlideSearch($langId);
         $srchSlide->doNotCalculateRecords();
@@ -414,13 +419,15 @@ class HomeController extends MyAppController
         return $slides;
     }
 
-    private function getBanners($langId)
+    private function getBanners()
     {
+        $langId = $this->siteLangId;
         return BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
     }
 
-    private function getSponsoredShops($langId, $productSrchObj)
+    private function getSponsoredShops($productSrchObj)
     {
+        $langId = $this->siteLangId;
         $shopPageSize = FatApp::getConfig('CONF_PPC_SHOPS_HOME_PAGE', FatUtility::VAR_INT, 2);
         if (1 > $shopPageSize) {
             return array();
@@ -467,8 +474,9 @@ class HomeController extends MyAppController
         return $sponsoredShops;
     }
 
-    private function getSponsoredProducts($langId, $productSrchObj)
+    private function getSponsoredProducts($productSrchObj)
     {
+        $langId = $this->siteLangId;
         $prodObj  = new PromotionSearch($langId);
         $prodObj->joinProducts();
         $prodObj->joinShops();
@@ -507,5 +515,4 @@ class HomeController extends MyAppController
         $openSidebar = (array_key_exists('openSidebar', $_COOKIE) && 0 < FatUtility::int($_COOKIE['openSidebar']) ? 0 : 1);
         setcookie('openSidebar', $openSidebar, '', CONF_WEBROOT_URL);
     }
-
 }
