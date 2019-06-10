@@ -6,12 +6,12 @@
     <div class="banner" style="<?php echo $bgImageUrl; ?>">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                <div class="col-xl-7 col-lg-6">
                     <div class="seller-slogan">
                         <div class="seller-slogan-txt"> <?php echo FatUtility::decodeHtmlEntities(nl2br($slogan['epage_content']));?> </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                <div class="col-xl-5 col-lg-6">
                     <div class="seller-register-form">
                         <div class="heading3"><?php echo Labels::getLabel('L_Register_Today', $siteLangId); ?></div>
                         <div class="gap"></div>
