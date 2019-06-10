@@ -39,7 +39,7 @@ class Stats extends MyAppModel
                 $srch->addCondition($alias.'.op_status_id', '=', FatApp::getConfig('CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS'));
                 break;
             case self::CANCELLED_SALES:
-                $srch->addCondition($alias.'.op_status_id', '!=', FatApp::getConfig('CONF_DEFAULT_CANCEL_ORDER_STATUS'));
+                $srch->addCondition($alias.'.op_status_id', '=', FatApp::getConfig('CONF_DEFAULT_CANCEL_ORDER_STATUS'));
                 break;
         }
 

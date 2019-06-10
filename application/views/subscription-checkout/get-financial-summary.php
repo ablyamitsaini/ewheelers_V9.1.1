@@ -4,9 +4,9 @@
 <div class="gap"></div>
 <div class="box box--white box--radius box--space cartdetail__footer">
     <?php if($spackage_type != SellerPackages::FREE_TYPE ) {
-        if( !empty($cartSummary['scartDiscounts']['coupon_code']) ){ ?>
+        if( !empty($cartSummary['cartDiscounts']['coupon_code']) ){ ?>
         <div class="applied-coupon">
-            <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['scartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?> </span>
+            <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code'];?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?> </span>
             <a href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--primary  btn--block"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a>
         </div>
 
@@ -29,10 +29,10 @@
             <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartAdjustableAmount']); ?></td>
           </tr>
           <?php }?>
-          <?php if(!empty($cartSummary['scartDiscounts'])){?>
+          <?php if(!empty($cartSummary['cartDiscounts'])){?>
           <tr>
             <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>
-            <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['scartDiscounts']['coupon_discount_total']); ?></td>
+            <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
           </tr>
           <?php }?>
           <?php if(!empty($cartSummary['cartRewardPoints'])){

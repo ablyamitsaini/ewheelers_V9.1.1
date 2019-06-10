@@ -36,16 +36,16 @@
           <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($scartSummary['cartAdjustableAmount']); ?></td>
         </tr>
             <?php }?>
-            <?php if(!empty($scartSummary['scartDiscounts'])){?>
+            <?php if(!empty($scartSummary['cartDiscounts'])){?>
       <tr>
         <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>
-        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($scartSummary['scartDiscounts']['coupon_discount_total']); ?></td>
+        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($scartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
       </tr>
     <?php } ?>
       <tr>
         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_You_Pay', $siteLangId);?></td>
         <td class="text-right hightlighted">    
-        <?php echo $amount = CommonHelper::displayMoneyFormat($scartSummary['cartTotal']-$scartSummary['cartAdjustableAmount']-$scartSummary['scartDiscounts']['coupon_discount_total']);?></td>
+        <?php echo $amount = CommonHelper::displayMoneyFormat($scartSummary['cartTotal']-$scartSummary['cartAdjustableAmount']-$scartSummary['cartDiscounts']['coupon_discount_total']);?></td>
 
         
       </tr>

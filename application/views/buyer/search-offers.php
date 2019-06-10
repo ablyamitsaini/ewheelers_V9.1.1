@@ -14,7 +14,7 @@ if (!empty($offers)) {
                 <h4><?php echo $discountValue; ?> <?php echo Labels::getLabel('LBL_OFF', $siteLangId); ?></h4>
                 <h6><?php echo ($row['coupon_title'] == '')?$row['coupon_identifier']:$row['coupon_title']; ?></h6>
             <p><span class="lessText"><?php echo CommonHelper::truncateCharacters($row['coupon_description'], 85, '', '', true); ?></span> <?php if (strlen($row['coupon_description']) > 85) {
-            ?> <span class="moreText" hidden><?php echo nl2br($row['coupon_description']); ?></span> <a class="readMore link--arrow" href="javascript:void(0);"> <?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId) ; ?> </a></p> <?php
+            ?> <span class="moreText hidden"><?php echo nl2br($row['coupon_description']); ?></span> <a class="readMore link--arrow" href="javascript:void(0);"> <?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId) ; ?> </a></p> <?php
             } ?> <div class="offer__footer">
                     <div class="offer__grid">
                         <p><?php echo Labels::getLabel('LBL_Expires_On', $siteLangId); ?>: <strong><?php echo FatDate::format($row['coupon_end_date']); ?></strong> <br><?php echo Labels::getLabel('LBL_Min_Order', $siteLangId); ?>:

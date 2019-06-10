@@ -297,9 +297,9 @@ class SubscriptionCheckoutController extends MyAppController
                 }
 
                 $discount = 0;
-                if (!empty($cartSummary["scartDiscounts"]["discountedSPPlanId"])) {
-                    if (array_key_exists($subscriptionInfo['spplan_id'], $cartSummary["scartDiscounts"]["discountedSPPlanId"])) {
-                        $discount = $cartSummary["scartDiscounts"]["discountedSPPlanId"][$subscriptionInfo['spplan_id']];
+                if (!empty($cartSummary["cartDiscounts"]["discountedSPPlanId"])) {
+                    if (array_key_exists($subscriptionInfo['spplan_id'], $cartSummary["cartDiscounts"]["discountedSPPlanId"])) {
+                        $discount = $cartSummary["cartDiscounts"]["discountedSPPlanId"][$subscriptionInfo['spplan_id']];
                     }
                 }
 

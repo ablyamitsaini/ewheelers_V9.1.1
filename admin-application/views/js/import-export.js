@@ -82,17 +82,18 @@
                             $(document).trigger('close.facebox');
                             $(document).trigger('close.mbsmessage');
                             fcom.displaySuccessMessage(ans.msg);
-                            if (typeof ans.CSVfileUrl !== 'undefined') {
-                                location.href = ans.CSVfileUrl;
-                            } else {
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
-                            }
                         } else {
                             $('#fileupload_div').html('');
                             $(document).trigger('close.mbsmessage');
                             fcom.displayErrorMessage(ans.msg);
+                        }
+                        
+                        if (typeof ans.CSVfileUrl !== 'undefined') {
+                            location.href = ans.CSVfileUrl;
+                        } else {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         }
                     } catch (exc) {
                         $(document).trigger('close.mbsmessage');
