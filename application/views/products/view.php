@@ -268,7 +268,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             <?php } */ ?>
 
                             <?php /* Volume Discounts[ */
-                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows)) { ?>
+                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows) && $product['in_stock']) { ?>
                             <div class="gap"></div>
                             <div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:</div>
                             <ul class="<?php echo (count($volumeDiscountRows) > 1) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">

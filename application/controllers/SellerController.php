@@ -71,7 +71,7 @@ class SellerController extends SellerBaseController
         $orderSrch->addSellerCancelledOrdersStats();
         $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('op_selprod_user_id', '=', $userId);
-        $orderSrch->addMultipleFields(array('todayOrderCount', 'totalInprocessSales', 'totalSoldSales', 'refundedOrderCount', 'refundedOrderAmount', 'cancelledOrderCount', 'cancelledOrderAmount' ));
+        $orderSrch->addMultipleFields(array('todayOrderCount', 'totalInprocessSales', 'totalSoldSales', 'totalSoldCount', 'refundedOrderCount', 'refundedOrderAmount', 'cancelledOrderCount', 'cancelledOrderAmount' ));
         $rs = $orderSrch->getResultSet();
         $ordersStats = FatApp::getDb()->fetch($rs);
         /* ]*/

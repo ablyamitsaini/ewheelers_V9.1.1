@@ -96,11 +96,14 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         <ul>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Completed_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $ordersCount;?></span>
+                                                <span class="total-numbers"><?php echo ($ordersStats['totalSoldCount'] > 0) ? $ordersStats['totalSoldCount'] : 0;?></span>
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $ordersStats['todayOrderCount'];?></span>
+                                                <span class="total-numbers">
+                                                    <?php $pendingOrders = $ordersCount - $ordersStats['totalSoldCount'];
+                                                    echo $pendingOrders;?>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -167,11 +170,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <ul>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Orders', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $ordersStats['refundedOrderCount'];?></span>
+                                            <span class="total-numbers"><?php echo ($ordersStats['refundedOrderCount']) ? $ordersStats['refundedOrderCount'] : 0 ;?></span>
                                         </li>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Amount', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $ordersStats['refundedOrderAmount'];?></span>
+                                            <span class="total-numbers"><?php echo ($ordersStats['refundedOrderAmount']) ? $ordersStats['refundedOrderAmount'] : 0 ;?></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -196,11 +199,11 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <ul>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $ordersStats['cancelledOrderCount'];?></span>
+                                            <span class="total-numbers"><?php echo ($ordersStats['cancelledOrderCount']) ? $ordersStats['cancelledOrderCount'] : 0 ;?></span>
                                         </li>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders_Amount', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $ordersStats['cancelledOrderAmount'];?></span>
+                                            <span class="total-numbers"><?php echo ($ordersStats['cancelledOrderAmount']) ? $ordersStats['cancelledOrderCount'] : 0 ;?></span>
                                         </li>
                                     </ul>
                                 </div>

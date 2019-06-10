@@ -69,7 +69,7 @@ class BuyerController extends BuyerBaseController
         $orderSrch->addBuyerOrdersCounts(false, false, 'pendingOrder');
         $completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS", FatUtility::VAR_STRING, ''));
         if (!empty($completedOrderStatus)) {
-            $srch->addCondition('op_status_id', 'NOT IN', $completedOrderStatus);
+            $orderSrch->addCondition('op_status_id', 'NOT IN', $completedOrderStatus);
         }
         $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('order_user_id', '=', $userId);
