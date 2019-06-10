@@ -18,6 +18,11 @@ class MyAppController extends FatController
     {
         $this->siteLangId = CommonHelper::getLangId();
         $this->siteCurrencyId = CommonHelper::getCurrencyId();
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->setApiVariables();
+        }
+
         $this->set('siteLangId', $this->siteLangId);
         $this->set('siteCurrencyId', $this->siteCurrencyId);
         $loginData = array(
@@ -126,6 +131,80 @@ class MyAppController extends FatController
         $this->set('controllerName', $controllerName);
         $this->set('isAppUser', commonhelper::isAppUser());
         $this->set('action', $this->action);
+    }
+
+    private function setApiVariables(){
+        $this->appToken = '';
+        $this->db = FatApp::getDb();
+        $post = FatApp::getPostedData();
+
+        if (array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
+            $this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
+        } elseif (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
+            $this->appToken = ($post['_token']!='')?$post['_token']:'';
+        }
+
+        $this->app_user['temp_user_id'] = 0;
+        if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
+            $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
+        }
+
+        if ($this->appToken) {
+            if (!UserAuthentication::isUserLogged('', $this->appToken)) {
+                $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
+                die(json_encode($arr));
+            }
+
+            $userId = UserAuthentication::getLoggedUserId();
+            $userObj = new User($userId);
+            if (!$row = $userObj->getProfileData()) {
+                $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
+                die(json_encode($arr));
+            }
+            $this->app_user = $row;
+            $this->app_user['temp_user_id'] = 0;
+        }
+
+        if (array_key_exists('language', $post)) {
+            $this->siteLangId = FatUtility::int($post['language']);
+            $_COOKIE['defaultSiteLang'] = $this->siteLangId;
+        }
+
+        if (array_key_exists('currency', $post)) {
+            $this->siteCurrencyId = FatUtility::int($post['currency']);
+            $_COOKIE['defaultSiteCurrency'] = $this->siteCurrencyId;
+        }
+
+        $currencyRow = Currency::getAttributesById($this->siteCurrencyId);
+        $this->currencySymbol = !empty($currencyRow['currency_symbol_left'])?$currencyRow['currency_symbol_left']:$currencyRow['currency_symbol_right'];
+        $this->set('currencySymbol',$this->currencySymbol);
+
+        $user_id = $this->getAppLoggedUserId();
+        $userObj = new User($user_id);
+        $srch = $userObj->getUserSearchObj();
+        $srch->addMultipleFields(array('u.*'));
+        $rs = $srch->getResultSet();
+        $this->user_details = $this->db->fetch($rs, 'user_id');
+
+        $cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
+        $this->cartItemsCount = $cObj->countProducts();
+        $this->set('cartItemsCount',$this->cartItemsCount);
+
+        $this->totalFavouriteItems = UserFavorite::getUserFavouriteItemCount($user_id);
+        $this->set('totalFavouriteItems',$this->totalFavouriteItems);
+
+        $threadObj = new Thread();
+        $this->totalUnreadMessageCount = $threadObj->getMessageCount($user_id);
+        $this->set('totalUnreadMessageCount',$this->totalUnreadMessageCount);
+
+        $notificationObj = new Notifications();
+        $this->totalUnreadNotificationCount = $notificationObj->getUnreadNotificationCount($user_id);
+        $this->set('totalUnreadNotificationCount',$this->totalUnreadNotificationCount);
+    }
+
+    private function getAppLoggedUserId()
+    {
+        return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
     }
 
     public function getStates($countryId, $stateId = 0)
