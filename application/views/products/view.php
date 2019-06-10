@@ -364,7 +364,8 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     <div class="row align-items-center">
                                         <div class="col-lg-8">
                                                 <div class="h6"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId);?>:</div>
-                                                <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>" class="link"><?php echo $shop['shop_name'];?></a> <br>
+                                                <h6>
+                                                 <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a></h6>
 
                                                  <div class="products__rating"> <i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
@@ -376,7 +377,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                         </svg></i> <span class="rate"><?php echo round($shop_rating, 1); ?><span></span></span>
                                                 </div><br>
                                                 <?php }*/?>
-                                               <span class="gap"></span>
+                                              
                                         </div>
                                         <div class="col-lg-4">
                                             <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border d-block"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	searchShopsReport( document.frmShopsReportSearch );
-	
+
 	$('input[name=\'shop_name\']').autocomplete({
 		'source': function(request, response) {
 			$.ajax({
@@ -20,7 +20,7 @@ $(document).ready(function(){
 			$("input[name='shop_name']").val( item['label'] );
 		}
 	});
-	
+
 	$('input[name=\'user_name\']').autocomplete({
 		'source': function(request, response) {
 			$.ajax({
@@ -40,19 +40,19 @@ $(document).ready(function(){
 			$("input[name='user_name']").val( item['label'] );
 		}
 	});
-	
+
 	$('input[name=\'shop_name\']').keyup(function(){
 		if( $(this).val() == "" ){
 			$("input[name='shop_id']").val(0);
 		}
 	});
-	
+
 	$('input[name=\'user_name\']').keyup(function(){
 		if( $(this).val() == "" ){
 			$("input[name='shop_user_id']").val(0);
 		}
 	});
-	
+
 });
 (function() {
 	var currentPage = 1;
@@ -63,7 +63,7 @@ $(document).ready(function(){
 		if( typeof page == undefined || page == null ){
 			page = 1;
 		}
-		var frm = document.frmShopsReportSearchPaging;		
+		var frm = document.frmShopsReportSearchPaging;
 		$( frm.page ).val( page );
 		searchShopsReport( frm );
 	};
@@ -72,29 +72,30 @@ $(document).ready(function(){
 		var frm = document.frmShopsReportSearchPaging;
 		searchShopsReport(frm);
 	};
-	
+
 	searchShopsReport = function(form){
 		var data = '';
 		if (form) {
 			data = fcom.frmData(form);
 		}
-		
+
 		$(dv).html(fcom.getLoader());
-		
+
 		fcom.ajax(fcom.makeUrl('ShopsReport','search'),data,function(res){
 			$(dv).html(res);
 		});
 	};
-	
+
 	exportReport = function(dateFormat){
-		document.frmShopsReportSearch.action = fcom.makeUrl('ShopsReport','export');
-		document.frmShopsReportSearch.submit();		
+		// document.frmShopsReportSearch.action = fcom.makeUrl('ShopsReport','export');
+		// document.frmShopsReportSearch.submit();
+		location.href = fcom.makeUrl('ShopsReport','export');
 	}
-	
+
 	clearSearch = function(){
 		document.frmShopsReportSearch.shop_id.value = '0';
 		document.frmShopsReportSearch.shop_user_id.value = '0';
 		document.frmShopsReportSearch.reset();
 		searchShopsReport( document.frmShopsReportSearch );
 	};
-})();	
+})();

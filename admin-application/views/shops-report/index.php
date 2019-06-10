@@ -16,14 +16,14 @@
                     <div class="sectionhead">
                         <h4><?php echo Labels::getLabel('LBL_Shops_Report', $adminLangId); ?> </h4>
                         <?php
-                    $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));
-                    $li = $ul->appendElement("li", array('class'=>'droplink'));
-                    $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
-                    $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
-                    $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
-                    $innerLiExport=$innerUl->appendElement('li');
-                    $innerLiExport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Export', $adminLangId),"onclick"=>"exportReport()"), Labels::getLabel('LBL_Export', $adminLangId), true);
-                    echo $ul->getHtml(); ?>
+                        $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));
+                        $li = $ul->appendElement("li", array('class'=>'droplink'));
+                        $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
+                        $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
+                        $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
+                        $innerLiExport=$innerUl->appendElement('li');
+                        $innerLiExport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Export', $adminLangId),"onclick"=>"exportReport()"), Labels::getLabel('LBL_Export', $adminLangId), true);
+                        echo $ul->getHtml(); ?>
                         <!--<a href="javascript:void(0)" class="themebtn btn-default btn-sm" onClick="exportReport()"><?php echo Labels::getLabel('LBL_Export', $adminLangId); ?></a>-->
                     </div>
                     <div class="sectionbody">

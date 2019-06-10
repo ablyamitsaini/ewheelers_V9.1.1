@@ -72,9 +72,11 @@ $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false
           <div class="col-9 yk-login--wrapper">
 			<div class="seller-login-trigger hide--desktop">
 				<a class="seller_login_toggle" href="javascript:void(0)"></a>
+<!--
 				<a class="seller_nav_toggle" href="javascript:void(0)">
 
 				</a>
+-->
 			 </div>
              <?php $this->includeTemplate( '_partial/seller/sellerHeaderLoginForm.php',$loginData,false); ?>
           </div>
