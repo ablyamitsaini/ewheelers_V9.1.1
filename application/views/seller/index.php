@@ -160,7 +160,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Refund', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund"></use>
                                 </svg>
                             </i>
                         </div>
@@ -189,7 +189,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Cancellation', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel"></use>
                                 </svg>
                             </i>
                         </div>
