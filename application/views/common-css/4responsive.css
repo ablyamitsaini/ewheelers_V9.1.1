@@ -867,7 +867,8 @@ h6, .h6 {font-size: 1rem;}
 
 
 
-.logo{width: 100px;}
+.logo{width: 100px;height: 42px;position: relative;}
+.logo img{position: absolute;left: 0;right: 0;top: 0; bottom: 0;margin: auto;}
 #header{height: 102px;}
 .column {
 margin-bottom: 15px;
