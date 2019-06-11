@@ -5,6 +5,7 @@ $data = array(
     'sponsoredProds' => $sponsoredProds,
     'sponsoredShops' => $sponsoredShops,
     'slides' => $slides,
-    'banners' => $banners,
     'collections' => $collections,
 );
+
+$data = array_merge($data, $banners);
