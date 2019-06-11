@@ -6,7 +6,7 @@
             foreach ($nav['pages'] as $link) {
                 $navUrl = CommonHelper::getnavigationUrl($link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id']);
                 $OrgnavUrl = CommonHelper::getnavigationUrl($link['nlink_type'], $link['nlink_url'], $link['nlink_cpage_id'], $link['nlink_category_id'], $getOrgUrl); ?>
-                <li><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $navUrl;?>"><?php echo $link['nlink_caption']; ?></a></li>
+                <li class="hide--mobile"><a target="<?php echo $link['nlink_target']; ?>" data-org-url="<?php echo $OrgnavUrl; ?>" href="<?php echo $navUrl;?>"><?php echo $link['nlink_caption']; ?></a></li>
             <?php }
         }
     }

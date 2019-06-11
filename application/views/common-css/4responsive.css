@@ -867,7 +867,8 @@ h6, .h6 {font-size: 1rem;}
 
 
 
-.logo{width: 100px;}
+.logo{width: 100px;height: 42px;position: relative;}
+.logo img{position: absolute;left: 0;right: 0;top: 0; bottom: 0;margin: auto;}
 #header{height: 102px;}
 .column {
 margin-bottom: 15px;
@@ -1381,7 +1382,7 @@ margin: 0 2px;
 .detail-first-fold{padding: 1rem;}
 .product-description .products__title h2{font-size: 1.2rem;}
 .sold-by .btn{display: inline-block!important;vertical-align: top;}
-.nav-detail ul{justify-content: flex-start;}
+.nav-detail ul{justify-content: flex-start;overflow: auto;}
 .shop-information{display: block;}
 .shop-information .shop-info{width: 100%;text-align: center;padding: 15px 0 0 ;}
 .shop-info .products__rating{justify-content: center !important;}
