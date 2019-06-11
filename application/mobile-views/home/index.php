@@ -31,7 +31,7 @@ foreach ($banners as $bannerType => $banner) {
     $data['data'][] = array(
         'type' => $bannerType,
         'title' => Labels::getLabel('LBL_Banners', $langId),
-        'data' => $banner
+        'data' => array($banner)
     );
 }
 
