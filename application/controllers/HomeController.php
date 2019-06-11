@@ -37,11 +37,15 @@ class HomeController extends MyAppController
         $this->set('slides', $slides);
         $this->set('banners', $banners);
         $this->set('collections', $collections);
+        $this->set('langId', $this->siteLangId);
 
-        if (false ===  MOBILE_APP_API_CALL) {
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
+        } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
         }
+
         $this->_template->render();
     }
 

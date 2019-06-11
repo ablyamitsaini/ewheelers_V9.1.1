@@ -390,7 +390,6 @@ class MobileAppApiController extends MyAppController
 
                                 $Prs = $productShopSrchTempObj->getResultSet();
 
-
                                 if (!FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                                     $rating = 0;
                                 } else {
