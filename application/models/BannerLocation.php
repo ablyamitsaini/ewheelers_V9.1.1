@@ -92,8 +92,14 @@ class BannerLocation extends MyAppModel
             $srch->addOrder('', 'rand()');
             $rs = $srch->getResultSet();
 
-            $bannerListing = $db->fetchAll($rs, 'banner_id');
-            $banners[$val['blocation_key']]['banners'] = $bannerListing;
+            if (true === MOBILE_APP_API_CALL) {
+                $bannerListing = $db->fetchAll($rs);
+                $banners[$val['blocation_key']]['recordCount'] = count($bannerListing);
+                $banners[$val['blocation_key']]['items'] = $bannerListing;
+            } else {
+                $bannerListing = $db->fetchAll($rs, 'banner_id');
+                $banners[$val['blocation_key']]['banners'] = $bannerListing;
+            }
         }
         return $banners;
     }

@@ -37,11 +37,15 @@ class HomeController extends MyAppController
         $this->set('slides', $slides);
         $this->set('banners', $banners);
         $this->set('collections', $collections);
+        $this->set('langId', $this->siteLangId);
 
-        if (false ===  MOBILE_APP_API_CALL) {
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
+        } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
         }
+
         $this->_template->render();
     }
 
@@ -177,6 +181,8 @@ class HomeController extends MyAppController
         $productCatSrchObj->addMultipleFields(array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description'));
 
         $collectionObj = new CollectionSearch();
+
+        $i = 0;
         foreach ($collectionsArr as $collection_id => $collection) {
             if (!$collection['collection_primary_records']) {
                 continue;
@@ -212,9 +218,16 @@ class HomeController extends MyAppController
                     $productSrchTempObj->setPageSize($collection['collection_primary_records']);
                     $rs = $productSrchTempObj->getResultSet();
 
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $db->fetchAll($rs, 'selprod_id');
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totProducts'] = $productSrchTempObj->recordCount();
+                    if (true === MOBILE_APP_API_CALL) {
+                        $collections[$i] = $collection;
+                        $collections[$i]['recordCount'] = $productSrchTempObj->recordCount();
+                        $collections[$i]['items'] = $db->fetchAll($rs);
+                    } else {
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $db->fetchAll($rs, 'selprod_id');
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totProducts'] = $productSrchTempObj->recordCount();
+                    }
+
                     /* ] */
                     unset($tempObj);
                     unset($productSrchTempObj);
@@ -248,8 +261,13 @@ class HomeController extends MyAppController
                     $rs = $productCatSrchTempObj->getResultSet();
                     /* ] */
 
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                    if (true === MOBILE_APP_API_CALL) {
+                        $collections[$i] = $collection;
+                    } else {
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                    }
 
+                    $counter = 0;
                     if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT2) {
                         while ($catData = $db->fetch($rs)) {
                             /* fetch Sub-Categories[ */
@@ -257,8 +275,14 @@ class HomeController extends MyAppController
                             $subCategorySrch->addCondition('prodcat_parent', '=', $catData['prodcat_id']);
                             $Catrs = $subCategorySrch->getResultSet();
 
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
+                            if (true === MOBILE_APP_API_CALL) {
+                                $collections[$i]['items'][$counter] = $catData;
+                                $collections[$i]['items'][$counter]['subCategories'] = $db->fetchAll($Catrs);
+                                $counter++;
+                            } else {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
+                            }
                             /* ] */
                         }
                     } else {
@@ -273,12 +297,24 @@ class HomeController extends MyAppController
                             if ($productShopSrchTempObj->recordCount() == 0) {
                                 continue;
                             }
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
-                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
+
+                            if (true === MOBILE_APP_API_CALL) {
+                                $collections[$i]['items'][$counter]['catData'] = $catData;
+                                $collections[$i]['items'][$counter]['products'] = $db->fetchAll($Prs);
+                                $counter++;
+                            } else {
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
+                                $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
+                            }
+
                             /* ] */
                         }
                     }
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totCategories'] = $tempObj->recordCount();
+                    if (true === MOBILE_APP_API_CALL) {
+                        $collections[$i]['recordCount'] = $tempObj->recordCount();
+                    } else {
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totCategories'] = $tempObj->recordCount();
+                    }
                     unset($tempObj);
                     break;
                 case Collections::COLLECTION_TYPE_SHOP:
@@ -302,9 +338,15 @@ class HomeController extends MyAppController
                     $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name'));
                     $rs = $shopObj->getResultSet();
 
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totShops'] = $shopObj->recordCount();
+                    if (true === MOBILE_APP_API_CALL) {
+                        $collections[$i] = $collection;
+                        $collections[$i]['recordCount'] = $shopObj->recordCount();
+                    } else {
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totShops'] = $shopObj->recordCount();
+                    }
 
+                    $counter = 0;
                     while ($shopsData = $db->fetch($rs)) {
                         /* fetch Shop data[ */
                         /*$productShopSrchTempObj = clone $productSrchObj;
@@ -314,14 +356,22 @@ class HomeController extends MyAppController
                         $productShopSrchTempObj->setPageSize(3);
                         $Prs = $productShopSrchTempObj->getResultSet();*/
 
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData'] = $shopsData;
-
                         $rating = 0;
                         if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                             $rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
                         }
 
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
+                        if (true === MOBILE_APP_API_CALL) {
+                            $collections[$i]['items'][$counter] = $shopsData;
+                            $collections[$i]['items'][$counter]['rating'] =  $rating;
+                            $counter++;
+                        } else {
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData'] = $shopsData;
+                        }
+
+                        if (false === MOBILE_APP_API_CALL) {
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
+                        }
                         /*$collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $db->fetchAll($Prs);*/
                         /* ] */
                     }
@@ -348,14 +398,21 @@ class HomeController extends MyAppController
                     $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
                     $rs = $brandSearchTempObj->getResultSet();
                     /* ] */
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
+                    if (true === MOBILE_APP_API_CALL) {
+                        $collections[$i] = $collection;
+                        $collections[$i]['recordCount'] = $brandSearchTempObj->recordCount();
+                        $collections[$i]['items'] = $db->fetchAll($rs);
+                    } else {
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
+                    }
 
                     unset($brandSearchTempObj);
                     unset($tempObj);
                     break;
             }
+            $i++;
         }
 
         FatCache::set('collectionCache_'.$langId, serialize($collections), '.txt');
@@ -451,6 +508,7 @@ class HomeController extends MyAppController
         $shopObj->setPageSize($shopPageSize);
 
         $rs = $shopObj->getResultSet();
+        $i = 0;
         while ($shops = $db->fetch($rs)) {
             /* fetch Shop data[ */
             $productShopSrchTempObj = clone $productSrchObj;
@@ -460,16 +518,27 @@ class HomeController extends MyAppController
             $productShopSrchTempObj->setPageSize(Shop::SHOP_PRODUCTS_COUNT_AT_HOMEPAGE);
             $Prs = $productShopSrchTempObj->getResultSet();
 
-            $sponsoredShops['shops'][$shops['shop_id']]['shopData'] = $shops;
-            $sponsoredShops['shops'][$shops['shop_id']]['shopData']['promotion_id'] = $shops['promotion_id'];
-
             $rating = 0;
             if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                 $rating = SelProdRating::getSellerRating($shops['shop_user_id']);
             }
-            $sponsoredShops['rating'][$shops['shop_id']] =  $rating;
-            $sponsoredShops['shops'][$shops['shop_id']]['products'] = $db->fetchAll($Prs);
+
+            if (true === MOBILE_APP_API_CALL) {
+                $sponsoredShops[$i] = $shops;
+                $sponsoredShops[$i]['promotion_id'] = $shops['promotion_id'];
+
+                $sponsoredShops[$i]['rating'] =  $rating;
+                $sponsoredShops[$i]['items'] = $db->fetchAll($Prs);
+            } else {
+                $sponsoredShops['shops'][$shops['shop_id']]['shopData'] = $shops;
+                $sponsoredShops['shops'][$shops['shop_id']]['shopData']['promotion_id'] = $shops['promotion_id'];
+
+                $sponsoredShops['rating'][$shops['shop_id']] =  $rating;
+                $sponsoredShops['shops'][$shops['shop_id']]['products'] = $db->fetchAll($Prs);
+            }
+
             /* ] */
+            $i++;
         }
         return $sponsoredShops;
     }

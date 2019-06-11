@@ -1868,6 +1868,7 @@ class CommonHelper extends FatUtility
 
     public static function jsonEncodeUnicode($data, $convertToType = false)
     {
+        $data = FatUtility::convertToType($data, FatUtility::VAR_STRING);
         die(FatUtility::convertToJson($data, 0));
         /*
         if($convertToType){
