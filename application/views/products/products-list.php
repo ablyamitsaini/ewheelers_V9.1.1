@@ -17,8 +17,11 @@ if ($products) {
 	</g>
 
 </svg>
-</span>Quick View</a>
+</span><?php echo Labels::getLabel('LBL_Quick_View', $siteLangId);?></a>
         </div>
+        <?php if($product['in_stock'] == 0) { ?>
+            <span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></span>
+        <?php  } ?>
         <div class="products__body"> <?php $this->includeTemplate('_partial/collection-ui.php', array('product'=>$product,'siteLangId'=>$siteLangId, 'forPage'=> $forPage), false); ?> <div class="products__img">
                 <?php $uploadedTime = ($product['product_image_updated_on'] > 0) ? '?'.strtotime($product['product_image_updated_on']) : '' ; ?> <a title="<?php echo $product['selprod_title']; ?>"
                     href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])):CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>">

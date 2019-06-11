@@ -45,12 +45,15 @@ foreach ($prodSpec as $key => $specification) {
 if (count($prodSpec) == 0) {
     $message = Labels::getLabel('LBL_No_Specifications_found_under_your_product', $siteLangId);
     $linkArr = array(
-    0=>array(
-    'href'=>'javascript:void(0);',
-    'label'=>Labels::getLabel('LBL_Add_Specification', $siteLangId),
-    'onClick'=>"addProdSpec(".$productId.",0)",
-    )
-    );
-    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
+        0=>array(
+            'href'=>'javascript:void(0);',
+            'label'=>Labels::getLabel('LBL_Add_Specification', $siteLangId),
+            'onClick'=>"addProdSpec(".$productId.",0)",
+            )
+        );
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
+/* $this->includeTemplate('_partial/no-record-found.php',array('siteLangId' => $siteLangId),false); */
+    /* $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Specifications_found_under_your_product', $siteLangId)); */
+} else {
+    echo $tbl->getHtml();
 }
-echo $tbl->getHtml();

@@ -62,7 +62,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                                 <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Revenue', $siteLangId);?></h5>
                                 <i class="icn">
                                     <svg class="svg">
-                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#credits" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#Credits"></use>
+                                        <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#revenue" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#revenue"></use>
                                     </svg>
                                 </i>
                             </div>

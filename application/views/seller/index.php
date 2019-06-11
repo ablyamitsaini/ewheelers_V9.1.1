@@ -96,11 +96,14 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         <ul>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Completed_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo FatUtility::int($ordersCount);?></span>
+                                                <span class="total-numbers"><?php echo FatUtility::int($ordersStats['totalSoldCount']);?></span>
                                             </li>
                                             <li>
                                                 <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo FatUtility::int($ordersStats['todayOrderCount']);?></span>
+                                                <span class="total-numbers">
+                                                    <?php $pendingOrders = $ordersCount - $ordersStats['totalSoldCount'];
+                                                    echo $pendingOrders;?>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -157,7 +160,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Refund', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund"></use>
                                 </svg>
                             </i>
                         </div>
@@ -186,7 +189,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Cancellation', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel"></use>
                                 </svg>
                             </i>
                         </div>

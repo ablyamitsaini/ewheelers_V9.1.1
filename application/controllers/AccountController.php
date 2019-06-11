@@ -1360,18 +1360,21 @@ class AccountController extends LoggedUserController
                     $srch = clone $srchObj;
                     $srch->joinSellerProducts();
                     $srch->joinProducts();
+                    $srch->joinBrands();
                     $srch->joinSellers();
                     $srch->joinShops();
                     $srch->joinProductToCategory();
                     $srch->joinSellerSubscription($this->siteLangId, true);
                     $srch->addSubscriptionValidCondition();
+                    $srch->joinSellerProductSpecialPrice();
+                    $srch->joinFavouriteProducts($loggedUserId);
                     $srch->addCondition('uwlp_uwlist_id', '=', $wishlist['uwlist_id']);
+                    $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+                    $srch->addCondition('selprod_active', '=', applicationConstants::YES);
                     $srch->setPageNumber(1);
                     $srch->setPageSize(4);
                     $srch->addMultipleFields(array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock'));
                     $srch->addOrder('uwlp_added_on');
-                    $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-                    $srch->addCondition('selprod_active', '=', applicationConstants::YES);
                     $srch->addGroupBy('selprod_id');
                     $rs = $srch->getResultSet();
                     $products = $db->fetchAll($rs);
@@ -1430,7 +1433,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $srch = new UserWishListProductSearch($this->siteLangId);
+            $srch = new UserWishListProductSearch($this->siteLangId);
         $srch->joinSellerProducts();
         $srch->joinProducts();
         $srch->joinBrands();
