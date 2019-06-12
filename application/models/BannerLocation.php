@@ -95,10 +95,11 @@ class BannerLocation extends MyAppModel
 
             if (true ===  MOBILE_APP_API_CALL) {
                 $bannerListing = $db->fetchAll($rs);
+                $banners[$val['blocation_key']][$val['blocation_id']] = $bannerListing;
             } else {
                 $bannerListing = $db->fetchAll($rs, 'banner_id');
+                $banners[$val['blocation_key']]['banners'] = $bannerListing;
             }
-            $banners[$val['blocation_key']]['banners'] = $bannerListing;
             $i++;
         }
         return $banners;
