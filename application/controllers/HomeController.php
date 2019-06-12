@@ -218,7 +218,7 @@ class HomeController extends MyAppController
 
                     if (true ===  MOBILE_APP_API_CALL) {
                         $collections[$i] = $collection;
-                        $collections[$i][$collection['collection_id']] = $db->fetchAll($rs);
+                        $collections[$i]['products'] = $db->fetchAll($rs);
                         $collections[$i]['totProducts'] = $productSrchTempObj->recordCount();
                     } else {
                         $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
@@ -271,8 +271,8 @@ class HomeController extends MyAppController
                             $Catrs = $subCategorySrch->getResultSet();
 
                             if (true ===  MOBILE_APP_API_CALL) {
-                                $collections[$i][$collection['collection_id']][$counter] = $catData;
-                                $collections[$i][$collection['collection_id']][$counter]['subCategories'] = $db->fetchAll($Catrs);
+                                $collections[$i]['categories'][$counter] = $catData;
+                                $collections[$i]['categories'][$counter]['subCategories'] = $db->fetchAll($Catrs);
                             } else {
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
@@ -293,8 +293,8 @@ class HomeController extends MyAppController
                                 continue;
                             }
                             if (true ===  MOBILE_APP_API_CALL) {
-                                $collections[$i][$collection['collection_id']][$counter]['catData'] = $catData;
-                                $collections[$i][$collection['collection_id']][$counter]['products'] = $db->fetchAll($Prs);
+                                $collections[$i]['categories'][$counter]['catData'] = $catData;
+                                $collections[$i]['categories'][$counter]['products'] = $db->fetchAll($Prs);
                             } else {
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
@@ -355,9 +355,9 @@ class HomeController extends MyAppController
                         }
 
                         if (true ===  MOBILE_APP_API_CALL) {
-                            $collections[$i][$collection['collection_id']][$counter]['shopData'] = $shopsData;
+                            $collections[$i]['shops'][$counter]['shopData'] = $shopsData;
 
-                            $collections[$i][$collection['collection_id']][$counter]['shopData']['rating'] =  $rating;
+                            $collections[$i]['shops'][$counter]['shopData']['rating'] =  $rating;
                         } else {
                             $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData'] = $shopsData;
 
@@ -395,7 +395,7 @@ class HomeController extends MyAppController
                     if (true ===  MOBILE_APP_API_CALL) {
                         $collections[$i] = $collection;
                         $collections[$i]['totBrands'] = $brandSearchTempObj->recordCount();
-                        $collections[$i][$collection['collection_id']] = $db->fetchAll($rs);
+                        $collections[$i]['brands'] = $db->fetchAll($rs);
                     } else {
                         $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
                         $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();

@@ -1,7 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
+$statusArr = array(
+    'status'=> 1,
+    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+);
+
 $data = array(
-    'status'=>1,
     'sponsoredProds' => $sponsoredProds,
     'sponsoredShops' => $sponsoredShops,
     'slides' => $slides,
@@ -11,6 +15,6 @@ $data = array(
 $data = array_merge($data, $banners);
 
 if (1 > count($sponsoredProds) && 1 > count($sponsoredShops) && 1 > count($slides) && 1 > count($collections) && 1 > count($banners)) {
-    $data['status'] = 0;
-    $data['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+    $statusArr['status'] = 0;
+    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }
