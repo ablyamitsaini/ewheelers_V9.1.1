@@ -15,7 +15,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 			<?php echo (strlen($defaultAddress['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$defaultAddress['ua_phone'].'<br>':'';?>
 		</div>
 	</div>
-	<div class="divider"></div>
+
 </div>
 <?php }?>
 

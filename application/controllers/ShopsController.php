@@ -450,7 +450,7 @@ class ShopsController extends MyAppController
 
         $arr = array(
             'frmProductSearch'=>$frm,
-            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'collection', array($shop_id)),
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'collection', array($shop_id, $scollectionId)),
             'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
             'recordId'=>$shop_id,
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),

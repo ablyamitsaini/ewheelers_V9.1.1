@@ -459,7 +459,7 @@ class UserAuthentication extends FatModel
         }
 
         if (isset($_SESSION [static::SESSION_ELEMENT_NAME])
-            && $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip
+            /*&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip*/
             && $_SESSION [static::SESSION_ELEMENT_NAME] ['user_is_guest'] == true
             && is_numeric($_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'])
             && 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id']
@@ -513,7 +513,7 @@ class UserAuthentication extends FatModel
         }
 
         if (isset($_SESSION [static::SESSION_ELEMENT_NAME])
-            && $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip
+            /*&& $_SESSION [static::SESSION_ELEMENT_NAME] ['user_ip'] == $ip*/
             && $_SESSION [static::SESSION_ELEMENT_NAME] ['user_is_guest'] == false
             && is_numeric($_SESSION [static::SESSION_ELEMENT_NAME] ['user_id'])
             && 0 < $_SESSION [static::SESSION_ELEMENT_NAME] ['user_id']

@@ -1233,6 +1233,7 @@ class Product extends MyAppModel
             $keyword = $criteria['keyword'];
         }
 
+
         if (!empty($keyword)) {
             $srch->addKeywordSearch($keyword);
             $srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  1,   0  ) as keywordmatched');
@@ -1241,9 +1242,11 @@ class Product extends MyAppModel
                 'if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
 END,   special_price_found ) as special_price_found'
             );
+            $sortBy = 'keyword_relevancy';
         } else {
             $srch->addFld('theprice');
             $srch->addFld('special_price_found');
+            $sortBy = 'popularity';
         }
 
         if (array_key_exists('brand', $criteria)) {
@@ -1258,7 +1261,12 @@ END,   special_price_found ) as special_price_found'
             }
         }
 
-        $condition = FatApp::getPostedData('condition', null, '');
+        if (array_key_exists('condition', $criteria)) {
+            $condition = $criteria['condition'];
+        } else {
+            $condition = FatApp::getPostedData('condition', null, '');
+        }
+
         if (!empty($condition)) {
             $srch->addConditionCondition($condition);
         }
@@ -1300,9 +1308,9 @@ END,   special_price_found ) as special_price_found'
             }
         }
 
+        //var_dump($criteria); exit;
         $srch->addOrder('in_stock', 'DESC');
 
-        $sortBy = 'popularity';
         if (array_key_exists('sortBy', $criteria)) {
             $sortBy = $criteria['sortBy'];
         }
@@ -1333,9 +1341,12 @@ END,   special_price_found ) as special_price_found'
                 case 'rating':
                     $srch->addOrder('prod_rating', $sortOrder);
                     break;
+                default:
+                    $srch->addOrder('keyword_relevancy', 'DESC');
+                    break;
             }
         }
-
+        
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addGroupBy('product_id');
 

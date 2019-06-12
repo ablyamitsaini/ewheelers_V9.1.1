@@ -4139,4 +4139,21 @@ class SellerController extends SellerBaseController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;
     }
+
+    public function sellerOffers()
+    {
+        $this->_template->render(true, false);
+    }
+
+    public function searchSellerOffers()
+    {
+        $offers = DiscountCoupons::getUserCoupons(UserAuthentication::getLoggedUserId(), $this->siteLangId, DiscountCoupons::TYPE_SELLER_PACKAGE);
+
+        if ($offers) {
+            $this->set('offers', $offers);
+        } else {
+            $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
+        }
+        $this->_template->render(false, false);
+    }
 }

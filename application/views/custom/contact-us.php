@@ -10,30 +10,35 @@ $fld->developerTags['col'] = 12;
 $fldSubmit = $contactFrm->getField('btn_submit');
 $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
 <div id="body" class="body" role="main">
-    <section class="section bg-contact">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-9">
-                    <div class="section-head section--white--head">
-                        <div class="section__heading">
-                            <h2><?php echo Labels::getLabel('LBL_Get_in_Touch', $siteLangId);?></h2>
-                            <p><?php echo Labels::getLabel('LBL_Get_in_Touch_Txt', $siteLangId);?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+    
+    <div class="section section--pagebar">
+      <div class="container container--fixed">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+                <h1><?php echo Labels::getLabel('LBL_Get_in_Touch', $siteLangId);?></h1>
+                <p><?php echo Labels::getLabel('LBL_Get_in_Touch_Txt', $siteLangId);?></p>
+          </div>
+          <div class="col-md-4 align--right"></div>
         </div>
-    </section>
+      </div>
+    </div>
+    
+    
+    
     <section class="section">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-9">
+                <div class="col-xl-9">
                     <div class="row">
-                        <div class="col-md-8">
-                            <?php echo $contactFrm->getFormHtml(); ?>
+                        <div class="col-md-7">
+                            <div class="bg-gray rounded p-4 p-5">
+                                <?php echo $contactFrm->getFormHtml(); ?>
+                            </div>
+                           
                         </div>
-                        <div class="col-md-4">
-                            <div class="bg-gray rounded p-4">
+                        <div class="col-md-5">
+                            <div class="-border rounded p-5 -heightfull">
                                 <h6><?php echo Labels::getLabel('LBL_General_Inquiry', $siteLangId);?></h6>
                                 <p class="small"><?php echo FatApp::getConfig('CONF_SITE_PHONE', FatUtility::VAR_STRING, '');?> <br><?php echo Labels::getLabel('LBL_24_a_day_7_days_week', $siteLangId);?></p>
                                 <div class="gap"></div>
@@ -50,6 +55,7 @@ $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
                                 <div class="gap"></div>
                                 <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
