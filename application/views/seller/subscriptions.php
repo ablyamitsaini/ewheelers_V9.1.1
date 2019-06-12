@@ -76,13 +76,13 @@ $cancelBtnFld->developerTags['col'] = 2;
                                      $autoOffClass='is--active';
                                      $autoOnClass='';
 
-                                     if($autoRenew){
+                                    if($autoRenew){
                                          $autoRenewClass ='is--active';
                                         $autoOffClass='';
                                         $autoOnClass='is--active';
-                                     }
-                                     $onOffArr = applicationConstants::getOnOffArr($siteLangId);
-                                     ?> <div class="switch-links"> <a href="javascript:void(0)" onclick="toggleAutoRenewal()" class="<?php echo $autoOffClass;?>"><?php echo $onOffArr[applicationConstants::OFF];?></a>
+                                    }
+                                     $onOffArr = applicationConstants::getOnOffArr($siteLangId); ?>
+                                     <div class="switch-links"> <a href="javascript:void(0)" onclick="toggleAutoRenewal()" class="<?php echo $autoOffClass;?>"><?php echo $onOffArr[applicationConstants::OFF];?></a>
                                     <div class="switch-button auto-renew-js  <?php echo $autoRenewClass;?>"></div>
                                     <a href="javascript:void(0)" onclick="toggleAutoRenewal()" class="<?php echo $autoOnClass;?>"><?php echo $onOffArr[applicationConstants::ON];?></a>
                                 </div>

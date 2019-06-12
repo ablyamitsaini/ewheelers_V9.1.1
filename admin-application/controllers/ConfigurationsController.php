@@ -551,8 +551,8 @@ class ConfigurationsController extends AdminBaseController
                     ''
                 );
 
-                $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
-
+                $fld = $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
+                $fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Current", $this->adminLangId).' <span id="currentDate">'. CommonHelper::currentDateTime(null, true).'</span></small>';
                 $countryObj = new Countries();
                 $countriesArr = $countryObj->getCountriesArr($this->adminLangId);
                 $frm->addSelectBox(Labels::getLabel('LBL_Country', $this->adminLangId), 'CONF_COUNTRY', $countriesArr);
@@ -1656,5 +1656,14 @@ class ConfigurationsController extends AdminBaseController
         } catch (Exception $e) {
             FatUtility::dieJsonError($e->getMessage());
         }
+    }
+
+    public function displayDateTime()
+    {
+        $post = FatApp::getPostedData();
+        $timeZone = $post['time_zone'];
+        $dateTime = CommonHelper::currentDateTime(null, true, null, $timeZone);
+        $this->set("dateTime", $dateTime);
+        $this->_template->render(false, false, 'json-success.php');
     }
 }

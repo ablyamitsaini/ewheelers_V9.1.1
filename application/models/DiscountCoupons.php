@@ -192,7 +192,7 @@ AND couponlang_lang_id = ' . $langId,
         return $row;
     }
 
-    public static function getUserCoupons($user_id, $lang_id)
+    public static function getUserCoupons($user_id, $lang_id, $coupon_type = self::TYPE_DISCOUNT)
     {
         $user_id = FatUtility::int($user_id);
 
@@ -224,9 +224,11 @@ AND couponlang_lang_id = ' . $langId,
         //$userCouponHistorySrch->addMultipleFields(array('count(couponhistory_id) as user_coupon_used_count'));
         /* ] */
 
-        $srch = new SearchBase(static::DB_TBL_COUPON_TO_USER);
-        $srch->addCondition('ctu_user_id', '=', $user_id);
-        $srch->joinTable(self::DB_TBL, 'LEFT OUTER JOIN', 'coupon_id = ctu_coupon_id', 'dc');
+        $srch = new SearchBase(self::DB_TBL, 'dc');
+        if ($coupon_type == self::TYPE_DISCOUNT) {
+            $srch->addCondition('ctu_user_id', '=', $user_id);
+            $srch->joinTable(self::DB_TBL_COUPON_TO_USER, 'LEFT OUTER JOIN', 'coupon_id = ctu_coupon_id', 'ctu');
+        }
         $srch->joinTable(self::DB_TBL_LANG, 'LEFT OUTER JOIN', 'couponlang_coupon_id = coupon_id and couponlang_lang_id = '.$lang_id, 'dc_l');
         $srch->joinTable('('.$cHistorySrch->getQuery().')', 'LEFT OUTER JOIN', 'coupon_history.couponhistory_coupon_id = dc.coupon_id', 'coupon_history');
         $srch->joinTable('('.$cHoldSrch->getQuery().')', 'LEFT OUTER JOIN', 'dc.coupon_id = coupon_hold.couponhold_coupon_id', 'coupon_hold');
@@ -235,10 +237,13 @@ AND couponlang_lang_id = ' . $langId,
         $srch->addCondition('dc.'.static::DB_TBL_PREFIX.'active', '=', applicationConstants::ACTIVE);
         $cnd = $srch->addCondition('dc.coupon_end_date', '>=', date('Y-m-d'));
         $cnd->attachCondition('dc.coupon_end_date', '=', '0000-00-00');
+        if ($coupon_type) {
+            $srch->addCondition('coupon_type', '=', $coupon_type);
+        }
         $srch->addGroupBy('dc.coupon_id');
         $srch->addHaving('dc.coupon_uses_count', '>', 'mysql_func_coupon_used_count + coupon_hold_count', 'AND', true);
         $srch->addHaving('dc.coupon_uses_coustomer', '>', 'mysql_func_user_coupon_used_count', 'AND', true);
-        /* echo $srch->getQuery(); die; */
+        // echo $srch->getQuery(); die;
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
 
