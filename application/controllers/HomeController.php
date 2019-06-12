@@ -37,7 +37,6 @@ class HomeController extends MyAppController
         $this->set('slides', $slides);
         $this->set('banners', $banners);
         $this->set('collections', $collections);
-        $this->set('langId', $this->siteLangId);
 
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
