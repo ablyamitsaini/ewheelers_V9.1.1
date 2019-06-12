@@ -161,7 +161,7 @@ class ProductSearch extends SearchBase
         $srch->joinTable(Countries::DB_TBL, 'INNER JOIN', 'shop_country_id = country_id and country_active = '.applicationConstants::YES);
         $srch->joinTable(States::DB_TBL, 'INNER JOIN', 'shop_state_id = state_id and state_active = '.applicationConstants::YES);
         $srch->joinTable(Brand::DB_TBL, 'INNER JOIN', 'product_brand_id = brand_id and brand_active = '.applicationConstants::YES.' and brand_deleted = '.applicationConstants::NO);
-        $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc_product_id = product_id');
+        $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'ptc_product_id = product_id');
         $srch->joinTable(ProductCategory::DB_TBL, 'INNER JOIN', 'prodcat_id = ptc_prodcat_id and prodcat_active = '.applicationConstants::YES.' and prodcat_deleted = '.applicationConstants::NO);
         $srch->addMultipleFields(array('selprod_product_id','MIN(IFNULL(splprice_price, selprod_price)) AS theprice','CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found'));
         $srch->joinTable(
@@ -681,6 +681,9 @@ class ProductSearch extends SearchBase
         if (is_numeric($condition)) {
             $condition = FatUtility::int($condition);
             $this->addCondition('selprod_condition', '=', $condition);
+        } elseif (is_array($condition)) {
+            $condition = array_filter(array_unique($condition));
+            $this->addDirectCondition('selprod_condition IN ('. implode(',', $condition).')');
         } else {
             $condition = explode(",", $condition);
             $condition = FatUtility::int($condition);

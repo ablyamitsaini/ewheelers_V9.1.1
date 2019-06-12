@@ -121,7 +121,7 @@ class ProductsController extends MyAppController
         $headerFormParamsAssocArr = array_merge($headerFormParamsAssocArr, $post);
 
         $prodSrchObj = new ProductSearch($this->siteLangId);
-        $prodSrchObj->setDefinedCriteria();
+        $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
         $prodSrchObj->joinSellerSubscription();
         $prodSrchObj->addSubscriptionValidCondition();
@@ -131,6 +131,11 @@ class ProductsController extends MyAppController
         if (array_key_exists('category', $post)) {
             $prodSrchObj->addCategoryCondition($post['category']);
             $categoryId = FatUtility::int($post['category']);
+        }
+
+        $shopId = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
+        if (0 < $shopId) {
+            $prodSrchObj->addShopIdCondition($shopId);
         }
 
         /* Categories Data[ */
@@ -276,8 +281,8 @@ class ProductsController extends MyAppController
         }
 
         $availability = 0;
-        if (array_key_exists('availability', $headerFormParamsAssocArr)) {
-            $availability = current($headerFormParamsAssocArr['availability']);
+        if (array_key_exists('out_of_stock', $headerFormParamsAssocArr)) {
+            $availability = $headerFormParamsAssocArr['out_of_stock'];
         }
 
         $productFiltersArr = array('count_for_view_more' => FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5));
@@ -614,7 +619,7 @@ class ProductsController extends MyAppController
         $this->set('product', $product);
         $this->set('shop_rating', $shop_rating);
         $this->set('shop', $shop);
-		$this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
+        $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
         $this->set('productImagesArr', $productGroupImages);
         //    $this->set( 'productGroups', $productGroups );
         $frmReviewSearch = $this->getReviewSearchForm(5);
@@ -803,7 +808,7 @@ class ProductsController extends MyAppController
 
     private function getOgTags($product = array(), $afile_id = 0)
     {
-        if (empty($product)){
+        if (empty($product)) {
             return array();
         }
         $afile_id = FatUtility::int($afile_id);
@@ -830,7 +835,7 @@ class ProductsController extends MyAppController
         return $socialShareContent;
     }
 
-	public function testView($selprod_id = 0)
+    public function testView($selprod_id = 0)
     {
         $productImagesArr = array();
         $selprod_id = FatUtility::int($selprod_id);
