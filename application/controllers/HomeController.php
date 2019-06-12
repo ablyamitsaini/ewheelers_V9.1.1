@@ -521,6 +521,8 @@ class HomeController extends MyAppController
                 $sponsoredShops[$i]['shopData'] = $shops;
                 $sponsoredShops[$i]['shopData']['promotion_id'] = $shops['promotion_id'];
                 $sponsoredShops[$i]['shopData']['rating'] = $rating;
+                $sponsoredShops[$i]['shopData']['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($shops['shop_id'], $langId));
+                $sponsoredShops[$i]['shopData']['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($shops['shop_id'], $langId));
                 $sponsoredShops[$i]['products'] = $db->fetchAll($Prs);
             } else {
                 $sponsoredShops['shops'][$shops['shop_id']]['shopData'] = $shops;
