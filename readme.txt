@@ -38,3 +38,5 @@ Fixes :
 	. Seller Product not avaliable if avaliabity from date is current date.
 	. Heading layout direction in Seller order view.
 	. PAYFORT Payment gateway payment failure.
+	. 027451 - Sorting issue resolved on product listing
+	. 027452- Product sorting based on default sort by option and filters based on products for category and shop page.

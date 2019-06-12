@@ -82,11 +82,15 @@ class SearchItem extends MyAppModel
                     case 'pagesize':
                         $arr_url_params['pageSize'] = $valueString;
                         break;
+                    case 'availability':
+                        $dashPosition = strpos($valueString, '-');
+                        $id = substr($valueString, 0, $dashPosition);
+                        $arr_url_params['out_of_stock'] = $id;
+                        break;
                     case 'brand':
                     case 'prodcat':
                     case 'optionvalue':
                     case 'condition':
-                    case 'availability':
                         $dashPosition =strpos($valueString, '-');
                         $id = substr($valueString, 0, $dashPosition);
                         $valueString = substr($valueString, $dashPosition+1);
