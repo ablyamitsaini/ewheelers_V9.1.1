@@ -48,6 +48,19 @@ class HomeController extends MyAppController
         $this->_template->render();
     }
 
+    public function languages()
+    {
+        $languages = Language::getAllNames(false);
+        $languageArr = array();
+        if (0 < count($languages)) {
+            foreach ($languages as &$language) {
+                $languageArr[] = $language;
+            }
+        }
+        $this->set('languages', $languageArr);
+        $this->_template->render();
+    }
+
     public function setLanguage($langId = 0)
     {
         if (!FatUtility::isAjaxCall()) {
@@ -61,6 +74,20 @@ class HomeController extends MyAppController
                 setcookie('defaultSiteLang', $langId, time()+3600*24*10, CONF_WEBROOT_URL);
             }
         }
+    }
+
+    public function currencies()
+    {
+        $cObj = Currency::getSearchObject($this->siteLangId, true);
+        $cObj->addMultipleFields(
+            array(
+            'currency_id','currency_code','IFNULL(curr_l.currency_name,curr.currency_code) as currency_name'
+            )
+        );
+        $rs = $cObj->getResultSet();
+        $currencies = $this->db->fetchAll($rs);
+        $this->set('currencies', $currencies);
+        $this->_template->render();
     }
 
     public function setCurrency($currencyId = 0)
