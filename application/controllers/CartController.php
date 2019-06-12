@@ -20,7 +20,7 @@ class CartController extends MyAppController
         $productsArr = $cartObj->getProducts($this->siteLangId);
         $prodGroupIds = array();
 
-        if (0 < count($productsArr)) {
+        if (0 < count($productsArr) || true ===  MOBILE_APP_API_CALL) {
             /* foreach( $productsArr as $product ) {
                 if( $product['prodgroup_id'] > 0 ){
                 $prodGroupIds[$product['prodgroup_id']] = $product['prodgroup_id'];
@@ -43,6 +43,34 @@ class CartController extends MyAppController
 
             $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
+            if (true ===  MOBILE_APP_API_CALL) {
+                $loggedUserId = UserAuthentication::getLoggedUserId(true);
+
+                $billingAddressDetail = array();
+                $billingAddressId = $cartObj->getCartBillingAddress();
+                if ($billingAddressId > 0) {
+                    $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $billingAddressId);
+                }
+
+                $shippingddressDetail = array();
+                $shippingAddressId = $cartObj->getCartShippingAddress();
+                if ($shippingAddressId > 0) {
+                    $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $shippingAddressId);
+                }
+
+                $cartHasPhysicalProduct = false;
+                if ($cartObj->hasPhysicalProduct()) {
+                    $cartHasPhysicalProduct = true;
+                }
+
+                $this->set('cartSelectedBillingAddress', $billingAddressDetail);
+                $this->set('cartSelectedShippingAddress', $shippingddressDetail);
+                $this->set('hasPhysicalProduct', $cartHasPhysicalProduct);
+                $this->set('isShippingSameAsBilling', $cartObj->getShippingAddressSameAsBilling());
+                $this->set('selectedBillingAddressId', $billingAddressId);
+                $this->set('selectedShippingAddressId', $shippingAddressId);
+            }
+
             $this->set('products', $productsArr);
             $this->set('prodGroupIds', $prodGroupIds);
             $this->set('PromoCouponsFrm', $PromoCouponsFrm);
@@ -55,6 +83,9 @@ class CartController extends MyAppController
             $EmptyCartItems = FatApp::getDb()->fetchAll($rs);
             $this->set('EmptyCartItems', $EmptyCartItems);
             $templateName = 'cart/empty-cart.php';
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render(true, true, $templateName);
         }
         $this->_template->render(false, false, $templateName);
     }
