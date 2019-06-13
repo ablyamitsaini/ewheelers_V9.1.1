@@ -42,3 +42,4 @@ Fixes :
 	. 027451 - Sorting issue resolved on product listing
 	. 027452- Product sorting based on default sort by option and filters based on products for category and shop page.
 	. 026820 - Refund of shipping charges
+	. 027334 - subscription page checkout layout.
