@@ -1453,7 +1453,7 @@ class Orders extends MyAppModel
                         'utxn_user_id'    => $childOrderInfo['op_selprod_user_id'],
                         'utxn_comments'    => $comments,
                         'utxn_status'    => Transactions::STATUS_COMPLETED,
-                        'utxn_debit'    => $actualShipCharges,
+                        'utxn_credit'    => $actualShipCharges,
                         'utxn_op_id'    => $childOrderInfo['op_id'],
                         'utxn_type'        => Transactions::TYPE_ORDER_SHIPPING,
                         );
@@ -1538,7 +1538,7 @@ class Orders extends MyAppModel
                         'utxn_user_id'    => $childOrderInfo['op_selprod_user_id'],
                         'utxn_comments'    => $comments,
                         'utxn_status'    => Transactions::STATUS_COMPLETED,
-                        'utxn_debit'    => $actualShipCharges,
+                        'utxn_credit'    => $actualShipCharges,
                         'utxn_op_id'    => $childOrderInfo['op_id'],
                         'utxn_type'        => Transactions::TYPE_ORDER_SHIPPING,
                         );

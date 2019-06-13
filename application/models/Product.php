@@ -1168,6 +1168,11 @@ class Product extends MyAppModel
             $join_price = FatUtility::int($criteria['join_price']);
         }
 
+        $keyword = '';
+        if (array_key_exists('keyword', $criteria)) {
+            $keyword = $criteria['keyword'];
+        }
+
         $srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinProductToCategory();
         $srch->joinSellerSubscription();
@@ -1182,25 +1187,40 @@ class Product extends MyAppModel
             $srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
 
-        $selProdReviewObj = new SelProdReviewSearch();
-        $selProdReviewObj->joinSelProdRating();
-        $selProdReviewObj->addCondition('sprating_rating_type', '=', SelProdRating::TYPE_PRODUCT);
-        $selProdReviewObj->doNotCalculateRecords();
-        $selProdReviewObj->doNotLimitRecords();
-        $selProdReviewObj->addGroupBy('spr.spreview_product_id');
-        $selProdReviewObj->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
-        $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating"));
-        $selProdRviewSubQuery = $selProdReviewObj->getQuery();
-        $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
-
         $srch->addMultipleFields(
             array('prodcat_code','product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
             'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
-            'selprod_sold_count','selprod_return_policy','ifnull(prod_rating,0) prod_rating',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
+            'selprod_sold_count','selprod_return_policy',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
             )
         );
+
+        $includeRating = false;
+
+        if (array_key_exists('top_products', $criteria)) {
+            $includeRating = true;
+            $srch->addHaving('prod_rating', '>=', 3);
+        }
+
+        if (!empty($keyword)) {
+            $includeRating = true;
+        }
+
+        if (true === $includeRating) {
+            $selProdReviewObj = new SelProdReviewSearch();
+            $selProdReviewObj->joinSelProdRating();
+            $selProdReviewObj->addCondition('sprating_rating_type', '=', SelProdRating::TYPE_PRODUCT);
+            $selProdReviewObj->doNotCalculateRecords();
+            $selProdReviewObj->doNotLimitRecords();
+            $selProdReviewObj->addGroupBy('spr.spreview_product_id');
+            $selProdReviewObj->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
+            $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating"));
+            $selProdRviewSubQuery = $selProdReviewObj->getQuery();
+            $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
+            $srch->addFld('ifnull(prod_rating,0) prod_rating');
+        }
+
 
         if (array_key_exists('category', $criteria)) {
             $srch->addCategoryCondition($criteria['category']);
@@ -1217,22 +1237,12 @@ class Product extends MyAppModel
             }
         }
 
-        if (array_key_exists('top_products', $criteria)) {
-            $srch->addHaving('prod_rating', '>=', 3);
-        }
-
         if (array_key_exists('collection_id', $criteria)) {
             $collection_id =  FatUtility::int($criteria['collection_id']);
             if (0 < $collection_id) {
                 $srch->addCollectionIdCondition($collection_id);
             }
         }
-
-        $keyword = '';
-        if (array_key_exists('keyword', $criteria)) {
-            $keyword = $criteria['keyword'];
-        }
-
 
         if (!empty($keyword)) {
             $srch->addKeywordSearch($keyword);
@@ -1346,7 +1356,7 @@ END,   special_price_found ) as special_price_found'
                     break;
             }
         }
-        
+
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addGroupBy('product_id');
 
