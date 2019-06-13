@@ -58,7 +58,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                         
                         <div class="shop-btn-group">
                            <div class="share-button">
-                            <a href="#" class="social-toggle"><i class="icn">
+                            <a href="javascript:void(0)" class="social-toggle"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
                                 </svg>

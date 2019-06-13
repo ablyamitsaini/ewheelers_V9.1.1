@@ -188,7 +188,7 @@
                 </div>
                 <div class="gap"></div>
                 <div id="tabs-container"></div>
-        <?php } else {
+        <?php } if( $gatewayCount > 0 ){
             echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
         } ?>
     </section>

@@ -58,10 +58,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
                         <?php echo $frm->getFieldHtml('user_id');
                               echo $frm->getFieldHtml('token');
                               echo $frm->getExternalJS(); ?>
+                        </form>
                     </div>
                 </div>
 				<?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData ,false); } ?>
