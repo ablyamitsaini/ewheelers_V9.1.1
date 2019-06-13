@@ -741,6 +741,7 @@ class AccountController extends LoggedUserController
 
     public function userProfileImage($userId, $sizeType = '', $cropedImage = false)
     {
+        $default_image = 'user_deafult_image.jpg';
         $userId = UserAuthentication::getLoggedUserId();
         $recordId = FatUtility::int($userId);
 
@@ -754,15 +755,14 @@ class AccountController extends LoggedUserController
         }
 
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
-
         switch (strtoupper($sizeType)) {
             case 'THUMB':
                 $w = 100;
                 $h = 100;
-                AttachedFile::displayImage($image_name, $w, $h);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
             default:
-                AttachedFile::displayOriginalImage($image_name);
+                AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }
     }
