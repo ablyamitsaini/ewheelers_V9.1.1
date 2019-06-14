@@ -53,9 +53,8 @@
 
                     </ul>
                 </div>
-
             </div>
         </div>
     </header>
     <div class="after-checkout-header"></div>
-    <?php /* echo FatUtility::decodeHtmlEntities( $headerData['epage_content'] ); */ ?>
+    <?php  /* echo FatUtility::decodeHtmlEntities( $headerData['epage_content'] ); */ ?>
