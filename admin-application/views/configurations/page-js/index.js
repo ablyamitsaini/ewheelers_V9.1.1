@@ -12,6 +12,14 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on("change", "select[name='CONF_TIMEZONE']", function() {
+        var timezone = $("select[name='CONF_TIMEZONE']").val();
+        fcom.ajax(fcom.makeUrl('Configurations', 'displayDateTime'), 'time_zone=' + timezone , function(t) {
+            var ans = $.parseJSON(t);
+            $('#currentDate').html(ans.dateTime);
+        });
+    });
+
 });
 
 (function() {

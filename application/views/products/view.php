@@ -48,8 +48,6 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 </div>
                                 <?php } ?>
                             </div>
-                            
-                            
                             <div class="favourite-wrapper favourite-wrapper-detail ">
                                         <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                         <div class="share-button">
@@ -91,9 +89,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                 </ul>
                                             </div>
                                         </div>
-                                    </div>
-                            
-                            
+                                    </div>                            
                         </div>
                         <div class="col-lg-6 col-details-right">
                             <div class="product-description">
@@ -121,20 +117,13 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                             <?php } */ ?>
                                         <?php } ?>
                                         
-                                    </div>    
-                                    
-                                    
-                                    
-                                   
-                                   
+                                    </div>
                                     <div class="col products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
                                         <?php if ($product['special_price_found']) { ?>
                                         <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
                                         <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                         <?php } ?>
                                     </div>
-                                    
-                                  
                                     <div class="divider"></div>
                                    
                                     <!--<div class="detail-grouping">
@@ -268,7 +257,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 </div>
                                 <?php } ?>
                                 <div class="gap"></div>
-                                
+
                                 </form>
                                 <?php echo $frmBuyProduct->getExternalJs();
                                 } else { ?>
@@ -391,7 +380,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                         </svg></i> <span class="rate"><?php echo round($shop_rating, 1); ?><span></span></span>
                                                 </div><br>
                                                 <?php }*/?>
-                                              
+
                                         </div>
                                         <div class="col-auto">
                                             <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
@@ -407,7 +396,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                     </div>
                 </div>
                 <?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
-                
+
                         <?php $youtube_embed_code = CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
                         <div class="nav-detail nav-detail-js">
                             <ul>
@@ -432,7 +421,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             </ul>
                         </div>
 
-                   
+
             </div>
             <section class="section">
                 <div class="row justify-content-center">
@@ -690,7 +679,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
             }
         });
         /* ] */
-        
+
          $(".nav-scroll-js").click(function(event){
         event.preventDefault();
         var full_url = this.href;
@@ -700,14 +689,14 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 
         var target_top = target_offset.top-170;
             $('html, body').animate({scrollTop:target_top}, 800);
-        }); 
+        });
         $('.nav-detail-js li a').click(function(){
         $('.nav-detail-js li a').removeClass('is-active');
             $(this).addClass('is-active');
-        });   
-        
-        
-        
+        });
+
+
+
     });
 </script>
 <!--Here is the facebook OG for this product  -->

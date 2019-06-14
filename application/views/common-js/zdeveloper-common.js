@@ -324,7 +324,7 @@ removeFromCart = function(key) {
 
 function submitSiteSearch(frm) {
 
-    var keyword = $(frm).find('input[name="keyword"]').val();
+    var keyword = $.trim($(frm).find('input[name="keyword"]').val());
 
     if (3 > keyword.length || '' === keyword) {
         $.mbsmessage(langLbl.searchString, true, 'alert--danger');
