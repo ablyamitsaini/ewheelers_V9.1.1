@@ -14,7 +14,7 @@ $(document).ready(function(){
 			loginPopUpBox(true);
 			return false;
 		}
-
+		
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
 				$.facebox(t,'faceboxWidth');

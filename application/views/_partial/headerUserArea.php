@@ -1,8 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
+$getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
 if (!$isUserLogged) {
     if (UserAuthentication::isGuestUserLogged()) { ?>
         <li class="logout"><a
-        data-org-url="<?php echo CommonHelper::generateUrl('GuestUser', 'logout', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout'); ?>"><?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a>
+        data-org-url="<?php echo CommonHelper::generateUrl('GuestUser', 'logout', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl('GuestUser', 'logout'); ?>"><?php echo User::getAttributesById(UserAuthentication::getLoggedUserId(), "user_name");?> | <?php echo Labels::getLabel('LBL_Logout', $siteLangId); ?></a>
 </li> <?php
     } else {
         ?> <li class="dropdown--user"> <a href="javascript:void(0)" class="sign-in sign-in-popup-js"><i class="icn icn--login"><svg class="svg">
@@ -12,7 +13,6 @@ if (!$isUserLogged) {
     } ?> <?php
     // $this->includeTemplate('guest-user/loginFormTemplate.php');
 } else {
-    $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
     $userActiveTab = false;
     if (User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S')) {
         $userActiveTab = true;

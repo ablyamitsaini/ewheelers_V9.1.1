@@ -6,6 +6,10 @@ class GuestUserController extends MyAppController
         /* if(UserAuthentication::doCookieLogin()){
         FatApp::redirectUser(CommonHelper::generateUrl('account'));
         } */
+        if (UserAuthentication::isGuestUserLogged()) {
+            FatApp::redirectUser(CommonHelper::generateUrl('home'));
+        }
+
         if (UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
@@ -72,18 +76,18 @@ class GuestUserController extends MyAppController
             $userPreferedDashboardType = ($data['user_preferred_dashboard'])?$data['user_preferred_dashboard']:$data['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
-            case User::USER_TYPE_BUYER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-                break;
-            case User::USER_TYPE_SELLER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-                break;
-            case User::USER_TYPE_AFFILIATE:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-                break;
-            case User::USER_TYPE_ADVERTISER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-                break;
+                case User::USER_TYPE_BUYER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+                    break;
             }
 
 
@@ -554,6 +558,10 @@ class GuestUserController extends MyAppController
 
     public function registrationForm()
     {
+        if (UserAuthentication::isGuestUserLogged()) {
+            FatApp::redirectUser(CommonHelper::generateUrl('home'));
+        }
+
         if (UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
