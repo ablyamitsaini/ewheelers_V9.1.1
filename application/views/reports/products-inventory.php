@@ -39,12 +39,12 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Products_Inventory_Report', $siteLangId);?></h5>
                             <div class="action">
                                 <?php
-                                    echo '<div class="btn-group"><a href="javascript:void(0)" onClick="exportProductsInventoryReport()" class="btn btn--primary btn--block">'.Labels::getLabel('LBL_Export', $siteLangId).'</a></div>';?>
+                                    echo '<div class="btn-group"><a href="javascript:void(0)" onClick="exportProductsInventoryReport()" class="btn btn--secondary btn--sm btn--block">'.Labels::getLabel('LBL_Export', $siteLangId).'</a></div>';?>
                             </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content  pl-4 pr-4 pb-4">
                             <div class="grids--profile">
-                                <div class="bg-gray-light p-3 pb-0">
+                                <div class="bg-gray-light p-4 pb-0">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <?php
@@ -59,7 +59,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
                                     </div>
                                 </div>
                             </div>
-                            <div class="gap"></div>
+                          
                         </div>
                     </div>
                 </div>

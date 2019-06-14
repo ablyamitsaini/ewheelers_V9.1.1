@@ -18,7 +18,7 @@ $cancelBtnFld = $frm->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
 $cancelBtnFld->developerTags['col'] = 2; ?>
-<div class="cards-content pl-4 pr-4 ">
+<div class="cards-content p-4 ">
 <?php echo $frm->getFormHtml(); ?>
 <div class="search-form"></div>
 <h5><?php echo Labels::getLabel('Lbl_Select_Your_Product_category',$siteLangId);?></h5>
@@ -31,5 +31,8 @@ $cancelBtnFld->developerTags['col'] = 2; ?>
 <p class="note"><?php echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId);?></p>
 </div>
 <script>
-$('.select-categories-slider-js').slick( getSlickSliderSettings(3, 1, langLbl.layoutDirection, false) );
+
+	$('.select-categories-slider-js').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
+
+
 </script>

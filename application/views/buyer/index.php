@@ -2,13 +2,13 @@
 $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+        <div class="content-header justify-content-between row mb-3">
             <div class="content-header-left col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></h2>
             </div>
             <div class="content-header-right col-auto">
                 <div class="">
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--primary-border"> <?php echo Labels::getLabel('LBL_Manage_Addresses', $siteLangId);?> </a>
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--secondary-border btn--sm"> <?php echo Labels::getLabel('LBL_Manage_Addresses', $siteLangId);?> </a>
                 </div>
             </div>
         </div>

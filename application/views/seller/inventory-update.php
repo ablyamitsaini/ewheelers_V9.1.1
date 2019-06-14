@@ -9,7 +9,7 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
         </div>
         <div class="content-body">
             <div class="cards">
-                <div class="cards-content pl-4 pr-4 ">
+                <div class="cards-content pl-4 pr-4 pb-4">
                     <div class="box__body">
                         <div class="tabs__content">
                             <div class="col-md-12">

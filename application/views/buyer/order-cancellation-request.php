@@ -15,9 +15,7 @@ $frmOrderCancel->developerTags['fld_default_col'] = 12;
         </div>
         <div class="content-body">
             <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title"></h5>
-                </div>
+                
                 <div class="cards-content pl-4 pr-4 ">
                     <?php echo $frmOrderCancel->getFormHtml(); ?>
                 </div>

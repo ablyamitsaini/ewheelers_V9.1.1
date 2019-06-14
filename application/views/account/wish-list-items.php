@@ -4,7 +4,7 @@
         <?php echo $wishListRow['uwlist_title']; ?>
         <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
     </h5>
-    <div class="action">
+    <div class="action action--favs">
         <label class="checkbox checkbox-inline">
             <input type="checkbox" class='selectAll-js' onclick="selectAll($(this));"><i class="input-helper"></i>Select all
         </label>

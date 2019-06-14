@@ -9,14 +9,14 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 <div id="body" class="body">
     <div class="section section--pagebar">
       <div class="container container--fixed">
-        <div class="row align-items-center">
-          <div class="col-md-8">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-8 col-sm-8">
            
             <h1><?php echo $shop['shop_name']; ?></h1>
             <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
             
           </div>
-          <div class="col-md-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
+          <div class="col-md-auto col-sm-auto"><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--secondary"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
         </div>
       </div>
     </div>

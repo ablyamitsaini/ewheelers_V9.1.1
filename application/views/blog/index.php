@@ -191,7 +191,7 @@
     <section class="section bg--first-color">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-xl-6">
                     <div class="blog-subscribers">
                         <h4><?php echo Labels::getLabel('LBL_Get_Weekly_Insights', $siteLangId)?></h4>
                         <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_weekly_newsletter', $siteLangId)?></p>
@@ -368,16 +368,14 @@
         slidesToScroll: 4,
         rtl: rtl,
         responsive: [{
-                breakpoint: 1024,
+                breakpoint: 1199,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
                 }
             },
             {
-                breakpoint: 600,
+                breakpoint: 1023,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2
