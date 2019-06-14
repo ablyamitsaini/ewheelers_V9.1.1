@@ -1135,6 +1135,14 @@ class BuyerController extends BuyerBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
+        
+        $canGiveFeedback = Orders::canGiveFeedback($userId, $opDetail['op_order_id'], $selProdId);
+        
+        if (!canGiveFeedback) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback1', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
+        
 
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $this->set('frm', $frm);

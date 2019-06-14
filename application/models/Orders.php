@@ -2270,4 +2270,18 @@ class Orders extends MyAppModel
 
         return true;
     }
+    
+    public static function canGiveFeedback($userId, $op_order_id, $selprod_id){
+        $oFeedbackSrch = new SelProdReviewSearch();
+        $oFeedbackSrch->doNotCalculateRecords();
+        $oFeedbackSrch->doNotLimitRecords();
+        $oFeedbackSrch->addCondition('spreview_postedby_user_id', '=', $userId);
+        $oFeedbackSrch->addCondition('spreview_order_id', '=', $op_order_id);
+        $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selprod_id);
+        $oFeedbackRs = $oFeedbackSrch->getResultSet();
+        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+            return false;
+        }
+        return true;
+    }
 }
