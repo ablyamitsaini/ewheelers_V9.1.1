@@ -285,12 +285,12 @@ $(document).ready(function(){
 /*  like animation  */
 $(document).ready(function(){
 	var debug = /*true ||*/ false;
-	var h = document.querySelector('.heart-wrapper');
-    $(document).on('click', '.heart-wrapper',function(){
-	/* $(document).delegate('.heart-wrapper','click',function(){ */
+	var h = document.querySelector('.wishListLink-Js');
+    $(document).on('click', '.wishListLink-Js',function(){
+	/* $(document).delegate('.wishListLink-Js','click',function(){ */
 		product_id= $(this).attr('data-id');
 		toggleProductFavorite(product_id,$(this));
-		h = document.querySelector('heart-wrapper');
+		h = document.querySelector('wishListLink-Js');
 	});
 
 /*   function toggleActivate(){

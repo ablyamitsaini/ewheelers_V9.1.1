@@ -16,10 +16,6 @@ $(document).ready(function () {
 		$('html').removeClass("nav-opened");
 	})
 
-	$('.social-toggle').on('click', function() {
-	 	$(this).next().toggleClass('open-menu');
-	});
-
 	$('.js-tabs li').click(function() {
 		$(this).siblings().removeClass('is--active');
 		$(this).addClass('is--active');
@@ -38,6 +34,10 @@ $(document).ready(function () {
 
 	});
 
+});
+
+$(document).on('click', '.social-toggle', function(){
+	$(this).next().toggleClass('open-menu');
 });
 
 function submitBlogSearch(frm){
