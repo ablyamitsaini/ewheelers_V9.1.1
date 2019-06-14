@@ -44,3 +44,4 @@ Fixes :
 	. 026820 - Refund of shipping charges
 	. 027334 - subscription page checkout layout.
 	. 027566 - Guest user apply coupon .
+	. 027584 - Guest user logout and login option both are displaying at same time
