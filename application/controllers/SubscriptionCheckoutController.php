@@ -30,20 +30,20 @@ class SubscriptionCheckoutController extends MyAppController
         }
         foreach ($criteria as $key => $val) {
             switch ($key) {
-            case 'isUserLogged':
-                if (!UserAuthentication::isUserLogged()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
-                    return false;
-                }
-                break;
-            case 'hasSubscription':
-                if (!$this->scartObj->hasSusbscription()) {
-                    $key = false;
-                    Message::addErrorMessage(Labels::getLabel('MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', $this->siteLangId));
-                    return false;
-                }
-                break;
+                case 'isUserLogged':
+                    if (!UserAuthentication::isUserLogged()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
+                        return false;
+                    }
+                    break;
+                case 'hasSubscription':
+                    if (!$this->scartObj->hasSusbscription()) {
+                        $key = false;
+                        Message::addErrorMessage(Labels::getLabel('MSG_Your_cart_seems_to_be_empty,_Please_try_after_reloading_the_page.', $this->siteLangId));
+                        return false;
+                    }
+                    break;
             }
         }
         return true;

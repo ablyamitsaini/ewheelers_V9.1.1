@@ -1,5 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="gap"></div>
 <div class="txt-order-summary"><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?></div>
 <div class="gap"></div>
 <div class="box box--white box--radius box--space cartdetail__footer">
