@@ -1,6 +1,6 @@
 window.onload = function(){
   var debug = /*true ||*/ false;
-  var h = document.querySelector('.wishListLink-Js');
+  var h = document.querySelector('.heart-wrapper-Js');
   
   function toggleActivate(){
     h.classList.toggle('is-active');

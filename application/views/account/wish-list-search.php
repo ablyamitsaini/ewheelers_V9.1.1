@@ -2,7 +2,7 @@
 <div class="row">
     <?php if ($wishLists) {
         foreach ($wishLists as $wishlist) {
-            //if(count($wishlist['products'])>0){ ?>
+            if(count($wishlist['products']) > 0 || FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 column">
                 <div class="items">
                     <div class="items__body">
@@ -51,7 +51,9 @@
                     </div>
                 </div>
             </div>
-        <?php }
+        <?php } else {
+            $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
+        } }
     }
     if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES) { ?>
         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 column">
