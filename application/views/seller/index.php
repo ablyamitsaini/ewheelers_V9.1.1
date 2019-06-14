@@ -6,16 +6,16 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></h2>
             </div>
-            <div class="content-header-right col-auto">
-                <div class="">
+            <div class="col-auto">
+                <div class="content-header-right">
                     <?php if (!Shop::isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) { ?>
-                        <a href="<?php echo  CommonHelper::generateUrl('Seller', 'shop'); ?>" class="btn btn--primary-border">
+                        <a href="<?php echo  CommonHelper::generateUrl('Seller', 'shop'); ?>" class="btn btn--primary-border btn--sm">
                             <?php echo Labels::getLabel('LBL_Create_Shop', $siteLangId); ?>
                         </a>
                     <?php } ?>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_catalog', $siteLangId);?></a>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_My_products', $siteLangId);?></a>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_My_store_inventory', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Add_new_catalog', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>" class="btn btn--secondary-border btn--sm"><?php echo Labels::getLabel('LBL_My_products', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_My_store_inventory', $siteLangId);?></a>
                 </div>
             </div>
         </div>
@@ -213,8 +213,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </a>
             </div>
         </div>
-            <div class="row mb-3">
-                <div class="col-lg-6 col-md-12  ">
+            <div class="row">
+                <div class="col-xl-6 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sales_Graph', $siteLangId);?></h5>
@@ -222,7 +222,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-content pl-4 pr-4  graph"> <?php $this->includeTemplate('_partial/seller/sellerSalesGraph.php'); ?> </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
@@ -313,8 +313,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5>
@@ -378,7 +378,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 col-md-12 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests', $siteLangId);?></h5>
@@ -455,7 +455,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 col-md-12 mb-3">
                     <!-- <div class="cards">
                     <?php // $this->includeTemplate('_partial/userDashboardMessages.php');?>
                 </div> -->

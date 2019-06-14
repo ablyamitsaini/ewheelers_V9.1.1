@@ -756,7 +756,7 @@
 			</g>
 
 		</symbol>
-		<symbol id="dash-promotions" height="512pt" viewBox="0 -31 512 512" width="512pt">
+		<symbol id="dash-promotions" viewBox="0 -31 512 512">
 			<path d="m91 300v150h120v-114.859375l-30-7.5v-27.640625zm0 0" />
 			<path d="m181 120h-30v90h-30v-90h-30v90h-30v-90h-61v150h181zm0 0" />
 			<path d="m452 0h60v390h-60zm0 0" />

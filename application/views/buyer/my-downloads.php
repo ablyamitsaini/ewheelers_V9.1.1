@@ -12,21 +12,32 @@
         <div class="row mb-4">
             <div class="col-lg-12">
                 <div class="cards">
-                    <div class="cards-header p-4">
-                        <!-- <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Downloads', $siteLangId); ?></h5> -->
-                    </div>
-                    <div class="cards-content pl-4 pr-4 ">
-                        <div class="tabs tabs--small   tabs--scroll clearfix">
+                    
+                    <div class="cards-content pl-4 pt-4 pr-4">
+                        <div class="tabs tabs--small   tabs--scroll clearfix no-border-bottom mb-0 pb-0">
                             <ul>
                                 <li class="is-active"><a href="javascript:void(0);" onclick="searchBuyerDownloads('', this)"><?php echo Labels::getLabel('LBL_Downloadable_Files', $siteLangId); ?></a></li>
                                 <li><a href="javascript:void(0);" onclick="searchBuyerDownloadLinks('', this)"><?php echo Labels::getLabel('LBL_Downloadable_Links', $siteLangId); ?></a></li>
                             </ul>
                         </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="cards">
+                    
+                    <div class="cards-content p-4">
                         <div id="listing"></div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
   </div>
 </main>

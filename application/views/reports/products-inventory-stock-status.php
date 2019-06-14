@@ -30,10 +30,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Products_Inventory_Stock_Status_Report', $siteLangId);?></h5>
-                        </div>
-                        <div class="cards-content pl-4 pr-4 ">
+                       
+                        <div class="cards-content pl-4 pt-4 pr-4 pb-4">
                             <div class="grids--profile">
                                 <div class="bg-gray-light p-3 pb-0">
                                     <div class="row">
@@ -48,7 +46,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
                                     </div>
                                 </div>
                             </div>
-                            <div class="gap"></div>
+                          
                         </div>
                     </div>
                 </div>
@@ -56,8 +54,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                        </div>
+                        
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                             <div class="gap"></div>

@@ -14,12 +14,12 @@ $fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
     
     <div class="section section--pagebar">
       <div class="container container--fixed">
-        <div class="row align-items-center">
-          <div class="col-md-8">
+        <div class="row align-items-center  justify-content-between">
+          <div class="col-md-8 col-sm-8">
                 <h1><?php echo Labels::getLabel('LBL_Get_in_Touch', $siteLangId);?></h1>
                 <p><?php echo Labels::getLabel('LBL_Get_in_Touch_Txt', $siteLangId);?></p>
           </div>
-          <div class="col-md-4 align--right"></div>
+          <div class="col-md-auto col-sm-auto"></div>
         </div>
       </div>
     </div>

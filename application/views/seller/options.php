@@ -39,13 +39,13 @@
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Manage_Seller_Options', $siteLangId); ?></h5>
                             <div class="action">
-                                <a class=" btn btn--primary" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
+                                <a class=" btn btn--secondary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
                                 <!-- <a href="#modal-popup" class="btn--block modaal-inline-content link" onclick="optionForm(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId);?></a> -->
-                                <a class="btn btn--primary-border formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
+                                <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
                             </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <div class="bg-gray-light p-3 pb-0">
+                        <div class="cards-content pl-4 pr-4 pb-4">
+                            <div class="bg-gray-light p-4 pb-0">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <?php
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <span class="gap"></span>
+                        
                         </div>
                     </div>
                 </div>
@@ -67,11 +67,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                        </div>
-                        <div class="cards-content pl-4 pr-4 ">
+                        
+                        <div class="cards-content pl-4 pr-4">
                             <div id="optionListing"></div>
-                            <span class="gap"></span>
                         </div>
                     </div>
                 </div>

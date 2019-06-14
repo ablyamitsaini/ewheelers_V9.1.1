@@ -2,12 +2,12 @@
 <section class="post-detail">
     <div class="container">
         <div class="row">
-            <div class="col-md-9 mb-4 mb-md-0">
+            <div class="col-xl-9 col-lg-8 mb-4 mb-md-0">
                 <div class="posted-content">
                     <div class="row" id="blogs-listing-js"></div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-xl-3 col-lg-4">
                 <?php $this->includeTemplate('_partial/blogSidePanel.php', array('popularPostList' => $popularPostList, 'featuredPostList' => $featuredPostList)); ?>
             </div>
         </div>

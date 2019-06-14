@@ -48,14 +48,14 @@ $cancelBtnFld->developerTags['col'] = 2;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div id="withdrawalReqForm"></div>
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content pl-4 pr-4">
                             <div id="credits-info"></div>
                             <div class="gap"></div>
                             <?php //echo $balanceTotalBlocksDisplayed;?>
                             <?php $srchFormDivWidth = $canAddMoneyToWallet ? '8' : 12; ?>
                             <div class="row">
-                                <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> ">
-                                    <div class="bg-gray-light p-3 pb-0">
+                                <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> col-md-12">
+                                    <div class="bg-gray-light p-4 pb-0">
                                         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Transactions', $siteLangId);?></h5>
                                         <?php
                                         $submitFld = $frmSrch->getField('btn_submit');
@@ -68,8 +68,8 @@ $cancelBtnFld->developerTags['col'] = 2;
                                     </div>
                                 </div>
                                 <?php if ($canAddMoneyToWallet) { ?>
-                                    <div class="col-lg-4 col-md-4 float--right ">
-                                        <div class="bg-gray-light p-3 pb-0">
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="bg-gray-light p-3 pb-0 amount-added-box">
                                             <h5 class="cards-title">
                                             <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $siteLangId); ?></h5>
                                             <div id="rechargeWalletDiv" class="cellright nopadding--bottom">
@@ -98,9 +98,7 @@ $cancelBtnFld->developerTags['col'] = 2;
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title"></h5>
-                        </div>
+                        
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="creditListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
                             <span class="gap"></span>
