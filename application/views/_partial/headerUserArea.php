@@ -1,4 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
+$getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
 if (!$isUserLogged) {
     if (UserAuthentication::isGuestUserLogged()) { ?>
         <li class="logout"><a
@@ -12,7 +13,6 @@ if (!$isUserLogged) {
     } ?> <?php
     // $this->includeTemplate('guest-user/loginFormTemplate.php');
 } else {
-    $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
     $userActiveTab = false;
     if (User::canViewSupplierTab() && (isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S')) {
         $userActiveTab = true;
