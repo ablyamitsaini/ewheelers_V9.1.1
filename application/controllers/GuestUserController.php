@@ -40,9 +40,30 @@ class GuestUserController extends MyAppController
     {
         $authentication = new UserAuthentication();
 
-        if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'])) {
-            Message::addErrorMessage(Labels::getLabel($authentication->getError(), $this->siteLangId));
+        if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
+            $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(FatUtility::decodeHtmlEntities(Message::getHtml()));
+        }
+        $this->app_user['temp_user_id'] = 0;
+
+        $userId = UserAuthentication::getLoggedUserId();
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $uObj = new User($userId);
+            if (!$token = $uObj->setMobileAppToken()) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            }
+
+            $userInfo = $uObj->getUserInfo(array('user_name','user_id'), true, true);
+            $this->set('token', $token);
+            $this->set('userInfo', $userInfo);
+            $this->_template->render();
         }
 
         $rememberme = FatApp::getPostedData('remember_me', FatUtility::VAR_INT, 0);
@@ -52,7 +73,6 @@ class GuestUserController extends MyAppController
             }
         }
 
-        $userId = UserAuthentication::getLoggedUserId();
         setcookie('uc_id', $userId, time()+3600*24*30, CONF_WEBROOT_URL);
 
         $data = User::getAttributesById($userId, array('user_preferred_dashboard','user_registered_initially_for'));
@@ -72,18 +92,18 @@ class GuestUserController extends MyAppController
             $userPreferedDashboardType = ($data['user_preferred_dashboard'])?$data['user_preferred_dashboard']:$data['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
-            case User::USER_TYPE_BUYER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-                break;
-            case User::USER_TYPE_SELLER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-                break;
-            case User::USER_TYPE_AFFILIATE:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-                break;
-            case User::USER_TYPE_ADVERTISER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-                break;
+                case User::USER_TYPE_BUYER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+                    break;
             }
 
 
@@ -1275,6 +1295,9 @@ class GuestUserController extends MyAppController
     public function logout()
     {
         UserAuthentication::logout();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
     }
 
