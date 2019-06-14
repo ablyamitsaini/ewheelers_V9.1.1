@@ -28,9 +28,9 @@ foreach ($orders as $sn => $order) {
         $canCancelOrder = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
         $canReturnRefund = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
     }
-    $canReviewOrders = false;
+    $isValidForReview = false;
     if (in_array($order["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
-        $canReviewOrders = true;
+        $isValidForReview = true;
     }
     foreach ($arr_flds as $key => $val) {
         $td = $tr->appendElement('td');
@@ -108,8 +108,8 @@ foreach ($orders as $sn => $order) {
                         true
                     );
                 }
-
-                if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0) && $canReviewOrders) {
+                $canSubmitFeedback = Orders::canSubmitFeedback($order['order_user_id'], $order['order_id'], $order['op_selprod_id']);
+                if ($canSubmitFeedback && $isValidForReview) {
                     $opFeedBackUrl = CommonHelper::generateUrl('Buyer', 'orderFeedback', array($order['op_id']));
                     $li = $ul->appendElement("li");
                     $li->appendElement(

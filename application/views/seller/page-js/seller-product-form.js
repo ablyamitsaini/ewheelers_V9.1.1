@@ -163,9 +163,9 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpSellerProductVolumeDiscount'), data, function(t) {
 			sellerProductVolumeDiscounts( $(frm.voldiscount_selprod_id).val() );
+			$.systemMessage.close();
 			$(document).trigger('close.facebox');
 		});
-		return false;
 	};
 
 	deleteSellerProductVolumeDiscount = function( voldiscount_id ){

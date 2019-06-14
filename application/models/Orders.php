@@ -2271,7 +2271,10 @@ class Orders extends MyAppModel
         return true;
     }
     
-    public static function canGiveFeedback($userId, $op_order_id, $selprod_id){
+    public static function canSubmitFeedback($userId, $op_order_id, $selprod_id){
+        if(!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)){
+            return false;
+        }        
         $oFeedbackSrch = new SelProdReviewSearch();
         $oFeedbackSrch->doNotCalculateRecords();
         $oFeedbackSrch->doNotLimitRecords();

@@ -362,7 +362,7 @@ class BuyerController extends BuyerBaseController
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
-            'totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
+            'totCombinedOrders as totOrders', 'op_selprod_id', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
             'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request')
         );
 
@@ -1136,10 +1136,10 @@ class BuyerController extends BuyerBaseController
             CommonHelper::redirectUserReferer();
         }
         
-        $canGiveFeedback = Orders::canGiveFeedback($userId, $opDetail['op_order_id'], $selProdId);
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
         
-        if (!canGiveFeedback) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback1', $this->siteLangId));
+        if (!$canSubmitFeedback) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
         
@@ -1221,19 +1221,15 @@ class BuyerController extends BuyerBaseController
         $productId = FatUtility::int($selProdDetail['selprod_product_id']); */
         $selProdCode = array_shift(explode('|', $opDetail['op_selprod_code']));
         $productId = array_shift(explode('_', $selProdCode));
-
-        $oFeedbackSrch = new SelProdReviewSearch();
-        $oFeedbackSrch->doNotCalculateRecords();
-        $oFeedbackSrch->doNotLimitRecords();
-        $oFeedbackSrch->addCondition('spreview_postedby_user_id', '=', $userId);
-        $oFeedbackSrch->addCondition('spreview_order_id', '=', $opDetail['op_order_id']);
-        $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selProdId);
-        $oFeedbackRs = $oFeedbackSrch->getResultSet();
-        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+        
+        
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
+        
+        if (!$canSubmitFeedback) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-
+        
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
