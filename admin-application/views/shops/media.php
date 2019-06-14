@@ -28,13 +28,13 @@ $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="banner-image-listing"></div>';
 $fld1->htmlAfterField = $htmlAfterField;
 
-$shopBackgroundImageFrm->setFormTagAttribute('class', 'web_form form_horizontal');
+/*$shopBackgroundImageFrm->setFormTagAttribute('class', 'web_form form_horizontal');
 $shopBackgroundImageFrm->developerTags['colClassPrefix'] = 'col-md-';
 $shopBackgroundImageFrm->developerTags['fld_default_col'] = 12;
 $fld1 = $shopBackgroundImageFrm->getField('shop_background_image');
 $fld1->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $shopBackgroundImageFrm->getField('lang_id');
-$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. Labels::getLabel('MSG_Upload_shop_background_text', $adminLangId). '</small>';
+$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. Labels::getLabel('MSG_Upload_shop_background_text', $adminLangId). '</small>';*/
 
 $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="bg-image-listing"></div>';
@@ -61,10 +61,10 @@ $fld1->htmlAfterField = $htmlAfterField;
                                     onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);"
                                 <?php }?>><?php echo Labels::getLabel('LBL_'.$langName, $adminLangId);?></a></li>
                             <?php } ?>
-                            <li><a href="javascript:void(0);"
+                            <?php /* <li><a href="javascript:void(0);"
                                 <?php if ($shop_id > 0) { ?>
                                     onclick="shopTemplates(<?php echo $shop_id ?>);"
-                                <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li>
+                                <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li> */ ?>
                             <li><a class="active" href="javascript:void(0);"
                                 <?php if ($shop_id > 0) { ?>
                                     onclick="shopMediaForm(<?php echo $shop_id ?>);"
@@ -78,7 +78,7 @@ $fld1->htmlAfterField = $htmlAfterField;
                             <div class="tabs_panel">
                                 <?php  echo $shopLogoFrm->getFormHtml();?>
                                 <?php echo $shopBannerFrm->getFormHtml();?>
-                                <?php echo $shopBackgroundImageFrm->getFormHtml();?>
+                                <?php /*echo $shopBackgroundImageFrm->getFormHtml();*/ ?>
                             </div>
                         </div>
                     </div>
