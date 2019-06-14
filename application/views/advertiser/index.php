@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+        <div class="content-header justify-content-between row mb-3">
             <div class="content-header-left col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Advertiser', $siteLangId); ?></h2>

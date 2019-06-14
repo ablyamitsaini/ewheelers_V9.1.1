@@ -1,6 +1,8 @@
 <div class="main-bar-blog">
     <div class="container">
+        <a class="navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="header-blog-inner">
+          
             <div class="logo">
                 <a href="<?php echo CommonHelper::generateUrl('Blog'); ?>">
                     <img src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>"
@@ -50,7 +52,7 @@
                 $navLinkCount++;
             } ?>
         <div class="navigations__overlayx"></div>
-        <a class="navs_toggle" href="javascript:void(0)"><span></span></a>
+        
         <div class="navigation-wrapper">
             <ul class="navigations">
                 <li><a href="<?php echo CommonHelper::generateUrl('Blog'); ?>"><?php echo Labels::getLabel('LBL_Blog_Home', $siteLangId); ?></a> </li>

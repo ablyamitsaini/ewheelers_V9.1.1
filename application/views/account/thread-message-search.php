@@ -1,9 +1,8 @@
 <?php if (count($arrListing) > 0){
 	foreach($arrListing as $row){
-?>
-	<li>
+?><li>
 	   <div class="msg_db">
-		   <div class="avtar"><img src="<?php echo CommonHelper::generateUrl('Image','user',array($row['message_from_user_id'],'thumb',true));?>" alt="<?php echo $row['message_from_name'];?>"></div>
+		   <img src="<?php echo CommonHelper::generateUrl('Image','user',array($row['message_from_user_id'],'thumb',true));?>" alt="<?php echo $row['message_from_name'];?>">
 	   </div>
 	   <div class="msg__desc">
             <span class="msg__title"><?php echo $row['message_from_name'];?></span>
@@ -12,6 +11,7 @@
        </div>
 
 	</li>
+
 <?php } }
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmMessageSrchPaging') );

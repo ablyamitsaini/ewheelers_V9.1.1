@@ -22,8 +22,8 @@ $(document).ready(function() {
         }
         showFormActionsBtns();
     });
-	if(0 < $('.js-widget-scroll').length){
-    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false));
+	if(0 < $('.js-widget-scroll').length){		
+    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
     $(document).on('keydown', 'input.phone-js', function(e) {
@@ -324,7 +324,7 @@ removeFromCart = function(key) {
 
 function submitSiteSearch(frm) {
 
-    var keyword = $(frm).find('input[name="keyword"]').val();
+    var keyword = $.trim($(frm).find('input[name="keyword"]').val());
 
     if (3 > keyword.length || '' === keyword) {
         $.mbsmessage(langLbl.searchString, true, 'alert--danger');
@@ -378,11 +378,18 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 			vertical: true,
 			verticalSwiping: true,
 			responsive: [{
-					breakpoint: 1199,
+					breakpoint: 1499,
+					settings: {
+						slidesToShow: 3,
+
+					}
+				},
+				{
+				breakpoint: 1199,
 					settings: {
 						slidesToShow: 4,
                         vertical: false,
-			            verticalSwiping: false,
+			            verticalSwiping: false
 					}
 				},
 
@@ -391,7 +398,7 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 					settings: {
 						slidesToShow: 2,
                          vertical: false,
-			            verticalSwiping: false,
+			            verticalSwiping: false
 				    }
 				}
 			]
@@ -422,7 +429,7 @@ var screenResolutionForSlider = {
         1023: 3,
         767: 2,
         480: 2
-    }
+    };
 
 function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay,slidesToShowForDiffResolution ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
@@ -472,7 +479,6 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
 	if(layoutDirection == 'rtl'){
 		sliderSettings['rtl'] = true;
 	}
-
     return sliderSettings;
 }
 

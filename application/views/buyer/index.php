@@ -2,13 +2,13 @@
 $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+        <div class="content-header justify-content-between row mb-3">
             <div class="content-header-left col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?> <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></h2>
             </div>
             <div class="content-header-right col-auto">
                 <div class="">
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
-                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--primary-border"> <?php echo Labels::getLabel('LBL_Manage_Addresses', $siteLangId);?> </a>
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'wishlist');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Favorites', $siteLangId);?> </a>
+                    <a href="<?php echo CommonHelper::generateUrl('Account', 'myAddresses');?>" class="btn btn--secondary-border btn--sm"> <?php echo Labels::getLabel('LBL_Manage_Addresses', $siteLangId);?> </a>
                 </div>
             </div>
         </div>
@@ -126,7 +126,13 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                             } else {
                                                     $canCancelOrder = (in_array($row["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
                                                     $canReturnRefund = (in_array($row["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
-                                            } ?> <tr>
+                                            }
+                                            $isValidForReview = false;
+                                            if (in_array($row["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
+                                                $isValidForReview = true;
+                                            }
+                                            $canSubmitFeedback = Orders::canSubmitFeedback($row['order_user_id'], $row['order_id'], $row['op_selprod_id']); ?>
+                                    <tr>
                                         <td> <?php
                                                 $prodOrBatchUrl = 'javascript:void(0)';
                                             if ($row['op_is_batch']) {
@@ -166,7 +172,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                             <ul class="actions">
                                                 <li><a title="<?php echo Labels::getLabel('LBL_View_Order', $siteLangId); ?>" href="<?php echo $orderDetailUrl; ?>"><i class="fa fa-eye"></i></a></li> <?php if ($canCancelOrder) { ?> <li><a
                                                         href="<?php echo CommonHelper::generateUrl('buyer', 'orderCancellationRequest', array($row['op_id']));?>" title="<?php echo Labels::getLabel('LBL_Cancel_Order', $siteLangId);?>"><i
-                                                            class="fa fa-close"></i></a></li> <?php } ?> <?php if (FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)) {?> <li><a
+                                                            class="fa fa-close"></i></a></li> <?php } ?> <?php if ($canSubmitFeedback && $isValidForReview) {?> <li><a
                                                         href="<?php echo CommonHelper::generateUrl('Buyer', 'orderFeedback', array($row['op_id']));?>" title="<?php echo Labels::getLabel('LBL_Feedback', $siteLangId);?>"><i class="fa fa-star"></i></a>
                                                 </li> <?php } ?> <?php if ($canReturnRefund) { ?> <li><a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($row['op_id']));?>"
                                                         title="<?php echo Labels::getLabel('LBL_Refund', $siteLangId);?>"><i class="fa fa-dollar"></i></a></li> <?php } ?>

@@ -2,8 +2,8 @@
 $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header  row justify-content-between mb-3">
-            <div class="col-md-auto">
+        <div class="content-header">
+           
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
                 <h2 class="content-header-title">
@@ -30,7 +30,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </h2>
-            </div>
+           
         </div>
         <div class="content-body">
             <div class="row mb-4">
@@ -40,7 +40,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
                             <div class="action">
                                 <?php if (User::canAddCustomProduct()) { ?>
-                                <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
+                                <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
                                 <?php }
                                 ?>
                                 <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
@@ -49,8 +49,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                 <?php } ?>
                             </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <div class="bg-gray-light p-3 pb-0">
+                        <div class="cards-content  pl-4 pr-4 pb-4">
+                            <div class="bg-gray-light p-4 pb-0">
                                 <?php
                                 $frmSearchCatalogProduct->setFormTagAttribute('id', 'frmSearchCatalogProduct');
                                 $frmSearchCatalogProduct->setFormTagAttribute('class', 'form');
@@ -92,7 +92,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                 echo $frmSearchCatalogProduct->getFormHtml();
                                 ?>
                             </div>
-                            <span class="gap"></span>
+                          
                         </div>
                     </div>
                 </div>
@@ -100,11 +100,10 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                        </div>
-                        <div class="cards-content pl-4 pr-4 ">
+                       
+                        <div class="cards-content p-4">
                             <div id="listing"> </div>
-                            <span class="gap"></span>
+                          
                         </div>
                     </div>
                 </div>

@@ -181,7 +181,7 @@ class Tax extends MyAppModel
 
     public function canRecordMarkDelete($id)
     {
-        $srch = $this->getSearchObject();
+        $srch = $this->getSearchObject(0, false);
         $srch->addCondition('t.'.static::DB_TBL_PREFIX.'id', '=', $id);
         $srch->addFld('t.'.static::DB_TBL_PREFIX.'id');
         $rs = $srch->getResultSet();
