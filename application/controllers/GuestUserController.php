@@ -60,7 +60,8 @@ class GuestUserController extends MyAppController
                 FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             }
 
-            $userInfo = $uObj->getUserInfo(array('user_name','user_id'), true, true);
+            $userInfo = $uObj->getUserInfo(array('user_name', 'user_id', 'user_phone', 'credential_email'), true, true, true);
+            
             $this->set('token', $token);
             $this->set('userInfo', $userInfo);
             $this->_template->render();

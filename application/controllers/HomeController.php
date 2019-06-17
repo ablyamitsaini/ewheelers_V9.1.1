@@ -106,6 +106,22 @@ class HomeController extends MyAppController
         }
     }
 
+    public function languageLabels()
+    {
+        $srch = Labels::getSearchObject();
+        $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
+        $srch->addOrder('lbl.' . Labels::DB_TBL_PREFIX . 'lang_id', 'ASC');
+        $srch->addGroupBy('lbl.' . Labels::DB_TBL_PREFIX . 'key');
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $srch->addCondition('lbl.label_lang_id', '=', $this->siteLangId);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+
+        $this->set('languageLabels', $records);
+        $this->_template->render();
+    }
+
     public function setCurrentLocation()
     {
         $post = FatApp::getPostedData();
