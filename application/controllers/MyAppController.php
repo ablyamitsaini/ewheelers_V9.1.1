@@ -19,6 +19,7 @@ class MyAppController extends FatController
         $this->siteLangId = CommonHelper::getLangId();
         $this->siteCurrencyId = CommonHelper::getCurrencyId();
 
+        $this->app_user['temp_user_id'] = 0;
         if (true ===  MOBILE_APP_API_CALL) {
             $this->setApiVariables();
         }
@@ -144,7 +145,6 @@ class MyAppController extends FatController
             $this->appToken = ($post['_token']!='')?$post['_token']:'';
         }
 
-        $this->app_user['temp_user_id'] = 0;
         if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
             $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
         }
