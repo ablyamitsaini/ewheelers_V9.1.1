@@ -1135,14 +1135,14 @@ class BuyerController extends BuyerBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
+
         $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
-        
+
         if (!$canSubmitFeedback) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
+
 
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $this->set('frm', $frm);
@@ -1221,15 +1221,15 @@ class BuyerController extends BuyerBaseController
         $productId = FatUtility::int($selProdDetail['selprod_product_id']); */
         $selProdCode = array_shift(explode('|', $opDetail['op_selprod_code']));
         $productId = array_shift(explode('_', $selProdCode));
-        
-        
+
+
         $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
-        
+
         if (!$canSubmitFeedback) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        
+
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
