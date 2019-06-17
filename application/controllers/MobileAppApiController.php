@@ -964,7 +964,7 @@ class MobileAppApiController extends MyAppController
             $srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  IFNULL(splprice_price, selprod_price),   theprice ) as theprice');
             $srch->addFld(
                 'if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
-END,   special_price_found ) as special_price_found'
+                END,   special_price_found ) as special_price_found'
             );
         } else {
             $srch->addFld('theprice');

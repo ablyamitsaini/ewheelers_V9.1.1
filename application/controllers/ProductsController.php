@@ -324,8 +324,11 @@ class ProductsController extends MyAppController
 
     public function view($selprod_id = 0)
     {
-        $productImagesArr = array();
         $selprod_id = FatUtility::int($selprod_id);
+        if (true ===  MOBILE_APP_API_CALL && 1 > $selprod_id) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $productImagesArr = array();
         $prodSrchObj = new ProductSearch($this->siteLangId);
 
         /* fetch requested product[ */
@@ -380,6 +383,9 @@ class ProductsController extends MyAppController
         /* ] */
 
         if (!$product) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            }
             FatUtility::exitWithErrorCode(404);
         }
 
