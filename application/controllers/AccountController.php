@@ -892,15 +892,22 @@ class AccountController extends LoggedUserController
     public function uploadProfileImage()
     {
         $userId = UserAuthentication::getLoggedUserId();
-
         $post = FatApp::getPostedData();
         if (empty($post)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
         if ($post['action'] == "demo_avatar") {
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
+                $message = Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
             }
 
@@ -908,15 +915,23 @@ class AccountController extends LoggedUserController
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
-                Message::addErrorMessage($fileHandlerObj->getError());
-                FatUtility::dieJsonError(Message::getHtml());
+                $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage();
+                FatUtility::dieJsonError(Message::getHtml($message));
             }
             $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?'.time());
         }
 
         if ($post['action'] == "avatar") {
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
+                $message = Labels::getLabel(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId), $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
             }
 
@@ -924,7 +939,11 @@ class AccountController extends LoggedUserController
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
-                Message::addErrorMessage($fileHandlerObj->getError());
+                $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
             }
 
@@ -933,7 +952,9 @@ class AccountController extends LoggedUserController
             $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?'.time());
         }
 
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1447,7 +1468,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-            $srch = new UserWishListProductSearch($this->siteLangId);
+        $srch = new UserWishListProductSearch($this->siteLangId);
         $srch->joinSellerProducts();
         $srch->joinProducts();
         $srch->joinBrands();
