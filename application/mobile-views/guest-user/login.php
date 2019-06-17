@@ -6,7 +6,6 @@ $statusArr = array(
 );
 
 $data = array(
-    'status'=>1,
     'token' => $token,
     'user_name' => !empty($userInfo['user_name']) ? $userInfo['user_name'] : '',
     'user_phone' => !empty($userInfo['user_phone']) ? $userInfo['user_phone'] : '',
