@@ -744,6 +744,10 @@ class UserAuthentication extends FatModel
         if (static::isUserLogged() || static::isGuestUserLogged()) {
             return true;
         }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $message = Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId());
+            FatUtility::dieJsonError(strip_tags($message));
+        }
 
         if (FatUtility::isAjaxCall()) {
             Message::addErrorMessage(Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId()));

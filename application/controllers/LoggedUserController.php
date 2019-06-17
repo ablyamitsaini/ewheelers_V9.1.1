@@ -6,7 +6,7 @@ class LoggedUserController extends MyAppController
         parent::__construct($action);
 
         UserAuthentication::checkLogin();
-
+        
         $userObj = new User(UserAuthentication::getLoggedUserId());
 
         $userInfo = $userObj->getUserInfo(array(), false, false);

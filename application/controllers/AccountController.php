@@ -718,21 +718,35 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
         $userId = FatUtility::int($userId);
-
         if (1 > $userId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage();
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $fileHandlerObj = new AttachedFile();
         if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId)) {
-            Message::addErrorMessage($fileHandlerObj->getError());
+            $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)) {
-            Message::addErrorMessage($fileHandlerObj->getError());
+            $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         $this->set('msg', Labels::getLabel('MSG_File_deleted_successfully', $this->siteLangId));
