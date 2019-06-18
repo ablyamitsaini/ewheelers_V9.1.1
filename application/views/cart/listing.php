@@ -87,9 +87,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
             </div>
         </td>
         <td>
-            <?php if ($product['special_price_found']) { ?>
-            <span class="text--normal text--normal-primary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
-            <?php } ?>
+            <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
         </td>
         <td> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
         </td>
