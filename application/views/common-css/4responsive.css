@@ -1497,6 +1497,7 @@ html.toggled-user .logo-wrapper{border-color: transparent;background: none;}
 .sold-by h6{margin-bottom:10px!important;}
 .reviews-desc{text-align: center;padding-top: 0;}
 .reviews-desc .products__rating{justify-content: center;}
+.main-search__field{position: static;}
 }
 
 @media only screen and (max-width: 600px) {
@@ -1508,7 +1509,7 @@ flex-direction: column;
 }
 
 .buy-group .btn .icn {display: none;}
-.main-search-form .search--keyword{width: 70%;}
+
 }
 
 @media only screen and (max-width: 500px) {
@@ -1526,4 +1527,5 @@ flex-direction: column;
 .section--pagebar h1 + p{margin-bottom:10px;font-size: 0.9em;}
 .prod-info{margin-bottom: 20px;}
 .product-description .products-reviews{margin-bottom: 15px;display: inline-block;padding: 5px 20px 10px;}
+
 }
