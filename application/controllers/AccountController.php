@@ -1094,19 +1094,35 @@ class AccountController extends LoggedUserController
     public function updateBankInfo()
     {
         $userId = UserAuthentication::getLoggedUserId();
+        $post = FatApp::getPostedData();
+        if (1 > count($post) && true ===  MOBILE_APP_API_CALL) {
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId)));
+        }
 
         $frm = $this->getBankInfoForm();
-        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+        $post = $frm->getFormDataFromArray($post);
 
         if (false === $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
+            $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $userObj = new User($userId);
         if (!$userObj->updateBankInfo($post)) {
-            Message::addErrorMessage(Labels::getLabel($userObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         $this->set('msg', Labels::getLabel('MSG_Setup_successful', $this->siteLangId));
@@ -2402,8 +2418,13 @@ class AccountController extends LoggedUserController
         $frm = new Form('frmBankInfo');
         $frm->addRequiredField(Labels::getLabel('M_Bank_Name', $this->siteLangId), 'ub_bank_name', '');
         $frm->addRequiredField(Labels::getLabel('M_Account_Holder_Name', $this->siteLangId), 'ub_account_holder_name', '');
-        $frm->addRequiredField(Labels::getLabel('M_Account_Number', $this->siteLangId), 'ub_account_number', '');
-        $frm->addRequiredField(Labels::getLabel('M_IFSC_Swift_Code', $this->siteLangId), 'ub_ifsc_swift_code', '');
+        $fld = $frm->addRequiredField(Labels::getLabel('M_Account_Number', $this->siteLangId), 'ub_account_number', '');
+        $fld->requirements()->setInt();
+        $fld->requirements()->setPositive();
+
+        $ifsc = $frm->addRequiredField(Labels::getLabel('M_IFSC_Swift_Code', $this->siteLangId), 'ub_ifsc_swift_code', '');
+        $ifsc->requirements()->setRegularExpressionToValidate(ValidateElement::USERNAME_REGEX);
+
         $frm->addTextArea(Labels::getLabel('M_Bank_Address', $this->siteLangId), 'ub_bank_address', '');
         $frm->addHtml('bank_info_safety_text', 'bank_info_safety_text', '<span class="text--small">'.Labels::getLabel('Lbl_Your_Bank/Card_info_is_safe_with_us', $this->siteLangId).'</span>');
         $frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
