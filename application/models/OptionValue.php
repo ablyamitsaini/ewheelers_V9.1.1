@@ -152,6 +152,21 @@ class OptionValue extends MyAppModel
         return false;
     }
 
+    public function isLinkedWithInventory()
+    {
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'INNER JOIN', SellerProduct::DB_TBL_PREFIX.'id = '.SellerProduct::DB_TBL_SELLER_PROD_OPTIONS_PREFIX.'selprod_id');
+        $srch->joinTable(static::DB_TBL, 'INNER JOIN', static::DB_TBL_PREFIX.'id = '.SellerProduct::DB_TBL_SELLER_PROD_OPTIONS_PREFIX.'optionvalue_id');
+        $srch->addCondition(static::DB_TBL_PREFIX.'id', '=', $this->mainTableRecordId);
+        $srch->addFld('selprod_id');
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+        if (!empty($row)) {
+            return true;
+        }
+        return false;
+    }
+
     /* public function deleteRecordByOptionId($optionId)
     {
 

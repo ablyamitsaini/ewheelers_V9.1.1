@@ -22,7 +22,7 @@ $(document).ready(function() {
         }
         showFormActionsBtns();
     });
-	if(0 < $('.js-widget-scroll').length){		
+	if(0 < $('.js-widget-scroll').length){
     	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
@@ -592,12 +592,11 @@ function defaultSetUpLogin(frm, v) {
             setTimeout(function() {
                 $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight) / 4) + 'px');
             }, 700);
+            $('#facebox .content').css('overflow-y', 'auto');
             if (fbContentHeight > screenHeight - parseInt(100)) {
-                $('#facebox .content').css('overflow-y', 'scroll');
                 $('#facebox .content').css('display', 'block');
             } else {
                 $('#facebox .content').css('max-height', '');
-                $('#facebox .content').css('overflow', '');
             }
         },
         updateFaceboxContent: function(t, cls) {
@@ -713,7 +712,7 @@ $(document).ready(function() {
 
     if (typeof $.fn.autocomplete_advanced !== typeof undefined) {
         $('#header_search_keyword').autocomplete_advanced({
-            appendTo: "#autoSuggest",
+            appendTo: ".main-search__field",
             minChars: 2,
             autoSelectFirst: false,
             lookup: function(query, done) {
@@ -726,8 +725,8 @@ $(document).ready(function() {
                     type: 'post',
                     success: function(json) {
                         done(json);
-                        /* $('.autocomplete-suggestions').appendTo('.form__cover'); */
-                        /* $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
+                        /* $('.autocomplete-suggestions').appendTo('.form__cover');
+                        $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
                     }
                 });
             },
