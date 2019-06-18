@@ -783,6 +783,12 @@ class AccountController extends LoggedUserController
 
     public function profileInfo()
     {
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('personalInfo', $this->personalInfo());
+            $this->set('bankInfo', $this->bankInfo());
+            $this->_template->render();
+        }
+
         $this->_template->addJs('js/jquery.form.js');
         $this->_template->addJs('js/cropper.js');
         $this->_template->addCss('css/cropper.css');
@@ -816,6 +822,9 @@ class AccountController extends LoggedUserController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
+        if (true ===  MOBILE_APP_API_CALL) {
+            return $data;
+        }
         $this->set('info', $data);
         $this->_template->render(false, false);
     }
@@ -825,6 +834,9 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $userObj = new User($userId);
         $data = $userObj->getUserBankInfo();
+        if (true ===  MOBILE_APP_API_CALL) {
+            return $data;
+        }
         $this->set('info', $data);
         $this->_template->render(false, false);
     }
