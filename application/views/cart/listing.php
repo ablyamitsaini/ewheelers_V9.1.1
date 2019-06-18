@@ -1,9 +1,5 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-
-
-
-
 <div class="row">
     <div class="col-xl-9 col-lg-8">
         <div class="box box--white box--radius box--space">
@@ -74,7 +70,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         </div>
                 </td>
             <td>
-            
+
             <div class="qty-wrapper">
                 <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
                     <span class="decrease decrease-js">-</span>
@@ -159,7 +155,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         </tr>
                     <?php }?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
-                    <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
+                    <?php $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
 
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
