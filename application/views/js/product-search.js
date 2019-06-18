@@ -127,21 +127,6 @@ $(document).ready(function(){
 
 	/* ] */
 
-	$(document).on('click', '#resetAll', function() {
-		searchArr = [];
-		document.frmProductSearch.reset();
-		document.frmProductSearchPaging.reset();
-
-		$('#filters a').each(function(){
-			id = $(this).attr('class');
-			clearFilters(id,this);
-		});
-		updatePriceFilter();
-		reloadProductListing(frm);
-		//searchProducts(frm,0,0,1,1);
-	});
-
-
 	$(window).on('load',function(){
 		showSelectedFilters();
 		initialize();
@@ -240,6 +225,20 @@ function addFilter(id,obj){
 	if(!$('#filters').find('a').hasClass(id)){
 		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
 	}
+}
+
+function resetListingFilter(){
+    searchArr = [];
+    document.frmProductSearch.reset();
+    document.frmProductSearchPaging.reset();
+    var frm = document.frmProductSearch;
+    $('#filters a').each(function(){
+        id = $(this).attr('class');
+        clearFilters(id,this);
+    });
+    updatePriceFilter();
+    reloadProductListing(frm);
+    //searchProducts(frm,0,0,1,1);
 }
 
 function addPaginationInlink(page){
