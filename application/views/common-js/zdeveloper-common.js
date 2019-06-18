@@ -712,7 +712,7 @@ $(document).ready(function() {
 
     if (typeof $.fn.autocomplete_advanced !== typeof undefined) {
         $('#header_search_keyword').autocomplete_advanced({
-            insertAfter: "#header_search_keyword",
+            appendTo: ".main-search__field",
             minChars: 2,
             autoSelectFirst: false,
             lookup: function(query, done) {
