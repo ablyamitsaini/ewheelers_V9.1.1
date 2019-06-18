@@ -24,6 +24,7 @@ Enhancements:
 	. Handled Form elements validations via a centralized class.
 	. Admin & User can perform multi select bulk operations(Update statues and Delete) on shop collection as well.
 	. Added min and max range for COD payments.
+	. Added a check for option values that not to be deleted if linked with an inventory.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.

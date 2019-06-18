@@ -185,6 +185,13 @@ class OptionValuesController extends LoggedUserController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
+        if ($optionValueObj->isLinkedWithInventory($optionvalue_id)) {
+            Message::addErrorMessage(
+                Labels::getLabel('MSG_This_option_value_is_linked_with_inventory', $this->siteLangId)
+            );
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+        
         if (!$optionValueObj->deleteRecord()) {
             Message::addErrorMessage($optionValueObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
