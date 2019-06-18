@@ -5,6 +5,10 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
+foreach ($slides as $index => $slideDetail) {
+    $slides[$index]['slide_image_url'] = CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'],0,$siteLangId));
+}
+
 $data = array(
     'sponsoredProds' => $sponsoredProds,
     'sponsoredShops' => $sponsoredShops,
