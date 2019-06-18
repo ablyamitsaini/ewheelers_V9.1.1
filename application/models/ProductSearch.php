@@ -115,7 +115,7 @@ class ProductSearch extends SearchBase
             $splPriceForDate = $now;
         }
 
-        $this->joinTable(SellerProduct::DB_TBL, 'LEFT OUTER JOIN', 'msellprod.selprod_product_id = p.product_id and selprod_deleted = '.applicationConstants::NO.' and selprod_active = '.applicationConstants::ACTIVE, 'msellprod');
+        $this->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'msellprod.selprod_product_id = p.product_id and selprod_deleted = '.applicationConstants::NO.' and selprod_active = '.applicationConstants::ACTIVE, 'msellprod');
         if (isset($criteria['optionvalue']) && $criteria['optionvalue'] !='') {
             $this->addOptionCondition($criteria['optionvalue']);
         }
@@ -154,7 +154,7 @@ class ProductSearch extends SearchBase
             $shopCondition = ' and shop_id = '.FatApp::getDb()->quoteVariable($shopId);
         }
 
-        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'product_id = selprod_product_id');
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'product_id = selprod_product_id AND product_active = '.applicationConstants::ACTIVE.' and product_deleted = '.applicationConstants::NO.' and product_approved = '.PRODUCT::APPROVED);
         $srch->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = user_id AND user_is_supplier = '.applicationConstants::YES);
         $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES);
         $srch->joinTable(Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES . $shopCondition);
@@ -163,7 +163,7 @@ class ProductSearch extends SearchBase
         $srch->joinTable(Brand::DB_TBL, 'INNER JOIN', 'product_brand_id = brand_id and brand_active = '.applicationConstants::YES.' and brand_deleted = '.applicationConstants::NO);
         $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'ptc_product_id = product_id');
         $srch->joinTable(ProductCategory::DB_TBL, 'INNER JOIN', 'prodcat_id = ptc_prodcat_id and prodcat_active = '.applicationConstants::YES.' and prodcat_deleted = '.applicationConstants::NO);
-        $srch->addMultipleFields(array('selprod_product_id','MIN(IFNULL(splprice_price, selprod_price)) AS theprice','CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found'));
+        $srch->addMultipleFields(array('selprod_product_id','MIN(IFNULL(splprice_price, selprod_price)) AS theprice','(CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found'));
         $srch->joinTable(
             SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
             'LEFT OUTER JOIN',
@@ -240,7 +240,7 @@ class ProductSearch extends SearchBase
         }
 
         $fields1 = array('sprods.*', 'm.*',
-        'CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found',
+        '(CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found',
         'IFNULL(m.splprice_price, selprod_price) AS theprice');
         $srch->addMultipleFields(array_merge($fields1, $fields2));
 
