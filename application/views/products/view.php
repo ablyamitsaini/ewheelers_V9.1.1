@@ -95,7 +95,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             <div class="product-description">
                                 <div class="product-description-inner">
                                     
-                                    <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
                                         <div class="products__title">
 
                                             <h2><?php echo $product['selprod_title'];?></h2>
@@ -362,7 +362,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                              
                                 <div class="sold-by bg-gray p-4 rounded">
                                     <div class="row align-items-center justify-content-between">
-                                        <div class="col-md-6">
+                                        <div class="col-xl-6 col-lg-6 col-md-5">
                                                 <div class="h6 m-0 -color-light"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></div>
                                                 <h6 class="m-0">
                                                  <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a>
