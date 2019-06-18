@@ -8,6 +8,34 @@ $statusArr = array(
 foreach ($slides as $index => $slideDetail) {
     $slides[$index]['slide_image_url'] = CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'],0,$siteLangId));
 }
+foreach ($sponsoredProds as $index => $product) {
+    $sponsoredProds[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+}
+foreach ($sponsoredShops as $shopIndex => $shopData) {
+    foreach ($shopData["products"] as $index => $shopProduct) {
+        $sponsoredShops[$shopIndex]['products'][$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($shopProduct['product_id'], "CLAYOUT3", $shopProduct['selprod_id'], 0, $siteLangId));
+    }
+}
+foreach ($collections as $collectionIndex => $collectionData) {
+    if (isset($collectionData['products'])) {
+        foreach ($collectionData['products'] as $index => $product) {
+            $collections[$collectionIndex]['products'][$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+        }
+    } elseif (isset($collectionData['categories'])) {
+        foreach ($collectionData['categories'] as $index => $category) {
+            $collections[$collectionIndex]['categories'][$index]['category_image_url'] = CommonHelper::generateFullUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId));
+        }
+    } elseif (isset($collectionData['shops'])) {
+        foreach ($collectionData['shops'] as $index => $shop) {
+            $collections[$collectionIndex]['shops'][$index]['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($shop['shop_id'], $siteLangId));
+            $collections[$collectionIndex]['shops'][$index]['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId));
+        }
+    } elseif (isset($collectionData['brands'])) {
+        foreach ($collectionData['brands'] as $index => $shop) {
+            $collections[$collectionIndex]['brands'][$index]['brand_image'] = CommonHelper::generateFullUrl('image', 'brand', array($shop['brand_id'], $siteLangId));
+        }
+    }
+}
 
 $data = array(
     'sponsoredProds' => $sponsoredProds,
