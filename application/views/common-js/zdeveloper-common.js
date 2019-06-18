@@ -20,9 +20,12 @@ $(document).ready(function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
         }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
         showFormActionsBtns();
     });
-	if(0 < $('.js-widget-scroll').length){		
+	if(0 < $('.js-widget-scroll').length){
     	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 

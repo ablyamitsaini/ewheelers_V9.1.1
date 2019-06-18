@@ -679,6 +679,9 @@ $(document).ready(function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
         }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
     });
 
 });
