@@ -560,7 +560,7 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 		getSetSelectedOptionsUrl(frm);
 		window.location.href = getSearchQueryUrl(true)+'/page-'+page+'/';
 		//searchProducts(frm,0,0,1,1);
-		$('html, body').animate({ scrollTop: 0 }, 'slow');
+		/* $('html, body').animate({ scrollTop: 0 }, 'slow'); */
 	};
 
 	saveProductSearch = function() {
