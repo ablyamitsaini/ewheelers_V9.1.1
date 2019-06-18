@@ -713,7 +713,7 @@ $(document).ready(function() {
 
     if (typeof $.fn.autocomplete_advanced !== typeof undefined) {
         $('#header_search_keyword').autocomplete_advanced({
-            appendTo: "#autoSuggest",
+            insertAfter: "#header_search_keyword",
             minChars: 2,
             autoSelectFirst: false,
             lookup: function(query, done) {
@@ -726,8 +726,8 @@ $(document).ready(function() {
                     type: 'post',
                     success: function(json) {
                         done(json);
-                        /* $('.autocomplete-suggestions').appendTo('.form__cover'); */
-                        /* $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
+                        /* $('.autocomplete-suggestions').appendTo('.form__cover');
+                        $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
                     }
                 });
             },
