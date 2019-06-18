@@ -12,6 +12,12 @@ $data = array(
     'collections' => $collections,
 );
 
+foreach ($banners as $location => $bannerLocationDetail) {
+    foreach ($bannerLocationDetail['banners'] as $index => $bannerDetail) {
+        $banners[$location]['banners'][$index]['banner_image_url'] = CommonHelper::generateFullUrl('Banner', 'showOriginalBanner', array($bannerDetail['banner_id'], $siteLangId));
+    }
+}
+
 $data = array_merge($data, $banners);
 
 if (1 > count($sponsoredProds) && 1 > count($sponsoredShops) && 1 > count($slides) && 1 > count($collections) && 1 > count($banners)) {
