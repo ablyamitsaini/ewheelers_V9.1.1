@@ -534,7 +534,7 @@ right: 10px;
 .favourite-wrapper-detail{right: auto;left: -40px;}
 .social-networks {left: auto;right: 0;}
 
-
+.listing-products--list .products__body{border-right: none;border-left: 1px solid var(--border-color);}
 
 
 /* media queries */

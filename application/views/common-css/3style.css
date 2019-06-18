@@ -15128,7 +15128,7 @@ margin: 0 0 0 -8px;}
 .ft-products .products--layout .products__body{position: static;}
 .ft-products .products--layout .products__body .favourite{}
 
-.autocomplete-suggestions.search-dropdown-menu{left: 0;top: 100%;padding: 10px;background: #fff;box-shadow: 0 20px 15px 10px rgba(0, 0, 0, 0.1);border-radius: 0 0 4px 4px;width: 100% !important;border-top: 1px solid #ddd;font-size: 0.8em;}
+.autocomplete-suggestions.search-dropdown-menu{left: 0;top: 100%;padding: 10px;background: #fff;box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);border-radius: 0 0 4px 4px;width: 100% !important;border-top: 1px solid #ddd;font-size: 0.8em;}
 .autocomplete-suggestions.search-dropdown-menu li{padding: 5px 0;}
 .autocomplete-suggestions.search-dropdown-menu li strong{font-weight: 700;}
 .main-search__field{position: relative;width: 100%;}
