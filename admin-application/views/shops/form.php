@@ -38,10 +38,10 @@ $urlFld->setFieldTagAttribute('onkeyup', "getSlugUrl(this,this.value,'')");
                             onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);"
                         <?php } ?>><?php echo Labels::getLabel("LBL_".$langName, $adminLangId);?></a></li>
                     <?php } ?>
-                        <li><a href="javascript:void(0);"
+                        <?php /* <li><a href="javascript:void(0);"
                         <?php if ($shop_id > 0) { ?>
                             onclick="shopTemplates(<?php echo $shop_id ?>);"
-                        <?php } ?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li>
+                        <?php } ?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li> */ ?>
                     <li><a href="javascript:void(0);"
                         <?php if ($shop_id > 0) {?>
                             onclick="shopMediaForm(<?php echo $shop_id ?>);"

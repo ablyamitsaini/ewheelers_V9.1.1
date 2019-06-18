@@ -10,7 +10,7 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
 <section class="section">
     <div class="container container-fluid">
         <div class="js-shop-slider shop-slider">
-            <?php foreach ($collectionData as $collection) {?>
+            <?php CommonHelper::printArray($collectionData); die; foreach ($collectionData as $collection) {?>
             <div class="item">
                 <figure><img class="" src="<?php echo CommonHelper::generateUrl('Image', 'shopCollectionImage', array($collection['scollection_id'], $siteLangId,'SHOP')).'?'.time();?>" alt="" data-ratio="16:9"></figure>
                 <div class="overlay-content">

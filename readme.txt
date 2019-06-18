@@ -43,3 +43,6 @@ Fixes :
 	. 027452- Product sorting based on default sort by option and filters based on products for category and shop page.
 	. 026820 - Refund of shipping charges
 	. 027334 - subscription page checkout layout.
+	. 027407 - Added a check for feedback links.
+	. 027566 - Guest user apply coupon .
+	. 027584 - Guest user logout and login option both are displaying at same time

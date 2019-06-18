@@ -288,7 +288,7 @@ if (!$print) {
                                     <td><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
                                     <td><?php echo $orderStatuses[$row['oshistory_orderstatus_id']]; echo ($row['oshistory_tracking_number'])? ': '.Labels::getLabel('LBL_Tracking_Number', $siteLangId).' '.$row['oshistory_tracking_number']." VIA <em>".$row['op_shipping_duration_name']."</em>" :''?>
                                     </td>
-                                    <td><?php echo !empty($row['oshistory_comments']) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_NA', $siteLangId);?></td>
+                                    <td><?php echo !empty($row['oshistory_comments']) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_N/A', $siteLangId);?></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>

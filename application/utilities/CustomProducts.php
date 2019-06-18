@@ -1979,19 +1979,19 @@ trait CustomProducts
 
     private function getCustomProductLangForm($langId)
     {
-        $siteLangId = $this->siteLangId;
+        $langId = FatUtility::int($langId);
         $frm = new Form('frmCustomProductLang');
         $frm->addHiddenField('', 'product_id')->requirements()->setRequired();
         ;
         $frm->addHiddenField('', 'lang_id', $langId);
-        $frm->addRequiredField(Labels::getLabel('LBL_Product_Name', $siteLangId), 'product_name');
-        /* $frm->addTextArea( Labels::getLabel('LBL_Short_Description', $siteLangId),'product_short_description');         */
-        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $siteLangId), 'product_youtube_video');
-        $fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Description', $siteLangId), 'product_description');
+        $frm->addRequiredField(Labels::getLabel('LBL_Product_Name', $langId), 'product_name');
+        /* $frm->addTextArea( Labels::getLabel('LBL_Short_Description', $langId),'product_short_description');         */
+        $frm->addTextBox(Labels::getLabel('LBL_YouTube_Video', $langId), 'product_youtube_video');
+        $fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Description', $langId), 'product_description');
         $fld->htmlBeforeField = '<div class="editor-bar">';
         $fld->htmlAfterField = '</div>';
 
-        $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $siteLangId));
+        $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
         return $frm;
     }
 
