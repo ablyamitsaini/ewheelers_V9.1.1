@@ -978,16 +978,25 @@ class AccountController extends LoggedUserController
         $frm = $this->getProfileInfoForm();
 
         $post = FatApp::getPostedData();
+        if (1 > count($post) && true ===  MOBILE_APP_API_CALL) {
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId)));
+        }
+
         /* CommonHelper::printArray($post);  */
         $user_state_id = FatUtility::int($post['user_state_id']);
         $post = $frm->getFormDataFromArray($post);
 
         if (false === $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
+            $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $post['user_state_id'] = $user_state_id;
+
         if (isset($post['user_id'])) {
             unset($post['user_id']);
         }
@@ -1009,7 +1018,12 @@ class AccountController extends LoggedUserController
             $dataToUpdateOnDuplicate = $dataToSave;
             unset($dataToUpdateOnDuplicate['uextra_user_id']);
             if (!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate)) {
-                Message::addErrorMessage(Labels::getLabel("LBL_Details_could_not_be_saved!", $this->siteLangId));
+                $message = Labels::getLabel(Labels::getLabel("LBL_Details_could_not_be_saved!", $this->siteLangId), $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+
+                Message::addErrorMessage($message);
                 if (FatUtility::isAjaxCall()) {
                     FatUtility::dieWithError(Message::getHtml());
                 }
@@ -1022,8 +1036,15 @@ class AccountController extends LoggedUserController
         $userObj = new User($userId);
         $userObj->assignValues($post);
         if (!$userObj->save()) {
-            Message::addErrorMessage($userObj->getError());
+            $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         $this->set('msg', Labels::getLabel('MSG_Setup_successful', $this->siteLangId));
