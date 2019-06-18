@@ -90,7 +90,7 @@ class PayFortPayController extends PaymentController
 
         $returnSignature = $payfortIntegration->calculateSignature($arrData, $paymentSettings['sha_response_phrase'], $paymentSettings['sha_type']);
 
-        if ($returnSignature == $_REQUEST['signature'] && substr($_REQUEST['response_code'], 2) == '000' && $_REQUEST['amount'] == $paymentGatewayCharge && $_REQUEST['customer_ip'] == $_SERVER['REMOTE_ADDR'] && $_REQUEST['currency'] == strtoupper($orderInfo['order_currency_code']/* $this->currency */) && $_REQUEST['merchant_reference'] == $orderInfo['id']) {
+        if ($returnSignature == $_REQUEST['signature'] && substr($_REQUEST['response_code'], 2) == '000' && $_REQUEST['amount'] == $paymentGatewayCharge && $_REQUEST['currency'] == strtoupper($orderInfo['order_currency_code']/* $this->currency */) && $_REQUEST['merchant_reference'] == $orderInfo['id']) {
             $message = array();
 
             foreach ($_REQUEST as $key => $value) {
@@ -152,13 +152,15 @@ class PayFortPayController extends PaymentController
             $payfortIntegration->access_code            = $paymentSettings['access_code'];
             $payfortIntegration->order_description      = $orderPaymentGatewayDescription;
             $payfortIntegration->merchant_reference     = $orderInfo['invoice']; /* uniqid('ref_'); */
-            $payfortIntegration->customer_ip            = $_SERVER['REMOTE_ADDR'];
+            // $payfortIntegration->customer_ip            = $_SERVER['REMOTE_ADDR'];
             $payfortIntegration->customer_email         = $orderInfo['customer_email'];
             $payfortIntegration->command                   = 'PURCHASE';
             // $payfortIntegration->return_url             = CommonHelper::generateNoAuthUrl('PayFortPay', 'doPayment', array($orderId));
             $payfortIntegration->return_url             = CommonHelper::generateFullUrl('PayFortPay', 'doPayment', array($orderId), '', false);
 
             $requestParams  = $payfortIntegration->getRequestParams();
+            unset($requestParams['customer_ip']);
+            ksort($requestParams);
             $signature      = $payfortIntegration->calculateSignature($requestParams, $paymentSettings['sha_request_phrase'], $paymentSettings['sha_type']);
             $requestParams['signature'] = $signature;
 
