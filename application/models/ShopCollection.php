@@ -146,6 +146,7 @@ class ShopCollection extends MyAppModel
         $srch->addMultipleFields(array( 'scollection_id', 'IFNULL(scollection_name, scollection_identifier) as scollection_name', 'scollection_shop_id'));
         $srch->addCondition(static::DB_TBL_PREFIX . "shop_id", "=", $shop_id);
         $srch->addCondition(static::DB_TBL_PREFIX . "active", "=", applicationConstants::YES);
+        $srch->addGroupBy('scollection_id');
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
