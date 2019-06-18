@@ -1175,7 +1175,7 @@ class Product extends MyAppModel
 
         $srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinProductToCategory();
-        $srch->joinSellerSubscription();
+        $srch->joinSellerSubscription(0, false, true);
         $srch->addSubscriptionValidCondition();
 
         /* to check current product is in wish list or not[ */
