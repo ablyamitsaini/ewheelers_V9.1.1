@@ -89,7 +89,6 @@ $(document).ready(function() {
 });
 
 function showFormActionsBtns() {
-    console.log('called');
     if (typeof $(".selectItem--js:checked").val() === 'undefined') {
         $(".formActionBtn-js").addClass('formActions-css');
     } else {
