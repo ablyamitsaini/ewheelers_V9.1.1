@@ -2050,15 +2050,22 @@ class AccountController extends LoggedUserController
         $threadId = FatUtility::int($threadId);
         $messageId = FatUtility::int($messageId);
         $userId = UserAuthentication::getLoggedUserId();
-
         if (1 > $threadId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
         $threadData = Thread::getAttributesById($messageId, array('thread_id,thread_type'));
         if ($threadData == false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
@@ -2090,28 +2097,41 @@ class AccountController extends LoggedUserController
         $threadDetails = FatApp::getDb()->fetch($rs);
         /* CommonHelper::printArray($threadDetails);die; */
         if ($threadDetails == false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
-        $frmSrch = $this->getMsgSearchForm($this->siteLangId);
-        $frmSrch->fill(array('thread_id'=>$threadId));
-
-        $frm = $this->sendMessageForm($this->siteLangId);
-
-        $frm->fill(array('message_thread_id'=>$threadId,'message_id'=>$messageId));
+        if (false ===  MOBILE_APP_API_CALL) {
+            $frmSrch = $this->getMsgSearchForm($this->siteLangId);
+            $frmSrch->fill(array('thread_id'=>$threadId));
+            $frm = $this->sendMessageForm($this->siteLangId);
+            $frm->fill(array('message_thread_id'=>$threadId,'message_id'=>$messageId));
+        }
 
         $threadObj = new Thread($threadId);
         if (!$threadObj->markUserMessageRead($threadId, $userId)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                Message::addErrorMessage(strip_tags(current($threadObj->getError())));
+            }
             Message::addErrorMessage($threadObj->getError());
         }
 
-        $this->set('frmSrch', $frmSrch);
-        $this->set('frm', $frm);
+        if (false ===  MOBILE_APP_API_CALL) {
+            $this->set('frmSrch', $frmSrch);
+            $this->set('frm', $frm);
+        }
+
         $this->set('threadDetails', $threadDetails);
         $this->set('threadTypeArr', Thread::getThreadTypeArr($this->siteLangId));
         $this->set('loggedUserId', $userId);
         $this->set('loggedUserName', ucfirst(UserAuthentication::getLoggedUserAttribute('user_name')));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(true, false);
     }
 
@@ -2119,10 +2139,14 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
         $post = FatApp::getPostedData();
-        $threadId = FatUtility::int($post['thread_id']);
+        $threadId = empty($post['thread_id']) ? 0 : FatUtility::int($post['thread_id']);
 
         if (1 > $threadId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -2167,6 +2191,11 @@ class AccountController extends LoggedUserController
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
         $this->set('records', $records);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->set('loadMoreBtnHtml', $this->_template->render(false, false, '_partial/load-previous-btn.php', true));
         $this->set('html', $this->_template->render(false, false, 'account/thread-message-search.php', true, false));
         $this->_template->render(false, false, 'json-success.php', true, false);
@@ -2178,6 +2207,9 @@ class AccountController extends LoggedUserController
         $frm = $this->sendMessageForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -2186,7 +2218,11 @@ class AccountController extends LoggedUserController
         $messageId =  FatUtility::int($post['message_id']);
 
         if (1 > $threadId || 1 > $messageId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -2209,7 +2245,11 @@ class AccountController extends LoggedUserController
 
         $threadDetails = FatApp::getDb()->fetch($rs);
         if (empty($threadDetails)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -2227,7 +2267,11 @@ class AccountController extends LoggedUserController
         $tObj = new Thread();
 
         if (!$insertId = $tObj->addThreadMessages($data)) {
-            Message::addErrorMessage(Labels::getLabel($tObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($tObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -2239,6 +2283,9 @@ class AccountController extends LoggedUserController
         $this->set('threadId', $threadId);
         $this->set('messageId', $insertId);
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
