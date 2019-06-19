@@ -1767,59 +1767,38 @@ class AccountController extends LoggedUserController
     public function favoriteShopSearch()
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
+        $post = FatApp::getPostedData();
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        if ($page < 2) {
+            $page = 1;
+        }
+        $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
         $db = FatApp::getDb();
         $srch = new UserFavoriteShopSearch($this->siteLangId);
         $srch->setDefinedCriteria();
         $srch->joinSellerOrder();
         $srch->joinSellerOrderSubscription($this->siteLangId);
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
         $srch->addCondition('ufs_user_id', '=', $loggedUserId);
         $srch->addMultipleFields(
             array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
             'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
         $rs = $srch->getResultSet();
         $shops = $db->fetchAll($rs);
 
         $totalProductsToShow = 4;
         if ($shops) {
-            $prodSrchObj = new ProductSearch($this->siteLangId);
-            $prodSrchObj->setDefinedCriteria(0);
-            $prodSrchObj->joinProductToCategory();
-            $prodSrchObj->setPageNumber(1);
-            $prodSrchObj->setPageSize($totalProductsToShow);
-            $prodSrchObj->joinSellerSubscription($this->siteLangId, true);
-            $prodSrchObj->addSubscriptionValidCondition();
-            $prodSrchObj->joinProductRating();
-            $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
             foreach ($shops as &$shop) {
-                $prodSrch = clone $prodSrchObj;
-                $prodSrch->addShopIdCondition($shop['shop_id']);
-                $prodSrch->addMultipleFields(
-                    array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
-                    'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-                    'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
-                );
-                $prodSrch->addGroupBy('product_id');
-
-                if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
-                    $prodSrch->joinFavouriteProducts($loggedUserId);
-                    $prodSrch->addFld('ufp_id');
-                } else {
-                    $prodSrch->joinUserWishListProducts($loggedUserId);
-                    $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
-                }
-
-                $prodRs = $prodSrch->getResultSet();
                 $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
-                $shop['totalProducts'] = $prodSrch->recordCount();
-                $shop['products'] = $db->fetchAll($prodRs);
             }
         }
-
-        $this->set('totalProductsToShow', $totalProductsToShow);
+        $this->set('page', $page);
+        $this->set('pageCount', $srch->pages());
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('postedData', $post);
         $this->set('shops', $shops);
         $this->_template->render(false, false);
     }

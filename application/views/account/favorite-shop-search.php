@@ -34,4 +34,10 @@
 </div>
 <?php } else {
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
-} ?>
+}
+$postedData['page'] = $page;
+echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmFavShopSearchPaging'));
+
+$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'callBackJsFunc' => 'goToFavoriteShopSearchPage');
+$this->includeTemplate('_partial/pagination.php', $pagingArr, false);
+?>

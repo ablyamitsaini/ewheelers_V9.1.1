@@ -59,7 +59,6 @@ if (count($arrListing) == 0){
 }
 echo $tbl->getHtml();
 
-
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmCreditSrchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToOrderSearchPage');
