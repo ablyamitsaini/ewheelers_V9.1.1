@@ -19,7 +19,7 @@
                             </tr> 
                             <tr>                            
                                 <th><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</th>
-                                <td><?php echo ($product['brand_name']) ? $product['brand_name'] : Labels::getLabel('LBL_NA', $siteLangId); ?></td>
+                                <td><?php echo ($product['brand_name']) ? $product['brand_name'] : Labels::getLabel('LBL_N/A', $siteLangId); ?></td>
                             </tr> 
                             <tr>  
                                 <th><?php echo Labels::getLabel('LBL_Product_Model', $siteLangId); ?>:</th>
