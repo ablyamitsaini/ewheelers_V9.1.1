@@ -47,3 +47,6 @@ Fixes :
 	. 027407 - Added a check for feedback links.
 	. 027566 - Guest user apply coupon .
 	. 027584 - Guest user logout and login option both are displaying at same time
+	. 027429 - Notice displayed after importing invalid policy point identifier row.
+	. 027655 - Select All checkbox is not getting checked if manually select all rows.
+	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected

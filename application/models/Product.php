@@ -1175,7 +1175,7 @@ class Product extends MyAppModel
 
         $srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinProductToCategory();
-        $srch->joinSellerSubscription();
+        $srch->joinSellerSubscription(0, false, true);
         $srch->addSubscriptionValidCondition();
 
         /* to check current product is in wish list or not[ */
@@ -1188,10 +1188,10 @@ class Product extends MyAppModel
         }
 
         $srch->addMultipleFields(
-            array('prodcat_code','product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model', 'product_short_description', 'product_image_updated_on','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
+            array('prodcat_code','product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model',  'product_image_updated_on','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-            'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
+            'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
             'selprod_sold_count','selprod_return_policy',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
             )
         );
@@ -1203,8 +1203,17 @@ class Product extends MyAppModel
             $srch->addHaving('prod_rating', '>=', 3);
         }
 
-        if (!empty($keyword)) {
+        /*if (!empty($keyword)) {
             $includeRating = true;
+        }*/
+
+        if (array_key_exists('sortBy', $criteria)) {
+            $sortBy = $criteria['sortBy'];
+            $sortByArr = explode("_", $sortBy);
+            $sortBy = isset($sortByArr[0]) ? $sortByArr[0] : $sortBy;
+            if ($sortBy == 'rating') {
+                $includeRating = true;
+            }
         }
 
         if (true === $includeRating) {
@@ -1330,14 +1339,19 @@ END,   special_price_found ) as special_price_found'
             $sortOrder = $criteria['sortOrder'];
         }
 
-        if (!in_array($sortOrder, array('asc','desc'))) {
-            $sortOrder = 'asc';
-        }
-
         if (!empty($sortBy)) {
             $sortByArr = explode("_", $sortBy);
             $sortBy = isset($sortByArr[0]) ? $sortByArr[0] : $sortBy;
             $sortOrder = isset($sortByArr[1]) ? $sortByArr[1] : $sortOrder;
+
+            if (!in_array($sortOrder, array('asc','desc'))) {
+                $sortOrder = 'asc';
+            }
+
+            if (!in_array($sortBy, array('keyword','price','popularity','rating'))) {
+                $sortOrder = 'keyword_relevancy';
+            }
+
             switch ($sortBy) {
                 case 'keyword':
                     $srch->addOrder('keyword_relevancy', 'DESC');

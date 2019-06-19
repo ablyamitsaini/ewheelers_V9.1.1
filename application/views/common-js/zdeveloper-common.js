@@ -20,6 +20,9 @@ $(document).ready(function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
         }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
         showFormActionsBtns();
     });
 	if(0 < $('.js-widget-scroll').length){
@@ -86,7 +89,6 @@ $(document).ready(function() {
 });
 
 function showFormActionsBtns() {
-    console.log('called');
     if (typeof $(".selectItem--js:checked").val() === 'undefined') {
         $(".formActionBtn-js").addClass('formActions-css');
     } else {
