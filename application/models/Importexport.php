@@ -4812,9 +4812,6 @@ class Importexport extends ImportexportCommon
         // Close File
         CommonHelper::writeToCSVFile($this->CSVfileObj, array(), true);
 
-
-
-
         if (CommonHelper::checkCSVFile($this->CSVfileName)) {
             $success['CSVfileUrl'] = FatUtility::generateFullUrl('custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND);
         }
@@ -4891,7 +4888,7 @@ class Importexport extends ImportexportCommon
             foreach ($coloumArr as $columnKey => $columnTitle) {
                 $colIndex = $this->headingIndexArr[$columnTitle];
                 $colValue = $this->getCell($row, $colIndex, '');
-
+                $invalid = false;
                 $errMsg = PolicyPoint::validateFields($columnKey, $columnTitle, $colValue, $langId);
 
                 if (false !== $errMsg) {
@@ -4905,6 +4902,9 @@ class Importexport extends ImportexportCommon
                     } elseif ('ppoint_type_identifier' == $columnKey) {
                         $columnKey = 'ppoint_type';
                         $colValue = $policyPointTypeId = array_key_exists($colValue, $policyPointTypeKeys) ? $policyPointTypeKeys[$colValue] : 0;
+                        if (1 > $colValue) {
+                            $errInSheet = $invalid = true;
+                        }
                     }
 
                     if (in_array($columnKey, array( 'ppoint_active', 'ppoint_deleted' ))) {
@@ -4915,10 +4915,15 @@ class Importexport extends ImportexportCommon
                         }
                     }
 
-                    if ('ppoint_title' == $columnKey) {
-                        $policyPointsLangArr[$columnKey] = $colValue;
+                    if (true === $invalid) {
+                        $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
                     } else {
-                        $policyPointsArr[$columnKey] = $colValue;
+                        if ('ppoint_title' == $columnKey) {
+                            $policyPointsLangArr[$columnKey] = $colValue;
+                        } else {
+                            $policyPointsArr[$columnKey] = $colValue;
+                        }
                     }
                 }
             }
