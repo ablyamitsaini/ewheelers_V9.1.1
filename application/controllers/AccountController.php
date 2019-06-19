@@ -1772,7 +1772,7 @@ class AccountController extends LoggedUserController
         if ($page < 2) {
             $page = 1;
         }
-        $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
+        $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
         $db = FatApp::getDb();
         $srch = new UserFavoriteShopSearch($this->siteLangId);
         $srch->setDefinedCriteria();
