@@ -2016,6 +2016,20 @@ class AccountController extends LoggedUserController
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $message_records = array();
+            foreach ($records as $mkey => $mval) {
+                $profile_images_arr=  array(
+                 "message_from_profile_url"=>CommonHelper::generateFullUrl('image', 'user', array($mval['message_from_user_id'],'thumb',1)),
+                 "message_to_profile_url"=>CommonHelper::generateFullUrl('image', 'user', array($mval['message_to_user_id'],'thumb',1)),
+                 "message_timestamp"=>strtotime($mval['message_date'])
+                                            );
+                $message_records[] = array_merge($mval, $profile_images_arr);
+            }
+            $records = $message_records;
+        }
+
         /* CommonHelper::printArray($records); die; */
         $this->set("arr_listing", $records);
         $this->set('pageCount', $srch->pages());
@@ -2024,6 +2038,10 @@ class AccountController extends LoggedUserController
         $this->set('page', $page);
         $this->set('pageSize', $pagesize);
         $this->set('postedData', $post);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
