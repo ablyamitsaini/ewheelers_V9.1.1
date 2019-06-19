@@ -275,20 +275,12 @@ class AccountController extends LoggedUserController
         $pwdFrm = $this->getChangePasswordForm();
         $post = $pwdFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if (!$pwdFrm->validate($post)) {
-            Message::addErrorMessage($pwdFrm->getValidationErrors());
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        if ($post['new_password'] != $post['conf_new_password']) {
-            Message::addErrorMessage(Labels::getLabel('MSG_New_Password_Confirm_Password_does_not_match', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        if (! ValidateElement::password($post['new_password'])) {
-            Message::addErrorMessage(
-                Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId)
-            );
+        if ($post === false) {
+            $message = Labels::getLabel(current($pwdFrm->getValidationErrors()), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -297,25 +289,45 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
 
         if (!$rs) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $data = FatApp::getDb()->fetch($rs, 'user_id');
 
         if ($data === false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if ($data['credential_password'] != UserAuthentication::encryptPassword($post['current_password'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId));
+            $message = Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if (!$userObj->setLoginPassword($post['new_password'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Password_could_not_be_set', $this->siteLangId). $userObj->getError());
+            $message = Labels::getLabel('MSG_Password_could_not_be_set', $this->siteLangId). $userObj->getError();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         $this->set('msg', Labels::getLabel('MSG_Password_changed_successfully', $this->siteLangId));
@@ -2447,7 +2459,7 @@ class AccountController extends LoggedUserController
         $newPwd->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password', $this->siteLangId), 'User@123').'</span>';
         $newPwd->requirements()->setRequired();
         $newPwd->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
-        $newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
+        $newPwd->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_ATLEAST_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
         $conNewPwd = $frm->addPasswordField(
             Labels::getLabel('LBL_CONFIRM_NEW_PASSWORD', $this->siteLangId),
             'conf_new_password'
