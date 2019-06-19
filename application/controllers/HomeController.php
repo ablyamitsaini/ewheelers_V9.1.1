@@ -621,4 +621,48 @@ class HomeController extends MyAppController
         $openSidebar = (array_key_exists('openSidebar', $_COOKIE) && 0 < FatUtility::int($_COOKIE['openSidebar']) ? 0 : 1);
         setcookie('openSidebar', $openSidebar, '', CONF_WEBROOT_URL);
     }
+
+    public function getImage()
+    {
+        $post = FatApp::getPostedData();
+        if (1 > count($post)) {
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            FatUtility::dieJsonError($message);
+        }
+        $type = FatApp::getPostedData('type', null, '');
+        if (empty($type)) {
+            $message = Labels::getLabel('MSG_Type_is_mandatory', $this->siteLangId);
+            FatUtility::dieJsonError($message);
+        }
+        $image_url = "";
+        switch (strtoupper($type)) {
+            case 'PRODUCT_PRIMARY':
+                $product_id = FatApp::getPostedData('product_id', null, 0);
+                $seller_product_id = FatApp::getPostedData('seller_product_id', null, 0);
+                if (1 > $product_id || 1 > $seller_product_id) {
+                    $message = Labels::getLabel('MSG_Product_id_&_Seller_product_id_is_mandatory.', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
+                }
+                $image_url = CommonHelper::generateFullUrl('image', 'product', array($product_id, "MEDIUM", $seller_product_id, 0, $this->siteLangId));
+                break;
+            case 'SLIDE':
+                $slide_id = FatApp::getPostedData('slide_id', null, 0);
+                if (1 > $slide_id) {
+                    $message = Labels::getLabel('MSG_Slide_id_is_mandatory.', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
+                }
+                $image_url = CommonHelper::generateFullUrl('Image', 'slide', array($slide_id,0,$this->siteLangId));
+                break;
+            case 'BANNER':
+                $banner_id = FatApp::getPostedData('banner_id', null, 0);
+                if (1 > $banner_id) {
+                    $message = Labels::getLabel('MSG_Banner_id_is_mandatory.', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
+                }
+                $image_url = CommonHelper::generateFullUrl('Banner', 'HomePageAfterFirstLayout', array($banner_id, $this->siteLangId));
+                break;
+        }
+        $this->set('image_url', $image_url);
+        $this->_template->render();
+    }
 }

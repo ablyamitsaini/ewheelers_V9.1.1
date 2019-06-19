@@ -1449,15 +1449,16 @@ class ProductsController extends MyAppController
             );
 
             $productRs = $prodSrch->getResultSet();
-            $Products = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
+            $products = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
 
             uksort(
-                $Products,
+                $products,
                 function ($key1, $key2) use ($ids) {
                     return (array_search($key1, $ids) > array_search($key2, $ids));
                 }
             );
-            return $Products;
+
+            return $products;
         }
     }
 

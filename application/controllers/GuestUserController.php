@@ -133,7 +133,7 @@ class GuestUserController extends MyAppController
     public function guestLogin()
     {
         $frm = $this->getGuestUserForm($this->siteLangId);
-        $post = FatApp::getPostedData();
+        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if ($post == false) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
