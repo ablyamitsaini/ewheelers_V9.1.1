@@ -2968,6 +2968,9 @@ class AccountController extends LoggedUserController
         } else {
             $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
         }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
