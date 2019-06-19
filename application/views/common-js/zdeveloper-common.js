@@ -240,10 +240,10 @@ toggleShopFavorite = function(shop_id) {
         if (ans.status) {
             if (ans.action == 'A') {
                 $("#shop_" + shop_id).addClass("is-active");
-                //	$("#shop_"+shop_id).text("Love this shop");
+                $("#shop_" + shop_id).prop('title', 'Unfavorite Shop');
             } else if (ans.action == 'R') {
                 $("#shop_" + shop_id).removeClass("is-active");
-                //$("#shop_"+shop_id).text("Loved pending css");
+                $("#shop_" + shop_id).prop('title', 'Favorite Shop');
             }
         }
     });
