@@ -315,13 +315,16 @@ class MyAppController extends FatController
         $frm->addHiddenField('', 'user_id', 0, array('id'=>'user_id'));
         $frm->addRequiredField(Labels::getLabel('LBL_NAME', $siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_NAME', $siteLangId)));
         $fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME', $siteLangId), 'user_username', '', array('placeholder'=>Labels::getLabel('LBL_USERNAME', $siteLangId)));
-        $fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
+        if (false ===  MOBILE_APP_API_CALL) {
+            $fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
+        }
         $fld->requirements()->setRequired();
         $fld->requirements()->setUsername();
 
         $fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL', $siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL', $siteLangId)));
-        $fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
-
+        if (false ===  MOBILE_APP_API_CALL) {
+            $fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
+        }
         $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $siteLangId), 'user_password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD', $siteLangId)));
         $fld->requirements()->setRequired();
         $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
