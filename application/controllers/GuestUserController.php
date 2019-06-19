@@ -212,7 +212,8 @@ class GuestUserController extends MyAppController
         $this->_template->render(false, false);
     }
 
-    public function form(){
+    public function form()
+    {
         $frm = $this->getGuestUserForm($this->siteLangId);
         $this->set('frm', $frm);
         $this->_template->render(false, false);
@@ -1107,13 +1108,20 @@ class GuestUserController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if (false === $post) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
             Message::addErrorMessage($frm->getValidationErrors());
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
-        if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
+        if (false ===  MOBILE_APP_API_CALL && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             if (!CommonHelper::verifyCaptcha()) {
-                Message::addErrorMessage(Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId));
+                $message = Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
             }
         }
@@ -1124,17 +1132,29 @@ class GuestUserController extends MyAppController
         $row = $userAuthObj->getUserByEmailOrUserName($user, '', false);
 
         if (!$row || false === $row) {
-            Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
         if ($row['user_is_shipping_company'] == applicationConstants::YES) {
-            Message::addErrorMessage(Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request', $this->siteLangId));
+            $message = Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
         if ($userAuthObj->checkUserPwdResetRequest($row['user_id'])) {
-            Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
@@ -1148,7 +1168,11 @@ class GuestUserController extends MyAppController
         // commonHelper::printArray($row); die;
         if (!$userAuthObj->addPasswordResetRequest($row)) {
             $db->rollbackTransaction();
-            Message::addErrorMessage(Labels::getLabel($userAuthObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
@@ -1164,7 +1188,11 @@ class GuestUserController extends MyAppController
         $userObj = new User($row['user_id']);
         if ($checkVerificationRow['credential_verified'] != applicationConstants::YES) {
             if (!$this->userEmailVerification($userObj, $row, $this->siteLangId)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
+                $message = Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
             }
         }
@@ -1173,11 +1201,20 @@ class GuestUserController extends MyAppController
         $email = new EmailHandler();
         if (!$email->sendForgotPasswordLinkEmail($this->siteLangId, $row)) {
             $db->rollbackTransaction();
-            Message::addErrorMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_PASSWORD_RESET_LINK_EMAIL", $this->siteLangId));
+            $message = Labels::getLabel("MSG_ERROR_IN_SENDING_PASSWORD_RESET_LINK_EMAIL", $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
         }
 
         $db->commitTransaction();
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('msg', Labels::getLabel("MSG_YOUR_PASSWORD_RESET_INSTRUCTIONS_TO_YOUR_EMAIL", $this->siteLangId));
+            $this->_template->render();
+        }
         Message::addMessage(Labels::getLabel("MSG_YOUR_PASSWORD_RESET_INSTRUCTIONS_TO_YOUR_EMAIL", $this->siteLangId));
         FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
     }
@@ -1373,7 +1410,8 @@ class GuestUserController extends MyAppController
         $siteLangId = $this->siteLangId;
         $frm = new Form('frmPwdForgot');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Username_or_email', $siteLangId), 'user_email_username')->requirements()->setRequired();
-        if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
+
+        if (true ===  MOBILE_APP_API_CALL && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT', $siteLangId));
