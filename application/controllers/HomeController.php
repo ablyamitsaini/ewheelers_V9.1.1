@@ -250,6 +250,10 @@ class HomeController extends MyAppController
                     }
 
                     $productSrchTempObj = clone $productSrchObj;
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        $productSrchTempObj->joinProductRating();
+                        $productSrchTempObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
+                    }
                     $productSrchTempObj->addCondition('selprod_id', 'IN', array_keys($productIds));
                     $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
                     $productSrchTempObj->addOrder('theprice', $orderBy);
@@ -552,6 +556,12 @@ class HomeController extends MyAppController
         while ($shops = $db->fetch($rs)) {
             /* fetch Shop data[ */
             $productShopSrchTempObj = clone $productSrchObj;
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                $productShopSrchTempObj->joinProductRating();
+                $productShopSrchTempObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
+            }
+
             $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shops['shop_user_id']);
             $productShopSrchTempObj->addGroupBy('selprod_product_id');
             $productShopSrchTempObj->doNotCalculateRecords();
@@ -606,6 +616,10 @@ class HomeController extends MyAppController
 
         $db = FatApp::getDb();
         $productSrchSponObj = clone $productSrchObj;
+        if (true ===  MOBILE_APP_API_CALL) {
+            $productSrchSponObj->joinProductRating();
+            $productSrchSponObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
+        }
         $productSrchSponObj->joinTable('(' . $prodObj->getQuery().') ', 'INNER JOIN', 'selprod_id = ppr.proSelProdId ', 'ppr');
         $productSrchSponObj->addFld(array('promotion_id','promotion_record_id'));
         $productSrchSponObj->addOrder('theprice', 'ASC');
