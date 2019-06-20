@@ -274,6 +274,9 @@ class HomeController extends MyAppController
                     break;
 
                 case Collections::COLLECTION_TYPE_CATEGORY:
+                    if (true ===  MOBILE_APP_API_CALL && Collections::TYPE_CATEGORY_LAYOUT2 == $collection['collection_layout_type']) {
+                        continue 2;
+                    }
                     $tempObj = clone $collectionObj;
                     $tempObj->addCondition('collection_id', '=', $collection_id);
                     $tempObj->joinCollectionCategories($langId);
