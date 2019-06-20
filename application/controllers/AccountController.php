@@ -1634,7 +1634,11 @@ class AccountController extends LoggedUserController
         $wishListRow = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
 
         if (!$wishListRow) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -1723,6 +1727,10 @@ class AccountController extends LoggedUserController
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
 
         if ($totalRecords > 0) {
             $this->set('html', $this->_template->render(false, false, 'products/products-list.php', true, false));
