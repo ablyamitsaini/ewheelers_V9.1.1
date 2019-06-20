@@ -150,6 +150,10 @@ class ShopsController extends MyAppController
         $json['startRecord'] = $startRecord;
         $json['endRecord'] = $endRecord;
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $json['html'] = $this->_template->render(false, false, 'shops/search.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, '_partial/load-more-btn.php', true, false);
         FatUtility::dieJsonSuccess($json);
