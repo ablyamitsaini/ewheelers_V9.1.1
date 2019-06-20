@@ -82,7 +82,10 @@ class UserAuthentication extends FatModel
     public function isBruteForceAttempt($ip, $username)
     {
         $db = FatApp::getDb();
-
+        $ips = explode(',', FatApp::getConfig("CONF_WHITELISTED_IP", FatUtility::VAR_STRING, ''));
+        if (in_array($ip, $ips)) {
+            return false;
+        }
         $srch = new SearchBase('tbl_failed_login_attempts');
         $srch->addCondition('attempt_ip', '=', $ip)->attachCondition('attempt_username', '=', $username);
         $srch->addCondition('attempt_time', '>=', date('Y-m-d H:i:s', strtotime("-5 minutes")));
