@@ -520,8 +520,11 @@ class ProductsController extends MyAppController
         $optionSrch->addGroupBy('option_id');
 
         $optionRs = $optionSrch->getResultSet();
-        $optionRows = FatApp::getDb()->fetchAll($optionRs, 'option_id');
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $optionRows = FatApp::getDb()->fetchAll($optionRs);
+        } else {
+            $optionRows = FatApp::getDb()->fetchAll($optionRs, 'option_id');
+        }
         if ($optionRows) {
             foreach ($optionRows as &$option) {
                 $optionValueSrch = clone $optionSrchObj;
@@ -531,7 +534,11 @@ class ProductsController extends MyAppController
                 $optionValueSrch->addMultipleFields(array( 'IFNULL(product_name, product_identifier) as product_name','selprod_id','selprod_user_id','selprod_code','option_id','ifNULL(optionvalue_name,optionvalue_identifier) as optionvalue_name ', 'theprice', 'optionvalue_id','optionvalue_color_code'));
                 $optionValueSrch->addGroupBy('optionvalue_id');
                 $optionValueRs = $optionValueSrch->getResultSet();
-                $optionValueRows = FatApp::getDb()->fetchAll($optionValueRs, 'optionvalue_id');
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $optionValueRows = FatApp::getDb()->fetchAll($optionValueRs);
+                } else {
+                    $optionValueRows = FatApp::getDb()->fetchAll($optionValueRs, 'optionvalue_id');
+                }
                 $option['values'] = $optionValueRows;
             }
         }
