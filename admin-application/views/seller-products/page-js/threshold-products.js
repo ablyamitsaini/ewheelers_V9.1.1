@@ -32,14 +32,14 @@ $(document).ready(function(){
 	};
 
 	sendMailForm = function (userId,selprodId){
-		$.mbsmessage(langLbl.processing,true,'alert--process');return;
+		$.systemMessage(langLbl.processing,'alert--process');
 		fcom.ajax(fcom.makeUrl('SellerProducts', 'sendMailThresholdStock', [userId,selprodId]), '', function(res) {
 			var ans =$.parseJSON(res);
 			if(ans.status == 1){
-				fcom.displaySuccessMessage(ans.msg);
+                $.systemMessage(ans.msg,'alert--success',true);
 				reloadList();
 			}else{
-				fcom.displayErrorMessage(ans.msg);
+                $.systemMessage(ans.msg,'alert--danger',true);
 			}
 		});
 	};

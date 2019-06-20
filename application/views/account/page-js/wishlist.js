@@ -152,13 +152,26 @@ $("document").ready(function(){
 		searchFavouriteListItems( frm, 0,page );
 	}
 
-	searchFavoriteShop = function(){
+	searchFavoriteShop = function(frm){
+		if(typeof frm == undefined || frm == null){
+			frm = document.frmFavShopSearchPaging;
+		}
+        data = fcom.frmData(frm);
 		$("#tab-fav-shop").parents().children().removeClass("is-active");
 		$("#tab-fav-shop").addClass("is-active");
 		$(dv).html( fcom.getLoader() );
-		fcom.ajax(fcom.makeUrl('Account', 'favoriteShopSearch'), '', function(res){
+		fcom.ajax(fcom.makeUrl('Account', 'favoriteShopSearch'), data, function(res){
 			$(dv).html(res);
 		});
+	};
+
+	goToFavoriteShopSearchPage = function(page) {
+		if(typeof page==undefined || page == null){
+			page =1;
+		}
+		var frm = document.frmFavShopSearchPaging;
+		$(frm.page).val(page);
+		searchFavoriteShop(frm);
 	};
 
 	toggleShopFavorite2 = function(shop_id){
