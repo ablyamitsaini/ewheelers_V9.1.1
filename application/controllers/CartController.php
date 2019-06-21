@@ -468,12 +468,20 @@ class CartController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         if (empty($post)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         if (empty($post['coupon_code'])) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -485,13 +493,21 @@ class CartController extends MyAppController
         $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
         $couponInfo = DiscountCoupons::getValidCoupons($loggedUserId, $this->siteLangId, $couponCode, $orderId);
         if ($couponInfo == false) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Coupon_Code', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Coupon_Code', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $cartObj = new Cart();
         if (!$cartObj->updateCartDiscountCoupon($couponInfo['coupon_code'])) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -503,11 +519,17 @@ class CartController extends MyAppController
         );
 
         if (!FatApp::getDb()->insertFromArray(DiscountCoupons::DB_TBL_COUPON_HOLD, $holdCouponData, true, array(), $holdCouponData)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $cartObj->removeUsedRewardPoints();
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel("MSG_cart_discount_coupon_applied", $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
