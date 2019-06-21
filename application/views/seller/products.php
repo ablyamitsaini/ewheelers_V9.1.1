@@ -26,28 +26,9 @@
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header">
-            
-                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
-                <h2 class="content-header-title">
-                    <?php
-                    // echo Labels::getLabel('LBL_Store_Inventory', $siteLangId);
-                    ?>
-                    <div class="delivery-term">
-                        <div id="inventoryToolTip" style="display:none">
-                            <div class="delivery-term-data-inner">
-                                <div class="heading">Store Inventory<span>All the information you need regarding this page</span></div>
-                                <ul>
-                                    <li>This tab lists all the products available to your front end store.</li>
-                                    <li>For each product variant, separate copy need to be created by seller either from Marketplace product tab or clone product icon.</li>
-                                    <li>To add new product to your store inventory, seller will have to pick the products from the marketplace products tabs from "Add to Store" button</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
-            </div>
-       
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+            <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
+        </div>
         <div class="content-body">
             <div class="row mb-4">
                 <div class="col-lg-12">

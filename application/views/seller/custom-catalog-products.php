@@ -27,26 +27,8 @@
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header">
-           
-                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
-                <h2 class="content-header-title">
-                    <?php
-                    //echo Labels::getLabel('LBL_Requested_Products', $siteLangId);
-                    ?>
-                    <div class="delivery-term">
-                        <div id="requestedProductsToolTip" style="display:none">
-                            <div class="delivery-term-data-inner">
-                                <div class="heading">Requested Products<span>All the information you need regarding this page</span></div>
-                                <ul>
-                                    <li>This tab lists all the products requested by seller to the admin which are not available in the marketplace products.</li>
-                                    <li>On admin approval, the product will be added to the marketplace products and to the seller inventory.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
-          
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+            <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
         </div>
         <div class="content-body">
             <div class="row mb-4">

@@ -3,34 +3,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header">
-           
-                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
-                <h2 class="content-header-title">
-                    <?php
-                        //echo Labels::getLabel('LBL_Marketplace_Products', $siteLangId);
-                    ?>
-                    <div class="delivery-term">
-                        <div id="catalogToolTip" style="display:none">
-                            <div class="delivery-term-data-inner">
-                                <div class="heading">Products<span>All the information you need regarding this page</span></div>
-                                <ul class="">
-                                    <li>
-                                        This page lists all the marketplace products added by admin and seller.
-                                        Marketplace products are of two types:-
-                                        <ul>
-                                            <li><strong>System Products</strong>: Available to all sellers and any seller can add to their own store.</li>
-                                            <li><strong>My Products</strong>: Available only for you. No other seller can add to their own store.</li>
-                                        </ul>
-                                    </li>
-                                    <li>On clicking "<strong>Add Product</strong>" button, seller can add new product to marketplace products.</li>
-                                    <li>On click of "<strong>Add to Store</strong>" the seller can pick the product and add the products to his store inventory.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
-           
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+            <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
         </div>
         <div class="content-body">
             <div class="row mb-4">
@@ -120,9 +94,5 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 
     $(".btn-inline-js").click(function(){
         $(".box-slide-js").slideToggle();
-    });
-
-    $(".initTooltip").click(function(){
-        $.facebox({ div: '#catalogToolTip' }, 'catalog-bg');
     });
 </script>

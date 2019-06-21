@@ -4156,4 +4156,10 @@ class SellerController extends SellerBaseController
         }
         $this->_template->render(false, false);
     }
+
+    public function productTooltipInstruction($type)
+    {
+        $this->set('type', $type);
+        $this->_template->render(false, false);
+    }
 }
