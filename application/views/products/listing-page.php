@@ -55,10 +55,10 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                  - <a href="<?php echo CommonHelper::generateUrl('Reviews', 'shop', array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews, ' ', Labels::getLabel('Lbl_Reviews', $siteLangId); ?></a>
                             <?php } ?> </span>
                         </div>
-                        
+
                         <div class="shop-btn-group">
                            <div class="share-button">
-                            <a href="javascript:void(0)" class="social-toggle"><i class="icn">
+                            <a href="javascript:void(0)" class="social-toggle" title="<?php echo Labels::getLabel('Lbl_Share', $siteLangId); ?>"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
                                 </svg>
@@ -102,7 +102,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                             }
                             ?>
                             <?php if ($showAddToFavorite) { ?>
-                                <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
+                                <a href="javascript:void(0)" title="<?php echo ($shop['is_favorite']) ? Labels::getLabel('Lbl_Unfavorite_Shop', $siteLangId) : Labels::getLabel('Lbl_Favorite_Shop', $siteLangId); ?>"  onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
                                     </svg></i></a>
                             <?php }?>
@@ -110,11 +110,11 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                 $showMoreButtons = false;
                             } ?>
                             <?php if ($showMoreButtons) { ?>
-                                <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Report_Spam', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report"></use>
                                         </svg></i></a>
 
-                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Send_Message', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use>
                                         </svg></i></a>
                             <?php } ?>

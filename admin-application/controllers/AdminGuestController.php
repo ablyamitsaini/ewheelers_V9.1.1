@@ -34,7 +34,7 @@ class AdminGuestController extends FatController
         $this->set('bodyClass', 'page--front');
     }
 
-    public function loginForm() 
+    public function loginForm()
     {
 
         $frm = $this->getLoginForm();
@@ -89,7 +89,7 @@ class AdminGuestController extends FatController
         $this->_template->render();
     }
 
-    public function forgotPasswordForm() 
+    public function forgotPasswordForm()
     {
 
         $frm = $this->getLoginForm();
@@ -121,9 +121,8 @@ class AdminGuestController extends FatController
 
 
 
-    public function login() 
+    public function login()
     {
-
         $username = FatApp::getPostedData('username');
         $password = FatApp::getPostedData('password');
 
@@ -157,7 +156,7 @@ class AdminGuestController extends FatController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function forgotPassword() 
+    public function forgotPassword()
     {
         if(!FatUtility::isAjaxCall() ) {
             FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->adminLangId));
@@ -374,7 +373,7 @@ class AdminGuestController extends FatController
 
     private function loginById($admin_id)
     {
-        if(!$admin_id) { return false; 
+        if(!$admin_id) { return false;
         }
         if($row = AdminUsers::getAttributesById($admin_id)) {
             $row['admin_ip'] = $_SERVER['REMOTE_ADDR'];
@@ -394,7 +393,7 @@ class AdminGuestController extends FatController
         return $token;
     }
 
-    private function getLoginForm() 
+    private function getLoginForm()
     {
         $frm = new Form('frmLogin');
         $frm->addTextBox('', 'username')->requirements()->setRequired();

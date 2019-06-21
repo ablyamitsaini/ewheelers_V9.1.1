@@ -487,7 +487,7 @@ class ProductSearch extends SearchBase
         $cnd->attachCondition('brand_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_short_description', 'LIKE', '%' . $keyword . '%');
-        $cnd->attachCondition('product_description', 'LIKE', '%' . $keyword . '%');
+        /*$cnd->attachCondition('product_description', 'LIKE', '%' . $keyword . '%');*/
 
         $arr = explode(' ', $keyword);
         $arr_keywords = array();

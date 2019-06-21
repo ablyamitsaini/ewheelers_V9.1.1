@@ -539,6 +539,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
                 $iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page", $this->adminLangId).'</small>';
+
+                /*$ipFld = $frm->addTextarea(Labels::getLabel('LBL_Whitelisted_IP', $this->adminLangId), 'CONF_WHITELISTED_IP');
+                $ipFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Any_IP_you_want_to_add_in_whitelist_(comma_Separated)", $this->adminLangId).'</small>';*/
+
                 break;
 
             case Configurations::FORM_LOCAL:

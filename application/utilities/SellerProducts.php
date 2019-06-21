@@ -71,8 +71,7 @@ trait SellerProducts
         $cnd->attachCondition( 'product_seller_id', '=', 0,'OR'); */
         $srch->addMultipleFields(
             array(
-            'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
-            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title')
+            'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_track_inventory', 'selprod_threshold_stock_level', 'selprod_product_id', 'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title')
         );
 
 
