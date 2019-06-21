@@ -25,22 +25,22 @@ if ($isUserLogged) {
 }
 ?>
 <div id="body" class="body">
-   
+
    <div class="section section--pagebar">
       <div class="container container--fixed">
         <div class="row align-items-center justify-content-between">
           <div class="col-md-8 col-sm-8">
                 <h1><?php echo Labels::getLabel('Lbl_Blog_Contribution', $siteLangId); ?></h1>
-                
-                
+
+
           </div>
-          <div class="col-md-auto col-sm-auto"><a href="<?php echo $backPageUrl; ?>" class="btn btn--secondary"><?php echo Labels::getLabel('Lbl_Back', $siteLangId); ?></a></div>
+          <div class="col-md-auto col-sm-auto"><a href="<?php echo CommonHelper::generateUrl('Blog'); ?>" class="btn btn--secondary"><?php echo Labels::getLabel('Lbl_Back_to_home', $siteLangId); ?></a></div>
         </div>
       </div>
     </div>
-   
-   
-   
+
+
+
     <section class="section">
         <div class="container">
             <div class="row justify-content-center">
