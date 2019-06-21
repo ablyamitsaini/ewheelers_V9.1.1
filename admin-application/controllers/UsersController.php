@@ -1124,6 +1124,14 @@ class UsersController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
+        $srch = SupplierFormFields::getSearchObject();
+        $srch->addCondition('sf.sformfield_identifier', '=', $post['sformfield_identifier']);
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+        if (!empty($row)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Please_choose_unique_identifier', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
         $sformfield_id = $post['sformfield_id'];
         unset($post['sformfield_id']);
 
