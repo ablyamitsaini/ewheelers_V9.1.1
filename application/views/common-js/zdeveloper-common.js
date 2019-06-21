@@ -83,7 +83,7 @@ $(document).ready(function() {
 
     $(document).on('click', '.accordianheader', function () {
       $(this).next('.accordianbody').slideToggle();
-      $(this).parent().siblings().children().next().slideUp();
+      $(this).parent().parent().siblings().children().children().next().slideUp();
       return false;
     });
 });
