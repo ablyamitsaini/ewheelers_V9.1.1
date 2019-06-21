@@ -1449,7 +1449,7 @@ class AccountController extends LoggedUserController
             $wishLists[] = Product::getUserFavouriteProducts($loggedUserId, $this->siteLangId);
         } else {
             $wishLists = UserWishList::getUserWishLists($loggedUserId, false);
-            if ($wishLists) {
+            if ($wishLists && false ===  MOBILE_APP_API_CALL) {
                 $srchObj = new UserWishListProductSearch($this->siteLangId);
                 $db = FatApp::getDb();
                 foreach ($wishLists as &$wishlist) {
@@ -1482,9 +1482,13 @@ class AccountController extends LoggedUserController
 
         /* $wishLists = array_merge($favouriteProducts,$wishLists); */
 
-        $frm = $this->getCreateWishListForm();
         $this->set('wishLists', $wishLists);
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
+        $frm = $this->getCreateWishListForm();
         $this->set('frm', $frm);
         $this->_template->render(false, false);
     }
@@ -1508,10 +1512,19 @@ class AccountController extends LoggedUserController
     public function searchWishListItems()
     {
         $post = FatApp::getPostedData();
+        if (empty($post)) {
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+        
         $db = FatApp::getDb();
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
-        $uwlist_id = FatUtility::int($post['uwlist_id']);
+        $uwlist_id = empty($post['uwlist_id']) ? 0 : FatUtility::int($post['uwlist_id']);
         $loggedUserId = 0;
         if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -1525,7 +1538,11 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         $wishListRow = $db->fetch($rs);
         if (!$wishListRow) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -1612,6 +1629,10 @@ class AccountController extends LoggedUserController
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
         $this->set('forPage', Labels::getLabel('LBL_Wishlist', $this->siteLangId));
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
 
         if ($totalRecords > 0) {
             $this->set('html', $this->_template->render(false, false, 'products/products-list.php', true, false));
