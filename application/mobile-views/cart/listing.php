@@ -6,7 +6,7 @@ $statusArr = array(
 );
 
 $data = array(
-    'products' => $products,
+    'products' => array_values($products),
     'cartSummary' => $cartSummary,
     'cartSelectedBillingAddress' => $cartSelectedBillingAddress,
     'cartSelectedShippingAddress' => $cartSelectedShippingAddress,

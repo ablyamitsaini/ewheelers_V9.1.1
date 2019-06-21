@@ -364,9 +364,6 @@ class Cart extends FatModel
             }
         }
         /* CommonHelper::printArray($this->products); die(); */
-        if (true ===  MOBILE_APP_API_CALL) {
-            $this->products = array_values($this->products);
-        }
         return $this->products;
     }
 
@@ -497,9 +494,6 @@ class Cart extends FatModel
         $cartProducts = $this->getProducts($this->cart_lang_id);
         if (is_array($cartProducts)) {
             foreach ($cartProducts as $cartKey => $product) {
-                if (true ===  MOBILE_APP_API_CALL) {
-                    $cartKey = $product['key'];
-                }
                 if ($key == 'all') {
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
