@@ -174,7 +174,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         </li>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Amount', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo FatUtility::int($ordersStats['refundedOrderAmount']);?></span>
+                                            <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['refundedOrderAmount']); ?></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -203,7 +203,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         </li>
                                         <li>
                                             <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders_Amount', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo FatUtility::int($ordersStats['cancelledOrderAmount']);?></span>
+                                            <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['cancelledOrderAmount']);?></span>
                                         </li>
                                     </ul>
                                 </div>
