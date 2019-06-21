@@ -177,11 +177,9 @@ class ShopsController extends MyAppController
 
         $this->shopDetail($shop_id);
 
-        $frm = $this->getProductSearchForm();
-
         $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
-
+        $get = array_filter(Product::convertArrToSrchFiltersAssocArr($get));
+        
         if (array_key_exists('currency', $get)) {
             $get['currency_id'] = $get['currency'];
         }
@@ -191,30 +189,32 @@ class ShopsController extends MyAppController
         //$get['join_price'] = 1;
         $get['shop_id'] = $shop_id;
 
-        $frm->fill($get);
-
         $data = $this->getListingData($get);
 
-        $arr = array(
-            'frmProductSearch'=>$frm,
-            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'view', array($shop_id)),
-            'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
-            'recordId'=>$shop_id,
-            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
-        );
+        if (false ===  MOBILE_APP_API_CALL) {
+            $frm = $this->getProductSearchForm();
+            $frm->fill($get);
 
-        $data = array_merge($data, $arr);
+            $arr = array(
+                'frmProductSearch'=>$frm,
+                'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'view', array($shop_id)),
+                'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
+                'recordId'=>$shop_id,
+                'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
+            );
+            $data = array_merge($data, $arr);
+
+            $this->includeProductPageJsCss();
+            $this->_template->addJs('js/slick.min.js');
+            $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+            $this->_template->addJs('js/shop-nav.js');
+            $this->_template->addJs('js/jquery.colourbrightness.min.js');
+        }
         $this->set('data', $data);
-
-        $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
-        $this->_template->addJs('js/shop-nav.js');
-        $this->_template->addJs('js/jquery.colourbrightness.min.js');
         $this->_template->render();
     }
 
-    public function showBackgroundImage($shop_id =0, $lang_id =0, $templateId='')
+    public function showBackgroundImage($shop_id = 0, $lang_id = 0, $templateId = '')
     {
         $recordId = FatUtility::int($shop_id);
         $lang_id = FatUtility::int($lang_id);
