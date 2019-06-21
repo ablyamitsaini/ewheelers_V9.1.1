@@ -1451,6 +1451,7 @@ class Importexport extends ImportexportCommon
                     } elseif ('category_Id' == $columnKey) {
                         $categoryIds = $colValue;
                     } elseif ('category_indentifier' == $columnKey) {
+                        $catArr = array();
                         $catIdentifiers = explode(',', $colValue);
                         if (!empty($catIdentifiers)) {
                             foreach ($catIdentifiers as $val) {

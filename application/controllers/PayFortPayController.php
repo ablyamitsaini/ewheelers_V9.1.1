@@ -50,8 +50,11 @@ class PayFortPayController extends PaymentController
         $this->_template->render(true, false);
     }
 
-    public function doPayment($orderId)
+    public function doPayment($orderId = '')
     {
+        if (empty($orderId) && !empty($_REQUEST['merchant_reference'])) {
+            $orderId = $arrData['merchant_reference'];
+        }
         if (!$orderId) {
             Message::addErrorMessage(Labels::getLabel('PAYFORT_INVALID_REQUEST'));
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'profileInfo'));
@@ -152,7 +155,7 @@ class PayFortPayController extends PaymentController
                                     'customer_email' => $orderInfo['customer_email'],
                                     'language' => strtolower($orderInfo['order_language']),
                                     'merchant_identifier' => $paymentSettings['merchant_id'],
-                                    'merchant_reference' => $orderInfo['invoice'],
+                                    'merchant_reference' => $orderInfo['id'],
                                     'order_description' => $orderPaymentGatewayDescription,
                                     'return_url' => $return_url,
                                 );

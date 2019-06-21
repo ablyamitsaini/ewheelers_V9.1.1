@@ -50,3 +50,4 @@ Fixes :
 	. 027429 - Notice displayed after importing invalid policy point identifier row.
 	. 027655 - Select All checkbox is not getting checked if manually select all rows.
 	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected
+	. 027755 - Manage Seller Approval Form Add Unique Identifier.
