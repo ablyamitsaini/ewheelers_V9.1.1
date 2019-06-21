@@ -12,7 +12,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 		<div class="form__content ">
 			<div class="col-md-12">
 				<div class="preview">
-				 <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*319')?></small>
+				 <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*330')?></small>
 				<?php echo $mediaFrm->getFormHtml();?>
 				<div class="">
 					<?php foreach($attachments as $img){?>

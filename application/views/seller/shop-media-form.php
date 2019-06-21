@@ -29,7 +29,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
             <div id="mediaResponse"></div>
             <div class="col-md-6">
                 <div class="preview">
-                  <small class="text--small"><?php echo Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId); ?></small>
+                  <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId), '1320*330')?></small>
                     <?php echo $shopBannerFrm->getFormHtml();?>
                     <div id="banner-image-listing" class="row"></div>
                 </div>
