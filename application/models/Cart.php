@@ -495,9 +495,11 @@ class Cart extends FatModel
     {
         $this->products = array();
         $cartProducts = $this->getProducts($this->cart_lang_id);
-
         if (is_array($cartProducts)) {
             foreach ($cartProducts as $cartKey => $product) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $cartKey = $product['key'];
+                }
                 if ($key == 'all') {
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
@@ -505,7 +507,6 @@ class Cart extends FatModel
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
-
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                     /* ] */

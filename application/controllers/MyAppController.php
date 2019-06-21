@@ -134,7 +134,8 @@ class MyAppController extends FatController
         $this->set('action', $this->action);
     }
 
-    private function setApiVariables(){
+    private function setApiVariables()
+    {
         $this->appToken = '';
         $this->db = FatApp::getDb();
         $post = FatApp::getPostedData();
@@ -177,7 +178,7 @@ class MyAppController extends FatController
 
         $currencyRow = Currency::getAttributesById($this->siteCurrencyId);
         $this->currencySymbol = !empty($currencyRow['currency_symbol_left'])?$currencyRow['currency_symbol_left']:$currencyRow['currency_symbol_right'];
-        $this->set('currencySymbol',$this->currencySymbol);
+        $this->set('currencySymbol', $this->currencySymbol);
 
         $user_id = $this->getAppLoggedUserId();
         $userObj = new User($user_id);
@@ -188,18 +189,18 @@ class MyAppController extends FatController
 
         $cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
         $this->cartItemsCount = $cObj->countProducts();
-        $this->set('cartItemsCount',$this->cartItemsCount);
+        $this->set('cartItemsCount', $this->cartItemsCount);
 
         $this->totalFavouriteItems = UserFavorite::getUserFavouriteItemCount($user_id);
-        $this->set('totalFavouriteItems',$this->totalFavouriteItems);
+        $this->set('totalFavouriteItems', $this->totalFavouriteItems);
 
         $threadObj = new Thread();
         $this->totalUnreadMessageCount = $threadObj->getMessageCount($user_id);
-        $this->set('totalUnreadMessageCount',$this->totalUnreadMessageCount);
+        $this->set('totalUnreadMessageCount', $this->totalUnreadMessageCount);
 
         $notificationObj = new Notifications();
         $this->totalUnreadNotificationCount = $notificationObj->getUnreadNotificationCount($user_id);
-        $this->set('totalUnreadNotificationCount',$this->totalUnreadNotificationCount);
+        $this->set('totalUnreadNotificationCount', $this->totalUnreadNotificationCount);
     }
 
     private function getAppLoggedUserId()

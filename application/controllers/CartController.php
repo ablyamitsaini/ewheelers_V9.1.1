@@ -261,24 +261,43 @@ class CartController extends MyAppController
     public function remove()
     {
         $post = FatApp::getPostedData();
-        if (false == $post) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+        if (empty($post)) {
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl());
         }
 
         if (!isset($post['key'])) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $cartObj = new Cart();
         if (!$cartObj->remove($post['key'])) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+            }
             Message::addMessage($cartObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
         $cartObj->removeUsedRewardPoints();
         if (0 == $cartObj->countProducts()) {
             $cartObj->removeCartDiscountCoupon();
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $cObj = new Cart(UserAuthentication::getLoggedUserId(), 0, $this->app_user['temp_user_id']);
+            $this->cartItemsCount = $cObj->countProducts();
+            $this->set('cartItemsCount', $this->cartItemsCount);
+
+            $this->_template->render();
         }
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
