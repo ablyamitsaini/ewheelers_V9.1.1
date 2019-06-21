@@ -364,6 +364,9 @@ class Cart extends FatModel
             }
         }
         /* CommonHelper::printArray($this->products); die(); */
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->products = array_values($this->products);
+        }
         return $this->products;
     }
 
