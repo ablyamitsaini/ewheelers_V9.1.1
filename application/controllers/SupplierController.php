@@ -20,7 +20,7 @@ class SupplierController extends MyAppController
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
         if (!FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) {
-            FatApp::redirectUser(CommonHelper::generateUrl('guest-user', 'registration-form'));
+            FatApp::redirectUser(CommonHelper::generateUrl('guest-user', 'login-form', array(applicationConstants::YES)));
         }
         $sellerFrm = $this->getSellerForm();
         $obj = new Extrapage();
