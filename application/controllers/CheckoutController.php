@@ -403,6 +403,9 @@ class CheckoutController extends MyAppController
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
                 $errMsg = Message::getHtml();
             }
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($errMsg));
+            }
             FatUtility::dieWithError($errMsg);
         }
 
@@ -418,10 +421,14 @@ class CheckoutController extends MyAppController
 
         $manualShippingArt = array('Seller Shiping');
         $frm_data = array('shippingapi_id' => $selectedShippingapi_id );
-        $frm = $this->getShippingApiForm($this->siteLangId);
         $shippingMethods = $this->getShippingMethods($this->siteLangId);
-        $frm->fill($frm_data);
-        $this->set('frmShippingApi', $frm);
+
+        if (false ===  MOBILE_APP_API_CALL) {
+            $frm = $this->getShippingApiForm($this->siteLangId);
+            $frm->fill($frm_data);
+            $this->set('frmShippingApi', $frm);
+        }
+
         /* $shippingDurationError = '';
         if( $shippingDurationError ){
         FatUtility::dieWithError( $shippingDurationError );
@@ -432,7 +439,7 @@ class CheckoutController extends MyAppController
         $shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 
         /* ] */
-        foreach ($cart_products as $cartkey=>$cartval) {
+        foreach ($cart_products as $cartkey => $cartval) {
             $cart_products[$cartkey]['pship_id']= 0;
             $shipBy = 0;
 
@@ -456,7 +463,11 @@ class CheckoutController extends MyAppController
             $cart_products[$cartkey]['shipping_free_availbilty']=$free_shipping_options;
         }
         if (count($cart_products)==0) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Your_Cart_is_empty', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -469,6 +480,9 @@ class CheckoutController extends MyAppController
 
         $this->set('selectedProductShippingMethod', $this->cartObj->getProductShippingMethod());
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'checkout/shipping-summary-inner.php');
     }
 
