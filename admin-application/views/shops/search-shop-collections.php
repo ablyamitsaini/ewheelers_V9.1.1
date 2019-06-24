@@ -91,16 +91,16 @@ if (count($arr_listing) == 0) {?>
             $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
 
             $innerLi=$innerUl->appendElement('li');
-            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_Active', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(1)"), Labels::getLabel('LBL_Make_Active', $adminLangId), true);
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Activate', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(1)"), Labels::getLabel('LBL_Activate', $adminLangId), true);
 
             $innerLi=$innerUl->appendElement('li');
-            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Make_InActive', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(0)"), Labels::getLabel('LBL_Make_InActive', $adminLangId), true);
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Deactivate', $adminLangId),"onclick"=>"toggleBulkCollectionStatues(0)"), Labels::getLabel('LBL_Deactivate', $adminLangId), true);
 
             $innerLi=$innerUl->appendElement('li');
             $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_New_Product', $adminLangId),"onclick"=>"getShopCollectionGeneralForm(".$shopId.", 0)"), Labels::getLabel('LBL_Add_Collection', $adminLangId), true);
 
             $innerLi=$innerUl->appendElement('li');
-            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelectedCollection()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSelectedCollection()"), Labels::getLabel('LBL_Delete', $adminLangId), true);
 
             echo $ul->getHtml();
         }

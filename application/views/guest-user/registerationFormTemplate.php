@@ -50,7 +50,7 @@ echo $registerFrm->getFormTag();  ?>
 	   <div class="field-set">
 		   <div class="field-wraper">
 			   <div class="field_cover"><?php echo $registerFrm->getFieldHtml('user_password'); ?></div>
-			  <span class="text--small"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),
+			  <span class="note"><?php echo sprintf(Labels::getLabel('LBL_Example_password',$siteLangId),
 'User@123') ?></span>
 		   </div>
 

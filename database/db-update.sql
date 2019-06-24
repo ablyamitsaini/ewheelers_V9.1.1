@@ -347,3 +347,7 @@ INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `la
 ALTER TABLE `tbl_order_cancel_reasons` ADD UNIQUE KEY `ocreason_identifier` (`ocreason_identifier`);
 ALTER TABLE `tbl_order_return_reasons` ADD UNIQUE KEY `orreason_identifier` (`orreason_identifier`);
 ALTER TABLE `tbl_report_reasons` ADD UNIQUE KEY `reportreason_identifier` (`reportreason_identifier`);
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_Active';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_InActive';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Delete_selected';
+
