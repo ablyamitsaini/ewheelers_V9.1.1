@@ -211,7 +211,7 @@ class ShopsController extends MyAppController
             $this->_template->addJs('js/jquery.colourbrightness.min.js');
         }
         if (true ===  MOBILE_APP_API_CALL) {
-            $data['shopInfo'] = $this->getShopInfo($shop_id);
+            $data['shopInfo'] = $this->shopPoliciesData($this->getShopInfo($shop_id));
         }
         $this->set('data', $data);
         $this->_template->render();
@@ -298,7 +298,7 @@ class ShopsController extends MyAppController
             break;
         } */
         $this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
-        $this->set('shop', $shop);
+        $this->set('shop', $this->shopPoliciesData($shop));
         $this->set('shopRating', SelProdRating::getSellerRating($shop['shop_user_id']));
         $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
 
@@ -792,6 +792,40 @@ class ShopsController extends MyAppController
 
         $this->set('shop', $shop);
         $this->_template->render();
+    }
+    private function shopPoliciesData($shop)
+    {
+        if (!empty($shop['shop_payment_policy'])) {
+            $shop['shop_payment_policy'] = array(
+                'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $this->siteLangId),
+                'description' => $shop['shop_payment_policy'],
+            );
+        }
+        if (!empty($shop['shop_delivery_policy'])) {
+            $shop['shop_delivery_policy'] = array(
+                'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $this->siteLangId),
+                'description' => $shop['shop_delivery_policy'],
+            );
+        }
+        if (!empty($shop['shop_refund_policy'])) {
+            $shop['shop_refund_policy'] = array(
+                'title' => Labels::getLabel('LBL_REFUND_POLICY', $this->siteLangId),
+                'description' => $shop['shop_refund_policy'],
+            );
+        }
+        if (!empty($shop['shop_additional_info'])) {
+            $shop['shop_additional_info'] = array(
+                'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+                'description' => $shop['shop_additional_info'],
+            );
+        }
+        if (!empty($shop['shop_seller_info'])) {
+            $shop['shop_seller_info'] = array(
+                'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+                'description' => $shop['shop_seller_info'],
+            );
+        }
+        return $shop;
     }
 
     public function banner($shopId, $sizeType = '', $prodCatId = 0, $lang_id = 0)
