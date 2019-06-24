@@ -11,7 +11,7 @@ class CheckoutController extends MyAppController
         if (true ===  MOBILE_APP_API_CALL) {
             UserAuthentication::checkLogin();
         }
-        
+
         if (!UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
         }
@@ -1344,10 +1344,16 @@ class CheckoutController extends MyAppController
     {
         $cartObj = new Cart();
         if (!$cartObj->removeUsedRewardPoints()) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel("MSG_used_reward_point_removed", $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
