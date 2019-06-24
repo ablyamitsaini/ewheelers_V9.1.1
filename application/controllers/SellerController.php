@@ -3077,8 +3077,9 @@ class SellerController extends SellerBaseController
         $frm->addHiddenField('', 'taxcat_id');
         $typeArr = applicationConstants::getYesNoArr($langId);
         $frm->addSelectBox(Labels::getLabel('LBL_Tax_in_percent', $langId), 'taxval_is_percent', $typeArr, '', array(), '');
-
-        $frm->addFloatField(Labels::getLabel('LBL_Value', $langId), 'taxval_value');
+        $fld = $frm->addFloatField(Labels::getLabel('LBL_Value', $langId), 'taxval_value');
+        $fld->requirements()->setFloatPositive(true);
+        $fld->requirements()->setRange('0', '100');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
         return $frm;
     }

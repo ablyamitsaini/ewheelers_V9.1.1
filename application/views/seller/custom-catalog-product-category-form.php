@@ -28,7 +28,7 @@ $cancelBtnFld->developerTags['col'] = 2; ?>
 </div>
 <div id="categorySearchListing"></div>
 <div class="gap"></div>
-<p class="note"><?php echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId);?></p>
+<p class="note"><?php /* echo Labels::getLabel('Lbl_Note:_if_not_found_it_may_either_require_approval',$siteLangId); */ ?></p>
 </div>
 <script>
 
