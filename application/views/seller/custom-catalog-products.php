@@ -26,27 +26,9 @@
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header row justify-content-between mb-3">
-            <div class="col-md-auto">
-                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
-                <h2 class="content-header-title">
-                    <?php
-                    //echo Labels::getLabel('LBL_Requested_Products', $siteLangId);
-                    ?>
-                    <div class="delivery-term">
-                        <div id="requestedProductsToolTip" style="display:none">
-                            <div class="delivery-term-data-inner">
-                                <div class="heading">Requested Products<span>All the information you need regarding this page</span></div>
-                                <ul>
-                                    <li>This tab lists all the products requested by seller to the admin which are not available in the marketplace products.</li>
-                                    <li>On admin approval, the product will be added to the marketplace products and to the seller inventory.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
-            </div>
+        <div class="content-header">
+            <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+            <?php $this->includeTemplate('_partial/productPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
         </div>
         <div class="content-body">
             <div class="row mb-4">
@@ -56,12 +38,12 @@
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
                             <div class="action">
                                 <?php if (User::canAddCustomProductAvailableToAllSellers()) {?>
-                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'customCatalogProductForm');?>" class="btn btn--primary ripplelink btn--block"><?php echo Labels::getLabel('LBL_Request_New_Product', $siteLangId);?></a>
+                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'customCatalogProductForm');?>" class="btn btn--secondary btn--sm ripplelink btn--block"><?php echo Labels::getLabel('LBL_Request_New_Product', $siteLangId);?></a>
                                 <?php }?>
                             </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <div class="bg-gray-light p-3 pb-0">
+                        <div class="cards-content pl-4 pr-4 pb-4">
+                            <div class="bg-gray-light p-4 pb-0">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <?php
@@ -77,7 +59,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <span class="gap"></span>
+                         
                         </div>
                     </div>
                 </div>
@@ -85,14 +67,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title">Data heading goes here</h5>
-                        </div>
+                        
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
-                            <span class="gap"></span>
+                          
                         </div>
                     </div>
                 </div>

@@ -63,6 +63,10 @@ class AffiliateController extends AffiliateBaseController
         $rs = $srch->getResultSet();
         $transactions = FatApp::getDb()->fetchAll($rs, 'utxn_id');
 
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($loggedUserId, date('Y-m-d'));
+        $this->set('txnsSummary', $txnsSummary);
+
         $sharingFrm = $this->getSharingForm($this->siteLangId);
         $affiliateTrackingUrl = CommonHelper::affiliateReferralTrackingUrl($userInfo['user_referral_code']);
         $this->set('affiliateTrackingUrl', $affiliateTrackingUrl);
@@ -75,6 +79,7 @@ class AffiliateController extends AffiliateBaseController
         $this->set('affiliateTrackingUrl', $affiliateTrackingUrl);
         $this->set('userBalance', User::getUserBalance($loggedUserId));
         $this->set('userRevenue', User::getAffiliateUserRevenue($loggedUserId));
+        $this->set('todayRevenue', User::getAffiliateUserRevenue($loggedUserId, date('Y-m-d H:i:s')));
         $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }

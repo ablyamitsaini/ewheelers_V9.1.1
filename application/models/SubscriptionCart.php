@@ -213,7 +213,7 @@ class SubscriptionCart extends FatModel
         $cartSummary = array(
         'cartTotal'        =>    $cartTotal,
 
-        'scartDiscounts'    =>    $cartDiscounts,
+        'cartDiscounts'    =>    $cartDiscounts,
         'cartWalletSelected'    =>    $this->isCartUserWalletSelected(),
         'cartRewardPoints'    =>    $cartRewardPoints,
         'cartAdjustableAmount'    =>    $cartAdjustableAmount,

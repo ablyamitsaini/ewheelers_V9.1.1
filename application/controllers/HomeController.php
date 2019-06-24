@@ -179,176 +179,178 @@ class HomeController extends MyAppController
             }
 
             switch ($collection['collection_type']) {
-            case Collections::COLLECTION_TYPE_PRODUCT:
-                $tempObj = clone $collectionObj;
-                $tempObj->joinCollectionProducts();
-                $tempObj->addCondition('collection_id', '=', $collection_id);
-                /* $tempObj->setPageSize( $collection['collection_primary_records']); */
-                $tempObj->addMultipleFields(array( 'ctsp_selprod_id' ));
-                $tempObj->addCondition('ctsp_selprod_id', '!=', 'NULL');
-                $rs = $tempObj->getResultSet();
+                case Collections::COLLECTION_TYPE_PRODUCT:
+                    $tempObj = clone $collectionObj;
+                    $tempObj->joinCollectionProducts();
+                    $tempObj->addCondition('collection_id', '=', $collection_id);
+                    /* $tempObj->setPageSize( $collection['collection_primary_records']); */
+                    $tempObj->addMultipleFields(array( 'ctsp_selprod_id' ));
+                    $tempObj->addCondition('ctsp_selprod_id', '!=', 'NULL');
+                    $rs = $tempObj->getResultSet();
 
-                if (!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id')) {
-                    continue 2;
-                }
-
-                /* fetch Products data[ */
-                $orderBy = 'ASC';
-                if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW) {
-                    $orderBy = 'DESC';
-                }
-
-                $productSrchTempObj = clone $productSrchObj;
-                $productSrchTempObj->addCondition('selprod_id', 'IN', array_keys($productIds));
-                $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-                $productSrchTempObj->addOrder('theprice', $orderBy);
-                $productSrchTempObj->joinSellers();
-                $productSrchTempObj->joinSellerSubscription($langId);
-                $productSrchTempObj->addGroupBy('selprod_id');
-                $productSrchTempObj->setPageSize($collection['collection_primary_records']);
-                $rs = $productSrchTempObj->getResultSet();
-
-                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $db->fetchAll($rs, 'selprod_id');
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['totProducts'] = $productSrchTempObj->recordCount();
-                /* ] */
-                unset($tempObj);
-                unset($productSrchTempObj);
-                break;
-
-            case Collections::COLLECTION_TYPE_CATEGORY:
-                $tempObj = clone $collectionObj;
-                $tempObj->addCondition('collection_id', '=', $collection_id);
-                $tempObj->joinCollectionCategories($langId);
-                $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
-                $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
-                $tempObj->setPageSize($collection['collection_primary_records']);
-
-                /* Exclude categories having no product [ */
-                /* $productSrchTempObj = clone $productSrchObj;
-                $productSrchTempObj->addGroupBy( 'prodcat_id' );
-                $productSrchTempObj->addMultipleFields( array('count(selprod_id) as productCounts', 'prodcat_id as qryProducts_prodcat_id') );
-                $productSrchTempObj->addCondition('selprod_deleted','=',applicationConstants::NO);
-                $tempObj->joinTable( '('.$productSrchTempObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = prodcat_id', 'qryProducts' );
-                $tempObj->addCondition( 'qryProducts.productCounts', '>', 0 ); */
-                /* ] */
-
-                $rs = $tempObj->getResultSet();
-                if (!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                    continue 2;
-                }
-
-                /* fetch Categories data[ */
-                $productCatSrchTempObj = clone $productCatSrchObj;
-                $productCatSrchTempObj->addCondition('prodcat_id', 'IN', array_keys($categoryIds));
-                $rs = $productCatSrchTempObj->getResultSet();
-                /* ] */
-
-                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-
-                if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT2) {
-                    while ($catData = $db->fetch($rs)) {
-                        /* fetch Sub-Categories[ */
-                        $subCategorySrch = clone $productCatSrchObj;
-                        $subCategorySrch->addCondition('prodcat_parent', '=', $catData['prodcat_id']);
-                        $Catrs = $subCategorySrch->getResultSet();
-
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
-                        /* ] */
+                    if (!$productIds = $db->fetchAll($rs, 'ctsp_selprod_id')) {
+                        continue 2;
                     }
-                } else {
-                    while ($catData = $db->fetch($rs)) {
-                        /* fetch Product data[ */
-                        $productShopSrchTempObj = clone $productSrchObj;
-                        $productShopSrchTempObj->addCondition('prodcat_id', '=', $catData['prodcat_id']);
+
+                    /* fetch Products data[ */
+                    $orderBy = 'ASC';
+                    if ($collection['collection_criteria'] == Collections::COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW) {
+                        $orderBy = 'DESC';
+                    }
+
+                    $productSrchTempObj = clone $productSrchObj;
+                    $productSrchTempObj->addCondition('selprod_id', 'IN', array_keys($productIds));
+                    $productSrchTempObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+                    $productSrchTempObj->addOrder('theprice', $orderBy);
+                    $productSrchTempObj->joinSellers();
+                    $productSrchTempObj->joinSellerSubscription($langId);
+                    $productSrchTempObj->addGroupBy('selprod_id');
+                    $productSrchTempObj->setPageSize($collection['collection_primary_records']);
+                    $rs = $productSrchTempObj->getResultSet();
+
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['products'] = $db->fetchAll($rs, 'selprod_id');
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totProducts'] = $productSrchTempObj->recordCount();
+                    /* ] */
+                    unset($tempObj);
+                    unset($productSrchTempObj);
+                    break;
+
+                case Collections::COLLECTION_TYPE_CATEGORY:
+                    $tempObj = clone $collectionObj;
+                    $tempObj->addCondition('collection_id', '=', $collection_id);
+                    $tempObj->joinCollectionCategories($langId);
+                    $tempObj->addMultipleFields(array( 'ctpc_prodcat_id'));
+                    $tempObj->addCondition('ctpc_prodcat_id', '!=', 'NULL');
+                    $tempObj->setPageSize($collection['collection_primary_records']);
+
+                    /* Exclude categories having no product [ */
+                    /* $productSrchTempObj = clone $productSrchObj;
+                    $productSrchTempObj->addGroupBy( 'prodcat_id' );
+                    $productSrchTempObj->addMultipleFields( array('count(selprod_id) as productCounts', 'prodcat_id as qryProducts_prodcat_id') );
+                    $productSrchTempObj->addCondition('selprod_deleted','=',applicationConstants::NO);
+                    $tempObj->joinTable( '('.$productSrchTempObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = prodcat_id', 'qryProducts' );
+                    $tempObj->addCondition( 'qryProducts.productCounts', '>', 0 ); */
+                    /* ] */
+
+                    $rs = $tempObj->getResultSet();
+                    if (!$categoryIds = $db->fetchAll($rs, 'ctpc_prodcat_id')) {
+                        continue 2;
+                    }
+
+                    /* fetch Categories data[ */
+                    $productCatSrchTempObj = clone $productCatSrchObj;
+                    $productCatSrchTempObj->addCondition('prodcat_id', 'IN', array_keys($categoryIds));
+                    $rs = $productCatSrchTempObj->getResultSet();
+                    /* ] */
+
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+
+                    if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT2) {
+                        while ($catData = $db->fetch($rs)) {
+                            /* fetch Sub-Categories[ */
+                            $subCategorySrch = clone $productCatSrchObj;
+                            $subCategorySrch->addCondition('prodcat_parent', '=', $catData['prodcat_id']);
+                            $Catrs = $subCategorySrch->getResultSet();
+
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
+                            /* ] */
+                        }
+                    } else {
+                        while ($catData = $db->fetch($rs)) {
+                            /* fetch Product data[ */
+                            $productShopSrchTempObj = clone $productSrchObj;
+                            $productShopSrchTempObj->addCondition('prodcat_id', '=', $catData['prodcat_id']);
+                            $productShopSrchTempObj->addOrder('in_stock', 'DESC');
+                            $productShopSrchTempObj->addGroupBy('selprod_product_id');
+                            $productShopSrchTempObj->setPageSize(7);
+                            $Prs = $productShopSrchTempObj->getResultSet();
+                            if ($productShopSrchTempObj->recordCount() == 0) {
+                                continue;
+                            }
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
+                            $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
+                            /* ] */
+                        }
+                    }
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totCategories'] = $tempObj->recordCount();
+                    unset($tempObj);
+                    break;
+                case Collections::COLLECTION_TYPE_SHOP:
+                    $tempObj = clone $collectionObj;
+                    $tempObj->addCondition('collection_id', '=', $collection_id);
+                    $tempObj->joinCollectionShops();
+                    $tempObj->addMultipleFields(array( 'ctps_shop_id' ));
+                    $tempObj->addCondition('ctps_shop_id', '!=', 'NULL');
+                    // $tempObj->setPageSize( $collection['collection_primary_records'] );
+                    $rs = $tempObj->getResultSet();
+
+                    if (!$shopIds = $db->fetchAll($rs, 'ctps_shop_id')) {
+                        continue 2;
+                    }
+
+                    $shopObj = new ShopSearch($langId);
+                    $shopObj->setDefinedCriteria($langId);
+                    $shopObj->joinSellerSubscription();
+                    $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
+                    $shopObj->setPageSize($collection['collection_primary_records']);
+                    $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name'));
+                    $rs = $shopObj->getResultSet();
+
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totShops'] = $shopObj->recordCount();
+
+                    while ($shopsData = $db->fetch($rs)) {
+                        /* fetch Shop data[ */
+                        /*$productShopSrchTempObj = clone $productSrchObj;
+                        $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
                         $productShopSrchTempObj->addOrder('in_stock', 'DESC');
                         $productShopSrchTempObj->addGroupBy('selprod_product_id');
-                        $productShopSrchTempObj->setPageSize(7);
-                        $Prs = $productShopSrchTempObj->getResultSet();
+                        $productShopSrchTempObj->setPageSize(3);
+                        $Prs = $productShopSrchTempObj->getResultSet();*/
 
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
-                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData'] = $shopsData;
+
+                        $rating = 0;
+                        if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+                            $rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
+                        }
+
+                        $collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
+                        /*$collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $db->fetchAll($Prs);*/
                         /* ] */
                     }
-                }
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['totCategories'] = $tempObj->recordCount();
-                unset($tempObj);
-                break;
-            case Collections::COLLECTION_TYPE_SHOP:
-                $tempObj = clone $collectionObj;
-                $tempObj->addCondition('collection_id', '=', $collection_id);
-                $tempObj->joinCollectionShops();
-                $tempObj->addMultipleFields(array( 'ctps_shop_id' ));
-                $tempObj->addCondition('ctps_shop_id', '!=', 'NULL');
-                // $tempObj->setPageSize( $collection['collection_primary_records'] );
-                $rs = $tempObj->getResultSet();
+                    unset($tempObj);
+                    break;
+                case Collections::COLLECTION_TYPE_BRAND:
+                    $tempObj = clone $collectionObj;
+                    $tempObj->addCondition('collection_id', '=', $collection_id);
+                    $tempObj->joinCollectionBrands($langId);
+                    $tempObj->addMultipleFields(array('ctpb_brand_id'));
+                    $tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
+                    $rs = $tempObj->getResultSet();
+                    $brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
 
-                if (!$shopIds = $db->fetchAll($rs, 'ctps_shop_id')) {
-                    continue 2;
-                }
-
-                $shopObj = new ShopSearch($langId);
-                $shopObj->setDefinedCriteria($langId);
-                $shopObj->joinSellerSubscription();
-                $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
-                $shopObj->setPageSize($collection['collection_primary_records']);
-                $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name'));
-                $rs = $shopObj->getResultSet();
-
-                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['totShops'] = $shopObj->recordCount();
-
-                while ($shopsData = $db->fetch($rs)) {
-                    /* fetch Shop data[ */
-                    $productShopSrchTempObj = clone $productSrchObj;
-                    $productShopSrchTempObj->addCondition('selprod_user_id', '=', $shopsData['shop_user_id']);
-                    $productShopSrchTempObj->addOrder('in_stock', 'DESC');
-                    $productShopSrchTempObj->addGroupBy('selprod_product_id');
-                    $productShopSrchTempObj->setPageSize(3);
-                    $Prs = $productShopSrchTempObj->getResultSet();
-
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['shopData'] = $shopsData;
-
-                    $rating = 0;
-                    if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
-                        $rating = SelProdRating::getSellerRating($shopsData['shop_user_id']);
+                    if (empty($brandIds)) {
+                        continue 2;
                     }
 
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['rating'][$shopsData['shop_id']] =  $rating;
-                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['shops'][$shopsData['shop_id']]['products'] = $db->fetchAll($Prs);
+                    /* fetch Brand data[ */
+                    $brandSearchObj = Brand::getSearchObject($langId, true, true);
+                    $brandSearchTempObj = clone $brandSearchObj;
+                    $brandSearchTempObj->addMultipleFields(array('brand_id','IFNULL(brand_name, brand_identifier) as brand_name'));
+                    $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
+                    $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
+                    $rs = $brandSearchTempObj->getResultSet();
                     /* ] */
-                }
-                unset($tempObj);
-                break;
-            case Collections::COLLECTION_TYPE_BRAND:
-                $tempObj = clone $collectionObj;
-                $tempObj->addCondition('collection_id', '=', $collection_id);
-                $tempObj->joinCollectionBrands($langId);
-                $tempObj->addMultipleFields(array('ctpb_brand_id'));
-                $tempObj->addCondition('ctpb_brand_id', '!=', 'NULL');
-                $rs = $tempObj->getResultSet();
-                $brandIds = $db->fetchAll($rs, 'ctpb_brand_id');
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();
+                    $collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
 
-                if (empty($brandIds)) {
-                    continue 2;
-                }
-
-                /* fetch Brand data[ */
-                $brandSearchObj = Brand::getSearchObject($langId, true, true);
-                $brandSearchTempObj = clone $brandSearchObj;
-                $brandSearchTempObj->addMultipleFields(array('brand_id','IFNULL(brand_name, brand_identifier) as brand_name'));
-                $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
-                $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
-                $rs = $brandSearchTempObj->getResultSet();
-                /* ] */
-                $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['totBrands'] = $brandSearchTempObj->recordCount();
-                $collections[$collection['collection_layout_type']][$collection['collection_id']]['brands'] = $db->fetchAll($rs);
-
-                unset($brandSearchTempObj);
-                unset($tempObj);
-                break;
+                    unset($brandSearchTempObj);
+                    unset($tempObj);
+                    break;
             }
         }
 

@@ -22,6 +22,26 @@ class CashOnDeliveryPayController extends MyAppController
         }
         /* ] */
 
+        /* Avoid payment for digital products [ */
+        $userId = UserAuthentication::getLoggedUserId();
+        $srch = new OrderProductSearch($this->siteLangId, true);
+        $srch->joinOrderUser();
+        $srch->addCondition('order_user_id', '=', $userId);
+        $srch->addCondition('order_id', '=', $orderId);
+        $rs = $srch->getResultSet();
+
+        $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
+
+        foreach ($childOrderDetail as $opID => $opDetail) {
+            if ($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL) {
+                $str = Labels::getLabel('MSG_Digital_Products_can_not_be_processed_along_with_{COD}', $this->siteLangId);
+                $str = str_replace('{cod}', $this->keyName, $str);
+                Message::addErrorMessage($str);
+                FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'ViewOrder', array($orderInfo['id'])));
+            }
+        }
+        /* ] */
+        
         $orderPaymentObj->confirmCodOrder($orderId, $this->siteLangId);
 
         FatApp::redirectUser(CommonHelper::generateFullUrl('custom', 'paymentSuccess', array( $orderInfo['id'])));

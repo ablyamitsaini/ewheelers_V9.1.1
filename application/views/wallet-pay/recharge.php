@@ -7,9 +7,9 @@
 <div id="body" class="body" role="main">
  <section class="">
     <div class="container">
-		<div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12 checkout--steps">
-                <div class="checkout--steps__inner">
+		<div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 ">
+                
                     <section class="section is-current">
                       <h3><?php echo Labels::getLabel("LBL_Add_Money_to_wallet", $siteLangId); ?></h3>
                       <div class="make-payment-wrapper">
@@ -53,7 +53,7 @@
                         <?php } ?>
                       </div>
                     </section>
-                </div>
+               
             </div>
         </div>
     </div>

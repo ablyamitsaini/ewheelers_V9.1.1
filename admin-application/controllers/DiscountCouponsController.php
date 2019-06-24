@@ -928,7 +928,7 @@ class DiscountCouponsController extends AdminBaseController
         $frm = new Form('frmCouponProduct');
         $frm->addHtml('', 'coupon_name', '');
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Plan', $this->adminLangId), 'plan_name');
-        $fld2 = $frm->addHtml('', 'addNewPlanLink', '<a target="_blank" href="'.CommonHelper::generateUrl('sellerPackages').'">'.Labels::getLabel('LBL_Plan_Not_Found?_Click_here_to_add_new_plan', $this->adminLangId).'</a>');
+        $fld2 = $frm->addHtml('', 'addNewPlanLink', '<br/><a target="_blank" href="'.CommonHelper::generateUrl('sellerPackages').'">'.Labels::getLabel('LBL_Plan_Not_Found?_Click_here_to_add_new_plan', $this->adminLangId).'</a>');
         $fld1->attachField($fld2);
         $frm->addHiddenField('', 'coupon_id');
         return $frm;

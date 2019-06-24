@@ -56,7 +56,7 @@
                                 <div class="social-networks">
                                     <ul>
                                         <li class="social-facebook">
-                                            <a class="social-link st-custom-button" data-network="facebook">
+                                            <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>/">
                                                 <i class="icn"><svg class="svg">
                                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                     </svg></i>
@@ -149,7 +149,7 @@
                             <div class="social-networks">
                                 <ul>
                                     <li class="social-facebook">
-                                        <a class="social-link st-custom-button" data-network="facebook">
+                                        <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>/">
                                             <i class="icn"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                 </svg></i>
@@ -191,10 +191,10 @@
     <section class="section bg--first-color">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-xl-6">
                     <div class="blog-subscribers">
                         <h4><?php echo Labels::getLabel('LBL_Get_Weekly_Insights', $siteLangId)?></h4>
-                        <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_tech_insights_-_Blogs,_eBooks_and_Webinars', $siteLangId)?></p>
+                        <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_weekly_newsletter', $siteLangId)?></p>
                         <?php $this->includeTemplate('_partial/footerNewsLetterForm.php', array('blogPage'=>true)); ?>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                                     <div class="social-networks">
                                         <ul>
                                             <li class="social-facebook">
-                                                <a class="social-link st-custom-button" data-network="facebook">
+                                                <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>/">
                                                     <i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                         </svg></i>
@@ -319,7 +319,7 @@
                                 <div class="social-networks">
                                     <ul>
                                         <li class="social-facebook">
-                                            <a class="social-link st-custom-button" data-network="facebook">
+                                            <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>/">
                                                 <i class="icn"><svg class="svg">
                                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                     </svg></i>
@@ -368,16 +368,14 @@
         slidesToScroll: 4,
         rtl: rtl,
         responsive: [{
-                breakpoint: 1024,
+                breakpoint: 1199,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
                 }
             },
             {
-                breakpoint: 600,
+                breakpoint: 1023,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2
@@ -401,3 +399,4 @@
         $('.js-popular-stories').slick('slickNext');
     })
 </script>
+<?php echo $this->includeTemplate('_partial/shareThisScript.php'); ?>

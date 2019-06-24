@@ -28,6 +28,7 @@ class NavigationsController extends AdminBaseController
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addOrder('nav_active', 'DESC');
+        $srch->addOrder('nav_id', 'DESC');
         $rs = $srch->getResultSet();
 
         $records = array();

@@ -16,7 +16,7 @@
                          <div class="box box--white  p-4">
                            <div class="box__head no-print" >
                                <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
+                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
                            </div>
                             <div class="box__body">
                                  <div class="grids--offset">
@@ -178,16 +178,16 @@
                                 </div>
               <?php }?>
               <?php if (!$notEligible){?>
-                                 <div class="section--repeated no-print">
-                <h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
-                                    <?php
-                $frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
-                $frm->setFormTagAttribute('class','form');
-                $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-                $frm->developerTags['fld_default_col'] = 12;
+                    <div class="section--repeated no-print cancelReason-js">
+                        <h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
+                        <?php
+                        $frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
+                        $frm->setFormTagAttribute('class','form');
+                        $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                        $frm->developerTags['fld_default_col'] = 12;
 
-                echo $frm->getFormHtml();?>
-                                 </div>
+                        echo $frm->getFormHtml();?>
+                    </div>
                <?php }?>
                             </div>
                         </div>
@@ -196,4 +196,3 @@
 	</div>
   </div>
 </main>
- 

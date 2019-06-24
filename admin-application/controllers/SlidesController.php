@@ -83,6 +83,15 @@ class SlidesController extends AdminBaseController
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
+        $srch = Slides::getSearchObject();
+        $srch->addCondition('slide_identifier', '=', $post['slide_identifier']);
+        $srch->addMultipleFields(array('slide_id'));
+        $rs = $srch->getResultSet();
+        $slideIdentifier = FatApp::getDb()->fetchAll($rs);
+        if (0 < count($slideIdentifier)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Slide_identifier_must_be_unique', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
 
         $slide_id = $post['slide_id'];
         unset($post['slide_id']);

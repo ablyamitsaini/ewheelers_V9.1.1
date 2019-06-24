@@ -13,9 +13,6 @@
 		runningAjaxReq = true;
 	};
 
-
-
-
 	var dv = '#listing';
 	var prodCatId = 0;
 	var blockCount = 0;
@@ -455,7 +452,7 @@
 				if($res.status == 0){
 				    $.mbsmessage($res.msg, true, 'alert--danger');
 				}else{
-					reloadProductOptions(product_id);	
+					reloadProductOptions(product_id);
 				}
 			});
 		});

@@ -2,15 +2,6 @@
 {
     public function contactUs()
     {
-        /* $srch = Extrapage::getSearchObject($this->siteLangId);
-        $srch->addCondition('ep.epage_type','=',Extrapage::CONTACT_US_CONTENT_BLOCK);
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $rs = $srch->getResultSet();
-        $pageData = FatApp::getDb()->fetch($rs); */
-        $obj = new Extrapage();
-        $pageData = $obj->getContentByPageType(Extrapage::CONTACT_US_CONTENT_BLOCK, $this->siteLangId);
-
         $contactFrm = $this->contactUsForm();
         $post = $contactFrm->getFormDataFromArray(FatApp::getPostedData());
         if (false != $post) {
@@ -18,7 +9,6 @@
         }
         $this->set('contactFrm', $contactFrm);
         $this->set('siteLangId', $this->siteLangId);
-        $this->set('pageData', $pageData);
         $this->_template->render(true, true, 'custom/contact-us.php');
     }
 
@@ -641,9 +631,9 @@
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '');
 
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '');
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '')->requirements()->setRequired();

@@ -123,7 +123,7 @@ class UploadBulkImagesController extends AdminBaseController
             $srch->addCondition('afile_record_id', '=', $uploadedBy);
         }
 
-
+        $srch->addOrder('afile_id', 'DESC');
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();

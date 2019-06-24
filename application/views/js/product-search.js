@@ -127,21 +127,6 @@ $(document).ready(function(){
 
 	/* ] */
 
-	$(document).on('click', '#resetAll', function() {
-		searchArr = [];
-		document.frmProductSearch.reset();
-		document.frmProductSearchPaging.reset();
-
-		$('#filters a').each(function(){
-			id = $(this).attr('class');
-			clearFilters(id,this);
-		});
-		updatePriceFilter();
-		reloadProductListing(frm);
-		//searchProducts(frm,0,0,1,1);
-	});
-
-
 	$(window).on('load',function(){
 		showSelectedFilters();
 		initialize();
@@ -240,6 +225,20 @@ function addFilter(id,obj){
 	if(!$('#filters').find('a').hasClass(id)){
 		$('#filters').append("<a href='javascript:void(0);' class="+id+"   "+click+ ">"+$filterVal+"</a>");
 	}
+}
+
+function resetListingFilter(){
+    searchArr = [];
+    document.frmProductSearch.reset();
+    document.frmProductSearchPaging.reset();
+    var frm = document.frmProductSearch;
+    $('#filters a').each(function(){
+        id = $(this).attr('class');
+        clearFilters(id,this);
+    });
+    updatePriceFilter();
+    reloadProductListing(frm);
+    //searchProducts(frm,0,0,1,1);
 }
 
 function addPaginationInlink(page){
@@ -438,7 +437,12 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 	};
 
 	searchProducts = function(frm){
-		$("input[id=keyword]").val($(frm.keyword).val());
+        var keyword = $.trim($(frm.keyword).val());
+        if (3 > keyword.length || '' === keyword) {
+            $.mbsmessage(langLbl.searchString, true, 'alert--danger');
+            return;
+        }
+		$("input[id=keyword]").val(keyword);
 		reloadProductListing(frm);
 	};
 
@@ -556,7 +560,7 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 		getSetSelectedOptionsUrl(frm);
 		window.location.href = getSearchQueryUrl(true)+'/page-'+page+'/';
 		//searchProducts(frm,0,0,1,1);
-		$('html, body').animate({ scrollTop: 0 }, 'slow');
+		/* $('html, body').animate({ scrollTop: 0 }, 'slow'); */
 	};
 
 	saveProductSearch = function() {

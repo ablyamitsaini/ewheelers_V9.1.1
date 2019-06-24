@@ -16,10 +16,28 @@ $(document).ready(function () {
 		$('html').removeClass("nav-opened");
 	})
 
-	$('.social-toggle').on('click', function() {
-	 	$(this).next().toggleClass('open-menu');
+	$('.js-tabs li').click(function() {
+		$(this).siblings().removeClass('is--active');
+		$(this).addClass('is--active');
+		moveToTargetDiv(this);
+		return false;
 	});
 
+	var tabs = $(".js-tabs li a");
+
+	tabs.click(function() {
+		var content = this.hash.replace('/', '');
+		tabs.removeClass("active");
+		$(this).addClass("active");
+		$(this).parents('.container').find('.tabs-content').find('.content-data').hide();
+		$(content).fadeIn(200);
+
+	});
+
+});
+
+$(document).on('click', '.social-toggle', function(){
+	$(this).next().toggleClass('open-menu');
 });
 
 function submitBlogSearch(frm){

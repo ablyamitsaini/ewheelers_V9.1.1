@@ -4,35 +4,35 @@ class AdminAuthentication extends FatModel
     const SESSION_ELEMENT_NAME = 'yokartAdmin';
     const ADMIN_REMEMBER_ME_COOKIE_NAME = 'yokartAdmin_remember_me';
     public static $_instance;
-    
+
     public function __construct()
     {
         $this->adminLangId = CommonHelper::getLangId();
     }
-    
+
     public static function getInstance()
     {
-        
+
         if(self::$_instance === null ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public static function isAdminLogged($ip = '') 
+    public static function isAdminLogged($ip = '')
     {
         if ($ip == '') {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
 
-        if (isset($_SESSION[static::SESSION_ELEMENT_NAME]) && FatUtility::int($_SESSION[static::SESSION_ELEMENT_NAME]['admin_id']) > 0 && $_SESSION[static::SESSION_ELEMENT_NAME]['admin_ip'] == $ip ) {
+        if (isset($_SESSION[static::SESSION_ELEMENT_NAME]) && FatUtility::int($_SESSION[static::SESSION_ELEMENT_NAME]['admin_id']) > 0 /*&& $_SESSION[static::SESSION_ELEMENT_NAME]['admin_ip'] == $ip */) {
             return true;
         }
 
         return false;
     }
 
-    public function login($username, $password, $ip) 
+    public function login($username, $password, $ip)
     {
         $objUserAuthentication = new UserAuthentication();
         if ($objUserAuthentication->isBruteForceAttempt($ip, $username)) {
@@ -65,14 +65,14 @@ class AdminAuthentication extends FatModel
         }
         $row['admin_ip'] = $ip;
         $this->setAdminSession($row);
-        
+
         /* clear failed login attempt for the user [ */
         $objUserAuthentication->clearFailedAttempt($ip, $username);
         /* ] */
-        
+
         return true;
     }
-    
+
     public function setAdminSession($row)
     {
         $_SESSION[static::SESSION_ELEMENT_NAME] = array(
@@ -83,7 +83,7 @@ class AdminAuthentication extends FatModel
         );
     }
 
-    public static function getLoggedAdminAttribute($key, $returnNullIfNotLogged = false) 
+    public static function getLoggedAdminAttribute($key, $returnNullIfNotLogged = false)
     {
         if (!static::isAdminLogged()) {
             if ($returnNullIfNotLogged) {
@@ -102,7 +102,7 @@ class AdminAuthentication extends FatModel
     {
         return static::getLoggedAdminAttribute('admin_id', false);
     }
-    
+
     public function checkAdminEmail( $email )
     {
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -126,7 +126,7 @@ class AdminAuthentication extends FatModel
         }
         return $row;
     }
-    
+
     public function checkAdminPwdResetRequest($admin_id)
     {
         $db = FatApp::getDb();
@@ -143,7 +143,7 @@ class AdminAuthentication extends FatModel
         $this->error = Labels::getLabel('MSG_Your_request_to_reset_password_has_already_been_placed_within_last_24_hours._Please_check_your_emails_or_retry_after_24_hours_of_your_previous_request', $this->adminLangId);
         return true;
     }
-    
+
     public function deleteOldPasswordResetRequest()
     {
         $db = FatApp::getDb();
@@ -153,7 +153,7 @@ class AdminAuthentication extends FatModel
         }
         return true;
     }
-    
+
     public function addPasswordResetRequest($data = array())
     {
         if(!isset($data['admin_id']) || $data['admin_id'] < 1 || strlen($data['token']) < 20) {
@@ -174,11 +174,11 @@ class AdminAuthentication extends FatModel
                 )
             );
             return true;
-        } 
+        }
         return false;
     }
-    
-    public function checkResetLink($aId, $token) 
+
+    public function checkResetLink($aId, $token)
     {
         $aId = FatUtility::convertToType($aId, FatUtility::VAR_INT);
         $token = FatUtility::convertToType($token, FatUtility::VAR_STRING);
@@ -194,20 +194,20 @@ class AdminAuthentication extends FatModel
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
-        
+
         if(!$row = $db->fetch($rs)) {
             $this->error = Labels::getLabel('MSG_Link_is_invalid_or_expired!', $this->adminLangId);
             return false;
         }
-         
+
         if($row['aprr_admin_id'] == $aId && $row['aprr_token'] === $token) {
             return true;
         }
         $this->error = Labels::getLabel('MSG_Link_is_invalid_or_expired!', $this->adminLangId);
         return false;
     }
-    
-    public function getAdminById($aId) 
+
+    public function getAdminById($aId)
     {
         $aId = FatUtility::convertToType($aId, FatUtility::VAR_INT);
         if ($aId < 1) {
@@ -227,8 +227,8 @@ class AdminAuthentication extends FatModel
         }
         return $row;
     }
-    
-    public function changeAdminPwd($aId, $pwd) 
+
+    public function changeAdminPwd($aId, $pwd)
     {
         $aId = FatUtility::convertToType($aId, FatUtility::VAR_INT);
         if ($aId < 1) {
@@ -244,7 +244,7 @@ class AdminAuthentication extends FatModel
         }
         return false;
     }
-    
+
     public function saveRememberLoginToken($values)
     {
         $db = FatApp::getDb();
@@ -254,7 +254,7 @@ class AdminAuthentication extends FatModel
         $this->error = $db->getError();
         return false;
     }
-    
+
     public static function checkLoginTokenInDB($token)
     {
         $db = FatApp::getDb();
@@ -265,7 +265,7 @@ class AdminAuthentication extends FatModel
         $rs = $srch->getResultSet();
         return $db->fetch($rs);
     }
-    
+
     public static function clearLoggedAdminLoginCookie()
     {
         if(!isset($_COOKIE[static::ADMIN_REMEMBER_ME_COOKIE_NAME])) {

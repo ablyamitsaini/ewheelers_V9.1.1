@@ -32,6 +32,41 @@ class AdvertiserController extends AdvertiserBaseController
         /* ] */
 
         /* Active Promotions [ */
+        $activePSrch = $this->getPromotionsSearch(true);
+        $rs = $activePSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
+        /* ] */
+
+        /* Total Promotions [ */
+        $totalPSrch = $this->getPromotionsSearch();
+        $rs = $totalPSrch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
+        /* ] */
+
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
+        $this->set('txnsSummary', $txnsSummary);
+
+        $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
+        $this->set('activePromotionChargedAmount', Promotion::getTotalChargedAmount($userId, true));
+        $this->set('transactions', $transactions);
+        $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
+        $this->set('activePromotions', $records);
+        $this->set('totPromotions', $totalPSrch->recordCount());
+        $this->set('totActivePromotions', $activePSrch->recordCount());
+        $this->set('lowBalWarning', $lowBalWarning);
+        // $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
+        $this->set('walletBalance', $walletBalance);
+        $typeArr = Promotion::getTypeArr($this->siteLangId);
+        $this->set('typeArr', $typeArr);
+        // $this->set('promotionList', $promotionList);
+        // $this->set('promotionCount', $srch->recordCount());
+        $this->_template->addJs('js/slick.min.js');
+        $this->_template->render(true, false);
+    }
+
+    public function getPromotionsSearch($active = false)
+    {
         $pSrch = $this->searchPromotionsObj();
         $pSrch->joinBannersAndLocation($this->siteLangId, Promotion::TYPE_BANNER, 'b');
         $pSrch->joinPromotionsLogForCount();
@@ -50,28 +85,18 @@ class AdvertiserController extends AdvertiserBaseController
             'pri.clicks',
             'pri.orders'
         ));
-        $pSrch->setDefinedCriteria();
-        $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d"));
-        $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES);
-        $pSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs      = $pSrch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs, 'promotion_id');
-        /* ] */
 
-        $this->set('totChargedAmount', Promotion::getTotalChargedAmount($userId));
-        $this->set('transactions', $transactions);
-        $this->set('txnStatusArr', Transactions::getStatusArr($this->siteLangId));
-        $this->set('activePromotions', $records);
-        $this->set('totActivePromotions', $pSrch->recordCount());
-        $this->set('lowBalWarning', $lowBalWarning);
-        // $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
-        $this->set('walletBalance', $walletBalance);
-        $typeArr = Promotion::getTypeArr($this->siteLangId);
-        $this->set('typeArr', $typeArr);
-        // $this->set('promotionList', $promotionList);
-        // $this->set('promotionCount', $srch->recordCount());
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+
+        if ($active) {
+            $pSrch->setDefinedCriteria();
+            $pSrch->addCondition('promotion_end_date', '>', date("Y-m-d"));
+            $pSrch->addCondition('promotion_approved', '=', applicationConstants::YES);
+        } else {
+            // $pSrch->addCondition('promotion_deleted', '=', applicationConstants::NO);
+        }
+
+        $pSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        return $pSrch;
     }
 
     public function setupPromotion()
@@ -111,6 +136,22 @@ class AdvertiserController extends AdvertiserBaseController
                 break;
             case Promotion::TYPE_PRODUCT:
                 $selProdId = $post['promotion_record_id'];
+
+                $srch = new ProductSearch($this->siteLangId);
+                $srch->joinSellerProducts();
+                $srch->joinProductToCategory();
+                $srch->joinSellerSubscription($this->siteLangId, true);
+                $srch->addSubscriptionValidCondition();
+                $srch->joinBrands();
+                $srch->setPageSize(1);
+                $srch->doNotCalculateRecords();
+                $srch->addCondition('selprod_id', '=', $selProdId);
+                $srch->addCondition('selprod_user_id', '=', $userId);
+                $srch->addMultipleFields(array('selprod_id'));
+
+                $rs = $srch->getResultSet();
+                $row = FatApp::getDb()->fetch($rs);
+
                 if (empty($row)) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
                     FatUtility::dieJsonError(Message::getHtml());
@@ -119,20 +160,6 @@ class AdvertiserController extends AdvertiserBaseController
                 $promotionApproved = applicationConstants::YES;
                 $minBudget = FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0);
                 break;
-
-                $rs  = $srch->getResultSet();
-                $row = FatApp::getDb()->fetch($rs);
-
-            $bannerLocationId = Fatutility::int($post['banner_blocation_id']);
-            $srch = BannerLocation::getSearchObject($this->siteLangId);
-            $srch->addMultipleFields(array('blocation_promotion_cost'));
-            $srch->addCondition('blocation_id', '=', $bannerLocationId);
-            $rs = $srch->getResultSet();
-            $row = FatApp::getDb()->fetch($rs, 'blocation_id');
-            if (!empty($row)) {
-                $minBudget = $row['blocation_promotion_cost'];
-            }
-            break;
 
             case Promotion::TYPE_BANNER:
                 $promotion_record_id = 0;
@@ -173,6 +200,7 @@ class AdvertiserController extends AdvertiserBaseController
                 FatUtility::dieJsonError(Message::getHtml());
                 break;
         }
+
         $promotionBudget = Fatutility::float($post['promotion_budget']);
         if ($minBudget > $promotionBudget) {
             Message::addErrorMessage(Labels::getLabel("MSG_Budget_should_be_greater_than_CPC", $this->siteLangId));
@@ -855,8 +883,8 @@ class AdvertiserController extends AdvertiserBaseController
         }
 
         $mediaFrm     = $this->getPromotionMediaForm($promotionId, $promotionType);
-        $bannerWidth  = '1920';
-        $bannerHeight = '550';
+        $bannerWidth  = '1200';
+        $bannerHeight = '360';
         if ($promotionType == Promotion::TYPE_BANNER) {
             $bannerWidth = FatUtility::convertToType($promotionDetails['blocation_banner_width'], FatUtility::VAR_FLOAT);
             $bannerHeight = FatUtility::convertToType($promotionDetails['blocation_banner_height'], FatUtility::VAR_FLOAT);

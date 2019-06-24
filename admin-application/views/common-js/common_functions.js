@@ -83,19 +83,21 @@ $(document).ready(function() {
     });
 
     (function() {
-        var uri = window.location.pathname;
+        var uri = (window.location.pathname).replace(/^\/|\/$/g, '');
         var parentCat = null;
         $('aside.leftside ul.leftmenu li').each(function() {
             if ($(this).hasClass('haschild')) {
                 parentCat = $(this);
                 $(this).find('ul li').each(function() {
-                    if (uri.includes($(this).find('a').attr('href'))) {
+                    var href = $(this).find('a').attr('href').replace(/^\/|\/$/g, '');
+                    if (href === uri) {
                         $(this).addClass('active');
                         $(parentCat).children('a').trigger('click');
                     }
                 });
             } else {
-                if (uri.includes($(this).find('a').attr('href'))) {
+                var href = $(this).find('a').attr('href').replace(/^\/|\/$/g, '');
+                if (href === uri) {
                     $(this).addClass('active');
                 }
             }
@@ -676,6 +678,9 @@ $(document).ready(function() {
     $(document).on("click", ".selectItem--js", function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
+        }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
         }
     });
 

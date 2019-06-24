@@ -286,6 +286,6 @@
 	#facebox .content.productQuickView {
 		overflow-y: auto;
 	}
-
+	#facebox .popup{padding:30px 20px;}
 
 }

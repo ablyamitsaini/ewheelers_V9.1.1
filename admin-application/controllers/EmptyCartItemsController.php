@@ -42,6 +42,7 @@ class EmptyCartItemsController extends AdminBaseController
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('emptycartitem_id', 'DESC');
         $rs = $srch->getResultSet();
 
         $arrListing =array();

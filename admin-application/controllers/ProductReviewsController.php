@@ -90,7 +90,7 @@ class ProductReviewsController extends AdminBaseController
         if (!empty($date_to) ) {
             $srch->addCondition('spreview_posted_on', '<=', $date_to. ' 23:59:59');
         }
-
+        $srch->addOrder('spreview_posted_on', 'DESC');
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 

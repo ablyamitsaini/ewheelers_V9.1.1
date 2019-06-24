@@ -27,7 +27,7 @@ $mediaFrm->setFormTagAttribute("class","form form--horizontal");
 			<li><?php echo $language[$batchImage['afile_lang_id']]?>
 				<div class="uploaded--image"><img src="<?php echo CommonHelper::generateUrl('Image', 'BatchProduct', array($batchImage['afile_record_id'],$batchImage['afile_lang_id'], 'THUMB?'.time()) ); ?>"></div>
 				<div class="btngroup--fix">
-					<a class="btn btn--secondary btn--sm" href="javascript:void(0);" onclick="removeBatchImage(<?php echo $prodgroup_id; ?>, <?php echo $batchImage['afile_lang_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?></a>
+					<a class="btn btn--primary btn--sm" href="javascript:void(0);" onclick="removeBatchImage(<?php echo $prodgroup_id; ?>, <?php echo $batchImage['afile_lang_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?></a>
 				</div>
 			</li>
 			<?php } ?>

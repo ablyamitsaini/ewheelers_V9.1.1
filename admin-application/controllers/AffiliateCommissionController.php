@@ -41,6 +41,7 @@ class AffiliateCommissionController extends AdminBaseController
         $srch->addMultipleFields(array( 'afcs.*', 'affiliate_cred.credential_username', 'IFNULL(prd_cat_l.prodcat_name, prod_cat.prodcat_identifier) as prodcat_name' ));
         $srch->addOrder('afcommsetting_is_mandatory', 'DESC');
         $srch->addOrder('afcommsetting_fees', 'DESC');
+        $srch->addOrder('afcommsetting_id', 'DESC');
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
 

@@ -1001,22 +1001,21 @@ class ProductsController extends AdminBaseController
     public function shippingMethodDurationAutocomplete()
     {
         $pagesize = 10;
+        $db  = FatApp::getDb();
         $post = FatApp::getPostedData();
         $srch = ShippingDurations::getSearchObject($this->adminLangId, true);
         $srch->addOrder('sduration_name');
 
-        $srch->addMultipleFields(array('sduration_id, sduration_name','sduration_from','sduration_to','sduration_days_or_weeks'));
+        $srch->addMultipleFields(array('sduration_id, IFNULL(sduration_name, sduration_identifier) as sduration_name','sduration_from','sduration_to','sduration_days_or_weeks'));
 
         if (!empty($post['keyword'])) {
-            $cnd = $srch->addCondition('sduration_id', 'LIKE', '%' . $post['keyword']. '%');
+            $srch->addDirectCondition("(sduration_identifier like " . $db->quoteVariable('%' . $post['keyword'] . '%') . " OR sduration_name like " . $db->quoteVariable('%' . $post['keyword'] . '%') . ")");
         }
 
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();
-        $db = FatApp::getDb();
 
         $shipDurations = $db->fetchAll($rs, 'sduration_id');
-
         $json = array();
         foreach ($shipDurations as $key => $shipDuration) {
             $json[] = array(

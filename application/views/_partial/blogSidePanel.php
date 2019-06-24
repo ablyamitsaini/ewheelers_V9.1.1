@@ -1,58 +1,110 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="page-search">
-	 <h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_Search',$siteLangId); ?></h3>
-	 <?php $blogSrchFrm->setFormTagAttribute ( 'onSubmit', 'submitBlogSearch(this); return(false);' );
-	 $blogSrchFrm->addFormTagAttribute('class','form-main-search');
-	 echo $blogSrchFrm->getFormTag();
-	 $keywordFld = $blogSrchFrm->getField('keyword');
-	 $keywordFld->addFieldTagAttribute('class','no-focus');
-	 $keywordFld->addFieldTagAttribute('placeholder',Labels::getLabel('Lbl_Search_Keyword',$siteLangId));
-	 echo $blogSrchFrm->getFieldHTML('keyword');
-	 echo $blogSrchFrm->getFieldHTML('btn_submit'); ?>
-	 </form> <?php echo $blogSrchFrm->getExternalJS(); ?>
- </div>
-
-<div class="gap"></div>
-<a href="<?php echo CommonHelper::generateUrl('Blog','contributionForm'); ?>" class="btn btn--primary btn--lg btn--block ripplelink btn--contribute">
-	<img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjY0cHgiIGhlaWdodD0iNjRweCIgdmlld0JveD0iMCAwIDUxMCA1MTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMCA1MTA7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8ZyBpZD0iYWRkLWNpcmNsZSI+CgkJPHBhdGggZD0iTTI1NSwwQzExNC43NSwwLDAsMTE0Ljc1LDAsMjU1czExNC43NSwyNTUsMjU1LDI1NXMyNTUtMTE0Ljc1LDI1NS0yNTVTMzk1LjI1LDAsMjU1LDB6IE0zODIuNSwyODAuNWgtMTAydjEwMmgtNTF2LTEwMiAgICBoLTEwMnYtNTFoMTAydi0xMDJoNTF2MTAyaDEwMlYyODAuNXoiIGZpbGw9IiNGRkZGRkYiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
-	<?php echo Labels::getLabel('Lbl_Contribute',$siteLangId); ?></a>
-	<div class="gap"></div>
-<?php if(!empty($categoriesArr)){ ?>
-<h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_categories',$siteLangId); ?></h3>
-<div class="">
-	<nav class="nav nav--toggled nav--toggled-js">
-		<ul class="blog_lnks accordion">
-			<?php foreach($categoriesArr as $cat){ ?>
-			<li class="<?php echo (count($cat['children'])>0) ? "has-child" : "" ?>"><a href="<?php echo CommonHelper::generateUrl('Blog','category', array($cat['bpcategory_id'])); ?>"><?php echo $cat['bpcategory_name']; echo !empty($cat['countChildBlogPosts'])?" <span class='badge'>($cat[countChildBlogPosts])</span>":''; ?></a>
-				<?php if( count($cat['children']) ){ ?>
-				<span class="link--toggle link--toggle-js"></span>
-				<ul style="display:none">
-					<?php foreach($cat['children'] as $children){ ?>
-						<li><a href="<?php echo CommonHelper::generateUrl('Blog','category',array($children['bpcategory_id'])); ?>"><?php echo $children['bpcategory_name']; echo !empty($children['countChildBlogPosts'])?" <span class='badge'>($children[countChildBlogPosts])</span>":''; ?></a>
-						<?php if(count($children['children'])){ ?>
-							<ul class="">
-							<?php foreach($children['children'] as $subChildren){ ?>
-								<li class="">
-									<a href="<?php echo CommonHelper::generateUrl('Blog','category',array($subChildren['bpcategory_id'])); ?>"><?php echo $subChildren['bpcategory_name']; ?></a>
-								</li>
-							<?php } ?>
-							</ul>
-						<?php }?>
-						</li>
-					<?php }?>
-				</ul>
-				<?php }?>
-			</li>
-			<?php }?>
-		</ul>
-	</nav>
+<div class="right-side-bar">
+    <?php if (FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION', FatUtility::VAR_INT, 0)) { ?>
+    <div class="blog-subscribers-inner text-center rounded p-4 mb-4">
+        <h3><?php echo Labels::getLabel('LBL_Get_Weekly_Insights', $siteLangId)?></h3>
+        <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_weekly_newsletter', $siteLangId)?></p>
+        <?php $this->includeTemplate('_partial/footerNewsLetterForm.php', array('blogPage'=>true)); ?>
+    </div>
+    <?php } ?>
+    <?php if (!empty($popularPostList) || (!empty($featuredPostList))) { ?>
+    <div class="bg-gray rounded p-4">
+        <ul class="js-tabs tabs-blog rounded">
+            <?php if (!empty($popularPostList)) { ?>
+                <li class="is--active"><a href="#/tab-1"><?php echo Labels::getLabel('LBL_Popular', $siteLangId)?></a></li>
+            <?php }?>
+            <?php if (!empty($featuredPostList)) { ?>
+                <li><a href="#/tab-2"><?php echo Labels::getLabel('LBL_Featured', $siteLangId)?> </a></li>
+            <?php }?>
+        </ul>
+        <div class="tabs-content">
+            <?php if (!empty($popularPostList)) { ?>
+            <div id="tab-1" class="content-data" style="display: block;">
+                <ul>
+                    <?php foreach ($popularPostList as $blogPost) { ?>
+                    <li>
+                        <div class="post">
+                            <ul class="post_category">
+                                <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
+                                $categoryNames = !empty($blogPost['categoryNames'])?explode('~', $blogPost['categoryNames']):array();
+                                $categories = array_combine($categoryIds, $categoryNames);
+                                foreach ($categories as $id => $name) { ?>
+                                    <li><a href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($id)); ?>"><?php echo $name; ?></a></li>
+                                <?php } ?>
+                            </ul>
+                            <h2 class="post_title"><a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo mb_substr($blogPost['post_title'], 0, 80); ?></a></h2>
+                        </div>
+                    </li>
+                    <?php }?>
+                </ul>
+            </div>
+            <?php }?>
+            <?php if (!empty($featuredPostList)) { ?>
+            <div id="tab-2" class="content-data">
+                <ul>
+                    <?php foreach ($featuredPostList as $blogPost) { ?>
+                    <li>
+                        <div class="post">
+                            <ul class="post_category">
+                                <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
+                                $categoryNames = !empty($blogPost['categoryNames'])?explode('~', $blogPost['categoryNames']):array();
+                                $categories = array_combine($categoryIds, $categoryNames);
+                                foreach ($categories as $id => $name) { ?>
+                                    <li><a href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($id)); ?>"><?php echo $name; ?></a></li>
+                                <?php } ?>
+                            </ul>
+                            <h2 class="post_title"><a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo mb_substr($blogPost['post_title'], 0, 80); ?></a></h2>
+                        </div>
+                    </li>
+                    <?php }?>
+                </ul>
+            </div>
+            <?php }?>
+        </div>
+    </div>
+    <?php }?>
 </div>
-<?php }?>
+<div class="gap"></div>
+<a href="<?php echo CommonHelper::generateUrl('Blog', 'contributionForm'); ?>" class="btn btn--primary btn--lg btn--block ripplelink btn--contribute"> <?php echo Labels::getLabel('Lbl_Contribute', $siteLangId); ?> </a>
+<div class="gap"></div>
+<?php /*if (!empty($categoriesArr)) { ?>
+<h3 class="widget__title -style-uppercase"><?php echo Labels::getLabel('Lbl_categories', $siteLangId); ?></h3>
+<div class="">
+    <nav class="nav nav--toggled nav--toggled-js">
+        <ul class="blog_lnks accordion">
+            <?php foreach ($categoriesArr as $cat) { ?>
+            <li class="<?php echo (count($cat['children'])>0) ? "has-child" : "" ?>"><a
+                    href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($cat['bpcategory_id'])); ?>"><?php echo $cat['bpcategory_name']; echo !empty($cat['countChildBlogPosts'])?" <span class='badge'>($cat[countChildBlogPosts])</span>":''; ?></a>
+                <?php if (count($cat['children'])) { ?>
+                <span class="link--toggle link--toggle-js"></span>
+                <ul style="display:none">
+                    <?php foreach ($cat['children'] as $children) { ?>
+                    <li><a
+                            href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($children['bpcategory_id'])); ?>"><?php echo $children['bpcategory_name']; echo !empty($children['countChildBlogPosts'])?" <span class='badge'>($children[countChildBlogPosts])</span>":''; ?></a>
+                        <?php if (count($children['children'])) { ?>
+                        <ul class="">
+                            <?php foreach ($children['children'] as $subChildren) { ?>
+                            <li class="">
+                                <a href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($subChildren['bpcategory_id'])); ?>"><?php echo $subChildren['bpcategory_name']; ?></a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                        <?php }?>
+                    </li>
+                    <?php }?>
+                </ul>
+                <?php }?>
+            </li>
+            <?php }?>
+        </ul>
+    </nav>
+</div>
+<?php }*/?>
 
 <script>
-        /* for blog links */
-        $('.link--toggle-js').click(function(){
-        if($(this).hasClass('is-active')){
+    /* for blog links */
+    $('.link--toggle-js').click(function() {
+        if ($(this).hasClass('is-active')) {
             $(this).removeClass('is-active');
             $(this).next('.nav--toggled-js > ul > li ul').find('.link--toggle-js').removeClass('is-active');
             $(this).next('.nav--toggled-js > ul > li ul').slideUp();
@@ -66,5 +118,5 @@
         });
         $(this).closest('ul').find('li .nav--toggled-js > ul > li ul').slideUp();
         $(this).next('.nav--toggled-js > ul > li ul').slideDown();
-        });
+    });
 </script>

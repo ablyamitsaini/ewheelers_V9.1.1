@@ -33,6 +33,7 @@ class PolicyPointsController extends AdminBaseController
 
         $srch->addMultipleFields(array('pp.*' , 'pp_l.ppoint_title' ));
         $srch->addOrder('ppoint_active', 'desc');
+        $srch->addOrder('ppoint_id', 'desc');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

@@ -1,13 +1,7 @@
 <?php
 defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="section-head">
-    <div class="section__heading"><h2><?php echo Labels::getLabel('LBL_My_Cart', $siteLangId); ?></h2></div>
-    <div class="section__action">
-        <a href="javascript:void(0)" onclick="cart.remove('all','cart')" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Empty_Cart', $siteLangId); ?></a>
-    </div>
-</div>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-xl-9 col-lg-8">
         <div class="box box--white box--radius box--space">
             <table class="table cart--full js-scrollable scroll-hint" style="position: relative; overflow: auto;">
                 <thead>
@@ -28,10 +22,10 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                             $imageUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>
 
                     <tr class="<?php echo md5($product['key']); ?> <?php echo (!$product['in_stock']) ? 'disabled' : ''; ?>">
-                        <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Item_Details', $siteLangId); ?></span>
+                        <td>
                             <div class="product-img"><a href="<?php echo $productUrl; ?>"><img src="<?php echo $imageUrl; ?>" alt="<?php echo $product['product_name']; ?>" title="<?php echo $product['product_name']; ?>"></a></div>
                         </td>
-                        <td><span class="hide--desktop mobile-thead"></span>
+                        <td>
                             <div class="item-yk-head">
                                 <div class="item-yk-head-category"><?php echo Labels::getLabel('LBL_Brand', $siteLangId).': '; ?><span class="text--dark"><?php echo $product['brand_name']; ?></div>
                                 <div class="item-yk-head-title"><a title="<?php echo ($product['selprod_title']) ? $product['selprod_title'] : $product['product_name']; ?>"
@@ -76,7 +70,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         </div>
                 </td>
             <td>
-            <span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Quantity', $siteLangId); ?></span>
+
             <div class="qty-wrapper">
                 <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
                     <span class="decrease decrease-js">-</span>
@@ -92,12 +86,10 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                 ?>
             </div>
         </td>
-        <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
-            <?php if ($product['special_price_found']) { ?>
-            <span class="text--normal text--normal-primary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
-            <?php } ?>
+        <td>
+            <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
         </td>
-        <td><span class="hide--desktop mobile-thead"><?php echo Labels::getLabel('LBL_SubTotal', $siteLangId); ?></span> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
+        <td> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
         </td>
         <td>
             <a href="javascript:void(0)" class="icons-wrapper" onclick="cart.remove('<?php echo md5($product['key']); ?>','cart')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>"><i class="icn shop"><svg class="svg">
@@ -123,12 +115,12 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 
 </div>
-<div class="col-md-3">
+<div class="col-xl-3 col-lg-4">
     <div class="box box--white box--radius box--space cart-footer">
         <?php if (!empty($cartSummary['cartDiscounts']['coupon_code'])) { ?>
         <div class="applied-coupon">
             <span><?php echo Labels::getLabel("LBL_Coupon", $siteLangId); ?> "<strong><?php echo $cartSummary['cartDiscounts']['coupon_code']; ?></strong>" <?php echo Labels::getLabel("LBL_Applied", $siteLangId); ?></span> <a href="javascript:void(0)"
-                onClick="removePromoCode()" class="btn btn--block btn--primary"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
+                onClick="removePromoCode()" class="btn btn--danger btn--sm"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
         <?php } else { ?>
         <div class="coupon">
             <a class="coupon-input btn btn--primary btn--block" href="javascript:void(0)" onclick="getPromoCode()"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId); ?></a>
@@ -161,7 +153,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         </tr>
                     <?php }?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
-                    <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
+                    <?php $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
 
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>

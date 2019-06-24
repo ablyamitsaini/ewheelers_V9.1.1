@@ -335,15 +335,14 @@ $("document").ready(function()
 		// $('.section-checkout').removeClass('is-current');
 		// $(paymentDiv).addClass('is-current');
 		// fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
-		// 	$(paymentDiv).addClass('is-current');
 		// 	$(paymentDiv).html(ans);
 		// 	$("#payment_methods_tab  li:first a").trigger('click');
 		// });
 		$(pageContent).html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'PaymentSummary'), '', function(ans) {
 			$(pageContent).html(ans);
+			$(paymentDiv).addClass('is-current');
 			setTimeout(function(){ $('#payment_methods_tab').find('li:first a')[0].click(); }, 500);
-
 			//$("#payment_methods_tab li:first a").trigger('click');
 		});
 	};

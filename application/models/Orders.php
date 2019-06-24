@@ -1453,7 +1453,7 @@ class Orders extends MyAppModel
                         'utxn_user_id'    => $childOrderInfo['op_selprod_user_id'],
                         'utxn_comments'    => $comments,
                         'utxn_status'    => Transactions::STATUS_COMPLETED,
-                        'utxn_debit'    => $actualShipCharges,
+                        'utxn_credit'    => $actualShipCharges,
                         'utxn_op_id'    => $childOrderInfo['op_id'],
                         'utxn_type'        => Transactions::TYPE_ORDER_SHIPPING,
                         );
@@ -1538,7 +1538,7 @@ class Orders extends MyAppModel
                         'utxn_user_id'    => $childOrderInfo['op_selprod_user_id'],
                         'utxn_comments'    => $comments,
                         'utxn_status'    => Transactions::STATUS_COMPLETED,
-                        'utxn_debit'    => $actualShipCharges,
+                        'utxn_credit'    => $actualShipCharges,
                         'utxn_op_id'    => $childOrderInfo['op_id'],
                         'utxn_type'        => Transactions::TYPE_ORDER_SHIPPING,
                         );
@@ -2268,6 +2268,23 @@ class Orders extends MyAppModel
             }
         }
 
+        return true;
+    }
+    
+    public static function canSubmitFeedback($userId, $op_order_id, $selprod_id){
+        if(!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)){
+            return false;
+        }        
+        $oFeedbackSrch = new SelProdReviewSearch();
+        $oFeedbackSrch->doNotCalculateRecords();
+        $oFeedbackSrch->doNotLimitRecords();
+        $oFeedbackSrch->addCondition('spreview_postedby_user_id', '=', $userId);
+        $oFeedbackSrch->addCondition('spreview_order_id', '=', $op_order_id);
+        $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selprod_id);
+        $oFeedbackRs = $oFeedbackSrch->getResultSet();
+        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+            return false;
+        }
         return true;
     }
 }

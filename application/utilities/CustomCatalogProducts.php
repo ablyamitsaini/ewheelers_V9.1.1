@@ -854,7 +854,7 @@ trait CustomCatalogProducts
         $str.= "</div></div>";
 
         $emptyBlock ='';
-        for ($i = $blockCount+1; $i<=3; $i++) {
+        for ($i = $blockCount+1; $i<=2; $i++) {
             $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories ' data-simplebar></div></div>";
         }
 

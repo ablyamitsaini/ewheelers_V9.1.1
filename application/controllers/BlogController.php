@@ -121,6 +121,23 @@
             $this->set('keyword', $keyword);
             $this->set('srchFrm', $frm);
         }
+
+        $featuredSrch = $this->getBlogSearchObject();
+        $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
+        $featuredSrch->setPageSize(4);
+        $featuredRs = $featuredSrch->getResultSet();
+        $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
+
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(4);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+
+        $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
+
         $this->_template->addJs('js/slick.min.js');
         $this->_template->addCss('css/slick.css');
         $this->_template->render(true, true);
@@ -131,7 +148,6 @@
         $post = FatApp::getPostedData();
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
-
         $srch = BlogPost::getSearchObject($this->siteLangId, true, false, true);
         $srch->addMultipleFields(array('bp.*' , 'IFNULL(bp_l.post_title,post_identifier) as post_title' , 'bp_l.post_author_name', 'bp_l.post_short_description', 'group_concat(bpcategory_id) categoryIds', 'group_concat(IFNULL(bpcategory_name, bpcategory_identifier) SEPARATOR "~") categoryNames', 'group_concat(GETBLOGCATCODE(bpcategory_id)) AS categoryCodes'));
         $srch->addCondition('postlang_post_id', 'is not', 'mysql_func_null', 'and', true);
@@ -245,6 +261,22 @@
             $blog->setPostViewsCount($blogPostId);
         }
         /* ] */
+
+        $featuredSrch = $this->getBlogSearchObject();
+        $featuredSrch->addCondition('post_featured', '=', applicationConstants::YES);
+        $featuredSrch->addOrder('post_added_on', 'desc');
+        $featuredSrch->setPageSize(4);
+        $featuredRs = $featuredSrch->getResultSet();
+        $featuredRecords = FatApp::getDb()->fetchAll($featuredRs);
+
+        $popularSrch = $this->getBlogSearchObject();
+        $popularSrch->addOrder('post_view_count', 'DESC');
+        $popularSrch->setPageSize(4);
+        $popularRs = $popularSrch->getResultSet();
+        $popularRecords = FatApp::getDb()->fetchAll($popularRs);
+
+        $this->set('featuredPostList', $featuredRecords);
+        $this->set('popularPostList', $popularRecords);
 
         $this->set('socialShareContent', $socialShareContent);
 
@@ -473,9 +505,9 @@
         $frm->addRequiredField(Labels::getLabel('LBL_First_Name', $this->siteLangId), 'bcontributions_author_first_name', '');
         $frm->addRequiredField(Labels::getLabel('LBL_Last_Name', $this->siteLangId), 'bcontributions_author_last_name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Email_Address', $this->siteLangId), 'bcontributions_author_email', '');
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone');
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);

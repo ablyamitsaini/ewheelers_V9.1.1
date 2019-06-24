@@ -110,10 +110,7 @@ $("document").ready(function(){
 			$('html').removeClass('toggled-user');
 		}
 
-		if($('html').hasClass('is--form-visible')){
-			$('html').removeClass('is--form-visible');
-			$('.toggle--search-js').toggleClass("is--active");
-		}
+	
 	});
 	$('.dropdown__target-js').click(function(e){
 		e.stopPropagation();
@@ -129,7 +126,7 @@ $("document").ready(function(){
 
 	$('.main-search').on('click','.form--search-popup',function(e){
 
-		if(!$(e.target).hasClass('link__close')){
+		if(!$(e.target).hasClass('close-layer')){
 			e.stopPropagation();
 		}else{
 			/* $('.toggle--search-js').toggleClass("is--active");
@@ -153,18 +150,17 @@ $("document").ready(function(){
 
 	/* for footer */
 	if( $(window).width() < 767 ){
-	  $('.f-links h3').click(function(){
-		if($(this).hasClass('active')){
-			$(this).removeClass('active');
-			$(this).siblings('.f-links ul').slideUp();
-			return false;
-		}
-		$('.f-links h3').removeClass('active');
-		$(this).addClass("active");
-		$('.f-links ul').slideUp();
-		$(this).siblings('.f-links ul').slideDown();
-		return;
-	  });
+	 /* FOR FOOTER TOGGLES */  
+		$('.toggle__trigger-js').click(function(){
+		  if($(this).hasClass('is-active')){
+			  $(this).removeClass('is-active');
+			  $(this).siblings('.toggle__target-js').slideUp();return false;
+		  }
+		  $('.toggle__trigger-js').removeClass('is-active');
+		  $(this).addClass("is-active");
+			 $('.toggle__target-js').slideUp();
+			 $(this).siblings('.toggle__target-js').slideDown();
+		});
 	}
 
 	/* for footer accordion */
@@ -289,12 +285,12 @@ $(document).ready(function(){
 /*  like animation  */
 $(document).ready(function(){
 	var debug = /*true ||*/ false;
-	var h = document.querySelector('.heart-wrapper');
-    $(document).on('click', '.heart-wrapper',function(){
-	/* $(document).delegate('.heart-wrapper','click',function(){ */
+	var h = document.querySelector('.heart-wrapper-Js');
+    $(document).on('click', '.heart-wrapper-Js',function(){
+	/* $(document).delegate('.heart-wrapper-Js','click',function(){ */
 		product_id= $(this).attr('data-id');
 		toggleProductFavorite(product_id,$(this));
-		h = document.querySelector('heart-wrapper');
+		h = document.querySelector('heart-wrapper-Js');
 	});
 
 /*   function toggleActivate(){
@@ -379,7 +375,7 @@ $(document).ready(function(){
         }
    }
 
-   function setSelectedCatValue(id){
+    function setSelectedCatValue(id){
 		var currentId = 'category--js-'+id;
 		var e = document.getElementById(currentId);
 		if(e != undefined){
@@ -388,6 +384,7 @@ $(document).ready(function(){
             $(e).parent().addClass('is-active');
 			$('#selected__value-js').html(catName);
 			$('#selected__value-js').closest('form').find('input[name="category"]').val(id);
+            $('.dropdown__trigger-js').parent('.dropdown').removeClass("is-active");
 		}
 	}
 

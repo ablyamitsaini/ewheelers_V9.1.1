@@ -394,27 +394,27 @@ h6,
 
 h1,
 .h1 {
-  font-size: 2.5rem;
+  font-size:1.5rem;
 }
 
 h2,
 .h2 {
-  font-size: 2rem;
+  font-size: 1.4rem;
 }
 
 h3,
 .h3 {
-  font-size: 1.75rem;
+  font-size: 1.3rem;
 }
 
 h4,
 .h4 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 h5,
 .h5 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 h6,
@@ -461,7 +461,7 @@ hr {
 small,
 .small {
   font-size: 80%;
-  font-weight: 400;
+  font-weight: 400;color: #999;font-style: italic;
 }
 
 mark,
@@ -605,13 +605,13 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-      max-width: 1120px;
+      max-width: 1220px;
   }
 }
 
 @media (min-width: 1366px) {
   .container {     
-    max-width: 1250px;
+    max-width: 1300px;
   }
 }
 
@@ -2783,6 +2783,7 @@ textarea.form-control {
   }
 }
 
+/*
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -2803,6 +2804,7 @@ textarea.form-control {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
+*/
 
 @media screen and (prefers-reduced-motion: reduce) {
   .btn {
@@ -3594,6 +3596,7 @@ input[type="button"].btn-block {
   margin-left: 0;
 }
 
+/*
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -3618,6 +3621,7 @@ input[type="button"].btn-block {
   right: 0;
   left: auto;
 }
+*/
 
 .dropup .dropdown-menu {
   top: auto;

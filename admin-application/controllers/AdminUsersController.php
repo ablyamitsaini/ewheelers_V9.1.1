@@ -100,7 +100,7 @@ class AdminUsersController extends AdminBaseController
         $srch = AdminUsers::getSearchObject(false);
 
         $srch->addFld('*');
-
+        $srch->addOrder('admin_id', 'DESC');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

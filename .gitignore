@@ -1,6 +1,8 @@
 .*
-.htaccess
 !/.gitignore
+/robots.txt
+/public/robots.txt
+/.htaccess
 /user-uploads/*
 /admin-application/views/innovas
 /application/views/innovas
@@ -12,3 +14,7 @@
 /public/sitemap.xml
 /public/restore.php
 /restore
+/*.zip
+/*.rar
+/*.tar
+/*.gz

@@ -31,7 +31,7 @@ class ShopReportReasonsController extends AdminBaseController
         $srch = ShopReportReason::getSearchObject($this->adminLangId);
 
         $srch->addMultipleFields(array('reportreason.*' , 'reportreason_l.reportreason_title'));
-
+        $srch->addOrder('reportreason_id', 'DESC');
         $rs = $srch->getResultSet();
         $records = array();
         if ($rs) {

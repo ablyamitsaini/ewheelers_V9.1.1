@@ -11,7 +11,7 @@
  */
 
 class PayfortIntegration {
-    
+
     public $amount;
     public $currency;
     public $merchant_identifier; // payfort merchant identifier
@@ -23,10 +23,10 @@ class PayfortIntegration {
     public $language;
     public $command; // operation commnad (AUTHORIZATION)
     public $return_url; // back to merchant url
-    
+
     /**
      * genarate array of request Params
-     * 
+     *
      * @return array of $requestParams
      */
     public function getRequestParams()
@@ -44,18 +44,18 @@ class PayfortIntegration {
             'command'               => $this->command,
             'return_url'            => $this->return_url,
         );
-      
+
        return $requestParams;
     }
-    
+
     /**
-     * redirect to fort payment page 
-     * 
+     * redirect to fort payment page
+     *
      * @param boolean $testMode (true, false) , if test mode is true the redirect will be to the sandBox else will be to the production
      * @param aray $requestParams order request parameters
      * @param string $action as fortm action
      */
-    function redirect($testMode, $requestParams = array(), $action = 'GET') 
+    function redirect($testMode, $requestParams = array(), $action = 'GET')
     {
         if ($testMode) {
             //sandBox redirection
@@ -84,8 +84,8 @@ class PayfortIntegration {
             die();
         }
     }
-    
-    
+
+
     /**
      * calculate fort signature
      * @param array $arrData
@@ -103,7 +103,7 @@ class PayfortIntegration {
         if($securityType == 'sha128') {
             $securityType = 'sha1';
         }
-		
+
         $shaString = $shaPharse . $shaString . $shaPharse;
         $signature = hash($securityType, $shaString);
 

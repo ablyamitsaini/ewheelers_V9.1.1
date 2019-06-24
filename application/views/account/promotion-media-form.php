@@ -33,7 +33,7 @@
 								<img src="<?php echo CommonHelper::generateUrl('Image','promotionMedia',array($img['afile_record_id'],$img['afile_lang_id'],'PREVIEW',$img['afile_id'])).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Promotion_Banner',$siteLangId);?>">
 							</div>
 							<div class="btngroup--fix">
-								<a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removePromotionMedia(<?php echo $promotion_id; ?>,<?php echo $img['afile_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
+								<a class = "btn btn--primary btn--sm" href="javascript:void(0);" onClick="removePromotionMedia(<?php echo $promotion_id; ?>,<?php echo $img['afile_id']; ?>)"><?php echo Labels::getLabel('LBL_Remove',$siteLangId);?></a>
 							</div>
 
 						<span class="gap"></span>

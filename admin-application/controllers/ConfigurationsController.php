@@ -70,6 +70,7 @@ class ConfigurationsController extends AdminBaseController
 
         $this->set('frm', $frm);
         $this->set('frmType', $frmType);
+        $this->set('record', $record);
         $this->set('dispLangTab', $dispLangTab);
         $this->set('lang_id', 0);
         $this->set('formLayout', '');
@@ -300,17 +301,7 @@ class ConfigurationsController extends AdminBaseController
         }
 
         $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveAttachment(
-            $_FILES['file']['tmp_name'],
-            $file_type,
-            0,
-            0,
-            $_FILES['file']['name'],
-            -1,
-            $unique_record = true,
-            $lang_id
-        )
-        ) {
+        if (!$res = $fileHandlerObj->saveImage($_FILES['file']['tmp_name'], $file_type, 0, 0, $_FILES['file']['name'], -1, true, $lang_id)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -524,14 +515,14 @@ class ConfigurationsController extends AdminBaseController
         switch ($type) {
             case Configurations::FORM_GENERAL:
                 $frm->addEmailField(Labels::getLabel('LBL_Store_Owner_Email', $this->adminLangId), 'CONF_SITE_OWNER_EMAIL');
-                $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Telephone', $this->adminLangId), 'CONF_SITE_PHONE');
+                $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Telephone', $this->adminLangId), 'CONF_SITE_PHONE', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
                 $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-                $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->adminLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+                // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->adminLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
                 $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->adminLangId));
 
-                $faxFld = $frm->addTextBox(Labels::getLabel('LBL_Fax', $this->adminLangId), 'CONF_SITE_FAX');
+                $faxFld = $frm->addTextBox(Labels::getLabel('LBL_Fax', $this->adminLangId), 'CONF_SITE_FAX', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
                 $faxFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-                $faxFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->adminLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+                // $faxFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->adminLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
                 $faxFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->adminLangId));
 
                 $cpagesArr = ContentPage::getPagesForSelectBox($this->adminLangId);
@@ -548,6 +539,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
                 $iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page", $this->adminLangId).'</small>';
+
+                /*$ipFld = $frm->addTextarea(Labels::getLabel('LBL_Whitelisted_IP', $this->adminLangId), 'CONF_WHITELISTED_IP');
+                $ipFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Any_IP_you_want_to_add_in_whitelist_(comma_Separated)", $this->adminLangId).'</small>';*/
+
                 break;
 
             case Configurations::FORM_LOCAL:
@@ -560,8 +555,8 @@ class ConfigurationsController extends AdminBaseController
                     ''
                 );
 
-                $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
-
+                $fld = $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
+                $fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Current", $this->adminLangId).' <span id="currentDate">'. CommonHelper::currentDateTime(null, true).'</span></small>';
                 $countryObj = new Countries();
                 $countriesArr = $countryObj->getCountriesArr($this->adminLangId);
                 $frm->addSelectBox(Labels::getLabel('LBL_Country', $this->adminLangId), 'CONF_COUNTRY', $countriesArr);
@@ -923,10 +918,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $frm->addHtml('', 'Cart', '<h3>'.Labels::getLabel("LBL_Cart", $this->adminLangId).'</h3>');
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Cancel_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_CANCEL', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_Cancelling_the_payment", $this->adminLangId)."</small>";
 
-                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
+                $fld = $frm->addRadioButtons(Labels::getLabel("LBL_On_Payment_Failure_Maintain_Cart", $this->adminLangId), 'CONF_MAINTAIN_CART_ON_PAYMENT_FAILURE', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::NO, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Cart_Items_Will_be_retained_on_payment_failure", $this->adminLangId)."</small>";
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Reminder_Interval_For_Products_In_Cart_[Days]", $this->adminLangId), 'CONF_REMINDER_INTERVAL_PRODUCTS_IN_CART', '');
@@ -1261,35 +1256,44 @@ class ConfigurationsController extends AdminBaseController
                 );
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Referrer_Url/Link_Validity_Period", $this->adminLangId), 'CONF_REFERRER_URL_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $string = Labels::getLabel("LBL_Days,_after_which_Referrer_Url_is_Expired.", $this->adminLangId);
                 $fld->htmlAfterField = "<small>". $string ."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_Registration", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_register.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_register_through_referrer.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points_Validity", $this->adminLangId), 'CONF_REGISTRATION_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Rewards', '<h3>'.Labels::getLabel("LBL_Reward_Benefits_on_First_Purchase", $this->adminLangId).'</h3>');
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrers_get_this_reward_points_when_their_referrals_(friends)_will_make_first_purchase.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referrer_Reward_Points_Validity", $this->adminLangId), 'CONF_SALE_REFERRER_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Referral_Reward_Points", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Referrals_get_this_reward_points_when_they_will_make_first_purchase_through_their_referrers.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Rewards_points_validity_in_days", $this->adminLangId), 'CONF_SALE_REFERRAL_REWARD_POINTS_VALIDITY');
+                $fld->requirements()->setIntPositive();
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_NOTE:Rewards_points_validity_in_days_from_the_date_of_credit", $this->adminLangId)."</small>";
 
                 /* $fld = $frm->addTextarea('Live Chat Code','CONF_LIVE_CHAT_CODE');
@@ -1599,7 +1603,7 @@ class ConfigurationsController extends AdminBaseController
                     $ul->htmlAfterField .= '<img src="'.CommonHelper::generateFullUrl('Image', 'mobileLogo', array($langId , 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeMobileLogo('.$langId.')" ><i class="ion-close-round"></i></a>';
                 }
 
-                // $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
+                $ul->htmlAfterField .= ' </div></div><input type="button" name="mobile_logo" class="logoFiles-Js btn-xs" id="mobile_logo" data-file_type='.AttachedFile::FILETYPE_MOBILE_LOGO.' value="Upload file"><small>Dimensions 168*37</small></li>';
                 //
                 // $ul->htmlAfterField .= '<li>'.Labels::getLabel('LBL_Select_Categories_Background_Image', $this->adminLangId).'<div class="logoWrap"><div class="uploaded--image">';
                 //
@@ -1656,5 +1660,14 @@ class ConfigurationsController extends AdminBaseController
         } catch (Exception $e) {
             FatUtility::dieJsonError($e->getMessage());
         }
+    }
+
+    public function displayDateTime()
+    {
+        $post = FatApp::getPostedData();
+        $timeZone = $post['time_zone'];
+        $dateTime = CommonHelper::currentDateTime(null, true, null, $timeZone);
+        $this->set("dateTime", $dateTime);
+        $this->_template->render(false, false, 'json-success.php');
     }
 }

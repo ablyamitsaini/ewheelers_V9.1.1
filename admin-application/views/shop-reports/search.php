@@ -6,7 +6,7 @@ $arr_flds = array(
 		'reportreason_title'=>Labels::getLabel('LBL_Report_Reason',$adminLangId),	
 		'sreport_message'=>Labels::getLabel('LBL_Message',$adminLangId),
 		'sreport_added_on'=>Labels::getLabel('LBL_Date_Time',$adminLangId),
-		'action' => Labels::getLabel('LBL_Action',$adminLangId),
+		/* 'action' => Labels::getLabel('LBL_Action',$adminLangId), */
 	);
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive'));
 $th = $tbl->appendElement('thead')->appendElement('tr');
@@ -36,7 +36,7 @@ foreach ($arr_listing as $sn=>$row){
 			case 'sreport_message':
 				$td->appendElement('plaintext', array(), nl2br($row[$key]) , true);
 			break;
-			case 'action':
+			/* case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions"));
 				if($canEdit){
 					$li = $ul->appendElement("li");
@@ -44,7 +44,7 @@ foreach ($arr_listing as $sn=>$row){
 					'title'=>Labels::getLabel('LBL_Delete',$adminLangId),"onclick"=>"deleteRecord(".$row['sreport_id'].")"),'<i class="ion-android-delete icon"></i>', 
 					true);
 				}
-			break;
+			break; */
 			default:
 				$td->appendElement('plaintext', array(), $row[$key],true);
 			break;

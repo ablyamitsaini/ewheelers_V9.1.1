@@ -1,11 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="tabs tabs--small tabs--scroll clearfix">
-    <!-- <ul>
+<!-- <div class="tabs tabs--small tabs--scroll clearfix">
+    <ul>
         <li class="is-active"><a href="javascript:void(0);" onClick="searchAddresses()"><?php echo Labels::getLabel('LBL_My_Addresses', $siteLangId);?></a></li>
         <li><a href="javascript:void(0);" onClick="addAddressForm(0)"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?></a></li>
-    </ul> -->
-    <a href="javascript:void(0);" onClick="addAddressForm(0)" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_address', $siteLangId);?> </a>
-</div>
+    </ul>
+</div> -->
+
 <div class="container--addresses">
     <div class="row">
 <?php if (!empty($addresses)) {
@@ -13,7 +13,7 @@
         $addresses[0]['ua_is_default'] = 1;
     }
     foreach ($addresses as $address) {
-        $address['ua_identifier'] = ($address['ua_identifier'] == '') ? '&nbsp;' : $address['ua_identifier']; ?> <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        $address['ua_identifier'] = ($address['ua_identifier'] == '') ? '&nbsp;' : $address['ua_identifier']; ?> <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
             <label class="list__selection <?php echo ($address['ua_is_default']==1)?'is-active':''; ?>">
                 <span class="radio">
                     <input type="radio" <?php echo ($address['ua_is_default']==1)?'checked=""':''; ?> name="1" onClick="setDefaultAddress(<?php echo $address['ua_id']; ?>)"><i class="input-helper"></i>

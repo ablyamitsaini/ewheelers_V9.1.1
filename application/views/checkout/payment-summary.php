@@ -172,7 +172,9 @@
                                 <div class="simplebar-scrollbar" style="height: 90px; transform: translate3d(0px, 0px, 0px); display: none;"></div>
                             </div>
                         </ul>
-                <?php } ?>
+                <?php } else{
+                    echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
+                } ?>
             </div>
             <div class="payment-from">
                 <div class="you-pay">
@@ -188,9 +190,7 @@
                 </div>
                 <div class="gap"></div>
                 <div id="tabs-container"></div>
-        <?php } else {
-            echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
-        } ?>
+        <?php } ?>
     </section>
 </div>
 <?php if ($cartSummary['orderPaymentGatewayCharges']) { ?>

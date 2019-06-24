@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+        <div class="content-header justify-content-between row mb-3">
             <div class="content-header-left col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Advertiser', $siteLangId); ?></h2>
@@ -29,8 +29,8 @@
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($walletBalance);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Credits_earned_today', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($txnsSummary['total_earned']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -58,8 +58,8 @@
                                                 <span class="total-numbers"><?php echo $totActivePromotions; ?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Active_promotions', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totActivePromotions);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Active_promotions_Expense', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($activePromotionChargedAmount);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -72,7 +72,7 @@
                     <a href="<?php echo CommonHelper::generateUrl('advertiser', 'promotionCharges');?>">
                         <div class="cards">
                             <div class="cards-header p-4">
-                                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Amount_Spent_on_Promotions', $siteLangId);?></h5>
+                                <h5 class="cards-title"><?php echo Labels::getLabel('LBL_All_Promotions', $siteLangId);?></h5>
                                 <i class="icn">
                                     <svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#give-money"></use>
@@ -84,11 +84,11 @@
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Charged_Amount', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totChargedAmount); ?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Promotions', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totPromotions); ?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Charged_Amount', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Expense', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totChargedAmount);?></span>
                                             </li>
                                         </ul>

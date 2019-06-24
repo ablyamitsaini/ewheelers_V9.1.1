@@ -6,16 +6,16 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             <div class="col-md-auto"> <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></h2>
             </div>
-            <div class="content-header-right col-auto">
-                <div class="">
+            <div class="col-auto">
+                <div class="content-header-right">
                     <?php if (!Shop::isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) { ?>
-                        <a href="<?php echo  CommonHelper::generateUrl('Seller', 'shop'); ?>" class="btn btn--primary-border">
+                        <a href="<?php echo  CommonHelper::generateUrl('Seller', 'shop'); ?>" class="btn btn--primary-border btn--sm">
                             <?php echo Labels::getLabel('LBL_Create_Shop', $siteLangId); ?>
                         </a>
                     <?php } ?>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Add_new_catalog', $siteLangId);?></a>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_My_products', $siteLangId);?></a>
-                    <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_My_store_inventory', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Add_new_catalog', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>" class="btn btn--secondary-border btn--sm"><?php echo Labels::getLabel('LBL_My_products', $siteLangId);?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_My_store_inventory', $siteLangId);?></a>
                 </div>
             </div>
         </div>
@@ -37,12 +37,12 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_sales', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($totalSoldSales);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Completed_Sales', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['totalSoldSales']);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Sale_for_today', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($todaySoldSales);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Inprocess_Sales', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['totalInprocessSales']);?></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -66,7 +66,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Credits', $siteLangId);?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
                                             </li>
                                             <li>
@@ -95,12 +95,15 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                     <div class="stats-number">
                                         <ul>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Total_Orders', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $ordersCount;?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Completed_Orders', $siteLangId);?></span>
+                                                <span class="total-numbers"><?php echo FatUtility::int($ordersStats['totalSoldCount']);?></span>
                                             </li>
                                             <li>
-                                                <span class="total"><?php echo Labels::getLabel('LBL_Orders_for_today', $siteLangId);?></span>
-                                                <span class="total-numbers"><?php echo $todayOrderCount;?></span>
+                                                <span class="total"><?php echo Labels::getLabel('LBL_Pending_Orders', $siteLangId);?></span>
+                                                <span class="total-numbers">
+                                                    <?php $pendingOrders = $ordersCount - $ordersStats['totalSoldCount'];
+                                                    echo $pendingOrders;?>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -152,12 +155,12 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             </div>
             <?php } ?>
             <div class="widget widget-stats">
-                <a href="<?php echo CommonHelper::generateUrl('Account', 'messages');?>">
+                <a href="<?php echo CommonHelper::generateUrl('Seller', 'orderReturnRequests');?>">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Messages', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Refund', $siteLangId);?></h5>
                             <i class="icn"><svg class="svg">
-                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#messages"></use>
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#refund"></use>
                                 </svg>
                             </i>
                         </div>
@@ -166,12 +169,41 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                 <div class="stats-number">
                                     <ul>
                                         <li>
-                                            <span class="total"><?php echo Labels::getLabel('LBL_Unread_messages', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $todayUnreadMessageCount;?></span>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Orders', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo FatUtility::int($ordersStats['refundedOrderCount']);?></span>
                                         </li>
                                         <li>
-                                            <span class="total"><?php echo Labels::getLabel('LBL_Total_messages', $siteLangId);?></span>
-                                            <span class="total-numbers"><?php echo $totalMessageCount;?></span>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Refunded_Amount', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['refundedOrderAmount']); ?></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="widget widget-stats">
+                <a href="<?php echo CommonHelper::generateUrl('Seller', 'orderCancellationRequests');?>">
+                    <div class="cards">
+                        <div class="cards-header p-4">
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Cancellation', $siteLangId);?></h5>
+                            <i class="icn"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#cancel"></use>
+                                </svg>
+                            </i>
+                        </div>
+                        <div class="cards-content pl-4 pr-4 ">
+                            <div class="stats">
+                                <div class="stats-number">
+                                    <ul>
+                                        <li>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo FatUtility::int($ordersStats['cancelledOrderCount']);?></span>
+                                        </li>
+                                        <li>
+                                            <span class="total"><?php echo Labels::getLabel('LBL_Cancelled_Orders_Amount', $siteLangId);?></span>
+                                            <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($ordersStats['cancelledOrderAmount']);?></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -181,8 +213,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </a>
             </div>
         </div>
-            <div class="row mb-3">
-                <div class="col-lg-6 col-md-12  ">
+            <div class="row">
+                <div class="col-xl-6 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sales_Graph', $siteLangId);?></h5>
@@ -190,7 +222,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-content pl-4 pr-4  graph"> <?php $this->includeTemplate('_partial/seller/sellerSalesGraph.php'); ?> </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
@@ -281,8 +313,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5>
@@ -308,7 +340,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                         foreach ($transactions as $row) { ?>
                                     <tr>
                                         <td>
-                                            <div class="txn__id"> <?php echo Labels::getLabel('Lbl_Txn._Id', $siteLangId)?>: <?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
+                                            <div class="txn__id"><?php echo Transactions::formatTransactionNumber($row['utxn_id']); ?> </div>
                                         </td>
                                         <td>
                                             <div class="txn__date"> <?php echo FatDate::format($row['utxn_date']); ?> </div>
@@ -346,7 +378,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 col-md-12 mb-3">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests', $siteLangId);?></h5>
@@ -423,7 +455,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-xl-6 col-md-12 mb-3">
                     <!-- <div class="cards">
                     <?php // $this->includeTemplate('_partial/userDashboardMessages.php');?>
                 </div> -->

@@ -16,7 +16,7 @@
 <div class="main-search">
 	<a href="javascript:void(0)" class="toggle--search toggle--search-js"> <span class="icn"></span></a>
 	<div class="form--search form--search-popup">
-		<a id="close-search-popup-js" class="close-layer d-xl-none d-lg-none" href="javascript:void(0)"></a>
+		<a id="close-search-popup-js" class="close-layer d-xl-none" href="javascript:void(0)"></a>
 		<?php echo $headerSrchFrm->getFormTag(); ?>
 			<div class="dropdown"> <span id="selected__value-js" class="select__value dropdown__trigger-js"> <?php echo Labels::getLabel('LBL_All',$siteLangId); ?></span>
 				<div class="dropdown__target dropdown__target-js">
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 			</div>
-			<?php echo $headerSrchFrm->getFieldHTML('keyword'); ?>
+			<div class="main-search__field"><?php echo $headerSrchFrm->getFieldHTML('keyword'); ?></div>
 			<?php echo $headerSrchFrm->getFieldHTML('category'); ?>
 			<?php echo $headerSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
 		</form>

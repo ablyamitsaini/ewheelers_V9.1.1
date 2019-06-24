@@ -23,6 +23,8 @@ Enhancements:
 	. jQuery library updated to V3.4.1.
 	. Handled Form elements validations via a centralized class.
 	. Admin & User can perform multi select bulk operations(Update statues and Delete) on shop collection as well.
+	. Added min and max range for COD payments.
+	. Added a check for option values that not to be deleted if linked with an inventory.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
@@ -38,3 +40,14 @@ Fixes :
 	. Seller Product not avaliable if avaliabity from date is current date.
 	. Heading layout direction in Seller order view.
 	. PAYFORT Payment gateway payment failure.
+	. 027451 - Sorting issue resolved on product listing
+	. 027452- Product sorting based on default sort by option and filters based on products for category and shop page.
+	. 026820 - Refund of shipping charges
+	. 027334 - subscription page checkout layout.
+	. 027407 - Added a check for feedback links.
+	. 027566 - Guest user apply coupon .
+	. 027584 - Guest user logout and login option both are displaying at same time
+	. 027429 - Notice displayed after importing invalid policy point identifier row.
+	. 027655 - Select All checkbox is not getting checked if manually select all rows.
+	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected
+	. 027755 - Manage Seller Approval Form Add Unique Identifier.

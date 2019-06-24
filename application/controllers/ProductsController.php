@@ -121,7 +121,7 @@ class ProductsController extends MyAppController
         $headerFormParamsAssocArr = array_merge($headerFormParamsAssocArr, $post);
 
         $prodSrchObj = new ProductSearch($this->siteLangId);
-        $prodSrchObj->setDefinedCriteria();
+        $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
         $prodSrchObj->joinSellerSubscription();
         $prodSrchObj->addSubscriptionValidCondition();
@@ -133,11 +133,25 @@ class ProductsController extends MyAppController
             $categoryId = FatUtility::int($post['category']);
         }
 
+        $shopId = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
+        if (0 < $shopId) {
+            $prodSrchObj->addShopIdCondition($shopId);
+        }
+
         /* Categories Data[ */
         $catSrch = clone $prodSrchObj;
         $catSrch->addGroupBy('c.prodcat_id');
         $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
         /* ] */
+
+        /*$recordSrch = clone $prodSrchObj;
+        $recordSrch->addMultipleFields(array('product_id'));
+        $recordSrch->setPageSize(1);
+        $rs = $recordSrch->getResultSet();
+        $totalRecords = FatApp::getDb()->totalRecords($rs);
+        if(1 > $totalRecords){
+            exit();
+        }*/
 
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
@@ -267,8 +281,8 @@ class ProductsController extends MyAppController
         }
 
         $availability = 0;
-        if (array_key_exists('availability', $headerFormParamsAssocArr)) {
-            $availability = current($headerFormParamsAssocArr['availability']);
+        if (array_key_exists('out_of_stock', $headerFormParamsAssocArr)) {
+            $availability = $headerFormParamsAssocArr['out_of_stock'];
         }
 
         $productFiltersArr = array('count_for_view_more' => FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5));
@@ -407,7 +421,6 @@ class ProductsController extends MyAppController
                 $productSelectedOptionValues[$op['selprodoption_option_id']] = $op['selprodoption_optionvalue_id'];
             }
         }
-
         if ($productImagesArr) {
             foreach ($productImagesArr as $image) {
                 $afileId = $image['afile_id'];
@@ -606,6 +619,7 @@ class ProductsController extends MyAppController
         $this->set('product', $product);
         $this->set('shop_rating', $shop_rating);
         $this->set('shop', $shop);
+        $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
         $this->set('productImagesArr', $productGroupImages);
         //    $this->set( 'productGroups', $productGroups );
         $frmReviewSearch = $this->getReviewSearchForm(5);
@@ -622,7 +636,7 @@ class ProductsController extends MyAppController
         /* ] */
 
         if (!empty($product)) {
-            $afile_id = !empty($productImagesArr)? array_keys($productImagesArr)[0] : 0;
+            $afile_id = !empty($productGroupImages)? array_keys($productGroupImages)[0] : 0;
             $this->set('socialShareContent', $this->getOgTags($product, $afile_id));
         }
 
@@ -683,7 +697,7 @@ class ProductsController extends MyAppController
         if (1 > $selprod_id) {
             return;
         }
-        
+
         $recentProductsArr = array();
         if (!isset($_COOKIE['recentViewedProducts'])) {
             setcookie('recentViewedProducts', $selprod_id.'_', time()+60*60*72, CONF_WEBROOT_URL);
@@ -794,7 +808,7 @@ class ProductsController extends MyAppController
 
     private function getOgTags($product = array(), $afile_id = 0)
     {
-        if (empty($product)){
+        if (empty($product)) {
             return array();
         }
         $afile_id = FatUtility::int($afile_id);
@@ -810,7 +824,7 @@ class ProductsController extends MyAppController
         $productImageUrl = '';
         /* $productImageUrl = CommonHelper::generateFullUrl('Image','product', array($product['product_id'],'', $product['selprod_id'],0,$this->siteLangId )); */
         if (0 < $afile_id) {
-            $productImageUrl = CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $afile_id ));
+            $productImageUrl = CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'FB_RECOMMEND', 0, $afile_id ));
         }
         $socialShareContent = array(
         'type'=>'Product',
@@ -821,7 +835,7 @@ class ProductsController extends MyAppController
         return $socialShareContent;
     }
 
-	public function testView($selprod_id = 0)
+    public function testView($selprod_id = 0)
     {
         $productImagesArr = array();
         $selprod_id = FatUtility::int($selprod_id);

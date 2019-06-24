@@ -12,7 +12,7 @@ $(document).on('change','.option-js',function(){
 (function() {
 	var runningAjaxReq = false;
 	var dv = '#listing';
-	
+
 	checkRunningAjax = function(){
 		if( runningAjaxReq == true ){
 			console.log(runningAjaxMsg);
@@ -20,7 +20,7 @@ $(document).on('change','.option-js',function(){
 		}
 		runningAjaxReq = true;
 	};
-	
+
 	searchCustomCatalogProducts = function(frm){
 		checkRunningAjax();
 		var data = fcom.frmData(frm);
@@ -30,28 +30,36 @@ $(document).on('change','.option-js',function(){
 			$(dv).html(res);
 		});
 	};
-	
+
 	goToCustomCatalogProductSearchPage = function(page) {
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
-		var frm = document.frmSearchCustomCatalogProducts;		
+		var frm = document.frmSearchCustomCatalogProducts;
 		$(frm.page).val(page);
 		searchCustomCatalogProducts(frm);
 	};
-		
+
+	productInstructions = function( type ){
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Seller', 'productTooltipInstruction', [type]), '', function(t) {
+				$.facebox(t,'faceboxWidth catalog-bg');
+			});
+		});
+	};
+
 	clearSearch = function(){
 		document.frmSearchCustomCatalogProducts.reset();
 		searchCustomCatalogProducts(document.frmSearchCustomCatalogProducts);
 	};
-	
+
 	customCatalogProductImages = function(preqId){
 		fcom.ajax(fcom.makeUrl('Seller', 'customCatalogProductImages', [preqId]), '', function(t) {
 			productImages(preqId);
 			$.facebox(t, 'faceboxWidth');
 		});
 	};
-	
+
 	productImages = function( preqId,option_id,lang_id ){
 		if(typeof option_id == 'undefined'){
 			option_id = 0;
@@ -63,7 +71,7 @@ $(document).on('change','.option-js',function(){
 			$('#imageupload_div').html(t);
 		});
 	};
-	
+
 	deleteCustomProductImage = function( preqId, image_id ){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
@@ -77,12 +85,12 @@ $(document).on('change','.option-js',function(){
 			productImages( preqId, $('.option').val(), $('.language').val() );
 		});
 	}
-	
-	setupCustomCatalogProductImages = function ( ){		
+
+	setupCustomCatalogProductImages = function ( ){
 		var data = new FormData(  );
 		$inputs = $('#frmCustomCatalogProductImage input[type=text],#frmCustomCatalogProductImage select,#frmCustomCatalogProductImage input[type=hidden]');
-		$inputs.each(function() { data.append( this.name,$(this).val());});		
-		
+		$inputs.each(function() { data.append( this.name,$(this).val());});
+
 		$.each( $('#prod_image')[0].files, function(i, file) {
 				$('#imageupload_div').html(fcom.getLoader());
 				data.append('prod_image', file);
@@ -104,4 +112,3 @@ $(document).on('change','.option-js',function(){
 			});
 	};
 })();
-	

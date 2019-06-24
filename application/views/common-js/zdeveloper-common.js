@@ -20,16 +20,75 @@ $(document).ready(function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
         }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
         showFormActionsBtns();
     });
 	if(0 < $('.js-widget-scroll').length){
-    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false));
+    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
+
+    $(document).on('keydown', 'input.phone-js', function(e) {
+        var key = e.which || e.charCode || e.keyCode || 0;
+        $phone = $(this);
+
+        // Don't let them remove the starting '('
+        if ($phone.val().length === 1 && (key === 8 || key === 46)) {
+            $phone.val('(');
+            return false;
+        }
+        // Reset if they highlight and type over first char.
+        else if ($phone.val().charAt(0) !== '(') {
+            $phone.val('(');
+        }
+
+        // Auto-format- do not expose the mask as the user begins to type
+        if (key !== 8 && key !== 9) {
+            if ($phone.val().length === 4) {
+                $phone.val($phone.val() + ')');
+            }
+            if ($phone.val().length === 5) {
+                $phone.val($phone.val() + ' ');
+            }
+            if ($phone.val().length === 9) {
+                $phone.val($phone.val() + '-');
+            }
+        }
+
+        // Allow numeric (and tab, backspace, delete, hyphen, space) keys only
+        return (key == 8 ||
+            key == 9 ||
+            key == 46 ||
+            key == 189 ||
+            key == 32 ||
+            (key >= 48 && key <= 57) ||
+            (key >= 96 && key <= 105));
+    });
+    $(document).on('focus', 'input.phone-js', function() {
+        $phone = $(this);
+        if ($phone.val().length === 0) {
+            $phone.val('(');
+        } else {
+            var val = $phone.val();
+            $phone.val('').val(val); // Ensure cursor remains at the end
+        }
+    });
+    $(document).on('blur', 'input.phone-js', function() {
+        $phone = $(this);
+        if ($phone.val() === '(') {
+            $phone.val('');
+        }
+    });
+
+    $(document).on('click', '.accordianheader', function () {
+      $(this).next('.accordianbody').slideToggle();
+      $(this).parent().parent().siblings().children().children().next().slideUp();
+      return false;
+    });
 });
 
-
 function showFormActionsBtns() {
-    console.log('called');
     if (typeof $(".selectItem--js:checked").val() === 'undefined') {
         $(".formActionBtn-js").addClass('formActions-css');
     } else {
@@ -183,10 +242,10 @@ toggleShopFavorite = function(shop_id) {
         if (ans.status) {
             if (ans.action == 'A') {
                 $("#shop_" + shop_id).addClass("is-active");
-                //	$("#shop_"+shop_id).text("Love this shop");
+                $("#shop_" + shop_id).prop('title', 'Unfavorite Shop');
             } else if (ans.action == 'R') {
                 $("#shop_" + shop_id).removeClass("is-active");
-                //$("#shop_"+shop_id).text("Loved pending css");
+                $("#shop_" + shop_id).prop('title', 'Favorite Shop');
             }
         }
     });
@@ -267,7 +326,7 @@ removeFromCart = function(key) {
 
 function submitSiteSearch(frm) {
 
-    var keyword = $(frm).find('input[name="keyword"]').val();
+    var keyword = $.trim($(frm).find('input[name="keyword"]').val());
 
     if (3 > keyword.length || '' === keyword) {
         $.mbsmessage(langLbl.searchString, true, 'alert--danger');
@@ -304,8 +363,8 @@ function submitSiteSearch(frm) {
     document.location.href = url;
 }
 
-function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5, slidesToScroll = 1) {
-    slidesToShow = (typeof slidesToShow != "undefined") ? parseInt(slidesToShow) : 5;
+function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4, slidesToScroll = 1) {
+    slidesToShow = (typeof slidesToShow != "undefined") ? parseInt(slidesToShow) : 4;
     slidesToScroll = (typeof slidesToScroll != "undefined") ? parseInt(slidesToScroll) : 1;
     layoutDirection = (typeof layoutDirection != "undefined") ? layoutDirection : 'ltr';
     if (imagesForNav) {
@@ -321,27 +380,28 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 			vertical: true,
 			verticalSwiping: true,
 			responsive: [{
-					breakpoint: 1050,
-					settings: {
-						slidesToShow: 4,
-					}
-				},
-				{
-					breakpoint: 800,
+					breakpoint: 1499,
 					settings: {
 						slidesToShow: 3,
-						vertical: true,
-						verticalSwiping: true,
 
 					}
 				},
 				{
-					breakpoint: 400,
+				breakpoint: 1199,
+					settings: {
+						slidesToShow: 4,
+                        vertical: false,
+			            verticalSwiping: false
+					}
+				},
+
+				{
+					breakpoint: 767,
 					settings: {
 						slidesToShow: 2,
-						vertical: true,
-						verticalSwiping: true,
-					}
+                         vertical: false,
+			            verticalSwiping: false
+				    }
 				}
 			]
 		};
@@ -367,10 +427,11 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 5
 }
 
 var screenResolutionForSlider = {
-        1024: 4,
-        768: 4,
+        1199: 4,
+        1023: 3,
+        767: 2,
         480: 2
-    }
+    };
 
 function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay,slidesToShowForDiffResolution ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
@@ -391,15 +452,21 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
                             autoplay: autoInfinitePlay,
                             arrows: true,
                             responsive: [{
-                                    breakpoint: 1024,
+                                    breakpoint: 1199,
                                     settings: {
-                                        slidesToShow: slidesToShowForDiffResolution[1024],
+                                        slidesToShow: slidesToShowForDiffResolution[1199],
                                     }
                                 },
-                                {
-                                    breakpoint: 768,
+								{
+                                    breakpoint: 1023,
                                     settings: {
-                                        slidesToShow: slidesToShowForDiffResolution[768],
+                                        slidesToShow: slidesToShowForDiffResolution[1023],
+                                    }
+                                },
+								{
+                                    breakpoint: 767,
+                                    settings: {
+                                        slidesToShow: slidesToShowForDiffResolution[767],
                                     }
                                 },
                                 {
@@ -414,7 +481,6 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
 	if(layoutDirection == 'rtl'){
 		sliderSettings['rtl'] = true;
 	}
-
     return sliderSettings;
 }
 
@@ -528,12 +594,11 @@ function defaultSetUpLogin(frm, v) {
             setTimeout(function() {
                 $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight) / 4) + 'px');
             }, 700);
+            $('#facebox .content').css('overflow-y', 'auto');
             if (fbContentHeight > screenHeight - parseInt(100)) {
-                $('#facebox .content').css('overflow-y', 'scroll');
                 $('#facebox .content').css('display', 'block');
             } else {
                 $('#facebox .content').css('max-height', '');
-                $('#facebox .content').css('overflow', '');
             }
         },
         updateFaceboxContent: function(t, cls) {
@@ -649,7 +714,7 @@ $(document).ready(function() {
 
     if (typeof $.fn.autocomplete_advanced !== typeof undefined) {
         $('#header_search_keyword').autocomplete_advanced({
-            appendTo: "#autoSuggest",
+            appendTo: ".main-search__field",
             minChars: 2,
             autoSelectFirst: false,
             lookup: function(query, done) {
@@ -662,8 +727,8 @@ $(document).ready(function() {
                     type: 'post',
                     success: function(json) {
                         done(json);
-                        /* $('.autocomplete-suggestions').appendTo('.form__cover'); */
-                        /* $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
+                        /* $('.autocomplete-suggestions').appendTo('.form__cover');
+                        $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
                     }
                 });
             },
@@ -1070,10 +1135,10 @@ $("document").ready(function() {
         var data = fcom.frmData(document.frmBuyProduct);
         var yourArray = [];
         var selprodId = $(this).siblings('input[name="selprod_id"]').val();
-        if (typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId) {
-            $(".cart-tbl").find("input").each(function(e) {
-                if (($(this).val() > 0) && (!$(this).parent().parent().siblings().hasClass("cancelled--js"))) {
-                    data = data + '&' + $(this).attr('lang') + "=" + $(this).val();
+        if( typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId ){
+            $(".cart-tbl").find("input").each(function(e){
+                if (($(this).val()>0) && (!$(this).closest("td").siblings().hasClass("cancelled--js"))){
+                    data = data+'&'+$(this).attr('lang')+"="+$(this).val();
                 }
             });
         }

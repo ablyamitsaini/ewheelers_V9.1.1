@@ -46,7 +46,7 @@ class CountriesController extends AdminBaseController
         $srch = Countries::getSearchObject(false, $this->adminLangId);
 
         $srch->addFld('c.* , c_l.country_name');
-
+        $srch->addOrder('country_name', 'ASC');
         if (!empty($post['keyword'])) {
             $condition=$srch->addCondition('c.country_code', 'like', '%'.$post['keyword'].'%');
             $condition->attachCondition('c_l.country_name', 'like', '%'.$post['keyword'].'%', 'OR');

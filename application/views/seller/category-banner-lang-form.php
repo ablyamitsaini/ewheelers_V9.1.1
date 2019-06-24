@@ -20,13 +20,13 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 					<?php if( $haveImage ){ ?>
 					<div class="profile__pic"><img src="<?php echo CommonHelper::generateUrl( 'Category', 'sellerBanner', array( $shop_id, $prodCatId, $formLangId, 'WIDE')).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Banner', $siteLangId);?>"></div>
 					<?php
-					$category_banner_fld->htmlAfterField = '<a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removeCategoryBanner('. $prodCatId .', ' . $formLangId . ')">'.Labels::getLabel('LBL_Remove',$siteLangId).'</a>';
+					$category_banner_fld->htmlAfterField = '<a class = "btn btn--primary btn--sm" href="javascript:void(0);" onClick="removeCategoryBanner('. $prodCatId .', ' . $formLangId . ')">'.Labels::getLabel('LBL_Remove',$siteLangId).'</a>';
 					} ?>
 
 					<div class="btngroup--fix">
 					<?php echo $mediaFrm->getFormHtml(); ?>
 					</form>
-					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*319')?></small>
+					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*330')?></small>
 					<?php echo $mediaFrm->getExternalJS();?>
 					</div>
 					<div id="mediaResponse"></div>

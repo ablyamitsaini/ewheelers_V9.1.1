@@ -48,98 +48,14 @@ $cancelBtnFld->developerTags['col'] = 2;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div id="withdrawalReqForm"></div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <!-- wallet balance[ -->
-                            <?php
-                            $balanceTotalBlocksDisplayed = 1;
-
-                            $showTotalBalanceAvailableDiv = false;
-                            if ($userTotalWalletBalance != $userWalletBalance) {
-                                $showTotalBalanceAvailableDiv = true;
-                                $balanceTotalBlocksDisplayed ++;
-                            }
-
-                            $showPromotionWalletChargedDiv = false;
-                            if ($promotionWalletToBeCharged) {
-                                $showPromotionWalletChargedDiv = true;
-                                $balanceTotalBlocksDisplayed ++;
-                            }
-
-
-                            $showWithdrawalRequestAmountDiv = false;
-                            if ($withdrawlRequestAmount) {
-                                $showWithdrawalRequestAmountDiv = true;
-                                $balanceTotalBlocksDisplayed ++;
-                            }
-
-                            $totalWidth = 12;
-                            $tobeShownWidth = intval($totalWidth/$balanceTotalBlocksDisplayed);
-                            $totalBalanceAvailableDiv = $tobeShownWidth;
-                            $promotionWalletChargedDiv = $tobeShownWidth;
-                            $withdrawalRequestAmountDiv = $tobeShownWidth;
-                            $currentBalanceDiv = $tobeShownWidth;
-                            ?>
-                            <div class="row">
-                                <?php if ($showTotalBalanceAvailableDiv) { ?>
-                                    <div class="col-lg-<?php echo $totalBalanceAvailableDiv; ?> col-md-<?php echo $totalBalanceAvailableDiv; ?> mb-3 mb-md-0">
-                                        <div class="balancebox" id="rechargeWalletDiv">
-                                            <p><?php echo Labels::getLabel('LBL_Total_Balance_Available', $siteLangId); ?>: </p>
-                                            <h2><strong><?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance); ?></strong></h2>
-                                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                                \
-                                                <small>
-                                                    <?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?>
-                                                    <?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance, true, true); ?>
-                                                </small>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                <?php }
-                                if ($showPromotionWalletChargedDiv) { ?>
-                                    <div class="col-lg-<?php echo $promotionWalletChargedDiv; ?> col-md-<?php echo $promotionWalletChargedDiv; ?>  mb-3 mb-md-0 ">
-                                        <div class="balancebox">
-                                            <p><?php echo Labels::getLabel('LBL_Promotion_Wallet_To_Be_Charged', $siteLangId); ?>: </p>
-                                            <h2><strong>
-                                                <?php echo CommonHelper::displayMoneyFormat($promotionWalletToBeCharged); ?></strong></h2>
-                                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                                    <small>
-                                                        <?php echo Labels::getLabel('LBL_Approx.', $siteLangId);
-                                                        echo CommonHelper::displayMoneyFormat($promotionWalletToBeCharged, true, true); ?>
-                                                    </small>
-                                                <?php } ?>
-                                        </div>
-                                    </div>
-                                <?php }
-                                if ($showWithdrawalRequestAmountDiv) {
-                                    ?> <div class="col-lg-<?php echo $withdrawalRequestAmountDiv; ?> col-md-<?php echo $withdrawalRequestAmountDiv; ?> ">
-                                        <div class="balancebox">
-                                            <p><?php echo Labels::getLabel('LBL_Withdrawl_Request_Amount', $siteLangId); ?>: </p>
-                                            <h2><strong>
-                                            <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount); ?></strong></h2>
-                                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                                <small><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount, true, true); ?></small>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                                <div class="col-lg-<?php echo $currentBalanceDiv; ?> col-md-<?php echo $currentBalanceDiv; ?> mt-4">
-                                        <div class="balancebox">
-                                            <p><?php echo Labels::getLabel('LBL_Current_Balance', $siteLangId);?>: </p>
-                                            <h2><strong>
-                                                <?php echo CommonHelper::displayMoneyFormat($userWalletBalance);?></strong></h2>
-                                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                                    <small><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($userWalletBalance, true, true); ?></small>
-                                                <?php } ?>
-                                                <a href="javascript:void(0)" onClick="withdrawalReqForm()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Request_Withdrawal', $siteLangId); ?></a>
-                                        </div>
-                                    </div>
-                            </div>
+                        <div class="cards-content pl-4 pr-4">
+                            <div id="credits-info"></div>
                             <div class="gap"></div>
                             <?php //echo $balanceTotalBlocksDisplayed;?>
                             <?php $srchFormDivWidth = $canAddMoneyToWallet ? '8' : 12; ?>
                             <div class="row">
-                                <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> ">
-                                    <div class="bg-gray-light p-3 pb-0">
+                                <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> col-md-12">
+                                    <div class="bg-gray-light p-4 pb-0">
                                         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Transactions', $siteLangId);?></h5>
                                         <?php
                                         $submitFld = $frmSrch->getField('btn_submit');
@@ -152,8 +68,8 @@ $cancelBtnFld->developerTags['col'] = 2;
                                     </div>
                                 </div>
                                 <?php if ($canAddMoneyToWallet) { ?>
-                                    <div class="col-lg-4 col-md-4 float--right ">
-                                        <div class="bg-gray-light p-3 pb-0">
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="bg-gray-light p-3 pb-0 amount-added-box">
                                             <h5 class="cards-title">
                                             <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $siteLangId); ?></h5>
                                             <div id="rechargeWalletDiv" class="cellright nopadding--bottom">
@@ -182,9 +98,7 @@ $cancelBtnFld->developerTags['col'] = 2;
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title"></h5>
-                        </div>
+                        
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="creditListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
                             <span class="gap"></span>

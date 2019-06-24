@@ -45,10 +45,15 @@ foreach ($arr_listing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $path, true);
                 break;
             case 'files':
-                $allFiles = scandir(CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path']);
-                $files_count = array_diff($allFiles, array( '..', '.' ));
+                $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'];
+                $count = Labels::getLabel('LBL_NA', $adminLangId);
+                if (file_exists($path)) {
+                    $allFiles = scandir($path);
+                    $files_count = array_diff($allFiles, array( '..', '.' ));
+                    $count = count($files_count);
+                }
 
-                $td->appendElement('plaintext', array(), count($files_count));
+                $td->appendElement('plaintext', array(), $count);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));

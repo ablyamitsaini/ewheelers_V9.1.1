@@ -1,48 +1,44 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-    $frmProductSearch->setFormTagAttribute('onSubmit', 'searchProducts(this); return(false);');
-    $keywordFld = $frmProductSearch->getField('keyword');
-    $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
-    $keywordFld = $frmProductSearch->getField('keyword');
-    $keywordFld->overrideFldType("hidden");
-    $bannerImage = '';
+if(empty($products)){
+    $pSrchFrm = Common::getSiteSearchForm();
+    $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $siteLangId)));
+    $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
+
+    $this->includeTemplate('_partial/no-product-found.php', array('pSrchFrm'=>$pSrchFrm,'siteLangId'=>$siteLangId,'postedData'=>$postedData), true);
+    return;
+}
+
+$frmProductSearch->setFormTagAttribute('onSubmit', 'searchProducts(this); return(false);');
+$keywordFld = $frmProductSearch->getField('keyword');
+$keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
+$keywordFld = $frmProductSearch->getField('keyword');
+$keywordFld->overrideFldType("hidden");
+$bannerImage = '';
 if (!empty($category['banner'])) {
     $bannerImage = CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide'));
 }
 if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?>
-    <section class="section bg-brands" style="background-image: url(<?php echo $bannerImage; ?>)">
-        <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-9">
-                        <div class="text-center">
-                            <h6 class="txt-white"><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-    </section>
-<?php } ?>
-<?php if (isset($pageTitle)) { ?>
-<section class="section section--pagebar">
-    <div class="container">
-        <div class="section-head  section--white--head justify-content-center mb-0">
-            <div class="section__heading">
-                <h2 class="mb-0"><?php echo $pageTitle; ?> <?php /* <span class="hide_on_no_product"><?php echo Labels::getLabel('LBL_Showing', $siteLangId); ?> <span id="start_record"><?php echo $page;?> - </span><span
-                        id="end_record"><?php echo $pageCount;?></span> <?php echo Labels::getLabel('LBL_of', $siteLangId); ?> <span id="total_records"><?php echo $recordCount;?></span></span> */ ?> </h2>
-            </div>
+    <section class="section page-category">
+        <div class="container">
+           <div class="page-category__media"><img src="<?php echo $bannerImage; ?>"></div>
+
+               <?php if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
+                    <div class="page-category__content">
+                    <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
+                     </div>
+                <?php } ?>
+
         </div>
-    </div>
-</section>
+   </section>
 <?php } ?>
-<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount), false);  ?>
+
+<?php $this->includeTemplate('_partial/productsSearchForm.php', array('frmProductSearch'=>$frmProductSearch,'siteLangId'=>$siteLangId,'recordCount'=>$recordCount,'pageTitle'=>(isset($pageTitle)) ? $pageTitle : 'Products'), false);  ?>
 <section class="">
     <div class="container">
         <div class="row">
-        <?php if (!isset($noProductFound)) { ?>
-            <div class="col-lg-3">
+            <div class="col-xl-3 col-lg-12">
             <?php if (isset($shop)) { ?>
-                <div class="bg-gray rounded shop-information p-5 ">
+                <div class="bg-gray rounded shop-information">
                     <div class="shop-logo"><img data-ratio="1:1 (150x150)" src="<?php echo CommonHelper::generateUrl('image', 'shopLogo', array($shop['shop_id'], $siteLangId, 'SMALL')); ?>" alt="<?php echo $shop['shop_name']; ?>"></div>
                     <div class="shop-info">
                         <div class="shop-name">
@@ -59,16 +55,18 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                  - <a href="<?php echo CommonHelper::generateUrl('Reviews', 'shop', array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews, ' ', Labels::getLabel('Lbl_Reviews', $siteLangId); ?></a>
                             <?php } ?> </span>
                         </div>
-                        <div class="share-button share-button--static-horizontal">
-                            <a href="javascript:void(0)" class="social-toggle"><i class="icn">
+
+                        <div class="shop-btn-group">
+                           <div class="share-button">
+                            <a href="javascript:void(0)" class="social-toggle" title="<?php echo Labels::getLabel('Lbl_Share', $siteLangId); ?>"><i class="icn">
                                 <svg class="svg">
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
                                 </svg>
                             </i></a>
-                            <div class="social-networks open-menu">
+                            <div class="social-networks">
                                 <ul>
                                     <li class="social-facebook">
-                                        <a class="social-link st-custom-button" data-network="facebook">
+                                        <a class="social-link st-custom-button" data-network="facebook" data-url="<?php echo CommonHelper::generateFullUrl('Shops', 'view', array($shop['shop_id'])); ?>/">
                                             <i class="icn"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#fb"></use>
                                                 </svg></i>
@@ -98,28 +96,27 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                 </ul>
                             </div>
                         </div>
-                        <div class="shop-btn-group">
                             <?php $showAddToFavorite = true;
                             if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {
                                 $showAddToFavorite = false;
                             }
                             ?>
                             <?php if ($showAddToFavorite) { ?>
-                                <a href="javascript:void(0)" onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
+                                <a href="javascript:void(0)" title="<?php echo ($shop['is_favorite']) ? Labels::getLabel('Lbl_Unfavorite_Shop', $siteLangId) : Labels::getLabel('Lbl_Favorite_Shop', $siteLangId); ?>"  onclick="toggleShopFavorite(<?php echo $shop['shop_id']; ?>);" class="btn btn--primary btn--sm <?php echo ($shop['is_favorite']) ? 'is-active' : ''; ?>" id="shop_<?php echo $shop['shop_id']; ?>"><i class="icn"><svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#heart"></use>
-                                    </svg></i><?php echo Labels::getLabel('LBL_Favorite_Shop', $siteLangId); ?> </a>
+                                    </svg></i></a>
                             <?php }?>
                             <?php $showMoreButtons = true; if (UserAuthentication::isUserLogged() && UserAuthentication::getLoggedUserId(true) == $shop['shop_user_id']) {
                                 $showMoreButtons = false;
                             } ?>
                             <?php if ($showMoreButtons) { ?>
-                                <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Report_Spam', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report"></use>
-                                        </svg></i><?php echo Labels::getLabel('LBL_Report_Spam', $siteLangId); ?></a>
+                                        </svg></i></a>
 
-                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
+                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Send_Message', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use>
-                                        </svg></i><?php echo Labels::getLabel('LBL_Send_Message', $siteLangId); ?></a>
+                                        </svg></i></a>
                             <?php } ?>
                         </div>
                     </div>
@@ -137,17 +134,10 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                     <div class="filters__ele productFilters-js"></div>
                 </div>
             </div>
-            <?php
-        }
-        if (!isset($noProductFound)) {
-            $class ='col-xl-9';
-        } else {
-            $class= 'col-lg-12';
-        } ?>
-        <div class="<?php echo $class; ?>">
+        <div class="col-xl-9 col-lg-12">
             <div class="listing-products -listing-products ">
                     <div id="productsList" role="main-listing" class="row product-listing">
-                    <?php if ($recordCount > 0) {
+                    <?php
                         $productsData = array(
                                         'products'=> $products,
                                         'page'=> $page,
@@ -157,13 +147,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description'])) { ?
                                         'siteLangId'=> $siteLangId,
                                     );
                         $this->includeTemplate('products/products-list.php', $productsData, false);
-                    } else {
-                        $pSrchFrm = Common::getSiteSearchForm();
-                        $pSrchFrm->fill(array('btnSiteSrchSubmit' => Labels::getLabel('LBL_Submit', $siteLangId)));
-                        $pSrchFrm->setFormTagAttribute('onSubmit', 'submitSiteSearch(this); return(false);');
-
-                        $this->includeTemplate('_partial/no-product-found.php', array('pSrchFrm'=>$pSrchFrm,'siteLangId'=>$siteLangId,'postedData'=>$postedData), true);
-                    } ?> </div>
+                    ?> </div>
                 </div>
             </div>
         </div>

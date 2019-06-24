@@ -1,9 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="box__head">
 	<h4><?php echo Labels::getLabel('LBL_Catalog_Listing',$siteLangId); ?></h4>
-	<div class="btn-group">
-		<a href="<?php echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Products',$siteLangId); ?></a>
-		<a href="javascript:void(0);" onClick="addNewCatalogRequest()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Request_to_add_catalog',$siteLangId); ?></a>
+	<div class="">
+		<a href="<?php echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Products',$siteLangId); ?></a>
+		<a href="javascript:void(0);" onClick="addNewCatalogRequest()" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Request_to_add_catalog',$siteLangId); ?></a>
 	</div>
 </div>
 <div class="box__body">

@@ -17,6 +17,7 @@ $(document).ready(function(){
 	register = function(frm){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
+        $.mbsmessage(langLbl.processing, false, 'alert--process alert');
 		fcom.updateWithAjax(fcom.makeUrl('Supplier', 'register'), data, function(t) {
 			//$.mbsmessage.close();
 			if(t.userId > 0){

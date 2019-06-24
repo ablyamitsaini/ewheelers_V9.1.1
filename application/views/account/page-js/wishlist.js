@@ -5,6 +5,10 @@ $("document").ready(function(){
 		if( $(this).prop("checked") == false ){
 			$(".selectAll-js").prop("checked", false);
 		}
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
+        showFormActionsBtns();
 	});
 
 });
@@ -148,13 +152,26 @@ $("document").ready(function(){
 		searchFavouriteListItems( frm, 0,page );
 	}
 
-	searchFavoriteShop = function(){
+	searchFavoriteShop = function(frm){
+		if(typeof frm == undefined || frm == null){
+			frm = document.frmFavShopSearchPaging;
+		}
+        data = fcom.frmData(frm);
 		$("#tab-fav-shop").parents().children().removeClass("is-active");
 		$("#tab-fav-shop").addClass("is-active");
 		$(dv).html( fcom.getLoader() );
-		fcom.ajax(fcom.makeUrl('Account', 'favoriteShopSearch'), '', function(res){
+		fcom.ajax(fcom.makeUrl('Account', 'favoriteShopSearch'), data, function(res){
 			$(dv).html(res);
 		});
+	};
+
+	goToFavoriteShopSearchPage = function(page) {
+		if(typeof page==undefined || page == null){
+			page =1;
+		}
+		var frm = document.frmFavShopSearchPaging;
+		$(frm.page).val(page);
+		searchFavoriteShop(frm);
 	};
 
 	toggleShopFavorite2 = function(shop_id){
@@ -170,6 +187,7 @@ $("document").ready(function(){
 				$(this).prop("checked", true);
 			}
 		});
+        showFormActionsBtns();
 	};
 
 
@@ -202,7 +220,7 @@ $("document").ready(function(){
 			$(this).prop("checked", false);
 		});
 
-		obj.parent().siblings('div').find('span.itemValue--js .selectItem--js').prop("checked", true);
+		obj.parent().siblings('li').find('.selectItem--js').prop("checked", true);
 
 		addSelectedToCart( event );
 	};

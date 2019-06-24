@@ -146,6 +146,7 @@ $(document).on('change',"select[name='banner_blocation_id']",function(){
 					$.facebox(t,'faceboxWidth');
 				});
 			});
+			fcom.resetFaceboxHeight();
 		}else{
 			alert(langLbl.selectLocation);
 		}

@@ -466,7 +466,7 @@ class AttachedFile extends MyAppModel
         if ($no_image == '') {
             $no_image = CONF_THEME_PATH . 'img/no_image.jpg';
         } else {
-            $no_image = CONF_UPLOADS_PATH . 'defaults/'. $no_image;
+            $no_image = 'images/defaults/'. $no_image;
         }
 
         if (trim($uploadedFilePath)!='') {

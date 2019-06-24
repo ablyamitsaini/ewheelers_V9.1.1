@@ -394,12 +394,17 @@ class AccountController extends LoggedUserController
         $this->set('accountSummary', $accountSummary);
         $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
         $this->set('canAddMoneyToWallet', $canAddMoneyToWallet);
+        $this->_template->render(true, false);
+    }
+
+    public function creditsInfo()
+    {
         $this->set('userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()));
         $this->set('userTotalWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId(), false, false));
         $this->set('promotionWalletToBeCharged', Promotion::getPromotionWalleToBeCharged(UserAuthentication::getLoggedUserId()));
         $this->set('withdrawlRequestAmount', User::getUserWithdrawnRequestAmount(UserAuthentication::getLoggedUserId()));
         $this->set('userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()));
-        $this->_template->render(true, false);
+        $this->_template->render(false, false);
     }
 
     public function setUpWalletRecharge()
@@ -736,6 +741,7 @@ class AccountController extends LoggedUserController
 
     public function userProfileImage($userId, $sizeType = '', $cropedImage = false)
     {
+        $default_image = 'user_deafult_image.jpg';
         $userId = UserAuthentication::getLoggedUserId();
         $recordId = FatUtility::int($userId);
 
@@ -749,15 +755,14 @@ class AccountController extends LoggedUserController
         }
 
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
-
         switch (strtoupper($sizeType)) {
             case 'THUMB':
                 $w = 100;
                 $h = 100;
-                AttachedFile::displayImage($image_name, $w, $h);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
             default:
-                AttachedFile::displayOriginalImage($image_name);
+                AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }
     }
@@ -823,11 +828,9 @@ class AccountController extends LoggedUserController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
-
-        if ($data['user_phone'] == 0) {
+        if (empty($data['user_phone'])) {
             $data['user_phone'] = '';
         }
-
         if (User::isAffiliate()) {
             $userExtraData = User::getUserExtraData($userId, array('uextra_company_name', 'uextra_website'));
             $userExtraData = ($userExtraData) ? $userExtraData : array();
@@ -1357,18 +1360,21 @@ class AccountController extends LoggedUserController
                     $srch = clone $srchObj;
                     $srch->joinSellerProducts();
                     $srch->joinProducts();
+                    $srch->joinBrands();
                     $srch->joinSellers();
                     $srch->joinShops();
                     $srch->joinProductToCategory();
                     $srch->joinSellerSubscription($this->siteLangId, true);
                     $srch->addSubscriptionValidCondition();
+                    $srch->joinSellerProductSpecialPrice();
+                    $srch->joinFavouriteProducts($loggedUserId);
                     $srch->addCondition('uwlp_uwlist_id', '=', $wishlist['uwlist_id']);
+                    $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+                    $srch->addCondition('selprod_active', '=', applicationConstants::YES);
                     $srch->setPageNumber(1);
                     $srch->setPageSize(4);
                     $srch->addMultipleFields(array( 'selprod_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock'));
                     $srch->addOrder('uwlp_added_on');
-                    $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-                    $srch->addCondition('selprod_active', '=', applicationConstants::YES);
                     $srch->addGroupBy('selprod_id');
                     $rs = $srch->getResultSet();
                     $products = $db->fetchAll($rs);
@@ -1427,7 +1433,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $srch = new UserWishListProductSearch($this->siteLangId);
+            $srch = new UserWishListProductSearch($this->siteLangId);
         $srch->joinSellerProducts();
         $srch->joinProducts();
         $srch->joinBrands();
@@ -1494,7 +1500,7 @@ class AccountController extends LoggedUserController
         $this->set('products', $products);
         $this->set('showProductShortDescription', false);
         $this->set('showProductReturnPolicy', false);
-        $this->set('colMdVal', 2);
+        $this->set('colMdVal', 3);
         $this->set('page', $page);
         $this->set('recordCount', $srch->recordCount());
         $this->set('pageCount', $srch->pages());
@@ -1761,59 +1767,38 @@ class AccountController extends LoggedUserController
     public function favoriteShopSearch()
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
+        $post = FatApp::getPostedData();
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        if ($page < 2) {
+            $page = 1;
+        }
+        $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
         $db = FatApp::getDb();
         $srch = new UserFavoriteShopSearch($this->siteLangId);
         $srch->setDefinedCriteria();
         $srch->joinSellerOrder();
         $srch->joinSellerOrderSubscription($this->siteLangId);
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
         $srch->addCondition('ufs_user_id', '=', $loggedUserId);
         $srch->addMultipleFields(
             array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
             'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
         $rs = $srch->getResultSet();
         $shops = $db->fetchAll($rs);
 
         $totalProductsToShow = 4;
         if ($shops) {
-            $prodSrchObj = new ProductSearch($this->siteLangId);
-            $prodSrchObj->setDefinedCriteria(0);
-            $prodSrchObj->joinProductToCategory();
-            $prodSrchObj->setPageNumber(1);
-            $prodSrchObj->setPageSize($totalProductsToShow);
-            $prodSrchObj->joinSellerSubscription($this->siteLangId, true);
-            $prodSrchObj->addSubscriptionValidCondition();
-            $prodSrchObj->joinProductRating();
-            $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
             foreach ($shops as &$shop) {
-                $prodSrch = clone $prodSrchObj;
-                $prodSrch->addShopIdCondition($shop['shop_id']);
-                $prodSrch->addMultipleFields(
-                    array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
-                    'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-                    'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
-                );
-                $prodSrch->addGroupBy('product_id');
-
-                if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
-                    $prodSrch->joinFavouriteProducts($loggedUserId);
-                    $prodSrch->addFld('ufp_id');
-                } else {
-                    $prodSrch->joinUserWishListProducts($loggedUserId);
-                    $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
-                }
-
-                $prodRs = $prodSrch->getResultSet();
                 $shop['shopRating'] = SelProdRating::getSellerRating($shop['shop_user_id']);
-                $shop['totalProducts'] = $prodSrch->recordCount();
-                $shop['products'] = $db->fetchAll($prodRs);
             }
         }
-
-        $this->set('totalProductsToShow', $totalProductsToShow);
+        $this->set('page', $page);
+        $this->set('pageCount', $srch->pages());
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('postedData', $post);
         $this->set('shops', $shops);
         $this->_template->render(false, false);
     }
@@ -2270,9 +2255,9 @@ class AccountController extends LoggedUserController
         $frm->addTextBox(Labels::getLabel('LBL_Email', $this->siteLangId), 'credential_email', '');
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->siteLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->siteLangId), 'user_dob', '', array('readonly'=>'readonly'));
-        $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone');
+        $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'user_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $phoneFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
-        $phoneFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
+        // $phoneFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $phoneFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
 
         if (User::isAffiliate()) {

@@ -141,7 +141,7 @@ class SellerProductsController extends AdminBaseController
         );
 
         $srch->addOrder('selprod_active', 'DESC');
-        $srch->addOrder('selprod_added_on');
+        $srch->addOrder('selprod_added_on', 'DESC');
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);
@@ -953,7 +953,7 @@ class SellerProductsController extends AdminBaseController
 
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
-        if ($tblRecord->loadFromDb(array('smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])))) {
+        if ($tblRecord->loadFromDb(array('smt' => '(splprice_selprod_id = ?) AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?) )', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])))) {
             $specialPriceRow = $tblRecord->getFlds();
             if ($specialPriceRow['splprice_id'] != $post['splprice_id']) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added', $this->adminLangId));
@@ -2010,6 +2010,7 @@ class SellerProductsController extends AdminBaseController
 
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+        $srch->addOrder('selprod_id', 'DESC');
         /* echo $srch->getQuery(); die; */
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
@@ -2114,7 +2115,7 @@ class SellerProductsController extends AdminBaseController
                 Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
             );
         }
-        
+
         foreach ($selprod_ids_arr as $selprod_id) {
             if (0 >= $selprod_id) {
                 continue;

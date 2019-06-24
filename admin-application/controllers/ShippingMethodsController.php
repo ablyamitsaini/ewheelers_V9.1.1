@@ -25,6 +25,7 @@ class ShippingMethodsController extends AdminBaseController
 
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
+        $srch->addOrder('shippingapi_id', 'DESC');
 
         $rs = $srch->getResultSet();
         $records =array();

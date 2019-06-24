@@ -1,4 +1,5 @@
 <?php
+require_once CONF_INSTALLATION_PATH . 'library/APIs/twitteroauth-master/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class BuyerController extends BuyerBaseController
@@ -65,18 +66,22 @@ class BuyerController extends BuyerBaseController
         $orderSrch->doNotCalculateRecords();
         $orderSrch->doNotLimitRecords();
         /* $orderSrch->addBuyerOrdersCounts(date('Y-m-d',strtotime("-1 days")),date('Y-m-d',strtotime("-1 days")),'yesterdayOrder'); */
-        $orderSrch->addBuyerOrdersCounts(date('Y-m-d'), date('Y-m-d'), 'todayOrder');
+        $orderSrch->addBuyerOrdersCounts(false, false, 'pendingOrder');
+        $completedOrderStatus = unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS", FatUtility::VAR_STRING, ''));
+        if (!empty($completedOrderStatus)) {
+            $orderSrch->addCondition('op_status_id', 'NOT IN', $completedOrderStatus);
+        }
         $orderSrch->addGroupBy('order_user_id');
         $orderSrch->addCondition('order_user_id', '=', $userId);
-        $orderSrch->addMultipleFields(array('todayOrderCount'));
+        $orderSrch->addMultipleFields(array('pendingOrderCount'));
         $rs = $orderSrch->getResultSet();
         $ordersStats = FatApp::getDb()->fetch($rs);
         /* ]*/
 
         /* Unread Message Count [*/
-        $threadObj = new Thread();
+        /*$threadObj = new Thread();
         $todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD, date('Y-m-d'));
-        $totalMessageCount = $threadObj->getMessageCount($userId);
+        $totalMessageCount = $threadObj->getMessageCount($userId);*/
         /*]*/
 
         /*
@@ -90,15 +95,18 @@ class BuyerController extends BuyerBaseController
         /*
         * Cancellation Request Listing
         */
-        $srch = $this->orderCancellationRequestObj();
-        $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
-        $rs = $srch->getResultSet();
+        $canSrch = $this->orderCancellationRequestObj();
+        $canSrch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
+        $rs = $canSrch->getResultSet();
         $cancellationRequests = FatApp::getDb()->fetchAll($rs);
 
         /*
         * Offers Listing
         */
         $offers = DiscountCoupons::getUserCoupons(UserAuthentication::getLoggedUserId(), $this->siteLangId);
+
+        $txnObj = new Transactions();
+        $txnsSummary = $txnObj->getTransactionSummary($userId, date('Y-m-d'));
 
         $this->set('offers', $offers);
         $this->set('data', $user->getProfileData());
@@ -108,11 +116,10 @@ class BuyerController extends BuyerBaseController
         $this->set('OrderReturnRequestStatusArr', OrderReturnRequest::getRequestStatusArr($this->siteLangId));
         $this->set('OrderCancelRequestStatusArr', OrderCancelRequest::getRequestStatusArr($this->siteLangId));
         $this->set('ordersCount', $srch->recordCount());
-        $this->set('todayOrderCount', FatUtility::int($ordersStats['todayOrderCount']));
-        $this->set('todayUnreadMessageCount', $todayUnreadMessageCount);
-        $this->set('totalMessageCount', $totalMessageCount);
+        $this->set('pendingOrderCount', FatUtility::int($ordersStats['pendingOrderCount']));
         $this->set('userBalance', User::getUserBalance($userId));
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
+        $this->set('txnsSummary', $txnsSummary);
         $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }
@@ -336,6 +343,18 @@ class BuyerController extends BuyerBaseController
         $srch = new OrderProductSearch($this->siteLangId, true, true);
         $srch->addCountsOfOrderedProducts();
         $srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
+        $srch->joinTable(
+            OrderReturnRequest::DB_TBL,
+            'LEFT OUTER JOIN',
+            'orr.orrequest_op_id = op.op_id',
+            'orr'
+        );
+        $srch->joinTable(
+            OrderCancelRequest::DB_TBL,
+            'LEFT OUTER JOIN',
+            'ocr.ocrequest_op_id = op.op_id',
+            'ocr'
+        );
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->joinPaymentMethod();
         $srch->addOrder("op_id", "DESC");
@@ -343,8 +362,8 @@ class BuyerController extends BuyerBaseController
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
-            'totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
-            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name')
+            'totCombinedOrders as totOrders', 'op_selprod_id', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
+            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -508,6 +527,7 @@ class BuyerController extends BuyerBaseController
         $oReturnRequestSrch->addCondition('orrequest_op_id', '=', $opDetail['op_id']);
         $oReturnRequestSrch->addCondition('orrequest_status', '!=', OrderReturnRequest::RETURN_REQUEST_STATUS_CANCELLED);
         $oReturnRequestRs = $oReturnRequestSrch->getResultSet();
+
         if (FatApp::getDb()->fetch($oReturnRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_return_request', $this->siteLangId));
             CommonHelper::redirectUserReferer();
@@ -1116,6 +1136,14 @@ class BuyerController extends BuyerBaseController
             CommonHelper::redirectUserReferer();
         }
 
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
+
+        if (!$canSubmitFeedback) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
+
+
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $this->set('frm', $frm);
         $this->set('opDetail', $opDetail);
@@ -1194,14 +1222,10 @@ class BuyerController extends BuyerBaseController
         $selProdCode = array_shift(explode('|', $opDetail['op_selprod_code']));
         $productId = array_shift(explode('_', $selProdCode));
 
-        $oFeedbackSrch = new SelProdReviewSearch();
-        $oFeedbackSrch->doNotCalculateRecords();
-        $oFeedbackSrch->doNotLimitRecords();
-        $oFeedbackSrch->addCondition('spreview_postedby_user_id', '=', $userId);
-        $oFeedbackSrch->addCondition('spreview_order_id', '=', $opDetail['op_order_id']);
-        $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selProdId);
-        $oFeedbackRs = $oFeedbackSrch->getResultSet();
-        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
+
+        if (!$canSubmitFeedback) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
@@ -1310,6 +1334,7 @@ class BuyerController extends BuyerBaseController
         $oCancelRequestSrch->addCondition('ocrequest_op_id', '=', $op_id);
         $oCancelRequestSrch->addCondition('ocrequest_status', '!=', OrderCancelRequest::CANCELLATION_REQUEST_STATUS_DECLINED);
         $oCancelRequestRs = $oCancelRequestSrch->getResultSet();
+
         if (FatApp::getDb()->fetch($oCancelRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_cancel_request', $this->siteLangId));
             CommonHelper::redirectUserReferer();
@@ -1857,7 +1882,21 @@ class BuyerController extends BuyerBaseController
             Message::addErrorMessage(Labels::getLabel('Msg_Referral_Code_is_empty', $this->siteLangId));
             CommonHelper::redirectUserReferer();
         }
-        include_once CONF_INSTALLATION_PATH . 'library/APIs/twitter/twitteroauth.php';
+
+        $get_twitter_url = $_SESSION["TWITTER_URL"]=CommonHelper::generateFullUrl('Buyer', 'twitterCallback');
+
+        try {
+            $twitteroauth = new TwitterOAuth(FatApp::getConfig("CONF_TWITTER_API_KEY"), FatApp::getConfig("CONF_TWITTER_API_SECRET"));
+
+            $request_token = $twitteroauth->oauth('oauth/request_token', array('oauth_callback' => $get_twitter_url));
+
+            $_SESSION['oauth_token'] = $request_token['oauth_token'];
+            $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+            $twitterUrl = $twitteroauth->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+            $this->set('twitterUrl', $twitterUrl);
+        } catch (\Exception $e) {
+            $this->set('twitterUrl', false);
+        }
 
         $this->set('referralTrackingUrl', CommonHelper::referralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code')));
         $this->set('sharingfrm', $this->getFriendsSharingForm($this->siteLangId));

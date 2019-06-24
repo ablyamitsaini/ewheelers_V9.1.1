@@ -6,7 +6,7 @@
     </div>
     <small class="text--small"><?php echo $languages[$img['afile_lang_id']];?></small>
     <div class="btngroup--fix">
-        <a class = "btn btn--secondary btn--sm" href="javascript:void(0);" onClick="removeShopImage(<?php echo $img['afile_id']; ?>,<?php echo $img['afile_lang_id']; ?>,'<?php echo $imageType; ?>')"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
+        <a class = "btn btn--primary-border btn--sm" href="javascript:void(0);" onClick="removeShopImage(<?php echo $img['afile_id']; ?>,<?php echo $img['afile_lang_id']; ?>,'<?php echo $imageType; ?>')"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
     </div>
 </div>
     <?php if ($imageType != 'banner') {
