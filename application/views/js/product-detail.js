@@ -23,7 +23,7 @@ $(document).ready(function(){
 })(jQuery);
 
 
- $('.social-toggle').on('click', function() {
+$('.social-toggle').on('click', function() {
   $(this).next().toggleClass('open-menu');
 });
 

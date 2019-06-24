@@ -22,30 +22,34 @@ if ($showAddToFavorite) { ?>
             </a>
         </div>
     <?php } else { ?>
-            <?php if (Labels::getLabel('LBL_Wishlist', $siteLangId) ==  $forPage) { ?>
-                <div class="row">
-                    <div class="col-md-3">
-                       <span class="float-left itemValue--js">
-                           <label class="checkbox">
-                               <input type="checkbox" name='selprod_id[]' class="selectItem--js" value="<?php echo $product['selprod_id']; ?>"/>
-                               <i class="input-helper"></i>
-                           </label>
-                       </span>
-                    </div>
-                    <div class="col-md-3">
-                        <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' onClick="addToCart( $(this), event );" href="javascript:void(0)" data-id='<?php echo $product['selprod_id']; ?>'>
-                            <i class="fa fa-shopping-cart"></i>
-                        </a>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="float-right">
-                            <a  title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>'onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="text--normal-secondary">
-                               <i class="fa fa-trash"></i>
+            <?php $showFavtBtn = true;
+            if (Labels::getLabel('LBL_Wishlist', $siteLangId) ==  $forPage) { ?>
+                <div class="container">
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                           <span class="float-left itemValue--js">
+                               <label class="checkbox">
+                                   <input type="checkbox" name='selprod_id[]' class="selectItem--js" value="<?php echo $product['selprod_id']; ?>"/>
+                                   <i class="input-helper"></i>
+                               </label>
+                           </span>
+                        </div>
+                        <div class="col-md-4">
+                            <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' onClick="addToCart( $(this), event );" href="javascript:void(0)" data-id='<?php echo $product['selprod_id']; ?>'>
+                                <i class="fa fa-shopping-cart"></i>
                             </a>
-                        </span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="float-right">
+                                <a  title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>'onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="text--normal-secondary">
+                                   <i class="fa fa-trash"></i>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php $showFavtBtn = false; } 
+            if ($showFavtBtn) { ?>
 
             <div class="favourite heart-wrapper wishListLink-Js <?php echo($product['is_in_any_wishlist'])?'is-active':''; ?>" id="listDisplayDiv_<?php echo $product['selprod_id']; ?>" data-id="<?php echo $product['selprod_id']; ?>">
                 <a href="javascript:void(0)" onClick="viewWishList(<?php echo $product['selprod_id']; ?>,this,event);"
@@ -55,6 +59,7 @@ if ($showAddToFavorite) { ?>
                 </a>
             </div>
     <?php }
+    }
     if (isset($productView) && true == $productView) { ?>
         <div class="share-button">
             <a href="#" class="social-toggle"><i class="icn">

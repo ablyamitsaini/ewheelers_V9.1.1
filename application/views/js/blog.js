@@ -3,7 +3,7 @@ $(document).ready(function () {
 	$('.wrapper-menu').click(function () {
 		$('html').toggleClass("nav-opened");
 		$(this).toggleClass("open");
-		
+
 		$('.search-toggle').removeClass('active');
 		$('html').removeClass("form-opened");
 	});
@@ -11,10 +11,14 @@ $(document).ready(function () {
 	$('.search-toggle').on('click', function () {
 		$(this).toggleClass('active');
 		$('html').toggleClass("form-opened");
-		
+
 		$('.wrapper-menu').removeClass("open");
 		$('html').removeClass("nav-opened");
 	})
+
+	$('.social-toggle').on('click', function() {
+	 	$(this).next().toggleClass('open-menu');
+	});
 
 });
 
@@ -26,7 +30,7 @@ function submitBlogSearch(frm){
 		var protomatch = /^(https?|ftp):\/\//;
 		url_arr.push('keyword-'+encodeURIComponent(keyword.replace(protomatch,'').replace(/\//g,'-')));
 	}
-	
+
 	if( qryParam.indexOf("category") > -1 ){
 		url_arr.push('category-'+$(frm).find('select[name="category"]').val());
 	}

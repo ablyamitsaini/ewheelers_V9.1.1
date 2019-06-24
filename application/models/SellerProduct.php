@@ -294,10 +294,13 @@ class SellerProduct extends MyAppModel
         );
 
         $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'LEFT OUTER JOIN', 'ptc.ptc_product_id = product_id', 'ptc');
+        $srch->joinTable(Brand::DB_TBL, 'LEFT OUTER JOIN', 'product_brand_id = brand.brand_id', 'brand');
         $srch->joinTable(ProductCategory::DB_TBL, 'LEFT OUTER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id', 'c');
 
         $srch->addCondition('c.prodcat_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('c.prodcat_deleted', '=', applicationConstants::NO);
+        $srch->addCondition('brand.brand_active', '=', applicationConstants::ACTIVE);
+        $srch->addCondition('brand.brand_deleted', '=', applicationConstants::NO);
         $srch->addGroupBy('selprod_id');
 
         $srch->addMultipleFields(array(
