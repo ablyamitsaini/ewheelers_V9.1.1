@@ -179,7 +179,7 @@ class ShopsController extends MyAppController
 
         $get = FatApp::getParameters();
         $get = array_filter(Product::convertArrToSrchFiltersAssocArr($get));
-        
+
         if (array_key_exists('currency', $get)) {
             $get['currency_id'] = $get['currency'];
         }
@@ -209,6 +209,9 @@ class ShopsController extends MyAppController
             $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
             $this->_template->addJs('js/shop-nav.js');
             $this->_template->addJs('js/jquery.colourbrightness.min.js');
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $data['shopInfo'] = $this->getShopInfo($shop_id);
         }
         $this->set('data', $data);
         $this->_template->render();
