@@ -41,7 +41,7 @@
                             <div class="action">
                                 <a class=" btn btn--secondary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
                                 <!-- <a href="#modal-popup" class="btn--block modaal-inline-content link" onclick="optionForm(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId);?></a> -->
-                                <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete_selected', $siteLangId); ?></a>
+                                <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
                             </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 pb-4">

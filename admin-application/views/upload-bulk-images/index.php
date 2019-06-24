@@ -38,7 +38,7 @@
                             $innerLiNew->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Upload', $adminLangId),"onclick"=>"uploadBulkMediaForm()"), Labels::getLabel('LBL_Upload', $adminLangId), true);
 
                             $innerLi=$innerUl->appendElement('li');
-                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_selected', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete_selected', $adminLangId), true);
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSelected()"), Labels::getLabel('LBL_Delete', $adminLangId), true);
 
                             echo $ul->getHtml();
                         ?>

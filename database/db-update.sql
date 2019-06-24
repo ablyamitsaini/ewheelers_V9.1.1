@@ -344,3 +344,6 @@ DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL
 ALTER TABLE `tbl_user_supplier_form_fields` ADD UNIQUE KEY `sformfield_identifier` (`sformfield_identifier`);
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_Upload_shop_banner_text';
 INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Upload_shop_banner_text', '1', 'Upload a .jpg, .gif or .png. This will be displayed in %s on your store.');
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_Active';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_InActive'
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Delete_selected'
