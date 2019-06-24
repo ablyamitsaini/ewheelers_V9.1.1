@@ -7,7 +7,12 @@ class CheckoutController extends MyAppController
     {
         parent::__construct($action);
         $user_id = 0;
-        if (!UserAuthentication::isUserLogged()){
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            UserAuthentication::checkLogin();
+        }
+        
+        if (!UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
         }
         if (UserAuthentication::isGuestUserLogged()) {
@@ -1264,25 +1269,38 @@ class CheckoutController extends MyAppController
 
     public function useRewardPoints()
     {
+        $loggedUserId = UserAuthentication::getLoggedUserId();
         $post = FatApp::getPostedData();
 
-        if (false == $post) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+        if (empty($post)) {
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         if (empty($post['redeem_rewards'])) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $rewardPoints = $post['redeem_rewards'];
         $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
-        $totalBalance = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId(), $orderId);
+        $totalBalance = UserRewardBreakup::rewardPointBalance($loggedUserId, $orderId);
 
         /* var_dump($totalBalance);exit; */
         if ($totalBalance == 0 || $totalBalance < $rewardPoints) {
-            Message::addErrorMessage(Labels::getLabel('ERR_Insufficient_reward_point_balance', $this->siteLangId));
+            $message = Labels::getLabel('ERR_Insufficient_reward_point_balance', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -1298,13 +1316,24 @@ class CheckoutController extends MyAppController
             $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', $this->siteLangId);
             $msg = str_replace('{MIN}', FatApp::getConfig('CONF_MIN_REWARD_POINT'), $msg);
             $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($msg));
+            }
             Message::addErrorMessage($msg);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
