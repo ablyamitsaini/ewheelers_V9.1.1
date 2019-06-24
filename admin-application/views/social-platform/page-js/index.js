@@ -183,8 +183,10 @@ $(document).on('click', '.File-Js', function() {
                         fcom.displaySuccessMessage(ans.msg);
                         mediaForm(ans.splatform_id);
                         reloadList();
+                    }else{
+                        fcom.displayErrorMessage(ans.msg);
                     }
-                    fcom.displayErrorMessage(ans.msg);
+
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
