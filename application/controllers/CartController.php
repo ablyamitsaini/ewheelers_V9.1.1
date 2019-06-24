@@ -538,10 +538,17 @@ class CartController extends MyAppController
     {
         $cartObj = new Cart();
         if (!$cartObj->removeCartDiscountCoupon()) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $cartObj->removeUsedRewardPoints();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel("MSG_cart_discount_coupon_removed", $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
