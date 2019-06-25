@@ -6,7 +6,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 <div id="body" class="body detail-page" role="main">
     <section class="">
         <div class="container">
-            <div class="section pt-3 pb-3">
+            <div class="section">
                 <div class="breadcrumbs breadcrumbs--center">
                     <?php  $this->includeTemplate('_partial/custom/header-breadcrumb.php');  ?>
                 </div>
