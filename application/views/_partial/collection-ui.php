@@ -34,9 +34,11 @@ if ($showAddToFavorite) { ?>
                                 </label>
                             </a>
                         </li>
+                        <?php if ($product['in_stock']) { ?>
                         <li>
                             <a onClick="addToCart( $(this), event );" href="javascript:void(0)" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>" data-id='<?php echo $product['selprod_id']; ?>'><i class="fa fa-shopping-cart"></i></a>
                         </li>
+                        <?php } ?>
                         <li>
                             <a  title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>' onclick="removeFromWishlist(<?php echo $product['selprod_id']; ?>, <?php echo $product['uwlp_uwlist_id']; ?>, event);" href="javascript:void(0)" class="icn-highlighted">
                                <i class="fa fa-trash"></i>
