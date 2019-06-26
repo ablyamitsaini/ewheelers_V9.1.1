@@ -145,7 +145,7 @@ class MyAppController extends FatController
         } elseif (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
             $this->appToken = ($post['_token']!='')?$post['_token']:'';
         }
-
+        
         if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
             $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
         }

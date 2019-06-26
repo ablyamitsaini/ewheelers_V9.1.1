@@ -127,6 +127,7 @@ class CartController extends MyAppController
         if (true ===  MOBILE_APP_API_CALL) {
             $cartObj = new Cart();
             $this->set('cartItemsCount', $cartObj->countProducts());
+            $this->set('tempUserId', $this->app_user['temp_user_id']);
             $this->_template->render();
         }
         $this->set('success_msg', CommonHelper::renderHtml(Message::getHtml()));

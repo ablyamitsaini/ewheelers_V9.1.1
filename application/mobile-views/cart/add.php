@@ -5,4 +5,7 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
-$data = array('cartItemsCount'=>$cartItemsCount);
+$data = array(
+    'cartItemsCount'=>$cartItemsCount,
+    'tempUserId'=>$tempUserId,
+);
