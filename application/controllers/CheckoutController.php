@@ -304,15 +304,18 @@ class CheckoutController extends MyAppController
     public function setUpAddressSelection()
     {
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
+            $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
             $this->set('redirectUrl', CommonHelper::generateUrl('GuestUser', 'LoginForm'));
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-        $post = FatApp::getPostedData();
-        $shipping_address_id = FatUtility::int($post['shipping_address_id']);
+        $shipping_address_id = FatApp::getPostedData('shipping_address_id', FatUtility::VAR_INT, 0);
 
-        $billing_address_id = FatUtility::int($post['billing_address_id']);
-        $isShippingSameAsBilling = isset($post['isShippingSameAsBilling']) ? FatUtility::int($post['isShippingSameAsBilling']) : 0;
+        $billing_address_id = FatApp::getPostedData('billing_address_id', FatUtility::VAR_INT, 0);
+        $isShippingSameAsBilling = FatApp::getPostedData('isShippingSameAsBilling', FatUtility::VAR_INT, 0);
 
         // Validate cart has products and has stock.
         //$this->cartObj = new Cart();
@@ -321,30 +324,46 @@ class CheckoutController extends MyAppController
         $hasStock = $this->cartObj->hasStock();
 
         if ((!$hasProducts) || (!$hasStock)) {
+            $message = Labels::getLabel('MSG_Cart_seems_to_be_empty_or_products_are_out_of_stock.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
             $this->set('redirectUrl', CommonHelper::generateUrl('cart'));
-            Message::addErrorMessage(Labels::getLabel('MSG_Cart_seems_to_be_empty_or_products_are_out_of_stock', $this->siteLangId));
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $hasPhysicalProduct = $this->cartObj->hasPhysicalProduct();
 
-        if (!$billing_address_id) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_select_Billing_address', $this->siteLangId));
+        if (1 > $billing_address_id) {
+            $message = Labels::getLabel('MSG_Please_select_Billing_address.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if ($hasPhysicalProduct && !$shipping_address_id) {
+        if ($hasPhysicalProduct && 1 > $shipping_address_id) {
+            $message = Labels::getLabel('MSG_Please_select_shipping_address.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
             $this->set('loadAddressDiv', true);
             /* $this->set( 'msg', Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId) );
             $this->_template->render(false, false, 'json-success.php'); */
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId));
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         /* setup billing address[ */
         $BillingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $billing_address_id);
         if (!$BillingAddressDetail) {
-            Message::addErrorMessage(Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID', $this->siteLangId));
+            $message = Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $this->cartObj->setCartBillingAddress($BillingAddressDetail['ua_id']);
@@ -358,7 +377,11 @@ class CheckoutController extends MyAppController
             }
             $ShippingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $shipping_address_id);
             if (!$ShippingAddressDetail) {
-                Message::addErrorMessage(Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID', $this->siteLangId));
+                $message = Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID.', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
             $this->cartObj->setCartShippingAddress($ShippingAddressDetail['ua_id']);
@@ -369,6 +392,9 @@ class CheckoutController extends MyAppController
         }
         $this->cartObj->removeProductShippingMethod();
         $this->set('hasPhysicalProduct', $hasPhysicalProduct);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel('MSG_Address_Selection_Successfull', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
