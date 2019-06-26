@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
 
-	<div class="section section--pagebar">
+	<div class="bg--second pt-3 pb-3">
       <div class="container container--fixed">
         <div class="row align-items-center">
           <div class="col-md-8">

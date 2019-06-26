@@ -43,7 +43,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Users', $siteLangId); ?></h5>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <div class="bg-gray-light p-3 pb-0">
+                            <div class="replaced">
                                 <?php echo $frmSearch->getFormHtml(); ?>
                             </div>
                             <span class="gap"></span>

@@ -1,4 +1,4 @@
-<div class="section section--pagebar">
+<div class="bg--second pt-3 pb-3">
   <div class="container container--fixed">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 align--center">

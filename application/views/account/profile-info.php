@@ -27,7 +27,12 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
                             </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <div class="tabs tabs--small tabs--scroll clearfix setactive-js mb-0 pb-0 no-border-bottom">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="tabs tabs--small tabs--scroll  setactive-js">
                                 <ul>
                                     <li class="is-active"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account', $siteLangId);?></a></li>
                                     <?php if (User::isAffiliate()) { ?>
@@ -43,11 +48,7 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
                                     <?php } ?>
                                 </ul>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <span class="gap"></span><span class="gap"></span>
+             
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">

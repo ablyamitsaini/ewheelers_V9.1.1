@@ -42,8 +42,8 @@
                                 <?php }?>
                             </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 pb-4">
-                            <div class="bg-gray-light p-4 pb-0">
+                        <div class="cards-content pl-4 pr-4 pb-0">
+                            <div class="replaced">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <?php

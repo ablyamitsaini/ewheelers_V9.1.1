@@ -24,7 +24,7 @@ $clearFld->setWrapperAttribute('class', 'col-lg-3');
 $clearFld->developerTags['col'] = 3;
 $clearFld->developerTags['noCaptionTag'] = true;
 ?>
-<div class="bg-gray-light p-3 pb-0">
+<div class="replaced">
     <div class="row">
         <div class="col-lg-6">
             <?php echo $frmSrch->getFormHtml(); ?>

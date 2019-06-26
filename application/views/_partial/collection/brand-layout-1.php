@@ -19,9 +19,9 @@ if( isset( $collections ) && count($collections) ){
                     <ul>
                         <?php $i=0; foreach( $row['brands'] as $brand ){	?>
                         <li> <a href="<?php echo CommonHelper::generateUrl('brands', 'View', array($brand['brand_id'] )); ?>">
-                            <div class="brands-img">
+                            <!--<div class="brands-img">
                                 <img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image','brandImage',array($brand['brand_id'],$siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>" data-ratio="1:1 (600x600)" alt="<?php echo $brand['brand_name']; ?>" title="<?php echo $brand['brand_name']; ?>">
-                            </div>
+                            </div>-->
                             <div class="brands-logo">
                                 <img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'brand', array($brand['brand_id'] , $siteLangId, 'COLLECTION_PAGE')), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $brand['brand_name']; ?>" title="<?php echo $brand['brand_name']; ?>">
                             </div> </a> 

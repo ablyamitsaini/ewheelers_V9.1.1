@@ -55,7 +55,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                             <?php $srchFormDivWidth = $canAddMoneyToWallet ? '8' : 12; ?>
                             <div class="row">
                                 <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> col-md-12">
-                                    <div class="bg-gray-light p-4 pb-0">
+                                    <div class="replaced">
                                         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Transactions', $siteLangId);?></h5>
                                         <?php
                                         $submitFld = $frmSrch->getField('btn_submit');
@@ -69,7 +69,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                                 </div>
                                 <?php if ($canAddMoneyToWallet) { ?>
                                     <div class="col-lg-4 col-md-12">
-                                        <div class="bg-gray-light p-3 pb-0 amount-added-box">
+                                        <div class="replaced amount-added-box">
                                             <h5 class="cards-title">
                                             <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $siteLangId); ?></h5>
                                             <div id="rechargeWalletDiv" class="cellright nopadding--bottom">

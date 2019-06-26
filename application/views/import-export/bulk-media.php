@@ -9,7 +9,7 @@ $variables = array('siteLangId'=>$siteLangId,'action'=>$action);
 $this->includeTemplate('import-export/_partial/top-navigation.php', $variables, false); ?>
 
 <div class="content-body">
-    <div class="bg-gray-light p-4 pb-0">
+    <div class="replaced">
            <?php echo $frm->getFormHtml();  ?>
      </div>
           

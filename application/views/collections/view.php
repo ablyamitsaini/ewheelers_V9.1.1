@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 <div id="body" class="body">
-    <section class="section section--pagebar">
+    <section class="bg--second pt-3 pb-3">
 		<div class="container">
 			<div class="section-head section--white--head justify-content-center mb-0">
 				<div class="section__heading">

@@ -13,7 +13,7 @@
 			<div class="cards-header p-4">
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Shop_Setup',$siteLangId); ?></h5>
 			</div>
-			<div class="cards-content p-4 pb-0">
+			<div class="cards-content pl-4 pr-4 pb-0">
         <div id="shopFormBlock">
           <?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
         </div>

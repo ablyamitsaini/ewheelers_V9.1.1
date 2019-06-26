@@ -65,8 +65,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                     <div class="cards-header p-4">
                         <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Order_Return_Requests', $siteLangId); ?></h5>
                     </div>
-                    <div class="cards-content pl-4 pr-4 pb-4 ">
-                        <div class="bg-gray-light p-3 pb-0">
+                    <div class="cards-content pl-4 pr-4 pb-0">
+                        <div class="replaced">
                             <?php
                             $submitFld = $frmOrderReturnRequestsSrch->getField('btn_submit');
                             $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');

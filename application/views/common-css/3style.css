@@ -1443,10 +1443,10 @@ select {
 	}
 
 	100% {
-		height: 200px;
-		width: 200px;
-		margin-left: -80px;
-		margin-top: -80px;
+		height: 50px;
+		width: 50px;
+		margin-left: -20px;
+		margin-top: -20px;
 		opacity: 0;
 	}
 }
@@ -1622,10 +1622,10 @@ input:checked + .slider:before {
 }
 
 .pagination li a {
-	width: 44px;
-	line-height: 42px;
+	width: 42px;
+	line-height: 40px;
 	text-align: center;
-	height: 42px;
+	height: 40px;
 	display: block;
 	font-size: 1em;
 	color: #333;
@@ -3582,7 +3582,7 @@ img {
 	width: 60px;
 	left: 50%;
 	line-height: 1.2;
-	padding: 5px;
+	padding:17px 10px;
 	border-radius: 50%;
 	position: absolute;
 	text-transform: uppercase;
@@ -7568,11 +7568,11 @@ body.is--dashboard {
 }
 
 .quantity .increase {
-	border-right: solid 1px var(--border-color);
+	border-left: solid 1px var(--border-color);
 }
 
 .quantity .decrease {
-	border-left: solid 1px var(--border-color);
+	border-right: solid 1px var(--border-color);
 	line-height: 35px;
 }
 
@@ -9675,6 +9675,7 @@ form.custom-form input[type="submit"] {
 	padding: 0 10px;
 	-webkit-transition: all 0.3s ease-in-out 0s;
 	transition: all 0.3s ease-in-out 0s;
+	border-radius: 4px;
 }
 
 .categories-add-step {
@@ -10296,12 +10297,12 @@ form.custom-form input[type="submit"] {
 	color: var(--first-color);
 }
 
-.bg--first-color {
+.bg--first-color {color: #fff;
 	background: var(--first-color);
 }
 
 .bg--second-color,
-.bg--second {
+.bg--second { color: #fff;
 	background: var(--second-color);
 }
 
@@ -10650,8 +10651,8 @@ html.quick-view--open {
 
 .page-sort select,
 .page-sort .btn {
-	height: 2.5rem;
-	line-height: 2.4rem;
+	/*height: 2.5rem;
+	line-height: 2.4rem;*/
 }
 
 /*product detail*/
@@ -11370,7 +11371,7 @@ html.quick-view--open {
 
 .nav-detail ul {
 	display: flex;
-	justify-content: space-between;
+	/*justify-content: space-between;*/
 	font-family: 'Poppins', sans-serif;
 }
 
@@ -14932,7 +14933,7 @@ main.main {
 	text-align: center;
 	text-transform: uppercase;
 }
-
+.certified-box p a{color: #575757;}
 
 /*Shops page*/
 .bg-shop {}
@@ -15130,7 +15131,7 @@ main.main {
 .shop-nav ul li a:hover,
 .shop-nav ul li.is--active a {
 	color: #000000;
-	background: var(--gray-light);
+	background: #fff;
 	border-radius: 4px 4px 0 0;
 }
 
@@ -15676,7 +15677,7 @@ input[type="password"][disabled] {
 }
 
 .col-details-right {
-	padding-left: 80px;
+	/*padding-left: 80px;*/
 }
 
 .favourite-wrapper-detail .favourite a {

@@ -14,7 +14,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
             <div class="detail-wrapper">
                 <div class="detail-first-fold ">
                     <div class="row justify-content-between">
-                        <div class="col-lg-6">
+                        <div class="col-lg-7">
                             <div id="img-static" class="product-detail-gallery">
                                 <?php $data['product'] = $product;
                                     $data['productImagesArr'] = $productImagesArr;
@@ -91,7 +91,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                         </div>
                                     </div>                            
                         </div>
-                        <div class="col-lg-6 col-details-right">
+                        <div class="col-lg-5 col-details-right">
                             <div class="product-description">
                                 <div class="product-description-inner">
                                     
@@ -99,9 +99,9 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                         <div class="products__title">
 
                                             <h2><?php echo $product['selprod_title'];?></h2>
-                                            <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
+                                           
 
-                                        </div>
+                                       
                                     
                                     
                                         <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
@@ -116,8 +116,9 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                             <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
                                             <?php } */ ?>
                                         <?php } ?>
-                                        
+                                         </div>
                                     </div>
+                                     <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
                                     <div class="col products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
                                         <?php if ($product['special_price_found']) { ?>
                                         <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
@@ -398,7 +399,9 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                 <?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
 
                         <?php $youtube_embed_code = CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
-                        <div class="nav-detail nav-detail-js">
+                        <div class="row justify-content-center">
+                        	<div class="col-md-7">
+                           <div class="nav-detail nav-detail-js">
                             <ul>
                                 <?php if (count($productSpecifications)>0) {?>
                                 <li><a class="nav-scroll-js is-active" href="#specifications"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?></a></li>
@@ -419,6 +422,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 <li class=""><a  class="nav-scroll-js" href="#itemRatings"><?php echo Labels::getLabel('LBL_Ratings_and_Reviews', $siteLangId); ?> </a></li>
                                 <?php }?>
                             </ul>
+                        </div></div>
                         </div>
 
 

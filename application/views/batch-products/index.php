@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<div class="cards-content pl-4 pr-4 ">
-					<div class="bg-gray-light p-3 pb-0">
+					<div class="replaced">
 						<div class="search search--sort">
 							<div class="search__field">
 								<?php
