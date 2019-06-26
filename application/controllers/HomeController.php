@@ -682,4 +682,14 @@ class HomeController extends MyAppController
         $this->set('image_url', $image_url);
         $this->_template->render();
     }
+    public function countries()
+    {
+        $countryObj = new Countries();
+        $countriesArr = $countryObj->getCountriesArr($this->siteLangId);
+        foreach ($countriesArr as $key => $val) {
+            $arr_country[]=array("id"=>$key,'name'=>$val);
+        }
+        $this->set('countries', $arr_country);
+        $this->_template->render();
+    }
 }
