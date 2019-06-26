@@ -211,7 +211,14 @@ class ShopsController extends MyAppController
             $this->_template->addJs('js/jquery.colourbrightness.min.js');
         }
         if (true ===  MOBILE_APP_API_CALL) {
-            $data['shopInfo'] = $this->shopPoliciesData($this->getShopInfo($shop_id));
+            $shopInfo = $this->shopPoliciesData($this->getShopInfo($shop_id));
+            $shopInfo['rating'] = 0;
+            if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+                $shopInfo['rating'] = SelProdRating::getSellerRating($shopInfo['shop_user_id']);
+            }
+            $shopInfo['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($shopInfo['shop_id'], $this->siteLangId));
+            $shopInfo['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($shopInfo['shop_id'], $this->siteLangId));
+            $data['shopInfo'] = $shopInfo;
         }
         $this->set('data', $data);
         $this->_template->render();
