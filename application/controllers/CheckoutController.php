@@ -514,13 +514,29 @@ class CheckoutController extends MyAppController
 
     public function getCarrierServicesList($product_key, $carrier_id = 0)
     {
+        if (empty($product_key)) {
+            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
         $this->set('options', $carrierList);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
