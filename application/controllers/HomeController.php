@@ -692,4 +692,18 @@ class HomeController extends MyAppController
         $this->set('countries', $arr_country);
         $this->_template->render();
     }
+    public function states($countryId)
+    {
+        $countryId = FatUtility::int($countryId);
+        if (1 > $countryId) {
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            FatUtility::dieJsonError(strip_tags($message));
+        }
+        $statesArr = $this->getStates($countryId, 0, true);
+        foreach ($statesArr as $key => $val) {
+            $states[]=array("id"=>$key,'name'=>$val);
+        }
+        $this->set('states', $states);
+        $this->_template->render();
+    }
 }

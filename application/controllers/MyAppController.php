@@ -208,14 +208,18 @@ class MyAppController extends FatController
         return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
     }
 
-    public function getStates($countryId, $stateId = 0)
+    public function getStates($countryId, $stateId = 0, $return = false)
     {
         $countryId = FatUtility::int($countryId);
         $stateId = FatUtility::int($stateId);
 
         $stateObj = new States();
         $statesArr = $stateObj->getStatesByCountryId($countryId, $this->siteLangId);
-
+            
+        if (true === $return) {
+            return $statesArr;
+        }
+        
         $this->set('statesArr', $statesArr);
         $this->set('stateId', $stateId);
         $this->_template->render(false, false, '_partial/states-list.php');
