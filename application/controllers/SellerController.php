@@ -3098,7 +3098,7 @@ class SellerController extends SellerBaseController
         $frm = new Form('frmInventoryUpdate');
         $frm->addHiddenField('', 'lang_id', $langId);
 
-        $fld = $frm->addButton(Labels::getLabel('Lbl_Upload_Csv_File', $langId), 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array('class'=>'csvFile-Js','id'=>'csvFile-Js'));
+        $fld = $frm->addButton('', 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array('class'=>'csvFile-Js','id'=>'csvFile-Js'));
         return $frm;
     }
 

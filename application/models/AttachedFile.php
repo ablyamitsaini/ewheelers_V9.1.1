@@ -362,9 +362,9 @@ class AttachedFile extends MyAppModel
         } else {
             $uploadedFilePath = CONF_UPLOADS_PATH;
         }
-
         $fileMimeType = '';
-
+        $w = FatUtility::int($w);
+        $h = FatUtility::int($h);
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
             $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
             $image_name = $uploadedFilePath . $image_name;
@@ -382,30 +382,17 @@ class AttachedFile extends MyAppModel
                 header("Expires: " . date('r', strtotime("+30 Day")));
             } catch (Exception $e) {
                 try {
-                    $file_extension = substr($image_name, strlen($image_name)-3, strlen($image_name));
-                    if ($file_extension=="svg") {
-                        header("Content-type: image/svg+xml");
-                        header('Cache-Control: public');
-                        header("Pragma: public");
-                        header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-                        header("Expires: " . date('r', strtotime("+30 Day")));
-
-                        echo file_get_contents($image_name);
-                        exit;
-                    }
-                    $img = new ImageResize($no_image);
+                    $img = static::getDefaultImage($no_image, $w, $h);
                 } catch (Exception $e) {
-                    $img = new ImageResize($no_image);
+                    $img = static::getDefaultImage($no_image, $w, $h);
                 }
             }
         } else {
-            $img = new ImageResize($no_image);
+            $img = static::getDefaultImage($no_image, $w, $h);
         }
 
         /* $w = max(1, FatUtility::int($w));
         $h = max(1, FatUtility::int($h)); */
-        $w = FatUtility::int($w);
-        $h = FatUtility::int($h);
 
         $img->setResizeMethod($resizeType);
         //$img->setResizeMethod(ImageResize::IMG_RESIZE_RESET_DIMENSIONS);
@@ -458,6 +445,49 @@ class AttachedFile extends MyAppModel
         }
 
         /* $img->displayImage(); */
+    }
+
+    public static function getDefaultImage($image_name, $width, $height, $useCache = false)
+    {
+        $file_extension = substr($image_name, strlen($image_name)-3, strlen($image_name));
+        if ($file_extension=="svg") {
+            header("Content-type: image/svg+xml");
+            if ($useCache) {
+                header('Cache-Control: public');
+                header("Pragma: public");
+                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
+                header("Expires: " . date('r', strtotime("+30 Day")));
+            }
+            // $image_name = static::setDimensions($image_name, $width, $height);
+            echo file_get_contents($image_name);
+            exit;
+        }
+        return $img = new ImageResize($image_name);
+    }
+
+    public static function setDimensions($image_name, $width, $height)
+    {
+        $dom = new DOMDocument('1.0', 'utf-8');
+        $dom->load($image_name);
+        $svg = $dom->documentElement;
+        if (! $svg->hasAttribute('viewBox')) {
+            // viewBox is needed to establish
+            // userspace coordinates
+             $pattern = '/^(\d*\.\d+|\d+)(px)?$/'; // positive number, px unit optional
+
+             $interpretable =  preg_match($pattern, $svg->getAttribute('width'), $width) && preg_match($pattern, $svg->getAttribute('height'), $height);
+
+            if ($interpretable) {
+                $view_box = implode(' ', [0, 0, $width[0], $height[0]]);
+                $svg->setAttribute('viewBox', $view_box);
+            }
+        }
+        $view_box = implode(' ', [0, 0, $width, $height]);
+        $svg->setAttribute('width', $width);
+        $svg->setAttribute('height', $height);
+        $svg->setAttribute('viewBox', $view_box);
+        $dom->save($image_name);
+        return $image_name;
     }
 
     public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = false)

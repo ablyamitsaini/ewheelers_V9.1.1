@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="col-lg-10 col-md-10 mb-3">
+<div class="col-lg-12 col-md-12">
     <div class="content-header justify-content-between row mb-4">
         <div class="content-header-left col-md-auto"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Shop_Collections', $siteLangId); ?></h5></div>
         <div class="content-header-right col-auto">
@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<div class="col-lg-10 col-md-10">
+<div class="col-lg-12 col-md-12">
     <?php $arr_flds = array(
             'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
             'listserial'=>Labels::getLabel('LBL_Sr._no.', $siteLangId),
