@@ -5,7 +5,7 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 $data = array(
-    'addresses' => isset($addresses) ? $addresses : '',
+    'addresses' => !empty($addresses) ? $addresses : array(),
 );
 if (!isset($addresses)) {
     $statusArr['status'] = 0;
