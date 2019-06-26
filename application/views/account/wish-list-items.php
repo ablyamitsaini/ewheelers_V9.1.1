@@ -33,6 +33,6 @@
 
 <script type="text/javascript">
 $("document").ready( function(){
-	searchWishListItems(<?php echo $wishListRow['uwlist_id']; ?>);
+    searchWishListItems(<?php echo $wishListRow['uwlist_id']; ?>);
 });
 </script>

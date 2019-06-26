@@ -1745,7 +1745,7 @@ class Orders extends MyAppModel
         // $buyerAllowCancelStatuses = array_diff($buyerAllowCancelStatuses, (array)FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"));
 
         $buyerAllowCancelStatuses = array_diff($buyerAllowCancelStatuses, (array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS"));
-
+        $buyerAllowCancelStatuses = array_diff($buyerAllowCancelStatuses, unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS")));
         $buyerAllowCancelStatuses = array_diff($buyerAllowCancelStatuses, unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")));
 
         return $buyerAllowCancelStatuses;
@@ -2270,11 +2270,11 @@ class Orders extends MyAppModel
 
         return true;
     }
-    
+
     public static function canSubmitFeedback($userId, $op_order_id, $selprod_id){
         if(!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)){
             return false;
-        }        
+        }
         $oFeedbackSrch = new SelProdReviewSearch();
         $oFeedbackSrch->doNotCalculateRecords();
         $oFeedbackSrch->doNotLimitRecords();
