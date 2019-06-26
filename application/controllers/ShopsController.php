@@ -803,36 +803,29 @@ class ShopsController extends MyAppController
     }
     private function shopPoliciesData($shop)
     {
-        if (!empty($shop['shop_payment_policy'])) {
-            $shop['shop_payment_policy'] = array(
-                'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $this->siteLangId),
-                'description' => $shop['shop_payment_policy'],
-            );
-        }
-        if (!empty($shop['shop_delivery_policy'])) {
-            $shop['shop_delivery_policy'] = array(
-                'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $this->siteLangId),
-                'description' => $shop['shop_delivery_policy'],
-            );
-        }
-        if (!empty($shop['shop_refund_policy'])) {
-            $shop['shop_refund_policy'] = array(
-                'title' => Labels::getLabel('LBL_REFUND_POLICY', $this->siteLangId),
-                'description' => $shop['shop_refund_policy'],
-            );
-        }
-        if (!empty($shop['shop_additional_info'])) {
-            $shop['shop_additional_info'] = array(
-                'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
-                'description' => $shop['shop_additional_info'],
-            );
-        }
-        if (!empty($shop['shop_seller_info'])) {
-            $shop['shop_seller_info'] = array(
-                'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
-                'description' => $shop['shop_seller_info'],
-            );
-        }
+        $shop['shop_payment_policy'] = empty($shop['shop_payment_policy']) ? array() : array(
+            'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $this->siteLangId),
+            'description' => $shop['shop_payment_policy'],
+        );
+
+        $shop['shop_delivery_policy'] = empty($shop['shop_delivery_policy']) ? array() : array(
+            'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $this->siteLangId),
+            'description' => $shop['shop_delivery_policy'],
+        );
+        $shop['shop_refund_policy'] = empty($shop['shop_refund_policy']) ? array() : array(
+            'title' => Labels::getLabel('LBL_REFUND_POLICY', $this->siteLangId),
+            'description' => $shop['shop_refund_policy'],
+        );
+
+        $shop['shop_additional_info'] = empty($shop['shop_additional_info']) ? array() : array(
+            'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+            'description' => $shop['shop_additional_info'],
+        );
+
+        $shop['shop_seller_info'] =empty($shop['shop_seller_info']) ? array() : array(
+            'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+            'description' => $shop['shop_seller_info'],
+        );
         return $shop;
     }
 
