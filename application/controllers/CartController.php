@@ -8,6 +8,8 @@ class CartController extends MyAppController
 
     public function index()
     {
+        $cartObj = new Cart();
+        $this->set('total', $cartObj->countProducts());
         $this->_template->render();
     }
 
@@ -233,9 +235,11 @@ class CartController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
         $cartObj->removeUsedRewardPoints();
-        if (0 == $cartObj->countProducts()) {
+        $total = $cartObj->countProducts();
+        if (0 == $total) {
             $cartObj->removeCartDiscountCoupon();
         }
+        $this->set('total', $total);
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }

@@ -1,4 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+
 <div id="body" class="body bg-gray-dark" role="main">
  
    
@@ -18,7 +19,5 @@
          
       </div>
     </div>
-   
-    
-		
+
 </div>

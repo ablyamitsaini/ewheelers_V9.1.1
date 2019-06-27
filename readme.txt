@@ -51,3 +51,4 @@ Fixes :
 	. 027655 - Select All checkbox is not getting checked if manually select all rows.
 	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected
 	. 027755 - Manage Seller Approval Form Add Unique Identifier.
+	. 027753 - Exclude content block string from Important instructions page bread crumb.
