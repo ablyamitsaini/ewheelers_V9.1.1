@@ -2229,4 +2229,22 @@ class BuyerController extends BuyerBaseController
     FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
     } */
     /* ] */
+    
+    public function shareEarnUrl()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+        if (!FatApp::getConfig("CONF_ENABLE_REFERRER_MODULE")) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_This_module_is_not_enabled', $this->siteLangId));
+        }
+        $userObj = new User($userId);
+        $userInfo = $userObj->getUserInfo(array('user_referral_code'), true, true);
+        if (empty($userInfo['user_referral_code'])) {
+            FatUtility::dieJsonError(Labels::getLabel('Msg_Referral_Code_is_empty', $this->siteLangId));
+        }
+
+        $referralTrackingUrl = CommonHelper::referralTrackingUrl($userInfo['user_referral_code']);
+        
+        $this->set('trackingUrl', $referralTrackingUrl);
+        $this->_template->render();
+    }
 }
