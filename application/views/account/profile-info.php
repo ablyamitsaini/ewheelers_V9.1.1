@@ -24,18 +24,18 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
                     <div class="cards">
                         <div class="cards-content p-4 pr-4 ">
                             <div class="tabs tabs--small tabs--scroll clearfix">
-                                <ul class="arrowTabs">
-                                    <li class="is-active"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account', $siteLangId);?></a></li>
+                                <ul class="tabs-js">
+                                    <li class="is-active" id="tab-myaccount"><a href="javascript:void(0);" onClick="profileInfoForm()"><?php echo Labels::getLabel('LBL_My_Account', $siteLangId);?></a></li>
                                     <?php if (User::isAffiliate()) { ?>
-                                        <li>
-                                            <a href="javascript:void(0);"
-                                            onClick="affiliatePaymentInfoForm()"><?php echo Labels::getLabel('LBL_Payment_Info', $siteLangId); ?></a>
-                                        </li>
+                                    <li id="tab-paymentinfo">
+                                        <a href="javascript:void(0);"
+                                        onClick="affiliatePaymentInfoForm()"><?php echo Labels::getLabel('LBL_Payment_Info', $siteLangId); ?></a>
+                                    </li>
                                     <?php }
                                     if (!User::isAffiliate()) { ?>
-                                        <li>
-                                            <a href="javascript:void(0);" onClick="bankInfoForm()"><?php echo Labels::getLabel('LBL_Bank_Account', $siteLangId); ?></a>
-                                        </li>
+                                    <li id="tab-bankaccount">
+                                        <a href="javascript:void(0);" onClick="bankInfoForm()"><?php echo Labels::getLabel('LBL_Bank_Account', $siteLangId); ?></a>
+                                    </li>
                                     <?php } ?>
                                 </ul>
                             </div>

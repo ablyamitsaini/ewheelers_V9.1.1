@@ -35,10 +35,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Messages', $siteLangId);?></h5>
-                        </div>
-                        <div class="cards-content pl-4 pr-4 pb-0">
+                        <div class="cards-content pt-4 pl-4 pr-4 pb-0">
                             <div id="withdrawalReqForm"></div>
                             <div class="replaced">
                                 <div class="row">
@@ -54,7 +51,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                                     </div>
                                 </div>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -62,7 +59,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        
+
                         <div class="cards-content">
                             <div id="messageListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
                         </div>
