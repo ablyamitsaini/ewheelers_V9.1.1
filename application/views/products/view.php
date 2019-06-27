@@ -94,7 +94,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <div class="col-lg-5 col-details-right">
                             <div class="product-description">
                                 <div class="product-description-inner">
-                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                    <div class="">
                                         <div class="products__title">
                                             <h2><?php echo $product['selprod_title'];?></h2>
                                              <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>

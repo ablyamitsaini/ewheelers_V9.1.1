@@ -53,12 +53,19 @@
       <div class="container">
         <div class="row align-items-center justify-content-between">
           <div class="col-md-8 col-sm-8">
-            <h1><?php echo $shop['shop_name']; ?></h1>
+           
+           <div class="section-head section--white--head mb-0">
+            <div class="section__heading">
+                <h2><?php echo $shop['shop_name']; ?></h2>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
+            </div>
+        </div>
+           
+           
             
           </div>
           <div class="col-md-auto col-sm-auto">
-          	<a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--secondary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>
+          	<a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary d-block"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a>
            </div>
         </div>
       </div>
@@ -66,10 +73,9 @@
  
  
   <section class="section">
-    <div class="container">
-      
+    <div class="container">      
 		  <div class="row justify-content-center">
-			  <div class="col-xl-8 col-lg-8">
+			  <div class="col-xl-7 col-lg-7">
 			  <div class="section-head">
 			<div class="section__heading">
 				<h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
