@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if ($reviewsList) { ?>
-    <ul>
+    <ul class="reviews-list mt-5">
     <?php foreach ($reviewsList as $review) { ?>
         <li>
         <div class="row">

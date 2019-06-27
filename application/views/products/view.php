@@ -98,13 +98,14 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                         <div class="products__title">
                                             <h2><?php echo $product['selprod_title'];?></h2>
                                              <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
-                                            <?php if (round($product['prod_rating']) > 0) { ?>
+                                            <?php /*if (round($product['prod_rating']) > 0) {*/ ?>
+                                            <?php $label = (round($product['prod_rating']) > 0) ? round($product['totReviews'], 1).' '.Labels::getLabel('LBL_Reviews', $siteLangId) : Labels::getLabel('LBL_No_Reviews', $siteLangId); ?>
                                             <div class="products-reviews">
                                                 <span class="rate"> <i class="icn"><svg class="svg">
                                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo round($product['totReviews'], 1);?> <?php echo Labels::getLabel('LBL_Reviews', $siteLangId); ?></a>
+                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
                                             </div>
-                                            <?php } ?>
+                                            <?php /*}*/ ?>
                                             <?php /* if (round($product['prod_rating']) == 0) {  ?>
                                             <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
                                             <?php } */ ?>

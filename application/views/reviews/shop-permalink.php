@@ -32,7 +32,7 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 				  <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. $shop['shop_name'] , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
 				</div>
 				<div class="rowx listing__all">
-                  <ul class="reviews-list">
+                  <ul class="reviews-list mt-5">
                     <li>
                         <div class="row">
                             <div class="col-md-4">
