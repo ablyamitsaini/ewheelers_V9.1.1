@@ -348,7 +348,7 @@ class AttachedFile extends MyAppModel
     } */
 
     /* always call this function using image controller and pass relavant arguments. */
-    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = false)
+    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = false, $imageCompression = true)
     {
         ob_end_clean();
         if ($no_image == '') {
@@ -429,7 +429,11 @@ class AttachedFile extends MyAppModel
             } else {
                 header("content-type: image/jpeg");
             }
-            $img->displayImage(80, false);
+            if ($imageCompression) {
+                $img->displayImage(80, false);
+            } else {
+                $img->displayImage(100, false);
+            }
             $imgData = ob_get_clean();
 
             FatCache::set($cacheKey, $imgData, '.jpg');
@@ -441,7 +445,11 @@ class AttachedFile extends MyAppModel
                 header("content-type: image/jpeg");
             }
 
-            $img->displayImage(80, false);
+            if ($imageCompression) {
+                $img->displayImage(80, false);
+            } else {
+                $img->displayImage(100, false);
+            }
         }
 
         /* $img->displayImage(); */

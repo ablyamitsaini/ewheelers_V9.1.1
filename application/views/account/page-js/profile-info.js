@@ -9,6 +9,8 @@ $(document).ready(function(){
 
 	profileInfoForm = function(){
 		$(dv).html(fcom.getLoader());
+		$("#tab-myaccount").parents().children().removeClass("is-active");
+		$("#tab-myaccount").addClass("is-active");
 		fcom.ajax(fcom.makeUrl('Account', 'profileInfoForm'), '', function(t) {
 			$(dv).html(t);
 		});
@@ -37,6 +39,8 @@ $(document).ready(function(){
 
 	bankInfoForm = function(){
 		$(dv).html(fcom.getLoader());
+		$("#tab-bankaccount").parents().children().removeClass("is-active");
+		$("#tab-bankaccount").addClass("is-active");
 		fcom.ajax(fcom.makeUrl('Account','bankInfoForm'),'',function(t){
 			$(dv).html(t);
 		});
@@ -81,6 +85,8 @@ $(document).ready(function(){
 
 	affiliatePaymentInfoForm = function(){
 		$(dv).html(fcom.getLoader());
+		$("#tab-paymentinfo").parents().children().removeClass("is-active");
+		$("#tab-paymentinfo").addClass("is-active");
 		fcom.ajax(fcom.makeUrl('Affiliate','paymentInfoForm'),'',function(t){
 			$(dv).html(t);
 		});
