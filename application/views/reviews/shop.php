@@ -10,8 +10,7 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
     <div class="bg--second pt-3 pb-3">
       <div class="container">
         <div class="row align-items-center justify-content-between">
-          <div class="col-md-8 col-sm-8">
-           
+          <div class="col-md-8 col-sm-8">           
             <div class="section-head section--white--head mb-0">
             <div class="section__heading">
                 <h2><?php echo $shop['shop_name']; ?></h2>

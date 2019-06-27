@@ -27,7 +27,7 @@ if($totReviews){
 			<div class="col-md-8">
 				<div class="ratings--overall">
 					<div class="row">
-						<div class="col-md-4 column">
+						<div class="col-md-5 column">
 							<div class="shop-reviews-wrapper">
 								<div class="shop-reviews">
 									<svg class="svg">
@@ -39,7 +39,7 @@ if($totReviews){
 								<div class="total-reviews"><?php echo Labels::getLabel('Lbl_Based_on',$siteLangId) ,' ', $totReviews ,' ',Labels::getLabel('Lbl_ratings',$siteLangId);?></div>
 							</div>
 						</div>
-						<div class="col-md-4 column">
+						<div class="col-md-7 column">
 							<div class="listing--progress-wrapper">
 								<ul class="listing--progress">
 									<li>

@@ -3582,7 +3582,7 @@ img {
 	width: 60px;
 	left: 50%;
 	line-height: 1.2;
-	padding:17px 10px;
+	padding: 17px 10px;
 	border-radius: 50%;
 	position: absolute;
 	text-transform: uppercase;
@@ -6313,7 +6313,7 @@ a.loadmore.loading {
 
 .border--left {
 	/*border-left: 1px solid #ededed;*/
-	padding: 20px;
+	/*padding: 20px;*/
 }
 
 .listing--progress-wrapper {}
@@ -7622,6 +7622,12 @@ body.is--dashboard {
 	position: relative;
 	padding: 1rem;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.items__body {
+	flex: 1;
 }
 
 .items__group {
@@ -10297,12 +10303,14 @@ form.custom-form input[type="submit"] {
 	color: var(--first-color);
 }
 
-.bg--first-color {color: #fff;
+.bg--first-color {
+	color: #fff;
 	background: var(--first-color);
 }
 
 .bg--second-color,
-.bg--second { color: #fff;
+.bg--second {
+	color: #fff;
 	background: var(--second-color);
 }
 
@@ -11003,7 +11011,7 @@ html.quick-view--open {
 }
 
 .have-you {
-	margin: 1rem auto;
+	margin: 0 auto;
 	text-align: center;
 }
 
@@ -11042,7 +11050,7 @@ html.quick-view--open {
 .profile-avatar {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	/*justify-content: center;*/
 	height: 100%;
 	padding: 1rem;
 	border-right: solid 1px var(--border-color);
@@ -11084,6 +11092,10 @@ html.quick-view--open {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.yes-no ul li {
+	border: none;
 }
 
 .yes-no ul li a {
@@ -14933,7 +14945,10 @@ main.main {
 	text-align: center;
 	text-transform: uppercase;
 }
-.certified-box p a{color: #575757;}
+
+.certified-box p a {
+	color: #575757;
+}
 
 /*Shops page*/
 .bg-shop {}
