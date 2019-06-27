@@ -11,6 +11,8 @@ class AddressesController extends LoggedUserController
     {
         $frm = $this->getUserAddressForm($this->siteLangId);
         $post = FatApp::getPostedData();
+        $post['ua_phone'] = !empty($post['ua_phone']) ? ValidateElement::convertPhone($post['ua_phone']) : '';
+
         if (empty($post)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
