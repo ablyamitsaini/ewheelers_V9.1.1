@@ -2,13 +2,21 @@
 <div id="body" class="body">
 
 	<div class="bg--second pt-3 pb-3">
-      <div class="container container--fixed">
+      <div class="container">
         <div class="row align-items-center">
-          <div class="col-md-8">
-                <h1><?php echo Labels::getLabel('Lbl_Testimonials',$siteLangId); ?></h1>
+          <div class="col-md-8">               
+               <div class="section-head section--white--head mb-0">
+            <div class="section__heading">
+                  <h2 class="mb-0"><?php echo Labels::getLabel('Lbl_Testimonials',$siteLangId); ?></h2>
                 <div class="breadcrumbs">
 				   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 				</div>
+            </div>
+        </div>    
+              
+              
+               
+              
           <div class="col-md-4 align--right"></div>
         </div>
       </div>
