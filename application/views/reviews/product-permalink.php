@@ -42,7 +42,7 @@
 			<h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']) , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
 		  </div>
           <div class=" listing__all">
-		  <ul>
+		  <ul class="reviews-list">
             <li>
                 <div class="row">
                     <div class="col-md-4">

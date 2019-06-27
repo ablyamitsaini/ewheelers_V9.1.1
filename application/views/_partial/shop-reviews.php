@@ -93,7 +93,7 @@ if($totReviews){
             </div>
         </div>
 		<div class="gap"></div>
-        <div class=" listing__all"></div>
+        <div class="listing__all"></div>
         <div id="loadMoreReviewsBtnDiv" class="align--center"></div>
 		<!--<a class="loadmore text--uppercase" href="javascript:alert('Pending');">Load More</a>-->
 		</div>

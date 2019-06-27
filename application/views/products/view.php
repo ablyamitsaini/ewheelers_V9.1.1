@@ -94,17 +94,10 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <div class="col-lg-5 col-details-right">
                             <div class="product-description">
                                 <div class="product-description-inner">
-
                                     <div class="d-sm-flex justify-content-between align-items-start">
                                         <div class="products__title">
-
                                             <h2><?php echo $product['selprod_title'];?></h2>
-
-
-
-
-
-                                        <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
+                                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
                                             <?php if (round($product['prod_rating']) > 0) { ?>
                                             <div class="products-reviews">
                                                 <span class="rate"> <i class="icn"><svg class="svg">
@@ -126,13 +119,12 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                         <?php } ?>
                                     </div>
                                     <div class="divider"></div>
-
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
 
                                     <?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
-                                </div>
+
                             <?php  if ($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']) { ?>
                             <div class="gap"> </div>
                                 <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
@@ -360,7 +352,8 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             <?php } ?>
                             <!-- ] -->
 
-
+                              </div>
+                               <div class="gap"></div>
                                 <div class="sold-by bg-gray p-4 rounded">
                                     <div class="row align-items-center justify-content-between">
                                         <div class="col-xl-6 col-lg-6 col-md-5">
