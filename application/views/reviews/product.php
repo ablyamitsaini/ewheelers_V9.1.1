@@ -1,7 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<div id="body" class="body">
- 
+<div id="body" class="body"> 
     <div class="bg--second pt-3 pb-3">
       <div class="container container--fixed">
         <div class="row justify-content-between">

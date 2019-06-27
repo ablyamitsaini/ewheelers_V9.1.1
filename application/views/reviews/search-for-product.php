@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if ($reviewsList) { ?>
-    <ul>
+    <ul class="reviews-list">
     <?php foreach ($reviewsList as $review) { ?>
         <li>
         <div class="row">
@@ -48,8 +48,8 @@
     </li>
     <?php } ?>
 </ul>
-<div class=" align--center"><a href="<?php echo CommonHelper::generateUrl('Reviews', 'Product', array($selprod_id)); ?>"
-        class="link"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging')); ?>
+<div class="align--center  mt-4"><a href="<?php echo CommonHelper::generateUrl('Reviews', 'Product', array($selprod_id)); ?>"
+        class="btn btn--secondary btn--primary-border"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging')); ?>
 <?php } else {
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
 }?>

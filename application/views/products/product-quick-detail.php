@@ -27,6 +27,7 @@
             <div class="product-description-inner">
                 <div class="products__title"><?php echo $product['selprod_title'];?>
                 </div>
+                <div class="gap"></div>
                 <div class="detail-grouping">
                     <?php $showAddToFavorite = false; include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                 </div>
@@ -35,6 +36,8 @@
                     <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                 <?php } ?>
                 </div>
+                <div class="divider"></div>
+                <div class="gap"></div>
             </div>
 
             <?php if (!empty($optionRows)) { ?>

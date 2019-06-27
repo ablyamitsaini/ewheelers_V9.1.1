@@ -11024,18 +11024,18 @@ html.quick-view--open {
 	border-bottom: none;
 }
 
-.listing__all {
+.reviews-list {
 	background: #fff;
 	border-radius: 4px;
 	border: solid 1px var(--border-color);
 }
 
-.listing__all > ul > li {
+.reviews-list li {
 	border-bottom: solid 1px var(--border-color);
 
 }
 
-.listing__all > ul > li:last-child {
+.reviews-list li:last-child {
 	border-bottom: none;
 }
 
