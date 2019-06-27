@@ -863,12 +863,12 @@ class ImageController extends FatController
                 case 'THUMB':
                     $w = 200;
                     $h = 100;
-                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
                 default:
                     $w = 2000;
                     $h = 360;
-                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
             }
         } else {
