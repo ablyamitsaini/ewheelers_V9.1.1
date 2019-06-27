@@ -12,7 +12,7 @@ class AddressesController extends LoggedUserController
         $frm = $this->getUserAddressForm($this->siteLangId);
         $post = FatApp::getPostedData();
         $post['ua_phone'] = !empty($post['ua_phone']) ? ValidateElement::convertPhone($post['ua_phone']) : '';
-        $markAsActive = (!empty($post['isDefault']) && 0 < FatUtility::int($post['isDefault']) ? true : false);
+        $markAsDefault = (!empty($post['isDefault']) && 0 < FatUtility::int($post['isDefault']) ? true : false);
 
         if (empty($post)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
@@ -54,7 +54,7 @@ class AddressesController extends LoggedUserController
             $ua_id = $addressObj->getMainTableRecordId();
         }
 
-        if (true === $setDefault) {
+        if (true === $markAsDefault) {
             $this->markAsDefault($ua_id);
         }
 
