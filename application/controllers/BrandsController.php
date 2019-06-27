@@ -14,7 +14,56 @@ class BrandsController extends MyAppController
         $brandSrch->addOrder('brand_name', 'asc');
         $brandRs = $brandSrch->getResultSet();
         $brandsArr = FatApp::getDb()->fetchAll($brandRs);
-        /* CommonHelper::printArray($brandsArr);die; */
+        if (true ===  MOBILE_APP_API_CALL) {
+            $db = FatApp::getDb();
+            $totalProdCountToDisplay = 4;
+            $productCustomSrchObj = new ProductSearch($this->siteLangId);
+            $productCustomSrchObj->joinProductToCategory($this->siteLangId);
+            $productCustomSrchObj->setDefinedCriteria();
+            $productCustomSrchObj->joinSellerSubscription($this->siteLangId, true);
+            $productCustomSrchObj->addSubscriptionValidCondition();
+
+            if (UserAuthentication::isUserLogged()) {
+                $productCustomSrchObj->joinFavouriteProducts(UserAuthentication::getLoggedUserId());
+            }
+
+            $productCustomSrchObj->joinProductRating();
+            $productCustomSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+            $productCustomSrchObj->addGroupBy('selprod_id');
+
+            $productCustomSrchObj->addMultipleFields(
+                array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
+                'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews','selprod_sold_count','selprod_min_order_qty')
+            );
+            if (UserAuthentication::isUserLogged()) {
+                $productCustomSrchObj->addFld(array('IF(ufp_id > 0, 1, 0) as isfavorite','IFNULL(ufp_id, 0) as ufp_id'));
+            } else {
+                $productCustomSrchObj->addFld(array('0 as isfavorite','0 as ufp_id'));
+            }
+
+            $productCustomSrchObj->setPageSize($totalProdCountToDisplay);
+            $cnt=0;
+            foreach ($brandsArr as $val) {
+                $prodSrch = clone $productCustomSrchObj;
+                $prodSrch->addBrandCondition($val['brand_id']);
+                $prodSrch->addGroupBy('selprod_id');
+                $prodRs = $prodSrch->getResultSet();
+                $brandsArr[$cnt] = $val;
+                $brandProducts = $db->fetchAll($prodRs);
+
+                foreach ($brandProducts as &$brandProduct) {
+                    $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($brandProduct['product_id'], "MEDIUM", $brandProduct['selprod_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
+                    $brandProduct['discounted_text'] =  CommonHelper::showProductDiscountedText($brandProduct, $this->siteLangId);
+                    $brandProduct['product_image'] =  $mainImgUrl;
+                    $brandProduct['currency_selprod_price'] = CommonHelper::displayMoneyFormat($brandProduct['selprod_price'], true, false, false);
+                    $brandProduct['currency_theprice'] = CommonHelper::displayMoneyFormat($brandProduct['theprice'], true, false, false);
+                }
+                $brandsArr[$cnt]['products'] = $brandProducts;
+                $brandsArr[$cnt]['totalProducts'] = $prodSrch->recordCount();
+                $cnt++;
+            }
+        }
         $this->set('layoutDirection', Language::getLayoutDirection($this->siteLangId));
         $this->set('allBrands', $brandsArr);
         $this->_template->render();
