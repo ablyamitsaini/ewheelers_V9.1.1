@@ -12,6 +12,7 @@ class AddressesController extends LoggedUserController
         $frm = $this->getUserAddressForm($this->siteLangId);
         $post = FatApp::getPostedData();
         $post['ua_phone'] = !empty($post['ua_phone']) ? ValidateElement::convertPhone($post['ua_phone']) : '';
+        $markAsActive = (!empty($post['isDefault']) && 0 < FatUtility::int($post['isDefault']) ? true : false);
 
         if (empty($post)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
@@ -53,6 +54,10 @@ class AddressesController extends LoggedUserController
             $ua_id = $addressObj->getMainTableRecordId();
         }
 
+        if (true === $setDefault) {
+            $this->markAsDefault($ua_id);
+        }
+
         $this->set('ua_id', $ua_id);
 
         if (true ===  MOBILE_APP_API_CALL) {
@@ -73,8 +78,18 @@ class AddressesController extends LoggedUserController
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-
         $ua_id = FatUtility::int($post['id']);
+        $this->markAsDefault($ua_id);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+        $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function markAsDefault($ua_id)
+    {
         if (1 > $ua_id) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -122,11 +137,6 @@ class AddressesController extends LoggedUserController
             Message::addErrorMessage($addressObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-        if (true ===  MOBILE_APP_API_CALL) {
-            $this->_template->render();
-        }
-        $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
-        $this->_template->render(false, false, 'json-success.php');
     }
 
     public function deleteRecord()
