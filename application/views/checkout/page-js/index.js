@@ -22,6 +22,11 @@ function showLoginDiv()
 		$(loginDiv).addClass("is-current");
 	});
 }
+
+function editCart(){
+	$('.js-editCart').toggle();
+}
+
 function showAddressFormDiv()
 {
 	editAddress();
