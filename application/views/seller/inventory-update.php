@@ -9,20 +9,14 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
         </div>
         <div class="content-body">
             <div class="cards">
-            
                 <div class="cards-content p-4">
-                    
-                               
-                                <div id="productInventory"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
-                                 
-                            
-                            <div class="col-md-12">
-                                <?php if (!empty($pageData['epage_content'])) { ?>
-                                    <h2><?php echo $pageData['epage_label']; ?></h2>
-                                    <?php echo FatUtility::decodeHtmlEntities($pageData['epage_content']);
-                                } ?>
-                            </div>
-                     
+                    <div id="productInventory"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
+                    <div class="col-md-12">
+                        <?php if (!empty($pageData['epage_content'])) { ?>
+                            <h2><?php echo $pageData['epage_label']; ?></h2>
+                            <?php echo FatUtility::decodeHtmlEntities($pageData['epage_content']);
+                        } ?>
+                    </div>
                 </div>
             </div>
         </div>
