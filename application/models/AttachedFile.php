@@ -383,12 +383,15 @@ class AttachedFile extends MyAppModel
             } catch (Exception $e) {
                 try {
                     $img = static::getDefaultImage($no_image, $w, $h);
+					$img->setExtraSpaceColor(204, 204, 204);
                 } catch (Exception $e) {
                     $img = static::getDefaultImage($no_image, $w, $h);
+					$img->setExtraSpaceColor(204, 204, 204);
                 }
             }
         } else {
             $img = static::getDefaultImage($no_image, $w, $h);
+			$img->setExtraSpaceColor(204, 204, 204);
         }
 
         /* $w = max(1, FatUtility::int($w));
@@ -471,31 +474,6 @@ class AttachedFile extends MyAppModel
             exit;
         }
         return $img = new ImageResize($image_name);
-    }
-
-    public static function setDimensions($image_name, $width, $height)
-    {
-        $dom = new DOMDocument('1.0', 'utf-8');
-        $dom->load($image_name);
-        $svg = $dom->documentElement;
-        if (! $svg->hasAttribute('viewBox')) {
-            // viewBox is needed to establish
-            // userspace coordinates
-             $pattern = '/^(\d*\.\d+|\d+)(px)?$/'; // positive number, px unit optional
-
-             $interpretable =  preg_match($pattern, $svg->getAttribute('width'), $width) && preg_match($pattern, $svg->getAttribute('height'), $height);
-
-            if ($interpretable) {
-                $view_box = implode(' ', [0, 0, $width[0], $height[0]]);
-                $svg->setAttribute('viewBox', $view_box);
-            }
-        }
-        $view_box = implode(' ', [0, 0, $width, $height]);
-        $svg->setAttribute('width', $width);
-        $svg->setAttribute('height', $height);
-        $svg->setAttribute('viewBox', $view_box);
-        $dom->save($image_name);
-        return $image_name;
     }
 
     public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = false)

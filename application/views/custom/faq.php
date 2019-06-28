@@ -9,7 +9,7 @@
                <div class="section-head section--white--head mb-0">
             <div class="section__heading">
                   <h2 class="mb-0">FAQ</h2>
-                <div class="breadcrumbs">
+                <div class="breadcrumbs breadcrumbs--white">
 				  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 				</div>
             </div>

@@ -200,14 +200,14 @@ class CollectionsController extends MyAppController
                 $shopRs = $shopObj->getResultSet();
                 $collections = $db->fetchAll($shopRs, 'shop_id');
 
-                $totalProdCountToDisplay = 3;
+                $totalProdCountToDisplay = 4;
 
                 foreach ($collections as $val) {
                     $prodSrch = clone $productSrchObj;
                     $prodSrch->addOrder('in_stock', 'DESC');
                     $prodSrch->addCondition('selprod_deleted', '=', applicationConstants::NO);
                     $prodSrch->addShopIdCondition($val['shop_id']);
-                    $prodSrch->setPageSize(3);
+                    $prodSrch->setPageSize(4);
                     $prodSrch->addGroupBy('product_id');
 
                     $prodRs = $prodSrch->getResultSet();
