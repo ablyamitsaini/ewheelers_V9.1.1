@@ -85,10 +85,10 @@ if($totReviews){
 			<div class="col-md-6 col-sm-6"><span id='reviews-pagination-strip--js' hidden><?php echo Labels::getLabel('Lbl_Displaying_Reviews',$siteLangId); ?>  <span id='reviewStartIndex'>XX</span>-<span id='reviewEndIndex'>XX</span> <?php echo Labels::getLabel('Lbl_of',$siteLangId); ?> <span id='reviewsTotal'>XX</span></span></div>
         </div>
         <div class="row mt-5">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <a href="javascript:void(0);" class="btn btn--primary d-block" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent', $siteLangId); ?></a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                <a href="javascript:void(0);" class="btn btn--secondary d-block btn--primary-border" data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful', $siteLangId); ?> </a>
             </div>
         </div>

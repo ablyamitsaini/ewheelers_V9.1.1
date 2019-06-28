@@ -613,6 +613,12 @@ class ProductsController extends MyAppController
         $this->set('productSpecifications', $this->getProductSpecifications($product['product_id'], $this->siteLangId));
         /* End of Product Specifications */
 
+        $canSubmitFeedback = true;
+        $orderProduct = SelProdReview::getProductOrderId($product['product_id']);
+        if (!Orders::canSubmitFeedback($loggedUserId, $orderProduct['op_order_id'], $selprod_id)) {
+            $canSubmitFeedback = false;
+        }
+        $this->set('canSubmitFeedback', $canSubmitFeedback);
         $this->set('upsellProducts', $upsellProducts);
         $this->set('relatedProductsRs', $relatedProductsRs);
         $this->set('banners', $banners);

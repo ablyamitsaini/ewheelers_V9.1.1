@@ -503,7 +503,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <div id="itemRatings">
                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
                                 <?php echo $frmReviewSearch->getFormHtml(); ?>
-                                <?php $this->includeTemplate('_partial/product-reviews.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']), false); ?>
+                                <?php $this->includeTemplate('_partial/product-reviews.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id'],'canSubmitFeedback' => $canSubmitFeedback), false); ?>
                             <?php }?>
                         </div>
 

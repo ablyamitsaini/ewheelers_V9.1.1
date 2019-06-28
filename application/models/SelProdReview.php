@@ -69,4 +69,30 @@ class SelProdReview extends MyAppModel
         }
         return $record['numOfReviews'];
     }
+
+    public static function getProductOrderId($product_id)
+    {
+        UserAuthentication::checkLogin();
+        $loggedUserId = UserAuthentication::getLoggedUserId();
+
+        $selProdSrch = SellerProduct::getSearchObject(0);
+        $selProdSrch->addCondition('selprod_product_id', '= ', $product_id);
+        $selProdSrch->addCondition('selprod_active', '= ', applicationConstants::ACTIVE);
+        $selProdSrch->addCondition('selprod_deleted', '= ', applicationConstants::NO);
+        $selProdSrch->addMultipleFields(array('selprod_id'));
+        $rs = $selProdSrch->getResultSet();
+        $selprodListing = FatApp::getDb()->fetchAll($rs);
+        $selProdList = array();
+        foreach ($selprodListing as $key => $val) {
+            $selProdList[$key] = $val['selprod_id'];
+        }
+        $srch = new OrderProductSearch(0, true);
+        $allowedReviewStatus = implode(",", SelProdReview::getBuyerAllowedOrderReviewStatuses());
+        $allowedSelProdId = implode(",", $selProdList);
+        $srch->addDirectCondition('order_user_id ='.$loggedUserId.' and ( FIND_IN_SET(op_selprod_id,(\''.$allowedSelProdId.'\')) and op_is_batch = 0) and  FIND_IN_SET(op_status_id,(\''.$allowedReviewStatus.'\')) ');
+        /* $srch->addOrder('order_date_added'); */
+        $orderProduct = FatApp::getDb()->fetch($srch->getResultSet());
+        return $orderProduct;
+    }
+
 }
