@@ -165,10 +165,7 @@
  	color: inherit;
  }
 
- .section-head .section__heading h2 {
- 	font-weight: 600;
- 	font-size: 2rem;
- }
+ 
 
  .arrows {
  	cursor: pointer;
@@ -971,12 +968,7 @@
  	color: inherit;
  }
 
- .section-head .section__heading h2 {
- 	font-weight: 600;
- 	font-size: 2rem;
- }
-
- .arrows {
+.arrows {
  	cursor: pointer;
  }
 
@@ -1063,27 +1055,6 @@
  	cursor: pointer;
  }
 
- .post-meta-detail .post--title {
- 	color: var(--txt-color);
- 	font-size: 2rem;
- 	font-weight: 700;
- 	margin-bottom: 20px;
- }
-
- .posted-by {
- 	display: flex;
- 	align-items: center;
- 	margin-bottom: 2rem;
- 	color: var(--txt-color-light);
- 	font-size: 0.875rem;
- 	text-transform: uppercase;
- }
-
- .posted-by span {
- 	border-right: solid 1px var(--border-color);
- 	padding-inline-end: 1rem;
- 	margin-inline-end: 1rem;
- }
 
  /*post detail*/
  .post__detail {

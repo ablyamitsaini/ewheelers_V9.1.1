@@ -1705,15 +1705,15 @@ input:checked + .slider:before {
 }
 
 .breadcrumbs ul li {
-
 	position: relative;
 	color: #000;
 	padding: 0;
 	padding-inline-end: 25px;
-	font-size: 0.875em;
+	font-size: 0.875rem;
 	vertical-align: top;
 	line-height: 1;
 	display: block;
+	font-weight: 400;
 }
 
 .breadcrumbs ul li:before {
