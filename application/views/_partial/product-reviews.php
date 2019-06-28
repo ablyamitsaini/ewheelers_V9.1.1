@@ -35,16 +35,20 @@ if ($totReviews) {
     </div>
     <?php $this->includeTemplate('_partial/product-overall-ratings.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id'=>$product_id), false); ?>
 </div>
+<?php if($canSubmitFeedback || $totReviews > 0) { ?>
 <div class="row mt-5">
+    <?php if ($canSubmitFeedback) { ?>
     <div class="<?php echo ($totReviews > 0) ? 'col-md-3' : 'col-md-12 align--center'; ?>">
         <a onClick="rateAndReviewProduct(<?php echo $product_id; ?>)" href="javascript:void(0)" class="btn btn--primary <?php echo ($totReviews > 0) ? 'btn--block' : '' ; ?>"><?php echo Labels::getLabel('Lbl_Add_Review', $siteLangId); ?></a>
     </div>
+    <?php } ?>
     <?php if ($totReviews > 0) { ?>
-    <div class="col-md-3">
-        <a href="javascript:void(0);" class="btn btn--secondary btn--primary-border btn--block" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Newest', $siteLangId); ?> </a>
+    <div class="<?php echo ($canSubmitFeedback) ? 'col-md-3' : 'col-md-12 align--center'; ?>">
+        <a href="javascript:void(0);" class="btn btn--secondary btn--primary-border <?php echo ($canSubmitFeedback) ? 'btn--block' : '' ; ?>" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Newest', $siteLangId); ?> </a>
     </div>
     <?php } ?>
 </div>
+<?php } ?>
 <div class="listing__all"></div>
 <div id="loadMoreReviewsBtnDiv" class="align--center"></div>
 
