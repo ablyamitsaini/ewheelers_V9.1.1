@@ -827,6 +827,10 @@ $(document).ready(function() {
     $(document).on("click", '.increase-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
         var val = $(this).parent().parent('div').find('input').val();
+        if(isNaN(val)){
+            $(this).parent().parent('div').find('input').val(1);
+            return false;
+        }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
         val = parseInt(val) + 1;
@@ -835,7 +839,7 @@ $(document).ready(function() {
             $(this).addClass('not-allowed');
         }
         $(this).parent().parent('div').find('input').val(val);
-        cart.update(key, page);
+        cart.update(key, page); 
     });
 
     $(document).on("change", '.productQty-js', function() {
@@ -859,6 +863,10 @@ $(document).ready(function() {
     $(document).on("click", '.decrease-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
         var val = $(this).parent().parent('div').find('input').val();
+        if(isNaN(val)){
+            $(this).parent().parent('div').find('input').val(1);
+            return false;
+        }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
         val = parseInt(val) - 1;
