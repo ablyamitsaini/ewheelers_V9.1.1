@@ -13,15 +13,15 @@ $th = $tbl->appendElement('thead')->appendElement('tr',array('class' => ''));
 foreach ($arr_flds as $val) {
 	$e = $th->appendElement('th', array(), $val);
 }
-
 $sr_no = 0;
 foreach ($orders as $sn => $order){
 	$sr_no++;
-
+	echo $order['ossubs_id'].' ';
 	$tr = $tbl->appendElement('tr',array('class' =>'' ));
 	$orderDetailUrl = CommonHelper::generateUrl('seller', 'viewSubscriptionOrder', array($order['ossubs_id']) );
 
 	foreach ($arr_flds as $key=>$val){
+
 		$td = $tr->appendElement('td');
 		switch ($key){
 			case 'order_id':

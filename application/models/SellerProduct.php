@@ -800,4 +800,18 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
+    
+    public static function getActiveCount($userId)
+    {
+        $srch = new SearchBase(static::DB_TBL);
+
+        $srch->addCondition(static::DB_TBL_PREFIX . 'user_id', '=', $userId);
+
+        $srch->addMultipleFields(array('selprod_id'));
+        $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
+        $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+        return $srch->recordCount();
+    }
 }

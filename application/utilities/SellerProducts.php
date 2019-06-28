@@ -108,6 +108,11 @@ trait SellerProducts
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
 
+        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+        }
+
         $selprod_id = FatUtility::int($selprod_id);
         $product_id = FatUtility::int($product_id);
         $userId = UserAuthentication::getLoggedUserId();
@@ -1850,9 +1855,12 @@ trait SellerProducts
     {
         if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addErrorMessage(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+            FatUtility::dieWithError(Message::getHtml());
         }
-
+        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit", $this->siteLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
         $selprod_id = FatUtility::int($selprod_id);
         $product_id = FatUtility::int($product_id);
         $userId = UserAuthentication::getLoggedUserId();
@@ -1861,7 +1869,7 @@ trait SellerProducts
 
         if ($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatApp::redirectUser($_SESSION['referer_page_url']);
+            FatUtility::dieWithError(Message::getHtml());
         }
 
         $sellerProductRow['selprod_available_from'] = date('Y-m-d');

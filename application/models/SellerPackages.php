@@ -70,7 +70,7 @@ class SellerPackages extends MyAppModel
         $srch->joinTable(SellerPackagePlans::DB_TBL, 'INNER JOIN', 'sp.spackage_id =spp.spplan_spackage_id', 'spp');
         $srch->addMultipleFields(
             array(
-            "sp.spackage_id", "IFNULL( spl.spackage_name, sp.spackage_identifier ) as spackage_name","spackage_text","spackage_products_allowed","spackage_images_per_product","spackage_commission_rate","spackage_type")
+            "sp.spackage_id", "IFNULL( spl.spackage_name, sp.spackage_identifier ) as spackage_name","spackage_text","spackage_products_allowed","spackage_inventory_allowed","spackage_images_per_product","spackage_commission_rate","spackage_type")
         );
         $srch->addGroupBy('sp.spackage_id');
         $srch->addCondition('sp.spackage_active', '=', applicationConstants::YES);
@@ -92,5 +92,27 @@ class SellerPackages extends MyAppModel
         SellerPackages::FREE_TYPE=>Labels::getLabel('LBL_Free_Plan', CommonHelper::getLangId()),
         SellerPackages::PAID_TYPE=>Labels::getLabel('LBL_Paid_Plan', CommonHelper::getLangId()),
         );
+    }
+    public static function getAllowedLimit($userId, $langId, $key = '')
+    {
+        $srch = new OrderSubscriptionSearch($langId, true, true);
+        $srch->joinSubscription();
+        $srch->joinOrderUser();
+        $srch->joinTable(static::DB_TBL, 'LEFT OUTER JOIN', 'spackage_id = oss.'.OrderSubscription::DB_TBL_PREFIX.'plan_id ');
+        $srch->addCondition('order_user_id', '=', $userId);
+        $srch->addCondition('order_type', '=', Orders::ORDER_SUBSCRIPTION);
+        $srch->addCondition('ossubs_status_id', '=', OrderSubscription::ACTIVE_SUBSCRIPTION);
+        $srch->setPageSize(1);
+
+        $srch->addMultipleFields(
+            array("spackage_products_allowed","spackage_inventory_allowed","spackage_images_per_product")
+        );
+        $rs = $srch->getResultSet();
+        $records = array();
+        $records = FatApp::getDb()->fetch($rs);
+        if (!empty($key)) {
+            return $records[$key];
+        }
+        return $records;
     }
 }
