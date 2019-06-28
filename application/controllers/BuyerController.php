@@ -1740,7 +1740,14 @@ class BuyerController extends BuyerBaseController
         if ($offers) {
             $this->set('offers', $offers);
         } else {
-            $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('offers', array());
+            } else {
+                $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
+            }
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
         $this->_template->render(false, false, 'buyer/search-offers.php');
     }
@@ -2229,7 +2236,7 @@ class BuyerController extends BuyerBaseController
     FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
     } */
     /* ] */
-    
+
     public function shareEarnUrl()
     {
         $userId = UserAuthentication::getLoggedUserId();
@@ -2243,7 +2250,7 @@ class BuyerController extends BuyerBaseController
         }
 
         $referralTrackingUrl = CommonHelper::referralTrackingUrl($userInfo['user_referral_code']);
-        
+
         $this->set('trackingUrl', $referralTrackingUrl);
         $this->_template->render();
     }
