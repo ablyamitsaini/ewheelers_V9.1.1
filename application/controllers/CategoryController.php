@@ -37,6 +37,10 @@ class CategoryController extends MyAppController
         $category = $db->fetch($productCategorySearchRs);
 
         if (false == $category) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+                FatUtility::dieJsonError(strip_tags($message));
+            }
             FatUtility::exitWithErrorCode(404);
         }
 
@@ -92,11 +96,14 @@ class CategoryController extends MyAppController
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
             'siteLangId'=>$this->siteLangId
         );
-
+        
         $this->set('data', $data);
-        $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+
+        if (false ===  MOBILE_APP_API_CALL) {
+            $this->includeProductPageJsCss();
+            $this->_template->addJs('js/slick.min.js');
+            $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+        }
         $this->_template->render();
     }
 
