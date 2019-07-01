@@ -7,16 +7,18 @@
     $str.= "<ul>";
     if (!empty($rootCategories)) {
         foreach ($rootCategories as $category) {
+            //$totalRecord =  $category['totalRecord'];
+            $totalRecord =  $childCountArr[$category['prodcat_id']]['total_child_count'];
             $class = '';
             if ($prodRootCatCode == $category['prodrootcat_code']) {
                 $class = 'active';
             }
-            if ($category['prodcat_parent'] == 0 && $category['totalRecord'] == 1) {
+            if ($category['prodcat_parent'] == 0 && $totalRecord == 1) {
                 $function = 'customCatalogProductForm(0,'.$category['prodcat_id'].')';
             } else {
                 $function = 'categorySearchByCode(\''.$category['prodrootcat_code'].'\')';
             }
-            $str.= '<li class="'.$class.'" onClick="'.$function.'"><a class="selectCategory" href="javascript:void(0)">'.strip_tags($category['prodcat_name']).'('.$category['totalRecord'].')</a> </li>';
+            $str.= '<li class="'.$class.'" onClick="'.$function.'"><a class="selectCategory" href="javascript:void(0)">'.strip_tags($category['prodcat_name']).'('.$totalRecord.')</a> </li>';
         }
     }
     $str.= "</ul>";

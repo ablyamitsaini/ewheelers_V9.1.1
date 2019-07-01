@@ -8,24 +8,17 @@
                <div class="section-head section--white--head mb-0">
             <div class="section__heading">
                   <h2 class="mb-0"><?php echo Labels::getLabel('Lbl_Testimonials',$siteLangId); ?></h2>
-                <div class="breadcrumbs">
+                <div class="breadcrumbs breadcrumbs--white"> 
 				   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 				</div>
             </div>
-        </div>    
-              
-              
-               
-              
-          <div class="col-md-4 align--right"></div>
+        </div> 
+        <div class="col-md-4 align--right"></div>
         </div>
       </div>
     </div>
     </div>
-
-
-
-	<section class="section bg--white">
+	<section class="section section--gray">
 	  <div class="container">
 		<div class="container--cms">
 			<div class="list__all" id='listing'></div>
@@ -34,5 +27,5 @@
 		</div>	
 	  </div>
 	</section>
-	<div class="gap"></div>
+	 
 </div>

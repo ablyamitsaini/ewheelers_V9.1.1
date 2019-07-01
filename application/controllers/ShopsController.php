@@ -123,7 +123,7 @@ class ShopsController extends MyAppController
             $productShopSrchTempObj->addCondition('selprod_user_id', '=', $val['shop_user_id']);
             $productShopSrchTempObj->addOrder('in_stock', 'DESC');
             $productShopSrchTempObj->addGroupBy('selprod_product_id');
-            $productShopSrchTempObj->setPageSize(3);
+            $productShopSrchTempObj->setPageSize(4);
             $Prs = $productShopSrchTempObj->getResultSet();
             $allShops[$val['shop_id']]['products'] = $db->fetchAll($Prs);
             $allShops[$val['shop_id']]['totalProducts'] = $productShopSrchTempObj->recordCount();

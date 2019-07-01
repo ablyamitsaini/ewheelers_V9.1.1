@@ -53,3 +53,4 @@ Fixes :
 	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected
 	. 027755 - Manage Seller Approval Form Add Unique Identifier.
 	. 027753 - Exclude content block string from Important instructions page bread crumb.
+	. 027709 - Fixed count issue on search category listing while adding product.

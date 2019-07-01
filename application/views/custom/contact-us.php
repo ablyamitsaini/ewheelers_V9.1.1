@@ -7,8 +7,12 @@ $fld = $contactFrm->getField('phone');
 $fld->developerTags['col'] = 12;
 $fld = $contactFrm->getField('message');
 $fld->developerTags['col'] = 12;
-$fldSubmit = $contactFrm->getField('btn_submit');
-$fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
+
+$fld = $contactFrm->getField('htmlNote');
+$fld->developerTags['col'] = 12;
+$fld = $contactFrm->getField('btn_submit');
+$fld->developerTags['col'] = 12;
+?>
 <div id="body" class="body" role="main">
 
     
