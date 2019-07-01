@@ -94,5 +94,4 @@ class SelProdReview extends MyAppModel
         $orderProduct = FatApp::getDb()->fetch($srch->getResultSet());
         return $orderProduct;
     }
-
 }

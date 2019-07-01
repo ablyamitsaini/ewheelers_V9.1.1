@@ -2272,7 +2272,7 @@ class Orders extends MyAppModel
     }
 
     public static function canSubmitFeedback($userId, $op_order_id, $selprod_id){
-        if(!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)){
+        if (!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)) {
             return false;
         }
         $oFeedbackSrch = new SelProdReviewSearch();
@@ -2282,7 +2282,7 @@ class Orders extends MyAppModel
         $oFeedbackSrch->addCondition('spreview_order_id', '=', $op_order_id);
         $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selprod_id);
         $oFeedbackRs = $oFeedbackSrch->getResultSet();
-        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+        if (!empty(FatApp::getDb()->fetch($oFeedbackRs))) {
             return false;
         }
         return true;

@@ -43,17 +43,69 @@ if ($totReviews) {
     </div>
     <?php } ?>
     <?php if ($totReviews > 0) { ?>
-    <div class="<?php echo ($canSubmitFeedback) ? 'col-md-3' : 'col-md-12 align--center'; ?>">
-        <a href="javascript:void(0);" class="btn btn--secondary btn--primary-border <?php echo ($canSubmitFeedback) ? 'btn--block' : '' ; ?>" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Newest', $siteLangId); ?> </a>
+    <div class="col-md-3 <?php echo ($canSubmitFeedback) ? '' : 'align--center'; ?>">
+        <div class="js-wrap-drop wrap-drop wrap-drop--first">
+            <span><?php echo Labels::getLabel('Lbl_Most_Recent', $siteLangId); ?></span>
+            <ul class="drop">
+                <li class="selected"><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent', $siteLangId); ?></a></li>
+                <li class="selected"><a href="javascript:void(0);" data-sort='most_helpful' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Helpful', $siteLangId); ?></a></li>
+            </ul>
+        </div>
     </div>
     <?php } ?>
-</div>
 <?php } ?>
+</div>
 <div class="listing__all"></div>
 <div id="loadMoreReviewsBtnDiv" class="align--center"></div>
 
 <script>
-    var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId); ?>';
-    var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS', $siteLangId); ?>';
-    $('#itemRatings div.progress__fill').css({'clip':'rect(0px, <?php echo $pixelToFillRight; ?>px, 160px, 0px)'});
+var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId); ?>';
+var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS', $siteLangId); ?>';
+$('#itemRatings div.progress__fill').css({'clip':'rect(0px, <?php echo $pixelToFillRight; ?>px, 160px, 0px)'});
+
+$(document).ready(function(){
+    function DropDown(el) {
+        this.dd = el;
+        this.placeholder = this.dd.children('span');
+        this.opts = this.dd.find('ul.drop li');
+        this.val = '';
+        this.index = -1;
+        this.initEvents();
+    }
+
+    DropDown.prototype = {
+        initEvents: function () {
+            var obj = this;
+            obj.dd.on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).toggleClass('active');
+            });
+            obj.opts.on('click', function () {
+                var opt = $(this);
+                obj.val = opt.text();
+                obj.index = opt.index();
+                obj.placeholder.text(obj.val);
+                opt.siblings().removeClass('selected');
+                opt.filter(':contains("' + obj.val + '")').addClass('selected');
+            }).change();
+        },
+        getValue: function () {
+            return this.val;
+        },
+        getIndex: function () {
+            return this.index;
+        }
+    };
+
+    $(function () {
+        // create new variable for each menu
+        var dd1 = new DropDown($('.js-wrap-drop'));
+        // var dd2 = new DropDown($('#other-gases'));
+        $(document).click(function () {
+            // close menu on document click
+            $('.wrap-drop').removeClass('active');
+        });
+    });
+});
 </script>
