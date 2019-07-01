@@ -54,3 +54,4 @@ Fixes :
 	. 027755 - Manage Seller Approval Form Add Unique Identifier.
 	. 027753 - Exclude content block string from Important instructions page bread crumb.
 	. 027709 - Fixed count issue on search category listing while adding product.
+	. 027465 - Excluded shipping and tax charges from order discounts (Coupons/volume discount).
