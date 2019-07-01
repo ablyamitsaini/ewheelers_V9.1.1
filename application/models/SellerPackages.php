@@ -108,11 +108,11 @@ class SellerPackages extends MyAppModel
             array("spackage_products_allowed","spackage_inventory_allowed","spackage_images_per_product")
         );
         $rs = $srch->getResultSet();
-        $records = array();
         $records = FatApp::getDb()->fetch($rs);
         if (!empty($key)) {
             return $records[$key];
         }
+
         return $records;
     }
 }
