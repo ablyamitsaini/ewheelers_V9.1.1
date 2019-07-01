@@ -700,6 +700,7 @@ class HomeController extends MyAppController
             FatUtility::dieJsonError(strip_tags($message));
         }
         $statesArr = $this->getStates($countryId, 0, true);
+        $states = array();
         foreach ($statesArr as $key => $val) {
             $states[]=array("id"=>$key,'name'=>$val);
         }
