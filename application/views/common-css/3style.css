@@ -1698,6 +1698,9 @@ input:checked + .slider:before {
 	justify-content: flex-end;
 }
 
+.breadcrumbs.breadcrumbs--white ul li  { color: #fff;}
+.breadcrumbs.breadcrumbs--white ul li  { color: #fff;}
+.breadcrumbs.breadcrumbs--white ul li:before{ border-color: #fff;}
 .breadcrumbs ul {
 	display: flex;
 	margin: 0;
@@ -3339,7 +3342,8 @@ img {
 }
 
 .products:hover {
-	box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);
+	/*box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);*/
+	border-color: var(--first-color);
 }
 
 .product-listing .products {
@@ -5623,65 +5627,158 @@ span.subheading {
 	text-decoration: underline;
 }
 
-.testimonial-blocks {
-	background: #f7f7f7;
-	margin: 10px 0 50px 0;
-	padding: 25px;
-}
-
-.testimonial-blocks {
-	text-align: right;
-}
-
-.testimonial-blocks .from {
-	padding-inline-end: 50px;
-}
-
-.testimonial-blocks .from .avatar {
-
-	border-radius: 50%;
-	overflow: hidden;
-
-	width: 80px;
-	height: 80px;
-	margin: 0 auto 10px;
+.testimonials-item {
 	display: block;
-}
-
-.testimonial-blocks .from .name {
-	color: #333333;
-	font-weight: 600;
-	display: block;
-	clear: both;
-	text-align: center;
-	font-size: 0.9em;
-}
-
-.testimonial-blocks .from .name span {
-	color: #999999;
-	font-weight: 300;
-	display: block;
-}
-
-.testimonial-blocks .description {
-	color: #333;
-	line-height: 1.9;
-	text-align: left;
 	position: relative;
-	padding-inline-start: 60px;
-	font-size: 0.9em;
-	font-style: italic;
+	margin-bottom: 30px;
 }
 
-.testimonial-blocks .description:before {
+.testimonials-item:hover .user {
+	top: -20px;
+}
+
+.testimonials-item:hover .testimonials-content:before {
+	opacity: 1;
+}
+
+.testimonials-item:hover .testimonials-content .user-name {
+	color: #fff;
+}
+
+.testimonials-item:hover .testimonials-content .txt:before,
+.testimonials-item:hover .testimonials-content .txt:after {
+	opacity: .1;
+}
+
+.testimonials-item:hover .testimonials-content span,
+.testimonials-item:hover .testimonials-content p {
+	color: #C7E5FF !important;
+}
+
+.testimonials-item .user {
+	width: 60px;
+	height: 60px;
+	position: relative;
 	position: absolute;
-	left: 0;
-	top: 0;
-	content: "";
-	background: url(../images/qoute.png) no-repeat 0 0;
+	top: -10px;
+	left: 25px;
+	z-index: 3;
+	-webkit-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	-o-transition: all 0.3s ease 0s;
+	transition: all 0.3s ease 0s;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	overflow: hidden;
+	background: #fff;
+	box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.06);
+}
+
+.testimonials-item .user img {
+	max-width: 100%;
+}
+
+.testimonials-item .testimonials-content {
+	background: #fff;
+	overflow: hidden;
+	box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.06);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	position: relative;
+}
+
+.testimonials-item .testimonials-content:before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background: var(--second-color);
+	opacity: 0;
+	-webkit-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	-o-transition: all 0.3s ease 0s;
+	transition: all 0.3s ease 0s;
+}
+
+.testimonials-item .testimonials-content .user-name {
 	display: block;
-	width: 44px;
-	height: 41px;
+	font-weight: 400;
+	font-size: 16px;
+	color: #3B566E;
+	margin-top: 20px;
+	padding-left: 100px;
+	letter-spacing: 0.69px;
+	margin-bottom: 5px;
+	position: relative;
+	z-index: 3;
+}
+
+.testimonials-item .testimonials-content span {
+	display: block;
+	font-weight: 400;
+	font-size: 14px;
+	color: #6F8BA4;
+	letter-spacing: 0.6px;
+	padding-left: 100px;
+	padding-right: 25px;
+	position: relative;
+	z-index: 3;
+}
+
+.testimonials-item .testimonials-content .txt {
+	position: relative;
+	overflow: hidden;
+}
+
+.testimonials-item .testimonials-content .txt:before {
+	font-family: FontAwesome;
+	content: "\f10d";
+	position: absolute;
+	left: 25px;
+	top: 25px;
+	color: #3B566E;
+	z-index: 1;
+	font-size: 40px;
+	opacity: .4;
+	color: #e1ecf4;
+	-webkit-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	-o-transition: all 0.3s ease 0s;
+	transition: all 0.3s ease 0s;
+}
+
+.testimonials-item .testimonials-content .txt:after {
+	font-family: FontAwesome;
+	content: "\f10e";
+	position: absolute;
+	right: 25px;
+	bottom: 15px;
+	color: #3B566E;
+	z-index: 1;
+	font-size: 40px;
+	opacity: .4;
+	color: #e1ecf4;
+	-webkit-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	-o-transition: all 0.3s ease 0s;
+	transition: all 0.3s ease 0s;
+}
+
+.testimonials-item .testimonials-content .txt p {
+	padding-left: 25px;
+	padding-right: 25px;
+	margin-bottom: 25px;
+	margin-top: 1rem;
+	font-weight: 400;
+	font-size: 14px;
+	letter-spacing: 0.6px;
+	line-height: 26px;
+	position: relative;
+	z-index: 3;
+	max-height: 250px;
 }
 
 /*faqs*/
@@ -9353,7 +9450,7 @@ form.custom-form input[type="submit"] {
 	margin-bottom: 0;
 	opacity: 0.6;
 	font-style: italic;
-	margin-bottom: 20px;
+
 	display: inline-block;
 	width: 100%;
 	/*font-style: italic;*/

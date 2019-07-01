@@ -17,5 +17,5 @@ $catTab = 1; ?>
 				  <path fill="none" d="M10.283,7.712c0,0.161-0.125,0.286-0.285,0.286H3.713c-0.161,0-0.286-0.125-0.286-0.286V7.141
 	c0-0.161,0.125-0.286,0.286-0.286h6.285c0.16,0,0.285,0.125,0.285,0.286V7.712z"/>
 				  </svg> </i> <?php echo $faqCat['faq_count']; ?> <?php echo Labels::getLabel( 'LBL_Questions', $siteLangId)?></a> <br class="clear">
-				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn  btn--primary ripplelink selectedCat"><?php echo Labels::getLabel( 'LBL_View_All_Questions', $siteLangId)?></a> </div>
+				  <a id="<?php echo $faqCat['faqcat_id']; ?>" class="btn  btn--primary btn--sm ripplelink selectedCat"><?php echo Labels::getLabel( 'LBL_View_All_Questions', $siteLangId)?></a> </div>
 <?php } } ?>
