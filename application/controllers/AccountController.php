@@ -1193,12 +1193,20 @@ class AccountController extends LoggedUserController
         $post = $emailFrm->getFormDataFromArray(FatApp::getPostedData());
 
         if (!$emailFrm->validate($post)) {
-            Message::addErrorMessage($emailFrm->getValidationErrors());
+            $message = $emailFrm->getValidationErrors();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($message)));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if ($post['new_email'] != $post['conf_new_email']) {
-            Message::addErrorMessage(Labels::getLabel('MSG_New_email_confirm_email_does_not_match', $this->siteLangId));
+            $message = Labels::getLabel('MSG_New_email_confirm_email_does_not_match', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -1207,19 +1215,31 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
 
         if (!$rs) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $data = FatApp::getDb()->fetch($rs, 'user_id');
 
         if ($data === false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if ($data['credential_password'] != UserAuthentication::encryptPassword($post['current_password'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId));
+            $message = Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -1230,11 +1250,19 @@ class AccountController extends LoggedUserController
         );
 
         if (!$this->userEmailVerification($userObj, $arr)) {
-            Message::addMessage(Labels::getLabel("MSG_ERROR_IN_SENDING_VERFICATION_EMAIL", $this->siteLangId));
+            $message = Labels::getLabel('MSG_ERROR_IN_SENDING_VERFICATION_EMAIL', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $this->set('msg', Labels::getLabel('MSG_CHANGE_EMAIL_REQUEST_SENT_SUCCESSFULLY', $this->siteLangId));
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
