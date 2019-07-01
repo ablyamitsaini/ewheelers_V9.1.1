@@ -950,7 +950,12 @@ class AccountController extends LoggedUserController
                 Message::addErrorMessage();
                 FatUtility::dieJsonError(Message::getHtml($message));
             }
-            $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?'.time());
+
+            if (false ===  MOBILE_APP_API_CALL) {
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?'.time());
+            } else {
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?'.time());
+            }
         }
 
         if ($post['action'] == "avatar") {
@@ -977,7 +982,12 @@ class AccountController extends LoggedUserController
 
             $data = json_decode(stripslashes($post['img_data']));
             CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
-            $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?'.time());
+
+            if (false ===  MOBILE_APP_API_CALL) {
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?'.time());
+            } else {
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?'.time());
+            }
         }
 
         if (true ===  MOBILE_APP_API_CALL) {
