@@ -260,15 +260,31 @@ class CategoryController extends MyAppController
     public function structure()
     {
         $productCategory = new productCategory;
-        $prodSrchObj = new ProductCategorySearch($this->siteLangId);
-        $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, 0, true, false, false, $prodSrchObj, true);
 
-        $categoriesDataArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
+        $prodSrchObj = (true ===  MOBILE_APP_API_CALL ? false : new ProductCategorySearch($this->siteLangId));
 
-        $categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
-        if (empty($categoriesDataArr)) {
-            $categoriesDataArr =  array();
+        $includeChild = true;
+        if (true ===  MOBILE_APP_API_CALL) {
+            $includeChild = false;
         }
+
+        $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, 0, $includeChild, false, false, $prodSrchObj, true);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $categoriesDataArr =  $categoriesArr;
+            foreach ($categoriesDataArr as $key => $value) {
+                $categoriesDataArr[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($value['prodcat_id'] , $this->siteLangId, 'MEDIUM'));
+            }
+        } else {
+            $categoriesDataArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
+
+            $categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
+
+            if (empty($categoriesDataArr)) {
+                $categoriesDataArr =  array();
+            }
+        }
+
         $this->set('categoriesData', $categoriesDataArr);
         $this->_template->render();
     }
