@@ -796,8 +796,10 @@ class AccountController extends LoggedUserController
     public function profileInfo()
     {
         if (true ===  MOBILE_APP_API_CALL) {
-            $this->set('personalInfo', $this->personalInfo());
-            $this->set('bankInfo', $this->bankInfo());
+            $bankInfo = $this->bankInfo();
+            $personalInfo = $this->personalInfo();
+            $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
+            $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
             $this->_template->render();
         }
 
@@ -831,7 +833,9 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $userObj = new User($userId);
         $srch = $userObj->getUserSearchObj();
-        $srch->addMultipleFields(array('u.*'));
+        $srch->addMultipleFields(array('u.*', 'country_name', 'state_name'));
+        $srch->joinTable('tbl_countries_lang', 'LEFT JOIN', 'countrylang_country_id = user_country_id and countrylang_lang_id = ' .$this->siteLangId);
+        $srch->joinTable('tbl_states_lang', 'LEFT JOIN', 'statelang_state_id = user_state_id and statelang_lang_id = ' .$this->siteLangId);
         $rs = $srch->getResultSet();
         $data = FatApp::getDb()->fetch($rs, 'user_id');
         if (true ===  MOBILE_APP_API_CALL) {
@@ -1520,7 +1524,7 @@ class AccountController extends LoggedUserController
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-        
+
         $db = FatApp::getDb();
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
