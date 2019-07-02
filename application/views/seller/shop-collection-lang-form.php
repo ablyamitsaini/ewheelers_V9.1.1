@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="form__subcontent">
+                    <div class="row form__subcontent ">
                         <div class="col-lg-6 col-md-6">
                             <?php
                                 $shopColLangFrm->setFormTagAttribute('class', 'form form--horizontal layout--'.$formLayout);
