@@ -96,7 +96,7 @@ class CategoryController extends MyAppController
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
             'siteLangId'=>$this->siteLangId
         );
-        
+
         $this->set('data', $data);
 
         if (false ===  MOBILE_APP_API_CALL) {
@@ -139,19 +139,19 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 48;
-            $h = 48;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'COLLECTION_PAGE':
+                $w = 48;
+                $h = 48;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -165,19 +165,19 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 250;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'WIDE':
-            $w = 1320;
-            $h = 320;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 250;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'WIDE':
+                $w = 1320;
+                $h = 320;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -275,9 +275,10 @@ class CategoryController extends MyAppController
             $includeChild = false;
         }
 
-        $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, 0, $includeChild, false, false, $prodSrchObj, true);
+        $parentId = FatApp::getPostedData('parentId', FatUtility::VAR_INT, 0);
+        $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $parentId, $includeChild, false, false, $prodSrchObj, true);
 
-        if (true ===  MOBILE_APP_API_CALL) {
+        if (true ===  MOBILE_APP_API_CALL && 0 >= $parentId) {
             $categoriesDataArr =  $categoriesArr;
             foreach ($categoriesDataArr as $key => $value) {
                 $categoriesDataArr[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($value['prodcat_id'] , $this->siteLangId, 'MEDIUM'));
