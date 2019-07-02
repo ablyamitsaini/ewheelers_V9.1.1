@@ -260,9 +260,10 @@ class GuestUserController extends MyAppController
         $facebookEmail = FatApp::getPostedData('email', FatUtility::VAR_STRING, '');
         $userFacebookId = FatApp::getPostedData('id', FatUtility::VAR_STRING, '');
         $user_type = isset($post['type']) ? $post['type'] : 0;
-        $facebookName = trim(FatApp::getPostedData('first_name', FatUtility::VAR_STRING, '').' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
+        $firstName = FatApp::getPostedData('first_name', FatUtility::VAR_STRING, '');
+        $facebookName = trim($firstName.' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
 
-        if (empty($userFacebookId) || 1 > $user_type || empty($facebookName)) {
+        if (empty($userFacebookId) || 1 > $user_type || empty($facebookName) || empty($firstName)) {
             $message = Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
