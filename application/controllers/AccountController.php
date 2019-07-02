@@ -1334,7 +1334,11 @@ class AccountController extends LoggedUserController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $selprod_id = FatUtility::int($post['selprod_id']);
         if (false === $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
+            $message = current($frm->getValidationErrors());
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -1346,7 +1350,11 @@ class AccountController extends LoggedUserController
 
         /* create new List[ */
         if (!$wListObj->save()) {
-            Message::addErrorMessage($wListObj->getError());
+            $message = $wListObj->getError();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $uwlp_uwlist_id = $wListObj->getMainTableRecordId();
@@ -1358,11 +1366,16 @@ class AccountController extends LoggedUserController
             if (!$wListObj->addUpdateListProducts($uwlp_uwlist_id, $selprod_id)) {
                 Message::addMessage($successMsg);
                 $msg = Labels::getLabel('LBL_Error_while_assigning_product_under_selected_list.');
+
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($msg));
+                }
                 Message::addErrorMessage($msg);
                 FatUtility::dieWithError(Message::getHtml());
             }
         }
         /* ] */
+
         //UserWishList
         $srch = UserWishList::getSearchObject($loggedUserId);
         $srch->joinTable(UserWishList::DB_TBL_LIST_PRODUCTS, 'LEFT OUTER JOIN', 'uwlist_id = uwlp_uwlist_id');
@@ -1380,6 +1393,9 @@ class AccountController extends LoggedUserController
         $this->set('productIsInAnyList', $productIsInAnyList);
         $this->set('wish_list_id', $uwlp_uwlist_id);
         $this->set('msg', $successMsg);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
