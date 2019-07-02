@@ -123,7 +123,7 @@ class ProductsController extends MyAppController
         $prodSrchObj = new ProductSearch($this->siteLangId);
         $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
-        $prodSrchObj->joinSellerSubscription();
+        $prodSrchObj->joinSellerSubscription(0, false, true);
         $prodSrchObj->addSubscriptionValidCondition();
 
         $categoryId = 0;
@@ -136,6 +136,17 @@ class ProductsController extends MyAppController
         $shopId = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
         if (0 < $shopId) {
             $prodSrchObj->addShopIdCondition($shopId);
+        }
+
+        $brandId = FatApp::getPostedData('brand_id', FatUtility::VAR_INT, 0);
+        if (0 < $brandId) {
+            $prodSrchObj->addBrandCondition($brandId);
+        }
+
+        $keyword = '';
+        if (array_key_exists('keyword', $headerFormParamsAssocArr)) {
+            $keyword = $headerFormParamsAssocArr['keyword'];
+            $prodSrchObj->addKeywordSearch($keyword);
         }
 
         /* Categories Data[ */
@@ -229,12 +240,12 @@ class ProductsController extends MyAppController
         $conditionSrch->addGroupBy('selprod_condition');
         $conditionSrch->addOrder('selprod_condition');
         $conditionSrch->addMultipleFields(array('selprod_condition'));
-
         /* if needs to show product counts under any condition[ */
         //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
         /* ] */
         $conditionRs = $conditionSrch->getResultSet();
         $conditionsArr = $db->fetchAll($conditionRs);
+
         /* ] */
 
         /* Price Filters[ */
@@ -270,6 +281,15 @@ class ProductsController extends MyAppController
         }
 
         /* ] */
+        /* Price Filters[ */
+        $availabilitySrch = clone $prodSrchObj;
+        $availabilitySrch->addGroupBy('in_stock');
+        $availabilitySrch->addMultipleFields(array('if(selprod_stock > 0,1,0) as in_stock'));
+        $availabilityRs = $availabilitySrch->getResultSet();
+        $availabilityArr = $db->fetchAll($availabilityRs);
+        /*] */
+
+
         $optionValueCheckedArr = array();
         if (array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
@@ -323,6 +343,7 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
+        $this->set('availabilityArr', $availabilityArr);
         echo $this->_template->render(false, false, 'products/filters.php', true);
         exit;
     }
@@ -2026,7 +2047,7 @@ class ProductsController extends MyAppController
         if ($pageSize) {
             $srch->setPageSize($pageSize);
         }
-
+        //echo $srch->getQuery();exit;
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
