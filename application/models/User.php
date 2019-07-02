@@ -427,10 +427,11 @@ class User extends MyAppModel
 
         $rs = $srch->getResultSet();
         $record = FatApp::getDb()->fetch($rs);
+
         if (!empty($record)) {
-            if (!empty($record['credential_password'])) {
-                unset($record['credential_password']);
-            }
+            // if (!empty($record['credential_password'])) {
+            //     unset($record['credential_password']);
+            // }
             return $record;
         }
         return false;
