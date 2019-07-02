@@ -10,7 +10,7 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
     <?php if ($showTotalBalanceAvailableDiv) { ?>
         <div class="col-lg-8 col-md-12 mb-3 mb-md-0 mb-sm-0 mt-4">
             <div class="balancebox">
-               
+
                     <div class="credits-number">
                         <ul>
                             <?php if ($userTotalWalletBalance != $userWalletBalance) { ?>
@@ -18,7 +18,7 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
                                 <span class="total"><?php echo Labels::getLabel('LBL_Wallet_Balance', $siteLangId); ?>: </span>
                                 <span class="total-numbers"><strong><?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance); ?></strong></span>
                                 <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                   
+
                                     <small>
                                         <?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?>
                                         <?php echo CommonHelper::displayMoneyFormat($userTotalWalletBalance, true, true); ?>
@@ -26,8 +26,9 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
                                 <?php } ?>
                             </li>
                             <?php } ?>
-                            <?php if ($promotionWalletToBeCharged) { ?>
+                            <?php if ($promotionWalletToBeCharged || $withdrawlRequestAmount) { ?>
                             <li>
+                                <?php if ($promotionWalletToBeCharged) { ?>
                                 <span class="total"><?php echo Labels::getLabel('LBL_Pending_Promotions_Charges', $siteLangId); ?>:</span>
                                 <span class="total-numbers"> <strong>
                                     <?php echo CommonHelper::displayMoneyFormat($promotionWalletToBeCharged); ?></strong></span>
@@ -37,21 +38,20 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
                                             echo CommonHelper::displayMoneyFormat($promotionWalletToBeCharged, true, true); ?>
                                         </small>
                                     <?php } ?>
-                            </li>
-                            <?php } ?>
-                            <?php if ($withdrawlRequestAmount) { ?>
-                            <li>
-                                <span class="total"><?php echo Labels::getLabel('LBL_Pending_Withdrawl_Requests', $siteLangId); ?>:</span>
-                                <span class="total-numbers"> <strong>
-                                <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount); ?></strong></span>
-                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                    <small><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount, true, true); ?></small>
+                                <?php } ?>
+                                <?php if ($withdrawlRequestAmount) { ?>
+                                    <span class="total"><?php echo Labels::getLabel('LBL_Pending_Withdrawl_Requests', $siteLangId); ?>:</span>
+                                    <span class="total-numbers"> <strong>
+                                    <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount); ?></strong></span>
+                                    <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                                        <small><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($withdrawlRequestAmount, true, true); ?></small>
+                                    <?php } ?>
                                 <?php } ?>
                             </li>
                             <?php } ?>
                         </ul>
                     </div>
-                
+
             </div>
         </div>
     <?php } ?>
@@ -63,7 +63,7 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
                 <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
                     <small class="d-block"><?php echo Labels::getLabel('LBL_Approx.', $siteLangId); ?> <?php echo CommonHelper::displayMoneyFormat($userWalletBalance, true, true); ?></small>
                 <?php } ?>
-                
+
                 <a href="javascript:void(0)" onClick="withdrawalReqForm()" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Request_Withdrawal', $siteLangId); ?></a>
         </div>
     </div>
