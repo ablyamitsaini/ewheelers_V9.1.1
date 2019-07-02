@@ -833,7 +833,7 @@ class Cart extends FatModel
         //$orderPaymentGatewayCharges = $netTotalAfterDiscount - $orderCreditsCharge;
 
         $totalDiscountAmount = (isset($cartDiscounts['coupon_discount_total'])) ? $cartDiscounts['coupon_discount_total'] : 0;
-        $orderNetAmount = ($cartTotal  + $shippingTotal  + $cartTaxTotal)  - $totalDiscountAmount - $cartVolumeDiscount ;
+        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
 
         $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
@@ -950,8 +950,10 @@ class Cart extends FatModel
                 $couponInfo['coupon_discount_value'] = min($couponInfo['coupon_discount_value'], $subTotal);
             }
 
+            $cartVolumeDiscount = 0;
             foreach ($cartProducts as $cartProduct) {
                 $discount = 0;
+                $cartVolumeDiscount += $cartProduct['volume_discount_total'];
                 if (empty($couponInfo['grouped_coupon_products']) || $this->cart_user_id == $couponInfo['grouped_coupon_users']) {
                     $status = true;
                 } else {
@@ -1028,7 +1030,7 @@ class Cart extends FatModel
                 }
             }
             /*]*/
-
+            $selProdDiscountTotal = $selProdDiscountTotal - $cartVolumeDiscount;
             $labelArr = array(
                 'coupon_label'=>$couponInfo["coupon_title"],
                 'coupon_id'=>$couponInfo["coupon_id"],

@@ -1409,11 +1409,12 @@ class BuyerController extends BuyerBaseController
 
         $user_id = UserAuthentication::getLoggedUserId();
         $srch = new OrderProductSearch($this->siteLangId, true);
+        $srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT, 'cvd');
         $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->addCondition('op_id', '=', $op_id);
         $srch->addOrder("op_id", "DESC");
-        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type'));
+        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type','op_unit_price','opcharge_amount'));
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
@@ -1427,6 +1428,21 @@ class BuyerController extends BuyerBaseController
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        if (abs($opDetail['opcharge_amount']) > 0) {
+            $orrequestQty = FatUtility::int($post['orrequest_qty']);
+            $priceWithoutVolumeDiscount = $opDetail['op_qty']*$opDetail['op_unit_price'];
+
+            $volumeDiscountPerItem = abs($opDetail['opcharge_amount'])/$opDetail['op_qty'];
+            $amtChargeBackToBuyer = $orrequestQty*$volumeDiscountPerItem;
+
+            $pricePerItemCharged = $opDetail['op_unit_price'] - $volumeDiscountPerItem;
+
+            if ($amtChargeBackToBuyer > ($opDetail['op_unit_price'] - $volumeDiscountPerItem)*abs($opDetail['op_qty'] - $orrequestQty)) {
+                Message::addErrorMessage(Labels::getLabel('MSG_Order_not_eligible_for_partial_qty_refund', $this->siteLangId));
+                FatUtility::dieJsonError(Message::getHtml());
+            }
         }
 
         if ($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL) {
