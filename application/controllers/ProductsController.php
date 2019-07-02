@@ -627,7 +627,7 @@ class ProductsController extends MyAppController
         $this->set('product', $product);
         $this->set('shop_rating', $shop_rating);
         $this->set('shop', $shop);
-		$this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
+        $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
         $this->set('productImagesArr', $productGroupImages);
         //    $this->set( 'productGroups', $productGroups );
         $frmReviewSearch = $this->getReviewSearchForm(5);
@@ -763,27 +763,27 @@ class ProductsController extends MyAppController
         $dateToEquate = date('Y-m-d');
 
         $recommendedProductsQuery = "(select rec_product_id , weightage from
-							(
-								SELECT ppr_recommended_product_id as rec_product_id , ppr_weightage as weightage from tbl_product_product_recommendation
-								where ppr_viewing_product_id = $productId order by ppr_weightage desc limit 5
-							) as set1
-							union
-							select rec_product_id , weightage from
-							(
-								select tpr_product_id  as rec_product_id , if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage from
-								(
-									select * from tbl_product_to_tags where ptt_product_id = $productId
-								) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
-								order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
-							) as set2
-							";
+                            (
+                                SELECT ppr_recommended_product_id as rec_product_id , ppr_weightage as weightage from tbl_product_product_recommendation
+                                where ppr_viewing_product_id = $productId order by ppr_weightage desc limit 5
+                            ) as set1
+                            union
+                            select rec_product_id , weightage from
+                            (
+                                select tpr_product_id  as rec_product_id , if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage from
+                                (
+                                    select * from tbl_product_to_tags where ptt_product_id = $productId
+                                ) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
+                                order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
+                            ) as set2
+                            ";
         if (0 < $userId) {
             $recommendedProductsQuery.= " union
-							select rec_product_id , weightage from
-							(
-								SELECT upr_product_id as rec_product_id , upr_weightage as weightage from tbl_user_product_recommendation
-								where upr_user_id = $userId order by upr_weightage desc limit 5
-							) as set3 " ;
+                            select rec_product_id , weightage from
+                            (
+                                SELECT upr_product_id as rec_product_id , upr_weightage as weightage from tbl_user_product_recommendation
+                                where upr_user_id = $userId order by upr_weightage desc limit 5
+                            ) as set3 " ;
         }
 
         $recommendedProductsQuery.= ")";
@@ -843,7 +843,7 @@ class ProductsController extends MyAppController
         return $socialShareContent;
     }
 
-	public function testView($selprod_id = 0)
+    public function testView($selprod_id = 0)
     {
         $productImagesArr = array();
         $selprod_id = FatUtility::int($selprod_id);
@@ -1159,27 +1159,27 @@ class ProductsController extends MyAppController
 
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
         $recommendedProductsQuery = "(select rec_product_id , weightage from
-							(
-								SELECT ppr_recommended_product_id as rec_product_id , ppr_weightage as weightage from tbl_product_product_recommendation
-								where ppr_viewing_product_id = $productId order by ppr_weightage desc limit 5
-							) as set1
-							union
-							select rec_product_id , weightage from
-							(
-								select tpr_product_id  as rec_product_id , if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage from
-								(
-									select * from tbl_product_to_tags where ptt_product_id = $productId
-								) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
-								order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
-							) as set2
-							";
+                            (
+                                SELECT ppr_recommended_product_id as rec_product_id , ppr_weightage as weightage from tbl_product_product_recommendation
+                                where ppr_viewing_product_id = $productId order by ppr_weightage desc limit 5
+                            ) as set1
+                            union
+                            select rec_product_id , weightage from
+                            (
+                                select tpr_product_id  as rec_product_id , if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage from
+                                (
+                                    select * from tbl_product_to_tags where ptt_product_id = $productId
+                                ) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
+                                order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
+                            ) as set2
+                            ";
         if ($loggedUserId) {
             $recommendedProductsQuery.= " union
-							select rec_product_id , weightage from
-							(
-								SELECT upr_product_id as rec_product_id , upr_weightage as weightage from tbl_user_product_recommendation
-								where upr_user_id = $loggedUserId order by upr_weightage desc limit 5
-							) as set3 " ;
+                            select rec_product_id , weightage from
+                            (
+                                SELECT upr_product_id as rec_product_id , upr_weightage as weightage from tbl_user_product_recommendation
+                                where upr_user_id = $loggedUserId order by upr_weightage desc limit 5
+                            ) as set3 " ;
         }
 
         $recommendedProductsQuery.= ")";
@@ -1306,11 +1306,11 @@ class ProductsController extends MyAppController
             $srch->doNotCalculateRecords();
             $srch->addDirectCondition(
                 '((CASE
-					WHEN promotion_duration='.Promotion::DAILY.' THEN promotion_budget > COALESCE(daily_cost,0)
-					WHEN promotion_duration='.Promotion::WEEKLY.' THEN promotion_budget > COALESCE(weekly_cost,0)
-					WHEN promotion_duration='.Promotion::MONTHLY.' THEN promotion_budget > COALESCE(monthly_cost,0)
-					WHEN promotion_duration='.Promotion::DURATION_NOT_AVAILABALE.' THEN promotion_budget = -1
-				  END ) )'
+                    WHEN promotion_duration='.Promotion::DAILY.' THEN promotion_budget > COALESCE(daily_cost,0)
+                    WHEN promotion_duration='.Promotion::WEEKLY.' THEN promotion_budget > COALESCE(weekly_cost,0)
+                    WHEN promotion_duration='.Promotion::MONTHLY.' THEN promotion_budget > COALESCE(monthly_cost,0)
+                    WHEN promotion_duration='.Promotion::DURATION_NOT_AVAILABALE.' THEN promotion_budget = -1
+                  END ) )'
             );
             $srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id' ,'userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration'));
             $rs = $srch->getResultSet();

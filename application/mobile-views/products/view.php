@@ -5,6 +5,14 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
+foreach ($upsellProducts as $index => $btProduct) {
+    $upsellProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($btProduct['product_id'], "THUMB", $btProduct['selprod_id'], 0, $siteLangId));
+}
+
+foreach ($relatedProductsRs as $index => $rProduct) {
+    $relatedProductsRs[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($rProduct['product_id'], "THUMB", $rProduct['selprod_id'], 0, $siteLangId));
+}
+
 $data = array(
     'reviews' => $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
@@ -12,14 +20,14 @@ $data = array(
     'shippingDetails' => $shippingDetails,
     'optionRows' => $optionRows,
     'productSpecifications' => $productSpecifications,
-    'upsellProducts' => $upsellProducts,
-    'relatedProductsRs' => $relatedProductsRs,
+    'buyTogether' => $upsellProducts,
+    'relatedProducts' => array_values($relatedProductsRs),
     'banners' => $banners,
     'product' => $product,
     'shop_rating' => $shop_rating,
     'shop' => $shop,
     'shopTotalReviews' => $shopTotalReviews,
-    'productImagesArr' => $productImagesArr,
+    'productImagesArr' => array_values($productImagesArr),
     'pollQuest' => $pollQuest,
     'volumeDiscountRows' => $volumeDiscountRows,
     'recommendedProducts' => $recommendedProducts,
