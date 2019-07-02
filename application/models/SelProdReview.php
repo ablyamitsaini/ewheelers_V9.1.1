@@ -70,11 +70,8 @@ class SelProdReview extends MyAppModel
         return $record['numOfReviews'];
     }
 
-    public static function getProductOrderId($product_id)
+    public static function getProductOrderId($product_id, $loggedUserId)
     {
-        UserAuthentication::checkLogin();
-        $loggedUserId = UserAuthentication::getLoggedUserId();
-
         $selProdSrch = SellerProduct::getSearchObject(0);
         $selProdSrch->addCondition('selprod_product_id', '= ', $product_id);
         $selProdSrch->addCondition('selprod_active', '= ', applicationConstants::ACTIVE);

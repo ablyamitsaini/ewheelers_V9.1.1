@@ -378,7 +378,9 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 
                                         </div>
                                         <div class="col-auto">
-                                            <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
+                                            <?php if (!UserAuthentication::isUserLogged() || (UserAuthentication::isUserLogged() && ((User::isBuyer()) || (User::isSeller() )))) { ?>
+                                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
+                                            <?php }?>
                                             <?php if (count($product['moreSellersArr'])>0) { ?>
                                                 <a href="<?php echo CommonHelper::generateUrl('products', 'sellers', array($product['selprod_id']));?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></a>
                                             <?php } ?>
