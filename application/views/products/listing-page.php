@@ -32,14 +32,14 @@ if (!empty($category['banner']) || !empty($category['prodcat_description']) || (
 <?php } ?>
 <?php if(isset($pageTitle)) { ?>
 <section class="bg--second pt-3 pb-3">
-    <div class="container">	
+    <div class="container">
 		<div class="section-head section--white--head justify-content-center mb-0">
             <div class="section__heading">
                 <h2 class="mb-0"><?php echo $pageTitle; ?></h2>
             </div>
-			
+
         </div>
-		
+
 	</div>
 </section>
 <?php }?>
@@ -124,10 +124,9 @@ if (!empty($category['banner']) || !empty($category['prodcat_description']) || (
                                 <a href="<?php echo CommonHelper::generateUrl('Shops', 'ReportSpam', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Report_Spam', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#report"></use>
                                         </svg></i></a>
-
-                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Send_Message', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg">
-                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use>
-                                        </svg></i></a>
+                                <?php if (!UserAuthentication::isUserLogged() || (UserAuthentication::isUserLogged() && ((User::isBuyer()) || (User::isSeller() )))) { ?>
+                                    <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'])); ?>"  title="<?php echo Labels::getLabel('Lbl_Send_Message', $siteLangId); ?>" class="btn btn--primary btn--sm"><i class="icn"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#send-msg"></use></svg></i></a>
+                                <?php } ?>
                             <?php } ?>
                         </div>
                     </div>

@@ -111,7 +111,7 @@ $(document).ready(function() {
                             $(document).trigger('close.mbsmessage');
                             $.systemMessage(ans.msg, 'alert--danger');
                         }
-                        
+
                         if (typeof ans.CSVfileUrl !== 'undefined') {
                             location.href = ans.CSVfileUrl;
                         }
@@ -177,14 +177,16 @@ $(document).ready(function() {
         });
     };
 
-    searchFiles = function(){
+    searchFiles = function(form){
 		if( runningAjaxReq == true ){
 			return;
 		}
 		runningAjaxReq = true;
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
 		var data = '';
-
+		if (form) {
+			data = fcom.frmData(form);
+		}
 		/*]*/
 		var dv = $('#listing');
 		$(dv).html( fcom.getLoader() );
@@ -212,6 +214,15 @@ $(document).ready(function() {
 	        });
 		}
     };
+
+    goToSearchPage = function(page) {
+		if(typeof page==undefined || page == null){
+			page =1;
+		}
+		var frm = document.frmSearchPaging;
+		$(frm.page).val(page);
+		searchFiles(frm);
+	};
 
 })();
 
