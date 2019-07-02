@@ -40,7 +40,7 @@ class ReviewsController extends MyAppController
         $this->set('reviews', $reviews);
 
         $canSubmitFeedback = true;
-        $orderProduct = SelProdReview::getProductOrderId($product['product_id']);
+        $orderProduct = SelProdReview::getProductOrderId($product['product_id'], $loggedUserId);
         if (!Orders::canSubmitFeedback($loggedUserId, $orderProduct['op_order_id'], $selprod_id)) {
             $canSubmitFeedback = false;
         }
@@ -453,7 +453,11 @@ class ReviewsController extends MyAppController
         if (!$product_id) {
             FatUtility::exitWithErrorCode(404);
         }
-        $orderProduct = SelProdReview::getProductOrderId($product_id);
+        $loggedUserId = 0;
+        if (UserAuthentication::isUserLogged()) {
+            $loggedUserId = UserAuthentication::getLoggedUserId();
+        }
+        $orderProduct = SelProdReview::getProductOrderId($product_id, $loggedUserId);
         if (empty($orderProduct)) {
             Message::addErrorMessage(Labels::getLabel('Msg_Review_can_be_posted_on_bought_product', $this->siteLangId));
             CommonHelper::redirectUserReferer();

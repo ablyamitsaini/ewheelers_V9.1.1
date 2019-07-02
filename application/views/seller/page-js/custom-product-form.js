@@ -51,12 +51,15 @@
 			$.mbsmessage.close();
 			if(ans.structure != ''){
 				$('.slick-track').append(ans.structure);
-
 				$('#categories-js .slick-prev').remove();
 				$('#categories-js .slick-next').remove();
 				$('.select-categories-slider-js').slick('reinit');
 				if(blockCount > 2){
 					$('.select-categories-slider-js').slick("slickNext");
+				}
+				if( $('.box-categories ul').length == 1){
+					$('.slick-next').css('pointer-events', 'none');
+					$('.slick-next').addClass('slick-disabled');
 				}
 			}
 			prodCatId = ans.prodcat_id;

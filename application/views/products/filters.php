@@ -191,7 +191,7 @@ if (isset($prodcat_code)) {
 
 
 <!--Brand Filters[ -->
-<?php if (isset($brandsArr) && $brandsArr) {
+<?php if (isset($brandsArr) && count($brandsArr) > 1) {
       $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array(); ?>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
 <div class="scrollbar-filters" id="scrollbar-filters">
@@ -251,7 +251,7 @@ if (isset($prodcat_code)) {
 
     <!--Condition Filters[ -->
 
-        <?php if (isset($conditionsArr) && $conditionsArr) {
+        <?php if (isset($conditionsArr) && count($conditionsArr) > 1) {
             $conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array(); ?>
         <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
         <div>
@@ -274,7 +274,9 @@ if (isset($prodcat_code)) {
         <!-- ] -->
 
         <!--Availability Filters[ -->
-        <?php $availability = isset($availability)?$availability:0;?>
+        <?php
+        if(isset($availabilityArr) && count($availabilityArr) > 1){
+        $availability = isset($availability)?$availability:0;?>
         <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
         <div class="selected-filters toggle-target">
             <ul class="listing--vertical listing--vertical-chcek">
@@ -283,6 +285,7 @@ if (isset($prodcat_code)) {
         }?>><i class="input-helper"></i><?php echo Labels::getLabel('LBL_Exclude_out_of_stock', $siteLangId); ?> </label></li>
             </ul>
         </div>
+    <?php }?>
         <!-- ] -->
 
 
