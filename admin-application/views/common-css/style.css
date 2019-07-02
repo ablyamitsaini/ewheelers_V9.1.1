@@ -4326,9 +4326,10 @@ fieldset[disabled] .field_control.disabled {
 }
 
 .web_form input[type="file"] {
-	height: auto;
-	padding: 6px;
-	min-height: 40px;
+	height: 38px;
+	padding: 0;
+	/*min-height: 40px;*/
+	line-height: 30px;
 }
 
 .filefield {
