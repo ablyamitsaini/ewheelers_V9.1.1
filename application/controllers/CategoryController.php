@@ -269,28 +269,30 @@ class CategoryController extends MyAppController
         $productCategory = new productCategory;
 
         $prodSrchObj = (true ===  MOBILE_APP_API_CALL ? false : new ProductCategorySearch($this->siteLangId));
-
+        $parentId = FatApp::getPostedData('parentId', FatUtility::VAR_INT, 0);
         $includeChild = true;
-        if (true ===  MOBILE_APP_API_CALL) {
+        if (true ===  MOBILE_APP_API_CALL && 0 == $parentId) {
             $includeChild = false;
         }
 
-        $parentId = FatApp::getPostedData('parentId', FatUtility::VAR_INT, 0);
         $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $parentId, $includeChild, false, false, $prodSrchObj, true);
 
-        if (true ===  MOBILE_APP_API_CALL && 0 >= $parentId) {
-            $categoriesDataArr =  $categoriesArr;
+        $categoriesDataArr =  $categoriesArr;
+
+        if (true ===  MOBILE_APP_API_CALL && 0 == $parentId) {
             foreach ($categoriesDataArr as $key => $value) {
                 $categoriesDataArr[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($value['prodcat_id'] , $this->siteLangId, 'MEDIUM'));
             }
         } else {
-            $categoriesDataArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
-
-            $categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
-
-            if (empty($categoriesDataArr)) {
-                $categoriesDataArr =  array();
+            if (false ===  MOBILE_APP_API_CALL) {
+                $categoriesDataArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
             }
+        }
+
+        $categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
+
+        if (empty($categoriesDataArr)) {
+            $categoriesDataArr =  array();
         }
 
         $this->set('categoriesData', $categoriesDataArr);
