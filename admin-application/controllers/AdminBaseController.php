@@ -457,7 +457,7 @@ class AdminBaseController extends FatController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $langId), 'shipping_country');
 
         $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $langId), 'ps_free', 1);
-        $frm->addHtml('', '', '<table id="tab_shipping"></table>');
+        $frm->addHtml('', '', '<table id="tab_shipping"></table><div class="gap"></div>');
 
         $frm->addHiddenField('', 'ps_from_country_id');
         $frm->addHiddenField('', 'product_id');
