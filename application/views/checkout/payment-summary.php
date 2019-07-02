@@ -76,7 +76,7 @@
                                             <p><?php echo Labels::getLabel('LBL_Amount_in_your_wallet', $siteLangId); ?></p>
                                             <h5><?php echo CommonHelper::displayMoneyFormat($userWalletBalance); ?></h5>
                                         </div>
-                                        <p>
+                                        <p class="note">
                                             <i>
                                                 <?php echo Labels::getLabel('LBL_Remaining_wallet_balance', $siteLangId);
                                                 $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);

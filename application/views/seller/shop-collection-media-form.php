@@ -10,7 +10,7 @@
         <div class="content-header-left col-md-auto"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Shop_Collections', $siteLangId); ?></h5></div>
         <div class="content-header-right col-auto">
             <div class="form__group">
-                <a href="javascript:void(0)" onClick="shopCollections(this)" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_Back_to_Collections', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="shopCollections(this)" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Collections', $siteLangId);?></a>
             </div>
         </div>
     </div>

@@ -1,10 +1,9 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
-	<div class="top-space">
+	<div class="section">
 	<div class="container">
        <!-- <div class="row"> -->           
-               <div class="panel panel--centered">
-                   <div class="box box--white">
+               <div class="">                   
                        <div class="message message--success align--center">
                            <i class="fa fa-check-circle"></i>
                            <h2><?php echo Labels::getLabel('LBL_Congratulations',$siteLangId);?></h2>
@@ -13,7 +12,7 @@
 						   <?php }?>
                            <span class="gap"></span>
                        </div>
-                   </div>
+                    
                </div>
 
         <!-- </div> -->

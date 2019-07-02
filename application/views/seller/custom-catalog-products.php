@@ -60,7 +60,7 @@
                 <div class="col-lg-12">
                     <div class="cards">
 
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content pt-2 pl-4 pr-4 pb-4">
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
