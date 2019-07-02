@@ -233,7 +233,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th colspan="2" width="60%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
@@ -325,7 +325,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th><?php echo Labels::getLabel('LBL_Txn._Id', $siteLangId);?></th>
@@ -389,7 +389,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th width="60%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
@@ -469,7 +469,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th width="40%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>

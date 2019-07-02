@@ -9,22 +9,14 @@ $variables = array('siteLangId'=>$siteLangId,'action'=>$action);
 $this->includeTemplate('import-export/_partial/top-navigation.php', $variables, false); ?>
 
 <div class="content-body">
-    <div class="replaced">
+	<div class="replaced">
         <?php echo $frm->getFormHtml();  ?>
-    </div>
-    <span class="gap"></span><span class="gap"></span>
-    <div class="cards">
-        <div class="cards-header p-4">
-            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Uploaded_Media_Directory_List', $siteLangId); ?></h5>
-        </div>
-        <div class="cards-content pl-4 pr-4 ">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $siteLangId); ?></div>
-                    <span class="gap"></span>
-                </div>
-            </div>
-        </div>
-        <span class="gap"></span>
-    </div>
+    </div> 
+	<h6 class=""><?php echo Labels::getLabel('LBL_Uploaded_Media_Directory_List', $siteLangId); ?></h6>
+	<div class="row">
+		<div class="col-lg-12">
+			<div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $siteLangId); ?></div>
+			<span class="gap"></span>
+		</div>
+	</div>
 </div>

@@ -4433,7 +4433,7 @@ img {
 }
 
 .ftshops .ftshops_location {
-	color: rgba(255, 255, 255, 0.5);
+	color: var(--txt-color-light);
 	font-size: 0.9em;
 
 }
@@ -5927,6 +5927,9 @@ span.subheading {
 	padding: 10px;
 	border-radius: 4px;
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .box--offer .offer__box {
@@ -5949,12 +5952,12 @@ span.subheading {
 .box--offer .offer__logo {
 	width: 80px;
 	/* height: 2.5rem; */
-	margin: 10px auto 0;
-	position: absolute;
+	margin:0 auto ;
+	/*position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
-	bottom: 0;
+	bottom: 0;	*/
 	display: block;
 }
 
@@ -7091,12 +7094,14 @@ body.is--dashboard {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	
 }
 
 .actions li a:hover {
 	background: var(--first-color);
 	border-color: var(--first-color);
 	color: #fff;
+	text-decoration: none !important;
 }
 
 .actions--large li a {
@@ -7989,6 +7994,7 @@ body.is--dashboard {
 	background: #f5f5f5;
 	border-radius: 1px;
 	padding: 25px;
+	margin-bottom: 1rem;
 }
 
 .preview h4 {
@@ -13307,7 +13313,7 @@ main.main {
 
 .payment_methods_list li {
 	text-align: center;
-	margin: 0.5rem 0;
+	margin: 0; margin-bottom: 0.5rem;
 	width: 100%;
 	display: block;
 	position: relative;
@@ -13349,26 +13355,32 @@ main.main {
 .payment_methods_list span {
 	flex: 1;
 	text-align: left;
-	display: block;
-
-	padding-bottom: 1rem;
+	display: block;	 
 	font-size: 0.875rem;
 }
 
 .payment_methods_list .payment-box {
-	margin-inline-start: 3rem;
+	margin-inline-start:30px;
+	padding: 1rem 0;
+	display: flex;
+	align-items: center;
 
 }
 
 .payment_methods_list .payment-icn {
-	width: 24px;
-	height: 24px;
+	width: 40px;
+	height: 40px;
 	display: block;
 	overflow: hidden;
-	max-width: 30px;
-	margin: 0.6rem 0;
+	max-width: 40px;
+	margin:0 0.6rem;
 }
 
+.payment-from{background: #fff;
+
+border-radius: 4px;
+
+border: solid 1px var(--border-color); padding: 2rem;}
 
 
 .payment-here {}
@@ -13625,10 +13637,9 @@ main.main {
 .order-summary {
 	position: -webkit-sticky;
 	position: sticky;
-
 	background-color: #fff;
 	border-radius: 4px;
-	margin-top: 52px;
+	margin-top: 63px;
 }
 
 .order-summary .divider {
@@ -14680,6 +14691,8 @@ main.main {
 .wallet {
 	margin: 1rem 0;
 }
+.wallet ul{ display: flex; justify-content: space-between;}
+.wallet ul li{ flex: 1; padding-inline-end:1rem; }
 
 .order-table tr {
 	border-bottom: none;

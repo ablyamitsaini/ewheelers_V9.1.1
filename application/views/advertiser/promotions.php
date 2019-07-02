@@ -78,15 +78,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="gap"></div>
+                
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="cards">
-                    <div class="cards-header p-4">
-                    </div>
-                    <div class="cards-content pl-4 pr-4 ">
+                <div class="cards">                    
+                    <div class="cards-content pt-2 pl-4 pr-4 ">
                         <div id="listing">
                             <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                         </div>

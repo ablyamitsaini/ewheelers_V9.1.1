@@ -109,7 +109,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                             <?php } ?> </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th colspan="2" width="70%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
@@ -199,7 +199,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                             <div class="action"> <?php if (count($offers)>0) { ?> <a href="<?php echo CommonHelper::generateUrl('buyer', 'offers');?>" class="link"><?php echo Labels::getLabel('Lbl_View_All', $siteLangId);?></a> <?php }?> </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th colspan="2" width="60%"><?php echo Labels::getLabel('LBL_Offer_Particulars', $siteLangId);?></th>
@@ -245,7 +245,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                             </div> <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th width="60%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
@@ -314,7 +314,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                             </div> <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable ">
                                 <tbody>
                                     <tr class="">
                                         <th width="40%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>

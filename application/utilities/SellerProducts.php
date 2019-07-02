@@ -1600,10 +1600,10 @@ trait SellerProducts
         $frm = new Form('frmLinks', array('id'=>'frmLinks'));
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Buy_Together_Products', $this->siteLangId), 'products_buy_together');
-        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list--vertical" id="buy-together-products"></ul></div></div>';
+        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list-vertical" id="buy-together-products"></ul></div></div>';
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Related_Products', $this->siteLangId), 'products_related');
-        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list--vertical" id="related-products"></ul></div></div>';
+        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list-vertical" id="related-products"></ul></div></div>';
 
         $frm->addHiddenField('', 'selprod_id');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel("LBL_Save_Changes", $this->siteLangId));
