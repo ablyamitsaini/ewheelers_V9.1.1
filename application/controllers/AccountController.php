@@ -1137,6 +1137,17 @@ class AccountController extends LoggedUserController
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+
+        if ((string)$accountNumber != $post['ub_account_number']) {
+            $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
 
         $userObj = new User($userId);
         if (!$userObj->updateBankInfo($post)) {
@@ -2568,8 +2579,7 @@ class AccountController extends LoggedUserController
         $frm->addRequiredField(Labels::getLabel('M_Bank_Name', $this->siteLangId), 'ub_bank_name', '');
         $frm->addRequiredField(Labels::getLabel('M_Account_Holder_Name', $this->siteLangId), 'ub_account_holder_name', '');
         $fld = $frm->addRequiredField(Labels::getLabel('M_Account_Number', $this->siteLangId), 'ub_account_number', '');
-        $fld->requirements()->setInt();
-        $fld->requirements()->setPositive();
+        $fld->requirement->setRequired(true);
 
         $ifsc = $frm->addRequiredField(Labels::getLabel('M_IFSC_Swift_Code', $this->siteLangId), 'ub_ifsc_swift_code', '');
         $ifsc->requirements()->setRegularExpressionToValidate(ValidateElement::USERNAME_REGEX);
