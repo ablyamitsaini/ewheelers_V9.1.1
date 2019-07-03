@@ -580,6 +580,19 @@ class BuyerController extends BuyerBaseController
         $this->_template->render(true, false);
     }
 
+    public function orderCancellationReasons()
+    {
+        $orderCancelReasonsArr = OrderCancelReason::getOrderCancelReasonArr($this->siteLangId);
+        $count = 0;
+        foreach ($orderCancelReasonsArr as $key => $val) {
+            $cancelReasonsArr[$count]['key']= $key;
+            $cancelReasonsArr[$count]['value']= $val;
+            $count++;
+        }
+        $this->set('orderCancelReasonsArr', $cancelReasonsArr);
+        $this->_template->render();
+    }
+
     public function setupOrderCancelRequest()
     {
         $frm = $this->getOrderCancelRequestForm($this->siteLangId);
