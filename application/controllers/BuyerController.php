@@ -593,6 +593,35 @@ class BuyerController extends BuyerBaseController
         $this->_template->render();
     }
 
+    public function orderReturnRequestsReasons($op_id)
+    {
+        if (1 > FatUtility::int($op_id)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $user_id = UserAuthentication::getLoggedUserId();
+        $orderReturnReasonsArr = OrderReturnReason::getOrderReturnReasonArr($this->siteLangId);
+        $count = 0;
+        foreach ($orderReturnReasonsArr as $key => $val) {
+            $returnReasonsArr[$count]['key']= $key;
+            $returnReasonsArr[$count]['value']= $val;
+            $count++;
+        }
+        $srch = new OrderProductSearch($this->siteLangId, true);
+        $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
+        $srch->addCondition('order_user_id', '=', $user_id);
+        $srch->addCondition('op_id', '=', $op_id);
+        $srch->addOrder("op_id", "DESC");
+        $srch->addMultipleFields(array('op_status_id', 'op_id', 'op_qty','op_product_type'));
+        $rs = $srch->getResultSet();
+        $opDetail = FatApp::getDb()->fetch($rs);
+        if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+
+        $this->set('returnReasonsArr', $returnReasonsArr);
+        $this->_template->render();
+    }
+
     public function setupOrderCancelRequest()
     {
         $frm = $this->getOrderCancelRequestForm($this->siteLangId);
