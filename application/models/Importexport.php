@@ -1605,11 +1605,11 @@ class Importexport extends ImportexportCommon
                     }
                 }
             }
-            
+
             if (false === $errorInRow && count($prodDataArr)) {
                 $prodDataArr['product_added_on'] = date('Y-m-d H:i:s');
                 ;
-                $prodDataArr['product_added_by_admin_id'] = (array_key_exists('user_id', $prodDataArr)) ? applicationConstants::YES : applicationConstants::NO;
+                $prodDataArr['product_added_by_admin_id'] = (1 > $userId) ? applicationConstants::YES : applicationConstants::NO;
 
                 if (!empty($prodData) && $prodData['product_id'] && (!$sellerId || ($sellerId && $prodData['product_seller_id'] == $sellerId))) {
                     unset($prodData['product_seller_id']);
