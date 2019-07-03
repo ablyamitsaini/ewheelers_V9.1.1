@@ -9485,13 +9485,12 @@ form.custom-form input[type="submit"] {
 }
 
 .seller-steps ul {
-	margin: 50px auto;
+	margin: 50px auto 0 auto;
 }
 
 .seller-steps li {
 	display: inline-block;
 	margin: 0 30px;
-
 	text-align: center;
 	width: 25%;
 	margin: 0 -2px;
@@ -13458,16 +13457,16 @@ border: solid 1px var(--border-color); padding: 2rem;}
 	display: flex;
 }
 
-.summary-listing .product_qty .qty {
+.summary-listing .product_qty .qty-wrapper {
 	height: 26px;
 	margin-inline-end: 5px;
 }
 
-.summary-listing .product_qty .qty .increase,
-.summary-listing .product_qty .qty .decrease,
-.summary-listing .product_qty .qty input {
-	height: 26px;
-	line-height: 24px;
+.summary-listing .product_qty .qty-wrapper .increase,
+.summary-listing .product_qty .qty-wrapper .decrease,
+.summary-listing .product_qty .qty-wrapper input {
+	height: 24px;
+	line-height: 22px;
 	font-size: 0.875rem;
 }
 
@@ -13600,14 +13599,13 @@ border: solid 1px var(--border-color); padding: 2rem;}
 
 .coupon-offers li:before {
 	border-radius: 50%;
-	width: 20px;
-	height: 20px;
+	width: 10px;
+	height: 10px;
 	background: var(--border-color);
 	display: block;
 	content: "";
 	left: 0;
-	top: 50%;
-	margin-top: -15px;
+	top: 32px;
 	position: absolute;
 }
 

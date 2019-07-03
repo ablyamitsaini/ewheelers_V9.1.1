@@ -102,7 +102,7 @@
                         $postCommentFrm->setFormTagAttribute('class', 'form');
                         $postCommentFrm->setFormTagAttribute('onsubmit', 'setupPostComment(this);return false;');
                         $postCommentFrm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
-                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-md-';
                         $postCommentFrm->developerTags['fld_default_col'] = 12;
                         $nameFld = $postCommentFrm->getField('bpcomment_author_name');
                         $nameFld->addFieldTagAttribute('readonly', true);

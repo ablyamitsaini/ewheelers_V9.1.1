@@ -1015,9 +1015,8 @@ display: none;
 	.table tbody,
 	.table thead,
 	.table tfoot {
-		display: table;
-		width: 100%;
-
+		/*display: table;
+		width: 100%;*/
 	}
 
 
@@ -2147,10 +2146,10 @@ border: solid 1px var(--border-color);
 	}
 
 	.breadcrumbs ul {
-		display: block;
+		/*display: block;
 		white-space: nowrap;
 		overflow-y: hidden;
-		overflow-x: auto;
+		overflow-x: auto;*/
 	}
 
 	.breadcrumbs ul li {

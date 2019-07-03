@@ -508,7 +508,7 @@ trait CustomProducts
         $frm = new Form('frmProductOptions', array('id'=>'frmProductOptions'));
         $frm->addHtml('', 'product_name', '');
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Option_Groups', $this->siteLangId), 'option_name');
-        $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="optionForm(0);">'.Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
+        $fld1->htmlAfterField= '<div class=""><small><a href="javascript:void(0);" onClick="optionForm(0);">'.Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
 
         /* $fld1->htmlAfterField='</div><div class="col-md-4"><small> <a class="" href="javascript:void(0);" onClick="optionForm(0);">' .Labels::getLabel('LBL_Add_New_Option',$this->siteLangId).'</a></small></div>'; */
         // $fld1->attachField($fld2);
