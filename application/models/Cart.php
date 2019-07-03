@@ -283,7 +283,7 @@ class Cart extends FatModel
                         } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
                             $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
                         }
-                        if ($codMinWalletBalance > $walletBalance) {
+                        if ($codMinWalletBalance > -1 && $codMinWalletBalance > $walletBalance) {
                             $codEnabled = false;
                         }
                     } else {

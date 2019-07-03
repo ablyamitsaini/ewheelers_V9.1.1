@@ -477,7 +477,7 @@ class ProductsController extends MyAppController
             } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
                 $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
             }
-            if ($codMinWalletBalance > $walletBalance) {
+            if ($codMinWalletBalance > -1 && $codMinWalletBalance > $walletBalance) {
                 $codEnabled = false;
             }
             $shippingRates = Product::getProductShippingRates($product['product_id'], $this->siteLangId, 0, $product['selprod_user_id']);
