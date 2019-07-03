@@ -627,6 +627,9 @@ class BuyerController extends BuyerBaseController
         $frm = $this->getOrderCancelRequestForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -641,24 +644,40 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
+            $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         if ($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL) {
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true))) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
+                $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
         } else {
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
-                Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
+                $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
         }
 
         if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -668,7 +687,11 @@ class BuyerController extends BuyerBaseController
         $ocRequestSrch->addCondition('ocrequest_op_id', '=', $opDetail['op_id']);
         $ocRequestRs = $ocRequestSrch->getResultSet();
         if (FatApp::getDb()->fetch($ocRequestRs)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_You_have_already_sent_the_cancellation_request_for_this_order', $this->siteLangId));
+            $message = Labels::getLabel('MSG_You_have_already_sent_the_cancellation_request_for_this_order', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -691,12 +714,19 @@ class BuyerController extends BuyerBaseController
         }
         $ocrequest_id = $oCRequestObj->getMainTableRecordId();
         if (!$ocrequest_id) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $emailObj = new EmailHandler();
         if (!$emailObj->sendOrderCancellationNotification($ocrequest_id, $this->siteLangId)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+            }
             Message::addErrorMessage($emailObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -711,8 +741,16 @@ class BuyerController extends BuyerBaseController
         );
 
         if (!Notification::saveNotifications($notificationData)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
+            $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
+        }
+        
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
         }
 
         Message::addMessage(Labels::getLabel('MSG_Your_cancellation_request_submitted', $this->siteLangId));
