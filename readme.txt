@@ -26,6 +26,7 @@ Enhancements:
 	. Added min and max range for COD payments.
 	. Added a check for option values that not to be deleted if linked with an inventory.
 	. Removed image compression for banners and slides.
+	. Added minimum wallet balance functionality for COD orders.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.

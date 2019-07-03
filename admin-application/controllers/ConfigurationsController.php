@@ -761,6 +761,8 @@ class ConfigurationsController extends AdminBaseController
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_minimum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
                 $fld = $frm->addTextBox(Labels::getLabel('LBL_Maximum_COD_Order_Total', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MAX_COD_ORDER_LIMIT');
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_maximum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
+                $fld = $frm->addTextBox(Labels::getLabel('LBL_Minimum_Wallet_Balance', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_COD_MIN_WALLET_BALANCE');
+                $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_seller_needs_to_maintain_to_accept_COD_orders._Default_is_-1", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Checkout', '<h3>'.Labels::getLabel('LBL_Checkout_Process', $this->adminLangId).'</h3>');
                 $fld1 = $frm->addCheckBox(Labels::getLabel('LBL_Activate_Live_Payment_Transaction_Mode', $this->adminLangId), 'CONF_TRANSACTION_MODE', 1, array(), false, 0);

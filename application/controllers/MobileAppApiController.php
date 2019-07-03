@@ -1298,8 +1298,19 @@ END,   special_price_found ) as special_price_found'
         /*[ Check COD enabled and Get Shipping Rates*/
         $codEnabled = false;
         if (Product::isProductShippedBySeller($product['product_id'], $product['product_seller_id'], $product['selprod_user_id'])) {
+            $walletBalance = User::getUserBalance($product['selprod_user_id']);
             if ($product['selprod_cod_enabled']) {
                 $codEnabled = true;
+            }
+            $codMinWalletBalance = -1;
+            $shop_cod_min_wallet_balance = Shop::getAttributesByUserId($product['selprod_user_id'], 'shop_cod_min_wallet_balance');
+            if ($shop_cod_min_wallet_balance > -1) {
+                $codMinWalletBalance = $shop_cod_min_wallet_balance;
+            } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
+                $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
+            }
+            if ($codMinWalletBalance > -1 && $codMinWalletBalance > $walletBalance) {
+                $codEnabled = false;
             }
             $shippingRates = Product::getProductShippingRates($product['product_id'], $this->siteLangId, 0, $product['selprod_user_id']);
             $shippingDetails = Product::getProductShippingDetails($product['product_id'], $this->siteLangId, $product['selprod_user_id']);
@@ -1712,7 +1723,6 @@ END,   special_price_found ) as special_price_found'
             $price = ($product['theprice'] - $volumeDiscount);
             $volumeDiscountRow['price'] = $price;
             $volumeDiscountRow['currency_price'] = CommonHelper::displayMoneyFormat($price, true, false, false);
-            ;
         }
 
         $api_product_detail_elements['codEnabled'] = $codEnabled;

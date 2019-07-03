@@ -20,7 +20,7 @@
                 <div class="cards">
                     <div class="cards-header p-4">
                         <!-- <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></h5> -->
-                        <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions', $siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?>
+                        <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_Promotions', $siteLangId).' : '. CommonHelper::displaymoneyformat(FatApp::getConfig('CONF_PPC_MIN_WALLET_BALANCE'));?></p>
                     </div>
                     <div class="cards-content pl-4 pr-4 ">
                         <div id="promotionForm">
@@ -78,7 +78,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="row">
