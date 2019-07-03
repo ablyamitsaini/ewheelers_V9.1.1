@@ -1443,11 +1443,9 @@ class Importexport extends ImportexportCommon
                             }
                             break;
                         case 'product_identifier':
-                            if ($this->settings['CONF_USE_PRODUCT_ID']) {
-                                $prodData = Product::getAttributesByIdentifier($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
-                                if ($sellerId && !empty($prodData) && $prodData['product_seller_id'] != $sellerId) {
-                                    $invalid = true;
-                                }
+                            $prodData = Product::getAttributesByIdentifier($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
+                            if ($sellerId && !empty($prodData) && $prodData['product_seller_id'] != $sellerId) {
+                                $invalid = true;
                             }
                             break;
                         case 'product_seller_id':
@@ -1494,29 +1492,6 @@ class Importexport extends ImportexportCommon
                                 }
                             }
                             $categoryIds = implode(',', $catArr);
-                            break;
-                        case 'tax_category_identifier':
-                            $catArr = array();
-
-                            $catIdentifiers = explode(',', $colValue);
-                            if (!empty($catIdentifiers)) {
-                                foreach ($catIdentifiers as $val) {
-                                    if (!array_key_exists($val, $categoryIdentifierArr)) {
-                                        $res = $this->getAllCategoryIdentifiers(false, $val);
-                                        if ($res) {
-                                            $categoryIdentifierArr = array_merge($categoryIdentifierArr, $res);
-                                        } else {
-                                            $invalid = true;
-                                        }
-                                    }
-                                    if (array_key_exists($val, $categoryIdentifierArr)) {
-                                        $catArr[] = $categoryIdentifierArr[$val];
-                                    } else {
-                                        $invalid = true;
-                                    }
-                                }
-                            }
-                            $colValue = implode(',', $catArr);
                             break;
                         case 'brand_identifier':
                             $columnKey = 'product_brand_id';
@@ -1642,6 +1617,7 @@ class Importexport extends ImportexportCommon
                                 $prodDataArr['product_approved'] = applicationConstants::NO;
                             }
                         }
+
                         $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
@@ -1695,7 +1671,7 @@ class Importexport extends ImportexportCommon
                             }
                         }
                         /*]*/
-
+                        
                         /* Tax Category [*/
                         $this->db->deleteRecords(Tax::DB_TBL_PRODUCT_TO_TAX, array('smt'=> 'ptt_product_id = ? and ptt_seller_user_id = ?','vals' => array( $productId, $userId ) ));
                         if ($taxCatId) {
