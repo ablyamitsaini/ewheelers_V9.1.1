@@ -272,8 +272,19 @@ class Cart extends FatModel
                     /*[COD available*/
                     $codEnabled = false;
                     if ($is_cod_enabled && Product::isProductShippedBySeller($sellerProductRow['product_id'], $sellerProductRow['product_seller_id'], $sellerProductRow['selprod_user_id'])) {
+                        $walletBalance = User::getUserBalance($sellerProductRow['selprod_user_id']);
                         if ($sellerProductRow['selprod_cod_enabled']) {
                             $codEnabled = true;
+                        }
+                        $codMinWalletBalance = -1;
+                        $shop_cod_min_wallet_balance = Shop::getAttributesByUserId($sellerProductRow['selprod_user_id'], 'shop_cod_min_wallet_balance');
+                        if ($shop_cod_min_wallet_balance > -1) {
+                            $codMinWalletBalance = $shop_cod_min_wallet_balance;
+                        } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
+                            $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
+                        }
+                        if ($codMinWalletBalance > $walletBalance) {
+                            $codEnabled = false;
                         }
                     } else {
                         if ($sellerProductRow['product_cod_enabled']) {

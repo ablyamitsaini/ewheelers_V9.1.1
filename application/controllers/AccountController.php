@@ -387,9 +387,18 @@ class AccountController extends LoggedUserController
         if (User::isAffiliate()) {
             $canAddMoneyToWallet = false;
         }
-
+        $codMinWalletBalance = -1;
+        if (User::isSeller() && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S') {
+            $shop_cod_min_wallet_balance = Shop::getAttributesByUserId($userId, 'shop_cod_min_wallet_balance');
+            if ($shop_cod_min_wallet_balance > -1) {
+                $codMinWalletBalance = $shop_cod_min_wallet_balance;
+            } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
+                $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
+            }
+        }
         $txnObj = new Transactions();
         $accountSummary = $txnObj->getTransactionSummary($userId);
+        $this->set('codMinWalletBalance', $codMinWalletBalance);
         $this->set('frmSrch', $frm);
         $this->set('accountSummary', $accountSummary);
         $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));

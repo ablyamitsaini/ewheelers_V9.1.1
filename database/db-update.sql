@@ -350,4 +350,4 @@ ALTER TABLE `tbl_report_reasons` ADD UNIQUE KEY `reportreason_identifier` (`repo
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_Active';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Make_InActive';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Delete_selected';
-
+ALTER TABLE `tbl_shops` ADD `shop_cod_min_wallet_balance` DECIMAL NOT NULL DEFAULT '-1' AFTER `shop_featured`;	
