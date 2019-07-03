@@ -127,7 +127,11 @@ class BuyerController extends BuyerBaseController
     public function viewOrder($orderId, $opId = 0, $print = false)
     {
         if (!$orderId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
@@ -141,7 +145,11 @@ class BuyerController extends BuyerBaseController
 
         $orderDetail = $orderObj->getOrderById($orderId, $this->siteLangId);
         if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
@@ -168,7 +176,7 @@ class BuyerController extends BuyerBaseController
         //CommonHelper::printArray($childOrderDetail); exit;
 
         foreach ($childOrderDetail as $opID => $val) {
-            $childOrderDetail[$opID]['charges'] = $orderDetail['charges'][$opID];
+            $childOrderDetail[$opID]['charges'] = array_values($orderDetail['charges'][$opID]);
         }
 
         if ($opId > 0) {
@@ -176,7 +184,11 @@ class BuyerController extends BuyerBaseController
         }
 
         if (!$childOrderDetail) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
@@ -187,7 +199,11 @@ class BuyerController extends BuyerBaseController
             $orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$childOrderDetail['op_id']));
         } else {
             $orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("order_id"=>$orderDetail['order_id']));
-            $orderDetail['payments'] = $orderObj->getOrderPayments(array("order_id"=>$orderDetail['order_id']));
+            $payments = $orderObj->getOrderPayments(array("order_id"=>$orderDetail['order_id']));
+            if (true ===  MOBILE_APP_API_CALL) {
+                $payments = array_values($payments);
+            }
+            $orderDetail['payments'] = $payments;
         }
 
         $digitalDownloads = array();
@@ -216,6 +232,9 @@ class BuyerController extends BuyerBaseController
             $print = true;
         }
         $this->set('print', $print);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(true, false);
     }
 
@@ -402,6 +421,7 @@ class BuyerController extends BuyerBaseController
         }
 
         $rs = $srch->getResultSet();
+
         $orders = FatApp::getDb()->fetchAll($rs);
 
         $oObj = new Orders();
