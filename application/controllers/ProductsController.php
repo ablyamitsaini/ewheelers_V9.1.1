@@ -1992,7 +1992,6 @@ class ProductsController extends MyAppController
                 $productImageUrl = CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $afile_id ));
             }
         }
-        $this->_template->addJs('js/product-detail.js');
         $this->set('product', $product);
         $this->set('productImagesArr', $productGroupImages);
         $this->_template->render(false, false);
