@@ -264,7 +264,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$productIds = $this->db->fetchAll($rs, 'ctsp_selprod_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Products data[ */
@@ -322,7 +322,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$categoryIds = $this->db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Categories data[ */
@@ -361,7 +361,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
                             /* echo $tempObj->getQuery(); die; */
                             if (!$shopIds = $this->db->fetchAll($rs, 'ctps_shop_id')) {
-                                continue;
+                                continue 2;
                             }
                             $shopObj = clone $shopSearchObj;
                             $shopObj->joinSellerSubscription();
