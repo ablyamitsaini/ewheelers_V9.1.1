@@ -1389,9 +1389,9 @@ class Importexport extends ImportexportCommon
                             $userObj = new User($sellerId);
                             $userInfo = $userObj->getUserInfo(array('credential_username'));
                             $userName = $userInfo['credential_username'];
+                        } else {
+                            $userName = ($userName == Labels::getLabel('LBL_Admin', $langId) ? '' : $userName);
                         }
-
-                        //$userName = ($userName == Labels::getLabel('LBL_Admin', $langId) ? '' : $userName);
 
                         if (!empty($userName) && !array_key_exists($userName, $usernameArr)) {
                             $res = $this->getAllUserArr(false, $userName);
@@ -1448,6 +1448,12 @@ class Importexport extends ImportexportCommon
                                 if ($sellerId && !empty($prodData) && $prodData['product_seller_id'] != $sellerId) {
                                     $invalid = true;
                                 }
+                            }
+                            break;
+                        case 'product_seller_id':
+                            $colValue = 0;
+                            if ($userId > 0) {
+                                $colValue = $userId;
                             }
                             break;
                         case 'product_cod_enabled':
@@ -1599,7 +1605,7 @@ class Importexport extends ImportexportCommon
                     }
                 }
             }
-
+            
             if (false === $errorInRow && count($prodDataArr)) {
                 $prodDataArr['product_added_on'] = date('Y-m-d H:i:s');
                 ;
