@@ -406,7 +406,7 @@ class BuyerController extends BuyerBaseController
 
         $oObj = new Orders();
         foreach ($orders as &$order) {
-            $charges = $oObj->getOrderProductChargesArr($order['op_id']);
+            $charges = $oObj->getOrderProductChargesArr($order['op_id'], MOBILE_APP_API_CALL);
             $order['charges'] = $charges;
         }
 
@@ -415,6 +415,10 @@ class BuyerController extends BuyerBaseController
         $this->set('pageCount', $srch->pages());
         $this->set('recordCount', $srch->recordCount());
         $this->set('postedData', $post);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
