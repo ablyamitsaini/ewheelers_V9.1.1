@@ -49,7 +49,7 @@
                     $selectedOptionColor = $option['values'][$selectedOptionsArr[$key]]['optionvalue_color_code']; ?>
                 <div class="col-md-6 mb-2">
                     <div class="h6"><?php echo $option['option_name']; ?></div>
-                    <div class="js-wrap-drop wrap-drop" id="js-wrap-drop<?php echo $count; ?>">
+                    <div class="js-wrap-drop-quick wrap-drop" id="js-wrap-drop-quick<?php echo $count; ?>">
                         <span>
                         <?php if ($option['option_is_color']) { ?>
                             <span class="colors" style="background-color:#<?php echo $selectedOptionColor; ?>; ?>;"></span>
@@ -218,8 +218,8 @@
             });
         });
 
-        $( ".js-wrap-drop" ).each(function( index, element ) {
-            var div = '#js-wrap-drop'+index;
+        $( ".js-wrap-drop-quick" ).each(function( index, element ) {
+            var div = '#js-wrap-drop-quick'+index;
             new DropDown($(div));
         });
         

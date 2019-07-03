@@ -599,55 +599,6 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
             }
         }, 5000);
 
-        function DropDown(el) {
-            this.dd = el;
-            this.placeholder = this.dd.children('span');
-            this.opts = this.dd.find('ul.drop li');
-            this.val = '';
-            this.index = -1;
-            this.initEvents();
-        }
-
-        DropDown.prototype = {
-            initEvents: function() {
-                var obj = this;
-                obj.dd.on('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    $(this).toggleClass('active');
-                });
-                obj.opts.on('click', function() {
-                    var opt = $(this);
-                    obj.val = opt.text();
-                    obj.index = opt.index();
-                    obj.placeholder.text(obj.val);
-                    opt.siblings().removeClass('selected');
-                    opt.filter(':contains("' + obj.val + '")').addClass('selected');
-                    var link = opt.filter(':contains("' + obj.val + '")').find('a').attr('href');
-                    window.location.replace(link);
-                }).change();
-            },
-            getValue: function() {
-                return this.val;
-            },
-            getIndex: function() {
-                return this.index;
-            }
-        };
-
-        $(function() {
-            // create new variable for each menu
-
-            $(document).click(function() {
-                // close menu on document click
-                $('.wrap-drop').removeClass('active');
-            });
-        });
-
-        $( ".js-wrap-drop" ).each(function( index, element ) {
-            var div = '#js-wrap-drop'+index;
-            new DropDown($(div));
-        });
     });
 
     <?php /* if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>
