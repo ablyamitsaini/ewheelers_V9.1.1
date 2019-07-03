@@ -4,10 +4,12 @@ $statusArr = array(
     'status'=> 1,
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
-
+if (1 > $opId) {
+    $childOrderDetail = array_values($childOrderDetail);
+}
 $data = array(
     'orderDetail' => $orderDetail,
-    'childOrderDetail' => array_values($childOrderDetail),
+    'childOrderDetail' => $childOrderDetail,
     'orderStatuses' => $orderStatuses,
     'primaryOrder' => $primaryOrder,
     'digitalDownloads' => $digitalDownloads,

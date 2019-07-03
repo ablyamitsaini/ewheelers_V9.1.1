@@ -173,7 +173,6 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
 
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
-        //CommonHelper::printArray($childOrderDetail); exit;
 
         foreach ($childOrderDetail as $opID => $val) {
             $childOrderDetail[$opID]['charges'] = array_values($orderDetail['charges'][$opID]);
@@ -183,7 +182,7 @@ class BuyerController extends BuyerBaseController
             $childOrderDetail = array_shift($childOrderDetail);
         }
 
-        if (!$childOrderDetail) {
+        if (1 > count($childOrderDetail)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
@@ -233,6 +232,7 @@ class BuyerController extends BuyerBaseController
         }
         $this->set('print', $print);
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('opId', $opId);
             $this->_template->render();
         }
         $this->_template->render(true, false);
