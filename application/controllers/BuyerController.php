@@ -1432,14 +1432,13 @@ class BuyerController extends BuyerBaseController
 
         if (abs($opDetail['opcharge_amount']) > 0) {
             $orrequestQty = FatUtility::int($post['orrequest_qty']);
-            $priceWithoutVolumeDiscount = $opDetail['op_qty']*$opDetail['op_unit_price'];
 
             $volumeDiscountPerItem = abs($opDetail['opcharge_amount'])/$opDetail['op_qty'];
-            $amtChargeBackToBuyer = $orrequestQty*$volumeDiscountPerItem;
+            $amtChargeBackToBuyer = ($opDetail['op_qty'] - $orrequestQty)*$volumeDiscountPerItem;
 
             $pricePerItemCharged = $opDetail['op_unit_price'] - $volumeDiscountPerItem;
 
-            if ($amtChargeBackToBuyer > ($opDetail['op_unit_price'] - $volumeDiscountPerItem)*abs($opDetail['op_qty'] - $orrequestQty)) {
+            if ($amtChargeBackToBuyer > ($opDetail['op_unit_price'] - $volumeDiscountPerItem)*abs($orrequestQty)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Order_not_eligible_for_partial_qty_refund', $this->siteLangId));
                 FatUtility::dieJsonError(Message::getHtml());
             }

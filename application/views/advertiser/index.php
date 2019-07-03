@@ -111,7 +111,7 @@
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable">
                                 <tbody>
                                     <tr class="">
                                         <th colspan="2"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></th>
@@ -187,7 +187,7 @@
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable">
                                 <tbody>
                                     <tr class="">
                                         <th><?php echo Labels::getLabel('LBL_Txn._Id', $siteLangId);?></th>

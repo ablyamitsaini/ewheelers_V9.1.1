@@ -1305,7 +1305,7 @@ END,   special_price_found ) as special_price_found'
 
         if (!empty($minPriceRange)) {
             $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($minPriceRange, false, false);
-            $srch->addCondition('theprice', '>=', $min_price_range_default_currency);
+            $srch->addHaving('theprice', '>=', $min_price_range_default_currency);
         }
 
         $maxPriceRange = '';
@@ -1317,7 +1317,7 @@ END,   special_price_found ) as special_price_found'
 
         if (!empty($maxPriceRange)) {
             $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($maxPriceRange, false, false);
-            $srch->addCondition('theprice', '<=', $max_price_range_default_currency);
+            $srch->addHaving('theprice', '<=', $max_price_range_default_currency);
         }
 
         if (array_key_exists('featured', $criteria)) {

@@ -41,14 +41,6 @@
 		margin-inline-end: -5px;
 	}
 
-	.widget-scroll .slick-next {
-		right: -20px;
-	}
-
-	.widget-scroll .slick-prev {
-		left: -20px;
-	}
-
 	.sidebar:hover,
 	.sidebar-is-expanded .sidebar:hover,
 	.sidebar-is-reduced .sidebar {
