@@ -5,7 +5,7 @@
 	<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
 </div>
 <div class="tabs__content">
-	<div class="form__content row">
+	<div class="form__content row justify-content-between">
 		<div class="col-md-auto"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product_Specifications',$siteLangId); ?></h5></div>
 		<div class="col-md-auto">
 			<div class="action">
@@ -17,9 +17,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12">
-			<div class="cards-content pl-4 pr-4 " id="product_specifications_list"> </div>
+		
+	</div><div class="row"><div class="col-md-12">
+			<div class=" " id="product_specifications_list"> </div>
 		</div>
-	</div>
+		</div>
 </div>
 </div>

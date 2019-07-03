@@ -11,7 +11,6 @@
             </div>
         </div>
     </div>
-    <div class="gap"></div>
 </div>
 <?php if (!empty($postedData)) {
     echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSellerAccount'));

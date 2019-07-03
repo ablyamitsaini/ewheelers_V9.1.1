@@ -529,6 +529,9 @@ class ShopsController extends AdminBaseController
         $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), 'shop_active', $activeInactiveArr, '', array(), '');
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Free_Shipping_On', $this->adminLangId), 'shop_free_ship_upto');
         $fld->requirements()->setInt();
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Minimum_Wallet_Balance', $this->adminLangId), 'shop_cod_min_wallet_balance');
+        $fld->requirements()->setFloat();
+        $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Seller_needs_to_maintain_to_accept_COD_orders._Default_is_-1", $this->adminLangId)."</small>";
         $frm->addCheckBox(Labels::getLabel('LBL_Featured', $this->adminLangId), 'shop_featured', 1, array(), false, 0);
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
