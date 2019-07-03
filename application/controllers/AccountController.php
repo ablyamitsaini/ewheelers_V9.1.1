@@ -1835,24 +1835,38 @@ class AccountController extends LoggedUserController
 
     public function deleteWishList()
     {
-        $post = FatApp::getPostedData();
-        $uwlist_id = FatUtility::int($post['uwlist_id']);
-        $loggedUserId = UserAuthentication::getLoggedUserId();
+        $uwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
+        if (0 >= $uwlist_id) {
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieWithError(Message::getHtml());
+        }
 
-        $srch = UserWishList::getSearchObject($loggedUserId);
+        $srch = UserWishList::getSearchObject(UserAuthentication::getLoggedUserId());
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         if (!$row) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('MSG_No_record_found', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         $obj = new UserWishList();
         $obj->deleteWishList($row['uwlist_id']);
         $this->set('msg', Labels::getLabel('LBL_Record_deleted_successfully', $this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->_template->render(false, false, 'json-success.php');
     }
 
