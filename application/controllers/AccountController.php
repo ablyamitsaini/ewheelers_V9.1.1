@@ -1203,7 +1203,7 @@ class AccountController extends LoggedUserController
         $emailFrm = $this->getChangeEmailForm();
         $post = $emailFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if (!$emailFrm->validate($post)) {
+        if (false === $post) {
             $message = $emailFrm->getValidationErrors();
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags(current($message)));
