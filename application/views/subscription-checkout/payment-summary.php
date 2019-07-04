@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="section-head">
     <div class="section__heading">
-        <h2><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?></h2>
+        <h2><?php echo Labels::getLabel('LBL_Payment_Summary', $siteLangId); ?></h2>
     </div>
 </div>
 <?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?>
@@ -71,7 +71,7 @@
                                             <p><?php echo Labels::getLabel('LBL_Amount_in_your_wallet', $siteLangId); ?></p>
                                             <h5><?php echo CommonHelper::displayMoneyFormat($userWalletBalance); ?></h5>
                                         </div>
-                                        <p>
+                                        <p class="note">
                                             <i>
                                                 <?php echo Labels::getLabel('LBL_Remaining_wallet_balance', $siteLangId);
                                                 $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);
@@ -110,11 +110,10 @@
                         <?php } ?>
                     </div>
                 </div>
-            <?php }
-                if ($subscriptionType == SellerPackages::PAID_TYPE) { ?>
+            <?php } if ($subscriptionType == SellerPackages::PAID_TYPE) { ?>
                     <p class="note"><?php echo Labels::getLabel('LBL_Note_Please_Maintain_Wallet_Balance_for_further_auto_renewal_payments', $siteLangId); ?></p>
                     <div class="gap"></div>
-                <?php } ?>
+            <?php } ?>
                 <?php if ($cartSummary['orderNetAmount'] <= 0) { ?>
                     <div class="gap"></div>
                     <div id="wallet">
@@ -148,8 +147,10 @@
             $gatewayCount++;
         }
         if ($cartSummary['orderPaymentGatewayCharges']) { ?>
-            <div class="payment_methods_list mb-4" <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>>
-                <?php if ($cartSummary['orderPaymentGatewayCharges'] && 0 < $gatewayCount && 0 < count($paymentMethods)) { ?>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="payment_methods_list mb-4" <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>>
+                        <?php if ($cartSummary['orderPaymentGatewayCharges'] && 0 < $gatewayCount && 0 < count($paymentMethods)) { ?>
                         <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar="init">
                             <div class="simplebar-wrapper" style="margin: 0px;">
                                 <div class="simplebar-height-auto-observer-wrapper">
@@ -189,26 +190,30 @@
                                 <div class="simplebar-scrollbar" style="height: 90px; transform: translate3d(0px, 0px, 0px); display: none;"></div>
                             </div>
                         </ul>
-                <?php } ?>
-            </div>
-            <div class="payment-from">
-                <div class="you-pay">
-                    <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
-                    <strong>
-                        <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
-                        <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                            <li>
-                                <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
-                            </li>
-                        <?php } ?>
-                    </strong>
+                    <?php } else {
+                        echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
+                    } ?>
+                    </div>
                 </div>
-                <div class="gap"></div>
-                <div id="tabs-container"></div>
-        <?php } else {
-            echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
-        } ?>
-
+                <div class="col-md-8">
+                    <div class="payment-from">
+                        <div class="you-pay">
+                            <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
+                            <strong>
+                                <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
+                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                                    <li>
+                                        <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
+                                    </li>
+                                <?php } ?>
+                            </strong>
+                        </div>
+                        <div class="gap"></div>
+                        <div id="tabs-container"></div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
     </section>
 </div>
 

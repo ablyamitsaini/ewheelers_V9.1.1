@@ -1225,11 +1225,10 @@ class ConfigurationsController extends AdminBaseController
 
                 if ($authUrl) {
                     $authenticateText = ($accessToken == '')?'Authenticate':'Re-Authenticate';
-                    $fld = $frm->addHTML('', 'accessToken', 'Please save your settings & <a href="'.$authUrl.'" >click here</a> to '.$authenticateText.' settings.', '', 'class="medium"');
+                    $fld = $frm->addHTML('', 'accessToken', 'Please save your settings & <a href="'.$authUrl.'" >click here</a> to '.$authenticateText.' settings.<div class="gap"></div>', '', 'class="medium"');
                 } else {
                     $fld=$frm->addHTML('', 'accessToken', 'Please configure your settings and then authenticate them', '', 'class="medium"');
                 }
-
 
                 $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Recaptcha", $this->adminLangId).'</h3>');
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Site_Key", $this->adminLangId), 'CONF_RECAPTCHA_SITEKEY');

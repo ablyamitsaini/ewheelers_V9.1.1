@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 quick-col-1">
+        <?php $showAddToFavorite = true; include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
         <?php if ($productImagesArr) { ?>
         <div class="js-product-gallery product-gallery" dir="<?php echo CommonHelper::getLayoutDirection();?>">
-            <?php
-                foreach ($productImagesArr as $afile_id => $image) {
-                    $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
-                    $thumbImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'THUMB', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg'); ?>
+            <?php foreach ($productImagesArr as $afile_id => $image) {
+                $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
+                $thumbImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'THUMB', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg'); ?>
             <div class=""><?php if (isset($imageGallery) && $imageGallery) { ?>
                 <a href="<?php echo $mainImgUrl; ?>" class="gallery" rel="gallery">
                     <?php } ?>
@@ -13,8 +13,7 @@
                     <?php if (isset($imageGallery) && $imageGallery) { ?>
                 </a>
                 <?php } ?></div>
-            <?php
-                }?>
+            <?php }?>
         </div>
         <?php } else {
                     $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array(0, 'MEDIUM', 0 )), CONF_IMG_CACHE_TIME, '.jpg'); ?>
@@ -22,15 +21,13 @@
         <?php
                 } ?>
     </div>
+
     <div class="col-lg-6 col-md-6 quick-col-2">
         <div class="product-detail product-description product-detail-quickview">
             <div class="product-description-inner">
-                <div class="products__title"><?php echo $product['selprod_title'];?>
+                <div class="products__title"><a title="<?php echo $product['selprod_title']; ?>" href="<?php echo !isset($product['promotion_id']) ? CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])) : CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>"><?php echo $product['selprod_title'];?></a>
                 </div>
                 <div class="gap"></div>
-                <div class="detail-grouping">
-                    <?php $showAddToFavorite = false; include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
-                </div>
                 <div class="products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
                 <?php if ($product['special_price_found']) { ?>
                     <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
@@ -211,17 +208,20 @@
 
         $(function() {
             // create new variable for each menu
-
             $(document).click(function() {
                 // close menu on document click
                 $('.wrap-drop').removeClass('active');
             });
+
+            $('.js-wrap-drop-quick').click(function() {
+    			$(this).parent().siblings().children('.js-wrap-drop-quick').removeClass('active');
+    		});
         });
 
         $( ".js-wrap-drop-quick" ).each(function( index, element ) {
             var div = '#js-wrap-drop-quick'+index;
             new DropDown($(div));
         });
-        
+
     });
 </script>

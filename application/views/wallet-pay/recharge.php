@@ -1,92 +1,107 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
-<?php $gatewayCount=0; foreach( $paymentMethods as $key => $val ){
-	if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_ADD_MONEY_TO_WALLET])) continue;
-	$gatewayCount++;
-}
-?>
-<div id="body" class="body" role="main">
- <section class="">
+<?php $gatewayCount=0; foreach ($paymentMethods as $key => $val) {
+    if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_ADD_MONEY_TO_WALLET])) {
+        continue;
+    }
+    $gatewayCount++;
+} ?>
+<section class="section bg-gray-dark">
     <div class="container">
-		<div class="row justify-content-center">
-            <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 ">
-                
-                    <section class="section is-current">
-                      <h3><?php echo Labels::getLabel("LBL_Add_Money_to_wallet", $siteLangId); ?></h3>
-                      <div class="make-payment-wrapper">
-                        <?php if( $orderInfo['order_net_amount'] ){ ?>
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="section-head  section--head--center">
+                    <div class="section__heading">
+                        <h2><?php echo Labels::getLabel('LBL_Add_Money_to_wallet', $siteLangId); ?></h2>
+                    </div>
+                </div>
+                <div class="box box--white box--radius p-4">
+                    <section id="payment" class="section-checkout">
+                        <?php if ($orderInfo['order_net_amount']) { ?>
                         <div class="row">
-                        <?php if( $gatewayCount > 0 ){ ?>
-                          <div class="col-lg-5 col-md-5 col-sm-12 col-xm-12 column">
-                            <?php if( $paymentMethods ){ ?>
-                            <div class="payment_methods_list" data-simplebar>
-                              <ul id="payment_methods_tab">
-                                <?php $count=0; foreach( $paymentMethods as $key => $val ){
-                                    if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_ADD_MONEY_TO_WALLET])) continue;
-                                    $count++;
-                                ?>
-                                <li class="<?php echo ($count == 1) ? 'is-active' : ''; ?>"><a class="<?php echo ($count == 1) ? 'is-active' : ''; ?>" href="<?php echo CommonHelper::generateUrl('WalletPay', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id']) ); ?>"><?php echo $val['pmethod_name']; ?></a></li>
-                                <?php } ?>
-                              </ul>
+                            <?php if ($gatewayCount > 0) { ?>
+                            <div class="col-md-4">
+                                <div class="payment_methods_list" <?php echo (count($paymentMethods) <= 0) ? 'is--disabled' : ''; ?>>
+                                    <?php if ($paymentMethods) { ?>
+                                    <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar>
+                                        <?php $count=0;
+                                        foreach ($paymentMethods as $key => $val) {
+                                            if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) {
+                                                continue;
+                                            }
+                                            $count++; ?>
+                                            <li>
+                                                <a href="<?php echo CommonHelper::generateUrl('Checkout', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id'])); ?>">
+                                                    <div class="payment-box">
+                                                        <i class="payment-icn">
+                                                            <img src="<?php echo CommonHelper::generateUrl('Image', 'paymentMethod', array($val['pmethod_id'],'SMALL')); ?>" alt="">
+                                                        </i>
+                                                        <span><?php echo $val['pmethod_name']; ?></span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                    <?php } ?>
+                                </div>
                             </div>
-                            <?php } ?>
-                          </div>
-                          <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
-                            <div class="payment-here">
-                              <div class="you-pay">
-																<?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <strong><?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
-                                <?php if( CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1) ){?>
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
+                                <div class="payment-here">
+                                    <div class="you-pay">
+                                        <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <strong><?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
+                                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) {?>
 
-                                  <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $orderInfo['order_net_amount']);  ?></p>
+                                            <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $orderInfo['order_net_amount']);  ?></p>
 
-                                <?php } ?>
-                                </strong> </div>
-                              <div class="gap"></div>
-                              <!--<div class="heading4"><?php //echo Labels::getLabel('LBL_Pay_With_Credit_Card', $siteLangId); ?></div>-->
-                              <div id="tabs-container"></div>
+                                            <?php } ?>
+                                        </strong> </div>
+                                    <div class="gap"></div>
+                                    <!--<div class="heading4"><?php //echo Labels::getLabel('LBL_Pay_With_Credit_Card', $siteLangId);?></div>-->
+                                    <div id="tabs-container"></div>
+                                </div>
                             </div>
-                          </div>
-                          <?php }else{
-
-                              echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
-                          } ?>
+                            <?php } else {
+                                echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
+                            } ?>
                         </div>
                         <?php } ?>
-                      </div>
                     </section>
-               
+                </div>
             </div>
         </div>
     </div>
- </section>
-</div>
-<?php if( $orderInfo['order_net_amount'] ){ ?>
+</section>
+<?php if ($orderInfo['order_net_amount']) { ?>
 <script type="text/javascript">
-var containerId = '#tabs-container';
-var tabsId = '#payment_methods_tab';
-$(document).ready(function(){
-	if( $(tabsId + ' li a.is-active').length > 0 ){
-		loadTab( $(tabsId + ' li A.is-active') );
-	}
-	$( tabsId + ' a' ).click(function(){
-	if( $(this).hasClass('is-active')){ return false; }
-		$(tabsId + ' li A.is-active').removeClass('is-active');
-		$('li').removeClass('is-active');
-		$(this).parent().addClass('is-active');
-		loadTab($(this));
-		return false;
-	});
-});
+    var containerId = '#tabs-container';
+    var tabsId = '#payment_methods_tab';
+    $(document).ready(function() {
+        if ($(tabsId + ' li a.is-active').length > 0) {
+            loadTab($(tabsId + ' li A.is-active'));
+        }
+        $(tabsId + ' a').click(function() {
+            if ($(this).hasClass('is-active')) {
+                return false;
+            }
+            $(tabsId + ' li A.is-active').removeClass('is-active');
+            $('li').removeClass('is-active');
+            $(this).parent().addClass('is-active');
+            loadTab($(this));
+            return false;
+        });
+    });
 
-function loadTab( tabObj ){
-	if(!tabObj || !tabObj.length){ return; }
-	$(containerId).html( fcom.getLoader() );
-	//$(containerId).fadeOut('fast');
-	fcom.ajax(tabObj.attr('href'),'',function(response){
-		$(containerId).html(response);
-	});
-	/* $(containerId).load( tabObj.attr('href'), function(){
-		//$(containerId).fadeIn('fast');
-	}); */
-}
+    function loadTab(tabObj) {
+        if (!tabObj || !tabObj.length) {
+            return;
+        }
+        $(containerId).html(fcom.getLoader());
+        //$(containerId).fadeOut('fast');
+        fcom.ajax(tabObj.attr('href'), '', function(response) {
+            $(containerId).html(response);
+        });
+        /* $(containerId).load( tabObj.attr('href'), function(){
+            //$(containerId).fadeIn('fast');
+        }); */
+    }
 </script>
 <?php } ?>

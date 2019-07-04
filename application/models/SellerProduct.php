@@ -47,15 +47,17 @@ class SellerProduct extends MyAppModel
     public static function requiredGenDataFields()
     {
         return array(
+            ImportexportCommon::VALIDATE_INT => array(
+                'selprod_max_download_times',
+                'selprod_download_validity_in_days'
+            ),
             ImportexportCommon::VALIDATE_POSITIVE_INT => array(
                 'selprod_id',
                 'selprod_product_id',
                 'selprod_price',
                 'selprod_stock',
                 'selprod_min_order_qty',
-                'selprod_condition',
-                'selprod_max_download_times',
-                'selprod_download_validity_in_days',
+                'selprod_condition'
             ),
             ImportexportCommon::VALIDATE_NOT_NULL => array(
                 'product_identifier',
