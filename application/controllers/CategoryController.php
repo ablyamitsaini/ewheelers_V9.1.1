@@ -43,8 +43,8 @@ class CategoryController extends MyAppController
             }
             FatUtility::exitWithErrorCode(404);
         }
-
-        $category['banner'] = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $categoryId);
+        $bannerDetail = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $categoryId);
+        $category['banner'] = empty($bannerDetail) ? (object)array() : $bannerDetail;
         /* ] */
 
         $userId = 0;
