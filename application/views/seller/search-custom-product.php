@@ -60,16 +60,10 @@ foreach ($arr_listing as $sn => $row){
 		}
 	}
 }
-if (count($arr_listing) == 0){ ?>
-	<div class="block--empty align--center">
-		<img class="block__img" src="<?php echo CONF_WEBROOT_URL; ?>images/empty_item.svg" alt="<?php Labels::getLabel('LBL_No_record_found', $siteLangId); ?>" width="80">
-		<h4><?php echo Labels::getLabel("LBL_No_catalog_found.", $siteLangId); //; ?></h4>
-	</div>
-<?php
-	// $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found_under_your_publication', $siteLangId));
-		//$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId));
-} else {
-	echo $tbl->getHtml();
+echo $tbl->getHtml();
+if (count($arr_listing) == 0) {
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
 }
 
 

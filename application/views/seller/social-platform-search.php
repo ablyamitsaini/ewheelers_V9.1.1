@@ -51,9 +51,10 @@ foreach ($arr_listing as $sn=>$row){
 		}
 	}
 }
-if (count($arr_listing) == 0){
-	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-}
 echo $tbl->getHtml();
+if (count($arr_listing) == 0) {
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
+} 
 ?>
 </div>
