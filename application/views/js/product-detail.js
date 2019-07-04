@@ -48,6 +48,11 @@ $(document).ready(function(){
             // close menu on document click
             $('.wrap-drop').removeClass('active');
         });
+
+		$('.js-wrap-drop').click(function() {
+			$(this).parent().siblings().children('.js-wrap-drop').removeClass('active');
+			// $(this).siblings().children('.js-wrap-drop').addClass('active');
+		});
     });
 
 
@@ -62,8 +67,8 @@ $(document).ready(function(){
 		var content = this.hash.replace('/','');
 		tabs.removeClass("is-active");
 		$(this).addClass("is-active");
-    $(".tabs-content").find('.tab-item').hide();
-    $(content).fadeIn(200);
+	    $(".tabs-content").find('.tab-item').hide();
+	    $(content).fadeIn(200);
 	});
 
 	$( ".js-wrap-drop" ).each(function( index, element ) {

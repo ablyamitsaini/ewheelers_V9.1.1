@@ -208,11 +208,14 @@
 
         $(function() {
             // create new variable for each menu
-
             $(document).click(function() {
                 // close menu on document click
                 $('.wrap-drop').removeClass('active');
             });
+
+            $('.js-wrap-drop-quick').click(function() {
+    			$(this).parent().siblings().children('.js-wrap-drop-quick').removeClass('active');
+    		});
         });
 
         $( ".js-wrap-drop-quick" ).each(function( index, element ) {
