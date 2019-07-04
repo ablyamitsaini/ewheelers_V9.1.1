@@ -934,7 +934,11 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $request = FatApp::getDb()->fetch($rs);
         if (!$request) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
         }
 
@@ -981,6 +985,9 @@ class BuyerController extends BuyerBaseController
         $urlParts = array_filter(FatApp::getParameters());
         $this->set('urlParts', $urlParts);
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(true, false);
     }
 
