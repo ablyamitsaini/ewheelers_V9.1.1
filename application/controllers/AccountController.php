@@ -2864,7 +2864,7 @@ class AccountController extends LoggedUserController
         $messagesList = FatApp::getDb()->fetchAll($rs, 'orrmsg_id');
         ksort($messagesList);
 
-        $this->set('messagesList', $messagesList);
+        $this->set('messagesList', (!empty($messagesList) ? $messagesList : array()));
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());
         $this->set('postedData', $post);
@@ -2878,6 +2878,11 @@ class AccountController extends LoggedUserController
         $this->set('totalRecords', $totalRecords);
         $this->set('startRecord', $startRecord);
         $this->set('endRecord', $endRecord);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->set('loadMoreBtnHtml', $this->_template->render(false, false, '_partial/load-previous-btn.php', true));
         $this->set('html', $this->_template->render(false, false, 'account/order-return-request-messages-list.php', true, false));
         $this->_template->render(false, false, 'json-success.php', true, false);
