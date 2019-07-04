@@ -1032,20 +1032,32 @@ class BuyerController extends BuyerBaseController
         $rs = $srch->getResultSet();
         $request = FatApp::getDb()->fetch($rs);
         if (!$request) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrderReturnRequest', array($orrequest_id)));
         }
 
         $orrObj = new OrderReturnRequest();
         if (!$orrObj->withdrawRequest($request['orrequest_id'], $user_id, $this->siteLangId, $request['op_id'], $request['order_language_id'])) {
-            Message::addErrorMessage(Labels::getLabel($orrObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($orrObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrderReturnRequest', array($orrequest_id)));
         }
 
         /* email notification handling[ */
         $emailNotificationObj = new EmailHandler();
         if (!$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification($request['orrequest_id'], $this->siteLangId)) {
-            Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
         /* ] */
@@ -1060,10 +1072,16 @@ class BuyerController extends BuyerBaseController
         );
 
         if (!Notification::saveNotifications($notificationData)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId));
+            $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         Message::addMessage(Labels::getLabel('MSG_Request_Withdrawn', $this->siteLangId));
         FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrderReturnRequest', array($orrequest_id)));
     }
