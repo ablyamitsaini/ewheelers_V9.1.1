@@ -1595,15 +1595,6 @@ class AccountController extends LoggedUserController
     public function searchWishListItems()
     {
         $post = FatApp::getPostedData();
-        if (empty($post)) {
-            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieWithError(Message::getHtml());
-        }
-
         $db = FatApp::getDb();
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
@@ -1612,21 +1603,23 @@ class AccountController extends LoggedUserController
         if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
-        /* echo $loggedUserId; die; */
-        $srch = UserWishList::getSearchObject($loggedUserId);
-        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('uwlist_id', '=', $uwlist_id);
-        $rs = $srch->getResultSet();
-        $wishListRow = $db->fetch($rs);
-        if (!$wishListRow) {
-            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+
+        if (false ===  MOBILE_APP_API_CALL) {
+            $srch = UserWishList::getSearchObject($loggedUserId);
+            $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
+            $srch->doNotCalculateRecords();
+            $srch->doNotLimitRecords();
+            $srch->addCondition('uwlist_id', '=', $uwlist_id);
+            $rs = $srch->getResultSet();
+            $wishListRow = $db->fetch($rs);
+            if (!$wishListRow) {
+                $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
+                FatUtility::dieWithError(Message::getHtml());
             }
-            Message::addErrorMessage($message);
-            FatUtility::dieWithError(Message::getHtml());
         }
 
         $srch = new UserWishListProductSearch($this->siteLangId);
@@ -1640,7 +1633,12 @@ class AccountController extends LoggedUserController
         $srch->addSubscriptionValidCondition();
         $srch->joinSellerProductSpecialPrice();
         $srch->joinFavouriteProducts($loggedUserId);
-        $srch->addCondition('uwlp_uwlist_id', '=', $uwlist_id);
+        if (true ===  MOBILE_APP_API_CALL && 0 >= $uwlist_id) {
+            $srch->joinWishLists();
+            $srch->addCondition('uwlist_user_id', '=', $loggedUserId);
+        } else {
+            $srch->addCondition('uwlp_uwlist_id', '=', $uwlist_id);
+        }
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_active', '=', applicationConstants::YES);
         $selProdReviewObj = new SelProdReviewSearch();

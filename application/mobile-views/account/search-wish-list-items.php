@@ -12,7 +12,6 @@ $data = array(
     'page' => $page,
     'recordCount' => $recordCount,
     'pageCount' => $pageCount,
-    'postedData' => $postedData,
 );
 
 if (empty($products)) {
