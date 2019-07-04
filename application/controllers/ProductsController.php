@@ -621,8 +621,8 @@ class ProductsController extends MyAppController
         $this->set('productSpecifications', $this->getProductSpecifications($product['product_id'], $this->siteLangId));
         /* End of Product Specifications */
 
-        $this->set('upsellProducts', $upsellProducts);
-        $this->set('relatedProductsRs', $relatedProductsRs);
+        $this->set('upsellProducts', !empty($upsellProducts) ? $upsellProducts : array());
+        $this->set('relatedProductsRs', !empty($relatedProductsRs) ? $relatedProductsRs : array());
         $this->set('banners', $banners);
         $this->set('product', $product);
         $this->set('shop_rating', $shop_rating);
