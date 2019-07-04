@@ -36,22 +36,21 @@
                 <?php }*/ ?>
 
                 <a href="<?php echo CommonHelper::generateUrl('Home'); ?>" class="btn btn--primary-border btn--sm back-store"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
-
-
                 <div class="checkout-flow">
+                    <?php if ($controllerName == 'checkout' || $controllerName == 'subscriptioncheckout') {   ?>
                     <ul>
-                        <?php if ($controllerName == 'Checkout') {  ?>
+                        <?php if ($controllerName == 'checkout') {  ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js shipping-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Shipping', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js order-complete-js" data-count="4"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
-                    <?php }else{?>
+                        <?php } else { ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js order-complete-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
-                    <?php }?>
-
+                        <?php } ?>
                     </ul>
+                    <?php } ?>
                 </div>
             </div>
         </div>
