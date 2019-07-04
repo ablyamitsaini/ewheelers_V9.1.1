@@ -1436,9 +1436,12 @@ class AccountController extends LoggedUserController
     {
         $selprod_id = FatUtility::int($selprod_id);
         $wish_list_id = FatUtility::int($wish_list_id);
+        if (1 > $wish_list_id) {
+            $wish_list_id = $this->getDefaultWishListId();
+        }
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
-        if (1 > $selprod_id || 1 > $wish_list_id) {
+        if (1 > $selprod_id) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
