@@ -980,8 +980,10 @@ class AccountController extends LoggedUserController
                 FatUtility::dieJsonError(Message::getHtml());
             }
 
-            $data = json_decode(stripslashes($post['img_data']));
-            CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
+            if (isset($post['img_data'])) {
+                $data = json_decode(stripslashes($post['img_data']));
+                CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
+            }
 
             if (false ===  MOBILE_APP_API_CALL) {
                 $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?'.time());
