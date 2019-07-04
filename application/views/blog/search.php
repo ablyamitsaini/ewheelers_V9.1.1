@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<section class="post-detail">
+<section class="section post-detail">
     <div class="container">
         <div class="row">
             <div class="col-xl-9 col-lg-8 mb-4 mb-md-0">

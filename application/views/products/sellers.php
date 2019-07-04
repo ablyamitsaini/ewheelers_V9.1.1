@@ -129,6 +129,6 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 ?> </div>
         </div>
-        <div class="gap"></div>
+         
     </section>
 </div>

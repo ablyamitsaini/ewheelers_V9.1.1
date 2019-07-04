@@ -15,9 +15,9 @@
 	?>
 
 	<?php if( $shop['shop_payment_policy'] != '' || $shop['shop_delivery_policy'] != '' || $shop['shop_refund_policy'] != '' || $shop['shop_additional_info'] != '' ||  $shop['shop_seller_info'] != ''){ ?>
-	<section class="top-space">
+	<section class="section">
 		<div class="container">
-		  <div class="white--bg padding20">
+		   
 			<div class="row">
 			  <div class="col-lg-12 col-md-12 col-sm-12  col-xs-12">
 
@@ -27,6 +27,7 @@
 				  <p><?php echo nl2br($shop['shop_payment_policy']); ?></p>
 				</div>
 				<?php } ?>
+				<div class="gap"></div>
 
 				<?php if( $shop['shop_delivery_policy'] != '' ){ ?>
 				<div class="container--cms">
@@ -57,7 +58,7 @@
 				<?php } ?>
 			  </div>
 			</div>
-		  </div>
+		  
 		</div>
     </section>
 	<?php } ?>

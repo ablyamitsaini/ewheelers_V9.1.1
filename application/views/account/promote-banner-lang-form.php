@@ -5,8 +5,8 @@ $promotionLangFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm
 $promotionLangFrm->developerTags['fld_default_col'] = 12;
 ?>
 	
-<div class="tabs__content form">	
-	<div class="form__content">
+	
+	<div class="row">
 		<div class="col-md-12">			 
 				<div class="tabs tabs-sm clearfix">
 					<ul>
@@ -27,4 +27,3 @@ $promotionLangFrm->developerTags['fld_default_col'] = 12;
 			</div>	
 		</div>	
 	</div>
-</div>

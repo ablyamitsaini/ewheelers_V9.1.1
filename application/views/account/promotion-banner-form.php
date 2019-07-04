@@ -6,7 +6,7 @@
 ?>
 
 <div class="tabs__content form">	
-	<div class="form__content">
+	<div class="row">
 		<div class="col-md-12">
 			 
 				<div class="tabs tabs-sm tabs--scroll clearfix">

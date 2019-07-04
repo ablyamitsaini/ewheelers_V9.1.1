@@ -49,7 +49,7 @@
 		</div>
 		<div id="sign-up" class="form-item sign-up <?php echo ($isRegisterForm==1) ? 'is-opened' : '' ;?>">
 			<div class="form-side-inner">
-        <div class="section-head  section--head--center">
+        <div class="section-head">
 						<div class="section__heading">
 							<h2><?php echo Labels::getLabel('LBL_Create_Your_Account_For_Sign_Up',$siteLangId);?></h2>
 						</div>

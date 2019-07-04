@@ -26,7 +26,7 @@
 <?php $variables= array( 'language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
 $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false); ?>
 <div class="tabs__content">
-    <div class="form__content ">
+    <div class="row ">
         <div class="row" id="shopFormBlock">
             <div id="mediaResponse"></div>
             <div class="col-md-6">

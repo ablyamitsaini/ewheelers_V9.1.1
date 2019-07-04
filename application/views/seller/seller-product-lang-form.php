@@ -1,13 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<div class="tabs tabs--small   tabs--scroll clearfix">
+    <?php require_once('sellerCatalogProductTop.php');?>
+</div>
+<div class="cards">
 <div class="cards-header p-4">
 	<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product_Setup',$siteLangId); ?></h5>
 </div>
-<div class="cards-content pl-4 pr-4 ">
-	<div class="tabs tabs--small   tabs--scroll clearfix">
-		<?php require_once('sellerCatalogProductTop.php');?>
-	</div>
+<div class="cards-content pl-4 pr-4 ">	
 	<div class="tabs__content form">
-		<div class="form__content">
+		<div class="row">
 			<div class="col-md-12">
 				<div class="">
 					<div class="tabs tabs-sm tabs--scroll clearfix">
@@ -44,4 +45,5 @@
 		</div>
 
 	</div>
+</div>
 </div>

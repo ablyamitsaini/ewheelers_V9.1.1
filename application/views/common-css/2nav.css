@@ -5,8 +5,10 @@
 
 .navigation-wrapper {
 	margin: 0 auto;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	vertical-align: top;
+	vertical-align: top; 
 	position: relative;
 }
 
@@ -38,6 +40,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	padding: 0;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
 	justify-content: space-between;
 }
 
@@ -195,6 +199,7 @@
 
 .navigations > li .subnav__wrapper {
 	background: #fff;
+	-webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20);
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20);
 	left: 0;
 	margin: 0;
@@ -412,6 +417,8 @@
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
+		-webkit-box-pack: start;
+		-ms-flex-pack: start;
 		justify-content: flex-start;
 	}
 

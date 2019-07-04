@@ -21,9 +21,7 @@
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div id="listing"> </div>
-            </div>
+			<div id="listing"> </div>            
         </div>
     </div>
 </main>
