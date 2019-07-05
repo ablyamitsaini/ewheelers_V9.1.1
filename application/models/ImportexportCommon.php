@@ -1110,15 +1110,27 @@ class ImportexportCommon extends FatModel
         return $row = $this->db->fetchAllAssoc($rs);
     }
 
-    public function getTaxCategoriesArr($byId = true)
+    public function getTaxCategoriesArr($byId = true, $taxCatIdOrIdentifier = false)
     {
         $srch = Tax::getSearchObject(false, false);
         $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
+
+        if ($taxCatIdOrIdentifier) {
+            $srch->setPageSize(1);
+        } else {
+            $srch->doNotLimitRecords();
+        }
+
         if ($byId) {
             $srch->addMultipleFields(array('taxcat_id','taxcat_identifier'));
+            if ($taxCatIdOrIdentifier) {
+                $srch->addCondition('taxcat_id', '=', $taxCatIdOrIdentifier);
+            }
         } else {
             $srch->addMultipleFields(array('taxcat_identifier','taxcat_id'));
+            if ($taxCatIdOrIdentifier) {
+                $srch->addCondition('taxcat_identifier', '=', $taxCatIdOrIdentifier);
+            }
         }
         $rs = $srch->getResultSet();
         return $row = $this->db->fetchAllAssoc($rs);

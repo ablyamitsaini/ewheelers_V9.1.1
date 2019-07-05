@@ -2505,6 +2505,7 @@ class Importexport extends ImportexportCommon
         $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
 
         $errInSheet = false;
+        $breakForeach = false;
         while (($row = $this->getFileRow($csvFilePointer)) !== false) {
             $rowIndex++;
 
@@ -2518,104 +2519,109 @@ class Importexport extends ImportexportCommon
 
                 $errMsg = Product::validateMediaFields($columnKey, $columnTitle, $colValue, $langId);
 
-
                 if (false !== $errMsg) {
                     $errorInRow = true;
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'product_id', 'product_identifier' ))) {
-                        if ('product_id' == $columnKey) {
-                            $productId = $colValue;
-                            $columnKey = 'afile_record_id';
-                        }
-                        if ('product_identifier' == $columnKey) {
-                            $columnKey = 'afile_record_id';
-                            if (!array_key_exists($colValue, $prodIndetifierArr)) {
-                                $res = $this->getAllProductsIdentifiers(false, $colValue);
-                                if (!$res) {
-                                    $invalid = true;
-                                } else {
-                                    $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                    switch ($columnKey) {
+                        case 'product_id':
+                        case 'product_identifier':
+                            if ('product_id' == $columnKey) {
+                                $productId = $colValue;
+                            }
+                            if ('product_identifier' == $columnKey) {
+                                if (!array_key_exists($colValue, $prodIndetifierArr)) {
+                                    $res = $this->getAllProductsIdentifiers(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    } else {
+                                        $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                    }
                                 }
+                                $colValue = $productId = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
                             }
-                            $colValue = $productId = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
-                        }
+                            $columnKey = 'afile_record_id';
 
-                        if (!empty($userId)) {
-                            $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $userId);
-                        }
-
-                        if (1 > $colValue) {
-                            $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
-                            $invalid = true;
-                        }
-                    }
-
-                    if (in_array($columnKey, array( 'option_id', 'option_identifier' ))) {
-                        if ('option_id' == $columnKey) {
-                            $optionId = $colValue;
-                        }
-                        if ('option_identifier' == $columnKey) {
-                            $optionId = 0;
-                            if (!array_key_exists($colValue, $optionIdentifierArr)) {
-                                $res = $this->getAllOptions(false, $colValue);
-                                if (!$res) {
-                                    $invalid = true;
-                                }
-                                $optionIdentifierArr = array_merge($optionIdentifierArr, $res);
+                            if (!empty($userId)) {
+                                $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $userId);
                             }
-                            $colValue = $optionId = array_key_exists($colValue, $optionIdentifierArr) ? $optionIdentifierArr[$colValue] : 0;
-                        }
 
-                        if (!array_key_exists($productId, $selProdValidOptionArr)) {
-                            $selProdValidOptionArr[$productId] = array();
-                            $optionSrch = Product::getSearchObject();
-                            $optionSrch->joinTable(Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', 'tp.product_id = po.prodoption_product_id', 'po');
-                            $optionSrch->addCondition('product_id', '=', $productId);
-                            $optionSrch->addMultipleFields(array('prodoption_option_id'));
-                            $optionSrch->doNotCalculateRecords();
-                            $optionSrch->doNotLimitRecords();
-                            $rs = $optionSrch->getResultSet();
-                            $db = FatApp::getDb();
-                            while ($rowOptions = $db->fetch($rs)) {
-                                $selProdValidOptionArr[$productId][] = $rowOptions['prodoption_option_id'];
-                            }
-                            if ($optionId && !in_array($optionId, $selProdValidOptionArr[$productId])) {
+                            if (1 > $colValue) {
+                                $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
                                 $invalid = true;
+                                $breakForeach = true;
                             }
-                        }
-                    }
 
-                    if (in_array($columnKey, array( 'optionvalue_id', 'optionvalue_identifier' ))) {
-                        if ('optionvalue_id' == $columnKey) {
-                            $columnKey = 'afile_record_subid';
-                            $optionValueId = $colValue;
-                        }
-                        if ('optionvalue_identifier' == $columnKey) {
-                            $columnKey = 'afile_record_subid';
-                            $optionValueId = 0;
-                            $optionValueIndetifierArr[$optionId] = array_key_exists($optionId, $optionValueIndetifierArr)  ? $optionValueIndetifierArr[$optionId] : array();
+                            break;
+                        case 'option_id':
+                        case 'option_identifier':
+                            if ('option_id' == $columnKey) {
+                                $optionId = $colValue;
+                            }
+                            if ('option_identifier' == $columnKey) {
+                                $optionId = 0;
+                                if (!empty($colValue) && !array_key_exists($colValue, $optionIdentifierArr)) {
+                                    $res = $this->getAllOptions(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    }
+                                    $optionIdentifierArr = array_merge($optionIdentifierArr, $res);
+                                }
+                                $colValue = $optionId = array_key_exists($colValue, $optionIdentifierArr) ? $optionIdentifierArr[$colValue] : 0;
+                            }
 
-                            if (!array_key_exists($colValue, $optionValueIndetifierArr[$optionId])) {
-                                $res = $this->getAllOptionValues($optionId, false, $colValue);
-                                if (!$res) {
+                            if (!array_key_exists($productId, $selProdValidOptionArr)) {
+                                $selProdValidOptionArr[$productId] = array();
+                                $optionSrch = Product::getSearchObject();
+                                $optionSrch->joinTable(Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', 'tp.product_id = po.prodoption_product_id', 'po');
+                                $optionSrch->addCondition('product_id', '=', $productId);
+                                $optionSrch->addMultipleFields(array('prodoption_option_id'));
+                                $optionSrch->doNotCalculateRecords();
+                                $optionSrch->doNotLimitRecords();
+                                $rs = $optionSrch->getResultSet();
+                                $db = FatApp::getDb();
+                                while ($rowOptions = $db->fetch($rs)) {
+                                    $selProdValidOptionArr[$productId][] = $rowOptions['prodoption_option_id'];
+                                }
+                                if ($optionId && !in_array($optionId, $selProdValidOptionArr[$productId])) {
                                     $invalid = true;
                                 }
-                                $optionValueIndetifierArr[$optionId] = array_merge($optionValueIndetifierArr[$optionId], $res);
                             }
-                            $colValue = $optionValueId = isset($optionValueIndetifierArr[$optionId][$colValue]) ? $optionValueIndetifierArr[$optionId][$colValue] : 0;
-                        }
-                    }
+                            break;
+                        case 'optionvalue_id':
+                        case 'optionvalue_identifier':
+                            if ('optionvalue_id' == $columnKey) {
+                                $columnKey = 'afile_record_subid';
+                                $optionValueId = $colValue;
+                            }
+                            if ('optionvalue_identifier' == $columnKey) {
+                                $columnKey = 'afile_record_subid';
+                                $optionValueId = 0;
+                                $optionValueIndetifierArr[$optionId] = array_key_exists($optionId, $optionValueIndetifierArr)  ? $optionValueIndetifierArr[$optionId] : array();
 
-                    if ('afile_lang_code' == $columnKey) {
-                        $columnKey = 'afile_lang_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                                if (!empty($colValue) && !array_key_exists($colValue, $optionValueIndetifierArr[$optionId])) {
+                                    $res = $this->getAllOptionValues($optionId, false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    }
+                                    $optionValueIndetifierArr[$optionId] = array_merge($optionValueIndetifierArr[$optionId], $res);
+                                }
+                                $colValue = $optionValueId = isset($optionValueIndetifierArr[$optionId][$colValue]) ? $optionValueIndetifierArr[$optionId][$colValue] : 0;
+                            }
+                            break;
+                        case 'afile_lang_code':
+                            $columnKey = 'afile_lang_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
                     }
 
                     if (true === $invalid) {
                         $errMsg = !empty($errMsg) ? $errMsg : str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
                         CommonHelper::writeToCSVFile($this->CSVfileObj, array($rowIndex, ($colIndex + 1), $errMsg ));
+                        if ($breakForeach) {
+                            break;
+                        }
                     } else {
                         $prodCatalogMediaArr[$columnKey] = $colValue;
                     }
@@ -2623,6 +2629,8 @@ class Importexport extends ImportexportCommon
             }
 
             if (false === $errorInRow && count($prodCatalogMediaArr)) {
+                unset($prodCatalogMediaArr['option_identifier']);
+                unset($prodCatalogMediaArr['option_id']);
                 $fileType = AttachedFile::FILETYPE_PRODUCT_IMAGE;
 
                 $prodCatalogMediaArr['afile_type'] = $fileType;
