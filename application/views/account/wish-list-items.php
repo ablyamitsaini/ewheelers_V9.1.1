@@ -1,7 +1,7 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div class="row justify-content-between align-items-center mb-4">
-<div class="col">
-    <h5 class="cards-title mb-4 mb-md-0">
+<div class="col-auto">
+    <h5 class="cards-title mb-3">
         <?php echo $wishListRow['uwlist_title']; ?>
         <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
     </h5>

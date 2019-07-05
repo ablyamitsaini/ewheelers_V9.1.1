@@ -6,7 +6,7 @@
                 <div class="first-fold">
                     <div class="post">
                         <figure class="post_media">
-                            <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT1"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                            <img  data-ratio="16:9"src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT1"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
                         </figure>
                         <div class="post_bg">
                             <ul class="post_category">
@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <div class="post">
                             <figure class="post_media">
-                                <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                                <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
                             </figure>
                             <ul class="post_category">
                                 <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -129,7 +129,7 @@
                 <div class="post">
                     <figure class="post_media">
                         <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>">
-                        <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
+                        <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                     </figure>
                     <ul class="post_category">
                         <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -212,7 +212,7 @@
                         <div class="col-md-6">
                             <div class="post">
                                 <figure class="post_media">
-                                    <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                                    <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
                                 </figure>
                                 <ul class="post_category">
                                     <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -299,7 +299,7 @@
                     <div class="post">
                         <figure class="post_media">
                             <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>">
-                            <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
+                            <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                         </figure>
                         <ul class="post_category">
                             <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();

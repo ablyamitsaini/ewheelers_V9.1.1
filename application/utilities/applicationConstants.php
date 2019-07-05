@@ -376,7 +376,7 @@ class applicationConstants
         return array('1'=>4,
         '2'=>6,
         '3'=>4,
-        '4'=>3,
+        '4'=>4,
         '5'=>4,
         '6'=>4,
         '7'=>4,

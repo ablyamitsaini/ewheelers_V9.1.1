@@ -4,16 +4,14 @@
  	<div class="content-wrapper content-space">
  		<div class="content-body">
  			<div class="cards">
-				<section class="top-space">
-					<div class="packages-banner">
-					  <div class="container">
-						<div class="banner-over-txt">
+				<div class="cards-content p-4">
+					<div class="section-head section--head--center mt-4 mb-5">					 
+						<div class="section__heading">
 						 <?php echo html_entity_decode($pageData['epage_content']);?>
-						</div>
-					  </div>
-					</div>
-					<div class="container">
+						</div>					  
+					</div>					 
 					  <div class="packages-box">
+					  	<div class="row">
 					  <?php
 					  $packageArrClass= SellerPackages::getPackageClass();
 					  $totalPackages = count($packagesArr);
@@ -23,21 +21,17 @@
 						$lgCols = $arrLgCols[$totalPackages];
 						$mdCols = $arrMdCols[$totalPackages];
 						$ColsinRow  = ceil(12/$lgCols);
-						$chunkedPackagesArr = array_chunk($packagesArr,$ColsinRow,1);
+						// $chunkedPackagesArr = array_chunk($packagesArr,$ColsinRow,1);
 						$inc=1;
-						foreach($chunkedPackagesArr as $chunkedPackages) {
-							echo '<div class="row">';
+//						foreach($packagesArr as $chunkedPackages) {
 
-							foreach($chunkedPackages as $package) {
+							foreach($packagesArr as $package) {
 							$planIds = array_column($package['plans'],SellerPackagePlans::DB_TBL_PREFIX.'id');
 							$selectedClass ='';
 							if(in_array($currentActivePlanId,$planIds)){
 								$selectedClass ='is--active';
-							}
-
-
-							?>
-							<div class=" col-lg-<?php echo $lgCols;?> col-md-<?php echo $mdCols;?> col-sm-6 col-xs-12 box <?php echo $packageArrClass[$inc]." ".$selectedClass ?>">
+							} ?>
+							<div class=" col-xl-<?php echo $lgCols;?> col-lg-<?php echo $mdCols;?> col-md-6 mb-3 box <?php echo $packageArrClass[$inc]." ".$selectedClass ?>">
 							  <div class="box-inner">
 								<div class="name"><?php echo $package['spackage_name'];?> <span><?php echo $package['spackage_text'];?></span></div>
 								<div class="valid"> <?php echo SellerPackagePlans::getCheapPlanPriceWithPeriod($package['cheapPlan'],$package['cheapPlan'][SellerPackagePlans::DB_TBL_PREFIX.'price']);?></div>
@@ -75,13 +69,10 @@
 
 							$inc++;
 							}
-							echo'</div><div class="gap"></div>';
-						}
+//						}
 					  }	  ?>
-					  </div>
-					  <div class="gap"></div>
-					</div>
-				</section>
+					  </div>				 
+				</div>
  			</div>
  		</div>
  	</div>
