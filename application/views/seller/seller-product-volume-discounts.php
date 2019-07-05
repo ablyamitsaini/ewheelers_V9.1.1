@@ -60,6 +60,7 @@
                                 }
                             }
                         }
+                        echo $tbl->getHtml();
                         if (count($arrListing) == 0) {
                             $message = Labels::getLabel('LBL_No_any_volume_discount_on_this_product', $siteLangId);
                             $linkArr = array(
@@ -69,9 +70,8 @@
                             'onClick'=>'sellerProductVolumeDiscountForm('.$selprod_id.', 0);',
                             )
                             );
-                            $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-                        }
-                        echo $tbl->getHtml(); ?>
+                            $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
+                        } ?>
                 </div>
             </div>
         </div>
