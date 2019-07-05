@@ -148,7 +148,7 @@ class WalletPayController extends MyAppController
         $this->set('paymentMethods', $paymentMethods);
         $this->set('excludePaymentGatewaysArr', $excludePaymentGatewaysArr);
         $this->set('headerData', $headerData);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function PaymentTab($order_id, $pmethod_id)
@@ -198,11 +198,11 @@ class WalletPayController extends MyAppController
         $frm->setFormTagAttribute('action', CommonHelper::generateUrl($controller, 'charge', array($orderInfo['order_id'])));
         $frm->fill(
             array(
-'order_type' => $orderInfo['order_type'],
-'order_id' => $order_id,
-'pmethod_id' => $pmethod_id
-)
-);
+                'order_type' => $orderInfo['order_type'],
+                'order_id' => $order_id,
+                'pmethod_id' => $pmethod_id
+                )
+        );
 
         $this->set('orderInfo', $orderInfo);
         $this->set('paymentMethod', $paymentMethod);

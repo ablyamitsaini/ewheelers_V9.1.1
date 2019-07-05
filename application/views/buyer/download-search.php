@@ -95,12 +95,11 @@ foreach ($digitalDownloads as $sn => $row) {
         }
     }
 }
-if (count($digitalDownloads) == 0) {
-    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-}
 echo $tbl->getHtml();
-
-
+if (count($digitalDownloads) == 0) {
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
+}
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSrchPaging'));
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToSearchPage');

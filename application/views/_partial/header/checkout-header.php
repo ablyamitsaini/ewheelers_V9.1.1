@@ -16,42 +16,33 @@
         */ ?>
         <div class="container">
             <div class="header-checkout-inner">
-
                 <div class="logo"><a href="<?php echo CommonHelper::generateUrl(); ?>" class=""><img src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>"
                 alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
 
 
-                <?php /*if ($controllerName == 'Checkout' || $controllerName == 'subscriptioncheckout') {   ?>
-                <div class="nav-checkout">
-                    <ul>
-                        <?php if ($controllerName == 'Checkout') {  ?>
-                        <li><a href="#login-register"><?php echo Labels::getLabel('LBL_Login', $siteLangId); ?></a></li>
-                        <li><a href="#address"><?php echo Labels::getLabel('LBL_Billing/Shipping_Address', $siteLangId); ?></a></li>
-                        <li><a href="#shipping-summary"><?php echo Labels::getLabel('LBL_Shipping_Summary', $siteLangId); ?></a></li>
-                        <?php   } ?>
-                        <li><a href="#cart-review"><?php echo Labels::getLabel('LBL_Review_Order', $siteLangId); ?></a></li>
-                        <li><a href="#payment"><?php echo Labels::getLabel('LBL_Make_Payment', $siteLangId); ?></a></li>
-                    </ul>
-                </div>
-                <?php }*/ ?>
+                <?php $backUrl = CommonHelper::generateUrl('Home');
+                if($controllerName == 'subscriptioncheckout'){
+                    $backUrl = CommonHelper::generateUrl('Seller', 'Packages');
+                }elseif($controllerName == 'walletpay'){
+                    $backUrl = CommonHelper::generateUrl('Account', 'Credits');
+                } ?>
 
-                <a href="<?php echo CommonHelper::generateUrl('Home'); ?>" class="btn btn--primary-border btn--sm back-store"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
-
-
+                <a href="<?php echo $backUrl; ?>" class="btn btn--primary-border btn--sm back-store"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
                 <div class="checkout-flow">
+                    <?php if ($controllerName == 'checkout' || $controllerName == 'subscriptioncheckout') {   ?>
                     <ul>
-                        <?php if ($controllerName == 'Checkout') {  ?>
+                        <?php if ($controllerName == 'checkout') {  ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js shipping-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Shipping', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js order-complete-js" data-count="4"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
-                    <?php }else{?>
+                        <?php } else { ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js order-complete-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
-                    <?php }?>
-
+                        <?php } ?>
                     </ul>
+                    <?php } ?>
                 </div>
             </div>
         </div>

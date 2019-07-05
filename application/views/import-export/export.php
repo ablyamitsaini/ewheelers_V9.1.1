@@ -8,7 +8,7 @@ $optionFld->developerTags['noCaptionTag'] = true;
 $variables = array('siteLangId'=>$siteLangId,'action'=>$action);
 $this->includeTemplate('import-export/_partial/top-navigation.php', $variables, false); ?>
 <div class="tabs__content">
-    <div class="form__content">
+    <div class="row">
         <div class="row">
             <div class="col-md-12" id="exportFormBlock">
                 <?php echo $frm->getFormHtml();  ?>

@@ -1,5 +1,4 @@
-<?php
-defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 <div class="box box--white box--radius order-summary">
     <?php if(!empty($defaultAddress)) {?>
     <div class="p-4">
@@ -90,7 +89,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');?>
                 href="javascript:void(0)" onClick="removePromoCode()" class="btn btn--primary btn--sm"><?php echo Labels::getLabel("LBL_Remove", $siteLangId); ?></a></div>
         <?php } else { ?>
         <div class="coupon"> <a class="coupon-input btn btn--primary btn--block" href="javascript:void(0)" onclick="getPromoCode()"><?php echo Labels::getLabel('LBL_I_have_a_coupon', $siteLangId); ?></a> </div>
-        
+
         <?php } ?>
     </div>
     <div class="divider"></div>

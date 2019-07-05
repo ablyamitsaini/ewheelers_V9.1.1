@@ -1,4 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$imagesFrm->setFormTagAttribute('class', 'form');
 $imagesFrm->setFormTagAttribute('id', 'frmCustomCatalogProductImage');
 $imagesFrm->developerTags['colClassPrefix'] = 'col-md-';
 $imagesFrm->developerTags['fld_default_col'] = 6;
@@ -10,9 +11,8 @@ $img_fld = $imagesFrm->getField('prod_image');
 /*$img_fld->developerTags['col'] = 12;*/
 $img_fld->setFieldTagAttribute('onchange', 'setupCustomCatalogProductImages(); return false;'); ?>
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
-<div class="cards-content p-3">
-    <div class="tabs__content form">
-        <div class="form__content">
+<div class="cards-content pl-4 pr-4 ">     
+        <div class="row">
             <div class="col-md-12">
                 <?php if ($displayLinkNavigation == true) { ?>
                     <div class="tabs tabs-sm tabs--scroll clearfix">
@@ -32,7 +32,7 @@ $img_fld->setFieldTagAttribute('onchange', 'setupCustomCatalogProductImages(); r
                         </ul>
                     </div>
                 <?php } ?>
-                <div class="form__subcontent"> <?php
+                <div class=""> <?php
                     echo $imagesFrm->getFormHtml(); ?>
                     <div class="col-lg-12 col-md-12">
                         <div id="imageupload_div"></div>
@@ -40,5 +40,5 @@ $img_fld->setFieldTagAttribute('onchange', 'setupCustomCatalogProductImages(); r
                 </div>
             </div>
         </div>
-    </div>
+    
 </div>

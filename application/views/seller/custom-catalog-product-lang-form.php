@@ -1,7 +1,7 @@
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
 <div class="cards-content pl-4 pr-4 ">
-<div class="tabs__content form">
-	<div class="form__content">
+
+	<div class="row">
 		<div class="col-md-12">
 				<div class="tabs tabs-sm tabs--scroll clearfix">
 					<ul>
@@ -18,7 +18,7 @@
 					</ul>
 				</div>
 
-			<div class="form__subcontent">
+			<div class="">
 			<?php
 				//$customProductLangFrm->setFormTagAttribute('onsubmit','setUpCustomSellerProductLang(this); return(false);');
 				$customProductLangFrm->setFormTagAttribute('class','form form--horizontal layout--'.$formLayout);
@@ -31,6 +31,5 @@
 				echo $customProductLangFrm->getFormHtml(); ?>
 		</div>
 	</div>
-</div>
 </div>
 </div>

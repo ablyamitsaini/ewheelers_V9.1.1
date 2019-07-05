@@ -20,7 +20,7 @@
     echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchCommentsPaging')); ?>
 </div>
 <?php } else { ?>
-    <div class="block--empty">
+    <div class="block--empty p-4">
         <p><?php echo Labels::getLabel('Msg_No_Comments_on_this_blog_post', $siteLangId); ?></p>
     </div>
 <?php } ?>

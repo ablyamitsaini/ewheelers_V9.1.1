@@ -88,7 +88,7 @@
 				<div class="box box--gray box--radius box--border p-5"> <?php echo $frm->getFormHtml(); ?> </div>
 			  </div>
 		  </div>
-		<div class="gap"></div><div class="gap"></div><div class="gap"></div>
+		 
     </div>
   </section>
 	

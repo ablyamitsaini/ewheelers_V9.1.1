@@ -33,7 +33,7 @@ $fld1->htmlAfterField = $htmlAfterField;
 	</ul>
 </div>
 <div class="tabs__content">
-	<div class="form__content">
+	<div class="row">
         <div class="row">
 			<div class="col-md-8">
 			<?php echo $mediaFrm->getFormHtml(); ?>

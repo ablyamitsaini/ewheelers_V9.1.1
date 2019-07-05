@@ -23,7 +23,7 @@ $langFrm->developerTags['fld_default_col'] = 12;
     </ul>
 </div>
 <div class="tabs__content">
-    <div class="form__content">
+    <div class="row">
         <div class="row">
             <div class="col-md-6">
             <?php echo $langFrm->getFormHtml(); ?>

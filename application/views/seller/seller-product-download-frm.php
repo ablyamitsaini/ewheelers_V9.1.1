@@ -7,7 +7,7 @@
         <?php require_once('sellerCatalogProductTop.php');?>
     </div>
     <div class="tabs__content form">
-        <div class="form__content">
+        <div class="row">
             <div class="col-md-12">
                 <?php $selprodDownloadFrm->setFormTagAttribute('id', 'frmDownload');
                 $selprodDownloadFrm->setFormTagAttribute('class', 'form form--horizontal');

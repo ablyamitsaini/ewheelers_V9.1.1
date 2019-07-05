@@ -1,9 +1,7 @@
 <?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
-<div class="cards-content pl-4 pr-4 ">
-<div class="tabs__content form">
-	<div class="form__content">
+<div class="cards-content pl-4 pr-4">
+	<div class="row">
 		<div class="col-md-12">
-
 				<div class="tabs tabs-sm tabs--scroll clearfix">
 					<ul>
 						<li><a onClick="customCatalogProductForm(<?php echo $preqId;?>,<?php echo $preqCatId;?>)" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId );?></a></li>
@@ -47,7 +45,7 @@
 		</div>
 	</div>
 </div>
-</div>
+
 </div>
 <script type="text/javascript">
 $("document").ready(function(){

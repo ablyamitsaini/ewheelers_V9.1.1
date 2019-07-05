@@ -19,7 +19,7 @@ $frm->developerTags['fld_default_col'] = 12;
 				<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product',$siteLangId),' : ',(!empty($opDetail['op_selprod_title']) ? $opDetail['op_selprod_title'] : $opDetail['op_product_name']) ,' | ', Labels::getLabel('LBL_Shop',$siteLangId),' : ', $opDetail['op_shop_name'] ; ?></h5>
 			</div>
 			<div class="cards-content pl-4 pr-4 ">
-				<div class="form__content">
+				<div class="row">
 					<?php echo $frm->getFormHtml(); ?>
 				</div>
 			</div>

@@ -17,7 +17,7 @@ $orRequestTypeFld->setOptionListTagAttribute('class', 'list-inline');
             <div class="cards">
                
                 <div class="cards-content pl-4 pr-4 ">
-                    <div class="form__content"> <?php echo $frmOrderReturnRequest->getFormHtml(); ?> </div>
+                    <div class="row"> <?php echo $frmOrderReturnRequest->getFormHtml(); ?> </div>
                 </div>
             </div>
         </div>
