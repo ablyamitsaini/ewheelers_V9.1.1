@@ -28,23 +28,35 @@ $data['priceDetail'] = array(
     array(
         'key' => Labels::getLabel('LBL_Total', $siteLangId),
         'value' => CommonHelper::displayMoneyFormat($cartSummary['cartTotal'])
-    ),
-    array(
-        'key' => Labels::getLabel('LBL_Tax', $siteLangId),
-        'value' => CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal'])
     )
 );
 
+if (isset($cartSummary['cartTaxTotal'])) {
+    $data['priceDetail'][] = array(
+        'key' => Labels::getLabel('LBL_Tax', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal'])
+    );
+}
+if (isset($cartSummary['cartVolumeDiscount'])) {
+    $data['priceDetail'][] = array(
+        'key' => Labels::getLabel('LBL_Volume_Discount', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount'])
+    );
+}
 if (isset($cartSummary['cartDiscounts']['coupon_discount_total'])) {
     $data['priceDetail'][] = array(
         'key' => Labels::getLabel('LBL_Discount', $siteLangId),
         'value' => CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total'])
     );
 }
-// $data['priceDetail'][] = array(
-//     'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
-//     'value' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount'])
-// );
+
+$netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
+$netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
+
+$data['netPayable'] = array(
+    'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
+    'value' => CommonHelper::displayMoneyFormat($netChargeAmt)
+);
 
 if (1 > count($products)) {
     $statusArr['status'] = 0;
