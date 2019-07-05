@@ -1,77 +1,78 @@
-<?php require_once(CONF_THEME_PATH.'_partial/seller/customProductNavigationLinks.php'); ?>
-<div class="cards-content pl-4 pr-4 ">
-    <div class="tabs tabs--small tabs--scroll clearfix">
-        <?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
-    </div>
-    <div class="tabs__content">
-        <div class="row row">
-            <div class="col-md-12">
-                <div class="tabs tabs--small tabs--scroll clearfix">
-                    <ul>
-                        <li class="is-active"><a <?php echo ($product_id) ? "onclick='customProductForm( ".$product_id." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId);?></a></li>
+<div class="tabs tabs--small tabs--scroll clearfix">
+    <?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
+</div>
+<div class="cards">
+    <div class="cards-content pt-3 pl-4 pr-4 ">
+        <div class="tabs__content">
+            <div class="row row">
+                <div class="col-md-12">
+                    <div class="tabs tabs-sm tabs--scroll clearfix">
+                        <ul>
+                            <li class="is-active"><a <?php echo ($product_id) ? "onclick='customProductForm( ".$product_id." );'" : ""; ?> href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Basic', $siteLangId);?></a></li>
 
-                        <?php foreach ($languages as $langId => $langName) {?>
-                        <li class="<?php echo (!$product_id) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($product_id) ? "onclick='customProductLangForm( ".$product_id.",".$langId." );'" : ""; ?>><?php echo $langName;?></a>
-                        </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-                <div class="form__subcontent">
-                    <?php
-                $customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
-                $customProductFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
-                $customProductFrm->developerTags['fld_default_col'] = 4;
-                $customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
+                            <?php foreach ($languages as $langId => $langName) {?>
+                            <li class="<?php echo (!$product_id) ? 'fat-inactive' : ''; ?>"><a href="javascript:void(0);" <?php echo ($product_id) ? "onclick='customProductLangForm( ".$product_id.",".$langId." );'" : ""; ?>><?php echo $langName;?></a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                    <div class="form__subcontent">
+                        <?php
+                        $customProductFrm->setFormTagAttribute('class', 'form form--horizontal');
+                        $customProductFrm->developerTags['colClassPrefix'] = 'col-lg-4 col-md-';
+                        $customProductFrm->developerTags['fld_default_col'] = 4;
+                        $customProductFrm->setFormTagAttribute('onsubmit', 'setupCustomProduct(this); return(false);');
 
-                $shippingCountryFld = $customProductFrm->getField('shipping_country');
-                $shippingCountryFld->setWrapperAttribute('class', 'not-digital-js');
+                        $shippingCountryFld = $customProductFrm->getField('shipping_country');
+                        $shippingCountryFld->setWrapperAttribute('class', 'not-digital-js');
 
-                $shipFreeFld = $customProductFrm->getField('ps_free');
-                $shipFreeFld->setWrapperAttribute('class', 'not-digital-js');
+                        $shipFreeFld = $customProductFrm->getField('ps_free');
+                        $shipFreeFld->setWrapperAttribute('class', 'not-digital-js');
 
-                if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1)) {
-                    $lengthFld = $customProductFrm->getField('product_length');
-                    $lengthFld->setWrapperAttribute('class', 'product_length_fld');
-                    //$lengthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
+                        if (FatApp::getConfig("CONF_PRODUCT_DIMENSIONS_ENABLE", FatUtility::VAR_INT, 1)) {
+                            $lengthFld = $customProductFrm->getField('product_length');
+                            $lengthFld->setWrapperAttribute('class', 'product_length_fld');
+                            //$lengthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
 
-                    $widthFld = $customProductFrm->getField('product_width');
-                    $widthFld->setWrapperAttribute('class', 'product_width_fld');
-                    //$widthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId) ;
+                            $widthFld = $customProductFrm->getField('product_width');
+                            $widthFld->setWrapperAttribute('class', 'product_width_fld');
+                            //$widthFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId) ;
 
-                    $heightFld = $customProductFrm->getField('product_height');
-                    $heightFld->setWrapperAttribute('class', 'product_height_fld');
-                    //$heightFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
+                            $heightFld = $customProductFrm->getField('product_height');
+                            $heightFld->setWrapperAttribute('class', 'product_height_fld');
+                            //$heightFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_for_Shipping_Calculation.',$adminLangId);
 
-                    $dimensionUnitFld = $customProductFrm->getField('product_dimension_unit');
-                    $dimensionUnitFld->setWrapperAttribute('class', 'product_dimension_unit_fld');
+                            $dimensionUnitFld = $customProductFrm->getField('product_dimension_unit');
+                            $dimensionUnitFld->setWrapperAttribute('class', 'product_dimension_unit_fld');
 
-                    $weightFld = $customProductFrm->getField('product_weight');
-                    $weightFld->setWrapperAttribute('class', 'product_weight_fld');
+                            $weightFld = $customProductFrm->getField('product_weight');
+                            $weightFld->setWrapperAttribute('class', 'product_weight_fld');
 
-                    $weightUnitFld = $customProductFrm->getField('product_weight_unit');
-                    $weightUnitFld->setWrapperAttribute('class', 'product_weight_unit_fld');
-                }
+                            $weightUnitFld = $customProductFrm->getField('product_weight_unit');
+                            $weightUnitFld->setWrapperAttribute('class', 'product_weight_unit_fld');
+                        }
 
-                $productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
-                $productCodEnabledFld->setWrapperAttribute('class', 'product_cod_enabled_fld');
+                        $productCodEnabledFld = $customProductFrm->getField('product_cod_enabled');
+                        $productCodEnabledFld->setWrapperAttribute('class', 'product_cod_enabled_fld');
 
-                $shippingInfoFld = $customProductFrm->getField('shipping_info_html');
-                $shippingInfoFld->setWrapperAttribute('class', 'col-lg-12');
-                $shippingInfoFld->developerTags['col'] = 12;
+                        $shippingInfoFld = $customProductFrm->getField('shipping_info_html');
+                        $shippingInfoFld->setWrapperAttribute('class', 'col-lg-12');
+                        $shippingInfoFld->developerTags['col'] = 12;
 
-                /* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
-                $productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */
+                        /* $productShippedByMeFld = $customProductFrm->getField('product_shipped_by_me');
+                        $productShippedByMeFld->setWrapperAttribute( 'class' , 'product_shipped_by_me_fld'); */
 
-                /* $lengthFld = $customProductFrm->getField('product_length')->fieldWrapper = array('<div class="s">','</div>');
-                $widthFld = $customProductFrm->getField('product_width')->fieldWrapper = array('<div class="f">','</div>');
-                $heightFld = $customProductFrm->getField('product_height')->fieldWrapper = array('<div class="a">','</div>');
+                        /* $lengthFld = $customProductFrm->getField('product_length')->fieldWrapper = array('<div class="s">','</div>');
+                        $widthFld = $customProductFrm->getField('product_width')->fieldWrapper = array('<div class="f">','</div>');
+                        $heightFld = $customProductFrm->getField('product_height')->fieldWrapper = array('<div class="a">','</div>');
 
-                $customProductFrm->getField('product_weight')->fieldWrapper = array('<div class="c">','</div>');
-                $customProductFrm->getField('product_weight_unit')->fieldWrapper = array('<div class="g">','</div>'); */
+                        $customProductFrm->getField('product_weight')->fieldWrapper = array('<div class="c">','</div>');
+                        $customProductFrm->getField('product_weight_unit')->fieldWrapper = array('<div class="g">','</div>'); */
 
-                //$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
-                echo $customProductFrm->getFormHtml();
-                ?>
+                        //$customProductFrm->getField('option_name')->setFieldTagAttribute('class','mini');
+                        echo $customProductFrm->getFormHtml();
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,4 +206,3 @@
 
     });
 </script>
-</div>

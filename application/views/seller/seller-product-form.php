@@ -14,8 +14,7 @@
             <div class="col-md-auto">
                 <div class="action">
                     <div class="">
-                        <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--primary btn--sm "><strong><?php echo Labels::getLabel('LBL_Back_To_My_Inventory', $siteLangId)?></strong> </a>
-                        <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog');?>" class="btn btn--primary-border btn--sm "><strong><?php echo Labels::getLabel('LBL_Back_To_Products', $siteLangId)?></strong> </a>
+                        <a href="<?php echo CommonHelper::generateUrl('seller', 'products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel('LBL_Back_To_My_Inventory', $siteLangId)?></a>
                     </div>
                 </div>
             </div>

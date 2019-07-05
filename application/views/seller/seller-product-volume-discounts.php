@@ -3,12 +3,14 @@
     <?php require_once('sellerCatalogProductTop.php');?>
 </div>
 <div class="cards">
-<div class="cards-header p-4">
-    <h5 class="cards-title"><?php /* echo $productCatalogName; */ ?></h5>
-    <div class="action">
-        <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a>
+<?php if(count($arrListing) > 0) { ?>
+    <div class="cards-header p-4">
+        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Volume_Discount_Setup', $siteLangId);?></h5>
+        <div class="action">
+            <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a>
+        </div>
     </div>
-</div>
+<?php } ?>
 <div class="cards-content pl-4 pr-4 ">
         <div class="row">
             <div class="<?php echo (count($arrListing) > 0) ? 'col-md-6' : 'col-md-12' ;?>">
@@ -59,7 +61,7 @@
                                 }
                             }
                         }
-                        echo $tbl->getHtml();
+
                         if (count($arrListing) == 0) {
                             $message = Labels::getLabel('LBL_No_any_volume_discount_on_this_product', $siteLangId);
                             $linkArr = array(
@@ -70,6 +72,8 @@
                             )
                             );
                             $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
+                        }else{
+                            echo $tbl->getHtml();
                         } ?>
                 </div>
             </div>
