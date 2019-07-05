@@ -7,7 +7,7 @@
 		<?php require_once('sellerCatalogProductTop.php');?>
 	</div>
 	<div class="tabs__content form">
-		<div class="form__content">
+		<div class="row">
 			<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 		</div>
 	</div>

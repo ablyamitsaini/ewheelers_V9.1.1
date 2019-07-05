@@ -21,8 +21,8 @@
                     </h6>
                 </div>
             </div>
-            <div class="align-items-center mb-4">
-                <div class="">
+            <div class="row align-items-center mb-4">
+                <div class="col">
                     <?php
                         $redeemRewardFrm->setFormTagAttribute('class', 'form form--secondary form--singlefield');
                         $redeemRewardFrm->setFormTagAttribute('onsubmit', 'useRewardPoints(this); return false;');
@@ -32,20 +32,9 @@
                         echo $redeemRewardFrm->getFieldHtml('btn_submit');
                         echo $redeemRewardFrm->getExternalJs(); ?>
                         </form>
-                        <div class="gap"></div>
-                    <?php if (!empty($cartSummary['cartRewardPoints'])) { ?>
-                        <div class="alert alert--success relative">
-                            <a href="javascript:void(0)" class="close" onClick="removeRewardPoints()"></a>
-                            <p><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId); ?> <strong><?php echo $cartSummary['cartRewardPoints']; ?></strong> <?php echo Labels::getLabel('LBL_Successfully_Used', $siteLangId); ?></p>
-                        </div>
-                    <?php } ?>
                 </div>
-            </div>
-        <?php } ?>
-        <div class="align-items-center mb-4">
-            <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
-                <div>
-                    <div id="wallet" class="wallet">
+                <div class="col-auto">
+                    <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
                         <label class="checkbox brand" id="brand_95">
                             <input onChange="walletSelection(this)" type="checkbox" <?php echo ($cartSummary["cartWalletSelected"]) ? 'checked="checked"' : ''; ?> name="pay_from_wallet" id="pay_from_wallet" />
                             <i class="input-helper"></i>
@@ -55,6 +44,24 @@
                                 echo '<strong>'.Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>: (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)</strong>
                             <?php } ?>
                         </label>
+                    <?php }?>
+                </div>
+            </div>
+            <?php if (!empty($cartSummary['cartRewardPoints'])) { ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                    <div class="alert alert--success relative">
+                        <a href="javascript:void(0)" class="close" onClick="removeRewardPoints()"></a>
+                        <p><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId); ?> <strong><?php echo $cartSummary['cartRewardPoints']; ?></strong> <?php echo Labels::getLabel('LBL_Successfully_Used', $siteLangId); ?></p>
+                    </div>
+            </div>
+        </div>
+            <?php } ?>
+        <?php } ?>
+        <div class="align-items-center mb-4">
+            <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
+                <div>
+                    <div id="wallet" class="wallet">
                         <?php if ($cartSummary["cartWalletSelected"]) { ?>
                             <div class="listing--grids">
                                 <ul>
@@ -69,7 +76,7 @@
                                             <p><?php echo Labels::getLabel('LBL_Amount_in_your_wallet', $siteLangId); ?></p>
                                             <h5><?php echo CommonHelper::displayMoneyFormat($userWalletBalance); ?></h5>
                                         </div>
-                                        <p>
+                                        <p class="note">
                                             <i>
                                                 <?php echo Labels::getLabel('LBL_Remaining_wallet_balance', $siteLangId);
                                                 $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);
@@ -131,68 +138,55 @@
             $gatewayCount++;
         }
         if ($cartSummary['orderPaymentGatewayCharges']) { ?>
-            <div class="payment_methods_list mb-4" <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>>
-                <?php if ($cartSummary['orderPaymentGatewayCharges'] && 0 < $gatewayCount && 0 < count($paymentMethods)) { ?>
-                        <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar="init">
-                            <div class="simplebar-wrapper" style="margin: 0px;">
-                                <div class="simplebar-height-auto-observer-wrapper">
-                                    <div class="simplebar-height-auto-observer"></div>
-                                </div>
-                                <div class="simplebar-mask">
-                                    <div class="simplebar-offset" style="right: 0px; bottom: -15px;">
-                                        <div class="simplebar-content" style="height: auto; overflow: scroll hidden;">
-                                            <div class="simplebar-resize-wrapper" style="padding: 0px;">
-                                            <?php $count=0;
-                                            foreach ($paymentMethods as $key => $val) {
-                                                if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) {
-                                                    continue;
-                                                }
-                                                $count++; ?>
-                                                <li>
-                                                    <a href="<?php echo CommonHelper::generateUrl('Checkout', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id'])); ?>">
-                                                        <div class="payment-box">
-                                                            <i class="payment-icn">
-                                                                <img src="<?php echo CommonHelper::generateUrl('Image', 'paymentMethod', array($val['pmethod_id'],'SMALL')); ?>" alt="">
-                                                            </i>
-                                                            <span><?php echo $val['pmethod_name']; ?></span>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="payment_methods_list" <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>>
+                        <?php if ($cartSummary['orderPaymentGatewayCharges'] && 0 < $gatewayCount && 0 < count($paymentMethods)) { ?>
+                            <ul id="payment_methods_tab" class="" data-simplebar>
+                                <?php $count=0;
+                                foreach ($paymentMethods as $key => $val) {
+                                    if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) {
+                                        continue;
+                                    }
+                                    $count++; ?>
+                                    <li>
+                                        <a href="<?php echo CommonHelper::generateUrl('Checkout', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id'])); ?>">
+                                            <div class="payment-box">
+                                                <i class="payment-icn">
+                                                    <img src="<?php echo CommonHelper::generateUrl('Image', 'paymentMethod', array($val['pmethod_id'],'SMALL')); ?>" alt="">
+                                                </i>
+                                                <span><?php echo $val['pmethod_name']; ?></span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="simplebar-placeholder" style="width: auto; height: 90px;"></div>
-                            </div>
-                            <div class="simplebar-track simplebar-horizontal" style="visibility: visible;">
-                                <div class="simplebar-scrollbar" style="width: 381px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
-                            </div>
-                            <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                                <div class="simplebar-scrollbar" style="height: 90px; transform: translate3d(0px, 0px, 0px); display: none;"></div>
-                            </div>
-                        </ul>
-                <?php } else{
-                    echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
-                } ?>
-            </div>
-            <div class="payment-from">
-                <div class="you-pay">
-                    <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
-                    <strong>
-                        <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
-                        <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                            <li>
-                                <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
-                            </li>
-                        <?php } ?>
-                    </strong>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        <?php } else {
+                            echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
+                        } ?>
+                    </div>
                 </div>
-                <div class="gap"></div>
-                <div id="tabs-container"></div>
-        <?php } ?>
-    </section>
-</div>
+                <div class="col-md-8">
+                    <div class="payment-from">
+                        <div class="you-pay">
+                            <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
+                            <strong>
+                                <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
+                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                                    <li>
+                                        <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
+                                    </li>
+                                <?php } ?>
+                            </strong>
+                        </div>
+                        <div class="gap"></div>
+                        <div id="tabs-container"></div>
+                <?php } ?>
+            </section>
+        </div>
+                </div>
+            </div>
+
 <?php if ($cartSummary['orderPaymentGatewayCharges']) { ?>
     <script type="text/javascript">
         var containerId = '#tabs-container';

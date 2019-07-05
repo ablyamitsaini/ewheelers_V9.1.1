@@ -56,7 +56,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 <div class="cards">
                    
                     <div class="cards-content p-4">
-                        <div class="bg-gray-light p-4 pb-0">
+                        <div class="replaced">
                             <?php
                             $submitFld = $frmOrderCancellationRequestsSrch->getField('btn_submit');
                             $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');

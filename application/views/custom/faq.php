@@ -2,15 +2,18 @@
 <div id="body" class="body">
 
 	  
-    <div class="section section--pagebar">
-      <div class="container container--fixed">
+    <div class="bg--second pt-3 pb-3">
+      <div class="container">
         <div class="row align-items-center">
-          <div class="col-md-8">
-                <h1>FAQ</h1>
-                <div class="breadcrumbs">
+          <div class="col-md-8">               
+               <div class="section-head section--white--head mb-0">
+            <div class="section__heading">
+                  <h2 class="mb-0">FAQ</h2>
+                <div class="breadcrumbs breadcrumbs--white">
 				  <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 				</div>
-                
+            </div>
+        </div> 
           </div>
           <div class="col-md-4 align--right"></div>
         </div>

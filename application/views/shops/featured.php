@@ -1,18 +1,20 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage'); ?>
 <div id="body" class="body">
-	<div class="section section--pagebar">
-      <div class="container container--fixed">
+	<div class="bg--second pt-3 pb-3">
+      <div class="container">
         <div class="row align-items-center">
           <div class="col-md-8">
-                <h1><?php echo Labels::getLabel('Lbl_Featured_Shops' , $siteLangId); ?></h1>
+               <div class="section-head section--white--head mb-0">
+            <div class="section__heading">
+               
+                <h2><?php echo Labels::getLabel('Lbl_Featured_Shops' , $siteLangId); ?></h2>
+            </div>			
+        </div>               
           </div>
           <div class="col-md-4 align--right"></div>
         </div>
       </div>
     </div>
-    
-
-
 	<section class="section">
 		<div class="container">
 			

@@ -26,7 +26,7 @@ $paymentPolicyfld->htmlAfterField = '<small class="text--small">'.Labels::getLab
 
 $this->includeTemplate('seller/_partial/shop-navigation.php',$variables,false); ?>
 <div class="tabs__content">
-	<div class="form__content ">
+	<div class="row ">
 		<div class="row">
 			<div class="col-lg-12 col-md-12" id="shopFormBlock">
 				<?php echo $shopLangFrm->getFormTag();

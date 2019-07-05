@@ -5,7 +5,7 @@
 	<?php require_once(CONF_THEME_PATH.'seller/sellerCustomProductTop.php');?>
 </div>
 <div class="tabs__content">
-	<div class="form__content row">
+	<div class="row row">
 	  <div class="col-md-12">
 		<?php
 			$frmLinks->setFormTagAttribute('class', 'form form--horizontal');

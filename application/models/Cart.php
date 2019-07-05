@@ -272,8 +272,19 @@ class Cart extends FatModel
                     /*[COD available*/
                     $codEnabled = false;
                     if ($is_cod_enabled && Product::isProductShippedBySeller($sellerProductRow['product_id'], $sellerProductRow['product_seller_id'], $sellerProductRow['selprod_user_id'])) {
+                        $walletBalance = User::getUserBalance($sellerProductRow['selprod_user_id']);
                         if ($sellerProductRow['selprod_cod_enabled']) {
                             $codEnabled = true;
+                        }
+                        $codMinWalletBalance = -1;
+                        $shop_cod_min_wallet_balance = Shop::getAttributesByUserId($sellerProductRow['selprod_user_id'], 'shop_cod_min_wallet_balance');
+                        if ($shop_cod_min_wallet_balance > -1) {
+                            $codMinWalletBalance = $shop_cod_min_wallet_balance;
+                        } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
+                            $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
+                        }
+                        if ($codMinWalletBalance > -1 && $codMinWalletBalance > $walletBalance) {
+                            $codEnabled = false;
                         }
                     } else {
                         if ($sellerProductRow['product_cod_enabled']) {
@@ -833,7 +844,7 @@ class Cart extends FatModel
         //$orderPaymentGatewayCharges = $netTotalAfterDiscount - $orderCreditsCharge;
 
         $totalDiscountAmount = (isset($cartDiscounts['coupon_discount_total'])) ? $cartDiscounts['coupon_discount_total'] : 0;
-        $orderNetAmount = ($cartTotal  + $shippingTotal  + $cartTaxTotal)  - $totalDiscountAmount - $cartVolumeDiscount ;
+        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
 
         $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
@@ -950,8 +961,10 @@ class Cart extends FatModel
                 $couponInfo['coupon_discount_value'] = min($couponInfo['coupon_discount_value'], $subTotal);
             }
 
+            $cartVolumeDiscount = 0;
             foreach ($cartProducts as $cartProduct) {
                 $discount = 0;
+                $cartVolumeDiscount += $cartProduct['volume_discount_total'];
                 if (empty($couponInfo['grouped_coupon_products']) || $this->cart_user_id == $couponInfo['grouped_coupon_users']) {
                     $status = true;
                 } else {
@@ -1028,7 +1041,7 @@ class Cart extends FatModel
                 }
             }
             /*]*/
-
+            $selProdDiscountTotal = $selProdDiscountTotal - $cartVolumeDiscount;
             $labelArr = array(
                 'coupon_label'=>$couponInfo["coupon_title"],
                 'coupon_id'=>$couponInfo["coupon_id"],

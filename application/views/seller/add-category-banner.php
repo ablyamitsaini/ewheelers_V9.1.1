@@ -9,7 +9,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 <div class="popup__body">
 	<h2><?php echo Labels::getLabel('LBL_Banner',$siteLangId); ?></h2>
 	<div class="tabs__content">
-		<div class="form__content ">
+		<div class="row ">
 			<div class="col-md-12">
 				<div class="preview">
 				 <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*330')?></small>

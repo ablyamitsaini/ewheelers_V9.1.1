@@ -1,18 +1,18 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="col-lg-10 col-md-10 mb-3">
+<div class="col-lg-12 col-md-12">
     <div class="content-header justify-content-between row mb-4">
         <div class="content-header-left col-md-auto"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Shop_Collections', $siteLangId); ?></h5></div>
         <div class="content-header-right col-auto">
             <div class="form__group">
-                <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(1)" class="btn btn--primary formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Activate', $siteLangId);?></a>
-                <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(0)" class="btn btn--primary-border formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Deactivate', $siteLangId);?></a>
-                <a href="javascript:void(0)" onClick="deleteSelectedCollection()" class="btn btn--primary formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Delete', $siteLangId);?></a>
-                <a href="javascript:void(0)" onClick="getShopCollectionGeneralForm(0)" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_Add_Collection', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(1)" class="btn btn--primary btn--sm formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Activate', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(0)" class="btn btn--primary-border btn--sm formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Deactivate', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="deleteSelectedCollection()" class="btn btn--primary  btn--smformActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Delete', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="getShopCollectionGeneralForm(0)" class="btn btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Add_Collection', $siteLangId);?></a>
             </div>
         </div>
     </div>
 </div>
-<div class="col-lg-10 col-md-10">
+<div class="col-lg-12 col-md-12">
     <?php $arr_flds = array(
             'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
             'listserial'=>Labels::getLabel('LBL_Sr._no.', $siteLangId),
@@ -94,6 +94,16 @@
             }
         }
     }
+    
+    $frm = new Form('frmCollectionsListing', array('id'=>'frmCollectionsListing'));
+    $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+    $frm->setFormTagAttribute('onsubmit', 'formAction(this, searchShopCollections ); return(false);');
+    $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'toggleBulkCollectionStatuses'));
+    $frm->addHiddenField('', 'collection_status', '');
+
+    echo $frm->getFormTag();
+    echo $frm->getFieldHtml('collection_status');
+    echo $tbl->getHtml(); 
     if (count($arr_listing) == 0) {
         $message = Labels::getLabel('LBL_No_Collection_found', $siteLangId);
         $linkArr = array(
@@ -103,16 +113,7 @@
             'onClick'=>"getShopCollectionGeneralForm(0)",
             )
         );
-        $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-    }
-    $frm = new Form('frmCollectionsListing', array('id'=>'frmCollectionsListing'));
-    $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
-    $frm->setFormTagAttribute('onsubmit', 'formAction(this, searchShopCollections ); return(false);');
-    $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'toggleBulkCollectionStatuses'));
-    $frm->addHiddenField('', 'collection_status', '');
-
-    echo $frm->getFormTag();
-    echo $frm->getFieldHtml('collection_status');
-    echo $tbl->getHtml(); ?>
+        $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
+    } ?>
     </form>
 </div>

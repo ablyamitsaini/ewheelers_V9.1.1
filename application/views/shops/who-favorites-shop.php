@@ -4,7 +4,7 @@ $shop_state = ( strlen($shopData['shop_city']) > 0 ) ? ', '. $shopData['shop_sta
 $shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shopData['shop_country_name'] : $shopData['shop_country_name'];
 $shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
-<div class="section section--pagebar">
+<div class="bg--second pt-3 pb-3">
    <div class="container container--fixed">
 	   <div class="row">
 		   <div class="col-md-8 col-sm-8">

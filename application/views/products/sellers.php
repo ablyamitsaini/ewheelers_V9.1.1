@@ -2,7 +2,7 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 ?> <div id="body" class="body">
 
-    <div class="section section--pagebar">
+    <div class="bg--second pt-3 pb-3">
       <div class="container container--fixed">
         <div class="row align-items-center">
           <div class="col-md-8">
@@ -37,7 +37,12 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
     
     <section class="section">
         <div class="container">
-           <h1><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h1>
+          <div class="section-head mb-0">
+				<div class="section__heading">
+					<h2 class="mb-0"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h2>
+				</div>
+			</div>
+          
             <div class=""> <?php
             $arr_flds = array(
                 'shop_name'    =>    Labels::getLabel('LBL_Seller', $siteLangId),
@@ -47,7 +52,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                 'Action'    =>    '',
 
             );
-            $tbl = new HtmlElement('table', array('class'=>'table table--orders'));
+            $tbl = new HtmlElement('table', array('class'=>'table table--orders js-scrollable'));
             $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
             foreach ($arr_flds as $val) {
                 $e = $th->appendElement('th', array(), $val);
@@ -124,6 +129,6 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 ?> </div>
         </div>
-        <div class="gap"></div>
+         
     </section>
 </div>

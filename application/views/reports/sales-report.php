@@ -35,10 +35,9 @@
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h5>
                             <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--block btn--sm">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 pb-4">
-                            <div class="grids--profile">
+                        <div class="cards-content pl-4 pr-4 pb-0">                            
                                 <?php if (empty($orderDate)) { ?>
-                                <div class="bg-gray-light p-4 pb-0">
+                                <div class="replaced">
                                     <?php
                                     $submitFld = $frmSrch->getField('btn_submit');
                                     $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
@@ -51,7 +50,7 @@
                                 <?php  } else {
                                         echo  $frmSrch->getFormHtml();
                                 } ?>
-                            </div>
+                            
                           
                         </div>
                     </div>

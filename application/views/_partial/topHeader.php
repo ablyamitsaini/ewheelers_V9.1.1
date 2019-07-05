@@ -36,7 +36,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-xs-6 d-none d-xl-block d-lg-block hide--mobile">
-                        <div class="slogan"><?php echo Labels::getLabel('L_Instant_Multi_Vendor_eCommerce_System_Builder', $siteLangId); ?></div>
+                        <div class="slogan"><?php echo Labels::getLabel('LBL_Multi-vendor_Ecommerce_Marketplace_Solution', $siteLangId); ?></div>
                     </div>
                     <div class="col-lg-6 col-xs-12">
                         <div class="short-links">

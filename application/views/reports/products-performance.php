@@ -7,32 +7,20 @@
             <div class="content-header-right"> <a href="javascript:void(0)" id="performanceReportExport" onclick="exportProdPerformanceReport('DESC')" class="btn btn--secondary btn--sm btn--block"><?php echo Labels::getLabel('LBL_Export', $siteLangId);?></a></div>
             </div>
         </div>
-        <div class="content-body">
+        <div class="content-body">           
            
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="cards">
-                       <div class="cards-header pl-4 pr-4 pt-4">
-                            
-                        
-                           <div class="tabs tabs--small tabs--scroll clearfix setactive-js mb-0 pb-0 no-border-bottom">
+            <div class="gap"></div>
+            <div class="tabs tabs--small tabs--scroll setactive-js">
                                     <ul>
                                         <li class="is-active"><a href="javascript:void(0);" onClick="topPerformingProducts()"><?php echo Labels::getLabel('LBL_Top_Performing_Products', $siteLangId);?></a></li>
                                         <li><a href="javascript:void(0);" onClick="badPerformingProducts()"><?php echo Labels::getLabel('LBL_Most_Refunded_Products_Report', $siteLangId);?></a></li>
                                         <li><a href="javascript:void(0);" onClick="mostWishListAddedProducts()"><?php echo Labels::getLabel('LBL_Most_WishList_Added_Products', $siteLangId);?></a></li>
                                     </ul>
                                 </div>
-
-                       </div>
-                      
-                    </div>
-                </div>
-            </div>
-            <div class="gap"></div>
+                                
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="cards">
-                      
+                    <div class="cards">                      
                        <div class="cards-content pl-4 pr-4 ">
                        <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                        </div>

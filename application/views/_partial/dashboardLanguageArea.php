@@ -34,4 +34,3 @@ if ($currencies && count($currencies) > 1) { ?>
             </div>
 </li>
 <?php } ?>
-<li class="divider"></li>

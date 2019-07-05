@@ -10,21 +10,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
-                            <div class="action">
-                                <?php if (User::canAddCustomProduct()) { ?>
-                                <a href="<?php echo CommonHelper::generateUrl('seller', 'customProductForm');?>" class="btn btn--secondary btn--sm"><?php echo Labels::getLabel('LBL_Add_New_Product', $siteLangId);?></a>
-                                <?php }
-                                ?>
-                                <!--<a href="<?php /* echo CommonHelper::generateUrl('seller','products');?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel( 'LBL_My_Inventory', $siteLangId) */?></a>-->
-                                <?php if ((isset($canAddCustomProduct) && $canAddCustomProduct==false) && (isset($canRequestProduct) && $canRequestProduct === true)) {?>
-                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'requestedCatalog');?>" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Request_A_Product', $siteLangId);?></a>
-                                <?php } ?>
-                            </div>
-                        </div>
-                        <div class="cards-content  pl-4 pr-4 pb-4">
-                            <div class="bg-gray-light p-4 pb-0">
+                        <div class="cards-content pt-3 pl-4 pr-4 pb-0">
+                            <div class="replaced">
                                 <?php
                                 $frmSearchCatalogProduct->setFormTagAttribute('id', 'frmSearchCatalogProduct');
                                 $frmSearchCatalogProduct->setFormTagAttribute('class', 'form');
@@ -66,7 +53,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                 echo $frmSearchCatalogProduct->getFormHtml();
                                 ?>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>
@@ -74,10 +61,8 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                       
-                        <div class="cards-content p-4">
+                        <div class="cards-content pt-2 pl-4 pr-4 pb-4">
                             <div id="listing"> </div>
-                          
                         </div>
                     </div>
                 </div>

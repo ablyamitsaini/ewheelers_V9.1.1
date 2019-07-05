@@ -1,17 +1,17 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="col-lg-10 col-md-10 mb-3">
+<div class="col-lg-12 col-md-12">
     <div class="content-header justify-content-between row mb-4">
         <div class="content-header-left col-md-auto"><h5 class="cards-title"><?php echo Labels::getLabel('LBL_Shop_Collections', $siteLangId); ?></h5></div>
         <div class="content-header-right col-auto">
             <div class="form__group">
-                <a href="javascript:void(0)" onClick="shopCollections(this)" class="btn btn--primary-border"><?php echo Labels::getLabel('LBL_Back_to_Collections', $siteLangId);?></a>
+                <a href="javascript:void(0)" onClick="shopCollections(this)" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Collections', $siteLangId);?></a>
             </div>
         </div>
     </div>
 </div>
-<div class="col-lg-10 col-md-10">
+<div class="col-lg-12 col-md-12">
     <div class="tabs__content">
-        <div class="form__content ">
+        <div class="row ">
             <div class="row">
                 <div class="col-md-12">
                     <div class="">
@@ -36,7 +36,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="form__subcontent">
+                    <div class="row form__subcontent">
                         <div class="col-lg-6 col-md-6">
                             <?php
                             $colectionForm->setFormTagAttribute('class', 'form form--horizontal');

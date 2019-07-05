@@ -498,8 +498,8 @@ class ImageController extends FatController
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
             default:
-                $h = 246;
-                $w = 246;
+                $h = 500;
+                $w = 2000;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
         }
@@ -863,12 +863,12 @@ class ImageController extends FatController
                 case 'THUMB':
                     $w = 200;
                     $h = 100;
-                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
                 default:
                     $w = 2000;
                     $h = 360;
-                    AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                    AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
             }
         } else {
@@ -1157,7 +1157,7 @@ class ImageController extends FatController
 
     public function shopCollectionImage($recordId, $langId = 0, $sizeType = '', $displayUniversalImage = true)
     {
-        $default_image = 'product_default_image.jpg';
+        $default_image = 'banner-default-image.png';
         $recordId = FatUtility::int($recordId);
         $langId = FatUtility::int($langId);
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_COLLECTION_IMAGE, $recordId, 0, $langId, $displayUniversalImage);

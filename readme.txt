@@ -25,6 +25,8 @@ Enhancements:
 	. Admin & User can perform multi select bulk operations(Update statues and Delete) on shop collection as well.
 	. Added min and max range for COD payments.
 	. Added a check for option values that not to be deleted if linked with an inventory.
+	. Removed image compression for banners and slides.
+	. Added minimum wallet balance functionality for COD orders.
 
 Fixes :
 	. Phpmailer Autoload function deprecated.
@@ -52,3 +54,6 @@ Fixes :
 	. 027579 - in wish list > move, cart and delete button shouldn't display until any item is selected
 	. 027755 - Manage Seller Approval Form Add Unique Identifier.
 	. 027753 - Exclude content block string from Important instructions page bread crumb.
+	. 027709 - Fixed count issue on search category listing while adding product.
+	. 027465 - Excluded shipping and tax charges from order discounts (Coupons/volume discount).
+	. 027948 - Rounded off value for price range filters.	

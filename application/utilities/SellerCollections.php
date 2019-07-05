@@ -375,7 +375,7 @@ trait SellerCollections
 
         $frm->addTextBox(Labels::getLabel('LBL_COLLECTION', $this->siteLangId), 'scp_selprod_id', '', array('id'=>'scp_selprod_id'));
 
-        $frm->addHtml('', 'buy_together', '<div id="selprod-products"><ul class="list--vertical" ></ul></div><div class="gap"></div>');
+        $frm->addHtml('', 'buy_together', '<div id="selprod-products"><ul class="list-vertical" ></ul></div><div class="gap"></div>');
         $frm->addHiddenField('', 'scp_scollection_id');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         return $frm;

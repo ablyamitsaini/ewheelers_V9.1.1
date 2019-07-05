@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<ul class="columlist list--vertical" id="product-option">
+<ul class="columlist list-vertical" id="product-option">
 <?php if($selectedCats){
 	$lis= '';
 	foreach($selectedCats as $option){

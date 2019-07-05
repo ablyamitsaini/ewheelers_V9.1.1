@@ -5,35 +5,34 @@ $shop_state = ( strlen($shop['shop_city']) > 0 ) ? ', '. $shop['shop_state_name'
 $shop_country = ( strlen($shop_state) > 0 ) ? ', '.$shop['shop_country_name'] : $shop['shop_country_name'];
 $shopLocation = $shop_city . $shop_state. $shop_country;
 ?>
-<div id="body" class="body bg--gray">
-    <div class="section section--pagebar">
-      <div class="container container--fixed">
-        <div class="row">
+<div id="body" class="body">
+    <div class="bg--second pt-3 pb-3">
+      <div class="container">
+        <div class="row align-items-center justify-content-between">
           <div class="col-md-8">
-            <div class="cell">
-             <!-- <div class="cell__left">
-                <div class="avtar"><img alt="" src="images/150x150_4.jpg"></div>
-              </div>-->
-              <div class="cell__right">
-                <div class="avtar__info">
-                  <h5><?php echo $shop['shop_name']; ?></h5>
+           
+           <div class="section-head section--white--head mb-0">
+            <div class="section__heading">
+                <h2><?php echo $shop['shop_name']; ?></h2>
                   <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
-                </div>
-              </div>
             </div>
+        </div>
+      
           </div>
-          <div class="col-md-4 align--right"><span class="gap"></span><a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
+          <div class="col-md-auto col-sm-auto">
+          <a href="<?php echo CommonHelper::generateUrl('Shops','view',array($shop['shop_id'])); ?>" class="btn btn--primary d-block"><?php echo Labels::getLabel('Lbl_Back_to_Shop',$siteLangId); ?></a></div>
         </div>
       </div>
     </div>
-	<section class="section section--gray">
+	<section class="section">
 		<div class="container">
-			<div id="itemRatings">
+		<div class="row justify-content-center">
+			<div class="col-md-7"><div id="itemRatings">
 				<div class="section__head">
 				  <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. $shop['shop_name'] , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
 				</div>
-				<div class="row listing__all">
-                  <ul>
+				<div class="rowx listing__all">
+                  <ul class="reviews-list mt-5">
                     <li>
                         <div class="row">
                             <div class="col-md-4">
@@ -71,7 +70,10 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
                     </li>
                   </ul>
                 </div>
-			</div>
+			</div></div>
+		</div>
+		
+			
 		</div>
     </section>
 	<div class="gap"></div>

@@ -108,19 +108,19 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 45;
-            $h = 41;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'COLLECTION_PAGE':
+                $w = 45;
+                $h = 41;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -132,19 +132,19 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 100;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'COLLECTION_PAGE':
-            $w = 48;
-            $h = 48;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 100;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'COLLECTION_PAGE':
+                $w = 48;
+                $h = 48;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -158,19 +158,19 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 250;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'WIDE':
-            $w = 1320;
-            $h = 320;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 250;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'WIDE':
+                $w = 1320;
+                $h = 320;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -185,24 +185,24 @@ class CategoryController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 250;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'MEDIUM':
-            $w = 380;
-            $h = 213;
-            AttachedFile::displayImage($image_name, $w, $h, $default_image);
-            break;
-        case 'WIDE':
-            $w = 1350;
-            $h = 400;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name, $default_image);
-            break;
+            case 'THUMB':
+                $w = 250;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'MEDIUM':
+                $w = 380;
+                $h = 213;
+                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                break;
+            case 'WIDE':
+                $w = 1350;
+                $h = 400;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
+                break;
         }
     }
 
@@ -211,28 +211,28 @@ class CategoryController extends MyAppController
         $nodes = array();
         $parameters = FatApp::getParameters();
         switch ($action) {
-        case 'view':
-            if (isset($parameters[0]) && $parameters[0] > 0) {
-                $parent = FatUtility::int($parameters[0]);
-                if ($parent>0) {
-                    $cntInc=1;
-                    $prodCateObj =new ProductCategory();
-                    $category_structure=$prodCateObj->getCategoryStructure($parent, '', $this->siteLangId);
-                    $category_structure = array_reverse($category_structure);
-                    foreach ($category_structure as $catKey => $catVal) {
-                        if ($cntInc < count($category_structure)) {
-                            $nodes[] = array('title'=>$catVal["prodcat_name"], 'href'=>Commonhelper::generateUrl('category', 'view', array($catVal['prodcat_id'])));
-                        } else {
-                            $nodes[] = array('title'=>$catVal["prodcat_name"]);
+            case 'view':
+                if (isset($parameters[0]) && $parameters[0] > 0) {
+                    $parent = FatUtility::int($parameters[0]);
+                    if ($parent>0) {
+                        $cntInc=1;
+                        $prodCateObj =new ProductCategory();
+                        $category_structure=$prodCateObj->getCategoryStructure($parent, '', $this->siteLangId);
+                        $category_structure = array_reverse($category_structure);
+                        foreach ($category_structure as $catKey => $catVal) {
+                            if ($cntInc < count($category_structure)) {
+                                $nodes[] = array('title'=>$catVal["prodcat_name"], 'href'=>Commonhelper::generateUrl('category', 'view', array($catVal['prodcat_id'])));
+                            } else {
+                                $nodes[] = array('title'=>$catVal["prodcat_name"]);
+                            }
+                            $cntInc++;
                         }
-                        $cntInc++;
                     }
                 }
-            }
-            break;
+                break;
 
-        case 'form':
-            break;
+            case 'form':
+                break;
         }
         return $nodes;
     }

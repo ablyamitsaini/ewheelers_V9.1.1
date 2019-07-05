@@ -7,17 +7,27 @@ $fld = $contactFrm->getField('phone');
 $fld->developerTags['col'] = 12;
 $fld = $contactFrm->getField('message');
 $fld->developerTags['col'] = 12;
-$fldSubmit = $contactFrm->getField('btn_submit');
-$fldSubmit->addFieldTagAttribute('class', 'btn--block'); ?>
+
+$fld = $contactFrm->getField('htmlNote');
+$fld->developerTags['col'] = 12;
+$fld = $contactFrm->getField('btn_submit');
+$fld->developerTags['col'] = 12;
+?>
 <div id="body" class="body" role="main">
 
     
-    <div class="section section--pagebar">
+    <div class="bg--second pt-3 pb-3">
       <div class="container container--fixed">
-        <div class="row align-items-center  justify-content-between">
-          <div class="col-md-8 col-sm-8">
-                <h1><?php echo Labels::getLabel('LBL_Get_in_Touch', $siteLangId);?></h1>
+        <div class="row align-items-center justify-content-center">
+          <div class="col-md-8 col-sm-8">               
+               <div class="section-head section--white--head justify-content-center mb-0">
+            <div class="section__heading text-center">
+                <h2><?php echo Labels::getLabel('LBL_Get_in_Touch', $siteLangId);?></h2>
                 <p><?php echo Labels::getLabel('LBL_Get_in_Touch_Txt', $siteLangId);?></p>
+            </div>
+        </div>
+               
+                
           </div>
           <div class="col-md-auto col-sm-auto"></div>
         </div>

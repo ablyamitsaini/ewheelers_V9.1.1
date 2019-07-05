@@ -13,19 +13,19 @@
 if (User::isSeller()) {
         $shopFld = $frm->getField('promotion_shop');
         $shopFld->setWrapperAttribute('class', 'promotion_shop_fld');
-        $shopFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_to_promote_shop.', $siteLangId);
+        $shopFld->htmlAfterField = '<p class="note">'.Labels::getLabel('LBL_Note:_Used_to_promote_shop.', $siteLangId).'</p>';
 
         $shopCpcFld = $frm->getField('promotion_shop_cpc');
         $shopCpcFld->setWrapperAttribute('class', 'promotion_shop_fld');
-        $shopCpcFld->htmlAfterField = Labels::getLabel('MSG_PPC_cost_per_click_for_shop', $siteLangId);
+        $shopCpcFld->htmlAfterField = '<p class="note">'.Labels::getLabel('MSG_PPC_cost_per_click_for_shop', $siteLangId).'</p>';
 
         $productFld = $frm->getField('promotion_product');
         $productFld->setWrapperAttribute('class', 'promotion_product_fld');
-        $productFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_to_promote_product.', $siteLangId);
+        $productFld->htmlAfterField = '<p class="note">'.Labels::getLabel('LBL_Note:_Used_to_promote_product.', $siteLangId).'</p>';
 
         $productCpcFld = $frm->getField('promotion_product_cpc');
         $productCpcFld->setWrapperAttribute('class', 'promotion_product_fld');
-        $productCpcFld->htmlAfterField = Labels::getLabel('MSG_PPC_cost_per_click_for_Product', $siteLangId);
+        $productCpcFld->htmlAfterField = '<p class="note">'.Labels::getLabel('MSG_PPC_cost_per_click_for_Product', $siteLangId).'</p>';
 }
 
     $locationFld = $frm->getField('banner_blocation_id');
@@ -36,18 +36,18 @@ if (User::isSeller()) {
 
     $slideUrlFld = $frm->getField('slide_url');
     $slideUrlFld->setWrapperAttribute('class', 'slide_url_fld');
-    $slideUrlFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_to_promote_through_slider.', $siteLangId);
+    $slideUrlFld->htmlAfterField = '<p class="note">'.Labels::getLabel('LBL_Note:_Used_to_promote_through_slider.', $siteLangId).'</p>';
 
     /* $slideTargetUrlFld = $frm->getField('slide_target');
     $slideTargetUrlFld->setWrapperAttribute( 'class' , 'slide_url_fld'); */
 
     $slideCpcFld = $frm->getField('promotion_slides_cpc');
     $slideCpcFld->setWrapperAttribute('class', 'slide_url_fld');
-    $slideCpcFld->htmlAfterField = Labels::getLabel('MSG_PPC_cost_per_click_for_Slides', $siteLangId);
+    $slideCpcFld->htmlAfterField = '<p class="note">'.Labels::getLabel('MSG_PPC_cost_per_click_for_Slides', $siteLangId).'</p>';
 
     $urlFld = $frm->getField('banner_url');
     $urlFld->setWrapperAttribute('class', 'banner_url_fld');
-    $urlFld->htmlAfterField = Labels::getLabel('LBL_Note:_Used_to_promote_through_banner.', $siteLangId);
+    $urlFld->htmlAfterField = '<p class="note">'.Labels::getLabel('LBL_Note:_Used_to_promote_through_banner.', $siteLangId).'</p>';
 
     /* $bannerTargetUrlFld = $frm->getField('banner_target');Request Products Which Is Availble To All Sellers
     $bannerTargetUrlFld->setWrapperAttribute( 'class' , 'banner_url_fld'); */
@@ -71,7 +71,7 @@ if (User::isSeller()) {
     </ul>
 </div>
 <div class="tabs__content">
-    <div class="form__content">
+    <div class="row">
         <div class="row">
             <div class="col-md-6">
                 <?php echo $frm->getFormHtml(); ?>

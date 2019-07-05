@@ -34,16 +34,8 @@
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Products', $siteLangId); ?></h5>
-                            <div class="action">
-                                <?php if (User::canAddCustomProductAvailableToAllSellers()) {?>
-                                <a href="<?php echo CommonHelper::generateUrl('Seller', 'customCatalogProductForm');?>" class="btn btn--secondary btn--sm ripplelink btn--block"><?php echo Labels::getLabel('LBL_Request_New_Product', $siteLangId);?></a>
-                                <?php }?>
-                            </div>
-                        </div>
-                        <div class="cards-content pl-4 pr-4 pb-4">
-                            <div class="bg-gray-light p-4 pb-0">
+                        <div class="cards-content pt-4 pl-4 pr-4 pb-0">
+                            <div class="replaced">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <?php
@@ -59,7 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                         
+
                         </div>
                     </div>
                 </div>
@@ -67,12 +59,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content pt-2 pl-4 pr-4 pb-4">
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
-                          
+
                         </div>
                     </div>
                 </div>

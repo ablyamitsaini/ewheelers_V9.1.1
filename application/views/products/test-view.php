@@ -247,7 +247,6 @@
                                 </div>
                             </div>
                             <div class="gap"></div>
-
                             <div class="sold-by bg-gray p-4 rounded">
                                 <div class="row align-items-center">
                                     <div class="col">

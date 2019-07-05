@@ -61,7 +61,7 @@ $("document").ready(function(){
 		});
 	};
 	$(document).on('click',".confirmReview",function(){
-		getReviewSCart();
+		// getReviewSCart();
 		$(sCartReviewDiv).removeClass("is-current");
 		loadPaymentSummary();
 	});
@@ -78,14 +78,11 @@ $("document").ready(function(){
 		});
 	}
 	loadPaymentSummary = function(){
-
-
 		$(paymentDiv).html( fcom.getLoader() );
-
 		fcom.ajax(fcom.makeUrl('SubscriptionCheckout', 'PaymentSummary'), '', function(ans) {
 			$(paymentDiv).html(ans);
-
 			$(paymentDiv).addClass("is-current");
+			setCheckoutFlow('PAYMENT');
 		});
 	};
 	loadFinancialSummary= function(){

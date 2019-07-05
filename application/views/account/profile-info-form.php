@@ -44,69 +44,66 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 ?>
 <div class="row">
     <div class="col-xl-4">
-       <div class="profile-container">
-       	<div class="profile-container__col">
-       		<div class="row preview preview--profile align-items-center" id="profileImageFrmBlock">
-				<div class="col-md-6">
-					<div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true)).'?'.time();?>"
-							alt="<?php echo Labels::getLabel('LBL_Profile_Image', $siteLangId);?>"></div>
-				</div>
-				<div class="col-md-6">
-					<div class="btngroup--fix">
-						<?php echo $imgFrm->getFormTag();    ?>
-						<span class="btn btn--primary btn--sm btn--fileupload">
-							<?php echo $imgFrm->getFieldHtml('user_profile_image'); ?><?php echo ($mode == 'Edit') ? Labels::getLabel('LBL_Change', $siteLangId): Labels::getLabel('LBL_Upload', $siteLangId) ;?>
-						</span>
-						<?php echo $imgFrm->getFieldHtml('update_profile_img');
-						echo $imgFrm->getFieldHtml('rotate_left');
-						echo $imgFrm->getFieldHtml('rotate_right');
-						echo $imgFrm->getFieldHtml('remove_profile_img');
-						echo $imgFrm->getFieldHtml('action');
-						echo $imgFrm->getFieldHtml('img_data');
-						?>
-						<?php if ($mode == 'Edit') { ?>
-						<a class="btn btn--primary-border btn--sm" href="javascript:void(0)" onClick="removeProfileImage()"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
-						<?php }?>
-						</form>
-						<?php echo $imgFrm->getExternalJS();?>
-						<div id="dispMessage"></div>
-					</div>
-				</div>
-			</div>
-       	</div>
-       	<div class="profile-container__col">
-       		 <?php if (User::canViewBuyerTab() && User::canViewSupplierTab()) { ?>
-				<div class="row preview preview--profile align-items-center">
-				
-						<h5><?php echo Labels::getLabel('LBL_Preferred_Dashboard', $siteLangId);?> </h5>
-						<div class="switch-group">
-							<ul class="switch setactive-js">
-								<?php if (User::canViewBuyerTab() && ( User::canViewSupplierTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() )) { ?>
-								<li <?php echo (User::USER_BUYER_DASHBOARD == $data['user_preferred_dashboard'])?'class="is-active"':''?>><a href="javascript:void(0)"
-										onClick="setPreferredDashboad(<?php echo User::USER_BUYER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Buyer', $siteLangId);?></a></li>
-								<?php } ?>
-								<?php if (User::canViewSupplierTab() && ( User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab() )) { ?>
-								<li <?php echo (User::USER_SELLER_DASHBOARD == $data['user_preferred_dashboard'])?'class="is-active"':''?>><a href="javascript:void(0)"
-										onClick="setPreferredDashboad(<?php echo User::USER_SELLER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></a></li>
-								<?php } ?>
-							</ul>
-						</div>
-					
-				</div>
-				<?php } ?>
-       	</div>
-       	
-       </div>
-        
-       
+        <div class="profile-container">
+            <div class="profile-container__col">
+                <div class="row preview preview--profile align-items-center" id="profileImageFrmBlock">
+                    <div class="col-md-6">
+                        <div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true)).'?'.time();?>"
+                                alt="<?php echo Labels::getLabel('LBL_Profile_Image', $siteLangId);?>"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btngroup--fix">
+                            <?php echo $imgFrm->getFormTag();    ?>
+                            <span class="btn btn--primary btn--sm btn--fileupload">
+                                <?php echo $imgFrm->getFieldHtml('user_profile_image'); ?><?php echo ($mode == 'Edit') ? Labels::getLabel('LBL_Change', $siteLangId): Labels::getLabel('LBL_Upload', $siteLangId) ;?>
+                            </span>
+                            <?php echo $imgFrm->getFieldHtml('update_profile_img');
+                            echo $imgFrm->getFieldHtml('rotate_left');
+                            echo $imgFrm->getFieldHtml('rotate_right');
+                            echo $imgFrm->getFieldHtml('remove_profile_img');
+                            echo $imgFrm->getFieldHtml('action');
+                            echo $imgFrm->getFieldHtml('img_data');
+                            ?>
+                            <?php if ($mode == 'Edit') { ?>
+                            <a class="btn btn--primary-border btn--sm" href="javascript:void(0)" onClick="removeProfileImage()"><?php echo Labels::getLabel('LBL_Remove', $siteLangId);?></a>
+                            <?php }?>
+                            </form>
+                            <?php echo $imgFrm->getExternalJS();?>
+                            <div id="dispMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-container__col">
+                <?php if (User::canViewBuyerTab() && User::canViewSupplierTab()) { ?>
+                <div class="row preview preview--profile align-items-center">
+                    <h5><?php echo Labels::getLabel('LBL_Preferred_Dashboard', $siteLangId);?> </h5>
+                    <div class="switch-group">
+                        <ul class="switch setactive-js">
+                            <?php if (User::canViewBuyerTab() && (User::canViewSupplierTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab())) { ?>
+                            <li <?php echo (User::USER_BUYER_DASHBOARD == $data['user_preferred_dashboard'])?'class="is-active"':''?>><a href="javascript:void(0)"
+                                    onClick="setPreferredDashboad(<?php echo User::USER_BUYER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Buyer', $siteLangId);?></a></li>
+                            <?php } ?>
+                            <?php if (User::canViewSupplierTab() && (User::canViewBuyerTab() || User::canViewAdvertiserTab() || User::canViewAffiliateTab())) { ?>
+                            <li <?php echo (User::USER_SELLER_DASHBOARD == $data['user_preferred_dashboard'])?'class="is-active"':''?>><a href="javascript:void(0)"
+                                    onClick="setPreferredDashboad(<?php echo User::USER_SELLER_DASHBOARD ;?>)"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
     </div>
     <div class="col-xl-8">
         <?php echo $frm->getFormHtml();?>
     </div>
 </div>
 <script language="javascript">
-    $(document).ready(function(){
-        getCountryStates($( "#user_country_id" ).val(),<?php echo $stateId ;?>,'#user_state_id');
-        $('.user_dob_js').datepicker('option', {maxDate: new Date()});
+    $(document).ready(function() {
+        getCountryStates($("#user_country_id").val(), <?php echo $stateId ;?>, '#user_state_id');
+        $('.user_dob_js').datepicker('option', {
+            maxDate: new Date()
+        });
     });
 </script>

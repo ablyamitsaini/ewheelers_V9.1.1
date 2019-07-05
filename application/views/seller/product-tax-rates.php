@@ -8,7 +8,7 @@
 	</div>
 	<div class="tabs__content form">
 
-		<div class="form__content">
+		<div class="row">
 			<div class="col-md-12">
 				<div class="form__subcontent">
 					<?php
@@ -61,10 +61,11 @@
                         }
                     }
                 }
-                if (count($arrListing) == 0){
-                    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-                }
                 echo $tbl->getHtml();
+                if (count($arrListing) == 0) {
+                    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+                    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
+                }
 				?>
 				</div>
 			</div>

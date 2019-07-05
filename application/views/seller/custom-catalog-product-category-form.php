@@ -8,16 +8,19 @@ $frm->developerTags['fld_default_col'] = 12;
 $keyFld = $frm->getField('keyword');
 $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
 $keyFld->developerTags['col'] = 8;
+$keyFld->developerTags['noCaptionTag'] = true;
 
 $submitBtnFld = $frm->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class','btn--block');
 $submitBtnFld->setWrapperAttribute('class','col-sm-3');
 $submitBtnFld->developerTags['col'] = 2;
+$submitBtnFld->developerTags['noCaptionTag'] = true;
 
 $cancelBtnFld = $frm->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class','btn--block');
 $cancelBtnFld->setWrapperAttribute('class','col-sm-3');
-$cancelBtnFld->developerTags['col'] = 2; ?>
+$cancelBtnFld->developerTags['col'] = 2;
+$cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
 <div class="cards-content p-4 ">
 <?php echo $frm->getFormHtml(); ?>
 <div class="search-form"></div>

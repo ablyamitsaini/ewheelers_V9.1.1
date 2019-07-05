@@ -176,6 +176,14 @@ class ProductSearch extends SearchBase
             $this->addOptionCondition($criteria['optionvalue'], $srch);
         }
 
+        if (isset($criteria['condition']) && !empty($criteria['condition'])) {
+            $this->addConditionCondition($criteria['condition'], $srch);
+        }
+
+        if (isset($criteria['out_of_stock']) && !empty($criteria['out_of_stock'])) {
+            $srch->addCondition('sprods.selprod_stock', '>', 0);
+        }
+
         if ($checkAvailableFrom) {
             $srch->addCondition('sprods.selprod_available_from', '<=', $now);
         }
@@ -476,7 +484,7 @@ class ProductSearch extends SearchBase
 
     public function addKeywordSearch($keyword)
     {
-        if ($keyword == '') {
+        if (empty($keyword) || $keyword == '') {
             return;
         }
 
@@ -636,19 +644,23 @@ class ProductSearch extends SearchBase
     }
 
 
-    public function addConditionCondition($condition)
+    public function addConditionCondition($condition, $obj = false)
     {
+        if ($obj === false) {
+            $obj = $this;
+        }
+
         if (is_numeric($condition)) {
             $condition = FatUtility::int($condition);
-            $this->addCondition('selprod_condition', '=', $condition);
+            $obj->addCondition('selprod_condition', '=', $condition);
         } elseif (is_array($condition)) {
             $condition = array_filter(array_unique($condition));
-            $this->addDirectCondition('selprod_condition IN ('. implode(',', $condition).')');
+            $obj->addDirectCondition('selprod_condition IN ('. implode(',', $condition).')');
         } else {
             $condition = explode(",", $condition);
             $condition = FatUtility::int($condition);
             $condition = array_filter(array_unique($condition));
-            $this->addDirectCondition('selprod_condition IN ('. implode(',', $condition).')');
+            $obj->addDirectCondition('selprod_condition IN ('. implode(',', $condition).')');
         }
     }
 

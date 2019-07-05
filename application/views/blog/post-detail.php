@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 /* $this->includeTemplate('_partial/blogTopFeaturedCategories.php'); */ ?>
-<section class="post-detail">
+<section class="section post-detail">
     <div class="container">
         <div class="row">
             <div class="col-xl-9 col-lg-8 mb-4 mb-md-0">
@@ -102,7 +102,7 @@
                         $postCommentFrm->setFormTagAttribute('class', 'form');
                         $postCommentFrm->setFormTagAttribute('onsubmit', 'setupPostComment(this);return false;');
                         $postCommentFrm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
-                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-md-';
                         $postCommentFrm->developerTags['fld_default_col'] = 12;
                         $nameFld = $postCommentFrm->getField('bpcomment_author_name');
                         $nameFld->addFieldTagAttribute('readonly', true);
@@ -118,7 +118,7 @@
                     </div>
                    
                     <?php }?>
-                    <div class="gap hide--mobile"></div> <div class="gap hide--mobile"></div> <div class="gap hide--mobile"></div>
+                    
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4">

@@ -31,23 +31,22 @@
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Seller_Options', $siteLangId); ?></h2>
             </div>
+            <div class="content-header-left col-md-auto">
+                <div class="action btn-group-scroll">
+                    <a class=" btn btn--secondary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
+                    <!-- <a href="#modal-popup" class="btn--block modaal-inline-content link" onclick="optionForm(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId);?></a> -->
+                    <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
+                </div>
+            </div>
         </div>
         <div class="content-body">
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Manage_Seller_Options', $siteLangId); ?></h5>
-                            <div class="action">
-                                <a class=" btn btn--secondary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?>" onclick="optionForm(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId); ?></a>
-                                <!-- <a href="#modal-popup" class="btn--block modaal-inline-content link" onclick="optionForm(0)"><?php echo Labels::getLabel('LBL_Add_Option', $siteLangId);?></a> -->
-                                <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>" onclick="deleteOptions()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
-                            </div>
-                        </div>
-                        <div class="cards-content pl-4 pr-4 pb-4">
-                            <div class="bg-gray-light p-4 pb-0">
+                        <div class="cards-content pt-4 pl-4 pr-4 pb-0">
+                            <div class="replaced">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-8">
                                         <?php
                                         $submitFld = $frmSearch->getField('btn_submit');
                                         $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
@@ -59,7 +58,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
                 </div>
@@ -67,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        
+
                         <div class="cards-content pl-4 pr-4">
                             <div id="optionListing"></div>
                         </div>

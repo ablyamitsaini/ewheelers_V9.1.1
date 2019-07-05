@@ -48,14 +48,19 @@ $cancelBtnFld->developerTags['col'] = 2;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div id="withdrawalReqForm"></div>
-                        <div class="cards-content pl-4 pr-4">
+                        <?php if ( $codMinWalletBalance > -1 ) { ?>
+                        <div class="cards-header p-4 pb-0">
+                            <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_COD', $siteLangId).' : '. CommonHelper::displaymoneyformat($codMinWalletBalance);?></p>
+                        </div>
+                        <?php } ?>
+                        <div class="cards-content pl-4 pr-4 pt-4">
                             <div id="credits-info"></div>
                             <div class="gap"></div>
                             <?php //echo $balanceTotalBlocksDisplayed;?>
-                            <?php $srchFormDivWidth = $canAddMoneyToWallet ? '8' : 12; ?>
+                            <?php $srchFormDivWidth = $canAddMoneyToWallet ? '8' : '12'; ?>
                             <div class="row">
                                 <div class="col-lg-<?php echo $srchFormDivWidth; ?> col-md-<?php echo $srchFormDivWidth; ?> col-md-12">
-                                    <div class="bg-gray-light p-4 pb-0">
+                                    <div class="replaced">
                                         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Transactions', $siteLangId);?></h5>
                                         <?php
                                         $submitFld = $frmSrch->getField('btn_submit');
@@ -69,7 +74,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                                 </div>
                                 <?php if ($canAddMoneyToWallet) { ?>
                                     <div class="col-lg-4 col-md-12">
-                                        <div class="bg-gray-light p-3 pb-0 amount-added-box">
+                                        <div class="replaced amount-added-box">
                                             <h5 class="cards-title">
                                             <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $siteLangId); ?></h5>
                                             <div id="rechargeWalletDiv" class="cellright nopadding--bottom">

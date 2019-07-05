@@ -1273,6 +1273,7 @@ class Importexport extends ImportexportCommon
 
         while ($row = $this->db->fetch($rs)) {
             $taxData = $this->getTaxCategoryByProductId($row['product_id']);
+
             if (!empty($taxData)) {
                 $row = array_merge($row, $taxData);
             }
@@ -1295,7 +1296,7 @@ class Importexport extends ImportexportCommon
                 }
 
                 if ('credential_username' == $columnKey) {
-                    $colValue = (!empty($row[$columnKey]) && 0 < $userId ? $row['credential_username'] :  Labels::getLabel('LBL_Admin', $langId));
+                    $colValue = (!empty($row[$columnKey]) ? $row['credential_username'] :  Labels::getLabel('LBL_Admin', $langId));
                 }
 
                 if ('product_type_identifier' == $columnKey) {
@@ -1358,11 +1359,13 @@ class Importexport extends ImportexportCommon
         $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
 
         $errInSheet = false;
+        $prodType = PRODUCT::PRODUCT_TYPE_PHYSICAL;
         while (($row = $this->getFileRow($csvFilePointer)) !== false) {
             $rowIndex++;
             $prodDataArr = $prodlangDataArr = $categoryIds = $prodShippingArr = array();
             $errorInRow = $taxCatId = false;
 
+            $breakForeach = false;
             foreach ($coloumArr as $columnKey => $columnTitle) {
                 $colIndex = $this->headingIndexArr[$columnTitle];
                 $colValue = $this->getCell($row, $colIndex, '');
@@ -1370,17 +1373,12 @@ class Importexport extends ImportexportCommon
 
                 if ($this->isDefaultSheetData($langId) && in_array($columnKey, array('product_seller_id', 'credential_username', 'product_id', 'product_identifier'))) {
                     if ($this->settings['CONF_USE_USER_ID']) {
-                        $colTitle = $columnTitle;
-                        if ('product_seller_id' != $columnKey) {
-                            $colTitle = $coloumArr['product_seller_id'];
-                        }
+                        $colTitle = ('product_seller_id' != $columnKey) ? $coloumArr['product_seller_id'] :$columnTitle;
                         $colInd = $this->headingIndexArr[$colTitle];
                         $userId = $this->getCell($row, $colInd, '');
                     } else {
-                        $colTitle = $columnTitle;
-                        if ('credential_username' != $columnKey) {
-                            $colTitle = $coloumArr['credential_username'];
-                        }
+                        $colTitle = ('credential_username' != $columnKey)? $coloumArr['credential_username']:$columnTitle;
+
                         if ('credential_username' == $columnKey) {
                             $columnKey = 'product_seller_id';
                         }
@@ -1390,9 +1388,11 @@ class Importexport extends ImportexportCommon
 
                         if (0 < $sellerId && empty($userName)) {
                             $userObj = new User($sellerId);
-                            $userName = ($userObj->getUserInfo(array('credential_username')))['credential_username'];
+                            $userInfo = $userObj->getUserInfo(array('credential_username'));
+                            $userName = $userInfo['credential_username'];
+                        } else {
+                            $userName = ($userName == Labels::getLabel('LBL_Admin', $langId) ? '' : $userName);
                         }
-                        $userName = ($userName == Labels::getLabel('LBL_Admin', $langId) ? '' : $userName);
 
                         if (!empty($userName) && !array_key_exists($userName, $usernameArr)) {
                             $res = $this->getAllUserArr(false, $userName);
@@ -1412,141 +1412,162 @@ class Importexport extends ImportexportCommon
                     if (0 < $sellerId && ($sellerId != $userId || 1 > $userId)) {
                         $colIndex = $colInd;
                         $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
+                        $breakForeach = true;
                     }
                 }
 
                 if (false === $errMsg) {
-                    $errMsg = Product::validateFields($columnKey, $columnTitle, $colValue, $langId);
+                    $errMsg = Product::validateFields($columnKey, $columnTitle, $colValue, $langId, $prodType);
                 }
 
                 if (false !== $errMsg) {
                     $errorInRow = true;
                     $err = array($rowIndex,($colIndex + 1),$errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
-                } else {
-                    if ($this->settings['CONF_USE_PRODUCT_ID'] && 'product_id' == $columnKey) {
-                        if (0 < $sellerId) {
-                            $userTempIdData = $this->getProductIdByTempId($colValue, $userId);
-                            if (!empty($userTempIdData) && $userTempIdData['pti_product_temp_id'] == $colValue) {
-                                $colValue = $userTempIdData['pti_product_id'];
-                            }
-                        }
-
-                        $prodDataArr['product_id'] = $colValue;
-
-                        $prodData = Product::getAttributesById($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
-                    } elseif ($this->settings['CONF_USE_PRODUCT_ID'] && 'product_identifier' == $columnKey) {
-                        $prodData = Product::getAttributesByIdentifier($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
-                        if ($sellerId && !empty($prodData) && $prodData['product_seller_id'] != $sellerId) {
-                            $invalid = true;
-                        }
-                    } elseif (in_array($columnKey, array( 'product_cod_enabled', 'product_featured', 'product_approved', 'product_active', 'product_deleted' ))) {
-                        if ($this->settings['CONF_USE_O_OR_1']) {
-                            $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
-                        } else {
-                            $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
-                        }
-                    } elseif ($sellerId && 'product_added_on' == $columnKey) {
-                        $colValue = date('Y-m-d H:i:s');
-                    } elseif ('category_Id' == $columnKey) {
-                        $categoryIds = $colValue;
-                    } elseif ('category_indentifier' == $columnKey) {
-                        $catArr = array();
-                        $catIdentifiers = explode(',', $colValue);
-                        if (!empty($catIdentifiers)) {
-                            foreach ($catIdentifiers as $val) {
-                                if (!array_key_exists($val, $categoryIdentifierArr)) {
-                                    $res = $this->getAllCategoryIdentifiers(false, $val);
-                                    if (!$res) {
-                                        continue;
-                                    } else {
-                                        $categoryIdentifierArr = array_merge($categoryIdentifierArr, $res);
-                                    }
-                                }
-                                if (isset($categoryIdentifierArr[$val])) {
-                                    $catArr[] = $categoryIdentifierArr[$val];
-                                }
-                            }
-                        }
-                        $categoryIds = implode(',', $catArr);
-                    } elseif ('tax_category_identifier' == $columnKey) {
-                        $catArr = array();
-
-                        $catIdentifiers = explode(',', $colValue);
-                        if (!empty($catIdentifiers)) {
-                            foreach ($catIdentifiers as $val) {
-                                if (!array_key_exists($val, $categoryIdentifierArr)) {
-                                    $res = $this->getAllCategoryIdentifiers(false, $val);
-                                    if ($res) {
-                                        $categoryIdentifierArr = array_merge($categoryIdentifierArr, $res);
-                                    } else {
-                                        $invalid = true;
-                                    }
-                                }
-                                if (array_key_exists($val, $categoryIdentifierArr)) {
-                                    $catArr[] = $categoryIdentifierArr[$val];
-                                } else {
-                                    $invalid = true;
-                                }
-                            }
-                        }
-                        $colValue = implode(',', $catArr);
-                    } elseif ('brand_identifier' == $columnKey) {
-                        $columnKey = 'product_brand_id';
-                        if (!array_key_exists($colValue, $brandIdentifierArr)) {
-                            $res = $this->getAllBrandsArr(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $brandIdentifierArr = array_merge($brandIdentifierArr, $res);
-                            }
-                        }
-                        $colValue = isset($brandIdentifierArr[$colValue]) ? $brandIdentifierArr[$colValue] : 0;
-                    } elseif ('product_type_identifier' == $columnKey) {
-                        $columnKey = 'product_type';
-                        if (!array_key_exists($colValue, $prodTypeIdentifierArr)) {
-                            $invalid = true;
-                        } else {
-                            $colValue = $prodTypeIdentifierArr[$colValue];
-                        }
-                    } elseif ('tax_category_id' == $columnKey) {
-                        $taxCatId = $colValue;
-                    } elseif ('tax_category_identifier' == $columnKey) {
-                        if (!array_key_exists($colValue, $taxCategoryArr)) {
-                            $res = $this->getTaxCategoriesArr(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $taxCategoryArr = array_merge($taxCategoryArr, $res);
-                            }
-                        }
-                        $taxCatId = isset($taxCategoryArr[$colValue]) ? $taxCategoryArr[$colValue] : 0;
-                    } elseif ('product_dimension_unit_identifier' == $columnKey) {
-                        $columnKey = 'product_dimension_unit';
-                        if (!array_key_exists($colValue, $lengthUnitsArr)) {
-                            $invalid = true;
-                        } else {
-                            $colValue = $lengthUnitsArr[$colValue];
-                        }
-                    } elseif ('product_weight_unit_identifier' == $columnKey) {
-                        $columnKey = 'product_weight_unit';
-                        if (!array_key_exists($colValue, $weightUnitsArr)) {
-                            $invalid = true;
-                        } else {
-                            $colValue = $weightUnitsArr[$colValue];
-                        }
-                    } elseif ('country_code' == $columnKey) {
-                        $columnKey = 'ps_from_country_id';
-                        if (!array_key_exists($colValue, $countryArr)) {
-                            $res = $this->getCountriesArr(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $countryArr = array_merge($countryArr, $res);
-                            }
-                        }
-                        $colValue = isset($countryArr[$colValue]) ? $countryArr[$colValue] : 0;
+                    if ($breakForeach) {
+                        break;
                     }
+                } else {
+                    switch ($columnKey) {
+                        case 'product_id':
+                            if ($this->settings['CONF_USE_PRODUCT_ID']) {
+                                if (0 < $sellerId) {
+                                    $userTempIdData = $this->getProductIdByTempId($colValue, $userId);
+                                    if (!empty($userTempIdData) && $userTempIdData['pti_product_temp_id'] == $colValue) {
+                                        $colValue = $userTempIdData['pti_product_id'];
+                                    }
+                                }
+
+                                $prodDataArr['product_id'] = $colValue;
+
+                                $prodData = Product::getAttributesById($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
+                            }
+                            break;
+                        case 'product_identifier':
+                            $prodData = Product::getAttributesByIdentifier($colValue, array( 'product_id', 'product_seller_id', 'product_featured', 'product_approved' ));
+                            if ($sellerId && !empty($prodData) && $prodData['product_seller_id'] != $sellerId) {
+                                $invalid = true;
+                            }
+                            break;
+                        case 'product_seller_id':
+                            $colValue = 0;
+                            if ($userId > 0) {
+                                $colValue = $userId;
+                            }
+                            break;
+                        case 'product_cod_enabled':
+                        case 'product_featured':
+                        case 'product_approved':
+                        case 'product_active':
+                        case 'product_deleted':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                        case 'product_added_on':
+                            if ($sellerId) {
+                                $colValue = date('Y-m-d H:i:s');
+                            }
+                            break;
+                        case 'category_Id':
+                            $categoryIds = $colValue;
+                            break;
+                        case 'category_indentifier':
+                            $catArr = array();
+                            $catIdentifiers = explode(',', $colValue);
+                            if (!empty($catIdentifiers)) {
+                                foreach ($catIdentifiers as $val) {
+                                    if (!array_key_exists($val, $categoryIdentifierArr)) {
+                                        $res = $this->getAllCategoryIdentifiers(false, $val);
+                                        if (!$res) {
+                                            continue;
+                                        } else {
+                                            $categoryIdentifierArr = array_merge($categoryIdentifierArr, $res);
+                                        }
+                                    }
+                                    if (isset($categoryIdentifierArr[$val])) {
+                                        $catArr[] = $categoryIdentifierArr[$val];
+                                    }
+                                }
+                            }
+                            $categoryIds = implode(',', $catArr);
+                            break;
+                        case 'brand_identifier':
+                            $columnKey = 'product_brand_id';
+                            if (!array_key_exists($colValue, $brandIdentifierArr)) {
+                                $res = $this->getAllBrandsArr(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $brandIdentifierArr = array_merge($brandIdentifierArr, $res);
+                                }
+                            }
+                            $colValue = isset($brandIdentifierArr[$colValue]) ? $brandIdentifierArr[$colValue] : 0;
+                            break;
+                        case 'product_type_identifier':
+                            $columnKey = 'product_type';
+                            if (!array_key_exists($colValue, $prodTypeIdentifierArr)) {
+                                $invalid = true;
+                            } else {
+                                $colValue = $prodTypeIdentifierArr[$colValue];
+                            }
+                            $prodType =  $colValue;
+                            break;
+                        case 'tax_category_id':
+                            $taxCatId = $colValue;
+                            break;
+                        case 'tax_category_identifier':
+                            if (!array_key_exists($colValue, $taxCategoryArr)) {
+                                $res = $this->getTaxCategoriesArr(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $taxCategoryArr = array_merge($taxCategoryArr, $res);
+                                }
+                            }
+                            $taxCatId = isset($taxCategoryArr[$colValue]) ? $taxCategoryArr[$colValue] : 0;
+                            break;
+                        case 'product_dimension_unit_identifier':
+                            $columnKey = 'product_dimension_unit';
+                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                                if (!array_key_exists($colValue, $lengthUnitsArr)) {
+                                    $invalid = true;
+                                } else {
+                                    $colValue = $lengthUnitsArr[$colValue];
+                                }
+                            } else {
+                                $colValue = '';
+                            }
+
+                            break;
+                        case 'product_weight_unit_identifier':
+                            $columnKey = 'product_weight_unit';
+                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                                if (!array_key_exists($colValue, $weightUnitsArr)) {
+                                    $invalid = true;
+                                } else {
+                                    $colValue = $weightUnitsArr[$colValue];
+                                }
+                            } else {
+                                $colValue = '';
+                            }
+                            break;
+                        case 'country_code':
+                            $columnKey = 'ps_from_country_id';
+                            if (!array_key_exists($colValue, $countryArr)) {
+                                $res = $this->getCountriesArr(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $countryArr = array_merge($countryArr, $res);
+                                }
+                            }
+                            $colValue = isset($countryArr[$colValue]) ? $countryArr[$colValue] : 0;
+                            break;
+                    }
+
 
                     if (true == $invalid) {
                         $errorInRow = true;
@@ -1572,8 +1593,9 @@ class Importexport extends ImportexportCommon
             }
 
             if (false === $errorInRow && count($prodDataArr)) {
-                $prodDataArr['product_added_on'] = date('Y-m-d H:i:s');;
-                $prodDataArr['product_added_by_admin_id'] = (array_key_exists('user_id', $prodDataArr)) ? applicationConstants::YES : applicationConstants::NO;
+                $prodDataArr['product_added_on'] = date('Y-m-d H:i:s');
+                ;
+                $prodDataArr['product_added_by_admin_id'] = (1 > $userId) ? applicationConstants::YES : applicationConstants::NO;
 
                 if (!empty($prodData) && $prodData['product_id'] && (!$sellerId || ($sellerId && $prodData['product_seller_id'] == $sellerId))) {
                     unset($prodData['product_seller_id']);
@@ -1606,6 +1628,7 @@ class Importexport extends ImportexportCommon
                                 $prodDataArr['product_approved'] = applicationConstants::NO;
                             }
                         }
+
                         $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
@@ -1685,10 +1708,6 @@ class Importexport extends ImportexportCommon
             FatUtility::dieJsonError($success);
         }
 
-        if ($errInSheet) {
-            $success['msg'] = Labels::getLabel('LBL_Error!_Please_check_error_log_sheet.', $langId);
-            FatUtility::dieJsonError($success);
-        }
         $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
         FatUtility::dieJsonSuccess($success);
     }
@@ -2251,7 +2270,7 @@ class Importexport extends ImportexportCommon
 
             $prodShipArr = array();
             $errorInRow = false;
-
+            $breakForeach = false;
             foreach ($coloumArr as $columnKey => $columnTitle) {
                 $colIndex = $this->headingIndexArr[$columnTitle];
                 $colValue = $this->getCell($row, $colIndex, '');
@@ -2263,116 +2282,112 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'product_id', 'product_identifier' ))) {
-                        if ('product_identifier' == $columnKey && !array_key_exists($colValue, $prodIndetifierArr)) {
-                            $res = $this->getAllProductsIdentifiers(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
-
+                    switch ($columnKey) {
+                        case 'product_id':
+                        case 'product_identifier':
+                            if ('product_identifier' == $columnKey) {
+                                if (!array_key_exists($colValue, $prodIndetifierArr)) {
+                                    $res = $this->getAllProductsIdentifiers(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    } else {
+                                        $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                    }
+                                }
                                 $colValue =   array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
                             }
-                        }
+                            $productId = $colValue;
 
-                        $productId = $colValue;
+                            /* Product Ship By Seller [ */
+                            $srch = new ProductSearch($langId);
+                            $srch->joinProductShippedBySeller($sellerId);
+                            $srch->addCondition('psbs_user_id', '=', $sellerId);
+                            $srch->addCondition('product_id', '=', $productId);
+                            $srch->addFld('psbs_user_id');
+                            $rs = $srch->getResultSet();
+                            $shipBySeller = FatApp::getDb()->fetch($rs);
+                            /* ] */
 
-                        /* Product Ship By Seller [ */
-                        $srch = new ProductSearch($langId);
-                        $srch->joinProductShippedBySeller($sellerId);
-                        $srch->addCondition('psbs_user_id', '=', $sellerId);
-                        $srch->addCondition('product_id', '=', $productId);
-                        $srch->addFld('psbs_user_id');
-                        $rs = $srch->getResultSet();
-                        $shipBySeller = FatApp::getDb()->fetch($rs);
-                        /* ] */
+                            if (empty($shipBySeller) && 0 < $sellerId) {
+                                $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $sellerId);
+                            }
 
-                        if (empty($shipBySeller) && 0 < $sellerId) {
-                            $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $sellerId);
-                        }
+                            if (1 > $productId) {
+                                $invalid = true;
+                            }
+                            $columnKey = 'pship_prod_id';
+                            break;
+                        case 'user_id':
+                        case 'credential_username':
+                            if ($this->settings['CONF_USE_USER_ID']) {
+                                $userId = $colValue;
+                            } else {
+                                $colValue = ($colValue == Labels::getLabel('LBL_Admin', $langId) ? '' : $colValue);
 
-                        if (1 > $productId) {
-                            $invalid = true;
-                        }
-                        $columnKey = 'pship_prod_id';
-                    }
+                                if (!empty($colValue) && !array_key_exists($colValue, $usernameArr)) {
+                                    $res = $this->getAllUserArr(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    } else {
+                                        $usernameArr = array_merge($usernameArr, $res);
+                                    }
+                                }
+                                $userId = $colValue = array_key_exists($colValue, $usernameArr) ? FatUtility::int($usernameArr[$colValue]) : 0;
+                            }
 
-                    if (in_array($columnKey, array('user_id', 'credential_username'))) {
-                        if ($this->settings['CONF_USE_USER_ID']) {
-                            $userId = $colValue;
-                        } else {
-                            $colValue = ($colValue == Labels::getLabel('LBL_Admin', $langId) ? '' : $colValue);
+                            if (0 < $sellerId && ($sellerId != $userId || 1 > $userId)) {
+                                $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
+                                $breakForeach = true;
+                            }
 
-                            if (!empty($colValue) && !array_key_exists($colValue, $usernameArr)) {
-                                $res = $this->getAllUserArr(false, $colValue);
+                            $columnKey = 'pship_user_id';
+                            break;
+                        case 'country_code':
+                        case 'country_id':
+                            if ('country_code' == $columnKey && !array_key_exists($colValue, $countryCodeArr)) {
+                                $res = $this->getCountriesArr(false, $colValue);
                                 if (!$res) {
                                     $invalid = true;
                                 } else {
-                                    $usernameArr = array_merge($usernameArr, $res);
+                                    $countryCodeArr = array_merge($countryCodeArr, $res);
                                 }
                             }
-                            $userId = $colValue = array_key_exists($colValue, $usernameArr) ? FatUtility::int($usernameArr[$colValue]) : 0;
-                        }
-
-                        if (0 < $sellerId && ($sellerId != $userId || 1 > $userId)) {
-                            $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
-                        }
-
-                        if (in_array($columnKey, array('user_id', 'credential_username'))) {
-                            $columnKey = 'pship_user_id';
-                        }
-                    }
-
-                    if ('country_code' == $columnKey) {
-                        if ('country_code' == $columnKey && !array_key_exists($colValue, $countryCodeArr)) {
-                            $res = $this->getCountriesArr(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $countryCodeArr = array_merge($countryCodeArr, $res);
+                            $colValue = array_key_exists($colValue, $countryCodeArr) ? $countryCodeArr[$colValue] : -1;
+                            $columnKey = 'pship_country';
+                            break;
+                        case 'scompany_id':
+                            $columnKey = 'pship_company';
+                            break;
+                        case 'scompany_identifier':
+                            $columnKey = 'pship_company';
+                            if (!array_key_exists($colValue, $scompanyIdentifierArr)) {
+                                $res = $this->getAllShippingCompany(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $scompanyIdentifierArr = array_merge($scompanyIdentifierArr, $res);
+                                }
                             }
-                        }
-                        $colValue = array_key_exists($colValue, $countryCodeArr) ? $countryCodeArr[$colValue] : 0;
-                    }
-
-                    if (in_array($columnKey, array( 'country_id', 'country_code' ))) {
-                        $columnKey = 'pship_country';
-                        $colValue = ($colValue) ? $colValue : -1;
-                    }
-
-                    if ('scompany_id' == $columnKey) {
-                        $columnKey = 'pship_company';
-                    }
-                    if ('scompany_identifier' == $columnKey) {
-                        $columnKey = 'pship_company';
-                        if (!array_key_exists($colValue, $scompanyIdentifierArr)) {
-                            $res = $this->getAllShippingCompany(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $scompanyIdentifierArr = array_merge($scompanyIdentifierArr, $res);
+                            $colValue = array_key_exists($colValue, $scompanyIdentifierArr) ? $scompanyIdentifierArr[$colValue] : 0;
+                            break;
+                        case 'sduration_id':
+                            $columnKey = 'pship_duration';
+                            break;
+                        case 'sduration_identifier':
+                            $columnKey = 'pship_duration';
+                            if (!array_key_exists($colValue, $durationIdentifierArr)) {
+                                $res = $this->getAllShippingDurations(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $durationIdentifierArr = array_merge($durationIdentifierArr, $res);
+                                }
                             }
-                        }
-                        $colValue = array_key_exists($colValue, $scompanyIdentifierArr) ? $scompanyIdentifierArr[$colValue] : 0;
-                    }
-
-                    if ('sduration_id' == $columnKey) {
-                        $columnKey = 'pship_duration';
-                    }
-                    if ('sduration_identifier' == $columnKey) {
-                        $columnKey = 'pship_duration';
-                        if (!array_key_exists($colValue, $durationIdentifierArr)) {
-                            $res = $this->getAllShippingDurations(false, $colValue);
-                            if (!$res) {
+                            $colValue = array_key_exists($colValue, $durationIdentifierArr) ? $durationIdentifierArr[$colValue] : 0;
+                            if (0 >= $colValue) {
                                 $invalid = true;
-                            } else {
-                                $durationIdentifierArr = array_merge($durationIdentifierArr, $res);
                             }
-                        }
-                        $colValue = array_key_exists($colValue, $durationIdentifierArr) ? $durationIdentifierArr[$colValue] : 0;
-                        if (0 >= $colValue) {
-                            $invalid = true;
-                        }
+                            break;
                     }
 
                     if (true === $invalid) {
@@ -2391,13 +2406,14 @@ class Importexport extends ImportexportCommon
                 'pship_method'=>ShippingCompanies::MANUAL_SHIPPING,
                 );
                 $data = array_merge($prodShipArr, $data);
-                if (!array_key_exists($productId, $prodArr)) {
+
+                if (!in_array($productId, $prodArr)) {
                     $prodArr[] = $productId;
                     $where =  array('smt'=> 'pship_prod_id = ? ','vals' => array( $productId ) );
                     if ($sellerId) {
                         $where =  array('smt'=> 'pship_prod_id = ? and pship_user_id = ?','vals' => array( $productId, $sellerId ) );
                     }
-                    $this->db->deleteRecords(Product::DB_PRODUCT_TO_SHIP, array('smt'=> 'pship_prod_id = ? ','vals' => array( $productId ) ));
+                    $this->db->deleteRecords(Product::DB_PRODUCT_TO_SHIP, $where);
                 }
                 $this->db->insertFromArray(Product::DB_PRODUCT_TO_SHIP, $data);
             } else {
@@ -2802,6 +2818,7 @@ class Importexport extends ImportexportCommon
         $rowIndex = 1;
         $usernameArr = array();
         $prodIndetifierArr = array();
+        $prodTypeArr = array();
         $prodConditionArr = Product::getConditionArr($langId);
         $prodConditionArr = array_flip($prodConditionArr);
 
@@ -2815,6 +2832,8 @@ class Importexport extends ImportexportCommon
             $selProdGenArr = $selProdGenLangArr = array();
             $errorInRow = false;
 
+            //if(array_key_exists($row['selprod_product_id'], $prodTypeArr))
+
             foreach ($coloumArr as $columnKey => $columnTitle) {
                 $colIndex = $this->headingIndexArr[$columnTitle];
                 $colValue = $this->getCell($row, $colIndex, '');
@@ -2827,64 +2846,64 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if ('selprod_id' == $columnKey) {
-                        $selprodId = $sellerTempId = $colValue;
-                        if ($sellerId) {
-                            $userTempIdData = $this->getTempSelProdIdByTempId($sellerTempId, $sellerId);
-                            if (!empty($userTempIdData) && $userTempIdData['spti_selprod_temp_id'] == $sellerTempId) {
-                                $selprodId = $colValue = $userTempIdData['spti_selprod_id'];
+                    switch ($columnKey) {
+                        case 'selprod_id':
+                            $selprodId = $sellerTempId = $colValue;
+                            if ($sellerId) {
+                                $userTempIdData = $this->getTempSelProdIdByTempId($sellerTempId, $sellerId);
+                                if (!empty($userTempIdData) && $userTempIdData['spti_selprod_temp_id'] == $sellerTempId) {
+                                    $selprodId = $colValue = $userTempIdData['spti_selprod_id'];
+                                }
                             }
-                        }
-                    }
-
-                    if ('selprod_product_id' == $columnKey) {
-                        $productId = $colValue;
-                    }
-                    if ('product_identifier' == $columnKey) {
-                        $columnKey = 'selprod_product_id';
-                        if (!array_key_exists($colValue, $prodIndetifierArr)) {
-                            $res = $this->getAllProductsIdentifiers(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                            break;
+                        case 'selprod_product_id':
+                            $productId = $colValue;
+                            break;
+                        case 'product_identifier':
+                            $columnKey = 'selprod_product_id';
+                            if (!array_key_exists($colValue, $prodIndetifierArr)) {
+                                $res = $this->getAllProductsIdentifiers(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                }
                             }
-                        }
-                        $productId = $colValue = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
-                    }
-
-                    if ('selprod_user_id' == $columnKey) {
-                        $userId = $colValue;
-                    }
-                    if ('credential_username' == $columnKey) {
-                        $columnKey = 'selprod_user_id';
-                        $colValue = ($colValue == Labels::getLabel('LBL_Admin', $langId) ? '' : $colValue);
-                        if (!empty($colValue) && !array_key_exists($colValue, $usernameArr)) {
-                            $res = $this->getAllUserArr(false, $colValue);
-                            if (!$res) {
-                                $invalid = true;
-                            } else {
-                                $usernameArr = array_merge($usernameArr, $res);
+                            $productId = $colValue = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
+                            break;
+                        case 'selprod_user_id':
+                            $userId = $colValue;
+                            break;
+                        case 'credential_username':
+                            $columnKey = 'selprod_user_id';
+                            $colValue = ($colValue == Labels::getLabel('LBL_Admin', $langId) ? '' : $colValue);
+                            if (!empty($colValue) && !array_key_exists($colValue, $usernameArr)) {
+                                $res = $this->getAllUserArr(false, $colValue);
+                                if (!$res) {
+                                    $invalid = true;
+                                } else {
+                                    $usernameArr = array_merge($usernameArr, $res);
+                                }
                             }
-                        }
-                        $userId = $colValue = array_key_exists($colValue, $usernameArr) ? $usernameArr[$colValue] : 0;
-                    }
-
-                    if ('selprod_condition_identifier' == $columnKey) {
-                        $colValue = array_key_exists($colValue, $prodConditionArr) ? $prodConditionArr[$colValue] : 0;
-                        $columnKey = 'selprod_condition';
-                    }
-
-                    if ('selprod_available_from' == $columnKey) {
-                        $colValue = $this->getDateTime($colValue);
-                    }
-
-                    if ('selprod_url_keyword' == $columnKey) {
-                        $urlKeyword = $colValue;
-                    }
-
-                    if (in_array($columnKey, array( 'selprod_active', 'selprod_cod_enabled', 'selprod_deleted' )) && !$this->settings['CONF_USE_O_OR_1']) {
-                        $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                            $userId = $colValue = array_key_exists($colValue, $usernameArr) ? $usernameArr[$colValue] : 0;
+                            break;
+                        case 'selprod_condition_identifier':
+                            $colValue = array_key_exists($colValue, $prodConditionArr) ? $prodConditionArr[$colValue] : 0;
+                            $columnKey = 'selprod_condition';
+                            break;
+                        case 'selprod_available_from':
+                            $colValue = $this->getDateTime($colValue);
+                            break;
+                        case 'selprod_url_keyword':
+                            $urlKeyword = $colValue;
+                            break;
+                        case 'selprod_active':
+                        case 'selprod_cod_enabled':
+                        case 'selprod_deleted':
+                            if (!$this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                            }
+                        break;
                     }
 
                     if (true === $invalid) {

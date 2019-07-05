@@ -854,7 +854,7 @@ trait CustomCatalogProducts
         $str.= "</div></div>";
 
         $emptyBlock ='';
-        for ($i = $blockCount+1; $i<=2; $i++) {
+        for ($i = $blockCount+1; $i<=3; $i++) {
             $str.="<div class='slider-item col-lg-4 col-md-4 col-sm-3 col-xs-12 slider-item-js categoryblock-js' id='categoryblock".$blockCount."' ><div class='box-border box-categories ' data-simplebar></div></div>";
         }
 
@@ -863,12 +863,36 @@ trait CustomCatalogProducts
         exit;
     }
 
+    private function getSubCatRecordCount($rootCategories, &$childCountArr, $keyword)
+    {
+        foreach ($rootCategories as $catId => $category) {
+            $childCountArr[$catId]['total_child_count'] = 0;
+
+            $id = ltrim($category['prodrootcat_code'], 0);
+            $childCount = count($category['children']);
+
+            if ($childCount > 0) {
+                if (strpos($category['prodcat_name'], $keyword) !== false && $id != $catId) {
+                    $childCountArr[$id]['total_child_count']+= 1;
+                }
+                $this->getSubCatRecordCount($category['children'], $childCountArr, $keyword);
+            } else {
+                $childCountArr[$id]['total_child_count']+= 1;
+            }
+        }
+    }
+
     public function searchCategory($prodRootCatCode = false)
     {
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-
         $prodCatObj = new ProductCategory();
-        $rootCategories = $prodCatObj->getProdRootCategoriesWithKeyword($this->siteLangId, $keyword, false, false, true);
+
+        $rootCategories = ProductCategory::getTreeArr($this->siteLangId, 0, false, false, false, $keyword);
+        /*$rootCategories = $prodCatObj->getProdRootCategoriesWithKeyword($this->siteLangId, $keyword, false, false, true);
+        */
+       $childCountArr = array();
+       $this->getSubCatRecordCount($rootCategories, $childCountArr, $keyword);
+
         $childCategories = array();
 
         if (!empty($rootCategories)) {
@@ -880,6 +904,7 @@ trait CustomCatalogProducts
         }
 
         $this->set('rootCategories', $rootCategories);
+        $this->set('childCountArr', $childCountArr);
         $this->set('childCategories', $childCategories);
         $this->set('prodRootCatCode', $prodRootCatCode);
         $this->set('keyword', $keyword);

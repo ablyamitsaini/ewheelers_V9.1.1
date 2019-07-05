@@ -20,12 +20,12 @@
     echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchCommentsPaging')); ?>
 </div>
 <?php } else { ?>
-    <div class="block--empty">
+    <div class="block--empty p-4">
         <p><?php echo Labels::getLabel('Msg_No_Comments_on_this_blog_post', $siteLangId); ?></p>
     </div>
 <?php } ?>
+<?php if (!UserAuthentication::isUserLogged()) { ?>
 <div class="comment box p-4">
-    <?php if (!UserAuthentication::isUserLogged()) { ?>
     <span class=""><a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>"><?php echo Labels::getLabel('Lbl_Login', $siteLangId); ?> </a> <?php echo Labels::getLabel('Lbl_Login_required_to_post_comment', $siteLangId); ?></span>
-    <?php } ?>
 </div>
+<?php } ?>

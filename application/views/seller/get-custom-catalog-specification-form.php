@@ -1,14 +1,14 @@
-<div class="bg-gray-light p-3 pb-0 specification" id="specification<?php echo $divCount; ?>">
+<div class="replaced specification" id="specification<?php echo $divCount; ?>">
 	<?php foreach($languages as $langId=>$langName){ ?>
-	<div class="row">
-		<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
+	<div class="row align-items-center">
+		<div class="col-md-4 ">
 		   <div class="field-set">
 			 <div class="caption-wraper">
-			   <div class="h3"><strong><?php  echo $langName;?></strong></div>
+			   <h3><?php  echo $langName;?></h3>
 			 </div>
 		   </div>
 		</div>
-		<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+		<div class="col-md-4 ">
 		   <div class="field-set">
 			 <div class="caption-wraper">
 			   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Name',$siteLangId)?></label>
@@ -20,7 +20,7 @@
 			 </div>
 		   </div>
 		</div>
-		<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+		<div class="col-md-3">
 		   <div class="field-set">
 			 <div class="caption-wraper">
 			   <label class="field_label"><?php echo Labels::getLabel('LBL_Specification_Value',$siteLangId)?></label>
@@ -33,7 +33,7 @@
 		   </div>
 		</div>
 		<?php if($langId == key( array_slice( $languages, -1, 1, TRUE ) )){ ?>
-		<div class="col-lg-1 col-md-1 col-sm-4 col-xs-12 align--right">
+		<div class="col-md-1 align--right">
 		  <button type="button" onclick="removeSpecDiv(<?php echo $divCount ?>);" class="btn btn--primary ripplelink" title="<?php echo Labels::getLabel('LBL_Remove',$siteLangId)?>"  ><i class="fa fa-minus"></i></button>
 		</div>
 		<?php }?>

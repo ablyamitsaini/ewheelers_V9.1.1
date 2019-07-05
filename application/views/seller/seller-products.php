@@ -16,7 +16,9 @@ $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--or
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
 foreach ($arr_flds as $key => $val) {
     if ('select_all' == $key) {
-        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input type="checkbox" onclick="selectAll( $(this) )" title="'.$val.'" class="selectAll-js"><i class="input-helper"></i></label>', true);
+        if (count($arrListing) > 0) {
+            $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input type="checkbox" onclick="selectAll( $(this) )" title="'.$val.'" class="selectAll-js"><i class="input-helper"></i></label>', true);
+        }
     } else {
         $e = $th->appendElement('th', array(), $val);
     }
@@ -109,12 +111,11 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    ?> <div class="block--empty align--center">
-    <img class="block__img" src="<?php echo CONF_WEBROOT_URL; ?>images/empty_item.svg" alt="<?php echo Labels::getLabel('LBL_No_record_found', $siteLangId); ?>" width="80">
-    <h4><?php echo Labels::getLabel("LBL_No_Products_added_yet.", $siteLangId); //Labels::getLabel('LBL_No_record_found', $siteLangId);?></h4>
-</div> <?php
+    echo $tbl->getHtml();
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
     // $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_products_found_under_your_publication', $siteLangId));
-        //$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId));
+    //$this->includeTemplate('_partial/no-record-found.php' , array('siteLangId'=>$siteLangId));
 } else {
     $frm = new Form('frmSellerProductsListing', array('id'=>'frmSellerProductsListing'));
     $frm->setFormTagAttribute('class', 'form');

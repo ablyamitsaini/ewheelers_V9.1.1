@@ -165,7 +165,7 @@ class ProductCategory extends MyAppModel
         return 1;
     }
 
-    public static function getTreeArr($langId, $parentId = 0, $orderFeatured = false, $prodCatSrchObj = false, $excludeCatHavingNoProducts = false)
+    public static function getTreeArr($langId, $parentId = 0, $orderFeatured = false, $prodCatSrchObj = false, $excludeCatHavingNoProducts = false, $keywords = false)
     {
         $parentId = FatUtility::int($parentId);
         $langId = FatUtility::int($langId);
@@ -177,6 +177,11 @@ class ProductCategory extends MyAppModel
             $prodCatSrch = clone $prodCatSrchObj;
         } else {
             $prodCatSrch = new ProductCategorySearch($langId, true, true, false);
+        }
+
+        if (!empty($keywords)) {
+            $cnd = $prodCatSrch->addCondition('prodcat_identifier', 'like', '%'.$keywords.'%');
+            $cnd->attachCondition('prodcat_name', 'like', '%'.$keywords.'%');
         }
 
         $prodCatSrch->doNotCalculateRecords();
@@ -216,7 +221,6 @@ class ProductCategory extends MyAppModel
 
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
-
         static::addMissingParentDetails($categoriesArr, $langId);
         $categoriesArr = static::parseTree($categoriesArr, $parentId);
 

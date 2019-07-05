@@ -1,4 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<div class="tabs tabs--small   tabs--scroll clearfix">
+    <?php require_once('sellerCatalogProductTop.php');?>
+</div>
+<div class="cards">
 <div class="cards-header p-4">
     <h5 class="cards-title"><?php echo $productCatalogName; ?></h5>
     <div class="action">
@@ -6,11 +10,8 @@
     </div>
 </div>
 <div class="cards-content pl-4 pr-4 ">
-    <div class="tabs tabs--small   tabs--scroll clearfix">
-        <?php require_once('sellerCatalogProductTop.php');?>
-    </div>
-    <div class="tabs__content form">
-        <div class="form__content">
+   
+        <div class="row">
             <div class="<?php echo (count($arrListing) > 0) ? 'col-md-6' : 'col-md-12' ;?>">
                 <div class="form__subcontent">
                     <?php
@@ -59,6 +60,7 @@
                                 }
                             }
                         }
+                        echo $tbl->getHtml();
                         if (count($arrListing) == 0) {
                             $message = Labels::getLabel('LBL_No_any_volume_discount_on_this_product', $siteLangId);
                             $linkArr = array(
@@ -68,11 +70,11 @@
                             'onClick'=>'sellerProductVolumeDiscountForm('.$selprod_id.', 0);',
                             )
                             );
-                            $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-                        }
-                        echo $tbl->getHtml(); ?>
+                            $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'linkArr'=>$linkArr,'message'=>$message));
+                        } ?>
                 </div>
             </div>
         </div>
-    </div>
+    
+</div>
 </div>

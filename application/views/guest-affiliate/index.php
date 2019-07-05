@@ -22,7 +22,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="gap"></div>
+	
 </div>
 <script type="text/javascript">
 	$("document").ready(function(){

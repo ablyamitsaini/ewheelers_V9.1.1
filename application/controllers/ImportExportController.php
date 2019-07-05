@@ -327,8 +327,8 @@ class ImportExportController extends LoggedUserController
         $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'bulk_images', array('id' => 'bulk_images', 'accept' => '.zip' ));
         $fldImg->requirement->setRequired(true);
         $fldImg->setFieldTagAttribute('onChange', '$("#uploadFileName").html(this.value)');
-        $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="uploadFileName"></span>';
-        $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $langId).'</label></div>';
+        $fldImg->htmlBeforeField='<div class="filefield">';
+        $fldImg->htmlAfterField='<label class="filelabel"></label></div>';
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Submit', $langId));
         return $frm;
