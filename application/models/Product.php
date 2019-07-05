@@ -80,9 +80,9 @@ class Product extends MyAppModel
         return $srch;
     }
 
-    public static function requiredFields()
+    public static function requiredFields($prodType = PRODUCT::PRODUCT_TYPE_PHYSICAL)
     {
-        return array(
+        $arr = array(
         ImportexportCommon::VALIDATE_POSITIVE_INT => array(
         'product_id',
         'product_brand_id',
@@ -98,13 +98,7 @@ class Product extends MyAppModel
         'category_indentifier',
         'brand_identifier',
         'product_type_identifier',
-        'tax_category_identifier',
-        'product_dimension_unit_identifier',
-        'product_weight_unit_identifier',
-        'product_length',
-        'product_width',
-        'product_height',
-        'product_weight',
+        'tax_category_identifier'
         ),
         ImportexportCommon::VALIDATE_INT => array(
         'product_seller_id',
@@ -112,11 +106,24 @@ class Product extends MyAppModel
         'product_ship_free',
         ),
         );
+
+        if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+            $physical = array(
+                'product_dimension_unit_identifier',
+                'product_weight_unit_identifier',
+                'product_length',
+                'product_width',
+                'product_height',
+                'product_weight',
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }        
+        return $arr;
     }
 
-    public static function validateFields($columnIndex, $columnTitle, $columnValue, $langId)
+    public static function validateFields($columnIndex, $columnTitle, $columnValue, $langId, $prodType = PRODUCT::PRODUCT_TYPE_PHYSICAL)
     {
-        $requiredFields = static::requiredFields();
+        $requiredFields = static::requiredFields($prodType);
         return ImportexportCommon::validateFields($requiredFields, $columnIndex, $columnTitle, $columnValue, $langId);
     }
 
@@ -153,7 +160,6 @@ class Product extends MyAppModel
         ImportexportCommon::VALIDATE_NOT_NULL => array(
         'product_identifier',
         'credential_username',
-        'country_code',
         'scompany_identifier',
         'sduration_identifier',
         'user_id',
