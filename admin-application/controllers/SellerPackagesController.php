@@ -31,7 +31,7 @@ class SellerPackagesController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function form($spackageId =0)
+    public function form($spackageId = 0)
     {
         $this->objPrivilege->canEditSellerPackages();
         $spackageId = FatUtility::int($spackageId);
@@ -73,6 +73,9 @@ class SellerPackagesController extends AdminBaseController
         $commissionRate->requirements()->setRange(0, 100);
 
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Package_Products_Allowed', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'products_allowed');
+        $fld->requirements()->setIntPositive();
+
+        $fld = $frm->addIntegerField(Labels::getLabel('LBL_Package_Inventory_Allowed', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'inventory_allowed');
         $fld->requirements()->setIntPositive();
 
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Package_Images_Per_Catalog', $this->adminLangId), SellerPackages::DB_TBL_PREFIX.'images_per_product');
