@@ -41,10 +41,10 @@ if (isset($cartSummary['cartDiscounts']['coupon_discount_total'])) {
         'value' => CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total'])
     );
 }
-$data['priceDetail'][] = array(
-    'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
-    'value' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount'])
-);
+// $data['priceDetail'][] = array(
+//     'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
+//     'value' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount'])
+// );
 
 if (1 > count($products)) {
     $statusArr['status'] = 0;
