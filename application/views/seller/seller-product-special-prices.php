@@ -4,7 +4,7 @@
 </div>
 <div class="cards">
 <div class="cards-header p-4">
-    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Product_Setup',$siteLangId); ?></h5>
+    <h5 class="cards-title"></h5>
     <div class="action">
     <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Special_Price', $siteLangId)?></a>
     </div>

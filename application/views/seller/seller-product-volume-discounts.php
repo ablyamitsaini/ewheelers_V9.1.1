@@ -1,16 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<div class="tabs tabs--small   tabs--scroll clearfix">
+<div class="tabs tabs--small tabs--scroll clearfix">
     <?php require_once('sellerCatalogProductTop.php');?>
 </div>
 <div class="cards">
 <div class="cards-header p-4">
-    <h5 class="cards-title"><?php echo $productCatalogName; ?></h5>
+    <h5 class="cards-title"><?php /* echo $productCatalogName; */ ?></h5>
     <div class="action">
         <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a>
     </div>
 </div>
 <div class="cards-content pl-4 pr-4 ">
-   
         <div class="row">
             <div class="<?php echo (count($arrListing) > 0) ? 'col-md-6' : 'col-md-12' ;?>">
                 <div class="form__subcontent">
@@ -75,6 +74,6 @@
                 </div>
             </div>
         </div>
-    
+
 </div>
 </div>
