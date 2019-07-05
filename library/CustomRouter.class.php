@@ -4,7 +4,6 @@ class CustomRouter
     public static function setRoute(&$controller, &$action, &$queryString)
     {
         $userType = null;
-
         if ('mobile-app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', '1.0');
@@ -53,7 +52,6 @@ class CustomRouter
             define('MOBILE_APP_API_VERSION', '');
             define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'views/');
         }
-
         define('MOBILE_APP_USER_TYPE', $userType);
 
         if (defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()) {
