@@ -39,6 +39,10 @@
 								  <ul>
 									<li><span><?php echo CommonHelper::displayComissionPercentage($package[SellerPackages::DB_TBL_PREFIX.'commission_rate']);?>%</span> <?php echo Labels::getLabel('LBL_Commision_rate',$siteLangId);?></li>
 									<li><span><?php echo $package[SellerPackages::DB_TBL_PREFIX.'products_allowed'];?></span> <?php echo ($package[SellerPackages::DB_TBL_PREFIX.'products_allowed'] == 1) ? Labels::getlabel('LBL_active_product',$siteLangId) : Labels::getlabel('LBL_active_products',$siteLangId);?></li>
+									<li>
+										<span><?php echo $package[SellerPackages::DB_TBL_PREFIX.'inventory_allowed']; ?></span>
+										<?php echo  Labels::getlabel('LBL_Product_Inventory', $siteLangId) ?>
+									</li>
 									<li><span><?php echo $package[SellerPackages::DB_TBL_PREFIX.'images_per_product'];?></span>  <?php echo ($package[SellerPackages::DB_TBL_PREFIX.'images_per_product'] == 1) ? Labels::getlabel('LBL_image_per_product',$siteLangId) : Labels::getlabel('LBL_images_per_product',$siteLangId);?></li>
 								  </ul>
 								</div>
@@ -77,4 +81,6 @@
  		</div>
  	</div>
 </main>
-<script>var currentActivePlanId = <?php echo  ($currentActivePlanId)?$currentActivePlanId:0;?></script>
+<script>
+    var currentActivePlanId = <?php echo  ($currentActivePlanId)?$currentActivePlanId:0;?>
+</script>
