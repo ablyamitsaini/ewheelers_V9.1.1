@@ -192,7 +192,8 @@ text-decoration: none;
 /* to make room for the icon, a width needs to be set here */
 .ui-button-icon-only {
 width: 2em;
-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+        box-sizing: border-box;
 text-indent: -9999px;
 white-space: nowrap;
 }
@@ -257,7 +258,8 @@ margin-bottom: 0;
 text-align: left;
 }
 .ui-controlgroup-vertical .ui-controlgroup-item {
-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+        box-sizing: border-box;
 }
 .ui-controlgroup .ui-controlgroup-label {
 padding: .4em 1em;
@@ -290,7 +292,8 @@ border-top-style: solid;
 }
 
 .ui-checkboxradio-label .ui-icon-background {
-box-shadow: inset 1px 1px 1px #ccc;
+-webkit-box-shadow: inset 1px 1px 1px #ccc;
+        box-shadow: inset 1px 1px 1px #ccc;
 border-radius: .12em;
 border: none;
 }
@@ -397,7 +400,7 @@ text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
 background-image: none;
-margin: .7em 0 0 0;
+margin: 0.5rem 0;
 padding: 0 .2em;
 border-left: 0;
 border-right: 0;
@@ -750,7 +753,8 @@ background-position: 0 0;
 /* support: IE8 - See #6727 */
 .ui-slider.ui-state-disabled .ui-slider-handle,
 .ui-slider.ui-state-disabled .ui-slider-range {
-filter: inherit;
+-webkit-filter: inherit;
+        filter: inherit;
 }
 
 .ui-slider-horizontal {background: #e9e9e9!important;
@@ -977,7 +981,8 @@ text-decoration: none;
 }
 
 .ui-visual-focus {
-box-shadow: 0 0 3px 1px rgb(94, 158, 214);
+-webkit-box-shadow: 0 0 3px 1px rgb(94, 158, 214);
+        box-shadow: 0 0 3px 1px rgb(94, 158, 214);
 }
 .ui-state-active,
 .ui-widget-content .ui-state-active,
@@ -1332,7 +1337,7 @@ box-shadow: 0px 0px 5px #666666;
 
 
 
-.ui-datepicker{border: none!important;box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);padding: 15px;border-radius: 5px!important;width: auto;min-width:350px;}
+.ui-datepicker{border: none!important;-webkit-box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);padding: 15px;border-radius: 5px!important;width: auto;min-width:350px;}
 
 .ui-datepicker-header.ui-widget-header{background: none; border: none;}
 .ui-datepicker-month, .ui-datepicker-year{margin: 0 2px!important;}
@@ -1359,8 +1364,6 @@ box-shadow: 0px 0px 5px #666666;
 .ui-datepicker .ui-datepicker-buttonpane{border:none;padding: 0;}
 .ui-datepicker .ui-datepicker-buttonpane button{opacity: 1; padding:5px 20px 6px;font-weight: normal!important;border: none;
 -webkit-transition:  0.5s all ease;margin: 0;font-size: 0.8em;
--moz-transition:  0.5s all ease;
--o-transition:  0.5s all ease;
 transition: 0.5s all ease;
 background: none !important;
 color: var(--first-color) !important;
@@ -1372,7 +1375,7 @@ border:1px solid var(--first-color) !important;}
 .ui-datepicker-calendar .ui-state-disabled{background: rgba(0,0,0,0.04);}
 
 
-.dropdown-menu{box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);background: #fff; border-radius: 5px; padding: 0;position:absolute;top: 100%;min-width:200px;z-index: 2;display: none;list-style: none;}
+.dropdown-menu{-webkit-box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);box-shadow:0 0 35px 10px rgba(0, 0, 0, 0.1);background: #fff; border-radius: 5px; padding: 0;position:absolute;top: 100%;min-width:200px;z-index: 2;display: none;list-style: none;}
 .dropdown-menu li{border-bottom: 1px solid rgba(0,0,0,0.1);}
 .dropdown-menu li a{display: block;padding: 10px;color: inherit;}
 

@@ -19,8 +19,19 @@
 	</div>
 	<section class="section bg--white">
 		<div class="container">
+		
+		
 			<div class="row justify-content-center">
 				<div class="col-md-8">
+				<div class="faq-filters mb-4">			
+			<a href="#" class="">How to Delete My Account</a>
+			<a href="#" class="">Cancel My Profile</a>
+			<a href="#" class="">Reactivate / Reinstate Account Online</a>
+			<a href="#" class="">Basic Troubleshooting for Tagged</a>
+			<a href="#" class="">Edit / Change Email Settings / Preferences</a>
+			
+		</div>
+			
 				<ul class="faqlist">
 				<li>
 					<h3 class="filterDiv account">How can I reset my password?</h3>

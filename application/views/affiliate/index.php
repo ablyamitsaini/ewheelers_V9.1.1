@@ -13,8 +13,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
             </div>
         </div>
         <div class="content-body">
-            <!-- <div class="row mb-3">
-            <div class="col-lg-8 col-md-12">
+            <!-- <div class="row ">
+            <div class="col-lg-8 col-md-12 mb-4">
                 <div class="cards">
                     <div class="cards-header p-4">
                         <p class="note">
@@ -118,7 +118,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                     <a class="showbutton box--share box--share-mail" href="javascript:void(0);"> <i class="fa fa-envelope"></i>
                         <h5><?php echo Labels::getLabel('L_Share_on', $siteLangId)?></h5>
                         <h2><?php echo Labels::getLabel('L_Email', $siteLangId)?></h2>
-                        <p> <?php echo Labels::getLabel('L_Email', $siteLangId)?></strong> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself', $siteLangId)?> </p>
+                        <p> <?php echo Labels::getLabel('L_Email', $siteLangId)?> <?php echo Labels::getLabel('L_Your_friend_tell_them_about_yourself', $siteLangId)?> </p>
                         <span class="ajax_message thanks-msg"></span>
                     </a>
                 </div>
@@ -153,8 +153,8 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-6 col-md-12">
+            <div class="row ">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Referred_by_me', $siteLangId);?></h5> <?php if (count($user_listing) > 0) {
@@ -212,7 +212,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5> <?php if (count($transactions) > 0) {
