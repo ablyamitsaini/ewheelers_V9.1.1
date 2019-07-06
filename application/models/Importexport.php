@@ -532,17 +532,17 @@ class Importexport extends ImportexportCommon
 
         switch ($type) {
             case Importexport::TYPE_BRANDS:
-                $sheetName = Labels::getLabel('LBL_Brands_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Brands_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importBrandsMedia($csvFilePointer, $post, $langId);
                 break;
             case Importexport::TYPE_CATEGORIES:
-                $sheetName = Labels::getLabel('LBL_Category_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Category_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importCategoryMedia($csvFilePointer, $post, $langId);
                 break;
             case Importexport::TYPE_PRODUCTS:
-                $sheetName = Labels::getLabel('LBL_Product_Catalog_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Product_Catalog_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importProductCatalogMedia($csvFilePointer, $post, $langId, $userId);
                 break;
@@ -4610,41 +4610,43 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if ('country_currency_id' == $columnKey) {
-                        $currencyId = FatUtility::int($colValue);
-                        $colValue =  array_key_exists($currencyId, $languageCodes) ? $currencyId : 0;
-                    } elseif ('country_currency_code' == $columnKey) {
-                        $columnKey = 'country_currency_id';
-                        $colValue = array_key_exists($colValue, $currencyIds) ? $currencyIds[$colValue] : 0;
+                    switch ($columnKey) {
+                        case 'country_currency_id':
+                            $currencyId = FatUtility::int($colValue);
+                            $colValue =  array_key_exists($currencyId, $currencyCodes) ? $currencyId : 0;
+                            break;
+                        case 'country_currency_code':
+                            $columnKey = 'country_currency_id';
+                            $colValue = array_key_exists($colValue, $currencyIds) ? $currencyIds[$colValue] : 0;
+                            break;
+                        case 'country_language_id':
+                            $currencyLangId = FatUtility::int($colValue);
+                            $colValue = array_key_exists($currencyLangId, $languageCodes) ? $currencyLangId : 0;
+                            break;
+                        case 'country_language_code':
+                            $columnKey = 'country_language_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
+                        case 'country_active':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = FatUtility::int($colValue);
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                        case 'country_id':
+                            $countryData = Countries::getAttributesById($colValue, array('country_id'));
+                            break;
+                        case 'country_code':
+                            $countryData = Countries::getCountryByCode($colValue, array('country_id'));
+                            break;
+                        case 'country_name':
+                            $countryLangArr[$columnKey] = $colValue;
+                            break;
                     }
 
-                    if ('country_language_id' == $columnKey) {
-                        $currencyLangId = FatUtility::int($colValue);
-                        $colValue = array_key_exists($currencyLangId, $languageCodes) ? $currencyLangId : 0;
-                    } elseif ('country_currency_code' == $columnKey) {
-                        $columnKey = 'country_language_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
-                    }
-
-                    if ('country_active' == $columnKey) {
-                        if ($this->settings['CONF_USE_O_OR_1']) {
-                            $colValue = FatUtility::int($colValue);
-                        } else {
-                            $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
-                        }
-                    }
-
-                    if ('country_id' == $columnKey) {
-                        $countryData = Countries::getAttributesById($colValue, array('country_id'));
-                    } elseif ('country_code' == $columnKey) {
-                        $countryData = Countries::getCountryByCode($colValue, array('country_id'));
-                    }
-
-                    if ('country_name' == $columnKey) {
-                        $countryLangArr[$columnKey] = $colValue;
-                    } else {
-                        $countryArr[$columnKey] = $colValue;
-                    }
+                    $countryArr[$columnKey] = $colValue;
+                    unset($countryArr['country_name']);
                 }
             }
 

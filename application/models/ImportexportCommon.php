@@ -267,7 +267,7 @@ class ImportexportCommon extends FatModel
 
             if ($this->isDefaultSheetData($langId)) {
                 $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                /*$arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);*/
                 $arr['brand_active'] = Labels::getLabel('LBL_Active', $langId);
             }
         }
@@ -305,6 +305,9 @@ class ImportexportCommon extends FatModel
                 $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
             }
         } else {
+            if ($this->isDefaultSheetData($langId)) {
+                $arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+            }
             $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
         }
 
