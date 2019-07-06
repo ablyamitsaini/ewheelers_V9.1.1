@@ -8,14 +8,8 @@
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Shop_Details', $siteLangId); ?></h2>
             </div>
         </div>
-        <div class="content-body">
-            <div class="cards">
-                <div class="cards-content p-4 pb-0">
-                    <div id="shopFormBlock">
-                        <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
-                    </div>
-                </div>
-            </div>
+        <div class="content-body" id="shopFormBlock">
+            <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
         </div>
     </div>
 </main>
