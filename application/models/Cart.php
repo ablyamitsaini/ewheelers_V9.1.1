@@ -549,13 +549,15 @@ class Cart extends FatModel
     public function update($key, $quantity)
     {
         $quantity = FatUtility::int($quantity);
+        $found = false;
         if ($quantity > 0) {
             $cartProducts = $this->getProducts($this->cart_lang_id);
             $cart_user_id = $this->cart_user_id;
-
+            
             if (is_array($cartProducts)) {
                 foreach ($cartProducts as $cartKey => $product) {
                     if (md5($product['key']) == $key) {
+                        $found = true;
                         /* minimum quantity check[ */
                         $minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
                         if ($quantity < $minimum_quantity) {
@@ -589,8 +591,14 @@ class Cart extends FatModel
                 }
             }
             $this->updateUserCart();
+        } else {
+            $this->error = Labels::getLabel('ERR_Quantity_should_be_greater_than_0', $this->cart_lang_id);
+            return false;
         }
-        return true;
+        if (false === $found) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->cart_lang_id);
+        }
+        return $found;
     }
 
     public function updateGroup($prodgroup_id, $quantity)
