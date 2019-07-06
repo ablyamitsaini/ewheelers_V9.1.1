@@ -6,21 +6,20 @@ $statusArr = array(
 );
 
 foreach ($productSelectedShippingMethodsArr as $key => $value) {
-    $productSelectedShippingMethodsArr[$key] = array_values($productSelectedShippingMethodsArr[$key]);
+    $productSelectedShippingMethodsArr[$key] = array_values($value);
 }
 
 $data = array(
-    'productSelectedShippingMethodsArr' => $productSelectedShippingMethodsArr,
+    'productSelectedShippingMethodsArr' => !empty($productSelectedShippingMethodsArr) ? $productSelectedShippingMethodsArr : (object)array(),
     'shipStationCarrierList' => $shipStationCarrierList,
     'shippingMethods' => $shippingMethods,
-    'products' => $products,
+    'products' => array_values($products),
     'cartSummary' => $cartSummary,
-    'shippingAddressDetail' => $shippingAddressDetail,
-    'selectedProductShippingMethod' => $selectedProductShippingMethod,
+    'shippingAddressDetail' => !empty($shippingAddressDetail) ? $shippingAddressDetail : (object)array(),
 );
 
 
-if (1 > count($productSelectedShippingMethodsArr) && 1 > count($shipStationCarrierList) && 1 > count($shippingMethods) && 1 > count($products) && 1 > count($cartSummary) && 1 > count($shippingAddressDetail) && 1 > count($selectedProductShippingMethod)) {
+if (1 > count($productSelectedShippingMethodsArr)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

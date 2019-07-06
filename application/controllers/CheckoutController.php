@@ -430,7 +430,8 @@ class CheckoutController extends MyAppController
                 $errMsg = Message::getHtml();
             }
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($errMsg));
+                $message = Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId);
+                FatUtility::dieJsonError(strip_tags($message));
             }
             FatUtility::dieWithError($errMsg);
         }
@@ -505,7 +506,7 @@ class CheckoutController extends MyAppController
         $this->set('shippingAddressDetail', UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $this->cartObj->getCartShippingAddress()));
 
         $this->set('selectedProductShippingMethod', $this->cartObj->getProductShippingMethod());
-
+        
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
