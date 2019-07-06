@@ -492,14 +492,17 @@ class Cart extends FatModel
     {
         $this->products = array();
         $cartProducts = $this->getProducts($this->cart_lang_id);
+        $found = false;
         if (is_array($cartProducts)) {
             foreach ($cartProducts as $cartKey => $product) {
                 if ($key == 'all') {
+                    $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
+                    $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
@@ -509,7 +512,8 @@ class Cart extends FatModel
             }
         }
         $this->updateUserCart();
-        return true;
+
+        return $found;
     }
 
     public function removeGroup($prodgroup_id)

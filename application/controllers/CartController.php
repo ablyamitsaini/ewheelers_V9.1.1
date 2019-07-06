@@ -282,7 +282,7 @@ class CartController extends MyAppController
             FatApp::redirectUser(CommonHelper::generateUrl());
         }
 
-        if (!isset($post['key'])) {
+        if (empty($post['key'])) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
@@ -293,10 +293,11 @@ class CartController extends MyAppController
 
         $cartObj = new Cart();
         if (!$cartObj->remove($post['key'])) {
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                FatUtility::dieJsonError(strip_tags($message));
             }
-            Message::addMessage($cartObj->getError());
+            Message::addMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $cartObj->removeUsedRewardPoints();
