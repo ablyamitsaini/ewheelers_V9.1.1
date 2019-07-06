@@ -214,7 +214,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
             </div>
         </div>
             <div class="row">
-                <div class="col-xl-6 mb-3">
+                <div class="col-xl-6 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sales_Graph', $siteLangId);?></h5>
@@ -222,7 +222,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         <div class="cards-content pl-4 pr-4  graph"> <?php $this->includeTemplate('_partial/seller/sellerSalesGraph.php'); ?> </div>
                     </div>
                 </div>
-                <div class="col-xl-6 mb-3">
+                <div class="col-xl-6 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
@@ -314,7 +314,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-md-12 mb-3">
+                <div class="col-lg-12 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5>
@@ -378,7 +378,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-6 col-md-12 mb-3">
+                <div class="col-xl-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests', $siteLangId);?></h5>
@@ -455,7 +455,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-12 mb-3">
+                <div class="col-xl-6 col-md-12 mb-4">
                     <!-- <div class="cards">
                     <?php // $this->includeTemplate('_partial/userDashboardMessages.php');?>
                 </div> -->

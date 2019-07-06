@@ -164,7 +164,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                     }?>
 
                                     <li class='manual_shipping' <?php echo $displayManualOptions ?>>
-                                        <?php  Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?>
+                                        <p><?php  Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?></p>
 
                                         <?php echo $select_shipping_options ?>
                                     </li>
@@ -173,11 +173,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
 
                                     <li class='shipstation_selectbox' <?php echo $displayShipStationOption;?>>
-                                        <?php echo Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?>
+                                        <p><?php echo Labels::getLabel('M_Select_Shipping_Provider',$siteLangId) ?></p>
                                         <?php echo $courierProviders ?>
                                     </li>
                                     <li class='shipstation_selectbox' <?php echo $displayShipStationOption;?>>
-                                        <?php echo  Labels::getLabel('M_Select_Shipping_Carrier',$siteLangId) ?>
+                                        <p><?php echo  Labels::getLabel('M_Select_Shipping_Carrier',$siteLangId) ?></p>
                                         <div class="services_loader"></div>
                                         <?php echo $serviceProviders ?>
                                     </li>

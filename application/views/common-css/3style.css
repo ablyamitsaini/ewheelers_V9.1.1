@@ -12196,12 +12196,17 @@ html.quick-view--open {
 	left: 220px;
 	text-transform: uppercase;
 	opacity: 0;
+	visibility: hidden;
+	display: none;
 	transition: all 0.7s ease-in-out;
+	
 }
 
 .sidebar-is-expanded .dashboard-menu .menu-head {
 	left: 0px;
 	opacity: 1;
+	visibility: visible;
+	display: block;
 }
 
 .dashboard-menu ul {
@@ -12459,7 +12464,7 @@ main.main {
 	display: flex;
 	margin-inline-start: -15px;
 	margin-inline-end: -15px;
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 }
 
 .widget-stats {
@@ -13245,9 +13250,15 @@ main.main {
 }
 
 .shipping-selectors li {
-	margin-bottom: 15px;
+	margin-bottom: 1rem;
 	display: block;
 }
+
+.shipping-selectors p {
+	margin-bottom: 0.5rem;
+}
+
+
 
 .btn-action {
 	float: right;
@@ -13486,7 +13497,9 @@ main.main {
 	font-size: 0.875rem;
 }
 
-.summary-listing .cartdetail__footer {}
+.summary-listing .cartdetail__footer {
+	padding: 0;
+}
 
 .summary-listing .cartdetail__footer table {
 	width: 100%;
@@ -16073,11 +16086,6 @@ input[type="password"][disabled] {
 
 /*FAQs*/
 
-
-
-
-
-
 #faqquestions {
 	margin: 40px auto 0;
 	padding: 0 5%;
@@ -16101,13 +16109,15 @@ input[type="password"][disabled] {
 	margin-top: 1rem;
 	height: 3rem;
 	background: rgba(255, 255, 255, 0.5);
-	border: solid 1px rgba(255, 255, 255, 0.7)
+	border: solid 1px rgba(255, 255, 255, 0.7);
+	background: rgba(0,0,0,0.015);
+		
 }
 
 .filterDiv {
 	font-size: 1.1rem;
 	font-weight: 400;
-	margin: 1.5rem 0;
+	margin: 2rem 0;
 	position: relative;
 }
 
@@ -16180,4 +16190,14 @@ div.faqanswer {
 div.faqanswer p {
 	margin: 0;
 	padding: 1rem;
+}
+
+.faq-filters a {
+	border: solid 1px var(--border-color);
+	border-radius: 4px;
+	margin: 5px 0;
+	padding: 0.5rem;
+	color: var(--txt-color);
+	font-size: 0.8rem;
+	display: inline-block;
 }
