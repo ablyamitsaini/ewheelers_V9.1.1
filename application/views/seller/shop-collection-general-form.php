@@ -16,19 +16,20 @@
                 <div class="">
                     <div class="tabs tabs-sm tabs--scroll clearfix">
                         <ul>
+                            <?php $inactive = ($scollection_id == 0) ? 'fat-inactive' : ''; ?>
                             <li class="is-active"><a onclick="getShopCollectionGeneralForm(<?php echo $scollection_id; ?>);" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_Basic', $siteLangId);?></a></li>
                             <?php foreach ($language as $lang_id => $langName) {?>
-                            <li class=""><a href="javascript:void(0)"
+                            <li class="<?php echo $inactive; ?>"><a href="javascript:void(0)"
                                 <?php if ($scollection_id > 0) { ?>
                                     onClick="editShopCollectionLangForm(<?php echo $scollection_id ?>, <?php echo $lang_id;?>)"
                                 <?php } ?>>
                                     <?php echo $langName;?></a></li>
                             <?php } ?>
-                            <li class=""><a
+                            <li class="<?php echo $inactive; ?>"><a
                             <?php if ($scollection_id > 0) {?>
                                 onclick="sellerCollectionProducts(<?php echo $scollection_id; ?>);"
                             <?php } ?> href="javascript:void(0);"><?php echo Labels::getLabel('TXT_LINK', $siteLangId);?></a></li>
-                            <li class=""><a
+                            <li class="<?php echo $inactive; ?>"><a
                             <?php if ($scollection_id > 0) {?>
                                 onclick="collectionMediaForm(this, <?php echo $scollection_id; ?>);"
                             <?php } ?> href="javascript:void(0);"><?php echo Labels::getLabel('TXT_Media', $siteLangId);?></a></li>
