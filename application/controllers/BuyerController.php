@@ -798,7 +798,7 @@ class BuyerController extends BuyerBaseController
             $ocrequest_status = FatUtility::int($ocrequest_status);
             $srch->addCondition('ocrequest_status', '=', $ocrequest_status);
         }
-        
+
         $rs = $srch->getResultSet();
         $requests = FatApp::getDb()->fetchAll($rs);
 
@@ -1855,6 +1855,9 @@ class BuyerController extends BuyerBaseController
         $this->set('pageSize', $pagesize);
         $this->set('postedData', $post);
         $this->set('convertReward', $convertReward);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
