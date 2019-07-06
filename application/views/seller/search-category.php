@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<?php echo Labels::getLabel('LBL_All_categories_with', $siteLangId);?>:<?php echo $keyword;?>
+<?php echo Labels::getLabel('LBL_All_categories_with', $siteLangId);?>: <?php echo $keyword;?>
 <div class="row">
 <?php if (!empty($rootCategories)) {
     $result = array();
