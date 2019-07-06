@@ -1,9 +1,6 @@
 <?php
 class MobileAppApiController extends MyAppController
 {
-    public $app_user = array();
-    public $appToken = '';
-
     public function __construct($action)
     {
         parent::__construct($action);
@@ -7129,22 +7126,5 @@ class MobileAppApiController extends MyAppController
     private function getAppLoggedUserId()
     {
         return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
-    }
-
-    private function getAppTempUserId()
-    {
-        if (array_key_exists('temp_user_id', $this->app_user) && !empty($this->app_user["temp_user_id"])) {
-            return $this->app_user["temp_user_id"];
-        }
-
-        if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
-            $userId = UserAuthentication::getLoggedUserId();
-            if ($userId > 0) {
-                return $userId;
-            }
-        }
-
-        $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
-        return $this->app_user['temp_user_id'] = $generatedTempId;
     }
 }

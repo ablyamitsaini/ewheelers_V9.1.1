@@ -553,7 +553,7 @@ class Cart extends FatModel
         if ($quantity > 0) {
             $cartProducts = $this->getProducts($this->cart_lang_id);
             $cart_user_id = $this->cart_user_id;
-            
+
             if (is_array($cartProducts)) {
                 foreach ($cartProducts as $cartKey => $product) {
                     if (md5($product['key']) == $key) {

@@ -1,6 +1,9 @@
 <?php
 class MyAppController extends FatController
 {
+    public $app_user = array();
+    public $appToken = '';
+
     public function __construct($action)
     {
         parent::__construct($action);
@@ -145,7 +148,7 @@ class MyAppController extends FatController
         } elseif (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
             $this->appToken = ($post['_token']!='')?$post['_token']:'';
         }
-        
+
         if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
             $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
         }
@@ -215,11 +218,11 @@ class MyAppController extends FatController
 
         $stateObj = new States();
         $statesArr = $stateObj->getStatesByCountryId($countryId, $this->siteLangId);
-            
+
         if (true === $return) {
             return $statesArr;
         }
-        
+
         $this->set('statesArr', $statesArr);
         $this->set('stateId', $stateId);
         $this->_template->render(false, false, '_partial/states-list.php');
@@ -547,5 +550,22 @@ class MyAppController extends FatController
         $this->_template->addJs('js/listing-functions.js');
         $this->_template->addCss('css/ion.rangeSlider.css');
         $this->_template->addCss('css/ion.rangeSlider.skinHTML5.css');
+    }
+
+    public function getAppTempUserId()
+    {
+        if (array_key_exists('temp_user_id', $this->app_user) && !empty($this->app_user["temp_user_id"])) {
+            return $this->app_user["temp_user_id"];
+        }
+
+        if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
+            echo $userId = UserAuthentication::getLoggedUserId();
+            if ($userId > 0) {
+                return $userId;
+            }
+        }
+
+        $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
+        return $this->app_user['temp_user_id'] = $generatedTempId;
     }
 }
