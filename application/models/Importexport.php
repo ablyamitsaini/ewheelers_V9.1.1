@@ -1531,7 +1531,7 @@ class Importexport extends ImportexportCommon
                             break;
                         case 'product_dimension_unit_identifier':
                             $columnKey = 'product_dimension_unit';
-                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                            if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
                                 if (!array_key_exists($colValue, $lengthUnitsArr)) {
                                     $invalid = true;
                                 } else {
@@ -1544,7 +1544,7 @@ class Importexport extends ImportexportCommon
                             break;
                         case 'product_weight_unit_identifier':
                             $columnKey = 'product_weight_unit';
-                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                            if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
                                 if (!array_key_exists($colValue, $weightUnitsArr)) {
                                     $invalid = true;
                                 } else {
@@ -4772,36 +4772,41 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'state_country_id', 'country_code' ))) {
-                        if ('state_country_id' == $columnKey) {
+                    switch ($columnKey) {
+                        case 'state_country_id':
                             $countryId = FatUtility::int($colValue);
                             $colValue = array_key_exists($countryId, $countryCodes) ? $countryId : 0;
-                        } elseif ('country_code' == $columnKey) {
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                        case 'country_code':
                             $columnKey = 'state_country_id';
                             $colValue = array_key_exists($colValue, $countryIds) ? $countryIds[$colValue] : 0;
-                        }
-                        if (!$colValue) {
-                            $invalid = true;
-                        }
-                    }
-
-                    if ('state_active' == $columnKey) {
-                        if ($this->settings['CONF_USE_O_OR_1']) {
-                            $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
-                        } else {
-                            $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
-                        }
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                        case 'state_active':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                        case 'state_name':
+                            if (false === $invalid) {
+                                $statesLangArr[$columnKey] = $colValue;
+                            }
+                            break;
                     }
 
                     if (true === $invalid) {
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
                         CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
                     } else {
-                        if ('state_name' == $columnKey) {
-                            $statesLangArr[$columnKey] = $colValue;
-                        } else {
-                            $statesArr[$columnKey] = $colValue;
-                        }
+                        $statesArr[$columnKey] = $colValue;
+                        unset($statesArr['state_name']);
                     }
                 }
             }
