@@ -913,10 +913,10 @@ class Importexport extends ImportexportCommon
             /*]*/
         }
 
-        $srch = Brand::getSearchObject($langId);
+        $srch = Brand::getSearchObject($langId, false);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
-        $srch->addMultipleFields(array('brand_id','brand_identifier','iFNULL(brand_name,brand_identifier) as brand_name','brand_short_description','brand_featured','brand_active'));
+        $srch->addMultipleFields(array('brand_id','brand_identifier','iFNULL(brand_name,brand_identifier) as brand_name','brand_short_description','brand_featured','brand_active','brand_deleted'));
         $srch->addCondition('brand_status', '=', applicationConstants::ACTIVE);
         if ($userId) {
             $srch->addCondition('brand_active', '=', applicationConstants::ACTIVE);
@@ -937,7 +937,7 @@ class Importexport extends ImportexportCommon
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
 
-                if (in_array($columnKey, array( 'brand_featured', 'brand_active' )) && !$this->settings['CONF_USE_O_OR_1']) {
+                if (in_array($columnKey, array( 'brand_featured', 'brand_active','brand_deleted')) && !$this->settings['CONF_USE_O_OR_1']) {
                     $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
                 }
 
@@ -977,7 +977,7 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex,($colIndex + 1),$errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array('brand_featured', 'brand_active'))) {
+                    if (in_array($columnKey, array('brand_featured', 'brand_active','brand_deleted'))) {
                         if ($this->settings['CONF_USE_O_OR_1']) {
                             $colValue = (FatUtility::int($colValue) == 1)?applicationConstants::YES:applicationConstants::NO;
                         } else {
@@ -4861,7 +4861,7 @@ class Importexport extends ImportexportCommon
     public function exportPolicyPoints($langId, $userId = 0)
     {
         $userId = FatUtility::int($userId);
-        $srch = PolicyPoint::getSearchObject($langId, false);
+        $srch = PolicyPoint::getSearchObject($langId, false, false);
         $srch->addMultipleFields(array('ppoint_id','ppoint_identifier','ppoint_type','ppoint_display_order','ppoint_active','ppoint_deleted','ppoint_title'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
@@ -4887,15 +4887,17 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
-
-                if (in_array($columnKey, array( 'ppoint_active', 'ppoint_deleted' )) && !$this->settings['CONF_USE_O_OR_1']) {
-                    $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                switch ($columnKey) {
+                    case 'ppoint_active':
+                    case 'ppoint_deleted':
+                        if (!$this->settings['CONF_USE_O_OR_1']) {
+                            $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                        }
+                        break;
+                    case 'ppoint_type_identifier':
+                        $colValue = isset($policyPointTypeArr[$row['ppoint_type']]) ? $policyPointTypeArr[$row['ppoint_type']] : '';
+                        break;
                 }
-
-                if ('ppoint_type_identifier' == $columnKey) {
-                    $colValue = isset($policyPointTypeArr[$row['ppoint_type']]) ? $policyPointTypeArr[$row['ppoint_type']] : '';
-                }
-
                 $sheetData[] = $colValue;
             }
             CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);

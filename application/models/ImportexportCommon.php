@@ -217,7 +217,7 @@ class ImportexportCommon extends FatModel
 
             if ($this->isDefaultSheetData($langId)) {
                 $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr['prodcat_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                /*$arr['prodcat_featured'] = Labels::getLabel('LBL_Featured', $langId);*/
                 $arr['prodcat_active'] = Labels::getLabel('LBL_Active', $langId);
                 $arr['prodcat_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
                 $arr['prodcat_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
@@ -269,6 +269,7 @@ class ImportexportCommon extends FatModel
                 $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
                 /*$arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);*/
                 $arr['brand_active'] = Labels::getLabel('LBL_Active', $langId);
+                $arr['brand_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             }
         }
         return $arr;
