@@ -1860,6 +1860,7 @@ class AccountController extends LoggedUserController
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
+        $srch->addCondition('uwlist_default', '=', applicationConstants::NO);
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         if (!$row) {
