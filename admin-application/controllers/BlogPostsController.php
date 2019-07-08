@@ -496,7 +496,7 @@ class BlogPostsController extends AdminBaseController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
         $postStatusArr = applicationConstants::getBlogPostStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Post_Status', $this->adminLangId), 'post_published', $postStatusArr, '', array('class'=>'small'), '');
+        $frm->addSelectBox(Labels::getLabel('LBL_Post_Status', $this->adminLangId), 'post_published', $postStatusArr, '', array(), '');
         $frm->addCheckBox(Labels::getLabel('LBL_Comment_Open', $this->adminLangId), 'post_comment_opened', 1, array(), false, 0);
         $frm->addCheckBox(Labels::getLabel('LBL_Featured', $this->adminLangId), 'post_featured', 1, array(), false, 0);
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
@@ -532,7 +532,7 @@ class BlogPostsController extends AdminBaseController
 
         $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword', '', array('class'=>'search-input'));
         $postStatusArr = applicationConstants::getBlogPostStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Post_Status', $this->adminLangId), 'post_published', $postStatusArr, '', array('class'=>'small'), 'Select');
+        $frm->addSelectBox(Labels::getLabel('LBL_Post_Status', $this->adminLangId), 'post_published', $postStatusArr, '', array(), 'Select');
         $frm->addHiddenField('', 'page');
         $fld_submit=$frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId));
