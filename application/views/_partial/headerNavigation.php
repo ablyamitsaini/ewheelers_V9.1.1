@@ -3,10 +3,8 @@
 <div class="last-bar">
     <div class="container">
         <div class="navigations__overlayx"></div>
-        
         <div class="navigation-wrapper">
-            <ul class="navigations">
-                <?php
+            <?php
                 $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false;
                 $noOfCharAllowedInNav = 90;
                 $rightNavCharCount = 5;
@@ -30,8 +28,9 @@
                         }
                         $navLinkCount++;
                     }
-                }
-
+                } ?>
+            <ul class="navigations <?php echo ($navLinkCount > 4) ? 'justify-content-between' : '' ; ?>">
+                <?php
                 foreach ($headerNavigation as $nav) {
                     if ($nav['pages']) {
                         $mainNavigation = array_slice($nav['pages'], 0, $navLinkCount);

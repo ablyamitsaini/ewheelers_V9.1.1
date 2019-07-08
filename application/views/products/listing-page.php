@@ -20,7 +20,7 @@ if (!empty($category['banner'])) {
 if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
     $bannerImage = CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId));
 }
-if (!empty($category['banner']) || !empty($category['prodcat_description']) || (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0)) { ?>
+if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0)) { ?>
     <section class="bg-shop">
         <div class="shop-banner" style="background-image: url(<?php echo $bannerImage; ?>)" data-ratio="4:1"></div>
         <?php /* if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
@@ -33,7 +33,7 @@ if (!empty($category['banner']) || !empty($category['prodcat_description']) || (
 <?php if (isset($pageTitle)) { ?>
 <section class="bg--second pt-3 pb-3">
     <div class="container">
-        <div class="section-head section--white--head justify-content-center mb-0">
+        <div class="section-head section--white--head section--head--center mb-0">
             <div class="section__heading">
                 <h2 class="mb-0"><?php echo $pageTitle; ?></h2>
                 <div class="breadcrumbs breadcrumbs--white breadcrumbs--center">

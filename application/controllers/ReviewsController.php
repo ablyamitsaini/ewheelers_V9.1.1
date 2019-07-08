@@ -10,7 +10,7 @@ class ReviewsController extends MyAppController
     {
         $selprod_id = FatUtility::int($selprod_id);
         $prodSrch = new ProductSearch($this->siteLangId);
-        $loggedUserId = UserAuthentication::getLoggedUserId();
+        $loggedUserId = UserAuthentication::getLoggedUserId(true);
         $prodSrch->setDefinedCriteria();
         $prodSrch->joinSellerSubscription();
         $prodSrch->addSubscriptionValidCondition();

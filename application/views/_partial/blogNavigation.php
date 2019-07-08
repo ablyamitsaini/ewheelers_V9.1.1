@@ -53,7 +53,7 @@
             } ?>
         <div class="navigations__overlayx"></div>
         <div class="navigation-wrapper">
-            <ul class="navigations">
+            <ul class="navigations <?php echo ($navLinkCount > 4) ? 'justify-content-between' : '' ; ?>">
                 <!--<li><a href="<?php /*echo CommonHelper::generateUrl('Blog'); ?>"><?php echo Labels::getLabel('LBL_Blog_Home', $siteLangId);*/ ?></a> </li>-->
                 <?php $mainNavigation = array_slice($categoriesArr, 0, $navLinkCount, true);
                 foreach ($mainNavigation as $id => $cat) { ?>

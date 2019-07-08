@@ -1363,7 +1363,7 @@ class CommonHelper extends FatUtility
         $originalPrice  = $product['selprod_price'];
         $specialPrice  = $product['theprice'];
         $discount =  (($originalPrice - $specialPrice)*100)/$originalPrice;
-        return $disVal = "-".round($discount)."%";
+        return $disVal = round($discount)."% ".Labels::getLabel('LBL_Off', $langId);
         /* $str = '';
         $listPrice = $product['splprice_display_list_price'];
         if( $listPrice > 0 ){
