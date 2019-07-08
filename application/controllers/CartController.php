@@ -359,6 +359,9 @@ class CartController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
         $key = $post['key'];
+        if (true ===  MOBILE_APP_API_CALL) {
+            $key = md5($key);
+        }
         $quantity = isset($post['quantity']) ? FatUtility::int($post['quantity']) : 1;
         $cartObj = new Cart();
         if (!$cartObj->update($key, $quantity)) {
