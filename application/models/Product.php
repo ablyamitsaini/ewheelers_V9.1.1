@@ -1393,4 +1393,23 @@ END,   special_price_found ) as special_price_found'
         }
         return $srch;
     }
+    public static function getActiveCount($sellerId)
+    {
+        if (0 > FatUtility::int($sellerId)) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            return false;
+        }
+
+        $srch = new SearchBase(static::DB_TBL);
+
+        $srch->addCondition(static::DB_TBL_PREFIX . 'seller_id', '=', $sellerId);
+
+        $srch->addMultipleFields(array(static::DB_TBL_PREFIX . 'id'));
+        $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
+        $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
+        $srch->addCondition(static::DB_TBL_PREFIX . 'approved', '=', applicationConstants::YES);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+        return $srch->recordCount();
+    }
 }

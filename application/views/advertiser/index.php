@@ -99,8 +99,8 @@
                     </a>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Active_Promotions', $siteLangId);?></h5>
@@ -175,8 +175,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5>

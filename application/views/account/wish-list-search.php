@@ -3,7 +3,7 @@
     <?php if ($wishLists) {
         foreach ($wishLists as $wishlist) {
             if(count($wishlist['products']) > 0 || FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
-            <div class="col-xl-3 col-lg-4 col-md-6 column">
+            <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
                 <div class="items">
                     <div class="items__body">
                         <span class="item__title"><?php echo $wishlist['uwlist_title']; ?></span>

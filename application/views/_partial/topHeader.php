@@ -73,9 +73,5 @@
         </div> <?php $this->includeTemplate('_partial/headerNavigation.php'); ?>
     </header>
     <div class="after-header no-print"></div>
-    <div class="display-in-print">
-        <img src="<?php echo CommonHelper::generateFullUrl('Image', 'invoiceLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>"
-            title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>">
-    </div>
     <!--header end here-->
     <!--body start here-->

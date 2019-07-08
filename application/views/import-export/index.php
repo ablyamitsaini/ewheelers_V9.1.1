@@ -9,12 +9,8 @@
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-content pt-2 pl-4 pr-4 pb-4">
-                    <div id="importExportBlock">
-                        <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
-                    </div>
-                </div>
+            <div id="importExportBlock">
+                <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
             </div>
         </div>
     </div>

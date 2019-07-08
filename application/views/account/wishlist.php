@@ -10,7 +10,7 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-ar
                 
                 <div class="cards-content p-4">
                     <div class="box__body">
-                        <div class="tabs tabs--small  tabs--scroll clearfix">
+                        <div class="tabs tabs--small tabs--scroll clearfix">
                             <ul>
                                 <li class="is-active" id="tab-wishlist"><a onClick="searchWishList();" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Wishlist', $siteLangId); ?></a></li>
                                 <li id="tab-fav-shop"><a onClick="searchFavoriteShop();" href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Shops', $siteLangId); ?></a></li>

@@ -28,7 +28,8 @@
           <div class="grids--offset">
              <div class="grid-layout">
                <div class="row">
-                 <div class="col-lg-6 col-md-6 col-sm-6">
+                 <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                 <div class="info--order">
                   <h6><?php echo Labels::getLabel('LBL_Vendor_Return_Address', $siteLangId); ?></h6>
                   <?php echo ($vendorReturnAddress['ura_name'] != null) ? '<strong>'.$vendorReturnAddress['ura_name'].'</strong>' : '';?>
                   <p>
@@ -41,7 +42,8 @@
                   <?php echo (strlen($vendorReturnAddress['ura_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$vendorReturnAddress['ura_phone'].'<br>':''; ?>
                   </p>
                  </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
                 <div class="info--order">
                   <h6><?php echo Labels::getLabel('LBL_Customer_Detail', $siteLangId); ?></h6>
                   <p>
@@ -102,7 +104,7 @@
               </tbody>
             </table>
 
-
+	<div class="gap"></div>
             <table class="table table--orders">
               <tbody>
                 <tr class="">

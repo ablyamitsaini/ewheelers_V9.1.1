@@ -70,6 +70,11 @@ trait CustomProducts
 
     public function customProductForm($prodId = 0, $prodCatId = 0)
     {
+        if (Product::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_products_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+        }
+
         if (!$this->isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) {
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }

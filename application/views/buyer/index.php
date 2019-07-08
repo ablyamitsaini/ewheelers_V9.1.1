@@ -98,8 +98,8 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                     </a>
                 </div>
             </div>
-            <div class="row mb-4">
-                <div class="col-lg-6 col-md-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Latest_Orders', $siteLangId);?></h5>
@@ -192,7 +192,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Latest_Offers', $siteLangId);?></h5>
@@ -236,8 +236,8 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                     </div>
                 </div>
             </div>
-            <div class="row mb-4">
-                <div class="col-lg-6 col-md-12">
+            <div class="row ">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Return_requests', $siteLangId);?></h5> <?php if (count($returnRequests) > 0) { ?> <div class="action">
@@ -303,7 +303,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-6 col-md-12 mb-4">
                     <!-- <div class="cards">
                         <?php // $this->includeTemplate('_partial/userDashboardMessages.php');?>
                         </div> -->

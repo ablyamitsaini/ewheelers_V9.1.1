@@ -25,10 +25,10 @@
                 <?php } ?>
             </div>
             <div class="cards-content pl-4 pr-4 ">
-                <div class="grids--offset">
-                    <div class="grid-layout">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+               
+                     <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6  mb-4">
+                               <div class="info--order">
                                 <h5><?php echo Labels::getLabel('LBL_Vendor_Return_Address', $siteLangId); ?></h5>
                                 <?php echo ($vendorReturnAddress['ura_name'] != null) ? '<h6>'.$vendorReturnAddress['ura_name'].'</h6>' : '';?>
                                 <p>
@@ -41,7 +41,8 @@
                                 <?php echo (strlen($vendorReturnAddress['ura_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$vendorReturnAddress['ura_phone'].'<br>':''; ?>
                                 </p>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6  mb-4">
                                 <div class="info--order">
                                     <h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
                                     <p>
@@ -62,8 +63,8 @@
                     <?php if ($canWithdrawRequest && !$print) { ?>
                     <a class="btn btn--primary no-print" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Buyer', 'WithdrawOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Withdraw_Request', $siteLangId); ?></a>
                     <?php } ?>
-                    </div>
-                </div>
+                    
+                
                 <?php if (!empty($request)) { ?>
                 <table class="table table--orders">
                     <tbody>
@@ -157,7 +158,8 @@
                     <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
                     <div id="loadMoreBtnDiv"></div>
                     <ul class="messages-list" id="messagesList"></ul>
-
+                    
+ <div class="gap"></div>
                     <?php if ($request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN)) {
                                 $frmMsg->setFormTagAttribute('onSubmit', 'setUpReturnOrderRequestMessage(this); return false;');
                                 $frmMsg->setFormTagAttribute('class', 'form');
@@ -180,6 +182,7 @@
                            </li>
                         </ul>
                     </div>
+                   
 
                     <?php
                             } ?>

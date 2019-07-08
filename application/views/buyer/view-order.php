@@ -56,13 +56,13 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"> <?php //echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5>
+                    <h5 class="cards-title"> <?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5>
                     <?php if (!$print) { ?>
                         <div class="action">
                         <div class="">
                             <iframe src="<?php echo Fatutility::generateUrl('buyer', 'viewOrder', $urlParts) . '/print'; ?>" name="frame" style="display:none"></iframe>
-                            <a href="javascript:void(0)" onclick="frames['frame'].print()" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
-                            <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders'); ?>" class="btn btn--primary-border no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId); ?></a>
+                            <a href="javascript:void(0)" onclick="frames['frame'].print()" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
+                            <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders'); ?>" class="btn btn--primary-border btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId); ?></a>
                         </div>
                     </div> <?php
                     } ?>
@@ -294,7 +294,7 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                             ?> <span class="gap"></span>
                     <div class="section--repeated">
                         <h5><?php echo Labels::getLabel('LBL_Payment_History', $siteLangId); ?></h5>
-                        <table class="table  table--orders">
+                        <table class="table table--orders">
                             <tbody>
                                 <tr class="">
                                     <th><?php echo Labels::getLabel('LBL_Date_Added', $siteLangId); ?></th>

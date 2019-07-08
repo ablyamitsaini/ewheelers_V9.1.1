@@ -72,11 +72,11 @@
 
   .posted-media {
   	margin-bottom: 2rem;
-  	-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+  	/*-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
   	        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
-  	padding: 10px;
+  	padding: 10px;*/
   	background: #fff;
-  	border-radius: 5px;
+  	border-radius: 4px;
   	overflow: hidden;
   }
 
@@ -698,7 +698,7 @@
   	        margin-inline-end: 2rem;
   }
 
-  .comment-by {}
+  .comment-by { -webkit-box-flex: 1; -ms-flex: 1; flex: 1;}
 
   .comment-by cite {
   	display: block;

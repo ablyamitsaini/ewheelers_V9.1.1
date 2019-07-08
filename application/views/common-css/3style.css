@@ -3230,6 +3230,7 @@ img {
 
 .section-head.section--head--center {
 	justify-content: center;
+	text-align: center;
 }
 
 .section-head .section__heading {
@@ -10839,7 +10840,7 @@ html.quick-view--open {
 
 .slider-nav .thumb {
 	margin: 0 auto;
-	margin-bottom: 1rem;
+	margin-bottom: 20px;
 	text-align: center;
 	border-radius: 4px;
 	border: solid 1px var(--border-color) !important;
@@ -12195,12 +12196,17 @@ html.quick-view--open {
 	left: 220px;
 	text-transform: uppercase;
 	opacity: 0;
+	visibility: hidden;
+	display: none;
 	transition: all 0.7s ease-in-out;
+	
 }
 
 .sidebar-is-expanded .dashboard-menu .menu-head {
 	left: 0px;
 	opacity: 1;
+	visibility: visible;
+	display: block;
 }
 
 .dashboard-menu ul {
@@ -12458,7 +12464,7 @@ main.main {
 	display: flex;
 	margin-inline-start: -15px;
 	margin-inline-end: -15px;
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 }
 
 .widget-stats {
@@ -13244,9 +13250,15 @@ main.main {
 }
 
 .shipping-selectors li {
-	margin-bottom: 15px;
+	margin-bottom: 1rem;
 	display: block;
 }
+
+.shipping-selectors p {
+	margin-bottom: 0.5rem;
+}
+
+
 
 .btn-action {
 	float: right;
@@ -13485,7 +13497,9 @@ main.main {
 	font-size: 0.875rem;
 }
 
-.summary-listing .cartdetail__footer {}
+.summary-listing .cartdetail__footer {
+	padding: 0;
+}
 
 .summary-listing .cartdetail__footer table {
 	width: 100%;
@@ -14158,15 +14172,10 @@ main.main {
 	background-position: 130% top;
 }
 
-.catalog-bg .delivery-term-data-inner > ul,
-.catalog-bg .delivery-term-data-inner .heading {
-	max-width: 500px;
-	margin-right: 250px;
-}
-
 .delivery-term-data-inner {
 	margin: 20px;
 	color: #4c4c4c;
+	max-width: 500px;
 }
 
 .delivery-term-data-inner .heading {
@@ -16073,4 +16082,122 @@ input[type="password"][disabled] {
 .main-search__field {
 	position: relative;
 	width: 100%;
+}
+
+/*FAQs*/
+
+#faqquestions {
+	margin: 40px auto 0;
+	padding: 0 5%;
+}
+
+#faqcloseall {
+	top: 0;
+	position: absolute;
+	right: 0;
+	z-index: 1;
+
+}
+
+
+
+.faqlist {
+	position: relative;
+}
+
+.faqsearch .faq-input {
+	margin-top: 1rem;
+	height: 3rem;
+	background: rgba(255, 255, 255, 0.5);
+	border: solid 1px rgba(255, 255, 255, 0.7);
+	background: rgba(0,0,0,0.015);
+		
+}
+
+.filterDiv {
+	font-size: 1.1rem;
+	font-weight: 400;
+	margin: 2rem 0;
+	position: relative;
+}
+
+h3.faqclose {
+	cursor: pointer;
+}
+
+h3.faqclose::after {
+	content: "\2715";
+	float: right;
+	font-size: 16px;
+	font-weight: 300;
+	line-height: 30px;
+}
+
+h3.faqclose::before {
+	-moz-transform: rotate(-90deg) !important;
+	-ms-transform: rotate(-90deg) !important;
+	-o-transform: rotate(-90deg) !important;
+	-webkit-transform: rotate(-90deg) !important;
+	transform: rotate(-90deg) !important;
+}
+
+/*
+.filterDiv:before,
+.filterDiv:after {
+	top: 50%;
+	position: absolute;
+	width: 9px;
+	height: 2px;
+	background-color: #545454;
+	display: inline-block;
+	transition: all 0.2s ease;
+	content: "";
+}
+
+.filterDiv:before {
+	right: 16px;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.filterDiv:after {
+	right: 10px;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.filterDiv.faqclose:before {
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.filterDiv.faqclose:after {
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+*/
+
+
+div.faqanswer {
+	background: var(--gray-bg);
+	margin: 1rem 0;
+	line-height: 1.8em;
+	border-radius: 4px;
+	/*margin-inline-start: 3rem;*/
+	border: solid 1px var(--border-color);
+}
+
+div.faqanswer p {
+	margin: 0;
+	padding: 1rem;
+}
+
+.faq-filters a {
+	border: solid 1px var(--border-color);
+	border-radius: 4px;
+	margin: 5px 0;
+	padding: 0.5rem;
+	color: var(--txt-color);
+	font-size: 0.8rem;
+	display: inline-block;
 }

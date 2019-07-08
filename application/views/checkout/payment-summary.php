@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="row align-items-center mb-4">
-                <div class="col">
+                <div class="col mb-3 mb-md-0">
                     <?php
                         $redeemRewardFrm->setFormTagAttribute('class', 'form form--secondary form--singlefield');
                         $redeemRewardFrm->setFormTagAttribute('onsubmit', 'useRewardPoints(this); return false;');
@@ -39,9 +39,9 @@
                             <input onChange="walletSelection(this)" type="checkbox" <?php echo ($cartSummary["cartWalletSelected"]) ? 'checked="checked"' : ''; ?> name="pay_from_wallet" id="pay_from_wallet" />
                             <i class="input-helper"></i>
                             <?php if ($cartSummary["cartWalletSelected"] && $userWalletBalance >= $cartSummary['orderNetAmount']) {
-                                echo '<strong>'.Labels::getLabel('LBL_Sufficient_balance_in_your_wallet', $siteLangId).'</strong>'; //';
+                                echo ''.Labels::getLabel('LBL_Sufficient_balance_in_your_wallet', $siteLangId).''; //';
                             } else {
-                                echo '<strong>'.Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>: (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)</strong>
+                                echo ''.Labels::getLabel('MSG_Use_My_Wallet_Credits', $siteLangId)?>: (<?php echo CommonHelper::displayMoneyFormat($userWalletBalance)?>)
                             <?php } ?>
                         </label>
                     <?php }?>

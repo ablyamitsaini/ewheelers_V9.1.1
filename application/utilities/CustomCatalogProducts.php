@@ -300,6 +300,7 @@ trait CustomCatalogProducts
         $this->set('productSpecifications', $productSpecData);
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $preqCatId);
+        $this->set('activeTab', 'SPECIFICATIONS');
         $this->set('productOptions', $productOptions);
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
@@ -406,6 +407,7 @@ trait CustomCatalogProducts
         $this->set('upcCodeData', $upcCodeData);
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $prodcat_id);
+        $this->set('activeTab', 'CUSTOMEANUPC');
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
     }
@@ -563,6 +565,7 @@ trait CustomCatalogProducts
         $this->set('languages', Language::getAllNames());
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $preqCatId);
+        $this->set('activeTab', 'PRODUCTLANGFORM');
         $this->set('siteLangId', $this->siteLangId);
         $this->set('product_lang_id', $lang_id);
         $this->set('productOptions', $productOptions);
@@ -681,6 +684,7 @@ trait CustomCatalogProducts
 
         $this->set('imagesFrm', $imagesFrm);
         $this->set('preqId', $preqId);
+        $this->set('activeTab', 'PRODUCTIMAGES');
         $this->set('languages', Language::getAllNames());
         $this->set('siteLangId', $this->siteLangId);
         $this->set('productOptions', $productOptions);

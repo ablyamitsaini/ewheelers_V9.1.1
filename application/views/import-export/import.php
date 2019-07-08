@@ -8,11 +8,13 @@ $optionFld->developerTags['noCaptionTag'] = true;
 
 $variables = array('siteLangId'=>$siteLangId,'action'=>$action);
 $this->includeTemplate('import-export/_partial/top-navigation.php', $variables, false); ?>
-<div class="tabs__content">
-    <div class="row">
-        <div class="row">
-            <div class="col-md-12" id="importFormBlock">
-                <?php echo $frm->getFormHtml();  ?>
+<div class="cards">
+    <div class="cards-content pt-3 pl-4 pr-4 pb-4">
+        <div class="tabs__content">
+            <div class="row">
+                <div class="col-md-12" id="importFormBlock">
+                    <?php echo $frm->getFormHtml();  ?>
+                </div>
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
 <div class="row">
 <?php if ($shops) { ?>
     <?php foreach ($shops as $shop) { ?>
-    <div class="col-lg-3 col-md-6 mb-sm-3">
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
         <div class="featured-item">
          <div class="featured_inner p-2 pt-4 pb-4">
             <div class="favourite-wrapper ">
