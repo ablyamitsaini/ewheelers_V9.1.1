@@ -294,7 +294,11 @@ class CartController extends MyAppController
         }
 
         $cartObj = new Cart();
-        if (!$cartObj->remove($post['key'])) {
+        $key = $post['key'];
+        if (true ===  MOBILE_APP_API_CALL) {
+            $key = md5($key);
+        }
+        if (!$cartObj->remove($key)) {
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($cartObj->getError()));
             }
