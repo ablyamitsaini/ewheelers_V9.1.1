@@ -156,7 +156,6 @@ class Importexport extends ImportexportCommon
     private function validateCSVHeaders($csvFilePointer, $coloumArr, $langId)
     {
         $headingRow = $this->getFileRow($csvFilePointer);
-
         if (!$this->isValidColumns($headingRow, $coloumArr)) {
             Message::addErrorMessage(Labels::getLabel("MSG_Invalid_Coloum_CSV_File", $langId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -1339,6 +1338,7 @@ class Importexport extends ImportexportCommon
         $brandIdentifierArr = array();
         $taxCategoryArr = array();
         $countryArr = array();
+        $userProdUploadLimit = array();
 
         if (!$this->settings['CONF_USE_PRODUCT_TYPE_ID']) {
             $prodTypeIdentifierArr = Product::getProductTypes($langId);
@@ -2514,6 +2514,7 @@ class Importexport extends ImportexportCommon
             $prodCatalogMediaArr = array();
             $errorInRow = false;
             $productId = $optionId = 0;
+
             foreach ($coloumArr as $columnKey => $columnTitle) {
                 $colIndex = $this->headingIndexArr[$columnTitle];
                 $colValue = $this->getCell($row, $colIndex, '');
@@ -2677,7 +2678,7 @@ class Importexport extends ImportexportCommon
                         $moved = $afileObj->moveAttachment($prodCatalogMediaArr['afile_physical_path'], $fileType, $productId, 0, $prodCatalogMediaArr['afile_name'], $prodCatalogMediaArr['afile_display_order'], false, $prodCatalogMediaArr['afile_lang_id']);
 
                         if (false === $moved) {
-                            $errMsg = Labels::getLabel("MSG_Invalid_File.", $langId);
+                            $errMsg = str_replace('{filepath}',$prodCatalogMediaArr['afile_physical_path'],Labels::getLabel("MSG_Invalid_File_{filepath}.", $langId));
                             CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, 'N/A', $errMsg ));
                         }
                     } else {
