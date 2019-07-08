@@ -2094,38 +2094,41 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex,($colIndex + 1),$errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'product_id', 'product_identifier' ))) {
-                        if ('product_identifier' == $columnKey) {
-                            if (!array_key_exists($colValue, $prodIndetifierArr)) {
-                                $res = $this->getAllProductsIdentifiers(false, $colValue);
+                    switch ($columnKey) {
+                        case 'product_id':
+                        case 'product_identifier':
+                            if ('product_identifier' == $columnKey) {
+                                if (!array_key_exists($colValue, $prodIndetifierArr)) {
+                                    $res = $this->getAllProductsIdentifiers(false, $colValue);
 
-                                if (!$res) {
-                                    $invalid = true;
-                                } else {
-                                    $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    } else {
+                                        $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                    }
                                 }
+                                $productId = $colValue = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
+                            } else {
+                                $productId = $colValue;
                             }
-                            $productId = $colValue = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
-                        } else {
-                            $productId = $colValue;
-                        }
 
-                        if ($userId) {
-                            $productId = $colValue = $this->getCheckAndSetProductIdByTempId($colValue, $userId);
-                        }
+                            if ($userId) {
+                                $productId = $colValue = $this->getCheckAndSetProductIdByTempId($colValue, $userId);
+                            }
+                            break;
+                        case 'prodspeclang_lang_id':
+                            $languageId = $colValue;
+                            break;
+                        case 'prodspeclang_lang_code':
+                            $columnKey = 'prodspeclang_lang_id';
+                            $colValue =  array_key_exists($colValue, $languageCodes) ? $languageCodes[$colValue] : 0;
+                            if (0 >= $colValue) {
+                                $invalid = true;
+                            }
+                            $languageId = $colValue;
+                            break;
                     }
 
-                    if ('prodspeclang_lang_id' == $columnKey) {
-                        $languageId = $colValue;
-                    }
-                    if ('prodspeclang_lang_code' == $columnKey) {
-                        $columnKey = 'prodspeclang_lang_id';
-                        $colValue =  array_key_exists($colValue, $languageCodes) ? $languageCodes[$colValue] : 0;
-                        if (0 >= $colValue) {
-                            $invalid = true;
-                        }
-                        $languageId = $colValue;
-                    }
 
                     if (true === $invalid) {
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
@@ -2154,7 +2157,7 @@ class Importexport extends ImportexportCommon
                     $this->db->deleteRecords(Product::DB_PRODUCT_SPECIFICATION, array('smt'=> 'prodspec_product_id = ? ','vals' => array( $productId ) ));
                 }
 
-                if (!array_key_exists($languageId, $langArr)) {
+                if (!in_array($languageId, $langArr)) {
                     $langArr[] = $languageId;
                     if (!$prodspec_id) {
                         $this->db->insertFromArray(Product::DB_PRODUCT_SPECIFICATION, array('prodspec_product_id' => $productId));
@@ -2180,7 +2183,6 @@ class Importexport extends ImportexportCommon
         }
         // Close File
         CommonHelper::writeToCSVFile($this->CSVfileObj, array(), true);
-
 
         if (CommonHelper::checkCSVFile($this->CSVfileName)) {
             $success['CSVfileUrl'] = FatUtility::generateFullUrl('custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND);
@@ -2929,9 +2931,10 @@ class Importexport extends ImportexportCommon
                 }
             }
 
-            if (false === $errorInRow && count($selProdGenArr)) {
-                $userId = (!$sellerId) ? $userId : $sellerId;
+            $userId = (!$sellerId) ? $userId : $sellerId;
+            $selProdGenArr['selprod_user_id'] = $userId;
 
+            if (false === $errorInRow && count($selProdGenArr)) {
                 $prodData = Product::getAttributesById($productId, array('product_min_selling_price'));
 
                 if (array_key_exists('selprod_price', $selProdGenArr) && $selProdGenArr['selprod_price'] < $prodData['product_min_selling_price']) {
