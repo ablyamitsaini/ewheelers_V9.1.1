@@ -66,7 +66,6 @@ class OrderSubscription extends MyAppModel
         $srch->setPageSize(1);
         $srch->doNotCalculateRecords(true);
         $srch->addOrder(Orders::DB_TBL_PREFIX.'id', 'desc');
-
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs, $flds);
 

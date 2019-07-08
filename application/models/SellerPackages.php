@@ -95,24 +95,13 @@ class SellerPackages extends MyAppModel
     }
     public static function getAllowedLimit($userId, $langId, $key = '')
     {
-        $srch = new OrderSubscriptionSearch($langId, true, true);
-        $srch->joinSubscription();
-        $srch->joinOrderUser();
-        $srch->joinTable(static::DB_TBL, 'LEFT OUTER JOIN', 'spackage_id = oss.'.OrderSubscription::DB_TBL_PREFIX.'plan_id ');
-        $srch->addCondition('order_user_id', '=', $userId);
-        $srch->addCondition('order_type', '=', Orders::ORDER_SUBSCRIPTION);
-        $srch->addCondition('ossubs_status_id', '=', OrderSubscription::ACTIVE_SUBSCRIPTION);
-        $srch->setPageSize(1);
-
-        $srch->addMultipleFields(
-            array("spackage_products_allowed","spackage_inventory_allowed","spackage_images_per_product")
-        );
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetch($rs);
+        $columns = array("spackage_products_allowed","spackage_inventory_allowed","spackage_images_per_product");
+        $currentActivePlan = OrderSubscription:: getUserCurrentActivePlanDetails($langId, $userId, $columns);
+        
         if (!empty($key)) {
-            return $records[$key];
+            return $currentActivePlan[$key];
         }
 
-        return $records;
+        return $currentActivePlan;
     }
 }

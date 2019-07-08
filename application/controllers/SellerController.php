@@ -3395,7 +3395,7 @@ class SellerController extends SellerBaseController
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
         $currentActivePlan = OrderSubscription:: getUserCurrentActivePlanDetails($this->siteLangId, UserAuthentication::getLoggedUserId(), array(OrderSubscription::DB_TBL_PREFIX.'till_date',OrderSubscription::DB_TBL_PREFIX.'price',OrderSubscription::DB_TBL_PREFIX.'type'));
-
+        
         $frmOrderSrch = $this->getSubscriptionOrderSearchForm($this->siteLangId);
         $userId = UserAuthentication::getLoggedUserId();
         $autoRenew = User::getAttributesById($userId, 'user_autorenew_subscription');
