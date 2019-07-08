@@ -811,18 +811,17 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    
     public static function getActiveCount($userId)
     {
-        $srch = new SearchBase(static::DB_TBL);
+        $srch = static::getSearchObject();
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.' and p.product_active = '.applicationConstants::YES, 'p');
 
-        $srch->addCondition(static::DB_TBL_PREFIX . 'user_id', '=', $userId);
-
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addCondition('selprod_user_id', '=', $userId);
         $srch->addMultipleFields(array('selprod_id'));
-        $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
-        $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
+        $db = FatApp::getDb();
         $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs);
+        $records = $db->fetchAll($rs);
         return $srch->recordCount();
     }
 }
