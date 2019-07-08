@@ -91,7 +91,6 @@ class Product extends MyAppModel
         'product_min_selling_price',
         ),
         ImportexportCommon::VALIDATE_NOT_NULL => array(
-        'product_model',
         'product_name',
         'product_identifier',
         'credential_username',
@@ -107,7 +106,7 @@ class Product extends MyAppModel
         ),
         );
 
-        if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+        if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
             $physical = array(
                 'product_dimension_unit_identifier',
                 'product_weight_unit_identifier',
@@ -117,7 +116,15 @@ class Product extends MyAppModel
                 'product_weight',
                 );
             $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
-        }        
+        }
+
+        if (FatApp::getConfig('CONF_PRODUCT_MODEL_MANDATORY', FatUtility::VAR_INT, 0)) {
+            $physical = array(
+                'product_model',
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }
+
         return $arr;
     }
 
