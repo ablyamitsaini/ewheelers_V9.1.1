@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navs_toggle" href="javascript:void(0)"><span></span></a>
         <div class="header-blog-inner">
-          
+
             <div class="logo">
                 <a href="<?php echo CommonHelper::generateUrl('Blog'); ?>">
                     <img src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>"
@@ -52,10 +52,9 @@
                 $navLinkCount++;
             } ?>
         <div class="navigations__overlayx"></div>
-        
         <div class="navigation-wrapper">
             <ul class="navigations">
-                <li><a href="<?php echo CommonHelper::generateUrl('Blog'); ?>"><?php echo Labels::getLabel('LBL_Blog_Home', $siteLangId); ?></a> </li>
+                <!--<li><a href="<?php /*echo CommonHelper::generateUrl('Blog'); ?>"><?php echo Labels::getLabel('LBL_Blog_Home', $siteLangId);*/ ?></a> </li>-->
                 <?php $mainNavigation = array_slice($categoriesArr, 0, $navLinkCount, true);
                 foreach ($mainNavigation as $id => $cat) { ?>
                 <li><a href="<?php echo CommonHelper::generateUrl('Blog', 'category', array($id)); ?>"><?php echo $cat; ?></a> </li>

@@ -274,7 +274,7 @@ class AttachedFile extends MyAppModel
             //@todo display order thing needs to be checked.
             $smt = $db->prepareStatement(
                 'SELECT MAX(afile_display_order) AS max_order FROM ' . static::DB_TBL . '
-					WHERE afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?'
+                    WHERE afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?'
             );
             $smt->bindParameters('iii', $fileType, $recordId, $recordSubid, $langId);
 
@@ -352,10 +352,11 @@ class AttachedFile extends MyAppModel
     {
         ob_end_clean();
         if ($no_image == '') {
-            $no_image = CONF_THEME_PATH . 'img/defaults/no_image.jpg';
+            $no_image = 'images/defaults/no_image.jpg';
         } else {
             $no_image = 'images/defaults/'. $no_image;
         }
+        /*echo $no_image; die;*/
         $originalImageName = $image_name;
         if (trim($uploadedFilePath)!='') {
             $uploadedFilePath = CONF_UPLOADS_PATH.$uploadedFilePath;
@@ -383,15 +384,15 @@ class AttachedFile extends MyAppModel
             } catch (Exception $e) {
                 try {
                     $img = static::getDefaultImage($no_image, $w, $h);
-					$img->setExtraSpaceColor(204, 204, 204);
+                    $img->setExtraSpaceColor(204, 204, 204);
                 } catch (Exception $e) {
                     $img = static::getDefaultImage($no_image, $w, $h);
-					$img->setExtraSpaceColor(204, 204, 204);
+                    $img->setExtraSpaceColor(204, 204, 204);
                 }
             }
         } else {
             $img = static::getDefaultImage($no_image, $w, $h);
-			$img->setExtraSpaceColor(204, 204, 204);
+            $img->setExtraSpaceColor(204, 204, 204);
         }
 
         /* $w = max(1, FatUtility::int($w));
