@@ -99,7 +99,7 @@ class ReviewsController extends MyAppController
 
     public function searchForProductList()
     {
-        $selprod_id = FatApp::getPostedData('selprod_id');
+        $selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
 
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
@@ -108,8 +108,11 @@ class ReviewsController extends MyAppController
         }
         $orderBy = FatApp::getPostedData('orderBy', FatUtility::VAR_STRING, 'most_recent');
 
-        $pageSize = FatApp::getPostedData('pageSize', FatUtility::VAR_INT, FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10));
-
+        $pageSize = FatApp::getPostedData('pageSize', FatUtility::VAR_INT, 0);
+        if (empty($pageSize)) {
+            $pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
+        }
+        
         $srch = new SelProdReviewSearch();
         $srch->joinProducts($this->siteLangId);
         $srch->joinSellerProducts($this->siteLangId);
@@ -127,22 +130,30 @@ class ReviewsController extends MyAppController
         $srch->setPageSize($pageSize);
 
         switch ($orderBy) {
-        case 'most_helpful':
-            $srch->addOrder('helpful', 'desc');
-            break;
-        default:
-            $srch->addOrder('spr.spreview_posted_on', 'desc');
-            break;
+            case 'most_helpful':
+                $srch->addOrder('helpful', 'desc');
+                break;
+            default:
+                $srch->addOrder('spr.spreview_posted_on', 'desc');
+                break;
         }
+
         $records = FatApp::getDb()->fetchAll($srch->getResultSet());
         $this->set('reviewsList', $records);
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());
         $this->set('postedData', FatApp::getPostedData());
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('recordCount', count($records));
+            $this->_template->render();
+        }
+
         $json['startRecord'] = !empty($records)?($page-1)*$pageSize + 1 :0;
 
         $json['recordsToDisplay'] = count($records);
         $json['totalRecords'] = $srch->recordCount();
+
         //$json['msg'] = '';
         $json['html'] = $this->_template->render(false, false, 'reviews/search-for-product-list.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, 'reviews/load-more-product-reviews-btn.php', true, false);
