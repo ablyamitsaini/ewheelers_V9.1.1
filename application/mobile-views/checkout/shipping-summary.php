@@ -11,8 +11,8 @@ foreach ($productSelectedShippingMethodsArr as $key => $value) {
 
 $data = array(
     'productSelectedShippingMethodsArr' => !empty($productSelectedShippingMethodsArr) ? $productSelectedShippingMethodsArr : (object)array(),
-    'shipStationCarrierList' => $shipStationCarrierList,
-    'shippingMethods' => $shippingMethods,
+    'shipStationCarrierList' => !empty($shipStationCarrierList) ? $shipStationCarrierList : (object)array(),
+    'shippingMethods' => !empty($shippingMethods) ? $shippingMethods : (object)array(),
     'products' => array_values($products),
     'cartSummary' => $cartSummary,
     'shippingAddressDetail' => !empty($shippingAddressDetail) ? $shippingAddressDetail : (object)array(),
