@@ -217,7 +217,7 @@ class ImportexportCommon extends FatModel
 
             if ($this->isDefaultSheetData($langId)) {
                 $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr['prodcat_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                /*$arr['prodcat_featured'] = Labels::getLabel('LBL_Featured', $langId);*/
                 $arr['prodcat_active'] = Labels::getLabel('LBL_Active', $langId);
                 $arr['prodcat_display_order'] = Labels::getLabel('LBL_Display_Order', $langId);
                 $arr['prodcat_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
@@ -267,8 +267,9 @@ class ImportexportCommon extends FatModel
 
             if ($this->isDefaultSheetData($langId)) {
                 $arr['urlrewrite_custom'] = Labels::getLabel('LBL_Seo_friendly_url', $langId);
-                $arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);
+                /*$arr['brand_featured'] = Labels::getLabel('LBL_Featured', $langId);*/
                 $arr['brand_active'] = Labels::getLabel('LBL_Active', $langId);
+                $arr['brand_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             }
         }
         return $arr;
@@ -305,6 +306,9 @@ class ImportexportCommon extends FatModel
                 $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
             }
         } else {
+            if ($this->isDefaultSheetData($langId)) {
+                $arr['product_id'] = Labels::getLabel('LBL_PRODUCT_ID', $langId);
+            }
             $arr['product_identifier'] = Labels::getLabel('LBL_Product_identifier', $langId);
         }
 
@@ -1110,15 +1114,27 @@ class ImportexportCommon extends FatModel
         return $row = $this->db->fetchAllAssoc($rs);
     }
 
-    public function getTaxCategoriesArr($byId = true)
+    public function getTaxCategoriesArr($byId = true, $taxCatIdOrIdentifier = false)
     {
         $srch = Tax::getSearchObject(false, false);
         $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
+
+        if ($taxCatIdOrIdentifier) {
+            $srch->setPageSize(1);
+        } else {
+            $srch->doNotLimitRecords();
+        }
+
         if ($byId) {
             $srch->addMultipleFields(array('taxcat_id','taxcat_identifier'));
+            if ($taxCatIdOrIdentifier) {
+                $srch->addCondition('taxcat_id', '=', $taxCatIdOrIdentifier);
+            }
         } else {
             $srch->addMultipleFields(array('taxcat_identifier','taxcat_id'));
+            if ($taxCatIdOrIdentifier) {
+                $srch->addCondition('taxcat_identifier', '=', $taxCatIdOrIdentifier);
+            }
         }
         $rs = $srch->getResultSet();
         return $row = $this->db->fetchAllAssoc($rs);

@@ -46,7 +46,7 @@ class SellerProduct extends MyAppModel
 
     public static function requiredGenDataFields()
     {
-        return array(
+        $arr = array(
             ImportexportCommon::VALIDATE_INT => array(
                 'selprod_max_download_times',
                 'selprod_download_validity_in_days'
@@ -71,6 +71,15 @@ class SellerProduct extends MyAppModel
                 'selprod_available_from',
             ),
         );
+
+        if (FatApp::getConfig('CONF_PRODUCT_SKU_MANDATORY', FatUtility::VAR_INT, 1)) {
+            $physical = array(
+                'selprod_sku'
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }
+
+        return $arr;
     }
 
     public static function validateGenDataFields($columnIndex, $columnTitle, $columnValue, $langId)

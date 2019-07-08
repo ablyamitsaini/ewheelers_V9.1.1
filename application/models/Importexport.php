@@ -532,17 +532,17 @@ class Importexport extends ImportexportCommon
 
         switch ($type) {
             case Importexport::TYPE_BRANDS:
-                $sheetName = Labels::getLabel('LBL_Brands_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Brands_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importBrandsMedia($csvFilePointer, $post, $langId);
                 break;
             case Importexport::TYPE_CATEGORIES:
-                $sheetName = Labels::getLabel('LBL_Category_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Category_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importCategoryMedia($csvFilePointer, $post, $langId);
                 break;
             case Importexport::TYPE_PRODUCTS:
-                $sheetName = Labels::getLabel('LBL_Product_Catalog_Media', $langId);
+                $sheetName = Labels::getLabel('LBL_Product_Catalog_Media_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importProductCatalogMedia($csvFilePointer, $post, $langId, $userId);
                 break;
@@ -913,10 +913,10 @@ class Importexport extends ImportexportCommon
             /*]*/
         }
 
-        $srch = Brand::getSearchObject($langId);
+        $srch = Brand::getSearchObject($langId, false);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
-        $srch->addMultipleFields(array('brand_id','brand_identifier','iFNULL(brand_name,brand_identifier) as brand_name','brand_short_description','brand_featured','brand_active'));
+        $srch->addMultipleFields(array('brand_id','brand_identifier','iFNULL(brand_name,brand_identifier) as brand_name','brand_short_description','brand_featured','brand_active','brand_deleted'));
         $srch->addCondition('brand_status', '=', applicationConstants::ACTIVE);
         if ($userId) {
             $srch->addCondition('brand_active', '=', applicationConstants::ACTIVE);
@@ -937,7 +937,7 @@ class Importexport extends ImportexportCommon
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
 
-                if (in_array($columnKey, array( 'brand_featured', 'brand_active' )) && !$this->settings['CONF_USE_O_OR_1']) {
+                if (in_array($columnKey, array( 'brand_featured', 'brand_active','brand_deleted')) && !$this->settings['CONF_USE_O_OR_1']) {
                     $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
                 }
 
@@ -977,7 +977,7 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex,($colIndex + 1),$errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array('brand_featured', 'brand_active'))) {
+                    if (in_array($columnKey, array('brand_featured', 'brand_active','brand_deleted'))) {
                         if ($this->settings['CONF_USE_O_OR_1']) {
                             $colValue = (FatUtility::int($colValue) == 1)?applicationConstants::YES:applicationConstants::NO;
                         } else {
@@ -1531,7 +1531,7 @@ class Importexport extends ImportexportCommon
                             break;
                         case 'product_dimension_unit_identifier':
                             $columnKey = 'product_dimension_unit';
-                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                            if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
                                 if (!array_key_exists($colValue, $lengthUnitsArr)) {
                                     $invalid = true;
                                 } else {
@@ -1544,7 +1544,7 @@ class Importexport extends ImportexportCommon
                             break;
                         case 'product_weight_unit_identifier':
                             $columnKey = 'product_weight_unit';
-                            if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+                            if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
                                 if (!array_key_exists($colValue, $weightUnitsArr)) {
                                     $invalid = true;
                                 } else {
@@ -2505,6 +2505,7 @@ class Importexport extends ImportexportCommon
         $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
 
         $errInSheet = false;
+        $breakForeach = false;
         while (($row = $this->getFileRow($csvFilePointer)) !== false) {
             $rowIndex++;
 
@@ -2518,104 +2519,109 @@ class Importexport extends ImportexportCommon
 
                 $errMsg = Product::validateMediaFields($columnKey, $columnTitle, $colValue, $langId);
 
-
                 if (false !== $errMsg) {
                     $errorInRow = true;
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'product_id', 'product_identifier' ))) {
-                        if ('product_id' == $columnKey) {
-                            $productId = $colValue;
-                            $columnKey = 'afile_record_id';
-                        }
-                        if ('product_identifier' == $columnKey) {
-                            $columnKey = 'afile_record_id';
-                            if (!array_key_exists($colValue, $prodIndetifierArr)) {
-                                $res = $this->getAllProductsIdentifiers(false, $colValue);
-                                if (!$res) {
-                                    $invalid = true;
-                                } else {
-                                    $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                    switch ($columnKey) {
+                        case 'product_id':
+                        case 'product_identifier':
+                            if ('product_id' == $columnKey) {
+                                $productId = $colValue;
+                            }
+                            if ('product_identifier' == $columnKey) {
+                                if (!array_key_exists($colValue, $prodIndetifierArr)) {
+                                    $res = $this->getAllProductsIdentifiers(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    } else {
+                                        $prodIndetifierArr = array_merge($prodIndetifierArr, $res);
+                                    }
                                 }
+                                $colValue = $productId = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
                             }
-                            $colValue = $productId = array_key_exists($colValue, $prodIndetifierArr) ? $prodIndetifierArr[$colValue] : 0;
-                        }
+                            $columnKey = 'afile_record_id';
 
-                        if (!empty($userId)) {
-                            $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $userId);
-                        }
-
-                        if (1 > $colValue) {
-                            $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
-                            $invalid = true;
-                        }
-                    }
-
-                    if (in_array($columnKey, array( 'option_id', 'option_identifier' ))) {
-                        if ('option_id' == $columnKey) {
-                            $optionId = $colValue;
-                        }
-                        if ('option_identifier' == $columnKey) {
-                            $optionId = 0;
-                            if (!array_key_exists($colValue, $optionIdentifierArr)) {
-                                $res = $this->getAllOptions(false, $colValue);
-                                if (!$res) {
-                                    $invalid = true;
-                                }
-                                $optionIdentifierArr = array_merge($optionIdentifierArr, $res);
+                            if (!empty($userId)) {
+                                $colValue = $productId = $this->getCheckAndSetProductIdByTempId($productId, $userId);
                             }
-                            $colValue = $optionId = array_key_exists($colValue, $optionIdentifierArr) ? $optionIdentifierArr[$colValue] : 0;
-                        }
 
-                        if (!array_key_exists($productId, $selProdValidOptionArr)) {
-                            $selProdValidOptionArr[$productId] = array();
-                            $optionSrch = Product::getSearchObject();
-                            $optionSrch->joinTable(Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', 'tp.product_id = po.prodoption_product_id', 'po');
-                            $optionSrch->addCondition('product_id', '=', $productId);
-                            $optionSrch->addMultipleFields(array('prodoption_option_id'));
-                            $optionSrch->doNotCalculateRecords();
-                            $optionSrch->doNotLimitRecords();
-                            $rs = $optionSrch->getResultSet();
-                            $db = FatApp::getDb();
-                            while ($rowOptions = $db->fetch($rs)) {
-                                $selProdValidOptionArr[$productId][] = $rowOptions['prodoption_option_id'];
-                            }
-                            if ($optionId && !in_array($optionId, $selProdValidOptionArr[$productId])) {
+                            if (1 > $colValue) {
+                                $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
                                 $invalid = true;
+                                $breakForeach = true;
                             }
-                        }
-                    }
 
-                    if (in_array($columnKey, array( 'optionvalue_id', 'optionvalue_identifier' ))) {
-                        if ('optionvalue_id' == $columnKey) {
-                            $columnKey = 'afile_record_subid';
-                            $optionValueId = $colValue;
-                        }
-                        if ('optionvalue_identifier' == $columnKey) {
-                            $columnKey = 'afile_record_subid';
-                            $optionValueId = 0;
-                            $optionValueIndetifierArr[$optionId] = array_key_exists($optionId, $optionValueIndetifierArr)  ? $optionValueIndetifierArr[$optionId] : array();
+                            break;
+                        case 'option_id':
+                        case 'option_identifier':
+                            if ('option_id' == $columnKey) {
+                                $optionId = $colValue;
+                            }
+                            if ('option_identifier' == $columnKey) {
+                                $optionId = 0;
+                                if (!empty($colValue) && !array_key_exists($colValue, $optionIdentifierArr)) {
+                                    $res = $this->getAllOptions(false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    }
+                                    $optionIdentifierArr = array_merge($optionIdentifierArr, $res);
+                                }
+                                $colValue = $optionId = array_key_exists($colValue, $optionIdentifierArr) ? $optionIdentifierArr[$colValue] : 0;
+                            }
 
-                            if (!array_key_exists($colValue, $optionValueIndetifierArr[$optionId])) {
-                                $res = $this->getAllOptionValues($optionId, false, $colValue);
-                                if (!$res) {
+                            if (!array_key_exists($productId, $selProdValidOptionArr)) {
+                                $selProdValidOptionArr[$productId] = array();
+                                $optionSrch = Product::getSearchObject();
+                                $optionSrch->joinTable(Product::DB_PRODUCT_TO_OPTION, 'INNER JOIN', 'tp.product_id = po.prodoption_product_id', 'po');
+                                $optionSrch->addCondition('product_id', '=', $productId);
+                                $optionSrch->addMultipleFields(array('prodoption_option_id'));
+                                $optionSrch->doNotCalculateRecords();
+                                $optionSrch->doNotLimitRecords();
+                                $rs = $optionSrch->getResultSet();
+                                $db = FatApp::getDb();
+                                while ($rowOptions = $db->fetch($rs)) {
+                                    $selProdValidOptionArr[$productId][] = $rowOptions['prodoption_option_id'];
+                                }
+                                if ($optionId && !in_array($optionId, $selProdValidOptionArr[$productId])) {
                                     $invalid = true;
                                 }
-                                $optionValueIndetifierArr[$optionId] = array_merge($optionValueIndetifierArr[$optionId], $res);
                             }
-                            $colValue = $optionValueId = isset($optionValueIndetifierArr[$optionId][$colValue]) ? $optionValueIndetifierArr[$optionId][$colValue] : 0;
-                        }
-                    }
+                            break;
+                        case 'optionvalue_id':
+                        case 'optionvalue_identifier':
+                            if ('optionvalue_id' == $columnKey) {
+                                $columnKey = 'afile_record_subid';
+                                $optionValueId = $colValue;
+                            }
+                            if ('optionvalue_identifier' == $columnKey) {
+                                $columnKey = 'afile_record_subid';
+                                $optionValueId = 0;
+                                $optionValueIndetifierArr[$optionId] = array_key_exists($optionId, $optionValueIndetifierArr)  ? $optionValueIndetifierArr[$optionId] : array();
 
-                    if ('afile_lang_code' == $columnKey) {
-                        $columnKey = 'afile_lang_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                                if (!empty($colValue) && !array_key_exists($colValue, $optionValueIndetifierArr[$optionId])) {
+                                    $res = $this->getAllOptionValues($optionId, false, $colValue);
+                                    if (!$res) {
+                                        $invalid = true;
+                                    }
+                                    $optionValueIndetifierArr[$optionId] = array_merge($optionValueIndetifierArr[$optionId], $res);
+                                }
+                                $colValue = $optionValueId = isset($optionValueIndetifierArr[$optionId][$colValue]) ? $optionValueIndetifierArr[$optionId][$colValue] : 0;
+                            }
+                            break;
+                        case 'afile_lang_code':
+                            $columnKey = 'afile_lang_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
                     }
 
                     if (true === $invalid) {
                         $errMsg = !empty($errMsg) ? $errMsg : str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
                         CommonHelper::writeToCSVFile($this->CSVfileObj, array($rowIndex, ($colIndex + 1), $errMsg ));
+                        if ($breakForeach) {
+                            break;
+                        }
                     } else {
                         $prodCatalogMediaArr[$columnKey] = $colValue;
                     }
@@ -2623,6 +2629,8 @@ class Importexport extends ImportexportCommon
             }
 
             if (false === $errorInRow && count($prodCatalogMediaArr)) {
+                unset($prodCatalogMediaArr['option_identifier']);
+                unset($prodCatalogMediaArr['option_id']);
                 $fileType = AttachedFile::FILETYPE_PRODUCT_IMAGE;
 
                 $prodCatalogMediaArr['afile_type'] = $fileType;
@@ -2901,9 +2909,9 @@ class Importexport extends ImportexportCommon
                         case 'selprod_cod_enabled':
                         case 'selprod_deleted':
                             if (!$this->settings['CONF_USE_O_OR_1']) {
-                                $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
                             }
-                        break;
+                            break;
                     }
 
                     if (true === $invalid) {
@@ -4602,41 +4610,43 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if ('country_currency_id' == $columnKey) {
-                        $currencyId = FatUtility::int($colValue);
-                        $colValue =  array_key_exists($currencyId, $languageCodes) ? $currencyId : 0;
-                    } elseif ('country_currency_code' == $columnKey) {
-                        $columnKey = 'country_currency_id';
-                        $colValue = array_key_exists($colValue, $currencyIds) ? $currencyIds[$colValue] : 0;
+                    switch ($columnKey) {
+                        case 'country_currency_id':
+                            $currencyId = FatUtility::int($colValue);
+                            $colValue =  array_key_exists($currencyId, $currencyCodes) ? $currencyId : 0;
+                            break;
+                        case 'country_currency_code':
+                            $columnKey = 'country_currency_id';
+                            $colValue = array_key_exists($colValue, $currencyIds) ? $currencyIds[$colValue] : 0;
+                            break;
+                        case 'country_language_id':
+                            $currencyLangId = FatUtility::int($colValue);
+                            $colValue = array_key_exists($currencyLangId, $languageCodes) ? $currencyLangId : 0;
+                            break;
+                        case 'country_language_code':
+                            $columnKey = 'country_language_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
+                        case 'country_active':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = FatUtility::int($colValue);
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                        case 'country_id':
+                            $countryData = Countries::getAttributesById($colValue, array('country_id'));
+                            break;
+                        case 'country_code':
+                            $countryData = Countries::getCountryByCode($colValue, array('country_id'));
+                            break;
+                        case 'country_name':
+                            $countryLangArr[$columnKey] = $colValue;
+                            break;
                     }
 
-                    if ('country_language_id' == $columnKey) {
-                        $currencyLangId = FatUtility::int($colValue);
-                        $colValue = array_key_exists($currencyLangId, $languageCodes) ? $currencyLangId : 0;
-                    } elseif ('country_currency_code' == $columnKey) {
-                        $columnKey = 'country_language_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
-                    }
-
-                    if ('country_active' == $columnKey) {
-                        if ($this->settings['CONF_USE_O_OR_1']) {
-                            $colValue = FatUtility::int($colValue);
-                        } else {
-                            $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
-                        }
-                    }
-
-                    if ('country_id' == $columnKey) {
-                        $countryData = Countries::getAttributesById($colValue, array('country_id'));
-                    } elseif ('country_code' == $columnKey) {
-                        $countryData = Countries::getCountryByCode($colValue, array('country_id'));
-                    }
-
-                    if ('country_name' == $columnKey) {
-                        $countryLangArr[$columnKey] = $colValue;
-                    } else {
-                        $countryArr[$columnKey] = $colValue;
-                    }
+                    $countryArr[$columnKey] = $colValue;
+                    unset($countryArr['country_name']);
                 }
             }
 
@@ -4762,36 +4772,41 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if (in_array($columnKey, array( 'state_country_id', 'country_code' ))) {
-                        if ('state_country_id' == $columnKey) {
+                    switch ($columnKey) {
+                        case 'state_country_id':
                             $countryId = FatUtility::int($colValue);
                             $colValue = array_key_exists($countryId, $countryCodes) ? $countryId : 0;
-                        } elseif ('country_code' == $columnKey) {
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                        case 'country_code':
                             $columnKey = 'state_country_id';
                             $colValue = array_key_exists($colValue, $countryIds) ? $countryIds[$colValue] : 0;
-                        }
-                        if (!$colValue) {
-                            $invalid = true;
-                        }
-                    }
-
-                    if ('state_active' == $columnKey) {
-                        if ($this->settings['CONF_USE_O_OR_1']) {
-                            $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
-                        } else {
-                            $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
-                        }
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                        case 'state_active':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                        case 'state_name':
+                            if (false === $invalid) {
+                                $statesLangArr[$columnKey] = $colValue;
+                            }
+                            break;
                     }
 
                     if (true === $invalid) {
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
                         CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
                     } else {
-                        if ('state_name' == $columnKey) {
-                            $statesLangArr[$columnKey] = $colValue;
-                        } else {
-                            $statesArr[$columnKey] = $colValue;
-                        }
+                        $statesArr[$columnKey] = $colValue;
+                        unset($statesArr['state_name']);
                     }
                 }
             }
@@ -4846,7 +4861,7 @@ class Importexport extends ImportexportCommon
     public function exportPolicyPoints($langId, $userId = 0)
     {
         $userId = FatUtility::int($userId);
-        $srch = PolicyPoint::getSearchObject($langId, false);
+        $srch = PolicyPoint::getSearchObject($langId, false, false);
         $srch->addMultipleFields(array('ppoint_id','ppoint_identifier','ppoint_type','ppoint_display_order','ppoint_active','ppoint_deleted','ppoint_title'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
@@ -4872,15 +4887,17 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
-
-                if (in_array($columnKey, array( 'ppoint_active', 'ppoint_deleted' )) && !$this->settings['CONF_USE_O_OR_1']) {
-                    $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                switch ($columnKey) {
+                    case 'ppoint_active':
+                    case 'ppoint_deleted':
+                        if (!$this->settings['CONF_USE_O_OR_1']) {
+                            $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                        }
+                        break;
+                    case 'ppoint_type_identifier':
+                        $colValue = isset($policyPointTypeArr[$row['ppoint_type']]) ? $policyPointTypeArr[$row['ppoint_type']] : '';
+                        break;
                 }
-
-                if ('ppoint_type_identifier' == $columnKey) {
-                    $colValue = isset($policyPointTypeArr[$row['ppoint_type']]) ? $policyPointTypeArr[$row['ppoint_type']] : '';
-                }
-
                 $sheetData[] = $colValue;
             }
             CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);
