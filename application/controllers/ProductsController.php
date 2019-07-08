@@ -392,6 +392,7 @@ class ProductsController extends MyAppController
         /* over all catalog product reviews */
         $selProdReviewObj->addCondition('spreview_product_id', '=', $product['product_id']);
         $selProdReviewObj->addMultipleFields(array('count(spreview_postedby_user_id) totReviews','sum(if(sprating_rating=1,1,0)) rated_1','sum(if(sprating_rating=2,1,0)) rated_2','sum(if(sprating_rating=3,1,0)) rated_3','sum(if(sprating_rating=4,1,0)) rated_4','sum(if(sprating_rating=5,1,0)) rated_5'));
+
         $reviews = FatApp::getDb()->fetch($selProdReviewObj->getResultSet());
 
         $this->set('reviews', $reviews);
@@ -816,7 +817,7 @@ class ProductsController extends MyAppController
 
     private function getOgTags($product = array(), $afile_id = 0)
     {
-        if (empty($product)){
+        if (empty($product)) {
             return array();
         }
         $afile_id = FatUtility::int($afile_id);

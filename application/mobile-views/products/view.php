@@ -14,30 +14,27 @@ foreach ($relatedProductsRs as $index => $rProduct) {
 }
 
 $data = array(
-    'reviews' => $reviews,
+    'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
     'shippingRates' => $shippingRates,
-    'shippingDetails' => $shippingDetails,
+    'shippingDetails' => empty($shippingDetails) ? (object)array() : $shippingDetails,
     'optionRows' => $optionRows,
-    'productSpecifications' => $productSpecifications,
+    'productSpecifications' => ($productSpecifications),
     'buyTogether' => $upsellProducts,
     'relatedProducts' => array_values($relatedProductsRs),
     'banners' => $banners,
-    'product' => $product,
+    'product' => empty($product) ? (object)array() : $product,
     'shop_rating' => $shop_rating,
-    'shop' => $shop,
+    'shop' => empty($shop) ? (object)array() : $shop,
     'shopTotalReviews' => $shopTotalReviews,
     'productImagesArr' => array_values($productImagesArr),
-    'pollQuest' => $pollQuest,
     'volumeDiscountRows' => $volumeDiscountRows,
     'recommendedProducts' => $recommendedProducts,
+    'socialShareContent' => empty($socialShareContent) ? (object)array() : $socialShareContent,
 );
 
-if (0 < count($socialShareContent)) {
-    $data['socialShareContent'] = $socialShareContent;
-}
 
-if (1 > count($shippingRates) && 1 > count($shippingDetails) && 1 > count($optionRows) && 1 > count($productSpecifications) && 1 > count($upsellProducts) && 1 > count($relatedProductsRs) && 1 > count($banners) && 1 > count($product) && 1 > count($shop_rating) && 1 > count($shop) && 1 > count($shopTotalReviews) && 1 > count($productImagesArr) && 1 > count($pollQuest) && 1 > count($volumeDiscountRows)  && 1 > count($recommendedProducts)) {
+if (1 > count((array)$reviews)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }
