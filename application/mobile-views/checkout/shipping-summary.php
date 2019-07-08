@@ -9,6 +9,9 @@ foreach ($productSelectedShippingMethodsArr as $key => $value) {
     $productSelectedShippingMethodsArr[$key] = array_values($value);
 }
 
+if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
+    $cartSummary['cartDiscounts'] = !empty($cartSummary['cartDiscounts']) ? $cartSummary['cartDiscounts'] : (object)array();
+}
 $data = array(
     'productSelectedShippingMethodsArr' => !empty($productSelectedShippingMethodsArr) ? $productSelectedShippingMethodsArr : (object)array(),
     'shipStationCarrierList' => !empty($shipStationCarrierList) ? $shipStationCarrierList : (object)array(),
