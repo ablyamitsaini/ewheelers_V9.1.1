@@ -13,14 +13,12 @@ var  productCatId  =  <?php echo $prodCatId ;?>;
             </div>
             <div class="col-md-auto">
                 <div class="actions">
-                    <a href="<?php echo CommonHelper::generateUrl('seller'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Account_Area', $siteLangId); ?></a>
+                    <a href="<?php echo CommonHelper::generateUrl('seller', 'catalog'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Products', $siteLangId); ?></a>
                 </div>
             </div>
         </div>
         <div class="content-body">
-            <div class="cards" id="listing">
-
-            </div>
+            <div id="listing"></div>
         </div>
     </div>
 </main>

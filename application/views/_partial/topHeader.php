@@ -36,7 +36,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-xs-6 d-none d-xl-block d-lg-block hide--mobile">
-                        <div class="slogan"><?php echo Labels::getLabel('L_Instant_Multi_Vendor_eCommerce_System_Builder', $siteLangId); ?></div>
+                        <div class="slogan"><?php echo Labels::getLabel('LBL_Multi-vendor_Ecommerce_Marketplace_Solution', $siteLangId); ?></div>
                     </div>
                     <div class="col-lg-6 col-xs-12">
                         <div class="short-links">
@@ -73,9 +73,5 @@
         </div> <?php $this->includeTemplate('_partial/headerNavigation.php'); ?>
     </header>
     <div class="after-header no-print"></div>
-    <div class="display-in-print">
-        <img src="<?php echo CommonHelper::generateFullUrl('Image', 'invoiceLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>"
-            title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>">
-    </div>
     <!--header end here-->
     <!--body start here-->

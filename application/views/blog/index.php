@@ -6,7 +6,7 @@
                 <div class="first-fold">
                     <div class="post">
                         <figure class="post_media">
-                            <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT1"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                            <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><img  data-ratio="16:9"src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT1"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                         </figure>
                         <div class="post_bg">
                             <ul class="post_category">
@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <div class="post">
                             <figure class="post_media">
-                                <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                                <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                             </figure>
                             <ul class="post_category">
                                 <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -129,7 +129,7 @@
                 <div class="post">
                     <figure class="post_media">
                         <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>">
-                        <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
+                        <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                     </figure>
                     <ul class="post_category">
                         <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -191,7 +191,7 @@
     <section class="section bg--first-color">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-xl-6">
                     <div class="blog-subscribers">
                         <h4><?php echo Labels::getLabel('LBL_Get_Weekly_Insights', $siteLangId)?></h4>
                         <p><?php echo Labels::getLabel('LBL_Subscribe_to_our_weekly_newsletter', $siteLangId)?></p>
@@ -212,7 +212,7 @@
                         <div class="col-md-6">
                             <div class="post">
                                 <figure class="post_media">
-                                    <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                                    <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                                 </figure>
                                 <ul class="post_category">
                                     <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -299,7 +299,7 @@
                     <div class="post">
                         <figure class="post_media">
                             <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>">
-                            <img src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
+                            <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "FEATURED"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
                         </figure>
                         <ul class="post_category">
                             <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();
@@ -368,16 +368,14 @@
         slidesToScroll: 4,
         rtl: rtl,
         responsive: [{
-                breakpoint: 1024,
+                breakpoint: 1199,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
                 }
             },
             {
-                breakpoint: 600,
+                breakpoint: 1023,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2

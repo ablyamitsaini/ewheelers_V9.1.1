@@ -5,7 +5,7 @@ $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 ?>
 <div class="panel">
-	<div class="container container--fixed">
+	<div class="container">
 	   <div class="row">
 			<div class="col-xs-10 panel__right--full " >
 				<div class="cols--group">

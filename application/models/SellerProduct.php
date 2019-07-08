@@ -46,16 +46,18 @@ class SellerProduct extends MyAppModel
 
     public static function requiredGenDataFields()
     {
-        return array(
+        $arr = array(
+            ImportexportCommon::VALIDATE_INT => array(
+                'selprod_max_download_times',
+                'selprod_download_validity_in_days'
+            ),
             ImportexportCommon::VALIDATE_POSITIVE_INT => array(
                 'selprod_id',
                 'selprod_product_id',
                 'selprod_price',
                 'selprod_stock',
                 'selprod_min_order_qty',
-                'selprod_condition',
-                'selprod_max_download_times',
-                'selprod_download_validity_in_days',
+                'selprod_condition'
             ),
             ImportexportCommon::VALIDATE_NOT_NULL => array(
                 'product_identifier',
@@ -69,6 +71,15 @@ class SellerProduct extends MyAppModel
                 'selprod_available_from',
             ),
         );
+
+        if (FatApp::getConfig('CONF_PRODUCT_SKU_MANDATORY', FatUtility::VAR_INT, 1)) {
+            $physical = array(
+                'selprod_sku'
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }
+
+        return $arr;
     }
 
     public static function validateGenDataFields($columnIndex, $columnTitle, $columnValue, $langId)
@@ -799,5 +810,19 @@ class SellerProduct extends MyAppModel
     public function rewriteUrlMoreSellers($keyword)
     {
         return $this->rewriteUrl($keyword, 'moresellers');
+    }
+    
+    public static function getActiveCount($userId)
+    {
+        $srch = new SearchBase(static::DB_TBL);
+
+        $srch->addCondition(static::DB_TBL_PREFIX . 'user_id', '=', $userId);
+
+        $srch->addMultipleFields(array('selprod_id'));
+        $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
+        $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+        return $srch->recordCount();
     }
 }

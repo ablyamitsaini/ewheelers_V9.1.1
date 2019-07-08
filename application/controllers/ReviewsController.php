@@ -10,7 +10,7 @@ class ReviewsController extends MyAppController
     {
         $selprod_id = FatUtility::int($selprod_id);
         $prodSrch = new ProductSearch($this->siteLangId);
-
+        $loggedUserId = UserAuthentication::getLoggedUserId();
         $prodSrch->setDefinedCriteria();
         $prodSrch->joinSellerSubscription();
         $prodSrch->addSubscriptionValidCondition();
@@ -39,6 +39,12 @@ class ReviewsController extends MyAppController
         $reviews = FatApp::getDb()->fetch($selProdReviewObj->getResultSet());
         $this->set('reviews', $reviews);
 
+        $canSubmitFeedback = true;
+        $orderProduct = SelProdReview::getProductOrderId($product['product_id'], $loggedUserId);
+        if (!Orders::canSubmitFeedback($loggedUserId, $orderProduct['op_order_id'], $selprod_id)) {
+            $canSubmitFeedback = false;
+        }
+        $this->set('canSubmitFeedback', $canSubmitFeedback);
         $frmReviewSearch = $this->getProductReviewSearchForm(FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG'));
         $frmReviewSearch->fill(array('selprod_id'=>$selprod_id));
         $this->set('frmReviewSearch', $frmReviewSearch);
@@ -476,27 +482,11 @@ class ReviewsController extends MyAppController
         if (!$product_id) {
             FatUtility::exitWithErrorCode(404);
         }
-        UserAuthentication::checkLogin();
-        $loggedUserId = UserAuthentication::getLoggedUserId();
-
-        $selProdSrch = SellerProduct::getSearchObject($this->siteLangId);
-        $selProdSrch->addCondition('selprod_product_id', '= ', $product_id);
-        $selProdSrch->addCondition('selprod_active', '= ', applicationConstants::ACTIVE);
-        $selProdSrch->addCondition('selprod_deleted', '= ', applicationConstants::NO);
-        $selProdSrch->addMultipleFields(array('selprod_id'));
-        $rs = $selProdSrch->getResultSet();
-        $selprodListing = FatApp::getDb()->fetchAll($rs);
-        $selProdList = array();
-        foreach ($selprodListing as $key => $val) {
-            $selProdList[$key] = $val['selprod_id'];
+        $loggedUserId = 0;
+        if (UserAuthentication::isUserLogged()) {
+            $loggedUserId = UserAuthentication::getLoggedUserId();
         }
-        $srch = new OrderProductSearch($this->siteLangId, true);
-        $allowedReviewStatus = implode(",", SelProdReview::getBuyerAllowedOrderReviewStatuses());
-        $allowedSelProdId = implode(",", $selProdList);
-        $srch->addDirectCondition('order_user_id ='.$loggedUserId.' and ( FIND_IN_SET(op_selprod_id,(\''.$allowedSelProdId.'\')) and op_is_batch = 0) and  FIND_IN_SET(op_status_id,(\''.$allowedReviewStatus.'\')) ');
-        /* $srch->addOrder('order_date_added'); */
-        $orderProduct = FatApp::getDb()->fetch($srch->getResultSet());
-
+        $orderProduct = SelProdReview::getProductOrderId($product_id, $loggedUserId);
         if (empty($orderProduct)) {
             Message::addErrorMessage(Labels::getLabel('Msg_Review_can_be_posted_on_bought_product', $this->siteLangId));
             CommonHelper::redirectUserReferer();

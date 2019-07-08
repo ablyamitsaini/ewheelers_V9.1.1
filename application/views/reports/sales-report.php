@@ -33,12 +33,11 @@
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h5>
-                            <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--primary btn--block">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
+                            <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--block btn--sm">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <div class="grids--profile">
+                        <div class="cards-content pl-4 pr-4 pb-0">                            
                                 <?php if (empty($orderDate)) { ?>
-                                <div class="bg-gray-light p-3 pb-0">
+                                <div class="replaced">
                                     <?php
                                     $submitFld = $frmSrch->getField('btn_submit');
                                     $submitFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
@@ -51,8 +50,8 @@
                                 <?php  } else {
                                         echo  $frmSrch->getFormHtml();
                                 } ?>
-                            </div>
-                            <div class="gap"></div>
+                            
+                          
                         </div>
                     </div>
                 </div>
@@ -60,11 +59,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                        </div>
-                        <div class="cards-content pl-4 pr-4 ">
-                            <div class="col-md-12" id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
-                            <div class="gap"></div>
+                        
+                        <div class="cards-content p-4 ">
+                            <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                         </div>
                     </div>
                 </div>

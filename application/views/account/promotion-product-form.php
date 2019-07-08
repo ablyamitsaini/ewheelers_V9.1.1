@@ -5,10 +5,8 @@
 	$frmPromote->developerTags['fld_default_col'] = 12;
 ?>
 
-<div class="tabs__content form">	
-	<div class="form__content">
-		<div class="col-md-12">
-			 
+<div class="row">
+		<div class="col-md-12">			 
 				<div class="tabs tabs-sm tabs--scroll clearfix">
 					<ul>
 						<li class="is-active"><a href="javascript:void(0)" onClick="promotionGeneralForm(<?php echo $promotion_id ?>)"><?php echo Labels::getLabel('LBL_General',$siteLangId); ?></a></li>
@@ -26,7 +24,7 @@
 			</div>	
 		</div>	
 	</div>
-</div>
+
 <script>
 $(document).ready(function(){
 	$('.time').datetimepicker({

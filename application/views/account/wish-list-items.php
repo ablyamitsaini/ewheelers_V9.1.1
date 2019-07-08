@@ -1,27 +1,31 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="cards-header pb-3">
-    <h5 class="cards-title">
+<div class="row justify-content-between align-items-center mb-4">
+<div class="col-auto">
+    <h5 class="cards-title mb-3">
         <?php echo $wishListRow['uwlist_title']; ?>
         <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
     </h5>
-    <div class="action">
+	</div>
+	<div class="col text-right">
+	
+    <div class="action action--favs btn-group-scroll">
         <label class="checkbox checkbox-inline">
             <input type="checkbox" class='selectAll-js' onclick="selectAll($(this));"><i class="input-helper"></i>Select all
         </label>
-        <a title='<?php echo Labels::getLabel('LBL_Move_to_other_wishlist', $siteLangId); ?>' class="btn btn--primary btn--sm" onclick="viewWishList(0,this,event);" href="javascript:void(0)">
-            <i class="icn shop"><svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-wishlist-favorite" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-wishlist-favorite"></use></svg>
-            </i><?php echo Labels::getLabel('LBL_Move', $siteLangId); ?>
+        <a title='<?php echo Labels::getLabel('LBL_Move_to_other_wishlist', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onclick="viewWishList(0,this,event);" href="javascript:void(0)">
+            <i class="fa fa-heart"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Move', $siteLangId); ?>
         </a>
-        <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' class="btn btn--primary btn--sm" onClick="addSelectedToCart(event);" href="javascript:void(0)">
+        <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onClick="addSelectedToCart(event);" href="javascript:void(0)">
             <i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
         </a>
-        <a title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>' class="btn btn--primary btn--sm" onClick="removeSelectedFromWishlist( <?php echo $wishListRow['uwlist_id']; ?>, event );" href="javascript:void(0)">
+        <a title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onClick="removeSelectedFromWishlist( <?php echo $wishListRow['uwlist_id']; ?>, event );" href="javascript:void(0)">
             <i class="fa fa-trash"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>
         </a>
         <a class="btn btn--primary btn--sm" onClick="searchWishList();" href="javascript:void(0)">
             <?php echo Labels::getLabel('LBL_Back', $siteLangId); ?>
         </a>
     </div>
+	</div>
 </div>
 <form method="post" name="wishlistForm" id="wishlistForm" >
     <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
@@ -33,6 +37,6 @@
 
 <script type="text/javascript">
 $("document").ready( function(){
-	searchWishListItems(<?php echo $wishListRow['uwlist_id']; ?>);
+    searchWishListItems(<?php echo $wishListRow['uwlist_id']; ?>);
 });
 </script>

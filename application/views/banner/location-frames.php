@@ -2,13 +2,13 @@
 <?php
 switch ($frameId) {
     case Banner::BANNER_HOME_PAGE_LAYOUT_1:
-        $image =  'images/defaults/banner_layouts/layout-1.jpg';
+        $image =  'images/banner_layouts/layout-1.jpg';
         break;
     case Banner::BANNER_HOME_PAGE_LAYOUT_2:
-        $image =  'images/defaults/banner_layouts/layout-2.jpg';
+        $image =  'images/banner_layouts/layout-2.jpg';
         break;
     case Banner::BANNER_PRODUCT_PAGE_LAYOUT_1:
-        $image =  'images/defaults/banner_layouts/layout-3.jpg';
+        $image =  'images/banner_layouts/layout-3.jpg';
         break;
 }
 ?>

@@ -121,9 +121,9 @@ class ProductsController extends MyAppController
         $headerFormParamsAssocArr = array_merge($headerFormParamsAssocArr, $post);
 
         $prodSrchObj = new ProductSearch($this->siteLangId);
-        $prodSrchObj->setDefinedCriteria();
+        $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
-        $prodSrchObj->joinSellerSubscription();
+        $prodSrchObj->joinSellerSubscription(0, false, true);
         $prodSrchObj->addSubscriptionValidCondition();
 
         $categoryId = 0;
@@ -131,6 +131,22 @@ class ProductsController extends MyAppController
         if (array_key_exists('category', $post)) {
             $prodSrchObj->addCategoryCondition($post['category']);
             $categoryId = FatUtility::int($post['category']);
+        }
+
+        $shopId = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
+        if (0 < $shopId) {
+            $prodSrchObj->addShopIdCondition($shopId);
+        }
+
+        $brandId = FatApp::getPostedData('brand_id', FatUtility::VAR_INT, 0);
+        if (0 < $brandId) {
+            $prodSrchObj->addBrandCondition($brandId);
+        }
+
+        $keyword = '';
+        if (array_key_exists('keyword', $headerFormParamsAssocArr)) {
+            $keyword = $headerFormParamsAssocArr['keyword'];
+            $prodSrchObj->addKeywordSearch($keyword);
         }
 
         /* Categories Data[ */
@@ -224,12 +240,12 @@ class ProductsController extends MyAppController
         $conditionSrch->addGroupBy('selprod_condition');
         $conditionSrch->addOrder('selprod_condition');
         $conditionSrch->addMultipleFields(array('selprod_condition'));
-
         /* if needs to show product counts under any condition[ */
         //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
         /* ] */
         $conditionRs = $conditionSrch->getResultSet();
         $conditionsArr = $db->fetchAll($conditionRs);
+
         /* ] */
 
         /* Price Filters[ */
@@ -265,6 +281,15 @@ class ProductsController extends MyAppController
         }
 
         /* ] */
+        /* Price Filters[ */
+        $availabilitySrch = clone $prodSrchObj;
+        $availabilitySrch->addGroupBy('in_stock');
+        $availabilitySrch->addMultipleFields(array('if(selprod_stock > 0,1,0) as in_stock'));
+        $availabilityRs = $availabilitySrch->getResultSet();
+        $availabilityArr = $db->fetchAll($availabilityRs);
+        /*] */
+
+
         $optionValueCheckedArr = array();
         if (array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
@@ -276,8 +301,8 @@ class ProductsController extends MyAppController
         }
 
         $availability = 0;
-        if (array_key_exists('availability', $headerFormParamsAssocArr)) {
-            $availability = current($headerFormParamsAssocArr['availability']);
+        if (array_key_exists('out_of_stock', $headerFormParamsAssocArr)) {
+            $availability = $headerFormParamsAssocArr['out_of_stock'];
         }
 
         $productFiltersArr = array('count_for_view_more' => FatApp::getConfig('CONF_COUNT_FOR_VIEW_MORE', FatUtility::VAR_INT, 5));
@@ -318,6 +343,7 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
+        $this->set('availabilityArr', $availabilityArr);
         echo $this->_template->render(false, false, 'products/filters.php', true);
         exit;
     }
@@ -468,8 +494,19 @@ class ProductsController extends MyAppController
         //abled and Get Shipping Rates [*/
         $codEnabled = false;
         if (Product::isProductShippedBySeller($product['product_id'], $product['product_seller_id'], $product['selprod_user_id'])) {
+            $walletBalance = User::getUserBalance($product['selprod_user_id']);
             if ($product['selprod_cod_enabled']) {
                 $codEnabled = true;
+            }
+            $codMinWalletBalance = -1;
+            $shop_cod_min_wallet_balance = Shop::getAttributesByUserId($product['selprod_user_id'], 'shop_cod_min_wallet_balance');
+            if ($shop_cod_min_wallet_balance > -1) {
+                $codMinWalletBalance = $shop_cod_min_wallet_balance;
+            } elseif (FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1) > -1) {
+                $codMinWalletBalance = FatApp::getConfig('CONF_COD_MIN_WALLET_BALANCE', FatUtility::VAR_FLOAT, -1);
+            }
+            if ($codMinWalletBalance > -1 && $codMinWalletBalance > $walletBalance) {
+                $codEnabled = false;
             }
             $shippingRates = Product::getProductShippingRates($product['product_id'], $this->siteLangId, 0, $product['selprod_user_id']);
             $shippingDetails = Product::getProductShippingDetails($product['product_id'], $this->siteLangId, $product['selprod_user_id']);
@@ -622,6 +659,15 @@ class ProductsController extends MyAppController
         $this->set('productSpecifications', $this->getProductSpecifications($product['product_id'], $this->siteLangId));
         /* End of Product Specifications */
 
+        $canSubmitFeedback = true;
+        if ($loggedUserId) {
+            $orderProduct = SelProdReview::getProductOrderId($product['product_id'], $loggedUserId);
+            if (!Orders::canSubmitFeedback($loggedUserId, $orderProduct['op_order_id'], $selprod_id)) {
+                $canSubmitFeedback = false;
+            }
+        }
+
+        $this->set('canSubmitFeedback', $canSubmitFeedback);
         $this->set('upsellProducts', !empty($upsellProducts) ? $upsellProducts : array());
         $this->set('relatedProductsRs', !empty($relatedProductsRs) ? $relatedProductsRs : array());
         $this->set('banners', $banners);
@@ -2027,7 +2073,7 @@ class ProductsController extends MyAppController
         if ($pageSize) {
             $srch->setPageSize($pageSize);
         }
-
+        //echo $srch->getQuery();exit;
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);

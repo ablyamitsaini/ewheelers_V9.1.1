@@ -20,7 +20,7 @@ class SupplierController extends MyAppController
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
         if (!FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) {
-            FatApp::redirectUser(CommonHelper::generateUrl('guest-user', 'registration-form'));
+            FatApp::redirectUser(CommonHelper::generateUrl('guest-user', 'login-form', array(applicationConstants::YES)));
         }
         $sellerFrm = $this->getSellerForm();
         $obj = new Extrapage();
@@ -38,7 +38,8 @@ class SupplierController extends MyAppController
         $srch->addCondition('faqcat_type', '=', FaqCategory::SELLER_PAGE);
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
-
+		$seller_navigation_left = Navigation::getNavigation(Navigations::NAVTYPE_SELLER_LEFT);
+        $this->set('seller_navigation_left', $seller_navigation_left);
         $this->set('formText', $formText);
         $this->set('faqCount', $srch->recordCount());
         $this->set('block1', $block1);

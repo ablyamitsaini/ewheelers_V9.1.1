@@ -906,8 +906,8 @@ class ProductsController extends AdminBaseController
         $languagesAssocArr = Language::getAllNames();
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_All_Languages', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
         $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_Photo(s):', $this->adminLangId), 'prod_image', array('id' => 'prod_image', 'multiple' => 'multiple'));
-        $fldImg->htmlBeforeField='<div class="filefield"><span class="filename"></span>';
-        $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $this->adminLangId).'</label></div><br/><small>'.Labels::getLabel('LBL_Please_keep_image_dimensions_greater_than_500_x_500._You_can_upload_multiple_photos_from_here.', $this->adminLangId).'</small>';
+        $fldImg->htmlBeforeField='<span class="filename"></span>';
+        $fldImg->htmlAfterField='<br/><small>'.Labels::getLabel('LBL_Please_keep_image_dimensions_greater_than_500_x_500._You_can_upload_multiple_photos_from_here.', $this->adminLangId).'</small>';
         $frm->addHiddenField('', 'product_id', $product_id);
         return $frm;
     }

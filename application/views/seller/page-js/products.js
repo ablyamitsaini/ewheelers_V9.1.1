@@ -59,6 +59,15 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 		$(frm.page).val(page);
 		loadSellerProducts(frm);
 	}
+
+	productInstructions = function( type ){
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Seller', 'productTooltipInstruction', [type]), '', function(t) {
+				$.facebox(t,'faceboxWidth catalog-bg');
+			});
+		});
+	};
+
 	sellerProductForm = function(product_id, selprod_id){
 		$(dv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Seller', 'sellerProductForm', [ product_id, selprod_id ]), '', function(t) {

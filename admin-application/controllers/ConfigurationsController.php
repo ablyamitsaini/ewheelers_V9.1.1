@@ -539,6 +539,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
                 $iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page", $this->adminLangId).'</small>';
+
+                /*$ipFld = $frm->addTextarea(Labels::getLabel('LBL_Whitelisted_IP', $this->adminLangId), 'CONF_WHITELISTED_IP');
+                $ipFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Any_IP_you_want_to_add_in_whitelist_(comma_Separated)", $this->adminLangId).'</small>';*/
+
                 break;
 
             case Configurations::FORM_LOCAL:
@@ -551,8 +555,8 @@ class ConfigurationsController extends AdminBaseController
                     ''
                 );
 
-                $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
-
+                $fld = $frm->addSelectBox(Labels::getLabel('LBL_Timezone', $this->adminLangId), 'CONF_TIMEZONE', Configurations::dateTimeZoneArr(), false, array(), '');
+                $fld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Current", $this->adminLangId).' <span id="currentDate">'. CommonHelper::currentDateTime(null, true).'</span></small>';
                 $countryObj = new Countries();
                 $countriesArr = $countryObj->getCountriesArr($this->adminLangId);
                 $frm->addSelectBox(Labels::getLabel('LBL_Country', $this->adminLangId), 'CONF_COUNTRY', $countriesArr);
@@ -757,6 +761,8 @@ class ConfigurationsController extends AdminBaseController
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_minimum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
                 $fld = $frm->addTextBox(Labels::getLabel('LBL_Maximum_COD_Order_Total', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MAX_COD_ORDER_LIMIT');
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_maximum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
+                $fld = $frm->addTextBox(Labels::getLabel('LBL_Minimum_Wallet_Balance', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_COD_MIN_WALLET_BALANCE');
+                $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_seller_needs_to_maintain_to_accept_COD_orders._Default_is_-1", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Checkout', '<h3>'.Labels::getLabel('LBL_Checkout_Process', $this->adminLangId).'</h3>');
                 $fld1 = $frm->addCheckBox(Labels::getLabel('LBL_Activate_Live_Payment_Transaction_Mode', $this->adminLangId), 'CONF_TRANSACTION_MODE', 1, array(), false, 0);
@@ -1219,11 +1225,10 @@ class ConfigurationsController extends AdminBaseController
 
                 if ($authUrl) {
                     $authenticateText = ($accessToken == '')?'Authenticate':'Re-Authenticate';
-                    $fld = $frm->addHTML('', 'accessToken', 'Please save your settings & <a href="'.$authUrl.'" >click here</a> to '.$authenticateText.' settings.', '', 'class="medium"');
+                    $fld = $frm->addHTML('', 'accessToken', 'Please save your settings & <a href="'.$authUrl.'" >click here</a> to '.$authenticateText.' settings.<div class="gap"></div>', '', 'class="medium"');
                 } else {
                     $fld=$frm->addHTML('', 'accessToken', 'Please configure your settings and then authenticate them', '', 'class="medium"');
                 }
-
 
                 $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Recaptcha", $this->adminLangId).'</h3>');
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Site_Key", $this->adminLangId), 'CONF_RECAPTCHA_SITEKEY');
@@ -1656,5 +1661,14 @@ class ConfigurationsController extends AdminBaseController
         } catch (Exception $e) {
             FatUtility::dieJsonError($e->getMessage());
         }
+    }
+
+    public function displayDateTime()
+    {
+        $post = FatApp::getPostedData();
+        $timeZone = $post['time_zone'];
+        $dateTime = CommonHelper::currentDateTime(null, true, null, $timeZone);
+        $this->set("dateTime", $dateTime);
+        $this->_template->render(false, false, 'json-success.php');
     }
 }

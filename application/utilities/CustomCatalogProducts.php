@@ -300,6 +300,7 @@ trait CustomCatalogProducts
         $this->set('productSpecifications', $productSpecData);
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $preqCatId);
+        $this->set('activeTab', 'SPECIFICATIONS');
         $this->set('productOptions', $productOptions);
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
@@ -406,6 +407,7 @@ trait CustomCatalogProducts
         $this->set('upcCodeData', $upcCodeData);
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $prodcat_id);
+        $this->set('activeTab', 'CUSTOMEANUPC');
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
     }
@@ -563,6 +565,7 @@ trait CustomCatalogProducts
         $this->set('languages', Language::getAllNames());
         $this->set('preqId', $preqId);
         $this->set('preqCatId', $preqCatId);
+        $this->set('activeTab', 'PRODUCTLANGFORM');
         $this->set('siteLangId', $this->siteLangId);
         $this->set('product_lang_id', $lang_id);
         $this->set('productOptions', $productOptions);
@@ -681,6 +684,7 @@ trait CustomCatalogProducts
 
         $this->set('imagesFrm', $imagesFrm);
         $this->set('preqId', $preqId);
+        $this->set('activeTab', 'PRODUCTIMAGES');
         $this->set('languages', Language::getAllNames());
         $this->set('siteLangId', $this->siteLangId);
         $this->set('productOptions', $productOptions);
@@ -863,12 +867,36 @@ trait CustomCatalogProducts
         exit;
     }
 
+    private function getSubCatRecordCount($rootCategories, &$childCountArr, $keyword)
+    {
+        foreach ($rootCategories as $catId => $category) {
+            $childCountArr[$catId]['total_child_count'] = 0;
+
+            $id = ltrim($category['prodrootcat_code'], 0);
+            $childCount = count($category['children']);
+
+            if ($childCount > 0) {
+                if (strpos($category['prodcat_name'], $keyword) !== false && $id != $catId) {
+                    $childCountArr[$id]['total_child_count']+= 1;
+                }
+                $this->getSubCatRecordCount($category['children'], $childCountArr, $keyword);
+            } else {
+                $childCountArr[$id]['total_child_count']+= 1;
+            }
+        }
+    }
+
     public function searchCategory($prodRootCatCode = false)
     {
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-
         $prodCatObj = new ProductCategory();
-        $rootCategories = $prodCatObj->getProdRootCategoriesWithKeyword($this->siteLangId, $keyword, false, false, true);
+
+        $rootCategories = ProductCategory::getTreeArr($this->siteLangId, 0, false, false, false, $keyword);
+        /*$rootCategories = $prodCatObj->getProdRootCategoriesWithKeyword($this->siteLangId, $keyword, false, false, true);
+        */
+       $childCountArr = array();
+       $this->getSubCatRecordCount($rootCategories, $childCountArr, $keyword);
+
         $childCategories = array();
 
         if (!empty($rootCategories)) {
@@ -880,6 +908,7 @@ trait CustomCatalogProducts
         }
 
         $this->set('rootCategories', $rootCategories);
+        $this->set('childCountArr', $childCountArr);
         $this->set('childCategories', $childCategories);
         $this->set('prodRootCatCode', $prodRootCatCode);
         $this->set('keyword', $keyword);

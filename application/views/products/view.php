@@ -7,7 +7,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 <div id="body" class="body detail-page" role="main">
     <section class="">
         <div class="container">
-            <div class="section pt-3 pb-3">
+            <div class="section">
                 <div class="breadcrumbs breadcrumbs--center">
                     <?php  $this->includeTemplate('_partial/custom/header-breadcrumb.php');  ?>
                 </div>
@@ -15,7 +15,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
             <div class="detail-wrapper">
                 <div class="detail-first-fold ">
                     <div class="row justify-content-between">
-                        <div class="col-lg-6">
+                        <div class="col-lg-7">
                             <div id="img-static" class="product-detail-gallery">
                                 <?php $data['product'] = $product;
                                     $data['productImagesArr'] = $productImagesArr;
@@ -49,30 +49,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 </div>
                                 <?php } ?>
                             </div>
-
-                        </div>
-                        <div class="col-lg-6 col-details-right">
-                            <div class="product-description">
-                                <div class="product-description-inner">
-
-                                    <div class="products__title">
-                                        <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
-                                        <h2><?php echo $product['selprod_title'];?></h2>
-                                        <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
-                                            <?php if (round($product['prod_rating']) > 0) { ?>
-                                            <div class="products-reviews">
-                                                <span class="rate"> <i class="icn"><svg class="svg">
-                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo round($product['totReviews'], 1);?> <?php echo Labels::getLabel('LBL_Reviews', $siteLangId); ?></a>
-                                            </div>
-                                            <?php } ?>
-                                            <?php /* if (round($product['prod_rating']) == 0) {  ?>
-                                            <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
-                                            <?php } */ ?>
-                                        <?php } ?>
-                                    </div>
-
-                                    <div class="favourite-wrapper favourite-wrapper-detail ">
+                            <div class="favourite-wrapper favourite-wrapper-detail ">
                                         <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                         <div class="share-button">
                                             <a href="javascript:void(0)" class="social-toggle"><i class="icn">
@@ -114,25 +91,42 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    <div class="gap"></div>
+                        </div>
+                        <div class="col-lg-5 col-details-right">
+                            <div class="product-description">
+                                <div class="product-description-inner">
+                                    <div class="">
+                                        <div class="products__title">
+                                            <h2><?php echo $product['selprod_title'];?></h2>
+                                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
+                                            <?php /*if (round($product['prod_rating']) > 0) {*/ ?>
+                                            <?php $label = (round($product['prod_rating']) > 0) ? round($product['totReviews'], 1).' '.Labels::getLabel('LBL_Reviews', $siteLangId) : Labels::getLabel('LBL_No_Reviews', $siteLangId); ?>
+                                            <div class="products-reviews">
+                                                <span class="rate"> <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                                                </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
+                                            </div>
+                                            <?php /*}*/ ?>
+                                            <?php /* if (round($product['prod_rating']) == 0) {  ?>
+                                            <span class="be-first"> <a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Be_the_first_to_review_this_product', $siteLangId); ?> </a> </span>
+                                            <?php } */ ?>
+                                        <?php } ?>
+                                         </div>
+                                    </div>
+                                     <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
                                     <div class="col products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
                                         <?php if ($product['special_price_found']) { ?>
                                         <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
                                         <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                         <?php } ?>
                                     </div>
-
-                                    <div class="gap"></div>
                                     <div class="divider"></div>
-                                    <div class="gap"></div>
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
 
                                     <?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
-                                </div>
+
                             <?php  if ($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']) { ?>
                             <div class="gap"> </div>
                                 <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
@@ -360,42 +354,51 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                             <?php } ?>
                             <!-- ] -->
 
-                                <div class="gap"></div>
+                              </div>
+                               <div class="gap"></div>
                                 <div class="sold-by bg-gray p-4 rounded">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-8">
-                                                <div class="h6"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId);?>:</div>
-                                                <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>" class="link"><?php echo $shop['shop_name'];?></a> <br>
-
-                                                 <div class="products__rating"> <i class="icn"><svg class="svg">
-                                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                        </svg></i> <span class="rate"><?php echo round($shop_rating,1),' ',Labels::getLabel('Lbl_Out_of',$siteLangId),' ', '5';  if($shopTotalReviews){ ?> - <a href="<?php echo CommonHelper::generateUrl('Reviews','shop',array($shop['shop_id'])); ?>"><?php echo $shopTotalReviews , ' ' , Labels::getLabel('Lbl_Reviews',$siteLangId); ?></a><?php } ?> </span>
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="col-xl-6 col-lg-6 col-md-5">
+                                                <div class="h6 m-0 -color-light"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></div>
+                                                <h6 class="m-0">
+                                                 <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a>
+                                                 <div class="products__rating -display-inline m-0"> - <i class="icn"><svg class="svg">
+                                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                                                        </svg></i> <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
                                                 </div>
+
+                                                 </h6>
+
+
                                                 <?php /*if ($shop_rating>0) { ?>
                                                 <div class="products__rating"> <i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                                                         </svg></i> <span class="rate"><?php echo round($shop_rating, 1); ?><span></span></span>
                                                 </div><br>
                                                 <?php }*/?>
-                                               <span class="gap"></span>
+
                                         </div>
-                                        <div class="col-lg-4">
-                                            <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border d-block"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
+                                        <div class="col-auto">
+                                            <?php if (!UserAuthentication::isUserLogged() || (UserAuthentication::isUserLogged() && ((User::isBuyer()) || (User::isSeller() )))) { ?>
+                                                <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>" class="btn btn--primary btn--secondary btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
+                                            <?php }?>
                                             <?php if (count($product['moreSellersArr'])>0) { ?>
-                                                <a href="<?php echo CommonHelper::generateUrl('products', 'sellers', array($product['selprod_id']));?>" class="btn btn--primary d-block"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></a>
+                                                <a href="<?php echo CommonHelper::generateUrl('products', 'sellers', array($product['selprod_id']));?>" class="btn btn--primary btn--sm "><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></a>
                                             <?php } ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="gap"></div>
+
                         </div>
                     </div>
                 </div>
                 <?php include(CONF_THEME_PATH.'_partial/product/shipping-rates.php');?>
 
                         <?php $youtube_embed_code = CommonHelper::parseYoutubeUrl($product["product_youtube_video"]); ?>
-                        <div class="nav-detail nav-detail-js">
+                        <div class="row justify-content-center">
+                        	<div class="col-md-7">
+                           <div class="nav-detail nav-detail-js">
                             <ul>
                                 <?php if (count($productSpecifications)>0) {?>
                                 <li><a class="nav-scroll-js is-active" href="#specifications"><?php echo Labels::getLabel('LBL_Specifications', $siteLangId); ?></a></li>
@@ -416,6 +419,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                 <li class=""><a  class="nav-scroll-js" href="#itemRatings"><?php echo Labels::getLabel('LBL_Ratings_and_Reviews', $siteLangId); ?> </a></li>
                                 <?php }?>
                             </ul>
+                        </div></div>
                         </div>
 
 
@@ -502,7 +506,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                         <div id="itemRatings">
                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
                                 <?php echo $frmReviewSearch->getFormHtml(); ?>
-                                <?php $this->includeTemplate('_partial/product-reviews.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id']), false); ?>
+                                <?php $this->includeTemplate('_partial/product-reviews.php', array('reviews'=>$reviews,'siteLangId'=>$siteLangId,'product_id' => $product['product_id'],'canSubmitFeedback' => $canSubmitFeedback), false); ?>
                             <?php }?>
                         </div>
 
@@ -596,55 +600,6 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
             }
         }, 5000);
 
-        function DropDown(el) {
-            this.dd = el;
-            this.placeholder = this.dd.children('span');
-            this.opts = this.dd.find('ul.drop li');
-            this.val = '';
-            this.index = -1;
-            this.initEvents();
-        }
-
-        DropDown.prototype = {
-            initEvents: function() {
-                var obj = this;
-                obj.dd.on('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    $(this).toggleClass('active');
-                });
-                obj.opts.on('click', function() {
-                    var opt = $(this);
-                    obj.val = opt.text();
-                    obj.index = opt.index();
-                    obj.placeholder.text(obj.val);
-                    opt.siblings().removeClass('selected');
-                    opt.filter(':contains("' + obj.val + '")').addClass('selected');
-                    var link = opt.filter(':contains("' + obj.val + '")').find('a').attr('href');
-                    window.location.replace(link);
-                }).change();
-            },
-            getValue: function() {
-                return this.val;
-            },
-            getIndex: function() {
-                return this.index;
-            }
-        };
-
-        $(function() {
-            // create new variable for each menu
-
-            $(document).click(function() {
-                // close menu on document click
-                $('.wrap-drop').removeClass('active');
-            });
-        });
-
-        $( ".js-wrap-drop" ).each(function( index, element ) {
-            var div = '#js-wrap-drop'+index;
-            new DropDown($(div));
-        });
     });
 
     <?php /* if( isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners']) ) { ?>

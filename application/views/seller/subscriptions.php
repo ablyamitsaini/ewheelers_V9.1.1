@@ -72,27 +72,25 @@ $cancelBtnFld->developerTags['col'] = 2;
                                 }
                                         }
                                     ?> <div class="auto-renew">
-                                <p><?php echo Labels::getLabel('LBL_AutoRenew_Subscription', $siteLangId); ?></p> <?php $autoRenewClass='';
-                                     $autoOffClass='is--active';
-                                     $autoOnClass='';
-
-                                     if($autoRenew){
-                                         $autoRenewClass ='is--active';
-                                        $autoOffClass='';
-                                        $autoOnClass='is--active';
+                                <p><?php echo Labels::getLabel('LBL_AutoRenew_Subscription', $siteLangId); ?></p>
+                                    <?php
+                                     $active = "";
+                                     if ($autoRenew) {
+                                        $active = 'checked';
                                      }
                                      $onOffArr = applicationConstants::getOnOffArr($siteLangId);
-                                     ?> <div class="switch-links"> <a href="javascript:void(0)" onclick="toggleAutoRenewal()" class="<?php echo $autoOffClass;?>"><?php echo $onOffArr[applicationConstants::OFF];?></a>
-                                    <div class="switch-button auto-renew-js  <?php echo $autoRenewClass;?>"></div>
-                                    <a href="javascript:void(0)" onclick="toggleAutoRenewal()" class="<?php echo $autoOnClass;?>"><?php echo $onOffArr[applicationConstants::ON];?></a>
-                                </div>
+                                     ?>
+                                     <label class="toggle-switch mb-0">
+                                         <input <?php echo $active; ?> type="checkbox" onclick="toggleAutoRenewal()">
+                                         <div class="slider round"></div>
+                                     </label>
                             </div>
                         </div>
                         <?php if(isset($message)){ ?>
                             <p class="highlighted-note"> <?php  echo $message;?> </p>
                         <?php }?>
                         <div class="cards-content pl-4 pr-4 ">
-                            <div class="bg-gray-light p-3 pb-0"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
+                            <div class="replaced"> <?php echo $frmOrderSrch->getFormHtml(); ?> </div>
                             <span class="gap"></span>
                         </div>
                     </div>

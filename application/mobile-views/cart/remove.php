@@ -2,7 +2,7 @@
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => $msg
 );
 
-$data = array('cartItemsCount'=>$cartItemsCount);
+$data = array('cartItemsCount'=>$total);

@@ -23,7 +23,7 @@
 
 .groups .group__head h5 {
     padding: 0;
-    font-size: 1.1em;
+    font-size:0.95em;font-weight: 600;margin: 0;
     font-family: inherit;
 }
 
@@ -46,13 +46,10 @@
     top: 6px;
 }
 
-.grouplisting .groups.is-active .group__head h5 {
-    font-weight: 500;
-}
 
 .editor-container, .groups .group__body h5 {
-    font-weight: 600;
-    font-size: 1em;
+
+    font-size: 0.95em;
 }
 
 .editor-container, .groups .group__body p {

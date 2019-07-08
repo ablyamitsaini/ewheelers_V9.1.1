@@ -71,8 +71,7 @@ trait SellerProducts
         $cnd->attachCondition( 'product_seller_id', '=', 0,'OR'); */
         $srch->addMultipleFields(
             array(
-            'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
-            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title')
+            'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_track_inventory', 'selprod_threshold_stock_level', 'selprod_product_id', 'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title')
         );
 
 
@@ -106,6 +105,11 @@ trait SellerProducts
     {
         if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addErrorMessage(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+        }
+
+        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
 
@@ -921,7 +925,7 @@ trait SellerProducts
 
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
-        if ($tblRecord->loadFromDb(array('smt' => 'splprice_selprod_id = ? AND (splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?) ', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date'])))) {
+        if ($tblRecord->loadFromDb(array('smt' => '(splprice_selprod_id = ?) AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?) )', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date'])))) {
             $specialPriceRow = $tblRecord->getFlds();
             if ($specialPriceRow['splprice_id'] != $post['splprice_id']) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added', $this->siteLangId));
@@ -1601,10 +1605,10 @@ trait SellerProducts
         $frm = new Form('frmLinks', array('id'=>'frmLinks'));
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Buy_Together_Products', $this->siteLangId), 'products_buy_together');
-        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list--vertical" id="buy-together-products"></ul></div></div>';
+        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list-vertical" id="buy-together-products"></ul></div></div>';
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Related_Products', $this->siteLangId), 'products_related');
-        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list--vertical" id="related-products"></ul></div></div>';
+        $fld1->htmlAfterField= '<div class="row"><div class="col-md-12"><ul class="list-vertical" id="related-products"></ul></div></div>';
 
         $frm->addHiddenField('', 'selprod_id');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel("LBL_Save_Changes", $this->siteLangId));
@@ -1851,9 +1855,12 @@ trait SellerProducts
     {
         if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addErrorMessage(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+            FatUtility::dieWithError(Message::getHtml());
         }
-
+        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit", $this->siteLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
         $selprod_id = FatUtility::int($selprod_id);
         $product_id = FatUtility::int($product_id);
         $userId = UserAuthentication::getLoggedUserId();
@@ -1862,7 +1869,7 @@ trait SellerProducts
 
         if ($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatApp::redirectUser($_SESSION['referer_page_url']);
+            FatUtility::dieWithError(Message::getHtml());
         }
 
         $sellerProductRow['selprod_available_from'] = date('Y-m-d');

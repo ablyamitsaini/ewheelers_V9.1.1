@@ -2,7 +2,7 @@
 <?php $this->includeTemplate('_partial/advertiser/advertiserDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+        <div class="content-header justify-content-between row mb-3">
             <div class="content-header-left col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Advertiser', $siteLangId); ?></h2>
@@ -99,8 +99,8 @@
                     </a>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Active_Promotions', $siteLangId);?></h5>
@@ -111,7 +111,7 @@
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable">
                                 <tbody>
                                     <tr class="">
                                         <th colspan="2"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></th>
@@ -175,8 +175,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-lg-12 col-md-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-4">
                     <div class="cards">
                         <div class="cards-header p-4">
                             <h5 class="cards-title "><?php echo Labels::getLabel('LBL_Transaction_History', $siteLangId);?></h5>
@@ -187,7 +187,7 @@
                             <?php } ?>
                         </div>
                         <div class="cards-content pl-4 pr-4 ">
-                            <table class="table table--orders js-scrollable scroll-hint" style="position: relative; overflow: auto;">
+                            <table class="table table--orders js-scrollable">
                                 <tbody>
                                     <tr class="">
                                         <th><?php echo Labels::getLabel('LBL_Txn._Id', $siteLangId);?></th>

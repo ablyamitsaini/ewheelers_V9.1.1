@@ -24,9 +24,9 @@ $clearFld->setWrapperAttribute('class', 'col-lg-3');
 $clearFld->developerTags['col'] = 3;
 $clearFld->developerTags['noCaptionTag'] = true;
 ?>
-<div class="bg-gray-light p-3 pb-0">
+<div class="replaced">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <?php echo $frmSrch->getFormHtml(); ?>
             <?php echo $frmSrch->getExternalJS();?>
         </div>
@@ -96,11 +96,11 @@ foreach ($digitalDownloadLinks as $sn => $row) {
         }
     }
 }
-if (count($digitalDownloadLinks) == 0) {
-    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-}
 echo $tbl->getHtml();
-
+if (count($digitalDownloadLinks) == 0) {
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
+}
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSrchPaging'));
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToLinksSearchPage');

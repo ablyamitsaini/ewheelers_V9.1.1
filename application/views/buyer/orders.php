@@ -62,18 +62,18 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                            <!-- <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5> -->
+                        <div class="cards-content pt-4 pl-4 pr-4 pb-0">
+                            <div class="replaced">
+                                <?php echo $frmOrderSrch->getFormHtml(); ?>
+                            </div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 "><?php echo $frmOrderSrch->getFormHtml(); ?></div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-header p-4">
-                        </div>
+
                         <div class="cards-content pl-4 pr-4 ">
                             <div id="ordersListing"></div>
                             <span class="gap"></span>

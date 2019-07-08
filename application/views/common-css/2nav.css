@@ -5,8 +5,10 @@
 
 .navigation-wrapper {
 	margin: 0 auto;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	vertical-align: top;
+	vertical-align: top; 
 	position: relative;
 }
 
@@ -38,6 +40,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	padding: 0;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
 	justify-content: space-between;
 }
 
@@ -46,7 +50,7 @@
 	font-size: 0.9em;
 	font-weight: 600;
 	position: static;
-	margin: 0 5px;
+	margin: 0 1rem;
 }
 
 .navigations > li:first-child {
@@ -62,7 +66,7 @@
 	color: inherit;
 	display: block;
 	overflow: hidden;
-	padding:15px 0px;
+	padding: 1rem 0px;
 	position: relative;
 	text-align: center;
 	text-overflow: ellipsis;
@@ -95,13 +99,15 @@
 	right: 50%;
 }
 
-.navigations > li > a:hover:after, .navigations > li.active > a:after {
+.navigations > li > a:hover:after,
+.navigations > li.active > a:after {
 	left: 0;
 	width: 50%;
 	background: var(--first-color);
 }
 
-.navigations > li > a:hover:before, .navigations > li.active > a:before {
+.navigations > li > a:hover:before,
+.navigations > li.active > a:before {
 	right: 0;
 	width: 50%;
 	background: var(--first-color);
@@ -193,7 +199,8 @@
 
 .navigations > li .subnav__wrapper {
 	background: #fff;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20); 
+	-webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20);
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.20);
 	left: 0;
 	margin: 0;
 	opacity: 0;
@@ -298,12 +305,13 @@
 	cursor: pointer;
 	display: none;
 	height: 40px;
-	left:0;
-	top:6px;
+	left: 0;
+	top: 6px;
 	line-height: 1;
 	position: absolute;
-	width:40px;
-	z-index: 1;padding: 2px 4px;
+	width: 40px;
+	z-index: 1;
+	padding: 2px 4px;
 }
 
 .navs_toggle span {
@@ -335,7 +343,15 @@
 	width: 75%;
 }
 
-.navs_toggle.active:after{position: fixed;left: 0;right: 0;top: 0; bottom: 0; background: rgba(0,0,0,0.5);content: "";}
+.navs_toggle.active:after {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	content: "";
+}
 
 
 /*tablet*/
@@ -401,6 +417,8 @@
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
+		-webkit-box-pack: start;
+		-ms-flex-pack: start;
 		justify-content: flex-start;
 	}
 
@@ -547,11 +565,11 @@
 	}
 }
 
-
 /**/
-
-
 @media only screen and (max-width:767px) {
-	.navs_toggle{left: 5px;top: 2px;}
-	
+	.navs_toggle {
+		left: 5px;
+		top: 2px;
+	}
+
 }

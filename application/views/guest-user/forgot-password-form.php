@@ -1,12 +1,38 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <div id="body" class="body">
+
+    <div class="bg--second pt-3 pb-3">
+      <div class="container container--fixed">
+        <div class="row align-items-center  justify-content-between">
+          <div class="col-md-8 col-sm-8">
+               <div class="section-head section--white--head mb-0">
+						<div class="section__heading">
+							<h2><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h2>
+							
+                        </div>
+                    </div>
+                    
+           </div>
+          <div class="col-md-auto col-sm-auto">
+              <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="btn btn--primary d-block">
+              <?php echo Labels::getLabel('LBL_Back_to_Login',$siteLangId);?></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 	<section class="section">
 		<div class="container">
             <div class="row justify-content-center">
+
                 <div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
+                   <div class="bg-gray rounded p-4 p-5">
                     <div class="text-center">
                         <div class="section-head">
-                            <div class="section__heading m-3"><h3><?php echo Labels::getLabel('LBL_Forgot_Password?',$siteLangId);?></h3>
+                            <div class="section__heading m-3">
                        <p><?php echo Labels::getLabel('LBL_Forgot_Password_Msg',$siteLangId);?></p></div></div>
 
                     <?php
@@ -30,8 +56,8 @@
                         $captchaFld->htmlAfterField = '</div></div></div>';
                     } */
                     /* echo $frm->getFormHtml(); */?>
-                    
-                    
+
+
                     <?php echo $frm->getFormTag();	?>
                         <div class="row">
                             <div class="col-md-12">
@@ -67,11 +93,11 @@
                         </div>
                     </form>
                 <?php echo $frm->getExternalJS();?>
-                   
                   <p class="text--dark"><?php echo Labels::getLabel('LBL_Back_to_login',$siteLangId);?>
-                  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="text text--uppercase"><?php echo Labels::getLabel('LBL_Click_Here',$siteLangId);?></a></p>
+                  <a href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm'); ?>" class="link"><?php echo Labels::getLabel('LBL_Click_Here',$siteLangId);?></a></p>
                 </div></div>
                 <?php if(!empty($pageData)) { $this->includeTemplate('_partial/GuestUserRightPanel.php', $pageData,false ); } ?>
+			</div>
 			</div>
 		</div>
 	</section>

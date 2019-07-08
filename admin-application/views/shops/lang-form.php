@@ -45,10 +45,10 @@ $paymentPolicyfld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Shop_seller_
                                 </li>
                             <?php }
                         } ?>
-                        <li><a href="javascript:void(0);"
+                        <?php /* <li><a href="javascript:void(0);"
                         <?php if ($shop_id > 0) { ?>
                             onclick="shopTemplates(<?php echo $shop_id ?>);"
-                        <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li>
+                        <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li> */ ?>
                         <li><a href="javascript:void(0);"
                             <?php if ($shop_id > 0) {?>
                                 onclick="shopMediaForm(<?php echo $shop_id ?>);"

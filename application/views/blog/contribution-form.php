@@ -25,16 +25,27 @@ if ($isUserLogged) {
 }
 ?>
 <div id="body" class="body">
+   <div class="bg--second pt-3 pb-3">
+      <div class="container">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-8 col-sm-8">
+               <div class="section-head section--white--head mb-0">
+						<div class="section__heading">
+                		<h2><?php echo Labels::getLabel('Lbl_Blog_Contribution', $siteLangId); ?></h2>
+                        </div>
+                     </div>
+          </div>
+          <div class="col-md-auto col-sm-auto"><a href="<?php echo CommonHelper::generateUrl('Blog'); ?>" class="btn btn--primary d-block"><?php echo Labels::getLabel('Lbl_Back_to_home', $siteLangId); ?></a></div>
+        </div>
+      </div>
+    </div>
     <section class="section">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="section-head">
-                        <div class="section__heading m-3"><h3><?php echo Labels::getLabel('Lbl_Blog_Contribution', $siteLangId); ?></h3></div>
-                        <?php $backPageUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : CommonHelper::generateUrl('Blog') ;?>
-                      <div class="btn-group panel__head_action">  <a href="<?php echo $backPageUrl; ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('Lbl_Back', $siteLangId); ?></a> </div>
-                    </div>
+                <div class="col-xl-8 col-lg-8">
+                    <div class="box box--gray box--radius box--border p-5">
                     <?php echo $frm->getFormHtml(); ?>
+                    </div>
                 </div>
             </div>
         </div>

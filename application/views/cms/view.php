@@ -53,18 +53,27 @@
 	}
 	//echo FatUtility::decodeHtmlEntities( $cPage['cpage_content'] ) ?>
 	<?php } else { ?>
+	<div class="bg--second pt-3 pb-3">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-8">               
+            <div class="section-head section--white--head mb-0">
+				<div class="section__heading">
+					  <h2 class="mb-0"><?php echo $cPage['cpage_title']; ?></h2>
+					<?php if(!$isAppUser){?>
+					<div class="breadcrumbs breadcrumbs--white">
+					   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
+					</div>
+					<?php }?>
+				</div>
+			</div> 
+			<div class="col-md-4 align--right"></div>
+        </div>
+      </div>
+    </div>
+    </div>
 	<section class="section bg--white">
 	  <div class="container">
-		<?php if(!$isAppUser){?>
-		<div class="breadcrumbs">
-		   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
-		</div>
-		<?php }?>
-		<div class="row">
-		  <div class="col-lg-12">
-			<div class="heading3"><?php echo $cPage['cpage_title']; ?></div>
-		  </div>
-		</div>
 		<div class="container--cms">
 			<?php echo FatUtility::decodeHtmlEntities( $cPage['cpage_content'] ) ?>
 		</div>

@@ -247,7 +247,6 @@
                                 </div>
                             </div>
                             <div class="gap"></div>
-
                             <div class="sold-by bg-gray p-4 rounded">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -255,7 +254,7 @@
                                         Vike Fashion Store <br> <br>
                                         <a href="#" class="link">View Shop</a>
                                     </div>
-                                    <div class="col-auto seller-action">
+                                    <div class="col-auto seller-action mt-4 mt-xl-0">
                                         <a href="#" class="btn btn--secondary btn--primary-border d-block mb-3">Ask Question</a>
                                         <a href="#" class="btn btn--secondary btn--primary-border d-block">All Seller</a>
                                     </div>
@@ -467,8 +466,8 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-md-3">
-                <a href="#" class="btn btn--primary d-block">Add Review</a>
+                <div class="col-md-3 mb-3 mb-md-0">
+                <a href="#" class="btn btn--primary d-block ">Add Review</a>
                 </div>
                 <div class="col-md-3">
                 <div class="js-wrap-drop wrap-drop wrap-drop--first">
@@ -586,6 +585,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY">
                 </ul>
 
             </div>
+            <div class="align--center  mt-4"><a href="#" class="btn btn--secondary btn--primary-border">Showing All 2 Reviews </a></div>
 
         </div>
         </div>

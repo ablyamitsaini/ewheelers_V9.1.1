@@ -21,12 +21,13 @@ $IDFld->setFieldTagAttribute('id', "shop_id");
 $identiFierFld = $shopFrm->getField('shop_identifier');
 $identiFierFld->setFieldTagAttribute('onkeyup', "Slugify(this.value,'urlrewrite_custom','shop_id','shopurl')");
 $variables= array('language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
-
 $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false); ?>
-<div class="tabs__content">
-    <div class="form__content">
-        <div class="row">
-            <div class="col-lg-12 col-md-12" id="shopFormBlock"> <?php echo $shopFrm->getFormHtml(); ?> </div>
+<div class="cards">
+    <div class="cards-content pt-3 pl-4 pr-4 ">
+        <div class="tabs__content">
+            <div class="row">
+                <div class="col-lg-12 col-md-12" id="shopFormBlock"> <?php echo $shopFrm->getFormHtml(); ?> </div>
+            </div>
         </div>
     </div>
 </div>

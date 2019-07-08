@@ -29,7 +29,7 @@
 					</div>
 				</div>
 			</div>
-			<?php echo $headerSrchFrm->getFieldHTML('keyword'); ?>
+			<div class="main-search__field"><?php echo $headerSrchFrm->getFieldHTML('keyword'); ?></div>
 			<?php echo $headerSrchFrm->getFieldHTML('category'); ?>
 			<?php echo $headerSrchFrm->getFieldHTML('btnSiteSrchSubmit'); ?>
 		</form>

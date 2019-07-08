@@ -1,15 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 /* $this->includeTemplate('_partial/blogTopFeaturedCategories.php'); */ ?>
-<section class="post-detail">
+<section class="section post-detail">
     <div class="container">
         <div class="row">
-            <div class="col-md-9 mb-4 mb-md-0">
+            <div class="col-xl-9 col-lg-8 mb-4 mb-md-0">
                 <div class="posted-content">
                     <div class="posted-media">
                         <?php if (!empty($post_images)) { ?>
                         <div class="post__pic">
                             <?php foreach ($post_images as $post_image) { ?>
-                            <div class="item"><img src="<?php echo FatUtility::generateUrl('image', 'blogPostFront', array($post_image['afile_record_id'], $post_image['afile_lang_id'], "LAYOUT1", 0, $post_image['afile_id']), CONF_WEBROOT_FRONT_URL); ?>"
+                            <div class="item"><img data-ratio="16:9" src="<?php echo FatUtility::generateUrl('image', 'blogPostFront', array($post_image['afile_record_id'], $post_image['afile_lang_id'], "LAYOUT1", 0, $post_image['afile_id']), CONF_WEBROOT_FRONT_URL); ?>"
                                     alt="<?php echo $post_image['afile_name']; ?>"></div>
                             <?php } ?>
                         </div>
@@ -95,13 +95,14 @@
                         </div>
                     <?php } ?>
                     <?php if ($blogPostData['post_comment_opened'] && UserAuthentication::isUserLogged() && isset($postCommentFrm)) { ?>
+                     <div class="gap"></div>
                     <div id="respond" class="comment-respond rounded">
                         <h2><?php echo Labels::getLabel('Lbl_Leave_A_Comment', $siteLangId); ?></h2>
                         <?php
                         $postCommentFrm->setFormTagAttribute('class', 'form');
                         $postCommentFrm->setFormTagAttribute('onsubmit', 'setupPostComment(this);return false;');
                         $postCommentFrm->setRequiredStarPosition(Form::FORM_REQUIRED_STAR_POSITION_NONE);
-                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                        $postCommentFrm->developerTags['colClassPrefix'] = 'col-md-';
                         $postCommentFrm->developerTags['fld_default_col'] = 12;
                         $nameFld = $postCommentFrm->getField('bpcomment_author_name');
                         $nameFld->addFieldTagAttribute('readonly', true);
@@ -115,10 +116,12 @@
                         $commentFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Message', $siteLangId));
                         echo $postCommentFrm->getFormHtml(); ?>
                     </div>
+                   
                     <?php }?>
+                    
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-xl-3 col-lg-4">
                 <?php $this->includeTemplate('_partial/blogSidePanel.php', array('popularPostList' => $popularPostList, 'featuredPostList' => $featuredPostList)); ?>
             </div>
             <!--<div class="col-md-3 colums__right">

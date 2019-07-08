@@ -14,7 +14,7 @@
 				<h5 class="cards-title"><?php echo Labels::getLabel('Lbl_Request_My_Data',$siteLangId);?></h5>
 			</div>
 			<div class="cards-content pl-4 pr-4 ">
-				<div class="form__content">
+				<div class="row">
 					<div class="col-md-8" id="requestDataFrmBlock">
 						<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
 					</div>

@@ -2,7 +2,7 @@
 if ($products) {
     $forPage = !empty($forPage) ? $forPage : '';
     foreach ($products as $product) {
-        $productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])); ?> <div class="col-lg-3 col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:4; ?> col-6 column">
+        $productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])); ?> <div class="col-xl-3 col-lg-4 col-md-<?php echo (isset($colMdVal) && $colMdVal > 0)?$colMdVal:4; ?> mb-3">
     <!--product tile-->
     <div class="products">
         <div class="products__quickview">

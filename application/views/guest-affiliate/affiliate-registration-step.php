@@ -145,7 +145,7 @@ switch( $affiliate_register_step_number ){
 	break;
 }	
 ?>
-<div class="registeration-process" id="tabUl">
+<div class="registeration-process">
 	<ul>
 		<?php
 		if( $registerStepsArr ){

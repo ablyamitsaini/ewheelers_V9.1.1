@@ -123,7 +123,7 @@ class ShopsController extends MyAppController
             $productShopSrchTempObj->addCondition('selprod_user_id', '=', $val['shop_user_id']);
             $productShopSrchTempObj->addOrder('in_stock', 'DESC');
             $productShopSrchTempObj->addGroupBy('selprod_product_id');
-            $productShopSrchTempObj->setPageSize(3);
+            $productShopSrchTempObj->setPageSize(4);
             $Prs = $productShopSrchTempObj->getResultSet();
             $allShops[$val['shop_id']]['products'] = $db->fetchAll($Prs);
             $allShops[$val['shop_id']]['totalProducts'] = $productShopSrchTempObj->recordCount();
@@ -465,7 +465,7 @@ class ShopsController extends MyAppController
 
         $arr = array(
             'frmProductSearch'=>$frm,
-            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'collection', array($shop_id)),
+            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'collection', array($shop_id, $scollectionId)),
             'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
             'recordId'=>$shop_id,
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),

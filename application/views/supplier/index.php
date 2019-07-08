@@ -6,12 +6,12 @@
     <div class="banner" style="<?php echo $bgImageUrl; ?>">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                <div class="col-xl-7 col-lg-6">
                     <div class="seller-slogan">
                         <div class="seller-slogan-txt"> <?php echo FatUtility::decodeHtmlEntities(nl2br($slogan['epage_content']));?> </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                <div class="col-xl-5 col-lg-6">
                     <div class="seller-register-form">
                         <div class="heading3"><?php echo Labels::getLabel('L_Register_Today', $siteLangId); ?></div>
                         <div class="gap"></div>
@@ -20,7 +20,7 @@
                             echo $sellerFrm->getFormHtml(); ?>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="padding20"><?php echo FatUtility::decodeHtmlEntities($formText['epage_content']);?></div>
+                                <div class=""><?php echo FatUtility::decodeHtmlEntities($formText['epage_content']);?></div>
                             </div>
                         </div>
                     </div>
@@ -29,22 +29,22 @@
         </div>
     </div>
     <?php if (!empty($block1)) { ?>
-        <div class="features">
+        <div class="section">
             <div class="container"><?php echo FatUtility::decodeHtmlEntities($block1['epage_content']); ?></div>
         </div>
     <?php }
     if (!empty($block2)) { ?>
-        <div class="simple-step">
+        <div class="section simple-step">
         <div class="container"> <?php echo FatUtility::decodeHtmlEntities($block2['epage_content']); ?> </div>
         </div>
     <?php }
     if (!empty($block3)) { ?>
-        <div class="simple-price">
+        <div class="section simple-price">
             <div class="container"> <?php echo FatUtility::decodeHtmlEntities($block3['epage_content']); ?> </div>
         </div>
     <?php }
     if ($faqCount > 0) { ?>
-        <div class="questions-section">
+        <div class="section questions-section">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -66,7 +66,7 @@
     <div class="container">
         <div class="align--center">
             <div class="heading3"><?php echo Labels::getLabel('LBL_Still_need_help', $siteLangId)?> ?</div>
-            <a href="<?php echo CommonHelper::generateUrl('custom', 'contact-us'); ?>" class="btn btn--secondary btn--lg ripplelink"><?php echo Labels::getLabel('LBL_Contact_Customer_Care', $siteLangId)?> </a>
+            <a href="<?php echo CommonHelper::generateUrl('custom', 'contact-us'); ?>" class="btn btn--secondary"><?php echo Labels::getLabel('LBL_Contact_Customer_Care', $siteLangId)?> </a>
         </div>
         <div class="gap"></div>
     </div>

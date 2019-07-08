@@ -50,8 +50,11 @@ class PayFortPayController extends PaymentController
         $this->_template->render(true, false);
     }
 
-    public function doPayment($orderId)
+    public function doPayment($orderId = '')
     {
+        if (empty($orderId) && !empty($_REQUEST['merchant_reference'])) {
+            $orderId = $arrData['merchant_reference'];
+        }
         if (!$orderId) {
             Message::addErrorMessage(Labels::getLabel('PAYFORT_INVALID_REQUEST'));
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'profileInfo'));
@@ -73,12 +76,13 @@ class PayFortPayController extends PaymentController
         $paymentGatewayCharge = 0.00;
         $orderInfo = array();
 
-        $requestParams = $this->generatePaymentFormParams($orderId, $orderPaymentObj, $orderInfo, $paymentGatewayCharge, false);
+        $requestFormParams = $this->generatePaymentFormParams($orderId, $orderPaymentObj, $orderInfo, $paymentGatewayCharge, true);
 
-        if ($requestParams === false || !$orderInfo) {
+        if ($requestFormParams === false || !$orderInfo) {
             Message::addErrorMessage($this->error);
             FatApp::redirectUser($paymentChargeUrl);
         }
+
         //calculate Signature after back to merchant and comapre it with request Signature
         $arrData = $_REQUEST;
         unset($arrData['signature']);
@@ -90,7 +94,7 @@ class PayFortPayController extends PaymentController
 
         $returnSignature = $payfortIntegration->calculateSignature($arrData, $paymentSettings['sha_response_phrase'], $paymentSettings['sha_type']);
 
-        if ($returnSignature == $_REQUEST['signature'] && substr($_REQUEST['response_code'], 2) == '000' && $_REQUEST['amount'] == $paymentGatewayCharge && $_REQUEST['customer_ip'] == $_SERVER['REMOTE_ADDR'] && $_REQUEST['currency'] == strtoupper($orderInfo['order_currency_code']/* $this->currency */) && $_REQUEST['merchant_reference'] == $orderInfo['id']) {
+        if ($returnSignature == $_REQUEST['signature'] && substr($_REQUEST['response_code'], 2) == '000' && $_REQUEST['amount'] == $paymentGatewayCharge && $_REQUEST['currency'] == strtoupper($orderInfo['order_currency_code']/* $this->currency */) && $_REQUEST['merchant_reference'] == $orderInfo['id']) {
             $message = array();
 
             foreach ($_REQUEST as $key => $value) {
@@ -98,7 +102,7 @@ class PayFortPayController extends PaymentController
                 $message[] = ucwords($key) . ': '.(string)$value;
             }
 
-            $gateWayCharges =     ($paymentGatewayCharge/100);
+            $gateWayCharges = ($paymentGatewayCharge/100);
             $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_code"], $_REQUEST['fort_id'], $gateWayCharges, 'Received Payment', implode('&', $message));
 
             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId)));
@@ -111,10 +115,9 @@ class PayFortPayController extends PaymentController
             FatApp::redirectUser(CommonHelper::getPaymentFailurePageUrl());
         }
     }
-
     private function generatePaymentFormParams($orderId, $orderPaymentObj, &$orderInfo, &$paymentGatewayCharge = 0.00, $returnParams = true)
     {
-        if (!$orderId) {
+        if (!$orderId || !$orderPaymentObj) {
             $this->error = Labels::getLabel('MSG_Invalid_order_request', $this->siteLangId);
             return false;
         }
@@ -124,13 +127,11 @@ class PayFortPayController extends PaymentController
 
         $paymentSettings = $this->getPaymentSettings();
 
-        if (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
-        }
-
         if (!$this->validatePayFortSettings($paymentSettings)) {
             $this->error = Labels::getLabel('PAYFORT_Invalid_Payment_Gateway_Setup_Error', $this->siteLangId);
+        } elseif (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
         }
 
         if (!$orderInfo['id']) {
@@ -144,25 +145,26 @@ class PayFortPayController extends PaymentController
         $orderPaymentGatewayDescription = sprintf(Labels::getLabel('MSG_Order_Payment_Gateway_Description', $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
 
         if ($returnParams) {
+            $return_url = CommonHelper::generateFullUrl('PayFortPay', 'doPayment', array($orderId), '', false);
+
+            $paramsValues = array(
+                                    'access_code' => $paymentSettings['access_code'],
+                                    'amount' => $paymentGatewayCharge,
+                                    'command' => 'PURCHASE',
+                                    'currency' => strtoupper($orderInfo['order_currency_code']),
+                                    'customer_email' => $orderInfo['customer_email'],
+                                    'language' => strtolower($orderInfo['order_language']),
+                                    'merchant_identifier' => $paymentSettings['merchant_id'],
+                                    'merchant_reference' => $orderInfo['id'],
+                                    'order_description' => $orderPaymentGatewayDescription,
+                                    'return_url' => $return_url,
+                                );
+
             $payfortIntegration = new PayfortIntegration();
-            $payfortIntegration->amount                 = $paymentGatewayCharge;
-            $payfortIntegration->currency               = /* $this->currency */ strtoupper($orderInfo['order_currency_code']);
-            $payfortIntegration->language               = strtolower($orderInfo['order_language']);
-            $payfortIntegration->merchant_identifier    = $paymentSettings['merchant_id'];
-            $payfortIntegration->access_code            = $paymentSettings['access_code'];
-            $payfortIntegration->order_description      = $orderPaymentGatewayDescription;
-            $payfortIntegration->merchant_reference     = $orderInfo['invoice']; /* uniqid('ref_'); */
-            $payfortIntegration->customer_ip            = $_SERVER['REMOTE_ADDR'];
-            $payfortIntegration->customer_email         = $orderInfo['customer_email'];
-            $payfortIntegration->command                   = 'PURCHASE';
-            // $payfortIntegration->return_url             = CommonHelper::generateNoAuthUrl('PayFortPay', 'doPayment', array($orderId));
-            $payfortIntegration->return_url             = CommonHelper::generateFullUrl('PayFortPay', 'doPayment', array($orderId), '', false);
+            $signature      = $payfortIntegration->calculateSignature($paramsValues, $paymentSettings['sha_request_phrase'], $paymentSettings['sha_type']);
+            $paramsValues['signature'] = $signature;
 
-            $requestParams  = $payfortIntegration->getRequestParams();
-            $signature      = $payfortIntegration->calculateSignature($requestParams, $paymentSettings['sha_request_phrase'], $paymentSettings['sha_type']);
-            $requestParams['signature'] = $signature;
-
-            return $requestParams;
+            return $paramsValues;
         } else {
             return array();
         }

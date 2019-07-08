@@ -35,7 +35,8 @@ if (!$print) {
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <?php if (!$print) { ?>
                     <div class="">
-                        <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId);?></a>
+                        <iframe src="<?php echo Fatutility::generateUrl('seller', 'viewOrder', $urlParts) . '/print'; ?>" name="frame" style="display:none"></iframe>
+                        <a href="javascript:void(0)" onclick="frames['frame'].print()" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
                         <a href="<?php echo CommonHelper::generateUrl('Seller', 'sales');?>" class="btn btn--primary-border  btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId);?></a>
                     </div>
                     <?php } ?>
@@ -288,7 +289,7 @@ if (!$print) {
                                     <td><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
                                     <td><?php echo $orderStatuses[$row['oshistory_orderstatus_id']]; echo ($row['oshistory_tracking_number'])? ': '.Labels::getLabel('LBL_Tracking_Number', $siteLangId).' '.$row['oshistory_tracking_number']." VIA <em>".$row['op_shipping_duration_name']."</em>" :''?>
                                     </td>
-                                    <td><?php echo !empty($row['oshistory_comments']) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_NA', $siteLangId);?></td>
+                                    <td><?php echo !empty($row['oshistory_comments']) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_N/A', $siteLangId);?></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
@@ -393,11 +394,12 @@ if (!$print) {
         </div>
     </div>
 </main>
-<?php if ($print) { ?>
-<script>
-    window.print();
+<?php if ($print) {?>
+    <script>
+    $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
+    /*window.print();
     window.onafterprint = function() {
         location.href = history.back();
-    }
+    }*/
 </script>
 <?php } ?>

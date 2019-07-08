@@ -6,6 +6,10 @@ class GuestUserController extends MyAppController
         /* if(UserAuthentication::doCookieLogin()){
         FatApp::redirectUser(CommonHelper::generateUrl('account'));
         } */
+        if (UserAuthentication::isGuestUserLogged()) {
+            FatApp::redirectUser(CommonHelper::generateUrl('home'));
+        }
+
         if (UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
@@ -631,6 +635,10 @@ class GuestUserController extends MyAppController
 
     public function registrationForm()
     {
+        if (UserAuthentication::isGuestUserLogged()) {
+            FatApp::redirectUser(CommonHelper::generateUrl('home'));
+        }
+
         if (UserAuthentication::isUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }

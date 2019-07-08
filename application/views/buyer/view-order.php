@@ -56,38 +56,40 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"> <?php //echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5> <?php if (!$print) {
-        ?> <div class="action">
+                    <h5 class="cards-title"> <?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5>
+                    <?php if (!$print) { ?>
+                        <div class="action">
                         <div class="">
-                            <a href="<?php echo Fatutility::generateUrl('buyer', 'viewOrder', $urlParts) . '/print'; ?>" class="btn btn--primary no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
-                            <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders'); ?>" class="btn btn--primary-border no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId); ?></a>
+                            <iframe src="<?php echo Fatutility::generateUrl('buyer', 'viewOrder', $urlParts) . '/print'; ?>" name="frame" style="display:none"></iframe>
+                            <a href="javascript:void(0)" onclick="frames['frame'].print()" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print', $siteLangId); ?></a>
+                            <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders'); ?>" class="btn btn--primary-border btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_order', $siteLangId); ?></a>
                         </div>
                     </div> <?php
-    } ?>
+                    } ?>
                 </div>
                 <div class="cards-content pl-4 pr-4 "> <?php if ($primaryOrder) {
-        ?> <div class="row">
+                                ?> <div class="row">
                         <div class="col-lg-6 col-md-6 mb-4">
                             <div class="info--order">
                                 <p><strong><?php echo Labels::getLabel('LBL_Customer_Name', $siteLangId); ?>: </strong><?php echo $childOrderDetail['user_name']; ?></p> <?php
                             $paymentMethodName = $childOrderDetail['pmethod_name']?:$childOrderDetail['pmethod_identifier'];
-        if ($childOrderDetail['order_pmethod_id'] > 0 && $childOrderDetail['order_is_wallet_selected'] > 0) {
-            $paymentMethodName .= ' + ';
-        }
-        if ($childOrderDetail['order_is_wallet_selected'] > 0) {
-            $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
-        } ?> <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId); ?>: </strong><?php echo $paymentMethodName; ?></p>
+                                if ($childOrderDetail['order_pmethod_id'] > 0 && $childOrderDetail['order_is_wallet_selected'] > 0) {
+                                    $paymentMethodName .= ' + ';
+                                }
+                                if ($childOrderDetail['order_is_wallet_selected'] > 0) {
+                                    $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
+                                } ?> <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId); ?>: </strong><?php echo $paymentMethodName; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Status', $siteLangId); ?>: </strong><?php echo $orderStatuses[$childOrderDetail['op_status_id']]; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Cart_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'CART_TOTAL')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Delivery', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'SHIPPING')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'TAX')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'DISCOUNT')); ?></p> <?php $volumeDiscount = CommonHelper::orderProductAmount($childOrderDetail, 'VOLUME_DISCOUNT');
-        if ($volumeDiscount) {
-            ?> <p><strong><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($volumeDiscount); ?></p> <?php
-        } ?> <?php $rewardPointDiscount = CommonHelper::orderProductAmount($childOrderDetail, 'REWARDPOINT');
-        if ($rewardPointDiscount != 0) {
-            ?> <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount); ?></p> <?php
-        } ?> <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail)); ?></p>
+                                if ($volumeDiscount) {
+                                    ?> <p><strong><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($volumeDiscount); ?></p> <?php
+                                } ?> <?php $rewardPointDiscount = CommonHelper::orderProductAmount($childOrderDetail, 'REWARDPOINT');
+                                if ($rewardPointDiscount != 0) {
+                                    ?> <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount); ?></p> <?php
+                                } ?> <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail)); ?></p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 mb-4">
@@ -97,8 +99,8 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                             </div>
                         </div>
                     </div> <?php
-    } else {
-        ?> <div class="row">
+                            } else {
+                                ?> <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <p><strong><?php echo Labels::getLabel('LBL_Order', $siteLangId); ?>: </strong><?php echo $orderDetail['order_id']; ?></p>
                         </div>
@@ -108,12 +110,12 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                             </div>
                         </div>
                     </div> <?php
-    }?> <table class="table  table--orders">
+                            }?> <table class="table  table--orders">
                         <tbody>
                             <tr class="">
                                 <th><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th> <?php if (!$print) {
-        ?> <th class="no-print"></th> <?php
-    } ?> <th><?php echo Labels::getLabel('LBL_Qty', $siteLangId);?></th>
+                                ?> <th class="no-print"></th> <?php
+                            } ?> <th><?php echo Labels::getLabel('LBL_Qty', $siteLangId);?></th>
                                 <th><?php echo Labels::getLabel('LBL_Price', $siteLangId);?></th>
                                 <th><?php echo Labels::getLabel('LBL_Shipping_Charges', $siteLangId);?></th>
                                 <th><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId);?></th>
@@ -282,7 +284,7 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                                     <td><?php echo $yesNoArr[$row['oshistory_customer_notified']]; ?></td>
                                     <td><?php echo ($row['oshistory_orderstatus_id']>0)?$orderStatuses[$row['oshistory_orderstatus_id']]:CommonHelper::displayNotApplicable($siteLangId, '');
                                 echo ($row['oshistory_tracking_number'])? ': '.Labels::getLabel('LBL_Tracking_Number', $siteLangId).' '.$row['oshistory_tracking_number']." VIA <em>".$row['op_shipping_duration_name']."</em>" :'' ?></td>
-                                    <td><?php echo !empty(trim(($row['oshistory_comments']))) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_NA', $siteLangId) ; ?></td>
+                                    <td><?php echo !empty(trim(($row['oshistory_comments']))) ? nl2br($row['oshistory_comments']) : Labels::getLabel('LBL_N/A', $siteLangId) ; ?></td>
                                 </tr> <?php
                             } ?>
                             </tbody>
@@ -292,7 +294,7 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                             ?> <span class="gap"></span>
                     <div class="section--repeated">
                         <h5><?php echo Labels::getLabel('LBL_Payment_History', $siteLangId); ?></h5>
-                        <table class="table  table--orders">
+                        <table class="table table--orders">
                             <tbody>
                                 <tr class="">
                                     <th><?php echo Labels::getLabel('LBL_Date_Added', $siteLangId); ?></th>
@@ -409,10 +411,10 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
 </main> <?php if ($print) {?>
     <script>
     $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
-    window.print();
+    /*window.print();
     window.onafterprint = function() {
         location.href = history.back();
-    }
+    }*/
 </script>
 <?php } ?> <script>
     function increaseDownloadedCount(linkId, opId) {

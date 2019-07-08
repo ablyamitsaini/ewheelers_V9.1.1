@@ -14,7 +14,7 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 		<?php } ?>
 	</ul>
 	<div class="tabs__content">
-		<div class="form__content ">
+		<div class="row ">
 			<div class="col-md-12">
 				<div class="preview">
 					<?php if( $haveImage ){ ?>
@@ -26,7 +26,7 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 					<div class="btngroup--fix">
 					<?php echo $mediaFrm->getFormHtml(); ?>
 					</form>
-					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*319')?></small>
+					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*330')?></small>
 					<?php echo $mediaFrm->getExternalJS();?>
 					</div>
 					<div id="mediaResponse"></div>

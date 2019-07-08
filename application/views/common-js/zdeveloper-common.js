@@ -20,10 +20,13 @@ $(document).ready(function() {
         if ($(this).prop("checked") == false) {
             $(".selectAll-js").prop("checked", false);
         }
+        if ($(".selectItem--js").length == $(".selectItem--js:checked").length) {
+            $(".selectAll-js").prop("checked", true);
+        }
         showFormActionsBtns();
     });
 	if(0 < $('.js-widget-scroll').length){
-    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false));
+    	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
     $(document).on('keydown', 'input.phone-js', function(e) {
@@ -80,13 +83,12 @@ $(document).ready(function() {
 
     $(document).on('click', '.accordianheader', function () {
       $(this).next('.accordianbody').slideToggle();
-      $(this).parent().siblings().children().next().slideUp();
+      $(this).parent().parent().siblings().children().children().next().slideUp();
       return false;
     });
 });
 
 function showFormActionsBtns() {
-    console.log('called');
     if (typeof $(".selectItem--js:checked").val() === 'undefined') {
         $(".formActionBtn-js").addClass('formActions-css');
     } else {
@@ -240,10 +242,10 @@ toggleShopFavorite = function(shop_id) {
         if (ans.status) {
             if (ans.action == 'A') {
                 $("#shop_" + shop_id).addClass("is-active");
-                //	$("#shop_"+shop_id).text("Love this shop");
+                $("#shop_" + shop_id).prop('title', 'Unfavorite Shop');
             } else if (ans.action == 'R') {
                 $("#shop_" + shop_id).removeClass("is-active");
-                //$("#shop_"+shop_id).text("Loved pending css");
+                $("#shop_" + shop_id).prop('title', 'Favorite Shop');
             }
         }
     });
@@ -324,7 +326,7 @@ removeFromCart = function(key) {
 
 function submitSiteSearch(frm) {
 
-    var keyword = $(frm).find('input[name="keyword"]').val();
+    var keyword = $.trim($(frm).find('input[name="keyword"]').val());
 
     if (3 > keyword.length || '' === keyword) {
         $.mbsmessage(langLbl.searchString, true, 'alert--danger');
@@ -378,11 +380,18 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 			vertical: true,
 			verticalSwiping: true,
 			responsive: [{
-					breakpoint: 1199,
+					breakpoint: 1499,
+					settings: {
+						slidesToShow: 3,
+
+					}
+				},
+				{
+				breakpoint: 1199,
 					settings: {
 						slidesToShow: 4,
                         vertical: false,
-			            verticalSwiping: false,
+			            verticalSwiping: false
 					}
 				},
 
@@ -391,7 +400,7 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 					settings: {
 						slidesToShow: 2,
                          vertical: false,
-			            verticalSwiping: false,
+			            verticalSwiping: false
 				    }
 				}
 			]
@@ -422,7 +431,7 @@ var screenResolutionForSlider = {
         1023: 3,
         767: 2,
         480: 2
-    }
+    };
 
 function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, autoInfinitePlay,slidesToShowForDiffResolution ){
 	slidesToShow = (typeof slidesToShow != "undefined" ) ? parseInt(slidesToShow) : 4;
@@ -472,7 +481,6 @@ function getSlickSliderSettings( slidesToShow, slidesToScroll, layoutDirection, 
 	if(layoutDirection == 'rtl'){
 		sliderSettings['rtl'] = true;
 	}
-
     return sliderSettings;
 }
 
@@ -586,12 +594,11 @@ function defaultSetUpLogin(frm, v) {
             setTimeout(function() {
                 $('#facebox .content').css('max-height', (parseInt(facebocxHeight) - parseInt(facebocxHeight) / 4) + 'px');
             }, 700);
+            $('#facebox .content').css('overflow-y', 'auto');
             if (fbContentHeight > screenHeight - parseInt(100)) {
-                $('#facebox .content').css('overflow-y', 'scroll');
                 $('#facebox .content').css('display', 'block');
             } else {
                 $('#facebox .content').css('max-height', '');
-                $('#facebox .content').css('overflow', '');
             }
         },
         updateFaceboxContent: function(t, cls) {
@@ -707,7 +714,7 @@ $(document).ready(function() {
 
     if (typeof $.fn.autocomplete_advanced !== typeof undefined) {
         $('#header_search_keyword').autocomplete_advanced({
-            appendTo: "#autoSuggest",
+            appendTo: ".main-search__field",
             minChars: 2,
             autoSelectFirst: false,
             lookup: function(query, done) {
@@ -720,8 +727,8 @@ $(document).ready(function() {
                     type: 'post',
                     success: function(json) {
                         done(json);
-                        /* $('.autocomplete-suggestions').appendTo('.form__cover'); */
-                        /* $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
+                        /* $('.autocomplete-suggestions').appendTo('.form__cover');
+                        $('.autocomplete-suggestions').insertAfter( "#header_search_keyword" ); */
                     }
                 });
             },
@@ -820,6 +827,10 @@ $(document).ready(function() {
     $(document).on("click", '.increase-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
         var val = $(this).parent().parent('div').find('input').val();
+        if(isNaN(val)){
+            $(this).parent().parent('div').find('input').val(1);
+            return false;
+        }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
         val = parseInt(val) + 1;
@@ -828,7 +839,7 @@ $(document).ready(function() {
             $(this).addClass('not-allowed');
         }
         $(this).parent().parent('div').find('input').val(val);
-        cart.update(key, page);
+        cart.update(key, page); 
     });
 
     $(document).on("change", '.productQty-js', function() {
@@ -852,6 +863,10 @@ $(document).ready(function() {
     $(document).on("click", '.decrease-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
         var val = $(this).parent().parent('div').find('input').val();
+        if(isNaN(val)){
+            $(this).parent().parent('div').find('input').val(1);
+            return false;
+        }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
         val = parseInt(val) - 1;

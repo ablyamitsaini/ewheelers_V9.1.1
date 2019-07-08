@@ -1,6 +1,9 @@
 .*
 !/.gitignore
+/robots.txt
+/public/robots.txt
 /.htaccess
+/public/.htaccess
 /user-uploads/*
 /admin-application/views/innovas
 /application/views/innovas

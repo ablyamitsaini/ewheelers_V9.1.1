@@ -798,13 +798,13 @@ class EmailHandler extends FatModel
         $rs = $srch->getResultSet();
 
         if (!$rs) {
-            return ;
+            return false;
         }
 
         $productInfo = FatApp::getDb()->fetch($rs);
 
         if (empty($productInfo)) {
-            return;
+            return false;
         }
 
         $frontEndUrl = (CONF_WEBROOT_FRONT_URL)?CONF_WEBROOT_FRONT_URL:CONF_WEBROOT_URL;

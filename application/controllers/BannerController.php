@@ -85,17 +85,17 @@ class BannerController extends MyAppController
 
     public function HomePageBannerTopLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 1200, 360, $screen);
+        $this->showBanner($bannerId, $langId, 1350, 405, $screen);
     }
 
     public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 600, 383, $screen);
+        $this->showBanner($bannerId, $langId, 660, 198, $screen);
     }
 
     public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 600, 338, $screen);
+        $this->showBanner($bannerId, $langId, 660, 198, $screen);
     }
 
     public function Thumb($bannerId, $langId = 0, $screen = 0)
@@ -110,7 +110,7 @@ class BannerController extends MyAppController
 
         $fileRow = AttachedFile::getAttachment(AttachedFile::FILETYPE_BANNER, $bannerId, 0, $langId, true, $screen);
         $image_name = isset($fileRow['afile_physical_path']) ?  $fileRow['afile_physical_path'] : '';
-        AttachedFile::displayImage($image_name, $w, $h, '', '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true);
+        AttachedFile::displayImage($image_name, $w, $h, '', '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
     }
 
     public function showOriginalBanner($bannerId, $langId, $screen = 0)

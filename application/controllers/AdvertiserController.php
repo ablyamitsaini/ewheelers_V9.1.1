@@ -1244,7 +1244,7 @@ class AdvertiserController extends AdvertiserBaseController
             $prodReqObj = new FormFieldRequirement('promotion_product', Labels::getLabel('LBL_Product', $this->siteLangId));
             $prodReqObj->setRequired(true);
 
-            $frm->addTextBox(Labels::getLabel('LBL_CPC' . '_[' . commonHelper::getDefaultCurrencySymbol() . ']', $this->siteLangId), 'promotion_product_cpc', FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0), array(
+            $frm->addTextBox(Labels::getLabel('LBL_CPC'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $this->siteLangId), 'promotion_product_cpc', FatApp::getConfig('CONF_CPC_PRODUCT', FatUtility::VAR_FLOAT, 0), array(
                 'readonly' => true
             ));
             /* ]*/
@@ -1346,7 +1346,7 @@ class AdvertiserController extends AdvertiserBaseController
             }
         }
 
-        $fld = $frm->addTextBox(Labels::getLabel('LbL_Budget' . '_[' . commonHelper::getDefaultCurrencySymbol() . ']', $this->siteLangId), 'promotion_budget');
+        $fld = $frm->addTextBox(Labels::getLabel('LbL_Budget'.'_[' . commonHelper::getDefaultCurrencySymbol() .']', $this->siteLangId), 'promotion_budget');
         $fld->requirements()->setRequired();
         $fld->requirements()->setFloatPositive(true);
 

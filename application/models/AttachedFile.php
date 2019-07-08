@@ -274,7 +274,7 @@ class AttachedFile extends MyAppModel
             //@todo display order thing needs to be checked.
             $smt = $db->prepareStatement(
                 'SELECT MAX(afile_display_order) AS max_order FROM ' . static::DB_TBL . '
-					WHERE afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?'
+                    WHERE afile_type = ? AND afile_record_id = ? AND afile_record_subid = ? AND afile_lang_id = ?'
             );
             $smt->bindParameters('iii', $fileType, $recordId, $recordSubid, $langId);
 
@@ -348,23 +348,24 @@ class AttachedFile extends MyAppModel
     } */
 
     /* always call this function using image controller and pass relavant arguments. */
-    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = false)
+    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = false, $imageCompression = true)
     {
         ob_end_clean();
         if ($no_image == '') {
-            $no_image = CONF_THEME_PATH . 'img/defaults/no_image.jpg';
+            $no_image = 'images/defaults/no_image.jpg';
         } else {
             $no_image = 'images/defaults/'. $no_image;
         }
+        /*echo $no_image; die;*/
         $originalImageName = $image_name;
         if (trim($uploadedFilePath)!='') {
             $uploadedFilePath = CONF_UPLOADS_PATH.$uploadedFilePath;
         } else {
             $uploadedFilePath = CONF_UPLOADS_PATH;
         }
-
         $fileMimeType = '';
-
+        $w = FatUtility::int($w);
+        $h = FatUtility::int($h);
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
             $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
             $image_name = $uploadedFilePath . $image_name;
@@ -382,30 +383,20 @@ class AttachedFile extends MyAppModel
                 header("Expires: " . date('r', strtotime("+30 Day")));
             } catch (Exception $e) {
                 try {
-                    $file_extension = substr($image_name, strlen($image_name)-3, strlen($image_name));
-                    if ($file_extension=="svg") {
-                        header("Content-type: image/svg+xml");
-                        header('Cache-Control: public');
-                        header("Pragma: public");
-                        header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-                        header("Expires: " . date('r', strtotime("+30 Day")));
-
-                        echo file_get_contents($image_name);
-                        exit;
-                    }
-                    $img = new ImageResize($no_image);
+                    $img = static::getDefaultImage($no_image, $w, $h);
+                    $img->setExtraSpaceColor(204, 204, 204);
                 } catch (Exception $e) {
-                    $img = new ImageResize($no_image);
+                    $img = static::getDefaultImage($no_image, $w, $h);
+                    $img->setExtraSpaceColor(204, 204, 204);
                 }
             }
         } else {
-            $img = new ImageResize($no_image);
+            $img = static::getDefaultImage($no_image, $w, $h);
+            $img->setExtraSpaceColor(204, 204, 204);
         }
 
         /* $w = max(1, FatUtility::int($w));
         $h = max(1, FatUtility::int($h)); */
-        $w = FatUtility::int($w);
-        $h = FatUtility::int($h);
 
         $img->setResizeMethod($resizeType);
         //$img->setResizeMethod(ImageResize::IMG_RESIZE_RESET_DIMENSIONS);
@@ -442,7 +433,11 @@ class AttachedFile extends MyAppModel
             } else {
                 header("content-type: image/jpeg");
             }
-            $img->displayImage(80, false);
+            if ($imageCompression) {
+                $img->displayImage(80, false);
+            } else {
+                $img->displayImage(100, false);
+            }
             $imgData = ob_get_clean();
 
             FatCache::set($cacheKey, $imgData, '.jpg');
@@ -454,17 +449,39 @@ class AttachedFile extends MyAppModel
                 header("content-type: image/jpeg");
             }
 
-            $img->displayImage(80, false);
+            if ($imageCompression) {
+                $img->displayImage(80, false);
+            } else {
+                $img->displayImage(100, false);
+            }
         }
 
         /* $img->displayImage(); */
+    }
+
+    public static function getDefaultImage($image_name, $width, $height, $useCache = false)
+    {
+        $file_extension = substr($image_name, strlen($image_name)-3, strlen($image_name));
+        if ($file_extension=="svg") {
+            header("Content-type: image/svg+xml");
+            if ($useCache) {
+                header('Cache-Control: public');
+                header("Pragma: public");
+                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
+                header("Expires: " . date('r', strtotime("+30 Day")));
+            }
+            // $image_name = static::setDimensions($image_name, $width, $height);
+            echo file_get_contents($image_name);
+            exit;
+        }
+        return $img = new ImageResize($image_name);
     }
 
     public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = false)
     {
         ob_end_clean();
         if ($no_image == '') {
-            $no_image = CONF_THEME_PATH . 'img/defaults/no_image.jpg';
+            $no_image = CONF_THEME_PATH . 'img/no_image.jpg';
         } else {
             $no_image = 'images/defaults/'. $no_image;
         }

@@ -22,87 +22,87 @@ class ImportExportController extends AdminBaseController
         }
 
         switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canViewProductCategories();
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canViewBrands();
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-            break;
-        case Importexport::TYPE_OPTIONS:
-        case Importexport::TYPE_OPTION_VALUES:
-            $this->objPrivilege->canViewOptions();
-            break;
-        case Importexport::TYPE_TAG:
-            $this->objPrivilege->canViewTags();
-            break;
-        case Importexport::TYPE_COUNTRY:
-            $this->objPrivilege->canViewCountries();
-            break;
-        case Importexport::TYPE_STATE:
-            $this->objPrivilege->canViewStates();
-            break;
-        case Importexport::TYPE_POLICY_POINTS:
-            $this->objPrivilege->canViewPolicyPoints();
-            break;
-        case Importexport::TYPE_USERS:
-            $this->objPrivilege->canViewUsers();
-            break;
-        case Importexport::TYPE_TAX_CATEGORY:
-            $this->objPrivilege->canViewTax();
-            break;
-        default:
-            Message::addErrorMessage($this->str_invalid_request);
-            break;
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canViewProductCategories();
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canViewBrands();
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                break;
+            case Importexport::TYPE_OPTIONS:
+            case Importexport::TYPE_OPTION_VALUES:
+                $this->objPrivilege->canViewOptions();
+                break;
+            case Importexport::TYPE_TAG:
+                $this->objPrivilege->canViewTags();
+                break;
+            case Importexport::TYPE_COUNTRY:
+                $this->objPrivilege->canViewCountries();
+                break;
+            case Importexport::TYPE_STATE:
+                $this->objPrivilege->canViewStates();
+                break;
+            case Importexport::TYPE_POLICY_POINTS:
+                $this->objPrivilege->canViewPolicyPoints();
+                break;
+            case Importexport::TYPE_USERS:
+                $this->objPrivilege->canViewUsers();
+                break;
+            case Importexport::TYPE_TAX_CATEGORY:
+                $this->objPrivilege->canViewTax();
+                break;
+            default:
+                Message::addErrorMessage($this->str_invalid_request);
+                break;
         }
 
         $obj = new Importexport();
         $min = null;
         $max = null;
         switch($exportDataRange){
-        case Importexport::BY_ID_RANGE:
-            if (isset($startId) && $startId >0) {
-                $min = $startId;
-            }
+            case Importexport::BY_ID_RANGE:
+                if (isset($startId) && $startId >0) {
+                    $min = $startId;
+                }
 
-            if (isset($endId) && $endId >1 && $endId  > $min) {
-                $max = $endId;
-            }
-            $obj->export($actionType, $langId, $sheetType, null, null, $min, $max);
-            break;
-        case Importexport::BY_BATCHES:
-            if (isset($batchNumber) && $batchNumber >0) {
-                $min = $batchNumber;
-            }
+                if (isset($endId) && $endId >1 && $endId  > $min) {
+                    $max = $endId;
+                }
+                $obj->export($actionType, $langId, $sheetType, null, null, $min, $max);
+                break;
+            case Importexport::BY_BATCHES:
+                if (isset($batchNumber) && $batchNumber >0) {
+                    $min = $batchNumber;
+                }
 
-            $max = Importexport::MAX_LIMIT;
-            if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
-                $max = $batchCount;
-            }
-            $min = (!$min)?1:$min;
-            $obj->export($actionType, $langId, $sheetType, $min, $max, null, null);
-            break;
+                $max = Importexport::MAX_LIMIT;
+                if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
+                    $max = $batchCount;
+                }
+                $min = (!$min)?1:$min;
+                $obj->export($actionType, $langId, $sheetType, $min, $max, null, null);
+                break;
 
-        default:
-            $obj->export($actionType, $langId, $sheetType, null, null, null, null);
-            break;
+            default:
+                $obj->export($actionType, $langId, $sheetType, null, null, null, null);
+                break;
         }
     }
 
     public function importData($actionType)
     {
-        if (!is_uploaded_file($_FILES['import_file']['tmp_name']) ) {
+        if (!is_uploaded_file($_FILES['import_file']['tmp_name'])) {
             Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_CSV_File', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $obj = new Importexport();
-        if(!$obj->isUploadedFileValidMimes($_FILES['import_file'])) {
+        if (!$obj->isUploadedFileValidMimes($_FILES['import_file'])) {
             Message::addErrorMessage(Labels::getLabel("LBL_Not_a_Valid_CSV_File", $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -110,38 +110,38 @@ class ImportExportController extends AdminBaseController
         $sheetType = FatApp::getPostedData('sheet_type', FatUtility::VAR_INT, 0);
         $langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 
-        switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canEditProductCategories();
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canEditBrands();
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canEditProducts();
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canEditSellerProducts();
-            break;
-        case Importexport::TYPE_OPTIONS:
-        case Importexport::TYPE_OPTION_VALUES:
-            $this->objPrivilege->canEditOptions();
-            break;
-        case Importexport::TYPE_TAG:
-            $this->objPrivilege->canEditTags();
-            break;
-        case Importexport::TYPE_COUNTRY:
-            $this->objPrivilege->canEditCountries();
-            break;
-        case Importexport::TYPE_STATE:
-            $this->objPrivilege->canEditStates();
-            break;
-        case Importexport::TYPE_POLICY_POINTS:
-            $this->objPrivilege->canEditPolicyPoints();
-            break;
-        default:
-            Message::addErrorMessage($this->str_invalid_request);
-            break;
+        switch ($actionType) {
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canEditProductCategories();
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canEditBrands();
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canEditProducts();
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canEditSellerProducts();
+                break;
+            case Importexport::TYPE_OPTIONS:
+            case Importexport::TYPE_OPTION_VALUES:
+                $this->objPrivilege->canEditOptions();
+                break;
+            case Importexport::TYPE_TAG:
+                $this->objPrivilege->canEditTags();
+                break;
+            case Importexport::TYPE_COUNTRY:
+                $this->objPrivilege->canEditCountries();
+                break;
+            case Importexport::TYPE_STATE:
+                $this->objPrivilege->canEditStates();
+                break;
+            case Importexport::TYPE_POLICY_POINTS:
+                $this->objPrivilege->canEditPolicyPoints();
+                break;
+            default:
+                Message::addErrorMessage($this->str_invalid_request);
+                break;
         }
 
         $obj->import($actionType, $langId, $sheetType);
@@ -157,22 +157,22 @@ class ImportExportController extends AdminBaseController
         $batchCount = FatApp::getPostedData('batch_count', FatUtility::VAR_INT, 0);
         $batchNumber = FatApp::getPostedData('batch_number', FatUtility::VAR_INT, 1);
 
-        switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canViewProductCategories();
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canViewBrands();
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-            break;
-        default:
-            Message::addErrorMessage($this->str_invalid_request);
-            break;
+        switch ($actionType) {
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canViewProductCategories();
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canViewBrands();
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                break;
+            default:
+                Message::addErrorMessage($this->str_invalid_request);
+                break;
         }
 
         $obj = new Importexport();
@@ -180,34 +180,34 @@ class ImportExportController extends AdminBaseController
         $min = null;
         $max = null;
 
-        switch($exportDataRange){
-        case Importexport::BY_ID_RANGE:
-            if (isset($startId) && $startId >0) {
-                $min = $startId;
-            }
+        switch ($exportDataRange) {
+            case Importexport::BY_ID_RANGE:
+                if (isset($startId) && $startId >0) {
+                    $min = $startId;
+                }
 
-            if (isset($endId) && $endId >1 && $endId  > $min) {
-                $max = $endId;
-            }
+                if (isset($endId) && $endId >1 && $endId  > $min) {
+                    $max = $endId;
+                }
 
-            $obj->exportMedia($actionType, $langId, null, null, $min, $max);
-            break;
-        case Importexport::BY_BATCHES:
-            if (isset($batchNumber) && $batchNumber >0) {
-                $min = $batchNumber;
-            }
+                $obj->exportMedia($actionType, $langId, null, null, $min, $max);
+                break;
+            case Importexport::BY_BATCHES:
+                if (isset($batchNumber) && $batchNumber >0) {
+                    $min = $batchNumber;
+                }
 
-            $max = Importexport::MAX_LIMIT;
-            if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
-                $max = $batchCount;
-            }
-            $min = (!$min)?1:$min;
-            $obj->exportMedia($actionType, $langId, $min, $max, null, null);
-            break;
+                $max = Importexport::MAX_LIMIT;
+                if (isset($batchCount) && $batchCount >0 && $batchCount <= Importexport::MAX_LIMIT) {
+                    $max = $batchCount;
+                }
+                $min = (!$min)?1:$min;
+                $obj->exportMedia($actionType, $langId, $min, $max, null, null);
+                break;
 
-        default:
-            $obj->exportMedia($actionType, $langId, null, null, null, null);
-            break;
+            default:
+                $obj->exportMedia($actionType, $langId, null, null, null, null);
+                break;
         }
     }
 
@@ -215,31 +215,31 @@ class ImportExportController extends AdminBaseController
     {
         $post = FatApp::getPostedData();
 
-        if (!is_uploaded_file($_FILES['import_file']['tmp_name']) ) {
+        if (!is_uploaded_file($_FILES['import_file']['tmp_name'])) {
             Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_CSV_File', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $obj = new Importexport();
-        if(!$obj->isUploadedFileValidMimes($_FILES['import_file'])) {
+        if (!$obj->isUploadedFileValidMimes($_FILES['import_file'])) {
             Message::addErrorMessage(Labels::getLabel("LBL_Not_a_Valid_CSV_File", $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
         $langId = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
 
-        switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canEditProductCategories();
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canEditBrands();
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canEditProducts();
-            break;
-        default:
-            Message::addErrorMessage($this->str_invalid_request);
-            break;
+        switch ($actionType) {
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canEditProductCategories();
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canEditBrands();
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canEditProducts();
+                break;
+            default:
+                Message::addErrorMessage($this->str_invalid_request);
+                break;
         }
 
         $obj->importMedia($actionType, $post, $langId);
@@ -248,25 +248,25 @@ class ImportExportController extends AdminBaseController
     public function importMediaForm($actionType)
     {
         $langId =     $this->langId;
-        switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canEditProductCategories();
-            $title = Labels::getLabel('LBL_Import_Categories_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canEditBrands();
-            $title = Labels::getLabel('LBL_Import_Brands_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canEditProducts();
-            $title = Labels::getLabel('LBL_Import_Catalog_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
-            break;
-        default:
-            FatUtility::dieWithError($this->str_invalid_request);
-            break;
+        switch ($actionType) {
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canEditProductCategories();
+                $title = Labels::getLabel('LBL_Import_Categories_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canEditBrands();
+                $title = Labels::getLabel('LBL_Import_Brands_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canEditProducts();
+                $title = Labels::getLabel('LBL_Import_Catalog_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'IMPORT_MEDIA', $actionType);
+                break;
+            default:
+                FatUtility::dieWithError($this->str_invalid_request);
+                break;
         }
 
         $this->set('frm', $frm);
@@ -278,30 +278,30 @@ class ImportExportController extends AdminBaseController
     public function exportMediaForm($actionType)
     {
         $langId = $this->langId;
-        switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canViewProductCategories();
-            $title = Labels::getLabel('LBL_Export_Categories_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canViewBrands();
-            $title = Labels::getLabel('LBL_Export_Brands_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            $title = Labels::getLabel('LBL_Export_Catalogs_Media', $langId);
-            $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-            $title = Labels::getLabel('LBL_Export_Digital_Files', $langId);
-            $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
-            break;
-        default:
-            FatUtility::dieWithError($this->str_invalid_request);
-            break;
+        switch ($actionType) {
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canViewProductCategories();
+                $title = Labels::getLabel('LBL_Export_Categories_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canViewBrands();
+                $title = Labels::getLabel('LBL_Export_Brands_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                $title = Labels::getLabel('LBL_Export_Catalogs_Media', $langId);
+                $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                $title = Labels::getLabel('LBL_Export_Digital_Files', $langId);
+                $frm = $this->getImportExportForm($langId, 'EXPORT_MEDIA', $actionType);
+                break;
+            default:
+                FatUtility::dieWithError($this->str_invalid_request);
+                break;
         }
 
         $this->set('frm', $frm);
@@ -315,56 +315,56 @@ class ImportExportController extends AdminBaseController
         $langId = $this->langId ;
         $displayMediaTab = true;
         switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canEditProductCategories();
-            $title = Labels::getLabel('LBL_Import_Categories', $langId);
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canEditBrands();
-            $title = Labels::getLabel('LBL_Import_Brands', $langId);
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            $title = Labels::getLabel('LBL_Import_Catalogs', $langId);
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Seller_Products', $langId);
-            break;
-        case Importexport::TYPE_OPTIONS:
-            $this->objPrivilege->canViewOptions();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Options', $langId);
-            break;
-        case Importexport::TYPE_OPTION_VALUES:
-            $this->objPrivilege->canViewOptions();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Option_Values', $langId);
-            break;
-        case Importexport::TYPE_TAG:
-            $this->objPrivilege->canViewTags();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Tags', $langId);
-            break;
-        case Importexport::TYPE_COUNTRY:
-            $this->objPrivilege->canViewCountries();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Countries', $langId);
-            break;
-        case Importexport::TYPE_STATE:
-            $this->objPrivilege->canViewStates();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_States', $langId);
-            break;
-        case Importexport::TYPE_POLICY_POINTS:
-            $this->objPrivilege->canViewPolicyPoints();
-            $displayMediaTab = false;
-            $title = Labels::getLabel('LBL_Import_Policy_Points', $langId);
-            break;
-        default:
-            FatUtility::dieWithError($this->str_invalid_request);
-            break;
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canEditProductCategories();
+                $title = Labels::getLabel('LBL_Import_Categories', $langId);
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canEditBrands();
+                $title = Labels::getLabel('LBL_Import_Brands', $langId);
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                $title = Labels::getLabel('LBL_Import_Catalogs', $langId);
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Seller_Products', $langId);
+                break;
+            case Importexport::TYPE_OPTIONS:
+                $this->objPrivilege->canViewOptions();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Options', $langId);
+                break;
+            case Importexport::TYPE_OPTION_VALUES:
+                $this->objPrivilege->canViewOptions();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Option_Values', $langId);
+                break;
+            case Importexport::TYPE_TAG:
+                $this->objPrivilege->canViewTags();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Tags', $langId);
+                break;
+            case Importexport::TYPE_COUNTRY:
+                $this->objPrivilege->canViewCountries();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Countries', $langId);
+                break;
+            case Importexport::TYPE_STATE:
+                $this->objPrivilege->canViewStates();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_States', $langId);
+                break;
+            case Importexport::TYPE_POLICY_POINTS:
+                $this->objPrivilege->canViewPolicyPoints();
+                $displayMediaTab = false;
+                $title = Labels::getLabel('LBL_Import_Policy_Points', $langId);
+                break;
+            default:
+                FatUtility::dieWithError($this->str_invalid_request);
+                break;
         }
 
         $frm = $this->getImportExportForm($langId, 'IMPORT', $actionType);
@@ -382,51 +382,51 @@ class ImportExportController extends AdminBaseController
         $pageData = '';
         $displayMediaTab = false;
         switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canEditProductCategories();
-            $displayMediaTab = true;
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_PRODUCTS_CATEGORIES_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canEditBrands();
-            $displayMediaTab = true;
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_BRANDS_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            $displayMediaTab = true;
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-               $pageData = $obj->getContentByPageType(Extrapage::ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_OPTIONS:
-            $this->objPrivilege->canViewOptions();
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_OPTION_VALUES:
-            $this->objPrivilege->canViewOptions();
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_TAG:
-            $this->objPrivilege->canViewTags();
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_TAGS_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_COUNTRY:
-            $this->objPrivilege->canViewCountries();
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_COUNTRIES_MANAGEMENT_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_STATE:
-            $this->objPrivilege->canViewStates();
-            $pageData = $obj->getContentByPageType(Extrapage::ADMIN_STATE_MANAGEMENT_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_POLICY_POINTS:
-            $this->objPrivilege->canViewPolicyPoints();
-            break;
-        default:
-            FatUtility::dieWithError($this->str_invalid_request);
-            break;
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canEditProductCategories();
+                $displayMediaTab = true;
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_PRODUCTS_CATEGORIES_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canEditBrands();
+                $displayMediaTab = true;
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_BRANDS_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                $displayMediaTab = true;
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                   $pageData = $obj->getContentByPageType(Extrapage::ADMIN_PRODUCT_INVENTORY_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_OPTIONS:
+                $this->objPrivilege->canViewOptions();
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_OPTION_VALUES:
+                $this->objPrivilege->canViewOptions();
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_OPTIONS_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_TAG:
+                $this->objPrivilege->canViewTags();
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_TAGS_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_COUNTRY:
+                $this->objPrivilege->canViewCountries();
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_COUNTRIES_MANAGEMENT_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_STATE:
+                $this->objPrivilege->canViewStates();
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_STATE_MANAGEMENT_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_POLICY_POINTS:
+                $this->objPrivilege->canViewPolicyPoints();
+                break;
+            default:
+                FatUtility::dieWithError($this->str_invalid_request);
+                break;
         }
         $title = Labels::getLabel('LBL_Import_Instructions', $langId);
         $this->set('pageData', $pageData);
@@ -445,49 +445,49 @@ class ImportExportController extends AdminBaseController
         $title = $options[$actionType];
 
         switch($actionType){
-        case Importexport::TYPE_CATEGORIES:
-            $this->objPrivilege->canViewProductCategories();
-            $displayMediaTab = true;
-            break;
-        case Importexport::TYPE_BRANDS:
-            $this->objPrivilege->canViewBrands();
-            $displayMediaTab = true;
-            break;
-        case Importexport::TYPE_PRODUCTS:
-            $this->objPrivilege->canViewProducts();
-            $displayMediaTab = true;
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $this->objPrivilege->canViewSellerProducts();
-            $displayMediaTab = true;
-            break;
-        case Importexport::TYPE_OPTIONS:
-            $this->objPrivilege->canViewOptions();
-            break;
-        case Importexport::TYPE_OPTION_VALUES:
-            $this->objPrivilege->canViewOptions();
-            break;
-        case Importexport::TYPE_TAG:
-            $this->objPrivilege->canViewTags();
-            break;
-        case Importexport::TYPE_COUNTRY:
-            $this->objPrivilege->canViewCountries();
-            break;
-        case Importexport::TYPE_STATE:
-            $this->objPrivilege->canViewStates();
-            break;
-        case Importexport::TYPE_POLICY_POINTS:
-            $this->objPrivilege->canViewPolicyPoints();
-            break;
-        case Importexport::TYPE_USERS:
-            $this->objPrivilege->canViewUsers();
-            break;
-        case Importexport::TYPE_TAX_CATEGORY:
-            $this->objPrivilege->canViewTax();
-            break;
-        default:
-            FatUtility::dieWithError($this->str_invalid_request);
-            break;
+            case Importexport::TYPE_CATEGORIES:
+                $this->objPrivilege->canViewProductCategories();
+                $displayMediaTab = true;
+                break;
+            case Importexport::TYPE_BRANDS:
+                $this->objPrivilege->canViewBrands();
+                $displayMediaTab = true;
+                break;
+            case Importexport::TYPE_PRODUCTS:
+                $this->objPrivilege->canViewProducts();
+                $displayMediaTab = true;
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $this->objPrivilege->canViewSellerProducts();
+                $displayMediaTab = true;
+                break;
+            case Importexport::TYPE_OPTIONS:
+                $this->objPrivilege->canViewOptions();
+                break;
+            case Importexport::TYPE_OPTION_VALUES:
+                $this->objPrivilege->canViewOptions();
+                break;
+            case Importexport::TYPE_TAG:
+                $this->objPrivilege->canViewTags();
+                break;
+            case Importexport::TYPE_COUNTRY:
+                $this->objPrivilege->canViewCountries();
+                break;
+            case Importexport::TYPE_STATE:
+                $this->objPrivilege->canViewStates();
+                break;
+            case Importexport::TYPE_POLICY_POINTS:
+                $this->objPrivilege->canViewPolicyPoints();
+                break;
+            case Importexport::TYPE_USERS:
+                $this->objPrivilege->canViewUsers();
+                break;
+            case Importexport::TYPE_TAX_CATEGORY:
+                $this->objPrivilege->canViewTax();
+                break;
+            default:
+                FatUtility::dieWithError($this->str_invalid_request);
+                break;
         }
 
         $frm = $this->getImportExportForm($langId, 'EXPORT', $actionType);
@@ -505,69 +505,69 @@ class ImportExportController extends AdminBaseController
         $languages = Language::getAllNames();
 
         /* if($type != 'EXPORT_MEDIA'){ */
-        if($type == 'IMPORT_MEDIA') {
+        if ($type == 'IMPORT_MEDIA') {
             $frm->addSelectBox(Labels::getLabel('LBL_Upload_File_Language', $langId), 'lang_id', $languages, '', array(), '')->requirements()->setRequired();
-        }else if($type == 'EXPORT_MEDIA') {
+        } elseif ($type == 'EXPORT_MEDIA') {
             $frm->addSelectBox(Labels::getLabel('LBL_Export_File_Language', $langId), 'lang_id', $languages, '', array(), '')->requirements()->setRequired();
-        }else{
+        } else {
             $frm->addSelectBox(Labels::getLabel('LBL_Language', $langId), 'lang_id', $languages, '', array(), '')->requirements()->setRequired();
         }
         /* } */
 
         $displayRangeFields = false;
 
-        switch(strtoupper($type)){
-        case 'EXPORT':
-            switch($actionType){
-            case Importexport::TYPE_PRODUCTS:
-                $displayRangeFields = true;
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+        switch (strtoupper($type)) {
+            case 'EXPORT':
+                switch($actionType){
+                    case Importexport::TYPE_PRODUCTS:
+                        $displayRangeFields = true;
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $displayRangeFields = true;
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_USERS:
+                        $displayRangeFields = true;
+                        break;
+                    case Importexport::TYPE_OPTIONS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    }
+                    break;
+            case 'EXPORT_MEDIA':
+                switch($actionType){
+                    case Importexport::TYPE_PRODUCTS:
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $displayRangeFields = true;
+                        break;
+                }
                 break;
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $displayRangeFields = true;
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+            case 'IMPORT':
+                switch($actionType){
+                    case Importexport::TYPE_PRODUCTS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_OPTIONS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                }
+                $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
+                $fldImg->requirement->setRequired(true);
+                $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
+                $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $langId).'</label></div>';
                 break;
-            case Importexport::TYPE_USERS:
-                $displayRangeFields = true;
+            case 'IMPORT_MEDIA':
+                $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
+                $fldImg->requirement->setRequired(true);
+                $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
+                $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $langId).'</label></div>';
                 break;
-            case Importexport::TYPE_OPTIONS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            }
-            break;
-        case 'EXPORT_MEDIA':
-            switch($actionType){
-            case Importexport::TYPE_PRODUCTS:
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $displayRangeFields = true;
-                break;
-            }
-            break;
-        case 'IMPORT':
-            switch($actionType){
-            case Importexport::TYPE_PRODUCTS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            case Importexport::TYPE_OPTIONS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getOptionContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            }
-            $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
-            $fldImg->requirement->setRequired(true);
-            $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
-            $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $langId).'</label></div>';
-            break;
-        case 'IMPORT_MEDIA':
-            $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
-            $fldImg->requirement->setRequired(true);
-            $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
-            $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField='<label class="filelabel">'.Labels::getLabel('LBL_Browse_File', $langId).'</label></div>';
-            break;
         }
 
         if($displayRangeFields) {

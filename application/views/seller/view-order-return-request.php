@@ -2,35 +2,36 @@
 
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
-	<div class="content-wrapper content-space">
-		<div class="content-header  row justify-content-between mb-3">
-			<div class="col-md-auto">
-				<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-				<h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ; ?></h2>
-			</div>
+    <div class="content-wrapper content-space">
+        <div class="content-header  row justify-content-between mb-3">
+            <div class="col-md-auto">
+                <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
+                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_View_Order_Return_Request', $siteLangId).': <span class="number">' . $request['orrequest_reference'].'</span>' ; ?></h2>
+            </div>
             <div class="col-md-auto">
                 <div class="action"><a href="<?php echo CommonHelper::generateUrl('Seller', 'orderReturnRequests'); ?>" class="btn btn--primary ripplelink btn--sm"><?php echo Labels::getLabel('LBL_Back_To_Return_Requests', $siteLangId); ?></a></div>
             </div>
-		</div>
-		<div class="content-body">
-			<div class="cards">
-				<div class="cards-header p-4">
-					<h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
-                    <div class=""><?php if( $canEscalateRequest ){ ?>
-                            <a class="btn btn--primary ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
+        </div>
+        <div class="content-body">
+            <div class="cards">
+                <div class="cards-header p-4">
+                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Request_Details', $siteLangId); ?></h5>
+                    <div class=""><?php if ($canEscalateRequest) { ?>
+                            <a class="btn btn--primary ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account', 'EscalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
                             <?php } ?>
-                            <?php if( $canApproveReturnRequest ){ ?>
-                            <a class="btn btn--primary-border ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Seller','approveOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Approve_Refund', $siteLangId); ?></a>
+                            <?php if ($canApproveReturnRequest) { ?>
+                            <a class="btn btn--primary-border ripplelink btn--sm" onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Seller', 'approveOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Approve_Refund', $siteLangId); ?></a>
                             <?php } ?>
                     </div>
-				</div>
-				<div class="cards-content pl-4 pr-4 ">
+                </div>
+                <div class="cards-content pl-4 pr-4 ">
           <div class="grids--offset">
              <div class="grid-layout">
                <div class="row">
-                 <div class="col-lg-6 col-md-6 col-sm-6">
-                  <h6><?php echo Labels::getLabel( 'LBL_Vendor_Return_Address', $siteLangId ); ?></h6>
-                  <?php echo ($vendorReturnAddress['ura_name'] != NULL ) ? '<strong>'.$vendorReturnAddress['ura_name'].'</strong>' : '';?>
+                 <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                 <div class="info--order">
+                  <h6><?php echo Labels::getLabel('LBL_Vendor_Return_Address', $siteLangId); ?></h6>
+                  <?php echo ($vendorReturnAddress['ura_name'] != null) ? '<strong>'.$vendorReturnAddress['ura_name'].'</strong>' : '';?>
                   <p>
                   <?php echo (strlen($vendorReturnAddress['ura_address_line_1']) > 0) ? $vendorReturnAddress['ura_address_line_1'].'<br/>' : '';?>
                   <?php echo (strlen($vendorReturnAddress['ura_address_line_2'])>0)?$vendorReturnAddress['ura_address_line_2'].'<br>':'';?>
@@ -41,50 +42,42 @@
                   <?php echo (strlen($vendorReturnAddress['ura_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$vendorReturnAddress['ura_phone'].'<br>':''; ?>
                   </p>
                  </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
                 <div class="info--order">
-                  <h5><?php echo Labels::getLabel('LBL_Vendor_Detail', $siteLangId); ?></h5>
+                  <h6><?php echo Labels::getLabel('LBL_Customer_Detail', $siteLangId); ?></h6>
                   <p>
 
-                  <?php echo ($request['buyer_name'] != '' ) ? '<strong>'.Labels::getLabel('LBL_Customer_Name:', $siteLangId).'</strong> '.$request['buyer_name'] : ''; ?></p>
+                  <?php echo ($request['buyer_name'] != '') ? '<strong>'.Labels::getLabel('LBL_Customer_Name:', $siteLangId).'</strong> '.$request['buyer_name'] : ''; ?></p>
 
-                  <?php if(isset($attachedFile) && !empty($attachedFile)) { ?>
+                  <?php if (isset($attachedFile) && !empty($attachedFile)) { ?>
                   <p>
-                    <strong><?php echo Labels::getLabel('Lbl_Download_attached_file',$siteLangId); ?>  </strong> <a href="<?php echo CommonHelper::generateUrl('Seller','downloadAttachedFileForReturn',array($request['orrequest_id'] , 0)); ?>" ><i class="fa fa-download"></i></a>
+                    <strong><?php echo Labels::getLabel('Lbl_Download_attached_file', $siteLangId); ?>  </strong> <a href="<?php echo CommonHelper::generateUrl('Seller', 'downloadAttachedFileForReturn', array($request['orrequest_id'] , 0)); ?>" ><i class="fa fa-download"></i></a>
                   </p>
                   <?php } ?>
                 </div>
                 </div>
                </div>
-
-            <div class="btn-grp"><?php if( $canEscalateRequest ){ ?>
-                              <a class="btn btn--primary ripplelink btn--sm " onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Account','escalateOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo str_replace("{website_name}", FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId), Labels::getLabel('LBL_Escalate_to', $siteLangId)); ?></a>
-            <?php } ?>
-
-            <?php if( $canApproveReturnRequest ){ ?>
-            <a class="btn btn--primary ripplelink btn--sm " onClick="javascript: return confirm('<?php echo Labels::getLabel('MSG_Do_you_want_to_proceed?', $siteLangId); ?>')" href="<?php echo CommonHelper::generateUrl('Seller','approveOrderReturnRequest', array($request['orrequest_id'])); ?>"><?php echo Labels::getLabel('LBL_Approve_Refund', $siteLangId); ?></a>
-            <?php } ?> </div>
-
              </div>
           </div>
 
             <div class="gap"></div>
-            <?php if( !empty($request) ){ ?>
+            <?php if (!empty($request)) { ?>
             <table class="table table--orders">
               <tbody>
                 <tr class="">
                   <th width="15%"><?php echo Labels::getLabel('LBL_ID', $siteLangId); ?></th>
                   <th width="20%"><?php echo Labels::getLabel('LBL_Order_Id/Invoice_Number', $siteLangId); ?></th>
-                  <th ><?php echo Labels::getLabel( 'LBL_Product', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Return_Qty', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Request_Type', $siteLangId ); ?></th>
+                  <th ><?php echo Labels::getLabel('LBL_Product', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Return_Qty', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Request_Type', $siteLangId); ?></th>
                 </tr>
                 <tr>
                   <td><?php echo $request['orrequest_reference'] /* CommonHelper::formatOrderReturnRequestNumber($request['orrequest_id']) */; ?></td>
                   <td><?php echo $request['op_invoice_number']; ?>
                   <td>
                     <div class="item__description">
-                      <?php if($request['op_selprod_title'] != ''){ ?>
+                      <?php if ($request['op_selprod_title'] != '') { ?>
                         <div class="item__title" title="<?php echo $request['op_selprod_title'];?>"><?php echo $request['op_selprod_title']; ?></div>
                         <div class="item__sub_title"><?php echo $request['op_product_name']; ?></div>
                         <?php } else { ?>
@@ -92,17 +85,17 @@
                         <?php } ?>
                         <div class="item__brand"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>: <?php echo $request['op_brand_name']; ?></div>
                         <?php
-                        if( $request['op_selprod_options'] != '' ){ ?>
+                        if ($request['op_selprod_options'] != '') { ?>
                           <div class="item__specification"><?php echo $request['op_selprod_options']; ?></div>
-                        <?php }	?>
+                        <?php }    ?>
 
-                        <?php if( $request['op_selprod_sku'] != '' ){ ?>
+                        <?php if ($request['op_selprod_sku'] != '') { ?>
                           <div class="item__sku"><?php echo Labels::getLabel('LBL_SKU', $siteLangId).':  ' . $request['op_selprod_sku']; ?> </div>
                         <?php } ?>
 
-                        <?php if( $request['op_product_model'] != '' ){ ?>
+                        <?php if ($request['op_product_model'] != '') { ?>
                           <div class="item__model"><?php echo Labels::getLabel('LBL_Model', $siteLangId).':  ' . $request['op_product_model']; ?></div>
-                        <?php }	?>
+                        <?php }    ?>
                     </div>
                   </td>
                   <td><?php echo $request['orrequest_qty']; ?></td>
@@ -111,17 +104,17 @@
               </tbody>
             </table>
 
-
+	<div class="gap"></div>
             <table class="table table--orders">
               <tbody>
                 <tr class="">
                   <th width="15%"><?php echo Labels::getLabel('LBL_Reason', $siteLangId); ?></th>
-                  <th><?php echo Labels::getLabel( 'LBL_Date', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Product_Price', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Tax', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Shipping', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Status', $siteLangId ); ?></th>
-                  <th width="15%"><?php echo Labels::getLabel( 'LBL_Total_Amount', $siteLangId ); ?></th>
+                  <th><?php echo Labels::getLabel('LBL_Date', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Product_Price', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Shipping', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Status', $siteLangId); ?></th>
+                  <th width="15%"><?php echo Labels::getLabel('LBL_Total_Amount', $siteLangId); ?></th>
                 </tr>
                 <tr>
                   <?php $returnDataArr = CommonHelper::getOrderProductRefundAmtArr($request);?>
@@ -145,7 +138,7 @@
                 </tr>
               </tbody>
             </table>
-            <?php }	?>
+            <?php }    ?>
 
             <?php echo $returnRequestMsgsForm->getFormHtml(); ?>
             <div class="gap"></div>
@@ -153,13 +146,11 @@
             <div id="loadMoreBtnDiv"></div>
             <ul class="messages-list" id="messagesList"></ul>
 
-            <?php if( $request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN ) ){
-
-            $frmMsg->setFormTagAttribute('onSubmit','setUpReturnOrderRequestMessage(this); return false;');
-            $frmMsg->setFormTagAttribute('class', 'form');
-            $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
-            $frmMsg->developerTags['fld_default_col'] = 12;
-            ?>
+            <?php if ($request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN)) {
+                      $frmMsg->setFormTagAttribute('onSubmit', 'setUpReturnOrderRequestMessage(this); return false;');
+                      $frmMsg->setFormTagAttribute('class', 'form');
+                      $frmMsg->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
+                      $frmMsg->developerTags['fld_default_col'] = 12; ?>
             <div class="messages-list" >
                 <ul>
                    <li>
@@ -173,10 +164,11 @@
                    </li>
                 </ul>
             </div>
-            <?php } ?>
+            <?php
+                  } ?>
 
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>

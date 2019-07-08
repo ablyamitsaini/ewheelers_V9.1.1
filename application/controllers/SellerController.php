@@ -3077,8 +3077,9 @@ class SellerController extends SellerBaseController
         $frm->addHiddenField('', 'taxcat_id');
         $typeArr = applicationConstants::getYesNoArr($langId);
         $frm->addSelectBox(Labels::getLabel('LBL_Tax_in_percent', $langId), 'taxval_is_percent', $typeArr, '', array(), '');
-
-        $frm->addFloatField(Labels::getLabel('LBL_Value', $langId), 'taxval_value');
+        $fld = $frm->addFloatField(Labels::getLabel('LBL_Value', $langId), 'taxval_value');
+        $fld->requirements()->setFloatPositive(true);
+        $fld->requirements()->setRange('0', '100');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
         return $frm;
     }
@@ -3097,7 +3098,7 @@ class SellerController extends SellerBaseController
         $frm = new Form('frmInventoryUpdate');
         $frm->addHiddenField('', 'lang_id', $langId);
 
-        $fld = $frm->addButton(Labels::getLabel('Lbl_Upload_Csv_File', $langId), 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array('class'=>'csvFile-Js','id'=>'csvFile-Js'));
+        $fld = $frm->addButton('', 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array('class'=>'csvFile-Js','id'=>'csvFile-Js'));
         return $frm;
     }
 
@@ -3370,7 +3371,7 @@ class SellerController extends SellerBaseController
         $currentActivePlanId = 0;
         $currentActivePlanId = OrderSubscription:: getUserCurrentActivePlanDetails($this->siteLangId, UserAuthentication::getLoggedUserId(), array(OrderSubscription::DB_TBL_PREFIX.'plan_id'));
 
-        foreach ($packagesArr as $key=>$package) {
+        foreach ($packagesArr as $key => $package) {
             $packagesArr[$key]['plans'] =  SellerPackagePlans::getSellerVisiblePackagePlans($package[SellerPackages::DB_TBL_PREFIX.'id']);
             $packagesArr[$key]['cheapPlan'] = SellerPackagePlans:: getCheapestPlanByPackageId($package[SellerPackages::DB_TBL_PREFIX.'id']);
         }
@@ -3743,10 +3744,10 @@ class SellerController extends SellerBaseController
 
         if ($type == 'CATALOG_PRODUCT') {
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Option_Groups', $this->siteLangId), 'option_name');
-            $fld1->htmlAfterField='<div class="col-md-12"><small> <a class="" href="javascript:void(0);" onClick="optionForm(0);">' .Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
+            $fld1->htmlAfterField='<div class=""><small> <a class="" href="javascript:void(0);" onClick="optionForm(0);">' .Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
 
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Tag', $this->siteLangId), 'tag_name');
-            $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product-tag-js"></ul></div>';
+            $fld1->htmlAfterField= '<div class=""><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product-tag-js"></ul></div>';
         }
 
         $frm->addHiddenField('', 'ps_from_country_id');
@@ -4138,5 +4139,28 @@ class SellerController extends SellerBaseController
         $frm->addTextarea(Labels::getLabel('LBL_Address2', $formLangId), 'ura_address_line_2');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;
+    }
+
+    public function sellerOffers()
+    {
+        $this->_template->render(true, false);
+    }
+
+    public function searchSellerOffers()
+    {
+        $offers = DiscountCoupons::getUserCoupons(UserAuthentication::getLoggedUserId(), $this->siteLangId, DiscountCoupons::TYPE_SELLER_PACKAGE);
+
+        if ($offers) {
+            $this->set('offers', $offers);
+        } else {
+            $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
+        }
+        $this->_template->render(false, false);
+    }
+
+    public function productTooltipInstruction($type)
+    {
+        $this->set('type', $type);
+        $this->_template->render(false, false);
     }
 }

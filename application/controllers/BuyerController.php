@@ -381,7 +381,7 @@ class BuyerController extends BuyerBaseController
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
-            'totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
+            'totCombinedOrders as totOrders', 'op_selprod_id', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
             'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request')
         );
 
@@ -1273,6 +1273,14 @@ class BuyerController extends BuyerBaseController
             CommonHelper::redirectUserReferer();
         }
 
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
+
+        if (!$canSubmitFeedback) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
+
+
         $frm = $this->getOrderFeedbackForm($opId, $this->siteLangId);
         $this->set('frm', $frm);
         $this->set('opDetail', $opDetail);
@@ -1372,14 +1380,10 @@ class BuyerController extends BuyerBaseController
         $selProdCodeArr = explode('_', $selProdCode);
         $productId = array_shift($selProdCodeArr);
 
-        $oFeedbackSrch = new SelProdReviewSearch();
-        $oFeedbackSrch->doNotCalculateRecords();
-        $oFeedbackSrch->doNotLimitRecords();
-        $oFeedbackSrch->addCondition('spreview_postedby_user_id', '=', $userId);
-        $oFeedbackSrch->addCondition('spreview_order_id', '=', $opDetail['op_order_id']);
-        $oFeedbackSrch->addCondition('spreview_selprod_id', '=', $selProdId);
-        $oFeedbackRs = $oFeedbackSrch->getResultSet();
-        if (FatApp::getDb()->fetch($oFeedbackRs)) {
+
+        $canSubmitFeedback = Orders::canSubmitFeedback($userId, $opDetail['op_order_id'], $selProdId);
+
+        if (!$canSubmitFeedback) {
             $message = Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
@@ -1586,11 +1590,12 @@ class BuyerController extends BuyerBaseController
         $op_id = FatApp::getPostedData('op_id', null, '0');
         $user_id = UserAuthentication::getLoggedUserId();
         $srch = new OrderProductSearch($this->siteLangId, true);
+        $srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT, 'cvd');
         $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->addCondition('op_id', '=', $op_id);
         $srch->addOrder("op_id", "DESC");
-        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type'));
+        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type','op_unit_price','opcharge_amount'));
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
 
@@ -1611,6 +1616,20 @@ class BuyerController extends BuyerBaseController
             }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        if (abs($opDetail['opcharge_amount']) > 0) {
+            $orrequestQty = FatUtility::int($post['orrequest_qty']);
+
+            $volumeDiscountPerItem = abs($opDetail['opcharge_amount'])/$opDetail['op_qty'];
+            $amtChargeBackToBuyer = ($opDetail['op_qty'] - $orrequestQty)*$volumeDiscountPerItem;
+
+            $pricePerItemCharged = $opDetail['op_unit_price'] - $volumeDiscountPerItem;
+
+            if ($amtChargeBackToBuyer > ($opDetail['op_unit_price'] - $volumeDiscountPerItem)*abs($orrequestQty)) {
+                Message::addErrorMessage(Labels::getLabel('MSG_Order_not_eligible_for_partial_qty_refund', $this->siteLangId));
+                FatUtility::dieJsonError(Message::getHtml());
+            }
         }
 
         if ($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL) {

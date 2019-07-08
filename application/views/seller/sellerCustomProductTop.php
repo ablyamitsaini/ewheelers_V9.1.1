@@ -1,4 +1,4 @@
-<?php $inactive = ($product_id==0)?'fat-inactive':'';	 ?>
+<?php $inactive = ($product_id==0)?'fat-inactive':''; ?>
 <ul>
 	<li class="<?php echo ($activeTab == 'GENERAL')?'is-active':''?>">
 	<a href="javascript:void(0)" onClick="customProductForm(<?php echo $product_id;?>,<?php echo $prodcat_id;?>)">

@@ -63,15 +63,17 @@ foreach ($arrListing as $sn => $row){
 	}
 }
 if( count($arrListing) == 0 ){
-	$tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
+    echo $tbl->getHtml();
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
 } else {
 	echo '<div class="box__head"><div class="btn-group">';
 	if(!empty($orderDate)){
 		echo '<a href="'.CommonHelper::generateUrl('Reports','SalesReport').'" class="btn btn--primary btn--sm">'.Labels::getLabel('LBL_Back',$siteLangId).'</a>';
 	}
 	echo '</div></div>';
+    echo $tbl->getHtml();
 }
-echo $tbl->getHtml();
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData ( $postedData, array ('name' => 'frmSalesReportSrchPaging') );
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToSalesReportSearchPage');

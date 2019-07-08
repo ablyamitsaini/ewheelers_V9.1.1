@@ -12,16 +12,16 @@
 
 <div id="body" class="body">
  
- <div class="section section--pagebar">
+ <div class="bg--second pt-3 pb-3">
       <div class="container container--fixed">
         <div class="row align-items-center">
           <div class="col-md-8">
            
-           <h5><?php echo $shop['shop_name']; ?></h5>
+           <h1><?php echo $shop['shop_name']; ?></h1>
               <p><?php echo $shopLocation; ?> <?php echo Labels::getLabel('LBL_Opened_on', $siteLangId); ?> <?php echo FatDate::format($shop['shop_created_on']); ?></p>
             
           </div>
-          <div class="col-md-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a></div>
+          <div class="col-md-4 align--right"><a href="<?php echo CommonHelper::generateUrl('Shops', 'View', array($shop['shop_id'])); ?>" class="btn btn--secondary"><?php echo Labels::getLabel('LBL_Back_to_Shop', $siteLangId); ?></a></div>
         </div>
       </div>
     </div>

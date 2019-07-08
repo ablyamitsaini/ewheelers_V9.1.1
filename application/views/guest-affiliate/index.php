@@ -6,14 +6,14 @@
 	<div  class="banner" style="<?php echo $bgImageUrl; ?>">
 		<div class="container">
 			<div class="row">
-			 <div class="col-md-6">
+			 <div class="col-xl-7 col-lg-6">
 					<div class="seller-slogan">
 						<div class="seller-slogan-txt">
 						<?php echo FatUtility::decodeHtmlEntities( nl2br($bannerSlogan['epage_content']) );?>
 						</div>
 					</div>
 				</div>
-				 <div class="col-md-6">
+				 <div class="col-xl-5 col-lg-6">
 					<div class="seller-register-form">
 						<div class="heading3"><?php echo Labels::getLabel('LBL_Affiliate_Registeration', $siteLangId); ?></div>
 						<div id="register-form-div"></div>
@@ -22,7 +22,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="gap"></div>
+	
 </div>
 <script type="text/javascript">
 	$("document").ready(function(){

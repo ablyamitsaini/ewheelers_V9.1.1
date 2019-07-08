@@ -43,36 +43,30 @@ var cart = {
 	remove: function (key, page){
 		if(confirm( langLbl.confirmRemove )){
 			var data = 'key=' + key ;
-			if(page == 'checkout')
-			{
-				fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
+			fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
+				if(page == 'checkout')
+				{
 					if( ans.status ){
 						loadFinancialSummary();
 						resetCheckoutDiv();
 					}
-					$.mbsmessage.close();
-				});
-			}
-			else if(page=='cart')
-			{
-				fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
+				}
+				else if(page=='cart')
+				{
 					if( ans.status ){
 						listCartProducts();
 						$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
 					}
-					$.mbsmessage.close();
-				});
-			}
-			else
-			{
-				fcom.updateWithAjax(fcom.makeUrl('Cart','remove'), data ,function(ans){
-						$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
-						//$('#shipping-products').load(fcom.makeUrl('checkout', 'shippingSummary'));
-						//listCartProducts();
-
-					$.mbsmessage.close();
-				});
-			}
+					if(ans.total == 0){
+						$('.emtyCartBtn-js').hide();
+					}
+				}
+				else
+				{
+					$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
+				}
+				$.mbsmessage.close();
+			});
 		}
 	},
 

@@ -1,4 +1,4 @@
-<section class="post-detail">
+<section class="post-listing">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9 mb-4 mb-md-0">

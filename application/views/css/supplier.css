@@ -378,7 +378,8 @@
 .seller_nav-active .short-nav, .seller_nav-active .common_overlay {
 	opacity: 1;
 	visibility: visible;
-	transform: translate(0px, 0px);
+	-webkit-transform: translate(0px, 0px);
+	        transform: translate(0px, 0px);
 	-moz-transform: translate(0px, 0px);
 	webkit-transform: translate(0px, 0px);
 }
@@ -415,13 +416,15 @@
 .seller_login-active .seller-login, .seller_login-active .common_overlay {
 	opacity: 1;
 	visibility: visible;
-	transform: translate(0px, 0px);
+	-webkit-transform: translate(0px, 0px);
+	        transform: translate(0px, 0px);
 	-moz-transform: translate(0px, 0px);
 	webkit-transform: translate(0px, 0px);
 }
 .seller-login {
 	background: var(--first-color);
-	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+	        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
 	top: 50px;
 	left: 0;
 	right: 0;

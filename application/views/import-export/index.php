@@ -9,16 +9,8 @@
             </div>
         </div>
         <div class="content-body">
-            <div class="cards">
-                <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Import_Export', $siteLangId);?></h5>
-                    <div class="note-messages"><strong><?php echo Labels::getLabel('LBL_User_ID', $siteLangId); ?>: <?php echo UserAuthentication::getLoggedUserId(); ?></strong></div>
-                </div>
-                <div class="cards-content pl-4 pr-4 ">
-                    <div id="importExportBlock">
-                        <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
-                    </div>
-                </div>
+            <div id="importExportBlock">
+                <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
             </div>
         </div>
     </div>

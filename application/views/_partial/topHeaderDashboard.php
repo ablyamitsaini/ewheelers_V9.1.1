@@ -35,7 +35,7 @@
             <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
             <ul class="c-header-links">
                 <li class="<?php echo (($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Advertiser' || $controllerName == 'Affiliate') && $action == 'index') ? 'is-active' : ''; ?>"><a data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl($controllerName); ?>"><?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?></a></li>
-                <?php if ($isShopActive && $shop_id > 0) { ?>
+                <?php if ($isShopActive && $shop_id > 0 && $activeTab == 'S') { ?>
                 <li><a data-org-url="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id), '', null, false, $getOrgUrl); ?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id)); ?>"><?php echo Labels::getLabel('LBL_Shop', $siteLangId);?></a></li>
                 <?php } ?>
             </ul>
@@ -55,3 +55,7 @@
             </div>
         </div>
     </header>
+    <div class="display-in-print text-center">
+        <img src="<?php echo CommonHelper::generateFullUrl('Image', 'invoiceLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>"
+            title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>">
+    </div>

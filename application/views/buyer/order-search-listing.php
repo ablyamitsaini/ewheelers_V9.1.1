@@ -28,9 +28,9 @@ foreach ($orders as $sn => $order) {
         $canCancelOrder = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
         $canReturnRefund = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
     }
-    $canReviewOrders = false;
+    $isValidForReview = false;
     if (in_array($order["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
-        $canReviewOrders = true;
+        $isValidForReview = true;
     }
     foreach ($arr_flds as $key => $val) {
         $td = $tr->appendElement('td');
@@ -108,8 +108,8 @@ foreach ($orders as $sn => $order) {
                         true
                     );
                 }
-
-                if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0) && $canReviewOrders) {
+                $canSubmitFeedback = Orders::canSubmitFeedback($order['order_user_id'], $order['order_id'], $order['op_selprod_id']);
+                if ($canSubmitFeedback && $isValidForReview) {
                     $opFeedBackUrl = CommonHelper::generateUrl('Buyer', 'orderFeedback', array($order['op_id']));
                     $li = $ul->appendElement("li");
                     $li->appendElement(
@@ -149,11 +149,11 @@ foreach ($orders as $sn => $order) {
         }
     }
 }
-if (count($orders) == 0) {
-    $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds), 'class'=>'text-center'), Labels::getLabel('LBL_No_record_found', $siteLangId));
-}
 echo $tbl->getHtml();
-
+if (count($orders) == 0) {
+    $message = Labels::getLabel('LBL_No_Records_Found', $siteLangId);
+    $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>$message));
+}
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmOrderSrchPaging'));
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount, 'callBackJsFunc' => 'goToOrderSearchPage');

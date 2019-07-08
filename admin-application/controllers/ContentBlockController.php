@@ -13,6 +13,30 @@ class ContentBlockController extends AdminBaseController
         $this->rewriteUrl = Extrapage::REWRITE_URL_PREFIX;
     }
 
+
+    public function getBreadcrumbNodes($action)
+    {
+        $nodes = array();
+
+        switch ($action) {
+            case 'importInstructions':
+                $nodes[] = array('title'=>Labels::getLabel('LBL_Import_instructions', $this->adminLangId));
+                break;
+            case 'index':
+                $className = get_class($this);
+                $arr = explode('-', FatUtility::camel2dashed($className));
+                array_pop($arr);
+                $urlController = implode('-', $arr);
+                $className = ucwords(implode(' ', $arr));
+                $nodes[] = array('title'=>$className);
+                break;
+            default:
+                $nodes[] = array('title' => $action);
+                break;
+        }
+        return $nodes;
+    }
+
     public function index($epage_id = 0)
     {
         $epage_id = FatUtility::int($epage_id);
