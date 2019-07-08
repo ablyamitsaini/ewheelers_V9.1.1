@@ -9,8 +9,7 @@ $data = array(
     'reviewsList' => $reviewsList,
     'page' => $page,
     'pageCount' => $pageCount,
-    'reviewsList' => $reviewsList,
-    'reviewsList' => $reviewsList,
+    'recordCount' => $recordCount,
 );
 
 if (1 > count($reviewsList)) {
