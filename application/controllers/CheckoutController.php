@@ -359,7 +359,7 @@ class CheckoutController extends MyAppController
         /* setup billing address[ */
         $BillingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $billing_address_id);
         if (!$BillingAddressDetail) {
-            $message = Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID.', $this->siteLangId);
+            $message = Labels::getLabel('MSG_Invalid_Billing_Address.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
             }
@@ -377,7 +377,7 @@ class CheckoutController extends MyAppController
             }
             $ShippingAddressDetail = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), 0, 0, $shipping_address_id);
             if (!$ShippingAddressDetail) {
-                $message = Labels::getLabel('MSG_ACTION_TRYING_PERFORM_NOT_VALID.', $this->siteLangId);
+                $message = Labels::getLabel('MSG_Invalid_Shipping_Address.', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError(strip_tags($message));
                 }
@@ -506,7 +506,7 @@ class CheckoutController extends MyAppController
         $this->set('shippingAddressDetail', UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $this->cartObj->getCartShippingAddress()));
 
         $this->set('selectedProductShippingMethod', $this->cartObj->getProductShippingMethod());
-        
+
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }

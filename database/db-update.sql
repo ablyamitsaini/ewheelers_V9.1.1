@@ -336,3 +336,4 @@ UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "Weâ€˜re here,
 UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "Weâ&euro;˜re here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "Weâ&euro;˜re here, ready to talk") > 0;
 UPDATE tbl_email_templates SET etpl_body = REPLACE(etpl_body, "We're here, ready to talk", "We are here, ready to talk") WHERE INSTR(etpl_body, "We're here, ready to talk, ready to talk") > 0;
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%LBL_Please_enter_valid_format%';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%MSG_ACTION_TRYING_PERFORM_NOT_VALID%';
