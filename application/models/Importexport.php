@@ -2909,9 +2909,9 @@ class Importexport extends ImportexportCommon
                         case 'selprod_cod_enabled':
                         case 'selprod_deleted':
                             if (!$this->settings['CONF_USE_O_OR_1']) {
-                                $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
                             }
-                        break;
+                            break;
                     }
 
                     if (true === $invalid) {
