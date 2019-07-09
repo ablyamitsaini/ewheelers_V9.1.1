@@ -1415,6 +1415,16 @@ class Importexport extends ImportexportCommon
                         $errMsg = Labels::getLabel("MSG_Sorry_you_are_not_authorized_to_update_this_product.", $langId);
                         $breakForeach = true;
                     }
+
+                    /*if (in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
+                        if (!array_key_exists($userId, $userProdUploadLimit)) {
+                            $userProdUploadLimit[$userId] = Product::getActiveCount($userId);
+                        }
+
+                        if ($userProdUploadLimit[$userId] >= SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed')) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        }
+                    }*/
                 }
 
                 if (false === $errMsg) {
@@ -1631,6 +1641,7 @@ class Importexport extends ImportexportCommon
                         }
 
                         $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
+                        //$userProdUploadLimit[$userId]++;
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
 
@@ -2679,7 +2690,7 @@ class Importexport extends ImportexportCommon
                         $moved = $afileObj->moveAttachment($prodCatalogMediaArr['afile_physical_path'], $fileType, $productId, 0, $prodCatalogMediaArr['afile_name'], $prodCatalogMediaArr['afile_display_order'], false, $prodCatalogMediaArr['afile_lang_id']);
 
                         if (false === $moved) {
-                            $errMsg = str_replace('{filepath}',$prodCatalogMediaArr['afile_physical_path'],Labels::getLabel("MSG_Invalid_File_{filepath}.", $langId));
+                            $errMsg = str_replace('{filepath}', $prodCatalogMediaArr['afile_physical_path'], Labels::getLabel("MSG_Invalid_File_{filepath}.", $langId));
                             CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, 'N/A', $errMsg ));
                         }
                     } else {

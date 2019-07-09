@@ -7,9 +7,10 @@
 	/* $keywordFld->setFieldTagAttribute('autofocus','autofocus'); */
 	$keywordFld->setFieldTagAttribute('id','header_search_keyword');
 	$keywordFld->setFieldTagAttribute('onkeyup','animation(this)');
+	$selectFld = $headerSrchFrm->getField('category');
+	$selectFld->setFieldTagAttribute('id','searched_category');
 	/* CommonHelper::printArray($categoriesArr); die; */
-	/* $selectFld = $headerSrchFrm->getField('category');
-	$selectFld->setFieldTagAttribute('id','category--js');
+	/*
 	$selectFld->setFieldTagAttribute('onChange','setSelectedCatValue()'); */
 ?>
 
