@@ -206,7 +206,7 @@ class FilterGroupsController extends AdminBaseController
         $frm->addHiddenField('', 'filtergroup_id', 0);
         $frm->addRequiredField(Labels::getLabel('LBL_Filter_Group_Identifier', $this->adminLangId), 'filtergroup_identifier');
         $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);    
-        $frm->addSelectBox(Labels::getLabel('LBL_Filter_Group_Active', $this->adminLangId), 'filtergroup_active', $activeInactiveArr, '', array('class'=>'small'), '');                
+        $frm->addSelectBox(Labels::getLabel('LBL_Filter_Group_Active', $this->adminLangId), 'filtergroup_active', $activeInactiveArr, '', array(), '');                
         $frm->addSubmitButton('', 'btn_submit', $action);        
         return $frm;
     }

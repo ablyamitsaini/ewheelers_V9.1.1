@@ -223,7 +223,7 @@ class BlogContributionsController extends AdminBaseController
         $frm = new Form('frmBlogContribution', array('id'=>'frmBlogContribution'));
         $frm->addHiddenField('', 'bcontributions_id', $bcontributions_id);
         $statusArr = applicationConstants::getBlogContributionStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Contribution_Status', $this->adminLangId), 'bcontributions_status', $statusArr, '', array('class'=>'small'), '');
+        $frm->addSelectBox(Labels::getLabel('LBL_Contribution_Status', $this->adminLangId), 'bcontributions_status', $statusArr, '', array(), '');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
     }
@@ -234,7 +234,7 @@ class BlogContributionsController extends AdminBaseController
 
         $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword', '', array('class'=>'search-input'));
         $statusArr = applicationConstants::getBlogContributionStatusArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel('LBL_Contribution_Status', $this->adminLangId), 'bcontributions_status', $statusArr, '', array('class'=>'small'), 'Select');
+        $frm->addSelectBox(Labels::getLabel('LBL_Contribution_Status', $this->adminLangId), 'bcontributions_status', $statusArr, '', array(), 'Select');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'bcontributions_id');
         $fld_submit=$frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));

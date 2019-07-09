@@ -4,7 +4,7 @@ if (!empty($postList)) {
     <div class="col-md-6 mb-5">
         <div class="post">
             <figure class="post_media">
-                <img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>">
+                <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><img data-ratio="16:9" src="<?php echo CommonHelper::generateUrl('image', 'blogPostFront', array($blogPost['post_id'], $siteLangId, "LAYOUT2"), CONF_WEBROOT_URL); ?>" alt="<?php echo $blogPost['post_title']?>"></a>
             </figure>
             <ul class="post_category">
                 <?php $categoryIds = !empty($blogPost['categoryIds'])?explode(',', $blogPost['categoryIds']):array();

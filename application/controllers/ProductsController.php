@@ -388,6 +388,7 @@ class ProductsController extends MyAppController
         $selProdReviewObj->doNotCalculateRecords();
         $selProdReviewObj->doNotLimitRecords();
         $selProdReviewObj->addGroupBy('spr.spreview_product_id');
+        $selProdReviewObj->addGroupBy('sprh_spreview_id');
         $selProdReviewObj->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
         $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id','spr.spreview_product_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
@@ -413,7 +414,7 @@ class ProductsController extends MyAppController
         $selProdReviewObj->addCondition('spreview_product_id', '=', $product['product_id']);
         $selProdReviewObj->addMultipleFields(array('count(spreview_postedby_user_id) totReviews','sum(if(sprating_rating=1,1,0)) rated_1','sum(if(sprating_rating=2,1,0)) rated_2','sum(if(sprating_rating=3,1,0)) rated_3','sum(if(sprating_rating=4,1,0)) rated_4','sum(if(sprating_rating=5,1,0)) rated_5'));
         $reviews = FatApp::getDb()->fetch($selProdReviewObj->getResultSet());
-
+        /* CommonHelper::printArray($reviews); die; */
         $this->set('reviews', $reviews);
         $subscription = false;
         $allowed_images =-1;
