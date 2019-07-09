@@ -221,7 +221,7 @@ class AttachedFile extends MyAppModel
         $defaultLangIdForErrors = ($langId == 0) ? $this->commonLangId : $langId;
 
         $path = CONF_UPLOADS_PATH;
-        $file = $path . $filePath.'/'.$name;
+        $file = $path . $filePath;
 
         if (false === $this->validateFile($file, $name, $defaultLangIdForErrors)) {
             return false;
@@ -244,7 +244,7 @@ class AttachedFile extends MyAppModel
             $saveName = rand(10, 99) . '-' . $saveName;
         }
 
-        if (false === rename($file, $path . $saveName)) {
+        if (false === copy($file, $path . $saveName)) {
             $this->error = Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $defaultLangIdForErrors);
             return false;
         }
