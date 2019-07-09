@@ -424,8 +424,10 @@ class AccountController extends LoggedUserController
         $this->set('userTotalWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId(), false, false));
         $this->set('promotionWalletToBeCharged', Promotion::getPromotionWalleToBeCharged(UserAuthentication::getLoggedUserId()));
         $this->set('withdrawlRequestAmount', User::getUserWithdrawnRequestAmount(UserAuthentication::getLoggedUserId()));
-        $this->set('userWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId()));
-        $this->_template->render(false, false);
+        
+        if (false ===  MOBILE_APP_API_CALL) {
+            $this->_template->render(false, false);
+        }
     }
 
     public function setUpWalletRecharge()
@@ -580,6 +582,10 @@ class AccountController extends LoggedUserController
         $this->set('recordCount', $srch->recordCount());
         $this->set('postedData', $post);
         $this->set('statusArr', Transactions::getStatusArr($this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->creditsInfo();
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
