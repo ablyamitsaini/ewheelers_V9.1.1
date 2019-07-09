@@ -627,6 +627,8 @@ trait CustomProducts
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 1)));
             FatUtility::dieWithError(Message::getHtml());
         }
+        
+        FatUtility::dieJsonSuccess(Labels::getLabel('LBL_Option_removed_successfully.', $this->siteLangId));
     }
 
     /* public function customProductImages( $product_id ){
