@@ -147,8 +147,9 @@ class Importexport extends ImportexportCommon
 
     public function getCell($arr = array(), $index, $defaultValue = '')
     {
-        if (array_key_exists($index, $arr) && trim($arr[$index]) != '') {
-            return FatUtility::webCompatibleData($arr[$index]);
+        if (array_key_exists($index, $arr) && trim($arr[$index]) != '') {            
+            $str = str_replace("\xc2\xa0", '', trim($arr[$index]));
+            return str_replace("\xa0", '', $str);
         }
         return $defaultValue;
     }
