@@ -147,7 +147,7 @@ class Importexport extends ImportexportCommon
 
     public function getCell($arr = array(), $index, $defaultValue = '')
     {
-        if (array_key_exists($index, $arr) && trim($arr[$index]) != '') {            
+        if (array_key_exists($index, $arr) && trim($arr[$index]) != '') {
             $str = str_replace("\xc2\xa0", '', trim($arr[$index]));
             return str_replace("\xa0", '', $str);
         }
@@ -4299,6 +4299,7 @@ class Importexport extends ImportexportCommon
                         }
 
                         if ('option_identifier' == $columnKey) {
+                            $columnKey = 'optionvalue_option_id';
                             if (!array_key_exists($colValue, $optionIdentifierArr)) {
                                 $res = $this->getAllOptions(false, $colValue);
                                 if (!$res) {
@@ -4317,6 +4318,7 @@ class Importexport extends ImportexportCommon
                             $optionValueData = $optionValueObj->getAtttibutesByIdentifierAndOptionId($optionId, $optionvalue_identifier, array( 'optionvalue_id' ));
                         }
                     }
+
                     if (true === $invalid) {
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
                         CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
