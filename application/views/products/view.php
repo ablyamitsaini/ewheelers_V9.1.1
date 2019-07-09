@@ -153,20 +153,20 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                         <?php if ($option['values']) { ?>
                                         <ul class="drop">
                                             <?php foreach ($option['values'] as $opVal) {
-                                        $isAvailable = true;
-                                        if (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
-                                            $optionUrl = CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
-                                        } else {
-                                            $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
-                                            $optionUrlArr = explode("::", $optionUrl);
-                                            if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
-                                                $optionUrl = $optionUrlArr[0];
-                                                $isAvailable = false;
-                                            }
-                                        } ?>
+                                                $isAvailable = true;
+                                                if (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
+                                                    $optionUrl = CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
+                                                } else {
+                                                    $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
+                                                    $optionUrlArr = explode("::", $optionUrl);
+                                                    if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
+                                                        $optionUrl = $optionUrlArr[0];
+                                                        $isAvailable = false;
+                                                    }
+                                                } ?>
                                             <li class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' selected' : ' ';
-                                        echo (!$optionUrl) ? ' is-disabled' : '';
-                                        echo (!$isAvailable) ? 'not--available':''; ?>">
+                                            echo (!$optionUrl) ? ' is-disabled' : '';
+                                            echo (!$isAvailable) ? 'not--available':''; ?>">
                                                 <?php if ($option['option_is_color'] && $opVal['optionvalue_color_code'] != '') { ?>
                                                 <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>"
                                                     title="<?php echo $opVal['optionvalue_name'];
@@ -183,9 +183,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                     <?php echo $opVal['optionvalue_name'];  ?> </a>
                                                 <?php } ?>
                                             </li>
-                                            <?php
-                                    } ?>
-
+                                            <?php } ?>
                                             </ul>
                                         <?php } ?>
                                     </div>
@@ -222,7 +220,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     echo $frmBuyProduct->getFormTag();
                                     $qtyField =  $frmBuyProduct->getField('quantity');
                                     $qtyFieldName =  $qtyField->getCaption();
-                                    if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
+                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
                                 <div class="row align-items-end">
                                     <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
                                         <div class="form__group form__group-select">
