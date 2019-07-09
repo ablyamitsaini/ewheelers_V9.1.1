@@ -1210,6 +1210,10 @@ class Product extends MyAppModel
         );
 
         $includeRating = false;
+        
+        if (true ===  MOBILE_APP_API_CALL) {
+            $includeRating = true;
+        }
 
         if (array_key_exists('top_products', $criteria)) {
             $includeRating = true;
