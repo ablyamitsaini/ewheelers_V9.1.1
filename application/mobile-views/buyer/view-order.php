@@ -7,14 +7,28 @@ $statusArr = array(
 if (1 > $opId) {
     $childOrderDetail = array_values($childOrderDetail);
 }
+$orderDetail['charges'] = !empty($orderDetail['charges']) ? $orderDetail['charges'] : (object)array();
+$orderDetail['billingAddress'] = !empty($orderDetail['billingAddress']) ? $orderDetail['billingAddress'] : (object)array();
+$orderDetail['shippingAddress'] = !empty($orderDetail['shippingAddress']) ? $orderDetail['shippingAddress'] : (object)array();
+
+if (!empty($orderDetail['charges'])) {
+    $charges = array();
+    $i = 0;
+    foreach ($orderDetail['charges'] as $key => $value) {
+        $charges[$key] = array_values($value);
+        $i++;
+    }
+    $orderDetail['charges'] = $charges;
+}
+
 $data = array(
     'orderDetail' => $orderDetail,
-    'childOrderDetail' => $childOrderDetail,
-    'orderStatuses' => $orderStatuses,
+    'childOrderDetail' => !empty($childOrderDetail) ? $childOrderDetail : (object)array(),
+    'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array()    ,
     'primaryOrder' => $primaryOrder,
-    'digitalDownloads' => $digitalDownloads,
-    'digitalDownloadLinks' => $digitalDownloadLinks,
-    'languages' => $languages,
+    'digitalDownloads' => !empty($digitalDownloads) ? $digitalDownloads : (object)array(),
+    'digitalDownloadLinks' => !empty($digitalDownloadLinks) ? $digitalDownloadLinks : (object)array(),
+    'languages' => !empty($languages) ? $languages : (object)array(),
     'yesNoArr' => $yesNoArr,
 );
 if (1 > count($orderDetail)) {
