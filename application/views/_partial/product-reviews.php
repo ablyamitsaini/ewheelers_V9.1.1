@@ -44,7 +44,7 @@ if ($totReviews) {
     <?php } ?>
     <?php if ($totReviews > 0) { ?>
     <div class="col-md-3 <?php echo ($canSubmitFeedback) ? '' : 'align--center'; ?>">
-        <div class="js-wrap-drop wrap-drop wrap-drop--first">
+        <div class="js-wrap-drop-reviews wrap-drop wrap-drop--first">
             <span><?php echo Labels::getLabel('Lbl_Most_Recent', $siteLangId); ?></span>
             <ul class="drop">
                 <li class="selected"><a href="javascript:void(0);" data-sort='most_recent' onclick="getSortedReviews(this);return false;"><?php echo Labels::getLabel('Lbl_Most_Recent', $siteLangId); ?></a></li>
@@ -100,8 +100,7 @@ $(document).ready(function(){
 
     $(function () {
         // create new variable for each menu
-        var dd1 = new DropDown($('.js-wrap-drop'));
-        // var dd2 = new DropDown($('#other-gases'));
+        var dd1 = new DropDown($('.js-wrap-drop-reviews'));
         $(document).click(function () {
             // close menu on document click
             $('.wrap-drop').removeClass('active');

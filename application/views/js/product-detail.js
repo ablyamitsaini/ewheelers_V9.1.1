@@ -43,18 +43,23 @@ $(document).ready(function(){
     };
 
     $(function() {
+
+		$(".js-wrap-drop").each(function(index, element) {
+            var div = '#js-wrap-drop' + index;
+            new DropDown($(div));
+			console.log(div);
+        });
+		// var dd1 = new DropDown($('.js-wrap-drop'));
         // create new variable for each menu
         $(document).click(function() {
             // close menu on document click
             $('.wrap-drop').removeClass('active');
         });
-
 		$('.js-wrap-drop').click(function() {
 			$(this).parent().siblings().children('.js-wrap-drop').removeClass('active');
 			// $(this).siblings().children('.js-wrap-drop').addClass('active');
 		});
     });
-
 
 });
 
@@ -71,10 +76,7 @@ $(document).ready(function(){
 	    $(content).fadeIn(200);
 	});
 
-	$( ".js-wrap-drop" ).each(function( index, element ) {
-		var div = '#js-wrap-drop'+index;
-		new DropDown($(div));
-	});
+
 
 })(jQuery);
 

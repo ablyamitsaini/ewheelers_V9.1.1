@@ -119,12 +119,12 @@
                     <div id="wallet">
                         <h6><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?> <strong>
                             <?php
-                            $btnSubmitFld = $confirmForm->getField('btn_submit');
+                            $btnSubmitFld = $confirmPaymentFrm->getField('btn_submit');
                             $btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary');
 
-                            $confirmForm->developerTags['colClassPrefix'] = 'col-md-';
-                            $confirmForm->developerTags['fld_default_col'] = 12;
-                            echo $confirmForm->getFormHtml(); ?>
+                            $confirmPaymentFrm->developerTags['colClassPrefix'] = 'col-md-';
+                            $confirmPaymentFrm->developerTags['fld_default_col'] = 12;
+                            echo $confirmPaymentFrm->getFormHtml(); ?>
                              <div class="gap"></div>
                              <script type="text/javascript">
                                  function confirmOrder(frm) {
