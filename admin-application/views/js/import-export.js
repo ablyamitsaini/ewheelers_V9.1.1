@@ -76,7 +76,7 @@
                 contentType: false,
                 success: function(t) {
                     try {
-                        var ans = $.parseJSON(t);
+                        var ans = $.parseJSON(t);                        
                         if (ans.status == 1) {
                             reloadList();
                             $(document).trigger('close.facebox');
@@ -87,7 +87,7 @@
                             $(document).trigger('close.mbsmessage');
                             fcom.displayErrorMessage(ans.msg);
                         }
-                        
+
                         if (typeof ans.CSVfileUrl !== 'undefined') {
                             location.href = ans.CSVfileUrl;
                         } else {
