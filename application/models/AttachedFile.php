@@ -244,7 +244,7 @@ class AttachedFile extends MyAppModel
             $saveName = rand(10, 99) . '-' . $saveName;
         }
 
-        if (false === rename($file, $path . $saveName)) {
+        if (false === copy($file, $path . $saveName)) {
             $this->error = Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $defaultLangIdForErrors);
             return false;
         }
