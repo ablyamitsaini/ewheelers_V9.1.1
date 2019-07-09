@@ -143,6 +143,11 @@ class ProductsController extends MyAppController
             $prodSrchObj->addBrandCondition($brandId);
         }
 
+        $featured = FatApp::getPostedData('featured', FatUtility::VAR_INT, 0);
+        if (0 < $featured) {
+            $prodSrchObj->addCondition('product_featured', '=', applicationConstants::YES);            
+        }
+
         $keyword = '';
         if (array_key_exists('keyword', $headerFormParamsAssocArr)) {
             $keyword = $headerFormParamsAssocArr['keyword'];
