@@ -386,16 +386,7 @@ class SellerProduct extends MyAppModel
             trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
         }
         $srch = new SearchBase(static::DB_TBL_SELLER_PROD_OPTIONS, 'spo');
-        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0)) {
-            $validDateCondition = " and oss.ossubs_till_date >= '".date('Y-m-d')."'";
-            $srch->joinTable(static::DB_TBL, 'INNER JOIN', 'spo.selprodoption_selprod_id = sp.selprod_id and sp.selprod_id = '.$selprod_id, 'sp');
-            $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'sp.selprod_product_id = p.product_id', 'p');
-            $srch->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = seller_user.user_id and seller_user.user_is_supplier = '.applicationConstants::YES.' AND seller_user.user_deleted = '.applicationConstants::NO, 'seller_user');
-            $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = seller_user.user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES, 'seller_user_cred');
-            $srch->joinTable(Orders::DB_TBL, 'INNER JOIN', 'o.order_user_id=seller_user.user_id AND o.order_type='.ORDERS::ORDER_SUBSCRIPTION.' AND o.order_is_paid =1', 'o');
-            $srch->joinTable(OrderSubscription::DB_TBL, 'INNER JOIN', 'o.order_id = oss.ossubs_order_id and oss.ossubs_status_id='.FatApp::getConfig('CONF_DEFAULT_SUBSCRIPTION_PAID_ORDER_STATUS').$validDateCondition, 'oss');
-        }
-
+        
         if ($option_id) {
             $srch->addCondition(static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'option_id', '=', $option_id);
         }
