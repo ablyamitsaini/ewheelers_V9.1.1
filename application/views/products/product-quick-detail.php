@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 quick-col-1">
-        <?php $showAddToFavorite = true; include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
+        <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
         <?php if ($productImagesArr) { ?>
         <div class="js-product-gallery product-gallery" dir="<?php echo CommonHelper::getLayoutDirection();?>">
             <?php foreach ($productImagesArr as $afile_id => $image) {
