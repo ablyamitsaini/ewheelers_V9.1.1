@@ -107,6 +107,18 @@ $(document).ready(function(){
 		//searchProducts(frm,0,0,1,1);
 	});
 
+	$(document).on('blur', 'input[name=priceFilterMinValue]', function(e) {
+		e.preventDefault();
+		removePaginationFromLink();
+		addPricefilter(true);
+	});
+
+	$(document).on('blur', 'input[name=priceFilterMaxValue]', function(e) {
+		e.preventDefault();
+		removePaginationFromLink();
+		addPricefilter(true);
+	});
+
 	$(document).on('keyup', 'input[name=priceFilterMinValue]', function(e) {
 		var code = e.which;
 		if( code == 13 ) {
@@ -305,7 +317,7 @@ function getSearchQueryUrl(includeBaseUrl){
 		delete searchArr['keyword'];
 		url = url +'/'+'keyword-'+keyword.replace(/_/g,'-');
 	}
-	
+
 	var category = parseInt($("input[id=searched_category]").val());
 	if(category > 0){
 		delete searchArr['category'];

@@ -1,7 +1,7 @@
-<?php 
+<?php
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $prodCatLangFrm->setFormTagAttribute('id', 'prodCate');
-$prodCatLangFrm->setFormTagAttribute('class', 'web_form layout--'.$formLayout);
+$prodCatLangFrm->setFormTagAttribute('class', 'web_form form_horizontal layout--'.$formLayout);
 
 $prodCatLangFrm->developerTags['colClassPrefix'] = 'col-md-';
 $prodCatLangFrm->developerTags['fld_default_col'] = 12;
@@ -18,7 +18,7 @@ $cat_image_fld->htmlAfterField = $htmlAfterField; */
 
 
 /* [ */
-/* $cat_icon_fld = $prodCatLangFrm->getField('cat_icon');	
+/* $cat_icon_fld = $prodCatLangFrm->getField('cat_icon');
 $cat_icon_fld->addFieldTagAttribute('class','btn btn--primary btn--sm');
 $htmlAfterField = '<span class="uploadimage--info">This will be displayed in 60x60 on your store.</span>';
 
@@ -30,9 +30,9 @@ $cat_icon_fld->htmlAfterField = $htmlAfterField; */
 /* ] */
 
 /* [ */
-/* $fld1 = $prodCatLangFrm->getField('cat_banner');	
+/* $fld1 = $prodCatLangFrm->getField('cat_banner');
 $fld1->addFieldTagAttribute('class','btn btn--primary btn--sm');
-$htmlAfterField = '<span class="uploadimage--info">Preferred Dimesnion: Width = 1050PX, Height = 340PX</span>'; 
+$htmlAfterField = '<span class="uploadimage--info">Preferred Dimesnion: Width = 1050PX, Height = 340PX</span>';
 if( isset($catBanners) && !empty($catBanners) ){
 	$htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Category','banner',array($prodcat_id, $prodcat_lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeCatBanner('. $prodcat_id.', '.$prodcat_lang_id.')" class="remove--img"><i class="ion-close-round"></i></a></div>';
 }
@@ -52,7 +52,7 @@ $fld1->htmlAfterField = $htmlAfterField; */
 	<div class="tabs_nav_container responsive flat">
 		<ul class="tabs_nav">
 			<li><a href="javascript:void(0);" onclick="categoryForm(<?php echo $prodcat_id ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-			<?php 
+			<?php
 			if ( $prodcat_id > 0 ) {
 				foreach( $languages as $langId => $langName ){ ?>
 					<li><a class="<?php echo ($prodcat_lang_id==$langId)?'active':''?>" href="javascript:void(0);" onclick="categoryLangForm(<?php echo $prodcat_id ?>, <?php echo $langId;?>);"><?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
@@ -66,7 +66,7 @@ $fld1->htmlAfterField = $htmlAfterField; */
 				<?php echo $prodCatLangFrm->getFormHtml(); ?>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 </div>
-</div></section>	
+</div></section>
