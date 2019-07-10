@@ -5,4 +5,6 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
-$data = array();
+$data = array(
+    'order_id' => $order_id
+);

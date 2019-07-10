@@ -521,6 +521,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('order_id', $order_id);
             $this->_template->render();
         }
         $this->set('redirectUrl', CommonHelper::generateUrl('WalletPay', 'Recharge', array($order_id)));
