@@ -42,7 +42,7 @@ $(document).on('click','.fileType-Js',function(){
 				complete: function() {
 					$(node).val($val);
 				},
-				success: function(ans) {												
+				success: function(ans) {
 						$('.text-danger').remove();
 						$('#input-sformfield'+fieldId).html(ans.msg);
 						$('#sformfield_'+fieldId).val(ans.file);						
