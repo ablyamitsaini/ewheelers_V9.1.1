@@ -19,6 +19,7 @@
                       
                                 <div class="row">
                                   <div class="col-lg-6 col-md-6 col-sm-6">
+                                      <div class="info--order">
                                        <p><strong><?php echo Labels::getLabel('LBL_Customer_Name', $siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
                                          <p><strong><?php echo Labels::getLabel('LBL_Status', $siteLangId);?>: </strong><?php if ($orderDetail['ossubs_status_id']==FatApp::getConfig('CONF_DEFAULT_SUBSCRIPTION_PAID_ORDER_STATUS') && $orderDetail['ossubs_till_date']<date("Y-m-d")) {
     echo Labels::getLabel('LBL_Expired', $siteLangId);
@@ -26,6 +27,7 @@
     echo $orderStatuses[$orderDetail['ossubs_status_id']];
 }
                                         ?></p>
+                                        </div>
                                   </div>
                                   <div class="col-lg-6 col-md-6 col-sm-6">
                                        <div class="info--order">
@@ -36,8 +38,8 @@
                                   </div>
                                 </div>
                             
-                      <div class="section--repeated">
-                          <table class="table align--left">
+					<div class="gap"></div>
+                          <table class="table table--orders js-scrollable">
                               <tbody>
                                 <tr class="">
                                     <th><?php echo Labels::getLabel('LBL_Date_Added', $siteLangId);?></th>
@@ -61,7 +63,7 @@
                                 </tr>
                               </tbody>
                           </table>
-                      </div>
+                      
                 </div>
             </div>
         </div>

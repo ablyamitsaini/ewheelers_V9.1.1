@@ -3524,42 +3524,38 @@ img {
 }
 
 .product-description .products-reviews {
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	border: solid 1px #323232;
 	border-radius: 4px;
 	padding: 1rem;
+	min-width: 110px;
 }
 
 
 
-.products-reviews .icn {
-	width: 16px;
-	height: 16px;
+.products-reviews .icn {	
 	margin-inline-end: 5px;
-	vertical-align: middle;
-	display: inline-block;
-	margin-top: -3px;
 }
 
 .products-reviews .icn svg {
 	width: inherit;
 	height: inherit;
-	vertical-align: top;
+	
+	width: 16px;
+	height: 16px;
 
 }
 
 .products-reviews .rate {
 	font-size: 0.875rem;
-	margin-inline-end: 10px
-		/*
+	margin-inline-end: 10px; 
 	display: flex;
 	align-items: center;
-*/
+	
+ 
 }
-.products-reviews .rate svg{ vertical-align: inherit;}
 
 .products-reviews .totals-review {
 	color: var(--first-color);
@@ -9687,7 +9683,7 @@ form.custom-form input[type="submit"] {
 
 .products__quickview {
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	top: 70%;
 	left: 50%;
 	-webkit-transform: translate(-50%, -50%);
@@ -10825,7 +10821,7 @@ html.quick-view--open {
 .slider-for img {
 	margin: 0 auto !important;
 	/*max-width: 100%;*/
-	max-width: 502px;
+	max-width: 490px;
 	float: none !important;
 	border-radius: 4px;
 	border: solid 1px var(--border-color);
@@ -10941,10 +10937,11 @@ html.quick-view--open {
 	align-items: flex-start;
 	justify-content: space-between;
 }
+.product-description .products__title a{ color: inherit;}
 
 .product-description .products__title h2 {
-	flex: 0 0 73%;
-	max-width: 73%;
+	/*flex: 0 0 73%;
+	max-width: 73%;*/
 	font-size: 1.75rem;
 	line-height: 1.3;
 	font-weight: 300;
@@ -12203,6 +12200,7 @@ html.quick-view--open {
 	visibility: hidden;
 	display: none;
 	transition: all 0.7s ease-in-out;
+	margin-top: 10px;
 
 }
 

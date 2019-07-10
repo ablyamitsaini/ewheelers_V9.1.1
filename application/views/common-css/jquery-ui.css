@@ -1344,8 +1344,10 @@ box-shadow: 0px 0px 5px #666666;
 
 .ui-datepicker td .ui-state-default{background: none; border: none;text-align: center;padding:8px 5px;}
 .ui-datepicker td.ui-datepicker-current-day{background:#333;color:#fff;}
+
 .ui-datepicker td.ui-datepicker-current-day a{color:inherit;}
 .ui-datepicker td.ui-datepicker-today{background: var(--first-color);font-weight: 600;color: #fff;}
+
 .ui-datepicker td.ui-datepicker-today a{color:inherit;}
 /*.ui-datepicker td.ui-datepicker-current-day:before{position: absolute;left: -4px; top: -4px; right: -4px;bottom: -4px;content: "";background: #54d1f1;box-shadow:0 0 15px 5px rgba(0, 0, 0, 0.1);}*/
 .ui-datepicker td{position: relative;}
