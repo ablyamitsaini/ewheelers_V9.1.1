@@ -29,6 +29,9 @@ $(document).ready(function() {
     	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
+    $(document).on('change', 'input.phone-js', function(e) {
+        $(this).keydown()
+    });
     $(document).on('keydown', 'input.phone-js', function(e) {
         var key = e.which || e.charCode || e.keyCode || 0;
         $phone = $(this);
