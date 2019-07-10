@@ -436,6 +436,9 @@ class AccountController extends LoggedUserController
         $frm = $this->getRechargeWalletForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -444,6 +447,9 @@ class AccountController extends LoggedUserController
         if ($order_net_amount < $minimumRechargeAmount) {
             $str = Labels::getLabel("LBL_Recharge_amount_must_be_greater_than_{minimumrechargeamount}", $this->siteLangId);
             $str = str_replace("{minimumrechargeamount}", CommonHelper::displayMoneyFormat($minimumRechargeAmount, true, true), $str);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($str));
+            }
             Message::addErrorMessage($str);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -508,10 +514,15 @@ class AccountController extends LoggedUserController
         if ($orderObj->addUpdateOrder($orderData, $this->siteLangId)) {
             $order_id = $orderObj->getOrderId();
         } else {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($orderObj->getError()));
+            }
             Message::addErrorMessage($orderObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('redirectUrl', CommonHelper::generateUrl('WalletPay', 'Recharge', array($order_id)));
         $this->set('msg', Labels::getLabel('MSG_Redirecting', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
