@@ -5,6 +5,8 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
+$data['shop'] = !empty($data['shop']) ? $data['shop'] : (object)array();
+
 if (1 > count($data)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);

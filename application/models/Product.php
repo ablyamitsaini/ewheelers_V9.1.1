@@ -1210,7 +1210,7 @@ class Product extends MyAppModel
         );
 
         $includeRating = false;
-        
+
         if (true ===  MOBILE_APP_API_CALL) {
             $includeRating = true;
         }
