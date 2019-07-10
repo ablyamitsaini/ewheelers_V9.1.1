@@ -737,6 +737,7 @@ transform: rotate(-180deg); */
 	left: auto;
 	right: -2rem;
 }
+.fld-date{ background-position: calc(12px) 11px;}
 
 /* media queries */
 @media only screen and (max-width: 1600px) {
