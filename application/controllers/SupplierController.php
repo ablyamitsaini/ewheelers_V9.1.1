@@ -416,7 +416,6 @@ class SupplierController extends MyAppController
         $userId = $this->getRegisteredSupplierId();
 
         if (!$this->isRegisteredSupplierId($userId)) {
-            /* Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId)); */
             FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
         }
 

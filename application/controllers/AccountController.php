@@ -2418,7 +2418,7 @@ class AccountController extends LoggedUserController
                         Labels::getLabel('LBL_Upload_File', $this->siteLangId),
                         array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
                     );
-                    $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
+                    $fld1->htmlAfterField='<span id="input-sformfield'.$field['sformfield_id'].'"></span>';
                     if ($field['sformfield_required'] == 1) {
                         $fld1->captionWrapper = array('<div class="astrick">','</div>');
                     }

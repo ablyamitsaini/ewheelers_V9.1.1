@@ -43,7 +43,7 @@ $(document).on('click','.fileType-Js',function(){
 					$(node).val($val);
 				},
 				success: function(ans) {
-						$('.text-danger').remove();
+						/* $('.text-danger').remove(); */
 						$('#input-sformfield'+fieldId).html(ans.msg);
 						$('#sformfield_'+fieldId).val(ans.file);						
 						if(ans.status == true){
