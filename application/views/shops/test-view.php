@@ -244,13 +244,13 @@
 					</div>
 				</div>
 				<div class="col-lg-9">
-					<div class="row align-items-center mb-3">
-						<div class="col-lg-6">
+					<div class="row align-items-center justify-content-between mb-3">
+						<div class="col mb-3 mb-md-0">
 							<div class="total-products">
 								<span class="hide_on_no_product"><span id="total_records">2</span> Items Total</span>
 							</div>
 						</div>
-						<div class="col-lg-6">
+						<div class="col-auto">
 							<div id="top-filters" class="page-sort hide_on_no_product">
 								<ul>
 									<li>
