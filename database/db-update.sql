@@ -354,3 +354,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Delete_selected';
 ALTER TABLE `tbl_seller_packages` ADD `spackage_inventory_allowed` INT(11) NOT NULL AFTER `spackage_products_allowed`;
 ALTER TABLE `tbl_shops` ADD `shop_cod_min_wallet_balance` DECIMAL NOT NULL DEFAULT '-1' AFTER `shop_featured`;
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Instant_Multi_Vendor_eCommerce_System_Builder';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_ITEM';
