@@ -56,7 +56,7 @@ foreach ($banners as $location => $bannerLocationDetail) {
 
 $data = array_merge($data, $banners);
 
-if (1 > count($sponsoredProds) && 1 > count($sponsoredShops) && 1 > count($slides) && 1 > count($collections) && 1 > count($banners)) {
+if (1 > count((array)$sponsoredProds) && 1 > count((array)$sponsoredShops) && 1 > count((array)$slides) && 1 > count((array)$collections) && 1 > count((array)$banners)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -22,7 +22,7 @@ $data = array(
 );
 
 
-if (1 > count($products)) {
+if (1 > count((array)$products)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

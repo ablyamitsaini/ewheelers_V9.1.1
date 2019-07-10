@@ -10,7 +10,7 @@ $data = array(
     'allBrands'=>$allBrands,
 );
 
-if (1 > count($allBrands)) {
+if (1 > count((array)$allBrands)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

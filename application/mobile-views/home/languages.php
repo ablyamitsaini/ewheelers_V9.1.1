@@ -7,7 +7,7 @@ $statusArr = array(
 
 $data = array('languages' => $languages);
 
-if (1 > count($languages)) {
+if (1 > count((array)$languages)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

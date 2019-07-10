@@ -14,7 +14,7 @@ $data = array(
     'totalRecords' => $totalRecords,
 );
 
-if (1 > count($reviewsList)) {
+if (1 > count((array)$reviewsList)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -344,6 +344,11 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
         $this->set('availabilityArr', $availabilityArr);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         echo $this->_template->render(false, false, 'products/filters.php', true);
         exit;
     }

@@ -16,7 +16,7 @@ $data = array(
     'endRecord' => $endRecord,
 );
 
-if (1 > count($arrListing)) {
+if (1 > count((array)$arrListing)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -14,7 +14,7 @@ $data = array(
     'requestRequestStatusArr' => $requestRequestStatusArr,
     'returnRequestTypeArr' => $returnRequestTypeArr,
 );
-if (1 > count($request)) {
+if (1 > count((array)$request)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -12,7 +12,7 @@ $data = array(
     'recordCount' => $recordCount,
     'OrderCancelRequestStatusArr' => $OrderCancelRequestStatusArr
 );
-if (1 > count($requests)) {
+if (1 > count((array)$requests)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

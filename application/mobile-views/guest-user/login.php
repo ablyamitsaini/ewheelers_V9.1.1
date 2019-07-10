@@ -14,7 +14,7 @@ $data = array(
     'user_image' => !empty($userInfo['user_id']) ? CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1)).'?'.time() : ''
 );
 
-if (1 > count($userInfo)) {
+if (1 > count((array)$userInfo)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

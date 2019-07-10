@@ -15,7 +15,7 @@ $data = array(
     'postedData' => $postedData,
 );
 
-if (1 > count($allShops)) {
+if (1 > count((array)$allShops)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -31,7 +31,7 @@ $data = array(
     'languages' => !empty($languages) ? $languages : (object)array(),
     'yesNoArr' => $yesNoArr,
 );
-if (1 > count($orderDetail)) {
+if (1 > count((array)$orderDetail)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

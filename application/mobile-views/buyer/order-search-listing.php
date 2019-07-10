@@ -11,7 +11,7 @@ $data = array(
     'pageCount' => $pageCount,
     'recordCount' => $recordCount
 );
-if (1 > count($orders)) {
+if (1 > count((array)$orders)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

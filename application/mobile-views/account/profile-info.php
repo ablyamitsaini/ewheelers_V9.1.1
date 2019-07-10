@@ -10,7 +10,7 @@ $data = array(
     'bankInfo' => $bankInfo,
 );
 
-if (1 > count($personalInfo) && 1 > count($bankInfo)) {
+if (1 > count((array)$personalInfo) && 1 > count((array)$bankInfo)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

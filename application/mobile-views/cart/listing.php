@@ -67,7 +67,7 @@ if (!empty($data['cartSummary']) && array_key_exists('cartDiscounts', $data['car
     $data['cartSummary']['cartDiscounts'] = !empty($data['cartSummary']['cartDiscounts']) ? $data['cartSummary']['cartDiscounts'] : (object)array();
 }
 
-if (1 > count($products)) {
+if (1 > count((array)$products)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -11,7 +11,7 @@ $data = array(
     'loggedUserName' => $loggedUserName,
 );
 
-if (1 > count($threadDetails)) {
+if (1 > count((array)$threadDetails)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -7,7 +7,7 @@ $statusArr = array(
 
 $data = array('currencies' => $currencies);
 
-if (1 > count($currencies)) {
+if (1 > count((array)$currencies)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

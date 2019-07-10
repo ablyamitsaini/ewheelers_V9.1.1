@@ -7,7 +7,7 @@ $statusArr = array(
 
 $data = array('categories' => $categoriesData);
 
-if (1 > count($categoriesData)) {
+if (1 > count((array)$categoriesData)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

@@ -7,7 +7,7 @@ $statusArr = array(
 $data = array(
     'orderCancelReasonsArr' => $orderCancelReasonsArr,
 );
-if (1 > count($orderCancelReasonsArr)) {
+if (1 > count((array)$orderCancelReasonsArr)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }
