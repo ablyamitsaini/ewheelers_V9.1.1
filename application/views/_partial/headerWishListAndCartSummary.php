@@ -45,7 +45,7 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                                 </div>
                             </td>
                             <td>
-                                <div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?> </span>
+                                <div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
                                     <?php if ($product['special_price_found']) { ?>
                                         <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                     <?php } ?>

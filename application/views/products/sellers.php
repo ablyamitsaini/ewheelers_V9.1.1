@@ -86,7 +86,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                         case 'theprice':
                          $txt = ' <div class="item-yk"><div class="product_price">'.CommonHelper::displayMoneyFormat($moresellers['theprice']);
                               if ($moresellers['special_price_found']) {
-                                  $txt.='  <span class="product_price_old">'.CommonHelper::displayMoneyFormat($moresellers['selprod_price']).'</span>
+                                  $txt.='  <span class="products__price_old">'.CommonHelper::displayMoneyFormat($moresellers['selprod_price']).'</span>
                               <div class="product_off">'.CommonHelper::showProductDiscountedText($moresellers, $siteLangId).'</div>';
                               }
                               $txt .='</div></div>';

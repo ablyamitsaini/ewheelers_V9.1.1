@@ -13,7 +13,7 @@
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <div class="action">
                     <?php /* <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>  */?>
-                    <a href="<?php echo CommonHelper::generateUrl('Seller', 'subscriptions');?>" class="link"><?php echo Labels::getLabel('LBL_Back_to_Subscription', $siteLangId);?></a></div>
+                    <a href="<?php echo CommonHelper::generateUrl('Seller', 'subscriptions');?>" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_Subscription', $siteLangId);?></a></div>
                 </div>
                 <div class="cards-content pl-4 pr-4 ">
                       

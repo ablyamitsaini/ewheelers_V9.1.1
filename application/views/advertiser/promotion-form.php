@@ -2,7 +2,7 @@
     $frm->setFormTagAttribute('class', 'form form--horizontal');
     $frm->setFormTagAttribute('onsubmit', 'setupPromotion(this); return(false);');
 
-    $frm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-';
+    $frm->developerTags['colClassPrefix'] = 'col-md-';
     $frm->developerTags['fld_default_col'] = 12;
     /* if($promotionId)
     {
@@ -72,10 +72,8 @@ if (User::isSeller()) {
 </div>
 <div class="tabs__content">
     <div class="row">
-        <div class="row">
-            <div class="col-md-6">
-                <?php echo $frm->getFormHtml(); ?>
-            </div>
+        <div class="col-md-6">
+            <?php echo $frm->getFormHtml(); ?>
         </div>
     </div>
 </div>

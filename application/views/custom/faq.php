@@ -8,7 +8,7 @@
 						<div class="section__heading">
 							<h2>Frequently Asked Questions</h2>
 						</div>
-						
+
 					</div>
 					<div class="faqsearch">
 							<input class="faq-input no-focus" type="text" placeholder="Search" />
@@ -115,8 +115,8 @@
 			</ul>
 				</div>
 			</div>
-		
-			
+
+
 
 		<!--	<div class="row">
 				<?php if($recordCount > 0) { ?>
@@ -245,7 +245,7 @@
 				var yolo = $('.faqclose').length
 				console.log(yolo);
 			}
-		}); //Close Function Click	            
+		}); //Close Function Click
 
 	}); //Close Function Ready
 

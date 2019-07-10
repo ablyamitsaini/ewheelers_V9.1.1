@@ -46,7 +46,7 @@ class SellerProduct extends MyAppModel
 
     public static function requiredGenDataFields()
     {
-        return array(
+        $arr = array(
             ImportexportCommon::VALIDATE_INT => array(
                 'selprod_max_download_times',
                 'selprod_download_validity_in_days'
@@ -71,6 +71,15 @@ class SellerProduct extends MyAppModel
                 'selprod_available_from',
             ),
         );
+
+        if (FatApp::getConfig('CONF_PRODUCT_SKU_MANDATORY', FatUtility::VAR_INT, 1)) {
+            $physical = array(
+                'selprod_sku'
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }
+
+        return $arr;
     }
 
     public static function validateGenDataFields($columnIndex, $columnTitle, $columnValue, $langId)
@@ -802,18 +811,17 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    
     public static function getActiveCount($userId)
     {
-        $srch = new SearchBase(static::DB_TBL);
+        $srch = static::getSearchObject();
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.' and p.product_active = '.applicationConstants::YES, 'p');
 
-        $srch->addCondition(static::DB_TBL_PREFIX . 'user_id', '=', $userId);
-
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addCondition('selprod_user_id', '=', $userId);
         $srch->addMultipleFields(array('selprod_id'));
-        $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
-        $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
+        $db = FatApp::getDb();
         $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs);
+        $records = $db->fetchAll($rs);
         return $srch->recordCount();
     }
 }

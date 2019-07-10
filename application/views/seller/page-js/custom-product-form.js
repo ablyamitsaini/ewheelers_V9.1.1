@@ -441,7 +441,6 @@
 	}
 
 	removeProductOption = function( product_id,option_id){
-
 		fcom.ajax(fcom.makeUrl('Seller', 'checkOptionLinkedToInventory'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
 			ans = jQuery.parseJSON(t);
 			if( ans.status == true ){
@@ -451,16 +450,16 @@
 			}
 			if(!agree){ return false; }
 			fcom.ajax(fcom.makeUrl('Seller', 'removeProductOption'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
-				$res = $.parseJSON(t);
-				if($res.status == 0){
-				    $.mbsmessage($res.msg, true, 'alert--danger');
-				}else{
-					reloadProductOptions(product_id);
-				}
+                var ans = $.parseJSON(t);
+                if( ans.status == 0 ){
+                    return;
+                }
+                $.mbsmessage(ans.msg, true, 'alert--success');
+                reloadProductOptions(product_id);
 			});
 		});
-
 	};
+    
 	reloadProductOptions = function( productId){
 
 		$("#product_options_list").html(fcom.getLoader());

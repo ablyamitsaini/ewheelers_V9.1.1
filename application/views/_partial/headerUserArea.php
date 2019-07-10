@@ -39,7 +39,7 @@ if (!$isUserLogged) {
         <img class="my-account__avatar" src="<?php echo $profilePicUrl; ?>" alt="">
     </a> <?php
     } else {
-        ?> <a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel('LBL_Hi,', $siteLangId).' '.$userName; ?></span></a> <?php
+        ?> <a href="javascript:void(0)" class="dropdown__trigger dropdown__trigger-js"><span class="icn icn-txt"><?php echo Labels::getLabel('LBL_Hi,', $siteLangId).' '.User::getAttributesById(UserAuthentication::getLoggedUserId(), "user_name"); ?></span></a> <?php
     } ?> <div
         class="dropdown__target dropdown__target__right dropdown__target-js">
         <div class="dropdown__target-space">

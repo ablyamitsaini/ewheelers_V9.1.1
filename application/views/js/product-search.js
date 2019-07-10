@@ -305,6 +305,12 @@ function getSearchQueryUrl(includeBaseUrl){
 		delete searchArr['keyword'];
 		url = url +'/'+'keyword-'+keyword.replace(/_/g,'-');
 	}
+	
+	var category = parseInt($("input[id=searched_category]").val());
+	if(category > 0){
+		delete searchArr['category'];
+		url = url +'/'+'category-'+category;
+	}
 
 	for (var key in searchArr) {
 		url = url +'/'+ key.replace(/_/g,'-') + '-'+ searchArr[key];

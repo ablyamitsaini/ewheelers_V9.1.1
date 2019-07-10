@@ -91,7 +91,6 @@ class Product extends MyAppModel
         'product_min_selling_price',
         ),
         ImportexportCommon::VALIDATE_NOT_NULL => array(
-        'product_model',
         'product_name',
         'product_identifier',
         'credential_username',
@@ -107,7 +106,7 @@ class Product extends MyAppModel
         ),
         );
 
-        if ($prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
+        if (FatApp::getConfig('CONF_PRODUCT_DIMENSIONS_ENABLE', FatUtility::VAR_INT, 0) && $prodType == PRODUCT::PRODUCT_TYPE_PHYSICAL) {
             $physical = array(
                 'product_dimension_unit_identifier',
                 'product_weight_unit_identifier',
@@ -117,7 +116,15 @@ class Product extends MyAppModel
                 'product_weight',
                 );
             $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
-        }        
+        }
+
+        if (FatApp::getConfig('CONF_PRODUCT_MODEL_MANDATORY', FatUtility::VAR_INT, 0)) {
+            $physical = array(
+                'product_model',
+                );
+            $arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $physical);
+        }
+
         return $arr;
     }
 
@@ -714,7 +721,7 @@ class Product extends MyAppModel
         return $record->getFlds();
     }
 
-    public static function generateProductOptionsUrl($selprod_id, $selectedOptions, $option_id, $optionvalue_id, $product_id)
+    public static function generateProductOptionsUrl($selprod_id, $selectedOptions, $option_id, $optionvalue_id, $product_id, $returnId = false)
     {
         $selectedOptions[$option_id] = $optionvalue_id;
         sort($selectedOptions);
@@ -738,6 +745,9 @@ class Product extends MyAppModel
         //echo $prodSrch->getQuery();
         $product = FatApp::getDb()->fetch($productRs);
         if ($product) {
+            if($returnId){
+                return $product['selprod_id'];
+            }
             return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
         } else {
             $prodSrch2 =  new ProductSearch(CommonHelper::getLangId());
@@ -753,6 +763,9 @@ class Product extends MyAppModel
             $product = FatApp::getDb()->fetch($productRs);
 
             if ($product) {
+                if($returnId){
+                    return $product['selprod_id'];
+                }
                 return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']))."::";
             } else {
                 return false;

@@ -15,7 +15,7 @@ class PolicyPoint extends MyAppModel
         $this->db = FatApp::getDb();
     }
 
-    public static function getSearchObject($langId = 0, $active = true)
+    public static function getSearchObject($langId = 0, $active = true, $deleted = true)
     {
         $langId = FatUtility::int($langId);
         $srch = new SearchBase(static::DB_TBL, 'pp');
@@ -32,7 +32,10 @@ class PolicyPoint extends MyAppModel
         if ($active == true) {
             $srch->addCondition('pp.ppoint_active', '=', applicationConstants::ACTIVE);
         }
-        $srch->addCondition('pp.ppoint_deleted', '=', applicationConstants::NO);
+
+        if ($deleted == true) {
+            $srch->addCondition('pp.ppoint_deleted', '=', applicationConstants::NO);
+        }
         return $srch;
     }
 

@@ -79,6 +79,7 @@ trait SellerProducts
         $srch->addOrder('selprod_added_on', 'DESC');
         $srch->addOrder('product_name');
         $db = FatApp::getDb();
+
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);
         if (count($arrListing)) {
@@ -108,7 +109,7 @@ trait SellerProducts
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
 
-        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+        if (0 == $selprod_id && FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) >= SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
             Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
@@ -126,7 +127,7 @@ trait SellerProducts
         $languages = Language::getAllNames();
         $userObj = new User($userId);
 
-        foreach ($languages as $langId =>$langName) {
+        foreach ($languages as $langId => $langName) {
             $srch = new SearchBase(User::DB_TBL_USR_RETURN_ADDR_LANG);
             $srch->addCondition('uralang_user_id', '=', $userId);
             $srch->addCondition('uralang_lang_id', '=', $langId);
@@ -1857,7 +1858,7 @@ trait SellerProducts
             Message::addErrorMessage(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        if (SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) > SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) >= SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
             Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
