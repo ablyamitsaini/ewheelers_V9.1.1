@@ -424,7 +424,7 @@ class AccountController extends LoggedUserController
         $this->set('userTotalWalletBalance', User::getUserBalance(UserAuthentication::getLoggedUserId(), false, false));
         $this->set('promotionWalletToBeCharged', Promotion::getPromotionWalleToBeCharged(UserAuthentication::getLoggedUserId()));
         $this->set('withdrawlRequestAmount', User::getUserWithdrawnRequestAmount(UserAuthentication::getLoggedUserId()));
-        
+
         if (false ===  MOBILE_APP_API_CALL) {
             $this->_template->render(false, false);
         }
@@ -637,13 +637,23 @@ class AccountController extends LoggedUserController
 
         if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days") - time()) > 0) {
             $nextWithdrawalDate = date('d M,Y', strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days"));
-            Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date', $this->siteLangId), FatDate::format($lastWithdrawal["withdrawal_request_date"]), FatDate::format($nextWithdrawalDate), FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")));
+
+            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date', $this->siteLangId), FatDate::format($lastWithdrawal["withdrawal_request_date"]), FatDate::format($nextWithdrawalDate), FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS"));
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+
+            Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
         }
 
         $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT");
         if ($balance < $minimumWithdrawLimit) {
-            Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
         }
 
@@ -651,23 +661,50 @@ class AccountController extends LoggedUserController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if (false === $post) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
         }
 
         if (($post["withdrawal_amount"] > $balance)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Withdrawal_Request_Greater', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Withdrawal_Request_Greater', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
         }
 
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+
+        if ((string)$accountNumber != $post['ub_account_number']) {
+            $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
+
         $userObj = new User($userId);
         if (!$userObj->updateBankInfo($post)) {
-            Message::addErrorMessage(Labels::getLabel($userObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -713,13 +750,21 @@ class AccountController extends LoggedUserController
         $post['withdrawal_comments'] = $withdrawal_comments;
 
         if (!$withdrawRequestId = $userObj->addWithdrawalRequest(array_merge($post, array("ub_user_id"=>$userId)), $this->siteLangId)) {
-            Message::addErrorMessage(Labels::getLabel($userObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $emailNotificationObj = new EmailHandler();
         if (!$emailNotificationObj->sendWithdrawRequestNotification($withdrawRequestId, $this->siteLangId, "A")) {
-            Message::addErrorMessage(Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -733,11 +778,19 @@ class AccountController extends LoggedUserController
         );
 
         if (!Notification::saveNotifications($notificationData)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
+            $message = Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $this->set('msg', Labels::getLabel('MSG_Withdraw_request_placed_successfully', $this->siteLangId));
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -2485,9 +2538,11 @@ class AccountController extends LoggedUserController
             $frm->addTextBox(Labels::getLabel('LBL_Swift_Code', $langId), 'ub_ifsc_swift_code');
             $bankIfscUnReqFld = new FormFieldRequirement('ub_ifsc_swift_code', Labels::getLabel('LBL_Swift_Code', $langId));
             $bankIfscUnReqFld->setRequired(false);
+            $bankIfscUnReqFld->requirements()->setRegularExpressionToValidate(ValidateElement::USERNAME_REGEX);
 
             $bankIfscReqFld = new FormFieldRequirement('ub_ifsc_swift_code', Labels::getLabel('LBL_Swift_Code', $langId));
             $bankIfscReqFld->setRequired(true);
+            $bankIfscReqFld->requirements()->setRegularExpressionToValidate(ValidateElement::USERNAME_REGEX);
 
             $PayMethodFld->requirements()->addOnChangerequirementUpdate(User::AFFILIATE_PAYMENT_METHOD_CHEQUE, 'eq', 'ub_ifsc_swift_code', $bankIfscUnReqFld);
             $PayMethodFld->requirements()->addOnChangerequirementUpdate(User::AFFILIATE_PAYMENT_METHOD_BANK, 'eq', 'ub_ifsc_swift_code', $bankIfscReqFld);
@@ -2524,7 +2579,8 @@ class AccountController extends LoggedUserController
             $frm->addRequiredField(Labels::getLabel('LBL_Bank_Name', $langId), 'ub_bank_name');
             $frm->addRequiredField(Labels::getLabel('LBL_Account_Holder_Name', $langId), 'ub_account_holder_name');
             $frm->addRequiredField(Labels::getLabel('LBL_Account_Number', $langId), 'ub_account_number');
-            $frm->addRequiredField(Labels::getLabel('LBL_IFSC_Swift_Code', $langId), 'ub_ifsc_swift_code');
+            $ifsc = $frm->addRequiredField(Labels::getLabel('LBL_IFSC_Swift_Code', $langId), 'ub_ifsc_swift_code');
+            $ifsc->requirements()->setRegularExpressionToValidate(ValidateElement::USERNAME_REGEX);
             $frm->addTextArea(Labels::getLabel('LBL_Bank_Address', $langId), 'ub_bank_address');
         }
         $frm->addTextArea(Labels::getLabel('LBL_Other_Info_Instructions', $langId), 'withdrawal_comments');
