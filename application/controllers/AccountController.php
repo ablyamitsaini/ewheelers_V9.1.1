@@ -2441,6 +2441,11 @@ class AccountController extends LoggedUserController
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
                     break;
+                    
+                case User::USER_FIELD_TYPE_PHONE:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName, '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+                    $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
+                    break;
             }
 
             if ($field['sformfield_required'] == 1) {

@@ -27,7 +27,8 @@ $shopLocation = $shop_city . $shop_state. $shop_country;
 	<section class="section">
 		<div class="container">
 		<div class="row justify-content-center">
-			<div class="col-md-7"><div id="itemRatings">
+			<div class="col-lg-7">
+			<div id="itemRatings">
 				<div class="section__head">
 				  <h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. $shop['shop_name'] , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
 				</div>

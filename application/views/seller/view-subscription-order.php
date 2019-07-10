@@ -13,11 +13,10 @@
                     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <div class="action">
                     <?php /* <a href="javascript:window.print();" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Print',$siteLangId);?></a>  */?>
-                    <a href="<?php echo CommonHelper::generateUrl('Seller', 'subscriptions');?>" class="link"><?php echo Labels::getLabel('LBL_Back_to_Subscription', $siteLangId);?></a></div>
+                    <a href="<?php echo CommonHelper::generateUrl('Seller', 'subscriptions');?>" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_Subscription', $siteLangId);?></a></div>
                 </div>
                 <div class="cards-content pl-4 pr-4 ">
-                      <div class="grids--offset">
-                           <div class="grid-layout">
+                      
                                 <div class="row">
                                   <div class="col-lg-6 col-md-6 col-sm-6">
                                        <p><strong><?php echo Labels::getLabel('LBL_Customer_Name', $siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
@@ -36,8 +35,7 @@
                                        </div>
                                   </div>
                                 </div>
-                           </div>
-                      </div>
+                            
                       <div class="section--repeated">
                           <table class="table align--left">
                               <tbody>
