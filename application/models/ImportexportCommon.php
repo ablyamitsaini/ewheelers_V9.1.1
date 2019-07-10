@@ -212,7 +212,7 @@ class ImportexportCommon extends FatModel
 
         $arr['prodcat_name'] = Labels::getLabel('LBL_Name', $langId);
         if (!$userId) {
-            $arr['prodcat_description'] = Labels::getLabel('LBL_Description', $langId);
+            /*$arr['prodcat_description'] = Labels::getLabel('LBL_Description', $langId);*/
             /* $arr[] = Labels::getLabel('LBL_Content_block', $langId); */
 
             if ($this->isDefaultSheetData($langId)) {
