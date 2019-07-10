@@ -149,7 +149,7 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
             <div class="row align-items-center mb-3">
                 <div class="col-lg-6">
                     <div class="total-products">
-                        <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS', $siteLangId); ?></span>
+                        <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEM(S)', $siteLangId); ?></span>
                     </div>
                 </div>
                 <div class="col-lg-6">

@@ -10,8 +10,9 @@
         </div>
         <div class="shipping-address">
             <?php echo $defaultAddress['ua_name']; ?><br>
-            <?php echo $defaultAddress['ua_address1'];?>, <?php echo (strlen($defaultAddress['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).$defaultAddress['ua_zip'].'<br>':'';?>
-            <?php echo (strlen($defaultAddress['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).$defaultAddress['ua_phone'].'<br>':'';?>
+            <?php echo $defaultAddress['ua_address1'];?><br>
+            <?php echo $defaultAddress['ua_city'];?>,  <?php echo $defaultAddress['state_name'];?>, <?php echo (strlen($defaultAddress['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).' '.$defaultAddress['ua_zip'].'<br>':'';?>
+            <?php echo (strlen($defaultAddress['ua_phone'])>0) ? Labels::getLabel('LBL_Phone:', $siteLangId).' '.$defaultAddress['ua_phone'].'<br>':'';?>
         </div>
     </div>
     <div class="divider"></div>
