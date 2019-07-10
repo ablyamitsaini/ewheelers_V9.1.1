@@ -25,8 +25,7 @@
                     </div>
                 </div>
                 <div class="cards-content pl-4 pr-4 ">
-          <div class="grids--offset">
-             <div class="grid-layout">
+           
                <div class="row">
                  <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
                  <div class="info--order">
@@ -58,8 +57,7 @@
                 </div>
                 </div>
                </div>
-             </div>
-          </div>
+            
 
             <div class="gap"></div>
             <?php if (!empty($request)) { ?>

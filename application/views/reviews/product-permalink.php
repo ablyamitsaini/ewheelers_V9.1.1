@@ -37,7 +37,7 @@
 	<section class="section">
 		<div class="container">
 		<div class="row justify-content-center">
-			<div class="col-md-7">
+			<div class="col-lg-7">
 			<div id="itemRatings">
 				<div class="section__head">
 					<h4><?php echo Labels::getLabel('Lbl_Review_of',$siteLangId).' '. (($product['selprod_title']) ? $product['selprod_title'] .' - '.$product['product_name'] : $product['product_name']) , ' ' ,Labels::getLabel('Lbl_by',$siteLangId),' : ',$reviewData['user_name'] ;?></h4>
