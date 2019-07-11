@@ -3494,6 +3494,7 @@ class Importexport extends ImportexportCommon
                 }
             }
 
+            unset($sellerProdSplPriceArr['selprod_id']);
             if (false === $errorInRow && count($sellerProdSplPriceArr)) {
                 $data = array(
                 'splprice_selprod_id'=>$selProdId,
@@ -3615,7 +3616,7 @@ class Importexport extends ImportexportCommon
                     }
                 }
             }
-
+            unset($selProdVolDisArr['selprod_id']);
             if (false === $errorInRow && count($selProdVolDisArr)) {
                 $data = array(
                 'voldiscount_selprod_id'=>$selProdId,
