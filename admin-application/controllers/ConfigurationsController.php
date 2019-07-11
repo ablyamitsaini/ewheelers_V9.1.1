@@ -760,7 +760,7 @@ class ConfigurationsController extends AdminBaseController
                 $fld = $frm->addTextBox(Labels::getLabel('LBL_Minimum_COD_Order_Total', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MIN_COD_ORDER_LIMIT');
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_minimum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
                 $fld = $frm->addTextBox(Labels::getLabel('LBL_Maximum_COD_Order_Total', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MAX_COD_ORDER_LIMIT');
-                $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_maximum_cash_on_delivery_order_total,_eligible_for_COD_payments.", $this->adminLangId)."</small>";
+                $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_This_is_the_maximum_cash_on_delivery_order_total,_eligible_for_COD_payments._Default_is_0", $this->adminLangId)."</small>";
                 $fld = $frm->addTextBox(Labels::getLabel('LBL_Minimum_Wallet_Balance', $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_COD_MIN_WALLET_BALANCE');
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_seller_needs_to_maintain_to_accept_COD_orders._Default_is_-1", $this->adminLangId)."</small>";
 

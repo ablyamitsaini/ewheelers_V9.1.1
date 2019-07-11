@@ -67,7 +67,7 @@
 </div>
 
 <?php if ($addresses && $cartHasPhysicalProduct) { ?>
-<div class="divider" id="shippingAddressDivider"></div>
+<div class="gap"></div>
 <div class="address-wrapper step__body box box--white box--radius p-4" id="shippingAddressContainer">
     <div class="row">
         <?php foreach ($addresses as $address) {
@@ -120,7 +120,6 @@
     $("input[name='isShippingSameAsBilling']").change(function() {
         if ($(this).is(":checked")) {
             $("#shippingAddressDivider").hide();
-            $("#shippingAddressContainer").hide();
             var billing_address_id = $("input[name=billing_address_id]:checked").val();
             if (billing_address_id) {
                 $("input[name='shipping_address_id']").each(function() {
@@ -134,7 +133,6 @@
             }
         } else {
             $("#shippingAddressContainer").show();
-            $("#shippingAddressDivider").show();
         }
     });
 

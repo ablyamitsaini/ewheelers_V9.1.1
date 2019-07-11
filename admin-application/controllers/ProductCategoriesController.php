@@ -622,7 +622,7 @@ class ProductCategoriesController extends AdminBaseController
         'prodcatlang_lang_id'=>$lang_id,
         'prodcatlang_prodcat_id'=>$prodcat_id,
         'prodcat_name'=> $post['prodcat_name'],
-        'prodcat_description'=>$post['prodcat_description'],
+        /*'prodcat_description'=>$post['prodcat_description'],*/
         );
 
         if (isset($post['prodcat_content_block'])) {

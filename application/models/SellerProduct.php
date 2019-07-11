@@ -386,7 +386,7 @@ class SellerProduct extends MyAppModel
             trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
         }
         $srch = new SearchBase(static::DB_TBL_SELLER_PROD_OPTIONS, 'spo');
-
+        
         if ($option_id) {
             $srch->addCondition(static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'option_id', '=', $option_id);
         }

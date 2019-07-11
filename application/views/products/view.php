@@ -2,6 +2,7 @@
 defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
 $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty-js');
+$buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 ?>
 <div id="body" class="body detail-page" role="main">
     <section class="">
@@ -290,7 +291,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                     </ul>
                                     <script type="text/javascript">
                                         $("document").ready(function() {
-                                            $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection));
+                                            $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection, false, {1199: 2,1023: 2,767: 1,480: 1}));
                                         });
                                     </script>
                                     <?php } /* ] */ ?>
@@ -328,7 +329,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
                                                         <div class="qty-wrapper">
                                                             <div class="quantity" data-stock="<?php echo $usproduct['selprod_stock']; ?>"><span class="decrease decrease-js">-</span>
                                                                 <div class="qty-input-wrapper" data-stock="<?php echo $usproduct['selprod_stock']; ?>">
-                                                                    <input type="text" value="1" placeholder="Qty" class="qty-input cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"
+                                                                    <input type="text" value="1" data-page="product-view" placeholder="Qty" class="qty-input cartQtyTextBox productQty-js" lang="addons[<?php echo $usproduct['selprod_id']?>]"
                                                                         name="addons[<?php echo $usproduct['selprod_id']?>]">
                                                                 </div>
                                                                 <span class="increase increase-js">+</span>
@@ -611,7 +612,7 @@ $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty
 <script>
     $(document).ready(function() {
         $("#btnAddToCart").addClass("quickView");
-        $('#slider-for').slick(getSlickGallerySettings(false, '<?php echo CommonHelper::getLayoutDirection();?>'));
+        $('#slider-for').slick(getSlickGallerySettings(false));
         $('#slider-nav').slick(getSlickGallerySettings(true, '<?php echo CommonHelper::getLayoutDirection();?>'));
 
         /* for toggling of tab/list view[ */

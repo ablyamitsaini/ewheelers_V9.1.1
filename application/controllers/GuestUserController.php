@@ -1303,7 +1303,7 @@ class GuestUserController extends MyAppController
         $siteLangId = $this->siteLangId;
         $frm = new Form('frmResetPwd');
         $fld_np = $frm->addPasswordField(Labels::getLabel('LBL_NEW_PASSWORD', $siteLangId), 'new_pwd');
-        $fld_np->htmlAfterField='<span class="text--small">'.sprintf(Labels::getLabel('LBL_Example_password', $siteLangId), 'User@123').'</span>';
+        $fld_np->htmlAfterField='<p class="note">'.sprintf(Labels::getLabel('LBL_Example_password', $siteLangId), 'User@123').'</p>';
         $fld_np->requirements()->setRequired();
         $fld_np->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
         $fld_np->requirements()->setCustomErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $siteLangId));

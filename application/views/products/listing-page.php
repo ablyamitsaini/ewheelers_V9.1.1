@@ -146,14 +146,14 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
                 </div>
             </div>
         <div class="col-xl-9 col-lg-12">
-            <div class="row align-items-center mb-3">
-                <div class="col-lg-6">
-                    <div class="total-products">
-                        <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEM(S)', $siteLangId); ?></span>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div id="top-filters" class="page-sort hide_on_no_product">
+			<div class="row align-items-center justify-content-between  flex-column flex-md-row mb-3">
+				<div class="col mb-3 mb-md-0">
+					<div class="total-products">
+						<span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEM(S)', $siteLangId); ?></span>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div id="top-filters" class="page-sort hide_on_no_product">
                     <ul>
                         <li class="list__item">
                            <a href="javascript:void(0)" class="link__filter btn btn--secondary-border d-xl-none btn--filters-control"><i class="icn">

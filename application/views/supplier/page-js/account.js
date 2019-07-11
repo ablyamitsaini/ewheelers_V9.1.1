@@ -87,16 +87,16 @@ $(document).on('click','.fileType-Js',function(){
 					$(node).val($val);
 				},
 				success: function(ans) {
-					$('#input-sformfield'+fieldId).removeClass('text-danger');
-					$('#input-sformfield'+fieldId).removeClass('text-success');
-
-					$('#input-sformfield'+fieldId).html( ans.msg );
-					$('#sformfield_'+fieldId).val(ans.file);
-					if( ans.status == 1 ){
-					$('#input-sformfield'+fieldId).addClass('text-success');
-					}else{
-					$('#input-sformfield'+fieldId).addClass('text-danger');
-					}
+                        /* $('.text-danger').remove(); */
+						$('#input-sformfield'+fieldId).html(ans.msg);
+						$('#sformfield_'+fieldId).val(ans.file);						
+						if(ans.status == true){
+							$('#input-sformfield'+fieldId).removeClass('text-danger');
+							$('#input-sformfield'+fieldId).addClass('text-success');
+						}else{
+							$('#input-sformfield'+fieldId).removeClass('text-success');
+							$('#input-sformfield'+fieldId).addClass('text-danger');
+						}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
