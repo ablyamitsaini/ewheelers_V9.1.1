@@ -2096,4 +2096,41 @@ class ProductsController extends MyAppController
         );
         return $data;
     }
+
+    public function getFilteredProducts()
+    {
+        $post = FatApp::getPostedData();
+
+        $userId = 0;
+        if (UserAuthentication::isUserLogged()) {
+            $userId = UserAuthentication::getLoggedUserId();
+        }
+
+        $page = 1;
+        if (array_key_exists('page', $post)) {
+            $page = FatUtility::int($post['page']);
+            if ($page < 2) {
+                $page = 1;
+            }
+        }
+
+        $pageSize = !empty($post['pageSize']) ? FatUtility::int($post['pageSize']) : FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
+
+        $srch = Product::getListingObj($post, $this->siteLangId, $userId);
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
+        $rs = $srch->getResultSet();
+        $db = FatApp::getDb();
+        $products = $db->fetchAll($rs);
+
+        $data = array(
+            'products'=>$products,
+            'page'=>$page,
+            'pageCount'=>$srch->pages(),
+            'pageSize'=>$pageSize,
+            'recordCount'=>$srch->recordCount()
+        );
+        $this->set('data', $data);
+        $this->_template->render();
+    }
 }
