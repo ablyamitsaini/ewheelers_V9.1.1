@@ -197,7 +197,7 @@ class ShopsController extends MyAppController
         }
         //$get['join_price'] = 1;
         $get['shop_id'] = $shop_id;
-        
+
         $data = $this->getListingData($get, $includeShopData);
 
         if (false ===  MOBILE_APP_API_CALL) {
@@ -537,18 +537,31 @@ class ShopsController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $loggedUserId = UserAuthentication::getLoggedUserId();
         if (false == $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            }
+
+            Message::addErrorMessage();
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
         $shopData = $this->getShopInfo($shop_id);
         if (!$shopData) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
         if ($shopData['shop_user_id'] == $loggedUserId) {
-            Message::addErrorMessage(Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId));
+            $message = Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -571,7 +584,11 @@ class ShopsController extends MyAppController
         $threadObj->assignValues($threadDataToSave);
 
         if (!$threadObj->save()) {
-            Message::addErrorMessage(Labels::getLabel($threadObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $thread_id = $threadObj->getMainTableRecordId();
@@ -586,15 +603,27 @@ class ShopsController extends MyAppController
         'message_deleted'    =>    0
         );
         if (!$message_id = $threadObj->addThreadMessages($threadMsgDataToSave)) {
-            Message::addErrorMessage(Labels::getLabel($threadObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         if ($message_id) {
             $emailObj = new EmailHandler();
-            $emailObj->SendMessageNotification($message_id, $this->siteLangId);
+            if (!$emailObj->SendMessageNotification($message_id, $this->siteLangId)) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+                }
+                Message::addErrorMessage($emailObj->getError());
+                FatUtility::dieJsonError(Message::getHtml());
+            }
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
