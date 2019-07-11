@@ -125,7 +125,7 @@ class CartController extends MyAppController
 
         $productsToAdd  = isset($post['addons'])?$post['addons']:array();
         $productsToAdd[$selprod_id] = $quantity;
-
+        
         $this->app_user['temp_user_id'] = $this->getAppTempUserId();
 
         $this->addProductToCart($productsToAdd, $selprod_id);

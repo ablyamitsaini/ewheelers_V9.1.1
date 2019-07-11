@@ -459,7 +459,6 @@ class CheckoutController extends MyAppController
         FatUtility::dieWithError( $shippingDurationError );
         } */
         $cart_products=$this->cartObj->getProducts($this->siteLangId);
-
         /* get user shipping address[ */
         $shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
 

@@ -89,7 +89,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             $selectedShippingType = "";
                             $displayManualOptions = "style='display:none'";
                             $displayShipStationOption = "style='display:none'";
-                             $shipping_options = array();
+                            $shipping_options = array();
                             $shipping_options[$product['product_id']][0] = Labels::getLabel("LBL_Select_Shipping",$siteLangId);
 
                             if (count($product["shipping_rates"])) {
@@ -114,8 +114,8 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
                             $servicesList = array();
                             $cartObj = new Cart();
-                            if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) {
 
+                            if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) {
                                 $carrierCode = "";
                                 $selectedService ='';
                                 if ($product['is_shipping_selected'] == ShippingMethods::SHIPSTATION_SHIPPING) {
@@ -145,18 +145,13 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
 
                             if(sizeof($shipping_options[$product['product_id']])<2){
-
                                 unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
                             }
-
                             if( !$product['is_physical_product'] && $product['is_digital_product'] ){
                                     echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
                                 }
                                 else{
-
-
                                     if(sizeof($newShippingMethods)>0){
-
                                        echo '<li>'. CommonHelper::createDropDownFromArray('shipping_type[' . md5($product['key']) . ']', $newShippingMethods, $selectedShippingType, 'class="shipping_method"  data-product-key="' . md5($product['key']) . '" ', Labels::getLabel('LBL_Select_Shipping_Method',$siteLangId)) .'</li>';
                                     }
                                     else{
