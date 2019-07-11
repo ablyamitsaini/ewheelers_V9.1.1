@@ -23,7 +23,7 @@
                                             <span class="overlay--collection"></span>
                                             <div class="item__head">
                                                 <?php if (!$product['in_stock']) { ?>
-                                                    <span class="tag--soldout"><?php echo Labels::getLabel('LBL_Sold_Out', $siteLangId); ?></span>
+                                                    <span class="tag--soldout tag--soldout-small"><?php echo Labels::getLabel('LBL_Sold_Out', $siteLangId); ?></span>
                                                 <?php } ?>
                                                 <a href="<?php echo $productUrl; ?>" class="item__pic">
                                                     <img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "THUMB", $product['selprod_id'], 0, $siteLangId ), CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>"
