@@ -1416,7 +1416,7 @@ class Importexport extends ImportexportCommon
                         $breakForeach = true;
                     }
 
-                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
                             $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed');
                         }
@@ -2935,7 +2935,7 @@ class Importexport extends ImportexportCommon
                             break;
                     }
 
-                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && in_array($columnKey, array('selprod_user_id','credential_username')) && 0 < $userId) {
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && in_array($columnKey, array('selprod_user_id','credential_username')) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
                             $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_inventory_allowed');
                         }
