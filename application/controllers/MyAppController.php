@@ -559,7 +559,7 @@ class MyAppController extends FatController
         }
 
         if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
-            echo $userId = UserAuthentication::getLoggedUserId();
+            $userId = UserAuthentication::getLoggedUserId();
             if ($userId > 0) {
                 return $userId;
             }
