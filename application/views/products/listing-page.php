@@ -35,10 +35,18 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
     <div class="container">
         <div class="section-head section--white--head section--head--center mb-0">
             <div class="section__heading">
-                <h2 class="mb-0"><?php echo $pageTitle; ?></h2>
-                <div class="breadcrumbs breadcrumbs--white breadcrumbs--center">
-                    <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
-                </div>
+                <h2 class="mb-0"><?php
+                $keywordStr = '';
+                if (isset($keyword) && !empty($keyword)) {
+                    $short_keyword = (mb_strlen($keyword) > 20) ? mb_substr($keyword, 0, 20)."..." : $keyword;
+                    $keywordStr = '<span title="'.$keyword.'" class="search-results">"'.$short_keyword.'"</span>';
+                }
+                echo $pageTitle; ?> <?php echo $keywordStr; ?></h2>
+                <?php if (isset($showBreadcrumb) && $showBreadcrumb) { ?>
+                    <div class="breadcrumbs breadcrumbs--white breadcrumbs--center">
+                        <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
+                    </div>
+                <?php }?>
             </div>
         </div>
     </div>
