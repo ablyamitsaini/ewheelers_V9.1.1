@@ -457,7 +457,7 @@ class AdminBaseController extends FatController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $langId), 'shipping_country');
 
         $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $langId), 'ps_free', 1);
-        $frm->addHtml('', '', '<table id="tab_shipping"></table><div class="gap"></div>');
+        $frm->addHtml('', '', '<table id="tab_shipping" width="100%"></table><div class="gap"></div>');
 
         $frm->addHiddenField('', 'ps_from_country_id');
         $frm->addHiddenField('', 'product_id');
@@ -564,7 +564,10 @@ class AdminBaseController extends FatController
         }
         $frm->addHiddenField('', 'selprod_user_id');
         $frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->adminLangId), 'selprod_url_keyword')->requirements()->setRequired();
-
+        
+        $costPrice = $frm->addFloatField(Labels::getLabel('LBL_Cost_Price', $this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_cost');
+        $costPrice->requirements()->setPositive();
+        
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_price');
         $fld->requirements()->setPositive();
         if (isset($productData['product_min_selling_price'])) {

@@ -38,7 +38,7 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $sr_no);
                 break;
             case 'name':
-                $variantStr = ($row['selprod_title'] != '') ? '<br/>' . $row['selprod_title'].'<br/>' : '';
+                $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
                 if (is_array($row['options']) && count($row['options'])) {
                     foreach ($row['options'] as $op) {
                         $variantStr .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
