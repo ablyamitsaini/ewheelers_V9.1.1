@@ -1339,7 +1339,7 @@ class Importexport extends ImportexportCommon
         $brandIdentifierArr = array();
         $taxCategoryArr = array();
         $countryArr = array();
-        $userProdUploadLimit = array();
+        $userProdUploadLimit = $usersCrossedUploadLimit = array();
 
         if (!$this->settings['CONF_USE_PRODUCT_TYPE_ID']) {
             $prodTypeIdentifierArr = Product::getProductTypes($langId);
@@ -1419,10 +1419,6 @@ class Importexport extends ImportexportCommon
                     if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
                             $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed');
-                        }
-
-                        if (1 > $userProdUploadLimit[$userId]) {
-                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
                         }
                     }
                 }
@@ -1618,11 +1614,15 @@ class Importexport extends ImportexportCommon
                         unset($prodDataArr['product_added_on']);
                     }
 
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && Product::getActiveCount($userId, $productId) >= $userProdUploadLimit[$userId]) {
+                        $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                        continue;
+                    }
+
                     $where = array('smt' => 'product_id = ?', 'vals' => array( $productId ) );
                     $this->db->updateFromArray(Product::DB_TBL, $prodDataArr, $where);
-                    if (array_key_exists($userId, $userProdUploadLimit)) {
-                        $userProdUploadLimit[$userId]--;
-                    }
+
                     if ($sellerId && $this->isDefaultSheetData($langId)) {
                         $tempData = array(
                         'pti_product_id' =>$productId,
@@ -1642,10 +1642,14 @@ class Importexport extends ImportexportCommon
                             }
                         }
 
-                        $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
-                        if (array_key_exists($userId, $userProdUploadLimit)) {
-                            $userProdUploadLimit[$userId]--;
+                        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && Product::getActiveCount($userId) >= $userProdUploadLimit[$userId]) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                            CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                            continue;
                         }
+
+                        $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
+
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
 
@@ -2879,6 +2883,7 @@ class Importexport extends ImportexportCommon
                         case 'selprod_id':
                             $selprodId = $sellerTempId = $colValue;
                             if ($sellerId) {
+                                $userId = $sellerId;
                                 $userTempIdData = $this->getTempSelProdIdByTempId($sellerTempId, $sellerId);
                                 if (!empty($userTempIdData) && $userTempIdData['spti_selprod_temp_id'] == $sellerTempId) {
                                     $selprodId = $colValue = $userTempIdData['spti_selprod_id'];
@@ -2935,13 +2940,9 @@ class Importexport extends ImportexportCommon
                             break;
                     }
 
-                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && in_array($columnKey, array('selprod_user_id','credential_username')) && 0 < $userId) {
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
                             $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_inventory_allowed');
-                        }
-
-                        if (1 > $userProdUploadLimit[$userId]) {
-                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
                         }
                     }
 
@@ -2981,10 +2982,13 @@ class Importexport extends ImportexportCommon
                         unset($selProdGenArr['selprod_added_on']);
                     }
 
-                    $this->db->updateFromArray(SellerProduct::DB_TBL, $selProdGenArr, $where);
-                    if (array_key_exists($userId, $userProdUploadLimit)) {
-                        $userProdUploadLimit[$userId]--;
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && SellerProduct::getActiveCount($userId, $selprodId) >= $userProdUploadLimit[$userId]) {
+                        $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                        continue;
                     }
+
+                    $this->db->updateFromArray(SellerProduct::DB_TBL, $selProdGenArr, $where);
 
                     if ($sellerId && $this->isDefaultSheetData($langId)) {
                         $tempData = array(
@@ -3003,10 +3007,12 @@ class Importexport extends ImportexportCommon
                     }
 
                     if ($this->isDefaultSheetData($langId)) {
-                        $this->db->insertFromArray(SellerProduct::DB_TBL, $selProdGenArr);
-                        if (array_key_exists($userId, $userProdUploadLimit)) {
-                            $userProdUploadLimit[$userId]--;
+                        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && SellerProduct::getActiveCount($userId) >= $userProdUploadLimit[$userId]) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                            CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                            continue;
                         }
+                        $this->db->insertFromArray(SellerProduct::DB_TBL, $selProdGenArr);
                         $selprodId = $this->db->getInsertId();
 
                         $tempData = array(
