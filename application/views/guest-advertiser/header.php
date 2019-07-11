@@ -69,7 +69,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,fals
 				<?php if(!empty($seller_navigation_left)) { ?>
 					<div class="seller_nav-trigger"> <a class="seller_nav_toggle" href="javascript:void(0)"><span></span></a> </div>
 				<?php }?>
-				<div class="logo header-login-logo zoomIn">
+				<div class="logo header-login-logo">
 					<a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
 				</div>
 			  </div>
