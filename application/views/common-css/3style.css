@@ -1685,9 +1685,9 @@ input:checked + .slider:before {
 .breadcrumbs {
 	list-style: none;
 	margin: 0;
-	width: 100%;
-	display: inline-block;
-	padding: 0px 0;
+	margin-top: 0.5rem;
+	padding: 0;
+	
 }
 
 .breadcrumbs.breadcrumbs--center ul {
@@ -4249,9 +4249,9 @@ img {
 }
 
 .featured-item:hover {
-	box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);
+	/*box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);*/
 	background: none;
-	border-color: var(--border-color);
+	border-color: var(--first-color);
 }
 
 .featured_inner {}
@@ -15308,6 +15308,7 @@ main.main {
 .shop-slider .item {
 	position: relative;
 	max-width: 610px;
+	min-width: 320px;
 	margin: 0 15px;
 }
 
@@ -15326,7 +15327,9 @@ main.main {
 	padding: 2rem;
 	text-align: left;
 	max-width: 210px;
+	font-weight: 400;
 }
+.shop-slider .overlay-content h4{ font-weight: inherit;}
 
 
 .txt-gray-light {
