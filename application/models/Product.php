@@ -1298,11 +1298,11 @@ END,   special_price_found ) as special_price_found'
         }
 
         if (array_key_exists('condition', $criteria)) {
-            $condition = $criteria['condition'];
+            $condition = is_array($criteria['condition']) ? array_filter($criteria['condition']) : $criteria['condition'];
         } else {
             $condition = FatApp::getPostedData('condition', null, '');
         }
-        if (!empty(array_filter($condition))) {
+        if (!empty($condition)) {
             $srch->addConditionCondition($condition);
         }
 
