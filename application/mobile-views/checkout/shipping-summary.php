@@ -12,7 +12,7 @@ if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
 foreach ($products as $index => $product) {
     $shipping_options = array(
         array(
-            'label' => Labels::getLabel("LBL_Select_Shipping", $siteLangId),
+            'title' => Labels::getLabel("LBL_Select_Shipping", $siteLangId),
             'value' => 0,
         )
     );
@@ -27,7 +27,7 @@ foreach ($products as $index => $product) {
                 $shipping_charges = $product["shipping_free_availbilty"] == 0 ? "+" . CommonHelper::displayMoneyFormat($sval['pship_charges']) : 0;
             }
             $shippingDurationTitle = ShippingDurations::getShippingDurationTitle($sval, $siteLangId);
-            $shipping_options[$i]['label'] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
+            $shipping_options[$i]['title'] =  $sval["scompany_name"] ." - " . $shippingDurationTitle . $country_code . " (" . $shipping_charges . ")";
             $shipping_options[$i]['value'] =  $sval['pship_id'];
             $i++;
         }
@@ -37,7 +37,7 @@ foreach ($products as $index => $product) {
     if (!empty($shipStationCarrierList)) {
         $i = 0;
         foreach ($shipStationCarrierList as $key => $value) {
-            $shipStation[$i]['label'] = $value;
+            $shipStation[$i]['title'] = $value;
             $shipStation[$i]['value'] = $key;
             $i++;
         }
@@ -48,7 +48,7 @@ foreach ($products as $index => $product) {
     }
     $i = 0;
     foreach ($newShippingMethods as $key => $value) {
-        $products[$index]['shippingMethods'][$i]['label'] = $value;
+        $products[$index]['shippingMethods'][$i]['title'] = $value;
         $products[$index]['shippingMethods'][$i]['value'] = $key;
         switch ($key) {
             case ShippingMethods::MANUAL_SHIPPING:
