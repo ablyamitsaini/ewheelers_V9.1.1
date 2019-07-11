@@ -291,7 +291,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     </ul>
                                     <script type="text/javascript">
                                         $("document").ready(function() {
-                                            $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection));
+                                            $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection, false, {1199: 2,1023: 2,767: 1,480: 1}));
                                         });
                                     </script>
                                     <?php } /* ] */ ?>
@@ -612,7 +612,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 <script>
     $(document).ready(function() {
         $("#btnAddToCart").addClass("quickView");
-        $('#slider-for').slick(getSlickGallerySettings(false, '<?php echo CommonHelper::getLayoutDirection();?>'));
+        $('#slider-for').slick(getSlickGallerySettings(false));
         $('#slider-nav').slick(getSlickGallerySettings(true, '<?php echo CommonHelper::getLayoutDirection();?>'));
 
         /* for toggling of tab/list view[ */
