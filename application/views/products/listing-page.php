@@ -35,8 +35,8 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
     <div class="container">
         <div class="section-head section--white--head section--head--center mb-0">
             <div class="section__heading">
-                <h2 class="mb-0"><?php
-                $keywordStr = '';
+                <h2 class="mb-0">
+                <?php $keywordStr = '';
                 if (isset($keyword) && !empty($keyword)) {
                     $short_keyword = (mb_strlen($keyword) > 20) ? mb_substr($keyword, 0, 20)."..." : $keyword;
                     $keywordStr = '<span title="'.$keyword.'" class="search-results">"'.$short_keyword.'"</span>';
