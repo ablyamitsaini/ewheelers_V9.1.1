@@ -26,6 +26,7 @@ if ($showAddToFavorite) { ?>
             if (Labels::getLabel('LBL_Wishlist', $siteLangId) ==  $forPage) { ?>
                 <div class="container wishlist_items--css">
                     <ul class="actions mt-2">
+                        <?php if ($product['in_stock']) { ?>
                         <li>
                             <a title='<?php echo Labels::getLabel('LBL_Select_Item', $siteLangId); ?>' href="javascript:void(0)" class="icn-highlighted">
                                 <label class="checkbox">
@@ -34,7 +35,6 @@ if ($showAddToFavorite) { ?>
                                 </label>
                             </a>
                         </li>
-                        <?php if ($product['in_stock']) { ?>
                         <li>
                             <a onClick="addToCart( $(this), event );" href="javascript:void(0)" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>" data-id='<?php echo $product['selprod_id']; ?>'><i class="fa fa-shopping-cart"></i></a>
                         </li>
