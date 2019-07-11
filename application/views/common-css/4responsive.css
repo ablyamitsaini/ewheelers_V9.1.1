@@ -326,7 +326,8 @@
 
 	.slider-nav .thumb {
 		border: none !important;
-		padding: 5px;
+		padding:10px;
+		margin-bottom: 0;
 	}
 
 	.slider-nav .thumb > a {
@@ -346,14 +347,19 @@
 		top: 12px;
 		bottom: 12px;
 		height: auto;
+		margin-bottom: 0;
 	}
 
 	.slider-nav .slick-arrow.slick-prev {
 		left: 0;
+		top: 0;
+		bottom: 0;
 	}
 
 	.slider-nav .slick-arrow.slick-next {
 		right: 0;
+		top: 0;
+		bottom: 0;
 	}
 
 	.slider-nav .slick-prev:after {
@@ -1322,7 +1328,8 @@ display: none;
 		top: 0;
 		bottom: 0;
 		margin: auto;
-	}}
+	}
+	.contact-info{ -webkit-box-orient: vertical; -webkit-box-direction: normal; -ms-flex-direction: column; flex-direction: column; -webkit-box-align: start; -ms-flex-align: start; align-items: flex-start;}}
 
 
 @media only screen and (max-width:1023px) {
