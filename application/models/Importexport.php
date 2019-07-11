@@ -1416,15 +1416,15 @@ class Importexport extends ImportexportCommon
                         $breakForeach = true;
                     }
 
-                    /*if (in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
-                            $userProdUploadLimit[$userId] = Product::getActiveCount($userId);
+                            $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed');
                         }
 
-                        if ($userProdUploadLimit[$userId] >= SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed')) {
+                        if (1 > $userProdUploadLimit[$userId]) {
                             $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
                         }
-                    }*/
+                    }
                 }
 
                 if (false === $errMsg) {
@@ -1620,7 +1620,9 @@ class Importexport extends ImportexportCommon
 
                     $where = array('smt' => 'product_id = ?', 'vals' => array( $productId ) );
                     $this->db->updateFromArray(Product::DB_TBL, $prodDataArr, $where);
-
+                    if (array_key_exists($userId, $userProdUploadLimit)) {
+                        $userProdUploadLimit[$userId]--;
+                    }
                     if ($sellerId && $this->isDefaultSheetData($langId)) {
                         $tempData = array(
                         'pti_product_id' =>$productId,
@@ -1641,7 +1643,9 @@ class Importexport extends ImportexportCommon
                         }
 
                         $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
-                        //$userProdUploadLimit[$userId]++;
+                        if (array_key_exists($userId, $userProdUploadLimit)) {
+                            $userProdUploadLimit[$userId]--;
+                        }
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
 
@@ -2842,6 +2846,8 @@ class Importexport extends ImportexportCommon
         $usernameArr = array();
         $prodIndetifierArr = array();
         $prodTypeArr = array();
+        $userProdUploadLimit = array();
+
         $prodConditionArr = Product::getConditionArr($langId);
         $prodConditionArr = array_flip($prodConditionArr);
 
@@ -2929,6 +2935,16 @@ class Importexport extends ImportexportCommon
                             break;
                     }
 
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE') && in_array($columnKey, array('selprod_user_id','credential_username')) && 0 < $userId) {
+                        if (!array_key_exists($userId, $userProdUploadLimit)) {
+                            $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_inventory_allowed');
+                        }
+
+                        if (1 > $userProdUploadLimit[$userId]) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        }
+                    }
+
                     if (true === $invalid) {
                         $errorInRow = true;
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
@@ -2966,6 +2982,9 @@ class Importexport extends ImportexportCommon
                     }
 
                     $this->db->updateFromArray(SellerProduct::DB_TBL, $selProdGenArr, $where);
+                    if (array_key_exists($userId, $userProdUploadLimit)) {
+                        $userProdUploadLimit[$userId]--;
+                    }
 
                     if ($sellerId && $this->isDefaultSheetData($langId)) {
                         $tempData = array(
@@ -2985,6 +3004,9 @@ class Importexport extends ImportexportCommon
 
                     if ($this->isDefaultSheetData($langId)) {
                         $this->db->insertFromArray(SellerProduct::DB_TBL, $selProdGenArr);
+                        if (array_key_exists($userId, $userProdUploadLimit)) {
+                            $userProdUploadLimit[$userId]--;
+                        }
                         $selprodId = $this->db->getInsertId();
 
                         $tempData = array(
