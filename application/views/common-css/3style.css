@@ -10582,6 +10582,9 @@ html.quick-view--open {
 	padding: 1em;
 	max-width: 450px;
 	min-height: 450px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .buy-group {
@@ -15694,10 +15697,10 @@ input[type="password"][disabled] {
 
 
 .product-detail.product-detail-quickview .buy-group {
-	position: absolute;
+	/*position: absolute;
 	bottom: 25px;
 	left: 25px;
-	right: 25px;
+	right: 25px;*/
 }
 
 @media(max-width:1399px) {

@@ -122,6 +122,7 @@
                         </div>
                     </div>
                 </div>
+				<div class="gap"></div>
                 <div class="buy-group">
                     <?php
                     if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
