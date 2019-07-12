@@ -16,7 +16,7 @@
 		visibility: hidden;
 		white-space: nowrap;
 	}
-	
+
 	.sidebar-is-reduced .sidebar {
 		width: 280px;
 	}
@@ -69,7 +69,7 @@
 		transform-origin: 15% 95%;
 		width: 24px;
 	}
-	
+
 	main.main,
 	.sidebar-is-expanded main.main {
 
@@ -107,7 +107,7 @@
 	}
 
 
-	
+
 
 	.ftshops .shop-detail-side {
 		max-width: 260px;
@@ -136,7 +136,7 @@
 	}
 
 
-	
+
 
 
 	.widget-wrapper {
@@ -1310,7 +1310,7 @@ display: none;
 
 	.favourite-wrapper-detail {
 		top: 20px;
-		right:30px;
+		right: 30px;
 	}
 
 	.col-details-right {
@@ -1357,6 +1357,11 @@ display: none;
 
 
 @media only screen and (max-width:1023px) {
+	html {
+		overflow: hidden;
+		overflow-y: scroll;
+	}
+
 	.amount-added-box {
 		margin-top: 20px;
 	}
@@ -1490,10 +1495,6 @@ display: none;
 		min-height: 250px;
 		background-size: cover;
 	}
-
-
-
-
 }
 
 @media only screen and (max-width: 767px) {
