@@ -53,7 +53,7 @@ $cancelBtnFld->developerTags['col'] = 2;
                             <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_COD', $siteLangId).' : '. CommonHelper::displaymoneyformat($codMinWalletBalance);?></p>
                         </div>
                         <?php } ?>
-                        <div class="cards-content pl-4 pr-4 pt-4">
+                        <div class="cards-content pt-4 pl-4 pr-4">
                             <div id="credits-info"></div>
                             <div class="gap"></div>
                             <?php //echo $balanceTotalBlocksDisplayed;?>

@@ -28,7 +28,8 @@ class ProductsController extends MyAppController
             'canonicalUrl' => CommonHelper::generateFullUrl('Products', 'index'),
             'productSearchPageType' => SavedSearchProduct::PAGE_PRODUCT_INDEX,
             'recordId' => 0,
-            'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'allProducts')
+            'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'allProducts'),
+            'showBreadcrumb' => false
         );
 
         $data = array_merge($data, $arr);
@@ -44,26 +45,28 @@ class ProductsController extends MyAppController
     {
         $db = FatApp::getDb();
         $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
-
+        $keyword = '';
         $includeKeywordRelevancy = false;
         if (array_key_exists('keyword', $get)) {
             $includeKeywordRelevancy = true;
+            $keyword = $get['keyword'];
         }
 
         $frm = $this->getProductSearchForm($includeKeywordRelevancy);
 
         $get['join_price'] = 1;
         $frm->fill($get);
-
         $data = $this->getListingData($get);
-
+        
         $arr = array(
             'frmProductSearch'=>$frm,
-            'pageTitle'=>Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId),
+            'pageTitle'=> Labels::getLabel('LBL_Search_results_for', $this->siteLangId),
             'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'search'),
             'productSearchPageType'=>SavedSearchProduct::PAGE_PRODUCT,
             'recordId'=>0,
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'searchListing'),
+            'showBreadcrumb'=> false,
+            'keyword' => $keyword,
         );
 
         $data = array_merge($data, $arr);
@@ -100,6 +103,7 @@ class ProductsController extends MyAppController
             'productSearchPageType' => SavedSearchProduct::PAGE_FEATURED_PRODUCT,
             'recordId' => 0,
             'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'searchListing'),
+            'showBreadcrumb' => false
         );
 
         $data = array_merge($data, $arr);

@@ -50,6 +50,9 @@ var cart = {
 						loadFinancialSummary();
 						resetCheckoutDiv();
 					}
+                    if(ans.total == 0){
+						window.location = fcom.makeUrl('Cart');
+					}
 				}
 				else if(page=='cart')
 				{

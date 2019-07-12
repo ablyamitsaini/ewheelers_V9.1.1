@@ -40,7 +40,7 @@ $this->includeTemplate( '_partial/header/commonHead2.php', $commonHead2Data,fals
 				<div class="row">
 					<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
 						<!--<div class="seller_nav-trigger"> <a class="seller_nav_toggle" href="javascript:void(0)"><span></span></a> </div>-->
-						<div class="logo zoomIn"><a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo FatUtility::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
+						<div class="logo"><a href="<?php echo CommonHelper::generateUrl(); ?>"><img src="<?php echo FatUtility::generateFullUrl('Image','siteLogo',array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a>
 						</div>
 					</div>
 					<div class="col-lg-8 col-md-8 col-sm-9 col-xs-12">
