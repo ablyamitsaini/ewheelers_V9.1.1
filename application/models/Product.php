@@ -721,7 +721,7 @@ class Product extends MyAppModel
         return $record->getFlds();
     }
 
-    public static function generateProductOptionsUrl($selprod_id, $selectedOptions, $option_id, $optionvalue_id, $product_id)
+    public static function generateProductOptionsUrl($selprod_id, $selectedOptions, $option_id, $optionvalue_id, $product_id, $returnId = false)
     {
         $selectedOptions[$option_id] = $optionvalue_id;
         sort($selectedOptions);
@@ -745,6 +745,9 @@ class Product extends MyAppModel
         //echo $prodSrch->getQuery();
         $product = FatApp::getDb()->fetch($productRs);
         if ($product) {
+            if($returnId){
+                return $product['selprod_id'];
+            }
             return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
         } else {
             $prodSrch2 =  new ProductSearch(CommonHelper::getLangId());
@@ -760,6 +763,9 @@ class Product extends MyAppModel
             $product = FatApp::getDb()->fetch($productRs);
 
             if ($product) {
+                if($returnId){
+                    return $product['selprod_id'];
+                }
                 return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']))."::";
             } else {
                 return false;

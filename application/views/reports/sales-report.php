@@ -35,7 +35,7 @@
                             <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h5>
                             <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--block btn--sm">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
                         </div>
-                        <div class="cards-content pl-4 pr-4 pb-0">                            
+                        <div class="cards-content pl-4 pr-4 pb-0">
                                 <?php if (empty($orderDate)) { ?>
                                 <div class="replaced">
                                     <?php
@@ -50,8 +50,8 @@
                                 <?php  } else {
                                         echo  $frmSrch->getFormHtml();
                                 } ?>
-                            
-                          
+
+
                         </div>
                     </div>
                 </div>
@@ -59,8 +59,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        
-                        <div class="cards-content p-4 ">
+                        <div class="cards-content pt-2 pl-4 pr-4">
                             <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                         </div>
                     </div>

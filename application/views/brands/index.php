@@ -26,9 +26,7 @@
     <div class="container">      
       <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="panel panel--centered">
-         
-          <div class="cell-container">
+    
             <div class="panel panel--centered">
 				<?php if(!empty($allBrands)){ $firstCharacter = '';
 						foreach($allBrands as $brands){
@@ -57,8 +55,7 @@
                 </ul>
               </div>
               <?php }?>
-            </div>
-          </div>
+             
         </div>
       </div>
     </div>

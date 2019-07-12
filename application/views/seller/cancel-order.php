@@ -10,19 +10,14 @@
 	<div class="content-body">
 		<div class="cards">
 			<div class="cards-header p-4">
-				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Search_Orders', $siteLangId); ?></h5>
+				<h5 class="cards-title "><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h5>
+				 <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
 			</div>
 			<div class="cards-content pl-4 pr-4 ">
-                         <div class="box box--white  p-4">
-                           <div class="box__head no-print" >
-                               <h4><?php echo Labels::getLabel('LBL_Order_Details',$siteLangId);?></h4>
-                               <div class="btn-group"><a href="<?php echo CommonHelper::generateUrl('Seller','sales');?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_order',$siteLangId);?></a></div>
-                           </div>
-                            <div class="box__body">
-                                 <div class="grids--offset">
-                                     <div class="grid-layout">
-                                         <div class="row">
+     			<div class="box__body">
+				         <div class="row">
                                              <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="info--order">
                                                  <p><strong><?php echo Labels::getLabel('LBL_Customer_Name',$siteLangId);?>: </strong><?php echo $orderDetail['user_name'];?></p>
                                                  <p><strong><?php echo Labels::getLabel('LBL_Status',$siteLangId);?>: </strong><?php echo $orderStatuses[$orderDetail['op_status_id']];?></p>
                                                  <p><strong><?php echo Labels::getLabel('LBL_Cart_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'CART_TOTAL'));?></p>
@@ -30,16 +25,15 @@
                                                  <p><strong><?php echo Labels::getLabel('LBL_Tax',$siteLangId);?>:</strong> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail,'TAX'));?></p>
                                                  <p><strong><?php echo Labels::getLabel('LBL_Order_Total',$siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail));?></p>
                                              </div>
+                                             </div>
                                              <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="info--order">
+                        						<div class="info--order">
                                                     <p><strong><?php echo Labels::getLabel('LBL_Invoice',$siteLangId);?> #: </strong><?php echo $orderDetail['op_invoice_number'];?></p>
                                                     <p><strong><?php echo Labels::getLabel('LBL_Date',$siteLangId);?>: </strong><?php echo FatDate::format($orderDetail['order_date_added']);?></p>
-                        </div>
+                        						</div>
                                              </div>
                                          </div>
-                                     </div>
-                                 </div>
-
+                                         <div class="gap"></div>
                                  <table class="table table--orders">
                                        <tbody><tr class="">
                                            <th colspan="2"><?php echo Labels::getLabel('LBL_Order_Particulars',$siteLangId);?></th>
@@ -86,10 +80,11 @@
                                             <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail));?></td>
                                         </tr>
                                  </tbody></table>
-                                 <div class="grids--colum">
+                                 <div class="gap"></div>
+                                 
                                      <div class="row">
                                          <div class="col-lg-6 col-md-6 col-sm-6">
-                                             <div class="grid">
+                                             <div class="info--order">
                                                 <h5><?php echo Labels::getLabel('LBL_Billing_Details',$siteLangId);?></h5>
                       <?php $billingAddress = $orderDetail['billingAddress']['oua_name'].'<br>';
                         if($orderDetail['billingAddress']['oua_address1']!=''){
@@ -121,7 +116,7 @@
                                          </div>
                     <?php if(!empty($orderDetail['shippingAddress'])){?>
                                          <div class="col-lg-6 col-md-6 col-sm-6">
-                                             <div class="grid">
+                                             <div class="info--order">
                                                    <h5><?php echo Labels::getLabel('LBL_Shipping_Detail',$siteLangId);?></h5>
                        <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
                         if($orderDetail['shippingAddress']['oua_address1']!=''){
@@ -153,7 +148,7 @@
                                          </div>
                    <?php }?>
                                      </div>
-                                 </div>
+                                 
 
                                  <span class="gap"></span>
                <?php if(!empty($orderDetail['comments'])){?>
@@ -178,6 +173,7 @@
                                 </div>
               <?php }?>
               <?php if (!$notEligible){?>
+                    <div class="gap"></div>
                     <div class="section--repeated no-print cancelReason-js">
                         <h5><?php echo Labels::getLabel('LBL_Reason_for_cancellation',$siteLangId);?></h5>
                         <?php
@@ -190,7 +186,7 @@
                     </div>
                <?php }?>
                             </div>
-                        </div>
+                         
 			</div>
 		</div>
 	</div>

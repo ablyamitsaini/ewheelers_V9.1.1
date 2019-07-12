@@ -47,13 +47,13 @@ if (isset($prodcat_code)) {
     </div>
 </div>
 <div class="selected-filters" id="filters"> </div>
-<div class="divider--filters"></div>
 <!-- ] -->
 
 <!--Categories Filters[ resetAll-->
 
 <?php if (isset($categoriesArr) && $categoriesArr) {
         ?>
+<div class="divider--filters"></div>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Categories', $siteLangId); ?> </div>
 <?php if (!$shopCatFilters) {
             ?>
@@ -152,7 +152,7 @@ if (isset($prodcat_code)) {
 
 <?php
         } ?>
-<div class="divider--filters"></div>
+
 <?php
     }
   ?>
@@ -161,6 +161,7 @@ if (isset($prodcat_code)) {
 <!--Price Filters[ -->
 <?php if (isset($priceArr) && $priceArr) {
       ?>
+<div class="divider--filters"></div>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Price', $siteLangId).' ('.(CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft()).')'; ?> </div>
 <div class="filter-content toggle-target">
     <div class="prices " id="perform_price">
@@ -172,7 +173,7 @@ if (isset($prodcat_code)) {
     <div class="slide__fields form">
         <div class="price-input">
             <div class="price-text-box">
-                <input class="input-filter form-control " value="<?php echo floor($priceArr['minPrice']); ?>" name="priceFilterMinValue" type="text">
+                <input class="input-filter " value="<?php echo floor($priceArr['minPrice']); ?>" name="priceFilterMinValue" type="text">
                 <span class="rsText"><?php echo CommonHelper::getCurrencySymbolRight()?CommonHelper::getCurrencySymbolRight():CommonHelper::getCurrencySymbolLeft(); ?></span> </div>
         </div>
         <span class="dash"> - </span>
@@ -184,7 +185,7 @@ if (isset($prodcat_code)) {
     </div>
     <!--<input value="GO" class="btn " name="toVal" type="submit">-->
 </div>
-<div class="divider--filters"></div>
+
 <?php
   } ?>
 <!-- ] -->
@@ -193,6 +194,7 @@ if (isset($prodcat_code)) {
 <!--Brand Filters[ -->
 <?php if (isset($brandsArr) && count($brandsArr) > 1) {
       $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array(); ?>
+<div class="divider--filters"></div>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
 <div class="scrollbar-filters" id="scrollbar-filters">
     <ul class="list-vertical">
@@ -206,7 +208,6 @@ if (isset($prodcat_code)) {
     </ul>
     <!--<a onClick="alert('Pending')" class="btn btn--link ripplelink"><?php echo Labels::getLabel('LBL_View_More', $siteLangId); ?> </a> -->
 </div>
-<div class="divider--filters"></div>
 <?php
   }?>
 <!-- ] -->
@@ -216,8 +217,9 @@ if (isset($prodcat_code)) {
         $optionIds = array();
         $optionValueCheckedArr = (isset($optionValueCheckedArr) && !empty($optionValueCheckedArr))? $optionValueCheckedArr : array();
 
-        if (isset($options) && $options) {
-            function sortByOrder($a, $b)
+        if (isset($options) && $options) { ?>
+        <div class="divider--filters"></div>
+            <?php function sortByOrder($a, $b)
             {
                 return $a['option_id'] - $b['option_id'];
             }
@@ -268,7 +270,7 @@ if (isset($prodcat_code)) {
             } ?>
             </ul>
         </div>
-        <div class="divider--filters"></div>
+        
         <?php
         } ?>
         <!-- ] -->
@@ -277,6 +279,7 @@ if (isset($prodcat_code)) {
         <?php
         if(isset($availabilityArr) && count($availabilityArr) > 1){
         $availability = isset($availability)?$availability:0;?>
+        <div class="divider--filters"></div>
         <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Availability', $siteLangId);?></div>
         <div class="selected-filters toggle-target">
             <ul class="listing--vertical listing--vertical-chcek">

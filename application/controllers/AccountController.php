@@ -224,14 +224,14 @@ class AccountController extends LoggedUserController
         $post = FatApp::getPostedData();
 
         if (empty($post)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
         }
         $field_id = $post['field_id'];
 
         if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
         }
 
         $fileHandlerObj = new AttachedFile();
@@ -247,8 +247,8 @@ class AccountController extends LoggedUserController
             $unique_record = false
         )
         ) {
-            Message::addErrorMessage($fileHandlerObj->getError());
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage($fileHandlerObj->getError()); */
+            FatUtility::dieJsonError($fileHandlerObj->getError());
         }
 
         $this->set('file', $_FILES['file']['name']);
@@ -1497,18 +1497,21 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function updateRemoveWishListProduct($selprod_id, $wish_list_id)
+    public function updateRemoveWishListProduct($selprodId, $wishListId)
     {
-        $selprod_id_arr = FatApp::getPostedData('selprod_id');
-        $oldWwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
+        $selprodIdArr = FatApp::getPostedData('selprod_id');
+        $oldWishlistId = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
 
-        if (empty($selprod_id_arr) || empty($oldWwlist_id)) {
+        if (empty($selprodIdArr) || empty($oldWishlistId)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        foreach ($selprod_id_arr as $selprod_id) {
-            $this->updateWishList($selprod_id, $oldWwlist_id);
-            $this->updateWishList($selprod_id, $wish_list_id);
+        foreach ($selprodIdArr as $selprodId) {
+            $this->updateWishList($selprodId, $oldWishlistId);
+            $isExists = UserWishList::getListProductsByListId($wishListId, $selprodId);
+            if (empty($isExists)) {
+                $this->updateWishList($selprodId, $wishListId);
+            }
         }
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1572,8 +1575,6 @@ class AccountController extends LoggedUserController
         $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
         $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
 
-        $rs = $srch->getResultSet();
-        $row = $db->fetch($rs);
         $rs = $srch->getResultSet();
 
         $action = 'N'; //nothing happened
@@ -2782,7 +2783,7 @@ class AccountController extends LoggedUserController
                         Labels::getLabel('LBL_Upload_File', $this->siteLangId),
                         array('class'=>'fileType-Js','id'=>'button-upload'.$field['sformfield_id'],'data-field_id'=>$field['sformfield_id'])
                     );
-                    $fld1->htmlAfterField='&nbsp;&nbsp;&nbsp;<span class="msg--success" id="input-sformfield'.$field['sformfield_id'].'"></span>';
+                    $fld1->htmlAfterField='<span id="input-sformfield'.$field['sformfield_id'].'"></span>';
                     if ($field['sformfield_required'] == 1) {
                         $fld1->captionWrapper = array('<div class="astrick">','</div>');
                     }
@@ -2804,6 +2805,11 @@ class AccountController extends LoggedUserController
                     $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
+                    break;
+
+                case User::USER_FIELD_TYPE_PHONE:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName, '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+                    $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
                     break;
             }
 

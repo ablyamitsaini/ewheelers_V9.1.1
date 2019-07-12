@@ -420,9 +420,9 @@ class MyAppController extends FatController
 
         //$pageSizeArr[$pageSize] = $pageSize.' '.$itemsTxt;
         $pageSizeArr[$pageSize] = Labels::getLabel('LBL_Default', $this->siteLangId);
-        $pageSizeArr[10] = 10 . ' '.$itemsTxt;
-        $pageSizeArr[25] = 25 . ' '.$itemsTxt;
-        $pageSizeArr[50] = 50 . ' '.$itemsTxt;
+        $pageSizeArr[12] = 12 . ' '.$itemsTxt;
+        $pageSizeArr[24] = 24 . ' '.$itemsTxt;
+        $pageSizeArr[48] = 48 . ' '.$itemsTxt;
         $frm = new Form('frmProductSearch');
         $frm->addTextBox('', 'keyword', '', array('id'=>'keyword'));
         $frm->addSelectBox('', 'sortBy', $sortByArr, $sortBy, array('id'=>'sortBy'), '');

@@ -380,7 +380,7 @@ class SubscriptionCheckoutController extends MyAppController
         $this->set('orderInfo', $orderInfo);
         $this->set('userWalletBalance', $userWalletBalance);
         $this->set('WalletPaymentForm', $WalletPaymentForm);
-        $this->set('ConfirmPaymentForm', $confirmPaymentFrm);
+        $this->set('confirmPaymentFrm', $confirmPaymentFrm);
         $this->_template->render(false, false);
     }
     public function getFinancialSummary()

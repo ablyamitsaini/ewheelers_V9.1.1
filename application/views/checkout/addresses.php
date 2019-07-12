@@ -15,7 +15,7 @@
         <?php foreach ($addresses as $address) {
                 $selected_billing_address_id = (!$selected_billing_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_billing_address_id; ?>
         <div class="col-lg-6 col-md-6 col-xs-12 address-<?php echo $address['ua_id'];?>">
-            <label class="address <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'is--selected' : ''; ?> ">
+            <label class="address address-billing <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'is--selected' : ''; ?> ">
                 <div class="address-inner">
                     <span class="radio">
                         <input <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="billing_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
@@ -67,13 +67,13 @@
 </div>
 
 <?php if ($addresses && $cartHasPhysicalProduct) { ?>
-<div class="divider" id="shippingAddressDivider"></div>
+<div class="gap"></div>
 <div class="address-wrapper step__body box box--white box--radius p-4" id="shippingAddressContainer">
     <div class="row">
         <?php foreach ($addresses as $address) {
                 $selected_shipping_address_id = (!$selected_shipping_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_shipping_address_id; ?>
         <div class="col-lg-6 col-md-6 col-xs-12">
-            <label class="address <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'is--selected' : ''; ?>">
+            <label class="address address-shipping <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'is--selected' : ''; ?>">
                 <div class="address-inner">
                     <span class="radio">
                         <input <?php echo ($selected_shipping_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="shipping_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
@@ -120,7 +120,6 @@
     $("input[name='isShippingSameAsBilling']").change(function() {
         if ($(this).is(":checked")) {
             $("#shippingAddressDivider").hide();
-            $("#shippingAddressContainer").hide();
             var billing_address_id = $("input[name=billing_address_id]:checked").val();
             if (billing_address_id) {
                 $("input[name='shipping_address_id']").each(function() {
@@ -134,13 +133,18 @@
             }
         } else {
             $("#shippingAddressContainer").show();
-            $("#shippingAddressDivider").show();
         }
     });
 
     $("input[name='billing_address_id']").change(function() {
+        $('.address-billing').removeClass("is--selected");
+		$(this).parent().parent().parent('.address').addClass("is--selected");
         $("input[name='isShippingSameAsBilling']").change();
     });
+    $("input[name='shipping_address_id']").change(function() {
+        $('.address-shipping').removeClass("is--selected");
+		$(this).parent().parent().parent('.address').addClass("is--selected");
+    });
 
-    $("input[name='billing_address_id']").change(); // trigger change event of billing address radio button
+    $("input[name='isShippingSameAsBilling']").change(); // trigger change event of billing address radio button
 </script>

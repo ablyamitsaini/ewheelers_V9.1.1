@@ -544,17 +544,4 @@
         $frm->addSubmitButton('', 'btnProductSrchSubmit', Labels::getLabel('btn_search', $this->siteLangId));
         return $frm;
     }
-
-    public function testView($selprod_id = 0)
-    {
-        $this->_template->render();
-    }
-	public function testView1($selprod_id = 0)
-    {
-        $this->_template->render();
-    }
-	public function testView2($selprod_id = 0)
-    {
-        $this->_template->render();
-    }
 }

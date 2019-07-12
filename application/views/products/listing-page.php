@@ -20,7 +20,7 @@ if (!empty($category['banner'])) {
 if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
     $bannerImage = CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId));
 }
-if (!empty($category['banner']) || !empty($category['prodcat_description']) || (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0)) { ?>
+if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0)) { ?>
     <section class="bg-shop">
         <div class="shop-banner" style="background-image: url(<?php echo $bannerImage; ?>)" data-ratio="4:1"></div>
         <?php /* if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
@@ -33,12 +33,20 @@ if (!empty($category['banner']) || !empty($category['prodcat_description']) || (
 <?php if (isset($pageTitle)) { ?>
 <section class="bg--second pt-3 pb-3">
     <div class="container">
-        <div class="section-head section--white--head justify-content-center mb-0">
+        <div class="section-head section--white--head section--head--center mb-0">
             <div class="section__heading">
-                <h2 class="mb-0"><?php echo $pageTitle; ?></h2>
-                <div class="breadcrumbs breadcrumbs--white breadcrumbs--center">
-                    <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
-                </div>
+                <h2 class="mb-0">
+                <?php $keywordStr = '';
+                if (isset($keyword) && !empty($keyword)) {
+                    $short_keyword = (mb_strlen($keyword) > 20) ? mb_substr($keyword, 0, 20)."..." : $keyword;
+                    $keywordStr = '<span title="'.$keyword.'" class="search-results">"'.$short_keyword.'"</span>';
+                }
+                echo $pageTitle; ?> <?php echo $keywordStr; ?></h2>
+                <?php if (isset($showBreadcrumb) && $showBreadcrumb) { ?>
+                    <div class="breadcrumbs breadcrumbs--white breadcrumbs--center">
+                        <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
+                    </div>
+                <?php }?>
             </div>
         </div>
     </div>
@@ -146,14 +154,14 @@ if (!empty($category['banner']) || !empty($category['prodcat_description']) || (
                 </div>
             </div>
         <div class="col-xl-9 col-lg-12">
-            <div class="row align-items-center mb-3">
-                <div class="col-lg-6">
-                    <div class="total-products">
-                        <span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEMS', $siteLangId); ?></span>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div id="top-filters" class="page-sort hide_on_no_product">
+			<div class="row align-items-center justify-content-between  flex-column flex-md-row mb-3">
+				<div class="col mb-3 mb-md-0">
+					<div class="total-products">
+						<span class="hide_on_no_product"><span id="total_records"><?php echo $recordCount;?></span> <?php echo Labels::getLabel('LBL_ITEM(S)', $siteLangId); ?></span>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div id="top-filters" class="page-sort hide_on_no_product">
                     <ul>
                         <li class="list__item">
                            <a href="javascript:void(0)" class="link__filter btn btn--secondary-border d-xl-none btn--filters-control"><i class="icn">

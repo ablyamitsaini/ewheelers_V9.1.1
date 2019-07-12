@@ -365,9 +365,9 @@ class ProductCategoriesController extends AdminBaseController
         $frm->addHiddenField('', 'prodcat_id', $prodcat_id);
         $frm->addHiddenField('', 'lang_id', $lang_id);
         $frm->addRequiredField(Labels::getLabel('LBL_Category_Name', $this->adminLangId), 'prodcat_name');
-        $fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Description', $this->adminLangId), 'prodcat_description');
+        /*$fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Description', $this->adminLangId), 'prodcat_description');
         // $fld->requirements()->setLength(0,250);
-        $fld->htmlAfterField = '<small>'.Labels::getLabel('LBL_First_100_characters_will_be_shown_in_home_page_collections.', $this->adminLangId).'</small>';
+        $fld->htmlAfterField = '<small>'.Labels::getLabel('LBL_First_100_characters_will_be_shown_in_home_page_collections.', $this->adminLangId).'</small>';*/
         /* if(isset($row['child_count']) && $row['child_count'] > 0){
         $fld = $frm->addHtmlEditor(Labels::getLabel('LBL_Content_Block',$this->adminLangId),'prodcat_content_block');
         $fld->htmlAfterField = '<br/>'.Labels::getLabel('LBL_Prefix_with_{SITEROOT}_if_u_want_to_generate_system_site_url.',$this->adminLangId).'<br/>E.g: {SITEROOT}/products, {SITEROOT}/contact_us etc.';
@@ -622,7 +622,7 @@ class ProductCategoriesController extends AdminBaseController
         'prodcatlang_lang_id'=>$lang_id,
         'prodcatlang_prodcat_id'=>$prodcat_id,
         'prodcat_name'=> $post['prodcat_name'],
-        'prodcat_description'=>$post['prodcat_description'],
+        /*'prodcat_description'=>$post['prodcat_description'],*/
         );
 
         if (isset($post['prodcat_content_block'])) {

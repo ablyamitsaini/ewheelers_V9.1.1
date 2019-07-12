@@ -29,6 +29,9 @@ $(document).ready(function() {
     	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
+    $(document).on('change', 'input.phone-js', function(e) {
+        $(this).keydown()
+    });
     $(document).on('keydown', 'input.phone-js', function(e) {
         var key = e.which || e.charCode || e.keyCode || 0;
         $phone = $(this);
@@ -405,10 +408,9 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 				}
 			]
 		};
-
-        if (layoutDirection == 'rtl') {
-            sliderSettings['rtl'] = true;
-        }
+		if($( window ).width() < 1025 && layoutDirection == 'rtl'){
+			sliderSettings['rtl'] = true;
+		}
 
     } else {
 		var sliderSettings = {
@@ -826,19 +828,25 @@ $(document).ready(function() {
 
     $(document).on("click", '.increase-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
-        var val = $(this).parent().parent('div').find('input').val();
-        if(isNaN(val)){
+        var rval = $(this).parent().parent('div').find('input').val();
+        if(isNaN(rval)){
             $(this).parent().parent('div').find('input').val(1);
             return false;
         }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
-        val = parseInt(val) + 1;
+        val = parseInt(rval) + 1;
         if (val > $(this).parent().data('stock')) {
             val = $(this).parent().data('stock');
             $(this).addClass('not-allowed');
         }
+        if($(this).hasClass('not-allowed') && rval >= $(this).parent().data('stock') ){
+            return false;
+        }
         $(this).parent().parent('div').find('input').val(val);
+        if(page == 'product-view'){
+            return false;
+        }
         cart.update(key, page); 
     });
 
@@ -857,24 +865,34 @@ $(document).ready(function() {
         $(this).val(val);
         var key = $(this).attr('data-key');
         var page = $(this).attr('data-page');
+        if(page == 'product-view'){
+            return false;
+        }
         cart.update(key, page);
     });
 
     $(document).on("click", '.decrease-js', function() {
         $(this).siblings('.not-allowed').removeClass('not-allowed');
-        var val = $(this).parent().parent('div').find('input').val();
-        if(isNaN(val)){
+        var rval = $(this).parent().parent('div').find('input').val();
+        if(isNaN(rval)){
             $(this).parent().parent('div').find('input').val(1);
             return false;
         }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
-        val = parseInt(val) - 1;
+        
+        val = parseInt(rval) - 1;
         if (val <= 1) {
             val = 1;
             $(this).addClass('not-allowed');
         }
+        if($(this).hasClass('not-allowed') && rval <= 1 ){
+            return false;
+        }
         $(this).parent().parent('div').find('input').val(val);
+        if(page == 'product-view'){
+            return false;
+        }
         cart.update(key, page);
     });
 

@@ -44,6 +44,7 @@ class User extends MyAppModel
     const USER_FIELD_TYPE_DATE = 4;
     const USER_FIELD_TYPE_DATETIME = 5;
     const USER_FIELD_TYPE_TIME = 6;
+    const USER_FIELD_TYPE_PHONE = 7;
 
     const SUPPLIER_REQUEST_PENDING = 0;
     const SUPPLIER_REQUEST_APPROVED = 1;

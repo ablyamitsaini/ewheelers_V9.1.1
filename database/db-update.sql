@@ -356,3 +356,4 @@ ALTER TABLE `tbl_shops` ADD `shop_cod_min_wallet_balance` DECIMAL NOT NULL DEFAU
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Instant_Multi_Vendor_eCommerce_System_Builder';
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%LBL_Please_enter_valid_format%';
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%MSG_ACTION_TRYING_PERFORM_NOT_VALID%';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_ITEM';

@@ -51,4 +51,4 @@ if ((!isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || $_SERVER['HTTP_X_FORWARDED_PR
 $_SESSION['WYSIWYGFileManagerRequirements'] = CONF_INSTALLATION_PATH . 'public/WYSIWYGFileManagerRequirements.php';
 
 define('SYSTEM_INIT', true);
-define('CONF_WEB_APP_VERSION', 'TV-9.0.1.20190705');
+define('CONF_WEB_APP_VERSION', 'TV-9.0.1.20190709');

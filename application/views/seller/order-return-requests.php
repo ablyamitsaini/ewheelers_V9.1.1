@@ -81,7 +81,6 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
         <div class="row">
             <div class="col-lg-12">
                 <div class="cards">
-
                     <div class="cards-content pt-2 pl-4 pr-4">
                         <div id="returnOrderRequestsListing"></div>
                     </div>

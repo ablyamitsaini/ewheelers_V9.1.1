@@ -84,13 +84,14 @@
             <?php echo $loginFrm->getExternalJS();?>
 
             <?php if ($showSignUpLink) { ?>
-            <div class="row">
-                <div class="col-md-12 col-xs-12 text-center">
+            <div class="row justify-content-center">
+                <div class="col-auto text-center">
                     <a class="link" href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?', $siteLangId), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a>
-                    <?php if (isset($includeGuestLogin) && 'true' == $includeGuestLogin) {?>
-                    <a class="link" href="javascript:void(0)" onclick="guestUserFrm()"><?php echo sprintf(Labels::getLabel('LBL_Guest_Checkout?', $siteLangId), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a>
-                    <?php }?>
+                    
                 </div>
+				 <div class="col-auto text-center"><?php if (isset($includeGuestLogin) && 'true' == $includeGuestLogin) {?>
+                    <a class="link" href="javascript:void(0)" onclick="guestUserFrm()"><?php echo sprintf(Labels::getLabel('LBL_Guest_Checkout?', $siteLangId), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a>
+                    <?php }?></div>
             </div>
             <?php } ?>
             <?php

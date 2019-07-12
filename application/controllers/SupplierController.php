@@ -416,29 +416,28 @@ class SupplierController extends MyAppController
         $userId = $this->getRegisteredSupplierId();
 
         if (!$this->isRegisteredSupplierId($userId)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
         }
 
         if (UserAuthentication::isUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
         }
 
         $post = FatApp::getPostedData();
         if (empty($post)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId));
         }
         if (!isset($post['field_id']) || FatUtility::int($post['field_id']) == 0) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId));
         }
         $field_id = $post['field_id'];
 
         if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId)); */
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
         }
 
         $fileHandlerObj = new AttachedFile();
@@ -446,8 +445,8 @@ class SupplierController extends MyAppController
 
         if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], $fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE, $userId, $field_id, $_FILES['file']['name'], -1, false)
         ) {
-            Message::addErrorMessage($fileHandlerObj->getError());
-            FatUtility::dieJsonError(Message::getHtml());
+            /* Message::addErrorMessage($fileHandlerObj->getError()); */
+            FatUtility::dieJsonError($fileHandlerObj->getError());
         }
 
         $this->set('file', $_FILES['file']['name']);
@@ -629,7 +628,7 @@ class SupplierController extends MyAppController
 
         $userObj = new User();
         $supplier_form_fields = $userObj->getSupplierFormFields($this->siteLangId);
-
+        
         foreach ($supplier_form_fields as $field) {
             $fieldName = 'sformfield_'.$field['sformfield_id'];
 
@@ -672,6 +671,11 @@ class SupplierController extends MyAppController
                     $fld->requirement->setRegularExpressionToValidate(ValidateElement::TIME_REGEX);
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
+                    break;
+                    
+                case User::USER_FIELD_TYPE_PHONE:
+                    $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName, '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+                    $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);                    
                     break;
             }
 
