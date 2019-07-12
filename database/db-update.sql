@@ -355,3 +355,10 @@ ALTER TABLE `tbl_seller_packages` ADD `spackage_inventory_allowed` INT(11) NOT N
 ALTER TABLE `tbl_shops` ADD `shop_cod_min_wallet_balance` DECIMAL NOT NULL DEFAULT '-1' AFTER `shop_featured`;
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Instant_Multi_Vendor_eCommerce_System_Builder';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_ITEM';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Total';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Request_detail';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Ordered_Product';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Upto_{amount}_you_will_get_free_shipping';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_free_shipping_is_not_eligible_for_this_product';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Reward_Point_in_your_account';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_You_can_use_upto_';

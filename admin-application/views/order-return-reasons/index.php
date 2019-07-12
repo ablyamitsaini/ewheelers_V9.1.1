@@ -14,8 +14,6 @@
                 <!--<div class="row">
     <div class="col-sm-12"> -->
                 <h1><?php //echo Labels::getLabel('LBL_Manage_Order_Return_Reasons',$adminLangId);?></h1>
-            </div>
-            <div class="col-sm-12">
                 <section class="section">
                     <div class="sectionhead">
                         <h4><?php echo Labels::getLabel('LBL_Order_Return_Reasons_Listing', $adminLangId); ?></h4>
