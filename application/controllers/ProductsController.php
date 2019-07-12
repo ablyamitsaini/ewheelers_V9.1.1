@@ -2100,11 +2100,7 @@ class ProductsController extends MyAppController
     public function getFilteredProducts()
     {
         $post = FatApp::getPostedData();
-
-        $userId = 0;
-        if (UserAuthentication::isUserLogged()) {
-            $userId = UserAuthentication::getLoggedUserId();
-        }
+        $userId = UserAuthentication::getLoggedUserId(true);
 
         $page = 1;
         if (array_key_exists('page', $post)) {
