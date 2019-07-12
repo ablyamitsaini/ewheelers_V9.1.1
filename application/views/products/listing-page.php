@@ -219,7 +219,7 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
 <div class="gap"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $currentPageUrl = '<?php echo $canonicalUrl; ?>';
+        $currentPageUrl = '<?php echo $canonicalUrl; ?>';        
         $productSearchPageType = '<?php echo $productSearchPageType; ?>';
         $recordId = <?php echo $recordId; ?>;
         loadProductListingfilters(document.frmProductSearch);

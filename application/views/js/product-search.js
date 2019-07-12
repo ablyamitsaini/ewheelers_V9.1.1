@@ -465,12 +465,17 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 	};
 
 	loadProductListingfilters = function(frm){
-		var url = window.location.href;
+		/*var url = window.location.href;
 		if($currentPageUrl == removeLastSpace(url)+'/index'){
 			url = fcom.makeUrl('Products','filters');
 		}else{
 			url = url.replace($currentPageUrl, fcom.makeUrl('Products','filters'));
 		}
+
+		if (url.indexOf("products/filters") == -1) {
+			url = fcom.makeUrl('Products','filters');
+	    }*/
+		url = fcom.makeUrl('Products','filters');
 		var data = fcom.frmData(frm);
 		fcom.ajax(url, data, function(res){
 			$('.productFilters-js').html(res);
