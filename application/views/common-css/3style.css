@@ -3531,7 +3531,7 @@ img {
 	align-items: center;
 	border: solid 1px #323232;
 	border-radius: 4px;
-	padding: 1rem;
+	padding: 0.5rem;
 	min-width: 110px;
 }
 
@@ -3559,7 +3559,7 @@ img {
 
 .products-reviews a.totals-review {
 	color: var(--first-color) !important;
-	margin-top: 5px;
+
 }
 
 .products-reviews .totals-review.link::after {
