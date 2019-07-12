@@ -29,7 +29,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                 <div class="stats">
                                     <div class="stats-number">
                                         <ul>
-                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Total', $siteLangId);?></span>
+                                            <li><span class="total"><?php echo Labels::getLabel('LBL_Total_Credits', $siteLangId);?></span>
                                                 <span class="total-numbers"><?php echo CommonHelper::displayMoneyFormat($userBalance);?></span>
                                             </li>
                                             <li>
@@ -318,7 +318,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                 <tbody>
                                     <tr class="">
                                         <th width="40%"><?php echo Labels::getLabel('LBL_Order_Particulars', $siteLangId);?></th>
-                                        <th width="50%"><?php echo Labels::getLabel('LBL_Request_detail', $siteLangId);?></th>
+                                        <th width="50%"><?php echo Labels::getLabel('LBL_Details', $siteLangId);?></th>
                                         <th width="10%"><?php echo Labels::getLabel('LBL_Status', $siteLangId);?></th>
                                     </tr> <?php if (count($cancellationRequests) > 0) {
                                         foreach ($cancellationRequests as $row) {
