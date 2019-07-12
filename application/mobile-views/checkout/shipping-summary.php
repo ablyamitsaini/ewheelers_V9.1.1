@@ -10,6 +10,10 @@ if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
 }
 
 foreach ($products as $index => $product) {
+    $products[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+    $products[$index]['total'] = !empty($products[$index]['total']) ? CommonHelper::displayMoneyFormat($products[$index]['total']) : 0;
+    $products[$index]['totalPrice'] = !empty($products[$index]['totalPrice']) ? CommonHelper::displayMoneyFormat($products[$index]['totalPrice']) : 0;
+    $products[$index]['netTotal'] = !empty($products[$index]['netTotal']) ? CommonHelper::displayMoneyFormat($products[$index]['netTotal']) : 0;
     $shipping_options = array(
         array(
             'title' => Labels::getLabel("LBL_Select_Shipping", $siteLangId),
