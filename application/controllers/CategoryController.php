@@ -90,7 +90,8 @@ class CategoryController extends MyAppController
             'productSearchPageType'=>SavedSearchProduct::PAGE_CATEGORY,
             'recordId'=>$categoryId,
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
-            'siteLangId'=>$this->siteLangId
+            'siteLangId'=>$this->siteLangId,
+            'showBreadcrumb'=> true,
         );
 
         $this->set('data', $data);

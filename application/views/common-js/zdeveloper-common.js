@@ -408,10 +408,9 @@ function getSlickGallerySettings(imagesForNav, layoutDirection, slidesToShow = 4
 				}
 			]
 		};
-
-        if (layoutDirection == 'rtl') {
-            sliderSettings['rtl'] = true;
-        }
+		if($( window ).width() < 1025 && layoutDirection == 'rtl'){
+			sliderSettings['rtl'] = true;
+		}
 
     } else {
 		var sliderSettings = {

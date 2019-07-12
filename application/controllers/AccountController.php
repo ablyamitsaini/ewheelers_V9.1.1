@@ -1257,18 +1257,21 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function updateRemoveWishListProduct($selprod_id, $wish_list_id)
+    public function updateRemoveWishListProduct($selprodId, $wishListId)
     {
-        $selprod_id_arr = FatApp::getPostedData('selprod_id');
-        $oldWwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
+        $selprodIdArr = FatApp::getPostedData('selprod_id');
+        $oldWishlistId = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
 
-        if (empty($selprod_id_arr) || empty($oldWwlist_id)) {
+        if (empty($selprodIdArr) || empty($oldWishlistId)) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Request", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-        foreach ($selprod_id_arr as $selprod_id) {
-            $this->updateWishList($selprod_id, $oldWwlist_id);
-            $this->updateWishList($selprod_id, $wish_list_id);
+        foreach ($selprodIdArr as $selprodId) {
+            $this->updateWishList($selprodId, $oldWishlistId);
+            $isExists = UserWishList::getListProductsByListId($wishListId, $selprodId);
+            if (empty($isExists)) {
+                $this->updateWishList($selprodId, $wishListId);
+            }
         }
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1322,8 +1325,6 @@ class AccountController extends LoggedUserController
         $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
         $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
 
-        $rs = $srch->getResultSet();
-        $row = $db->fetch($rs);
         $rs = $srch->getResultSet();
 
         $action = 'N'; //nothing happened
@@ -2441,7 +2442,7 @@ class AccountController extends LoggedUserController
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
                     break;
-                    
+
                 case User::USER_FIELD_TYPE_PHONE:
                     $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName, '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
                     $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);

@@ -59,7 +59,7 @@
                         $logoUrl = CommonHelper::generateUrl();
                     }
                     ?>
-                    <div class="logo zoomIn">
+                    <div class="logo">
                         <a href="<?php echo $logoUrl; ?>">
                             <img data-ratio="16:9" src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>" alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, '') ?>">
                         </a>

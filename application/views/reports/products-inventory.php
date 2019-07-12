@@ -43,7 +43,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
                             </div>
                         </div>
                         <div class="cards-content pl-4 pr-4 pb-0">
-                            
+
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <?php
@@ -56,8 +56,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
                                             ?>
                                         </div>
                                     </div>
-                           
-                          
+
+
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content pt-2 pl-4 pr-4 ">
                             <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                             <div class="gap"></div>
                         </div>

@@ -199,14 +199,10 @@
                     <div class="payment-from">
                         <div class="you-pay">
                             <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
-                            <strong>
-                                <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
-                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                    <li>
-                                        <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
-                                    </li>
-                                <?php } ?>
-                            </strong>
+                            <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
+                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                            <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
+                            <?php } ?>
                         </div>
                         <div class="gap"></div>
                         <div id="tabs-container"></div>

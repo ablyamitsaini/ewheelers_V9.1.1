@@ -1,3 +1,4 @@
+
 #header {
 	position: relative;
 	z-index: 10;
@@ -40,9 +41,10 @@
 	display: -ms-flexbox;
 	display: flex;
 	padding: 0;
+	/*
 	-webkit-box-pack: justify;
 	-ms-flex-pack: justify;
-	justify-content: space-between;
+	justify-content: space-between;*/
 }
 
 .navigations > li {
@@ -50,7 +52,7 @@
 	font-size: 0.9em;
 	font-weight: 600;
 	position: static;
-	margin: 0 1rem;
+	margin: 0 2rem;
 }
 
 .navigations > li:first-child {
@@ -417,9 +419,12 @@
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
-		-webkit-box-pack: start;
-		-ms-flex-pack: start;
-		justify-content: flex-start;
+		 
+		-webkit-box-pack: start !important;
+		 
+		    -ms-flex-pack: start !important;
+		 
+		        justify-content: flex-start !important;
 	}
 
 	.navigations > li {

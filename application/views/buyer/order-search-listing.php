@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
     'order_id'    =>    Labels::getLabel('LBL_Order_ID_Date', $siteLangId),
-    'product'    =>    Labels::getLabel('LBL_Ordered_Product', $siteLangId),
+    'product'    =>    Labels::getLabel('LBL_Details', $siteLangId),
     'total'        =>    Labels::getLabel('LBL_Total', $siteLangId),
     'status'    =>    Labels::getLabel('LBL_Status', $siteLangId),
     'action'    =>    Labels::getLabel('LBL_Action', $siteLangId),

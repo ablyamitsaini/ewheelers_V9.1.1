@@ -97,7 +97,8 @@ class BrandsController extends MyAppController
             'productSearchPageType'=>SavedSearchProduct::PAGE_BRAND,
             'recordId'=>$brandId,
             'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'brands'),
-            'siteLangId'=>$this->siteLangId
+            'siteLangId'=>$this->siteLangId,
+            'showBreadcrumb'=> true,
         );
 
         $this->set('data', $data);

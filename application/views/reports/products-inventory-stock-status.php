@@ -30,8 +30,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <div class="cards">
-                       
-                        <div class="cards-content pl-4 pr-4 pt-4 pb-0">                            
+
+                        <div class="cards-content pl-4 pr-4 pt-4 pb-0">
                                 <div class="replaced">
                                     <div class="row">
                                         <div class="col-lg-6"> <?php
@@ -40,12 +40,12 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
 
                                             $fldClear= $frmSrch->getField('btn_clear');
                                             $fldClear->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
-                                            echo $frmSrch->getFormHtml(); ?> 
+                                            echo $frmSrch->getFormHtml(); ?>
                                         </div>
                                     </div>
                                 </div>
-                            
-                          
+
+
                         </div>
                     </div>
                 </div>
@@ -53,8 +53,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true; ?> <?php $this->includeTemp
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        
-                        <div class="cards-content pl-4 pr-4 ">
+
+                        <div class="cards-content pt-2 pl-4 pr-4 ">
                             <div id="listingDiv"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
                             <div class="gap"></div>
                         </div>

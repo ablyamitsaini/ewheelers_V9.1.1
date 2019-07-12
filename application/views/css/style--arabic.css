@@ -1,5 +1,8 @@
 html {
 	direction: rtl;
+	overflow: hidden;
+	overflow-y: scroll;
+
 }
 
 body {
@@ -38,10 +41,6 @@ th,
 	left: auto;
 }
 
-.form--search-popup .select__value {
-	border-right: none;
-	border-left: solid 1px var(--first-color);
-}
 
 .form--search-popup .select__value {
 	padding: 0 15px 0 35px;
@@ -57,7 +56,7 @@ th,
 	left: 20px;
 }
 
-.ftshops .ftshops_item_head_right,
+
 .seller-login {
 	text-align: left;
 }
@@ -557,10 +556,6 @@ transform: rotate(-180deg); */
 	margin-left: 8px;
 }
 
-.sidebar {
-	border-right: none;
-	border-left: solid 1px var(--border-color);
-}
 
 .header-icons-group .dropdown__target {
 	left: 0;
@@ -708,10 +703,7 @@ transform: rotate(-180deg); */
 	right: 0;
 }
 
-.listing-products--list .products__body {
-	border-right: none;
-	border-left: 1px solid var(--border-color);
-}
+
 
 .dashboard-menu .menu__item__inner::before {
 	left: auto;
@@ -737,27 +729,34 @@ transform: rotate(-180deg); */
 	left: auto;
 	right: -2rem;
 }
-.fld-date{ background-position: calc(12px) 11px;}
 
-/* media queries */
+.fld-date {
+	background-position: calc(12px) 11px;
+}
+
+.testimonials-item .user {
+	left: auto;
+	right: 25px;
+}
+
+.listing--check li a:before {
+	left: auto;
+	right: 0;
+}
+.short-links > ul > li:after{ right: auto; left: -16px;}
+/*All media queries */
 @media only screen and (max-width: 1600px) {
 	.post-data.is-fixed .sticky-element {
 		margin: 0;
 	}
 }
-
-
-@media only screen and (max-width: 1281px) {
- 
-}
-
+@media only screen and (max-width: 1281px) {}
 @media only screen and (max-width: 1199px) {
 	.navs_toggle {
 		left: auto;
 		right: 8px;
 	}
 
-	.ftshops .ftshops_item_head_right,
 	.seller-login {
 		text-align: right;
 	}
@@ -896,8 +895,8 @@ transform: rotate(-180deg); */
 		left: 0;
 		right: auto;
 	}
-}
 
+}
 @media only screen and (max-width: 767px) {
 	html {
 		overflow-x: hidden;
@@ -927,7 +926,7 @@ transform: rotate(-180deg); */
 		margin-right: auto;
 		margin-left: 0;
 	}
-
+	
 	.short-links > ul > li.dropdown--lang {
 		margin-right: 0;
 	}
@@ -960,13 +959,21 @@ transform: rotate(-180deg); */
 		left: auto;
 		right: 35px;
 	}
-	.widget-scroll .slick-prev{ right: 0;}
-	.widget-scroll .slick-next{ left: 0;}
-	.ft-pro-wrapper{ background: none; border: none;}
+
+	.widget-scroll .slick-prev {
+		right: 0;
+	}
+
+	.widget-scroll .slick-next {
+		left: 0;
+	}
+
+	.ft-pro-wrapper {
+		background: none;
+		border: none;
+	}
 
 }
-
-
 @media only screen and (max-width:500px) {
 
 	.page-sort ul li .btn--filters-control.btn--primary-border,
