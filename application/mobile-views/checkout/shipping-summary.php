@@ -14,6 +14,7 @@ foreach ($products as $index => $product) {
     $products[$index]['total'] = !empty($products[$index]['total']) ? CommonHelper::displayMoneyFormat($products[$index]['total']) : 0;
     $products[$index]['totalPrice'] = !empty($products[$index]['totalPrice']) ? CommonHelper::displayMoneyFormat($products[$index]['totalPrice']) : 0;
     $products[$index]['netTotal'] = !empty($products[$index]['netTotal']) ? CommonHelper::displayMoneyFormat($products[$index]['netTotal']) : 0;
+    $products[$index]['productKey'] = md5($products[$index]['key']);
     $shipping_options = array(
         array(
             'title' => Labels::getLabel("LBL_Select_Shipping", $siteLangId),
