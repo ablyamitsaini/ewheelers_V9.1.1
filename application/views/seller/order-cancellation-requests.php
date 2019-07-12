@@ -67,7 +67,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 </div>
             </div>
             <div class="cards">
-                <div class="cards-content pl-4 pr-4 ">
+                <div class="cards-content pt-2 pl-4 pr-4 ">
                     <div id="cancelOrderRequestsListing"></div>
                     <span class="gap"></span>
                 </div>

@@ -16,36 +16,7 @@
 		visibility: hidden;
 		white-space: nowrap;
 	}
-
-	.hamburger-toggle.is-opened .bar-top {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-		-webkit-transform-origin: center;
-		transform-origin: center;
-	}
-
-	.hamburger-toggle.is-opened .bar-mid {
-		opacity: 1;
-	}
-
-	.hamburger-toggle.is-opened .bar-bot {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-		-webkit-transform-origin: center;
-		transform-origin: center;
-		width: 12px;
-	}
-
-	.widget-scroll {
-		-webkit-margin-start: -5px;
-		-moz-margin-start: -5px;
-		margin-inline-start: -5px;
-		-webkit-margin-end: -5px;
-		-moz-margin-end: -5px;
-		margin-inline-end: -5px;
-	}
-
-
+	
 	.sidebar-is-reduced .sidebar {
 		width: 280px;
 	}
@@ -98,6 +69,45 @@
 		transform-origin: 15% 95%;
 		width: 24px;
 	}
+	
+	main.main,
+	.sidebar-is-expanded main.main {
+
+		-webkit-padding-start: 70px;
+		-moz-padding-start: 70px;
+		padding-inline-start: 70px;
+	}
+
+	.hamburger-toggle.is-opened .bar-top {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+		-webkit-transform-origin: center;
+		transform-origin: center;
+	}
+
+	.hamburger-toggle.is-opened .bar-mid {
+		opacity: 1;
+	}
+
+	.hamburger-toggle.is-opened .bar-bot {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+		-webkit-transform-origin: center;
+		transform-origin: center;
+		width: 12px;
+	}
+
+	.widget-scroll {
+		-webkit-margin-start: -5px;
+		-moz-margin-start: -5px;
+		margin-inline-start: -5px;
+		-webkit-margin-end: -5px;
+		-moz-margin-end: -5px;
+		margin-inline-end: -5px;
+	}
+
+
+	
 
 	.ftshops .shop-detail-side {
 		max-width: 260px;
@@ -126,12 +136,7 @@
 	}
 
 
-	main.main,
-	.sidebar-is-expanded main.main {
-		-webkit-padding-start: 70px;
-		-moz-padding-start: 70px;
-		padding-inline-start: 70px;
-	}
+	
 
 
 	.widget-wrapper {
@@ -326,7 +331,7 @@
 
 	.slider-nav .thumb {
 		border: none !important;
-		padding:10px;
+		padding: 10px;
 		margin-bottom: 0;
 	}
 
@@ -1315,7 +1320,7 @@ display: none;
 }
 
 @media only screen and (max-width:1080px) {
-.logo {
+	.logo {
 		width: 100px;
 		height: 42px;
 		position: relative;
@@ -1329,7 +1334,26 @@ display: none;
 		bottom: 0;
 		margin: auto;
 	}
-	.contact-info{ -webkit-box-orient: vertical; -webkit-box-direction: normal; -ms-flex-direction: column; flex-direction: column; -webkit-box-align: start; -ms-flex-align: start; align-items: flex-start;}}
+
+	.contact-info {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		-webkit-box-align: start;
+		-ms-flex-align: start;
+		align-items: flex-start;
+	}
+
+	.shop-slider .overlay-content {
+		padding: 1rem;
+	}
+
+	.shop-banner {
+		min-height: 300px;
+		background-size: cover;
+	}
+}
 
 
 @media only screen and (max-width:1023px) {
@@ -1461,8 +1485,15 @@ display: none;
 		flex-wrap: nowrap;
 		overflow-x: auto;
 	}
-	
-	
+
+	.shop-banner {
+		min-height: 250px;
+		background-size: cover;
+	}
+
+
+
+
 }
 
 @media only screen and (max-width: 767px) {
@@ -1607,10 +1638,6 @@ left: 50%; top: 50%; transform: translate(-50%,-50%) scaleY(1)!important;z-index
 		margin: auto;
 		position: relative;
 	}
-
-
-
-	
 
 	#header {
 		height: 102px;
@@ -2488,10 +2515,7 @@ border: solid 1px var(--border-color);
 		position: static;
 	}
 
-	.shop-banner {
-		min-height: 200px;
-		background-size: cover;
-	}
+
 
 	.delivery-term-data-inner .heading {
 		font-size: 2rem;

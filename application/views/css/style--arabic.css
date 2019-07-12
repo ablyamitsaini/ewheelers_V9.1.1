@@ -729,6 +729,7 @@ transform: rotate(-180deg); */
 }
 .fld-date{ background-position: calc(12px) 11px;}
 .testimonials-item .user{ left: auto; right: 25px;}
+.listing--check li a:before{ left: auto; right: 0;}
 
 /* media queries */
 @media only screen and (max-width: 1600px) {

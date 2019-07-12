@@ -59,7 +59,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                             <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_COD', $siteLangId).' : '. CommonHelper::displaymoneyformat($codMinWalletBalance);?></p>
                         </div>
                         <?php } ?>
-                        <div class="cards-content pl-4 pr-4 pt-4">
+                        <div class="cards-content pt-4 pl-4 pr-4">
                             <div id="credits-info"></div>
                             <div class="gap"></div>
                             <?php //echo $balanceTotalBlocksDisplayed;?>
@@ -112,7 +112,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 <div class="col-lg-12">
                     <div class="cards">
 
-                        <div class="cards-content pl-4 pr-4 ">
+                        <div class="cards-content pt-2 pl-4 pr-4 ">
                             <div id="creditListing"><?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?></div>
                             <span class="gap"></span>
                         </div>

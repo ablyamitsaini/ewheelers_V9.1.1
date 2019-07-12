@@ -27,7 +27,7 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
 <?php echo $this->includeTemplate('_partial/shareThisScript.php'); ?>
 <script>
     $(document).ready(function(){
-        $('.js-shop-slider').slick( getSlickSliderSettings(3, 1, langLbl.layoutDirection) );
+        $('.js-shop-slider').slick( getSlickSliderSettings(3, 1, langLbl.layoutDirection, false, {1199: 3,1024: 2,767: 1,480: 1}) );
         
         $('.social-toggle').on('click', function() {
             $(this).next().toggleClass('open-menu');
