@@ -523,10 +523,10 @@ class ShopsController extends MyAppController
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if ($shopData['shop_user_id'] == $loggedUserId) {
+        /*  if ($shopData['shop_user_id'] == $loggedUserId) {
             Message::addErrorMessage(Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
-        }
+        } */
 
         $threadObj = new Thread();
         $threadDataToSave = array(
