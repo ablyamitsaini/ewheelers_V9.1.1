@@ -1687,7 +1687,7 @@ input:checked + .slider:before {
 	margin: 0;
 	margin-top: 0.5rem;
 	padding: 0;
-	
+
 }
 
 .breadcrumbs.breadcrumbs--center ul {
@@ -3585,7 +3585,8 @@ img {
 	content: "";
 }
 
-.products .tag--soldout {
+.products .tag--soldout,
+.tag--soldout {
 	background: red;
 	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
@@ -3600,11 +3601,17 @@ img {
 	position: absolute;
 	text-transform: uppercase;
 	top: 50%;
-	-webkit-transform: translate(-50% -50%);
-	transform: translate(-50% -50%);
+	transform: translate(-50%, -50%);
 	z-index: 1;
 	/*white-space: nowrap;*/
 	font-weight: 700;
+}
+
+.tag--soldout.tag--soldout-small {
+	padding: 9px 7px;
+	width: 40px;
+	height: 40px;
+	font-size: 0.6rem;
 }
 
 .products .products__body .products__img {
@@ -5421,7 +5428,7 @@ span.subheading {
 
 .price-text-box .input-filter {
 	margin: 0;
-	padding: 0 5px 0 30px;
+	padding: 0 5px 0 36px;
 	display: inline-block;
 	font-size: 12px;
 	vertical-align: top;
@@ -7772,6 +7779,8 @@ body.is--dashboard {
 
 .item__head {
 	text-align: center;
+	display: flex;
+	justify-content: space-between;
 }
 
 .items .item__pic {
@@ -7786,15 +7795,16 @@ body.is--dashboard {
 }
 
 .items .item__pic img {
-	max-width: 75%;
+	/*max-width: 75%;*/
 	margin: 0 auto;
+	box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.20);
+
+	border-radius: 4px;
 }
 
 .items .item__title {
-	font-size: 1.1em;
-	font-weight: 500;
-	clear: left;
-	margin: 25px 0 5px;
+	color: var(--body-color);
+
 }
 
 .items .form--creatlist {
@@ -7816,6 +7826,7 @@ body.is--dashboard {
 	margin: 5px 0 0;
 }
 
+/*
 .tag--soldout {
 	background: rgba(255, 255, 255, 0.8);
 	left: 50%;
@@ -7824,7 +7835,7 @@ body.is--dashboard {
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	padding: 1px 5px;
-}
+}*/
 
 .section--items-favs + .loadmore {
 	background: #f5f5f5;
@@ -15329,7 +15340,10 @@ main.main {
 	max-width: 210px;
 	font-weight: 400;
 }
-.shop-slider .overlay-content h4{ font-weight: inherit;}
+
+.shop-slider .overlay-content h4 {
+	font-weight: inherit;
+}
 
 
 .txt-gray-light {
@@ -15878,6 +15892,11 @@ input[type="password"][disabled] {
 
 .section.bg--second-color .section-head .section__heading h2 {
 	color: inherit;
+}
+
+.section-head .section__heading h2 > span.search-results {
+	display: inline-block;
+	font-size: inherit;
 }
 
 .shop-btn-group .share-button {

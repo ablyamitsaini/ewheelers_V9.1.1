@@ -41,7 +41,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                                 echo '<div class="note-messages">'.Labels::getLabel('LBL_free_shipping_is_available_for_this_shop', $siteLangId).'</div>' ;
                                             }
                                             elseif($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']){
-                                                $str = Labels::getLabel('LBL_Upto_{amount}_you_will_get_free_shipping', $siteLangId);
+                                                $str = Labels::getLabel('LBL_Free_shipping_available_on_orders_above_{amount}_from_this_shop', $siteLangId);
                                                 $str = str_replace( '{amount}', $product['shop_free_ship_upto'], $str );
                                                 echo '<div class="note-messages">'.$str.'</div>';
                                             }
@@ -78,7 +78,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                         | <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
                                         <?php if(($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0 && $product['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) { ?>
                                         <div class="item-yk-head-specification note-messages">
-                                            <?php echo Labels::getLabel('LBL_free_shipping_is_not_eligible_for_this_product', $siteLangId);    ?>
+                                            <?php echo Labels::getLabel('LBL_This_product_is_not_eligible_for_free_shipping', $siteLangId);    ?>
                                         </div>
                                         <?php } ?>
                                     </div>
