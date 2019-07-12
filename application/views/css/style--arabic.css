@@ -743,6 +743,8 @@ transform: rotate(-180deg); */
 	right: 0;
 }
 .short-links > ul > li:after{ right: auto; left: -16px;}
+.slick-prev{ left: auto; right: 0;}
+.slick-next{ right: auto; left: 0;}
 /*All media queries */
 @media only screen and (max-width: 1600px) {
 	.post-data.is-fixed .sticky-element {

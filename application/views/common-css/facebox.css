@@ -93,10 +93,11 @@
 	position: relative;
 }
 
-#facebox .content .pop-up-title {font-weight: 300;
+#facebox .content .pop-up-title {
+	font-weight: 300;
 	color: var(--txt-color);
 	font-size: 2rem;
-	 font-family: 'Poppins', sans-serif;
+	font-family: 'Poppins', sans-serif;
 	text-align: center;
 	/*margin-bottom: 20px;*/
 	padding: 10px;
@@ -132,12 +133,7 @@
 
 #facebox .content.productQuickView {
 	width: 900px;
-	padding: 0 15px;
-
 }
-
-
-
 #facebox .content.loginpopup {
 	padding: 0;
 	max-height: none;
@@ -275,8 +271,6 @@
 }
 
 @media only screen and (max-width: 767px) {
-
-
 	#facebox .content.fbminwidth {
 		min-width: inherit;
 		max-height: 90vh;
@@ -286,6 +280,9 @@
 	#facebox .content.productQuickView {
 		overflow-y: auto;
 	}
-	#facebox .popup{padding:30px 20px;}
+
+	#facebox .popup {
+		padding: 30px 20px;
+	}
 
 }
