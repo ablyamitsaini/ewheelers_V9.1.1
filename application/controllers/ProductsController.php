@@ -415,7 +415,7 @@ class ProductsController extends MyAppController
             'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
             'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-            'shop_id', 'shop_name','ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
+            'shop_id', 'shop_name','ifnull(sq_sprating.prod_rating,0) prod_rating','ifnull(sq_sprating.totReviews,0) totReviews',
             'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from')
         );
 
@@ -723,8 +723,11 @@ class ProductsController extends MyAppController
 
         $this->setRecentlyViewedItem($selprod_id);
 
-        $this->_template->addCss(array('css/slick.css','css/modaal.css','css/product-detail.css','css/cart.css','css/xzoom.css','css/magnific-popup.css'));
-        $this->_template->addJs(array('js/slick.js','js/modaal.js','js/product-detail.js','js/responsive-img.min.js','js/xzoom.js','js/magnific-popup.js'));
+        if (false ===  MOBILE_APP_API_CALL) {
+            $this->_template->addCss(array('css/slick.css','css/modaal.css','css/product-detail.css','css/cart.css','css/xzoom.css','css/magnific-popup.css'));
+            $this->_template->addJs(array('js/slick.js','js/modaal.js','js/product-detail.js','js/responsive-img.min.js','js/xzoom.js','js/magnific-popup.js'));
+        }
+
         $this->_template->render();
     }
 
@@ -988,6 +991,13 @@ class ProductsController extends MyAppController
             $prodSrch->setDefinedCriteria();
             $prodSrch->joinProductToCategory();
             $prodSrch->doNotCalculateRecords();
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                $prodSrch->joinTable(SelProdReview::DB_TBL, 'LEFT OUTER JOIN', 'spr.spreview_selprod_id = selprod_id AND spr.spreview_product_id = product_id', 'spr');
+                $prodSrch->joinTable(SelProdRating::DB_TBL, 'LEFT OUTER JOIN', 'sprating.sprating_spreview_id = spr.spreview_id', 'sprating');
+                $prodSrch->addFld(array('IFNULL(ROUND(AVG(sprating_rating),2),0) as prod_rating'));
+            }
+
             $prodSrch->doNotLimitRecords();
             if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
                 $prodSrch->joinFavouriteProducts($loggedUserId);

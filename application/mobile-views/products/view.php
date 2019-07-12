@@ -13,6 +13,10 @@ foreach ($relatedProductsRs as $index => $rProduct) {
     $relatedProductsRs[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($rProduct['product_id'], "THUMB", $rProduct['selprod_id'], 0, $siteLangId));
 }
 
+foreach ($recommendedProducts as $index => $recProduct) {
+    $recommendedProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($recProduct['product_id'], "THUMB", $recProduct['selprod_id'], 0, $siteLangId));
+}
+
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
@@ -20,8 +24,6 @@ $data = array(
     'shippingDetails' => empty($shippingDetails) ? (object)array() : $shippingDetails,
     'optionRows' => $optionRows,
     'productSpecifications' => ($productSpecifications),
-    'buyTogether' => $upsellProducts,
-    'relatedProducts' => array_values($relatedProductsRs),
     'banners' => $banners,
     'product' => empty($product) ? (object)array() : $product,
     'shop_rating' => $shop_rating,
@@ -29,8 +31,19 @@ $data = array(
     'shopTotalReviews' => $shopTotalReviews,
     'productImagesArr' => array_values($productImagesArr),
     'volumeDiscountRows' => $volumeDiscountRows,
-    'recommendedProducts' => $recommendedProducts,
     'socialShareContent' => empty($socialShareContent) ? (object)array() : $socialShareContent,
+    'buyTogether' => array(
+        'title' => Labels::getLabel('LBL_Product_Add-ons', $siteLangId),
+        'data' => $upsellProducts,
+    ),
+    'relatedProducts' => array(
+        'title' => Labels::getLabel('LBL_Similar_Products', $siteLangId),
+        'data' => array_values($relatedProductsRs)
+    ),
+    'recommendedProducts' => array(
+        'title' => Labels::getLabel('LBL_Recommended_Products', $siteLangId),
+        'data' => $recommendedProducts
+    )
 );
 
 
