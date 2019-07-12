@@ -55,7 +55,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
         <div class="row mb-4">
             <div class="col-lg-12">
                 <div class="cards">
-                    
+
                     <div class="cards-content p-4">
                         <div class="replaced">
                             <?php
@@ -67,7 +67,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                             echo $frmOrderReturnRequestsSrch->getFormHtml();
                             ?>
                         </div>
-                     
+
                     </div>
                 </div>
             </div>
@@ -75,8 +75,8 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
         <div class="row">
             <div class="col-lg-12">
                 <div class="cards">
-                   
-                    <div class="cards-content pl-4 pr-4 ">
+
+                    <div class="cards-content pt-2 pl-4 pr-4 ">
                         <div id="returnOrderRequestsListing"></div>
                         <span class="gap"></span>
                     </div>

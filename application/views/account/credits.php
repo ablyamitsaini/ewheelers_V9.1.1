@@ -54,7 +54,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                 <div class="col-lg-12">
                     <div class="cards">
                         <div id="withdrawalReqForm"></div>
-                        <?php if ( $codMinWalletBalance > -1 ) { ?>
+                        <?php if ($codMinWalletBalance > -1) { ?>
                         <div class="cards-header p-4 pb-0">
                             <p class="note"><?php echo Labels::getLabel('MSG_Minimum_balance_Required_For_COD', $siteLangId).' : '. CommonHelper::displaymoneyformat($codMinWalletBalance);?></p>
                         </div>
