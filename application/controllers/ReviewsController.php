@@ -118,7 +118,7 @@ class ReviewsController extends MyAppController
         if (empty($pageSize)) {
             $pageSize = FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10);
         }
-        
+
         $srch = new SelProdReviewSearch();
         $srch->joinProducts($this->siteLangId);
         $srch->joinSellerProducts($this->siteLangId);
@@ -462,17 +462,26 @@ class ReviewsController extends MyAppController
         $reviewId = FatApp::getPostedData('reviewId', FatUtility::VAR_INT, 0);
         $isHelpful = FatApp::getPostedData('isHelpful', FatUtility::VAR_INT, 0);
         if ($reviewId <= 0) {
-            Message::addErrorMessage(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('Msg_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $userId = UserAuthentication::getLoggedUserId();
         $tblRecObj = new SelProdReviewHelpful();
         $tblRecObj->assignValues(array('sprh_spreview_id'=>$reviewId , 'sprh_user_id'=>$userId, 'sprh_helpful'=>$isHelpful));
         if (!$tblRecObj->addNew(array(), array('sprh_helpful'=>$isHelpful))) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($tblRecObj->getError()));
+            }
             Message::addErrorMessage($tblRecObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         FatUtility::dieJsonSuccess(Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId));
     }
 
