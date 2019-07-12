@@ -11,12 +11,12 @@
             <div class="section-head">
                 <div class="section__heading">
                     <h6>
-                        <?php echo Labels::getLabel('LBL_Reward_Point_in_your_account', $siteLangId); ?>
+                        <?php echo Labels::getLabel('LBL_Reward_points_available:', $siteLangId); ?>
                         <strong>
                             <?php echo $rewardPoints; ?>
                         </strong>
                         (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency(UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()))); ?>)
-                        <?php echo Labels::getLabel('LBL_You_can_use_upto_', $siteLangId); ?>
+                        <br/><?php echo Labels::getLabel('LBL_Reward_points_available_for_this_order:', $siteLangId); ?>
                         <strong><?php echo min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0)); ?></strong>
                     </h6>
                 </div>
@@ -170,14 +170,10 @@
                     <div class="payment-from">
                         <div class="you-pay">
                             <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> :
-                            <strong>
-                                <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
-                                <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
-                                    <li>
-                                        <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
-                                    </li>
-                                <?php } ?>
-                            </strong>
+                            <?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?>
+                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
+                            <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderPaymentGatewayCharges']); ?></p>
+                            <?php } ?>
                         </div>
                         <div class="gap"></div>
                         <div id="tabs-container"></div>
