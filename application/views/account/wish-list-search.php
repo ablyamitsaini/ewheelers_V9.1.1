@@ -5,16 +5,19 @@
             if(count($wishlist['products']) > 0 || FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
             <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
                 <div class="items">
-                    <div class="items__body">
-                        <span class="item__title"><?php echo $wishlist['uwlist_title']; ?></span>
-                        <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>
-                            <span class='float-right'>
-                                <a title='<?php echo Labels::getLabel('LBL_Delete_List', $siteLangId); ?>' onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="text--normal-secondary">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </span>
-                        <?php }
-                        if ($wishlist['products']) { ?>
+                   <div class="item__head mb-2">
+                   	  <span class="item__title">
+                       <?php echo $wishlist['uwlist_title']; ?></span>
+                        <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>                           
+					   <a href="javascript:void(0)" onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" class="icons-wrapper"><i class="icn shop"><svg class="svg">
+								<use xlink:href="/yokartv8/images/retina/sprite.svg#bin" href="/yokartv8/images/retina/sprite.svg#bin"></use>
+							</svg>
+						</i>
+						</a>
+                  		<?php } ?>
+                   </div>
+                    <div class="items__body">                      
+                        <?php if ($wishlist['products']) { ?>
                             <div class="items__group clearfix">
                                 <div class="items__row">
                                     <?php foreach ($wishlist['products'] as $product) {
@@ -59,7 +62,7 @@
         } }
     }
     if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES) { ?>
-        <div class="col-xl-3 col-lg-4 col-md-6  column">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
             <div class="items p-4">
                 <div class="items__body text-center">
                     <div class="form">

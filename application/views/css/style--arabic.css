@@ -1,6 +1,6 @@
 html {
 	direction: rtl;
-	 
+
 }
 
 body {
@@ -38,7 +38,7 @@ th,
 	right: 30px;
 	left: auto;
 }
- 
+
 
 .form--search-popup .select__value {
 	padding: 0 15px 0 35px;
@@ -54,7 +54,7 @@ th,
 	left: 20px;
 }
 
- 
+
 .seller-login {
 	text-align: left;
 }
@@ -553,7 +553,7 @@ transform: rotate(-180deg); */
 	margin-right: 0;
 	margin-left: 8px;
 }
- 
+
 
 .header-icons-group .dropdown__target {
 	left: 0;
@@ -701,7 +701,7 @@ transform: rotate(-180deg); */
 	right: 0;
 }
 
- 
+
 
 .dashboard-menu .menu__item__inner::before {
 	left: auto;
@@ -727,22 +727,28 @@ transform: rotate(-180deg); */
 	left: auto;
 	right: -2rem;
 }
-.fld-date{ background-position: calc(12px) 11px;}
-.testimonials-item .user{ left: auto; right: 25px;}
-.listing--check li a:before{ left: auto; right: 0;}
 
-/* media queries */
+.fld-date {
+	background-position: calc(12px) 11px;
+}
+
+.testimonials-item .user {
+	left: auto;
+	right: 25px;
+}
+
+.listing--check li a:before {
+	left: auto;
+	right: 0;
+}
+.short-links > ul > li:after{ right: auto; left: -16px;}
+/*All media queries */
 @media only screen and (max-width: 1600px) {
 	.post-data.is-fixed .sticky-element {
 		margin: 0;
 	}
 }
-
-
-@media only screen and (max-width: 1281px) {
- 
-}
-
+@media only screen and (max-width: 1281px) {}
 @media only screen and (max-width: 1199px) {
 	.navs_toggle {
 		left: auto;
@@ -887,13 +893,8 @@ transform: rotate(-180deg); */
 		left: 0;
 		right: auto;
 	}
-	
-	html {
- 
-	overflow-x: hidden;
-}
-}
 
+}
 @media only screen and (max-width: 767px) {
 	html {
 		overflow-x: hidden;
@@ -923,7 +924,7 @@ transform: rotate(-180deg); */
 		margin-right: auto;
 		margin-left: 0;
 	}
-
+	
 	.short-links > ul > li.dropdown--lang {
 		margin-right: 0;
 	}
@@ -956,13 +957,21 @@ transform: rotate(-180deg); */
 		left: auto;
 		right: 35px;
 	}
-	.widget-scroll .slick-prev{ right: 0;}
-	.widget-scroll .slick-next{ left: 0;}
-	.ft-pro-wrapper{ background: none; border: none;}
+
+	.widget-scroll .slick-prev {
+		right: 0;
+	}
+
+	.widget-scroll .slick-next {
+		left: 0;
+	}
+
+	.ft-pro-wrapper {
+		background: none;
+		border: none;
+	}
 
 }
-
-
 @media only screen and (max-width:500px) {
 
 	.page-sort ul li .btn--filters-control.btn--primary-border,

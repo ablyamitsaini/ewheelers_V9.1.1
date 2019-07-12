@@ -15,7 +15,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
             <div class="detail-wrapper">
                 <div class="detail-first-fold ">
                     <div class="row justify-content-between">
-                        <div class="col-lg-7">
+                        <div class="col-lg-7 relative">
                             <div id="img-static" class="product-detail-gallery">
                                 <?php $data['product'] = $product;
                                     $data['productImagesArr'] = $productImagesArr;
@@ -48,7 +48,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     } ?>
                                 </div>
                                 <?php } ?>
-                            </div>
+                           
                             <div class="favourite-wrapper favourite-wrapper-detail ">
                                 <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                 <div class="share-button">
@@ -91,7 +91,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> </div>
                         <div class="col-lg-5 col-details-right">
                             <div class="product-description">
                                 <div class="product-description-inner">
