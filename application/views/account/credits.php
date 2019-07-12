@@ -9,20 +9,24 @@ $keyFld = $frmSrch->getField('keyword');
 $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Keyword', $siteLangId));
 $keyFld->setWrapperAttribute('class', 'col-lg-6');
 $keyFld->developerTags['col'] = 6;
+$keyFld->developerTags['noCaptionTag'] = true;
 
 $keyFld = $frmSrch->getField('debit_credit_type');
 $keyFld->setWrapperAttribute('class', 'col-lg-6');
 $keyFld->developerTags['col'] = 6;
+$keyFld->developerTags['noCaptionTag'] = true;
 
 $keyFld = $frmSrch->getField('date_from');
 $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_From_Date', $siteLangId));
 $keyFld->setWrapperAttribute('class', 'col-lg-4');
 $keyFld->developerTags['col'] = 4;
+$keyFld->developerTags['noCaptionTag'] = true;
 
 $keyFld = $frmSrch->getField('date_to');
 $keyFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_To_Date', $siteLangId));
 $keyFld->setWrapperAttribute('class', 'col-lg-4');
 $keyFld->developerTags['col'] = 4;
+$keyFld->developerTags['noCaptionTag'] = true;
 
 /* $keyFld = $frmSrch->getField('date_order');
 $keyFld->setWrapperAttribute('class','col-lg-6');
@@ -32,11 +36,13 @@ $submitBtnFld = $frmSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
 $submitBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $submitBtnFld->developerTags['col'] = 2;
+$submitBtnFld->developerTags['noCaptionTag'] = true;
 
 $cancelBtnFld = $frmSrch->getField('btn_clear');
 $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
 $cancelBtnFld->setWrapperAttribute('class', 'col-lg-2');
 $cancelBtnFld->developerTags['col'] = 2;
+$cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header row justify-content-between mb-3">
@@ -87,8 +93,10 @@ $cancelBtnFld->developerTags['col'] = 2;
 
                                                 $amountFld = $frmRechargeWallet->getField('amount');
                                                 $amountFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId));
+                                                $amountFld->developerTags['noCaptionTag'] = true;
                                                 $buttonFld = $frmRechargeWallet->getField('btn_submit');
                                                 $buttonFld->setFieldTagAttribute('class', 'btn--block block-on-mobile');
+                                                $buttonFld->developerTags['noCaptionTag'] = true;
                                                 echo $frmRechargeWallet->getFormHtml(); ?>
                                             </div>
                                         </div>
