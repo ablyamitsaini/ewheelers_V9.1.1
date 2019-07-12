@@ -936,13 +936,17 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
-
-                if (in_array($columnKey, array( 'brand_featured', 'brand_active','brand_deleted')) && !$this->settings['CONF_USE_O_OR_1']) {
-                    $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
-                }
-
-                if ('urlrewrite_custom' == $columnKey) {
-                    $colValue = isset($urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']]) ? $urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']] : '';
+                switch ($columnKey){
+                    case 'brand_featured':
+                    case 'brand_active':
+                    case 'brand_deleted':
+                        if (!$this->settings['CONF_USE_O_OR_1']) {
+                            $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                        }
+                        break;
+                    case 'urlrewrite_custom':
+                        $colValue = isset($urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']]) ? $urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']] : '';
+                        break;
                 }
 
                 $sheetData[] = $colValue;
@@ -1061,10 +1065,10 @@ class Importexport extends ImportexportCommon
     public function exportBrandMedia($langId)
     {
         $srch = Brand::getSearchObject();
-        $srch->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'brand_id = afile_record_id and afile_type = '.AttachedFile::FILETYPE_BRAND_LOGO);
+        $srch->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'brand_id = afile_record_id');
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
-        $srch->addMultipleFields(array('brand_id','brand_identifier','afile_record_id','afile_record_subid','afile_lang_id','afile_screen','afile_physical_path','afile_name','afile_display_order'));
+        $srch->addMultipleFields(array('brand_id','brand_identifier','afile_record_id','afile_record_subid','afile_lang_id','afile_screen','afile_physical_path','afile_name','afile_display_order','afile_type'));
         $srch->addCondition('brand_status', '=', applicationConstants::ACTIVE);
         $rs = $srch->getResultSet();
 
@@ -1080,9 +1084,21 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
+                switch ($columnKey) {
+                    case 'afile_lang_code':
+                        $colValue = $languageCodes[$row['afile_lang_id']];
+                        break;
 
-                if ('afile_lang_code' == $columnKey) {
-                    $colValue = $languageCodes[$row['afile_lang_id']];
+                    case 'afile_lang_code':
+                        $colValue = $languageCodes[$row['afile_lang_id']];
+                        break;
+
+                    case 'afile_type':
+                        $colValue = 'logo';
+                        if ($row['afile_type'] == AttachedFile::FILETYPE_BRAND_IMAGE){
+                            $colValue = 'image';
+                        }
+                        break;
                 }
 
                 $sheetData[] = $colValue;
@@ -1123,17 +1139,27 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if ('brand_id' == $columnKey) {
-                        $columnKey = 'afile_record_id';
-                    }
-                    if ('brand_identifier' == $columnKey) {
-                        $columnKey = 'afile_record_id';
-                        $colValue = $brandIds[$colValue];
-                    }
+                    switch ($columnKey) {
+                        case 'brand_id':
+                            $columnKey = 'afile_record_id';
+                            break;
 
-                    if ('afile_lang_code' == $columnKey) {
-                        $columnKey = 'afile_lang_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                        case 'brand_identifier':
+                            $columnKey = 'afile_record_id';
+                            $colValue = $brandIds[$colValue];
+                            break;
+                        case 'afile_lang_code':
+                            $columnKey = 'afile_lang_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
+
+                        case 'afile_type':
+                            $fileType  = AttachedFile::FILETYPE_BRAND_LOGO;
+                            if ('image' == mb_strtolower($colValue)) {
+                                $fileType  = AttachedFile::FILETYPE_BRAND_IMAGE;
+                            }
+                            $colValue = $fileType;
+                            break;
                     }
 
                     $brandsMediaArr[$columnKey] = $colValue;
@@ -1141,10 +1167,7 @@ class Importexport extends ImportexportCommon
             }
 
             if (false === $errorInRow && count($brandsMediaArr)) {
-                $fileType  = AttachedFile::FILETYPE_BRAND_LOGO;
-
                 $dataToSaveArr = array(
-                'afile_type'=>$fileType,
                 'afile_record_subid'=> 0,
                 );
                 $dataToSaveArr = array_merge($dataToSaveArr, $brandsMediaArr);

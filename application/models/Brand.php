@@ -178,4 +178,5 @@ class Brand extends MyAppModel
         );
         return $arr;
     }
+
 }
