@@ -15388,12 +15388,10 @@ main.main {
 	cursor: pointer;
 	padding-inline-end: 35px;
 	background: #fff;
-	white-space: nowrap;
-
-	overflow: hidden;
-
-	text-overflow: ellipsis;
+	
 }
+.wrap-drop span{white-space: nowrap;	
+	text-overflow: ellipsis; overflow: hidden;}
 
 
 .wrap-drop:before,

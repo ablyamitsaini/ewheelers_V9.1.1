@@ -1500,6 +1500,10 @@ display: none;
 		min-height: 250px;
 		background-size: cover;
 	}
+	
+	.container-form.sign-up{ -webkit-transform: none; transform: none; position: static; opacity: 1; visibility: visible;}
+	.container-form.sign-up .form-item.sign-in{opacity: 1; visibility: visible;}
+	.form-item.sign-up.is-opened{ -webkit-transform: none; transform: none;}
 }
 
 @media only screen and (max-width: 767px) {
@@ -1907,7 +1911,8 @@ left: 50%; top: 50%; transform: translate(-50%,-50%) scaleY(1)!important;z-index
 
 	.ft-pro-wrapper {
 		grid-template-columns: 50% 50%;
-		grid-gap: 5px;
+		grid-gap:1px;
+		border: none;
 	}
 
 	.ft-pro.ft-pro-1 {
@@ -2431,10 +2436,7 @@ border: solid 1px var(--border-color);
 		white-space: nowrap;
 		overflow: auto;
 	}
-
-	.tabs {
-		text-align: left;
-	}
+ 
 
 	.tabs li {
 		-webkit-margin-end: 1.5rem;
