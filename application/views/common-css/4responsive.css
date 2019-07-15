@@ -306,9 +306,9 @@
 		width: calc(100% - 170px);
 		text-align: left;
 		padding-top: 20px;
-		-webkit-padding-start:30px;
-		   -moz-padding-start:30px;
-		        padding-inline-start:30px; 
+		-webkit-padding-start: 30px;
+		-moz-padding-start: 30px;
+		padding-inline-start: 30px;
 	}
 
 	.shop-info .products__rating {
@@ -1365,7 +1365,7 @@ display: none;
 		/*overflow: hidden;
 		overflow-y: scroll;*/
 	}
-	
+
 
 	.amount-added-box {
 		margin-top: 20px;
@@ -1500,10 +1500,24 @@ display: none;
 		min-height: 250px;
 		background-size: cover;
 	}
-	
-	.container-form.sign-up{ -webkit-transform: none; transform: none; position: static; opacity: 1; visibility: visible;}
-	.container-form.sign-up .form-item.sign-in{opacity: 1; visibility: visible;}
-	.form-item.sign-up.is-opened{ -webkit-transform: none; transform: none;}
+
+	.container-form.sign-up {
+		-webkit-transform: none;
+		transform: none;
+		position: static;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.container-form.sign-up .form-item.sign-in {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.form-item.sign-up.is-opened {
+		-webkit-transform: none;
+		transform: none;
+	}
 }
 
 @media only screen and (max-width: 767px) {
@@ -1911,7 +1925,7 @@ left: 50%; top: 50%; transform: translate(-50%,-50%) scaleY(1)!important;z-index
 
 	.ft-pro-wrapper {
 		grid-template-columns: 50% 50%;
-		grid-gap:1px;
+		grid-gap: 1px;
 		border: none;
 	}
 
@@ -2208,15 +2222,15 @@ border: solid 1px var(--border-color);
 		position: relative;
 		text-align: left;
 		position: relative;
-		margin:0.5rem 0;
+		margin: 0.5rem 0;
 		cursor: pointer;
 		font-size: 0.95em;
 		text-transform: uppercase;
 		padding: 15px 10px 15px 15px !important;
 		border: solid 1px var(--border-color);
 		border-radius: 4px;
-	 
-	 
+
+
 	}
 
 	.footer .toggle__trigger:before,
@@ -2436,7 +2450,7 @@ border: solid 1px var(--border-color);
 		white-space: nowrap;
 		overflow: auto;
 	}
- 
+
 
 	.tabs li {
 		-webkit-margin-end: 1.5rem;
@@ -2552,6 +2566,13 @@ border: solid 1px var(--border-color);
 		-ms-flex: 0 0 50%;
 		flex: 0 0 50%;
 		max-width: 50%;
+	}
+
+	.promotion-area ul {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: column;
+		flex-direction: column;
 	}
 }
 

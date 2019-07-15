@@ -10,7 +10,7 @@
                        <?php echo $wishlist['uwlist_title']; ?></span>
                         <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>
 					   <a href="javascript:void(0)" onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" class="icons-wrapper"><i class="icn shop"><svg class="svg">
-								<use xlink:href="/yokartv8/images/retina/sprite.svg#bin" href="/yokartv8/images/retina/sprite.svg#bin"></use>
+								<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
 							</svg>
 						</i>
 						</a>
