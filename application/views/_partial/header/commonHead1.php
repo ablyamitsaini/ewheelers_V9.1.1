@@ -3,9 +3,14 @@
 if ($controllerName != 'GuestUser' && $controllerName != 'Error') {
     $_SESSION['referer_page_url'] = CommonHelper::getCurrUrl();
 }
+$htmlClass = '';
+$actionName = FatApp::getAction();
+if ($controllerName == 'Products' && $actionName == 'view') {
+	$htmlClass = 'product-view';
+}
 ?>
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#">
+<html prefix="og: http://ogp.me/ns#" class="<?php echo $htmlClass;?>">
 <head>
     <style>
         :root {
