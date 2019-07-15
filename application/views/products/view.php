@@ -27,7 +27,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         $originalImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'ORIGINAL', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
                                         $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
                                         $thumbImgUrl = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($product['product_id'], 'THUMB', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg'); ?>
-                                    <img class="xzoom xactive" id="xzoom-default" src="<?php echo $mainImgUrl; ?>" xoriginal="<?php echo $originalImgUrl; ?>">
+                                    <img class="xzoom active" id="xzoom-default" src="<?php echo $mainImgUrl; ?>" xoriginal="<?php echo $originalImgUrl; ?>">
                                     <?php break;
                                     } ?>
                                     <?php } else {
@@ -106,7 +106,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 											<i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                                             </svg>
-											</i> 
+											</i>
                                             <span class="rate"><?php echo round($product['prod_rating'], 1);?></span>
 											</div>
 														<a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
@@ -133,13 +133,12 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     <?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
 
                                     <?php  if ($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']) { ?>
-                                    <div class="gap"> </div>
                                     <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
                                     <div class="note-messages"><?php echo str_replace('{amount}', $freeShipAmt, Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase', $siteLangId));?></div>
                                     <?php }?>
-                                    <div class="gap"></div>
 
                                     <?php if (!empty($optionRows)) { ?>
+                                    <div class="gap"> </div>
                                     <div class="row">
                                         <?php $selectedOptionsArr = $product['selectedOptionValues'];
                                 /*CommonHelper::printArray($selectedOptionsArr);
@@ -648,11 +647,6 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
         $('.nav-detail-js li a').click(function() {
             $('.nav-detail-js li a').removeClass('is-active');
             $(this).addClass('is-active');
-        });
-
-        $(".js-wrap-drop").each(function(index, element) {
-            var div = '#js-wrap-drop' + index;
-            var ddl = new DropDown($(div));
         });
 
     });
