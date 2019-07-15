@@ -8,7 +8,7 @@ foreach($list as $listItem){
 		if($category != 0){	?>
 		</div></div>
 	<?php } ?>
-	
+
 	<div class="heading3"><?php echo $listItem['faqcat_name']; ?></div>
 	<?php
 	}
