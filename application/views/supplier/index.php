@@ -1,4 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php
+$faqSearchFrm->setFormTagAttribute('id', 'frmSearchFaqs');
+$faqSearchFrm->setFormTagAttribute('onSubmit', 'searchFaqs(this);return false;');
+$faqSearchFrm->getField('question')->setFieldTagAttribute('placeholder', Labels::getLabel('Lbl_Search', $siteLangId));
+$faqSearchFrm->getField('question')->setFieldTagAttribute('class', "faq-input no-focus");
+?>
 <div class="after-header"></div>
 <div id="body" class="body">
     <?php $haveBgImage =AttachedFile::getAttachment(AttachedFile::FILETYPE_SELLER_PAGE_SLOGAN_BG_IMAGE, $slogan['epage_id'], 0, $siteLangId);
@@ -46,8 +52,8 @@
     if ($faqCount > 0) { ?>
         <div class="section questions-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="row justify-content-center">
+                    <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div id="listing"></div>
                         <div class="gap"> </div>
                     </div>
@@ -56,10 +62,35 @@
                         <div class="row">
                             <div id="categoryPanel"></div>
                         </div>
+                    </div> -->
+                    <div class="col-md-6 mb-5">
+                    <div class="section-head section--head--center">
+                        <div class="section__heading">
+                            <h2><?php echo Labels::getLabel('LBL_Frequently_Asked_Questions', $siteLangId);?></h2>
+                        </div>
+                    </div>
+                    <div class="">
+                        <?php
+                            echo $faqSearchFrm->getFormTag();
+                            echo $faqSearchFrm->getFieldHtml('question');
+                        ?>
+                        </form>
+                        <!-- <input class="faq-input no-focus" type="text" placeholder="Search" /> -->
+                    </div>
+                </div>
+
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <?php if ($faqCount > 0) { ?>
+                        <div class="faq-filters mb-4" id="categoryPanel"></div>
+                        <?php } ?>
+                        <ul class="faqlist" id="listing"></ul>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="divider"></div>
     <?php } ?>
     <div class="gap"></div>
