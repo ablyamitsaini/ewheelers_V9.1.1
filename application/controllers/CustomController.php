@@ -193,6 +193,7 @@
         }
 
         $this->set('siteLangId', $this->siteLangId);
+        $this->set('faqCatIdArr', $faqCatId);
         $this->set('list', $records);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
@@ -236,10 +237,13 @@
         $rsCat = $srch->getResultSet();
         $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
 
+        $faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
+
         $this->set('siteLangId', $this->siteLangId);
         $this->set('list', $records);
         // commonHelper::printArray($recordsCategories); die;
         $this->set('listCategories', $recordsCategories);
+        $this->set('faqMainCat', $faqMainCat);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
             $json['html'] = $this->_template->render(false, false, 'custom/search-faqs.php', true, false);

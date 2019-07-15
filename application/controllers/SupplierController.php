@@ -522,6 +522,7 @@ class SupplierController extends MyAppController
         }
 
         $this->set('siteLangId', $this->siteLangId);
+        $this->set('faqCatIdArr', $faqCatId);
         $this->set('list', $records);
         $json['html'] = '';//$this->_template->render( false, false,'_partial/no-record-found.php', true );
         if (!empty($records)) {
@@ -558,9 +559,13 @@ class SupplierController extends MyAppController
         if ($rsCat) {
             $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
         }
+
+        $faqMainCat = FatApp::getConfig("CONF_SELLER_PAGE_MAIN_CATEGORY", FatUtility::VAR_STRING, '');
+
         $this->set('siteLangId', $this->siteLangId);
         $this->set('list', $records);
         $this->set('listCategories', $recordsCategories);
+        $this->set('faqMainCat', $faqMainCat);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
             $json['html'] = $this->_template->render(false, false, 'supplier/search-faqs.php', true, false);
