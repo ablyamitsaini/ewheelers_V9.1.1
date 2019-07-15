@@ -366,3 +366,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'MSG_Use_My_Wallet_Credits
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Sufficient_balance_in_your_wallet';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Order_From';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Order_to	';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Shipping_Policies';

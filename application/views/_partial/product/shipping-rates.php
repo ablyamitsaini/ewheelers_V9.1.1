@@ -45,7 +45,7 @@
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments"></use>
                             </svg>
                         </i>
-                        <p><?php echo Labels::getLabel('LBL_Shipping_Policies', $siteLangId);?>
+                        <p><?php echo Labels::getLabel('LBL_Shipping_Rates', $siteLangId);?>
                         <a href="#shipRates" rel="facebox"><i class="fa fa-question-circle"></i></a></p>
                         <div id="shipRates" style="display:none">
                             <div class="delivery-term-data-inner">
