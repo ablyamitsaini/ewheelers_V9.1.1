@@ -48,7 +48,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     } ?>
                                 </div>
                                 <?php } ?>
-                           
+
                             <div class="favourite-wrapper favourite-wrapper-detail ">
                                 <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                 <div class="share-button">
@@ -642,7 +642,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
             var trgt = parts[1];
             var target_offset = $("#" + trgt).offset();
 
-            var target_top = target_offset.top - 170;
+            var target_top = target_offset.top - $('#header').height();
             $('html, body').animate({
                 scrollTop: target_top
             }, 800);
