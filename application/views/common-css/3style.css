@@ -3531,7 +3531,7 @@ img {
 	align-items: center;
 	border: solid 1px #323232;
 	border-radius: 4px;
-	padding: 1rem;
+	padding: 0.5rem;
 	min-width: 110px;
 }
 
@@ -3559,7 +3559,7 @@ img {
 
 .products-reviews a.totals-review {
 	color: var(--first-color) !important;
-	margin-top: 5px;
+
 }
 
 .products-reviews .totals-review.link::after {
@@ -8459,7 +8459,7 @@ a.box--share:hover {
 .message {
 	text-align: center;
 	max-width: 600px;
-	margin: 20px auto;
+
 }
 
 .message h6 {
@@ -9568,7 +9568,9 @@ form.custom-form input[type="submit"] {
 /**/
 .sitemapcontainer h2 {
 	font-size: 1.3em;
-	margin: 10px 0 0 0;
+	margin: 1rem 0;
+	padding-bottom: 1rem;
+	border-bottom: solid 1px var(--border-color);
 }
 
 .sitemapcontainer .box {
@@ -9582,10 +9584,7 @@ form.custom-form input[type="submit"] {
 }
 
 .site-map-list h3 {
-	font-size: 1.1em;
-	border-bottom: solid 1px var(--border-color);
-	margin-bottom: 15px;
-	color: #333;
+	font-size: 1em;
 }
 
 .site-map-list h3 a {
@@ -9594,12 +9593,21 @@ form.custom-form input[type="submit"] {
 
 .site-map-list > ul {
 	list-style: inside;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .site-map-list > ul > li {
-	display: inline-block;
+	flex: 0 0 25%;
+	max-width: 25%;
+	font-size: 0.875em;
 	padding: 7px 0;
-	width: 19%;
+	color: var(--body-color);
+
+}
+
+.site-map-list > ul > li a {
+	color: inherit;
 }
 
 .site-map-list > ul > li a:hover {
@@ -10819,6 +10827,7 @@ html.quick-view--open {
 
 .product-detail-gallery {
 	position: sticky;
+	z-index: 1;
 	top: 130px;
 	display: flex;
 	margin-bottom: 2rem;
@@ -13115,6 +13124,7 @@ main.main {
 	position: fixed;
 	z-index: 99;
 	border-bottom: solid 1px var(--border-color);
+	height: 94px;
 }
 
 .after-checkout-header {

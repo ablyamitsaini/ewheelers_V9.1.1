@@ -66,9 +66,9 @@
 					</div>
 					<?php }?>
 				</div>
-			</div> 
-			<div class="col-md-4 align--right"></div>
+			</div>			
         </div>
+        <div class="col-md-4 align--right"></div>
       </div>
     </div>
     </div>

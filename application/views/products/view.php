@@ -102,9 +102,14 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                             <?php /*if (round($product['prod_rating']) > 0) {*/ ?>
                                             <?php $label = (round($product['prod_rating']) > 0) ? round($product['totReviews'], 1).' '.Labels::getLabel('LBL_Reviews', $siteLangId) : Labels::getLabel('LBL_No_Reviews', $siteLangId); ?>
                                             <div class="products-reviews">
-                                                <span class="rate"> <i class="icn"><svg class="svg">
+											<div class="products__rating">
+											<i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                        </svg></i> <?php echo round($product['prod_rating'], 1);?></span><a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
+                                            </svg>
+											</i> 
+                                            <span class="rate"><?php echo round($product['prod_rating'], 1);?></span>
+											</div>
+														<a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
                                             </div>
                                             <?php /*}*/ ?>
                                             <?php /* if (round($product['prod_rating']) == 0) {  ?>
