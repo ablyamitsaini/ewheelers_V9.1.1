@@ -47,7 +47,6 @@ $(document).ready(function(){
 		$(".js-wrap-drop").each(function(index, element) {
             var div = '#js-wrap-drop' + index;
             new DropDown($(div));
-			console.log(div);
         });
 		// var dd1 = new DropDown($('.js-wrap-drop'));
         // create new variable for each menu

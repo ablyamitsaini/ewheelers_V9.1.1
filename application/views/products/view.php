@@ -106,7 +106,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 											<i class="icn"><svg class="svg">
                                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                                             </svg>
-											</i> 
+											</i>
                                             <span class="rate"><?php echo round($product['prod_rating'], 1);?></span>
 											</div>
 														<a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
@@ -133,13 +133,12 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     <?php /* include(CONF_THEME_PATH.'_partial/product-listing-head-section.php'); */ ?>
 
                                     <?php  if ($shop['shop_free_ship_upto'] > 0 && Product::PRODUCT_TYPE_PHYSICAL == $product['product_type']) { ?>
-                                    <div class="gap"> </div>
                                     <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
                                     <div class="note-messages"><?php echo str_replace('{amount}', $freeShipAmt, Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase', $siteLangId));?></div>
                                     <?php }?>
-                                    <div class="gap"></div>
 
                                     <?php if (!empty($optionRows)) { ?>
+                                    <div class="gap"> </div>
                                     <div class="row">
                                         <?php $selectedOptionsArr = $product['selectedOptionValues'];
                                 /*CommonHelper::printArray($selectedOptionsArr);
@@ -516,6 +515,43 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                     </div>
                 </div>
             </section>
+            <section class="">
+                <?php if (isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners'])) { ?>
+                <div class="gap"></div>
+                <div class="row">
+                    <?php foreach ($banners['Product_Detail_Page_Banner']['banners'] as $val) {
+                         $desktop_url = '';
+                         $tablet_url = '';
+                         $mobile_url = '';
+                        if (!AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId)) {
+                             continue;
+                        } else {
+                            $slideArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId);
+                            foreach ($slideArr as $slideScreen) {
+                                switch ($slideScreen['afile_screen']) {
+                                    case applicationConstants::SCREEN_MOBILE:
+                                        $mobile_url = '<736:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).",";
+                                        break;
+                                    case applicationConstants::SCREEN_IPAD:
+                                        $tablet_url = ' >768:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).",";
+                                        break;
+                                    case applicationConstants::SCREEN_DESKTOP:
+                                        $desktop_url = ' >1025:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)).",";
+                                        break;
+                                }
+                            }
+                        } ?>
+                    <div class="col-md-6">
+                        <div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" target="<?php echo $val['banner_target']; ?>" title="<?php echo $val['banner_title']; ?>"
+                                class="advertise__block"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
+                                    src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
+                                    class="img-responsive"></a></div>
+                    </div>
+                    <?php } ?></div>
+                <?php } if (isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC) {
+                         Promotion::updateImpressionData($val['banner_record_id']);
+                } ?>
+            </section>
         </div>
     </section>
     <?php if ($recommendedProducts) { ?>
@@ -529,45 +565,6 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
     </section>
     <?php } ?>
     <div id="recentlyViewedProductsDiv"></div>
-    <!--<section class="section section--gray">
-    <div class="container">
-        <?php /*if (isset($banners['Product_Detail_Page_Banner']) && $banners['Product_Detail_Page_Banner']['blocation_active'] && count($banners['Product_Detail_Page_Banner']['banners'])) { ?>
-        <div class="gap"></div>
-        <div class="row">
-            <?php foreach ($banners['Product_Detail_Page_Banner']['banners'] as $val) {
-                 $desktop_url = '';
-                 $tablet_url = '';
-                 $mobile_url = '';
-                if (!AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId)) {
-                     continue;
-                } else {
-                    $slideArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $val['banner_id'], 0, $siteLangId);
-                    foreach ($slideArr as $slideScreen) {
-                        switch ($slideScreen['afile_screen']) {
-                            case applicationConstants::SCREEN_MOBILE:
-                                $mobile_url = '<736:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).",";
-                                break;
-                            case applicationConstants::SCREEN_IPAD:
-                                $tablet_url = ' >768:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_IPAD)).",";
-                                break;
-                            case applicationConstants::SCREEN_DESKTOP:
-                                $desktop_url = ' >1025:' .CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'], $siteLangId, applicationConstants::SCREEN_DESKTOP)).",";
-                                break;
-                        }
-                    }
-                } ?>
-            <div class="col-md-6">
-                <div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" target="<?php echo $val['banner_target']; ?>" title="<?php echo $val['banner_title']; ?>"
-                        class="advertise__block"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
-                            src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
-                            class="img-responsive"></a></div>
-            </div>
-            <?php } ?></div>
-        <?php } if (isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC) {
-                 Promotion::updateImpressionData($val['banner_record_id']);
-        }*/ ?>
-    </div>
-</section>-->
 </div>
 <script type="text/javascript">
     var mainSelprodId = <?php echo $product['selprod_id'];?>;
@@ -650,11 +647,6 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
         $('.nav-detail-js li a').click(function() {
             $('.nav-detail-js li a').removeClass('is-active');
             $(this).addClass('is-active');
-        });
-
-        $(".js-wrap-drop").each(function(index, element) {
-            var div = '#js-wrap-drop' + index;
-            var ddl = new DropDown($(div));
         });
 
     });
