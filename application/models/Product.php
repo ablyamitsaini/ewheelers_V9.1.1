@@ -1004,7 +1004,7 @@ class Product extends MyAppModel
             return;
         }
 
-        if (!$shippingDetails) {
+        if (empty($shippingDetails)) {
             return;
         } else {
             return FatUtility::decodeHtmlEntities('<em><strong>'.$shippingDetails['country_name'].'</em></strong> '.Labels::getLabel('LBL_by', $langId).' <strong>'.$shippingDetails['scompany_name'].'</strong> '.Labels::getLabel('LBL_in', $langId).' '.ShippingDurations::getShippingDurationTitle($shippingDetails, $langId));
