@@ -276,7 +276,7 @@ class BrandsController extends AdminBaseController
             }
         }
         /* ] */
-        
+
         unset($post['brand_id']);
         unset($post['lang_id']);
         $data=array(
