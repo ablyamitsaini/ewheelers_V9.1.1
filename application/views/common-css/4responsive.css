@@ -16,7 +16,7 @@
 		visibility: hidden;
 		white-space: nowrap;
 	}
-	
+
 	.sidebar-is-reduced .sidebar {
 		width: 280px;
 	}
@@ -69,7 +69,7 @@
 		transform-origin: 15% 95%;
 		width: 24px;
 	}
-	
+
 	main.main,
 	.sidebar-is-expanded main.main {
 
@@ -107,7 +107,7 @@
 	}
 
 
-	
+
 
 	.ftshops .shop-detail-side {
 		max-width: 260px;
@@ -136,7 +136,7 @@
 	}
 
 
-	
+
 
 
 	.widget-wrapper {
@@ -406,6 +406,7 @@
 
 	.header-checkout {
 		position: relative;
+		height: auto;
 	}
 
 	.after-checkout-header {
@@ -1310,7 +1311,7 @@ display: none;
 
 	.favourite-wrapper-detail {
 		top: 20px;
-		right:30px;
+		right: 30px;
 	}
 
 	.col-details-right {
@@ -1357,6 +1358,11 @@ display: none;
 
 
 @media only screen and (max-width:1023px) {
+	html {
+		overflow: hidden;
+		overflow-y: scroll;
+	}
+
 	.amount-added-box {
 		margin-top: 20px;
 	}
@@ -1490,10 +1496,6 @@ display: none;
 		min-height: 250px;
 		background-size: cover;
 	}
-
-
-
-
 }
 
 @media only screen and (max-width: 767px) {
@@ -2197,13 +2199,15 @@ border: solid 1px var(--border-color);
 		position: relative;
 		text-align: left;
 		position: relative;
-		margin: 1px 0 0 0;
+		margin:0.5rem 0;
 		cursor: pointer;
 		font-size: 0.95em;
 		text-transform: uppercase;
 		padding: 15px 10px 15px 15px !important;
-		color: #fff;
-		background: #666;
+		border: solid 1px var(--border-color);
+		border-radius: 4px;
+	 
+	 
 	}
 
 	.footer .toggle__trigger:before,
@@ -2214,8 +2218,8 @@ border: solid 1px var(--border-color);
 		width: 10px;
 		height: 10px;
 		content: "";
-		border-left: 2px solid rgba(255, 255, 255, 1);
-		border-bottom: 2px solid rgba(255, 255, 255, 1);
+		border-left: 2px solid rgba(0, 0, 0, 0.32);
+		border-bottom: 2px solid rgba(0, 0, 0, 0.32);
 		transform: rotate(-45deg);
 		-webkit-transform: rotate(-45deg);
 		-ms-transform: rotate(-45deg);

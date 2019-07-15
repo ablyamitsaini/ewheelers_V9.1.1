@@ -12,9 +12,11 @@
                         <div class="prod-info__right">
                             <div class="avtar__info">
                                 <h6><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($product['selprod_id']));?>"><?php echo $product['selprod_title'];?></a></h6>
-                                <?php if (round($product['prod_rating'])>0  && FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?> <div class="products-reviews"><span class="rate"><i class="icn"><svg class="svg"> <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use></svg> </i><?php echo round($product['prod_rating'], 1); ?></span> </div> <?php
-                                } ?>
-                            </div>
+                                <?php if (round($product['prod_rating'])>0  && FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+                                    ?> <div class="products__rating"><i class="icn"><svg class="svg">
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                            </svg> </i><span class="rate"><?php echo round($product['prod_rating'], 1); ?></span> </div> <?php
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -24,11 +26,12 @@
 
     <section class="section">
         <div class="container">
-            <div class="section-head mb-0">
-                <div class="section__heading">
-                    <h2 class="mb-0"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h2>
-                </div>
-            </div>
+          <div class="section-head mb-0">
+				<div class="section__heading">
+					<h2 class="mb-0"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h2>
+				</div>
+			</div>
+
             <div class=""> <?php
             $arr_flds = array(
                 'shop_name'    =>    Labels::getLabel('LBL_Seller', $siteLangId),
@@ -59,7 +62,7 @@
                         $txt .= '</a></div><a href="'.CommonHelper::generateUrl('shops', 'view', array($moresellers['shop_id'])).'"><div class="ftshops_location">'.$moresellers['shop_state_name'].",".$moresellers['shop_country_name'].'</div></a></div>';
                         if (isset($product['rating'][$moresellers['selprod_user_id']]) && $product['rating'][$moresellers['selprod_user_id']]>0) {
                             $txt.='<div class="products-reviews"><span class="rate"><i class="icn"><svg class="svg"> <use xlink:href="'.CONF_WEBROOT_URL.'images/retina/sprite.svg#star-yellow" href="'.CONF_WEBROOT_URL.'images/retina/sprite.svg#star-yellow"></use></svg> </i>'.round($product['rating'][$moresellers['selprod_user_id']], 1).'</span> </div>';
-                        }
+                            }
                         $td->appendElement('plaintext', array(), $txt, true);
                             break;
 
