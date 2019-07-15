@@ -28,8 +28,8 @@
                 } ?>
 
                 <a href="<?php echo $backUrl; ?>" class="btn btn--primary-border btn--sm back-store"><?php echo Labels::getLabel('LBL_Back', $siteLangId); ?></a>
+                <?php if ($controllerName == 'checkout' || $controllerName == 'subscriptioncheckout') {   ?>
                 <div class="checkout-flow">
-                    <?php if ($controllerName == 'checkout' || $controllerName == 'subscriptioncheckout') {   ?>
                     <ul>
                         <?php if ($controllerName == 'checkout') {  ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
@@ -42,8 +42,8 @@
                         <li class="pending checkoutNav-js order-complete-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
                         <?php } ?>
                     </ul>
-                    <?php } ?>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </header>

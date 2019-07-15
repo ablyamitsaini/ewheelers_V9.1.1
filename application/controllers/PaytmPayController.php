@@ -1,5 +1,5 @@
 <?php
-require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/paytm/encdec_paytm.php';
+require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/paytm/PaytmKit/lib/encdec_paytm.php';
 class PaytmPayController extends PaymentController
 {
     private $keyName="Paytm";
@@ -16,9 +16,11 @@ class PaytmPayController extends PaymentController
             Message::addErrorMessage($pmObj->getError());
             CommonHelper::redirectUserReferer();
         }
+
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
+
         if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
         } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
@@ -28,6 +30,7 @@ class PaytmPayController extends PaymentController
         } else {
             $this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
         }
+
         $this->set('orderInfo', $orderInfo);
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
@@ -102,9 +105,11 @@ class PaytmPayController extends PaymentController
         //$url = "https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus";
         if (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) {
             //https://securegw.paytm.in/theia/processTransaction
-            $url = "https://secure.paytm.in/oltp/HANDLER_INTERNAL/TXNSTATUS";
+            // $url = "https://secure.paytm.in/oltp/HANDLER_INTERNAL/TXNSTATUS";
+            $url = "https://securegw.paytm.in/order/process";
         } else {
-            $url = "https://pguat.paytm.com/oltp/HANDLER_INTERNAL/TXNSTATUS";
+            // $url = "https://pguat.paytm.com/oltp/HANDLER_INTERNAL/TXNSTATUS";
+            $url = "https://securegw-stage.paytm.in/order/process";
         }
 
         $HEADER[] = "Content-Type: application/json";
@@ -129,10 +134,13 @@ class PaytmPayController extends PaymentController
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentGatewayCharge = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
+
         if (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) {
-            $action_url = "https://secure.paytm.in/oltp-web/processTransaction";
+            // $action_url = "https://secure.paytm.in/oltp-web/processTransaction";
+            $action_url = "https://securegw.paytm.in/order/process";
         } else {
-            $action_url = "https://pguat.paytm.com/oltp-web/processTransaction";
+            // $action_url = "https://pguat.paytm.com/oltp-web/processTransaction";
+            $action_url = "https://securegw-stage.paytm.in/order/process";
         }
         $orderPaymentGatewayDescription = sprintf(Labels::getLabel('MSG_Order_Payment_Gateway_Description', $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
 
@@ -151,7 +159,9 @@ class PaytmPayController extends PaymentController
         "CALLBACK_URL" => CommonHelper::generateFullUrl('PaytmPay', 'callback'),
         "ORDER_DETAILS" => $orderPaymentGatewayDescription,
         );
+
         $checkSumHash = getChecksumFromArray($parameters, $paymentSettings['merchant_key']);
+
         $frm->addHiddenField('', 'CHECKSUMHASH', $checkSumHash);
         foreach ($parameters as $paramkey => $paramval) {
             $frm->addHiddenField('', $paramkey, $paramval);

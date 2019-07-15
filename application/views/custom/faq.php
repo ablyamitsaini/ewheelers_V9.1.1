@@ -19,19 +19,17 @@
 	</div>
 	<section class="section bg--white">
 		<div class="container">
-		
-		
 			<div class="row justify-content-center">
 				<div class="col-md-8">
-				<div class="faq-filters mb-4">			
+				<div class="faq-filters mb-4">
 			<a href="#" class="">How to Delete My Account</a>
 			<a href="#" class="">Cancel My Profile</a>
 			<a href="#" class="">Reactivate / Reinstate Account Online</a>
 			<a href="#" class="">Basic Troubleshooting for Tagged</a>
 			<a href="#" class="">Edit / Change Email Settings / Preferences</a>
-			
+
 		</div>
-			
+
 				<ul class="faqlist">
 				<li>
 					<h3 class="filterDiv account">How can I reset my password?</h3>
@@ -205,78 +203,78 @@
 
 </div>
 <script>
-	var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE',$siteLangId); ?>';
-	var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS',$siteLangId); ?>';
+    var $linkMoreText = '<?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId); ?>';
+    var $linkLessText = '<?php echo Labels::getLabel('Lbl_SHOW_LESS', $siteLangId); ?>';
 </script>
 
 
 <script>
-	var clics = 0;
+    var clics = 0;
 
-	$(document).ready(function() {
+    $(document).ready(function() {
 
-		$('.faqanswer').hide();
-		$('#faqcloseall').hide();
+        $('.faqanswer').hide();
+        $('#faqcloseall').hide();
 
-		$('h3').click(function() {
+        $('h3').click(function() {
 
-			$(this).next('.faqanswer').toggle(function() {
+            $(this).next('.faqanswer').toggle(function() {
 
-				$(this).next('.faqanswer');
+                $(this).next('.faqanswer');
 
-			}, function() {
+            }, function() {
 
-				$(this).next('.faqanswer').fadeIn('fast');
+                $(this).next('.faqanswer').fadeIn('fast');
 
-			});
+            });
 
-			if ($(this).hasClass('faqclose')) {
-				$(this).removeClass('faqclose');
-			} else {
-				$(this).addClass('faqclose');
-			};
+            if ($(this).hasClass('faqclose')) {
+                $(this).removeClass('faqclose');
+            } else {
+                $(this).addClass('faqclose');
+            };
 
-			if ($('.faqclose').length >= 3) {
+            if ($('.faqclose').length >= 3) {
 
-				$('#faqcloseall').fadeIn('fast');
+                $('#faqcloseall').fadeIn('fast');
 
-			} else {
-				$('#faqcloseall').hide();
-				var yolo = $('.faqclose').length
-				console.log(yolo);
-			}
-		}); //Close Function Click
+            } else {
+                $('#faqcloseall').hide();
+                var yolo = $('.faqclose').length
+                console.log(yolo);
+            }
+        }); //Close Function Click
 
-	}); //Close Function Ready
+    }); //Close Function Ready
 
-	$('#faqcloseall').click(function() {
-		$('.faqanswer').fadeOut(200);
-		$('h3').removeClass('faqclose');
-		$('#faqcloseall').fadeOut('fast');
-	});
+    $('#faqcloseall').click(function() {
+        $('.faqanswer').fadeOut(200);
+        $('h3').removeClass('faqclose');
+        $('#faqcloseall').fadeOut('fast');
+    });
 
-	//search box
+    //search box
 
-	$(function() {
-		$('.faq-input').keyup(function() {
-			// Get user input from search box
-			var filter_text = $(this).val();
-			// If user input is not null
-			if (filter_text) {
-				$('.faqlist h3').each(function() {
-					// If user input matches this item in the list, show this item
-					if ($(this).text().toLowerCase().indexOf(filter_text) >= 0) {
-						$(this).parent().slideDown();
-					}
-					// If user input doesn't match this item in the list, hide this item
-					else {
-						$(this).parent().slideUp();
-					}
-				})
-				// If user input is null
-			} else {
-				$('.faqlist li').slideDown();
-			}
-		});
-	});
+    $(function() {
+        $('.faq-input').keyup(function() {
+            // Get user input from search box
+            var filter_text = $(this).val();
+            // If user input is not null
+            if (filter_text) {
+                $('.faqlist h3').each(function() {
+                    // If user input matches this item in the list, show this item
+                    if ($(this).text().toLowerCase().indexOf(filter_text) >= 0) {
+                        $(this).parent().slideDown();
+                    }
+                    // If user input doesn't match this item in the list, hide this item
+                    else {
+                        $(this).parent().slideUp();
+                    }
+                })
+                // If user input is null
+            } else {
+                $('.faqlist li').slideDown();
+            }
+        });
+    });
 </script>

@@ -7,7 +7,7 @@
                     <div class="certified-box">
                         <i class="icn">
                             <svg class="svg">
-                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#freeshipping" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#freeshipping"></use>
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#yearswarranty" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#yearswarranty"></use>
                             </svg>
                         </i>
                         <p><?php echo $product['selprod_warranty_policies']['ppoint_title']; ?></p>
@@ -31,7 +31,7 @@
                     <div class="certified-box">
                         <i class="icn">
                             <svg class="svg">
-                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#yearswarranty" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#yearswarranty"></use>
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#freeshipping" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#freeshipping"></use>
                             </svg>
                         </i>
                         <p><?php echo Labels::getLabel('LBL_Free_Shipping_on_this_Order', $siteLangId); ?></p>
@@ -45,7 +45,7 @@
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments"></use>
                             </svg>
                         </i>
-                        <p><?php echo Labels::getLabel('LBL_Shipping_Policies', $siteLangId);?>
+                        <p><?php echo Labels::getLabel('LBL_Shipping_Rates', $siteLangId);?>
                         <a href="#shipRates" rel="facebox"><i class="fa fa-question-circle"></i></a></p>
                         <div id="shipRates" style="display:none">
                             <div class="delivery-term-data-inner">

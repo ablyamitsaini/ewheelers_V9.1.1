@@ -4,7 +4,7 @@
 		<div class="col-md-4 ">
 		   <div class="field-set">
 			 <div class="caption-wraper">
-			   <h3><?php  echo $langName;?></h3>
+			   <h5><?php  echo $langName;?></h5>
 			 </div>
 		   </div>
 		</div>

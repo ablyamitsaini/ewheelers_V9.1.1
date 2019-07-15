@@ -19,7 +19,7 @@
                         <?php if ($orderInfo['order_net_amount']) { ?>
                         <div class="row">
                             <?php if ($gatewayCount > 0) { ?>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-4 mb-md-0 ">
                                 <div class="payment_methods_list" <?php echo (count($paymentMethods) <= 0) ? 'is--disabled' : ''; ?>>
                                     <?php if ($paymentMethods) { ?>
                                     <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar>
@@ -44,7 +44,7 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
+                            <div class="col-md-8">
                                 <div class="payment-here">
                                     <div class="you-pay">
                                         <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
