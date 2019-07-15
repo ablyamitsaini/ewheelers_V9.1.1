@@ -74,7 +74,7 @@ class ShopsController extends MyAppController
         /* ] */
 
         $srch->addMultipleFields(
-            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
             'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
@@ -1013,7 +1013,7 @@ class ShopsController extends MyAppController
         /* ] */
 
         $srch->addMultipleFields(
-            array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
             'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
