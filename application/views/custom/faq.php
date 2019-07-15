@@ -79,26 +79,23 @@ $frm->getField('question')->setFieldTagAttribute('class', "faq-input no-focus");
         $(document).on("keyup", '.faq-input', function() {
             // Get user input from search box
             var filter_text = $(this).val();
+            var replaceWith = "<span class='js--highlightText'>"+filter_text+"</span>";
 
-            // If user input is not null
-            if ('' !== filter_text) {
-                $('.faqlist h3').each(function() {
-                    // If user input matches this item in the list, show this item
+            $('.faqlist h3').each(function() {
+                if ('' !== filter_text) {
                     if ($(this).text().toLowerCase().indexOf(filter_text) >= 0) {
-                        // $(this).parent().slideDown();
+                        var content = $(this).text();
                         $(this).siblings( ".faqanswer" ).slideDown();
-                    }
-                    // If user input doesn't match this item in the list, hide this item
-                    else {
-                        // $(this).parent().slideUp();
+                        $(this).html(content.replace(filter_text,replaceWith));
+                    } else {
+                        $(this).text($(this).text());
                         $(this).siblings( ".faqanswer" ).slideUp();
                     }
-                })
-                // If user input is null
-            } else {
-                // $('.faqlist li').slideDown();
-                $('.faqlist h3').siblings( ".faqanswer" ).slideUp();
-            }
+                } else {
+                    $(this).text($(this).text());
+                    $('.faqlist h3').siblings( ".faqanswer" ).slideUp();
+                }
+            })
         });
     });
 </script>
