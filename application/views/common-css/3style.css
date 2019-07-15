@@ -13414,7 +13414,7 @@ main.main {
 }
 
 .payment_methods_list span {
-	flex: 1;	 
+	flex: 1;
 	display: block;
 	font-size: 0.875rem;
 }
@@ -15386,10 +15386,14 @@ main.main {
 	cursor: pointer;
 	padding-inline-end: 35px;
 	background: #fff;
-	
+
 }
-.wrap-drop span{white-space: nowrap;	
-	text-overflow: ellipsis; overflow: hidden;}
+
+.wrap-drop span {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 
 .wrap-drop:before,
@@ -16170,16 +16174,22 @@ input[type="password"][disabled] {
 	position: relative;
 }
 
-.faqlist .js--highlightText{background:#fbf9c9;}
+.faqlist .js--highlightText {
+	background: #fbf9c9;
+}
 
 
 .faqsearch .faq-input {
 	margin-top: 1rem;
 	height: 3rem;
 	border: solid 1px rgba(255, 255, 255, 0.7);
-	background:#fff;
+	background: #fff;
 }
-.faqsearch .faq-input:hover, .faqsearch .faq-input:focus{ border-color:inherit;}
+
+.faqsearch .faq-input:hover,
+.faqsearch .faq-input:focus {
+	border-color: inherit;
+}
 
 .filterDiv {
 	font-size: 1.1rem;
@@ -16271,7 +16281,11 @@ div.faqanswer p {
 	overflow: hidden;
 }
 
-.faq-filters a:after { position: absolute; top: 0; right: 0; content: "";
+.faq-filters a:after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	content: "";
 	width: 0;
 	height: 0;
 	border-top: 10px solid var(--first-color);
@@ -16281,7 +16295,7 @@ div.faqanswer p {
 .faq-filters a.is--active {
 	background: var(--first-color);
 	color: #fff;
-	border-color:var(--first-color);
+	border-color: var(--first-color);
 }
 
 .dragHandle {

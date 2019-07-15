@@ -385,14 +385,18 @@ input[type="text"].p-cards.meastro {
 	text-align: left;
 }
 
-.payment_methods_list li a {	 }
+.payment_methods_list li a {}
 
 .payment_methods_list li a:before {
 	left: auto;
 	right: 15px;
 }
 
-.payment_methods_list li.is-active:after{ left: auto; right: 10px;}
+.payment_methods_list li.is-active:after {
+	left: auto;
+	right: 10px;
+}
+
 .summary-listing .product_price {
 	clear: left;
 }
@@ -895,7 +899,10 @@ transform: rotate(-180deg); */
 	.shop-information .shop-info {
 		text-align: right;
 	}
-	.product-view{ overflow-x: hidden;}
+
+	.product-view {
+		overflow-x: hidden;
+	}
 
 }
 
