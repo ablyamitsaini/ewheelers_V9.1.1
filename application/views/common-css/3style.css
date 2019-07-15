@@ -13373,7 +13373,6 @@ main.main {
 }
 
 .payment_methods_list li {
-	text-align: center;
 	margin: 0;
 	margin-bottom: 0.5rem;
 	width: 100%;
@@ -13415,8 +13414,7 @@ main.main {
 }
 
 .payment_methods_list span {
-	flex: 1;
-	text-align: left;
+	flex: 1;	 
 	display: block;
 	font-size: 0.875rem;
 }
