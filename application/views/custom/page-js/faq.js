@@ -44,9 +44,8 @@ $(document).ready(function(){
     });
 }   */
 
-	searchFaqs(document.frmSearchFaqs);
+	searchFaqs(0);
 	faqRightPanel();
-
 });
 
 (function() {
@@ -55,7 +54,8 @@ $(document).ready(function(){
 	var currPage = 1;
 	var faqCatId=1;
 	reloadListing = function(){
-		searchFaqs(document.frmSearchFaqs);
+		// searchFaqs(document.frmSearchFaqs);
+		searchFaqs(0);
 	};
 
 	$(document).on('click','a.selectedCat',function(){
@@ -72,11 +72,14 @@ $(document).ready(function(){
 
 	searchFaqs = function(catId){
 
-		if(catId<0)
-			catId =0;
-
+		if (catId < 0) {
+			catId = 0;
+		}
 		$(dv).html(fcom.getLoader());
-
+		if (1 >= $('.is--active').length && 0 < catId) {
+			$('.is--active').removeClass('is--active');
+			$('#'+catId).addClass('is--active');
+		}
 		fcom.updateWithAjax(fcom.makeUrl('Custom','SearchFaqs', [catId]), '', function(ans){
 			$.mbsmessage.close();
 

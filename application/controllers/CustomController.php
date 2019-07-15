@@ -146,7 +146,7 @@
         FatUtility::dieJsonSuccess($json);
     }
 
-    public function searchFaqs($catId='')
+    public function searchFaqs($catId = '')
     {
         $searchFrm = $this->getSearchFaqForm();
         $faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
@@ -567,12 +567,6 @@
     FatUtility::dieJsonSuccess($json);
     }
     */
-    public function favoriteShopProducts()
-    {
-    }
-
-
-
 
     public function referral($userReferralCode, $sharingUrl)
     {

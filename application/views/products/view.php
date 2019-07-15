@@ -125,7 +125,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                         <?php } ?>
                                     </div>
-                                    <div class="divider"></div>
+                                    
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
@@ -136,7 +136,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     <?php $freeShipAmt = CommonHelper::displayMoneyFormat($shop['shop_free_ship_upto']); ?>
                                     <div class="note-messages"><?php echo str_replace('{amount}', $freeShipAmt, Labels::getLabel('LBL_Free_shipping_up_to_{amount}_purchase', $siteLangId));?></div>
                                     <?php }?>
-
+                                    <div class="divider"></div>
                                     <?php if (!empty($optionRows)) { ?>
                                     <div class="gap"> </div>
                                     <div class="row">
