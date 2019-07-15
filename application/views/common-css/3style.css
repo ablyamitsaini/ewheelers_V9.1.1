@@ -10980,6 +10980,7 @@ html.quick-view--open {
 	color: var(--first-color);
 	font-weight: 700;
 	line-height: 1.1;
+	font-family: 'Poppins', sans-serif;
 }
 
 .product-description .h6 {
