@@ -15,7 +15,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                         </div>
                         <div class="prod-info__right">
                             <div class="avtar__info">
-                                <h6><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($product['selprod_id']));?>"><?php echo $product['selprod_title'];?></a></h6>
+                                <h2><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($product['selprod_id']));?>"><?php echo $product['selprod_title'];?></a></h2>
                                 <?php if (round($product['prod_rating'])>0  && FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                                     ?> <div class="products__rating"><i class="icn"><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>

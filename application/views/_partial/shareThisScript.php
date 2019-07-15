@@ -5,3 +5,7 @@
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <?php }?>
 <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js"></script>
+<script type="text/javascript">
+var addthis_config = addthis_config||{};
+addthis_config.lang = 'ar' 
+</script>

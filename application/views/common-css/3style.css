@@ -14973,25 +14973,28 @@ main.main {
 	-webkit-transform: scale(0) translateY(-150px);
 	transform: scale(0) translateY(-150px);
 */
-	opacity: 0;
-	visibility: hidden;
 	-webkit-transition: all .4s ease;
 	transition: all .4s ease;
 	/* stops flickering */
 	/*	-webkit-backface-visibility: hidden;*/
 	position: absolute;
-	left: 0;
 	z-index: 1;
 	background: #fff;
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
 	padding: 10px;
-	border-radius: 5px;
-	min-width: 180px;
+	border-radius: 4px;
+	/*min-width: 180px;*/
+	left: 50%;
+	-webkit-transform: scaleY(0) translateX(-50%);
+	transform: scaleY(0) translateX(-50%);
+	opacity: 0;
+	visibility: hidden;
+	filter: alpha(opacity=0);
+	-webkit-transition: all 300ms;
+	transition: all 300ms;
+	-webkit-transform-origin: center;
+	transform-origin: center;
 }
-
-
-
-
 
 .social-networks.open-menu,
 .no-js .social-networks {
@@ -14999,8 +15002,13 @@ main.main {
 	-webkit-transform: scale(1) translateY(0);
 	transform: scale(1) translateY(0);
 */
+
+	-webkit-transform: scaleY(1) translateX(-50%);
+	transform: scaleY(1) translateX(-50%);
 	opacity: 1;
+	filter: alpha(opacity=100);
 	visibility: visible;
+
 }
 
 .social-networks ul {
@@ -15012,6 +15020,7 @@ main.main {
 	padding: 0;
 	list-style: none;
 	display: flex;
+	flex-direction: column;
 }
 
 .social-networks li {
@@ -15377,6 +15386,11 @@ main.main {
 	cursor: pointer;
 	padding-inline-end: 35px;
 	background: #fff;
+	white-space: nowrap;
+
+	overflow: hidden;
+
+	text-overflow: ellipsis;
 }
 
 
@@ -15982,7 +15996,8 @@ input[type="password"][disabled] {
 	color: #fff;
 }
 
-.prod-info__right p {
+.prod-info__right p,
+.prod-info__right a {
 	color: inherit;
 }
 
@@ -16261,4 +16276,8 @@ div.faqanswer p {
 
 .dragHandle {
 	cursor: move;
+}
+
+#st_gdpr_iframe {
+	display: none;
 }

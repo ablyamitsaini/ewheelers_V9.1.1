@@ -42,7 +42,7 @@
                     <div class="certified-box">
                         <i class="icn">
                             <svg class="svg">
-                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#safepayments"></use>
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#shipping-policies" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#shipping-policies"></use>
                             </svg>
                         </i>
                         <p><?php echo Labels::getLabel('LBL_Shipping_Policies', $siteLangId);?>
