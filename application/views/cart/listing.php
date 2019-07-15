@@ -174,7 +174,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
         </div>
         <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) { ?>
         <div class="summary__row">
-            <p class="align--right"><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderNetAmount']); ?> </p>
+            <p class="note align--right"><?php echo CommonHelper::currencyDisclaimer($siteLangId, $cartSummary['orderNetAmount']); ?> </p>
         </div>
         <?php } ?>
         <div class="cart-advices">

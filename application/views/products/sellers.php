@@ -1,16 +1,12 @@
-<?php
-defined('SYSTEM_INIT') or die('Invalid Usage.');
-?> <div id="body" class="body">
-
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<div id="body" class="body">
     <div class="bg--second pt-3 pb-3">
-      <div class="container container--fixed">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-                <div class="prod-info">
-                        
+        <div class="container container--fixed">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="prod-info">
                         <div class="prod-info__left">
-                            <div class="product-avtar"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($product['selprod_id']));?>"><img alt=""
-                            src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId), CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>"></a>
+                            <div class="product-avtar"><a title="<?php echo $product['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($product['selprod_id']));?>"><img alt="" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "SMALL", $product['selprod_id'], 0, $siteLangId), CONF_WEBROOT_URL), CONF_IMG_CACHE_TIME, '.jpg'); ?>"></a>
                             </div>
                         </div>
                         <div class="prod-info__right">
@@ -23,18 +19,11 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                             } ?>
                         </div>
                     </div>
-                    
                 </div>
-               
-          </div>
-          
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-    
-    
-    
     <section class="section">
         <div class="container">
           <div class="section-head mb-0">
@@ -42,7 +31,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 					<h2 class="mb-0"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h2>
 				</div>
 			</div>
-          
+
             <div class=""> <?php
             $arr_flds = array(
                 'shop_name'    =>    Labels::getLabel('LBL_Seller', $siteLangId),
@@ -72,9 +61,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                         $txt .= $moresellers[$key];
                         $txt .= '</a></div><a href="'.CommonHelper::generateUrl('shops', 'view', array($moresellers['shop_id'])).'"><div class="ftshops_location">'.$moresellers['shop_state_name'].",".$moresellers['shop_country_name'].'</div></a></div>';
                         if (isset($product['rating'][$moresellers['selprod_user_id']]) && $product['rating'][$moresellers['selprod_user_id']]>0) {
-                            $txt.='<div class="products__rating"><i class="svg"><svg class="svg">
-                                <use xlink:href="/yokartv8/images/retina/sprite.svg#star-yellow" href="/yokartv8/images/retina/sprite.svg#star-yellow"></use>
-                            </svg> </i><span class="rate">'.round($product['rating'][$moresellers['selprod_user_id']], 1).'</span> </div>';
+                            $txt.='<div class="products-reviews"><span class="rate"><i class="icn"><svg class="svg"> <use xlink:href="'.CONF_WEBROOT_URL.'images/retina/sprite.svg#star-yellow" href="'.CONF_WEBROOT_URL.'images/retina/sprite.svg#star-yellow"></use></svg> </i>'.round($product['rating'][$moresellers['selprod_user_id']], 1).'</span> </div>';
                             }
                         $td->appendElement('plaintext', array(), $txt, true);
                             break;
@@ -120,11 +107,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
                     }
                 }
             }
-
-    echo $tbl->getHtml();
-
-?> </div>
+            echo $tbl->getHtml(); ?> </div>
         </div>
-         
     </section>
 </div>

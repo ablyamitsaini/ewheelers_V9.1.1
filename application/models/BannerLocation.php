@@ -52,7 +52,7 @@ class BannerLocation extends MyAppModel
         $db = FatApp::getDb();
 
         $bannerSrch = Banner::getBannerLocationSrchObj(true);
-        $bannerSrch->addCondition('blocation_id', '<=', $blocationId);
+        $bannerSrch->addCondition('blocation_id', '=', $blocationId);
         $rs = $bannerSrch->getResultSet();
         $bannerLocation = $db->fetchAll($rs, 'blocation_key');
 
@@ -84,7 +84,6 @@ class BannerLocation extends MyAppModel
             );
 
             $srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget','promotion_duration'));
-
             if ($val['blocation_banner_count'] > 0) {
                 $pageSize = $val['blocation_banner_count'];
             }
