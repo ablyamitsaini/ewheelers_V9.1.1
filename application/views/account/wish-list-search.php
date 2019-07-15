@@ -8,7 +8,7 @@
                    <div class="item__head mb-2">
                    	  <span class="item__title">
                        <?php echo $wishlist['uwlist_title']; ?></span>
-                        <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>                           
+                        <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>
 					   <a href="javascript:void(0)" onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" class="icons-wrapper"><i class="icn shop"><svg class="svg">
 								<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
 							</svg>
@@ -16,7 +16,7 @@
 						</a>
                   		<?php } ?>
                    </div>
-                    <div class="items__body">                      
+                    <div class="items__body">
                         <?php if ($wishlist['products']) { ?>
                             <div class="items__group clearfix">
                                 <div class="items__row">
@@ -37,17 +37,19 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                        <?php }
+                        <?php } else {
+                            $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>Labels::getLabel('LBL_No_items_added_to_this_wishlist.', $siteLangId)));
+                        }
                         if (!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type']!=UserWishList::TYPE_FAVOURITE)) {
                             $functionName = 'viewWishListItems';
                         } else {
                             $functionName = 'viewFavouriteItems';
                         } ?>
-                        
+
                     </div>
                     <?php
 					if ($wishlist['totalProducts']>0) { ?>
-                            
+
                             <div class="align--center ">
                                 <a onClick="<?php echo $functionName; ?>(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="btn btn--primary-border">
                                     <?php echo str_replace('{n}', $wishlist['totalProducts'], Labels::getLabel('LBL_View_{n}_items', $siteLangId)); ?> <i class="fa fa-eye"></i>
