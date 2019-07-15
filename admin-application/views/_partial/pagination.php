@@ -61,6 +61,10 @@ $ul = new HtmlElement(
     );
 ?>
 <div class="section footinfo">
-	<aside class="grid_1"><?php echo $ul->getHtml();?></aside>
-	<aside class="grid_2"><?php echo Labels::getLabel('LBL_Showing', $adminLangId); ?> <?php echo $startIdx = ($pageNumber-1)*$pageSize + 1; ?> <?php echo Labels::getLabel('LBL_to', $adminLangId); ?> <?php echo ($recordCount < $startIdx + $pageSize - 1) ? $recordCount : $startIdx + $pageSize - 1 ;?> <?php echo Labels::getLabel('LBL_of', $adminLangId); ?> <?php echo $recordCount;?> <?php echo Labels::getLabel('LBL_Entries', $adminLangId); ?></aside>
+    <aside class="grid_1"><?php echo $ul->getHtml();?></aside>
+    <?php if ($pageCount == 1) {?>
+        <aside class="grid_2"><?php echo Labels::getLabel('LBL_Showing', $adminLangId); ?> <?php echo $recordCount;?> <?php echo Labels::getLabel('LBL_Entries', $adminLangId); ?></aside>
+    <?php } else {?>
+        <aside class="grid_2"><?php echo Labels::getLabel('LBL_Showing', $adminLangId); ?> <?php echo $startIdx = ($pageNumber-1)*$pageSize + 1; ?> <?php echo Labels::getLabel('LBL_to', $adminLangId); ?> <?php echo ($recordCount < $startIdx + $pageSize - 1) ? $recordCount : $startIdx + $pageSize - 1 ;?> <?php echo Labels::getLabel('LBL_of', $adminLangId); ?> <?php echo $recordCount;?> <?php echo Labels::getLabel('LBL_Entries', $adminLangId); ?></aside>
+    <?php } ?>
 </div>
