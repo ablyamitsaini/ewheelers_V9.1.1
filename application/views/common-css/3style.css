@@ -6757,6 +6757,7 @@ a.loadmore.loading {
 
 .layout--rtl {
 	direction: rtl !important;
+	text-align: right !important;
 }
 
 .layout--ltr {
@@ -16172,6 +16173,9 @@ input[type="password"][disabled] {
 .faqlist {
 	position: relative;
 }
+
+.faqlist .js--highlightText{background:#fbf9c9;}
+
 
 .faqsearch .faq-input {
 	margin-top: 1rem;
