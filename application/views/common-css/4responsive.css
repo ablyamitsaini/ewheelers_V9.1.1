@@ -305,7 +305,10 @@
 	.shop-information .shop-info {
 		width: calc(100% - 170px);
 		text-align: left;
-		padding: 20px 0 0 30px;
+		padding-top: 20px;
+		-webkit-padding-start:30px;
+		   -moz-padding-start:30px;
+		        padding-inline-start:30px; 
 	}
 
 	.shop-info .products__rating {
@@ -1359,9 +1362,10 @@ display: none;
 
 @media only screen and (max-width:1023px) {
 	html {
-		overflow: hidden;
-		overflow-y: scroll;
+		/*overflow: hidden;
+		overflow-y: scroll;*/
 	}
+	
 
 	.amount-added-box {
 		margin-top: 20px;
