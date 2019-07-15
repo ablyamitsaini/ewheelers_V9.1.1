@@ -227,6 +227,11 @@ class SellerProductsController extends AdminBaseController
         // CommonHelper::printArray($post); die;
         $selprod_id = Fatutility::int($post['selprod_id']);
         $selprod_product_id = Fatutility::int($post['selprod_product_id']);
+
+        $selprod_stock = Fatutility::int($post['selprod_stock']);
+        $selprod_min_order_qty = Fatutility::int($post['selprod_min_order_qty']);
+        $selprod_threshold_stock_level = Fatutility::int($post['selprod_threshold_stock_level']);
+
         // commonHelper::printArray($post); die;
         if (!$selprod_product_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
@@ -237,6 +242,21 @@ class SellerProductsController extends AdminBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
+
+        if ($post['selprod_track_inventory'] == Product::INVENTORY_NOT_TRACK) {
+            $post['selprod_threshold_stock_level'] = 0;
+        }
+
+        if ($selprod_threshold_stock_level >= $selprod_stock) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Alert_stock_level_should_be_less_than_stock_quantity.', $this->adminLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if ($selprod_min_order_qty > $selprod_stock || 1 > $selprod_min_order_qty) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Minimum_quantity_should_be_less_than_equal_to_stock_quantity.', $this->adminLangId));
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
         $frm = $this->getSellerProductForm($selprod_product_id);
         $post = $frm->getFormDataFromArray($post);
 
@@ -266,10 +286,6 @@ class SellerProductsController extends AdminBaseController
         if ($sellerProductRow && !empty(Product::isSellProdAvailableForUser($selProdCode, $this->adminLangId, $sellerProductRow['selprod_user_id'], $selprod_id))) {
             Message::addErrorMessage(Labels::getLabel("MSG_Product_has_been_already_added_by_user", $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
-        }
-
-        if ($post['selprod_track_inventory'] == Product::INVENTORY_NOT_TRACK) {
-            $post['selprod_threshold_stock_level'] = 0;
         }
 
         $data_to_be_save = $post;
