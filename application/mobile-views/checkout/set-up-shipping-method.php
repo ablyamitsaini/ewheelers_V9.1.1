@@ -23,11 +23,17 @@ $data['priceDetail'] = array(
         'value' => $recordCount
     ),
     array(
-        'key' => Labels::getLabel('LBL_Delivery_Charges', $siteLangId),
-        'value' => CommonHelper::displayMoneyFormat($deliveryCharges)
+        'key' => Labels::getLabel('LBL_Sub_Total', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat($cartSummary['cartTotal'])
     )
 );
 
+if ($cartSummary['originalShipping']) {
+    $data['priceDetail'][] = array(
+        'key' => Labels::getLabel('LBL_Delivery_Charges', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat($deliveryCharges)
+    );
+}
 if (0 < $cartTaxTotal) {
     $data['priceDetail'][] = array(
         'key' => Labels::getLabel('LBL_Tax', $siteLangId),

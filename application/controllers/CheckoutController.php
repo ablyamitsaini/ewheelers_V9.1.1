@@ -541,7 +541,7 @@ class CheckoutController extends MyAppController
     public function setUpShippingMethod()
     {
         $post = FatApp::getPostedData();
-
+        die(json_encode($post));
         $cartProducts = $this->cartObj->getProducts($this->siteLangId);
         //$this->cartObj = new Cart();
         $productToShippingMethods = array();
@@ -586,18 +586,18 @@ class CheckoutController extends MyAppController
                     $product = FatApp::getDb()->fetch($productRs);
                     /* ] */
 
-                    if (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["shipping_locations"][$productKey])) {
+                    if (isset($post["data"][$productKey]['shipping_type']) && ($post["data"][$productKey]['shipping_type'] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["data"][$productKey]['shipping_locations'])) {
                         foreach ($shipping_options as $shipOption) {
-                            if ($shipOption['pship_id']==$post["shipping_locations"][$productKey]) {
+                            if ($shipOption['pship_id']==$post['data'][$productKey]["shipping_locations"]) {
                                 $productToShippingMethods['product'][$cartval['selprod_id']] = array(
                                 'selprod_id'    =>    $cartval['selprod_id'],
-                                'pship_id'    =>    $post["shipping_locations"][$productKey],
+                                'pship_id'    =>    $post['data'][$productKey]["shipping_locations"],
                                 'sduration_id'    =>    $shipOption['sduration_id'],
                                 'sduration_name' => $shipOption['sduration_name'],
                                 'sduration_from' => $shipOption['sduration_from'],
                                 'sduration_to' => $shipOption['sduration_to'],
                                 'sduration_days_or_weeks' => $shipOption['sduration_days_or_weeks'],
-                                'mshipapi_id'    =>    $post["shipping_type"][$productKey],
+                                'mshipapi_id'    =>    $post['data'][$productKey]["shipping_type"],
                                 'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                                 'mshipcompany_name'    =>    $shipOption['scompany_name'],
                                 'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
@@ -606,15 +606,15 @@ class CheckoutController extends MyAppController
                                 continue;
                             }
                         }
-                    } elseif (isset($post["shipping_type"][$productKey]) && ($post["shipping_type"][$productKey] ==  ShippingCompanies::SHIPSTATION_SHIPPING) && !empty($post["shipping_services"][$productKey])) {
-                        list($carrier_name, $carrier_price) = explode("-", $post["shipping_services"][$productKey]);
+                    } elseif (isset($post['data'][$productKey]["shipping_type"]) && ($post['data'][$productKey]["shipping_type"] ==  ShippingCompanies::SHIPSTATION_SHIPPING) && !empty($post['data'][$productKey]["shipping_services"])) {
+                        list($carrier_name, $carrier_price) = explode("-", $post['data'][$productKey]["shipping_services"]);
                         $productToShippingMethods['product'][$cartval['selprod_id']] = array(
                           'selprod_id'    =>    $cartval['selprod_id'],
-                          'mshipapi_id'    =>    $post["shipping_type"][$productKey],
+                          'mshipapi_id'    =>    $post['data'][$productKey]["shipping_type"],
                           'mshipcompany_name'    =>    ($carrier_name),
                           'mshipapi_cost' =>  $carrier_price ,
-                          'mshipapi_key' =>  $post["shipping_services"][$productKey] ,
-                          'mshipapi_label' =>  str_replace("_", " ", $post["shipping_services"][$productKey]) ,
+                          'mshipapi_key' =>  $post['data'][$productKey]["shipping_services"],
+                          'mshipapi_label' =>  str_replace("_", " ", $post['data'][$productKey]["shipping_services"]) ,
                           'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                                             );
                         continue;
