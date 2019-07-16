@@ -38,7 +38,7 @@ class SupplierController extends MyAppController
         $srch->addCondition('faqcat_type', '=', FaqCategory::SELLER_PAGE);
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
-		$seller_navigation_left = Navigation::getNavigation(Navigations::NAVTYPE_SELLER_LEFT);
+        $seller_navigation_left = Navigation::getNavigation(Navigations::NAVTYPE_SELLER_LEFT);
         $this->set('seller_navigation_left', $seller_navigation_left);
         $this->set('formText', $formText);
         $this->set('faqCount', $srch->recordCount());
@@ -47,7 +47,16 @@ class SupplierController extends MyAppController
         $this->set('block3', $block3);
         $this->set('slogan', $slogan);
         $this->set('sellerFrm', $sellerFrm);
+        $this->set('faqSearchFrm', $this->getFaqSearchForm());
         $this->_template->render();
+    }
+
+    private function getFaqSearchForm()
+    {
+        $frm = new Form('frmSearchFaqs');
+        $frm->addTextbox(Labels::getLabel('LBL_Enter_your_question', $this->siteLangId), 'question');
+        $frm->addSubmitButton('', 'btn_submit', '');
+        return $frm;
     }
 
     public function account()
@@ -513,6 +522,7 @@ class SupplierController extends MyAppController
         }
 
         $this->set('siteLangId', $this->siteLangId);
+        $this->set('faqCatIdArr', $faqCatId);
         $this->set('list', $records);
         $json['html'] = '';//$this->_template->render( false, false,'_partial/no-record-found.php', true );
         if (!empty($records)) {
@@ -549,9 +559,13 @@ class SupplierController extends MyAppController
         if ($rsCat) {
             $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
         }
+
+        $faqMainCat = FatApp::getConfig("CONF_SELLER_PAGE_MAIN_CATEGORY", FatUtility::VAR_STRING, '');
+
         $this->set('siteLangId', $this->siteLangId);
         $this->set('list', $records);
         $this->set('listCategories', $recordsCategories);
+        $this->set('faqMainCat', $faqMainCat);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
             $json['html'] = $this->_template->render(false, false, 'supplier/search-faqs.php', true, false);
@@ -628,7 +642,7 @@ class SupplierController extends MyAppController
 
         $userObj = new User();
         $supplier_form_fields = $userObj->getSupplierFormFields($this->siteLangId);
-        
+
         foreach ($supplier_form_fields as $field) {
             $fieldName = 'sformfield_'.$field['sformfield_id'];
 
@@ -672,10 +686,10 @@ class SupplierController extends MyAppController
                     $fld->htmlAfterField = Labels::getLabel('LBL_HH:MM', $this->siteLangId);
                     $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_time_format.', $this->siteLangId));
                     break;
-                    
+
                 case User::USER_FIELD_TYPE_PHONE:
                     $fld = $frm->addTextBox($field['sformfield_caption'], $fieldName, '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
-                    $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);                    
+                    $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
                     break;
             }
 

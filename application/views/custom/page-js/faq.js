@@ -76,7 +76,7 @@ $(document).ready(function(){
 			catId = 0;
 		}
 		$(dv).html(fcom.getLoader());
-		if (1 >= $('.is--active').length && 0 < catId) {
+		if (0 < catId) {
 			$('.is--active').removeClass('is--active');
 			$('#'+catId).addClass('is--active');
 		}

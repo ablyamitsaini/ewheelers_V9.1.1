@@ -38,7 +38,10 @@ $(document).ready(function(){
 			catId = 0;
 		}
 		$(dv).html(fcom.getLoader());
-
+		if (0 < catId) {
+			$('.is--active').removeClass('is--active');
+			$('#'+catId).addClass('is--active');
+		}
 		fcom.updateWithAjax(fcom.makeUrl('supplier','SearchFaqs', [catId]), '', function(ans){
 			$(dv).find('.loader-yk').remove();
 			$(dv).html(ans.html);
@@ -113,4 +116,56 @@ $(document).on('click',".scroll",function( event ){
 		var target_top = target_offset.top;
 		$('html, body').animate({scrollTop:target_top}, 1000);
 	}
+});
+$(document).ready(function() {
+	$('.faqanswer').hide();
+	$('#faqcloseall').hide();
+	$(document).on("click", 'h3', function() {
+		$(this).next('.faqanswer').toggle(function() {
+			$(this).next('.faqanswer');
+		}, function() {
+			$(this).next('.faqanswer').fadeIn('fast');
+		});
+		if ($(this).hasClass('faqclose')) {
+			$(this).removeClass('faqclose');
+		} else {
+			$(this).addClass('faqclose');
+		};
+		if ($('.faqclose').length >= 3) {
+			$('#faqcloseall').fadeIn('fast');
+		} else {
+			$('#faqcloseall').hide();
+			var yolo = $('.faqclose').length
+		}
+	}); //Close Function Click
+}); //Close Function Ready
+$(document).on("click", '#faqcloseall', function() {
+	$('.faqanswer').fadeOut(200);
+	$('h3').removeClass('faqclose');
+	$('#faqcloseall').fadeOut('fast');
+});
+//search box
+$(function() {
+	$(document).on("keyup", '.faq-input', function() {
+		// Get user input from search box
+		var filter_text = $(this).val();
+		var replaceWith = "<span class='js--highlightText'>"+filter_text+"</span>";
+		var re = new RegExp(filter_text, 'g');
+
+		$('.faqlist h3').each(function() {
+			if ('' !== filter_text) {
+				if ($(this).text().toLowerCase().indexOf(filter_text) >= 0) {
+					var content = $(this).text();
+					$(this).siblings( ".faqanswer" ).slideDown();
+					$(this).html(content.replace(re, replaceWith));
+				} else {
+					$(this).text($(this).text());
+					$(this).siblings( ".faqanswer" ).slideUp();
+				}
+			} else {
+				$(this).text($(this).text());
+				$('.faqlist h3').siblings( ".faqanswer" ).slideUp();
+			}
+		})
+	});
 });

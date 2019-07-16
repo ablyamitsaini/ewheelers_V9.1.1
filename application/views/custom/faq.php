@@ -80,13 +80,14 @@ $frm->getField('question')->setFieldTagAttribute('class', "faq-input no-focus");
             // Get user input from search box
             var filter_text = $(this).val();
             var replaceWith = "<span class='js--highlightText'>"+filter_text+"</span>";
+            var re = new RegExp(filter_text, 'g');
 
             $('.faqlist h3').each(function() {
                 if ('' !== filter_text) {
                     if ($(this).text().toLowerCase().indexOf(filter_text) >= 0) {
                         var content = $(this).text();
                         $(this).siblings( ".faqanswer" ).slideDown();
-                        $(this).html(content.replace(filter_text,replaceWith));
+                        $(this).html(content.replace(re, replaceWith));
                     } else {
                         $(this).text($(this).text());
                         $(this).siblings( ".faqanswer" ).slideUp();
