@@ -189,7 +189,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             </td>
                             <td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
                                 <?php if( $product['special_price_found'] ){ ?>
-                                <span class="text--normal text--normal-secondary"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
+                                <span class="text--normal text--normal-secondary text-nowrap"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                 <?php } ?>
                             </td>
                             <td class="text-right">
