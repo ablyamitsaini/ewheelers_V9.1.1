@@ -173,7 +173,7 @@ $("document").ready(function(){
 		'select': function(item) {
 			$('input[name=\'option_name\']').val('');
 			$('#product-option' + item['value']).remove();
-			$('#product-option-js').append('<li id="product-option' + item['value'] + '"><span class="left" ><a href="javascript:void(0)" title="Remove" onClick="removeProductOption('+ item['value'] +');"><i class="icon ion-close" data-option-id="' + item['value'] + '"></i></a></span><span class="left">' + item['label'] +')<input type="hidden" value="'+ item['value'] +'"  name="product_option[]"></span></li>');			
+			$('#product-option-js').append('<li id="product-option' + item['value'] + '"><span class="left" ><a href="javascript:void(0)" title="Remove" onClick="removeProductOption('+ item['value'] +');"><i class="icon ion-close" data-option-id="' + item['value'] + '"></i></a></span><span class="left">' + item['label'] +'<input type="hidden" value="'+ item['value'] +'"  name="product_option[]"></span></li>');			
 		}
 	});
 	
@@ -204,7 +204,7 @@ $("document").ready(function(){
 		'select': function(item) {
 			$('input[name=\'tag_name\']').val('');
 			$('#product-tag' + item['value']).remove();
-			$('#product-tag-js').append('<li id="product-tag' + item['value'] + '"><span class="left "><a href="javascript:void(0)" title="Remove" onClick="removeProductTag('+ item['value'] +');"><i class="icon ion-close remove_tag-js" data-tag-id="'+ item['value'] +'"></i></a></span><span class="left">' +item['label']+')<input type="hidden" value="'+ item['value'] +'"  name="product_tags[]"></span></li></li>');
+			$('#product-tag-js').append('<li id="product-tag' + item['value'] + '"><span class="left "><a href="javascript:void(0)" title="Remove" onClick="removeProductTag('+ item['value'] +');"><i class="icon ion-close remove_tag-js" data-tag-id="'+ item['value'] +'"></i></a></span><span class="left">' +item['label']+'<input type="hidden" value="'+ item['value'] +'"  name="product_tags[]"></span></li></li>');
 		}
 	});
 	
