@@ -20,10 +20,50 @@ if (!empty($orderDetail['charges'])) {
     }
     $orderDetail['charges'] = $charges;
 }
+// echo $primaryOrder; die;
+if ($primaryOrder) {
+    $childArr[] = $childOrderDetail;
+} else {
+    $childArr = $childOrderDetail;
+}
+$cartTotal = 0;
+$shippingCharges = 0;
+foreach ($childArr as $index => $childOrder) {
+    $cartTotal = $cartTotal + CommonHelper::orderProductAmount($childOrder, 'cart_total');
+    $shippingCharges = $shippingCharges + CommonHelper::orderProductAmount($childOrder, 'shipping');
+    $volumeDiscount = CommonHelper::orderProductAmount($childOrder, 'VOLUME_DISCOUNT');
+    $rewardPointDiscount = CommonHelper::orderProductAmount($childOrder, 'REWARDPOINT');
+    $childArr[$index]['priceDetail'] = array(
+        array(
+            'title' => Labels::getLabel('LBL_Price', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat($childOrder['op_unit_price']),
+        ),
+        array(
+            'title' => Labels::getLabel('LBL_Shipping_Charges', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'shipping')),
+        ),
+        array(
+            'title' => Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat($volumeDiscount),
+        ),
+        array(
+            'title' => Labels::getLabel('LBL_Tax_Charges', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'tax')),
+        ),
+        array(
+            'title' => Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat($rewardPointDiscount),
+        ),
+        array(
+            'title' => Labels::getLabel('LBL_Total', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)),
+        ),
+    );
+}
 
 $data = array(
     'orderDetail' => $orderDetail,
-    'childOrderDetail' => !empty($childOrderDetail) ? $childOrderDetail : (object)array(),
+    'childOrderDetail' => $childArr,
     'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array()    ,
     'primaryOrder' => $primaryOrder,
     'digitalDownloads' => !empty($digitalDownloads) ? $digitalDownloads : (object)array(),

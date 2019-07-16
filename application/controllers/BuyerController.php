@@ -182,7 +182,7 @@ class BuyerController extends BuyerBaseController
             $childOrderDetail = array_shift($childOrderDetail);
         }
 
-        if (1 > count($childOrderDetail)) {
+        if (empty($childOrderDetail) || 1 > count($childOrderDetail)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
