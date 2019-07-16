@@ -229,14 +229,14 @@
         $json['recordCount'] = $srch->recordCount();
 
         $srch->addGroupBy('faqcat_id');
-        $srch->addMultipleFields(array('faqcat_name','faqcat_id'));
+        $srch->addMultipleFields(array('IFNULL(faqcat_name, faqcat_identifier) as faqcat_name','faqcat_id'));
         $srch->addFld('COUNT(*) AS faq_count');
         if (isset($srchCondition)) {
             $srchCondition->remove();
         }
         $rsCat = $srch->getResultSet();
         $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
-
+        // CommonHelper::printArray($recordsCategories);
         $faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
 
         $this->set('siteLangId', $this->siteLangId);

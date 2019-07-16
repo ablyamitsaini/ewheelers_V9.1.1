@@ -125,7 +125,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                         <?php } ?>
                                     </div>
-                                    
+
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
@@ -543,7 +543,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                         } ?>
                     <div class="col-md-6">
                         <div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" target="<?php echo $val['banner_target']; ?>" title="<?php echo $val['banner_title']; ?>"
-                                class="advertise__block"><img data-ratio="16:9 (600x338)" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
+                                class="advertise__block"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
                                     src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
                                     class="img-responsive"></a></div>
                     </div>
