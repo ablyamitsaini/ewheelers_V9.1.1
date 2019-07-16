@@ -74,7 +74,7 @@
     </div>
 	<section class="section bg--white">
 	  <div class="container">
-		<div class="container--cms">
+		<div class="cms">
 			<?php echo FatUtility::decodeHtmlEntities( $cPage['cpage_content'] ) ?>
 		</div>
 	  </div>
