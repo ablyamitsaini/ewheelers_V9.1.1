@@ -647,10 +647,15 @@ trait SellerProducts
         if ($selprod_id > 0) {
             $languages = Language::getAllNames();
             foreach ($languages as $langId =>$langName) {
-                if (!$row = SellerProduct::getAttributesByLangId($langId, $selprod_id)) {
+                if ($langId > $lang_id) {
                     $newTabLangId = $langId;
                     break;
                 }
+                /*if (!$row = SellerProduct::getAttributesByLangId($langId, $selprod_id)) {
+                    $newTabLangId = $langId;
+                    break;
+                }*/
+
             }
         }
 
