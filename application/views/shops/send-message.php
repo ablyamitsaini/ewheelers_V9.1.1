@@ -75,18 +75,17 @@
   <section class="section">
     <div class="container">      
 		  <div class="row justify-content-center">
-			  <div class="col-xl-7 col-lg-7">
-			  <div class="section-head">
-			<div class="section__heading">
-				<h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
+			<div class="col-xl-7 col-lg-7">
+                <div class="section-head">
+                    <div class="section__heading">
+                        <h4><?php echo Labels::getLabel('LBL_Send_Message_to_shop_owner', $siteLangId); ?></h4>
+                    </div>
+                    <?php /* if( $shop['shop_user_id'] === $loggedUserData['user_id']){ ?>
+                        <div class="section__action"><div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message', $siteLangId); ?></div></div>
+                    <?php } */ ?>
+                </div>
+                <div class="box box--gray box--radius box--border p-5"> <?php echo $frm->getFormHtml(); ?> </div>
 			</div>
-							<div class="section__action"><div class="note-messages"><?php echo Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $siteLangId); ?></div></div><?php if( $shop['shop_user_id'] === $loggedUserData['user_id']){ ?>
-			
-			<?php } ?>
-					</div>
-			  
-				<div class="box box--gray box--radius box--border p-5"> <?php echo $frm->getFormHtml(); ?> </div>
-			  </div>
 		  </div>
 		 
     </div>

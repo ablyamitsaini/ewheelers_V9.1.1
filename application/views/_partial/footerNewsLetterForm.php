@@ -25,7 +25,7 @@
             var data = fcom.frmData(frm);
             fcom.updateWithAjax(fcom.makeUrl('MyApp', 'setUpNewsLetter'), data, function(t) {
                 if(t.status){
-                    document.frmNewsLetter.reset();
+                    frm.reset();
                 }
             });
         };

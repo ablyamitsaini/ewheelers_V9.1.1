@@ -218,7 +218,6 @@ if (isset($prodcat_code)) {
         $optionValueCheckedArr = (isset($optionValueCheckedArr) && !empty($optionValueCheckedArr))? $optionValueCheckedArr : array();
 
         if (isset($options) && $options) { ?>
-        <div class="divider--filters"></div>
             <?php function sortByOrder($a, $b)
             {
                 return $a['option_id'] - $b['option_id'];
@@ -231,10 +230,10 @@ if (isset($prodcat_code)) {
             foreach ($options as $optionRow) {
                 if ($optionName != $optionRow['option_name']) {
                     if ($optionName!='') {
-                        echo "</ul></div><div class='divider'></div>";
+                        echo "</ul></div>";
                     }
                     $optionName = ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?>
-<div class="widgets__heading filter-head-js"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
+<div class="divider--filters"></div><div class="widgets__heading filter-head-js"><?php echo ($optionRow['option_name']) ? $optionRow['option_name'] : $optionRow['option_identifier']; ?></div>
 <div>
     <ul class="list-vertical"><?php
                 }
@@ -246,8 +245,7 @@ if (isset($prodcat_code)) {
 
         <?php
             }
-            echo "</ul></div>
-            <div class='divider--filters'></div>";
+            echo "</ul></div>";
         }?>
         <!-- ]->
 

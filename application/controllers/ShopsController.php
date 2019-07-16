@@ -74,7 +74,7 @@ class ShopsController extends MyAppController
         /* ] */
 
         $srch->addMultipleFields(
-            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+            array( 's.shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
             'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
             'IFNULL(ufs.ufs_id, 0) as is_favorite' )
         );
@@ -556,14 +556,15 @@ class ShopsController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if ($shopData['shop_user_id'] == $loggedUserId) {
+
+        /*if ($shopData['shop_user_id'] == $loggedUserId) {
             $message = Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
-        }
+        } */
 
         $threadObj = new Thread();
         $threadDataToSave = array(
@@ -1092,7 +1093,7 @@ class ShopsController extends MyAppController
             /* ] */
 
             $srch->addMultipleFields(
-                array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+                array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
                 'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
                 'IFNULL(ufs.ufs_id, 0) as is_favorite' )
             );

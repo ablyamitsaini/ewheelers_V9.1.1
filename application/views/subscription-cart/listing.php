@@ -16,7 +16,7 @@
 		
 			?>
     <tr >
-      <td><span class="hide--desktop mobile-thead"></span>
+      <td>
         <div class="item__head">
           <div class="item__title"><a href="javascript:void(0)"><?php echo $subscription['spackage_name'] ?></a></div>
         </div>

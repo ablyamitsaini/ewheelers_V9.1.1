@@ -19,13 +19,13 @@
                         <?php if ($orderInfo['order_net_amount']) { ?>
                         <div class="row">
                             <?php if ($gatewayCount > 0) { ?>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-4 mb-md-0 ">
                                 <div class="payment_methods_list" <?php echo (count($paymentMethods) <= 0) ? 'is--disabled' : ''; ?>>
                                     <?php if ($paymentMethods) { ?>
                                     <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar>
                                         <?php $count=0;
                                         foreach ($paymentMethods as $key => $val) {
-                                            if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_PRODUCT])) {
+                                            if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_ADD_MONEY_TO_WALLET])) {
                                                 continue;
                                             }
                                             $count++; ?>
@@ -44,16 +44,14 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12">
+                            <div class="col-md-8">
                                 <div class="payment-here">
                                     <div class="you-pay">
-                                        <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <strong><?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
-                                            <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) {?>
-
-                                            <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $orderInfo['order_net_amount']);  ?></p>
-
-                                            <?php } ?>
-                                        </strong> </div>
+                                        <?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?> : <?php echo CommonHelper::displayMoneyFormat($orderInfo['order_net_amount']); ?>
+                                        <?php if (CommonHelper::getCurrencyId() != FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)) {?>
+                                        <p><?php echo CommonHelper::currencyDisclaimer($siteLangId, $orderInfo['order_net_amount']);  ?></p>
+                                        <?php } ?>
+                                    </div>
                                     <div class="gap"></div>
                                     <!--<div class="heading4"><?php //echo Labels::getLabel('LBL_Pay_With_Credit_Card', $siteLangId);?></div>-->
                                     <div id="tabs-container"></div>

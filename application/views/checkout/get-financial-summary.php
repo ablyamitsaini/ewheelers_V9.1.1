@@ -22,9 +22,9 @@
             <div class="section__heading">
                 <h6><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> - <?php echo count($products); ?> <?php echo Labels::getLabel('LBL_item(s)', $siteLangId); ?></h6>
             </div>
-            <div class="section__action js-editCart" style="display:block;"><a href="javascript:void(0);" onClick="editCart()" class="btn btn--primary-border btn--sm">Edit cart</a> </div>
+            <div class="section__action js-editCart" style="display:block;"><a href="javascript:void(0);" onClick="editCart()" class="btn btn--primary-border btn--sm"><?php echo Labels::getLabel('LBL_Edit_Cart', $siteLangId);?></a> </div>
         </div>
-        <div class="scrollbar-order-list" id="simplebar" <?php echo count($products)>2 ? 'data-simplebar' : ''; ?>>
+        <div class="scrollbar-order-list" data-simplebar>
             <table class="cart-summary  table--justify order-table">
                 <tbody>
                     <?php foreach ($products as $product) { ?>

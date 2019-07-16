@@ -146,7 +146,7 @@
         FatUtility::dieJsonSuccess($json);
     }
 
-    public function searchFaqs($catId='')
+    public function searchFaqs($catId = '')
     {
         $searchFrm = $this->getSearchFaqForm();
         $faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
@@ -193,6 +193,7 @@
         }
 
         $this->set('siteLangId', $this->siteLangId);
+        $this->set('faqCatIdArr', $faqCatId);
         $this->set('list', $records);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
@@ -228,18 +229,21 @@
         $json['recordCount'] = $srch->recordCount();
 
         $srch->addGroupBy('faqcat_id');
-        $srch->addMultipleFields(array('faqcat_name','faqcat_id'));
+        $srch->addMultipleFields(array('IFNULL(faqcat_name, faqcat_identifier) as faqcat_name','faqcat_id'));
         $srch->addFld('COUNT(*) AS faq_count');
         if (isset($srchCondition)) {
             $srchCondition->remove();
         }
         $rsCat = $srch->getResultSet();
         $recordsCategories = FatApp::getDb()->fetchAll($rsCat);
+        // CommonHelper::printArray($recordsCategories);
+        $faqMainCat = FatApp::getConfig("CONF_FAQ_PAGE_MAIN_CATEGORY", null, '');
 
         $this->set('siteLangId', $this->siteLangId);
         $this->set('list', $records);
         // commonHelper::printArray($recordsCategories); die;
         $this->set('listCategories', $recordsCategories);
+        $this->set('faqMainCat', $faqMainCat);
         $json['html'] = $this->_template->render(false, false, '_partial/no-record-found.php', true, false);
         if (!empty($records)) {
             $json['html'] = $this->_template->render(false, false, 'custom/search-faqs.php', true, false);
@@ -567,12 +571,6 @@
     FatUtility::dieJsonSuccess($json);
     }
     */
-    public function favoriteShopProducts()
-    {
-    }
-
-
-
 
     public function referral($userReferralCode, $sharingUrl)
     {

@@ -914,7 +914,7 @@
   	}
 
   	.after-header-blog {
-  		height: 68px;
+  		height: 62px;
   	}
 
   	.posted-content {
@@ -932,6 +932,7 @@
   		-webkit-transform: translate(0, 0);
   		        transform: translate(0, 0);
   		padding: 15px;
+		max-width: none;
   		border-radius: 0 0 4px 4px;
   	}
 

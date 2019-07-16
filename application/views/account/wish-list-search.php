@@ -5,16 +5,19 @@
             if(count($wishlist['products']) > 0 || FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES){ ?>
             <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
                 <div class="items">
-                    <div class="items__body">
-                        <span class="item__title"><?php echo $wishlist['uwlist_title']; ?></span>
+                   <div class="item__head mb-2">
+                   	  <span class="item__title">
+                       <?php echo $wishlist['uwlist_title']; ?></span>
                         <?php if ((!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type'] != UserWishList::TYPE_FAVOURITE)) && $wishlist['uwlist_default'] != applicationConstants::YES) { ?>
-                            <span class='float-right'>
-                                <a title='<?php echo Labels::getLabel('LBL_Delete_List', $siteLangId); ?>' onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="text--normal-secondary">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </span>
-                        <?php }
-                        if ($wishlist['products']) { ?>
+					   <a href="javascript:void(0)" onclick="deleteWishList(<?php echo $wishlist['uwlist_id']; ?>);" class="icons-wrapper"><i class="icn shop"><svg class="svg">
+								<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#bin"></use>
+							</svg>
+						</i>
+						</a>
+                  		<?php } ?>
+                   </div>
+                    <div class="items__body">
+                        <?php if ($wishlist['products']) { ?>
                             <div class="items__group clearfix">
                                 <div class="items__row">
                                     <?php foreach ($wishlist['products'] as $product) {
@@ -34,17 +37,19 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                        <?php }
+                        <?php } else {
+                            $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId,'message'=>Labels::getLabel('LBL_No_items_added_to_this_wishlist.', $siteLangId)));
+                        }
                         if (!isset($wishlist['uwlist_type']) || (isset($wishlist['uwlist_type']) && $wishlist['uwlist_type']!=UserWishList::TYPE_FAVOURITE)) {
                             $functionName = 'viewWishListItems';
                         } else {
                             $functionName = 'viewFavouriteItems';
                         } ?>
-                        
+
                     </div>
                     <?php
 					if ($wishlist['totalProducts']>0) { ?>
-                            
+
                             <div class="align--center ">
                                 <a onClick="<?php echo $functionName; ?>(<?php echo $wishlist['uwlist_id']; ?>);" href="javascript:void(0)" class="btn btn--primary-border">
                                     <?php echo str_replace('{n}', $wishlist['totalProducts'], Labels::getLabel('LBL_View_{n}_items', $siteLangId)); ?> <i class="fa fa-eye"></i>
@@ -59,7 +64,7 @@
         } }
     }
     if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::YES) { ?>
-        <div class="col-xl-3 col-lg-4 col-md-6  column">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
             <div class="items p-4">
                 <div class="items__body text-center">
                     <div class="form">

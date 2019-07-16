@@ -2,7 +2,7 @@
 $frmOrderReturnRequest->setFormTagAttribute('class', 'form form--horizontal');
 $frmOrderReturnRequest->setFormTagAttribute('onsubmit', 'setupOrderReturnRequest(this); return(false);');
 $frmOrderReturnRequest->developerTags['colClassPrefix'] = 'col-md-';
-$frmOrderReturnRequest->developerTags['fld_default_col'] = 12;
+$frmOrderReturnRequest->developerTags['fld_default_col'] = 6;
 
 $orRequestTypeFld = $frmOrderReturnRequest->getField('orrequest_type');
 $orRequestTypeFld->setOptionListTagAttribute('class', 'list-inline');
@@ -15,9 +15,9 @@ $orRequestTypeFld->setOptionListTagAttribute('class', 'list-inline');
         </div>
         <div class="content-body">
             <div class="cards">
-               
-                <div class="cards-content pl-4 pr-4 ">
-                    <div class="row"> <?php echo $frmOrderReturnRequest->getFormHtml(); ?> </div>
+
+                <div class="cards-content pt-4 pl-4 pr-4 pb-0">
+                    <?php echo $frmOrderReturnRequest->getFormHtml(); ?>
                 </div>
             </div>
         </div>
