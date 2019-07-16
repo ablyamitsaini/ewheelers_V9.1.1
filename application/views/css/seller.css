@@ -1,6 +1,6 @@
 #header {
 	height: 127px;
-} 
+}
 
 #header ~ .after-header {
 	height: 127px;
@@ -21,18 +21,18 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-pack: end;
-	    -ms-flex-pack: end;
-	        justify-content: flex-end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
 	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
 }
 
 .seller-login .field-set {
 	margin-bottom: 0;
 	-webkit-margin-start: 10px;
-	   -moz-margin-start: 10px;
-	        margin-inline-start: 10px;
+	-moz-margin-start: 10px;
+	margin-inline-start: 10px;
 	vertical-align: top;
 	display: inline-block;
 	width: auto;
@@ -109,8 +109,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
 }
 
 .seller-slogan-txt {
@@ -233,7 +233,7 @@
 	right:-577px; bottom:0;
 }*/
 .simple-price {
-	background:var(--second-color);	 
+	background: var(--second-color);
 	text-align: center;
 	color: #fff;
 }
@@ -253,7 +253,7 @@
 	-ms-flex-align: center;
 	align-items: center;
 	-ms-flex-wrap: wrap;
-	    flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 .pricing-structure ul li {
@@ -294,7 +294,7 @@
 	border-width: 2px;
 }
 
- 
+
 
 .cta-left,
 .cta-right {
@@ -317,7 +317,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-wrap: nowrap;
-	    flex-wrap: nowrap;
+	flex-wrap: nowrap;
 	overflow-x: auto;
 }
 
@@ -332,19 +332,19 @@
 	font-size: 0.85em;
 	color: var(--txt-color);
 	-webkit-margin-end: 1rem;
-	   -moz-margin-end: 1rem;
-	        margin-inline-end: 1rem;
+	-moz-margin-end: 1rem;
+	margin-inline-end: 1rem;
 	position: relative;
 	white-space: nowrap;
 }
 
 .registeration-process ul li:first-child {
 	-webkit-margin-start: 0;
-	   -moz-margin-start: 0;
-	        margin-inline-start: 0;
+	-moz-margin-start: 0;
+	margin-inline-start: 0;
 	-webkit-padding-start: 0;
-	   -moz-padding-start: 0;
-	        padding-inline-start: 0;
+	-moz-padding-start: 0;
+	padding-inline-start: 0;
 }
 
 .registeration-process ul li a {
@@ -370,11 +370,11 @@
 	left: 0;
 	right: 100%;
 	-webkit-transition-duration: 0.3s;
-	        transition-duration: 0.3s;
+	transition-duration: 0.3s;
 	-webkit-transition-property: right;
 	transition-property: right;
 	-webkit-transition-timing-function: ease-out;
-	        transition-timing-function: ease-out;
+	transition-timing-function: ease-out;
 }
 
 .registeration-process ul li.is--active:after {
@@ -423,13 +423,13 @@
 	background: url(../images/retina/hamburger-menu.svg) no-repeat center;
 }
 
- 
+
 
 @media only screen and (max-width: 1199px) {
 	.logo {
 		-webkit-margin-start: 0;
-		   -moz-margin-start: 0;
-		        margin-inline-start: 0;
+		-moz-margin-start: 0;
+		margin-inline-start: 0;
 	}
 
 	.top-head {
@@ -456,7 +456,7 @@
 		opacity: 1;
 		visibility: visible;
 		-webkit-transform: translate(0px, 0px);
-		        transform: translate(0px, 0px);
+		transform: translate(0px, 0px);
 		-moz-transform: translate(0px, 0px);
 		webkit-transform: translate(0px, 0px);
 	}
@@ -500,7 +500,7 @@
 		opacity: 1;
 		visibility: visible;
 		-webkit-transform: translate(0px, 0px);
-		        transform: translate(0px, 0px);
+		transform: translate(0px, 0px);
 		-moz-transform: translate(0px, 0px);
 		--webkit-transform: translate(0px, 0px);
 	}
@@ -512,7 +512,7 @@
 	.seller-login {
 		background: #fff;
 		-webkit-box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
-		        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
 		top: 40px;
 		left: 0;
 		right: 0;
@@ -580,8 +580,8 @@
 	.seller-login {
 		-webkit-box-orient: vertical;
 		-webkit-box-direction: normal;
-		    -ms-flex-direction: column;
-		        flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
 	}
 
 	.seller-login input[type="text"],
@@ -652,7 +652,7 @@
 	.pricing-structure ul {
 		-webkit-box-orient: vertical;
 		-webkit-box-direction: normal;
-		    -ms-flex-direction: column;
-		        flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
 	}
 }

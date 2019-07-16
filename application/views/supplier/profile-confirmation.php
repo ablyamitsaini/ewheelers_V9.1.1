@@ -6,7 +6,8 @@
         <li class="is--active"><a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Confirmation', $siteLangId);?></a></li>
     </ul>
 </div>
-<div class="message message--success align--center"> <i class="fa fa-check-circle"></i>
+<div class="message message--success align--center">
+<i class="fa fa-check-circle"></i>
     <h2><?php echo Labels::getLabel('MSG_Congratulations', $siteLangId);?>!</h2>
     <p><?php echo $success_message; ?></p>
     <div class="gap"></div>

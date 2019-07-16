@@ -1357,6 +1357,12 @@ display: none;
 		min-height: 300px;
 		background-size: cover;
 	}
+	.promotion-area ul {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: column;
+		flex-direction: column;
+	}
 }
 
 @media only screen and (max-width:1023px) {
@@ -2567,12 +2573,7 @@ border: solid 1px var(--border-color);
 		max-width: 50%;
 	}
 
-	.promotion-area ul {
-		-webkit-box-orient: vertical;
-		-webkit-box-direction: normal;
-		-ms-flex-direction: column;
-		flex-direction: column;
-	}
+	
 }
 
 @media only screen and (max-width: 600px) {

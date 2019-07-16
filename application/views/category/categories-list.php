@@ -6,7 +6,7 @@
 	<h6 class="big-title"> <a href="<?php echo CommonHelper::generateUrl('category','view',array($category['prodcat_id']));?>"><?php echo $category['prodcat_name']; ?></a> </h6>
 	<?php if(!empty($category['children'])){?>
 	  <div class="cell__body">
-		<ul class="list">
+		<ul class="listing--onefifth">
 		  <?php foreach($category['children'] as $subcat){?>
 		  <li><a href="<?php echo CommonHelper::generateUrl('category','view',array($subcat['prodcat_id']));?>"> <?php echo $subcat['prodcat_name']?></a></li>
 		  <?php }?>

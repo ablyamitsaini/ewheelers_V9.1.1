@@ -19,8 +19,8 @@
     <section class="section">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 <?php echo (empty($pageData)) ? '' : '';?>">
-                    <div class="bg-gray rounded p-4 p-5">
+                <div class="col-lg-6 <?php echo (empty($pageData)) ? '' : '';?>">
+                    <div class="bg-gray rounded p-4">
                         <div class="text-center">
                             <div class="section-head">
                                 <div class="section__heading m-3">
