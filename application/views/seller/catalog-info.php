@@ -29,10 +29,13 @@
                                     <th><?php echo Labels::getLabel('LBL_Minimum_Selling_Price', $siteLangId); ?>:</th>
                                     <td><?php echo CommonHelper::displayMoneyFormat($product['product_min_selling_price']); ?></td>
                                 </tr>
+                                <?php  $saleTaxArr = Tax::getSaleTaxCatArr($siteLangId);
+                                if(array_key_exists($product['ptt_taxcat_id'], $saleTaxArr)){?>
                                 <tr>
                                     <th><?php echo Labels::getLabel('LBL_Tax_Category', $siteLangId); ?>:</th>
-                                    <td><?php echo Tax::getSaleTaxCatArr($siteLangId)[$product['ptt_taxcat_id']]; ?></td>
+                                    <td><?php echo $saleTaxArr[$product['ptt_taxcat_id']]; ?></td>
                                 </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>

@@ -189,7 +189,7 @@ class CommonHelper extends FatUtility
         $urlString.= '/'.FatUtility::camel2dashed($action);
         $urlString.= '/'.implode('/',$queryData);
         $urlString = trim($urlString,'/'); */
-        $urlString = trim($url, '/');
+        $urlString = trim(ltrim($url, CONF_WEBROOT_FRONTEND), '/');
         $srch = UrlRewrite::getSearchObject();
         $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'original', 'LIKE', $urlString);
         $rs = $srch->getResultSet();
@@ -1860,7 +1860,7 @@ class CommonHelper extends FatUtility
 
     public static function demoUrl()
     {
-        if ($_SERVER['SERVER_NAME']== 'v8.demo.yo-kart.com') {
+        if (strpos($_SERVER ['SERVER_NAME'], 'v8.demo.yo-kart.com') !== false) {
             return true;
         }
         return false;

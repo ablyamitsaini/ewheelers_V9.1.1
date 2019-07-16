@@ -3,9 +3,8 @@ defined('SYSTEM_INIT') or die('Invalid Usage');
 
 $bCount = 1;
 
-if ($bannerLayout1['blocation_active']) {
-    ?>
- <section class="section">
+if (!empty($bannerLayout1['banners']) && $bannerLayout1['blocation_active']) { ?>
+ <section class="section pb-0">
  <div class="container">
 	<?php foreach ($bannerLayout1['banners'] as $val) {
         /* if($bCount%2==0)

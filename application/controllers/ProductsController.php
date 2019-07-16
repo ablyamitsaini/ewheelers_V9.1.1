@@ -1517,8 +1517,7 @@ class ProductsController extends MyAppController
 
     private function getListingData($get)
     {
-        $db = FatApp::getDb();
-
+        $db = FatApp::getDb();        
         /* to show searched category data[ */
         $categoryId = null;
         $category = array();

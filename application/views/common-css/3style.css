@@ -1747,7 +1747,7 @@ input:checked + .slider:before {
 	display: block;
 	line-height: inherit;
 }
-
+.breadcrumbs ul li:last-child{ padding-inline-end:0; }
 .breadcrumbs ul li:last-child:before {
 	display: none;
 }
@@ -1774,7 +1774,7 @@ input:checked + .slider:before {
 .cms p {
 	color: var(--txt-color);
 	font-size: 0.875rem;
-	line-height: 1.8;
+	line-height: 1.8; margin-bottom: 1rem;
 }
 
 .cms .space {
@@ -8477,7 +8477,7 @@ a.box--share:hover {
 
 .message a {
 	text-decoration: underline;
-	font-weight: 600;
+	
 }
 
 .note-messages {
@@ -9194,12 +9194,11 @@ a.box--share:hover {
 	color: var(--first-color);
 }
 
-.cg-main .item {
-	background: #fff;
-	padding: 1rem;
+.cg-main .item {	 
+	padding: 1rem 0;
 	border-bottom: solid 1px var(--border-color);
 	text-align: inherit;
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.06);
+	
 
 }
 
@@ -10378,8 +10377,8 @@ form.custom-form input[type="submit"] {
 
 .cat-img {
 	display: block;
-	margin: 0 0 15px;
-	padding: 0 0 56%;
+	margin: 0 0 1rem;
+	padding: 0 0 25%;
 	position: relative;
 	width: 100%;
 }

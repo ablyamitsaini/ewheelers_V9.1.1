@@ -26,7 +26,7 @@
             <div class="row">
                 <?php $this->includeTemplate( '_partial/footerNavigation.php'); ?>
                 <div class="col-lg-2 col-md-4 col-sm-12 column">
-                
+
                 	<div class="toggle-group">
 						<h5 class="toggle__trigger toggle__trigger-js"><?php echo Labels::getLabel('LBL_Sell_With', $siteLangId)." ".FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId,FatUtility::VAR_STRING,''); ?></h5>
 						<div class="toggle__target toggle__target-js">
@@ -39,19 +39,19 @@
 							<div class="g-play"><a href="javascript:void(0)"><img src="<?php echo CONF_WEBROOT_URL; ?>images/g-play.png" alt="<?php echo Labels::getLabel('LBL_Download_APP', $siteLangId); ?>"></a></div> */ ?>
 						</div>
 					</div>
-                
-                
-					
+
+
+
 				</div>
 				<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 column">
-					
+
 					<?php if( FatApp::getConfig('CONF_ENABLE_NEWSLETTER_SUBSCRIPTION',FatUtility::VAR_INT,0) ){ ?>
 					<div class="toggle-group">
 						<h5 class="toggle__trigger toggle__trigger-js"><?php echo Labels::getLabel('LBL_Sign_Up_To_Our_Newsletter', $siteLangId);?></h5>
 						<div class="toggle__target toggle__target-js">
 							<p><?php echo Labels::getLabel('LBL_Be_the_first_to_here_about_the_latest_trends,_new_arrivals_&_exclusive_offers', $siteLangId);?></p>
-							
-					
+
+
 							<?php $this->includeTemplate( '_partial/footerNewsLetterForm.php'); } ?>
 							<ul class="contact-info">
 								<?php $site_conatct = FatApp::getConfig('CONF_SITE_PHONE',FatUtility::VAR_STRING,'');
@@ -63,12 +63,12 @@
 									<li><i class="icn"><img src="<?php echo CONF_WEBROOT_URL; ?>images/icn-email.png"></i> <a href="mailto:<?php echo $email_id; ?>"><?php echo $email_id;?></a> </li>
 								<?php } ?>
 							</ul>
-							
-							
+
+
 						</div>
 					</div>
-				
-					
+
+
 				</div>
 			</div>
 		</div>
@@ -198,7 +198,9 @@ window.onafterprint = function () {
 </script>
 <!--End of Tawk.to Script-->
 <?php
-$this->includeTemplate( 'restore-system/page-content.php');
+	if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+		$this->includeTemplate( 'restore-system/page-content.php');
+	}
 }?>
 </div>
 </div>

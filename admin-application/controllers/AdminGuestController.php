@@ -395,9 +395,15 @@ class AdminGuestController extends FatController
 
     private function getLoginForm()
     {
+        $userName ='';$pass = '';
+        if (CommonHelper::demoUrl()) {
+            $userName = 'admin';
+            $pass = 'admin@123';
+        }
+
         $frm = new Form('frmLogin');
-        $frm->addTextBox('', 'username')->requirements()->setRequired();
-        $frm->addPasswordField('', 'password')->requirements()->setRequired();
+        $frm->addTextBox('', 'username', $userName)->requirements()->setRequired();
+        $frm->addPasswordField('', 'password', $pass)->requirements()->setRequired();
         $frm->addCheckBox('', 'rememberme', 1);
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Sign_In', $this->adminLangId));
         return $frm;

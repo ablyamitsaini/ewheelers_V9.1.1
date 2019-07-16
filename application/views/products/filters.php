@@ -268,7 +268,7 @@ if (isset($prodcat_code)) {
             } ?>
             </ul>
         </div>
-        
+
         <?php
         } ?>
         <!-- ] -->

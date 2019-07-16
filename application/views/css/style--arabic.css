@@ -1,8 +1,7 @@
 html {
 	direction: rtl;
-
-
 }
+.ltr-right{ }
 
 body {
 	text-align: right;
