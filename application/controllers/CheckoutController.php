@@ -529,9 +529,6 @@ class CheckoutController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
         }
-        if (true ===  MOBILE_APP_API_CALL) {
-            $product_key = md5($product_key);
-        }
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
         $this->set('options', $carrierList);
