@@ -1895,7 +1895,10 @@ class UsersController extends AdminBaseController
         $frm->addTextBox(Labels::getLabel('LBL_Username', $this->adminLangId), 'credential_username', '');
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_Name', $this->adminLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_Of_Birth', $this->adminLangId), 'user_dob', '', array('readonly' => 'readonly'));
-        $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->adminLangId), 'user_phone');
+
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
+
         $frm->addTextBox(Labels::getLabel('LBL_Email', $this->adminLangId), 'credential_email', '');
 
         $countryObj = new Countries();
@@ -2035,7 +2038,8 @@ class UsersController extends AdminBaseController
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'ua_state_id', array())->requirement->setRequired(true);
         $frm->addTextBox(Labels::getLabel('LBL_Postal_Code', $this->adminLangId), 'ua_zip');
-        $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->adminLangId), 'ua_phone');
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'ua_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $frm->addHiddenField('', 'ua_user_id');
         $frm->addHiddenField('', 'ua_id');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
