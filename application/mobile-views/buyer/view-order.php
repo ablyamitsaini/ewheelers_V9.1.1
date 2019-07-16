@@ -55,11 +55,11 @@ foreach ($childArr as $index => $childOrder) {
         array(
             'title' => Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($rewardPointDiscount),
-        ),
-        array(
-            'title' => Labels::getLabel('LBL_Total', $siteLangId),
-            'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)),
-        ),
+        )
+    );
+    $childArr[$index]['totalAmount'] = array(
+        'title' => Labels::getLabel('LBL_Total', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)),
     );
 }
 
