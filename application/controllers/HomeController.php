@@ -31,7 +31,6 @@ class HomeController extends MyAppController
         $sponsoredProds = $this->getSponsoredProducts($this->siteLangId, $productSrchObj);
         $slides = $this->getSlides($this->siteLangId);
         $banners = $this->getBanners($this->siteLangId);
-
         $this->set('sponsoredProds', $sponsoredProds);
         $this->set('sponsoredShops', $sponsoredShops);
         $this->set('slides', $slides);
@@ -416,7 +415,10 @@ class HomeController extends MyAppController
 
     private function getBanners($langId)
     {
-        return BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
+        $top_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_TOP_BANNER, $langId);
+        $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
+        $banners = array_merge($top_banners, $bottom_banners);
+        return $banners;
     }
 
     private function getSponsoredShops($langId, $productSrchObj)
