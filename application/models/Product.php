@@ -1004,7 +1004,7 @@ class Product extends MyAppModel
             return;
         }
 
-        if (!$shippingDetails) {
+        if (empty($shippingDetails)) {
             return;
         } else {
             return FatUtility::decodeHtmlEntities('<em><strong>'.$shippingDetails['country_name'].'</em></strong> '.Labels::getLabel('LBL_by', $langId).' <strong>'.$shippingDetails['scompany_name'].'</strong> '.Labels::getLabel('LBL_in', $langId).' '.ShippingDurations::getShippingDurationTitle($shippingDetails, $langId));
@@ -1399,12 +1399,13 @@ END,   special_price_found ) as special_price_found'
         }
         return $srch;
     }
-    public static function getActiveCount($sellerId)
+    public static function getActiveCount($sellerId, $prodId = 0)
     {
         if (0 > FatUtility::int($sellerId)) {
             $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
+        $prodId = FatUtility::int($prodId);
 
         $srch = new SearchBase(static::DB_TBL);
 
@@ -1414,6 +1415,9 @@ END,   special_price_found ) as special_price_found'
         $srch->addCondition(static::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
         $srch->addCondition(static::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
         $srch->addCondition(static::DB_TBL_PREFIX . 'approved', '=', applicationConstants::YES);
+        if ($prodId) {
+            $srch->addCondition(static::DB_TBL_PREFIX . 'id', '!=', $prodId);
+        }
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
         return $srch->recordCount();

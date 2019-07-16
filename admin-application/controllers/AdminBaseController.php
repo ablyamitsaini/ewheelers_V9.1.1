@@ -564,10 +564,10 @@ class AdminBaseController extends FatController
         }
         $frm->addHiddenField('', 'selprod_user_id');
         $frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->adminLangId), 'selprod_url_keyword')->requirements()->setRequired();
-        
+
         $costPrice = $frm->addFloatField(Labels::getLabel('LBL_Cost_Price', $this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_cost');
         $costPrice->requirements()->setPositive();
-        
+
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Price', $this->adminLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_price');
         $fld->requirements()->setPositive();
         if (isset($productData['product_min_selling_price'])) {

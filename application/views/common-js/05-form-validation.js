@@ -356,13 +356,13 @@
                         else{
                             if(rname=='comparewith'){
                                 msg=$.Validation.getMessage(rname+'_'+rval[x].operator);
-                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('title'));
+                                msg=msg.replace("{comparefield}", $(field).parents('form').find('[name='+rval[x].fldname+']').attr('data-field-caption'));
                             }
                             else{
                                 msg=$.Validation.getMessage(rname);
                             }
                         }
-                        msg=msg.replace("{caption}",$(field).attr('title'));
+                        msg=msg.replace("{caption}",$(field).attr('data-field-caption'));
                         if(jQuery.isArray(rval) && rval.length==2){
                             msg=msg.replace("{minval}", rval[0]);
                             msg=msg.replace("{minlength}", rval[0]);
@@ -494,7 +494,7 @@
 	            if(ans.status==0){
 	            	fld.addClass('field-unique-error');
 
-	            	checkUniqueErrorNotify(fld.attr('title'),  entered);
+	            	checkUniqueErrorNotify(fld.attr('data-field-caption'),  entered);
 	                fld.val(ans.existing_value);
 	                fld.focus();
 	            }

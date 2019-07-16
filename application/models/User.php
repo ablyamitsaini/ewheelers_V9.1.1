@@ -298,6 +298,7 @@ class User extends MyAppModel
         static::USER_FIELD_TYPE_DATE => Labels::getLabel('LBL_Date', $langId),
         static::USER_FIELD_TYPE_DATETIME => Labels::getLabel('LBL_Datetime', $langId),
         static::USER_FIELD_TYPE_TIME => Labels::getLabel('LBL_Time', $langId),
+        static::USER_FIELD_TYPE_PHONE => Labels::getLabel('LBL_Phone', $langId),
         );
         return $arr;
     }

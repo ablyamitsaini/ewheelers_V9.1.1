@@ -288,7 +288,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         <li>
                                             <div class="qty__value"><?php echo($volumeDiscountRow['voldiscount_min_qty']); ?> <?php echo Labels::getLabel('LBL_Or_more', $siteLangId); ?>
                                                 (<?php echo $volumeDiscountRow['voldiscount_percentage'].'%'; ?>) <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($price); ?> /
-                                                    <?php echo Labels::getLabel('LBL_Product', $siteLangId); ?></span><span class="item__price--old"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span></div>
+                                                    <?php echo Labels::getLabel('LBL_Product', $siteLangId); ?></span></div>
                                         </li>
                                         <?php
                             } ?>

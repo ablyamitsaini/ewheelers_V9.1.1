@@ -386,7 +386,7 @@ class SellerProduct extends MyAppModel
             trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
         }
         $srch = new SearchBase(static::DB_TBL_SELLER_PROD_OPTIONS, 'spo');
-        
+
         if ($option_id) {
             $srch->addCondition(static::DB_TBL_SELLER_PROD_OPTIONS_PREFIX . 'option_id', '=', $option_id);
         }
@@ -811,13 +811,21 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    public static function getActiveCount($userId)
+    
+    public static function getActiveCount($userId, $selprodId = 0)
     {
+        $selprodId = FatUtility::int($selprodId);
+        $userId = FatUtility::int($userId);
+
         $srch = static::getSearchObject();
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id and p.product_deleted = '.applicationConstants::NO.' and p.product_active = '.applicationConstants::YES, 'p');
 
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_user_id', '=', $userId);
+        if ($selprodId) {
+            $srch->addCondition('selprod_id', '!=', $selprodId);
+        }
+
         $srch->addMultipleFields(array('selprod_id'));
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
