@@ -374,6 +374,12 @@ class BuyerController extends BuyerBaseController
             'ocr.ocrequest_op_id = op.op_id',
             'ocr'
         );
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinSellerProducts();
+            $srch->addfld('selprod_product_id');
+        }
+
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->joinPaymentMethod();
         $srch->addOrder("op_id", "DESC");
