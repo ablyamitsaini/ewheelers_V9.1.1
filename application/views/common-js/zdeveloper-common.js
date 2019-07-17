@@ -68,15 +68,6 @@ $(document).ready(function() {
             (key >= 48 && key <= 57) ||
             (key >= 96 && key <= 105));
     });
-    $(document).on('focus', 'input.phone-js', function() {
-        $phone = $(this);
-        if ($phone.val().length === 0) {
-            $phone.val('(');
-        } else {
-            var val = $phone.val();
-            $phone.val('').val(val); // Ensure cursor remains at the end
-        }
-    });
     $(document).on('blur', 'input.phone-js', function() {
         $phone = $(this);
         if ($phone.val() === '(') {
