@@ -917,6 +917,11 @@ trait SellerProducts
         if ($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
+        
+        if ($sellerProductRow['selprod_price'] <= $post['splprice_price']) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_can_not_be_greater_than_or_equal_to_the_product_price', $this->siteLangId));
+        }
+        
         $frm = $this->getSellerProductSpecialPriceForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 

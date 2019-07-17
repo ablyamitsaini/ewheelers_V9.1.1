@@ -58,7 +58,12 @@ if (!$print) {
                                     $selected_method.= ($selected_method!='') ? ' + '.Labels::getLabel("LBL_Rewards", $siteLangId) : Labels::getLabel("LBL_Rewards", $siteLangId);
                                 } ?>
                                 <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId);?>: </strong><?php echo $selected_method;?></p>
-                                <p><strong><?php echo Labels::getLabel('LBL_Status', $siteLangId);?>: </strong><?php echo $orderStatuses[$orderDetail['op_status_id']];?></p>
+                                <p><strong><?php echo Labels::getLabel('LBL_Status', $siteLangId);?>: </strong>
+                                <?php echo Orders::getOrderPaymentStatusArr($siteLangId)[$orderDetail['order_is_paid']];
+                                if ('' != $orderDetail['pmethod_name'] && 'CashOnDelivery' == $orderDetail['pmethod_code']) {
+                                    echo ' ('.$orderDetail['pmethod_name'].' )';
+                                } ?>
+                                <?php /*echo $orderStatuses[$orderDetail['op_status_id']];*/ ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Cart_Total', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'CART_TOTAL'));?></p>
 
                                 <?php if ($shippedBySeller) {?>
