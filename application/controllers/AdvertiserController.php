@@ -752,7 +752,7 @@ class AdvertiserController extends AdvertiserBaseController
             if (User::isSeller()) {
                 $srch->joinShops($this->siteLangId, false, false);
                 $srch->addFld(array(
-                    'ifnull(shop_identifier,shop_name) as promotion_shop'
+                    'ifnull(shop_name,shop_identifier) as promotion_shop'
                 ));
             }
             $srch->addCondition('promotion_id', '=', $promotionId);

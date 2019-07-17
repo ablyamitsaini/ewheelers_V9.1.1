@@ -193,7 +193,7 @@ class CollectionsController extends MyAppController
                 $shopObj->joinSellerSubscription();
                 $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
                 $shopObj->addMultipleFields(
-                    array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'shop_name', 'shop_description',
+                    array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_name, shop_identifier) as shop_name', 'shop_description',
                     'shop_country_l.country_name as country_name', 'shop_state_l.state_name as state_name', 'shop_city',
                     'IFNULL(ufs.ufs_id, 0) as is_favorite' )
                 );
