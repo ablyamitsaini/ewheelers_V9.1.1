@@ -21,7 +21,7 @@ $fld2->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $prodCatBannerFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'banner-language-js');
 
-$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions', $adminLangId), '1350*400').'</small>';
+$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions', $adminLangId), '2000*500').'</small>';
 
 $htmlAfterField = $preferredDimensionsStr;
 $catBannerImages ='';

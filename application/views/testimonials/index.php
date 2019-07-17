@@ -20,7 +20,7 @@
     </div>
 	<section class="section section--gray">
 	  <div class="container">
-		<div class="container--cms">
+		<div class="cms">
 			<div class="list__all" id='listing'></div>
 			<div id="loadMoreBtnDiv"></div>
 			<?php echo FatUtility::createHiddenFormFromData ( array('page'=>1), array ('name' => 'frmSearchTestimonialsPaging') ); ?>

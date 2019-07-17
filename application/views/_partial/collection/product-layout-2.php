@@ -7,7 +7,7 @@ if( isset( $collections ) && count($collections) ){
 <?php if( isset($row['products']) && count($row['products']) ) {
 	?>
 
-<section class="section">
+<section class="section pb-0">
 	<div class="container">
 		<div class="section-head">
 			<div class="section__heading">

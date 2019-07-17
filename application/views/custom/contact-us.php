@@ -42,7 +42,7 @@ $fld->developerTags['col'] = 12;
                 <div class="col-xl-9">
                     <div class="row">
                         <div class="col-md-7">
-                            <div class="bg-gray rounded p-4 p-5">
+                            <div class="bg-gray rounded p-4">
                                 <?php echo $contactFrm->getFormHtml(); ?>
                             </div>
                            

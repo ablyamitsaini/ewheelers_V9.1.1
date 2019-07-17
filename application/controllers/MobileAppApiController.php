@@ -2911,7 +2911,9 @@ class MobileAppApiController extends MyAppController
             $minimum_quantity = ($sellerProductRow['selprod_min_order_qty']) ? $sellerProductRow['selprod_min_order_qty'] : 1;
             if ($quantity < $minimum_quantity) {
                 $productAdd = false;
-                FatUtility::dieJsonError(Labels::getLabel('LBL_Please_add_minimum', $this->siteLangId). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+                $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
+                $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                FatUtility::dieJsonError($str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
             }
             /* ] */
 

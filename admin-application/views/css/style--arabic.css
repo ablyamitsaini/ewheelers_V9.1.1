@@ -2,6 +2,10 @@ body {
   direction: rtl;
   text-align: right;
 }
+.ltr-right {
+    direction: ltr;
+    text-align: right;
+}
 
 .right {
   float: left !important;

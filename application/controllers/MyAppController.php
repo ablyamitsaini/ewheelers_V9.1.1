@@ -306,6 +306,11 @@ class MyAppController extends FatController
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmLogin');
+        $userName ='';$pass = '';
+        if (CommonHelper::demoUrl()) {
+            $userName = 'login@dummyid.com';
+            $pass = 'kanwar@123';
+        }
         $fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email', $siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_Username_Or_Email', $siteLangId)));
         $pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password', $siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_Password', $siteLangId)));
         $pwd->requirements()->setRequired();
@@ -393,7 +398,7 @@ class MyAppController extends FatController
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
 
-        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone', '', array('class'=>'phone-js', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));

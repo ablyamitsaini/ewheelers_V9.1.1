@@ -1,6 +1,6 @@
 <?php if (!empty($product['selprod_warranty_policies']) || !empty($product['selprod_return_policies']) || (isset($shippingDetails['ps_free']) && $shippingDetails['ps_free']==applicationConstants::YES) || (count($shippingRates)>0) || ($codEnabled)) { ?>
 <section class="section certified-bar">
-    
+
         <div class="row justify-content-around">
             <?php if (!empty($product['selprod_warranty_policies'])) { ?>
                 <div class="col-auto">
@@ -100,6 +100,6 @@
                 </div>
             <?php } ?>
         </div>
-    
+
 </section>
 <?php }?>

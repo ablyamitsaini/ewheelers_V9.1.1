@@ -936,13 +936,17 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
-
-                if (in_array($columnKey, array( 'brand_featured', 'brand_active','brand_deleted')) && !$this->settings['CONF_USE_O_OR_1']) {
-                    $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
-                }
-
-                if ('urlrewrite_custom' == $columnKey) {
-                    $colValue = isset($urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']]) ? $urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']] : '';
+                switch ($columnKey){
+                    case 'brand_featured':
+                    case 'brand_active':
+                    case 'brand_deleted':
+                        if (!$this->settings['CONF_USE_O_OR_1']) {
+                            $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
+                        }
+                        break;
+                    case 'urlrewrite_custom':
+                        $colValue = isset($urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']]) ? $urlKeywords[Brand::REWRITE_URL_PREFIX.$row['brand_id']] : '';
+                        break;
                 }
 
                 $sheetData[] = $colValue;
@@ -1061,10 +1065,10 @@ class Importexport extends ImportexportCommon
     public function exportBrandMedia($langId)
     {
         $srch = Brand::getSearchObject();
-        $srch->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'brand_id = afile_record_id and afile_type = '.AttachedFile::FILETYPE_BRAND_LOGO);
+        $srch->joinTable(AttachedFile::DB_TBL, 'INNER JOIN', 'brand_id = afile_record_id');
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
-        $srch->addMultipleFields(array('brand_id','brand_identifier','afile_record_id','afile_record_subid','afile_lang_id','afile_screen','afile_physical_path','afile_name','afile_display_order'));
+        $srch->addMultipleFields(array('brand_id','brand_identifier','afile_record_id','afile_record_subid','afile_lang_id','afile_screen','afile_physical_path','afile_name','afile_display_order','afile_type'));
         $srch->addCondition('brand_status', '=', applicationConstants::ACTIVE);
         $rs = $srch->getResultSet();
 
@@ -1080,9 +1084,21 @@ class Importexport extends ImportexportCommon
             $sheetData = array();
             foreach ($headingsArr as $columnKey => $heading) {
                 $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
+                switch ($columnKey) {
+                    case 'afile_lang_code':
+                        $colValue = $languageCodes[$row['afile_lang_id']];
+                        break;
 
-                if ('afile_lang_code' == $columnKey) {
-                    $colValue = $languageCodes[$row['afile_lang_id']];
+                    case 'afile_lang_code':
+                        $colValue = $languageCodes[$row['afile_lang_id']];
+                        break;
+
+                    case 'afile_type':
+                        $colValue = 'logo';
+                        if ($row['afile_type'] == AttachedFile::FILETYPE_BRAND_IMAGE){
+                            $colValue = 'image';
+                        }
+                        break;
                 }
 
                 $sheetData[] = $colValue;
@@ -1123,17 +1139,27 @@ class Importexport extends ImportexportCommon
                     $err = array($rowIndex, ($colIndex + 1), $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                 } else {
-                    if ('brand_id' == $columnKey) {
-                        $columnKey = 'afile_record_id';
-                    }
-                    if ('brand_identifier' == $columnKey) {
-                        $columnKey = 'afile_record_id';
-                        $colValue = $brandIds[$colValue];
-                    }
+                    switch ($columnKey) {
+                        case 'brand_id':
+                            $columnKey = 'afile_record_id';
+                            break;
 
-                    if ('afile_lang_code' == $columnKey) {
-                        $columnKey = 'afile_lang_id';
-                        $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                        case 'brand_identifier':
+                            $columnKey = 'afile_record_id';
+                            $colValue = $brandIds[$colValue];
+                            break;
+                        case 'afile_lang_code':
+                            $columnKey = 'afile_lang_id';
+                            $colValue = array_key_exists($colValue, $languageIds) ? $languageIds[$colValue] : 0;
+                            break;
+
+                        case 'afile_type':
+                            $fileType  = AttachedFile::FILETYPE_BRAND_LOGO;
+                            if ('image' == mb_strtolower($colValue)) {
+                                $fileType  = AttachedFile::FILETYPE_BRAND_IMAGE;
+                            }
+                            $colValue = $fileType;
+                            break;
                     }
 
                     $brandsMediaArr[$columnKey] = $colValue;
@@ -1141,10 +1167,7 @@ class Importexport extends ImportexportCommon
             }
 
             if (false === $errorInRow && count($brandsMediaArr)) {
-                $fileType  = AttachedFile::FILETYPE_BRAND_LOGO;
-
                 $dataToSaveArr = array(
-                'afile_type'=>$fileType,
                 'afile_record_subid'=> 0,
                 );
                 $dataToSaveArr = array_merge($dataToSaveArr, $brandsMediaArr);
@@ -1339,7 +1362,7 @@ class Importexport extends ImportexportCommon
         $brandIdentifierArr = array();
         $taxCategoryArr = array();
         $countryArr = array();
-        $userProdUploadLimit = array();
+        $userProdUploadLimit = $usersCrossedUploadLimit = array();
 
         if (!$this->settings['CONF_USE_PRODUCT_TYPE_ID']) {
             $prodTypeIdentifierArr = Product::getProductTypes($langId);
@@ -1416,15 +1439,11 @@ class Importexport extends ImportexportCommon
                         $breakForeach = true;
                     }
 
-                    /*if (in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && in_array($columnKey, array('credential_username','product_seller_id')) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
-                            $userProdUploadLimit[$userId] = Product::getActiveCount($userId);
+                            $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed');
                         }
-
-                        if ($userProdUploadLimit[$userId] >= SellerPackages::getAllowedLimit($userId, $langId, 'spackage_products_allowed')) {
-                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
-                        }
-                    }*/
+                    }
                 }
 
                 if (false === $errMsg) {
@@ -1618,6 +1637,12 @@ class Importexport extends ImportexportCommon
                         unset($prodDataArr['product_added_on']);
                     }
 
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && Product::getActiveCount($userId, $productId) >= $userProdUploadLimit[$userId]) {
+                        $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                        continue;
+                    }
+
                     $where = array('smt' => 'product_id = ?', 'vals' => array( $productId ) );
                     $this->db->updateFromArray(Product::DB_TBL, $prodDataArr, $where);
 
@@ -1640,8 +1665,14 @@ class Importexport extends ImportexportCommon
                             }
                         }
 
+                        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && Product::getActiveCount($userId) >= $userProdUploadLimit[$userId]) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                            CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                            continue;
+                        }
+
                         $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
-                        //$userProdUploadLimit[$userId]++;
+
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
 
@@ -2842,6 +2873,8 @@ class Importexport extends ImportexportCommon
         $usernameArr = array();
         $prodIndetifierArr = array();
         $prodTypeArr = array();
+        $userProdUploadLimit = array();
+
         $prodConditionArr = Product::getConditionArr($langId);
         $prodConditionArr = array_flip($prodConditionArr);
 
@@ -2873,6 +2906,7 @@ class Importexport extends ImportexportCommon
                         case 'selprod_id':
                             $selprodId = $sellerTempId = $colValue;
                             if ($sellerId) {
+                                $userId = $sellerId;
                                 $userTempIdData = $this->getTempSelProdIdByTempId($sellerTempId, $sellerId);
                                 if (!empty($userTempIdData) && $userTempIdData['spti_selprod_temp_id'] == $sellerTempId) {
                                     $selprodId = $colValue = $userTempIdData['spti_selprod_id'];
@@ -2929,6 +2963,12 @@ class Importexport extends ImportexportCommon
                             break;
                     }
 
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId) {
+                        if (!array_key_exists($userId, $userProdUploadLimit)) {
+                            $userProdUploadLimit[$userId] = SellerPackages::getAllowedLimit($userId, $langId, 'spackage_inventory_allowed');
+                        }
+                    }
+
                     if (true === $invalid) {
                         $errorInRow = true;
                         $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
@@ -2965,6 +3005,12 @@ class Importexport extends ImportexportCommon
                         unset($selProdGenArr['selprod_added_on']);
                     }
 
+                    if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && SellerProduct::getActiveCount($userId, $selprodId) >= $userProdUploadLimit[$userId]) {
+                        $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                        continue;
+                    }
+
                     $this->db->updateFromArray(SellerProduct::DB_TBL, $selProdGenArr, $where);
 
                     if ($sellerId && $this->isDefaultSheetData($langId)) {
@@ -2984,6 +3030,11 @@ class Importexport extends ImportexportCommon
                     }
 
                     if ($this->isDefaultSheetData($langId)) {
+                        if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId && SellerProduct::getActiveCount($userId) >= $userProdUploadLimit[$userId]) {
+                            $errMsg = Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $langId);
+                            CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                            continue;
+                        }
                         $this->db->insertFromArray(SellerProduct::DB_TBL, $selProdGenArr);
                         $selprodId = $this->db->getInsertId();
 
@@ -3494,6 +3545,7 @@ class Importexport extends ImportexportCommon
                 }
             }
 
+            unset($sellerProdSplPriceArr['selprod_id']);
             if (false === $errorInRow && count($sellerProdSplPriceArr)) {
                 $data = array(
                 'splprice_selprod_id'=>$selProdId,
@@ -3615,7 +3667,7 @@ class Importexport extends ImportexportCommon
                     }
                 }
             }
-
+            unset($selProdVolDisArr['selprod_id']);
             if (false === $errorInRow && count($selProdVolDisArr)) {
                 $data = array(
                 'voldiscount_selprod_id'=>$selProdId,

@@ -229,9 +229,13 @@ class CartController extends MyAppController
             if ($quantity < $minimum_quantity) {
                 $productAdd = false;
                 if ($productId!=$selprod_id) {
-                    $productErr['addon'][$productId]=Labels::getLabel('LBL_Please_add_minimum', $this->siteLangId). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
+                    $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
+                    $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                    $productErr['addon'][$productId] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 } else {
-                    $productErr['product']=Labels::getLabel('LBL_Please_add_minimum', $this->siteLangId). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
+                    $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
+                    $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                    $productErr['product'] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 }
             }
             /* ] */
