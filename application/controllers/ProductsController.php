@@ -407,7 +407,7 @@ class ProductsController extends MyAppController
             'product_id','product_identifier', 'IFNULL(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
             'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-            'shop_id', 'IFNULL(shop_identifier, shop_name) as shop_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
+            'shop_id', 'IFNULL(shop_name, shop_identifier) as shop_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
             'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from')
         );
 
@@ -641,7 +641,7 @@ class ProductsController extends MyAppController
         $srch->setDefinedCriteria($this->siteLangId);
         $srch->doNotCalculateRecords();
         $srch->addMultipleFields(
-            array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description', 'shop_payment_policy', 'shop_delivery_policy', 'shop_refund_policy',  'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city','shop_free_ship_upto' )
+            array( 'shop_id','shop_user_id','shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_name, shop_identifier) as shop_name', 'shop_description', 'shop_payment_policy', 'shop_delivery_policy', 'shop_refund_policy',  'ifNULL(shop_country_l.country_name,shop_country.country_code) as shop_country_name', 'ifNULL(shop_state_l.state_name,state_identifier) as shop_state_name', 'shop_city','shop_free_ship_upto' )
         );
         $srch->addCondition('shop_id', '=', $product['shop_id']);
         $shopRs = $srch->getResultSet();
