@@ -541,7 +541,6 @@ class CheckoutController extends MyAppController
     public function setUpShippingMethod()
     {
         $post = FatApp::getPostedData();
-        die(json_encode($post));
         $cartProducts = $this->cartObj->getProducts($this->siteLangId);
         //$this->cartObj = new Cart();
         $productToShippingMethods = array();
