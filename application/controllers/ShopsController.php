@@ -368,7 +368,7 @@ class ShopsController extends MyAppController
             $get['sortOrder'] = $get['sort'];
         }
 
-        $get['top_products'] = $shop_id;
+        $get['top_products'] = 1;
         $get['shop_id'] = $shop_id;
 
         $frm->fill($get);
@@ -1044,6 +1044,7 @@ class ShopsController extends MyAppController
         }
 
         $srch = Product::getListingObj($get, $this->siteLangId, $userId);
+        
         $srch->setPageNumber($page);
         if ($pageSize) {
             $srch->setPageSize($pageSize);
