@@ -37,28 +37,28 @@ foreach ($childArr as $index => $childOrder) {
     $rewardPointDiscount = CommonHelper::orderProductAmount($childOrder, 'REWARDPOINT');
     $childArr[$index]['priceDetail'] = array(
         array(
-            'title' => Labels::getLabel('LBL_Price', $siteLangId),
+            'key' => Labels::getLabel('LBL_Price', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($childOrder['op_unit_price']),
         ),
         array(
-            'title' => Labels::getLabel('LBL_Shipping_Charges', $siteLangId),
+            'key' => Labels::getLabel('LBL_Shipping_Charges', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'shipping')),
         ),
         array(
-            'title' => Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId),
+            'key' => Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($volumeDiscount),
         ),
         array(
-            'title' => Labels::getLabel('LBL_Tax_Charges', $siteLangId),
+            'key' => Labels::getLabel('LBL_Tax_Charges', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'tax')),
         ),
         array(
-            'title' => Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId),
+            'key' => Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($rewardPointDiscount),
         )
     );
     $childArr[$index]['totalAmount'] = array(
-        'title' => Labels::getLabel('LBL_Total', $siteLangId),
+        'key' => Labels::getLabel('LBL_Total', $siteLangId),
         'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)),
     );
 }
