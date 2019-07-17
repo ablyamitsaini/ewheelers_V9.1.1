@@ -2063,13 +2063,6 @@ a.ui-button:active,
 	background: none;
 }
 
-
-
-
-
-
-
-
 .ui-datepicker {
 	border: none !important;
 	-webkit-box-shadow: 0 0 35px 10px rgba(0, 0, 0, 0.1);
@@ -2078,6 +2071,7 @@ a.ui-button:active,
 	border-radius: 5px !important;
 	width: auto;
 	min-width: 350px;
+	z-index: 11 !important;
 }
 
 .ui-datepicker-header.ui-widget-header {
