@@ -24,7 +24,7 @@
 <div class="tabs_panel_wrap">
     <div class="form__subcontent">
         <div class="preview" id="shopFormBlock">
-            <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_collection_image_text', $adminLangId), '250*250')?></small>
+            <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_collection_image_text', $adminLangId), '610*343')?></small>
             <?php echo $frm->getFormHtml();?>
                <div id="imageListing" class="row" ></div>
         </div>
