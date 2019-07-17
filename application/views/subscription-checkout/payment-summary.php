@@ -151,45 +151,27 @@
                 <div class="col-md-4">
                     <div class="payment_methods_list mb-4" <?php echo ($cartSummary['orderPaymentGatewayCharges'] <= 0) ? 'is--disabled' : ''; ?>>
                         <?php if ($cartSummary['orderPaymentGatewayCharges'] && 0 < $gatewayCount && 0 < count($paymentMethods)) { ?>
-                        <ul id="payment_methods_tab" class="simplebar-horizontal" data-simplebar="init">
-                            <div class="simplebar-wrapper" style="margin: 0px;">
-                                <div class="simplebar-height-auto-observer-wrapper">
-                                    <div class="simplebar-height-auto-observer"></div>
-                                </div>
-                                <div class="simplebar-mask">
-                                    <div class="simplebar-offset" style="right: 0px; bottom: -15px;">
-                                        <div class="simplebar-content" style="height: auto; overflow: scroll hidden;">
-                                            <div class="simplebar-resize-wrapper" style="padding: 0px;">
-                                            <?php $count=0;
-                                            foreach ($paymentMethods as $key => $val) {
-                                                if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_SUBSCRIPTION])) {
-                                                    continue;
-                                                }
-                                                $count++; ?>
-                                                <li>
-                                                    <a href="<?php echo CommonHelper::generateUrl('SubscriptionCheckout', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id'])); ?>">
-                                                        <div class="payment-box">
-                                                            <i class="payment-icn">
-                                                                <img src="<?php echo CommonHelper::generateUrl('Image', 'paymentMethod', array($val['pmethod_id'],'SMALL')); ?>" alt="">
-                                                            </i>
-                                                            <span><?php echo $val['pmethod_name']; ?></span>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="simplebar-placeholder" style="width: auto; height: 90px;"></div>
-                            </div>
-                            <div class="simplebar-track simplebar-horizontal" style="visibility: visible;">
-                                <div class="simplebar-scrollbar" style="width: 381px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
-                            </div>
-                            <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                                <div class="simplebar-scrollbar" style="height: 90px; transform: translate3d(0px, 0px, 0px); display: none;"></div>
-                            </div>
-                        </ul>
+						<?php if ($paymentMethods) { ?>
+								<ul id="payment_methods_tab" data-simplebar>
+								   <?php $count=0;
+									foreach ($paymentMethods as $key => $val) {
+										if (in_array($val['pmethod_code'], $excludePaymentGatewaysArr[applicationConstants::CHECKOUT_SUBSCRIPTION])) {
+											continue;
+										}
+										$count++; ?>
+										<li>
+											<a href="<?php echo CommonHelper::generateUrl('SubscriptionCheckout', 'PaymentTab', array($orderInfo['order_id'], $val['pmethod_id'])); ?>">
+												<div class="payment-box">
+													<i class="payment-icn">
+														<img src="<?php echo CommonHelper::generateUrl('Image', 'paymentMethod', array($val['pmethod_id'],'SMALL')); ?>" alt="">
+													</i>
+													<span><?php echo $val['pmethod_name']; ?></span>
+												</div>
+											</a>
+										</li>
+									<?php } ?>
+								</ul>
+							<?php } ?>
                     <?php } else {
                         echo Labels::getLabel("LBL_Payment_method_is_not_available._Please_contact_your_administrator.", $siteLangId);
                     } ?>

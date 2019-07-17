@@ -36,7 +36,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="field-set">
-                        <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_Username_Or_Email', $siteLangId); ?></label></div>
                         <div class="field-wraper">
                             <div class="field_cover"><?php echo $loginFrm->getFieldHtml('username'); ?></div>
                         </div>
@@ -46,7 +45,6 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="field-set">
-                        <div class="caption-wraper"><label class="field_label"><?php echo Labels::getLabel('LBL_Password', $siteLangId); ?></label></div>
                         <div class="field-wraper">
                             <div class="field_cover">
                                 <?php echo $loginFrm->getFieldHtml('password'); ?>
@@ -87,11 +85,12 @@
             <div class="row justify-content-center">
                 <div class="col-auto text-center">
                     <a class="link" href="<?php echo CommonHelper::generateUrl('GuestUser', 'loginForm', array(applicationConstants::YES)); ?>"><?php echo sprintf(Labels::getLabel('LBL_Not_Register_Yet?', $siteLangId), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a>
-                    
                 </div>
-				 <div class="col-auto text-center"><?php if (isset($includeGuestLogin) && 'true' == $includeGuestLogin) {?>
+				<?php if (isset($includeGuestLogin) && 'true' == $includeGuestLogin) {?>
+				 <div class="col-auto text-center">
                     <a class="link" href="javascript:void(0)" onclick="guestUserFrm()"><?php echo sprintf(Labels::getLabel('LBL_Guest_Checkout?', $siteLangId), FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId));?></a>
-                    <?php }?></div>
+                </div>
+				<?php }?>
             </div>
             <?php } ?>
             <?php
@@ -101,7 +100,7 @@
             <div class="other-option">
                 <div class="section-head section--head--center">
                     <div class="section__heading">
-                        <h2><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></h2>
+                        <h6 class="mb-0"><?php echo Labels::getLabel('LBL_Or_Login_With', $siteLangId); ?></h6>
                     </div>
                 </div>
                 <div class="buttons-list">

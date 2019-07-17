@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php if( !empty( $footer_navigation ) ){ ?>
 		<?php foreach( $footer_navigation as $nav ){ ?>
-			<div class="col-lg-2 col-md-4 col-sm-12 col-xs-12 column">
+			<div class="col-lg-2 col-md-4 mb-3 mb-md-0">
 	  		
 		  		<div class="toggle-group">
 					<h5 class="toggle__trigger toggle__trigger-js"><?php echo $nav['parent']; ?></h5>

@@ -19,8 +19,12 @@ $faqSearchFrm->getField('question')->setFieldTagAttribute('class', "faq-input no
                 </div>
                 <div class="col-xl-5 col-lg-6">
                     <div class="seller-register-form">
-                        <div class="heading3"><?php echo Labels::getLabel('L_Register_Today', $siteLangId); ?></div>
-                        <div class="gap"></div>
+					<div class="section-head">
+			<div class="section__heading">
+				<h2><?php echo Labels::getLabel('L_Register_Today', $siteLangId); ?></h2>
+			</div>
+					</div>
+                                                <div class="gap"></div>
                         <?php $sellerFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
                             $sellerFrm->developerTags['fld_default_col'] = 12;
                             echo $sellerFrm->getFormHtml(); ?>
