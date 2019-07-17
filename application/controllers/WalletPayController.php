@@ -107,7 +107,7 @@ class WalletPayController extends MyAppController
             }
             CommonHelper::redirectUserReferer();
         }
-        if ($orderId == '' || ((isset($_SESSION['wallet_recharge_cart']) && $orderId != $_SESSION['wallet_recharge_cart']["order_id"]))) {
+        if ($orderId == '' || ((isset($_SESSION['wallet_recharge_cart']) && !empty($_SESSION['wallet_recharge_cart']) && $orderId != $_SESSION['wallet_recharge_cart']["order_id"]))) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
             /* if( $isAjaxCall ){

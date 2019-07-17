@@ -48,21 +48,21 @@ $fld->developerTags['col'] = 12;
                            
                         </div>
                         <div class="col-md-5">
-                            <div class="-border rounded p-5 -heightfull">
+                            <div class="border rounded p-4 h-100">
                                 <h6><?php echo Labels::getLabel('LBL_General_Inquiry', $siteLangId);?></h6>
-                                <p class="small"><?php echo FatApp::getConfig('CONF_SITE_PHONE', FatUtility::VAR_STRING, '');?> <br><?php echo Labels::getLabel('LBL_24_a_day_7_days_week', $siteLangId);?></p>
-                                <div class="gap"></div>
+                                <p class=""><?php echo FatApp::getConfig('CONF_SITE_PHONE', FatUtility::VAR_STRING, '');?> <br><?php echo Labels::getLabel('LBL_24_a_day_7_days_week', $siteLangId);?></p>
+                                 
                                 <div class="divider"></div>
-                                <div class="gap"></div>
+                                 
                                 <h6><?php echo Labels::getLabel('LBL_Fax', $siteLangId);?> </h6>
-                                <p class="small"><?php echo FatApp::getConfig('CONF_SITE_FAX', FatUtility::VAR_STRING, '');?>
+                                <p class=""><?php echo FatApp::getConfig('CONF_SITE_FAX', FatUtility::VAR_STRING, '');?>
                                 <br><?php echo Labels::getLabel('LBL_24_a_day_7_days_week', $siteLangId);?></p>
-                                <div class="gap"></div>
+                                
                                 <div class="divider"></div>
-                                <div class="gap"></div>
+                                
                                 <h6><?php echo Labels::getLabel('LBL_Address', $siteLangId);?></h6>
-                                <p class="small"><?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId, FatUtility::VAR_STRING, ''));?></p>
-                                <div class="gap"></div>
+                                <p class=""><?php echo nl2br(FatApp::getConfig('CONF_ADDRESS_'.$siteLangId, FatUtility::VAR_STRING, ''));?></p>
+                                 
                                 <?php $this->includeTemplate( '_partial/footerSocialMedia.php'); ?>
                             </div>
                             
