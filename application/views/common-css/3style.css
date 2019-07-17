@@ -1104,9 +1104,9 @@ a.btn:hover,
 
 :focus {
 	outline: none !important;
-	outline-style: none  !important;
-	box-shadow: none  !important;
-	
+	outline-style: none !important;
+	box-shadow: none !important;
+
 }
 
 .invalid {
@@ -1624,7 +1624,7 @@ input:checked + .slider:before {
 .pagination.pagination--right {
 	justify-content: flex-end;
 }
- 
+
 
 .pagination li a {
 	width: 42px;
@@ -1792,12 +1792,21 @@ input:checked + .slider:before {
 
 .cms ul {
 	margin: 10px 0;
+	color: var(--txt-color);
 }
 
 .cms ul li {
 	position: relative;
 	padding: 5px 0;
 	margin: 0 15px;
+	color: inherit;
+	list-style: disc;
+
+display: list-item;
+}
+
+.cms ul ul li {
+	font-size: 0.875rem;
 }
 
 .cms ol {
@@ -4798,7 +4807,10 @@ img {
 	max-width: 15px;
 	max-height: 15px;
 }
-.contact-info li a{ color: inherit;}
+
+.contact-info li a {
+	color: inherit;
+}
 
 .payment {
 	text-align: right;
@@ -10855,7 +10867,7 @@ html.quick-view--open {
 .slider-for img {
 	margin: 0 auto !important;
 	/*max-width: 100%;*/
-	max-width:500px;
+	max-width: 500px;
 	float: none !important;
 	border-radius: 4px;
 	border: solid 1px var(--border-color);
@@ -10943,10 +10955,10 @@ html.quick-view--open {
 	position: static;
 	right: 0;
 	top: 0;
-	display: flex;	
+	display: flex;
 	z-index: 1;
 	margin-bottom: 0.5rem;
-	align-items:flex-start;
+	align-items: flex-start;
 }
 
 .favourite-wrapper-detail .favourite {
@@ -13035,7 +13047,7 @@ main.main {
 }
 
 .buttons-list ul li {
-	margin:0 10px;
+	margin: 0 10px;
 }
 
 .buttons-list a.btn--social {
@@ -15113,7 +15125,8 @@ main.main {
 	color: #222;
 }
 
-.share-button--static-horizontal { display: inline-block;
+.share-button--static-horizontal {
+	display: inline-block;
 	/*display: flex;
 	align-items: center;
 	justify-content: center;*/
@@ -15151,7 +15164,7 @@ main.main {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	margin:0 1rem;
+	margin: 0 1rem;
 }
 
 .certified-box p {
