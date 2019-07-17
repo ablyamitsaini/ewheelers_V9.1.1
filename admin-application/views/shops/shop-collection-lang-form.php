@@ -7,7 +7,7 @@ if (isset($scollection_id) && $scollection_id > 0) {
 <ul class="tabs_nav tabs_nav--internal">
     <li>
         <a onclick="getShopCollectionGeneralForm(<?php echo $shop_id; ?>, <?php echo $scollection_id; ?>);" href="javascript:void(0)">
-            <?php echo Labels::getLabel('TXT_GENERAL', $adminLangId);?>
+            <?php echo Labels::getLabel('TXT_GENERAL_lang', $adminLangId);?>
         </a>
     </li>
     <?php foreach ($language as $lang_id => $langName) {?>
