@@ -127,7 +127,7 @@ switch( $affiliate_register_step_number ){
 	
 	case UserAuthentication::AFFILIATE_REG_STEP4:
 		$FldSuccessHtml = $registerForm->getField('affiliate_success_html');
-		$FldSuccessHtml->value = '<div class="message message--success align--center"> <i class="fa fa-check-circle"></i>
+		$FldSuccessHtml->value = '<div class="message message--success align--center cms"> <i class="fa fa-check-circle"></i>
 		<h2>' . Labels::getLabel('LBL_Congratulations', $siteLangId) . '!!</h2>
 		<p>'.$successMsg.' </p>
 		 </div>';

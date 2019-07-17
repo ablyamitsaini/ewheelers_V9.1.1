@@ -1,7 +1,11 @@
 html {
 	direction: rtl;
 }
-.ltr-right{ }
+
+.ltr-right {
+	direction: ltr;
+	text-align: right;
+}
 
 body {
 	text-align: right;
@@ -424,9 +428,9 @@ input[type="text"].p-cards.meastro {
 	margin-left: 10px;
 }
 
-.pagination li .fa.fa-angle-right {
-	/* -webkit-transform: rotate(-180deg);
-transform: rotate(-180deg); */
+.pagination li.next, .pagination li.prev, .pagination li.forward{
+-webkit-transform: rotateY(180deg);
+transform: rotateY(180deg);
 }
 
 .media > li .avtar {
@@ -437,11 +441,6 @@ transform: rotate(-180deg); */
 .delivery-term-data-inner ul li:before {
 	left: auto;
 	right: 0;
-}
-
-.pagination li.prev {
-	-webkit-transform: rotate(-180deg);
-	transform: rotate(-180deg);
 }
 
 .search--btn {
