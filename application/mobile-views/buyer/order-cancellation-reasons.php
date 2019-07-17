@@ -5,7 +5,7 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 $data = array(
-    'orderCancelReasonsArr' => $orderCancelReasonsArr,
+    'reasons' => $orderCancelReasonsArr,
 );
 if (1 > count((array)$orderCancelReasonsArr)) {
     $statusArr['status'] = 0;
