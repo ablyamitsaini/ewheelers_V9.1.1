@@ -1,0 +1,8 @@
+Wed, 17 Jul 2019 11:55:38 +0530
+Exception: Too few arguments to function Labels::getLabel(), 1 passed in C:\xampp\htdocs\yokartv8\application\controllers\GuestUserController.php on line 1143 and exactly 2 expected
+===================
+
+Wed, 17 Jul 2019 11:55:42 +0530
+Exception: Too few arguments to function Labels::getLabel(), 1 passed in C:\xampp\htdocs\yokartv8\application\controllers\GuestUserController.php on line 1143 and exactly 2 expected
+===================
+
