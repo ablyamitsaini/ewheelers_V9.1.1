@@ -19,7 +19,8 @@ $(document).ready(function(){
 	profileImageForm = function(){
 		$(imgdv).html(fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Account', 'profileImageForm'), '', function(t) {
-			$(imgdv).html(t);
+            location.reload();
+			/* $(imgdv).html(t); */
 		});
 	};
 

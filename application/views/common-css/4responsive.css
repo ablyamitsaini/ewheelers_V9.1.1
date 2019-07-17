@@ -1,3 +1,9 @@
+@media only screen and (max-width:1440px) {
+	.section {
+		padding: 2.5rem 0;
+	}
+}
+
 @media only screen and (max-width: 1399px) {
 	.sidebar-is-expanded .sidebar {
 		width: 70px;
@@ -123,10 +129,6 @@
 
 	html {
 		font-size: 15px;
-	}
-
-	.section {
-		padding: 2.5rem 0;
 	}
 
 	.header-dashboard {
@@ -1357,6 +1359,7 @@ display: none;
 		min-height: 300px;
 		background-size: cover;
 	}
+
 	.promotion-area ul {
 		-webkit-box-orient: vertical;
 		-webkit-box-direction: normal;
@@ -1522,6 +1525,10 @@ display: none;
 	.form-item.sign-up.is-opened {
 		-webkit-transform: none;
 		transform: none;
+	}
+
+	.content-header {
+		margin-bottom: 1rem !important;
 	}
 }
 
@@ -2496,9 +2503,7 @@ border: solid 1px var(--border-color);
 		margin-bottom: 0 !important;
 	}
 
-	.content-header {
-		margin-bottom: 1rem !important;
-	}
+
 
 	.box--offer .offer {
 		height: auto;
@@ -2573,7 +2578,7 @@ border: solid 1px var(--border-color);
 		max-width: 50%;
 	}
 
-	
+
 }
 
 @media only screen and (max-width: 600px) {
