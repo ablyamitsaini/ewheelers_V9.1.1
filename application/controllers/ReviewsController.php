@@ -443,8 +443,10 @@ class ReviewsController extends MyAppController
             Message::addErrorMessage($tblRecObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-
-        FatUtility::dieJsonSuccess(Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId));
+        $tblRecObj = new SelProdReviewHelpful($reviewId);
+        $success['msg'] = Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId);
+        $success['data'] = $tblRecObj->getData();
+        FatUtility::dieJsonSuccess($success);
     }
 
     public function write($product_id)

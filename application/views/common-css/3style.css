@@ -1102,6 +1102,13 @@ a.btn:hover,
 	border-color: inherit !important;
 }
 
+:focus {
+	outline: none !important;
+	outline-style: none  !important;
+	box-shadow: none  !important;
+	border-color: transparent  !important;
+}
+
 .invalid {
 	-webkit-animation: moltinShake .4s ease-in-out .1s normal forwards 1 running;
 	animation: moltinShake .4s ease-in-out .1s normal forwards 1 running
@@ -1617,10 +1624,7 @@ input:checked + .slider:before {
 .pagination.pagination--right {
 	justify-content: flex-end;
 }
-
-.pagination li {
-	float: left;
-}
+ 
 
 .pagination li a {
 	width: 42px;
@@ -1747,7 +1751,11 @@ input:checked + .slider:before {
 	display: block;
 	line-height: inherit;
 }
-.breadcrumbs ul li:last-child{ padding-inline-end:0; }
+
+.breadcrumbs ul li:last-child {
+	padding-inline-end: 0;
+}
+
 .breadcrumbs ul li:last-child:before {
 	display: none;
 }
@@ -1774,7 +1782,8 @@ input:checked + .slider:before {
 .cms p {
 	color: var(--txt-color);
 	font-size: 0.875rem;
-	line-height: 1.8; margin-bottom: 1rem;
+	line-height: 1.8;
+	margin-bottom: 1rem;
 }
 
 .cms .space {
@@ -3429,7 +3438,7 @@ img {
 	margin: 0 auto;
 	padding: 10px;
 	font-size: 0.9em;
-	font-weight: 600;
+	font-weight: 400;
 	min-height: 62px;
 }
 
@@ -5443,7 +5452,7 @@ span.subheading {
 	margin-inline-end: 3px;
 	padding-inline-start: 3px;
 	position: absolute;
-	top: 11px;
+	top: 10px;
 }
 
 .filter-content .btn {
@@ -8477,7 +8486,7 @@ a.box--share:hover {
 
 .message a {
 	text-decoration: underline;
-	
+
 }
 
 .note-messages {
@@ -9194,11 +9203,11 @@ a.box--share:hover {
 	color: var(--first-color);
 }
 
-.cg-main .item {	 
+.cg-main .item {
 	padding: 1rem 0;
 	border-bottom: solid 1px var(--border-color);
 	text-align: inherit;
-	
+
 
 }
 
@@ -10372,7 +10381,7 @@ form.custom-form input[type="submit"] {
 	border-radius: 4px;
 	height: 100%;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
-	min-height: 360px;
+	min-height: 292px;
 }
 
 .cat-img {
@@ -12305,6 +12314,22 @@ html.quick-view--open {
 	-ms-transition: all 0.7s ease-in-out;
 	-o-transition: all 0.7s ease-in-out;
 	transition: all 0.7s ease-in-out;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.dashboard-menu .menu-item__title .msg-count {
+	text-align: center;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 0.75rem;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--first-color);
 }
 
 .dashboard-menu .is-active .menu-item__title {
@@ -15082,14 +15107,14 @@ main.main {
 	color: #222;
 }
 
-.share-button--static-horizontal {
-	display: flex;
+.share-button--static-horizontal { display: inline-block;
+	/*display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: center;*/
 }
 
 .share-button--static-horizontal .social-networks {
-	position: static
+	/*position: static*/
 }
 
 .share-button--static-horizontal .social-networks ul {

@@ -37,10 +37,8 @@
 			</div>
 		  </section>
 		<?php }if(isset ($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_5])  &&  $blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_5]['cpblocklang_text']){?>
-		  <section class="section">
-		   <div class="divider"></div>
-			<div class="container">
-				
+		  <section class="">
+			<div class="container">				
 			  <?php echo FatUtility::decodeHtmlEntities($blockData[Contentpage::CONTENT_PAGE_LAYOUT1_BLOCK_5]['cpblocklang_text']);?>
 			</div>
 		  </section>

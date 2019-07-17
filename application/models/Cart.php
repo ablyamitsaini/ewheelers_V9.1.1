@@ -566,7 +566,9 @@ class Cart extends FatModel
                         /* minimum quantity check[ */
                         $minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
                         if ($quantity < $minimum_quantity) {
-                            $this->warning = Labels::getLabel('LBL_Please_add_minimum', $this->cart_lang_id). " ".$minimum_quantity." ".FatUtility::decodeHtmlEntities($product['product_name']);
+                            $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->cart_lang_id);
+                            $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                            $this->warning = $str." ".FatUtility::decodeHtmlEntities($product['product_name']);
                             break;
                         }
                         /* ] */

@@ -27,6 +27,10 @@ function setupReviewAbuse(frm){
 		isHelpful = (isHelpful) ? isHelpful : 0;
 		var data = 'reviewId='+reviewId+'&isHelpful=' + isHelpful;
 		fcom.updateWithAjax(fcom.makeUrl('Reviews','markHelpful'), data, function(ans){
+			if (1 == ans.status) {
+				$(".rev_"+reviewId+"_1 span").text("("+ans.data.helpful+")");
+				$(".rev_"+reviewId+"_0 span").text("("+ans.data.notHelpful+")");
+			}
 			$.mbsmessage.close();
 		});
 	}
