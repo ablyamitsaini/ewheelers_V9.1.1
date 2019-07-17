@@ -49,7 +49,17 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 </div>
                                 <?php } ?>
 
-                            <div class="favourite-wrapper favourite-wrapper-detail ">
+                           
+                        </div>
+						</div>
+                        <div class="col-lg-5 col-details-right">
+                            <div class="product-description">
+                                <div class="product-description-inner">
+                                    <div class="">
+                                        <div class="products__title">
+                                            <div clss="">
+											<h2><?php echo $product['selprod_title'];?></h2>
+											 <div class="favourite-wrapper favourite-wrapper-detail ">
                                 <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                 <div class="share-button">
                                     <a href="javascript:void(0)" class="social-toggle"><i class="icn">
@@ -91,13 +101,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     </div>
                                 </div>
                             </div>
-                        </div> </div>
-                        <div class="col-lg-5 col-details-right">
-                            <div class="product-description">
-                                <div class="product-description-inner">
-                                    <div class="">
-                                        <div class="products__title">
-                                            <h2><?php echo $product['selprod_title'];?></h2>
+											</div>
                                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
                                             <?php /*if (round($product['prod_rating']) > 0) {*/ ?>
                                             <?php $label = (round($product['prod_rating']) > 0) ? round($product['totReviews'], 1).' '.Labels::getLabel('LBL_Reviews', $siteLangId) : Labels::getLabel('LBL_No_Reviews', $siteLangId); ?>
@@ -147,7 +151,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 foreach ($optionRows as $key => $option) {
                                     $selectedOptionValue = $option['values'][$selectedOptionsArr[$key]]['optionvalue_name'];
                                     $selectedOptionColor = $option['values'][$selectedOptionsArr[$key]]['optionvalue_color_code']; ?>
-                                        <div class="col-md-6 mb-2">
+                                        <div class="col-md-6 mb-3">
                                             <div class="h6"><?php echo $option['option_name']; ?></div>
                                             <div class="js-wrap-drop wrap-drop" id="js-wrap-drop<?php echo $count; ?>">
                                                 <span>
