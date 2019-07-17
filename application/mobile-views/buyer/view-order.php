@@ -61,6 +61,15 @@ foreach ($childArr as $index => $childOrder) {
         'key' => Labels::getLabel('LBL_Total', $siteLangId),
         'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)),
     );
+
+    $paymentMethodName = $childOrder['pmethod_name']?:$childOrder['pmethod_identifier'];
+    if (0 < $childOrder['order_pmethod_id'] && 0 < $childOrder['order_is_wallet_selected']) {
+        $paymentMethodName .= ' + ';
+    }
+    if (0 < $childOrder['order_is_wallet_selected']) {
+        $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
+    }
+    $childArr[$index]['pmethod_name'] = $paymentMethodName;
 }
 
 $data = array(
