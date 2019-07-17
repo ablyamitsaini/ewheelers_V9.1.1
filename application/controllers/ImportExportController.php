@@ -1,14 +1,16 @@
 <?php
-class ImportExportController extends LoggedUserController
+class ImportExportController extends SellerBaseController
 {
     public function __construct($action)
     {
         parent::__construct($action);
-        if (!User::canAccessSupplierDashboard() || !User::isSellerVerified(UserAuthentication::getLoggedUserId())) {
-            FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
+        if (!Shop::isShopActive(UserAuthentication::getLoggedUserId(), 0, true)) {
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }
-        $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-        $this->set('bodyClass', 'is--dashboard');
+        if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
+            Message::addInfo(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+        }
     }
 
     public function index()

@@ -35,11 +35,11 @@
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js shipping-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Shipping', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
-                        <li class="pending checkoutNav-js order-complete-js" data-count="4"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
+                        <?php /*?><li class="pending checkoutNav-js order-complete-js" data-count="4"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li><?php */?>
                         <?php } else { ?>
                         <li class="pending checkoutNav-js billing-js" data-count="1"><span><?php echo Labels::getLabel('LBL_Billing', $siteLangId); ?></span></li>
                         <li class="pending checkoutNav-js payment-js" data-count="2"><span><?php echo Labels::getLabel('LBL_Payment', $siteLangId); ?></span></li>
-                        <li class="pending checkoutNav-js order-complete-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li>
+                        <?php /*?><li class="pending checkoutNav-js order-complete-js" data-count="3"><span><?php echo Labels::getLabel('LBL_Order_Completed', $siteLangId); ?></span></li><?php */?>
                         <?php } ?>
                     </ul>
                 </div>
