@@ -2385,7 +2385,11 @@ class BuyerController extends BuyerBaseController
     public function addItemsToCart($orderId)
     {
         if (!$orderId) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             return;
         }
 
@@ -2394,7 +2398,11 @@ class BuyerController extends BuyerBaseController
         $orderObj = new Orders();
         $orderDetail = $orderObj->getOrderById($orderId, $this->siteLangId);
         if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             return;
         }
 
@@ -2417,6 +2425,10 @@ class BuyerController extends BuyerBaseController
         $cartObj->removeCartDiscountCoupon();
         $cartObj->removeProductShippingMethod();
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+        
         /* Update existing cart [ */
 
         /* $db = FatApp::getDb();
