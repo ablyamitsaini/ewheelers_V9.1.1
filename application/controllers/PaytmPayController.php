@@ -3,6 +3,9 @@ require_once CONF_INSTALLATION_PATH . 'library/payment-plugins/paytm/PaytmKit/li
 class PaytmPayController extends PaymentController
 {
     private $keyName="Paytm";
+    private $currenciesAccepted = array(
+                                        'India' => 'INR',
+                                    );
 
     public function charge($orderId)
     {
@@ -20,6 +23,13 @@ class PaytmPayController extends PaymentController
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
         $paymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
+
+        /* To check for valid currencies accepted by paypal gateway [ */
+
+        if (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
 
         if (!$orderInfo['id']) {
             FatUtility::exitWIthErrorCode(404);
@@ -42,6 +52,7 @@ class PaytmPayController extends PaymentController
         $pmObj = new PaymentSettings($this->keyName);
         $paymentSettings = $pmObj->getPaymentSettings();
         $post = FatApp::getPostedData();
+
         $request ='';
         foreach ($post as $key => $value) {
             $request .= '&' . $key . '=' . urlencode(html_entity_decode($value, ENT_QUOTES, 'UTF-8'));
@@ -53,15 +64,17 @@ class PaytmPayController extends PaymentController
         $arrOrder= explode("_", $post['ORDERID']);
         $orderId = (!empty($arrOrder[1]))?$arrOrder[1]:0;
         $txnInfo = $this->PaytmTransactionStatus($post['ORDERID']);
+
         $orderPaymentObj = new OrderPayment($orderId);
         $paymentGatewayCharge = $orderPaymentObj->getOrderPaymentGatewayAmount();
         if ($paymentGatewayCharge>0) {
             if ($isValidChecksum) {
-                /* $totalPaidMatch = ((float)$post['TXNAMOUNT'] == $paymentGatewayCharge); */
-                $totalPaidMatch = ((float)$txnInfo['TXNAMOUNT'] == $paymentGatewayCharge);
+                $paid_amount = (float)$txnInfo['TXNAMOUNT'];
+                $totalPaidMatch = ($paid_amount == $paymentGatewayCharge);
                 if (!$totalPaidMatch) {
                     $request .= "\n\n Paytm :: TOTAL PAID MISMATCH! " . strtolower($paid_amount) . "\n\n";
                 }
+
                 if ($txnInfo['STATUS'] == "TXN_SUCCESS" && $totalPaidMatch) {
                     $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $post['TXNID'], $paymentGatewayCharge, Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $request);
                     FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId)));
@@ -101,17 +114,11 @@ class PaytmPayController extends PaymentController
 
         $JsonData =json_encode($request);
         $postData = 'JsonData='.urlencode($JsonData);
-        //die($postData);
-        //$url = "https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus";
         if (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) {
-            //https://securegw.paytm.in/theia/processTransaction
-            // $url = "https://secure.paytm.in/oltp/HANDLER_INTERNAL/TXNSTATUS";
-            $url = "https://securegw.paytm.in/order/process";
+            $url = "https://securegw.paytm.in/order/status";
         } else {
-            // $url = "https://pguat.paytm.com/oltp/HANDLER_INTERNAL/TXNSTATUS";
-            $url = "https://securegw-stage.paytm.in/order/process";
+            $url = "https://securegw-stage.paytm.in/order/status";
         }
-
         $HEADER[] = "Content-Type: application/json";
         $HEADER[] = "Accept: application/json";
 
@@ -136,10 +143,8 @@ class PaytmPayController extends PaymentController
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
 
         if (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) {
-            // $action_url = "https://secure.paytm.in/oltp-web/processTransaction";
             $action_url = "https://securegw.paytm.in/order/process";
         } else {
-            // $action_url = "https://pguat.paytm.com/oltp-web/processTransaction";
             $action_url = "https://securegw-stage.paytm.in/order/process";
         }
         $orderPaymentGatewayDescription = sprintf(Labels::getLabel('MSG_Order_Payment_Gateway_Description', $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
