@@ -7,6 +7,7 @@ $registerForm->developerTags['fld_default_col'] = 12;
 if( !$affiliate_register_step_number ){
 	$btnSubmitFld = $registerForm->getField('btn_submit');
 	$btnSubmitFld->addFieldTagAttribute( 'class', 'btn--block');
+	$btnSubmitFld->developerTags['noCaptionTag'] = true;
 }
 
 switch( $affiliate_register_step_number ){
@@ -27,12 +28,13 @@ switch( $affiliate_register_step_number ){
 		
 		$registerForm->removeField( $registerForm->getField('agree') );
 		
-		$termsFldHtml = '<div class="field-set"><div class="caption-wraper">&nbsp;</div><div class="field-wraper"><div class="field_cover"><label><span class="checkbox">'.$termsFld;
+		$termsFldHtml = '<div class="field-set"><div class="field-wraper"><div class="field_cover"><label><span class="checkbox">'.$termsFld;
 		
 		$termsFldHtml .= '<i class="input-helper"></i>' . $termsAndConditionsLink . '</span></label></div></div></div>';
 		
 		$agree_fld_html_div = $registerForm->getField('agree_fld_html_div');
 		$agree_fld_html_div->value = $termsFldHtml;
+		
 		/* ] */
 		
 	break;
@@ -146,7 +148,7 @@ switch( $affiliate_register_step_number ){
 }	
 ?>
 <div class="registeration-process">
-	<ul>
+	<ul data-simplebar>
 		<?php
 		if( $registerStepsArr ){
 			foreach( $registerStepsArr as $key => $val ){
@@ -161,4 +163,7 @@ switch( $affiliate_register_step_number ){
 		?>
 	</ul>
 </div>
-<?php echo $registerForm->getFormHtml(); ?>
+<?php
+	$btnSubmitFld = $registerForm->getField('btn_submit');
+	$btnSubmitFld->developerTags['noCaptionTag'] = true;
+	echo $registerForm->getFormHtml(); ?>
