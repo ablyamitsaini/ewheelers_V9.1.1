@@ -31,7 +31,7 @@ if ($isUserLogged) {
           <div class="col-md-8 col-sm-8">
                <div class="section-head section--white--head mb-0">
 						<div class="section__heading">
-                		<h2><?php echo Labels::getLabel('Lbl_Blog_Contribution', $siteLangId); ?></h2>
+                		<h2 class="mb-0"><?php echo Labels::getLabel('Lbl_Blog_Contribution', $siteLangId); ?></h2>
                         </div>
                      </div>
           </div>

@@ -24,14 +24,10 @@
   	}
   }
 
-  .social-toggle {
-  	width: 42px;
-  	height: 42px;
-  }
 
   .social-toggle .icn svg {
-  	width: 16px;
-  	height: 16px;
+  	width: 12px;
+  	height: 12px;
   }
 
   .header-blog-inner {
