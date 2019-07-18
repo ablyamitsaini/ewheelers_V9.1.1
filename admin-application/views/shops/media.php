@@ -7,7 +7,7 @@ $fld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $shopLogoFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'logo-language-js');
 
-$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $adminLangId), '296*67'). '</small>';
+$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $adminLangId), '150*150'). '</small>';
 
 $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="logo-image-listing"></div>';

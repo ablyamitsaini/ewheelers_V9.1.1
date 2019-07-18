@@ -144,10 +144,10 @@
         </div>
     </div>
 </div>
-<?php if (count($products) > 2) {  ?>
+<?php /* if (count($products) > 2) {  ?>
 <script>
     new SimpleBar(document.getElementById('simplebar'), {
         autoHide: false
     });
 </script>
-<?php } ?>
+<?php } */ ?>
