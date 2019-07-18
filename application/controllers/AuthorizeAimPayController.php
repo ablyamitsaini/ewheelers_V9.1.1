@@ -1,9 +1,31 @@
 <?php
+require CONF_INSTALLATION_PATH . 'library/payment-plugins/AuthorizeNet/autoload.php';
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+
+// define("AUTHORIZENET_LOG_FILE", "phplog");
+
 class AuthorizeAimPayController extends PaymentController
 {
+    const SANDBOX = "https://apitest.authorize.net";
+    const PRODUCTION = "https://api2.authorize.net";
+
+    const VERSION = "2.0.0";
+
     private $keyName = "AuthorizeAim";
-    private $testEnvironmentUrl = 'https://test.authorize.net/gateway/transact.dll';
-    private $liveEnvironmentUrl = 'https://secure.authorize.net/gateway/transact.dll';
+    private $currenciesAccepted = array(
+                                            'Australian Dollar' => 'AUD',
+                                            'Canadian Dollar' => 'CAD',
+                                            'Danish Krone' => 'DKK',
+                                            'Euro' => 'EUR',
+                                            'Norwegian Krone' => 'NOK',
+                                            'New Zealand Dollar' => 'NZD',
+                                            'Polish Zloty' => 'PLN',
+                                            'Pound Sterling' => 'GBP',
+                                            'Swedish Krona' => 'SEK',
+                                            'Swiss Franc' => 'CHF',
+                                            'U.S. Dollar' => 'USD',
+                                    );
 
     public function charge($orderId = '')
     {
@@ -31,6 +53,11 @@ class AuthorizeAimPayController extends PaymentController
             $this->set('error', Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId));
         }
 
+        if (count($this->currenciesAccepted) && !in_array($orderInfo["order_currency_code"], $this->currenciesAccepted)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_ORDER_CURRENCY_PASSED_TO_GATEWAY', $this->siteLangId));
+            CommonHelper::redirectUserReferer();
+        }
+
         $cancelBtnUrl = CommonHelper::getPaymentCancelPageUrl();
         if ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
             $cancelBtnUrl = CommonHelper::getPaymentFailurePageUrl();
@@ -42,133 +69,6 @@ class AuthorizeAimPayController extends PaymentController
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->addCss('css/payment.css');
         $this->_template->render(true, false);
-    }
-
-    public function send($orderId)
-    {
-        $pmObj=new PaymentSettings($this->keyName);
-        $paymentSettings=$pmObj->getPaymentSettings();
-
-        $post = FatApp::getPostedData();
-        $orderPaymentObj=new OrderPayment($orderId, $this->siteLangId);
-        /* Retrieve Payment to charge corresponding to your order */
-        $orderPaymentAamount=$orderPaymentObj->getOrderPaymentGatewayAmount();
-        if ($orderPaymentAamount>0) {
-            /* Retrieve Primary Info corresponding to your order */
-            $orderInfo=$orderPaymentObj->getOrderPrimaryinfo();
-            $orderActualPaid = number_format(round($orderPaymentAamount, 2), 2, ".", "");
-            $actionUrl = (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true)?$this->liveEnvironmentUrl:$this->testEnvironmentUrl;
-
-            $data = array();
-            $data['x_login'] = $paymentSettings['login_id'];
-            $data['x_tran_key'] = $paymentSettings['transaction_key'];
-            $data['x_version'] = '3.1';
-            $data['x_delim_data'] = 'true';
-            $data['x_delim_char'] = '|';
-            $data['x_encap_char'] = '"';
-            $data['x_relay_response'] = 'false';
-            $data['x_first_name'] = FatUtility::decodeHtmlEntities($orderInfo['customer_name'], ENT_QUOTES, 'UTF-8');
-            $data['x_company'] = FatUtility::decodeHtmlEntities($orderInfo['customer_name'], ENT_QUOTES, 'UTF-8');
-            $data['x_address'] = FatUtility::decodeHtmlEntities($orderInfo['customer_billing_address_1'], ENT_QUOTES, 'UTF-8').' '.FatUtility::decodeHtmlEntities($orderInfo['customer_billing_address_2'], ENT_QUOTES, 'UTF-8');
-            $data['x_city'] = FatUtility::decodeHtmlEntities($orderInfo['customer_billing_city'], ENT_QUOTES, 'UTF-8');
-            $data['x_state'] = FatUtility::decodeHtmlEntities($orderInfo['customer_billing_state'], ENT_QUOTES, 'UTF-8');
-            $data['x_zip'] = FatUtility::decodeHtmlEntities($orderInfo['customer_billing_postcode'], ENT_QUOTES, 'UTF-8');
-            $data['x_country'] = FatUtility::decodeHtmlEntities($orderInfo['customer_billing_country'], ENT_QUOTES, 'UTF-8');
-            $data['x_phone'] = $orderInfo['customer_phone'];
-            /* $data['x_customer_ip'] = $this->request->server['REMOTE_ADDR']; */
-            $data['x_customer_ip'] = $_SERVER['REMOTE_ADDR'];
-            $data['x_email'] = $orderInfo['customer_email'];
-            $orderPaymentGatewayDescription=sprintf(Labels::getLabel("MSG_Order_Payment_Gateway_Description", $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
-            $data['x_description'] = FatUtility::decodeHtmlEntities($orderPaymentGatewayDescription, ENT_QUOTES, 'UTF-8');
-            $data['x_amount'] = $orderActualPaid;
-            $data['x_currency_code'] = $orderInfo["order_currency_code"];
-            $data['x_method'] = 'CC';
-            $data['x_type'] = 'AUTH_CAPTURE';
-            $data['x_card_num'] = str_replace(' ', '', $post['cc_number']);
-            $data['x_exp_date'] = $post['cc_expire_date_month'] . $post['cc_expire_date_year'];
-            $data['x_card_code'] = $post['cc_cvv'];
-            $data['x_invoice_num'] = $orderId;
-            $data['x_solution_id'] = 'A1000015';
-
-            /* Customer Shipping Address Fields[ */
-            $data['x_ship_to_first_name'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_name'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_company'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_name'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_address'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_address_1'], ENT_QUOTES, 'UTF-8') . ' ' . FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_address_2'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_city'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_city'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_state'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_state'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_zip'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_postcode'], ENT_QUOTES, 'UTF-8');
-            $data['x_ship_to_country'] = FatUtility::decodeHtmlEntities($orderInfo['customer_shipping_country'], ENT_QUOTES, 'UTF-8');
-            /* ] */
-
-            if (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) {
-                $data['x_test_request'] = 'true';
-            }
-
-            $curl = curl_init($actionUrl);
-            curl_setopt($curl, CURLOPT_PORT, 443);
-            curl_setopt($curl, CURLOPT_HEADER, 0);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_FORBID_REUSE, 1);
-            curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-            $response = curl_exec($curl);
-
-            $json = array();
-            if (curl_error($curl)) {
-                /* $json['error'] = 'CURL ERROR: ' . curl_errno($curl) . '::' . curl_error($curl); */
-                $json['error'] = Labels::getLabel('MSG_Payment_cannot_be_processed_right_now._Please_try_after_some_time.', $this->siteLangId);
-            } elseif ($response) {
-                $i = 1;
-                $responseInfo = array();
-                $results = explode('|', $response);
-                foreach ($results as $result) {
-                    $responseInfo[$i] = trim($result, '"');
-                    $i++;
-                }
-                if ($responseInfo[1] == '1') {
-                    $message = '';
-                    if (isset($responseInfo['5'])) {
-                        $message .= 'Authorization Code: ' . $responseInfo['5'] . "\n";
-                    }
-                    if (isset($responseInfo['6'])) {
-                        $message .= 'AVS Response: ' . $responseInfo['6'] . "\n";
-                    }
-                    if (isset($responseInfo['7'])) {
-                        $message .= 'Transaction ID: ' . $responseInfo['7'] . "\n";
-                    }
-                    if (isset($responseInfo['39'])) {
-                        $message .= 'Card Code Response: ' . $responseInfo['39'] . "\n";
-                    }
-                    if (isset($responseInfo['40'])) {
-                        $message .= 'Cardholder Authentication Verification Response: ' . $responseInfo['40'] . "\n";
-                    }
-
-                    if (!$paymentSettings['md5_hash'] || (strtoupper($responseInfo[38]) == strtoupper(md5($paymentSettings['md5_hash'].$paymentSettings['login_id'].$responseInfo[7] . $orderActualPaid)))) {
-                        /* Recording Payment in DB */
-                        if (!$orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $responseInfo['7'], $orderPaymentAamount, Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message)) {
-                            $json['error'] = "Invalid Action";
-                        }
-                        /* End Recording Payment in DB */
-                    } else {
-                        /*  Do what ever you want to do */
-                    }
-                    $json['redirect'] = CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId));
-                } else {
-                    $json['error'] = $responseInfo[4];
-                }
-            } else {
-                $json['error'] = Labels::getLabel('MSG_EMPTY_GATEWAY_RESPONSE', $this->siteLangId);
-            }
-        } else {
-            $json['error'] = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-        }
-        curl_close($curl);
-
-        echo json_encode($json);
     }
 
     public function checkCardType()
@@ -196,5 +96,166 @@ class AuthorizeAimPayController extends PaymentController
         /* $frm->addCheckBox(Labels::getLabel('LBL_SAVE_THIS_CARD_FOR_FASTER_CHECKOUT',$this->siteLangId), 'cc_save_card','1'); */
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
         return $frm;
+    }
+
+    public function send($orderId)
+    {
+        $pmObj=new PaymentSettings($this->keyName);
+        $paymentSettings=$pmObj->getPaymentSettings();
+
+        $frm = $this->getPaymentForm();
+        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+        if (false === $post) {
+            $message['error'] = Message::addErrorMessage(current($frm->getValidationErrors()));
+            FatUtility::dieJsonError($message);
+        }
+
+        $invalidCardDetail = false;
+        if (date('Y') == $post['cc_expire_date_year'] && date('m') > $post['cc_expire_date_month']) {
+            $invalidCardDetail = true;
+        } else if (date('Y') > $post['cc_expire_date_year']) {
+            $invalidCardDetail = true;
+        }
+
+        if (true === $invalidCardDetail) {
+            $message['error'] = Labels::getLabel("MSG_Invalid_card_detail", $this->siteLangId);
+            FatUtility::dieJsonError($message);
+        }
+
+        $orderPaymentObj=new OrderPayment($orderId, $this->siteLangId);
+        /* Retrieve Payment to charge corresponding to your order */
+        $orderPaymentAmount = $orderPaymentObj->getOrderPaymentGatewayAmount();
+
+        if ($orderPaymentAmount > 0) {
+            $orderActualPaid = number_format(round($orderPaymentAmount, 2), 2, ".", "");
+
+            $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
+
+            /* Create a merchantAuthenticationType object with authentication details
+               retrieved from the constants file */
+            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+            $merchantAuthentication->setName($paymentSettings['login_id']);
+            $merchantAuthentication->setTransactionKey($paymentSettings['transaction_key']);
+
+            // Set the transaction's refId
+            $refId = $orderId;
+
+            // Create the payment data for a credit card
+            $creditCard = new AnetAPI\CreditCardType();
+            $creditCard->setCardNumber(str_replace(' ', '', $post['cc_number']));
+
+            $creditCard->setExpirationDate($post['cc_expire_date_year'] ."-".$post['cc_expire_date_month']);
+            $creditCard->setCardCode($post['cc_cvv']);
+
+            // Add the payment data to a paymentType object
+            $paymentOne = new AnetAPI\PaymentType();
+            $paymentOne->setCreditCard($creditCard);
+
+            // Create order information
+            $order = new AnetAPI\OrderType();
+            $order->setInvoiceNumber($orderId);
+            $orderPaymentGatewayDescription = sprintf(Labels::getLabel("MSG_Order_Payment_Gateway_Description", $this->siteLangId), $orderInfo["site_system_name"], $orderInfo['invoice']);
+            $order->setDescription($orderPaymentGatewayDescription);
+
+            // Set the customer's Bill To address
+            $customerAddress = new AnetAPI\CustomerAddressType();
+            $customerAddress->setFirstName(trim($orderInfo['customer_name']));
+            $customerAddress->setLastName("");
+            $customerAddress->setCompany(trim($orderInfo['customer_name']));
+            $customerAddress->setAddress($orderInfo['customer_billing_address_1']);
+            $customerAddress->setCity($orderInfo['customer_billing_city']);
+            $customerAddress->setState($orderInfo['customer_billing_state']);
+            $customerAddress->setZip($orderInfo['customer_billing_postcode']);
+            $customerAddress->setCountry($orderInfo['customer_billing_country']);
+
+            // Set the customer's identifying information
+            $customerData = new AnetAPI\CustomerDataType();
+            $customerData->setType("individual");
+            $customerData->setId($orderInfo['customer_phone']);
+            $customerData->setEmail($orderInfo['customer_email']);
+
+            // Add values for transaction settings
+            $duplicateWindowSetting = new AnetAPI\SettingType();
+            $duplicateWindowSetting->setSettingName("duplicateWindow");
+            $duplicateWindowSetting->setSettingValue("60");
+
+            // Create a TransactionRequestType object and add the previous objects to it
+            $transactionRequestType = new AnetAPI\TransactionRequestType();
+            $transactionRequestType->setTransactionType("authCaptureTransaction");
+            $transactionRequestType->setAmount($orderActualPaid);
+            $transactionRequestType->setOrder($order);
+            $transactionRequestType->setPayment($paymentOne);
+            $transactionRequestType->setBillTo($customerAddress);
+            $transactionRequestType->setCustomer($customerData);
+            $transactionRequestType->addToTransactionSettings($duplicateWindowSetting);
+
+            // Assemble the complete transaction request
+            $request = new AnetAPI\CreateTransactionRequest();
+            $request->setMerchantAuthentication($merchantAuthentication);
+            $request->setRefId($refId);
+            $request->setTransactionRequest($transactionRequestType);
+
+            // Create the controller and get the response
+            $controller = new AnetController\CreateTransactionController($request);
+
+            $actionUrl = (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true)?static::PRODUCTION:static::SANDBOX;
+            $response = $controller->executeWithApiResponse($actionUrl);
+
+            if ($response != null) {
+                // Check to see if the API request was successfully received and acted upon
+                if ($response->getMessages()->getResultCode() == "Ok") {
+                    // Since the API request was successful, look for a transaction response
+                    // and parse it to display the results of authorizing the card
+                    $tresponse = $response->getTransactionResponse();
+
+                    if ($tresponse != null && $tresponse->getMessages() != null) {
+                        $str = Labels::getLabel("Successfully created transaction with Transaction ID: {txn-id}", $this->siteLangId);
+                        $message = str_replace("{txn-id}", $tresponse->getTransId(), $str). "\n";
+
+                        $str = Labels::getLabel("Transaction Response Code: {txn-resp-code}", $this->siteLangId);
+                        $decription = str_replace("{txn-resp-code}", $tresponse->getResponseCode(), $str). "\n";
+
+                        $str = Labels::getLabel("Message Code: {msg-code}", $this->siteLangId);
+                        $decription .= str_replace("{msg-code}", $tresponse->getMessages()[0]->getCode(), $str). "\n";
+
+                        $str = Labels::getLabel("Auth Code: {auth-code}", $this->siteLangId);
+                        $decription .= str_replace("{auth-code}", $tresponse->getAuthCode(), $str). "\n";
+
+                        $str = Labels::getLabel("Description: {description}", $this->siteLangId);
+                        $decription .= str_replace("{description}", $tresponse->getMessages()[0]->getDescription(), $str). "\n";
+
+                        if (!$orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $tresponse->getTransId(), $orderPaymentAmount, Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message)) {
+                            $json['error'] = Labels::getLabel('MSS_Transaction_Failed', $this->siteLangId);
+                        } else {
+                            $json['msg'] = $message;
+                            $json['description'] = $decription;
+                            $json['redirect'] = CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderId));
+                        }
+                    } else {
+                        $json['errorMsg'] =  Labels::getLabel('Transaction Failed', $this->siteLangId);
+                        if ($tresponse->getErrors() != null) {
+                            $json['error'] = $tresponse->getErrors()[0]->getErrorText();
+                            $json['errorCode'] = $tresponse->getErrors()[0]->getErrorCode();
+                        }
+                    }
+                    // Or, print errors if the API request wasn't successful
+                } else {
+                    $json['errorMsg'] =  Labels::getLabel('MSG_Transaction Failed', $this->siteLangId);
+                    $tresponse = $response->getTransactionResponse();
+                    if ($tresponse != null && $tresponse->getErrors() != null) {
+                        $json['error'] = $tresponse->getErrors()[0]->getErrorText();
+                        $json['errorCode'] = $tresponse->getErrors()[0]->getErrorCode();
+                    } else {
+                        $json['error'] = $response->getMessages()->getMessage()[0]->getText();
+                        $json['errorCode'] = $response->getMessages()->getMessage()[0]->getCode();
+                    }
+                }
+            } else {
+                $json['error'] = Labels::getLabel('MSG_No_response_returned', $this->siteLangId);
+            }
+        } else {
+            $json['error'] = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
+        }
+        echo json_encode($json);
     }
 }
