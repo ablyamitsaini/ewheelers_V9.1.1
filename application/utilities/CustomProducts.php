@@ -20,7 +20,7 @@ trait CustomProducts
         $frmSearchCustomProduct = $this->getCustomProductSearchForm();
         $this->set("frmSearchCustomProduct", $frmSearchCustomProduct);
         $this->_template->addJs('js/jscolor.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchCustomProduct()
@@ -107,7 +107,7 @@ trait CustomProducts
         $this->_template->addJs('js/jquery.tablednd.js');
         $this->_template->addJs('js/slick.js');
         $this->_template->addCss('css/slick.css');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     /* public function customProductFormOld( $product_id=0){

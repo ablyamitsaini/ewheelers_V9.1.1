@@ -75,7 +75,7 @@ class AccountController extends LoggedUserController
 
 
         $this->set('supplierRequest', $supplierRequest);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function supplierApprovalForm($p = '')
@@ -120,7 +120,7 @@ class AccountController extends LoggedUserController
         $approvalFrm->fill($data);
 
         $this->set('approvalFrm', $approvalFrm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function setupSupplierApproval()
@@ -259,7 +259,7 @@ class AccountController extends LoggedUserController
     public function changeEmailPassword()
     {
         $this->set('siteLangId', $this->siteLangId);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function changePasswordForm()
@@ -403,7 +403,7 @@ class AccountController extends LoggedUserController
         $this->set('accountSummary', $accountSummary);
         $this->set('frmRechargeWallet', $this->getRechargeWalletForm($this->siteLangId));
         $this->set('canAddMoneyToWallet', $canAddMoneyToWallet);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function creditsInfo()
@@ -800,7 +800,7 @@ class AccountController extends LoggedUserController
 
         $this->set('showSellerActivateButton', $showSellerActivateButton);
         $this->set('userPreferredDashboard', $data['user_preferred_dashboard']);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function personalInfo()
@@ -1351,7 +1351,7 @@ class AccountController extends LoggedUserController
         $this->_template->addCss('css/slick.css');
         $this->_template->addJs('js/slick.js');
         $this->_template->addCss('css/product-detail.css');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function wishListSearch()
@@ -1872,7 +1872,7 @@ class AccountController extends LoggedUserController
     {
         $frm = $this->getMessageSearchForm($this->siteLangId);
         $this->set('frmSrch', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function messageSearch()
@@ -1987,7 +1987,7 @@ class AccountController extends LoggedUserController
         $this->set('threadTypeArr', Thread::getThreadTypeArr($this->siteLangId));
         $this->set('loggedUserId', $userId);
         $this->set('loggedUserName', ucfirst(UserAuthentication::getLoggedUserAttribute('user_name')));
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function threadMessageSearch()
@@ -2785,7 +2785,7 @@ class AccountController extends LoggedUserController
 
     public function myAddresses()
     {
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchAddresses()

@@ -7,7 +7,7 @@ trait Options
         $this->set("frmSearch", $frmSearch);
         $this->_template->addJs('js/jscolor.js');
         $this->_template->addJs('js/jquery.tablednd.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     private function getSearchForm()

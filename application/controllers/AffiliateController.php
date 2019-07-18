@@ -81,7 +81,7 @@ class AffiliateController extends AffiliateBaseController
         $this->set('userRevenue', User::getAffiliateUserRevenue($loggedUserId));
         $this->set('todayRevenue', User::getAffiliateUserRevenue($loggedUserId, date('Y-m-d H:i:s')));
         $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function paymentInfoForm()
@@ -343,7 +343,7 @@ class AffiliateController extends AffiliateBaseController
         $this->set('sharingFrm', $sharingFrm);
         $this->set('fbLoginUrl', $fbLoginUrl);
         $this->set('fbAccessToken', $fbAccessToken);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function setUpMailAffiliateSharing()
@@ -462,7 +462,7 @@ class AffiliateController extends AffiliateBaseController
         $this->set('user_listing', $user_listing);
         $this->set('frmSearch', $frmSearch);
         $this->set('user_listing', $user_listing);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     private function getUserSearchForm()
