@@ -16,7 +16,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12; ?>
                 <div class="widget widget-stats">
                     <div class="cards d-flex -direction-col">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('L_Share_And_Earn_Text_Message', $siteLangId)?></h5>
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Share_with_your_friends_and_you_both_earn_reward_points', $siteLangId)?></h5>
                         </div>
                         <div class="cards-content p-4 pr-4 ">
                             <div class="stats">
