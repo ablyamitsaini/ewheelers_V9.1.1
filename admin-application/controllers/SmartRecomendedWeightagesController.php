@@ -43,7 +43,7 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
-        $srch->addOrder('reportreason_id', 'DESC');
+        
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 
