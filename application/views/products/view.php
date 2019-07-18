@@ -113,7 +113,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 											</i>
                                             <span class="rate"><?php echo round($product['prod_rating'], 1);?></span>
 											</div>
-														<a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
+                                            <a href="#itemRatings" class="totals-review link nav-scroll-js"><?php echo $label; ?></a>
                                             </div>
                                             <?php /*}*/ ?>
                                             <?php /* if (round($product['prod_rating']) == 0) {  ?>
@@ -551,7 +551,8 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
                                     class="img-responsive"></a></div>
                     </div>
-                    <?php } ?></div>
+                    <?php } ?>
+                    </div>
                 <?php } if (isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC) {
                          Promotion::updateImpressionData($val['banner_record_id']);
                 } ?>

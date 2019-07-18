@@ -26,7 +26,7 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 					<div class="btngroup--fix">
 					<?php echo $mediaFrm->getFormHtml(); ?>
 					</form>
-					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'1320*330')?></small>
+					<small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text',$siteLangId),'2000*500')?></small>
 					<?php echo $mediaFrm->getExternalJS();?>
 					</div>
 					<div id="mediaResponse"></div>

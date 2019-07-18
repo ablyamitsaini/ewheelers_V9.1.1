@@ -292,7 +292,7 @@ $(document).on('change','.language-js',function(){
 	addBrandReqForm = function(id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('seller', 'addBrandReqForm', [id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 			});
 		});
 	};
@@ -475,7 +475,7 @@ $(document).on('change','.language-js',function(){
 	addTagForm = function(id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('seller', 'addTagsForm', [id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 			});
 		});
 	};

@@ -1,6 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?> <?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php');
 $yesNoArr = applicationConstants::getYesNoArr($siteLangId);
-
 $sharingFrm->addFormTagAttribute('class', 'form');
 $sharingFrm->addFormTagAttribute('onsubmit', 'setUpMailAffiliateSharing(this);return false;');
 $sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';

@@ -53,8 +53,9 @@ if ($totReviews) {
         </div>
     </div>
     <?php } ?>
-<?php } ?>
 </div>
+<?php } ?>
+
 <div class="listing__all"></div>
 <div id="loadMoreReviewsBtnDiv" class="align--center"></div>
 

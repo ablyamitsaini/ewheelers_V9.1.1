@@ -30,7 +30,7 @@
                     <div id="mediaResponse"></div>
                     <div class="col-md-6">
                         <div class="preview">
-                            <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId), '1320*330')?></small>
+                            <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId), '2000*500')?></small>
                             <?php echo $shopBannerFrm->getFormHtml();?>
                             <?php foreach ($bannerAttachments as $img) {?>
 

@@ -380,7 +380,7 @@ $("document").ready(function()
 
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 				$("input[name='coupon_code']").focus();
 			});
 		});

@@ -23,7 +23,7 @@ $idFld = $brandImageFrm->getField('brand_id');
 $idFld->addFieldTagAttribute('id','id-js');
 $imageLangFld = $brandImageFrm->getField('lang_id');	
 $imageLangFld->addFieldTagAttribute('class','image-language-js');
-$ImagePreferredDimensions = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'246*246').'<br/>'. Labels::getLabel('LBL_This_image_will_be_displayed_for_homepage_brands_collection',$adminLangId) .'</small>';
+$ImagePreferredDimensions = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'2000*500').'<br/>'. Labels::getLabel('LBL_This_image_will_be_displayed_for_homepage_brands_collection',$adminLangId) .'</small>';
 $htmlAfterField = $ImagePreferredDimensions; 
 $htmlAfterField .= '<div id="image-listing"></div>';
 $imageFld->htmlAfterField = $htmlAfterField;
