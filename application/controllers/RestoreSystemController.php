@@ -5,9 +5,9 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 class RestoreSystemController extends MyAppController
 {
     const CONF_FILE = 'public/settings.php';
-    const BACKUP_FILE = CONF_INSTALLATION_PATH."restore/database/yokart-db.sql";
-    const DATABASE_FIRST = 'yokartv8_1';
-    const DATABASE_SECOND = 'yokartv8_2';
+    const BACKUP_FILE = CONF_INSTALLATION_PATH."restore/database/db.sql";
+    const DATABASE_FIRST = CONF_RESTORE_DB_INSTANCE_1;
+    const DATABASE_SECOND = CONF_RESTORE_DB_INSTANCE_2;
     const RESTORE_TIME_INTERVAL_HOURS = 4;
 
     public function index()

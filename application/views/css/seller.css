@@ -328,7 +328,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	white-space: nowrap;
-	overflow: auto;
+	overflow: hidden;
+	overflow-x: auto;
 	width: 100%;
 }
 

@@ -16,6 +16,7 @@
 /public/restore.php
 /library/license.txt
 /license.txt
+/mbs-errors.log
 /restore
 /*.zip
 /*.rar
