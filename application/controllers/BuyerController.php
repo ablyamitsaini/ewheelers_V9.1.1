@@ -121,7 +121,7 @@ class BuyerController extends BuyerBaseController
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
         $this->set('txnsSummary', $txnsSummary);
         $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function viewOrder($orderId, $opId = 0, $print = false)
@@ -216,7 +216,7 @@ class BuyerController extends BuyerBaseController
             $print = true;
         }
         $this->set('print', $print);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function downloadDigitalFile($aFileId, $recordId = 0)
@@ -321,7 +321,7 @@ class BuyerController extends BuyerBaseController
     {
         $frmOrderSrch = $this->getOrderSearchForm($this->siteLangId);
         $this->set('frmOrderSrch', $frmOrderSrch);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderSearchListing()
@@ -420,7 +420,7 @@ class BuyerController extends BuyerBaseController
 
     public function MyDownloads()
     {
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function downloadSearch()
@@ -553,7 +553,7 @@ class BuyerController extends BuyerBaseController
         $frm = $this->getOrderCancelRequestForm($this->siteLangId);
         $frm->fill(array('op_id' => $opDetail['op_id'] ));
         $this->set('frmOrderCancel', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function setupOrderCancelRequest()
@@ -658,7 +658,7 @@ class BuyerController extends BuyerBaseController
     {
         $frm = $this->getOrderCancellationRequestsSearchForm($this->siteLangId);
         $this->set('frmOrderCancellationRequestsSrch', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderCancellationRequestSearch()
@@ -723,7 +723,7 @@ class BuyerController extends BuyerBaseController
     {
         $frm = $this->getOrderReturnRequestsSearchForm($this->siteLangId);
         $this->set('frmOrderReturnRequestsSrch', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderReturnRequestSearch()
@@ -874,7 +874,7 @@ class BuyerController extends BuyerBaseController
         $urlParts = array_filter(FatApp::getParameters());
         $this->set('urlParts', $urlParts);
 
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function downloadAttachedFileForReturn($recordId, $recordSubid =0)
@@ -1149,7 +1149,7 @@ class BuyerController extends BuyerBaseController
         $this->set('opDetail', $opDetail);
         $this->_template->addCss(array('css/star-rating.css'));
         $this->_template->addJs(array('js/jquery.barrating.min.js'));
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function setupOrderFeedback()
@@ -1400,7 +1400,7 @@ class BuyerController extends BuyerBaseController
 
         $frm->fill(array('op_id' => $opDetail['op_id'] ));
         $this->set('frmOrderReturnRequest', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function setupOrderReturnRequest()
@@ -1601,7 +1601,7 @@ class BuyerController extends BuyerBaseController
 
         $this->set('totalRewardPoints', UserRewardBreakup::rewardPointBalance($userId));
         $this->set('convertReward', $convertReward);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function rewardPointsSearch()
@@ -1749,7 +1749,7 @@ class BuyerController extends BuyerBaseController
 
     public function offers()
     {
-        $this->_template->render(true, false, 'buyer/offers.php');
+        $this->_template->render(true, true, 'buyer/offers.php');
     }
 
     public function searchOffers()
@@ -1916,7 +1916,7 @@ class BuyerController extends BuyerBaseController
         $this->set('referralTrackingUrl', CommonHelper::referralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code')));
         $this->set('sharingFrm', $this->getFriendsSharingForm($this->siteLangId));
         $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function sendMailShareEarn()

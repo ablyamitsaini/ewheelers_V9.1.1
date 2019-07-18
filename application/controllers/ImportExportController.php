@@ -15,7 +15,7 @@ class ImportExportController extends SellerBaseController
 
     public function index()
     {
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function exportData($actionType)
