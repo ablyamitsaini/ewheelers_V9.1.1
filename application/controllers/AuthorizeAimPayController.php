@@ -225,7 +225,7 @@ class AuthorizeAimPayController extends PaymentController
                         $decription .= str_replace("{description}", $tresponse->getMessages()[0]->getDescription(), $str). "\n";
 
                         if (!$orderPaymentObj->addOrderPayment($paymentSettings["pmethod_name"], $tresponse->getTransId(), $orderPaymentAmount, Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message)) {
-                            $json['error'] = Labels::getLabel('Transaction Failed', $this->siteLangId);
+                            $json['error'] = Labels::getLabel('MSS_Transaction_Failed', $this->siteLangId);
                         } else {
                             $json['msg'] = $message;
                             $json['description'] = $decription;
