@@ -15,8 +15,7 @@
             </div>
           </div>
            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-            <div class="seller-register-form">
-              
+            <div class="seller-register-form">              
 			  <div class="section-head">
 			<div class="section__heading">
 				<h2><?php echo Labels::getLabel('L_Advertise_With_Us', $siteLangId); ?></h2>

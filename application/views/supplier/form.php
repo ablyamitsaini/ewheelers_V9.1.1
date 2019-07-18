@@ -5,7 +5,12 @@ $frm->setFormTagAttribute('onsubmit', 'register(this); return(false);');
 $frm->developerTags['fld_default_col'] = 12; */
 ?>
 
-<div class="heading3"><?php echo Labels::getLabel('LBL_Seller_Registration',$siteLangId);?></div>
+ 
+<div class="section-head">
+			<div class="section__heading">
+				<h2><?php echo Labels::getLabel('LBL_Seller_Registration',$siteLangId);?></h2>
+			</div>
+					</div>
 <div class="registeration-process">
   <ul>
     <li class="is--active"><a href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Details',$siteLangId);?></a></li>
