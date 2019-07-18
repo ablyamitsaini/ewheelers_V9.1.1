@@ -787,6 +787,13 @@ class BuyerController extends BuyerBaseController
         $srch = $this->orderCancellationRequestObj();
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'selprod_id = op_selprod_id');
+            $srch->joinTable(SellerProduct::DB_LANG_TBL, 'INNER JOIN', 'selprod_id = selprodlang_selprod_id');
+            $srch->addFld(array('selprod_product_id', 'selprod_title'));
+        }
+
         $op_invoice_number = $post['op_invoice_number'];
         if (!empty($op_invoice_number)) {
             $srch->addCondition('op_invoice_number', '=', $op_invoice_number);

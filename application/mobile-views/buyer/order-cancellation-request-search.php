@@ -5,6 +5,11 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
+foreach ($requests as $key => $request) {
+    $requests[$key]['statusName'] = $OrderCancelRequestStatusArr[$request['ocrequest_status']];
+    $requests[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($request['selprod_product_id'], "THUMB", $request['op_selprod_id'], 0, $siteLangId));
+}
+
 $data = array(
     'requests' => $requests,
     'page' => $page,
