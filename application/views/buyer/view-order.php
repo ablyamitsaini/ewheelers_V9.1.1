@@ -1,6 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
     $canCancelOrder = true;
     $canReturnRefund = true;
+    $canReviewOrders = false;
 if (true == $primaryOrder) {
     if ($childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
         $canCancelOrder = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true)));
@@ -9,14 +10,16 @@ if (true == $primaryOrder) {
         $canCancelOrder = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
         $canReturnRefund = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
     }
-}
-$canReviewOrders = false;
-if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
-    $canReviewOrders = true;
+
+    if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
+        $canReviewOrders = true;
+    }
 }
 ?> <?php if (!$print) {
     ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <?php
-} ?> <main id="main-area" class="main" role="main">
+} ?>
+
+<main id="main-area" <?php if (!$print) { ?>class="main" <?php }?> role="main">
     <div class="content-wrapper content-space">
         <?php if (!$print) { ?>
         <div class="content-header row justify-content-between mb-3">

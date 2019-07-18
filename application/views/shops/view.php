@@ -7,7 +7,7 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
     ?>
 <?php echo $this->includeTemplate('products/listing-page.php', $shopData, false); ?>
 <?php if (!empty($collectionData)) { ?>
-<section class="section">
+<section class="section pt-0">
     <div class="container container-fluid">
         <div class="js-shop-slider shop-slider">
             <?php foreach ($collectionData as $collection) {?>

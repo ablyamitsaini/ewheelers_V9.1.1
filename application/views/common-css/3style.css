@@ -1761,36 +1761,19 @@ input:checked + .slider:before {
 }
 
 /*CMS*/
-.cms h1 {}
-
-.cms h2 {}
-
-.cms h3 {
-	font-size: 1.25rem;
-	color: #000;
-}
-
-.cms h4 {}
-
-.cms h5 {}
-
-.cms h6 {
-	font-size: 1rem;
-
-}
-
-.cms p {
-	color: var(--txt-color);
+.cms h1 {font-weight: 400;}
+.cms h2 { font-weight: 400;}
+.cms h3 {font-size: 1.5rem;	color: #000;font-weight: 400;}
+.cms h4 {font-size: 1.25rem;font-weight: 400;}
+.cms h5 {font-size: 1rem;font-weight: 400;}
+.cms h6 {font-size:0.875rem;font-weight: 400;}
+.cms p {color: var(--txt-color);font-weight: 400;
 	font-size: 0.875rem;
 	line-height: 1.8;
 	margin-bottom: 1rem;
 	word-break: break-all;
 }
-
-.cms .space {
-	padding: 50px 0;
-}
-
+.cms .space {padding: 50px 0;}
 .cms ul {
 	margin: 10px 0;
 	color: var(--txt-color);
@@ -2890,7 +2873,7 @@ table.cart-tbl-addons .item__title {
 .list-vertical .childs li {
 	font-size: 0.95em;
 	margin: 4px 0;
-	padding-inline-start: 0; 
+	padding-inline-start: 0;
 }
 
 .list-vertical li.seprator {

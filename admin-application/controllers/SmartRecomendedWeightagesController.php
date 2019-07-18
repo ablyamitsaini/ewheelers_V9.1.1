@@ -25,7 +25,6 @@ class SmartRecomendedWeightagesController extends AdminBaseController
     public function search()
     {
         $this->objPrivilege->canViewRecomendedWeightages();
-
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
         $searchForm = $this->getSearchForm();
         $data = FatApp::getPostedData();
@@ -35,7 +34,7 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $obj = new SmartWeightageSettings();
         $srch = $obj->getSearchObject();
 
-        if(!empty($post['keyword'])) {
+        if (!empty($post['keyword'])) {
             $srch->addCondition('sws.swsetting_name', 'like', '%'.$post['keyword'].'%');
         }
 
@@ -43,7 +42,6 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $page = FatUtility::int($page);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
-        $srch->addOrder('reportreason_id', 'DESC');
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
 
@@ -61,7 +59,7 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $this->objPrivilege->canEditRecomendedWeightages();
 
         $swsetting_key = FatUtility::int($swsetting_key);
-        if(1 > $swsetting_key) {
+        if (1 > $swsetting_key) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -70,18 +68,19 @@ class SmartRecomendedWeightagesController extends AdminBaseController
 
 
         $weightageKeyArr = SmartWeightageSettings::getWeightageKeyArr();
-        if(!array_key_exists($swsetting_key, $weightageKeyArr)) {
+        if (!array_key_exists($swsetting_key, $weightageKeyArr)) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $obj = new SmartWeightageSettings($swsetting_key);
+        
         $obj->assignValues(
             array(
             SmartWeightageSettings::tblFld('weightage') => $weightage,
             SmartWeightageSettings::tblFld('name')=>$weightageKeyArr[$swsetting_key])
         );
-        if(!$obj->save()) {
+        if (!$obj->save()) {
             Message::addErrorMessage($obj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -99,6 +98,4 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $fld_submit->attachField($fld_cancel);
         return $frm;
     }
-
-
 }

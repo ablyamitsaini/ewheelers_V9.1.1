@@ -119,7 +119,11 @@
               <label class="field_label"></label>
             </div>
             <div class="field-wraper">
-              <div class="field_cover"> <?php echo $frm->getFieldHtml('btn_submit'); ?> <a href="<?php echo $cancelBtnUrl; ?>" class="link link--normal"><?php echo Labels::getLabel('LBL_Cancel',$siteLangId);?></a> </div>
+              <div class="field_cover">
+                  <?php echo $frm->getFieldHtml('btn_submit'); ?>
+                  <a href="<?php echo $cancelBtnUrl; ?>" class="link link--normal"><?php echo Labels::getLabel('LBL_Cancel',$siteLangId);?></a>
+                  <span id="load"></span>
+              </div>
             </div>
           </div>
         </div>
