@@ -224,8 +224,8 @@ class MyAppController extends FatController
             $userName = 'login@dummyid.com';
             $pass = 'kanwar@123';
         }
-        $fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email', $siteLangId), 'username', '', array('placeholder'=>Labels::getLabel('LBL_Username_Or_Email', $siteLangId)));
-        $pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password', $siteLangId), 'password', '', array('placeholder'=>Labels::getLabel('LBL_Password', $siteLangId)));
+        $fld = $frm->addRequiredField(Labels::getLabel('LBL_Username_Or_Email', $siteLangId), 'username', $userName, array('placeholder'=>Labels::getLabel('LBL_Username_Or_Email', $siteLangId)));
+        $pwd = $frm->addPasswordField(Labels::getLabel('LBL_Password', $siteLangId), 'password', $pass, array('placeholder'=>Labels::getLabel('LBL_Password', $siteLangId)));
         $pwd->requirements()->setRequired();
         $frm->addCheckbox(Labels::getLabel('LBL_Remember_Me', $siteLangId), 'remember_me', 1, array(), '', 0);
         $frm->addHtml('', 'forgot', '');
