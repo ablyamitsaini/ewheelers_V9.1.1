@@ -3166,6 +3166,9 @@ class AccountController extends LoggedUserController
             $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
         }
         if (true ===  MOBILE_APP_API_CALL) {
+            $cartObj = new Cart(UserAuthentication::getLoggedUserId());
+            $shipping_address_id = $cartObj->getCartShippingAddress();
+            $this->set('shippingAddressId', $shipping_address_id);
             $this->_template->render();
         }
         $this->_template->render(false, false);

@@ -4,6 +4,14 @@ $statusArr = array(
     'status'=> 1,
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
+
+foreach ($addresses as $key => $value) {
+    $isShippingAddress = 0;
+    if ($shippingAddressId == $value['ua_id']) {
+        $isShippingAddress = 1;
+    }
+    $addresses[$key]['isShippingAddress'] = $isShippingAddress;
+}
 $data = array(
     'addresses' => !empty($addresses) ? $addresses : array(),
 );
