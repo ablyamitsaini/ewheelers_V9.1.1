@@ -49,7 +49,17 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 </div>
                                 <?php } ?>
 
-                            <div class="favourite-wrapper favourite-wrapper-detail ">
+                           
+                        </div>
+						</div>
+                        <div class="col-lg-5 col-details-right">
+                            <div class="product-description">
+                                <div class="product-description-inner">
+                                    <div class="">
+                                        <div class="products__title">
+                                            <div clss="">
+											<h2><?php echo $product['selprod_title'];?></h2>
+											 <div class="favourite-wrapper favourite-wrapper-detail ">
                                 <?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>
                                 <div class="share-button">
                                     <a href="javascript:void(0)" class="social-toggle"><i class="icn">
@@ -91,13 +101,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     </div>
                                 </div>
                             </div>
-                        </div> </div>
-                        <div class="col-lg-5 col-details-right">
-                            <div class="product-description">
-                                <div class="product-description-inner">
-                                    <div class="">
-                                        <div class="products__title">
-                                            <h2><?php echo $product['selprod_title'];?></h2>
+											</div>
                                             <?php if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
                                             <?php /*if (round($product['prod_rating']) > 0) {*/ ?>
                                             <?php $label = (round($product['prod_rating']) > 0) ? round($product['totReviews'], 1).' '.Labels::getLabel('LBL_Reviews', $siteLangId) : Labels::getLabel('LBL_No_Reviews', $siteLangId); ?>
@@ -109,7 +113,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 											</i>
                                             <span class="rate"><?php echo round($product['prod_rating'], 1);?></span>
 											</div>
-														<a href="#itemRatings" class="totals-review link"><?php echo $label; ?></a>
+                                            <a href="#itemRatings" class="totals-review link nav-scroll-js"><?php echo $label; ?></a>
                                             </div>
                                             <?php /*}*/ ?>
                                             <?php /* if (round($product['prod_rating']) == 0) {  ?>
@@ -147,7 +151,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 foreach ($optionRows as $key => $option) {
                                     $selectedOptionValue = $option['values'][$selectedOptionsArr[$key]]['optionvalue_name'];
                                     $selectedOptionColor = $option['values'][$selectedOptionsArr[$key]]['optionvalue_color_code']; ?>
-                                        <div class="col-md-6 mb-2">
+                                        <div class="col-md-6 mb-3">
                                             <div class="h6"><?php echo $option['option_name']; ?></div>
                                             <div class="js-wrap-drop wrap-drop" id="js-wrap-drop<?php echo $count; ?>">
                                                 <span>
@@ -379,7 +383,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 
                                         </div>
                                         <div class="col-auto">
-                                            <?php if (!UserAuthentication::isUserLogged() || (UserAuthentication::isUserLogged() && ((User::isBuyer()) || (User::isSeller() )))) { ?>
+                                            <?php if (!UserAuthentication::isUserLogged() || (UserAuthentication::isUserLogged() && ((User::isBuyer()) || (User::isSeller() )) && (UserAuthentication::getLoggedUserId()!=$shop['shop_user_id']))) { ?>
                                             <a href="<?php echo CommonHelper::generateUrl('shops', 'sendMessage', array($shop['shop_id'],$product['selprod_id'])); ?>"
                                                 class="btn btn--primary btn--secondary btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Ask_Question', $siteLangId); ?></a>
                                             <?php }?>
@@ -547,7 +551,8 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
                                     class="img-responsive"></a></div>
                     </div>
-                    <?php } ?></div>
+                    <?php } ?>
+                    </div>
                 <?php } if (isset($val['banner_record_id']) && $val['banner_record_id'] > 0 && $val['banner_type'] == Banner::TYPE_PPC) {
                          Promotion::updateImpressionData($val['banner_record_id']);
                 } ?>

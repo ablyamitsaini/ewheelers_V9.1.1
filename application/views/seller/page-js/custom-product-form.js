@@ -459,7 +459,7 @@
 			});
 		});
 	};
-    
+
 	reloadProductOptions = function( productId){
 
 		$("#product_options_list").html(fcom.getLoader());
@@ -573,7 +573,7 @@
 	addTagForm = function(id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('seller', 'addTagsForm', [id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 			});
 		});
 	};
@@ -616,7 +616,7 @@
 	addBrandReqForm = function(id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('seller', 'addBrandReqForm', [id]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 			});
 		});
 	};

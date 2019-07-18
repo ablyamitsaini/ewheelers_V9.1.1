@@ -11,7 +11,7 @@
     <div class="container">
         <div class="shop-nav">
             <?php
-            $variables= array('template_id'=>$template_id, 'shop_id'=>$shop['shop_id'],'collectionData'=>$collectionData,'action'=>$action,'siteLangId'=>$siteLangId);
+            $variables= array('template_id'=>$template_id, 'shop_id'=>$shop['shop_id'], 'shop_user_id'=>$shop['shop_user_id'], 'collectionData'=>$collectionData,'action'=>$action,'siteLangId'=>$siteLangId);
             $this->includeTemplate('shops/shop-layout-navigation.php', $variables, false); ?>
         </div>
     </div>

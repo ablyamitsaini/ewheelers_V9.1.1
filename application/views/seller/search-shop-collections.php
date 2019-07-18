@@ -9,19 +9,28 @@
                 <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(1)" class="btn btn--primary btn--sm formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Activate', $siteLangId);?></a>
                 <a href="javascript:void(0)" onClick="toggleBulkCollectionStatues(0)" class="btn btn--primary-border btn--sm formActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Deactivate', $siteLangId);?></a>
                 <a href="javascript:void(0)" onClick="deleteSelectedCollection()" class="btn btn--primary  btn--smformActionBtn-js formActions-css"><?php echo Labels::getLabel('LBL_Delete', $siteLangId);?></a>
+                <?php if (count($arr_listing) > 0) { ?>
                 <a href="javascript:void(0)" onClick="getShopCollectionGeneralForm(0)" class="btn btn--primary-border  btn--sm"><?php echo Labels::getLabel('LBL_Add_Collection', $siteLangId);?></a>
+            <?php }?>
             </div>
         </div>
     </div>
 </div>
 <div class="col-lg-12 col-md-12">
-    <?php $arr_flds = array(
-            'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
+    <?php
+    $arr_flds = array(
             'listserial'=>Labels::getLabel('LBL_Sr._no.', $siteLangId),
             'scollection_identifier'=>Labels::getLabel('LBL_Collection_Name', $siteLangId),
             'scollection_active'=>Labels::getLabel('LBL_Status', $siteLangId),
             'action' => Labels::getLabel('LBL_Action', $siteLangId),
         );
+        if (count($arr_listing) > 0) {
+            $arr_flds = array_merge(
+                array('select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId)),
+                $arr_flds
+                );
+        }
+
     $tbl = new HtmlElement(
         'table',
         array('width'=>'100%', 'class'=>'table table--orders','id'=>'options')

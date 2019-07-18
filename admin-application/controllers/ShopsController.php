@@ -357,10 +357,10 @@ class ShopsController extends AdminBaseController
         }
 
         $fileHandlerObj = new AttachedFile();
-        $unique_record = false;
-        if ($file_type != AttachedFile::FILETYPE_SHOP_BANNER) {
+        $unique_record = true;
+        /*if ($file_type != AttachedFile::FILETYPE_SHOP_BANNER) {
             $unique_record = true;
-        }
+        }*/
         if (!$res = $fileHandlerObj->saveAttachment(
             $_FILES['file']['tmp_name'],
             $file_type,

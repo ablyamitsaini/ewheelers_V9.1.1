@@ -3,27 +3,27 @@ jQuery.fn.reset = function () {
   $(this).each (function() { this.reset(); });
 }
 $(document).ready(function(){
-	
+
 	$("#twitter_btn").click(function(event) {
 		event.preventDefault();
 		twitter_login();
 	});
-	
+
 	$("#facebook_btn").click(function(event) {
 		event.preventDefault();
 		fbSubmit();
 	});
-	
+
 	$("#facebook_btn2").click(function(event){
 		event.preventDefault();
 		fbSubmit2();
 	});
-	
+
 	$('.showbutton').click(function() {
 		$(this).toggleClass("active");
 		$('.showwrap').slideToggle("600");
 	});
-	
+
 	$( 'form[rel=action]' ).submit(function( event ) {
 		event.preventDefault();
 		var me=$(this);
@@ -51,7 +51,17 @@ $(document).ready(function(){
 			frm.reset();
 		});
 	};
-	
+
+    copy = function(obj){
+		var copyText = obj.attr('title');
+		document.addEventListener('copy', function(e) {
+			e.clipboardData.setData('text/plain', copyText);
+			e.preventDefault();
+		}, true);
+		document.execCommand('copy');
+		alert('copied text: ' + copyText);
+	}
+
 })();
 
 
@@ -81,9 +91,9 @@ function fbSubmit() {
 		} else {
 			FB.login(function(response) {
 				if (response.authResponse) {
-					
+
 					//$(window.parent.document).find("#facebook_btn2").trigger("click");;
-					
+
 					/* window.parent.$('#facebook_btn2').trigger('click'); */
 					//window.parent.document.getElementById("facebook_btn2").onClick();
 					//window.parent.fbSubmit();

@@ -1914,7 +1914,8 @@ class BuyerController extends BuyerBaseController
         }
 
         $this->set('referralTrackingUrl', CommonHelper::referralTrackingUrl(UserAuthentication::getLoggedUserAttribute('user_referral_code')));
-        $this->set('sharingfrm', $this->getFriendsSharingForm($this->siteLangId));
+        $this->set('sharingFrm', $this->getFriendsSharingForm($this->siteLangId));
+        $this->_template->addJs('js/slick.min.js');
         $this->_template->render(true, false);
     }
 

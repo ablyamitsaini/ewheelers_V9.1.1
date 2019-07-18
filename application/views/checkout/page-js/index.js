@@ -12,6 +12,13 @@ var cartReviewDiv = '#cart-review';
 var paymentDiv = '#payment';
 var financialSummary = '.summary-listing';
 
+function checkLogin(){
+	if( isUserLogged() == 0 ){
+		loginPopUpBox();
+		return false;
+	}
+}
+
 function showLoginDiv()
 {
 	$('.step').removeClass("is-current");
@@ -24,6 +31,7 @@ function showLoginDiv()
 }
 
 function editCart(){
+	checkLogin();
 	$('.js-editCart').toggle();
 }
 
@@ -34,6 +42,7 @@ function showAddressFormDiv()
 }
 function showAddressList()
 {
+	checkLogin();
 	loadAddressDiv();
 	setCheckoutFlow('BILLING');
 	// resetShippingSummary();
@@ -125,6 +134,7 @@ $("document").ready(function()
 	};
 
 	removeAddress = function(id){
+		checkLogin();
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){
 			return false;
@@ -136,6 +146,7 @@ $("document").ready(function()
 	};
 
 	editAddress = function( address_id ){
+		checkLogin();
 		if(typeof address_id == 'undefined'){
 			address_id = 0;
 		}
@@ -151,6 +162,7 @@ $("document").ready(function()
 	};
 
 	setUpAddress = function(frm){
+		checkLogin();
 		if ( !$(frm).validate() ) return;
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Addresses', 'setUpAddress'), data, function(t) {
@@ -162,7 +174,7 @@ $("document").ready(function()
 	};
 
 	setUpAddressSelection = function(elm){
-
+		checkLogin();
 		var shipping_address_id = $(elm).parent().parent().parent().find('input[name="shipping_address_id"]:checked').val();
 		var billing_address_id = $(elm).parent().parent().parent().parent().find('input[name="billing_address_id"]:checked').val();
 		var isShippingSameAsBilling = $('input[name="isShippingSameAsBilling"]:checked').val();
@@ -187,6 +199,7 @@ $("document").ready(function()
 	};
 
 	setUpShippingApi = function(frm){
+		checkLogin();
 		var data = fcom.frmData(frm);
 		$(shippingSummaryDiv).html( fcom.getLoader() );
 		fcom.ajax(fcom.makeUrl('Checkout', 'setUpShippingApi'), data , function(ans) {
@@ -209,6 +222,7 @@ $("document").ready(function()
 	};
 
 	setUpShippingMethod = function(){
+		checkLogin();
 		var data = $("#shipping-summary select").serialize();
 		fcom.updateWithAjax(fcom.makeUrl('Checkout', 'setUpShippingMethod'), data , function(t) {
 			if( t.status == 1 ){
@@ -277,6 +291,7 @@ $("document").ready(function()
 	};
 
 	changeShipping = function(){
+		checkLogin();
 		loadShippingSummaryDiv();
 		resetCartReview();
 		resetPaymentSummary();
@@ -361,24 +376,18 @@ $("document").ready(function()
 	};
 
 	getPromoCode = function(){
-		if( isUserLogged() == 0 ){
-			loginPopUpBox();
-			return false;
-		}
+		checkLogin();
 
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Checkout','getCouponForm'), '', function(t){
-				$.facebox(t,'faceboxWidth');
+				$.facebox(t,'faceboxWidth medium-fb-width');
 				$("input[name='coupon_code']").focus();
 			});
 		});
 	};
 
 	applyPromoCode  = function(frm){
-		if( isUserLogged() == 0 ){
-			loginPopUpBox();
-			return false;
-		}
+		checkLogin();
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
 
@@ -408,6 +417,7 @@ $("document").ready(function()
 	};
 
 	useRewardPoints  = function(frm){
+		checkLogin();
 		$.systemMessage.close();
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
@@ -418,6 +428,7 @@ $("document").ready(function()
 	};
 
 	removeRewardPoints  = function(){
+		checkLogin();
 		$.systemMessage.close();
 		fcom.updateWithAjax(fcom.makeUrl('Checkout','removeRewardPoints'),'',function(res){
 			loadFinancialSummary();

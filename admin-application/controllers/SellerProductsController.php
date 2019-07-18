@@ -1098,11 +1098,15 @@ class SellerProductsController extends AdminBaseController
         }
 
         $data_to_save = array(
-        'voldiscount_id'            =>    $voldiscount_id,
         'voldiscount_selprod_id'    =>    $selprod_id,
         'voldiscount_min_qty'        =>    $post['voldiscount_min_qty'],
         'voldiscount_percentage'    =>    $post['voldiscount_percentage']
         );
+        
+        if($voldiscount_id > 1){
+            $data_to_save['voldiscount_id']	=	$voldiscount_id;
+        }
+        
         $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
         $record->assignValues($data_to_save);
         if (!$record->addNew(array(), $data_to_save)) {
