@@ -62,7 +62,7 @@ class AdvertiserController extends AdvertiserBaseController
         // $this->set('promotionList', $promotionList);
         // $this->set('promotionCount', $srch->recordCount());
         $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function getPromotionsSearch($active = false)
@@ -697,12 +697,12 @@ class AdvertiserController extends AdvertiserBaseController
 
         $this->set("frmSearchPromotions", $frmSearchPromotions);
         $this->set("records", $records);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function promotionCharges()
     {
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchPromotionCharges()
@@ -1104,7 +1104,7 @@ class AdvertiserController extends AdvertiserBaseController
         $this->set('searchForm', $searchForm);
         $this->set('promotionDetails', $promotionDetails);
 
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchAnalyticsData()
