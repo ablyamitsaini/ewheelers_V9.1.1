@@ -20,14 +20,19 @@ $fld2 = $prodCatBannerFrm->getField('cat_banner');
 $fld2->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $prodCatBannerFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'banner-language-js');
+$screenFld = $prodCatBannerFrm->getField('slide_screen');
+$screenFld->addFieldTagAttribute('class', 'prefDimensions-js');
 
-$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions', $adminLangId), '2000*500').'</small>';
+$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'1350 x 405').'</div>';
+$htmlAfterField .= '<div id="banner-image-listing"></div>';
+$fld2->htmlAfterField = $htmlAfterField;
 
+/*$preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions', $adminLangId), '2000*500').'</small>';
 $htmlAfterField = $preferredDimensionsStr;
 $catBannerImages ='';
 $htmlAfterField .= '<div id="banner-image-listing"></div>';
-$fld2->htmlAfterField = $htmlAfterField;
-?>
+$fld2->htmlAfterField = $htmlAfterField;*/ ?>
+
 <section class="section">
     <div class="sectionhead">
         <h4><?php echo Labels::getLabel('LBL_Product_Category_Media_Setup', $adminLangId); ?></h4>
@@ -57,7 +62,6 @@ $fld2->htmlAfterField = $htmlAfterField;
                                 <?php /* echo $prodCatImageFrm->getFormHtml(); */?>
                                 <?php echo $prodCatBannerFrm->getFormHtml();?>
                             </section>
-                            <h3><?php echo $catBannerImages;?></h3>
                         </div>
                     </div>
                 </div>
@@ -65,3 +69,21 @@ $fld2->htmlAfterField = $htmlAfterField;
         </div>
     </div>
 </section>
+<script>
+    $(document).on('change','.prefDimensions-js',function(){
+        var screenDesktop = <?php echo applicationConstants::SCREEN_DESKTOP ?>;
+        var screenIpad = <?php echo applicationConstants::SCREEN_IPAD ?>;
+
+        if($(this).val() == screenDesktop)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1350 x 405'));
+        }
+        else if($(this).val() == screenIpad)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 576'));
+        }
+        else{
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));
+        }
+    });
+</script>

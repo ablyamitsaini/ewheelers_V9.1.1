@@ -12,7 +12,15 @@ $(document).on('change','.banner-language-js',function(){
 /* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var prodcat_id = $("input[name='prodcat_id']").val();
-	categoryImages(prodcat_id,'banner',lang_id);
+	var slide_screen = $(".prefDimensions-js").val();
+	categoryImages(prodcat_id,'banner',slide_screen,lang_id);
+});
+$(document).on('change','.prefDimensions-js',function(){
+/* $(document).delegate('.prefDimensions-js','change',function(){ */
+	var slide_screen = $(this).val();
+	var prodcat_id = $("input[name='prodcat_id']").val();
+	var lang_id = $(".language-js").val();
+	categoryImages(prodcat_id,'banner',slide_screen,lang_id);
 });
 (function() {
 	var currentPage = 1;
@@ -57,8 +65,8 @@ $(document).on('change','.banner-language-js',function(){
 
 	};
 
-	categoryImages = function(prodCatId,imageType,lang_id){
-		fcom.ajax(fcom.makeUrl('ProductCategories', 'images', [prodCatId,imageType,lang_id]), '', function(t) {
+	categoryImages = function(prodCatId,imageType,slide_screen,lang_id){
+		fcom.ajax(fcom.makeUrl('ProductCategories', 'images', [prodCatId,imageType,lang_id,slide_screen]), '', function(t) {
 			if(imageType=='icon') {
 				$('#icon-image-listing').html(t);
 			} else if(imageType=='banner') {
@@ -151,8 +159,8 @@ $(document).on('change','.banner-language-js',function(){
 	categoryMediaForm = function(prodCatId){
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('productCategories','mediaForm',[prodCatId]),'',function(t){
-			categoryImages(prodCatId,'icon');
-			categoryImages(prodCatId,'banner');
+			categoryImages(prodCatId,'icon',1);
+			categoryImages(prodCatId,'banner',1);
 			fcom.updateFaceboxContent(t);
 			setTimeout(  fcom.resetFaceboxHeight(),5000);
 		});
@@ -172,10 +180,10 @@ $(document).on('change','.banner-language-js',function(){
 		});
 	};
 
-	deleteImage = function(fileId, prodcatId, imageType, langId){
+	deleteImage = function(fileId, prodcatId, imageType, langId, slide_screen){
 		if( !confirm(langLbl.confirmDeleteImage) ){ return; }
-		fcom.updateWithAjax(fcom.makeUrl('productCategories', 'removeImage',[fileId,prodcatId,imageType,langId]), '', function(t) {
-			categoryImages( prodcatId, imageType, langId );
+		fcom.updateWithAjax(fcom.makeUrl('productCategories', 'removeImage',[fileId,prodcatId,imageType,langId,slide_screen]), '', function(t) {
+			categoryImages( prodcatId, imageType, slide_screen, langId );
 		});
 	};
 
@@ -238,6 +246,7 @@ $(document).on('click','.catFile-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
 	var formName = $(node).attr('data-frm');
+	var slide_screen = 0;
 	if(formName == 'frmCategoryImage'){
 		var lang_id = document.frmCategoryImage.lang_id.value;
 		var prodcat_id = document.frmCategoryImage.prodcat_id.value;
@@ -248,6 +257,7 @@ $(document).on('click','.catFile-Js',function(){
 	}else{
 		var lang_id = document.frmCategoryBanner.lang_id.value;
 		var prodcat_id = document.frmCategoryBanner.prodcat_id.value;
+		slide_screen = document.frmCategoryBanner.slide_screen.value;
 		var imageType = 'banner';
 	}
 
@@ -257,7 +267,8 @@ $(document).on('click','.catFile-Js',function(){
 	frm = frm.concat('<input type="file" name="file" />');
 	frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');
 	frm = frm.concat('<input type="hidden" name="prodcat_id" value="' + prodcat_id + '">');
-	frm = frm.concat('<input type="lang_id" name="lang_id" value="' + lang_id + '">');
+	frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
+	frm = frm.concat('<input type="hidden" name="slide_screen" value="' + slide_screen + '">');
 	frm = frm.concat('</form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
@@ -288,7 +299,7 @@ $(document).on('click','.catFile-Js',function(){
 						if(ans.status == 1){
 							fcom.displaySuccessMessage(ans.msg);
 							$('#form-upload').remove();
-							categoryImages(prodcat_id,imageType,lang_id);
+							categoryImages(prodcat_id,imageType,slide_screen,lang_id);
 						}else{
 							fcom.displayErrorMessage(ans.msg);
 						}

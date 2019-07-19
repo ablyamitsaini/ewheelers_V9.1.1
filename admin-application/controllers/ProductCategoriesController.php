@@ -183,7 +183,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function images($prodcat_id, $imageType = '', $lang_id = 0)
+    public function images($prodcat_id, $imageType = '', $lang_id = 0, $slide_screen = 0)
     {
         $this->objPrivilege->canViewShops();
         $shop_id = FatUtility::int($prodcat_id);
@@ -205,8 +205,9 @@ class ProductCategoriesController extends AdminBaseController
             $this->set('images', $catIcons);
             $this->set('imageFunction', 'icon');
         } elseif ($imageType=='banner') {
-            $catBanners = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_CATEGORY_BANNER, $prodcat_id, 0, $lang_id, false);
+            $catBanners = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_CATEGORY_BANNER, $prodcat_id, 0, $lang_id, false, $slide_screen);
             $this->set('images', $catBanners);
+            $this->set('screenTypeArr', $this->getDisplayScreenName());
             $this->set('imageFunction', 'banner');
         }
         $this->set('imageType', $imageType);
@@ -221,6 +222,7 @@ class ProductCategoriesController extends AdminBaseController
         $file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0);
         $prodcat_id = FatApp::getPostedData('prodcat_id', FatUtility::VAR_INT, 0);
         $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
+        $slide_screen = FatApp::getPostedData('slide_screen', FatUtility::VAR_INT, 0);
         if (!$file_type || !$prodcat_id) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
@@ -248,7 +250,8 @@ class ProductCategoriesController extends AdminBaseController
             -1,
             $unique_record = true,
             $lang_id,
-            $_FILES['file']['type']
+            $_FILES['file']['type'],
+            $slide_screen
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -262,7 +265,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeImage($afileId, $prodCatId, $imageType = '', $langId = 0)
+    public function removeImage($afileId, $prodCatId, $imageType = '', $langId = 0, $screen = 0)
     {
         $afileId = FatUtility::int($afileId);
         $prodCatId = FatUtility::int($prodCatId);
@@ -278,7 +281,7 @@ class ProductCategoriesController extends AdminBaseController
             $fileType = AttachedFile::FILETYPE_CATEGORY_BANNER;
         }
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $prodCatId, $afileId, 0, $langId)) {
+        if (!$fileHandlerObj->deleteFile($fileType, $prodCatId, $afileId, 0, $langId, $screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -493,6 +496,8 @@ class ProductCategoriesController extends AdminBaseController
         $frm->addHiddenField('', 'prodcat_id', $prodcat_id);
         $bannerTypeArr = applicationConstants::bannerTypeArr();
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '');
+        $screenArr = applicationConstants::getDisplaysArr($this->adminLangId);
+        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->adminLangId), 'slide_screen', $screenArr, '', array(), '');
         $fld = $frm->addButton(
             Labels::getLabel('LBL_Banner', $this->adminLangId),
             'cat_banner',
@@ -918,5 +923,11 @@ class ProductCategoriesController extends AdminBaseController
             );
         }
         die(json_encode($json));
+    }
+
+    private function getDisplayScreenName()
+    {
+        $screenTypesArr = applicationConstants::getDisplaysArr($this->adminLangId);
+        return array( 0 => '' ) + $screenTypesArr;
     }
 }
