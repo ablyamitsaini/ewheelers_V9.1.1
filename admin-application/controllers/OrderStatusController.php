@@ -91,7 +91,7 @@ class OrderStatusController extends AdminBaseController
         $frm = $this->getForm($orderStatusId);
 
         if (0 < $orderStatusId) {
-            $data = OrderStatus::getAttributesById($orderStatusId, array('orderstatus_id','orderstatus_identifier','orderstatus_is_active','orderstatus_is_digital'));
+            $data = OrderStatus::getAttributesById($orderStatusId, array('orderstatus_id','orderstatus_identifier','orderstatus_is_active','orderstatus_is_digital','orderstatus_color_code'));
 
             if ($data === false) {
                 FatUtility::dieWithError($this->str_invalid_request);
@@ -227,7 +227,8 @@ class OrderStatusController extends AdminBaseController
 
         $frm = new Form('frmorderstatus');
         $frm->addHiddenField('', 'orderstatus_id', $orderStatusId);
-        $frm->addRequiredField(Labels::getLabel('LBL_orderstatus_Identifier', $this->adminLangId), 'orderstatus_identifier');
+        $frm->addRequiredField(Labels::getLabel('LBL_Order_Status_Identifier', $this->adminLangId), 'orderstatus_identifier');
+        $frm->addRequiredField(Labels::getLabel('LBL_Order_Status_Color_Code', $this->adminLangId), 'orderstatus_color_code');
 
         $orderStatusTypeArr = OrderStatus::getOrderStatusTypeArr($this->adminLangId);
 
