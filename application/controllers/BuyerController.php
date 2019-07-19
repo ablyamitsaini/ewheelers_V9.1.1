@@ -868,6 +868,12 @@ class BuyerController extends BuyerBaseController
             'op_invoice_number', 'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model')
         );
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'selprod_id = op_selprod_id');
+            $srch->joinTable(SellerProduct::DB_LANG_TBL, 'INNER JOIN', 'selprod_id = selprodlang_selprod_id AND selprodlang_lang_id = '.$this->siteLangId);
+            $srch->addFld(array('selprod_product_id', 'selprod_title'));
+        }
+
         $srch->addOrder('orrequest_date', 'DESC');
 
         $keyword = $post['keyword'];
