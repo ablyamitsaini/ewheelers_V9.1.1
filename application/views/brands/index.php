@@ -25,9 +25,8 @@
   <section class="section">
     <div class="container">      
       <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    
-            <div class="panel panel--centered">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+            <div class="cg-main">
 				<?php if(!empty($allBrands)){ $firstCharacter = '';
 						foreach($allBrands as $brands){
 
@@ -46,8 +45,8 @@
 							if($firstCharacter!=''){ echo "</ul></div>"; }
 							$firstCharacter = $str;
 				?>
-              <div class="listingbox">
-                <h5><?php echo $firstCharacter;?></h5>
+              <div class="item">
+                <h6><?php echo $firstCharacter;?></h6>
                 <ul class="listing--onefifth">
                   <?php } ?>
                   <li><a href="<?php echo CommonHelper::generateUrl('Brands','view',array($brands['brand_id']));?>"><?php echo $brands['brand_name'];?></a></li>
