@@ -16,6 +16,6 @@
             <div id="loadMoreBtnDiv"></div>
 		</div>
 	</section>
-	<div class="gap"></div>
+	
 </div>
 <?php echo $searchForm->getFormHtml();?>

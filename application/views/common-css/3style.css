@@ -1761,19 +1761,48 @@ input:checked + .slider:before {
 }
 
 /*CMS*/
-.cms h1 {font-weight: 400;}
-.cms h2 { font-weight: 400;}
-.cms h3 {font-size: 1.5rem;	color: #000;font-weight: 400;}
-.cms h4 {font-size: 1.25rem;font-weight: 400;}
-.cms h5 {font-size: 1rem;font-weight: 400;}
-.cms h6 {font-size:0.875rem;font-weight: 400;}
-.cms p {color: var(--txt-color);font-weight: 400;
+.cms h1 {
+	font-weight: 400;
+}
+
+.cms h2 {
+	font-weight: 400;
+}
+
+.cms h3 {
+	font-size: 1.5rem;
+	color: #000;
+	font-weight: 400;
+}
+
+.cms h4 {
+	font-size: 1.25rem;
+	font-weight: 400;
+}
+
+.cms h5 {
+	font-size: 1rem;
+	font-weight: 400;
+}
+
+.cms h6 {
+	font-size: 0.875rem;
+	font-weight: 400;
+}
+
+.cms p {
+	color: var(--txt-color);
+	font-weight: 400;
 	font-size: 0.875rem;
 	line-height: 1.8;
 	margin-bottom: 1rem;
-	word-break: break-all;
+	word-break:break-word;
 }
-.cms .space {padding: 50px 0;}
+
+.cms .space {
+	padding: 50px 0;
+}
+
 .cms ul {
 	margin: 10px 0;
 	color: var(--txt-color);
@@ -1786,7 +1815,7 @@ input:checked + .slider:before {
 	color: inherit;
 	list-style: disc;
 
-display: list-item;
+	display: list-item;
 }
 
 .cms ul ul li {
@@ -2930,24 +2959,29 @@ table.cart-tbl-addons .item__title {
 	left: 0;
 	top: 0;
 	content: "";
-	border-radius:4px;
+	border-radius: 4px;
 }
-.listing--check li.is-active a:before{ background: var(--first-color); border-color: var(--first-color);}
+
+.listing--check li.is-active a:before {
+	background: var(--first-color);
+	border-color: var(--first-color);
+}
+
 .listing--check li.is-active a:after {
-height: 12px;
-width: 7px;
-position: absolute;
-content: '';
-display: inline-block;
-font-size: 16px;
-text-align: center;
-line-height: 16px;
-border-right: 2px solid #fff;
-border-bottom: 2px solid #fff;
-transform: rotate(45deg);
-left: 6px;
-top: 2px;
-margin:;
+	height: 12px;
+	width: 7px;
+	position: absolute;
+	content: '';
+	display: inline-block;
+	font-size: 16px;
+	text-align: center;
+	line-height: 16px;
+	border-right: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	transform: rotate(45deg);
+	left: 6px;
+	top: 2px;
+	margin: ;
 }
 
 
@@ -8024,8 +8058,8 @@ body.is--dashboard {
 
 .preview {
 	background: #f5f5f5;
-	border-radius: 1px;
-	padding: 25px;
+	border-radius: 4px;
+	padding: 20px;
 	margin-bottom: 1rem;
 }
 
@@ -9158,7 +9192,7 @@ a.box--share:hover {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
-	margin: 15px 0;
+	margin: 0;
 }
 
 .cg-nav-wrapper ul {
@@ -9184,10 +9218,11 @@ a.box--share:hover {
 	display: inline-block;
 	margin-inline-end: 15px;
 	border-radius: 50%;
-	border: solid 1px var(--border-color);
+	/*border: solid 1px var(--border-color);*/
+	box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.30);
 	overflow: hidden;
 	flex: 0 0 35px;
-	padding: 5px;
+	padding: 0;
 }
 
 .cg-nav-wrapper .caption {
@@ -9207,8 +9242,10 @@ a.box--share:hover {
 	padding: 1rem 0;
 	border-bottom: solid 1px var(--border-color);
 	text-align: inherit;
+}
 
-
+.cg-main .item:last-child {
+	border-bottom: none;
 }
 
 .cg-main ul li {
@@ -15172,7 +15209,20 @@ main.main {
 .shop-banner {
 	background-position: center top;
 	background-repeat: no-repeat;
-	min-height: 500px;
+	position: relative;
+	/*height: 0;
+	padding-bottom: 25%;
+}
+
+.shop-banner img {
+	/*
+	-o-object-fit: cover;
+	object-fit: cover;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;*/
 }
 
 .btn .icn svg,
@@ -15534,22 +15584,24 @@ main.main {
 
 /* Demo button */
 .fixed-demo-btn {
-	line-height: 1.8;
+	line-height: 1.2;
 	position: fixed;
-	right: -100px;
-	top: 300px;
+	right: 15px;
+	top:18%;
 	z-index: 10;
 	background: var(--first-color);
 	border-radius: 2px 2px 0px 0px;
 	-webkit-transform: rotate(-90deg);
 	transform: rotate(-90deg);
 	display: block;
-	height: 50px;
-	width: 228px;
+	/*height: 50px;
+	width: 220px;*/
 	color: #fff;
-	font-size: 1.5em;
+	font-size: 1.2em;
+	padding: 5px 10px;
 	/* font-weight: 600; */
 	text-align: center;
+	transform-origin: right;
 }
 
 .fixed-demo-btn #btn-demo {
@@ -16336,5 +16388,3 @@ div.faqanswer p {
 #st_gdpr_iframe {
 	display: none;
 }
-
-

@@ -1,13 +1,17 @@
-<div id="body" class="body bg--gray">
-  <section class="dashboard">
+<div id="body" class="body">
+ <div class="bg--second pt-3 pb-3">
+      <div class="container">
+    <div class="section-head section--white--head justify-content-center mb-0">
+            <div class="section__heading">
+                  <h2 class="mb-0"><?php echo Labels::getLabel('LBL_Shop_By_Categories', $siteLangId);?></h2>
+            </div>
+        </div> 
+    </div>
+    </div>
+  <section class="section">
     <div class="container">
-      <div class="breadcrumbs">
-        <?php /* $this->includeTemplate('_partial/custom/header-breadcrumb.php'); */ ?>
-      </div>
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="panel panel--centered">
-            <h3><?php echo Labels::getLabel('LBL_Shop_By_Categories', $siteLangId);?></h3>
+        <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
             <div class="cg-nav-wrapper cg--js">
 			<?php
 				$featuredCategory = array_slice($categoriesArr, 0, 7);
@@ -45,11 +49,9 @@
             </div>
             <span class="gap"></span>
 			<?php $this->includeTemplate('category/categories-list.php',array('categoriesArr'=>$categoriesArr),false);?>
-             <span class="gap"></span>
-          </div>
+    
         </div>
       </div>
     </div>
-  </section>
-	<div class="gap"></div>
+  </section>	
 </div>
