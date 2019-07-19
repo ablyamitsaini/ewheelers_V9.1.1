@@ -790,7 +790,7 @@ class BuyerController extends BuyerBaseController
 
         if (true ===  MOBILE_APP_API_CALL) {
             $srch->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'selprod_id = op_selprod_id');
-            $srch->joinTable(SellerProduct::DB_LANG_TBL, 'INNER JOIN', 'selprod_id = selprodlang_selprod_id');
+            $srch->joinTable(SellerProduct::DB_LANG_TBL, 'INNER JOIN', 'selprod_id = selprodlang_selprod_id AND selprodlang_lang_id = '.$this->siteLangId);
             $srch->addFld(array('selprod_product_id', 'selprod_title'));
         }
 
