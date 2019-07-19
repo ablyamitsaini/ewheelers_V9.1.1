@@ -180,7 +180,7 @@ class BuyerController extends BuyerBaseController
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
 
         foreach ($childOrderDetail as $opID => $val) {
-            $childOrderDetail[$opID]['charges'] = array_values($orderDetail['charges'][$opID]);
+            $childOrderDetail[$opID]['charges'] = $orderDetail['charges'][$opID];
         }
 
         if ($opId > 0) {
