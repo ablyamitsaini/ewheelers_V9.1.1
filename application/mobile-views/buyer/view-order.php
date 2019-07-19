@@ -31,6 +31,19 @@ $shippingCharges = 0;
 foreach ($childArr as $index => $childOrder) {
     $childArr[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($childOrder['selprod_product_id'], "THUMB", $childOrder['op_selprod_id'], 0, $siteLangId));
 
+    if ($childOrder['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+        $childArr[$index]['canCancelOrder'] = (in_array($childOrder["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true))) ? 1 : 0;
+        $childArr[$index]['canReturnOrder'] = (in_array($childOrder["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true))) ? 1 : 0;
+    } else {
+        $childArr[$index]['canCancelOrder'] = (in_array($childOrder["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) ? 1 : 0;
+        $childArr[$index]['canReturnOrder'] = (in_array($childOrder["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses())) ? 1 : 0;
+    }
+
+    $canSubmitFeedback = Orders::canSubmitFeedback($childOrder['order_user_id'], $childOrder['order_id'], $childOrder['op_selprod_id']);
+    $isValidForReview = in_array($childOrder["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses());
+
+    $childArr[$index]['canSubmitFeedback'] = ($canSubmitFeedback && $isValidForReview) ? 1 : 0;
+
     $cartTotal = $cartTotal + CommonHelper::orderProductAmount($childOrder, 'cart_total');
     $shippingCharges = $shippingCharges + CommonHelper::orderProductAmount($childOrder, 'shipping');
     $volumeDiscount = CommonHelper::orderProductAmount($childOrder, 'VOLUME_DISCOUNT');
