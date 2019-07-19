@@ -265,7 +265,7 @@ class ProductCategoriesController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeImage($afileId, $prodCatId, $imageType = '', $langId = 0, $screen = 0)
+    public function removeImage($afileId, $prodCatId, $imageType = '', $langId = 0, $slide_screen = 0)
     {
         $afileId = FatUtility::int($afileId);
         $prodCatId = FatUtility::int($prodCatId);
@@ -281,7 +281,7 @@ class ProductCategoriesController extends AdminBaseController
             $fileType = AttachedFile::FILETYPE_CATEGORY_BANNER;
         }
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $prodCatId, $afileId, 0, $langId, $screen)) {
+        if (!$fileHandlerObj->deleteFile($fileType, $prodCatId, $afileId, 0, $langId, $slide_screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
