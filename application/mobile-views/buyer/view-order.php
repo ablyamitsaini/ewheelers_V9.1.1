@@ -50,6 +50,10 @@ foreach ($childArr as $index => $childOrder) {
     $rewardPointDiscount = CommonHelper::orderProductAmount($childOrder, 'REWARDPOINT');
     $childArr[$index]['priceDetail'] = array(
         array(
+            'key' => Labels::getLabel('LBL_Quantity', $siteLangId),
+            'value' => $childOrder['op_qty'],
+        ),
+        array(
             'key' => Labels::getLabel('LBL_Price', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($childOrder['op_unit_price']),
         ),
