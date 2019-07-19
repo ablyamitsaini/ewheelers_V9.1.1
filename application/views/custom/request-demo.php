@@ -21,6 +21,7 @@
 	.pop-logo {
 		margin: 1rem auto;
 		text-align: center;
+		max-width: 180px;
 	}
 
 	.pop-logo img {
