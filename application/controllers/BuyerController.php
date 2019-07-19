@@ -869,9 +869,11 @@ class BuyerController extends BuyerBaseController
         );
 
         if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinTable(OrderReturnReason::DB_TBL, 'LEFT JOIN', 'orrequest_returnreason_id = orreason_id');
+            $srch->joinTable(OrderReturnReason::DB_TBL_LANG, 'LEFT JOIN', 'orreasonlang_orreason_id = orreason_id');
             $srch->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'selprod_id = op_selprod_id');
             $srch->joinTable(SellerProduct::DB_LANG_TBL, 'INNER JOIN', 'selprod_id = selprodlang_selprod_id AND selprodlang_lang_id = '.$this->siteLangId);
-            $srch->addFld(array('selprod_product_id', 'selprod_title'));
+            $srch->addFld(array('selprod_product_id', 'selprod_title', 'IFNULL(orreason_title, orreason_identifier) as requestReason'));
         }
 
         $srch->addOrder('orrequest_date', 'DESC');
