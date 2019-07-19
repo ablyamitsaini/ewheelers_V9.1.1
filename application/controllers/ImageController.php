@@ -280,7 +280,7 @@ class ImageController extends FatController
         }
     }
 
-    public function shopBanner($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0)
+    public function shopBanner($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0, $screen = 0)
     {
         $default_image = 'product_default_image.jpg';
 
@@ -294,7 +294,7 @@ class ImageController extends FatController
                 return ;
             }
         } else {
-            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_BANNER, $recordId, 0, $lang_id);
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_BANNER, $recordId, 0, $lang_id, true, $screen);
         }
 
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';

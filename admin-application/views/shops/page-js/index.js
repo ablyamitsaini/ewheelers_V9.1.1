@@ -4,21 +4,28 @@ $(document).ready(function(){
 $(document).on('change','.logo-language-js',function(){
 /* $(document).delegate('.logo-language-js','change',function(){ */
 	var lang_id = $(this).val();
-	var shop_id = $("input[name='shop_id']").val();
+	var shop_id = document.frmShopLogo.shop_id.value;
 	shopImages(shop_id,'logo',lang_id);
 });
 $(document).on('change','.banner-language-js',function(){
 /* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
-	var shop_id = $("input[name='shop_id']").val();
+	var shop_id = document.frmShopBanner.shop_id.value;
+	var slide_screen = $(".prefDimensions-js").val();
 	shopImages(shop_id,'banner',lang_id);
 });
-$(document).on('change','.bg-language-js',function(){
-/* $(document).delegate('.bg-language-js','change',function(){ */
-	var lang_id = $(this).val();
-	var shop_id = $("input[name='shop_id']").val();
-	shopImages(shop_id,'bg',lang_id);
+$(document).on('change','.prefDimensions-js',function(){
+/* $(document).delegate('.prefDimensions-js','change',function(){ */
+	var slide_screen = $(this).val();
+	var shop_id = document.frmShopBanner.shop_id.value;
+	var lang_id = $(".language-js").val();
+	shopImages(shop_id,'banner',slide_screen,lang_id);
 });
+/*$(document).on('change','.bg-language-js',function(){
+	var lang_id = $(this).val();
+	var shop_id = document.frmShopBg.shop_id.value;
+	shopImages(shop_id,'bg',lang_id);
+});*/
 $(document).on('change','.collection-language-js',function(){
 	var lang_id = $(this).val();
 	var scollection_id = document.frmCollectionMedia.scollection_id.value;
@@ -128,15 +135,15 @@ $(document).on('change','.collection-language-js',function(){
 	shopMediaForm = function(shopId){
 			fcom.displayProcessing();
 			fcom.ajax(fcom.makeUrl('shops', 'media', [shopId]), '', function(t) {
-				shopImages(shopId,'logo');
-				shopImages(shopId,'banner');
-				shopImages(shopId,'bg');
+				shopImages(shopId,'logo',1);
+				shopImages(shopId,'banner',1);
+				shopImages(shopId,'bg',1);
 				fcom.updateFaceboxContent(t);
 			});
 	};
 
-	shopImages = function(shopId,imageType,lang_id){
-		fcom.ajax(fcom.makeUrl('shops', 'images', [shopId,imageType,lang_id]), '', function(t) {
+	shopImages = function(shopId,imageType,slide_screen,lang_id){
+		fcom.ajax(fcom.makeUrl('shops', 'images', [shopId,imageType,lang_id,slide_screen]), '', function(t) {
 			if(imageType=='logo') {
 				$('#logo-image-listing').html(t);
 			} else if(imageType=='banner') {
@@ -285,13 +292,13 @@ $(document).on('change','.collection-language-js',function(){
 		});
 	};
 
-	deleteImage = function( fileId, shopId, imageType, langId){
+	deleteImage = function( fileId, shopId, imageType, langId, slide_screen){
 		var agree = confirm( langLbl.confirmDeleteImage );
 		if( !agree ){
 			return false;
 		}
-		fcom.updateWithAjax(fcom.makeUrl('Shops', 'removeShopImage',[fileId,shopId,imageType,langId]), '', function(t) {
-			shopImages( shopId, imageType, langId );
+		fcom.updateWithAjax(fcom.makeUrl('Shops', 'removeShopImage',[fileId,shopId,imageType,langId,slide_screen]), '', function(t) {
+			shopImages( shopId, imageType, slide_screen, langId );
 		});
 	};
 
@@ -402,6 +409,7 @@ $(document).on('click','.shopFile-Js',function(){
 	var node = this;
 	$('#form-upload').remove();
 	var frmName = $(node).attr('data-frm');
+	var slide_screen = 0;
 	if('frmShopLogo' == frmName){
 		var langId = document.frmShopLogo.lang_id.value;
 		var shopId = document.frmShopLogo.shop_id.value;
@@ -409,6 +417,7 @@ $(document).on('click','.shopFile-Js',function(){
 	}else if('frmShopBanner' == frmName){
 		var langId = document.frmShopBanner.lang_id.value;
 		var shopId = document.frmShopBanner.shop_id.value;
+		slide_screen = document.frmShopBanner.slide_screen.value;
 		var imageType = 'banner';
 	}else {
 		var langId = document.frmBackgroundImage.lang_id.value;
@@ -421,6 +430,7 @@ $(document).on('click','.shopFile-Js',function(){
 	var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
 	frm = frm.concat('<input type="file" name="file" />');
 	frm = frm.concat('<input type="hidden" name="shop_id" value="'+shopId+'"/>');
+	frm = frm.concat('<input type="hidden" name="slide_screen" value="'+slide_screen+'"/>');
 	frm = frm.concat('<input type="hidden" name="file_type" value="'+fileType+'"></form>');
 	$('body').prepend(frm);
 	$('#form-upload input[name=\'file\']').trigger('click');
@@ -452,7 +462,7 @@ $(document).on('click','.shopFile-Js',function(){
 							$('#input-field'+fileType).removeClass('text-danger');
 							$('#input-field'+fileType).addClass('text-success');
 							$('#form-upload').remove();
-							shopImages(ans.shopId,imageType,langId);
+							shopImages(ans.shopId,imageType,slide_screen,langId);
 							fcom.displaySuccessMessage(ans.msg);
 							//addShopLangForm(ans.shopId, langId);
 						}else{
