@@ -116,7 +116,7 @@
 </div>
 <script>
 <?php
-$dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +2 hours'));
+$dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +4 hours'));
 $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_STRING, $dateTime);
 ?>
 // Set the date we're counting down to
