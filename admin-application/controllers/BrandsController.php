@@ -393,7 +393,7 @@ class BrandsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function images($brand_id, $file_type, $lang_id=0)
+    public function images($brand_id, $file_type, $lang_id=0, $slide_screen = 0)
     {
         $brand_id = FatUtility::int($brand_id);
         if ($file_type=='logo') {
@@ -401,7 +401,7 @@ class BrandsController extends AdminBaseController
             $this->set('images', $brandLogos);
             $this->set('imageFunction', 'brandReal');
         } else {
-            $brandImages = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BRAND_IMAGE, $brand_id, 0, $lang_id, false);
+            $brandImages = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BRAND_IMAGE, $brand_id, 0, $lang_id, false, $slide_screen);
             $this->set('images', $brandImages);
             $this->set('imageFunction', 'brandImage');
         }
@@ -436,6 +436,7 @@ class BrandsController extends AdminBaseController
         $brand_id = FatApp::getPostedData('brand_id', FatUtility::VAR_INT, 0);
         $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
         $file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0);
+        $slide_screen = FatApp::getPostedData('slide_screen', FatUtility::VAR_INT, 0);
         if (!$brand_id) {
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieJsonError(Message::getHtml());
@@ -457,7 +458,8 @@ class BrandsController extends AdminBaseController
             $_FILES['file']['name'],
             -1,
             $unique_record = false,
-            $lang_id
+            $lang_id,
+            $slide_screen
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -505,6 +507,8 @@ class BrandsController extends AdminBaseController
         $frm->addHTML('', 'brand_logo_heading', '');
         $frm->addHiddenField('', 'brand_id', $brand_id);
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
+        $screenArr = applicationConstants::getDisplaysArr($this->adminLangId);
+        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->adminLangId), 'slide_screen', $screenArr, '', array(), '');
         $frm->addButton(
             Labels::getLabel('Lbl_Image', $this->adminLangId),
             'image',
@@ -619,7 +623,7 @@ class BrandsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function removeBrandMedia($brand_id, $imageType='', $lang_id = 0)
+    public function removeBrandMedia($brand_id, $imageType='', $lang_id = 0, $slide_screen = 0)
     {
         $brand_id = FatUtility::int($brand_id);
         $lang_id = FatUtility::int($lang_id);
@@ -634,7 +638,7 @@ class BrandsController extends AdminBaseController
             $fileType = AttachedFile::FILETYPE_BRAND_IMAGE;
         }
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $brand_id, 0, 0, $lang_id)) {
+        if (!$fileHandlerObj->deleteFile($fileType, $brand_id, 0, 0, $lang_id, $slide_screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }

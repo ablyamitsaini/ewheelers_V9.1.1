@@ -10,9 +10,16 @@ $(document).on('change','.logo-language-js',function(){
 $(document).on('change','.image-language-js',function(){
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	brandImages(brand_id, 'image', lang_id);
+	var slide_screen = $(".prefDimensions-js").val();
+	brandImages(brand_id, 'image', slide_screen, lang_id);
 });
-
+$(document).on('change','.prefDimensions-js',function(){
+/* $(document).delegate('.prefDimensions-js','change',function(){ */
+	var slide_screen = $(this).val();
+	var brand_id = $("input[id='id-js']").val();
+	var lang_id = $(".language-js").val();
+	brandImages(brand_id,'image',slide_screen,lang_id);
+});
 (function() {
 	var currentPage = 1;
 	var runningAjaxReq = false;
@@ -98,8 +105,8 @@ $(document).on('change','.image-language-js',function(){
 		});
 	};
 
-	brandImages = function(brandId, fileType, langId){
-		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId, fileType, langId]), '', function(t) {
+	brandImages = function(brandId, fileType, slide_screen, langId){
+		fcom.ajax(fcom.makeUrl('Brands', 'images', [brandId, fileType, langId, slide_screen]), '', function(t) {
 			if(fileType=='logo') {
 				$('#logo-listing').html(t);
 			} else {
@@ -112,8 +119,8 @@ $(document).on('change','.image-language-js',function(){
 	brandMediaForm = function(brandId){
 		fcom.displayProcessing();
         fcom.ajax(fcom.makeUrl('Brands', 'media', [brandId]), '', function(t) {
-            brandImages(brandId, 'logo');
-            brandImages(brandId, 'image');
+            brandImages(brandId, 'logo', 1);
+            brandImages(brandId, 'image', 1);
             fcom.updateFaceboxContent(t);
         });
 	};
@@ -131,10 +138,10 @@ $(document).on('change','.image-language-js',function(){
 		searchProductBrands(document.frmSearch);
 	};
 
-	deleteMedia = function( brandId, fileType, langId ){
+	deleteMedia = function( brandId, fileType, langId, slide_screen ){
 		if(!confirm(langLbl.confirmDelete)){return;}
-		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandMedia',[brandId, fileType, langId]), '', function(t) {
-			brandImages(brandId,fileType,langId);
+		fcom.updateWithAjax(fcom.makeUrl('brands', 'removeBrandMedia',[brandId, fileType, langId, slide_screen]), '', function(t) {
+			brandImages(brandId,fileType,slide_screen,langId);
 			reloadList();
 		});
 	};
@@ -189,9 +196,11 @@ $(document).on('click','.uploadFile-Js',function(){
 	var langId = document.frmProdBrandLang.lang_id.value; */
 
     var formName = $(node).attr('data-frm');
+	var slide_screen = 0;
 	if(formName == 'frmBrandImage'){
         var brandId = document.frmBrandImage.brand_id.value;
         var langId = document.frmBrandImage.lang_id.value;
+		slide_screen = document.frmBrandImage.slide_screen.value;
         var imageType = 'image';
 	}else{
 		var brandId = document.frmBrandLogo.brand_id.value;
@@ -206,6 +215,7 @@ $(document).on('click','.uploadFile-Js',function(){
 	frm = frm.concat('<input type="hidden" name="brand_id" value="' + brandId + '"/>');
 	frm = frm.concat('<input type="hidden" name="lang_id" value="' + langId + '"/>');
     frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '">');
+	frm = frm.concat('<input type="hidden" name="slide_screen" value="' + slide_screen + '">');
 	frm = frm.concat('</form>');
 
 	$( 'body' ).prepend( frm );
@@ -238,7 +248,7 @@ $(document).on('click','.uploadFile-Js',function(){
 						{
 							fcom.displaySuccessMessage(ans.msg);
 							$('#form-upload').remove();
-							brandImages(ans.brandId,imageType,langId);
+							brandImages(ans.brandId,imageType,slide_screen,langId);
 							reloadList();
 						}else{
 							fcom.displayErrorMessage(ans.msg,'');
