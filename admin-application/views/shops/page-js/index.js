@@ -5,14 +5,14 @@ $(document).on('change','.logo-language-js',function(){
 /* $(document).delegate('.logo-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = document.frmShopLogo.shop_id.value;
-	shopImages(shop_id,'logo',lang_id);
+	shopImages(shop_id,'logo',0,lang_id);
 });
 $(document).on('change','.banner-language-js',function(){
 /* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = document.frmShopBanner.shop_id.value;
 	var slide_screen = $(".prefDimensions-js").val();
-	shopImages(shop_id,'banner',lang_id);
+	shopImages(shop_id,'banner',slide_screen,lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
 /* $(document).delegate('.prefDimensions-js','change',function(){ */

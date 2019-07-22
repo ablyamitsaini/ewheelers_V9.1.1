@@ -1458,7 +1458,7 @@ class SellerController extends SellerBaseController
         $this->_template->render(false, false);
     }
 
-    public function shopImages($imageType, $lang_id=0)
+    public function shopImages($imageType, $lang_id = 0, $slide_screen = 0)
     {
         $userId = UserAuthentication::getLoggedUserId();
         $shopDetails = Shop::getAttributesByUserId($userId, null, false);
@@ -1483,7 +1483,8 @@ class SellerController extends SellerBaseController
                 $this->set('images', $logoAttachments);
                 $this->set('imageFunction', 'shopLogo');
             } elseif ($imageType=='banner') {
-                $bannerAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop_id, 0, $lang_id, false);
+                $bannerAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop_id, 0, $lang_id, false, $slide_screen);
+                // CommonHelper::printArray($bannerAttachments); die;
                 $this->set('images', $bannerAttachments);
                 $this->set('imageFunction', 'shopBanner');
             } else {
@@ -1978,6 +1979,7 @@ class SellerController extends SellerBaseController
         }
         $file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0);
         $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
+        $slide_screen = FatApp::getPostedData('slide_screen', FatUtility::VAR_INT, 0);
 
         if (!$file_type) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
@@ -2009,7 +2011,8 @@ class SellerController extends SellerBaseController
             $_FILES['file']['name'],
             -1,
             $unique_record,
-            $lang_id
+            $lang_id,
+            $slide_screen
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -2026,7 +2029,7 @@ class SellerController extends SellerBaseController
         $this->_template->render(false, false, 'json-success.php'); */
     }
 
-    public function removeShopImage($banner_id, $langId, $imageType)
+    public function removeShopImage($banner_id, $langId, $imageType, $slide_screen = 0)
     {
         $userId = UserAuthentication::getLoggedUserId();
         $langId = FatUtility::int($langId);
@@ -2052,7 +2055,7 @@ class SellerController extends SellerBaseController
 
 
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $shop_id, $banner_id, 0, $langId)) {
+        if (!$fileHandlerObj->deleteFile($fileType, $shop_id, $banner_id, 0, $langId, $slide_screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -3216,8 +3219,10 @@ class SellerController extends SellerBaseController
         $frm->addHiddenField('', 'shop_id', $shop_id);
         $bannerTypeArr = applicationConstants::bannerTypeArr();
         $frm->addSelectBox(Labels::getLabel('Lbl_Language', $langId), 'lang_id', $bannerTypeArr, '', array('class'=>'banner-language-js'), '');
+        $screenArr = applicationConstants::getDisplaysArr($this->siteLangId);
+        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->siteLangId), 'slide_screen', $screenArr, '', array(), '');
         $fld1 =  $frm->addButton(
-            Labels::getLabel('Lbl_Banner', $langId),
+            Labels::getLabel('Lbl_Banner', $this->siteLangId),
             'shop_banner',
             Labels::getLabel('LBL_Upload_Banner', $this->siteLangId),
             array('class'=>'shopFile-Js','id'=>'shop_banner','data-file_type'=>AttachedFile::FILETYPE_SHOP_BANNER,'data-frm'=>'frmShopBanner')
@@ -3395,7 +3400,7 @@ class SellerController extends SellerBaseController
             FatApp::redirectUser(CommonHelper::generateUrl('account'));
         }
         $currentActivePlan = OrderSubscription:: getUserCurrentActivePlanDetails($this->siteLangId, UserAuthentication::getLoggedUserId(), array(OrderSubscription::DB_TBL_PREFIX.'till_date',OrderSubscription::DB_TBL_PREFIX.'price',OrderSubscription::DB_TBL_PREFIX.'type'));
-        
+
         $frmOrderSrch = $this->getSubscriptionOrderSearchForm($this->siteLangId);
         $userId = UserAuthentication::getLoggedUserId();
         $autoRenew = User::getAttributesById($userId, 'user_autorenew_subscription');

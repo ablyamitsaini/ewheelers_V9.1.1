@@ -5,7 +5,7 @@ $(document).on('change','.icon-language-js',function(){
 /* $(document).delegate('.icon-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var prodcat_id = $("input[name='prodcat_id']").val();
-	categoryImages(prodcat_id,'icon',lang_id);
+	categoryImages(prodcat_id,'icon',0,lang_id);
 
 });
 $(document).on('change','.banner-language-js',function(){
