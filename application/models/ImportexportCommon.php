@@ -578,8 +578,8 @@ class ImportexportCommon extends FatModel
             $arr['selprod_available_from'] = Labels::getLabel('LBL_Available_from', $langId);
             $arr['selprod_active'] = Labels::getLabel('LBL_Active', $langId);
             $arr['selprod_cod_enabled'] = Labels::getLabel('LBL_COD_Available', $langId);
+            $arr['selprod_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
             if (!$userId) {
-                $arr['selprod_deleted'] = Labels::getLabel('LBL_Deleted', $langId);
                 $arr['selprod_sold_count'] = Labels::getLabel('LBL_Sold_Count', $langId);
             }
         }
