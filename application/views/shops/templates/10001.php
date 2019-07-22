@@ -6,13 +6,13 @@ $mobile_url = '';
 foreach ($catBannerArr as $slideScreen) {
     switch ($slideScreen['afile_screen']) {
         case applicationConstants::SCREEN_MOBILE:
-            $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'TEMP1', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+            $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
             break;
         case applicationConstants::SCREEN_IPAD:
-            $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'TEMP1', 0, applicationConstants::SCREEN_IPAD))).",";
+            $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_IPAD))).",";
             break;
         case applicationConstants::SCREEN_DESKTOP:
-            $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'TEMP1', 0, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+            $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
             break;
     }
 } ?>
@@ -20,7 +20,7 @@ foreach ($catBannerArr as $slideScreen) {
 <?php if (!empty($catBannerArr)) { ?>
 <section class="bg-shop">
    <div class="shop-banner">
-       <img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'],$siteLangId,'TEMP1', 0, applicationConstants::SCREEN_DESKTOP)); ?>">
+       <img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'],$siteLangId,'ORIGINAL', 0, applicationConstants::SCREEN_DESKTOP)); ?>">
    </div>
 </section>
 <?php } ?>
