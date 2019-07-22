@@ -1,5 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');?>
 <?php $catBannerArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop['shop_id'], '', $siteLangId);
+$desktop_url = '';
+$tablet_url = '';
+$mobile_url = '';
 foreach ($catBannerArr as $slideScreen) {
     switch ($slideScreen['afile_screen']) {
         case applicationConstants::SCREEN_MOBILE:
@@ -17,7 +20,7 @@ foreach ($catBannerArr as $slideScreen) {
 <?php if (!empty($catBannerArr)) { ?>
 <section class="bg-shop">
    <div class="shop-banner">
-       <img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('image', 'shopBanner', array($category['prodcat_id'],$siteLangId,'TEMP1', 0, applicationConstants::SCREEN_DESKTOP)); ?>">
+       <img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'],$siteLangId,'TEMP1', 0, applicationConstants::SCREEN_DESKTOP)); ?>">
    </div>
 </section>
 <?php } ?>

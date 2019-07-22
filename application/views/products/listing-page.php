@@ -13,7 +13,9 @@ $keywordFld = $frmProductSearch->getField('keyword');
 $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
 $keywordFld = $frmProductSearch->getField('keyword');
 $keywordFld->overrideFldType("hidden");
-
+$desktop_url = '';
+$tablet_url = '';
+$mobile_url = '';
 if (!empty($category['banner'])) {
     $catBannerArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_CATEGORY_BANNER, $category['prodcat_id'], 0, $siteLangId);
     foreach ($catBannerArr as $slideScreen) {
@@ -54,7 +56,7 @@ if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
             }
         } ?>
     <section class="bg-shop">
-        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'],$siteLangId,'',0,applicationConstants::SCREEN_DESKTOP)); ?>"></div>
+        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'],$siteLangId,'wide',0,applicationConstants::SCREEN_DESKTOP)); ?>"></div>
    </section>
 <?php } ?>
 
