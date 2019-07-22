@@ -19,7 +19,7 @@ if (true == $primaryOrder) {
     ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <?php
 } ?>
 
-<main id="main-area" <?php if (!$print) { ?>class="main" <?php }?> role="main">
+<main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <?php if (!$print) { ?>
         <div class="content-header row justify-content-between mb-3">
@@ -416,7 +416,8 @@ if (true == $primaryOrder) {
             </div>
         </div>
     </div>
-</main> <?php if ($print) {?>
+</main>
+<?php if ($print) {?>
 <script>
     $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
     /*window.print();

@@ -210,9 +210,9 @@ class BuyerController extends BuyerBaseController
         $this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 
 
-        $urlParts = array_filter(FatApp::getParameters());
+        $urlParts = array($orderId,$opId);
         $this->set('urlParts', $urlParts);
-        if ($print) {
+        if ($print !== false) {
             $print = true;
         }
         $this->set('print', $print);
