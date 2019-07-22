@@ -5,7 +5,18 @@ $statusArr = array(
     'msg' => $msg
 );
 
+$rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
+
+$canBeUsed = min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
+
+$rewardPointsDetail = array(
+    'canBeUsed' => $canBeUsed,
+    'balance' => $rewardPoints,
+    'convertedValue' => CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUsed)),
+);
+
 $data = array(
+    'rewardPointsDetail' => $rewardPointsDetail,
     'cartSummary' => $cartSummary,
     'userWalletBalance' => $userWalletBalance
 );
