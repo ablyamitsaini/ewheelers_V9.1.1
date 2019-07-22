@@ -35,45 +35,45 @@ class BannerController extends MyAppController
         }
         if (Promotion::isUserClickCountable($userId, $row['banner_record_id'], $_SERVER['REMOTE_ADDR'], session_id())) {
             switch ($row['banner_type']) {
-            case Banner::TYPE_BANNER:
+                case Banner::TYPE_BANNER:
 
-                break;
+                    break;
 
-            case Banner::TYPE_PPC:
-                $promotionClickData = array(
-                'pclick_promotion_id' => $row['banner_record_id'],
-                'pclick_user_id' => $userId,
-                'pclick_datetime' => date('Y-m-d H:i:s'),
-                'pclick_ip' => $_SERVER['REMOTE_ADDR'],
-                /* 'pclick_cost' => $row['blocation_promotion_cost'], */
-                'pclick_cost' => $row['promotion_cpc'],
-                'pclick_session_id' => session_id(),
-                );
-                FatApp::getDb()->insertFromArray(Promotion::DB_TBL_CLICKS, $promotionClickData, false, '', $promotionClickData);
+                case Banner::TYPE_PPC:
+                    $promotionClickData = array(
+                    'pclick_promotion_id' => $row['banner_record_id'],
+                    'pclick_user_id' => $userId,
+                    'pclick_datetime' => date('Y-m-d H:i:s'),
+                    'pclick_ip' => $_SERVER['REMOTE_ADDR'],
+                    /* 'pclick_cost' => $row['blocation_promotion_cost'], */
+                    'pclick_cost' => $row['promotion_cpc'],
+                    'pclick_session_id' => session_id(),
+                    );
+                    FatApp::getDb()->insertFromArray(Promotion::DB_TBL_CLICKS, $promotionClickData, false, '', $promotionClickData);
 
-                $clickId= FatApp::getDb()->getInsertId();
+                    $clickId= FatApp::getDb()->getInsertId();
 
-                $promotionClickChargesData = array(
+                    $promotionClickChargesData = array(
 
-                'picharge_pclick_id' => $clickId,
-                'picharge_datetime'  => date('Y-m-d H:i:s'),
-                /* 'picharge_cost'  => $row['blocation_promotion_cost'], */
-                'picharge_cost'  => $row['promotion_cpc'],
+                    'picharge_pclick_id' => $clickId,
+                    'picharge_datetime'  => date('Y-m-d H:i:s'),
+                    /* 'picharge_cost'  => $row['blocation_promotion_cost'], */
+                    'picharge_cost'  => $row['promotion_cpc'],
 
-                );
+                    );
 
-                FatApp::getDb()->insertFromArray(Promotion::DB_TBL_ITEM_CHARGES, $promotionClickChargesData, false);
+                    FatApp::getDb()->insertFromArray(Promotion::DB_TBL_ITEM_CHARGES, $promotionClickChargesData, false);
 
 
-                $promotionLogData = array(
-                'plog_promotion_id' => $row['banner_record_id'],
-                'plog_date' =>  date('Y-m-d'),
-                'plog_clicks' =>  1,
-                );
+                    $promotionLogData = array(
+                    'plog_promotion_id' => $row['banner_record_id'],
+                    'plog_date' =>  date('Y-m-d'),
+                    'plog_clicks' =>  1,
+                    );
 
-                $onDuplicatePromotionLogData = array_merge($promotionLogData, array('plog_clicks'=>'mysql_func_plog_clicks+1'));
-                FatApp::getDb()->insertFromArray(Promotion::DB_TBL_LOGS, $promotionLogData, true, array(), $onDuplicatePromotionLogData);
-                break;
+                    $onDuplicatePromotionLogData = array_merge($promotionLogData, array('plog_clicks'=>'mysql_func_plog_clicks+1'));
+                    FatApp::getDb()->insertFromArray(Promotion::DB_TBL_LOGS, $promotionLogData, true, array(), $onDuplicatePromotionLogData);
+                    break;
             }
         }
         if (!filter_var($url, FILTER_VALIDATE_URL) === false) {

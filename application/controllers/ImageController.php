@@ -305,7 +305,21 @@ class ImageController extends FatController
                 $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 576;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
+                $w = 2000;
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
             default:
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
@@ -497,7 +511,17 @@ class ImageController extends FatController
             case 'COLLECTION_PAGE':
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
-            case 'WIDE':
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 576;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
                 $w = 2000;
                 $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h);
@@ -867,6 +891,21 @@ class ImageController extends FatController
                     $w = 200;
                     $h = 100;
                     AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
+                    break;
+                case 'MOBILE':
+                    $w = 640;
+                    $h = 360;
+                    AttachedFile::displayImage($image_name, $w, $h);
+                    break;
+                case 'TABLET':
+                    $w = 1024;
+                    $h = 576;
+                    AttachedFile::displayImage($image_name, $w, $h);
+                    break;
+                case 'DESKTOP':
+                    $w = 2000;
+                    $h = 500;
+                    AttachedFile::displayImage($image_name, $w, $h);
                     break;
                 default:
                     $w = 2000;
