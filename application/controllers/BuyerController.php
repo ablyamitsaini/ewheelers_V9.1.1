@@ -545,6 +545,11 @@ class BuyerController extends BuyerBaseController
         $this->set('recordCount', $srch->recordCount());
         $this->set('postedData', $post);
         $this->set('languages', Language::getAllNames());
+        
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->_template->render(false, false);
     }
 
