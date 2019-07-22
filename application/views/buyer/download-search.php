@@ -19,7 +19,7 @@ $submitBtnFld->developerTags['col'] = 3;
 $submitBtnFld->developerTags['noCaptionTag'] = true;
 
 $clearFld = $frmSrch->getField('btn_clear');
-$clearFld->setFieldTagAttribute('onclick', 'clearSearch(1)');
+$clearFld->setFieldTagAttribute('onclick', 'clearSearch(0)');
 $clearFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
 $clearFld->setWrapperAttribute('class', 'col-lg-3');
 $clearFld->developerTags['col'] = 3;

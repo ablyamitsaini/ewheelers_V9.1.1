@@ -843,10 +843,11 @@ class DiscountCouponsController extends AdminBaseController
         $flatDiscountVal->setRequired(true);
         $percentDiscountVal = new FormFieldRequirement('coupon_discount_value', Labels::getLabel('LBL_Discount_Value', $this->adminLangId));
         $percentDiscountVal->setRequired(true);
-        $percentDiscountVal->setRange(1, 100);
+        $percentDiscountVal->setFloatPositive();
 
         $couponMinOrderValueReqTrue = new FormFieldRequirement('coupon_min_order_value', 'value');
         $couponMinOrderValueReqTrue->setRequired();
+        $couponMinOrderValueReqTrue->setRange('0.00001', '9999999999');
         $couponMinOrderValueReqFalse = new FormFieldRequirement('coupon_min_order_value', 'value');
         $couponMinOrderValueReqFalse->setRequired(false);
 

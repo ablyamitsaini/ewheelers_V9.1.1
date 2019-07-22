@@ -29,7 +29,7 @@ class ReportsController extends LoggedUserController
         }
         $srchFrm = $this->getProdPerformanceSrchForm();
         $this->set('srchFrm', $srchFrm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchProductsPerformance($topPerformed = 0, $export = "")
@@ -219,7 +219,7 @@ class ReportsController extends LoggedUserController
         }
         $frmSrch = $this->getProductInventorySearchForm($this->siteLangId);
         $this->set('frmSrch', $frmSrch);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchProductsInventory($export = "")
@@ -297,7 +297,7 @@ class ReportsController extends LoggedUserController
         }
         $frmSrch = $this->getProductInventoryStockStatusSearchForm($this->siteLangId);
         $this->set('frmSrch', $frmSrch);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchProductsInventoryStockStatus($export = "")
@@ -419,7 +419,7 @@ class ReportsController extends LoggedUserController
         $frmSrch = $this->getSalesReportSearchForm($orderDate);
         $this->set('frmSrch', $frmSrch);
         $this->set('orderDate', $orderDate);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchSalesReport($export = "")

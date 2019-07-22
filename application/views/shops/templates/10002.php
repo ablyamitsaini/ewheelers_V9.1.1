@@ -63,7 +63,7 @@
         </div>
     </div>
 </section>
-<section class="section bg-shop">
+<section class="section">
     <div class="container">
         <div class="shop-header">
             <div class="row">

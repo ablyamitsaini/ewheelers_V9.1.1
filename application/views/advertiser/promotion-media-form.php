@@ -51,11 +51,11 @@ $fld1->htmlAfterField = $htmlAfterField;
 		if(promotionType==<?php echo Promotion::TYPE_SLIDES ?>){
 			if($(this).val() == screenDesktop)
 			{
-				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1200 * 360'));
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1350 * 405'));
 			}
 			else if($(this).val() == screenIpad)
 			{
-				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 * 576'));
+				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '1024 * 360'));
 			}
 			else{
 				$('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, '640 * 360'));

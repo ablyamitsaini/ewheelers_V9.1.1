@@ -1356,8 +1356,8 @@ display: none;
 	}
 
 	.shop-banner {
-		min-height: 300px;
-		background-size: cover;
+	/*	min-height: 300px;
+		background-size: cover;*/
 	}
 
 	.promotion-area ul {
@@ -1505,8 +1505,8 @@ display: none;
 	}
 
 	.shop-banner {
-		min-height: 250px;
-		background-size: cover;
+		/*min-height: 250px;
+		background-size: cover;*/
 	}
 
 	.container-form.sign-up {
@@ -1533,6 +1533,7 @@ display: none;
 }
 
 @media only screen and (max-width: 767px) {
+	.fixed-demo-btn{ font-size: 0.875rem;}
 
 	h1,
 	.h1 {

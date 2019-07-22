@@ -2071,7 +2071,7 @@ a.ui-button:active,
 	border-radius: 5px !important;
 	width: auto;
 	min-width: 350px;
-	z-index: 11 !important;
+	
 }
 
 .ui-datepicker-header.ui-widget-header {

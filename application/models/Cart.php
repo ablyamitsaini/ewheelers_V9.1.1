@@ -696,6 +696,13 @@ class Cart extends FatModel
         return true;
     }
 
+    public function unsetCartShippingAddress()
+    {
+        unset($this->SYSTEM_ARR['shopping_cart']['shipping_address_id']);
+        $this->updateUserCart();
+        return true;
+    }
+
     public function setShippingAddressSameAsBilling()
     {
         $billing_address_id = $this->getCartBillingAddress();

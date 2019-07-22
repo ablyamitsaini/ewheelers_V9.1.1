@@ -1,6 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
     $canCancelOrder = true;
     $canReturnRefund = true;
+    $canReviewOrders = false;
 if (true == $primaryOrder) {
     if ($childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
         $canCancelOrder = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true)));
@@ -9,14 +10,16 @@ if (true == $primaryOrder) {
         $canCancelOrder = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
         $canReturnRefund = (in_array($childOrderDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
     }
-}
-$canReviewOrders = false;
-if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
-    $canReviewOrders = true;
+
+    if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOrderReviewStatuses())) {
+        $canReviewOrders = true;
+    }
 }
 ?> <?php if (!$print) {
     ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <?php
-} ?> <main id="main-area" class="main" role="main">
+} ?>
+
+<main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <?php if (!$print) { ?>
         <div class="content-header row justify-content-between mb-3">
@@ -259,7 +262,7 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
                         ?> <div class="info--order">
                                 <p><?php echo $billingAddress;?></p>
                             </div>
-                        </div> <?php if (!empty($orderDetail['shippingAddress'])) {
+                        </div> <?php  if (!empty($orderDetail['shippingAddress'])) {
                             ?> <div class="col-lg-6 col-md-6 mb-4">
                             <h5><?php echo Labels::getLabel('LBL_Shipping_Details', $siteLangId); ?></h5> <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
                             if ($orderDetail['shippingAddress']['oua_address1']!='') {
@@ -431,7 +434,8 @@ if (in_array($childOrderDetail["op_status_id"], SelProdReview::getBuyerAllowedOr
             </div>
         </div>
     </div>
-</main> <?php if ($print) {?>
+</main>
+<?php if ($print) {?>
 <script>
     $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
     /*window.print();

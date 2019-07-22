@@ -2813,7 +2813,7 @@ class Importexport extends ImportexportCommon
         $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.credential_user_id = u.user_id', 'uc');
         if ($userId) {
             $srch->addCondition('u.user_id', '=', $userId);
-            $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+            /*$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);*/
         }
         $srch->doNotCalculateRecords();
         $srch->addMultipleFields(array('sp.*','sp_l.*','user_id','credential_username','product_id','product_identifier'));

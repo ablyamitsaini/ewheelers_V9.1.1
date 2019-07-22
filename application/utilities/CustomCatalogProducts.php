@@ -20,7 +20,7 @@ trait CustomCatalogProducts
         $frmSearchCustomCatalogProducts = $this->getCustomCatalogProductsSearchForm();
 
         $this->set("frmSearchCustomCatalogProducts", $frmSearchCustomCatalogProducts);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchCustomCatalogProducts()
@@ -104,7 +104,7 @@ trait CustomCatalogProducts
         $this->_template->addJs('js/slick.js');
         $this->_template->addCss('css/slick.css');
         $this->_template->addJs('js/jquery.tablednd.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function customCatalogProductCategoryForm()

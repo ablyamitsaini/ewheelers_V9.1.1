@@ -20,7 +20,7 @@ trait CustomProducts
         $frmSearchCustomProduct = $this->getCustomProductSearchForm();
         $this->set("frmSearchCustomProduct", $frmSearchCustomProduct);
         $this->_template->addJs('js/jscolor.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchCustomProduct()
@@ -107,7 +107,7 @@ trait CustomProducts
         $this->_template->addJs('js/jquery.tablednd.js');
         $this->_template->addJs('js/slick.js');
         $this->_template->addCss('css/slick.css');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     /* public function customProductFormOld( $product_id=0){
@@ -581,7 +581,7 @@ trait CustomProducts
         $db = FatApp::getDb();
         $row = $db->fetch($rs);
         if (!empty($row)) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_This_option_is_linked_with_the_inventory,_still_want_to_delete_this_option?', $this->siteLangId));
+            FatUtility::dieJsonError(Labels::getLabel('MSG_This_option_is_linked_with_the_inventory,_so_can_not_be_deleted', $this->siteLangId));
             return;
         }
         FatUtility::dieJsonSuccess(Labels::getLabel("MSG_Option_can_be_deleted", $this->siteLangId));

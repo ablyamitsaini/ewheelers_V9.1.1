@@ -13,23 +13,53 @@ $keywordFld = $frmProductSearch->getField('keyword');
 $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search', $siteLangId));
 $keywordFld = $frmProductSearch->getField('keyword');
 $keywordFld->overrideFldType("hidden");
-$bannerImage = '';
+$desktop_url = '';
+$tablet_url = '';
+$mobile_url = '';
 if (!empty($category['banner'])) {
-    $bannerImage = CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide'));
-}
-if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
-    $bannerImage = CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId));
-}
-if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0)) { ?>
+    $catBannerArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_CATEGORY_BANNER, $category['prodcat_id'], 0, $siteLangId);
+    foreach ($catBannerArr as $slideScreen) {
+        switch ($slideScreen['afile_screen']) {
+            case applicationConstants::SCREEN_MOBILE:
+                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                break;
+            case applicationConstants::SCREEN_IPAD:
+                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'TABLET', applicationConstants::SCREEN_IPAD))).",";
+                break;
+            case applicationConstants::SCREEN_DESKTOP:
+                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'DESKTOP', applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                break;
+            }
+    } ?>
     <section class="bg-shop">
-        <div class="shop-banner" style="background-image: url(<?php echo $bannerImage; ?>)" data-ratio="4:1"></div>
+        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'],$siteLangId,'DESKTOP',applicationConstants::SCREEN_DESKTOP)); ?>"></div>
         <?php /* if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
             <div class="page-category__content">
             <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
              </div>
         <?php } */ ?>
    </section>
+<?php }
+if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
+    $brandImgArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BRAND_IMAGE, $postedData['brand_id'], 0, $siteLangId);
+    foreach ($brandImgArr as $slideScreen) {
+        switch ($slideScreen['afile_screen']) {
+            case applicationConstants::SCREEN_MOBILE:
+                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'MOBILE', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                break;
+            case applicationConstants::SCREEN_IPAD:
+                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'TABLET', 0, applicationConstants::SCREEN_IPAD))).",";
+                break;
+            case applicationConstants::SCREEN_DESKTOP:
+                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'DESKTOP', 0, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                break;
+            }
+        } ?>
+    <section class="bg-shop">
+        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'],$siteLangId,'DESKTOP',0,applicationConstants::SCREEN_DESKTOP)); ?>"></div>
+   </section>
 <?php } ?>
+
 <?php if (isset($pageTitle)) { ?>
 <section class="bg--second pt-3 pb-3">
     <div class="container">
@@ -227,7 +257,7 @@ if (!empty($category['banner']) || (array_key_exists('brand_id', $postedData) &&
 <div class="gap"></div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $currentPageUrl = '<?php echo $canonicalUrl; ?>';        
+        $currentPageUrl = '<?php echo $canonicalUrl; ?>';
         $productSearchPageType = '<?php echo $productSearchPageType; ?>';
         $recordId = <?php echo $recordId; ?>;
         loadProductListingfilters(document.frmProductSearch);

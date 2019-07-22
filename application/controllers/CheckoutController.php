@@ -28,6 +28,9 @@ class CheckoutController extends MyAppController
         $this->cartObj = new Cart($user_id, $this->siteLangId);
         if (1 > $this->cartObj->getCartBillingAddress()) {
             $this->cartObj->setCartBillingAddress();
+        }
+
+        if ($this->cartObj->hasPhysicalProduct() && 1 > $this->cartObj->getCartShippingAddress()) {
             $this->cartObj->setShippingAddressSameAsBilling();
         }
 
@@ -348,8 +351,6 @@ class CheckoutController extends MyAppController
                 FatUtility::dieJsonError(strip_tags($message));
             }
             $this->set('loadAddressDiv', true);
-            /* $this->set( 'msg', Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId) );
-            $this->_template->render(false, false, 'json-success.php'); */
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -388,6 +389,12 @@ class CheckoutController extends MyAppController
         if (!$isShippingSameAsBilling) {
             $this->cartObj->unSetShippingAddressSameAsBilling();
         }
+
+        if (!$hasPhysicalProduct) {
+            $this->cartObj->unSetShippingAddressSameAsBilling();
+            $this->cartObj->unsetCartShippingAddress();
+        }
+
         $this->cartObj->removeProductShippingMethod();
         $this->set('hasPhysicalProduct', $hasPhysicalProduct);
         if (true ===  MOBILE_APP_API_CALL) {
@@ -493,6 +500,11 @@ class CheckoutController extends MyAppController
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if (!$this->cartObj->hasPhysicalProduct()) {
+            $this->cartObj->unSetShippingAddressSameAsBilling();
+            $this->cartObj->unsetCartShippingAddress();
         }
 
         $this->set('productSelectedShippingMethodsArr', $productSelectedShippingMethodsArr);
@@ -1774,12 +1786,19 @@ class CheckoutController extends MyAppController
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         $products = $this->cartObj->getProducts($this->siteLangId);
 
-        $selected_shipping_address_id = $this->cartObj->getCartShippingAddress();
+        $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
+        if (!$hasPhysicalProd) {
+            $selected_shipping_address_id = $this->cartObj->getCartBillingAddress();
+        } else {
+            $selected_shipping_address_id = $this->cartObj->getCartShippingAddress();
+        }
+
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);
+        $this->set('hasPhysicalProd', $hasPhysicalProd);
         $this->_template->render(false, false);
     }
 

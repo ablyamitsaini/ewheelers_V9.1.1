@@ -116,7 +116,7 @@
 </div>
 <script>
 <?php
-$dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +2 hours'));
+$dateTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +4 hours'));
 $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_STRING, $dateTime);
 ?>
 // Set the date we're counting down to
@@ -126,7 +126,7 @@ var countDownDate = new Date('<?php echo $restoreTime;?>').getTime();
     var x = setInterval(function() {
 
     // Get today's date and time
-    var now = new Date('<?php echo FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d H:i:s');?>').getTime();
+    var now = new Date().getTime();
 
     // Find the distance between now and the count down date
     var distance = countDownDate - now;
@@ -139,7 +139,8 @@ var countDownDate = new Date('<?php echo $restoreTime;?>').getTime();
 
     var str  = ('0' + hours).slice(-2) + ":" + ('0' + minutes).slice(-2) + ":" + ('0' + seconds).slice(-2);
     // Display the result in the element with id="demo"
-    $('#restoreCounter').html(str);
+    document.getElementById("restoreCounter").innerHTML = str;
+    //$('#restoreCounter').html(str);
 
     // If the count down is finished, write some text
     if (distance < 0) {

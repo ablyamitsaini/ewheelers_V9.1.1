@@ -4,7 +4,13 @@
     <div class="p-4">
         <div class="section-head">
             <div class="section__heading">
-                <h6><?php echo Labels::getLabel('LBL_Shipping_to:', $siteLangId); ?></h6>
+                <h6>
+                <?php if ($hasPhysicalProd) {
+                    echo Labels::getLabel('LBL_Shipping_to:', $siteLangId);
+                } else {
+                    echo Labels::getLabel('LBL_Billing_to:', $siteLangId);
+                } ?>
+                </h6>
             </div>
             <div class="section__action"><a href="#" class="btn btn--primary-border btn--sm" onClick="showAddressList()"><?php echo Labels::getLabel('LBL_Change_Address', $siteLangId); ?></a> </div>
         </div>

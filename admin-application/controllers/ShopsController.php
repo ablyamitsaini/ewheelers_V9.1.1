@@ -344,6 +344,7 @@ class ShopsController extends AdminBaseController
         }
 
         $file_type = $post['file_type'];
+        $slide_screen = $post['slide_screen'];
         $allowedFileTypeArr = array( AttachedFile::FILETYPE_SHOP_LOGO, AttachedFile::FILETYPE_SHOP_BANNER, AttachedFile::FILETYPE_SHOP_BACKGROUND_IMAGE);
 
         if (!in_array($file_type, $allowedFileTypeArr)) {
@@ -369,7 +370,8 @@ class ShopsController extends AdminBaseController
             $_FILES['file']['name'],
             -1,
             $unique_record,
-            $lang_id
+            $lang_id,
+            $slide_screen
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());
@@ -408,7 +410,7 @@ class ShopsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function images($shop_id, $imageType='', $lang_id=0)
+    public function images($shop_id, $imageType='', $lang_id = 0, $slide_screen = 0)
     {
         $this->objPrivilege->canViewShops();
         $shop_id = FatUtility::int($shop_id);
@@ -421,7 +423,7 @@ class ShopsController extends AdminBaseController
             $this->set('images', $logoAttachments);
             $this->set('imageFunction', 'shopLogo');
         } elseif ($imageType=='banner') {
-            $bannerAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop_id, 0, $lang_id, false);
+            $bannerAttachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SHOP_BANNER, $shop_id, 0, $lang_id, false, $slide_screen);
             $this->set('images', $bannerAttachments);
             $this->set('imageFunction', 'shopBanner');
         } else {
@@ -435,7 +437,7 @@ class ShopsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function removeShopImage($afileId, $shopId, $imageType='', $langId)
+    public function removeShopImage($afileId, $shopId, $imageType='', $langId, $slide_screen = 0)
     {
         $afileId = FatUtility::int($afileId);
         $shopId = FatUtility::int($shopId);
@@ -453,7 +455,7 @@ class ShopsController extends AdminBaseController
             $fileType = AttachedFile::FILETYPE_SHOP_BACKGROUND_IMAGE;
         }
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile($fileType, $shopId, $afileId, 0, $langId)) {
+        if (!$fileHandlerObj->deleteFile($fileType, $shopId, $afileId, 0, $langId, $slide_screen)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -593,6 +595,8 @@ class ShopsController extends AdminBaseController
         $frm->addHiddenField('', 'shop_id', $shop_id);
         $bannerTypeArr = applicationConstants::bannerTypeArr();
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '');
+        $screenArr = applicationConstants::getDisplaysArr($this->adminLangId);
+        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->adminLangId), 'slide_screen', $screenArr, '', array(), '');
         $fld1 =  $frm->addButton(Labels::getLabel('Lbl_Banner', $land_id), 'shop_banner', Labels::getLabel('LBL_Upload', $land_id), array('class'=>'shopFile-Js','id'=>'shop_banner','data-file_type'=>AttachedFile::FILETYPE_SHOP_BANNER,'data-frm'=>'frmShopBanner'));
         return $frm;
     }

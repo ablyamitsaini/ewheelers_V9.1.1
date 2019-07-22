@@ -16,8 +16,8 @@
 				if($firstCharacter!=''){ echo "</ul></div>"; }
 				$firstCharacter = $str;
 	?>
-  <div class="listingbox">
-	<h5><?php echo $firstCharacter;?></h5>
+  <div class="item">
+	<h6><?php echo $firstCharacter;?></h6>
 	<ul class="listing--onefifth">
 	  <?php } ?>
 	  <li><a href="<?php echo CommonHelper::generateUrl('Brands','view',array($brands['brand_id']));?>"><?php echo $brands['brand_name'];?></a></li>

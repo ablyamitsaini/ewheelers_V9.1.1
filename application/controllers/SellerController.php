@@ -150,14 +150,14 @@ class SellerController extends SellerBaseController
         $this->_template->addJs(array('js/chartist.min.js'));
         $this->_template->addCss(array('css/chartist.css'));
         $this->_template->addJs('js/slick.min.js');
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function sales()
     {
         $frmOrderSrch = $this->getOrderSearchForm($this->siteLangId);
         $this->set('frmOrderSrch', $frmOrderSrch);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderProductSearchListing()
@@ -445,7 +445,7 @@ class SellerController extends SellerBaseController
         $this->set('print', $print);
         $urlParts = array_filter(FatApp::getParameters());
         $this->set('urlParts', $urlParts);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function viewSubscriptionOrder($ossubs_id)
@@ -488,7 +488,7 @@ class SellerController extends SellerBaseController
         $this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
         //$this->set('frm', $frm);
         //    $this->set('displayForm',(in_array($orderDetail['op_status_id'],$processingStatuses)));
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function changeOrderStatus()
@@ -650,7 +650,7 @@ class SellerController extends SellerBaseController
         $this->set('orderDetail', $orderDetail);
         $this->set('orderStatuses', $orderStatuses);
         $this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function cancelReason()
@@ -724,7 +724,7 @@ class SellerController extends SellerBaseController
         $this->set('canRequestProduct', User::canRequestProduct());
         $this->set('canAddCustomProduct', User::canAddCustomProduct());
         $this->set('canAddCustomProductAvailableToAllSellers', User::canAddCustomProductAvailableToAllSellers());
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function requestedCatalog()
@@ -736,7 +736,7 @@ class SellerController extends SellerBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'catalog'));
         }
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchRequestedCatalog()
@@ -1237,7 +1237,7 @@ class SellerController extends SellerBaseController
     {
         $frmSearch = $this->getTaxCatSearchForm($this->siteLangId);
         $this->set("frmSearch", $frmSearch);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchTaxCategories()
@@ -1368,7 +1368,7 @@ class SellerController extends SellerBaseController
         $this->set('shop_id', $shop_id);
         $this->set('language', Language::getAllNames());
         $this->set('siteLangId', $this->siteLangId);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function shopForm()
@@ -2297,7 +2297,7 @@ class SellerController extends SellerBaseController
     {
         $frm = $this->getOrderCancellationRequestsSearchForm($this->siteLangId);
         $this->set('frmOrderCancellationRequestsSrch', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderCancellationRequestSearch()
@@ -2361,7 +2361,7 @@ class SellerController extends SellerBaseController
     {
         $frm = $this->getOrderReturnRequestsSearchForm($this->siteLangId);
         $this->set('frmOrderReturnRequestsSrch', $frm);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function orderReturnRequestSearch()
@@ -2542,7 +2542,7 @@ class SellerController extends SellerBaseController
         $this->set('requestRequestStatusArr', OrderReturnRequest::getRequestStatusArr($this->siteLangId));
         $this->set('logged_user_name', UserAuthentication::getLoggedUserAttribute('user_name'));
         $this->set('logged_user_id', UserAuthentication::getLoggedUserId());
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function approveOrderReturnRequest($orrequest_id)
@@ -2663,7 +2663,7 @@ class SellerController extends SellerBaseController
     {
         $userId = UserAuthentication::getLoggedUserId();
         $this->set('siteLangId', $this->siteLangId);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function socialPlatformSearch()
@@ -2903,7 +2903,7 @@ class SellerController extends SellerBaseController
         $pageData = $extraPage->getContentByPageType(Extrapage::PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId);
 
         $this->set('pageData', $pageData);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function InventoryUpdateForm()
@@ -3382,7 +3382,7 @@ class SellerController extends SellerBaseController
         $this->set('includeFreeSubscription', $includeFreeSubscription);
         $this->set('currentActivePlanId', $currentActivePlanId);
         $this->set('packagesArr', $packagesArr);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     /*  Subscription Orders */
@@ -3403,7 +3403,7 @@ class SellerController extends SellerBaseController
         $this->set('currentActivePlan', $currentActivePlan);
         $this->set('frmOrderSrch', $frmOrderSrch);
         $this->set('autoRenew', $autoRenew);
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function addCatalogPopup()
@@ -4143,7 +4143,7 @@ class SellerController extends SellerBaseController
 
     public function sellerOffers()
     {
-        $this->_template->render(true, false);
+        $this->_template->render(true, true);
     }
 
     public function searchSellerOffers()

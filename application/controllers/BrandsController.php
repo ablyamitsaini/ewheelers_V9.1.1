@@ -152,7 +152,7 @@ class BrandsController extends MyAppController
 
         $this->set('data', $data);
         $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
         $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
         $this->_template->render();
     }

@@ -25,7 +25,6 @@ class SmartRecomendedWeightagesController extends AdminBaseController
     public function search()
     {
         $this->objPrivilege->canViewRecomendedWeightages();
-
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10);
         $searchForm = $this->getSearchForm();
         $data = FatApp::getPostedData();
@@ -44,7 +43,6 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $rs = $srch->getResultSet();
-
         $records = FatApp::getDb()->fetchAll($rs);
 
         $this->set("arr_listing", $records);
@@ -76,6 +74,7 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         }
 
         $obj = new SmartWeightageSettings($swsetting_key);
+
         $obj->assignValues(
             array(
             SmartWeightageSettings::tblFld('weightage') => $weightage,
