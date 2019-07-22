@@ -202,7 +202,7 @@ class CategoryController extends MyAppController
                 break;
             case 'TABLET':
                 $w = 1024;
-                $h = 576;
+                $h = 360;
                 AttachedFile::displayImage($image_name, $w, $h);
                 break;
             case 'DESKTOP':
