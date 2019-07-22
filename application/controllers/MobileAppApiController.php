@@ -313,6 +313,9 @@ class MobileAppApiController extends MyAppController
                             break;
 
                         case Collections::COLLECTION_TYPE_CATEGORY:
+                            if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT1) {
+                                continue;
+                            }
                             $tempObj = clone $collectionObj;
                             $tempObj->addCondition('collection_id', '=', $collection_id);
                             $tempObj->joinCollectionCategories($this->siteLangId);
