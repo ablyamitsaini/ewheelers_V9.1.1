@@ -5,8 +5,15 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
+$rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId());
+
+$rewardPointsDetail = array(
+    'balance' => $rewardPoints,
+    'convertedValue' => CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($rewardPoints)),
+);
 $data = array(
-    'arrListing' => $arr_listing,
+    'rewardPointsDetail' => $rewardPointsDetail,
+    'rewardPointsStatement' => $arr_listing,
     'pageCount' => $pageCount,
     'recordCount' => $recordCount,
     'page' => $page,
