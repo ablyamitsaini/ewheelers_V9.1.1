@@ -3272,7 +3272,7 @@ class Importexport extends ImportexportCommon
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                     continue;
                 }
-                $options['selprod_code'] = $productRow['product_id'].'_'.implode('_', $v['optionValueIds']);
+                $options['selprod_code'] = $productRow['selprod_product_id'].'_'.implode('_', $v['optionValueIds']);
                 $sellerProdObj = new SellerProduct($k);
                 $sellerProdObj->assignValues($options);
                 if (!$sellerProdObj->save()) {
