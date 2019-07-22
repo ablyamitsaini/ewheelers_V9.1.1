@@ -96,7 +96,7 @@ class CategoryController extends MyAppController
 
         $this->set('data', $data);
         $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
         $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
         $this->_template->render();
     }
@@ -175,14 +175,13 @@ class CategoryController extends MyAppController
         }
     }
 
-    public function banner($prodCatId, $langId = 0, $sizeType = '', $subRcordId = 0)
+    public function banner($prodCatId, $langId = 0, $sizeType = '', $screen = 0, $displayUniversalImage = true)
     {
         $default_image = 'product_default_image.jpg';
         $prodCatId = FatUtility::int($prodCatId);
-        $subRcordId = FatUtility::int($subRcordId);
         $langId = FatUtility::int($langId);
 
-        $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $prodCatId, $subRcordId, $langId);
+        $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $prodCatId, 0, $langId, $displayUniversalImage, $screen);
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
@@ -196,7 +195,17 @@ class CategoryController extends MyAppController
                 $h = 150;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-            case 'WIDE':
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
                 $w = 2000;
                 $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h);

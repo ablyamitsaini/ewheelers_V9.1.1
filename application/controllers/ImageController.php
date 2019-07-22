@@ -280,7 +280,7 @@ class ImageController extends FatController
         }
     }
 
-    public function shopBanner($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0)
+    public function shopBanner($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0, $screen = 0)
     {
         $default_image = 'product_default_image.jpg';
 
@@ -294,7 +294,7 @@ class ImageController extends FatController
                 return ;
             }
         } else {
-            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_BANNER, $recordId, 0, $lang_id);
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_SHOP_BANNER, $recordId, 0, $lang_id, true, $screen);
         }
 
         $image_name = isset($file_row['afile_physical_path']) ? $file_row['afile_physical_path'] : '';
@@ -305,7 +305,21 @@ class ImageController extends FatController
                 $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
+                $w = 2000;
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
             default:
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
@@ -422,9 +436,9 @@ class ImageController extends FatController
         $this->displayBrandLogo($recordId, $langId, $sizeType, $afile_id);
     }
 
-    public function brandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0)
+    public function brandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $slide_screen = 0)
     {
-        $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id);
+        $this->displayBrandImage($recordId, $langId, $sizeType, $afile_id, $slide_screen);
     }
 
     public function displayBrandLogo($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
@@ -471,7 +485,7 @@ class ImageController extends FatController
         }
     }
 
-    public function displayBrandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
+    public function displayBrandImage($recordId, $langId = 0, $sizeType = '', $afile_id = 0, $screen = 0, $displayUniversalImage = true)
     {
         $default_image = 'brand_deafult_image.jpg';
         $recordId = FatUtility::int($recordId);
@@ -484,7 +498,7 @@ class ImageController extends FatController
                 $file_row = $res;
             }
         } else {
-            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_IMAGE, $recordId, 0, $langId, $displayUniversalImage);
+            $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_BRAND_IMAGE, $recordId, 0, $langId, $displayUniversalImage, $screen);
         }
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
@@ -497,10 +511,23 @@ class ImageController extends FatController
             case 'COLLECTION_PAGE':
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
-            default:
-                $h = 500;
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
                 $w = 2000;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image);
+                $h = 500;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }
     }
@@ -865,9 +892,24 @@ class ImageController extends FatController
                     $h = 100;
                     AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
-                default:
-                    $w = 2000;
+                case 'MOBILE':
+                    $w = 640;
                     $h = 360;
+                    AttachedFile::displayImage($image_name, $w, $h);
+                    break;
+                case 'TABLET':
+                    $w = 1024;
+                    $h = 360;
+                    AttachedFile::displayImage($image_name, $w, $h);
+                    break;
+                case 'DESKTOP':
+                    $w = 1350;
+                    $h = 405;
+                    AttachedFile::displayImage($image_name, $w, $h);
+                    break;
+                default:
+                    $w = 1350;
+                    $h = 405;
                     AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, true, false);
                     break;
             }

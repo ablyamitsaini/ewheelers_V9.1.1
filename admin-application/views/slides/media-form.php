@@ -58,7 +58,7 @@ $fld1->htmlAfterField = $htmlAfterField;
 		}
 		else if($(this).val() == screenIpad)
 		{
-			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 576'));
+			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 360'));
 		}
 		else{
 			$('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));

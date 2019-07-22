@@ -203,10 +203,8 @@ class ShopsController extends MyAppController
         $this->set('data', $data);
 
         $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
+        $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js', 'js/shop-nav.js', 'js/jquery.colourbrightness.min.js'));
         $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
-        $this->_template->addJs('js/shop-nav.js');
-        $this->_template->addJs('js/jquery.colourbrightness.min.js');
         $this->_template->render();
     }
 
@@ -523,7 +521,7 @@ class ShopsController extends MyAppController
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        
+
         if ($shopData['shop_user_id'] == $loggedUserId) {
             Message::addErrorMessage(Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -1044,7 +1042,7 @@ class ShopsController extends MyAppController
         }
 
         $srch = Product::getListingObj($get, $this->siteLangId, $userId);
-        
+
         $srch->setPageNumber($page);
         if ($pageSize) {
             $srch->setPageSize($pageSize);

@@ -20,13 +20,19 @@ $fld1 = $shopBannerFrm->getField('shop_banner');
 $fld1->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $shopBannerFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'banner-language-js');
-$bannerSize = applicationConstants::getShopBannerSize();
+$screenFld = $shopBannerFrm->getField('slide_screen');
+$screenFld->addFieldTagAttribute('class', 'prefDimensions-js');
+
+$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'2000 x 500').'</div>';
+$htmlAfterField .= '<div id="banner-image-listing"></div>';
+$fld1->htmlAfterField = $htmlAfterField;
+/*$bannerSize = applicationConstants::getShopBannerSize();
 $shopLayout= ($shopDetails['shop_ltemplate_id'])?$shopDetails['shop_ltemplate_id']:SHOP::TEMPLATE_ONE;
 $preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. sprintf(Labels::getLabel('MSG_Upload_shop_banner_text', $adminLangId), $bannerSize[$shopLayout]). '</small>';
 
 $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="banner-image-listing"></div>';
-$fld1->htmlAfterField = $htmlAfterField;
+$fld1->htmlAfterField = $htmlAfterField;*/
 
 /*$shopBackgroundImageFrm->setFormTagAttribute('class', 'web_form form_horizontal');
 $shopBackgroundImageFrm->developerTags['colClassPrefix'] = 'col-md-';
@@ -85,3 +91,21 @@ $fld1->htmlAfterField = $htmlAfterField; */ ?>
     </div>
     </div>
 </section>
+<script>
+    $(document).on('change','.prefDimensions-js',function(){
+        var screenDesktop = <?php echo applicationConstants::SCREEN_DESKTOP ?>;
+        var screenIpad = <?php echo applicationConstants::SCREEN_IPAD ?>;
+
+        if($(this).val() == screenDesktop)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '2000 x 500'));
+        }
+        else if($(this).val() == screenIpad)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 360'));
+        }
+        else{
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));
+        }
+    });
+</script>
