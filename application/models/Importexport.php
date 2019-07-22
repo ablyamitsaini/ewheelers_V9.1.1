@@ -3265,7 +3265,7 @@ class Importexport extends ImportexportCommon
         if ($selProdOptionsArr) {
             $options = array();
             foreach ($selProdOptionsArr as $k => $v) {
-                $productRow = Product::getAttributesById($k, array('product_id'));
+                $productRow = SellerProduct::getAttributesById($k, array('product_id'));
                 if (!$productRow) {
                     $errMsg = Labels::getLabel("MSG_Product_not_found.", $langId);
                     $err = array($v['row'], 'N/A', $errMsg);
