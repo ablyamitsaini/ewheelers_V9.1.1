@@ -21,18 +21,18 @@ if (!empty($category['banner'])) {
     foreach ($catBannerArr as $slideScreen) {
         switch ($slideScreen['afile_screen']) {
             case applicationConstants::SCREEN_MOBILE:
-                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide', applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'ORIGINAL', applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
                 break;
             case applicationConstants::SCREEN_IPAD:
-                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide', applicationConstants::SCREEN_IPAD))).",";
+                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'ORIGINAL', applicationConstants::SCREEN_IPAD))).",";
                 break;
             case applicationConstants::SCREEN_DESKTOP:
-                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'wide', applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'], $siteLangId, 'ORIGINAL', applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
                 break;
             }
     } ?>
     <section class="bg-shop">
-        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'],$siteLangId,'wide',applicationConstants::SCREEN_DESKTOP)); ?>"></div>
+        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Category', 'Banner', array($category['prodcat_id'],$siteLangId,'ORIGINAL',applicationConstants::SCREEN_DESKTOP)); ?>"></div>
         <?php /* if (!empty($category['prodcat_description']) && array_key_exists('prodcat_description', $category)) { ?>
             <div class="page-category__content">
             <p><?php  echo FatUtility::decodeHtmlEntities($category['prodcat_description']); ?></p>
@@ -45,18 +45,18 @@ if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
     foreach ($brandImgArr as $slideScreen) {
         switch ($slideScreen['afile_screen']) {
             case applicationConstants::SCREEN_MOBILE:
-                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'wide', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                $mobile_url = '<736:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg').",";
                 break;
             case applicationConstants::SCREEN_IPAD:
-                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'wide', 0, applicationConstants::SCREEN_IPAD))).",";
+                $tablet_url = ' >768:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_IPAD))).",";
                 break;
             case applicationConstants::SCREEN_DESKTOP:
-                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'wide', 0, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
+                $desktop_url = ' >1025:' .FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'], $siteLangId, 'ORIGINAL', 0, applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg').",";
                 break;
             }
         } ?>
     <section class="bg-shop">
-        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'],$siteLangId,'wide',0,applicationConstants::SCREEN_DESKTOP)); ?>"></div>
+        <div class="shop-banner"><img data-ratio="4:1" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Image', 'BrandImage', array($postedData['brand_id'],$siteLangId,'ORIGINAL',0,applicationConstants::SCREEN_DESKTOP)); ?>"></div>
    </section>
 <?php } ?>
 
