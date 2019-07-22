@@ -244,7 +244,7 @@ if (true == $primaryOrder) {
                         ?> <div class="info--order">
                                 <p><?php echo $billingAddress;?></p>
                             </div>
-                        </div> <?php if (!empty($orderDetail['shippingAddress'])) {
+                        </div> <?php  if (!empty($orderDetail['shippingAddress'])) {
                             ?> <div class="col-lg-6 col-md-6 mb-4">
                             <h5><?php echo Labels::getLabel('LBL_Shipping_Details', $siteLangId); ?></h5> <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
                             if ($orderDetail['shippingAddress']['oua_address1']!='') {

@@ -7,7 +7,7 @@ class CheckoutController extends MyAppController
     {
         parent::__construct($action);
         $user_id = 0;
-        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
+        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
         }
         if (UserAuthentication::isGuestUserLogged()) {
@@ -25,6 +25,9 @@ class CheckoutController extends MyAppController
         $this->cartObj = new Cart($user_id, $this->siteLangId);
         if (1 > $this->cartObj->getCartBillingAddress()) {
             $this->cartObj->setCartBillingAddress();
+        }
+
+        if ($this->cartObj->hasPhysicalProduct() && 1 > $this->cartObj->getCartShippingAddress()) {
             $this->cartObj->setShippingAddressSameAsBilling();
         }
 
@@ -330,8 +333,6 @@ class CheckoutController extends MyAppController
 
         if ($hasPhysicalProduct && !$shipping_address_id) {
             $this->set('loadAddressDiv', true);
-            /* $this->set( 'msg', Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId) );
-            $this->_template->render(false, false, 'json-success.php'); */
             Message::addErrorMessage(Labels::getLabel('MSG_Please_select_shipping_address', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -362,6 +363,12 @@ class CheckoutController extends MyAppController
         if (!$isShippingSameAsBilling) {
             $this->cartObj->unSetShippingAddressSameAsBilling();
         }
+
+        if (!$hasPhysicalProduct) {
+            $this->cartObj->unSetShippingAddressSameAsBilling();
+            $this->cartObj->unsetCartShippingAddress();
+        }
+
         $this->cartObj->removeProductShippingMethod();
         $this->set('hasPhysicalProduct', $hasPhysicalProduct);
         $this->set('msg', Labels::getLabel('MSG_Address_Selection_Successfull', $this->siteLangId));
@@ -453,6 +460,11 @@ class CheckoutController extends MyAppController
         if (count($cart_products)==0) {
             Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if (!$this->cartObj->hasPhysicalProduct()) {
+            $this->cartObj->unSetShippingAddressSameAsBilling();
+            $this->cartObj->unsetCartShippingAddress();
         }
 
         $this->set('productSelectedShippingMethodsArr', $productSelectedShippingMethodsArr);
@@ -1667,12 +1679,19 @@ class CheckoutController extends MyAppController
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         $products = $this->cartObj->getProducts($this->siteLangId);
 
-        $selected_shipping_address_id = $this->cartObj->getCartShippingAddress();
+        $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
+        if (!$hasPhysicalProd) {
+            $selected_shipping_address_id = $this->cartObj->getCartBillingAddress();
+        } else {
+            $selected_shipping_address_id = $this->cartObj->getCartShippingAddress();
+        }
+
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);
+        $this->set('hasPhysicalProd', $hasPhysicalProd);
         $this->_template->render(false, false);
     }
 
