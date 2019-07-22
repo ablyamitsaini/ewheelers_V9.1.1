@@ -443,12 +443,10 @@
 	removeProductOption = function( product_id,option_id){
 		fcom.ajax(fcom.makeUrl('Seller', 'checkOptionLinkedToInventory'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
 			ans = jQuery.parseJSON(t);
-			if( ans.status == true ){
-				var agree = confirm(langLbl.confirmDeleteOption);
-			}else{
-				var agree = confirm(ans.msg);
+			if( ans.status != true ){
+				var agree = alert(ans.msg);
+                return false;
 			}
-			if(!agree){ return false; }
 			fcom.ajax(fcom.makeUrl('Seller', 'removeProductOption'), 'product_id='+product_id+'&option_id='+option_id, function(t) {
                 var ans = $.parseJSON(t);
                 if( ans.status == 0 ){
