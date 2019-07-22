@@ -2,6 +2,10 @@ html {
 	direction: rtl;
 }
 
+.product-view {
+	overflow-x: hidden;
+}
+
 .ltr-right {
 	direction: ltr;
 	text-align: right;
@@ -385,11 +389,11 @@ input[type="text"].p-cards.meastro {
 }
 
 .selected-panel-action {
-	text-align: left;
+	text-align: left; 
 }
 
 .payment_methods_list li a {}
-
+ 
 .payment_methods_list li a:before {
 	left: auto;
 	right: 15px;
@@ -428,9 +432,12 @@ input[type="text"].p-cards.meastro {
 	margin-left: 10px;
 }
 
-.pagination li.next, .pagination li.prev, .pagination li.forward{
--webkit-transform: rotateY(180deg);
-transform: rotateY(180deg);
+.pagination li.next,
+.pagination li.prev,
+.pagination li.forward,
+.pagination li.rewind {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .media > li .avtar {
@@ -898,9 +905,7 @@ transform: rotateY(180deg);
 		text-align: right;
 	}
 
-	.product-view {
-		overflow-x: hidden;
-	}
+
 
 }
 

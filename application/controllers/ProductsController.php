@@ -142,6 +142,12 @@ class ProductsController extends MyAppController
             $prodSrchObj->addShopIdCondition($shopId);
         }
 
+        $topProducts = FatApp::getPostedData('top_products', FatUtility::VAR_INT, 0);
+        if (0 < $topProducts) {
+            $prodSrchObj->joinProductRating();
+            $prodSrchObj->addCondition('prod_rating', '>=', 3);
+        }
+
         $brandId = FatApp::getPostedData('brand_id', FatUtility::VAR_INT, 0);
         if (0 < $brandId) {
             $prodSrchObj->addBrandCondition($brandId);
@@ -1547,7 +1553,7 @@ class ProductsController extends MyAppController
 
     private function getListingData($get)
     {
-        $db = FatApp::getDb();        
+        $db = FatApp::getDb();
         /* to show searched category data[ */
         $categoryId = null;
         $category = array();

@@ -1,6 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?> <?php $this->includeTemplate('_partial/affiliate/affiliateDashboardNavigation.php');
 $yesNoArr = applicationConstants::getYesNoArr($siteLangId);
-
 $sharingFrm->addFormTagAttribute('class', 'form');
 $sharingFrm->addFormTagAttribute('onsubmit', 'setUpMailAffiliateSharing(this);return false;');
 $sharingFrm->developerTags['colClassPrefix'] = 'col-xs-12 col-md-';
@@ -13,18 +12,6 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
             </div>
         </div>
         <div class="content-body">
-            <!-- <div class="row ">
-            <div class="col-lg-8 col-md-12 mb-4">
-                <div class="cards">
-                    <div class="cards-header p-4">
-                        <p class="note">
-                            <?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text', $siteLangId)?><br/><strong><?php echo Labels::getLabel('LBL_You_may_copy_invitation_link_below', $siteLangId)?></strong>
-                        </p>
-                        <div class="alert--gray"><?php echo $affiliateTrackingUrl; ?></div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
             <div class="js-widget-scroll widget-scroll">
                 <div class="widget widget-stats">
                     <a href="<?php echo CommonHelper::generateUrl('Account', 'credits'); ?>">
@@ -88,7 +75,7 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
                 <div class="widget widget-stats">
                     <div class="cards d-flex -direction-col">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text', $siteLangId)?></h5>
+                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Share_and_earn_commission_on_every_purchase', $siteLangId)?></h5>
                         </div>
                         <div class="cards-content p-4 pr-4 ">
                             <div class="stats">

@@ -53,20 +53,19 @@
 	<?php } else { ?>
 	<div class="bg--second pt-3 pb-3">
       <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-8">               
-            <div class="section-head section--white--head mb-0">
+        <div class="row align-items-center justify-content-center">
+          <div class="col-md-12">               
+            <div class="section-head section--white--head section--head--center mb-0">
 				<div class="section__heading">
-					  <h2 class="mb-0"><?php echo $cPage['cpage_title']; ?></h2>
+					  <h2><?php echo $cPage['cpage_title']; ?></h2>
 					<?php if(!$isAppUser){?>
-					<div class="breadcrumbs breadcrumbs--white">
+					<div class="breadcrumbs breadcrumbs--white breadcrumbs--center">
 					   <?php $this->includeTemplate('_partial/custom/header-breadcrumb.php'); ?>
 					</div>
 					<?php }?>
 				</div>
 			</div>			
         </div>
-        <div class="col-md-4 align--right"></div>
       </div>
     </div>
     </div>

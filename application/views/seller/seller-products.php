@@ -1,10 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$arr_flds = array(
-    'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
-    'listserial' => Labels::getLabel('LBL_Sr.', $siteLangId),
-);
+$arr_flds = array();
+if (count($arrListing) > 0) {
+    $arr_flds['select_all'] = Labels::getLabel('LBL_Select_all', $siteLangId);
+}
+$arr_flds['listserial'] = Labels::getLabel('LBL_Sr', $siteLangId);
 /* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
-    $arr_flds['name'] = Labels::getLabel('LBL_Name', $siteLangId);
+$arr_flds['name'] = Labels::getLabel('LBL_Name', $siteLangId);
 /* } */
 $arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $siteLangId);
 $arr_flds['selprod_stock'] = Labels::getLabel('LBL_Quantity', $siteLangId);

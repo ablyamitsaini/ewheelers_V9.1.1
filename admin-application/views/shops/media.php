@@ -7,7 +7,7 @@ $fld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $shopLogoFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'logo-language-js');
 
-$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $adminLangId), '296*67'). '</small>';
+$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $adminLangId), '150*150'). '</small>';
 
 $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="logo-image-listing"></div>';
@@ -34,56 +34,54 @@ $shopBackgroundImageFrm->developerTags['fld_default_col'] = 12;
 $fld1 = $shopBackgroundImageFrm->getField('shop_background_image');
 $fld1->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 $langFld = $shopBackgroundImageFrm->getField('lang_id');
-$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. Labels::getLabel('MSG_Upload_shop_background_text', $adminLangId). '</small>';*/
-
+$preferredDimensionsStr = '<span class="gap"></span><small class="text--small">'. Labels::getLabel('MSG_Upload_shop_background_text', $adminLangId). '</small>';
 $htmlAfterField = $preferredDimensionsStr;
 $htmlAfterField .= '<div id="bg-image-listing"></div>';
-$fld1->htmlAfterField = $htmlAfterField;
-?>
-    <section class="section">
-        <div class="sectionhead">
-            <h4><?php echo Labels::getLabel('LBL_Shop_Media_Setup', $adminLangId); ?></h4>
-        </div>
-        <div class="sectionbody space">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="tabs_nav_container responsive flat">
-                        <ul class="tabs_nav">
-                            <li>
-                                <a href="javascript:void(0)" onclick="shopForm(<?php echo $shop_id ?>);">
-                                    <?php echo Labels::getLabel('LBL_General', $adminLangId); ?>
-                                </a>
-                            </li>
-                            <?php $inactive=($shop_id==0)?'fat-inactive':'';
-                            foreach ($languages as $langId => $langName) { ?>
-                                <li class="<?php echo $inactive;?>"><a href="javascript:void(0);"
-                                <?php if ($shop_id > 0) { ?>
-                                    onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);"
-                                <?php }?>><?php echo Labels::getLabel('LBL_'.$langName, $adminLangId);?></a></li>
-                            <?php } ?>
-                            <?php /* <li><a href="javascript:void(0);"
-                                <?php if ($shop_id > 0) { ?>
-                                    onclick="shopTemplates(<?php echo $shop_id ?>);"
-                                <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li> */ ?>
-                            <li><a class="active" href="javascript:void(0);"
-                                <?php if ($shop_id > 0) { ?>
-                                    onclick="shopMediaForm(<?php echo $shop_id ?>);"
-                                <?php }?>><?php echo Labels::getLabel('LBL_Media', $adminLangId); ?></a></li>
-                            <li><a href="javascript:void(0);"
-                                <?php if ($shop_id > 0) { ?>
-                                    onclick="shopCollections(<?php echo $shop_id ?>);"
-                                <?php }?>><?php echo Labels::getLabel('LBL_Collection', $adminLangId); ?></a></li>
-                        </ul>
-                        <div class="tabs_panel_wrap">
-                            <div class="tabs_panel">
-                                <?php  echo $shopLogoFrm->getFormHtml();?>
-                                <?php echo $shopBannerFrm->getFormHtml();?>
-                                <?php /*echo $shopBackgroundImageFrm->getFormHtml();*/ ?>
-                            </div>
+$fld1->htmlAfterField = $htmlAfterField; */ ?>
+<section class="section">
+    <div class="sectionhead">
+        <h4><?php echo Labels::getLabel('LBL_Shop_Media_Setup', $adminLangId); ?></h4>
+    </div>
+    <div class="sectionbody space">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tabs_nav_container responsive flat">
+                    <ul class="tabs_nav">
+                        <li>
+                            <a href="javascript:void(0)" onclick="shopForm(<?php echo $shop_id ?>);">
+                                <?php echo Labels::getLabel('LBL_General', $adminLangId); ?>
+                            </a>
+                        </li>
+                        <?php $inactive=($shop_id==0)?'fat-inactive':'';
+                        foreach ($languages as $langId => $langName) { ?>
+                            <li class="<?php echo $inactive;?>"><a href="javascript:void(0);"
+                            <?php if ($shop_id > 0) { ?>
+                                onclick="addShopLangForm(<?php echo $shop_id ?>, <?php echo $langId;?>);"
+                            <?php }?>><?php echo Labels::getLabel('LBL_'.$langName, $adminLangId);?></a></li>
+                        <?php } ?>
+                        <?php /* <li><a href="javascript:void(0);"
+                            <?php if ($shop_id > 0) { ?>
+                                onclick="shopTemplates(<?php echo $shop_id ?>);"
+                            <?php }?>><?php echo Labels::getLabel('LBL_Templates', $adminLangId); ?></a></li> */ ?>
+                        <li><a class="active" href="javascript:void(0);"
+                            <?php if ($shop_id > 0) { ?>
+                                onclick="shopMediaForm(<?php echo $shop_id ?>);"
+                            <?php }?>><?php echo Labels::getLabel('LBL_Media', $adminLangId); ?></a></li>
+                        <li><a href="javascript:void(0);"
+                            <?php if ($shop_id > 0) { ?>
+                                onclick="shopCollections(<?php echo $shop_id ?>);"
+                            <?php }?>><?php echo Labels::getLabel('LBL_Collection', $adminLangId); ?></a></li>
+                    </ul>
+                    <div class="tabs_panel_wrap">
+                        <div class="tabs_panel">
+                            <?php  echo $shopLogoFrm->getFormHtml();?>
+                            <?php echo $shopBannerFrm->getFormHtml();?>
+                            <?php /*echo $shopBackgroundImageFrm->getFormHtml();*/ ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-    </section>
+    </div>
+    </div>
+</section>

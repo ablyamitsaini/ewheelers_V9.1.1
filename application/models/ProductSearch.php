@@ -184,6 +184,11 @@ class ProductSearch extends SearchBase
             $srch->addCondition('sprods.selprod_stock', '>', 0);
         }
 
+        /*if (isset($criteria['top_products']) && !empty($criteria['top_products'])) {
+            $srch->joinProductRating();
+            $srch->addCondition('prod_rating', '>=', 3);
+        }*/
+
         if ($checkAvailableFrom) {
             $srch->addCondition('sprods.selprod_available_from', '<=', $now);
         }
@@ -718,9 +723,9 @@ class ProductSearch extends SearchBase
         $selProdReviewObj->doNotLimitRecords();
         $selProdReviewObj->addGroupBy('spr.spreview_product_id');
         $selProdReviewObj->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
-        $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
+        $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id','spreview_product_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
-        $this->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
+        $this->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating');
     }
 
     public function joinSellerOrder($langId = 0)

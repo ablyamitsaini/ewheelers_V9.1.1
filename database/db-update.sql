@@ -375,3 +375,5 @@ UPDATE `tbl_extra_pages_lang` SET `epage_content` = '<div class=\"section-head s
 UPDATE `tbl_user_supplier_form_fields` SET `sformfield_type` = '7' WHERE `tbl_user_supplier_form_fields`.`sformfield_id` = 3;
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Please_add_minimum';
 ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Share_And_Earn_Text_Message';
+DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Affiliate_Sharing_information_text';

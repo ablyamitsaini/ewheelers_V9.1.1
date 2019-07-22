@@ -392,7 +392,7 @@ class ShopsController extends MyAppController
             $get['sortOrder'] = $get['sort'];
         }
 
-        $get['top_products'] = $shop_id;
+        $get['top_products'] = 1;
         $get['shop_id'] = $shop_id;
 
         $frm->fill($get);
@@ -557,14 +557,14 @@ class ShopsController extends MyAppController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        /*if ($shopData['shop_user_id'] == $loggedUserId) {
-            $message = Labels::getLabel('LBL_User_is_not_allowed_to_send_message_to_yourself', $this->siteLangId);
+        if ($shopData['shop_user_id'] == $loggedUserId) {
+            $message = Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($message));
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
-        } */
+        }
 
         $threadObj = new Thread();
         $threadDataToSave = array(
@@ -1123,6 +1123,7 @@ class ShopsController extends MyAppController
         }
 
         $srch = Product::getListingObj($get, $this->siteLangId, $userId);
+
         $srch->setPageNumber($page);
         if ($pageSize) {
             $srch->setPageSize($pageSize);

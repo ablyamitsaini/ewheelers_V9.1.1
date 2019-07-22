@@ -1,19 +1,21 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+if (isset($scollection_id) && $scollection_id > 0) {
+    $scollection_id = $scollection_id;
+} else {
+    $scollection_id = 0;
+}
+$fatInactive = ($scollection_id==0) ? 'fat-inactive' : '';
+?>
 <ul class="tabs_nav tabs_nav--internal">
-    <li><a class="active" onclick="getShopCollectionGeneralForm(<?php echo $shop_id; ?>);" href="javascript:void(0)"><?php echo Labels::getLabel('TXT_GENERAL', $adminLangId);?></a></li>
-    <?php if (isset($scollection_id) && $scollection_id > 0) {
-        $scollection_id=$scollection_id;
-    } else {
-        $scollection_id='';
-    }
-    foreach ($language as $lang_id => $langName) {?>
-    <li><a href="javascript:void(0)" onClick="editShopCollectionLangForm(<?php echo $shop_id;?>, <?php echo $scollection_id ?>, <?php echo $lang_id;?>)">
+    <li><a class="active" href="javascript:void(0)" <?php if($scollection_id > 0) { ?> onclick="getShopCollectionGeneralForm(<?php echo $shop_id; ?>,<?php echo $scollection_id; ?>);" href="javascript:void(0)" <?php }?>><?php echo Labels::getLabel('TXT_GENERAL', $adminLangId);?></a></li>
+    <?php foreach ($language as $lang_id => $langName) {?>
+    <li class="<?php echo $fatInactive; ?>"><a href="javascript:void(0)" <?php if($scollection_id > 0) { ?> onClick="editShopCollectionLangForm(<?php echo $shop_id;?>, <?php echo $scollection_id ?>, <?php echo $lang_id;?>)" <?php }?>>
         <?php echo Labels::getLabel('LBL_'.$langName, $adminLangId);?></a></li>
     <?php } ?>
 
-    <li><a onclick="sellerCollectionProducts(<?php echo $scollection_id; ?>,<?php echo $shop_id; ?>);" href="javascript:void(0);"><?php echo Labels::getLabel('TXT_LINK', $adminLangId);?></a></li>
-    <li> 
-        <a onclick="collectionMediaForm(<?php echo $shop_id; ?>,<?php echo $scollection_id ?>)" href="javascript:void(0);"> <?php echo Labels::getLabel('TXT_MEDIA', $adminLangId);?> </a>
+    <li class="<?php echo $fatInactive; ?>"><a <?php if($scollection_id > 0) { ?> onclick="sellerCollectionProducts(<?php echo $scollection_id; ?>,<?php echo $shop_id; ?>);"<?php } ?> href="javascript:void(0);"><?php echo Labels::getLabel('TXT_LINK', $adminLangId);?></a></li>
+    <li class="<?php echo $fatInactive; ?>"> 
+        <a <?php if($scollection_id > 0) { ?> onclick="collectionMediaForm(<?php echo $shop_id; ?>,<?php echo $scollection_id ?>)" <?php } ?> href="javascript:void(0);"> <?php echo Labels::getLabel('TXT_MEDIA', $adminLangId);?> </a>
     </li>
 </ul>
 <div class="tabs_panel_wrap">

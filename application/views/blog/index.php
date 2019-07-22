@@ -47,7 +47,7 @@
                                 <?php } ?>
                             </ul>
                             <h2 class="post_title"> <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
-                            <div class="share-button share-button--static-horizontal justify-content-start">
+                            <?php /* <div class="share-button share-button--static-horizontal justify-content-start">
                                 <a href="javascript:void(0)" class="social-toggle"><i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -85,7 +85,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */ ?>
 
                         </div>
                     </div>
@@ -140,7 +140,7 @@
                         <?php } ?>
                     </ul>
                     <h2 class="post_title"> <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo mb_substr($blogPost['post_title'], 0, 80); ?></a></h2>
-                        <div class="share-button share-button--static-horizontal justify-content-start">
+                        <?php /* <div class="share-button share-button--static-horizontal justify-content-start">
                             <a href="javascript:void(0)" class="social-toggle"><i class="icn">
                                     <svg class="svg">
                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -178,7 +178,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> */ ?>
                     </div>
                 </div>
             <?php } ?>
@@ -223,7 +223,7 @@
                                     <?php } ?>
                                 </ul>
                                 <h2 class="post_title"> <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo $blogPost['post_title']?></a></h2>
-                                <div class="share-button share-button--static-horizontal justify-content-start">
+                                <?php /* <div class="share-button share-button--static-horizontal justify-content-start">
                                     <a href="javascript:void(0)" class="social-toggle"><i class="icn">
                                             <svg class="svg">
                                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -261,8 +261,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
-
+                                </div> */ ?>
                             </div>
                         </div>
                     <?php } ?>
@@ -310,7 +309,7 @@
                             <?php } ?>
                         </ul>
                         <h2 class="post_title"> <a href="<?php echo CommonHelper::generateUrl('Blog', 'postDetail', array($blogPost['post_id'])); ?>"><?php echo mb_substr($blogPost['post_title'], 0, 80); ?></a></h2>
-                            <div class="share-button share-button--static-horizontal justify-content-start">
+                            <?php /* <div class="share-button share-button--static-horizontal justify-content-start">
                                 <a href="javascript:void(0)" class="social-toggle"><i class="icn">
                                         <svg class="svg">
                                             <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#share"></use>
@@ -348,7 +347,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */ ?>
                         </div>
                     </div>
             <?php } ?>

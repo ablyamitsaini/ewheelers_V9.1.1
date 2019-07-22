@@ -15,7 +15,11 @@
 				</div>
 				 <div class="col-xl-5 col-lg-6">
 					<div class="seller-register-form">
-						<div class="heading3"><?php echo Labels::getLabel('LBL_Affiliate_Registeration', $siteLangId); ?></div>
+					<div class="section-head">
+			<div class="section__heading">
+				<h2><?php echo Labels::getLabel('LBL_Affiliate_Registeration', $siteLangId); ?></h2>
+			</div>
+					</div>
 						<div id="register-form-div"></div>
 					</div>
 				</div>
