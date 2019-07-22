@@ -471,7 +471,11 @@ class BuyerController extends BuyerBaseController
         $srch->joinOrderUser();
         $srch->joinDigitalDownloads();
         $srch->addDigitalDownloadCondition();
-        $srch->addMultipleFields(array('op_id','op_invoice_number','order_user_id','op_product_type','order_date_added','op_qty','op_status_id','op_selprod_max_download_times','op_selprod_download_validity_in_days','opa.*'));
+        $srch->addMultipleFields(array('op_id', 'op_selprod_id', 'op_invoice_number', 'order_user_id', 'op_product_type', 'order_date_added', 'op_qty', 'op_status_id', 'op_selprod_max_download_times', 'op_selprod_download_validity_in_days', 'opa.*'));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinSellerProducts($this->siteLangId);
+            $srch->addFld(array('selprod_product_id'));
+        }
         $srch->setPageNumber($page);
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->addOrder('order_date_added', 'desc');
@@ -496,6 +500,11 @@ class BuyerController extends BuyerBaseController
         $this->set('recordCount', $srch->recordCount());
         $this->set('postedData', $post);
         $this->set('languages', Language::getAllNames());
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->_template->render(false, false);
     }
 
@@ -2555,7 +2564,7 @@ class BuyerController extends BuyerBaseController
         $srch->addMultipleFields(array('utxn_id'));
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetch($rs);
-        
+
         if (empty($records)) {
             $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
