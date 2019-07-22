@@ -14,16 +14,26 @@
 
     public function contactSubmit()
     {
-        $frm = $this->contactUsForm();
-        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+        $frm = $this->contactUsForm(MOBILE_APP_API_CALL);
+        $post = FatApp::getPostedData();
+        $post['phone'] = !empty($post['phone']) ? ValidateElement::convertPhone($post['phone']) : '';
+        $post = $frm->getFormDataFromArray($post);
 
         if (false === $post) {
-            Message::addErrorMessage($frm->getValidationErrors());
+            $message = $frm->getValidationErrors();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags(current($message)));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
         }
 
-        if (!CommonHelper::verifyCaptcha()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId));
+        if (false ===  MOBILE_APP_API_CALL && !CommonHelper::verifyCaptcha()) {
+            $message = Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             $this->ContactUs();
             die();
             //FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
@@ -38,9 +48,17 @@
 
             $email = new EmailHandler();
             if (!$email->sendContactFormEmail($emailId, $this->siteLangId, $post)) {
-                Message::addErrorMessage(Labels::getLabel('MSG_email_not_sent_server_issue', $this->siteLangId));
+                $message = Labels::getLabel('MSG_email_not_sent_server_issue', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
             } else {
                 Message::addMessage(Labels::getLabel('MSG_your_message_sent_successfully', $this->siteLangId));
+            }
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->_template->render();
             }
 
             FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
@@ -623,7 +641,7 @@
         return $frm;
     }
 
-    private function contactUsForm()
+    private function contactUsForm($mobileApiCall = false)
     {
         $frm = new Form('frmContact');
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '');
@@ -636,7 +654,10 @@
 
         $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '')->requirements()->setRequired();
 
-        $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
+        if (false === $mobileApiCall) {
+            $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
+        }
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT', $this->siteLangId));
         return $frm;
     }
