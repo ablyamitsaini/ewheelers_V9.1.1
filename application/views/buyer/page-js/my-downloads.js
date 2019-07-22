@@ -49,6 +49,7 @@ $(document).ready(function(){
 	};
 
 	clearSearch = function(type){
+		console.log(type);
 		/* document.frmSrch.reset(); */
 		$('input[name=keyword').val('');
 		if(type==1){

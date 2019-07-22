@@ -19,7 +19,7 @@ if (true == $primaryOrder) {
     ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <?php
 } ?>
 
-<main id="main-area" <?php if (!$print) { ?>class="main" <?php }?> role="main">
+<main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <?php if (!$print) { ?>
         <div class="content-header row justify-content-between mb-3">
@@ -244,7 +244,7 @@ if (true == $primaryOrder) {
                         ?> <div class="info--order">
                                 <p><?php echo $billingAddress;?></p>
                             </div>
-                        </div> <?php if (!empty($orderDetail['shippingAddress'])) {
+                        </div> <?php  if (!empty($orderDetail['shippingAddress'])) {
                             ?> <div class="col-lg-6 col-md-6 mb-4">
                             <h5><?php echo Labels::getLabel('LBL_Shipping_Details', $siteLangId); ?></h5> <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
                             if ($orderDetail['shippingAddress']['oua_address1']!='') {
@@ -416,7 +416,8 @@ if (true == $primaryOrder) {
             </div>
         </div>
     </div>
-</main> <?php if ($print) {?>
+</main>
+<?php if ($print) {?>
 <script>
     $(".sidebar-is-expanded").addClass('sidebar-is-reduced').removeClass('sidebar-is-expanded');
     /*window.print();
