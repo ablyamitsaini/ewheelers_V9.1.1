@@ -3,15 +3,21 @@ $(document).ready(function() {
 });
 $(document).on('change', '.logo-language-js', function() {
     var lang_id = $(this).val();
-    shopImages('logo', lang_id);
+    shopImages('logo', 0, lang_id);
 });
 $(document).on('change', '.banner-language-js', function() {
     var lang_id = $(this).val();
-    shopImages('banner', lang_id);
+    var slide_screen = $(".prefDimensions-js").val();
+    shopImages('banner', slide_screen, lang_id);
+});
+$(document).on('change','.prefDimensions-js',function(){
+	var slide_screen = $(this).val();
+	var lang_id = $(".banner-language-js").val();
+	shopImages('banner', slide_screen, lang_id);
 });
 $(document).on('change', '.bg-language-js', function() {
     var lang_id = $(this).val();
-    shopImages('bg', lang_id);
+    shopImages('bg', 0, lang_id);
 });
 $(document).on('change', '.collection-language-js', function() {
     var lang_id = $(this).val();
@@ -163,13 +169,13 @@ $(document).on('change', '.collection-language-js', function() {
             $(el).parent().siblings().removeClass('is-active');
             $(el).parent().addClass('is-active');
             shopImages('logo');
-            shopImages('banner');
+            shopImages('banner',1);
             shopImages('bg');
         });
     };
 
-    shopImages = function(imageType, lang_id) {
-        fcom.ajax(fcom.makeUrl('Seller', 'shopImages', [imageType, lang_id]), '', function(t) {
+    shopImages = function(imageType, slide_screen, lang_id) {
+        fcom.ajax(fcom.makeUrl('Seller', 'shopImages', [imageType, lang_id, slide_screen]), '', function(t) {
             if (imageType == 'logo') {
                 $('#logo-image-listing').html(t);
             } else if (imageType == 'banner') {
@@ -218,13 +224,13 @@ $(document).on('change', '.collection-language-js', function() {
         });
     };
 
-    removeShopImage = function(BannerId, langId, imageType) {
+    removeShopImage = function(BannerId, langId, imageType, slide_screen) {
         var agree = confirm(langLbl.confirmRemove);
         if (!agree) {
             return false;
         }
-        fcom.updateWithAjax(fcom.makeUrl('Seller', 'removeShopImage', [BannerId, langId, imageType]), '', function(t) {
-            shopImages(imageType, langId);
+        fcom.updateWithAjax(fcom.makeUrl('Seller', 'removeShopImage', [BannerId, langId, imageType, slide_screen]), '', function(t) {
+            shopImages(imageType, slide_screen, langId);
         });
     };
 
@@ -479,6 +485,7 @@ $(document).on('click', '.shopFile-Js', function() {
         var imageType = 'logo';
     } else if ('frmShopBanner' == frmName) {
         var lang_id = document.frmShopBanner.lang_id.value;
+        var slide_screen = document.frmShopBanner.slide_screen.value;
         var imageType = 'banner';
     } else {
         var lang_id = document.frmBackgroundImage.lang_id.value;
@@ -487,6 +494,7 @@ $(document).on('click', '.shopFile-Js', function() {
     var frm = '<form enctype="multipart/form-data" id="form-upload" style="position:absolute; top:-100px;" >';
     frm = frm.concat('<input type="file" name="file" />');
     frm = frm.concat('<input type="hidden" name="lang_id" value="' + lang_id + '">');
+    frm = frm.concat('<input type="hidden" name="slide_screen" value="' + slide_screen + '">');
     frm = frm.concat('<input type="hidden" name="file_type" value="' + fileType + '"></form>');
     $('body').prepend(frm);
     $('#form-upload input[name=\'file\']').trigger('click');
@@ -521,7 +529,7 @@ $(document).on('click', '.shopFile-Js', function() {
                         $('#input-field' + fileType).removeClass('text-danger');
                         $('#input-field' + fileType).addClass('text-success');
                         $('#form-upload').remove();
-                        shopImages(imageType, lang_id);
+                        shopImages(imageType, slide_screen, lang_id);
                     } else {
                         $.mbsmessage(ans.msg, true, 'alert--danger');
                         $('#input-field' + fileType).removeClass('text-success');

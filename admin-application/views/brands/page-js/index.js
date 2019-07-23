@@ -5,7 +5,7 @@ $(document).ready(function(){
 $(document).on('change','.logo-language-js',function(){
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	brandImages(brand_id, 'logo', lang_id);
+	brandImages(brand_id, 'logo', 0, lang_id);
 });
 $(document).on('change','.image-language-js',function(){
 	var lang_id = $(this).val();
