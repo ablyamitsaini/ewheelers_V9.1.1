@@ -1,21 +1,21 @@
-<?php 
+<?php
 switch(strtoupper($stats_type)){
 	case 'TOP_COUNTRIES':
-		if($stats_info['totalsForAllResults']==0){ echo "<li>".Labels::getLabel('LBL_No_Record_Found',$adminLangId)."</li>"; exit;}
+		if(!array_key_exists('totalsForAllResults',$stats_info) || $stats_info['totalsForAllResults']==0){ echo "<li>".Labels::getLabel('LBL_No_Record_Found',$adminLangId)."</li>"; exit;}
 
 		foreach($stats_info['rows'] as $key=>$val){
 			echo "<li>".$key." <span class='count'>".$val['%age']."%</span></li>";
 		}
 	break;
 	case 'TOP_REFERRERS':
-		if($stats_info['totalsForAllResults']==0){ echo "<li>".Labels::getLabel('LBL_No_Record_Found',$adminLangId)."</li>"; exit;}
+		if(!array_key_exists('totalsForAllResults',$stats_info) || $stats_info['totalsForAllResults']==0){ echo "<li>".Labels::getLabel('LBL_No_Record_Found',$adminLangId)."</li>"; exit;}
 		foreach($stats_info['rows'] as $key=>$val){
 			echo "<li>".$key." <span class='count'>".$val['visit']."</span></li>";
 		}
 	break;
 	case 'TRAFFIC_SOURCE':
 		$pieChatStats="[['Source', 'Visitors'],";
-		if($stats_info['totalsForAllResults']>0){
+		if(array_key_exists('totalsForAllResults',$stats_info) && $stats_info['totalsForAllResults']>0){
 			foreach($stats_info['rows'] as $key=>$val){
 				if($key==''){continue;}
 				$pieChatStats.="['".$key."',".intval($val['visit'])."],";
