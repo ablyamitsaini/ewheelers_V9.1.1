@@ -1980,7 +1980,6 @@ class SellerController extends SellerBaseController
         $file_type = FatApp::getPostedData('file_type', FatUtility::VAR_INT, 0);
         $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
         $slide_screen = FatApp::getPostedData('slide_screen', FatUtility::VAR_INT, 0);
-
         if (!$file_type) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
@@ -2003,7 +2002,7 @@ class SellerController extends SellerBaseController
         } */
 
         $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveImage(
+        if (!$res = $fileHandlerObj->saveAttachment(
             $_FILES['file']['tmp_name'],
             $file_type,
             $shop_id,

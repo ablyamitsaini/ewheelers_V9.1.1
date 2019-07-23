@@ -7,7 +7,8 @@ $(document).on('change', '.logo-language-js', function() {
 });
 $(document).on('change', '.banner-language-js', function() {
     var lang_id = $(this).val();
-    shopImages('banner', 0, lang_id);
+    var slide_screen = $(".prefDimensions-js").val();
+    shopImages('banner', slide_screen, lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
 	var slide_screen = $(this).val();
@@ -16,7 +17,7 @@ $(document).on('change','.prefDimensions-js',function(){
 });
 $(document).on('change', '.bg-language-js', function() {
     var lang_id = $(this).val();
-    shopImages('bg', slide_screen, lang_id);
+    shopImages('bg', 0, lang_id);
 });
 $(document).on('change', '.collection-language-js', function() {
     var lang_id = $(this).val();
