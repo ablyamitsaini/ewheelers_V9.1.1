@@ -1,4 +1,4 @@
-<?php 
+<?php
 switch(strtoupper($stats_type)){
 	case 'TOP_COUNTRIES':
 		if($stats_info['totalsForAllResults']==0){ echo "<li>".Labels::getLabel('LBL_No_Record_Found',$adminLangId)."</li>"; exit;}

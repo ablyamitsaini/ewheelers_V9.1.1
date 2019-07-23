@@ -1865,4 +1865,12 @@ class CommonHelper extends FatUtility
         }
         return false;
     }
+    
+    public static function displayBadgeCount($totalCount, $maxValue = 99)
+    {
+        if ($totalCount > $maxValue) {
+            return $maxValue.'+';
+        }
+        return $totalCount;
+    }
 }
