@@ -19,11 +19,11 @@
 			foreach ($shipping_rates as $shipping) { /* print_r($shipping);die;  */?>
 				 <input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][pship_id]" value="<?php echo $shipping['pship_id']; ?>" />
 				<tr id="shipping-row<?php echo $shipping_row; ?>">
-				<td>
+				<td style="position: relative;">
 				<input type="text" name="product_shipping[<?php echo $shipping_row; ?>][country_name]" value="<?php echo $shipping["pship_country"]!="-1"?$shipping["country_name"]:"&#8594;".Labels::getLabel('LBL_EveryWhere_Else',$adminLangId);?>" placeholder="<?php echo Labels::getLabel('LBL_Shipping',$adminLangId)?>" /><input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][country_id]" value="<?php echo $shipping["pship_country"]?>" /></td>
-				<td>
+				<td style="position: relative;">
 				<input type="text" name="product_shipping[<?php echo $shipping_row; ?>][company_name]" value="<?php echo isset($shipping["scompany_name"]) ? $shipping["scompany_name"] : ''; ?>" placeholder="<?php echo Labels::getLabel('LBL_Company',$adminLangId)?>" /><input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][company_id]" value="<?php echo $shipping["pship_company"]?>" /></td>
-				<td>
+				<td style="position: relative;">
 				<input type="text" name="product_shipping[<?php echo $shipping_row; ?>][processing_time]" value="<?php echo ShippingDurations::getShippingDurationTitle($shipping,$adminLangId)?>" placeholder="<?php echo Labels::getLabel('LBL_Processing_Time',$adminLangId)?>" /><input type="hidden" name="product_shipping[<?php echo $shipping_row; ?>][processing_time_id]" value="<?php echo isset($shipping["pship_duration"]) ? $shipping["pship_duration"] : '';?>" /></td>
 				<td><input type="text" name="product_shipping[<?php echo $shipping_row; ?>][cost]" value="<?php echo isset($shipping["pship_charges"]) ? $shipping["pship_charges"] : '';?>" placeholder="<?php echo Labels::getLabel('LBL_Cost',$adminLangId)?>" /></td>
 				<td>
@@ -47,11 +47,11 @@
 			addShipping = function(){
 			
 				html  = '<tr id="shipping-row' + shipping_row + '">';
-				html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][country_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Ships_To',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][country_id]' value='' /></td>";
+				html += "  <td style='position: relative;'><input type='text' name='product_shipping[" + shipping_row + "][country_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Ships_To',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][country_id]' value='' /></td>";
 				
-				html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][company_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Shipping_Company',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][company_id]' value='' /></td>";
+				html += "  <td style='position: relative;'><input type='text' name='product_shipping[" + shipping_row + "][company_name]' value='' placeholder='<?php echo Labels::getLabel('LBL_Shipping_Company',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][company_id]' value='' /></td>";
 				
-				html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][processing_time]' value='' placeholder='<?php echo Labels::getLabel('LBL_Processing_Time',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][processing_time_id]' value='' /></td>";
+				html += "  <td style='position: relative;'><input type='text' name='product_shipping[" + shipping_row + "][processing_time]' value='' placeholder='<?php echo Labels::getLabel('LBL_Processing_Time',$adminLangId)?>' /><input type='hidden' name='product_shipping[" + shipping_row + "][processing_time_id]' value='' /></td>";
 				
 				html += "  <td><input type='text' name='product_shipping[" + shipping_row + "][cost]' value='' placeholder='<?php echo Labels::getLabel('LBL_Cost',$adminLangId)?>' /></td>";
 				
