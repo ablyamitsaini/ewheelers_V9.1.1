@@ -2,14 +2,12 @@ $(document).ready(function(){
 	searchSlides(document.frmSlideSearch);
 });
 $(document).on('change','.language-js',function(){
-/* $(document).delegate('.language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var slide_id = $("input[name='slide_id']").val();
 	var slide_screen = $(".prefDimensions-js").val();
 	images(slide_id,slide_screen,lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
-/* $(document).delegate('.prefDimensions-js','change',function(){ */
 	var slide_screen = $(this).val();
 	var slide_id = $("input[name='slide_id']").val();
 	var lang_id = $(".language-js").val();

@@ -8,17 +8,15 @@ $(document).on('change','.logo-language-js',function(){
 	shopImages(shop_id,'logo',0,lang_id);
 });
 $(document).on('change','.banner-language-js',function(){
-/* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var shop_id = document.frmShopBanner.shop_id.value;
 	var slide_screen = $(".prefDimensions-js").val();
 	shopImages(shop_id,'banner',slide_screen,lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
-/* $(document).delegate('.prefDimensions-js','change',function(){ */
 	var slide_screen = $(this).val();
 	var shop_id = document.frmShopBanner.shop_id.value;
-	var lang_id = $(".language-js").val();
+	var lang_id = $(".banner-language-js").val();
 	shopImages(shop_id,'banner',slide_screen,lang_id);
 });
 /*$(document).on('change','.bg-language-js',function(){

@@ -14,10 +14,9 @@ $(document).on('change','.image-language-js',function(){
 	brandImages(brand_id, 'image', slide_screen, lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
-/* $(document).delegate('.prefDimensions-js','change',function(){ */
 	var slide_screen = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	var lang_id = $(".language-js").val();
+	var lang_id = $(".image-language-js").val();
 	brandImages(brand_id,'image',slide_screen,lang_id);
 });
 (function() {
