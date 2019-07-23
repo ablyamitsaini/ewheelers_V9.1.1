@@ -2,24 +2,21 @@ $(document).ready(function(){
 	searchProductCategories(document.frmSearch);
 });
 $(document).on('change','.icon-language-js',function(){
-/* $(document).delegate('.icon-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var prodcat_id = $("input[name='prodcat_id']").val();
 	categoryImages(prodcat_id,'icon',0,lang_id);
 
 });
 $(document).on('change','.banner-language-js',function(){
-/* $(document).delegate('.banner-language-js','change',function(){ */
 	var lang_id = $(this).val();
 	var prodcat_id = $("input[name='prodcat_id']").val();
 	var slide_screen = $(".prefDimensions-js").val();
 	categoryImages(prodcat_id,'banner',slide_screen,lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
-/* $(document).delegate('.prefDimensions-js','change',function(){ */
 	var slide_screen = $(this).val();
 	var prodcat_id = $("input[name='prodcat_id']").val();
-	var lang_id = $(".language-js").val();
+	var lang_id = $(".banner-language-js").val();
 	categoryImages(prodcat_id,'banner',slide_screen,lang_id);
 });
 (function() {
