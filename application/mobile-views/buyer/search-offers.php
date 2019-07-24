@@ -11,7 +11,7 @@ foreach ($offers as $key => $offer) {
 $data = array(
     'offers'=> array_values($offers),
 );
-if (1 > count((array)$offers)) {
+if (1 > count($offers)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }
