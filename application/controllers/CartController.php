@@ -143,7 +143,8 @@ class CartController extends MyAppController
     public function addSelectedToCart()
     {
         $selprod_id_arr = FatApp::getPostedData('selprod_id');
-        if (is_array($selprod_id_arr)) {
+        $selprod_id_arr = !empty($selprod_id_arr) ? array_filter($selprod_id_arr) : array();
+        if (!empty($selprod_id_arr) && is_array($selprod_id_arr)) {
             foreach ($selprod_id_arr as $selprod_id) {
                 $productsToAdd = array();
 
