@@ -9,7 +9,7 @@ $statusArr = array(
 );
 
 foreach ($arrListing as $key => $value) {
-    $arrListing[$key]['utxn_status'] = $txnStatusArr[$value['utxn_status']];
+    $arrListing[$key]['utxn_statusLabel'] = $txnStatusArr[$value['utxn_status']];
     $arrListing[$key]['utxn_id'] = Transactions::formatTransactionNumber($value['utxn_status']);
 }
 
@@ -22,6 +22,7 @@ $data = array(
     'userTotalWalletBalance' => $userTotalWalletBalance,
     'promotionWalletToBeCharged' => $promotionWalletToBeCharged,
     'withdrawlRequestAmount' => $withdrawlRequestAmount,
+    'txnStatusArr' => $txnStatusArr,
 );
 
 if (1 > $recordCount) {
