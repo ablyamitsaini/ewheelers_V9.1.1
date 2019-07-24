@@ -5,12 +5,16 @@
     $shopLogoFrm->developerTags['fld_default_col'] = 12;
     $fld = $shopLogoFrm->getField('shop_logo');
     $fld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
+    
     $shopBannerFrm->setFormTagAttribute('onsubmit', 'setupShopMedia(this); return(false);');
     $shopBannerFrm->setFormTagAttribute('class', 'form');
     $shopBannerFrm->developerTags['colClassPrefix'] = 'col-md-';
     $shopBannerFrm->developerTags['fld_default_col'] = 12;
+    $screenFld = $shopBannerFrm->getField('slide_screen');
+    $screenFld->addFieldTagAttribute('class', 'prefDimensions-js');
     $fld = $shopBannerFrm->getField('shop_banner');
     $fld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
+
     $shopBackgroundImageFrm->setFormTagAttribute('onsubmit', 'setupShopMedia(this); return(false);');
     $shopBackgroundImageFrm->developerTags['colClassPrefix'] = 'col-md-';
     $shopBackgroundImageFrm->developerTags['fld_default_col'] = 12;
@@ -29,7 +33,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
                 <div id="mediaResponse"></div>
                 <div class="col-md-6">
                     <div class="preview">
-                      <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_banner_text', $siteLangId), '2000*500')?></small>
+                      <small class="text--small preferredDimensions-js"><?php echo sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s', $siteLangId), '2000 x 500'); ?></small>
                         <?php echo $shopBannerFrm->getFormHtml();?>
                         <div id="banner-image-listing" class="row"></div>
                     </div>
@@ -50,3 +54,21 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
         </div>
     </div>
 </div>
+<script>
+    $(document).on('change','.prefDimensions-js',function(){
+        var screenDesktop = <?php echo applicationConstants::SCREEN_DESKTOP ?>;
+        var screenIpad = <?php echo applicationConstants::SCREEN_IPAD ?>;
+
+        if($(this).val() == screenDesktop)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '2000 x 500'));
+        }
+        else if($(this).val() == screenIpad)
+        {
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 360'));
+        }
+        else{
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));
+        }
+    });
+</script>

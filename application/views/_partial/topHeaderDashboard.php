@@ -45,7 +45,7 @@
                         <use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#notification"></use>
                     </svg>
                 </i>
-                <span class="h-badge"><span class="heartbit"></span><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span></a>
+                <span class="h-badge"><span class="heartbit"></span><?php echo CommonHelper::displayBadgeCount($todayUnreadMessageCount, 9); ?></span></a>
             </div>
             <div class="short-links">
                 <ul>

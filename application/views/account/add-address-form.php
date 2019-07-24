@@ -14,7 +14,7 @@ $stateFld->setFieldTagAttribute('id', 'ua_state_id');
 $cancelFld = $addressFrm->getField('btn_cancel');
 $cancelFld->setFieldTagAttribute('onclick', 'searchAddresses()');
 $cancelFld->setFieldTagAttribute('class', 'btn btn--primary-border');
-
+$cancelFld->developerTags['col'] = 12;
 $submitFld = $addressFrm->getField('btn_submit');
 $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 ?>
@@ -38,7 +38,7 @@ $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 <?php //} ?>
     </ul>
 </div> -->
-<div class="container--addresses p-4"> <?php echo $addressFrm->getFormHtml();?> </div>
+<div class="container--addresses"> <?php echo $addressFrm->getFormHtml();?> </div>
 <script language="javascript">
     $(document).ready(function() {
         getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id');

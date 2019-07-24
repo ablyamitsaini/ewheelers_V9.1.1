@@ -3265,14 +3265,14 @@ class Importexport extends ImportexportCommon
         if ($selProdOptionsArr) {
             $options = array();
             foreach ($selProdOptionsArr as $k => $v) {
-                $productRow = Product::getAttributesById($k, array('product_id'));
+                $productRow = SellerProduct::getAttributesById($k, array('selprod_product_id'));
                 if (!$productRow) {
                     $errMsg = Labels::getLabel("MSG_Product_not_found.", $langId);
                     $err = array($v['row'], 'N/A', $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                     continue;
                 }
-                $options['selprod_code'] = $productRow['product_id'].'_'.implode('_', $v['optionValueIds']);
+                $options['selprod_code'] = $productRow['selprod_product_id'].'_'.implode('_', $v['optionValueIds']);
                 $sellerProdObj = new SellerProduct($k);
                 $sellerProdObj->assignValues($options);
                 if (!$sellerProdObj->save()) {

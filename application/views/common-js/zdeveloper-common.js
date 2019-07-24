@@ -310,6 +310,9 @@ removeFromCart = function(key) {
     var data = 'key=' + key;
     fcom.updateWithAjax(fcom.makeUrl('Cart', 'remove'), data, function(ans) {
         if (ans.status) {
+            if(ans.total == 0){
+                $('.emtyCartBtn-js').hide();
+            }
             listCartProducts();
             $('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
         }

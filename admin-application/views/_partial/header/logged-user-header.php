@@ -13,7 +13,7 @@
                         <a title="<?php echo Labels::getLabel('LBL_Clear_Cache',$adminLangId);?>" href="javascript:void(0)" onclick="clearCache()"><img class="iconerase" alt="" src="<?php echo CONF_WEBROOT_URL; ?>images/header_icon_2.svg"></a>
                     </li>
 					<li class="togglemsg droplink">
-                        <a href="javascript:void(0)" onclick="getNotifications()" title="Message"><img src="<?php echo CONF_WEBROOT_URL; ?>images/header_icon_1.svg" alt=""><span class="counts"><?php echo $notifyCount; ?></span></a>
+                        <a href="javascript:void(0)" onclick="getNotifications()" title="Message"><img src="<?php echo CONF_WEBROOT_URL; ?>images/header_icon_1.svg" alt=""><span class="counts"><?php echo CommonHelper::displayBadgeCount($notifyCount); ?></span></a>
                         <div class="dropwrap">
                             <div class="head"><?php echo Labels::getLabel('LBL_Notifications',$adminLangId);?></div>
                             <div class="body" id="notificationList">
