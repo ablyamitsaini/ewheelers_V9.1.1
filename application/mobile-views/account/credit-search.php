@@ -1,9 +1,16 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
+
+$txnStatusArr = $statusArr;
+
 $statusArr = array(
     'status'=> 1,
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
+
+foreach ($arrListing as $key => $value) {
+    $arrListing[$key]['utxn_status'] = $txnStatusArr[$value['utxn_status']];
+}
 
 $data = array(
     'creditsListing' => array_values($arrListing),
