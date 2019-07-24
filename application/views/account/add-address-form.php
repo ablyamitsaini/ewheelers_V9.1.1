@@ -14,7 +14,7 @@ $stateFld->setFieldTagAttribute('id', 'ua_state_id');
 $cancelFld = $addressFrm->getField('btn_cancel');
 $cancelFld->setFieldTagAttribute('onclick', 'searchAddresses()');
 $cancelFld->setFieldTagAttribute('class', 'btn btn--primary-border');
-
+$cancelFld->developerTags['col'] = 12;
 $submitFld = $addressFrm->getField('btn_submit');
 $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 ?>
