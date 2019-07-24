@@ -10,6 +10,7 @@ $statusArr = array(
 
 foreach ($arrListing as $key => $value) {
     $arrListing[$key]['utxn_status'] = $txnStatusArr[$value['utxn_status']];
+    $arrListing[$key]['utxn_id'] = Transactions::formatTransactionNumber($value['utxn_status']);
 }
 
 $data = array(
