@@ -6,8 +6,8 @@ $statusArr = array(
 );
 
 $data = array(
-    'personalInfo' => $personalInfo,
-    'bankInfo' => $bankInfo,
+    'personalInfo' => (object)$personalInfo,
+    'bankInfo' => (object)$bankInfo,
 );
 
 if (1 > count((array)$personalInfo) && 1 > count((array)$bankInfo)) {
