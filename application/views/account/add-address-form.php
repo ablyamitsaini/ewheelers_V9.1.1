@@ -38,7 +38,7 @@ $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 <?php //} ?>
     </ul>
 </div> -->
-<div class="container--addresses p-4"> <?php echo $addressFrm->getFormHtml();?> </div>
+<div class="container--addresses"> <?php echo $addressFrm->getFormHtml();?> </div>
 <script language="javascript">
     $(document).ready(function() {
         getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id');
