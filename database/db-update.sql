@@ -377,3 +377,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Please_add_minimum';
 ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Share_And_Earn_Text_Message';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Affiliate_Sharing_information_text';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%Msg_Referral_Code_is_empty%'
