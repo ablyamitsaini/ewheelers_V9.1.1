@@ -277,7 +277,7 @@ class CartController extends MyAppController
             $this->set('msg', CommonHelper::renderHtml(Message::getHtml($productErr)));
             if (!$ProductAdded) {
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($productErr));
+                    FatUtility::dieJsonError(strip_tags(current($productErr)));
                 }
                 Message::addErrorMessage($productErr);
                 FatUtility::dieWithError(Message::getHtml());
