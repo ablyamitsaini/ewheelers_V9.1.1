@@ -581,7 +581,7 @@ trait CustomProducts
         $db = FatApp::getDb();
         $row = $db->fetch($rs);
         if (!empty($row)) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_This_option_is_linked_with_the_inventory,_still_want_to_delete_this_option?', $this->siteLangId));
+            FatUtility::dieJsonError(Labels::getLabel('MSG_This_option_is_linked_with_the_inventory,_so_can_not_be_deleted', $this->siteLangId));
             return;
         }
         FatUtility::dieJsonSuccess(Labels::getLabel("MSG_Option_can_be_deleted", $this->siteLangId));

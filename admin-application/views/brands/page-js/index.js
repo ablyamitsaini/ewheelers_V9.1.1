@@ -5,7 +5,7 @@ $(document).ready(function(){
 $(document).on('change','.logo-language-js',function(){
 	var lang_id = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	brandImages(brand_id, 'logo', lang_id);
+	brandImages(brand_id, 'logo', 0, lang_id);
 });
 $(document).on('change','.image-language-js',function(){
 	var lang_id = $(this).val();
@@ -14,10 +14,9 @@ $(document).on('change','.image-language-js',function(){
 	brandImages(brand_id, 'image', slide_screen, lang_id);
 });
 $(document).on('change','.prefDimensions-js',function(){
-/* $(document).delegate('.prefDimensions-js','change',function(){ */
 	var slide_screen = $(this).val();
 	var brand_id = $("input[id='id-js']").val();
-	var lang_id = $(".language-js").val();
+	var lang_id = $(".image-language-js").val();
 	brandImages(brand_id,'image',slide_screen,lang_id);
 });
 (function() {

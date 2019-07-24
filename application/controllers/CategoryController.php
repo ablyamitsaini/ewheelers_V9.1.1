@@ -195,7 +195,17 @@ class CategoryController extends MyAppController
                 $h = 150;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-            case 'WIDE':
+            case 'MOBILE':
+                $w = 640;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'TABLET':
+                $w = 1024;
+                $h = 360;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'DESKTOP':
                 $w = 2000;
                 $h = 500;
                 AttachedFile::displayImage($image_name, $w, $h);

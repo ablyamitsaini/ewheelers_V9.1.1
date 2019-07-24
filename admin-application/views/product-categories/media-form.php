@@ -23,7 +23,7 @@ $langFld->addFieldTagAttribute('class', 'banner-language-js');
 $screenFld = $prodCatBannerFrm->getField('slide_screen');
 $screenFld->addFieldTagAttribute('class', 'prefDimensions-js');
 
-$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'1350 x 405').'</div>';
+$htmlAfterField = '<div style="margin-top:15px;" class="preferredDimensions-js">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s',$adminLangId),'2000 x 500').'</div>';
 $htmlAfterField .= '<div id="banner-image-listing"></div>';
 $fld2->htmlAfterField = $htmlAfterField;
 
@@ -76,11 +76,11 @@ $fld2->htmlAfterField = $htmlAfterField;*/ ?>
 
         if($(this).val() == screenDesktop)
         {
-            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1350 x 405'));
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '2000 x 500'));
         }
         else if($(this).val() == screenIpad)
         {
-            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 576'));
+            $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '1024 x 360'));
         }
         else{
             $('.preferredDimensions-js').html((langLbl.preferredDimensions).replace(/%s/g, '640 x 360'));

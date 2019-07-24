@@ -12,7 +12,7 @@ class MobileAppApiController extends MyAppController
         $post = FatApp::getPostedData();
 
         $this->appToken = '';
-        var_dump($_SERVER); exit;
+
         if (array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
             $this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
         } elseif (('1.0' == MOBILE_APP_API_VERSION || $action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
@@ -313,6 +313,9 @@ class MobileAppApiController extends MyAppController
                             break;
 
                         case Collections::COLLECTION_TYPE_CATEGORY:
+                            if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT1) {
+                                continue;
+                            }
                             $tempObj = clone $collectionObj;
                             $tempObj->addCondition('collection_id', '=', $collection_id);
                             $tempObj->joinCollectionCategories($this->siteLangId);

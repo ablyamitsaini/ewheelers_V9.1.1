@@ -2813,7 +2813,7 @@ class Importexport extends ImportexportCommon
         $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.credential_user_id = u.user_id', 'uc');
         if ($userId) {
             $srch->addCondition('u.user_id', '=', $userId);
-            $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+            /*$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);*/
         }
         $srch->doNotCalculateRecords();
         $srch->addMultipleFields(array('sp.*','sp_l.*','user_id','credential_username','product_id','product_identifier'));
@@ -3265,14 +3265,14 @@ class Importexport extends ImportexportCommon
         if ($selProdOptionsArr) {
             $options = array();
             foreach ($selProdOptionsArr as $k => $v) {
-                $productRow = Product::getAttributesById($k, array('product_id'));
+                $productRow = SellerProduct::getAttributesById($k, array('selprod_product_id'));
                 if (!$productRow) {
                     $errMsg = Labels::getLabel("MSG_Product_not_found.", $langId);
                     $err = array($v['row'], 'N/A', $errMsg);
                     CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
                     continue;
                 }
-                $options['selprod_code'] = $productRow['product_id'].'_'.implode('_', $v['optionValueIds']);
+                $options['selprod_code'] = $productRow['selprod_product_id'].'_'.implode('_', $v['optionValueIds']);
                 $sellerProdObj = new SellerProduct($k);
                 $sellerProdObj->assignValues($options);
                 if (!$sellerProdObj->save()) {
