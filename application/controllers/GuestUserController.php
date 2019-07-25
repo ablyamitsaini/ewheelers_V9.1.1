@@ -54,6 +54,7 @@ class GuestUserController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(FatUtility::decodeHtmlEntities(Message::getHtml()));
         }
+        
         $this->app_user['temp_user_id'] = 0;
 
         $userId = UserAuthentication::getLoggedUserId();
@@ -1282,12 +1283,12 @@ class GuestUserController extends MyAppController
         FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
     }
 
-    public function resendVerification($user='')
+    public function resendVerification($user = '')
     {
         $frm = $this->getForgotForm();
-
         if (empty($user)) {
-            FatUtility::dieJsonError($frm->getValidationErrors());
+            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
+            FatUtility::dieJsonError($message);
         }
 
         $userAuthObj = new UserAuthentication();
@@ -1307,7 +1308,12 @@ class GuestUserController extends MyAppController
             if (!$this->userEmailVerification($userObj, $row, $this->siteLangId)) {
                 FatUtility::dieJsonError(Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
             } else {
-                FatUtility::dieJsonSuccess(Labels::getLabel("MSG_VERIFICATION_EMAIL_HAS_BEEN_SENT_AGAIN", $this->siteLangId));
+                $message = Labels::getLabel("MSG_VERIFICATION_EMAIL_HAS_BEEN_SENT_AGAIN", $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $this->set('msg', $message);
+                    $this->_template->render();
+                }
+                FatUtility::dieJsonSuccess($message);
             }
         } else {
             FatUtility::dieJsonError(Labels::getLabel("MSG_You_are_already_verified_please_login.", $this->siteLangId));
