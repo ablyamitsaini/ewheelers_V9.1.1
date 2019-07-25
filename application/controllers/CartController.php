@@ -227,16 +227,18 @@ class CartController extends MyAppController
             if ($sellerProductRow['selprod_stock'] <= 0) {
                 if ($productId!=$selprod_id) {
                     $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
+                    $message = sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
                     if (true ===  MOBILE_APP_API_CALL) {
                         FatUtility::dieJsonError(strip_tags($message));
                     }
-                    $productErr['addon'][$productId]=sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+                    $productErr['addon'][$productId] = $message;
                 } else {
                     $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
+                    $message = sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
                     if (true ===  MOBILE_APP_API_CALL) {
                         FatUtility::dieJsonError(strip_tags($message));
                     }
-                    $productErr['product']=sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+                    $productErr['product'] = $message;
                 }
 
                 /* Message::addErrorMessage(Labels::getLabel("LBL_Out_of_Stock_Products_cannot_be_added_to_cart",$this->siteLangId));
