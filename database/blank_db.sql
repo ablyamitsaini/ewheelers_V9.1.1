@@ -720,12 +720,7 @@ CREATE TABLE `tbl_commission_settings` (
 --
 
 INSERT INTO `tbl_commission_settings` (`commsetting_id`, `commsetting_product_id`, `commsetting_user_id`, `commsetting_prodcat_id`, `commsetting_fees`, `commsetting_is_mandatory`, `commsetting_deleted`, `commsetting_by_package`) VALUES
-(1, 0, 4, 0, '4.00', 0, 0, 1),
-(2, 0, 5, 0, '4.00', 0, 0, 1),
-(3, 0, 6, 0, '4.00', 0, 0, 1),
-(4, 0, 0, 0, '10.00', 0, 0, 0),
-(5, 0, 11, 0, '5.00', 0, 0, 1),
-(8, 0, 12, 0, '5.00', 0, 0, 1);
+(1, 0, 0, 0, '3.00', 1, 0, 0);
 
 -- --------------------------------------------------------
 
