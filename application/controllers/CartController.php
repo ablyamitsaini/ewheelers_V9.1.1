@@ -226,9 +226,17 @@ class CartController extends MyAppController
             /* cannot add, out of stock products in cart[ */
             if ($sellerProductRow['selprod_stock'] <= 0) {
                 if ($productId!=$selprod_id) {
-                    $productErr['addon'][$productId]=sprintf(Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId), FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+                    $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    $productErr['addon'][$productId]=sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
                 } else {
-                    $productErr['product']=sprintf(Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId), FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
+                    $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    $productErr['product']=sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
                 }
 
                 /* Message::addErrorMessage(Labels::getLabel("LBL_Out_of_Stock_Products_cannot_be_added_to_cart",$this->siteLangId));
@@ -243,10 +251,16 @@ class CartController extends MyAppController
                 if ($productId!=$selprod_id) {
                     $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
                     $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($str));
+                    }
                     $productErr['addon'][$productId] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 } else {
                     $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
                     $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($str));
+                    }
                     $productErr['product'] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 }
             }
@@ -259,9 +273,17 @@ class CartController extends MyAppController
             $selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
             if ($quantity > $selprod_stock) {
                 if ($productId != $selprod_id) {
-                    $productErr['addon'][$productId]=Message::addInfo(Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId)." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']));
+                    $message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    $productErr['addon'][$productId]=Message::addInfo($message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']));
                 } else {
-                    $productErr['product']=Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId)." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']);
+                    $message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    $productErr['product']=$message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']);
                 }
             }
             /* ] */
