@@ -1105,6 +1105,15 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
+        if (strtotime($post['user_dob']) > time()) {
+            $message = Labels::getLabel("MSG_Invalid_date_of_birth", $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
         $post['user_state_id'] = $user_state_id;
 
         if (isset($post['user_id'])) {
@@ -2136,7 +2145,7 @@ class AccountController extends LoggedUserController
         $this->set('recordCount', $srch->recordCount());
         $this->set('postedData', $post);
         $this->set('shops', $shops);
-        
+
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
