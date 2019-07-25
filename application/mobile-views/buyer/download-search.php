@@ -2,7 +2,7 @@
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 foreach ($digitalDownloads as $index => $row) {
     $digitalDownloads[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($row['selprod_product_id'], "THUMB", $row['op_selprod_id'], 0, $siteLangId));

@@ -2,7 +2,7 @@
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 unset($postedData['btn_submit']);
 unset($postedData['btn_clear']);

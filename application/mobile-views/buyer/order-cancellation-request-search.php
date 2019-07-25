@@ -2,7 +2,7 @@
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 
 foreach ($requests as $key => $request) {

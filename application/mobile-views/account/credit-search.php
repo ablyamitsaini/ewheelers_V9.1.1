@@ -5,7 +5,7 @@ $txnStatusArr = $statusArr;
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 
 foreach ($arrListing as $key => $value) {

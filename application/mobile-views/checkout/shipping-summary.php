@@ -2,7 +2,7 @@
 
 $statusArr = array(
     'status'=> 1,
-    'msg' => Labels::getLabel('MSG_Success', $siteLangId)
+    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 
 if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
