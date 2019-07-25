@@ -689,8 +689,9 @@ class HomeController extends MyAppController
     {
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($this->siteLangId);
+        $arr_country = array();
         foreach ($countriesArr as $key => $val) {
-            $arr_country[]=array("id"=>$key,'name'=>$val);
+            $arr_country[] = array("id"=>$key,'name'=>$val);
         }
         $this->set('countries', $arr_country);
         $this->_template->render();
