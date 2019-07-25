@@ -5,4 +5,6 @@ $statusArr = array(
     'msg' => Labels::getLabel('MSG_Success', $siteLangId)
 );
 
-$data = array();
+$data = array(
+    'userImage' => CommonHelper::generateFullUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true)).'?'.time()
+);
