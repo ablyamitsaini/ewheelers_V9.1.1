@@ -2034,8 +2034,7 @@ class AccountController extends LoggedUserController
 
     public function toggleShopFavorite()
     {
-        $post = FatApp::getPostedData();
-        $shop_id = FatUtility::int($post['shop_id']);
+        $shop_id = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $db = FatApp::getDb();
 
@@ -2053,7 +2052,11 @@ class AccountController extends LoggedUserController
         $shop = $db->fetch($shopRs);
 
         if (!$shop) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
@@ -2067,14 +2070,22 @@ class AccountController extends LoggedUserController
         if (!$row = $db->fetch($rs)) {
             $shopObj = new Shop();
             if (!$shopObj->addUpdateUserFavoriteShop($loggedUserId, $shop_id)) {
-                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
+                $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
             $action = 'A'; //Added to favorite
             $this->set('msg', Labels::getLabel('LBL_Shop_is_marked_as_favoutite', $this->siteLangId));
         } else {
             if (!$db->deleteRecords(Shop::DB_TBL_SHOP_FAVORITE, array('smt'=>'ufs_user_id = ? AND ufs_shop_id = ?', 'vals'=>array($loggedUserId, $shop_id)))) {
-                Message::addErrorMessage(Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId));
+                $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
             $action = 'R'; //Removed from favorite
@@ -2083,6 +2094,9 @@ class AccountController extends LoggedUserController
 
         $this->set('action', $action);
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
