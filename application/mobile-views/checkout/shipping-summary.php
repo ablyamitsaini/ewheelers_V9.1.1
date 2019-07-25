@@ -68,9 +68,9 @@ foreach ($products as $index => $product) {
 }
 
 $data = array(
-    'products' => array_values($products),
+    'products' => !empty(array_filter($products)) ? array_values($products) : array(),
     'cartSummary' => $cartSummary,
-    'shippingAddressDetail' => !empty($shippingAddressDetail) ? $shippingAddressDetail : (object)array(),
+    'shippingAddressDetail' => !empty(array_filter($shippingAddressDetail)) ? $shippingAddressDetail : (object)array(),
 );
 
 
