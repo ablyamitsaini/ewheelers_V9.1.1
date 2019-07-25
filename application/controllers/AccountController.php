@@ -1488,7 +1488,7 @@ class AccountController extends LoggedUserController
         $selprod_id_arr = !empty($selprod_id_arr) ? array_filter($selprod_id_arr) : array();
 
         $uwlist_id = FatApp::getPostedData('uwlist_id', FatUtility::VAR_INT, 0);
-        
+
         if (empty($selprod_id_arr) || empty($uwlist_id)) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -3183,6 +3183,9 @@ class AccountController extends LoggedUserController
         if ($addresses) {
             $this->set('addresses', $addresses);
         } else {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('addresses', array());
+            }
             $this->set('noRecordsHtml', $this->_template->render(false, false, '_partial/no-record-found.php', true));
         }
         if (true ===  MOBILE_APP_API_CALL) {
