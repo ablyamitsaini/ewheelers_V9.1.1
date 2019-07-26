@@ -85,8 +85,8 @@ class ProductCategoriesController extends AdminBaseController
         $this->set('parentData', $parentCatData);
         $this->set('pageSize', $pagesize);
         $this->set('postedData', $post);
+        $this->set('recordCount', $srch->recordCount());
         //$this->set('category_structure', $category_structure);
-
         $this->_template->render(false, false);
     }
 

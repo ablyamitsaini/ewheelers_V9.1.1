@@ -386,7 +386,7 @@
 			</li>
 			<li>
 				<div class="carousel__item">
-					<div class="box box--social box--social-gp">
+					<div class="box box--social box--social-li">
 						<img src="<?php echo CONF_WEBROOT_URL ?>images/social_2.svg" alt="" class="box__icon">
 						<h3>
 							<?php echo isset($dashboardInfo['socialVisits']['rows']['Twitter']['%age'])?$dashboardInfo['socialVisits']['rows']['Twitter']['%age']:0;?>%</h3>
@@ -399,7 +399,7 @@
 			</li>
 			<li>
 				<div class="carousel__item">
-					<div class="box box--social box--social-li">
+					<div class="box box--social box--social-gp">
 						<img src="<?php echo CONF_WEBROOT_URL ?>images/social_3.svg" alt="" class="box__icon">
 						<h3>
 							<?php echo isset($dashboardInfo['socialVisits']['rows']['Google+']['%age'])?$dashboardInfo['socialVisits']['rows']['Google+']['%age']:0;?>%</h3>

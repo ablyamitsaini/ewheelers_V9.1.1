@@ -1,3 +1,5 @@
+Multivendor - Released Version : RV-9.0.0
+
 New Features:
 
 	• Brand new UI for front-end, Shop and dashboard pages.
@@ -67,3 +69,11 @@ Known Issues and Problems:
 	Following is a list of known errors that don’t have a workaround. These issues will be fixed in the subsequent release.
 	• Change in minimum selling price
 	• Change in user assignment for a catalog product
+
+Installation steps:
+ 	• Download the files and configured with your development/production environment.
+ 	• You can get all the files mentioned in .gitignore file from git-ignored-files directory.
+ 	• Renamed -.htaccess file to .htaccess from {document root} and {document root}/public directory
+	• Upload Fatbit library and licence files under {document root}/library.
+	• Define DB configuration under {document root}/public/settings.php
+	• Update basic configuration as per your system requirements under {document root}/conf directory.

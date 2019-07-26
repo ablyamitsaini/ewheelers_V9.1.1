@@ -18,7 +18,7 @@ class SocialPlatform extends MyAppModel
     const ICON_CSS_TWITTER_CLASS = 'twitter';
     const ICON_CSS_YOUTUBE_CLASS = 'youtube';
     const ICON_CSS_INSTAGRAM_CLASS = 'instagram';
-    const ICON_CSS_GOOGLE_PLUS_CLASS = 'google-plus';
+    const ICON_CSS_GOOGLE_PLUS_CLASS = 'google';
     const ICON_CSS_PINTEREST_CLASS = 'pinterest-p';
 
     public function __construct($id = 0)
@@ -60,7 +60,7 @@ class SocialPlatform extends MyAppModel
         static::ICON_CSS_TWITTER_CLASS => Labels::getLabel('LBL_Twitter_Icon', $langId),
         static::ICON_CSS_YOUTUBE_CLASS => Labels::getLabel('LBL_Youtube_Icon', $langId),
         static::ICON_CSS_INSTAGRAM_CLASS => Labels::getLabel('LBL_Instagram_Icon', $langId),
-        static::ICON_CSS_GOOGLE_PLUS_CLASS => Labels::getLabel('LBL_Google_Plus_Icon', $langId),
+        static::ICON_CSS_GOOGLE_PLUS_CLASS => Labels::getLabel('LBL_Google_Icon', $langId),
         static::ICON_CSS_PINTEREST_CLASS => Labels::getLabel('LBL_Pinterest_Icon', $langId),
         );
     }
