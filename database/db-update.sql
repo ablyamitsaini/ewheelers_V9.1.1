@@ -375,3 +375,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Please_add_minimum';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'L_Share_And_Earn_Text_Message';
 DELETE FROM `tbl_language_labels` WHERE `label_key` = 'LBL_Affiliate_Sharing_information_text';
 INSERT INTO `tbl_extra_pages` (`epage_id`, `epage_identifier`, `epage_type`, `epage_content_for`, `epage_active`, `epage_default`, `epage_default_content`) VALUES (NULL, 'Policy points', '44', '1', '1', '', '');
+ALTER TABLE `tbl_order_seller_subscriptions` ADD `ossubs_inventory_allowed` INT(11) NOT NULL AFTER `ossubs_products_allowed`;

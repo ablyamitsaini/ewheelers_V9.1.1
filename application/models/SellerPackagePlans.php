@@ -155,7 +155,7 @@ class SellerPackagePlans extends MyAppModel
 
         $srch->joinPlan();
         $srch->addCondition(SellerPackagePlans::DB_TBL_PREFIX.'id', '=', $spplan_id);
-        $srch->addMultipleFields(array(SellerPackagePlans::DB_TBL_PREFIX.'price',SellerPackages::DB_TBL_PREFIX.'products_allowed',SellerPackagePlans::DB_TBL_PREFIX.'interval',SellerPackages::DB_TBL_PREFIX.'type',SellerPackagePlans::DB_TBL_PREFIX.'frequency',SellerPackages::DB_TBL_PREFIX.'name',SellerPackagePlans::DB_TBL_PREFIX.'trial_interval',SellerPackagePlans::DB_TBL_PREFIX.'trial_frequency'));
+        $srch->addMultipleFields(array(SellerPackagePlans::DB_TBL_PREFIX.'price',SellerPackages::DB_TBL_PREFIX.'products_allowed',SellerPackages::DB_TBL_PREFIX.'inventory_allowed',SellerPackages::DB_TBL_PREFIX.'images_per_product',SellerPackagePlans::DB_TBL_PREFIX.'interval',SellerPackages::DB_TBL_PREFIX.'type',SellerPackagePlans::DB_TBL_PREFIX.'frequency',SellerPackages::DB_TBL_PREFIX.'name',SellerPackagePlans::DB_TBL_PREFIX.'trial_interval',SellerPackagePlans::DB_TBL_PREFIX.'trial_frequency'));
         $srch->addOrder(SellerPackagePlans::DB_TBL_PREFIX.'price', 'asc');
         $srch->addCondition('spp.spplan_active', '=', applicationConstants::YES);
         $srch->setPageSize(1);
