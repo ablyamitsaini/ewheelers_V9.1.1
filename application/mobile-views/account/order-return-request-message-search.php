@@ -9,8 +9,6 @@ $data = array(
     'page' => $page,
     'pageCount' => $pageCount,
     'totalRecords' => $totalRecords,
-    'startRecord' => $startRecord,
-    'endRecord' => $endRecord,
 );
 
 if (1 > count((array)$messagesList)) {
