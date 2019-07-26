@@ -4,11 +4,12 @@ $statusArr = array(
     'status'=> 1,
     'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
+
+$threadDetails['threadTypeTitle'] = $threadTypeArr[$threadDetails['thread_type']];
+
 $data = array(
     'threadDetails' => $threadDetails,
     'threadTypeArr' => $threadTypeArr,
-    'loggedUserId' => $loggedUserId,
-    'loggedUserName' => $loggedUserName,
 );
 
 if (1 > count((array)$threadDetails)) {
