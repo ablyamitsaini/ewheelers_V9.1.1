@@ -6,14 +6,13 @@ $statusArr = array(
 );
 
 $data = array(
-    'allShops' => array_values($allShops),
-    'pageCount' => $pageCount,
-    'recordCount' => $recordCount,
-    'page' => $page,
-    'pageSize' => $pageSize,
+    'recordCount' => !empty($recordCount) ? $recordCount : 0,
+    'collection' => !empty($collection) ? $collection : (object)array(),
+    'collectionItems' => !empty($collections) ? $collections : array(),
 );
 
-if (1 > count((array)$allShops)) {
+
+if (empty($collection)) {
     $statusArr['status'] = 0;
     $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
 }

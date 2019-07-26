@@ -42,8 +42,17 @@ class CollectionsController extends MyAppController
     public function search()
     {
         $db = FatApp::getDb();
-        $data = FatApp::getPostedData();
-        $collection_id = FatUtility::int($data['collection_id']);
+        $collection_id = FatApp::getPostedData('collection_id', FatUtility::VAR_INT, 0);
+
+        if ($collection_id < 1) {
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
         $loggedUserId = 0;
         if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -134,8 +143,13 @@ class CollectionsController extends MyAppController
                 $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 
                 $collections = $db->fetchAll($rs);
-                /* commonHelper::printArray($collections); die; */
                 /* ] */
+                if (true ===  MOBILE_APP_API_CALL) {
+                    foreach ($collections as &$product) {
+                        $product['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $this->siteLangId));
+                    }
+                }
+
                 $this->set('pageCount', $productSrchTempObj->pages());
                 $this->set('recordCount', $productSrchTempObj->recordCount());
                 unset($tempObj);
@@ -160,13 +174,21 @@ class CollectionsController extends MyAppController
                 $productCatSrchTempObj = clone $productCatSrchObj;
                 $productCatSrchTempObj->addCondition('prodcat_id', 'IN', array_keys($categoryIds));
 
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $productCatSrchTempObj->addProductsCountField();
+                }
+
                 $rs = $productCatSrchTempObj->getResultSet();
                 $collections =  $db->fetchAll($rs);
                 /* ] */
 
                 if ($collections) {
                     foreach ($collections as &$cat) {
-                        $cat['children'] = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $cat['prodcat_id']);
+                        if (true ===  MOBILE_APP_API_CALL) {
+                            $cat['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($cat['prodcat_id'] , $this->siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
+                        } else {
+                            $cat['children'] = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $cat['prodcat_id']);
+                        }
                     }
                 }
 
@@ -254,6 +276,11 @@ class CollectionsController extends MyAppController
 
         $this->set('collection', $collection);
         $this->set('siteLangId', CommonHelper::getLangId());
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $this->_template->render(false, false);
     }
 }
