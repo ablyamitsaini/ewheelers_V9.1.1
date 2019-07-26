@@ -143,8 +143,13 @@ class CollectionsController extends MyAppController
                 $collections[$collection['collection_layout_type']][$collection['collection_id']] = $collection;
 
                 $collections = $db->fetchAll($rs);
-                /* commonHelper::printArray($collections); die; */
                 /* ] */
+                if (true ===  MOBILE_APP_API_CALL) {
+                    foreach ($collections as &$product) {
+                        $product['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $this->siteLangId));
+                    }
+                }
+
                 $this->set('pageCount', $productSrchTempObj->pages());
                 $this->set('recordCount', $productSrchTempObj->recordCount());
                 unset($tempObj);
