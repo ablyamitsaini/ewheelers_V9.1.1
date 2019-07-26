@@ -7,12 +7,10 @@ $statusArr = array(
 
 $data = array(
     'allShops' => array_values($allShops),
-    'totalProdCountToDisplay' => $totalProdCountToDisplay,
     'pageCount' => $pageCount,
     'recordCount' => $recordCount,
     'page' => $page,
     'pageSize' => $pageSize,
-    'postedData' => $postedData,
 );
 
 if (1 > count((array)$allShops)) {
