@@ -165,20 +165,38 @@ class UserPrivilege
 
     /* Subscription privildges */
 
-    public static function canSellerUpgradeOrDowngradePlan($userId = 0, $spPlanId = 0, $langId = 0)
+    public static function canSellerUpgradeOrDowngradePlan($userId, $spPlanId = 0, $langId = 0)
     {
+        $userId = FatUtility::int($userId);
+        if (1 > $userId) {
+            return false;
+        }
         $currentActivePlanId = OrderSubscription:: getUserCurrentActivePlanDetails($langId, $userId, array(OrderSubscription::DB_TBL_PREFIX.'id'));
         if (!$currentActivePlanId) {
             return true;
         } else {
+            $totalActiveProducts =  Product::getActiveCount($userId);
+            $allowedLimit = SellerPackagePlans::getSubscriptionPlanDataByPlanId($spPlanId, $langId);
+
+            if ($totalActiveProducts > $allowedLimit['spackage_products_allowed']) {
+                Message::addErrorMessage(sprintf(Labels::getLabel('M_YOU_ARE_DOWNGRADING_YOUR_PACKAGE', $langId), $allowedLimit['spackage_products_allowed'], $totalActiveProducts));
+                return false;
+            }
+
+            $totalActiveInventories =  SellerProduct::getActiveCount($userId);
+            if ($totalActiveInventories > $allowedLimit['spackage_inventory_allowed']) {
+                Message::addErrorMessage(sprintf(Labels::getLabel('M_YOU_ARE_DOWNGRADING_YOUR_PACKAGE', $langId), $allowedLimit['spackage_inventory_allowed'], $totalActiveInventories));
+                return false;
+            }
+
             /* if Downgrading package then give message to reduce products */
-            $planDetails = SellerPackagePlans::getSubscriptionPlanDataByPlanId($spPlanId, $langId);
+            /*$planDetails = SellerPackagePlans::getSubscriptionPlanDataByPlanId($spPlanId, $langId);
             $products = new Product();
-            $totalProducts  =  $products->getTotalProductsAddedByUser(UserAuthentication::getLoggedUserId());
+            $totalProducts  =  $products->getTotalProductsAddedByUser($userId);
             if ($totalProducts > $planDetails[SellerPackages::DB_TBL_PREFIX.'products_allowed']) {
                 Message::addErrorMessage(sprintf(Labels::getLabel('M_YOU_ARE_DOWNGRADING_YOUR_PACKAGE', $langId), $planDetails[SellerPackages::DB_TBL_PREFIX.'products_allowed'], $totalProducts));
                 return false;
-            }
+            }*/
 
             /* ] */
             /* $totalProductsAdded  =
