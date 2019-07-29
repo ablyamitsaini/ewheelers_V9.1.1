@@ -3381,7 +3381,7 @@ class AccountController extends LoggedUserController
     {
         $userId = UserAuthentication::getLoggedUserId();
         $uObj=new User($userId);
-        $tempToken = substr(md5(rand(1, 99999) . microtime()), 1, 25);
+        $tempToken = substr(md5(rand(1, 99999) . microtime()), 1, UserAuthentication::TOKEN_LENGTH);
 
         if (!$uObj->createUserTempToken($tempToken)) {
             FatUtility::dieJsonError($uObj->getError());

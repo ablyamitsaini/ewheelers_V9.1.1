@@ -14,7 +14,7 @@ class PaymentController extends MyAppController
         }
 
         $tempToken = FatApp::getPostedData('tempToken', FatUtility::VAR_STRING, '');
-        if (25 != strlen($tempToken)) {
+        if (UserAuthentication::TOKEN_LENGTH != strlen($tempToken)) {
             FatUtility::dieJSONError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
@@ -62,7 +62,7 @@ class PaymentController extends MyAppController
         }
 
         $tempToken = FatApp::getPostedData('tempToken', FatUtility::VAR_STRING, '');
-        if (25 != strlen($tempToken)) {
+        if (UserAuthentication::TOKEN_LENGTH != strlen($tempToken)) {
             FatUtility::dieJSONError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
