@@ -242,4 +242,41 @@ class PaypalStandardPayController extends PaymentController
         $this->set('msg', $msg);
         $this->_template->render();
     }
+
+    //For API Call, If order not completed due to payment at initial, pending, processed stage.
+    public function paymentPending()
+    {
+        $keyName = FatApp::getPostedData('keyName', FatUtility::VAR_STRING, '');
+
+        if ($keyName != $this->keyName) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+        }
+
+        $tempToken = FatApp::getPostedData('tempToken', FatUtility::VAR_STRING, '');
+        if (25 != strlen($tempToken)) {
+            FatUtility::dieJSONError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
+        }
+
+        $userId = UserAuthentication::getLoggedUserId();
+        $uObj = new User($userId);
+        if (!$uObj->validateAPITempToken($tempToken)) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', $this->siteLangId));
+        }
+
+        $response = FatApp::getPostedData('response', FatUtility::VAR_STRING, '');
+        $orderId = FatApp::getPostedData('orderId', FatUtility::VAR_STRING, '');
+
+        if (empty($response)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
+        }
+
+        $pmObj = new PaymentSettings($this->keyName);
+        $paymentSettings = $pmObj->getPaymentSettings();
+
+        $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
+        $orderPaymentObj->addOrderPaymentComments($response);
+
+        $this->set('msg', $response);
+        $this->_template->render();
+    }
 }
