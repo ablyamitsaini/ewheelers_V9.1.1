@@ -1262,19 +1262,19 @@ class GuestUserController extends MyAppController
         FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
     }
 
-    public function resendVerification($user = '')
+    public function resendVerification($usernameOrEmail = '')
     {
         $frm = $this->getForgotForm();
-        if (empty($user)) {
-            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError($message);
+        if (empty($usernameOrEmail)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
         $userAuthObj = new UserAuthentication();
 
-        if (!$row = $userAuthObj->getUserByEmailOrUserName($user, false, false)) {
+        if (!$row = $userAuthObj->getUserByEmailOrUserName($usernameOrEmail, false, false)) {
             FatUtility::dieJsonError(Labels::getLabel($userAuthObj->getError(), $this->siteLangId));
         }
+
         $row['user_email'] = $row['credential_email'];
         $db = FatApp::getDb();
         $srch = new SearchBase('tbl_user_credentials');
