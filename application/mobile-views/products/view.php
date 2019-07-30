@@ -27,23 +27,23 @@ $product['selprod_return_policies'] = !empty($product['selprod_return_policies']
 $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_policies']) ? $product['selprod_warranty_policies'] : (object)array();
 
 $shop['shop_payment_policy'] = empty($shop['shop_payment_policy']) ? (object) array() : array(
-    'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $this->siteLangId),
+    'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId),
     'description' => $shop['shop_payment_policy'],
 );
 $shop['shop_delivery_policy'] =  empty($shop['shop_delivery_policy']) ? (object) array() : array(
-    'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $this->siteLangId),
+    'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $siteLangId),
     'description' => $shop['shop_delivery_policy'],
 );
 $shop['shop_refund_policy'] =  empty($shop['shop_refund_policy']) ? (object) array() : array(
-    'title' => Labels::getLabel('LBL_REFUND_POLICY', $this->siteLangId),
+    'title' => Labels::getLabel('LBL_REFUND_POLICY', $siteLangId),
     'description' => $shop['shop_refund_policy'],
 );
 $shop['shop_additional_info'] =  empty($shop['shop_additional_info']) ? (object) array() : array(
-    'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+    'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId),
     'description' => $shop['shop_additional_info'],
 );
 $shop['shop_seller_info'] =  empty($shop['shop_seller_info']) ? (object) array() : array(
-    'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+    'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId),
     'description' => $shop['shop_seller_info'],
 );
 
