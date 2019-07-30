@@ -5,4 +5,4 @@ $statusArr = array(
     'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
 );
 
-$data = array();
+
