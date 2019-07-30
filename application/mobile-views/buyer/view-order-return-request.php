@@ -1,10 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
-$request['charges'] = array_values($request['charges']);
+$request['charges'] = array_key_exists('charges', $request) ? array_values($request['charges']) : array();
 $data = array(
     'canEscalateRequest' => $canEscalateRequest,
     'canWithdrawRequest' => $canWithdrawRequest,
@@ -14,7 +10,6 @@ $data = array(
     'requestRequestStatusArr' => $requestRequestStatusArr,
     'returnRequestTypeArr' => $returnRequestTypeArr,
 );
-if (1 > count((array)$request)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($request)) {
+    $status = applicationConstants::OFF;
 }

@@ -1,10 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
-
 if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
     $cartSummary['cartDiscounts'] = !empty($cartSummary['cartDiscounts']) ? $cartSummary['cartDiscounts'] : (object)array();
 }
@@ -74,7 +69,6 @@ $data = array(
 );
 
 
-if (1 > count((array)$products)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($products)) {
+    $status = applicationConstants::OFF;
 }

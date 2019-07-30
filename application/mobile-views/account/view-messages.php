@@ -1,18 +1,13 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
 
-$threadDetails['threadTypeTitle'] = $threadTypeArr[$threadDetails['thread_type']];
+$threadDetails['threadTypeTitle'] = array_key_exists('thread_type', $threadDetails) ? $threadTypeArr[$threadDetails['thread_type']] : '';
 
 $data = array(
     'threadDetails' => $threadDetails,
     'threadTypeArr' => $threadTypeArr,
 );
 
-if (1 > count((array)$threadDetails)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($threadDetails)) {
+    $status = applicationConstants::OFF;
 }

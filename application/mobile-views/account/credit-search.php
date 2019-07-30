@@ -3,10 +3,6 @@
 
 $txnStatusArr = $statusArr;
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
 
 foreach ($arrListing as $key => $value) {
     $arrListing[$key]['utxn_statusLabel'] = $txnStatusArr[$value['utxn_status']];
@@ -26,6 +22,5 @@ $data = array(
 );
 
 if (1 > $recordCount) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+   $status = applicationConstants::OFF;
 }

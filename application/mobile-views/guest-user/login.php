@@ -1,10 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
-
 $data = array(
     'token' => $token,
     'user_name' => !empty($userInfo['user_name']) ? $userInfo['user_name'] : '',
@@ -14,7 +9,6 @@ $data = array(
     'user_image' => !empty($userInfo['user_id']) ? CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1)).'?'.time() : ''
 );
 
-if (1 > count((array)$userInfo)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($userInfo)) {
+   $status = applicationConstants::OFF;
 }

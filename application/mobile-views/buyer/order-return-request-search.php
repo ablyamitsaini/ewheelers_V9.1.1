@@ -1,12 +1,8 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
 foreach ($requests as $key => $request) {
-    $requests[$key]['statusName'] = $OrderReturnRequestStatusArr[$request['orrequest_status']];
-    $requests[$key]['orrequestTypeTitle'] = $returnRequestTypeArr[$request['orrequest_type']];
+    $requests[$key]['statusName'] = array_key_exists('orrequest_status', $request) ? $OrderReturnRequestStatusArr[$request['orrequest_status']] : '';
+    $requests[$key]['orrequestTypeTitle'] = array_key_exists('orrequest_type', $request) ? $returnRequestTypeArr[$request['orrequest_type']] : '';
     $requests[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($request['selprod_product_id'], "THUMB", $request['op_selprod_id'], 0, $siteLangId));
 }
 $data = array(
@@ -17,7 +13,6 @@ $data = array(
     'returnRequestTypeArr' => $returnRequestTypeArr,
     'OrderReturnRequestStatusArr' => $OrderReturnRequestStatusArr,
 );
-if (1 > count((array)$requests)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($requests)) {
+    $status = applicationConstants::OFF;
 }
