@@ -168,6 +168,9 @@ class BuyerController extends BuyerBaseController
             $srch->joinTable(SelProdReview::DB_TBL, 'LEFT OUTER JOIN', 'o.order_id = spr.spreview_order_id and op.op_selprod_id = spr.spreview_selprod_id', 'spr');
             $srch->joinTable(SelProdRating::DB_TBL, 'LEFT OUTER JOIN', 'sprating.sprating_spreview_id = spr.spreview_id', 'sprating');
             $srch->addFld(array('*','IFNULL(ROUND(AVG(sprating_rating),2),0) as prod_rating'));
+
+            // Comment: Passing wrong $opId it will return result having null values coresponding with their keys except sprating_rating (due to AVG function). To avoid this situation, having clause added.
+            $srch->addHaving('op_id', '=', $opId);
         }
 
         if ($opId > 0) {
@@ -175,10 +178,10 @@ class BuyerController extends BuyerBaseController
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
             $primaryOrderDisplay = true;
         }
+
         $rs = $srch->getResultSet();
 
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');
-
         foreach ($childOrderDetail as $opID => $val) {
             $childOrderDetail[$opID]['charges'] = $orderDetail['charges'][$opID];
         }

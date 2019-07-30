@@ -1,9 +1,9 @@
 $(document).ready(function(){
 		/* alert(singleFeaturedProduct); */
 		/* home page main slider */
-        
+
         $('.js-collection-corner').slick( getSlickSliderSettings(5, 1, langLbl.layoutDirection) );
-        
+
 		if(langLbl.layoutDirection == 'rtl'){
 
 			$('.js-hero-slider').slick({
@@ -13,30 +13,8 @@ $(document).ready(function(){
 				arrows: false,
 				dots: true,
 				rtl:true,
-
+                autoplay: true,
 			});
-
-			/* $('.js-collection-corner').slick({
-				dots: false,
-				arrows: false,
-				autoplay: true,
-				rtl:true,
-				pauseOnHover: false,
-				slidesToShow: 6,
-				responsive: [{
-					breakpoint: 1025,
-					settings: {
-						arrows: false,
-						slidesToShow: 3,
-					}
-						}, {
-					breakpoint: 500,
-					settings: {
-						arrows: false,
-						slidesToShow: 2,
-					}
-						}]
-			}); */
 
 			$('.featured-item-js').slick({
 
@@ -123,28 +101,8 @@ $(document).ready(function(){
 				slidesToShow: 1,
 				arrows: false,
 				dots: true,
+                autoplay: true,
 			});
-
-			/* $('.js-collection-corner').slick({
-				dots: false,
-				arrows: false,
-				autoplay: true,
-				pauseOnHover: false,
-				slidesToShow: 6,
-				responsive: [{
-					breakpoint: 1025,
-					settings: {
-						arrows: false,
-						slidesToShow: 3,
-					}
-						}, {
-					breakpoint: 500,
-					settings: {
-						arrows: false,
-						slidesToShow: 2,
-					}
-						}]
-			}); */
 
 		$('.featured-item-js').slick({
 		  centerMode: true,

@@ -137,8 +137,7 @@ class PaypalStandardPayController extends PaymentController
         $paymentSettings = $pmObj->getPaymentSettings();
 
         $post = FatApp::getPostedData();
-        /* $post = json_decode('{"mc_gross":"14.00","invoice":"O1475665176","protection_eligibility":"Ineligible","item_number1":"O1475665176","payer_id":"RKW4ZZPDCZ4NW","tax":"0.00","payment_date":"04:01:49 Oct 05, 2016 PDT","payment_status":"Completed","charset":"windows-1252","mc_shipping":"0.00","mc_handling":"0.00","first_name":"anup","mc_fee":"0.71","notify_version":"3.8","custom":"O1475665176","payer_status":"verified","business":"anupmr@dummyid.com","num_cart_items":"1","mc_handling1":"0.00","verify_sign":"Ai.5bQT0IEOAwZz0G2AWlZ32DvJdAFEkLshyPSxSxaanFugsLmsZQryA","payer_email":"anup@dummyid.com","mc_shipping1":"0.00","tax1":"0.00","txn_id":"7JF47304TA4145814","payment_type":"instant","last_name":"test","item_name1":"Order Payment Gateway Description","receiver_email":"anupmr@dummyid.com","payment_fee":"0.71","quantity1":"1","receiver_id":"X5VD4GYQM95XE","txn_type":"cart","mc_gross_1":"14.00","mc_currency":"USD","residence_country":"US","test_ipn":"1","transaction_subject":"","payment_gross":"14.00","ipn_tra    ck_id":"f22e1a245498"}');$post = $this->toArray($post);  */
-        //var_dump($post); exit;
+
         $orderId = (isset($post['custom']))?$post['custom']:0;
 
         $orderPaymentObj = new OrderPayment($orderId, $this->siteLangId);
@@ -165,18 +164,18 @@ class PaypalStandardPayController extends PaymentController
             if ((strcmp($response, 'VERIFIED') == 0 || strcmp($response, 'UNVERIFIED') == 0) && isset($post['payment_status'])) {
                 $orderPaymentStatus = $paymentSettings['order_status_initial'];
                 switch (strtoupper($post['payment_status'])) {
-                case 'PENDING':
-                    $orderPaymentStatus = $paymentSettings['order_status_pending'];
-                    break;
-                case 'PROCESSED':
-                    $orderPaymentStatus = $paymentSettings['order_status_processed'];
-                    break;
-                case 'COMPLETED':
-                    $orderPaymentStatus = $paymentSettings['order_status_completed'];
-                    break;
-                default:
-                    $orderPaymentStatus = $paymentSettings['order_status_others'];
-                    break;
+                    case 'PENDING':
+                        $orderPaymentStatus = $paymentSettings['order_status_pending'];
+                        break;
+                    case 'PROCESSED':
+                        $orderPaymentStatus = $paymentSettings['order_status_processed'];
+                        break;
+                    case 'COMPLETED':
+                        $orderPaymentStatus = $paymentSettings['order_status_completed'];
+                        break;
+                    default:
+                        $orderPaymentStatus = $paymentSettings['order_status_others'];
+                        break;
                 }
 
                 $receiverMatch = (strtolower($post['receiver_email']) == strtolower($paymentSettings['merchant_email']));
@@ -192,7 +191,7 @@ class PaypalStandardPayController extends PaymentController
                 }
 
                 if ($orderPaymentStatus == Orders::ORDER_IS_PAID && $receiverMatch && $totalPaidMatch) {
-                    $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_code"], $post["txn_id"], $paymentGatewayCharge, 'Received Payment', $request."#".$response);
+                    $orderPaymentObj->addOrderPayment($paymentSettings["pmethod_code"], $post["txn_id"], $paymentGatewayCharge, Labels::getLabel('MSG_Payment_Received', $this->siteLangId), $request."#".$response);
                 } else {
                     $orderPaymentObj->addOrderPaymentComments($request);
                 }

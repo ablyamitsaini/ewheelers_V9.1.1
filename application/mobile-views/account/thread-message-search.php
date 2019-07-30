@@ -10,10 +10,6 @@ $data = array(
     'recordCount' => $recordCount,
     'page' => $page,
     'pageSize' => $pageSize,
-    'postedData' => $postedData,
-    'totalRecords' => $totalRecords,
-    'startRecord' => $startRecord,
-    'endRecord' => $endRecord,
 );
 
 if (1 > count((array)$arrListing)) {

@@ -3375,4 +3375,18 @@ class AccountController extends LoggedUserController
         $this->set('msg', Labels::getLabel('MSG_REQUEST_SENT_SUCCESSFULLY', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
+
+    //Valid for 10 Minutes only
+    public function getTempToken()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+        $uObj=new User($userId);
+        $tempToken = substr(md5(rand(1, 99999) . microtime()), 1, UserAuthentication::TOKEN_LENGTH);
+
+        if (!$uObj->createUserTempToken($tempToken)) {
+            FatUtility::dieJsonError($uObj->getError());
+        }
+        $this->set('tempToken', $tempToken);
+        $this->_template->render();
+    }
 }

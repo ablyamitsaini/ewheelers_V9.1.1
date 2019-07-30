@@ -10,10 +10,8 @@ $data = array(
     'messages' => $arr_listing,
     'pageCount' => $pageCount,
     'recordCount' => $recordCount,
-    'loggedUserId' => $loggedUserId,
     'page' => $page,
     'pageSize' => $pageSize,
-    'postedData' => $postedData,
 );
 
 if (1 > count((array)$arr_listing)) {
