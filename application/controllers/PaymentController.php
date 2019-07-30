@@ -2,7 +2,7 @@
 class PaymentController extends MyAppController
 {
     //Mobile payment gateways
-    private $keyNames = ['PaypalStandard','Stripe'];
+    private $keyNames = ['PaypalStandard'];
 
     //For API Call, After successfull payment.
     public function paymentSuccess()

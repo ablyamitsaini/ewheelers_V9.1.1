@@ -14,7 +14,11 @@ class StripePayController extends PaymentController
     public function charge($orderId)
     {
         if (empty(trim($orderId))) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
         }
 
@@ -44,17 +48,33 @@ class StripePayController extends PaymentController
         $orderInfo = $orderPaymentObj->getOrderPrimaryinfo();
 
         if (!$orderInfo['id']) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+                FatUtility::dieJsonError($message);
+            }
             FatUtility::exitWithErrorCode(404);
         } elseif ($orderInfo && $orderInfo["order_is_paid"] == Orders::ORDER_IS_PENDING) {
             $this->currencyCode = strtolower($orderInfo["order_currency_code"]);
             $checkPayment = $this->doPayment($payableAmount, $orderInfo);
-            $frm=$this->getPaymentForm($orderId);
+            $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             if ($checkPayment) {
                 $this->set('success', true);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $this->_template->render();
+                }
+            } else {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $message = Labels::getLabel('MSG_Payment_Failed', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
+                }
             }
         } else {
-            $this->error = Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId);
+            $message = Labels::getLabel('MSG_INVALID_ORDER_PAID_CANCELLED', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            $this->error = $message;
         }
         $this->set('paymentAmount', $paymentAmount);
         $this->set('orderInfo', $orderInfo);
@@ -115,10 +135,8 @@ class StripePayController extends PaymentController
         return $frm;
     }
 
-    private function doPayment($payment_amount = null, $orderInfo = null)
+    private function doPayment($payment_amount, $orderInfo)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
         $this->paymentSettings=$this->getPaymentSettings();
         if ($payment_amount == null || !$this->paymentSettings || $orderInfo['id'] == null) {
             return false;
@@ -126,8 +144,14 @@ class StripePayController extends PaymentController
         $checkPayment = false;
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             try {
-                if (!isset($_POST['stripeToken'])) {
-                    throw new Exception("The Stripe Token was not generated correctly");
+                $stripeToken = FatApp::getPostedData('stripeToken', FatUtility::VAR_STRING, '');
+
+                if (empty($stripeToken)) {
+                    $message = Labels::getLabel('MSG_The_Stripe_Token_was_not_generated_correctly', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    throw new Exception($message);
                 } else {
                     $stripe = array(
                     'secret_key'      => $this->paymentSettings['privateKey'],
@@ -140,12 +164,11 @@ class StripePayController extends PaymentController
                     $customer = \Stripe\Customer::create(
                         array(
                           "email" => $orderInfo['customer_email'],
-                          "source" => $_POST['stripeToken'],
+                          "source" => $stripeToken,
                         )
                     );
                     $charge = \Stripe\Charge::create(
                         array(
-                        /* 'source'     => $_POST['stripeToken'], */
                         "customer" => $customer->id,
                         'amount'   => $payment_amount,
                         'currency' => $this->currencyCode,
@@ -185,10 +208,15 @@ class StripePayController extends PaymentController
                             $orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $charge['id'], ($payment_amount/100), Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message);
                             /* End Recording Payment in DB */
                             $checkPayment = true;
-                            FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderInfo['id'])));
+
+                            if (false ===  MOBILE_APP_API_CALL) {
+                                FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentSuccess', array($orderInfo['id'])));
+                            }
                         } else {
                             $orderPaymentObj->addOrderPaymentComments($message);
-                            FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
+                            if (false ===  MOBILE_APP_API_CALL) {
+                                FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
+                            }
                         }
                     }
                 }
