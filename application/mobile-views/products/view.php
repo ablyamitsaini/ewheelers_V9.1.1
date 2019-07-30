@@ -1,10 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
-
 foreach ($upsellProducts as $index => $btProduct) {
     $upsellProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($btProduct['product_id'], "THUMB", $btProduct['selprod_id'], 0, $siteLangId));
 }
@@ -83,7 +78,6 @@ $data = array(
 );
 
 
-if (1 > count((array)$product)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty((array)$product)) {
+    $status = applicationConstants::OFF;
 }

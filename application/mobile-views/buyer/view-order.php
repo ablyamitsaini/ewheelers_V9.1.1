@@ -1,9 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
 if (1 > $opId) {
     $childOrderDetail = array_values($childOrderDetail);
 }
@@ -99,7 +95,6 @@ $data = array(
     'languages' => !empty($languages) ? $languages : (object)array(),
     'yesNoArr' => $yesNoArr,
 );
-if (1 > count((array)$orderDetail)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($orderDetail)) {
+    $status = applicationConstants::OFF;
 }

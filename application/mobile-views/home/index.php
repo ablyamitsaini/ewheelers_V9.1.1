@@ -1,10 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$statusArr = array(
-    'status'=> 1,
-    'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId)
-);
-
 foreach ($slides as $index => $slideDetail) {
     $slides[$index]['slide_image_url'] = CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'],0,$siteLangId));
 }
@@ -56,7 +51,6 @@ foreach ($banners as $location => $bannerLocationDetail) {
 
 $data = array_merge($data, $banners);
 
-if (1 > count((array)$sponsoredProds) && 1 > count((array)$sponsoredShops) && 1 > count((array)$slides) && 1 > count((array)$collections) && 1 > count((array)$banners)) {
-    $statusArr['status'] = 0;
-    $statusArr['msg'] = Labels::getLabel('MSG_No_record_found', $siteLangId);
+if (empty($sponsoredProds) && empty($sponsoredShops) && empty($slides) && empty($collections) && empty($banners)) {
+    $status = applicationConstants::OFF;
 }
