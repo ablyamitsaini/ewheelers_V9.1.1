@@ -146,26 +146,6 @@ class CommonHelper extends FatUtility
         return md5(PASSWORD_SALT . $pwd . PASSWORD_SALT);
     } */
 
-    public static function isShippedBySeller($sellerId = 0, $productSellerId = 0, $shippedBySellerId = false)
-    {
-        $productSellerId = FatUtility::int($productSellerId);
-        $sellerId = FatUtility::int($sellerId);
-        /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
-            return false;
-        } */
-
-        if ($productSellerId > 0 && $sellerId == $productSellerId) {
-            /* Catalog-Product Added By Seller so also shipped by seller */
-            return $sellerId;
-        } else {
-            $shippedBySellerId = FatUtility::int($shippedBySellerId);
-            if ($shippedBySellerId > 0 && $sellerId == $shippedBySellerId) {
-                return $shippedBySellerId;
-            }
-        }
-        return false;
-    }
-
     public static function canAvailShippingChargesBySeller($opSellerId = 0, $shippedByUserId = 0)
     {
         /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
@@ -1600,34 +1580,6 @@ class CommonHelper extends FatUtility
         }
         $dropDown .='</select>';
         return  $dropDown;
-    }
-    public static function getLgColsForPackages()
-    {
-        return array('1'=>4,
-            '2'=>6,
-            '3'=>4,
-            '4'=>3,
-            '5'=>4,
-            '6'=>4,
-            '7'=>4,
-            '8'=>4,
-            '9'=>4,
-            '10'=>4
-        );
-    }
-    public static function getMdColsForPackages()
-    {
-        return array('1'=>4,
-            '2'=>6,
-            '3'=>4,
-            '4'=>3,
-            '5'=>4,
-            '6'=>4,
-            '7'=>4,
-            '8'=>4,
-            '9'=>4,
-            '10'=>4
-        );
     }
 
     public static function getUserFirstName($userName = '')

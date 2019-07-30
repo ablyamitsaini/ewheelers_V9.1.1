@@ -47,7 +47,7 @@ class CollectionsController extends MyAppController
         if ($collection_id < 1) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());

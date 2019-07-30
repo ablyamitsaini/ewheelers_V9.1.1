@@ -756,7 +756,7 @@ class UserAuthentication extends FatModel
         }
         if (true ===  MOBILE_APP_API_CALL) {
             $message = Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId());
-            FatUtility::dieJsonError(strip_tags($message));
+            FatUtility::dieJsonError($message);
         }
 
         if (FatUtility::isAjaxCall()) {

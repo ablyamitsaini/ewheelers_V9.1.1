@@ -42,7 +42,7 @@ class CategoryController extends MyAppController
         if (false == $category) {
             if (true ===  MOBILE_APP_API_CALL) {
                 $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             FatUtility::exitWithErrorCode(404);
         }

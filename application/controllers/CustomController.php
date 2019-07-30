@@ -31,7 +31,7 @@
         if (false ===  MOBILE_APP_API_CALL && !CommonHelper::verifyCaptcha()) {
             $message = Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             $this->ContactUs();
@@ -50,7 +50,7 @@
             if (!$email->sendContactFormEmail($emailId, $this->siteLangId, $post)) {
                 $message = Labels::getLabel('MSG_email_not_sent_server_issue', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
             } else {

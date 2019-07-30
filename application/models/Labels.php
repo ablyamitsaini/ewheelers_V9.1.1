@@ -65,11 +65,11 @@ class Labels extends MyAppModel
 
             if (isset($lang_array[$lblKey][$langId])) {
                 if ($lang_array[$lblKey][$langId]!='') {
-                    return $lang_array[$lblKey][$langId];
+                    return strip_tags($lang_array[$lblKey][$langId]);
                 } else {
                     $arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($lblKey))));
                     array_shift($arr);
-                    return $str = implode(' ', $arr);
+                    return $str = strip_tags(implode(' ', $arr));
                 }
             }
         }
@@ -114,7 +114,7 @@ class Labels extends MyAppModel
             $lang_array[$lblKey][$langId] = $str;
         }
 
-        return $str;
+        return strip_tags($str);
     }
 
     public function addUpdateData($data = array())

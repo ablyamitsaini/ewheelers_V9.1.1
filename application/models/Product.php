@@ -1426,4 +1426,24 @@ END,   special_price_found ) as special_price_found'
         $records = FatApp::getDb()->fetchAll($rs);
         return $srch->recordCount();
     }
+
+    public static function isShippedBySeller($selprodUserId = 0, $productSellerId = 0, $shippedBySellerId = false)
+    {
+        $productSellerId = FatUtility::int($productSellerId);
+        $selprodUserId = FatUtility::int($selprodUserId);
+        /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
+            return false;
+        } */
+
+        if ($productSellerId > 0 && $selprodUserId == $productSellerId) {
+            /* Catalog-Product Added By Seller so also shipped by seller */
+            return $selprodUserId;
+        } else {
+            $shippedBySellerId = FatUtility::int($shippedBySellerId);
+            if ($shippedBySellerId > 0 && $selprodUserId == $shippedBySellerId) {
+                return $shippedBySellerId;
+            }
+        }
+        return false;
+    }
 }

@@ -1800,36 +1800,6 @@ class SellerController extends SellerBaseController
             $shopObj->rewriteUrlTopProducts($post['urlrewrite_custom']);
             $shopObj->rewriteUrlContact($post['urlrewrite_custom']);
             $shopObj->rewriteUrlpolicy($post['urlrewrite_custom']);
-
-            /* $shopCustomUrl = CommonHelper::seoUrl($post['urlrewrite_custom']);
-            $getShopUrls  = applicationConstants::getShopUrlRewriteLink($shopCustomUrl,$shop_id);
-            foreach($getShopUrls as $originalUrl=>$customUrl){
-
-            $urlSrch = UrlRewrite::getSearchObject();
-            $urlSrch->doNotCalculateRecords();
-            $urlSrch->doNotLimitRecords();
-            $urlSrch->addFld('urlrewrite_custom');
-            $urlSrch->addCondition( 'urlrewrite_original', '=', $originalUrl );
-            $rs = $urlSrch->getResultSet();
-            $urlRow = FatApp::getDb()->fetch($rs);
-            $recordObj = new TableRecord(UrlRewrite::DB_TBL);
-            if( $urlRow ){
-
-
-            $recordObj->assignValues( array('urlrewrite_custom'    =>    $customUrl ) );
-            if( !$recordObj->update( array( 'smt' => 'urlrewrite_original = ?', 'vals' => array($originalUrl)) )){
-            Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->siteLangId) );
-            FatUtility::dieJsonError( Message::getHtml() );
-            }
-            //$shopDetails['urlrewrite_custom'] = $urlRow['urlrewrite_custom'];
-            } else {
-            $recordObj->assignValues( array('urlrewrite_original' => $originalUrl, 'urlrewrite_custom'    =>    $customUrl) );
-            if( !$recordObj->addNew( )){
-            Message::addErrorMessage( Labels::getLabel("Please_try_different_url,_URL_already_used_for_another_record.", $this->siteLangId) );
-            FatUtility::dieJsonError( Message::getHtml() );
-            }
-            }
-            } */
         }
         /* ] */
 
