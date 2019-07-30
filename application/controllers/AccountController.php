@@ -17,7 +17,7 @@ class AccountController extends LoggedUserController
         }
         $this->set('bodyClass', 'is--dashboard');
     }
-
+    
     public function index()
     {
         /* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */

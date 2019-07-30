@@ -516,6 +516,8 @@ class UserAuthentication extends FatModel
             $ip = CommonHelper::getClientIp();
         }
 
+        $token = empty($token)?CommonHelper::getAppToken():$token;
+
         if ($token != '' && static::doAppLogin($token)) {
             return true;
         }

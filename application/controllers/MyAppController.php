@@ -139,13 +139,12 @@ class MyAppController extends FatController
 
     private function setApiVariables()
     {
-        $this->appToken = '';
+
         $this->db = FatApp::getDb();
         $post = FatApp::getPostedData();
 
-        if (array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-            $this->appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
-        } elseif (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
+        $this->appToken = CommonHelper::getAppToken();
+        if (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
             $this->appToken = ($post['_token']!='')?$post['_token']:'';
         }
 

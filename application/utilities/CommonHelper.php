@@ -12,6 +12,7 @@ class CommonHelper extends FatUtility
     private static $_currency_value;
     private static $_default_currency_symbol_left;
     private static $_default_currency_symbol_right;
+    private static $appToken;
 
     public static function initCommonVariables($isAdmin = false)
     {
@@ -34,6 +35,11 @@ class CommonHelper extends FatUtility
                     self::$_currency_id = FatUtility::int(trim($_COOKIE['defaultSiteCurrency']));
                 }
             }
+
+            if (true ===  MOBILE_APP_API_CALL && array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
+                self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
+            }
+
         } else {
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
                 $languages = Language::getAllNames();
@@ -55,6 +61,11 @@ class CommonHelper extends FatUtility
         self::$_currency_code = $currencyData['currency_code'];
         self::$_currency_value = $currencyData['currency_value'];
         self::$_layout_direction = Language::getLayoutDirection(self::$_lang_id);
+    }
+
+    public static function getAppToken()
+    {
+        return self::$appToken;
     }
 
     public static function getLangId()

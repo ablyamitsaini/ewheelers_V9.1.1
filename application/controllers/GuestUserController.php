@@ -54,7 +54,7 @@ class GuestUserController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(FatUtility::decodeHtmlEntities(Message::getHtml()));
         }
-        
+
         $this->app_user['temp_user_id'] = 0;
 
         $userId = UserAuthentication::getLoggedUserId();
