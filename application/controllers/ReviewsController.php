@@ -234,7 +234,7 @@ class ReviewsController extends MyAppController
         if ($selprod_id <= 0 || false === $sellerId) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -464,7 +464,7 @@ class ReviewsController extends MyAppController
         if ($reviewId <= 0) {
             $message = Labels::getLabel('Msg_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());

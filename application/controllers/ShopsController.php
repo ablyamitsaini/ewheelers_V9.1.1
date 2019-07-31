@@ -557,7 +557,7 @@ class ShopsController extends MyAppController
         if (!$shopData) {
             $message = Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
 
             Message::addErrorMessage($message);
@@ -567,7 +567,7 @@ class ShopsController extends MyAppController
         if ($shopData['shop_user_id'] == $loggedUserId) {
             $message = Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -594,7 +594,7 @@ class ShopsController extends MyAppController
         if (!$threadObj->save()) {
             $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -613,7 +613,7 @@ class ShopsController extends MyAppController
         if (!$message_id = $threadObj->addThreadMessages($threadMsgDataToSave)) {
             $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());

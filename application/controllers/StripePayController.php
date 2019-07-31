@@ -149,7 +149,7 @@ class StripePayController extends PaymentController
                 if (empty($stripeToken)) {
                     $message = Labels::getLabel('MSG_The_Stripe_Token_was_not_generated_correctly', $this->siteLangId);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
                     throw new Exception($message);
                 } else {

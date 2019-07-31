@@ -46,13 +46,7 @@ class GuestUserController extends MyAppController
 
         if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
             $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
-
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
-            }
-
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(FatUtility::decodeHtmlEntities(Message::getHtml()));
+            FatUtility::dieJsonError($message);
         }
 
         $this->app_user['temp_user_id'] = 0;
@@ -254,12 +248,7 @@ class GuestUserController extends MyAppController
     {
         $post = FatApp::getPostedData();
         if (empty($post)) {
-            $message = Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
 
         $facebookEmail = FatApp::getPostedData('email', FatUtility::VAR_STRING, '');
@@ -269,17 +258,10 @@ class GuestUserController extends MyAppController
         $facebookName = trim($firstName.' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
 
         if (empty($userFacebookId) || 1 > $user_type || empty($facebookName) || empty($firstName)) {
-            $message = Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
 
         // User info ok? Let's print it (Here we will be adding the login and registering routines)
-
-
         $db = FatApp::getDb();
         $userObj = new User();
         $srch = $userObj->getUserSearchObj(array('user_id','user_facebook_id','credential_email','credential_active','user_deleted'), true, false);
@@ -306,7 +288,7 @@ class GuestUserController extends MyAppController
             if ($row['credential_active'] != applicationConstants::ACTIVE) {
                 $message = Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
@@ -314,7 +296,7 @@ class GuestUserController extends MyAppController
             if ($row['user_deleted'] == applicationConstants::YES) {
                 $message = Labels::getLabel("ERR_USER_INACTIVE_OR_DELETED", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage(Labels::getLabel("ERR_USER_INACTIVE_OR_DELETED", $this->siteLangId));
                 CommonHelper::redirectUserReferer();
@@ -326,7 +308,7 @@ class GuestUserController extends MyAppController
             if (!$userObj->setUserInfo($arr)) {
                 $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
@@ -357,7 +339,7 @@ class GuestUserController extends MyAppController
                 $db->rollbackTransaction();
                 $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
@@ -369,7 +351,7 @@ class GuestUserController extends MyAppController
                 $db->rollbackTransaction();
                 $message = Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
@@ -382,7 +364,7 @@ class GuestUserController extends MyAppController
                     $db->rollbackTransaction();
                     $message = Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
                     Message::addErrorMessage($message);
                     if (FatUtility::isAjaxCall()) {
@@ -403,7 +385,7 @@ class GuestUserController extends MyAppController
                     $db->rollbackTransaction();
                     $message = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
                     Message::addErrorMessage($message);
 
@@ -425,7 +407,7 @@ class GuestUserController extends MyAppController
         if (!$userInfo || ($userInfo && $userInfo['user_facebook_id']!= $userFacebookId)) {
             $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -435,7 +417,7 @@ class GuestUserController extends MyAppController
         if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
             $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -678,7 +660,7 @@ class GuestUserController extends MyAppController
         if ($post == false) {
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
 
@@ -701,7 +683,7 @@ class GuestUserController extends MyAppController
             if ($row['credential_username']==$post['user_username']) {
                 $message = Labels::getLabel('MSG_DUPLICATE_USERNAME', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 if (FatUtility::isAjaxCall()) {
@@ -710,7 +692,7 @@ class GuestUserController extends MyAppController
             } elseif ($row['credential_email']==$post['user_email']) {
                 $message = Labels::getLabel('MSG_DUPLICATE_EMAIL', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 if (FatUtility::isAjaxCall()) {
@@ -733,7 +715,7 @@ class GuestUserController extends MyAppController
 
             $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if (FatUtility::isAjaxCall()) {
@@ -758,7 +740,7 @@ class GuestUserController extends MyAppController
             $db->rollbackTransaction();
 
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             if (FatUtility::isAjaxCall()) {
                 FatUtility::dieWithError(Message::getHtml());
@@ -778,7 +760,7 @@ class GuestUserController extends MyAppController
             if ($api_key == '' || $list_id == '') {
                 $message = Labels::getLabel("LBL_Newsletter_is_not_configured_yet,_Please_contact_admin", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 if (FatUtility::isAjaxCall()) {
@@ -810,7 +792,7 @@ class GuestUserController extends MyAppController
                 $db->rollbackTransaction();
 
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
 
                 if (FatUtility::isAjaxCall()) {
@@ -837,7 +819,7 @@ class GuestUserController extends MyAppController
             $db->rollbackTransaction();
 
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
 
             if (FatUtility::isAjaxCall()) {
@@ -854,7 +836,7 @@ class GuestUserController extends MyAppController
                 $db->rollbackTransaction();
 
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
 
                 if (FatUtility::isAjaxCall()) {
@@ -871,7 +853,7 @@ class GuestUserController extends MyAppController
                     $db->rollbackTransaction();
 
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
 
                     if (FatUtility::isAjaxCall()) {
@@ -892,7 +874,7 @@ class GuestUserController extends MyAppController
                     $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
 
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
                     Message::addErrorMessage($message);
                     if (FatUtility::isAjaxCall()) {
@@ -1173,7 +1155,7 @@ class GuestUserController extends MyAppController
 
         if (false === $post) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+                FatUtility::dieJsonError(current($frm->getValidationErrors()));
             }
             Message::addErrorMessage($frm->getValidationErrors());
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1182,9 +1164,6 @@ class GuestUserController extends MyAppController
         if (false ===  MOBILE_APP_API_CALL && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
             if (!CommonHelper::verifyCaptcha()) {
                 $message = Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId);
-                if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
-                }
                 Message::addErrorMessage($message);
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
             }
@@ -1198,7 +1177,7 @@ class GuestUserController extends MyAppController
         if (!$row || false === $row) {
             $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1207,7 +1186,7 @@ class GuestUserController extends MyAppController
         if ($row['user_is_shipping_company'] == applicationConstants::YES) {
             $message = Labels::getLabel('ERR_Shipping_user_are_not_allowed_to_place_forgot_password_request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1216,7 +1195,7 @@ class GuestUserController extends MyAppController
         if ($userAuthObj->checkUserPwdResetRequest($row['user_id'])) {
             $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1234,7 +1213,7 @@ class GuestUserController extends MyAppController
             $db->rollbackTransaction();
             $message = Labels::getLabel($userAuthObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1254,7 +1233,7 @@ class GuestUserController extends MyAppController
             if (!$this->userEmailVerification($userObj, $row, $this->siteLangId)) {
                 $message = Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1267,7 +1246,7 @@ class GuestUserController extends MyAppController
             $db->rollbackTransaction();
             $message = Labels::getLabel("MSG_ERROR_IN_SENDING_PASSWORD_RESET_LINK_EMAIL", $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'forgotPasswordForm'));
@@ -1283,19 +1262,19 @@ class GuestUserController extends MyAppController
         FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
     }
 
-    public function resendVerification($user = '')
+    public function resendVerification($usernameOrEmail = '')
     {
         $frm = $this->getForgotForm();
-        if (empty($user)) {
-            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError($message);
+        if (empty($usernameOrEmail)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
         $userAuthObj = new UserAuthentication();
 
-        if (!$row = $userAuthObj->getUserByEmailOrUserName($user, false, false)) {
+        if (!$row = $userAuthObj->getUserByEmailOrUserName($usernameOrEmail, false, false)) {
             FatUtility::dieJsonError(Labels::getLabel($userAuthObj->getError(), $this->siteLangId));
         }
+
         $row['user_email'] = $row['credential_email'];
         $db = FatApp::getDb();
         $srch = new SearchBase('tbl_user_credentials');

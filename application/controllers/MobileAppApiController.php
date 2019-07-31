@@ -3398,7 +3398,7 @@ class MobileAppApiController extends MyAppController
                         'mshipapi_id'    =>    $shipping_type,
                         'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                         'mshipcompany_name'    =>    $shipOption['scompany_name'],
-                        'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                        'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                         'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                         );
                     }
@@ -3412,7 +3412,7 @@ class MobileAppApiController extends MyAppController
                  'mshipapi_cost' =>  $carrier_price ,
                  'mshipapi_key' =>  $shipping_service ,
                  'mshipapi_label' =>  str_replace("_", " ", $shipping_service) ,
-                 'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                 'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                 );
             } else {
                 FatUtility::dieJsonError(sprintf(Labels::getLabel('M_Shipping_Info_Required_for_%s', $this->siteLangId), htmlentities($cartval['product_name'])));

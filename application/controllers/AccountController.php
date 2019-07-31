@@ -278,7 +278,7 @@ class AccountController extends LoggedUserController
         if ($post === false) {
             $message = Labels::getLabel(current($pwdFrm->getValidationErrors()), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -291,7 +291,7 @@ class AccountController extends LoggedUserController
         if (!$rs) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -302,7 +302,7 @@ class AccountController extends LoggedUserController
         if ($data === false) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -311,7 +311,7 @@ class AccountController extends LoggedUserController
         if ($data['credential_password'] != UserAuthentication::encryptPassword($post['current_password'])) {
             $message = Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -320,7 +320,7 @@ class AccountController extends LoggedUserController
         if (!$userObj->setLoginPassword($post['new_password'])) {
             $message = Labels::getLabel('MSG_Password_could_not_be_set', $this->siteLangId). $userObj->getError();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -652,7 +652,7 @@ class AccountController extends LoggedUserController
 
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date', $this->siteLangId), FatDate::format($lastWithdrawal["withdrawal_request_date"]), FatDate::format($nextWithdrawalDate), FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS"));
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
 
             Message::addErrorMessage($message);
@@ -663,7 +663,7 @@ class AccountController extends LoggedUserController
         if ($balance < $minimumWithdrawLimit) {
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
@@ -683,7 +683,7 @@ class AccountController extends LoggedUserController
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
@@ -692,7 +692,7 @@ class AccountController extends LoggedUserController
         if (($post["withdrawal_amount"] > $balance)) {
             $message = Labels::getLabel('MSG_Withdrawal_Request_Greater', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJSONError(Message::getHtml());
@@ -703,7 +703,7 @@ class AccountController extends LoggedUserController
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -714,7 +714,7 @@ class AccountController extends LoggedUserController
         if (!$userObj->updateBankInfo($post)) {
             $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -764,7 +764,7 @@ class AccountController extends LoggedUserController
         if (!$withdrawRequestId = $userObj->addWithdrawalRequest(array_merge($post, array("ub_user_id"=>$userId)), $this->siteLangId)) {
             $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -774,7 +774,7 @@ class AccountController extends LoggedUserController
         if (!$emailNotificationObj->sendWithdrawRequestNotification($withdrawRequestId, $this->siteLangId, "A")) {
             $message = Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -792,7 +792,7 @@ class AccountController extends LoggedUserController
         if (!Notification::saveNotifications($notificationData)) {
             $message = Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -813,7 +813,7 @@ class AccountController extends LoggedUserController
         if (1 > $userId) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST_ID', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage();
             FatUtility::dieJsonError(Message::getHtml());
@@ -823,7 +823,7 @@ class AccountController extends LoggedUserController
         if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId)) {
             $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -832,7 +832,7 @@ class AccountController extends LoggedUserController
         if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId)) {
             $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1005,7 +1005,7 @@ class AccountController extends LoggedUserController
         if (empty($post)) {
             $message = Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1014,7 +1014,7 @@ class AccountController extends LoggedUserController
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
                 $message = Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1026,7 +1026,7 @@ class AccountController extends LoggedUserController
             ) {
                 $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage();
                 FatUtility::dieJsonError(Message::getHtml($message));
@@ -1043,7 +1043,7 @@ class AccountController extends LoggedUserController
             if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
                 $message = Labels::getLabel(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId), $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1055,7 +1055,7 @@ class AccountController extends LoggedUserController
             ) {
                 $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1099,7 +1099,7 @@ class AccountController extends LoggedUserController
         if (false === $post) {
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1108,7 +1108,7 @@ class AccountController extends LoggedUserController
         if (strtotime($post['user_dob']) > time()) {
             $message = Labels::getLabel("MSG_Invalid_date_of_birth", $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1139,7 +1139,7 @@ class AccountController extends LoggedUserController
             if (!FatApp::getDb()->insertFromArray(User::DB_TBL_USR_EXTRAS, $dataToSave, false, array(), $dataToUpdateOnDuplicate)) {
                 $message = Labels::getLabel(Labels::getLabel("LBL_Details_could_not_be_saved!", $this->siteLangId), $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
 
                 Message::addErrorMessage($message);
@@ -1157,7 +1157,7 @@ class AccountController extends LoggedUserController
         if (!$userObj->save()) {
             $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1224,7 +1224,7 @@ class AccountController extends LoggedUserController
         if (false === $post) {
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1234,7 +1234,7 @@ class AccountController extends LoggedUserController
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1245,7 +1245,7 @@ class AccountController extends LoggedUserController
         if (!$userObj->updateBankInfo($post)) {
             $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1307,7 +1307,7 @@ class AccountController extends LoggedUserController
         if ($post['new_email'] != $post['conf_new_email']) {
             $message = Labels::getLabel('MSG_New_email_confirm_email_does_not_match', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1320,7 +1320,7 @@ class AccountController extends LoggedUserController
         if (!$rs) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1331,7 +1331,7 @@ class AccountController extends LoggedUserController
         if ($data === false) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1340,7 +1340,7 @@ class AccountController extends LoggedUserController
         if ($data['credential_password'] != UserAuthentication::encryptPassword($post['current_password'])) {
             $message = Labels::getLabel('MSG_YOUR_CURRENT_PASSWORD_MIS_MATCHED', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1355,7 +1355,7 @@ class AccountController extends LoggedUserController
         if (!$this->userEmailVerification($userObj, $arr)) {
             $message = Labels::getLabel('MSG_ERROR_IN_SENDING_VERFICATION_EMAIL', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1428,7 +1428,7 @@ class AccountController extends LoggedUserController
         if (false === $post) {
             $message = current($frm->getValidationErrors());
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1444,7 +1444,7 @@ class AccountController extends LoggedUserController
         if (!$wListObj->save()) {
             $message = $wListObj->getError();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1501,7 +1501,7 @@ class AccountController extends LoggedUserController
         if (empty($selprod_id_arr) || empty($uwlist_id)) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1549,7 +1549,7 @@ class AccountController extends LoggedUserController
         if (1 > $selprod_id) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1603,7 +1603,7 @@ class AccountController extends LoggedUserController
             if (!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id)) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -1614,7 +1614,7 @@ class AccountController extends LoggedUserController
             if (!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -1725,7 +1725,7 @@ class AccountController extends LoggedUserController
             if (!$wishListRow) {
                 $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -1848,7 +1848,7 @@ class AccountController extends LoggedUserController
         if (!$wishListRow) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1960,7 +1960,7 @@ class AccountController extends LoggedUserController
         if (0 >= $uwlist_id) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1976,7 +1976,7 @@ class AccountController extends LoggedUserController
         if (!$row) {
             $message = Labels::getLabel('MSG_No_record_found', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -2063,7 +2063,7 @@ class AccountController extends LoggedUserController
         if (!$shop) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -2081,7 +2081,7 @@ class AccountController extends LoggedUserController
             if (!$shopObj->addUpdateUserFavoriteShop($loggedUserId, $shop_id)) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -2092,7 +2092,7 @@ class AccountController extends LoggedUserController
             if (!$db->deleteRecords(Shop::DB_TBL_SHOP_FAVORITE, array('smt'=>'ufs_user_id = ? AND ufs_shop_id = ?', 'vals'=>array($loggedUserId, $shop_id)))) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -2285,7 +2285,7 @@ class AccountController extends LoggedUserController
         if (1 > $threadId) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -2295,7 +2295,7 @@ class AccountController extends LoggedUserController
         if ($threadData == false) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -2331,7 +2331,7 @@ class AccountController extends LoggedUserController
         if ($threadDetails == false) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -2376,7 +2376,7 @@ class AccountController extends LoggedUserController
         if (1 > $threadId) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -2452,7 +2452,7 @@ class AccountController extends LoggedUserController
         if (1 > $threadId || 1 > $messageId) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -2479,7 +2479,7 @@ class AccountController extends LoggedUserController
         if (empty($threadDetails)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -2501,7 +2501,7 @@ class AccountController extends LoggedUserController
         if (!$insertId = $tObj->addThreadMessages($data)) {
             $message = Labels::getLabel($tObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());

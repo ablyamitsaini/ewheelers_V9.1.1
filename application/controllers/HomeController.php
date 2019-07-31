@@ -701,7 +701,7 @@ class HomeController extends MyAppController
         $countryId = FatUtility::int($countryId);
         if (1 > $countryId) {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            FatUtility::dieJsonError($message);
         }
         $statesArr = $this->getStates($countryId, 0, true);
         $states = array();

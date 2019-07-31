@@ -307,7 +307,7 @@ class CheckoutController extends MyAppController
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             $this->set('redirectUrl', CommonHelper::generateUrl('GuestUser', 'LoginForm'));
             Message::addErrorMessage($message);
@@ -327,7 +327,7 @@ class CheckoutController extends MyAppController
         if ((!$hasProducts) || (!$hasStock)) {
             $message = Labels::getLabel('MSG_Cart_seems_to_be_empty_or_products_are_out_of_stock.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             $this->set('redirectUrl', CommonHelper::generateUrl('cart'));
             Message::addErrorMessage($message);
@@ -339,7 +339,7 @@ class CheckoutController extends MyAppController
         if (1 > $billing_address_id) {
             $message = Labels::getLabel('MSG_Please_select_Billing_address.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -348,7 +348,7 @@ class CheckoutController extends MyAppController
         if ($hasPhysicalProduct && 1 > $shipping_address_id) {
             $message = Labels::getLabel('MSG_Please_select_shipping_address.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             $this->set('loadAddressDiv', true);
             Message::addErrorMessage($message);
@@ -360,7 +360,7 @@ class CheckoutController extends MyAppController
         if (!$BillingAddressDetail) {
             $message = Labels::getLabel('MSG_Invalid_Billing_Address.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -378,7 +378,7 @@ class CheckoutController extends MyAppController
             if (!$ShippingAddressDetail) {
                 $message = Labels::getLabel('MSG_Invalid_Shipping_Address.', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -436,7 +436,7 @@ class CheckoutController extends MyAppController
             }
             if (true ===  MOBILE_APP_API_CALL) {
                 $message = Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId);
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             FatUtility::dieWithError($errMsg);
         }
@@ -496,7 +496,7 @@ class CheckoutController extends MyAppController
         if (count($cart_products)==0) {
             $message = Labels::getLabel('MSG_Your_Cart_is_empty', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -527,7 +527,7 @@ class CheckoutController extends MyAppController
         if (empty($product_key)) {
             $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -536,7 +536,7 @@ class CheckoutController extends MyAppController
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -611,7 +611,7 @@ class CheckoutController extends MyAppController
                                 'mshipapi_id'    =>    $post['data'][$productKey]["shipping_type"],
                                 'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                                 'mshipcompany_name'    =>    $shipOption['scompany_name'],
-                                'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                                'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                                 'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                                 );
                                 continue;
@@ -626,7 +626,7 @@ class CheckoutController extends MyAppController
                           'mshipapi_cost' =>  $carrier_price ,
                           'mshipapi_key' =>  $post['data'][$productKey]["shipping_services"],
                           'mshipapi_label' =>  str_replace("_", " ", $post['data'][$productKey]["shipping_services"]) ,
-                          'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                          'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                                             );
                         continue;
                     } else {
@@ -641,7 +641,7 @@ class CheckoutController extends MyAppController
                 if (!$this->cartObj->isProductShippingMethodSet()) {
                     $message = Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
+                        FatUtility::dieJsonError($message);
                     }
                     //MSG_Error_in_Shipping_Method_Selection
                     Message::addErrorMessage($message);
@@ -662,7 +662,7 @@ class CheckoutController extends MyAppController
             } else {
                 $message = Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -761,7 +761,7 @@ class CheckoutController extends MyAppController
                 $errMsg = Message::getHtml();
             }
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             FatUtility::dieWithError($errMsg);
         }
@@ -1359,7 +1359,7 @@ class CheckoutController extends MyAppController
         if (empty($post)) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1368,7 +1368,7 @@ class CheckoutController extends MyAppController
         if (empty($post['redeem_rewards'])) {
             $message = Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1382,7 +1382,7 @@ class CheckoutController extends MyAppController
         if ($totalBalance == 0 || $totalBalance < $rewardPoints) {
             $message = Labels::getLabel('ERR_Insufficient_reward_point_balance', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1410,7 +1410,7 @@ class CheckoutController extends MyAppController
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1430,7 +1430,7 @@ class CheckoutController extends MyAppController
         if (!$cartObj->removeUsedRewardPoints()) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                FatUtility::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
