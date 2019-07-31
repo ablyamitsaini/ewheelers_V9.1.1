@@ -311,7 +311,7 @@ class MobileAppApiController extends MyAppController
 
                         case Collections::COLLECTION_TYPE_CATEGORY:
                             if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT1) {
-                                continue;
+                                continue 2;
                             }
                             $tempObj = clone $collectionObj;
                             $tempObj->addCondition('collection_id', '=', $collection_id);
