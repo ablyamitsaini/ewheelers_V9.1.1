@@ -20,6 +20,7 @@ foreach ($productImagesArr as $afile_id => $image) {
 
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
 $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_policies']) ? $product['selprod_warranty_policies'] : (object)array();
+$product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'));
 
 $shop['shop_payment_policy'] = empty($shop['shop_payment_policy']) ? (object) array() : array(
     'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId),
