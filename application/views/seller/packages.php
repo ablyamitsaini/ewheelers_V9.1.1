@@ -27,7 +27,7 @@
                                         default:
                                             $lgCols =  $mdCols = 4;
                                             break;
-                                }
+                                    }
 
                           $ColsinRow  = ceil(12/$lgCols);
                           $inc=1;
@@ -46,16 +46,7 @@
                                             <li><span><?php echo CommonHelper::displayComissionPercentage($package[SellerPackages::DB_TBL_PREFIX.'commission_rate']); ?>%</span> <?php echo Labels::getLabel('LBL_Commision_rate', $siteLangId); ?></li>
                                             <li><span><?php echo $package[SellerPackages::DB_TBL_PREFIX.'products_allowed']; ?></span>
                                                 <?php echo ($package[SellerPackages::DB_TBL_PREFIX.'products_allowed'] == 1) ? Labels::getlabel('LBL_active_product', $siteLangId) : Labels::getlabel('LBL_active_products', $siteLangId); ?></li>
-                                            <li>case '1':
-                                            $lgCols =  $mdCols = 4;
-                                            break;
-                                        case '2':
-                                            $lgCols =  $mdCols = 6;
-                                            break;
-
-                                        default:
-                                            $lgCols =  $mdCols = 4;
-                                            bre
+                                            <li>
                                                 <span><?php echo $package[SellerPackages::DB_TBL_PREFIX.'inventory_allowed']; ?></span>
                                                 <?php echo  Labels::getlabel('LBL_Product_Inventory', $siteLangId) ?>
                                             </li>
