@@ -444,6 +444,10 @@ class GuestUserController extends MyAppController
         $this->set('url', $redirectUrl);
         $this->set('msg', Labels::getLabel('MSG_LoggedIn_SUCCESSFULLY', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
+            if (!$token = $userObj->setMobileAppToken()) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            }
+            $this->set('token', $token);
             $this->_template->render();
         }
         $this->_template->render(false, false, 'json-success.php');
