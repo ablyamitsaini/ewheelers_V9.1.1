@@ -1847,6 +1847,9 @@ class CommonHelper extends FatUtility
         // So we get the object name in case it is an object before we convert to an array (which we lose the object name)
         if (is_object($obj)) {
             $obj = (array)$obj;
+            if (empty($obj)) {
+                return $orig_obj;
+            }
         }
 
         // If obj is now an array, we do a recursion
@@ -1869,7 +1872,7 @@ class CommonHelper extends FatUtility
 
         return $new;
     }
-    
+
     public static function displayBadgeCount($totalCount, $maxValue = 99)
     {
         if ($totalCount > $maxValue) {
