@@ -1839,23 +1839,37 @@ class CommonHelper extends FatUtility
         die(FatUtility::convertToJson($data, 0));
     }
 
-    public static function cleanArray($arr)
+    public static function cleanArray($obj)
     {
-        $arrStr = array();
-        foreach ($arr as $key => $val) {
-            if (!is_array($val)) {
-                if (!is_object($val)) {
-                    $arrStr[$key] = FatUtility::convertToType($val, FatUtility::VAR_STRING);
-                } else {
-                    $arrStr[$key] =  $val;
-                }
-            } else {
-                $arrStr[$key]= static::cleanArray($val);
-            }
-        }
-        return $arrStr;
-    }
+        $orig_obj = $obj;
 
+        // We want to preserve the object name to the array
+        // So we get the object name in case it is an object before we convert to an array (which we lose the object name)
+        if (is_object($obj)) {
+            $obj = (array)$obj;
+        }
+
+        // If obj is now an array, we do a recursion
+        // If obj is not, just return the value
+        if (is_array($obj)) {
+            $new = [];
+            //initiate the recursion
+            foreach ($obj as $key => $val) {
+                if (is_object($orig_obj)) {
+                    // Remove full class name from the key
+                    $key = str_replace(get_class($orig_obj), '', $key);
+                    // We don't want those * infront of our keys due to protected methods
+                }
+
+                $new[$key] = self::cleanArray($val);
+            }
+        } else {
+            $new = FatUtility::convertToType($obj, FatUtility::VAR_STRING);
+        }
+
+        return $new;
+    }
+    
     public static function displayBadgeCount($totalCount, $maxValue = 99)
     {
         if ($totalCount > $maxValue) {
