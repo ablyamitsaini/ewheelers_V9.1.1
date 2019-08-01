@@ -333,92 +333,7 @@ class GuestUserController extends MyAppController
                 CommonHelper::redirectUserReferer();
             }
         } else {
-            //$user_is_supplier = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION",FatUtility::VAR_INT,1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM",FatUtility::VAR_INT,1)) ?0:1;
-            $user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1))?0:1;
-
-            $db->startTransaction();
-            if (isset($user_type) && $user_type == User::USER_TYPE_BUYER) {
-                $userPreferredDashboard = User::USER_BUYER_DASHBOARD;
-                $post['user_registered_initially_for'] = User::USER_TYPE_BUYER;
-            }
-            if (isset($user_type) && $user_type == User::USER_TYPE_SELLER) {
-                $userPreferredDashboard = User::USER_SELLER_DASHBOARD;
-                $post['user_registered_initially_for'] = User::USER_TYPE_SELLER;
-            }
-            $userData = array(
-            'user_name' => $facebookName,
-            'user_is_buyer' => (isset($user_type) && $user_type == User::USER_TYPE_BUYER) ? 1:0,
-            'user_is_supplier' => (isset($user_type) && $user_type == User::USER_TYPE_SELLER) ? 1:0,
-            'user_is_advertiser' => $user_is_advertiser,
-            'user_facebook_id' => $userFacebookId,
-            'user_preferred_dashboard' => $userPreferredDashboard,
-            );
-            $userObj->assignValues($userData);
-            if (!$userObj->save()) {
-                $db->rollbackTransaction();
-                $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
-                if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError($message);
-                }
-                Message::addErrorMessage($message);
-                CommonHelper::redirectUserReferer();
-            }
-
-            $username = str_replace(" ", "", $facebookName).$userFacebookId;
-
-            if (!$userObj->setLoginCredentials($username, $facebookEmail, uniqid(), 1, 1)) {
-                $db->rollbackTransaction();
-                $message = Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
-                if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError($message);
-                }
-                Message::addErrorMessage($message);
-                CommonHelper::redirectUserReferer();
-            }
-
-            $userData['user_username'] = $username;
-            $userData['user_email'] = $facebookEmail;
-            if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
-                if (!$this->notifyAdminRegistration($userObj, $userData)) {
-                    $db->rollbackTransaction();
-                    $message = Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError($message);
-                    }
-                    Message::addErrorMessage($message);
-                    if (FatUtility::isAjaxCall()) {
-                        FatUtility::dieWithError(Message::getHtml());
-                    }
-                }
-            }
-
-            if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1) && $facebookEmail) {
-                $data['user_email'] = $facebookEmail;
-                $data['user_name'] = $facebookName;
-
-                //ToDO::Change login link to contact us link
-                $data['link'] = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
-                $userId = $userObj->getMainTableRecordId();
-                $userEmailObj = new User($userId);
-                if (!$this->userWelcomeEmailRegistration($userEmailObj, $data)) {
-                    $db->rollbackTransaction();
-                    $message = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError($message);
-                    }
-                    Message::addErrorMessage($message);
-
-                    //FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginForm'));
-                    $url = CommonHelper::generateUrl('GuestUser', 'loginForm');
-                    $this->set('url', $url);
-                    $this->set('msg', Labels::getLabel('MSG_LoggedIn_SUCCESSFULLY', $this->siteLangId));
-                    $this->_template->render(false, false, 'json-success.php');
-                }
-            }
-            $db->commitTransaction();
-
-
-            $userObj->setUpRewardEntry($userObj->getMainTableRecordId(), $this->siteLangId);
+            $this->setupUser($user_type, $facebookName, 0, $userFacebookId, $facebookEmail, $userObj);
         }
 
         $userInfo = $userObj->getUserInfo(array('user_facebook_id','user_preferred_dashboard','credential_username','credential_password'));
@@ -478,6 +393,7 @@ class GuestUserController extends MyAppController
 
     public function loginGoogle()
     {
+        $user_type = FatApp::getPostedData('type', FatUtility::VAR_INT, User::USER_TYPE_BUYER);
         include_once CONF_INSTALLATION_PATH . 'library/GoogleAPI/vendor/autoload.php'; // include the required calss files for google login
 
         $client = new Google_Client();
@@ -546,81 +462,7 @@ class GuestUserController extends MyAppController
                     CommonHelper::redirectUserReferer();
                 }
             } else {
-                $user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) ? 0: 1;
-                $user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) ? 0: 1;
-
-                $db->startTransaction();
-
-                $userData = array(
-                'user_name' => $userGoogleName,
-                'user_is_buyer' => 1,
-                'user_is_supplier' => $user_is_supplier,
-                'user_is_advertiser' => $user_is_advertiser,
-                'user_googleplus_id' => $userGoogleId,
-                'user_preferred_dashboard' => User::USER_BUYER_DASHBOARD,
-                );
-                $post['user_registered_initially_for'] = User::USER_TYPE_BUYER;
-                $userObj->assignValues($userData);
-                if (!$userObj->save()) {
-                    $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
-                    Message::addErrorMessage($message);
-                    $db->rollbackTransaction();
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
-                    }
-                    CommonHelper::redirectUserReferer();
-                }
-
-
-                $username = str_replace(" ", "", $userGoogleName).$userGoogleId;
-
-                if (!$userObj->setLoginCredentials($username, $userGoogleEmail, uniqid(), 1, 1)) {
-                    $message = Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
-                    Message::addErrorMessage($message);
-                    $db->rollbackTransaction();
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($message));
-                    }
-                    CommonHelper::redirectUserReferer();
-                }
-
-                $userData['user_username'] = $username;
-                $userData['user_email'] = $userGoogleEmail;
-                if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
-                    if (!$this->notifyAdminRegistration($userObj, $userData)) {
-                        $message = Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
-                        Message::addErrorMessage($message);
-                        $db->rollbackTransaction();
-                        if (true ===  MOBILE_APP_API_CALL) {
-                            FatUtility::dieJsonError(strip_tags($message));
-                        }
-                        if (FatUtility::isAjaxCall()) {
-                            FatUtility::dieWithError(Message::getHtml());
-                        }
-                    }
-                }
-
-                if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1) && $userGoogleEmail) {
-                    $data['user_email'] = $userGoogleEmail;
-                    $data['user_name'] = $userGoogleName;
-
-                    //ToDO::Change login link to contact us link
-                    $data['link'] = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
-                    $userId = $userObj->getMainTableRecordId();
-                    $userEmailObj = new User($userId);
-                    if (!$this->userWelcomeEmailRegistration($userEmailObj, $data)) {
-                        $message = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
-                        Message::addErrorMessage($message);
-                        $db->rollbackTransaction();
-                        if (true ===  MOBILE_APP_API_CALL) {
-                            FatUtility::dieJsonError(strip_tags($message));
-                        }
-                        CommonHelper::redirectUserReferer();
-                    }
-                }
-
-                $db->commitTransaction();
-                $userObj->setUpRewardEntry($userObj->getMainTableRecordId(), $this->siteLangId);
+                $this->setupUser($user_type, $userGoogleName, $userGoogleId, 0, $userGoogleEmail, $userObj);
             }
 
             $userInfo = $userObj->getUserInfo(array('user_googleplus_id','user_preferred_dashboard','credential_username','credential_password'));
@@ -674,6 +516,97 @@ class GuestUserController extends MyAppController
         }
 
         CommonHelper::redirectUserReferer();
+    }
+
+    private function setupUser($user_type, $userName, $userGoogleId, $userFacebookId, $userEmail, $userObj)
+    {
+        $db = FatApp::getDb();
+        $user_is_supplier = (FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) ? 0: 1;
+        $user_is_advertiser = (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1) || FatApp::getConfig("CONF_ACTIVATE_SEPARATE_SIGNUP_FORM", FatUtility::VAR_INT, 1)) ? 0: 1;
+
+        if (isset($user_type) && $user_type == User::USER_TYPE_BUYER) {
+            $userPreferredDashboard = User::USER_BUYER_DASHBOARD;
+            $user_registered_initially_for = User::USER_TYPE_BUYER;
+        }
+        if (isset($user_type) && $user_type == User::USER_TYPE_SELLER) {
+            $userPreferredDashboard = User::USER_SELLER_DASHBOARD;
+            $user_registered_initially_for = User::USER_TYPE_SELLER;
+        }
+
+        $db->startTransaction();
+
+        $userData = array(
+        'user_name' => $userName,
+        'user_is_buyer' => (isset($user_type) && $user_type == User::USER_TYPE_BUYER) ? 1:0,
+        'user_is_supplier' => (isset($user_type) && $user_type == User::USER_TYPE_SELLER) ? 1:0,
+        'user_is_advertiser' => $user_is_advertiser,
+        'user_googleplus_id' => empty($userGoogleId) ? $userGoogleId : '',
+        'user_facebook_id' => empty($userFacebookId) ? $userFacebookId : '',
+        'user_preferred_dashboard' => $userPreferredDashboard,
+        'user_registered_initially_for' => $user_registered_initially_for,
+        );
+
+        $userObj->assignValues($userData);
+        if (!$userObj->save()) {
+            $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
+            Message::addErrorMessage($message);
+            $db->rollbackTransaction();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            CommonHelper::redirectUserReferer();
+        }
+
+        $socialUid = !empty($userGoogleId) ? $userGoogleId : $userFacebookId;
+        $username = str_replace(" ", "", $userName).$socialUid;
+
+        if (!$userObj->setLoginCredentials($username, $userEmail, uniqid(), 1, 1)) {
+            $message = Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
+            Message::addErrorMessage($message);
+            $db->rollbackTransaction();
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            CommonHelper::redirectUserReferer();
+        }
+
+        $userData['user_username'] = $username;
+        $userData['user_email'] = $userEmail;
+        if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
+            if (!$this->notifyAdminRegistration($userObj, $userData)) {
+                $message = Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
+                Message::addErrorMessage($message);
+                $db->rollbackTransaction();
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                if (FatUtility::isAjaxCall()) {
+                    FatUtility::dieWithError(Message::getHtml());
+                }
+            }
+        }
+
+        if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1) && $userEmail) {
+            $data['user_email'] = $userEmail;
+            $data['user_name'] = $username;
+
+            //ToDO::Change login link to contact us link
+            $data['link'] = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
+            $userId = $userObj->getMainTableRecordId();
+            $userEmailObj = new User($userId);
+            if (!$this->userWelcomeEmailRegistration($userEmailObj, $data)) {
+                $message = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
+                Message::addErrorMessage($message);
+                $db->rollbackTransaction();
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                CommonHelper::redirectUserReferer();
+            }
+        }
+
+        $db->commitTransaction();
+        $userObj->setUpRewardEntry($userObj->getMainTableRecordId(), $this->siteLangId);
     }
 
     public function registrationForm()
