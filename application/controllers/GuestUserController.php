@@ -463,7 +463,7 @@ class GuestUserController extends MyAppController
 
         $accessToken = false;
         if (isset($get['code'])) {
-            $client->authenticate($_GET['code']); // Authenticate
+            $client->authenticate($get['code']); // Authenticate
             $accessToken = $client->getAccessToken();
         }
 
