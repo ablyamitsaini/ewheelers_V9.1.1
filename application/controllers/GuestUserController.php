@@ -244,18 +244,49 @@ class GuestUserController extends MyAppController
 
     public function loginFacebook()
     {
-        $post = FatApp::getPostedData();
-        if (empty($post)) {
-            FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
+        $user_type = FatApp::getPostedData('type', FatUtility::VAR_INT, User::USER_TYPE_BUYER);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $accessToken = FatApp::getPostedData('accessToken', FatUtility::VAR_STRING, '');
+            if (empty($accessToken)) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+            }
+            include_once CONF_INSTALLATION_PATH . 'library/facebook/facebook.php';
+            $facebook = new Facebook(
+                array(
+                'appId' => FatApp::getConfig("CONF_FACEBOOK_APP_ID", FatUtility::VAR_STRING, ''),
+                'secret' => FatApp::getConfig("CONF_FACEBOOK_APP_SECRET", FatUtility::VAR_STRING, ''),
+                )
+            );
+            $facebook->setAccessToken($accessToken);
+            $user = $facebook->getUser();
+            if (!$user) {
+                $message = Labels::getLabel('MSG_Invalid_Token', $this->siteLangId);
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+
+            try {
+                // Proceed knowing you have a logged in user who's authenticated.
+                $userProfile = $facebook->api('/me?fields=id,name,email');
+            } catch (FacebookApiException $e) {
+                FatUtility::dieJsonError($e->getMessage());
+            }
+
+            if (empty($userProfile)) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_ERROR_INVALID_REQUEST', $this->siteLangId));
+            }
+
+            // User info ok? Let's print it (Here we will be adding the login and registering routines)
+            $facebookName = $userProfile['name'];
+            $userFacebookId = $userProfile['id'];
+            $facebookEmail = $userProfile['email'];
+        } else {
+            $facebookEmail = FatApp::getPostedData('email', FatUtility::VAR_STRING, '');
+            $userFacebookId = FatApp::getPostedData('id', FatUtility::VAR_STRING, '');
+            $firstName = FatApp::getPostedData('first_name', FatUtility::VAR_STRING, '');
+            $facebookName = trim($firstName.' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
         }
 
-        $facebookEmail = FatApp::getPostedData('email', FatUtility::VAR_STRING, '');
-        $userFacebookId = FatApp::getPostedData('id', FatUtility::VAR_STRING, '');
-        $user_type = isset($post['type']) ? $post['type'] : 0;
-        $firstName = FatApp::getPostedData('first_name', FatUtility::VAR_STRING, '');
-        $facebookName = trim($firstName.' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
-
-        if (empty($userFacebookId) || 1 > $user_type || empty($facebookName) || empty($firstName)) {
+        if ((empty($facebookEmail) && empty($userFacebookId)) || empty($facebookName)) {
             FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
 
@@ -437,12 +468,13 @@ class GuestUserController extends MyAppController
             if (!$token = $userObj->setMobileAppToken()) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             }
+            $userInfo = $userObj->getUserInfo(array('user_name', 'user_id', 'user_phone', 'credential_email'), true, true, true);
             $this->set('token', $token);
-            $this->_template->render(true, true, 'guest-user/social-login.php');
+            $this->set('userInfo', $userInfo);
+            $this->_template->render(true, true, 'guest-user/login.php');
         }
         $this->_template->render(false, false, 'json-success.php');
     }
-
 
     public function loginGoogle()
     {
@@ -475,7 +507,7 @@ class GuestUserController extends MyAppController
         } else {
             $accessToken = FatApp::getPostedData('accessToken');
         }
-        
+
         $client->setAccessToken($accessToken);
         $user = $oauth2->userinfo->get();
 
@@ -568,11 +600,9 @@ class GuestUserController extends MyAppController
                     }
                 }
 
-
                 if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1) && $userGoogleEmail) {
                     $data['user_email'] = $userGoogleEmail;
                     $data['user_name'] = $userGoogleName;
-
 
                     //ToDO::Change login link to contact us link
                     $data['link'] = CommonHelper::generateFullUrl('GuestUser', 'loginForm');
@@ -619,8 +649,10 @@ class GuestUserController extends MyAppController
                 if (!$token = $userObj->setMobileAppToken()) {
                     FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
                 }
+                $userInfo = $userObj->getUserInfo(array('user_name', 'user_id', 'user_phone', 'credential_email'), true, true, true);
                 $this->set('token', $token);
-                $this->_template->render(true, true, 'guest-user/social-login.php');
+                $this->set('userInfo', $userInfo);
+                $this->_template->render(true, true, 'guest-user/login.php');
             }
 
             $cartObj = new Cart();
