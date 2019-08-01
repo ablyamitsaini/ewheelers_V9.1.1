@@ -126,7 +126,7 @@ var countDownDate = new Date('<?php echo $restoreTime;?>').getTime();
     var x = setInterval(function() {
 
     // Get today's date and time
-    var now = new Date().getTime();
+    var now = new Date('<?php echo date('Y-m-d\TH:i:s')?>').getTime();
 
     // Find the distance between now and the count down date
     var distance = countDownDate - now;
