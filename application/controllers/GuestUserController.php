@@ -470,26 +470,20 @@ class GuestUserController extends MyAppController
         $client->setDeveloperKey(FatApp::getConfig("CONF_GOOGLEPLUS_DEVELOPER_KEY")); // Developer key
 
         $oauth2 =new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
+        $get = FatApp::getQueryStringData();
 
-        if (isset($_GET['code'])) {
+        $accessToken = false;
+        if (isset($get['code'])) {
             $client->authenticate($_GET['code']); // Authenticate
-
-            $_SESSION['access_token'] = $client->getAccessToken(); // get the access token here
-            FatApp::redirectUser($currentPageUri);
+            $accessToken = $client->getAccessToken();
         }
 
-        if (isset($_SESSION['access_token'])) {
-            $client->setAccessToken($_SESSION['access_token']);
-        }
-
-        if (!$client->getAccessToken()) {
+        if (false === $accessToken) {
             $authUrl = $client->createAuthUrl();
             FatApp::redirectUser($authUrl);
         }
-
+        $client->setAccessToken($accessToken);
         $user = $oauth2->userinfo->get();
-
-        $_SESSION['access_token'] = $client->getAccessToken();
 
         $userGoogleEmail = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
         $userGoogleId = $user['id'];
@@ -595,8 +589,6 @@ class GuestUserController extends MyAppController
                 Message::addErrorMessage(Labels::getLabel($authentication->getError(), $this->siteLangId));
                 CommonHelper::redirectUserReferer();
             }
-
-            unset($_SESSION['access_token']);
 
             $cartObj = new Cart();
             if ($cartObj->hasProducts()) {
