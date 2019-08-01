@@ -459,22 +459,23 @@ class GuestUserController extends MyAppController
         $client->setDeveloperKey(FatApp::getConfig("CONF_GOOGLEPLUS_DEVELOPER_KEY")); // Developer key
 
         $oauth2 =new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
-        $get = FatApp::getQueryStringData();
 
-        $accessToken = false;
-        if (isset($get['code'])) {
-            $client->authenticate($get['code']); // Authenticate
-            $accessToken = $client->getAccessToken();
-        }
-
-        if (false === $accessToken) {
-            if (true ===  MOBILE_APP_API_CALL) {
-                $message = Labels::getLabel('MSG_Invalid_Token', $this->siteLangId);
-                FatUtility::dieJsonError(strip_tags($message));
+        if (false ===  MOBILE_APP_API_CALL) {
+            $get = FatApp::getQueryStringData();
+            $accessToken = false;
+            if (isset($get['code'])) {
+                $client->authenticate($get['code']); // Authenticate
+                $accessToken = $client->getAccessToken();
             }
-            $authUrl = $client->createAuthUrl();
-            FatApp::redirectUser($authUrl);
+
+            if (false === $accessToken) {
+                $authUrl = $client->createAuthUrl();
+                FatApp::redirectUser($authUrl);
+            }
+        } else {
+            $accessToken = FatApp::getPostedData('accessToken');
         }
+        
         $client->setAccessToken($accessToken);
         $user = $oauth2->userinfo->get();
 
