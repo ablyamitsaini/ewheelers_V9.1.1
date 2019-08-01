@@ -266,16 +266,6 @@ class GuestUserController extends MyAppController
         if (!empty($facebookEmail)) {
             $srch->addCondition('credential_email', '=', $facebookEmail);
         } else {
-            if (empty($userFacebookId)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_THERE_WAS_SOME_PROBLEM_IN_AUTHENTICATING_YOUR_ACCOUNT_WITH_FACEBOOK,_PLEASE_TRY_WITH_DIFFERENT_LOGIN_OPTIONS", $this->siteLangId));
-                unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
-                unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
-                unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
-                $url = CommonHelper::generateUrl('GuestUser', 'loginForm');
-                $this->set('url', $url);
-                $this->set('msg', Labels::getLabel('MSG_Invalid_login', $this->siteLangId));
-                $this->_template->render(false, false, 'json-success.php');
-            }
             $srch->addCondition('user_facebook_id', '=', $userFacebookId);
         }
 
@@ -448,7 +438,7 @@ class GuestUserController extends MyAppController
                 FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             }
             $this->set('token', $token);
-            $this->_template->render();
+            $this->_template->render(true, true, 'guest-user/social-login.php');
         }
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -464,32 +454,30 @@ class GuestUserController extends MyAppController
         $client->setClientId(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_ID")); // paste the client id which you get from google API Console
         $client->setClientSecret(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_SECRET")); // set the client secret
 
-
         $currentPageUri = CommonHelper::generateFullUrl('GuestUser', 'loginGoogle', array(), '', false);
         $client->setRedirectUri($currentPageUri);
         $client->setDeveloperKey(FatApp::getConfig("CONF_GOOGLEPLUS_DEVELOPER_KEY")); // Developer key
 
         $oauth2 =new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
 
-        if (isset($_GET['code'])) {
-            $client->authenticate($_GET['code']); // Authenticate
+        if (false ===  MOBILE_APP_API_CALL) {
+            $get = FatApp::getQueryStringData();
+            $accessToken = false;
+            if (isset($get['code'])) {
+                $client->authenticate($get['code']); // Authenticate
+                $accessToken = $client->getAccessToken();
+            }
 
-            $_SESSION['access_token'] = $client->getAccessToken(); // get the access token here
-            FatApp::redirectUser($currentPageUri);
+            if (false === $accessToken) {
+                $authUrl = $client->createAuthUrl();
+                FatApp::redirectUser($authUrl);
+            }
+        } else {
+            $accessToken = FatApp::getPostedData('accessToken');
         }
-
-        if (isset($_SESSION['access_token'])) {
-            $client->setAccessToken($_SESSION['access_token']);
-        }
-
-        if (!$client->getAccessToken()) {
-            $authUrl = $client->createAuthUrl();
-            FatApp::redirectUser($authUrl);
-        }
-
+        
+        $client->setAccessToken($accessToken);
         $user = $oauth2->userinfo->get();
-
-        $_SESSION['access_token'] = $client->getAccessToken();
 
         $userGoogleEmail = filter_var($user['email'], FILTER_SANITIZE_EMAIL);
         $userGoogleId = $user['id'];
@@ -506,16 +494,23 @@ class GuestUserController extends MyAppController
 
             if ($row) {
                 if ($row['credential_active'] != applicationConstants::ACTIVE) {
-                    Message::addErrorMessage(Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId));
+                    $message = Labels::getLabel('ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED', $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    Message::addErrorMessage($message);
                     CommonHelper::redirectUserReferer();
                 }
                 $userObj->setMainTableRecordId($row['user_id']);
 
-
                 $arr = array('user_googleplus_id' => $userGoogleId);
 
                 if (!$userObj->setUserInfo($arr)) {
-                    Message::addErrorMessage(Labels::getLabel($userObj->getError(), $this->siteLangId));
+                    $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
+                    Message::addErrorMessage($message);
                     CommonHelper::redirectUserReferer();
                 }
             } else {
@@ -535,8 +530,12 @@ class GuestUserController extends MyAppController
                 $post['user_registered_initially_for'] = User::USER_TYPE_BUYER;
                 $userObj->assignValues($userData);
                 if (!$userObj->save()) {
-                    Message::addErrorMessage(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
+                    $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
+                    Message::addErrorMessage($message);
                     $db->rollbackTransaction();
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
                     CommonHelper::redirectUserReferer();
                 }
 
@@ -544,8 +543,12 @@ class GuestUserController extends MyAppController
                 $username = str_replace(" ", "", $userGoogleName).$userGoogleId;
 
                 if (!$userObj->setLoginCredentials($username, $userGoogleEmail, uniqid(), 1, 1)) {
-                    Message::addErrorMessage(Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
+                    $message = Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();
+                    Message::addErrorMessage($message);
                     $db->rollbackTransaction();
+                    if (true ===  MOBILE_APP_API_CALL) {
+                        FatUtility::dieJsonError(strip_tags($message));
+                    }
                     CommonHelper::redirectUserReferer();
                 }
 
@@ -553,8 +556,12 @@ class GuestUserController extends MyAppController
                 $userData['user_email'] = $userGoogleEmail;
                 if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
                     if (!$this->notifyAdminRegistration($userObj, $userData)) {
-                        Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
+                        $message = Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
+                        Message::addErrorMessage($message);
                         $db->rollbackTransaction();
+                        if (true ===  MOBILE_APP_API_CALL) {
+                            FatUtility::dieJsonError(strip_tags($message));
+                        }
                         if (FatUtility::isAjaxCall()) {
                             FatUtility::dieWithError(Message::getHtml());
                         }
@@ -572,8 +579,12 @@ class GuestUserController extends MyAppController
                     $userId = $userObj->getMainTableRecordId();
                     $userEmailObj = new User($userId);
                     if (!$this->userWelcomeEmailRegistration($userEmailObj, $data)) {
-                        Message::addErrorMessage(Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
+                        $message = Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId);
+                        Message::addErrorMessage($message);
                         $db->rollbackTransaction();
+                        if (true ===  MOBILE_APP_API_CALL) {
+                            FatUtility::dieJsonError(strip_tags($message));
+                        }
                         CommonHelper::redirectUserReferer();
                     }
                 }
@@ -586,22 +597,37 @@ class GuestUserController extends MyAppController
 
 
             if (!$userInfo || ($userInfo && $userInfo['user_googleplus_id']!= $userGoogleId)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId));
+                $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
             }
 
             $authentication = new UserAuthentication();
             if (!$authentication->login($userInfo['credential_username'], $userInfo['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
-                Message::addErrorMessage(Labels::getLabel($authentication->getError(), $this->siteLangId));
+                $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
             }
 
-            unset($_SESSION['access_token']);
+            if (true ===  MOBILE_APP_API_CALL) {
+                if (!$token = $userObj->setMobileAppToken()) {
+                    FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+                }
+                $this->set('token', $token);
+                $this->_template->render(true, true, 'guest-user/social-login.php');
+            }
 
             $cartObj = new Cart();
             if ($cartObj->hasProducts()) {
                 FatApp::redirectUser(CommonHelper::generateFullUrl('cart'));
             }
+
 
             $preferredDashboard = 0;
             if ($userInfo != false) {
