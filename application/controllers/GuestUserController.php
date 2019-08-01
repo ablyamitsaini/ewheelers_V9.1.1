@@ -231,9 +231,7 @@ class GuestUserController extends MyAppController
     public function socialMediaLogin($oauthProvider)
     {
         if (isset($oauthProvider)) {
-            if ($oauthProvider == 'googleplus') {
-                FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginGoogleplus'));
-            } elseif ($oauthProvider == 'google') {
+            if ($oauthProvider == 'google') {
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginGoogle'));
             } elseif ($oauthProvider == 'facebook') {
                 FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'loginFacebook'));
