@@ -1037,16 +1037,22 @@ class ProductsController extends MyAppController
 
     public function searchProducttagsAutocomplete()
     {
-        $post = FatApp::getPostedData();
+        $keyword = FatApp::getPostedData("keyword");
         $srch = Tag::getSearchObject($this->siteLangId);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addMultipleFields(array('IFNULL(tag_name, tag_identifier) as value'));
-        $srch->addOrder("LOCATE('".urldecode($post["keyword"])."',value)");
+        $srch->addOrder("LOCATE('".urldecode($keyword)."',value)");
         $srch->addGroupby('value');
-        $srch->addHaving('value', 'LIKE', '%'.urldecode($post["keyword"]).'%');
+        $srch->addHaving('value', 'LIKE', '%'.urldecode($keyword).'%');
         $rs = $srch->getResultSet();
         $tags = FatApp::getDb()->fetchAll($rs);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('suggestions', $tags);
+            $this->_template->render();
+        }
+
         die(json_encode(array('suggestions'=>$tags)));
     }
 
