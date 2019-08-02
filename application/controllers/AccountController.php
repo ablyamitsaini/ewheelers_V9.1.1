@@ -288,19 +288,10 @@ class AccountController extends LoggedUserController
         $srch = $userObj->getUserSearchObj(array('user_id','credential_password'));
         $rs = $srch->getResultSet();
 
-        if (!$rs) {
-            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
         $data = FatApp::getDb()->fetch($rs, 'user_id');
 
         if ($data === false) {
-            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            $message = Labels::getLabel('MSG_Invalid_User', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($message);
             }
