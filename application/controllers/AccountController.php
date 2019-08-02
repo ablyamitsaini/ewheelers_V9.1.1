@@ -1542,7 +1542,7 @@ class AccountController extends LoggedUserController
         $selprod_id = FatUtility::int($selprod_id);
         $wish_list_id = FatUtility::int($wish_list_id);
         $rowAction = ('' == $rowAction ? -1 : $rowAction);
-        
+
         if (1 > $wish_list_id) {
             $wish_list_id = $this->getDefaultWishListId();
         }
