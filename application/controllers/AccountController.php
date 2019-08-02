@@ -17,7 +17,7 @@ class AccountController extends LoggedUserController
         }
         $this->set('bodyClass', 'is--dashboard');
     }
-    
+
     public function index()
     {
         /* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
@@ -1541,6 +1541,8 @@ class AccountController extends LoggedUserController
     {
         $selprod_id = FatUtility::int($selprod_id);
         $wish_list_id = FatUtility::int($wish_list_id);
+        $rowAction = FatApp::getPostedData('rowAction', FatUtility::VAR_INT, -1);
+
         if (1 > $wish_list_id) {
             $wish_list_id = $this->getDefaultWishListId();
         }
@@ -1555,7 +1557,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $action = $this->updateWishList($selprod_id, $wish_list_id);
+        $action = $this->updateWishList($selprod_id, $wish_list_id, $rowAction);
 
         //UserWishList
         $srch = UserWishList::getSearchObject($loggedUserId);
@@ -1582,24 +1584,29 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    private function updateWishList($selprod_id, $wish_list_id)
+    private function updateWishList($selprod_id, $wish_list_id, $rowAction = -1)
     {
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
+        $row = false;
+
         $db = FatApp::getDb();
         $wListObj = new UserWishList();
-        $srch = UserWishList::getSearchObject($loggedUserId);
-        $wListObj->joinWishListProducts($srch);
-        $srch->addMultipleFields(array('uwlist_id'));
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
-        $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
+        if (0 > $rowAction) {
+            $srch = UserWishList::getSearchObject($loggedUserId);
+            $wListObj->joinWishListProducts($srch);
+            $srch->addMultipleFields(array('uwlist_id'));
+            $srch->doNotCalculateRecords();
+            $srch->doNotLimitRecords();
+            $srch->addCondition('uwlp_selprod_id', '=', $selprod_id);
+            $srch->addCondition('uwlp_uwlist_id', '=', $wish_list_id);
 
-        $rs = $srch->getResultSet();
+            $rs = $srch->getResultSet();
+            $row = $db->fetch($rs);
+        }
 
         $action = 'N'; //nothing happened
-        if (!$row = $db->fetch($rs)) {
+        if (!$row && (0 < $rowAction || 0 > $rowAction)) {
             if (!$wListObj->addUpdateListProducts($wish_list_id, $selprod_id)) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
@@ -1611,7 +1618,26 @@ class AccountController extends LoggedUserController
             $action = 'A'; //Added to wishlist
             $this->set('msg', Labels::getLabel('LBL_Product_Added_in_list_successfully', $this->siteLangId));
         } else {
-            if (!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($wish_list_id, $selprod_id)))) {
+            $uwlistIds = array();
+            if (true ===  MOBILE_APP_API_CALL) {
+                $srch = UserWishList::getSearchObject($loggedUserId);
+                $srch->addMultipleFields(array('uwlist_id'));
+                $rs = $srch->getResultSet();
+                $row = $db->fetchAll($rs, 'uwlist_id');
+                $uwlistIds = array_keys($row);
+            } else {
+                $uwlistIds[] = $wish_list_id;
+            }
+            $err = true;
+            foreach ($uwlistIds as $uwlistId) {
+                $err = false;
+                if (!$db->deleteRecords(UserWishList::DB_TBL_LIST_PRODUCTS, array('smt'=>'uwlp_uwlist_id = ? AND uwlp_selprod_id = ?', 'vals'=>array($uwlistId, $selprod_id)))) {
+                    $err = true;
+                    break;
+                }
+            }
+
+            if (true == $err) {
                 $message = Labels::getLabel('LBL_Some_problem_occurred,_Please_contact_webmaster', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError($message);
@@ -1619,6 +1645,7 @@ class AccountController extends LoggedUserController
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
+
             $action = 'R'; //Removed from wishlist
             $this->set('msg', Labels::getLabel('LBL_Product_Removed_from_list_successfully', $this->siteLangId));
         }
