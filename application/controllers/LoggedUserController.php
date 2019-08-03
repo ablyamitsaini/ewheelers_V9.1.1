@@ -6,7 +6,7 @@ class LoggedUserController extends MyAppController
         parent::__construct($action);
 
         UserAuthentication::checkLogin();
-        
+
         $userObj = new User(UserAuthentication::getLoggedUserId());
 
         $userInfo = $userObj->getUserInfo(array(), false, false);
@@ -23,18 +23,18 @@ class LoggedUserController extends MyAppController
             $userPreferedDashboardType = ($userInfo['user_preferred_dashboard'])?$userInfo['user_preferred_dashboard']:$userInfo['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
-            case User::USER_TYPE_BUYER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-                break;
-            case User::USER_TYPE_SELLER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-                break;
-            case User::USER_TYPE_AFFILIATE:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-                break;
-            case User::USER_TYPE_ADVERTISER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-                break;
+                case User::USER_TYPE_BUYER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+                    break;
             }
         }
 

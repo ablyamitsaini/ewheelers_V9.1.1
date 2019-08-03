@@ -498,7 +498,7 @@ class ShopsController extends MyAppController
         $this->_template->render(true, true, 'shops/view.php');
     }
 
-    public function sendMessage($shop_id, $selprod_id=0)
+    public function sendMessage($shop_id, $selprod_id = 0)
     {
         UserAuthentication::checkLogin();
         $shop_id = FatUtility::int($shop_id);
@@ -544,33 +544,19 @@ class ShopsController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $loggedUserId = UserAuthentication::getLoggedUserId();
         if (false == $post) {
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
-            }
-
-            Message::addErrorMessage();
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
         $shopData = $this->getShopInfo($shop_id);
         if (!$shopData) {
             $message = Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
-            }
-
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError($message);
         }
 
         if ($shopData['shop_user_id'] == $loggedUserId) {
             $message = Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError($message);
         }
 
         $threadObj = new Thread();
@@ -622,11 +608,7 @@ class ShopsController extends MyAppController
         if ($message_id) {
             $emailObj = new EmailHandler();
             if (!$emailObj->SendMessageNotification($message_id, $this->siteLangId)) {
-                if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($emailObj->getError()));
-                }
-                Message::addErrorMessage($emailObj->getError());
-                FatUtility::dieJsonError(Message::getHtml());
+                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
             }
         }
         if (true ===  MOBILE_APP_API_CALL) {
@@ -892,19 +874,19 @@ class ShopsController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 250;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'WIDE':
-            $w = 1320;
-            $h = 320;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 250;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'WIDE':
+                $w = 1320;
+                $h = 320;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 

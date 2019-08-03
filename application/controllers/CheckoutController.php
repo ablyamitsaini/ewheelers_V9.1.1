@@ -535,11 +535,7 @@ class CheckoutController extends MyAppController
 
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError($message);
         }
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
@@ -1381,11 +1377,7 @@ class CheckoutController extends MyAppController
         /* var_dump($totalBalance);exit; */
         if ($totalBalance == 0 || $totalBalance < $rewardPoints) {
             $message = Labels::getLabel('ERR_Insufficient_reward_point_balance', $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
-            }
-            Message::addErrorMessage($message);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError($message);
         }
 
         $cartObj = new Cart();
@@ -1400,11 +1392,7 @@ class CheckoutController extends MyAppController
             $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', $this->siteLangId);
             $msg = str_replace('{MIN}', FatApp::getConfig('CONF_MIN_REWARD_POINT'), $msg);
             $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($msg));
-            }
-            Message::addErrorMessage($msg);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(strip_tags($msg));
         }
 
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
