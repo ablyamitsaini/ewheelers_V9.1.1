@@ -63,7 +63,9 @@ Fixes:
 		• Apple touch icon does not display correctly
 		• Fixed Aweber code
 		• Fixed redirection to same page after turning on the ‘Shipped by me’ option on the seller dashboard.
-
+		• 029021 - No default address selected when previous default address is deleted
+		• 029024 - Default address is changed even when user clicks on cancel button while changing default address
+		• 029114 - Pop-up for confirm message is displayed even when clicked on current default address
 Known Issues and Problems:
 
 	Following is a list of known errors that don’t have a workaround. These issues will be fixed in the subsequent release.

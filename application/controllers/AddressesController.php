@@ -87,30 +87,32 @@ class AddressesController extends LoggedUserController
 
     public function deleteRecord()
     {
-        $post = FatApp::getPostedData();
-        if ($post == false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
-            FatUtility::dieWithError(Message::getHtml());
-        }
-
-        $ua_id = FatUtility::int($post['id']);
+        $ua_id = FatApp::getPostedData('id', FatUtility::VAR_INT, 0);
         if (1 > $ua_id) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $data =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $ua_id);
-        if ($data === false) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_request', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+        $userId = UserAuthentication::getLoggedUserId();
+        $userDefaultAddress = UserAddress::getDefaultAddressId($userId);
+        if ($userDefaultAddress['ua_id'] == $ua_id) {
+            $message = Labels::getLabel('MSG_Select_another_address', $this->siteLangId);
+            FatUtility::dieJsonError($message);
         }
 
-        $addressObj = new UserAddress($ua_id);
-        if (!$addressObj->deleteRecord()) {
-            Message::addErrorMessage($addressObj->getError());
-            FatUtility::dieJsonError(Message::getHtml());
+        $db = FatApp::getDb();
+        if (!$db->deleteRecords(UserAddress::DB_TBL, array('smt' => 'ua_user_id = ? AND ua_id = ?', 'vals' => array($userId, $ua_id)))) {
+            FatUtility::dieJsonError(strip_tags($db->getError()));
         }
-
-        FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Deleted_successfully', $this->siteLangId));
+        $msg = Labels::getLabel('MSG_Deleted_successfully', $this->siteLangId);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('msg', $msg);
+            $this->_template->render();
+        }
+        FatUtility::dieJsonSuccess($msg);
     }
 }
