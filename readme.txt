@@ -64,7 +64,7 @@ Fixes:
 		• Fixed Aweber code
 		• Fixed redirection to same page after turning on the ‘Shipped by me’ option on the seller dashboard.
 		• Restrict to delete default address, removed confirmation on default address and address selection fixes.
-		
+
 Known Issues and Problems:
 
 	Following is a list of known errors that don’t have a workaround. These issues will be fixed in the subsequent release.
