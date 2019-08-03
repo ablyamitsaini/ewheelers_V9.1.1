@@ -31,37 +31,37 @@
 
 				<?php if( $shop['shop_payment_policy'] != '' ){ ?>
 				<div class="cms">
-				  <h4><?php echo Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId); ?></h4>
-				  <p><?php echo nl2br($shop['shop_payment_policy']); ?></p>
+				  <h4><?php echo $shop['shop_payment_policy']['title']; ?></h4>
+				  <p><?php echo nl2br($shop['shop_payment_policy']['description']); ?></p>
 				</div>
 				<?php } ?>
 				<div class="gap"></div>
 
 				<?php if( $shop['shop_delivery_policy'] != '' ){ ?>
 				<div class="cms">
-				  <h4><?php echo Labels::getLabel('LBL_DELIVERY_POLICY', $siteLangId); ?></h4>
-				  <p> <?php echo nl2br($shop['shop_delivery_policy']); ?> </p>
+				  <h4><?php echo $shop['shop_delivery_policy']['title']; ?></h4>
+				  <p> <?php echo nl2br($shop['shop_delivery_policy']['description']); ?> </p>
 				</div>
 				<?php } ?>
 
 				<?php if( $shop['shop_refund_policy'] != '' ){ ?>
 				<div class="cms">
-				  <h4> <?php echo Labels::getLabel('LBL_REFUND_POLICY', $siteLangId); ?></h4>
-				  <p> <?php echo nl2br($shop['shop_refund_policy']); ?> </p>
+				  <h4> <?php echo $shop['shop_refund_policy']['title']; ?></h4>
+				  <p> <?php echo nl2br($shop['shop_refund_policy']['title']); ?> </p>
 				</div>
 				<?php } ?>
 
 				<?php if( $shop['shop_additional_info'] != '' ){ ?>
 				<div class="cms">
-				  <h4> <?php echo Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId); ?></h4>
-				  <p> <?php echo nl2br($shop['shop_additional_info']); ?> </p>
+				  <h4> <?php echo $shop['shop_additional_info']['title']; ?></h4>
+				  <p> <?php echo nl2br($shop['shop_additional_info']['description']); ?> </p>
 				</div>
 				<?php } ?>
 
 				<?php if( $shop['shop_seller_info'] != '' ){ ?>
 				<div class="cms">
-				  <h4> <?php echo Labels::getLabel('LBL_SELLER_INFO', $siteLangId); ?></h4>
-				  <p> <?php echo nl2br($shop['shop_seller_info']); ?> </p>
+				  <h4> <?php echo $shop['shop_seller_info']['title']; ?></h4>
+				  <p> <?php echo nl2br($shop['shop_seller_info']['description']); ?> </p>
 				</div>
 				<?php } ?>
 			  </div>
