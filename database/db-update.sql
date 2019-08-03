@@ -21793,3 +21793,4 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
+INSERT INTO `tbl_language_labels` (`label_id`, `label_key`, `label_lang_id`, `label_caption`) VALUES (NULL, 'MSG_Select_another_address', '1', 'Please Select Another Address As Default Address');
