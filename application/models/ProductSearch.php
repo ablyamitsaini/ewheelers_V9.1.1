@@ -483,18 +483,21 @@ class ProductSearch extends SearchBase
             /* $category = explode(",", $category);
             $category = FatUtility::int($category);
             $this->addCondition('prodcat_id', 'IN', $category ); */
-
-            $condition= '(';
-            foreach ($category as $catId) {
-                $catId = FatUtility::int($catId);
-                if (1 > $catId) {
-                    continue;
+            
+            if (0 < count(array_filter($category))) {
+                $condition= '(';
+                foreach ($category as $catId) {
+                    $catId = FatUtility::int($catId);
+                    if (1 > $catId) {
+                        continue;
+                    }
+                    $condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT) ."%' OR";
                 }
-                $condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT) ."%' OR";
+                $condition = substr($condition, 0, -2);
+                $condition .= ')';
+
+                $this->addDirectCondition($condition);
             }
-            $condition = substr($condition, 0, -2);
-            $condition .= ')';
-            $this->addDirectCondition($condition);
         }
     }
 

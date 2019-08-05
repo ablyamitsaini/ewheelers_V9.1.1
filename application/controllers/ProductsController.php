@@ -140,6 +140,7 @@ class ProductsController extends MyAppController
         $catSrch = clone $prodSrchObj;
         $catSrch->addGroupBy('c.prodcat_id');
         $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
+        $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
         /* ] */
 
         /*$recordSrch = clone $prodSrchObj;

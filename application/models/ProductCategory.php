@@ -195,9 +195,10 @@ class ProductCategory extends MyAppModel
         if ($excludeCatHavingNoProducts) {
             $prodSrchObj = new ProductSearch($langId);
             $prodSrchObj->setDefinedCriteria();
-            $prodSrchObj->joinProductToCategory();
             $prodSrchObj->doNotCalculateRecords();
+
             $prodSrchObj->doNotLimitRecords();
+            $prodSrchObj->joinProductToCategory();
             $prodSrchObj->joinSellerSubscription($langId, true);
             $prodSrchObj->addSubscriptionValidCondition();
 
@@ -266,7 +267,9 @@ class ProductCategory extends MyAppModel
             if ($parent == $root) {
                 unset($tree[$categoryId]);
                 $return[$categoryId] = $category;
-                $return[$categoryId]['children'] = static::parseTree($tree, $categoryId);
+                $child = static::parseTree($tree, $categoryId);
+                $return[$categoryId]['isLastChildren'] = (0 < count($child)) ? 0 : 1;
+                $return[$categoryId]['children'] = (true ===  MOBILE_APP_API_CALL) ? array_values($child) : $child;
             }
         }
         return empty($return) ? array() : $return;
