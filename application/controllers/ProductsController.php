@@ -8,45 +8,26 @@ class ProductsController extends MyAppController
 
     public function index()
     {
-        $db = FatApp::getDb();
-        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
-
-        $includeKeywordRelevancy = false;
-        if (array_key_exists('keyword', $get)) {
-            $includeKeywordRelevancy = true;
-        }
-
-        $frm = $this->getProductSearchForm($includeKeywordRelevancy);
-        $get['join_price'] = 1;
-        $frm->fill($get);
-
-        $data = $this->getListingData($get);
-
-        $arr = array(
-            'frmProductSearch' => $frm,
-            'pageTitle' => Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId),
-            'canonicalUrl' => CommonHelper::generateFullUrl('Products', 'index'),
-            'productSearchPageType' => SavedSearchProduct::PAGE_PRODUCT_INDEX,
-            'recordId' => 0,
-            'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'allProducts'),
-            'showBreadcrumb' => false
-        );
-
-        $data = array_merge($data, $arr);
-        $this->set('data', $data);
-
-        $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
-        $this->_template->render();
+        $this->productsData(__FUNCTION__);
     }
 
     public function search()
     {
+        $this->productsData(__FUNCTION__);
+    }
+
+    public function featured()
+    {
+        $this->productsData(__FUNCTION__);
+    }
+
+    private function productsData($method)
+    {
         $db = FatApp::getDb();
         $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
-        $keyword = '';
+
         $includeKeywordRelevancy = false;
+        $keyword = '';
         if (array_key_exists('keyword', $get)) {
             $includeKeywordRelevancy = true;
             $keyword = $get['keyword'];
@@ -55,58 +36,49 @@ class ProductsController extends MyAppController
         $frm = $this->getProductSearchForm($includeKeywordRelevancy);
 
         $get['join_price'] = 1;
-        $frm->fill($get);
-        $data = $this->getListingData($get);
 
-        $arr = array(
-            'frmProductSearch'=>$frm,
-            'pageTitle'=> Labels::getLabel('LBL_Search_results_for', $this->siteLangId),
-            'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'search'),
-            'productSearchPageType'=>SavedSearchProduct::PAGE_PRODUCT,
-            'recordId'=>0,
-            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'searchListing'),
-            'showBreadcrumb'=> false,
-            'keyword' => $keyword,
-        );
+        $arr = array();
 
-        $data = array_merge($data, $arr);
-        $this->set('data', $data);
-
-        $this->includeProductPageJsCss();
-        $this->_template->addJs('js/slick.min.js');
-        $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
-        $this->_template->render(true, true, 'products/index.php');
-    }
-
-    public function featured()
-    {
-        $db = FatApp::getDb();
-        $get = Product::convertArrToSrchFiltersAssocArr(FatApp::getParameters());
-
-        $includeKeywordRelevancy = false;
-        if (array_key_exists('keyword', $get)) {
-            $includeKeywordRelevancy = true;
+        switch ($method) {
+            case 'index':
+                $arr = array(
+                    'pageTitle' => Labels::getLabel('LBL_All_PRODUCTS', $this->siteLangId),
+                    'canonicalUrl' => CommonHelper::generateFullUrl('Products', 'index'),
+                    'productSearchPageType' => SavedSearchProduct::PAGE_PRODUCT_INDEX,
+                    'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'allProducts'),
+                );
+                break;
+            case 'search':
+                $arr = array(
+                    'pageTitle'=> Labels::getLabel('LBL_Search_results_for', $this->siteLangId),
+                    'canonicalUrl'=>CommonHelper::generateFullUrl('Products', 'search'),
+                    'productSearchPageType'=>SavedSearchProduct::PAGE_PRODUCT,
+                    'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'searchListing'),
+                    'keyword' => $keyword,
+                );
+                break;
+            case 'featured':
+                $arr = array(
+                    'pageTitle' => Labels::getLabel('LBL_FEATURED_PRODUCTS', $this->siteLangId),
+                    'canonicalUrl' => CommonHelper::generateFullUrl('Products', 'featured'),
+                    'productSearchPageType' => SavedSearchProduct::PAGE_FEATURED_PRODUCT,
+                    'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'searchListing'),
+                );
+                $get['featured'] = 1;
+                break;
         }
 
-        $frm = $this->getProductSearchForm($includeKeywordRelevancy);
-
-        $get['join_price'] = 1;
-        $get['featured'] = 1;
         $frm->fill($get);
 
         $data = $this->getListingData($get);
 
-        $arr = array(
+        $common = array(
             'frmProductSearch' => $frm,
-            'pageTitle' => Labels::getLabel('LBL_FEATURED_PRODUCTS', $this->siteLangId),
-            'canonicalUrl' => CommonHelper::generateFullUrl('Products', 'featured'),
-            'productSearchPageType' => SavedSearchProduct::PAGE_FEATURED_PRODUCT,
             'recordId' => 0,
-            'bannerListigUrl' => CommonHelper::generateFullUrl('Banner', 'searchListing'),
             'showBreadcrumb' => false
         );
 
-        $data = array_merge($data, $arr);
+        $data = array_merge($data, $common, $arr);
         $this->set('data', $data);
 
         $this->includeProductPageJsCss();
@@ -1037,16 +1009,22 @@ class ProductsController extends MyAppController
 
     public function searchProducttagsAutocomplete()
     {
-        $post = FatApp::getPostedData();
+        $keyword = FatApp::getPostedData("keyword");
         $srch = Tag::getSearchObject($this->siteLangId);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addMultipleFields(array('IFNULL(tag_name, tag_identifier) as value'));
-        $srch->addOrder("LOCATE('".urldecode($post["keyword"])."',value)");
+        $srch->addOrder("LOCATE('".urldecode($keyword)."',value)");
         $srch->addGroupby('value');
-        $srch->addHaving('value', 'LIKE', '%'.urldecode($post["keyword"]).'%');
+        $srch->addHaving('value', 'LIKE', '%'.urldecode($keyword).'%');
         $rs = $srch->getResultSet();
         $tags = FatApp::getDb()->fetchAll($rs);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('suggestions', $tags);
+            $this->_template->render();
+        }
+
         die(json_encode(array('suggestions'=>$tags)));
     }
 
@@ -1596,7 +1574,7 @@ class ProductsController extends MyAppController
         if ($pageSize) {
             $srch->setPageSize($pageSize);
         }
-        //echo $srch->getQuery();exit;
+        // echo $srch->getQuery();exit;
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);

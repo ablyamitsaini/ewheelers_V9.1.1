@@ -293,6 +293,7 @@ class CategoryController extends MyAppController
 
         if (true ===  MOBILE_APP_API_CALL && 0 == $parentId) {
             foreach ($categoriesDataArr as $key => $value) {
+                $categoriesDataArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($value['prodcat_id'], $this->siteLangId, 'COLLECTION_PAGE'));
                 $categoriesDataArr[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($value['prodcat_id'] , $this->siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
             }
         } else {

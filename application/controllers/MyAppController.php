@@ -305,7 +305,8 @@ class MyAppController extends FatController
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmLogin');
-        $userName ='';$pass = '';
+        $userName ='';
+        $pass = '';
         if (CommonHelper::demoUrl()) {
             $userName = 'login@dummyid.com';
             $pass = 'kanwar@123';

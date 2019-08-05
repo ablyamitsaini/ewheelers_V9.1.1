@@ -726,8 +726,9 @@ class ProductCategory extends MyAppModel
             return $categoriesArr;
         }
         if ($categoriesArr) {
-            foreach ($categoriesArr as &$cat) {
-                $cat['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
+            foreach ($categoriesArr as $key => $cat) {
+                $categoriesArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($cat['prodcat_id'], $langId, 'COLLECTION_PAGE'));
+                $categoriesArr[$key]['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
             }
         }
         return $categoriesArr;

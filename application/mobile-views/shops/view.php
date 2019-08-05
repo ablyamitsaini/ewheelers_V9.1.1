@@ -8,6 +8,6 @@ if (array_key_exists('products', $data)) {
 
 $data['shop'] = !empty($data['shop']) ? $data['shop'] : (object)array();
 
-if (empty((array)$data['shop'])) {
+if (empty($data['products'])) {
     $status = applicationConstants::OFF;
 }
