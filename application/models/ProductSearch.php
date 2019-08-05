@@ -462,7 +462,7 @@ class ProductSearch extends SearchBase
         $wislistPSrchObj->doNotCalculateRecords();
         $wislistPSrchObj->doNotLimitRecords();
         $wislistPSrchObj->addCondition('uwlist_user_id', '=', $user_id);
-        $wislistPSrchObj->addFld('uwlp_selprod_id');
+        $wislistPSrchObj->addMultipleFields(array('uwlp_selprod_id', 'uwlp_uwlist_id'));
         $wishListSubQuery = $wislistPSrchObj->getQuery();
         $this->joinTable('(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp');
     }
