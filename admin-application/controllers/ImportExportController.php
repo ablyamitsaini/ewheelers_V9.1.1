@@ -423,7 +423,7 @@ class ImportExportController extends AdminBaseController
                 break;
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canViewPolicyPoints();
-                $pageData = $obj->getContentByPageType(Extrapage::TYPE_POLICY_POINTS, $langId);
+                $pageData = $obj->getContentByPageType(Extrapage::ADMIN_TYPE_POLICY_POINTS, $langId);
                 break;
             default:
                 FatUtility::dieWithError($this->str_invalid_request);
