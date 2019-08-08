@@ -159,5 +159,6 @@ function restoreSystem(){
     fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL; ?>'), '', function(resp){
         setTimeout(function(){ window.location.reload(); }, 3000);
     },false,false);
+    setTimeout(function(){ window.location.reload(); }, 3000);
 }
 </script>
