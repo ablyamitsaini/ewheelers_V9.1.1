@@ -102,6 +102,7 @@ class AdminPrivilege
     const SECTION_PRODUCT_TEMP_IMAGES = 98;
     const SECTION_IMPORT_INSTRUCTIONS = 99;
     const SECTION_UPLOAD_BULK_IMAGES = 100;
+    const SECTION_SPECIAL_PRICE = 101;
 
     const PRIVILEGE_NONE = 0;
     const PRIVILEGE_READ = 1;
@@ -236,6 +237,7 @@ class AdminPrivilege
         static::SECTION_PRODUCT_TEMP_IMAGES => Labels::getLabel('MSG_Products_Temp_Images', CommonHelper::getLangId()),
         static::SECTION_IMPORT_INSTRUCTIONS => Labels::getLabel('MSG_Import_Instructions', CommonHelper::getLangId()),
         static::SECTION_UPLOAD_BULK_IMAGES => Labels::getLabel('MSG_Bulk_Upload', CommonHelper::getLangId()),
+        static::SECTION_SPECIAL_PRICE => Labels::getLabel('MSG_Special_Price', CommonHelper::getLangId()),
 
         /* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
         static::SECTION_Languages => Labels::getLabel('MSG_Order_Status',CommonHelper::getLangId()), */
@@ -1365,5 +1367,15 @@ class AdminPrivilege
     public function canEditUserRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
+    }
+
+    public function canViewSpecialPrices($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_SPECIAL_PRICE, static::PRIVILEGE_READ, $returnResult);
+    }
+
+    public function canEditSpecialPrices($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_SPECIAL_PRICE, static::PRIVILEGE_WRITE, $returnResult);
     }
 }

@@ -773,9 +773,12 @@ class SellerProductsController extends AdminBaseController
             $cnd = $cnd->attachCondition('selprod_title', 'LIKE', '%' . $post['keyword'] . '%', 'OR');
             $cnd->attachCondition('product_identifier', 'LIKE', '%'. $post['keyword'] . '%', 'OR');
         }
-        $selprod_user=SellerProduct::getAttributesById($post['selProdId'], array('selprod_user_id'));
-        $srch->addCondition('selprod_user_id', '=', $selprod_user['selprod_user_id']);
-        $srch->addCondition('selprod_id', '!=', $post['selProdId']);
+
+        if (!empty($post['selProdId']) && 0 < FatUtility::int($post['selProdId'])) {
+            $selprod_user=SellerProduct::getAttributesById($post['selProdId'], array('selprod_user_id'));
+            $srch->addCondition('selprod_user_id', '=', $selprod_user['selprod_user_id']);
+            $srch->addCondition('selprod_id', '!=', $post['selProdId']);
+        }
         $srch->addCondition(Product::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
         $srch->addCondition(Product::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
@@ -799,8 +802,6 @@ class SellerProductsController extends AdminBaseController
             );
         }
         die(json_encode($json));
-
-        return  $arrListing;
     }
 
     public function autoCompleteUserShopName()
@@ -951,15 +952,6 @@ class SellerProductsController extends AdminBaseController
     public function setUpSellerProductSpecialPrice()
     {
         $this->objPrivilege->canEditSellerProducts();
-        $post = FatApp::getPostedData();
-        $selprod_id = FatUtility::int($post['splprice_selprod_id']);
-        $splprice_id = FatUtility::int($post['splprice_id']);
-
-        if (!$selprod_id) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
-        }
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
-
         $frm = $this->getSellerProductSpecialPriceForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
@@ -967,6 +959,23 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieJsonError(current($frm->getValidationErrors()));
         }
 
+        $resp = $this->updateSelProdSplPrice($post);
+        if (!$resp) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+        $this->set('msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId));
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function updateSelProdSplPrice($post, $return = false)
+    {
+        $selprod_id = FatUtility::int($post['splprice_selprod_id']);
+        $splprice_id = FatUtility::int($post['splprice_id']);
+
+        if (1 > $selprod_id) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+        $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
         if ($tblRecord->loadFromDb(array('smt' => '(splprice_selprod_id = ?) AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ?) )', 'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])))) {
@@ -988,12 +997,12 @@ class SellerProductsController extends AdminBaseController
         'splprice_display_list_price' =>$post['splprice_display_list_price'], */
         );
         $sellerProdObj = new SellerProduct();
-        if (!$sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save)) {
+        $resp = $sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save, $return);
+        if (false === $resp) {
             FatUtility::dieJsonError(Labels::getLabel($sellerProdObj->getError(), $this->adminLangId));
         }
 
-        $this->set('msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId));
-        $this->_template->render(false, false, 'json-success.php');
+        return $resp;
     }
 
     public function deleteSellerProductSpecialPrice()
@@ -1102,11 +1111,11 @@ class SellerProductsController extends AdminBaseController
         'voldiscount_min_qty'        =>    $post['voldiscount_min_qty'],
         'voldiscount_percentage'    =>    $post['voldiscount_percentage']
         );
-        
-        if($voldiscount_id > 1){
+
+        if ($voldiscount_id > 1) {
             $data_to_save['voldiscount_id']	=	$voldiscount_id;
         }
-        
+
         $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
         $record->assignValues($data_to_save);
         if (!$record->addNew(array(), $data_to_save)) {
@@ -1310,6 +1319,8 @@ class SellerProductsController extends AdminBaseController
         if ($action == 'index') {
             $nodes[] = array('title'=>$className);
         } else {
+            $arr = explode('-', FatUtility::camel2dashed($action));
+            $action = ucwords(implode(' ', $arr));
             $nodes[] = array('title'=>$action);
         }
         return $nodes;
@@ -2222,5 +2233,187 @@ class SellerProductsController extends AdminBaseController
             Message::addErrorMessage($sellerProdObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
+    }
+
+    public function specialPrice()
+    {
+        $this->objPrivilege->canViewSpecialPrices();
+        $srchFrm = $this->getSpecialPriceSearchForm();
+        $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
+
+        if (false === $post) {
+            FatUtility::dieJsonError(current($frm->getValidationErrors()));
+        } else {
+            $srchFrm->fill($post);
+        }
+
+        $this->set("frmSearch", $srchFrm);
+        $this->_template->render();
+    }
+
+    public function searchSpecialPriceProducts()
+    {
+        $this->objPrivilege->canViewSpecialPrices();
+        $post = FatApp::getPostedData();
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+
+        $srch = SellerProduct::getSearchObject($this->adminLangId);
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'INNER JOIN', 'spp.splprice_selprod_id = sp.selprod_id', 'spp');
+        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->adminLangId, 'p_l');
+        $srch->addMultipleFields(
+            array(
+            'selprod_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
+            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', "count('splprice_id') as specialPriceCount")
+        );
+
+        $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
+        if ($keyword != '') {
+            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
+            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
+        }
+
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
+        $srch->addOrder('selprod_active', 'DESC');
+        $srch->addOrder('selprod_added_on', 'DESC');
+        $srch->addGroupBy('spp.splprice_selprod_id');
+
+        $db = FatApp::getDb();
+        $rs = $srch->getResultSet();
+        $arrListing = $db->fetchAll($rs);
+        if (count($arrListing)) {
+            foreach ($arrListing as & $arr) {
+                $arr['options'] = SellerProduct::getSellerProductOptions($arr['selprod_id'], true, $this->adminLangId);
+            }
+        }
+
+        $this->set("arrListing", $arrListing);
+        $this->set('canViewSpecialPrice', $this->objPrivilege->canViewSpecialPrices($this->admin_id, true));
+
+        $this->set('page', $page);
+        $this->set('pageCount', $srch->pages());
+        $this->set('postedData', $post);
+        $this->set('recordCount', $srch->recordCount());
+        $this->set('pageSize', $pageSize);
+        $this->_template->render(false, false);
+    }
+
+    private function getSpecialPriceSearchForm()
+    {
+        $frm = new Form('frmSearch', array('id'=>'frmSearch'));
+        $frm->setRequiredStarWith('caption');
+        $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword');
+        $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
+        $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
+        $fld_submit->attachField($fld_cancel);
+        return $frm;
+    }
+
+    public function addSpecialPrice()
+    {
+        $this->objPrivilege->canEditSpecialPrices();
+        $frm = $this->specialPriceFormElements();
+        $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
+
+        $flds = array(
+            'product_name' => Labels::getLabel('LBL_Product', $this->adminLangId),
+            'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $this->adminLangId),
+            'splprice_end_date' => Labels::getLabel('LBL_End_Date', $this->adminLangId),
+            'splprice_price' => Labels::getLabel('LBL_Special_Price', $this->adminLangId),
+            'action' => Labels::getLabel('LBL_Action', $this->adminLangId),
+        );
+        $product = array_fill_keys(array_keys($flds), null);
+
+        if (!empty($selProdIdsArr)) {
+            foreach ($selProdIdsArr as $splpriceId => $selProdId) {
+                if (0 < $splpriceId) {
+                    $row = SellerProduct::getSellerProductSpecialPriceById($splpriceId, true);
+                    $product['splprice_start_date'] = date('Y-m-d', strtotime($row['splprice_start_date']));
+                    $product['splprice_end_date'] = date('Y-m-d', strtotime($row['splprice_end_date']));
+                    $product['splprice_price'] = $row['splprice_price'];
+                    $product['splprice_id'] = $splpriceId;
+                }
+
+                $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->adminLangId);
+                $product['product_name']  = html_entity_decode($product_name, ENT_QUOTES, 'UTF-8');
+                $product['splprice_selprod_id']  = $selProdId;
+                $data[] = $product;
+            }
+        } else {
+            $data = array($product);
+        }
+        $this->set('frm', $frm);
+        $this->set('arrFlds', $flds);
+        $this->set('data', $data);
+
+        $this->_template->render();
+    }
+
+    private function specialPriceFormElements()
+    {
+        $frm = $this->getSellerProductSpecialPriceForm();
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'product_name', '', array('class'=>'selProd--js'));
+        $fld->requirements()->setRequired();
+        $frm->addSubmitButton('', 'btn_update', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
+        return $frm;
+    }
+
+    public function updateSpecialPrice()
+    {
+        $this->objPrivilege->canEditSpecialPrices();
+        $frm = $this->specialPriceFormElements();
+        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+
+        if (false === $post) {
+            FatUtility::dieJsonError(current($frm->getValidationErrors()));
+        }
+        $insertId = $this->updateSelProdSplPrice($post, true);
+        if (!$insertId) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+        $post['product_name'] = SellerProduct::getProductDisplayTitle($post['splprice_selprod_id'], $this->adminLangId);
+        $this->set('post', $post);
+        $this->set('insertId', $insertId);
+        $json = array(
+            'status'=> true,
+            'msg'=>Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId),
+            'data'=>$this->_template->render(false, false, 'seller-products/update-special-price.php', true)
+        );
+        FatUtility::dieJsonSuccess($json);
+    }
+
+    public function editSelProdSpecialPrice()
+    {
+        $splprice_id = FatApp::getPostedData('splprice_id', FatUtility::VAR_INT, 0);
+        if (1 > $splprice_id) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+
+        $row = SellerProduct::getSellerProductSpecialPriceById($splprice_id, true);
+        $row['product_name'] = SellerProduct::getProductDisplayTitle($row['selprod_id'], $this->adminLangId);
+        $row['splprice_start_date'] = date('Y-m-d', strtotime($row['splprice_start_date']));
+        $row['splprice_end_date'] = date('Y-m-d', strtotime($row['splprice_end_date']));
+        die(json_encode($row));
+    }
+
+    public function specialPriceList($selprod_id)
+    {
+        $selprod_id = FatUtility::int($selprod_id);
+
+        if (1 > $selprod_id) {
+            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'SpecialPrice'));
+        }
+
+        $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
+        $arrListing = SellerProduct::getSellerProductSpecialPrices($selprod_id);
+
+        $this->set('product_name', SellerProduct::getProductDisplayTitle($sellerProductRow['selprod_id'], $this->adminLangId));
+        $this->set('arrListing', $arrListing);
+        $this->set('selprod_id', $sellerProductRow['selprod_id']);
+
+        $this->_template->render();
     }
 }

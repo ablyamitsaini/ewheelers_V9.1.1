@@ -487,12 +487,18 @@ class SellerProduct extends MyAppModel
         return true;
     }
 
-    public function addUpdateSellerProductSpecialPrice($data)
+    public function addUpdateSellerProductSpecialPrice($data, $return = false)
     {
         $db = FatApp::getDb();
         if (!$db->insertFromArray(static::DB_TBL_SELLER_PROD_SPCL_PRICE, $data, false, array(), $data)) {
             $this->error = $db->getError();
             return false;
+        }
+        if (true === $return) {
+            if (!empty($data['splprice_id'])) {
+                return $data['splprice_id'];
+            }
+            return FatApp::getDb()->getInsertId();
         }
         return true;
     }
@@ -811,7 +817,7 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    
+
     public static function getActiveCount($userId, $selprodId = 0)
     {
         $selprodId = FatUtility::int($selprodId);
