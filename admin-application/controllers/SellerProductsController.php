@@ -2273,7 +2273,8 @@ class SellerProductsController extends AdminBaseController
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
         }
-
+        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
         $srch->addOrder('selprod_active', 'DESC');
@@ -2316,6 +2317,7 @@ class SellerProductsController extends AdminBaseController
         $this->objPrivilege->canEditSpecialPrices();
         $frm = $this->specialPriceFormElements();
         $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
+        $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
 
         $flds = array(
             'product_name' => Labels::getLabel('LBL_Product', $this->adminLangId),
@@ -2328,6 +2330,7 @@ class SellerProductsController extends AdminBaseController
 
         if (!empty($selProdIdsArr)) {
             foreach ($selProdIdsArr as $splpriceId => $selProdId) {
+                $splpriceId = 0 < $edit ? $splpriceId : 0;
                 if (0 < $splpriceId) {
                     $row = SellerProduct::getSellerProductSpecialPriceById($splpriceId, true);
                     $product['splprice_start_date'] = date('Y-m-d', strtotime($row['splprice_start_date']));
@@ -2344,7 +2347,9 @@ class SellerProductsController extends AdminBaseController
         } else {
             $data = array($product);
         }
+
         $this->set('frm', $frm);
+        $this->set('edit', $edit);
         $this->set('arrFlds', $flds);
         $this->set('data', $data);
 
@@ -2373,7 +2378,10 @@ class SellerProductsController extends AdminBaseController
         if (!$insertId) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
+        $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
+        
         $post['product_name'] = SellerProduct::getProductDisplayTitle($post['splprice_selprod_id'], $this->adminLangId);
+        $this->set('edit', $edit);
         $this->set('post', $post);
         $this->set('insertId', $insertId);
         $json = array(

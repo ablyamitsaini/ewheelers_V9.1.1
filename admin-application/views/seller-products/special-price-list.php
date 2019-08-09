@@ -112,10 +112,11 @@
                                 // $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Special_Price_added_to_this_product', $adminLangId));
                                 $this->includeTemplate('_partial/no-record-found.php', array('adminLangId' => $adminLangId), false);
                             } else {
-                                $frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing'));
+                                $frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing', 'target' => '_blank'));
                                 $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
-
+                                $frm->addHiddenField('', 'edit', 1);
                                 echo $frm->getFormTag();
+                                echo $frm->getFieldHtml('edit');
                                 echo $tbl->getHtml();
                             } ?>
                                 </form>

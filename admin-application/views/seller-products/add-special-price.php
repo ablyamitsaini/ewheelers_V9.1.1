@@ -23,10 +23,9 @@
                                 foreach ($data as $counter => $value) {
                                     $selProdId = !empty($value['splprice_selprod_id']) ? $value['splprice_selprod_id'] : 0;
                                     $splPriceId = !empty($value['splprice_id']) ? $value['splprice_id'] : 0;
-                                    $frm->setFormTagAttribute('id', 'frmSellerProductSpecialPrice-'.$selProdId);
-                                    $frm->setFormTagAttribute('name', 'frmSellerProductSpecialPrice-'.$selProdId);
-                                    $frm->setFormTagAttribute('data-splPriceId', $splPriceId);
-                                    $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table splPrice-'.$selProdId.'-js'));
+                                    $frm->setFormTagAttribute('id', 'frmSellerProductSpecialPrice-'.$selProdId.'-'.$splPriceId);
+                                    $frm->setFormTagAttribute('name', 'frmSellerProductSpecialPrice-'.$selProdId.'-'.$splPriceId);
+                                    $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table splPrice-'.$selProdId.'-'.$splPriceId.'-js'));
                                     if (1 > $counter) {
                                         $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
                                         foreach ($arrFlds as $val) {
@@ -34,12 +33,14 @@
                                         }
                                     }
                                     $frm->fill($value);
-                                    $tr = $tbl->appendElement('tr', array('class' => 'selProdId-'.$selProdId));
+                                    $tr = $tbl->appendElement('tr', array('class' => 'selProdId-'.$selProdId.'-'.$splPriceId));
                                     foreach ($arrFlds as $key => $val) {
                                         $td = $tr->appendElement('td');
                                         $fld = $frm->getField($key);
                                         if (!empty($fld)) {
-                                            $fld->setFieldTagAttribute('class', 'selProdId-'.$selProdId);
+                                            $fld->setFieldTagAttribute('class', 'selProdId-'.$selProdId.'-'.$splPriceId);
+                                            $fld->setFieldTagAttribute('data-selprodid', $selProdId);
+                                            $fld->setFieldTagAttribute('data-splpriceid', $splPriceId);
                                         }
                                         switch ($key) {
                                             case 'product_name':
@@ -69,16 +70,20 @@
                                         }
                                     }
                                     $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
-                                    $frm->setFormTagAttribute('onsubmit', 'updateSpecialPrice(this, '.$selProdId.'); return(false);');
+                                    $frm->setFormTagAttribute('onsubmit', 'updateSpecialPrice(this, '.$selProdId.', '.$splPriceId.'); return(false);');
+                                    $frm->addHiddenField('', 'edit', $edit);
 
                                     echo $frm->getFormTag();
+                                    echo $frm->getFieldHtml('edit');
 
                                     $selProdIdFld = $frm->getField('splprice_selprod_id');
-                                    $selProdIdFld->setFieldTagAttribute('class', 'selProdId-'.$selProdId);
+                                    $selProdIdFld->setFieldTagAttribute('class', 'selProdId-'.$selProdId.'-'.$splPriceId);
                                     echo $frm->getFieldHtml('splprice_selprod_id');
 
                                     $splPriceIdFld = $frm->getField('splprice_id');
-                                    $splPriceIdFld->setFieldTagAttribute('class', 'selProdId-'.$selProdId);
+                                    $splPriceIdFld->setFieldTagAttribute('class', 'selProdId-'.$selProdId.'-'.$splPriceId);
+
+
                                     echo $frm->getFieldHtml('splprice_id');
                                     echo $tbl->getHtml();
                                     echo $frm->getExternalJS();

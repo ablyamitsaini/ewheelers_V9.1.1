@@ -737,10 +737,12 @@ class SellerProduct extends MyAppModel
         $prodSrch = new ProductSearch($langId, null, null, true, false);
         $prodSrch->joinSellerProducts(0, '', array(), false);
         $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-        $prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name'));
+        $prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
         $productRs = $prodSrch->getResultSet();
+        
         $products = FatApp::getDb()->fetch($productRs);
-        $variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['product_identifier'];
+
+        $variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['selprod_title'];
 
         $options = static::getSellerProductOptions($selprod_id, true, $langId);
         if (is_array($options) && count($options)) {

@@ -45,7 +45,7 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
                 break;
             case 'specialPriceCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'specialPriceList', array($row['selprod_id']))), $row[$key], true);
+                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
                 break;
             case 'selprod_available_from':
                 $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);
