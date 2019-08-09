@@ -706,6 +706,14 @@ class ProductsController extends MyAppController
         if (false ===  MOBILE_APP_API_CALL) {
             $this->_template->addCss(array('css/slick.css','css/modaal.css','css/product-detail.css','css/cart.css','css/xzoom.css','css/magnific-popup.css'));
             $this->_template->addJs(array('js/slick.js','js/modaal.js','js/product-detail.js','js/responsive-img.min.js','js/xzoom.js','js/magnific-popup.js'));
+        } else {
+            $recentlyViewed  = FatApp::getPostedData('recentlyViewed');
+            $recentlyViewed = is_array($recentlyViewed) ? FatUtility::int($recentlyViewed) : array();
+            if (in_array($selprod_id, $recentlyViewed)) {
+                unset($recentlyViewed[$selprod_id]);
+            }
+            $recentlyViewed = $this->getRecentlyViewedProductsDeail($recentlyViewed);
+            $this->set('recentlyViewed', $recentlyViewed);
         }
 
         $this->_template->render();
@@ -900,13 +908,48 @@ class ProductsController extends MyAppController
         $sellerId =  $post['sellerId'];
     }
 
-    public function recentlyViewedProducts($productId = 0)
+    private function getRecentlyViewedProductsDeail($cookiesProductsArr = array())
     {
-        $productId = FatUtility::int($productId);
         $loggedUserId = 0;
         if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
         }
+        $prodSrch = new ProductSearch($this->siteLangId);
+        $prodSrch->setDefinedCriteria();
+        $prodSrch->joinSellerSubscription();
+        $prodSrch->addSubscriptionValidCondition();
+        $prodSrch->joinProductToCategory();
+        $prodSrch->doNotCalculateRecords();
+        $prodSrch->doNotLimitRecords();
+        if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+            $prodSrch->joinFavouriteProducts($loggedUserId);
+            $prodSrch->addFld('ufp_id');
+        } else {
+            $prodSrch->joinUserWishListProducts($loggedUserId);
+            $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+        }
+        $prodSrch->addCondition('selprod_id', 'IN', $cookiesProductsArr);
+        $prodSrch->addMultipleFields(
+            array(
+            'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on',
+            'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
+            'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price')
+        );
+        // echo $prodSrch->getQuery(); die;
+
+        $productRs = $prodSrch->getResultSet();
+        $recentViewedProducts = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
+        uksort(
+            $recentViewedProducts,
+            function ($key1, $key2) use ($cookiesProductsArr) {
+                return (array_search($key1, $cookiesProductsArr) > array_search($key2, $cookiesProductsArr));
+            }
+        );
+        return $recentViewedProducts;
+    }
+    public function recentlyViewedProducts($productId = 0)
+    {
+        $productId = FatUtility::int($productId);
         $recentViewedProducts = array();
         $cookieProducts = isset($_COOKIE['recentViewedProducts']) ? $_COOKIE['recentViewedProducts'] : false;
         if ($cookieProducts != false) {
@@ -918,43 +961,15 @@ class ProductsController extends MyAppController
                 $pos = array_search($productId, $cookiesProductsArr);
                 unset($cookiesProductsArr[$pos]);
             }
+
             if (isset($cookiesProductsArr) && is_array($cookiesProductsArr) && count($cookiesProductsArr)) {
                 $cookiesProductsArr = array_map('intval', $cookiesProductsArr);
                 $cookiesProductsArr = array_reverse($cookiesProductsArr);
 
-                $prodSrch = new ProductSearch($this->siteLangId);
-                $prodSrch->setDefinedCriteria();
-                $prodSrch->joinSellerSubscription();
-                $prodSrch->addSubscriptionValidCondition();
-                $prodSrch->joinProductToCategory();
-                $prodSrch->doNotCalculateRecords();
-                $prodSrch->doNotLimitRecords();
-                if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
-                    $prodSrch->joinFavouriteProducts($loggedUserId);
-                    $prodSrch->addFld('ufp_id');
-                } else {
-                    $prodSrch->joinUserWishListProducts($loggedUserId);
-                    $prodSrch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
-                }
-                $prodSrch->addCondition('selprod_id', 'IN', $cookiesProductsArr);
-                $prodSrch->addMultipleFields(
-                    array(
-                    'product_id', 'IFNULL(product_name, product_identifier) as product_name', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on',
-                    'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-                    'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price')
-                );
-                // echo $prodSrch->getQuery(); die;
-
-                $productRs = $prodSrch->getResultSet();
-                $recentViewedProducts = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
-                uksort(
-                    $recentViewedProducts,
-                    function ($key1, $key2) use ($cookiesProductsArr) {
-                        return (array_search($key1, $cookiesProductsArr) > array_search($key2, $cookiesProductsArr));
-                    }
-                );
+                $recentViewedProducts = $this->getRecentlyViewedProductsDeail($cookiesProductsArr);
             }
         }
+
         $this->set('recentViewedProducts', $recentViewedProducts);
         $this->_template->render(false, false);
     }

@@ -12,6 +12,10 @@ foreach ($recommendedProducts as $index => $recProduct) {
     $recommendedProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($recProduct['product_id'], "THUMB", $recProduct['selprod_id'], 0, $siteLangId));
 }
 
+foreach ($recentlyViewed as $index => $recViewed) {
+    $recentlyViewed[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($recViewed['product_id'], "THUMB", $recViewed['selprod_id'], 0, $siteLangId));
+}
+
 foreach ($productImagesArr as $afile_id => $image) {
     $originalImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'ORIGINAL', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
     $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'product', array($product['product_id'], 'MEDIUM', 0, $image['afile_id'] )), CONF_IMG_CACHE_TIME, '.jpg');
@@ -85,6 +89,10 @@ $data = array(
     'recommendedProducts' => array(
         'title' => Labels::getLabel('LBL_Recommended_Products', $siteLangId),
         'data' => $recommendedProducts
+    ),
+    'recentlyViewed' => array(
+        'title' => Labels::getLabel('LBL_Recently_Viewed', $siteLangId),
+        'data' => array_values($recentlyViewed)
     )
 );
 
