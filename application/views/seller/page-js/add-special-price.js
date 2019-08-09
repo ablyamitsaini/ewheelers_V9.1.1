@@ -6,13 +6,13 @@ $(document).on('keyup', "input[name='product_name']", function(){
     if('' != currObj.val()){
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
-        			url: fcom.makeUrl('SellerProducts', 'autoCompleteProducts'),
+        			url: fcom.makeUrl('Seller', 'sellerProductsAutoComplete'),
         			data: {keyword: request,fIsAjax:1,keyword:currObj.val()},
         			dataType: 'json',
         			type: 'post',
         			success: function(json) {
-        				response($.map(json, function(item) {
-        					return { label: item['name'], value: item['id']	};
+        				response($.map(json.suggestions, function(item) {
+        					return { label: item['value'], value: item['id']	};
         				}));
         			},
         		});
@@ -39,7 +39,7 @@ $(document).on('blur', "input[name='splprice_price']", function(){
     updateSpecialPrice = function(frm, selProdId, splPriceId){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPrice'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateSpecialPrice'), data, function(t) {
             if(t.status == true){
                 if (0 < selProdId) {
                     $('tr.selProdId-'+selProdId+'-'+splPriceId).hide();
@@ -58,7 +58,7 @@ $(document).on('blur', "input[name='splprice_price']", function(){
     edit = function(obj, splPriceId, selProdId){
         if (0 < $('tr.selProdId-0-0').length) {
             $.ajax({
-                url: fcom.makeUrl('SellerProducts', 'editSelProdSpecialPrice'),
+                url: fcom.makeUrl('Seller', 'editSelProdSpecialPrice'),
                 data: {fIsAjax:1,splprice_id:splPriceId},
                 dataType: 'json',
                 type: 'post',
@@ -93,7 +93,7 @@ $(document).on('blur', "input[name='splprice_price']", function(){
         }
 
         data = 'splprice_id=' + splPriceId;
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductSpecialPrice'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'deleteSellerProductSpecialPrice'), data, function(t) {
             var selectorClass = 'selProdId-'+selProdId+'-'+splPriceId;
             if (0 < $('tr.selProdId-0-0').length) {
                 var selectorClass = 'selProdId-0-0';
@@ -107,6 +107,7 @@ $(document).on('blur', "input[name='splprice_price']", function(){
             } else if (0 < $("#frmSellerProductSpecialPrice-"+selProdId+'-0').length) {
                 formSelector = "frmSellerProductSpecialPrice-"+selProdId+'-0';
             }
+            
             document.getElementById(formSelector).reset();
 
             $('tr.'+selectorClass).fadeIn();

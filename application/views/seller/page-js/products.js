@@ -149,5 +149,12 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 		$(frm.page).val(1);
 		loadSellerProducts(document.frmSearch);
 	};
+	addSpecialPrice = function(){
+		if (typeof $(".selectItem--js:checked").val() === 'undefined') {
+	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        return false;
+	    }
+		$("#frmSellerProductsListing").attr('action', fcom.makeUrl('Seller','addSpecialPrice')).removeAttr('onsubmit').submit();
+	};
 
 })();

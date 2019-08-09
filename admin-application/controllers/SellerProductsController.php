@@ -2244,6 +2244,7 @@ class SellerProductsController extends AdminBaseController
         if (false === $post) {
             FatUtility::dieJsonError(current($frm->getValidationErrors()));
         } else {
+            unset($post['btn_submit'], $post['btn_clear']);
             $srchFrm->fill($post);
         }
 
@@ -2379,7 +2380,7 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
         $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
-        
+
         $post['product_name'] = SellerProduct::getProductDisplayTitle($post['splprice_selprod_id'], $this->adminLangId);
         $this->set('edit', $edit);
         $this->set('post', $post);
