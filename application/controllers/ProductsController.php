@@ -708,11 +708,11 @@ class ProductsController extends MyAppController
             $this->_template->addJs(array('js/slick.js','js/modaal.js','js/product-detail.js','js/responsive-img.min.js','js/xzoom.js','js/magnific-popup.js'));
         } else {
             $recentlyViewed  = FatApp::getPostedData('recentlyViewed');
-            $recentlyViewed = is_array($recentlyViewed) ? FatUtility::int($recentlyViewed) : array();
+            $recentlyViewed = is_array($recentlyViewed) && 0 < count($recentlyViewed) ? FatUtility::int($recentlyViewed) : array();
             if (in_array($selprod_id, $recentlyViewed)) {
                 unset($recentlyViewed[$selprod_id]);
             }
-            $recentlyViewed = $this->getRecentlyViewedProductsDeail($recentlyViewed);
+            $recentlyViewed = $this->getRecentlyViewedProductsDetail($recentlyViewed);
             $this->set('recentlyViewed', $recentlyViewed);
         }
 
@@ -908,8 +908,12 @@ class ProductsController extends MyAppController
         $sellerId =  $post['sellerId'];
     }
 
-    private function getRecentlyViewedProductsDeail($cookiesProductsArr = array())
+    private function getRecentlyViewedProductsDetail($cookiesProductsArr = array())
     {
+        if (1 > count($cookiesProductsArr)) {
+            return $cookiesProductsArr;
+        }
+
         $loggedUserId = 0;
         if (UserAuthentication::isUserLogged()) {
             $loggedUserId = UserAuthentication::getLoggedUserId();
@@ -966,7 +970,7 @@ class ProductsController extends MyAppController
                 $cookiesProductsArr = array_map('intval', $cookiesProductsArr);
                 $cookiesProductsArr = array_reverse($cookiesProductsArr);
 
-                $recentViewedProducts = $this->getRecentlyViewedProductsDeail($cookiesProductsArr);
+                $recentViewedProducts = $this->getRecentlyViewedProductsDetail($cookiesProductsArr);
             }
         }
 
