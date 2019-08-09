@@ -3,14 +3,29 @@
     $frmSearch->setFormTagAttribute('onsubmit', 'searchSpecialPriceProducts(this); return(false);');
     $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
     $frmSearch->developerTags['fld_default_col'] = 4;
-    $fld_active = $frmSearch->getField('active');
+
+    $keywordFld = $frmSearch->getField('keyword');
+    $keywordFld->setWrapperAttribute('class', 'col-lg-4');
+    $keywordFld->developerTags['col'] = 4;
+    $keywordFld->developerTags['noCaptionTag'] = true;
+
+    $submitBtnFld = $frmSearch->getField('btn_submit');
+    $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+    $submitBtnFld->developerTags['col'] = 2;
+    $submitBtnFld->developerTags['noCaptionTag'] = true;
+
+    $cancelBtnFld = $frmSearch->getField('btn_clear');
+    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+    $cancelBtnFld->developerTags['col'] = 2;
+    $cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?>
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header  row justify-content-between mb-3">
             <div class="col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Sales', $siteLangId); ?></h2>
+                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Seller_Products_List', $siteLangId); ?></h2>
             </div>
         </div>
         <div class="content-body">
@@ -27,13 +42,22 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <h4><?php echo Labels::getLabel('LBL_Seller_Products_List', $siteLangId); ?> </h4>
-                    <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?>" onclick="addSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?></a>
-                </div>
-                <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-content pt-2 pl-4 pr-4 ">
-                            <div id="listing"></div>
+                        <div class="cards-content pl-4 pr-4 pt-4">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                </div>
+                                <div class="col-auto">
+                                    <div class="action">
+                                        <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?>" onclick="addSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?></a>
+                                        <div class="gap"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="listing">
+                                <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
+                            </div>
                             <span class="gap"></span>
                         </div>
                     </div>

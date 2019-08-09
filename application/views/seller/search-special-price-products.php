@@ -1,14 +1,14 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
-    'listserial' => Labels::getLabel('LBL_Sr.', $adminLangId),
+    'listserial' => Labels::getLabel('LBL_Sr.', $siteLangId),
 );
 /* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
-    $arr_flds['name'] = Labels::getLabel('LBL_Name', $adminLangId);
+    $arr_flds['name'] = Labels::getLabel('LBL_Name', $siteLangId);
 /* } */
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $adminLangId);
-$arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $adminLangId);
-$arr_flds['selprod_stock'] = Labels::getLabel('LBL_Quantity', $adminLangId);
-$arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $adminLangId);
+$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $siteLangId);
+$arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $siteLangId);
+$arr_flds['selprod_stock'] = Labels::getLabel('LBL_Quantity', $siteLangId);
+$arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $siteLangId);
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
@@ -35,11 +35,7 @@ foreach ($arrListing as $sn => $row) {
                     }
                 }
                 $td->appendElement('plaintext', array(), $variantStr, true);
-                if ($canViewSpecialPrice) {
-                    $td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Products').'", '.$row['selprod_product_id'].')'), $row['product_name'], true);
-                } else {
-                    $td->appendElement('plaintext', array(), $row['product_name'], true);
-                }
+                $td->appendElement('plaintext', array(), $row['product_name'], true);
                 break;
             case 'selprod_price':
                 $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
@@ -60,7 +56,7 @@ if (count($arrListing) == 0) {
     $tbl->appendElement('tr')->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
-        Labels::getLabel('LBL_No_Record_Found', $adminLangId)
+        Labels::getLabel('LBL_No_Record_Found', $siteLangId)
     );
 }
 
@@ -75,5 +71,5 @@ echo $tbl->getHtml(); ?>
 $postedData['page'] = $page;
 echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSearchSpecialPricePaging'));
 
-$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'callBackJsFunc' => 'goToSearchPage','adminLangId'=>$adminLangId);
+$pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'callBackJsFunc' => 'goToSearchPage','adminLangId'=>$siteLangId);
 $this->includeTemplate('_partial/pagination.php', $pagingArr, false);

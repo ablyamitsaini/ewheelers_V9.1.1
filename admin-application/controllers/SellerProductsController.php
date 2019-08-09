@@ -2292,7 +2292,7 @@ class SellerProductsController extends AdminBaseController
         }
 
         $this->set("arrListing", $arrListing);
-        $this->set('canViewSpecialPrice', $this->objPrivilege->canViewSpecialPrices($this->admin_id, true));
+        $this->set('canViewSellerProducts', $this->objPrivilege->canViewSellerProducts($this->admin_id, true));
 
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());

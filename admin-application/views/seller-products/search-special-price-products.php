@@ -35,7 +35,7 @@ foreach ($arrListing as $sn => $row) {
                     }
                 }
                 $td->appendElement('plaintext', array(), $variantStr, true);
-                if ($canViewSpecialPrice) {
+                if ($canViewSellerProducts) {
                     $td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Products').'", '.$row['selprod_product_id'].')'), $row['product_name'], true);
                 } else {
                     $td->appendElement('plaintext', array(), $row['product_name'], true);

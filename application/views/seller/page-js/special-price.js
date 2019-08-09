@@ -14,7 +14,7 @@ $(document).ready(function(){
 		var dv = $('#listing');
 		$(dv).html( fcom.getLoader() );
 
-		fcom.ajax(fcom.makeUrl('SellerProducts','searchSpecialPriceProducts'),data,function(res){
+		fcom.ajax(fcom.makeUrl('Seller','searchSpecialPriceProducts'),data,function(res){
 			$("#listing").html(res);
 		});
 	};
@@ -36,6 +36,6 @@ $(document).ready(function(){
 		searchSpecialPriceProducts(frm);
 	}
 	addSpecialPrice = function() {
-		window.open(fcom.makeUrl('SellerProducts','addSpecialPrice'), '_blank');
+		window.open(fcom.makeUrl('Seller','addSpecialPrice'), '_blank');
 	}
 })();
