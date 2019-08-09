@@ -4196,6 +4196,7 @@ class SellerController extends SellerBaseController
 
     public function searchSpecialPriceProducts()
     {
+        $userId = UserAuthentication::getLoggedUserId();
         $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
@@ -4215,6 +4216,7 @@ class SellerController extends SellerBaseController
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
         }
+        $srch->addCondition('selprod_user_id', '=', $userId);
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->setPageNumber($page);

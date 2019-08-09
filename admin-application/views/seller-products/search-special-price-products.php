@@ -5,10 +5,8 @@ $arr_flds = array(
 /* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
     $arr_flds['name'] = Labels::getLabel('LBL_Name', $adminLangId);
 /* } */
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $adminLangId);
 $arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $adminLangId);
-$arr_flds['selprod_stock'] = Labels::getLabel('LBL_Quantity', $adminLangId);
-$arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $adminLangId);
+$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $adminLangId);
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));

@@ -5,10 +5,8 @@ $arr_flds = array(
 /* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
     $arr_flds['name'] = Labels::getLabel('LBL_Name', $siteLangId);
 /* } */
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $siteLangId);
 $arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $siteLangId);
-$arr_flds['selprod_stock'] = Labels::getLabel('LBL_Quantity', $siteLangId);
-$arr_flds['selprod_available_from'] = Labels::getLabel('LBL_Available_From', $siteLangId);
+$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $siteLangId);
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
@@ -41,7 +39,7 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
                 break;
             case 'specialPriceCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
+                $td->appendElement('a', array('href' => CommonHelper::generateUrl('Seller', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
                 break;
             case 'selprod_available_from':
                 $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);

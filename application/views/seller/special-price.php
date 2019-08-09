@@ -25,7 +25,13 @@
         <div class="content-header  row justify-content-between mb-3">
             <div class="col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Seller_Products_List', $siteLangId); ?></h2>
+                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Seller_Products_Special_Price_List', $siteLangId); ?></h2>
+            </div>
+            <div class="col-auto">
+                <div class="action">
+                    <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?>" onclick="addSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?></a>
+                    <div class="gap"></div>
+                </div>
             </div>
         </div>
         <div class="content-body">
@@ -44,17 +50,6 @@
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-content pl-4 pr-4 pt-4">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                </div>
-                                <div class="col-auto">
-                                    <div class="action">
-                                        <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?>" onclick="addSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?></a>
-                                        <div class="gap"></div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
