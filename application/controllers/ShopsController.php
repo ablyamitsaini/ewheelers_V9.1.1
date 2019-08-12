@@ -848,7 +848,7 @@ class ShopsController extends MyAppController
             'description' => $shop['shop_additional_info'],
         );
         $shop['shop_seller_info'] =  empty($shop['shop_seller_info']) ? (object) array() : array(
-            'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+            'title' => Labels::getLabel('LBL_SELLER_INFO', $this->siteLangId),
             'description' => $shop['shop_seller_info'],
         );
         return $shop;

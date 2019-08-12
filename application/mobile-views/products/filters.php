@@ -19,8 +19,3 @@ $data = array(
     'availability' => $availability,
     'availabilityArr' => $availabilityArr,
 );
-
-
-if (empty((array)$productFiltersArr)) {
-    $status = applicationConstants::OFF;
-}
