@@ -22,41 +22,24 @@ foreach ($productImagesArr as $afile_id => $image) {
     $productImagesArr[$afile_id]['product_image_url'] = $mainImgUrl;
 }
 
+$selectedOptionsArr = $product['selectedOptionValues'];
+foreach ($optionRows as $key => $option) {
+    foreach ($option['values'] as $index => $opVal) {
+        $optionRows[$key]['values'][$index]['isAvailable'] = 1;
+        if (!in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
+            $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
+            $optionUrlArr = explode("::", $optionUrl);
+            if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
+                $optionRows[$key]['values'][$index]['isAvailable'] = 0;
+            }
+        }
+    }
+}
+
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
 $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_policies']) ? $product['selprod_warranty_policies'] : (object)array();
 $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'));
 
-
-if (!empty($shop['shop_payment_policy'])) {
-    $shop['policies'][] = array(
-        'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $siteLangId),
-        'description' => $shop['shop_payment_policy'],
-    );
-}
-if (!empty($shop['shop_delivery_policy'])) {
-    $shop['policies'][] = array(
-        'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $siteLangId),
-        'description' => $shop['shop_delivery_policy'],
-    );
-}
-if (!empty($shop['shop_refund_policy'])) {
-    $shop['policies'][] = array(
-        'title' => Labels::getLabel('LBL_REFUND_POLICY', $siteLangId),
-        'description' => $shop['shop_refund_policy'],
-    );
-}
-if (!empty($shop['shop_additional_info'])) {
-    $shop['policies'][] = array(
-        'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $siteLangId),
-        'description' => $shop['shop_additional_info'],
-    );
-}
-if (!empty($shop['shop_seller_info'])) {
-    $shop['policies'][] = array(
-        'title' => Labels::getLabel('LBL_SELLER_INFO', $siteLangId),
-        'description' => $shop['shop_seller_info'],
-    );
-}
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
