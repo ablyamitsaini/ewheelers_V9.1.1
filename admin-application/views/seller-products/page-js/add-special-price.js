@@ -27,7 +27,7 @@ $(document).on('keyup', "input[name='product_name']", function(){
     }
 });
 
-$(document).on('blur', "input[name='splprice_price']", function(){
+$(document).on('blur', "input[name='splprice_price']", function(e){
     var selProdId = $(this).data('selprodid');
     var splPriceId = $(this).data('splpriceid');
     var selector = "#frmSellerProductSpecialPrice-"+selProdId+'-'+splPriceId;

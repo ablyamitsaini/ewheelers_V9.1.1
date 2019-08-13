@@ -11,6 +11,7 @@
                 <div class="action">
                     <a class="btn btn--primary btn--sm" title="<?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?>" onclick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Special_Price', $siteLangId); ?></a>
                     <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Update_Special_Price', $siteLangId); ?>" onclick="updateSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Update_Special_Price', $siteLangId); ?></a>
+                    <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Remove_Special_Price', $siteLangId); ?>" onclick="removeSpecialPrice()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Remove_Special_Price', $siteLangId); ?></a>
                     <div class="gap"></div>
                 </div>
             </div>

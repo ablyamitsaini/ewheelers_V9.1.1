@@ -34,7 +34,6 @@ $(document).on('blur', "input[name='splprice_price']", function(){
     $(selector).submit();
 });
 
-
 (function() {
     updateSpecialPrice = function(frm, selProdId, splPriceId){
 		if (!$(frm).validate()) return;
@@ -107,7 +106,7 @@ $(document).on('blur', "input[name='splprice_price']", function(){
             } else if (0 < $("#frmSellerProductSpecialPrice-"+selProdId+'-0').length) {
                 formSelector = "frmSellerProductSpecialPrice-"+selProdId+'-0';
             }
-            
+
             document.getElementById(formSelector).reset();
 
             $('tr.'+selectorClass).fadeIn();

@@ -28,6 +28,9 @@
 
                             $innerLi = $innerUl->appendElement('li');
                             $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Update_Special_Price', $adminLangId),"onclick"=>"updateSpecialPrice();"), Labels::getLabel('LBL_Update_Special_Price', $adminLangId), true);
+
+                            $innerLi = $innerUl->appendElement('li');
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Remove_Special_Price', $adminLangId),"onclick"=>"removeSpecialPrice();"), Labels::getLabel('LBL_Remove_Special_Price', $adminLangId), true);
                         }
                             echo $ul->getHtml();
                         ?>

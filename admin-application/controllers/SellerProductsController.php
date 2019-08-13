@@ -1008,22 +1008,38 @@ class SellerProductsController extends AdminBaseController
     public function deleteSellerProductSpecialPrice()
     {
         $this->objPrivilege->canEditSellerProducts();
-        $post = FatApp::getPostedData();
-        $splprice_id = FatUtility::int($post['splprice_id']);
-        if (!$splprice_id) {
+        $splPriceId = FatApp::getPostedData('splprice_id', FatUtility::VAR_INT, 0);
+        if (1 > $splPriceId) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
-
-        $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splprice_id);
-
-        $sellerProdObj = new SellerProduct($specialPriceRow['selprod_id']);
-        if (!$sellerProdObj->deleteSellerProductSpecialPrice($splprice_id, $specialPriceRow['selprod_id'])) {
-            FatUtility::dieWithError(Labels::getLabel($sellerProdObj->getError(), $this->adminLangId));
-        }
-
+        $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
+        $this->removeSpecialPrice($splPriceId, $specialPriceRow);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
+    }
+
+    public function removeSpecialPriceArr()
+    {
+        $this->objPrivilege->canEditSellerProducts();
+        $splpriceIdArr = FatApp::getPostedData('selprod_ids');
+        $splpriceIds = FatUtility::int($splpriceIdArr);
+        foreach ($splpriceIds as $splPriceId => $selProdId) {
+            $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
+            $this->removeSpecialPrice($splPriceId, $specialPriceRow);
+        }
+        $this->set('selprod_id', $specialPriceRow['selprod_id']);
+        $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->adminLangId));
+        $this->_template->render(false, false, 'json-success.php');
+    }
+
+    private function removeSpecialPrice($splPriceId, $specialPriceRow)
+    {
+        $sellerProdObj = new SellerProduct($specialPriceRow['selprod_id']);
+        if (!$sellerProdObj->deleteSellerProductSpecialPrice($splPriceId, $specialPriceRow['selprod_id'])) {
+            FatUtility::dieWithError(Labels::getLabel($sellerProdObj->getError(), $this->adminLangId));
+        }
+        return true;
     }
 
     /* Seller Product Volume Discount [ */

@@ -35,4 +35,22 @@ $(document).ready(function(){
 	    }
 		$("#frmSplPriceListing").attr('action', fcom.makeUrl('SellerProducts','addSpecialPrice')).submit();
 	};
+    removeSpecialPrice = function(){
+        if (typeof $(".selectItem--js:checked").val() === 'undefined') {
+	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        return false;
+	    }
+        var agree = confirm(langLbl.confirmDelete);
+		if( !agree ){ return false; }
+        var data = fcom.frmData(document.getElementById('frmSplPriceListing'));
+        fcom.ajax(fcom.makeUrl('SellerProducts', 'removeSpecialPriceArr'), data, function(t) {
+            var ans = $.parseJSON(t);
+            if( ans.status == 1 ){
+                fcom.displaySuccessMessage(ans.msg);
+            } else {
+                fcom.displayErrorMessage(ans.msg);
+            }
+            location.reload();
+        });
+	};
 })();
