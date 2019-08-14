@@ -16,7 +16,7 @@
 							<?php foreach($row['categories'] as $category) { ?>
 								<div class="col-xl-3 col-lg-6 col-sm-6 column">
 									<div class="top-categories">
-										<div class="cat-img"><img data-ratio="4:1" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MEDIUM')), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $category['prodcat_name']; ?> " title= "<?php echo $category['prodcat_name']; ?> "></div>
+										<div class="cat-img"><img data-ratio="4:1" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MEDIUM', applicationConstants::SCREEN_DESKTOP)), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt= "<?php echo $category['prodcat_name']; ?> " title= "<?php echo $category['prodcat_name']; ?> "></div>
 										<div class="cat-tittle"> <a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($category['prodcat_id'] )); ?>"> <?php echo $category['prodcat_name']; ?></a></div>
 										<div class="cat-list">
 											<ul>

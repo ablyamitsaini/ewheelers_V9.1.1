@@ -560,7 +560,7 @@ class Orders extends MyAppModel
 
     private function addUpdateSubscriptionOrder($data = array(), $langId = 1)
     {
-        $db  = FatApp::getDb();
+        $db  = FatApp::getDb(); 
         $ordersLangData = $data['orderLangData'];
         unset($data['orderLangData']);
         $subscriptions = $data['subscriptions'];

@@ -145,12 +145,6 @@ trait SellerProducts
             FatApp::redirectUser($_SESSION['referer_page_url']);
         }
 
-
-
-        if ($selprod_id == 0 && !UserPrivilege::canSellerAddNewProduct()) {
-            Message::addErrorMessage(Labels::getLabel("LBL_Please_Upgrade_your_package_to_add_new_products", $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
-        }
         if (!UserPrivilege::canSellerAddProductInCatalog($product_id, $userId)) {
             Message::addErrorMessage(Labels::getLabel("MSG_Invalid_Request", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Products'));
@@ -176,11 +170,16 @@ trait SellerProducts
             FatUtility::dieWithError(Message::getHtml());
         }
 
+        if (0 == $selprod_id && FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && SellerProduct::getActiveCount(UserAuthentication::getLoggedUserId()) >= SellerPackages::getAllowedLimit(UserAuthentication::getLoggedUserId(), $this->siteLangId, 'spackage_inventory_allowed')) {
+            Message::addErrorMessage(Labels::getLabel("MSG_You_have_crossed_your_package_limit.", $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
+        }
+
         if (!UserPrivilege::isUserHasValidSubsription(UserAuthentication::getLoggedUserId())) {
             Message::addErrorMessage(Labels::getLabel("MSG_Please_buy_subscription", $this->siteLangId));
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'Packages'));
         }
-        if ($selprod_id==0 && !UserPrivilege::canSellerAddNewProduct()) {
+        if ($selprod_id==0 && !UserPrivilege::canSellerAddProductInCatalog($product_id, UserAuthentication::getLoggedUserId())) {
             Message::addErrorMessage(Labels::getLabel("LBL_Please_Upgrade_your_package_to_add_new_products", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -922,11 +921,11 @@ trait SellerProducts
         if ($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
-        
+
         if ($sellerProductRow['selprod_price'] <= $post['splprice_price']) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_can_not_be_greater_than_or_equal_to_the_product_price', $this->siteLangId));
         }
-        
+
         $frm = $this->getSellerProductSpecialPriceForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 

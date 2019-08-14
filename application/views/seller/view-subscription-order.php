@@ -16,7 +16,7 @@
                     <a href="<?php echo CommonHelper::generateUrl('Seller', 'subscriptions');?>" class="btn btn--primary btn--sm no-print"><?php echo Labels::getLabel('LBL_Back_to_Subscription', $siteLangId);?></a></div>
                 </div>
                 <div class="cards-content pl-4 pr-4 ">
-                      
+
                                 <div class="row">
                                   <div class="col-lg-6 col-md-6 col-sm-6">
                                       <div class="info--order">
@@ -37,7 +37,7 @@
                                        </div>
                                   </div>
                                 </div>
-                            
+
 					<div class="gap"></div>
                           <table class="table table--orders js-scrollable">
                               <tbody>
@@ -47,6 +47,8 @@
                                     <th><?php echo Labels::getLabel('LBL_Subscription_Period', $siteLangId);?></th>
                                     <th><?php echo Labels::getLabel('LBL_Subscription_Amount', $siteLangId);?></th>
                                     <th><?php echo Labels::getLabel('LBL_Product_Upload_Limit', $siteLangId);?></th>
+                                    <th><?php echo Labels::getLabel('LBL_Inventory_Upload_Limit', $siteLangId);?></th>
+                                    <th><?php echo Labels::getLabel('LBL_Images_Limit', $siteLangId);?></th>
                                 </tr>
                                 <tr>
                                     <td><?php echo FatDate::format($orderDetail['order_date_added'], true);?></td>
@@ -60,10 +62,12 @@
                                     </td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['ossubs_price']);?></td>
                                     <td><?php echo $orderDetail['ossubs_products_allowed'];?></td>
+                                    <td><?php echo $orderDetail['ossubs_inventory_allowed'];?></td>
+                                    <td><?php echo $orderDetail['ossubs_images_allowed'];?></td>
                                 </tr>
                               </tbody>
                           </table>
-                      
+
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined('SYSTEM_INIT') or die('Invalid Usage');
 $pagination = '';
 if ($pageCount < 1) {

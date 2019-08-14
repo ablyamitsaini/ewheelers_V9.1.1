@@ -134,7 +134,7 @@ class SubscriptionCheckoutController extends MyAppController
         $prodSrch->joinPackage();
 
         $prodSrch->addCondition('spplan_id', '=', $spplan_id);
-        $fields = array( 'spplan_id','spplan_price' ,'spackage_images_per_product','spackage_type','spackage_products_allowed','spplan_interval','spplan_frequency','spackage_commission_rate' );
+        $fields = array( 'spplan_id','spplan_price' ,'spackage_images_per_product','spackage_type','spackage_products_allowed','spackage_inventory_allowed','spplan_interval','spplan_frequency','spackage_commission_rate' );
         $prodSrch->addMultipleFields($fields);
         $rs = $prodSrch->getResultSet();
         return $subscriptionInfo = FatApp::getDb()->fetch($rs);
@@ -282,6 +282,7 @@ class SubscriptionCheckoutController extends MyAppController
                 OrderSubscription::DB_TBL_PREFIX.'price'        =>    $subscriptionInfo['spplan_price'],
                 OrderSubscription::DB_TBL_PREFIX.'images_allowed'        =>    $subscriptionInfo['spackage_images_per_product'],
                 OrderSubscription::DB_TBL_PREFIX.'products_allowed'        =>    $subscriptionInfo['spackage_products_allowed'],
+                OrderSubscription::DB_TBL_PREFIX.'inventory_allowed'        =>    $subscriptionInfo['spackage_inventory_allowed'],
                 OrderSubscription::DB_TBL_PREFIX.'type'        =>    $subscriptionInfo['spackage_type'],
                 OrderSubscription::DB_TBL_PREFIX.'plan_id'        =>    $subscriptionInfo['spplan_id'],
                 OrderSubscription::DB_TBL_PREFIX.'interval'        =>    $subscriptionInfo['spplan_interval'],
@@ -843,7 +844,7 @@ class SubscriptionCheckoutController extends MyAppController
         $srch->addCondition('ossubs_till_date', '<=', $endDate);
         $srch->addCondition('ossubs_till_date', '!=', '0000-00-00');
         $srch->addCondition('user_autorenew_subscription', '!=', 1);
-        $srch->addMultipleFields(array('order_user_id','order_id','ossubs_id','ossubs_type','ossubs_price','ossubs_images_allowed','ossubs_products_allowed','ossubs_plan_id','ossubs_interval','ossubs_frequency','ossubs_commission'));
+        $srch->addMultipleFields(array('order_user_id','order_id','ossubs_id','ossubs_type','ossubs_price','ossubs_images_allowed','ossubs_products_allowed','ossubs_inventory_allowed','ossubs_plan_id','ossubs_interval','ossubs_frequency','ossubs_commission'));
         /* $srch->addGroupBy('order_user_id');  */
         $srch->addOrder('ossubs_id', 'desc');
 
@@ -963,6 +964,7 @@ class SubscriptionCheckoutController extends MyAppController
          OrderSubscription::DB_TBL_PREFIX.'price'        =>    $activeSub['ossubs_price'],
          OrderSubscription::DB_TBL_PREFIX.'images_allowed'        =>    $activeSub['ossubs_images_allowed'],
          OrderSubscription::DB_TBL_PREFIX.'products_allowed'        =>    $activeSub['ossubs_products_allowed'],
+         OrderSubscription::DB_TBL_PREFIX.'inventory_allowed'        =>    $activeSub['ossubs_inventory_allowed'],
          OrderSubscription::DB_TBL_PREFIX.'plan_id'        =>    $activeSub['ossubs_plan_id'],
          OrderSubscription::DB_TBL_PREFIX.'type'        =>    $activeSub['ossubs_type'],
          OrderSubscription::DB_TBL_PREFIX.'interval'        =>    $activeSub['ossubs_interval'],
