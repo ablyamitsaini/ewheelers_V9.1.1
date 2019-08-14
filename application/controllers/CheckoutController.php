@@ -550,6 +550,9 @@ class CheckoutController extends MyAppController
     public function setUpShippingMethod()
     {
         $post = FatApp::getPostedData();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $post['data'] = (!empty($post['data']) ? json_decode($post['data'], true) : array());
+        }
         $cartProducts = $this->cartObj->getProducts($this->siteLangId);
 
         //$this->cartObj = new Cart();
