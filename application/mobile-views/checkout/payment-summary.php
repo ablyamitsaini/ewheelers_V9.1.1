@@ -8,6 +8,7 @@ $canBeUse = min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($c
 $canBeUseRPAmt = CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUse));
 $data = array(
     'orderId' => $orderId,
+    'orderType' => $orderType,
     'paymentMethods' => $paymentMethods,
     'userWalletBalance' => $userWalletBalance,
     'rewardPoints' => $rewardPoints,

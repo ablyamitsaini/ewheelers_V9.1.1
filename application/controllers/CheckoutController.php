@@ -1264,6 +1264,7 @@ class CheckoutController extends MyAppController
 
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('orderId', $order_id);
+            $this->set('orderType', $orderInfo['order_type']);
             $this->_template->render();
         }
         $this->_template->render(false, false);
