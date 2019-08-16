@@ -26,6 +26,7 @@ class RestoreSystemController extends MyAppController
         $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_STRING, $dateTime);
 
         if (strtotime($restoreTime) >= strtotime(date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +1 min')))) {
+            $this->resetRestoreTime(CONF_DB_NAME);
             Message::addErrorMessage('Auto restore scheduled on '.$restoreTime);
             FatUtility::dieJsonError(Message::getHtml());
         }

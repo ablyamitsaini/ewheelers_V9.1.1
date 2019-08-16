@@ -44,8 +44,8 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 ?>
 <div class="row">
     <div class="col-xl-4">
-        <div class="profile-container">
-            <div class="profile-container__col">
+        <div class="profile-container row">
+            <div class="profile-container__col col-xl-12 col-lg-6">
                 <div class="row preview preview--profile align-items-center" id="profileImageFrmBlock">
                     <div class="col-md-6">
                         <div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true)).'?'.time();?>"
@@ -74,7 +74,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
                     </div>
                 </div>
             </div>
-            <div class="profile-container__col">
+            <div class="profile-container__col col-xl-12 col-lg-6">
                 <?php if (User::canViewBuyerTab() && User::canViewSupplierTab()) { ?>
                 <div class="row preview preview--profile align-items-center">
                     <h5><?php echo Labels::getLabel('LBL_Preferred_Dashboard', $siteLangId);?> </h5>
