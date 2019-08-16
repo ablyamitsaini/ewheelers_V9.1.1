@@ -1646,4 +1646,67 @@ class ProductsController extends MyAppController
         $this->set('data', $data);
         $this->_template->render();
     }
+
+    public function getOptions($selProdId)
+    {
+        $selProdId = FatUtility::int($selProdId);
+        if (1 > $selProdId) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $productId = SellerProduct::getAttributesById($selProdId, 'selprod_product_id', false);
+
+        $options = SellerProduct::getSellerProductOptions($selProdId, false);
+        $productSelectedOptionValues = array();
+        if (is_array($options) && 0 < count($options)) {
+            foreach ($options as $op) {
+                $productSelectedOptionValues[$op['selprodoption_option_id']] = $op['selprodoption_optionvalue_id'];
+            }
+        }
+
+        $prodSrchObj = new ProductSearch($this->siteLangId);
+
+        $optionSrchObj = clone $prodSrchObj;
+        $optionSrchObj->setDefinedCriteria();
+        $optionSrchObj->joinTable(SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'LEFT OUTER JOIN', 'selprod_id = tspo.selprodoption_selprod_id', 'tspo');
+        $optionSrchObj->joinTable(OptionValue::DB_TBL, 'LEFT OUTER JOIN', 'tspo.selprodoption_optionvalue_id = opval.optionvalue_id', 'opval');
+        $optionSrchObj->joinTable(Option::DB_TBL, 'LEFT OUTER JOIN', 'opval.optionvalue_option_id = op.option_id', 'op');
+
+        $optionSrch = clone $optionSrchObj;
+        $optionSrch->joinTable(Option::DB_TBL.'_lang', 'LEFT OUTER JOIN', 'op.option_id = op_l.optionlang_option_id AND op_l.optionlang_lang_id = '. $this->siteLangId, 'op_l');
+        $optionSrch->addMultipleFields(array(  'option_id', 'option_is_color', 'ifNULL(option_name,option_identifier) as option_name' ));
+        $optionSrch->addCondition('option_id', '!=', 'NULL');
+        $optionSrch->addCondition('selprodoption_selprod_id', '=', $selProdId);
+        $optionSrch->addGroupBy('option_id');
+
+        $optionRs = $optionSrch->getResultSet();
+        $optionRows = FatApp::getDb()->fetchAll($optionRs);
+
+        if ($optionRows) {
+            foreach ($optionRows as &$option) {
+                $optionValueSrch = clone $optionSrchObj;
+                $optionValueSrch->joinTable(OptionValue::DB_TBL.'_lang', 'LEFT OUTER JOIN', 'opval.optionvalue_id = opval_l.optionvaluelang_optionvalue_id AND opval_l.optionvaluelang_lang_id = '. $this->siteLangId, 'opval_l');
+                $optionValueSrch->addCondition('product_id', '=', $productId);
+                $optionValueSrch->addCondition('option_id', '=', $option['option_id']);
+                $optionValueSrch->addMultipleFields(array( 'IFNULL(product_name, product_identifier) as product_name','selprod_id','selprod_user_id','selprod_code','option_id','IFNULL(optionvalue_name,optionvalue_identifier) as optionvalue_name ', 'theprice', 'optionvalue_id','optionvalue_color_code'));
+                $optionValueSrch->addGroupBy('optionvalue_id');
+                $optionValueRs = $optionValueSrch->getResultSet();
+                $optionValueRows = FatApp::getDb()->fetchAll($optionValueRs);
+
+                foreach ($optionValueRows as $index => $opVal) {
+                    $optionValueRows[$index]['isAvailable'] = 1;
+                    if (is_array($productSelectedOptionValues) && !in_array($opVal['optionvalue_id'], $productSelectedOptionValues)) {
+                        $optionUrl = Product::generateProductOptionsUrl($selProdId, $productSelectedOptionValues, $option['option_id'], $opVal['optionvalue_id'], $productId);
+                        $optionUrlArr = explode("::", $optionUrl);
+                        if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
+                            $optionValueRows[$index]['isAvailable'] = 0;
+                        }
+                    }
+                }
+
+                $option['values'] = $optionValueRows;
+            }
+        }
+        $this->set('options', $optionRows);
+        $this->_template->render();
+    }
 }

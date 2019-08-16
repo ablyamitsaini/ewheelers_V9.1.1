@@ -204,6 +204,7 @@ class CheckoutController extends MyAppController
         $this->set('pageData', $pageData);
         $this->set('addresses', $addresses);
         $this->set('headerData', $headerData);
+
         $this->_template->render(true, false);
     }
 
@@ -549,7 +550,11 @@ class CheckoutController extends MyAppController
     public function setUpShippingMethod()
     {
         $post = FatApp::getPostedData();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $post['data'] = (!empty($post['data']) ? json_decode($post['data'], true) : array());
+        }
         $cartProducts = $this->cartObj->getProducts($this->siteLangId);
+
         //$this->cartObj = new Cart();
         $productToShippingMethods = array();
         $user_id = UserAuthentication::getLoggedUserId();
@@ -663,6 +668,9 @@ class CheckoutController extends MyAppController
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
+        } else {
+            $message = Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId);
+            FatUtility::dieJsonError($message);
         }
     }
 
@@ -750,20 +758,18 @@ class CheckoutController extends MyAppController
         }
 
         if (!$this->isEligibleForNextStep($criteria)) {
+            $errMsg = Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($errMsg));
+            }
             if (Message::getErrorCount()) {
                 $errMsg = Message::getHtml();
-            } else {
-                Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
-                $errMsg = Message::getHtml();
-            }
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError($message);
             }
             FatUtility::dieWithError($errMsg);
         }
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-        //commonHelper::printArray($cartSummary);
+
         $userId = UserAuthentication::getLoggedUserId();
 
         /* Payment Methods[ */
@@ -1197,6 +1203,9 @@ class CheckoutController extends MyAppController
             $order_id = $orderObj->getOrderId();
             $_SESSION['order_id'] = $order_id;
         } else {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($orderObj->getError()));
+            }
             Message::addErrorMessage($orderObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
@@ -1213,42 +1222,54 @@ class CheckoutController extends MyAppController
             $this->cartObj->clear();
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrder', array($order_id)));
         }
-        $WalletPaymentForm = $this->getWalletPaymentForm($this->siteLangId);
-        $confirmForm = $this->getConfirmFormWithNoAmount($this->siteLangId);
+
         $userWalletBalance = User::getUserBalance($userId, true);
 
-        if ((FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) > 0) && $cartSummary['cartWalletSelected'] && $cartSummary['orderNetAmount'] > 0) {
-            $WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay', 'Charge', array($order_id)));
-            $WalletPaymentForm->fill(array('order_id' => $order_id));
-            $WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
-            $WalletPaymentForm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
+        if (false ===  MOBILE_APP_API_CALL) {
+            $WalletPaymentForm = $this->getWalletPaymentForm($this->siteLangId);
+            $confirmForm = $this->getConfirmFormWithNoAmount($this->siteLangId);
+
+            if ((FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) > 0) && $cartSummary['cartWalletSelected'] && $cartSummary['orderNetAmount'] > 0) {
+                $WalletPaymentForm->addFormTagAttribute('action', CommonHelper::generateUrl('WalletPay', 'Charge', array($order_id)));
+                $WalletPaymentForm->fill(array('order_id' => $order_id));
+                $WalletPaymentForm->setFormTagAttribute('onsubmit', 'confirmOrder(this); return(false);');
+                $WalletPaymentForm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId));
+            }
+
+            if ($cartSummary['orderNetAmount'] <= 0) {
+                $confirmForm->addFormTagAttribute('action', CommonHelper::generateUrl('ConfirmPay', 'Charge', array($order_id)));
+                $confirmForm->fill(array('order_id' => $order_id));
+                /* $confirmForm->setFormTagAttribute('onsubmit', 'confirmOrderWithoutPayment(this); return(false);'); */
+                $confirmForm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Confirm_Order', $this->siteLangId));
+            }
+
+            $redeemRewardFrm = $this->getRewardsForm($this->siteLangId);
+            $this->set('redeemRewardFrm', $redeemRewardFrm);
         }
 
-        if ($cartSummary['orderNetAmount'] <= 0) {
-            $confirmForm->addFormTagAttribute('action', CommonHelper::generateUrl('ConfirmPay', 'Charge', array($order_id)));
-            $confirmForm->fill(array('order_id' => $order_id));
-            /* $confirmForm->setFormTagAttribute('onsubmit', 'confirmOrderWithoutPayment(this); return(false);'); */
-            $confirmForm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Confirm_Order', $this->siteLangId));
-        }
 
-        $redeemRewardFrm = $this->getRewardsForm($this->siteLangId);
 
-        $this->set('redeemRewardFrm', $redeemRewardFrm);
-        $cartHasPhysicalProduct = false;
-        if ($this->cartObj->hasPhysicalProduct()) {
-            $cartHasPhysicalProduct = true;
-        }
-
-        $excludePaymentGatewaysArr = applicationConstants::getExcludePaymentGatewayArr();
-
-        $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
         $this->set('paymentMethods', $paymentMethods);
-        $this->set('excludePaymentGatewaysArr', $excludePaymentGatewaysArr);
-        $this->set('cartSummary', $cartSummary);
-        $this->set('orderInfo', $orderInfo);
         $this->set('userWalletBalance', $userWalletBalance);
-        $this->set('WalletPaymentForm', $WalletPaymentForm);
-        $this->set('confirmForm', $confirmForm);
+        $this->set('cartSummary', $cartSummary);
+        if (false ===  MOBILE_APP_API_CALL) {
+            $excludePaymentGatewaysArr = applicationConstants::getExcludePaymentGatewayArr();
+            $cartHasPhysicalProduct = false;
+            if ($this->cartObj->hasPhysicalProduct()) {
+                $cartHasPhysicalProduct = true;
+            }
+            $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
+            $this->set('excludePaymentGatewaysArr', $excludePaymentGatewaysArr);
+            $this->set('orderInfo', $orderInfo);
+            $this->set('WalletPaymentForm', $WalletPaymentForm);
+            $this->set('confirmForm', $confirmForm);
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('orderId', $order_id);
+            $this->set('orderType', $orderInfo['order_type']);
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
