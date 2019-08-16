@@ -39,7 +39,6 @@ class CommonHelper extends FatUtility
             if (true ===  MOBILE_APP_API_CALL && array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
                 self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
             }
-
         } else {
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
                 $languages = Language::getAllNames();

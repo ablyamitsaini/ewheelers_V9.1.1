@@ -15,4 +15,3 @@ $data = array(
     'canBeUseRP' => trim($canBeUse),
     'canBeUseRPAmt' => trim($canBeUseRPAmt),
 );
-$data['confirmOrder'] = CommonHelper::generateFullUrl('checkout', 'confirmOrder');
