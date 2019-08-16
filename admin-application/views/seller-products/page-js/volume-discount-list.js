@@ -1,49 +1,52 @@
 $(document).ready(function(){
 });
 (function() {
-    sellerProductSpecialPriceForm = function( selprod_id, splprice_id ){
-		if(typeof splprice_id==undefined || splprice_id == null){
-			splprice_id = 0;
+    sellerProductVolumeDiscountForm = function( selprod_id, voldiscount_id ){
+		if( typeof voldiscount_id == undefined || voldiscount_id == null ){
+			voldiscount_id = 0;
 		}
 		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('SellerProducts', 'sellerProductSpecialPriceForm', [selprod_id, splprice_id ]), '', function(t) {
-				$.facebox(t,'faceboxWidth');
+			fcom.displayProcessing();
+			fcom.ajax(fcom.makeUrl('SellerProducts', 'sellerProductVolumeDiscountForm', [selprod_id, voldiscount_id ]), '', function(t) {
+				fcom.updateFaceboxContent(t);
 			});
 		});
 	};
-    deleteSellerProductSpecialPrice = function( splprice_id ){
+
+    deleteSellerProductVolumeDiscount = function( voldiscount_id ){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductSpecialPrice'), 'splprice_id=' + splprice_id, function(t) {
-            location.reload();
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductVolumeDiscount'), 'voldiscount_id=' + voldiscount_id, function(t) {
+			location.reload();
 		});
-	};
-    setUpSellerProductSpecialPrice = function(frm){
+	}
+
+    setUpSellerProductVolumeDiscount = function(frm){
 		if (!$(frm).validate()) return;
 
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductSpecialPrice'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductVolumeDiscount'), data, function(t) {
 			$(document).trigger('close.facebox');
             location.reload();
 		});
 		return false;
 	};
-    updateSpecialPrice = function(){
+    updateVolumeDiscount = function(){
         if (typeof $(".selectItem--js:checked").val() === 'undefined') {
 	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
 	    }
-		$("#frmSplPriceListing").attr('action', fcom.makeUrl('SellerProducts','addSpecialPrice')).submit();
+		$("#frmVolDiscountListing").attr('action', fcom.makeUrl('SellerProducts','addVolumeDiscount')).submit();
 	};
-    removeSpecialPrice = function(){
+    deleteVolumeDiscount = function(){
         if (typeof $(".selectItem--js:checked").val() === 'undefined') {
 	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
 	    }
         var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
-        var data = fcom.frmData(document.getElementById('frmSplPriceListing'));
-        fcom.ajax(fcom.makeUrl('SellerProducts', 'removeSpecialPriceArr'), data, function(t) {
+        var data = fcom.frmData(document.getElementById('frmVolDiscountListing'));
+        fcom.ajax(fcom.makeUrl('SellerProducts', 'deleteVolumeDiscountArr'), data, function(t) {
             var ans = $.parseJSON(t);
             if( ans.status == 1 ){
                 fcom.displaySuccessMessage(ans.msg);

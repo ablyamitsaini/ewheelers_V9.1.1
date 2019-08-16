@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="col--first col-lg-6">
                             <span class="page__icon"><i class="ion-android-star"></i></span>
-                            <h5><?php echo Labels::getLabel('LBL_Manage_Special_Price', $adminLangId); ?> </h5>
+                            <h5><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $adminLangId); ?> </h5>
                             <?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
                         </div>
                     </div>
@@ -15,7 +15,7 @@
                 <!--<div class="col-sm-12">-->
                 <section class="section">
                     <div class="sectionhead">
-                        <h4><?php echo $product_name .' '. Labels::getLabel('LBL_Special_Price_List', $adminLangId); ?> </h4>
+                        <h4><?php echo $product_name .' '. Labels::getLabel('LBL_Volume_Discount_List', $adminLangId); ?> </h4>
                         <?php
                         if ($canEdit) {
                             $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));
@@ -24,13 +24,13 @@
                             $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
                             $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
                             $innerLi = $innerUl->appendElement('li');
-                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_Special_Price', $adminLangId),"onclick"=>"sellerProductSpecialPriceForm(".$selprod_id.", 0);"), Labels::getLabel('LBL_Add_Special_Price', $adminLangId), true);
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Add_Volume_Discount', $adminLangId),"onclick"=>"sellerProductVolumeDiscountForm(".$selprod_id.", 0);"), Labels::getLabel('LBL_Add_Volume_Discount', $adminLangId), true);
 
                             $innerLi = $innerUl->appendElement('li');
-                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Update_Special_Price', $adminLangId),"onclick"=>"updateSpecialPrice();"), Labels::getLabel('LBL_Update_Special_Price', $adminLangId), true);
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Update_Volume_Discount', $adminLangId),"onclick"=>"updateVolumeDiscount();"), Labels::getLabel('LBL_Update_Volume_Discount', $adminLangId), true);
 
                             $innerLi = $innerUl->appendElement('li');
-                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Remove_Special_Price', $adminLangId),"onclick"=>"removeSpecialPrice();"), Labels::getLabel('LBL_Remove_Special_Price', $adminLangId), true);
+                            $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_Volume_Discount', $adminLangId),"onclick"=>"deleteVolumeDiscount();"), Labels::getLabel('LBL_Delete_Volume_Discount', $adminLangId), true);
                         }
                             echo $ul->getHtml();
                         ?>
@@ -41,9 +41,8 @@
                             $arr_flds = array(
                                 'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
                                 'listserial'=> Labels::getLabel('LBL_Sr.', $adminLangId),
-                                'splprice_price' => Labels::getLabel('LBL_Special_Price', $adminLangId),
-                                'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $adminLangId),
-                                'splprice_end_date' => Labels::getLabel('LBL_End_Date', $adminLangId),
+                                'voldiscount_min_qty' => Labels::getLabel('LBL_Minimum_Quantity', $adminLangId),
+                                'voldiscount_percentage' => Labels::getLabel('LBL_Percentage', $adminLangId),
                                 'action' => Labels::getLabel('LBL_Action', $adminLangId),
                             );
                             $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
@@ -65,19 +64,16 @@
                                     $td = $tr->appendElement('td');
                                     switch ($key) {
                                         case 'select_all':
-                                            $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['splprice_id'].']" value='.$selprod_id.'><i class="input-helper"></i></label>', true);
+                                            $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['voldiscount_id'].']" value='.$selprod_id.'><i class="input-helper"></i></label>', true);
                                             break;
                                         case 'listserial':
                                             $td->appendElement('plaintext', array(), ''.$sr_no, true);
                                             break;
-                                        case 'splprice_price':
-                                            $td->appendElement('plaintext', array(), ''.CommonHelper::displayMoneyFormat($row[$key]), true);
+                                        case 'voldiscount_min_qty':
+                                            $td->appendElement('plaintext', array(), ''.$row[$key], true);
                                             break;
-                                        case 'splprice_start_date':
-                                            $td->appendElement('plaintext', array(), ''.FatDate::format($row[$key]), true);
-                                            break;
-                                        case 'splprice_end_date':
-                                            $td->appendElement('plaintext', array(), ''.FatDate::format($row[$key]), true);
+                                        case 'voldiscount_percentage':
+                                            $td->appendElement('plaintext', array(), ''.$row[$key].'%', true);
                                             break;
                                         case 'action':
                                             $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
@@ -91,7 +87,7 @@
                                             $innerLiEdit->appendElement(
                                                 'a',
                                                 array('href'=>'javascript:void(0)', 'class'=>'',
-                                                'title'=>Labels::getLabel('LBL_Edit', $adminLangId),"onclick"=>"sellerProductSpecialPriceForm(".$selprod_id.", ".$row['splprice_id'].")"),
+                                                'title'=>Labels::getLabel('LBL_Edit', $adminLangId),"onclick"=>"sellerProductVolumeDiscountForm(".$selprod_id.", ".$row['voldiscount_id'].")"),
                                                 Labels::getLabel('LBL_Edit', $adminLangId),
                                                 true
                                             );
@@ -100,7 +96,7 @@
                                             $innerLiDelete->appendElement(
                                                 'a',
                                                 array('href'=>'javascript:void(0)', 'class'=>'',
-                                                'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"),
+                                                'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"),
                                                 Labels::getLabel('LBL_Delete', $adminLangId),
                                                 true
                                             );
@@ -112,17 +108,16 @@
                                 }
                             }
                             if (count($arrListing) == 0) {
-                                // $tbl->appendElement('tr')->appendElement('td', array('colspan'=>count($arr_flds)), Labels::getLabel('LBL_No_Special_Price_added_to_this_product', $adminLangId));
                                 $this->includeTemplate('_partial/no-record-found.php', array('adminLangId' => $adminLangId), false);
                             } else {
-                                $frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing', 'target' => '_blank'));
+                                $frm = new Form('frmVolDiscountListing', array('id'=>'frmVolDiscountListing', 'target' => '_blank'));
                                 $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
                                 $frm->addHiddenField('', 'edit', 1);
                                 echo $frm->getFormTag();
                                 echo $frm->getFieldHtml('edit');
-                                echo $tbl->getHtml();
-                            } ?>
+                                echo $tbl->getHtml(); ?>
                                 </form>
+                            <?php } ?>
                         </div>
                     </div>
                 </section>

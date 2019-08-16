@@ -1,8 +1,8 @@
 $(document).on('keyup', "input[name='product_name']", function(){
     var currObj = $(this);
     var selProdId = currObj.data('selprodid');
-    var splPriceId = currObj.data('splpriceid');
-    var selector = ".selProdId-"+selProdId+'-'+splPriceId;
+    var volDiscountId = currObj.data('voldiscountid');
+    var selector = ".selProdId-"+selProdId+'-'+volDiscountId;
     if('' != currObj.val()){
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
@@ -18,94 +18,93 @@ $(document).on('keyup', "input[name='product_name']", function(){
         		});
         	},
         	'select': function(item) {
-        		$("input[name='splprice_selprod_id']"+selector).val(item['value']);
+        		$("input[name='voldiscount_selprod_id']"+selector).val(item['value']);
                 currObj.val( item['label'] );
         	}
         });
     }else{
-        $("input[name='splprice_selprod_id']"+selector).val('');
+        $("input[name='voldiscount_selprod_id']"+selector).val('');
     }
 });
 
-$(document).on('blur', "input[name='splprice_price']", function(e){
+$(document).on('blur', "input[name='voldiscount_percentage']", function(e){
     var selProdId = $(this).data('selprodid');
-    var splPriceId = $(this).data('splpriceid');
-    var selector = "#frmSellerProductSpecialPrice-"+selProdId+'-'+splPriceId;
+    var volDiscountId = $(this).data('voldiscountid');
+    var selector = "#frmSellerProductVolumeDiscount-"+selProdId+'-'+volDiscountId;
     $(selector).submit();
 });
 
 
 (function() {
-    updateSpecialPrice = function(frm, selProdId, splPriceId){
+    updateVolumeDiscount = function(frm, selProdId, volDiscountId){
 		if (!$(frm).validate()) return;
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPrice'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateVolumeDiscount'), data, function(t) {
             if(t.status == true){
                 if (0 < selProdId) {
-                    $('tr.selProdId-'+selProdId+'-'+splPriceId).hide();
+                    $('tr.selProdId-'+selProdId+'-'+volDiscountId).hide();
                 } else {
-                    $("input[name='splprice_selprod_id'].selProdId-"+selProdId+'-'+splPriceId).val('');
+                    $("input[name='voldiscount_selprod_id'].selProdId-"+selProdId+'-'+volDiscountId).val('');
                     frm.reset();
                 }
-                $("input[name='splprice_id'].selProdId-"+selProdId+'-'+splPriceId).val('');
-                $('table.splPrice-'+selProdId+'-'+splPriceId+'-js tbody').append(t.data);
+                $("input[name='voldiscount_id'].selProdId-"+selProdId+'-'+volDiscountId).val('');
+                $('table.volDiscount-'+selProdId+'-'+volDiscountId+'-js tbody').append(t.data);
             }
 			$(document).trigger('close.facebox');
 		});
 		return false;
 	};
 
-    edit = function(obj, splPriceId, selProdId){
+    edit = function(obj, volDiscountId, selProdId){
         if (0 < $('tr.selProdId-0-0').length) {
             $.ajax({
-                url: fcom.makeUrl('SellerProducts', 'editSelProdSpecialPrice'),
-                data: {fIsAjax:1,splprice_id:splPriceId},
+                url: fcom.makeUrl('SellerProducts', 'editVolumeDiscount'),
+                data: {fIsAjax:1,voldiscount_id:volDiscountId},
                 dataType: 'json',
                 type: 'post',
                 success: function(json) {
                     var selectorClass = 'selProdId-0-0';
                     $("input[name='product_name']."+selectorClass).val(json.product_name);
-                    $("input[name='splprice_price']."+selectorClass).val(json.splprice_price);
-                    $("input[name='splprice_start_date']."+selectorClass).val(json.splprice_start_date);
-                    $("input[name='splprice_end_date']."+selectorClass).val(json.splprice_end_date);
-                    $("input[name='splprice_selprod_id']."+selectorClass).val(json.splprice_selprod_id);
-                    $("input[name='splprice_id']."+selectorClass).val(json.splprice_id);
+                    $("input[name='voldiscount_min_qty']."+selectorClass).val(json.voldiscount_min_qty);
+                    $("input[name='voldiscount_percentage']."+selectorClass).val(json.voldiscount_percentage);
+                    $("input[name='voldiscount_selprod_id']."+selectorClass).val(json.voldiscount_selprod_id);
+                    $("input[name='voldiscount_id']."+selectorClass).val(json.voldiscount_id);
                     $('tr.'+selectorClass).fadeIn();
                     $(document).trigger('close.facebox');
                 },
             });
         } else {
-            var selectorClass = 'selProdId-'+selProdId+'-'+splPriceId;
+            var selectorClass = 'selProdId-'+selProdId+'-'+volDiscountId;
             if (0 < $('tr.selProdId-'+selProdId+'-0').length) {
                 var selectorClass = 'selProdId-'+selProdId+'-0';
             }
 
-            $("input[name='splprice_id']."+selectorClass).val(splPriceId);
+            $("input[name='voldiscount_id']."+selectorClass).val(volDiscountId);
             $('tr.'+selectorClass).fadeIn();
         }
         obj.parentsUntil('tr').parent().remove();
 		return false;
     };
 
-    remove = function(obj, splPriceId, selProdId){
+    remove = function(obj, volDiscountId, selProdId){
 		if( !confirm(langLbl.confirmDelete) ){
             return false;
         }
 
-        data = 'splprice_id=' + splPriceId;
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductSpecialPrice'), data, function(t) {
-            var selectorClass = 'selProdId-'+selProdId+'-'+splPriceId;
+        data = 'voldiscount_id=' + volDiscountId;
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductVolumeDiscount'), data, function(t) {
+            var selectorClass = 'selProdId-'+selProdId+'-'+volDiscountId;
             if (0 < $('tr.selProdId-0-0').length) {
                 var selectorClass = 'selProdId-0-0';
                 selProdId = 0;
             } else if (0 < $('tr.selProdId-'+selProdId+'-0').length) {
                 var selectorClass = 'selProdId-'+selProdId+'-0';
             }
-            var formSelector = "frmSellerProductSpecialPrice-"+selProdId+'-'+splPriceId;
-            if (0 < $("#frmSellerProductSpecialPrice-0-0").length) {
-                formSelector = "frmSellerProductSpecialPrice-0-0";
-            } else if (0 < $("#frmSellerProductSpecialPrice-"+selProdId+'-0').length) {
-                formSelector = "frmSellerProductSpecialPrice-"+selProdId+'-0';
+            var formSelector = "frmSellerProductVolumeDiscount-"+selProdId+'-'+volDiscountId;
+            if (0 < $("#frmSellerProductVolumeDiscount-0-0").length) {
+                formSelector = "frmSellerProductVolumeDiscount-0-0";
+            } else if (0 < $("#frmSellerProductVolumeDiscount-"+selProdId+'-0').length) {
+                formSelector = "frmSellerProductVolumeDiscount-"+selProdId+'-0';
             }
             document.getElementById(formSelector).reset();
 

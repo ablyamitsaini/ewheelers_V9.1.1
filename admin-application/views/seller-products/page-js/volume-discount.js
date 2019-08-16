@@ -1,9 +1,9 @@
 $(document).ready(function(){
-    searchSpecialPriceProducts(document.frmSearch);
+    searchVolumeDiscountProducts(document.frmSearch);
 });
 (function() {
 	var dv = '#listing';
-	searchSpecialPriceProducts = function(frm){
+	searchVolumeDiscountProducts = function(frm){
 
 		/*[ this block should be before dv.html('... anything here.....') otherwise it will through exception in ie due to form being removed from div 'dv' while putting html*/
 		var data = '';
@@ -14,13 +14,13 @@ $(document).ready(function(){
 		var dv = $('#listing');
 		$(dv).html( fcom.getLoader() );
 
-		fcom.ajax(fcom.makeUrl('SellerProducts','searchSpecialPriceProducts'),data,function(res){
+		fcom.ajax(fcom.makeUrl('SellerProducts','searchVolumeDiscountProducts'),data,function(res){
 			$("#listing").html(res);
 		});
 	};
     clearSearch = function(){
 		document.frmSearch.reset();
-		searchSpecialPriceProducts(document.frmSearch);
+		searchVolumeDiscountProducts(document.frmSearch);
 	};
     goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
@@ -28,14 +28,14 @@ $(document).ready(function(){
 		}
 		var frm = document.frmSearchSpecialPricePaging;
 		$(frm.page).val(page);
-		searchSpecialPriceProducts(frm);
+		searchVolumeDiscountProducts(frm);
 	}
 
 	reloadList = function() {
 		var frm = document.frmSearch;
-		searchSpecialPriceProducts(frm);
+		searchVolumeDiscountProducts(frm);
 	}
-	addSpecialPrice = function() {
-		window.open(fcom.makeUrl('SellerProducts','addSpecialPrice'), '_blank');
+	addVolumeDiscount = function() {
+		window.open(fcom.makeUrl('SellerProducts','addVolumeDiscount'), '_blank');
 	}
 })();

@@ -469,4 +469,12 @@ $(document).ready(function(){
 		$("#frmSelProdListing").attr("action",fcom.makeUrl('SellerProducts','deleteSelected')).submit();
 	};
 
+	addVolumeDiscount = function(){
+		if (typeof $(".selectItem--js:checked").val() === 'undefined') {
+	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        return false;
+	    }
+		$("#frmSelProdListing").attr('action', fcom.makeUrl('SellerProducts','addVolumeDiscount')).removeAttr('onsubmit').submit();
+	};
+
 })();

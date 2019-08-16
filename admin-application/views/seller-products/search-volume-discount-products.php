@@ -1,12 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
     'listserial' => Labels::getLabel('LBL_Sr.', $adminLangId),
+    'name' => Labels::getLabel('LBL_Name', $adminLangId),
+    'volumeDiscountCount' => Labels::getLabel('LBL_Volume_Discounts', $adminLangId),
+    'selprod_price' => Labels::getLabel('LBL_Price', $adminLangId),
 );
-/* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
-    $arr_flds['name'] = Labels::getLabel('LBL_Name', $adminLangId);
-/* } */
-$arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $adminLangId);
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $adminLangId);
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
@@ -42,8 +40,8 @@ foreach ($arrListing as $sn => $row) {
             case 'selprod_price':
                 $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
                 break;
-            case 'specialPriceCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
+            case 'volumeDiscountCount':
+                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'volumeDiscountList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
                 break;
             case 'selprod_available_from':
                 $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);
@@ -71,7 +69,7 @@ echo $tbl->getHtml(); ?>
 </form>
 <?php
 $postedData['page'] = $page;
-echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSearchSpecialPricePaging'));
+echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSearchVolumeDiscountPaging'));
 
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'callBackJsFunc' => 'goToSearchPage','adminLangId'=>$adminLangId);
 $this->includeTemplate('_partial/pagination.php', $pagingArr, false);
