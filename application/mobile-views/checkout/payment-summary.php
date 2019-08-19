@@ -16,8 +16,7 @@ $data = array(
     'canBeUseRP' => trim($canBeUse),
     'canBeUseRPAmt' => trim($canBeUseRPAmt),
     'remainingWalletBalance' => 0,
-    'orderNetAmount' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']),
-    // 'netPayable' => $cartSummary['orderPaymentGatewayCharges'],
+    'orderNetAmount' => $cartSummary['orderNetAmount'],
 );
 
 $cartTotal = isset($cartSummary['cartTotal']) ? $cartSummary['cartTotal'] : 0;
