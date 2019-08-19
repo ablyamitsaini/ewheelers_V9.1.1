@@ -68,6 +68,7 @@
                                         <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Deactivate', $siteLangId); ?>" onclick="toggleBulkStatues(0)" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Deactivate', $siteLangId); ?></a>
                                         <a class="btn btn--primary btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>" onclick="deleteBulkSellerProducts()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?></a>
                                         <div class="gap"></div>
+                                        <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Add_Volume_Discount', $siteLangId); ?>" onclick="addVolumeDiscount()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Add_Volume_Discount', $siteLangId); ?></a>
                                     </div>
                                 </div>
                             </div>

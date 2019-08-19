@@ -149,5 +149,11 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 		$(frm.page).val(1);
 		loadSellerProducts(document.frmSearch);
 	};
-
+	addVolumeDiscount = function(){
+		if (typeof $(".selectItem--js:checked").val() === 'undefined') {
+	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        return false;
+	    }
+		$("#frmSellerProductsListing").attr('action', fcom.makeUrl('Seller','addVolumeDiscount')).removeAttr('onsubmit').submit();
+	};
 })();
