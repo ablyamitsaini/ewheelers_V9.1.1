@@ -751,6 +751,11 @@ class CheckoutController extends MyAppController
 
     public function PaymentSummary()
     {
+        if (true ===  MOBILE_APP_API_CALL) {
+            $payFromWallet = FatApp::getPostedData('payFromWallet', Fatutility::VAR_INT, 0);
+            $this->cartObj->updateCartWalletOption($payFromWallet);
+        }
+
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
         if ($this->cartObj->hasPhysicalProduct()) {
             $criteria['hasShippingAddress'] = true;
@@ -1266,6 +1271,7 @@ class CheckoutController extends MyAppController
         }
 
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('products', $cartProducts);
             $this->set('orderId', $order_id);
             $this->set('orderType', $orderInfo['order_type']);
             $this->_template->render();
@@ -1461,10 +1467,19 @@ class CheckoutController extends MyAppController
         $order_type = FatApp::getPostedData('order_type', FatUtility::VAR_INT, 0);
         $pmethod_id = FatApp::getPostedData('pmethod_id', FatUtility::VAR_INT, 0);
         $order_id = FatApp::getPostedData("order_id", FatUtility::VAR_STRING, "");
+        $user_id = UserAuthentication::getLoggedUserId();
+        $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
+        $userWalletBalance = User::getUserBalance($user_id, true);
 
         if (true ===  MOBILE_APP_API_CALL) {
-            $paymentMethod = $this->getPaymentUrl($pmethod_id);
-            $controller = $paymentMethod['pmethod_code'].'Pay';
+            if (0 < $pmethod_id) {
+                $paymentMethod = $this->getPaymentUrl($pmethod_id);
+                $controller = $paymentMethod['pmethod_code'].'Pay';
+            }
+            if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT))) {
+                $controller = 'WalletPay';
+                $pmethod_id = 0;
+            }
             $this->set('orderPayment', CommonHelper::generateFullUrl($controller, 'charge', array($order_id)));
         }
 
@@ -1548,12 +1563,8 @@ class CheckoutController extends MyAppController
             }
             FatUtility::dieWithError($errMsg);
         }
-        $user_id = UserAuthentication::getLoggedUserId();
-        $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-        $userWalletBalance = User::getUserBalance($user_id, true);
-        $pmethod_id = FatApp::getPostedData('pmethod_id', FatUtility::VAR_INT, 0);
 
-        if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['cartWalletSelected'], FatUtility::VAR_FLOAT)) && !$pmethod_id) {
+        if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT)) && !$pmethod_id) {
             if (true ===  MOBILE_APP_API_CALL) {
                 $this->_template->render();
             }
