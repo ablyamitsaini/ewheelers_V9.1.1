@@ -1472,6 +1472,7 @@ class CheckoutController extends MyAppController
         $userWalletBalance = User::getUserBalance($user_id, true);
 
         if (true ===  MOBILE_APP_API_CALL) {
+            $controller = '';
             if (0 < $pmethod_id) {
                 $paymentMethod = $this->getPaymentUrl($pmethod_id);
                 $controller = $paymentMethod['pmethod_code'].'Pay';
@@ -1479,6 +1480,9 @@ class CheckoutController extends MyAppController
             if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT))) {
                 $controller = 'WalletPay';
                 $pmethod_id = 0;
+            }
+            if (empty($controller)) {
+                FatUtility::dieJsonError(strip_tags(Labels::getLabel('MSG_Please_Select_Payment_Method', $this->siteLangId)));
             }
             $this->set('orderPayment', CommonHelper::generateFullUrl($controller, 'charge', array($order_id)));
         }
