@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 <section class="section">
     <div class="sectionhead">
-        <a class="btn-default btn-sm" target='_blank' href="<?php echo CommonHelper::generateUrl('SellerProducts', 'volumeDiscountList', array($selprod_id)); ?>" style='float:right;'><?php echo Labels::getLabel('LBL_Manage_Special_Price', $adminLangId)?></a>
+        <a class="btn-default btn-sm" target='_blank' href="<?php echo CommonHelper::generateUrl('SellerProducts', 'volumeDiscountList', array($selprod_id)); ?>" style='float:right;'><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $adminLangId)?></a>
         <h4><?php echo Labels::getLabel('LBL_Product_Setup', $adminLangId); ?></h4>
     </div>
     <div class="sectionbody space">
