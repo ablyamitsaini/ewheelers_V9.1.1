@@ -15,7 +15,7 @@ $data = array(
     'rewardPoints' => $rewardPoints,
     'canBeUseRP' => trim($canBeUse),
     'canBeUseRPAmt' => trim($canBeUseRPAmt),
-    'remainingWalletBalance' => 0,
+    'remainingWalletBalance' => $userWalletBalance,
     'orderNetAmount' => $cartSummary['orderNetAmount'],
 );
 
